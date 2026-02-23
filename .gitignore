@@ -1,0 +1,19 @@
+# IDE / Editor
+.vscode/
+.idea/
+
+# Firebase Studio
+.idx/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (not used, but prevent accidental inclusion)
+node_modules/
+dist/
+.cache/
+
+# Logs
+*.log
+firebase-debug.log
