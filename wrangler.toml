@@ -1,2 +1,2 @@
 name = "ilsanroom"
-pages_build_output_dir = "."
+pages_build_output_dir = "./public"

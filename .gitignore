@@ -14,6 +14,9 @@ node_modules/
 dist/
 .cache/
 
+# Cloudflare
+.wrangler/
+
 # Logs
 *.log
 firebase-debug.log
