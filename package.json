@@ -1,0 +1,15 @@
+{
+  "name": "ilsanroom",
+  "version": "1.0.0",
+  "private": true,
+  "description": "전국 룸·나이트·클럽·라운지 정보형 디렉토리",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "qa:similarity": "node scripts/qa-similarity.js",
+    "qa:density": "node scripts/qa-density.js",
+    "qa:repeat": "node scripts/qa-repeat.js",
+    "qa:meta": "node scripts/qa-meta.js",
+    "qa:all": "node scripts/qa-all.js",
+    "deploy:ready": "npm run qa:all"
+  }
+}
