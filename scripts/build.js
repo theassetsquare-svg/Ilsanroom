@@ -409,7 +409,7 @@ function buildHomepage() {
     html += '    <h2 class="section-title">' + cats[cat] + '</h2>\n';
     html += '    <div class="venue-grid">\n';
     items.forEach(function(v) {
-      html += '      <a href="/venue/' + v.slug + '.html" class="venue-card">\n';
+      html += '      <a href="/venue/' + v.slug + '.html" class="venue-card" target="_blank" rel="noopener">\n';
       html += '        <h3>' + esc(v.P) + '</h3>\n';
       html += '        <span class="venue-type-tag">' + esc(v.S) + '</span>\n';
       html += '      </a>\n';
