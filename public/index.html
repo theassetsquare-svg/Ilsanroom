@@ -1,14 +1,315 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+  <title>일산명월관요정 — 일산룸 · 요정 · 나이트 안내</title>
+  <meta name="description" content="일산명월관요정 위치·분위기·교통과 고양 일산동구 나이트·라운지 매장 안내. 일산룸 야간 씬 가이드." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ilsanroom.pages.dev/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="일산명월관요정 — 일산룸 안내" />
+  <meta property="og:description" content="고양 일산동구 요정·나이트·라운지 위치·분위기·교통 길잡이." />
+  <meta property="og:url" content="https://ilsanroom.pages.dev/" />
+  <meta property="og:locale" content="ko_KR" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "일산 룸 안내",
+    "url": "https://ilsanroom.pages.dev/",
+    "description": "고양 일산동구 요정·나이트·라운지 길잡이",
+    "inLanguage": "ko"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "일산명월관요정",
+    "description": "경기도 고양시 일산동구 장항동 소재 한옥 요정. 한정식과 국악 공연을 갖춘 프리미엄 비즈니스 공간.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "장항동 895-1번지",
+      "addressLocality": "고양시 일산동구",
+      "addressRegion": "경기도",
+      "addressCountry": "KR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 37.6584,
+      "longitude": 126.7697
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="/style.css" rel="stylesheet" />
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="site-logo">일산룸<span>길잡이</span></a>
+      <nav>
+        <ul class="header-nav">
+          <li><a href="#featured">명월관</a></li>
+          <li><a href="#directory">목록</a></li>
+          <li><a href="#guide">교통</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1><span class="highlight">일산명월관요정</span> · 일산룸 안내</h1>
+      <p class="hero-sub">
+        경기도 고양시 장항동·마두 일대 요정, 나이트클럽, 라운지 등
+        밤 문화 장소를 모아 소개합니다.
+        위치와 분위기를 살펴본 뒤 방문 계획을 세워 보세요.
+      </p>
+      <div class="hero-tags">
+        <span class="hero-tag">일산명월관요정</span>
+        <span class="hero-tag">일산룸</span>
+        <span class="hero-tag">일산요정</span>
+        <span class="hero-tag">고양 나이트</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured: 일산명월관요정 -->
+  <section id="featured" class="section">
+    <div class="container">
+      <h2 class="section-title">대표 매장 소개</h2>
+      <p class="section-desc">이 지역에서 오랜 역사를 지닌 대표 한옥 요정으로, 한정식과 국악이 어우러진 프리미엄 공간. 일산명월관요정 상세 소개.</p>
+
+      <div class="featured-card">
+        <span class="featured-badge">VERIFIED OPEN</span>
+        <h2>일산명월관요정</h2>
+        <p class="venue-type">한옥 요정 · 비즈니스룸 · 한정식 · 국악</p>
+
+        <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 8px;">
+          일산명월관요정은 경기도 고양시 일산동구 장항동에 자리잡은 한옥 양식 요정입니다.
+          고풍스러운 인테리어가 돋보이며,
+          호텔 출신 조리장이 차려내는 한정식 코스와 가야금·판소리 라이브 연주가 함께 펼쳐집니다.
+          회식이나 특별한 모임에 적합한 프라이빗 룸을 다수 갖추었고,
+          이 권역 최대 규모의 좌석 수를 보유합니다.
+        </p>
+
+        <div class="featured-detail-grid">
+          <div class="detail-item">
+            <span class="label">위치</span>
+            <span class="value">경기도 고양시 장항동 895-1번지 (일산동구)</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">교통편</span>
+            <span class="value">수도권 3호선 마두역 또는 정발산역 하차 후 차량 이동. 자가용 시 건물 인근 차량 보관 가능.</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">시설 구성</span>
+            <span class="value">고전 양식 인테리어, 크기별 프라이빗 룸, 라이브 무대, 단체 모임 수용.</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">대표 콘텐츠</span>
+            <span class="value">15종 이상 반찬의 한정식 코스, 가야금·판소리 공연, 업무 미팅 전용 룸.</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">분위기</span>
+            <span class="value">고풍스러운 고건축과 현대적 편의시설의 조화. 격식 있는 자리에 어울리는 품격 있는 환경.</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">운영 현황</span>
+            <span class="value">공식 웹사이트, TripAdvisor 등록, SNS 활동 등 복수 경로에서 현재 영업 중으로 파악됨.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Directory -->
+  <section id="directory" class="section" style="background: var(--bg-secondary);">
+    <div class="container">
+      <h2 class="section-title">일산 나이트 씬 장소 목록</h2>
+      <p class="section-desc">이 일대에서 데이터가 수집된 장소를 유형별로 정리했습니다.</p>
+
+      <div class="venue-grid">
+
+        <!-- 일산샴푸나이트 -->
+        <article class="venue-card">
+          <div class="venue-card-header">
+            <h3>일산샴푸나이트</h3>
+            <span class="status-badge status-verified">운영 파악</span>
+          </div>
+          <span class="venue-type-tag">나이트클럽</span>
+          <div class="venue-info">
+            <p>마두동 805-1 오원빌딩 8층에 자리한 클럽으로, 지하철 마두역과 가까워 접근성이 좋고, 건물 내 차량 보관 시설도 갖춤.</p>
+            <p>오랜 기간 유지되어 온 곳으로, TripAdvisor와 SNS 등 복수 채널에서 활동이 파악됨.</p>
+          </div>
+          <div class="venue-meta">
+            <span class="venue-meta-item"><strong>위치:</strong> 마두동 805-1, 8층</span>
+            <span class="venue-meta-item"><strong>교통:</strong> 마두역 도보권</span>
+          </div>
+        </article>
+
+        <!-- 노래방 -->
+        <article class="venue-card">
+          <div class="venue-card-header">
+            <h3>노래방 일대</h3>
+            <span class="status-badge status-unknown">미확인</span>
+          </div>
+          <span class="venue-type-tag">노래방</span>
+          <div class="venue-info">
+            <p>백석동, 마두동, 주엽동 부근에 다수의 노래방이 분포해 있음. 프라이빗 룸부터 일반 노래방까지 다양한 형태로 보임.</p>
+            <p>개별 상호의 구체적 상태는 현장 확인이 필요하며 미확인 상태.</p>
+          </div>
+          <div class="venue-meta">
+            <span class="venue-meta-item"><strong>일대:</strong> 백석·마두·주엽</span>
+            <span class="venue-meta-item"><strong>상태:</strong> 확인 필요</span>
+          </div>
+        </article>
+
+        <!-- 라운지 -->
+        <article class="venue-card">
+          <div class="venue-card-header">
+            <h3>라운지·바</h3>
+            <span class="status-badge status-unknown">미확인</span>
+          </div>
+          <span class="venue-type-tag">라운지</span>
+          <div class="venue-info">
+            <p>라페스타 상권, 정발산역 주변, 웨스턴돔 등에 라운지와 바가 있다고 알려져 있음. 캐주얼 칵테일바부터 프리미엄 라운지까지 다양한 콘셉트가 존재.</p>
+            <p>상권 특성상 변동이 잦으므로, 정확한 상호와 상태를 별도로 살펴보시길 권합니다.</p>
+          </div>
+          <div class="venue-meta">
+            <span class="venue-meta-item"><strong>일대:</strong> 라페스타·웨스턴돔</span>
+            <span class="venue-meta-item"><strong>상태:</strong> 확인 필요</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Guide -->
+  <section id="guide" class="section">
+    <div class="container">
+      <h2 class="section-title">교통·주차 길잡이</h2>
+      <p class="section-desc">찾아가기 전 알아두면 유용한 이동 가이드.</p>
+
+      <div class="guide-grid">
+        <div class="guide-item">
+          <h3>대중교통</h3>
+          <ul>
+            <li>3호선: 마두역, 정발산역, 주엽역, 대화역</li>
+            <li>경의중앙선: 탄현역 활용 가능</li>
+            <li>광역버스: 서울 도심발 직행 노선 다수</li>
+            <li>심야 귀가 시 택시·심야버스 사전 파악 권장</li>
+          </ul>
+        </div>
+        <div class="guide-item">
+          <h3>자가용</h3>
+          <ul>
+            <li>자유로 경유 시 서울에서 약 30~50분</li>
+            <li>라페스타·웨스턴돔 인근 공영·사설 주차장 분포</li>
+            <li>심야 노상 단속 구역 사전 파악 권장</li>
+            <li>대리운전 앱 준비 시 편리</li>
+          </ul>
+        </div>
+        <div class="guide-item">
+          <h3>상권 개요</h3>
+          <p>마두·주엽·정발산·백석 부근에 상업 시설이 밀집되어 있음. 라페스타와 웨스턴돔은 식음·여가 장소가 몰린 대표 상권이며, 장항동에는 고건축 양식의 고급 공간이 자리함. 서울 근교 밤 씬의 거점.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section" style="background: var(--bg-secondary);">
+    <div class="container">
+      <h2 class="section-title">자주 묻는 질문</h2>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>일산명월관요정은 어디에 있나요?</span>
+            <span class="icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              경기도 고양시 장항동 895-1번지에 자리함. 지하철 마두역이나 정발산역에서 차량으로 접근 가능.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>일산명월관요정의 매력 포인트는?</span>
+            <span class="icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              고건축 양식 건물에서 한정식 코스와 국악 공연을 동시에 즐기는 프리미엄 공간. 다양한 크기의 프라이빗 룸을 갖추어 업무 미팅이나 단체 모임에 알맞음.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>클럽은 어떻게 찾아가나요?</span>
+            <span class="icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              주로 마두 상권 쪽에 위치. 마두역에서 도보 접근이 가능하고, 자가용 시 인근 주차 자리를 미리 살펴보세요.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>사이트 운영 목적이 궁금합니다.</span>
+            <span class="icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              이 부근 밤 씬(요정, 클럽, 라운지 등)의 위치·분위기·교통 내용을 정리한 가이드 사이트. 예약 대행이나 중개는 하지 않음.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span>게시 내용은 어떻게 검증하나요?</span>
+            <span class="icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              공식 웹사이트, SNS, 지도 서비스, 리뷰 플랫폼 등 복수 채널로 교차 검증. 2개 이상 경로에서 파악된 곳은 "영업 파악" 배지를, 그렇지 않은 곳은 "미확인"으로 표기.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <strong>안내:</strong> 본 사이트는 고양 일산동구 밤 씬 장소에 대한 내용을 수집·정리한 길잡이. 예약 대행·중개·알선을 하지 않으며, 게시 내용의 최신성을 보장하지 않음. 영업 상태 등은 해당 장소에 직접 문의 바람.
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>일산명월관요정 길잡이</p>
+      <p>&copy; 2026 고양 밤 씬 가이드.</p>
+    </div>
+  </footer>
+
   <script defer type="text/javascript" src="/main.js"></script>
 </body>
 </html>
