@@ -1,0 +1,36 @@
+{
+  "id": "club-gangnam-race",
+  "slug": "gangnam-club-race",
+  "storeName": "강남클럽 레이스",
+  "regionCity": "서울특별시",
+  "regionArea": "서초구 강남대로",
+  "category": "club",
+  "primaryKeyword": "강남클럽 레이스",
+  "secondaryKeywords": ["강남클럽", "신사역클럽"],
+  "intentKeywords": ["강남클럽 위치", "강남 클럽 추천", "신사역 클럽", "강남클럽 레이스 교통"],
+  "status": "verified_open",
+  "sourceUrls": [
+    "https://www.instagram.com/clubrace_seoul/",
+    "https://www.instagram.com/race_seoul/",
+    "https://sites.google.com/view/gangnamclubrace/",
+    "https://www.clubracesoundkorea.com/"
+  ],
+  "verifiedSignals": [
+    "다수 Instagram 계정 활성 운영",
+    "프로모션 랜딩 페이지 존재",
+    "예약 시스템·게스트 엔트리 운영 중",
+    "영업시간 23:00~11:00 안내"
+  ],
+  "unverifiedFacts": [],
+  "lastCheckedAt": "2026-03-13",
+  "waiterName": "",
+  "phone": "",
+  "address": "서울시 서초구 강남대로 597 지하1층",
+  "nearStation": "신사역 4번 출구",
+  "heroImage": "",
+  "summaryBullets": [
+    "서초구 강남대로 지하1층, 신사역 4번 출구 인근",
+    "2022년 4월 오픈, Instagram 다중 계정 운영",
+    "예약 시스템 및 게스트 리스트 운영 확인"
+  ]
+}
