@@ -1,163 +1,76 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: "매거진 - 일산룸포털",
-  description: "나이트라이프 문화, 트렌드, 인터뷰 등 다양한 콘텐츠를 만나보세요.",
-};
-
-const featuredArticle = {
-  title: "2026 대한민국 나이트라이프 트렌드 리포트",
-  excerpt: "올해 주목해야 할 클럽, 라운지, 나이트 씬의 변화를 분석합니다. 새로운 장르의 부상부터 공간 디자인 트렌드까지.",
-  category: "트렌드",
-  date: "2026-03-10",
-  readTime: "8분",
+  title: '매거진 | 일산룸포털 - 나이트라이프 트렌드와 가이드',
+  description: '나이트라이프 문화, 트렌드, 업소 가이드, 인터뷰 등 다양한 콘텐츠를 일산룸포털 매거진에서 확인하세요.',
 };
 
 const articles = [
   {
-    id: 1,
-    title: "강남 vs 홍대: 두 개의 클럽 문화",
-    excerpt: "같은 서울이지만 전혀 다른 분위기. 두 지역의 나이트라이프 문화를 비교합니다.",
-    category: "문화",
-    date: "2026-03-08",
-    readTime: "5분",
+    id: 'a1', title: '2026 강남 클럽 TOP5 — 올해 꼭 가봐야 할 곳',
+    excerpt: '강남 지역에서 가장 인기 있는 EDM 클럽 5곳을 선정했습니다. 클럽 레이스, 클럽 사운드, 클럽 페이스 등 2026년 강남 클럽 씬을 이끄는 업소들의 특징과 차이점을 비교합니다.',
+    tag: '클럽', date: '2026-03-12', readMin: 5,
   },
   {
-    id: 2,
-    title: "DJ 인터뷰: 한국 EDM 씬의 현재와 미래",
-    excerpt: "국내 톱 DJ들이 말하는 한국 일렉트로닉 뮤직 씬의 성장과 전망.",
-    category: "인터뷰",
-    date: "2026-03-06",
-    readTime: "7분",
+    id: 'a2', title: '일산명월관요정 완벽 가이드: 접대부터 가족모임까지',
+    excerpt: '일산명월관요정은 한정식 코스, 국악 라이브, 30개 프라이빗 룸을 갖춘 일산 대표 요정입니다. 비즈니스 접대부터 돌잔치까지, 일산명월관요정 이용 가이드를 총정리합니다.',
+    tag: '요정', date: '2026-03-10', readMin: 7,
   },
   {
-    id: 3,
-    title: "라운지 바 문화 입문 가이드",
-    excerpt: "클럽이 부담스럽다면? 편안하면서도 세련된 라운지 바 문화를 소개합니다.",
-    category: "가이드",
-    date: "2026-03-04",
-    readTime: "4분",
+    id: 'a3', title: '클럽 vs 나이트 — 완전히 다른 두 문화',
+    excerpt: '클럽과 나이트(나이트클럽)는 이름이 비슷하지만 완전히 다른 업종입니다. EDM 중심의 클럽과 소셜 댄스 중심의 나이트, 각 문화의 차이를 상세히 비교합니다.',
+    tag: '가이드', date: '2026-03-08', readMin: 6,
   },
   {
-    id: 4,
-    title: "해운대 나이트라이프의 사계절",
-    excerpt: "여름만 있는 줄 알았던 해운대. 계절마다 다른 매력을 가진 부산의 밤.",
-    category: "여행",
-    date: "2026-03-02",
-    readTime: "6분",
+    id: 'a4', title: '처음 나이트 가는 분을 위한 A to Z 매너 가이드',
+    excerpt: '나이트클럽 첫 방문이 걱정되시나요? 입장부터 퇴장까지, 복장, 매너, 부킹 시스템, 주문 방법 등 처음 가는 분이 알아야 할 모든 것을 정리했습니다.',
+    tag: '나이트', date: '2026-03-05', readMin: 8,
   },
   {
-    id: 5,
-    title: "나이트클럽의 역사: 한국 나이트 문화 40년",
-    excerpt: "80년대 디스코텍부터 현재의 메가 클럽까지. 한국 나이트 문화의 변천사.",
-    category: "역사",
-    date: "2026-02-28",
-    readTime: "10분",
+    id: 'a5', title: '홍대 vs 이태원 클럽 — 어디가 나에게 맞을까?',
+    excerpt: '홍대 클럽은 인디·힙합 중심, 이태원 클럽은 다문화·레게톤 중심. 두 지역의 클럽 문화를 비교하고, 당신의 취향에 맞는 곳을 찾아봅니다.',
+    tag: '비교', date: '2026-03-03', readMin: 5,
   },
   {
-    id: 6,
-    title: "칵테일 101: 라운지에서 주문하는 법",
-    excerpt: "기본 칵테일부터 시그니처 드링크까지. 라운지 초보를 위한 음료 가이드.",
-    category: "가이드",
-    date: "2026-02-25",
-    readTime: "5분",
-  },
-  {
-    id: 7,
-    title: "일산 명월관 요정 — 비즈니스 접대의 새로운 기준",
-    excerpt: "전통 한정식과 국악 라이브가 어우러지는 일산명월관요정. 15가지 코스 요리, 30개 프라이빗 룸, 정찰제 운영으로 비즈니스 접대의 격을 높이는 공간을 소개합니다.",
-    category: "비즈니스",
-    date: "2026-03-12",
-    readTime: "7분",
-  },
-  {
-    id: 8,
-    title: "일산 룸 문화 가이드 — 프라이빗 모임의 정석",
-    excerpt: "일산룸은 경기 서북부를 대표하는 프리미엄 룸 공간입니다. 비즈니스 회식부터 소규모 모임까지, 일산 지역 룸 문화의 특징과 이용 팁을 정리했습니다.",
-    category: "가이드",
-    date: "2026-03-11",
-    readTime: "6분",
+    id: 'a6', title: '전국 나이트클럽 지역별 특징 총정리',
+    excerpt: '서울, 부산, 대구, 광주, 인천, 수원, 울산 등 전국 주요 도시의 나이트클럽 문화와 특징을 정리합니다. 각 지역만의 독특한 분위기와 추천 업소를 소개합니다.',
+    tag: '정보', date: '2026-02-28', readMin: 10,
   },
 ];
 
-function getCategoryColor(category: string): string {
-  const colors: Record<string, string> = {
-    "트렌드": "bg-violet-500/10 text-violet-400",
-    "문화": "bg-blue-500/10 text-blue-400",
-    "인터뷰": "bg-amber-500/10 text-amber-400",
-    "가이드": "bg-green-500/10 text-green-400",
-    "여행": "bg-cyan-500/10 text-cyan-400",
-    "역사": "bg-orange-500/10 text-orange-400",
-    "비즈니스": "bg-rose-500/10 text-rose-400",
-  };
-  return colors[category] || "bg-neutral-500/10 text-neutral-400";
-}
-
 export default function MagazinePage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
-      <div className="mx-auto max-w-5xl px-4 py-16">
-        <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold">
-            일산룸포털 <span className="text-violet-400">매거진</span>
-          </h1>
-          <p className="text-lg text-neutral-400">
-            나이트라이프 문화와 트렌드 이야기
-          </p>
-        </div>
+    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+      <h1 className="text-3xl font-extrabold text-neon-text mb-2">매거진</h1>
+      <p className="text-neon-text-muted mb-10">나이트라이프 트렌드, 가이드, 비교 콘텐츠</p>
 
-        {/* Featured Article */}
-        <div className="mb-12 overflow-hidden rounded-3xl border border-neutral-800 bg-gradient-to-br from-violet-600/10 to-neutral-900">
-          <div className="flex flex-col md:flex-row">
-            <div className="flex h-64 items-center justify-center bg-gradient-to-br from-violet-600/30 to-transparent md:h-auto md:w-1/2">
-              <span className="text-7xl opacity-40">📰</span>
-            </div>
-            <div className="flex flex-col justify-center p-8 md:w-1/2">
-              <span className={`mb-3 w-fit rounded-full px-3 py-1 text-xs ${getCategoryColor(featuredArticle.category)}`}>
-                {featuredArticle.category}
-              </span>
-              <h2 className="mb-3 text-2xl font-bold">{featuredArticle.title}</h2>
-              <p className="mb-4 text-sm leading-relaxed text-neutral-400">
-                {featuredArticle.excerpt}
-              </p>
-              <div className="flex items-center gap-3 text-xs text-neutral-500">
-                <span>{featuredArticle.date}</span>
-                <span>·</span>
-                <span>읽는 시간 {featuredArticle.readTime}</span>
-              </div>
+      {/* Featured article */}
+      <div className="mb-10 rounded-2xl border border-neon-primary/30 bg-gradient-to-br from-neon-primary/5 via-neon-surface to-neon-bg p-8 card-hover">
+        <span className="rounded-full bg-neon-primary/10 px-3 py-1 text-xs text-neon-primary-light">{articles[0].tag}</span>
+        <h2 className="mt-3 text-2xl font-bold text-neon-text">{articles[0].title}</h2>
+        <p className="mt-2 text-sm text-neon-text-muted">{articles[0].excerpt}</p>
+        <div className="mt-4 flex items-center gap-3 text-xs text-neon-text-muted">
+          <span>{articles[0].date}</span>
+          <span>·</span>
+          <span>{articles[0].readMin}분 읽기</span>
+        </div>
+      </div>
+
+      {/* Article grid */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {articles.slice(1).map((a) => (
+          <div key={a.id} className="rounded-2xl border border-neon-border bg-neon-surface p-6 card-hover">
+            <span className="rounded-full bg-neon-primary/10 px-2.5 py-0.5 text-xs text-neon-primary-light">{a.tag}</span>
+            <h3 className="mt-3 text-sm font-bold text-neon-text leading-snug line-clamp-2">{a.title}</h3>
+            <p className="mt-2 text-xs text-neon-text-muted line-clamp-3">{a.excerpt}</p>
+            <div className="mt-3 flex items-center gap-2 text-[10px] text-neon-text-muted/60">
+              <span>{a.date}</span>
+              <span>·</span>
+              <span>{a.readMin}분 읽기</span>
             </div>
           </div>
-        </div>
-
-        {/* Article Grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {articles.map((article) => (
-            <div
-              key={article.id}
-              className="group overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 transition-all hover:border-violet-500/50"
-            >
-              <div className="flex h-40 items-center justify-center bg-gradient-to-br from-neutral-800 to-neutral-900">
-                <span className="text-4xl opacity-30 transition group-hover:opacity-60">📖</span>
-              </div>
-              <div className="p-5">
-                <span className={`mb-2 inline-block rounded-full px-2.5 py-0.5 text-xs ${getCategoryColor(article.category)}`}>
-                  {article.category}
-                </span>
-                <h3 className="mb-2 font-semibold leading-tight group-hover:text-violet-400">
-                  {article.title}
-                </h3>
-                <p className="mb-3 text-sm leading-relaxed text-neutral-400">
-                  {article.excerpt}
-                </p>
-                <div className="flex items-center gap-2 text-xs text-neutral-500">
-                  <span>{article.date}</span>
-                  <span>·</span>
-                  <span>{article.readTime}</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        ))}
       </div>
     </div>
   );

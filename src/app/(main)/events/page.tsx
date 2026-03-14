@@ -1,153 +1,66 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import JsonLd from '@/components/seo/JsonLd';
 
 export const metadata: Metadata = {
-  title: "이벤트 & 파티 캘린더 - 일산룸포털",
-  description: "최신 나이트라이프 이벤트와 파티 일정을 확인하세요. 클럽, 나이트, 라운지 이벤트 총정리.",
+  title: '이벤트 & 파티 캘린더 | 일산룸포털',
+  description: '최신 나이트라이프 이벤트와 파티 일정. 클럽, 나이트, 라운지 이벤트 총정리.',
 };
 
-const upcomingEvents = [
-  {
-    id: 1,
-    title: "일산룸포털 RAVE: 봄맞이 EDM 페스티벌",
-    venue: "Club Race",
-    region: "강남",
-    date: "2026-03-22",
-    time: "22:00",
-    category: "페스티벌",
-    description: "최정상 DJ 라인업과 함께하는 봄맞이 대형 EDM 파티. 특별 사운드 시스템 세팅.",
-    tags: ["EDM", "페스티벌", "대형파티"],
-  },
-  {
-    id: 2,
-    title: "DEEP HOUSE NIGHT",
-    venue: "M2",
-    region: "홍대",
-    date: "2026-03-21",
-    time: "23:00",
-    category: "정규",
-    description: "매주 금요일 딥하우스 나이트. 감각적인 사운드로 채워지는 특별한 밤.",
-    tags: ["딥하우스", "정규이벤트"],
-  },
-  {
-    id: 3,
-    title: "청담 GALA NIGHT",
-    venue: "청담 나이트클럽",
-    region: "청담",
-    date: "2026-03-29",
-    time: "20:00",
-    category: "갈라",
-    description: "라이브 밴드 특별 공연과 함께하는 프리미엄 갈라 나이트. 정장 필수.",
-    tags: ["갈라", "라이브", "프리미엄"],
-  },
-  {
-    id: 4,
-    title: "SUNSET BEACH PARTY",
-    venue: "Cream",
-    region: "해운대",
-    date: "2026-04-05",
-    time: "17:00",
-    category: "비치파티",
-    description: "해운대 오션뷰 테라스에서 시작하는 선셋 비치 파티. 봄 시즌 오프닝.",
-    tags: ["비치파티", "선셋", "오션뷰"],
-  },
-  {
-    id: 5,
-    title: "LADIES NIGHT SPECIAL",
-    venue: "Lounge Arzu",
-    region: "강남",
-    date: "2026-03-20",
-    time: "21:00",
-    category: "레이디스나이트",
-    description: "여성 게스트 특별 혜택과 시그니처 칵테일이 준비된 레이디스 나이트.",
-    tags: ["레이디스나이트", "칵테일"],
-  },
-  {
-    id: 6,
-    title: "RETRO DISCO FEVER",
-    venue: "M2",
-    region: "홍대",
-    date: "2026-04-12",
-    time: "22:00",
-    category: "테마파티",
-    description: "80s-90s 레트로 디스코 테마 파티. 복고풍 드레스코드 환영.",
-    tags: ["레트로", "디스코", "테마파티"],
-  },
+const events = [
+  { id: 'e1', title: '강남 클럽 레이스 EDM 파티', venue: '강남클럽레이스', date: '2026-03-21', time: '23:00', region: '강남', category: '클럽' },
+  { id: 'e2', title: '홍대 NB2 힙합 나이트', venue: '클럽NB2', date: '2026-03-22', time: '22:00', region: '홍대', category: '클럽' },
+  { id: 'e3', title: '일산명월관요정 봄 한정식 특별 코스', venue: '일산명월관요정', date: '2026-03-25', time: '18:00', region: '일산', category: '요정' },
+  { id: 'e4', title: '수원찬스돔 주말 스페셜', venue: '수원찬스돔나이트', date: '2026-03-29', time: '20:00', region: '수원', category: '나이트' },
+  { id: 'e5', title: '부산 클럽806 스프링 페스티벌', venue: '부산클럽806', date: '2026-04-05', time: '23:00', region: '부산', category: '클럽' },
+  { id: 'e6', title: '청담 H2O 나이트 VIP 이벤트', venue: '청담H2O나이트', date: '2026-04-12', time: '20:00', region: '청담', category: '나이트' },
 ];
 
-function getCategoryColor(category: string): string {
-  const colors: Record<string, string> = {
-    "페스티벌": "bg-violet-500/10 text-violet-400",
-    "정규": "bg-blue-500/10 text-blue-400",
-    "갈라": "bg-amber-500/10 text-amber-400",
-    "비치파티": "bg-cyan-500/10 text-cyan-400",
-    "레이디스나이트": "bg-pink-500/10 text-pink-400",
-    "테마파티": "bg-orange-500/10 text-orange-400",
-  };
-  return colors[category] || "bg-neutral-500/10 text-neutral-400";
-}
+const months = ['3월', '4월'];
 
 export default function EventsPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
-      <div className="mx-auto max-w-5xl px-4 py-16">
-        <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold">
-            이벤트 & 파티 <span className="text-violet-400">캘린더</span>
-          </h1>
-          <p className="text-lg text-neutral-400">
-            놓치지 말아야 할 나이트라이프 이벤트
-          </p>
-        </div>
+    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+      {/* Event JSON-LD */}
+      {events.map((e) => (
+        <JsonLd key={e.id} data={{
+          '@context': 'https://schema.org',
+          '@type': 'Event',
+          name: e.title,
+          startDate: `${e.date}T${e.time}:00+09:00`,
+          location: { '@type': 'Place', name: e.venue, address: { '@type': 'PostalAddress', addressCountry: 'KR' } },
+          organizer: { '@type': 'Organization', name: '일산룸포털', url: 'https://ilsanroom.pages.dev' },
+        }} />
+      ))}
 
-        <div className="mb-8 flex flex-wrap justify-center gap-3">
-          {["전체", "페스티벌", "정규", "갈라", "비치파티", "테마파티"].map((tab) => (
-            <button
-              key={tab}
-              className="rounded-full bg-neutral-900 px-5 py-2 text-sm text-neutral-400 transition hover:bg-neutral-800 hover:text-white first:bg-violet-600 first:text-white"
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
+      <h1 className="text-3xl font-extrabold text-neon-text mb-2">이벤트 & 파티 캘린더</h1>
+      <p className="text-neon-text-muted mb-10">전국 나이트라이프 이벤트 일정</p>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {upcomingEvents.map((event) => (
-            <div
-              key={event.id}
-              className="group overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 transition-all hover:border-violet-500/50"
-            >
-              <div className="flex h-40 items-center justify-center bg-gradient-to-br from-violet-600/20 to-neutral-900">
-                <span className="text-5xl opacity-50 transition group-hover:opacity-80">
-                  🎶
-                </span>
-              </div>
-              <div className="p-5">
-                <div className="mb-3 flex items-center gap-2">
-                  <span className={`rounded-full px-2.5 py-0.5 text-xs ${getCategoryColor(event.category)}`}>
-                    {event.category}
-                  </span>
-                  <span className="text-xs text-neutral-500">{event.region}</span>
-                </div>
-                <h3 className="mb-2 text-lg font-bold group-hover:text-violet-400">
-                  {event.title}
-                </h3>
-                <p className="mb-4 text-sm leading-relaxed text-neutral-400">
-                  {event.description}
-                </p>
-                <div className="flex items-center justify-between text-sm text-neutral-500">
-                  <div>
-                    <div>📅 {event.date}</div>
-                    <div>🕐 {event.time}</div>
+      {/* Calendar-style month sections */}
+      {months.map((month) => {
+        const monthEvents = events.filter((e) => (month === '3월' && e.date.startsWith('2026-03')) || (month === '4월' && e.date.startsWith('2026-04')));
+        return (
+          <div key={month} className="mb-10">
+            <h2 className="mb-4 text-xl font-bold text-neon-primary-light">{month} 2026</h2>
+            <div className="space-y-3">
+              {monthEvents.map((e) => (
+                <div key={e.id} className="flex items-center gap-4 rounded-xl border border-neon-border bg-neon-surface px-5 py-4 card-hover">
+                  <div className="shrink-0 text-center">
+                    <p className="text-2xl font-bold text-neon-text">{e.date.split('-')[2]}</p>
+                    <p className="text-xs text-neon-text-muted">{month}</p>
                   </div>
-                  <div className="text-right text-xs">
-                    <div className="text-neutral-400">{event.venue}</div>
+                  <div className="h-10 w-px bg-neon-border" />
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-sm font-bold text-neon-text">{e.title}</h3>
+                    <p className="text-xs text-neon-text-muted">{e.venue} · {e.region} · {e.time}</p>
                   </div>
+                  <span className="shrink-0 rounded-full bg-neon-primary/10 px-3 py-1 text-xs text-neon-primary-light">{e.category}</span>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

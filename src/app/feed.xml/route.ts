@@ -1,47 +1,42 @@
 export const dynamic = "force-static";
-import { NextResponse } from 'next/server';
+
+const SITE_URL = 'https://ilsanroom.pages.dev';
 
 const articles = [
-  { title: '2026 대한민국 나이트라이프 트렌드 리포트', date: '2026-03-10', slug: 'trend-report-2026', category: '트렌드' },
-  { title: '강남 vs 홍대: 두 개의 클럽 문화', date: '2026-03-08', slug: 'gangnam-vs-hongdae', category: '문화' },
-  { title: 'DJ 인터뷰: 한국 EDM 씬의 현재와 미래', date: '2026-03-06', slug: 'dj-interview-edm', category: '인터뷰' },
-  { title: '라운지 바 문화 입문 가이드', date: '2026-03-04', slug: 'lounge-bar-guide', category: '가이드' },
-  { title: '해운대 나이트라이프의 사계절', date: '2026-03-02', slug: 'haeundae-seasons', category: '여행' },
-  { title: '나이트클럽의 역사: 한국 나이트 문화 40년', date: '2026-02-28', slug: 'nightclub-history', category: '역사' },
-  { title: '일산 명월관 요정 — 비즈니스 접대의 새로운 기준', date: '2026-03-12', slug: 'ilsan-myeongwolgwan-business', category: '비즈니스' },
-  { title: '일산 룸 문화 가이드 — 프라이빗 모임의 정석', date: '2026-03-11', slug: 'ilsan-room-guide', category: '가이드' },
+  { title: '2026 강남 클럽 TOP5 — 올해 꼭 가봐야 할 곳', date: '2026-03-12', slug: 'gangnam-club-top5', category: '클럽' },
+  { title: '일산명월관요정 완벽 가이드: 접대부터 가족모임까지', date: '2026-03-10', slug: 'ilsan-myeongwolgwan-guide', category: '요정' },
+  { title: '클럽 vs 나이트 — 완전히 다른 두 문화', date: '2026-03-08', slug: 'club-vs-night', category: '가이드' },
+  { title: '처음 나이트 가는 분을 위한 A to Z 매너 가이드', date: '2026-03-05', slug: 'night-beginner-guide', category: '나이트' },
+  { title: '홍대 vs 이태원 클럽 비교', date: '2026-03-03', slug: 'hongdae-vs-itaewon', category: '비교' },
+  { title: '전국 나이트클럽 지역별 특징 총정리', date: '2026-02-28', slug: 'nationwide-night-guide', category: '정보' },
+  { title: '일산룸 프리미엄 비즈니스 룸 가이드', date: '2026-02-25', slug: 'ilsan-room-guide', category: '룸' },
+  { title: '드레스코드 완벽 가이드 — 업종별 복장 정리', date: '2026-02-20', slug: 'dresscode-guide', category: '패션' },
 ];
 
 export async function GET() {
-  const siteUrl = 'https://neon-nightlife.com';
-
-  const items = articles.map(a => `
+  const items = articles.map((a) => `
     <item>
       <title><![CDATA[${a.title}]]></title>
-      <link>${siteUrl}/magazine/${a.slug}</link>
-      <guid>${siteUrl}/magazine/${a.slug}</guid>
+      <link>${SITE_URL}/magazine</link>
       <pubDate>${new Date(a.date).toUTCString()}</pubDate>
       <category>${a.category}</category>
-      <description><![CDATA[일산룸포털 매거진 - ${a.title}]]></description>
+      <description><![CDATA[${a.title} - 일산룸포털 매거진]]></description>
     </item>`).join('');
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>일산룸포털 매거진</title>
-    <link>${siteUrl}/magazine</link>
-    <description>대한민국 No.1 나이트라이프 가이드 일산룸포털의 매거진과 커뮤니티 소식</description>
+    <link>${SITE_URL}</link>
+    <description>일산룸, 일산명월관요정 등 전국 나이트라이프 업소 정보와 가이드</description>
     <language>ko</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-    <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>
     ${items}
   </channel>
 </rss>`;
 
-  return new NextResponse(xml, {
-    headers: {
-      'Content-Type': 'application/xml',
-      'Cache-Control': 's-maxage=3600, stale-while-revalidate',
-    },
+  return new Response(xml, {
+    headers: { 'Content-Type': 'application/rss+xml; charset=utf-8' },
   });
 }

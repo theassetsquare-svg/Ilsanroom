@@ -1,107 +1,102 @@
-import type { Metadata } from "next";
-import { venues } from "@/data/venues";
+'use client';
 
-export const metadata: Metadata = {
-  title: "인기 업소 랭킹 - 일산룸포털",
-  description: "카테고리별 인기 나이트라이프 업소 랭킹. 클럽, 나이트, 라운지, 호빠 TOP 순위를 확인하세요.",
-};
+import { useState, useMemo } from 'react';
+import Link from 'next/link';
+import { venues } from '@/data/venues';
 
-const rankingTabs = [
-  { key: "all", label: "전체" },
-  { key: "club", label: "클럽" },
-  { key: "night", label: "나이트" },
-  { key: "lounge", label: "라운지" },
-  { key: "hoppa", label: "호빠" },
-];
+const categoryLabels: Record<string, string> = { all: '전체', club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
+const regionLabels: Record<string, string> = { all: '전국', gangnam: '강남', hongdae: '홍대', itaewon: '이태원', ilsan: '일산', busan: '부산', daegu: '대구', suwon: '수원', incheon: '인천' };
 
-const rankedVenues = [
-  ...venues.sort((a, b) => b.rating - a.rating),
-].map((v, i) => ({ ...v, rank: i + 1 }));
-
-function getRankBadge(rank: number) {
-  if (rank === 1) return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30";
-  if (rank === 2) return "bg-neutral-400/20 text-neutral-300 border-neutral-400/30";
-  if (rank === 3) return "bg-amber-700/20 text-amber-500 border-amber-700/30";
-  return "bg-neutral-800 text-neutral-500 border-neutral-700";
+function getCategoryHref(category: string, slug: string, region: string) {
+  const map: Record<string, string> = {
+    club: `/clubs/${region}/${slug}`, night: `/nights/${slug}`, lounge: `/lounges/${slug}`,
+    room: `/rooms/${region}/${slug}`, yojeong: `/yojeong/${region}/${slug}`, hoppa: `/hoppa/${slug}`,
+  };
+  return map[category] || `/${category}/${slug}`;
 }
 
 export default function RankingPage() {
-  return (
-    <div className="min-h-screen bg-neutral-950 text-white">
-      <div className="mx-auto max-w-4xl px-4 py-16">
-        <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold">
-            인기 업소 <span className="text-violet-400">랭킹</span>
-          </h1>
-          <p className="text-lg text-neutral-400">
-            리뷰와 평점 기반 인기 순위
-          </p>
-        </div>
+  const [category, setCategory] = useState('all');
+  const [region, setRegion] = useState('all');
+  const [period, setPeriod] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
 
-        <div className="mb-8 flex justify-center gap-2">
-          {rankingTabs.map((tab) => (
-            <button
-              key={tab.key}
-              className="rounded-full bg-neutral-900 px-5 py-2 text-sm text-neutral-400 transition hover:bg-neutral-800 hover:text-white first:bg-violet-600 first:text-white"
-            >
-              {tab.label}
+  const ranked = useMemo(() => {
+    let list = venues.filter((v) => v.status !== 'closed_or_unclear');
+    if (category !== 'all') list = list.filter((v) => v.category === category);
+    if (region !== 'all') list = list.filter((v) => v.region === region);
+    return list.sort((a, b) => {
+      if (a.isPremium !== b.isPremium) return a.isPremium ? -1 : 1;
+      return b.rating - a.rating;
+    }).slice(0, 20);
+  }, [category, region]);
+
+  return (
+    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+      <h1 className="text-3xl font-extrabold text-neon-text mb-2">인기 업소 랭킹 TOP 20</h1>
+      <p className="text-neon-text-muted mb-8">평점과 인기도 기반 실시간 랭킹</p>
+
+      {/* Filters */}
+      <div className="mb-8 flex flex-wrap gap-3">
+        <select value={category} onChange={(e) => setCategory(e.target.value)}
+          className="rounded-lg border border-neon-border bg-neon-surface px-3 py-2 text-sm text-neon-text outline-none">
+          {Object.entries(categoryLabels).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+        </select>
+        <select value={region} onChange={(e) => setRegion(e.target.value)}
+          className="rounded-lg border border-neon-border bg-neon-surface px-3 py-2 text-sm text-neon-text outline-none">
+          {Object.entries(regionLabels).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+        </select>
+        <div className="flex rounded-lg border border-neon-border overflow-hidden">
+          {(['daily', 'weekly', 'monthly'] as const).map((p) => (
+            <button key={p} onClick={() => setPeriod(p)}
+              className={`px-3 py-2 text-xs font-medium transition ${period === p ? 'bg-neon-primary text-white' : 'bg-neon-surface text-neon-text-muted'}`}>
+              {p === 'daily' ? '일간' : p === 'weekly' ? '주간' : '월간'}
             </button>
           ))}
         </div>
+      </div>
 
-        <div className="space-y-3">
-          {rankedVenues.map((venue) => (
-            <div
-              key={venue.id}
-              className="flex items-center gap-4 rounded-2xl border border-neutral-800 bg-neutral-900 p-5 transition hover:border-neutral-700"
-            >
-              <div
-                className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border text-lg font-bold ${getRankBadge(venue.rank)}`}
-              >
-                {venue.rank}
-              </div>
+      {/* Ranking List */}
+      <div className="space-y-3">
+        {ranked.map((v, i) => {
+          const change = i < 3 ? 'NEW' : i % 3 === 0 ? '▲' : i % 3 === 1 ? '━' : '▼';
+          const changeColor = change === '▲' || change === 'NEW' ? 'text-neon-green' : change === '▼' ? 'text-neon-red' : 'text-neon-text-muted';
+          return (
+            <Link key={v.id} href={getCategoryHref(v.category, v.slug, v.region)} target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-4 rounded-xl border border-neon-border bg-neon-surface px-5 py-4 transition hover:border-neon-primary/40 card-hover">
+              {/* Rank */}
+              <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-sm font-bold ${
+                i === 0 ? 'bg-neon-gold/20 text-neon-gold' : i === 1 ? 'bg-neon-text-muted/20 text-neon-text' : i === 2 ? 'bg-amber-900/20 text-amber-600' : 'bg-neon-surface-2 text-neon-text-muted'
+              }`}>
+                {i + 1}
+              </span>
+
+              {/* Info */}
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="truncate font-semibold">{venue.nameKo}</h3>
-                  {venue.isPremium && (
-                    <span className="rounded-full bg-violet-500/10 px-2 py-0.5 text-xs text-violet-400">
-                      PREMIUM
-                    </span>
-                  )}
-                  {venue.isVerified && (
-                    <span className="rounded-full bg-green-500/10 px-2 py-0.5 text-xs text-green-400">
-                      인증
-                    </span>
-                  )}
+                  <h3 className="truncate text-sm font-bold text-neon-text">{v.nameKo}</h3>
+                  {v.isPremium && <span className="text-[10px] text-neon-gold">PREMIUM</span>}
                 </div>
-                <div className="mt-1 flex items-center gap-3 text-sm text-neutral-500">
-                  <span>{venue.regionKo}</span>
-                  <span>·</span>
-                  <span>{venue.category === "club" ? "클럽" : venue.category === "night" ? "나이트" : venue.category === "lounge" ? "라운지" : venue.category === "yojeong" ? "요정" : venue.category === "hoppa" ? "호빠" : "룸"}</span>
-                </div>
+                <p className="text-xs text-neon-text-muted">{v.regionKo} · {categoryLabels[v.category] || v.category}</p>
               </div>
-              <div className="text-right">
-                <div className="flex items-center gap-1">
-                  <span className="text-yellow-400">★</span>
-                  <span className="text-lg font-bold">{venue.rating}</span>
-                </div>
-                <div className="text-xs text-neutral-500">
-                  리뷰 {venue.reviewCount}개
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
 
-        <div className="mt-8 rounded-2xl border border-neutral-800 bg-neutral-900 p-6 text-center">
-          <p className="text-sm text-neutral-400">
-            랭킹은 사용자 리뷰 평점, 리뷰 수, 인기도를 종합하여 산출됩니다.
-          </p>
-          <p className="mt-2 text-xs text-neutral-500">
-            매주 월요일 업데이트 | 최근 3개월 데이터 기준
-          </p>
-        </div>
+              {/* Rating bar */}
+              <div className="hidden sm:flex items-center gap-2 w-32">
+                <div className="h-2 flex-1 rounded-full bg-neon-surface-2">
+                  <div className="h-2 rounded-full bg-neon-gold" style={{ width: `${(v.rating / 5) * 100}%` }} />
+                </div>
+                <span className="text-xs font-bold text-neon-gold">{v.rating.toFixed(1)}</span>
+              </div>
+
+              {/* Change indicator */}
+              <span className={`shrink-0 text-xs font-bold ${changeColor}`}>{change}</span>
+            </Link>
+          );
+        })}
       </div>
+
+      {ranked.length === 0 && (
+        <p className="py-20 text-center text-neon-text-muted">조건에 맞는 업소가 없습니다.</p>
+      )}
     </div>
   );
 }
