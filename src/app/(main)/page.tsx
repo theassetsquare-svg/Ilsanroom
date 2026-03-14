@@ -22,6 +22,12 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     siteName: '일산룸포털',
     url: 'https://ilsanroom.pages.dev',
+    images: [{ url: 'https://ilsanroom.pages.dev/og/default.svg', width: 1200, height: 630, alt: '일산룸포털 — 오늘밤 어디가?' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '일산룸포털 — 오늘밤 어디가?',
+    images: ['https://ilsanroom.pages.dev/og/default.svg'],
   },
 };
 
