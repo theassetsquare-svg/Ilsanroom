@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { createClient } from '@/lib/supabase';
 
 interface PageViewTrackerProps {
   venueId: string;
@@ -11,18 +12,15 @@ interface PageViewTrackerProps {
 
 export default function PageViewTracker({ venueId, venueName, category, region }: PageViewTrackerProps) {
   useEffect(() => {
-    // Track page view via API
-    fetch('/api/v1/analytics', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    const client = createClient();
+    if (client) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (client as any).from('analytics_events').insert({
         venue_id: venueId,
         event_type: 'page_view',
         metadata: { venue_name: venueName, category, region },
-      }),
-    }).catch(() => {
-      // Silent fail - analytics should never block UX
-    });
+      }).then(() => {}).catch(() => {});
+    }
   }, [venueId, venueName, category, region]);
 
   return null;

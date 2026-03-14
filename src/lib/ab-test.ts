@@ -69,15 +69,7 @@ export function getVariant(experimentId: string, userId?: string): Variant {
 }
 
 export function trackABEvent(experimentId: string, variant: Variant, event: string) {
-  // Track A/B test events via analytics API
   if (typeof window === 'undefined') return;
-
-  fetch('/api/v1/analytics', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      event_type: 'ab_test',
-      metadata: { experiment_id: experimentId, variant, event },
-    }),
-  }).catch(() => {});
+  // Log to console; in production use Supabase directly
+  console.debug('[AB]', experimentId, variant, event);
 }

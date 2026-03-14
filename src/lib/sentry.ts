@@ -52,11 +52,7 @@ export function captureError(error: Error, extra?: Record<string, unknown>) {
 
   // In production: send to Sentry API
   if (SENTRY_DSN) {
-    fetch('/api/v1/error-report', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(event),
-    }).catch(() => {});
+    console.error('[Sentry Event]', JSON.stringify(event));
   }
 
   // Always log to console in development
