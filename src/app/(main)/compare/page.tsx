@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import Link from 'next/link';
 import { venues } from '@/data/venues';
+import Badge from '@/components/ui/Badge';
 import type { Venue } from '@/types';
 
 const categoryLabels: Record<string, string> = {
@@ -9,255 +11,115 @@ const categoryLabels: Record<string, string> = {
   yojeong: '요정', hoppa: '호빠', collatek: '콜라텍',
 };
 
+function getCategoryHref(v: Venue) {
+  const map: Record<string, string> = {
+    club: `/clubs/${v.region}/${v.slug}`, night: `/nights/${v.slug}`, lounge: `/lounges/${v.slug}`,
+    room: `/rooms/${v.region}/${v.slug}`, yojeong: `/yojeong/${v.region}/${v.slug}`, hoppa: `/hoppa/${v.slug}`,
+  };
+  return map[v.category] || `/${v.category}/${v.slug}`;
+}
+
 export default function ComparePage() {
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [selected, setSelected] = useState<string[]>([]);
   const [votes, setVotes] = useState<Record<string, number>>({});
-  const [showPicker, setShowPicker] = useState<number | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
 
-  const activeVenues = venues.filter((v) => v.status !== 'closed_or_unclear');
-  const selectedVenues = selectedIds
-    .map((id) => activeVenues.find((v) => v.id === id))
-    .filter(Boolean) as Venue[];
+  const openVenues = useMemo(() =>
+    venues.filter((v) => v.status !== 'closed_or_unclear').sort((a, b) => b.rating - a.rating),
+    []
+  );
 
-  const filteredPicker = useMemo(() => {
-    return activeVenues.filter(
-      (v) =>
-        !selectedIds.includes(v.id) &&
-        (v.nameKo.includes(searchTerm) || v.regionKo.includes(searchTerm))
+  const selectedVenues = useMemo(() =>
+    selected.map((id) => openVenues.find((v) => v.id === id)).filter(Boolean) as Venue[],
+    [selected, openVenues]
+  );
+
+  const toggleSelect = (id: string) => {
+    setSelected((prev) =>
+      prev.includes(id)
+        ? prev.filter((x) => x !== id)
+        : prev.length < 3 ? [...prev, id] : prev
     );
-  }, [searchTerm, selectedIds, activeVenues]);
-
-  const handleSelect = (venueId: string, slot: number) => {
-    const newIds = [...selectedIds];
-    newIds[slot] = venueId;
-    setSelectedIds(newIds);
-    setShowPicker(null);
-    setSearchTerm('');
   };
 
-  const handleRemove = (slot: number) => {
-    const newIds = [...selectedIds];
-    newIds.splice(slot, 1);
-    setSelectedIds(newIds);
+  const vote = (id: string) => {
+    setVotes((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
   };
-
-  const handleVote = (venueId: string) => {
-    setVotes((prev) => ({ ...prev, [venueId]: (prev[venueId] || 0) + 1 }));
-  };
-
-  const totalVotes = selectedVenues.reduce((sum, v) => sum + (votes[v.id] || 0), 0);
-
-  const comparisonRows: { label: string; key: keyof Venue; format?: (v: unknown) => string }[] = [
-    { label: '카테고리', key: 'category', format: (v) => categoryLabels[v as string] || String(v) },
-    { label: '지역', key: 'regionKo' },
-    { label: '평점', key: 'rating', format: (v) => `★ ${v}` },
-    { label: '리뷰 수', key: 'reviewCount', format: (v) => `${v}개` },
-    { label: '영업시간', key: 'openHours' },
-    { label: '연령대', key: 'ageGroup' },
-    { label: '드레스코드', key: 'dressCode' },
-    { label: '주차', key: 'parking' },
-    { label: '최근역', key: 'nearbyStation' },
-    { label: '추천 시간', key: 'bestTime' },
-    { label: '입장료', key: 'priceEntry', format: (v) => (v as string) || '문의' },
-    { label: '주대', key: 'priceTable', format: (v) => (v as string) || '문의' },
-    { label: '음료 가격', key: 'priceDrink', format: (v) => (v as string) || '문의' },
-  ];
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
-      <div className="mx-auto max-w-6xl px-4 py-16">
-        {/* Header */}
-        <div className="mb-10 text-center">
-          <h1 className="mb-4 text-4xl font-bold">
-            업소 <span className="text-violet-400">비교</span>
-          </h1>
-          <p className="text-lg text-neutral-400">
-            최대 3개 업소를 나란히 비교하고 투표하세요
-          </p>
-        </div>
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+      <h1 className="text-3xl font-extrabold text-neon-text mb-2">업소 비교</h1>
+      <p className="text-neon-text-muted mb-8">2~3곳을 선택하여 나란히 비교하고 투표하세요.</p>
 
-        {/* Selection Slots */}
-        <div className="mb-8 grid grid-cols-3 gap-4">
-          {[0, 1, 2].map((slot) => (
-            <div key={slot} className="relative">
-              {selectedVenues[slot] ? (
-                <div className="flex flex-col items-center gap-2 rounded-2xl border border-violet-500/30 bg-neutral-900 p-5 text-center">
-                  <p className="font-semibold text-white">{selectedVenues[slot].nameKo}</p>
-                  <p className="text-xs text-neutral-500">
-                    {categoryLabels[selectedVenues[slot].category]} · {selectedVenues[slot].regionKo}
-                  </p>
-                  <button
-                    onClick={() => handleRemove(slot)}
-                    className="mt-1 text-xs text-red-400 hover:text-red-300"
-                  >
-                    제거
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => { setShowPicker(slot); setSearchTerm(''); }}
-                  className="flex h-24 w-full items-center justify-center rounded-2xl border-2 border-dashed border-neutral-700 bg-neutral-900/50 transition hover:border-violet-500/50"
-                >
-                  <span className="text-sm text-neutral-500">+ 업소 선택</span>
-                </button>
-              )}
-            </div>
+      {/* Venue Selector */}
+      <div className="mb-8">
+        <h2 className="mb-3 text-sm font-semibold text-neon-text">비교할 업소 선택 (최대 3곳)</h2>
+        <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto">
+          {openVenues.slice(0, 30).map((v) => (
+            <button
+              key={v.id}
+              onClick={() => toggleSelect(v.id)}
+              className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+                selected.includes(v.id)
+                  ? 'bg-neon-primary text-white'
+                  : 'border border-neon-border bg-neon-surface text-neon-text-muted hover:text-neon-text'
+              }`}
+            >
+              {v.nameKo}
+            </button>
           ))}
         </div>
-
-        {/* Venue Picker Modal */}
-        {showPicker !== null && (
-          <div className="mb-8 rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-semibold text-white">업소 선택</h3>
-              <button
-                onClick={() => setShowPicker(null)}
-                className="text-sm text-neutral-500 hover:text-white"
-              >
-                닫기
-              </button>
-            </div>
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="업소명 또는 지역으로 검색..."
-              className="mb-4 w-full rounded-xl border border-neutral-700 bg-neutral-950 px-4 py-3 text-sm text-white placeholder-neutral-500 outline-none focus:border-violet-500"
-            />
-            <div className="grid max-h-60 gap-2 overflow-y-auto sm:grid-cols-2 lg:grid-cols-3">
-              {filteredPicker.map((venue) => (
-                <button
-                  key={venue.id}
-                  onClick={() => handleSelect(venue.id, showPicker)}
-                  className="rounded-xl border border-neutral-800 bg-neutral-950 p-3 text-left transition hover:border-violet-500/50 hover:bg-neutral-900"
-                >
-                  <p className="text-sm font-medium text-white">{venue.nameKo}</p>
-                  <p className="text-xs text-neutral-500">
-                    {categoryLabels[venue.category]} · {venue.regionKo} · ★{venue.rating}
-                  </p>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Comparison Table */}
-        {selectedVenues.length >= 2 && (
-          <>
-            <div className="overflow-x-auto rounded-2xl border border-neutral-800">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-neutral-800 bg-neutral-900">
-                    <th className="p-4 text-left text-sm font-medium text-neutral-400">항목</th>
-                    {selectedVenues.map((venue) => (
-                      <th key={venue.id} className="p-4 text-center text-sm font-semibold text-white">
-                        {venue.nameKo}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {comparisonRows.map((row) => (
-                    <tr key={row.label} className="border-b border-neutral-800/50 transition hover:bg-neutral-900/50">
-                      <td className="p-4 text-sm font-medium text-neutral-400">{row.label}</td>
-                      {selectedVenues.map((venue) => {
-                        const value = venue[row.key];
-                        const formatted = row.format ? row.format(value) : String(value ?? '');
-                        return (
-                          <td key={venue.id} className="p-4 text-center text-sm">
-                            {formatted}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  ))}
-                  <tr className="border-b border-neutral-800/50 transition hover:bg-neutral-900/50">
-                    <td className="p-4 text-sm font-medium text-neutral-400">특징</td>
-                    {selectedVenues.map((venue) => (
-                      <td key={venue.id} className="p-4 text-center">
-                        <div className="flex flex-wrap justify-center gap-1">
-                          {venue.features.map((f) => (
-                            <span key={f} className="rounded-full bg-violet-500/10 px-2 py-0.5 text-xs text-violet-400">
-                              {f}
-                            </span>
-                          ))}
-                        </div>
-                      </td>
-                    ))}
-                  </tr>
-                  <tr className="transition hover:bg-neutral-900/50">
-                    <td className="p-4 text-sm font-medium text-neutral-400">분위기</td>
-                    {selectedVenues.map((venue) => (
-                      <td key={venue.id} className="p-4 text-center">
-                        <div className="flex flex-wrap justify-center gap-1">
-                          {venue.atmosphere.map((a) => (
-                            <span key={a} className="rounded-full bg-neutral-800 px-2 py-0.5 text-xs text-neutral-300">
-                              {a}
-                            </span>
-                          ))}
-                        </div>
-                      </td>
-                    ))}
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            {/* Voting Section */}
-            <div className="mt-10 rounded-2xl border border-violet-500/20 bg-violet-500/5 p-8">
-              <h2 className="mb-6 text-center text-xl font-bold text-white">
-                어디가 더 좋을까요? 투표하세요!
-              </h2>
-              <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${selectedVenues.length}, 1fr)` }}>
-                {selectedVenues.map((venue) => {
-                  const voteCount = votes[venue.id] || 0;
-                  const pct = totalVotes > 0 ? Math.round((voteCount / totalVotes) * 100) : 0;
-                  return (
-                    <div key={venue.id} className="text-center">
-                      <button
-                        onClick={() => handleVote(venue.id)}
-                        className="w-full rounded-xl border border-violet-500/30 bg-neutral-900 p-6 transition hover:border-violet-400 hover:shadow-lg hover:shadow-violet-500/10"
-                      >
-                        <p className="text-lg font-bold text-white">{venue.nameKo}</p>
-                        <p className="mt-1 text-sm text-neutral-500">{venue.regionKo}</p>
-                      </button>
-                      <div className="mt-4">
-                        <div className="mx-auto h-3 w-full overflow-hidden rounded-full bg-neutral-800">
-                          <div
-                            className="h-full rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500 transition-all duration-500"
-                            style={{ width: `${pct}%` }}
-                          />
-                        </div>
-                        <p className="mt-2 text-sm text-neutral-400">
-                          <span className="font-bold text-violet-400">{pct}%</span>
-                          <span className="text-neutral-600"> ({voteCount}표)</span>
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              {totalVotes > 0 && (
-                <p className="mt-6 text-center text-sm text-neutral-500">
-                  총 {totalVotes}표 참여
-                </p>
-              )}
-            </div>
-          </>
-        )}
-
-        {selectedVenues.length < 2 && (
-          <div className="mt-8 rounded-2xl border border-neutral-800 bg-neutral-900 p-12 text-center">
-            <p className="text-lg text-neutral-400">
-              2개 이상의 업소를 선택하면 비교 결과가 표시됩니다
-            </p>
-            <p className="mt-2 text-sm text-neutral-500">
-              위에서 &quot;+ 업소 선택&quot; 버튼을 눌러 비교할 업소를 추가하세요
-            </p>
-          </div>
-        )}
       </div>
+
+      {/* Comparison Table */}
+      {selectedVenues.length >= 2 ? (
+        <div className="overflow-x-auto">
+          <div className={`grid gap-4 ${selectedVenues.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
+            {selectedVenues.map((v) => (
+              <div key={v.id} className="rounded-2xl border border-neon-border bg-neon-surface p-6">
+                <Link href={getCategoryHref(v)} target="_blank" rel="noopener noreferrer">
+                  <h3 className="text-lg font-bold text-neon-primary-light hover:text-neon-primary mb-2">{v.nameKo}</h3>
+                </Link>
+                {v.isPremium && <Badge variant="premium" className="mb-3">PREMIUM</Badge>}
+
+                <dl className="space-y-2 text-sm">
+                  <div><dt className="text-neon-text-muted/60">카테고리</dt><dd className="text-neon-text">{categoryLabels[v.category]}</dd></div>
+                  <div><dt className="text-neon-text-muted/60">지역</dt><dd className="text-neon-text">{v.regionKo}</dd></div>
+                  <div><dt className="text-neon-text-muted/60">평점</dt><dd className="text-neon-gold">★ {v.rating.toFixed(1)}</dd></div>
+                  {v.staffNickname && <div><dt className="text-neon-text-muted/60">담당</dt><dd className="text-neon-gold">{v.staffNickname}</dd></div>}
+                  <div><dt className="text-neon-text-muted/60">입장료</dt><dd className="text-neon-text">{v.priceEntry || '-'}</dd></div>
+                  <div><dt className="text-neon-text-muted/60">주대/룸</dt><dd className="text-neon-text">{v.priceTable || '-'}</dd></div>
+                  <div><dt className="text-neon-text-muted/60">음료</dt><dd className="text-neon-text">{v.priceDrink || '-'}</dd></div>
+                  {v.openHours && <div><dt className="text-neon-text-muted/60">영업시간</dt><dd className="text-neon-text">{v.openHours}</dd></div>}
+                  {v.dressCode && <div><dt className="text-neon-text-muted/60">드레스코드</dt><dd className="text-neon-text">{v.dressCode}</dd></div>}
+                </dl>
+
+                {v.features.length > 0 && (
+                  <div className="mt-4">
+                    <p className="text-xs text-neon-text-muted/60 mb-1">특징</p>
+                    <div className="flex flex-wrap gap-1">
+                      {v.features.slice(0, 4).map((f) => (
+                        <span key={f} className="rounded-full bg-neon-surface-2 px-2 py-0.5 text-[10px] text-neon-text-muted">{f}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Vote Button */}
+                <button
+                  onClick={() => vote(v.id)}
+                  className="mt-6 w-full rounded-xl border border-neon-primary/40 py-2.5 text-sm font-semibold text-neon-primary transition-all hover:bg-neon-primary/10"
+                >
+                  투표하기 {votes[v.id] ? `(${votes[v.id]})` : ''}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-12 text-center">
+          <p className="text-neon-text-muted">위에서 2~3곳을 선택하면 비교표가 나타납니다.</p>
+        </div>
+      )}
     </div>
   );
 }
