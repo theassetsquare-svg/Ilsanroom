@@ -8,9 +8,38 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/dashboard", "/login", "/signup"],
+        disallow: ["/dashboard", "/billing", "/analytics", "/onboarding", "/login", "/signup", "/profile", "/admin", "/api/"],
+      },
+      // AI Crawlers - explicitly allowed
+      {
+        userAgent: "GPTBot",
+        allow: "/",
+      },
+      {
+        userAgent: "Google-Extended",
+        allow: "/",
+      },
+      {
+        userAgent: "ChatGPT-User",
+        allow: "/",
+      },
+      {
+        userAgent: "Bingbot",
+        allow: "/",
+      },
+      {
+        userAgent: "anthropic-ai",
+        allow: "/",
+      },
+      {
+        userAgent: "ClaudeBot",
+        allow: "/",
+      },
+      {
+        userAgent: "PerplexityBot",
+        allow: "/",
       },
     ],
-    sitemap: "https://neon-nightlife.pages.dev/sitemap.xml",
+    sitemap: "https://neon-nightlife.com/sitemap.xml",
   };
 }

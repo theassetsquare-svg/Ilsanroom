@@ -18,6 +18,17 @@ function VenueCard({ venue, href }: { venue: Venue; href: string }) {
         {venue.isVerified && <Badge variant="verified">인증됨</Badge>}
       </div>
       <h3 className="text-lg font-bold text-white mb-1">{venue.nameKo}</h3>
+      {/* Staff Info */}
+      {venue.staffNickname && (
+        <p className="mb-1 text-sm font-medium text-amber-400">
+          담당: {venue.staffNickname}
+        </p>
+      )}
+      {venue.staffPhone && (
+        <p className="mb-2 text-sm text-emerald-400">
+          📞 {venue.staffPhone}
+        </p>
+      )}
       <div className="mb-2 flex items-center gap-3 text-sm text-neutral-400">
         <span>{venue.regionKo}</span>
         <span className="flex items-center gap-1">

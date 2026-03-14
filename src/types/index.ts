@@ -29,6 +29,9 @@ export interface Venue {
   priceEntry?: string;
   priceTable?: string;
   priceDrink?: string;
+  staffNickname?: string;
+  staffPhone?: string;
+  district?: string;
 }
 
 export interface CommunityPost {

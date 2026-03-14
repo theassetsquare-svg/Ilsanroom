@@ -19,6 +19,17 @@ function VenueCard({ venue }: { venue: Venue }) {
         {venue.isVerified && <Badge variant="verified">인증됨</Badge>}
       </div>
       <h3 className="text-lg font-bold text-white mb-1">{venue.nameKo}</h3>
+      {/* Staff Info */}
+      {venue.staffNickname && (
+        <p className="mb-1 text-sm font-medium text-amber-400">
+          담당: {venue.staffNickname}
+        </p>
+      )}
+      {venue.staffPhone && (
+        <p className="mb-2 text-sm text-emerald-400">
+          📞 {venue.staffPhone}
+        </p>
+      )}
       <div className="mb-2 flex items-center gap-3 text-sm text-neutral-400">
         <span>{venue.regionKo}</span>
         <span className="flex items-center gap-1">
@@ -56,7 +67,7 @@ export default function RoomsPage() {
       {/* 일산룸 Featured */}
       {ilsanRoom && (
         <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-          <Link href="/rooms/ilsan/ilsan-room" className="group block">
+          <Link href="/rooms/ilsan/ilsan-room" target="_blank" rel="noopener noreferrer" className="group block">
             <div className="relative overflow-hidden rounded-2xl border border-rose-500/30 bg-neutral-900 transition-all duration-500 hover:border-rose-400/60 hover:shadow-2xl hover:shadow-rose-500/20">
               <div className="absolute inset-0 bg-gradient-to-br from-rose-900/40 via-neutral-900/80 to-neutral-950" />
               <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-rose-600/10 blur-3xl transition-all duration-500 group-hover:bg-rose-600/20" />

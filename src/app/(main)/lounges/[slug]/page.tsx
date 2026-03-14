@@ -5,6 +5,8 @@ import Badge from '@/components/ui/Badge';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import PageViewTracker from '@/components/venue/PageViewTracker';
 import PremiumBadge from '@/components/venue/PremiumBadge';
+import VenueHero from '@/components/venue/VenueHero';
+import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
 import VenueJsonLd from '@/components/venue/VenueJsonLd';
 import ReviewSection from '@/components/venue/ReviewSection';
 import QRCode from '@/components/venue/QRCode';
@@ -48,7 +50,7 @@ export default async function LoungeDetailPage({ params }: Props) {
   const related = getRelatedVenues(venue, 3);
 
   return (
-    <div className="bg-neutral-950">
+    <div className="bg-neutral-950 pb-20">
       <PageViewTracker venueId={venue.id} venueName={venue.nameKo} category={venue.category} region={venue.region} />
       <VenueJsonLd
         venue={venue}
@@ -67,18 +69,16 @@ export default async function LoungeDetailPage({ params }: Props) {
         <Breadcrumb items={[{ label: '라운지', href: '/lounges' }, { label: venue.nameKo }]} />
       </section>
 
-      <section className="relative overflow-hidden border-b border-neutral-800">
-        <div className="absolute inset-0 bg-gradient-to-b from-amber-950/30 to-neutral-950" />
-        <div className="relative mx-auto max-w-7xl px-4 pb-12 sm:px-6">
-          <PremiumBadge isPremium={venue.isPremium} isVerified={venue.isVerified} />
-          <h1 className="mt-4 text-3xl font-extrabold text-white sm:text-4xl">{venue.nameKo}</h1>
-          <div className="mt-3 flex items-center gap-3 text-neutral-400">
-            <span className="flex items-center gap-1"><span className="text-yellow-500">★</span> {venue.rating}</span>
-            <span>·</span><span>리뷰 {venue.reviewCount}개</span>
-            <span>·</span><span>{venue.regionKo}</span>
-          </div>
-        </div>
-      </section>
+      <VenueHero
+        name={venue.nameKo}
+        staffNickname={venue.staffNickname}
+        rating={venue.rating}
+        reviewCount={venue.reviewCount}
+        isPremium={venue.isPremium}
+        isVerified={venue.isVerified}
+        category={venue.category}
+        regionKo={venue.regionKo}
+      />
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
         <div className="grid gap-10 lg:grid-cols-3">
@@ -153,6 +153,11 @@ export default async function LoungeDetailPage({ params }: Props) {
           </div>
         </section>
       )}
+      <StickyPhoneBar
+        phone={venue.staffPhone}
+        staffName={venue.staffNickname}
+        venueName={venue.nameKo}
+      />
     </div>
   );
 }

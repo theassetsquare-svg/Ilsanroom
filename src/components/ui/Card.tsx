@@ -4,14 +4,20 @@ interface CardProps {
   className?: string;
   children: React.ReactNode;
   href?: string;
+  newTab?: boolean;
 }
 
-export default function Card({ className = '', children, href }: CardProps) {
+export default function Card({ className = '', children, href, newTab = true }: CardProps) {
   const classes = `glass rounded-2xl p-5 transition-all duration-300 neon-box-glow-hover ${className}`;
 
   if (href) {
     return (
-      <Link href={href} className={`block ${classes}`}>
+      <Link
+        href={href}
+        target={newTab ? '_blank' : undefined}
+        rel={newTab ? 'noopener noreferrer' : undefined}
+        className={`block ${classes}`}
+      >
         {children}
       </Link>
     );

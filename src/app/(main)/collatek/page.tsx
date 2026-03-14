@@ -18,6 +18,17 @@ function VenueCard({ venue }: { venue: Venue }) {
       </div>
       {/* 큰 글씨 - 4050 타겟 */}
       <h3 className="text-xl font-bold text-white mb-2 sm:text-2xl">{venue.nameKo}</h3>
+      {/* Staff Info */}
+      {venue.staffNickname && (
+        <p className="mb-1 text-sm font-medium text-amber-400">
+          담당: {venue.staffNickname}
+        </p>
+      )}
+      {venue.staffPhone && (
+        <p className="mb-2 text-sm text-emerald-400">
+          📞 {venue.staffPhone}
+        </p>
+      )}
       <div className="mb-3 flex items-center gap-4 text-base text-neutral-400">
         <span className="font-medium">{venue.regionKo}</span>
         <span className="flex items-center gap-1">

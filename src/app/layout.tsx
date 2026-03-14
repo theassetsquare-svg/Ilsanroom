@@ -3,6 +3,7 @@ import { Noto_Sans_KR } from 'next/font/google';
 import './globals.css';
 import Toast from '@/components/ui/Toast';
 import RetargetingPixels from '@/components/seo/RetargetingPixels';
+import SentryInit from '@/components/seo/SentryInit';
 import AgeVerification from '@/components/popups/AgeVerification';
 import CookieConsent from '@/components/popups/CookieConsent';
 
@@ -79,6 +80,7 @@ export default function RootLayout({
           </>
         )}
         <RetargetingPixels />
+        <SentryInit />
         {children}
         <Toast />
         <AgeVerification />

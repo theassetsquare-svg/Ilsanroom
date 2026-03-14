@@ -3,7 +3,7 @@ export const dynamic = "force-static";
 import type { MetadataRoute } from "next";
 import { venues } from "@/data/venues";
 
-const BASE_URL = "https://neon-nightlife.pages.dev";
+const BASE_URL = "https://neon-nightlife.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -145,6 +145,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.6,
     },
+    // SaaS pages
+    { url: `${BASE_URL}/pricing`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
+    { url: `${BASE_URL}/for-business`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
+    { url: `${BASE_URL}/case-studies`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
+    { url: `${BASE_URL}/testimonials`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/demo`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/referral`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
+    // Legal
+    { url: `${BASE_URL}/terms`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
+    { url: `${BASE_URL}/privacy`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
+    { url: `${BASE_URL}/disclaimer`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
+    { url: `${BASE_URL}/venue-terms`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.3 },
+    // Community
+    { url: `${BASE_URL}/community/guidelines`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.4 },
+    // Help
+    { url: `${BASE_URL}/help`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
+    { url: `${BASE_URL}/status`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 0.3 },
   ];
 
   const venueRoutes: MetadataRoute.Sitemap = venues
@@ -165,8 +182,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
                     ? "hoppa"
                     : "collatek";
 
+      const needsRegion = ['club', 'room', 'yojeong'];
+      const url = needsRegion.includes(venue.category)
+        ? `${BASE_URL}/${categoryPath}/${venue.region}/${venue.slug}`
+        : `${BASE_URL}/${categoryPath}/${venue.slug}`;
+
       return {
-        url: `${BASE_URL}/${categoryPath}/${venue.slug}`,
+        url,
         lastModified: new Date(),
         changeFrequency: "weekly" as const,
         priority: venue.isPremium ? 0.9 : 0.8,

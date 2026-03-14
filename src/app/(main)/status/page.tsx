@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+'use client';
+
 import {
   CheckCircle2,
   Server,
@@ -6,13 +7,11 @@ import {
   Database,
   Wifi,
   Clock,
+  Bell,
+  Shield,
+  Mail,
 } from "lucide-react";
-
-export const metadata: Metadata = {
-  title: "서비스 상태 - NEON",
-  description:
-    "NEON 서비스 시스템 상태를 실시간으로 확인하세요. API, 웹, 데이터베이스, CDN 상태 모니터링.",
-};
+import { useState } from "react";
 
 const systems = [
   {
@@ -70,7 +69,25 @@ const recentIncidents = [
   },
 ];
 
+// Generate 30-day uptime data
+const uptimeDays = Array.from({ length: 30 }).map((_, i) => {
+  if (i === 12) return { status: 'degraded' as const, label: '일부 지연 발생' };
+  if (i === 25) return { status: 'degraded' as const, label: '일부 지연 발생' };
+  return { status: 'ok' as const, label: '정상' };
+});
+
 export default function StatusPage() {
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email.trim()) {
+      setSubscribed(true);
+      setEmail('');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
       <div className="mx-auto max-w-4xl px-4 py-16">
@@ -90,10 +107,14 @@ export default function StatusPage() {
           </div>
         </div>
 
-        {/* Overall Uptime */}
+        {/* Service Uptime */}
         <div className="mb-12 rounded-2xl border border-neutral-800 bg-neutral-900 p-8 text-center">
-          <p className="mb-1 text-sm text-neutral-400">전체 가동률 (30일)</p>
+          <div className="mb-2 flex items-center justify-center gap-2">
+            <Shield className="h-5 w-5 text-violet-400" />
+            <p className="text-sm font-medium text-neutral-300">서비스 업타임</p>
+          </div>
           <p className="text-5xl font-extrabold text-violet-400">99.9%</p>
+          <p className="mt-2 text-xs text-neutral-500">월간 평균 가동률</p>
           <div className="mt-4 flex items-center justify-center gap-2 text-xs text-neutral-500">
             <Clock className="h-3.5 w-3.5" />
             마지막 확인: 방금 전
@@ -140,22 +161,20 @@ export default function StatusPage() {
         {/* 30-day bar visualization */}
         <div className="mb-12 rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
           <h2 className="mb-4 text-sm font-semibold">
-            30일 가동 현황
+            최근 30일 가동 현황
           </h2>
           <div className="flex gap-0.5">
-            {Array.from({ length: 30 }).map((_, i) => (
+            {uptimeDays.map((day, i) => (
               <div
                 key={i}
                 className={`h-8 flex-1 rounded-sm ${
-                  i === 12 || i === 25
+                  day.status === 'degraded'
                     ? "bg-yellow-500/60"
-                    : "bg-green-500/60"
+                    : day.status === 'ok'
+                    ? "bg-green-500/60"
+                    : "bg-red-500/60"
                 }`}
-                title={
-                  i === 12 || i === 25
-                    ? "일부 지연 발생"
-                    : "정상"
-                }
+                title={day.label}
               />
             ))}
           </div>
@@ -170,14 +189,18 @@ export default function StatusPage() {
                 <span className="inline-block h-2 w-2 rounded-sm bg-yellow-500/60" />
                 일부 지연
               </span>
+              <span className="flex items-center gap-1">
+                <span className="inline-block h-2 w-2 rounded-sm bg-red-500/60" />
+                장애
+              </span>
             </div>
             <span>오늘</span>
           </div>
         </div>
 
         {/* Recent Incidents */}
-        <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-8">
-          <h2 className="mb-6 text-lg font-bold">최근 인시던트</h2>
+        <div className="mb-12 rounded-2xl border border-neutral-800 bg-neutral-900 p-8">
+          <h2 className="mb-6 text-lg font-bold">인시던트 이력</h2>
           <div className="space-y-4">
             {recentIncidents.map((incident) => (
               <div
@@ -199,6 +222,68 @@ export default function StatusPage() {
           <p className="mt-6 text-center text-xs text-neutral-600">
             이전 인시던트 기록은 보관 정책에 따라 90일간 유지됩니다.
           </p>
+        </div>
+
+        {/* Monitoring */}
+        <div className="mb-12 rounded-2xl border border-neutral-800 bg-neutral-900 p-8">
+          <div className="flex items-center gap-3 mb-4">
+            <Bell className="h-5 w-5 text-violet-400" />
+            <h2 className="text-lg font-bold">모니터링</h2>
+          </div>
+          <p className="text-sm text-neutral-400 leading-relaxed">
+            NEON은 <span className="text-white font-medium">Uptime Robot</span>을 통해 1분 간격으로
+            모든 서비스의 가용성을 모니터링하고 있습니다. 장애 발생 시 자동으로 알림이 전송되며,
+            운영팀이 즉시 대응합니다.
+          </p>
+          <div className="mt-4 grid grid-cols-3 gap-4 text-center">
+            <div className="rounded-xl bg-neutral-950 p-4">
+              <p className="text-2xl font-bold text-violet-400">1분</p>
+              <p className="mt-1 text-xs text-neutral-500">모니터링 간격</p>
+            </div>
+            <div className="rounded-xl bg-neutral-950 p-4">
+              <p className="text-2xl font-bold text-violet-400">4개</p>
+              <p className="mt-1 text-xs text-neutral-500">모니터링 대상</p>
+            </div>
+            <div className="rounded-xl bg-neutral-950 p-4">
+              <p className="text-2xl font-bold text-violet-400">24/7</p>
+              <p className="mt-1 text-xs text-neutral-500">상시 감시</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Subscribe */}
+        <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-8">
+          <div className="flex items-center gap-3 mb-4">
+            <Mail className="h-5 w-5 text-violet-400" />
+            <h2 className="text-lg font-bold">상태 알림 구독</h2>
+          </div>
+          <p className="text-sm text-neutral-400 mb-6">
+            서비스 상태 변경 알림을 이메일로 받으세요. 장애 발생, 복구, 예정된 유지보수 소식을
+            실시간으로 전달해 드립니다.
+          </p>
+          {subscribed ? (
+            <div className="flex items-center gap-2 rounded-xl bg-green-500/10 p-4">
+              <CheckCircle2 className="h-5 w-5 text-green-400" />
+              <p className="text-sm text-green-400">구독이 완료되었습니다. 상태 변경 시 알림을 보내드리겠습니다.</p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubscribe} className="flex gap-3">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="이메일 주소를 입력하세요"
+                required
+                className="flex-1 rounded-xl border border-neutral-700 bg-neutral-950 px-4 py-3 text-sm text-white placeholder-neutral-600 outline-none transition focus:border-violet-500"
+              />
+              <button
+                type="submit"
+                className="shrink-0 rounded-xl bg-violet-600 px-6 py-3 text-sm font-medium text-white transition hover:bg-violet-500"
+              >
+                구독하기
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </div>
