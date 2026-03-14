@@ -48,6 +48,9 @@ export interface DbVenue {
   price_entry: string | null;
   price_table: string | null;
   price_drink: string | null;
+  staff_nickname: string | null;
+  staff_phone: string | null;
+  district: string | null;
   owner_id: string | null;
   is_active: boolean;
   created_at: string;
