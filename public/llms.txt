@@ -1,0 +1,68 @@
+# NEON 나이트라이프 (NEON Nightlife)
+> 대한민국 나이트라이프 정보 포털 | Korea Nightlife Information Portal
+
+## About / 소개
+NEON은 대한민국의 클럽, 나이트, 라운지, 룸, 요정, 호빠(호스트바) 정보를 제공하는 종합 나이트라이프 디렉토리입니다.
+NEON is a comprehensive nightlife directory providing information about clubs, nightclubs, lounges, rooms, yojeong (traditional Korean entertainment venues), and host bars across South Korea.
+
+## Categories / 카테고리
+
+### 클럽 (Clubs)
+EDM, 힙합, 테크노 등 다양한 장르의 음악과 DJ 공연을 즐길 수 있는 클럽.
+주요 지역: 강남, 홍대, 이태원, 해운대
+Clubs featuring various music genres including EDM, hip-hop, and techno with DJ performances.
+
+### 나이트 (Night Clubs)
+라이브 밴드 공연과 사교댄스를 즐길 수 있는 전통적인 나이트클럽.
+주요 지역: 강남, 청담, 파주, 수원
+Traditional nightclubs with live band performances and social dancing.
+
+### 라운지 (Lounges)
+칵테일과 세련된 분위기를 즐길 수 있는 프리미엄 라운지 바.
+주요 지역: 강남, 청담, 이태원
+Premium lounge bars with cocktails and sophisticated ambiance.
+
+### 룸 (Rooms)
+프라이빗한 공간에서 모임을 즐길 수 있는 룸 시설.
+주요 지역: 일산, 강남
+Private room facilities for gatherings and events.
+
+### 요정 (Yojeong)
+한국 전통 요정 문화를 현대적으로 계승하는 고급 접대 공간. 한식 코스와 전통 공연 제공.
+Traditional Korean yojeong offering high-end dining with Korean cuisine courses and traditional performances.
+
+### 호빠 (Host Bars / Hoppa)
+호스트바. 여성 고객을 위한 엔터테인먼트 공간.
+Host bars providing entertainment services.
+
+## Key Venues / 주요 업소
+- Club Race (클럽 레이스) - 강남
+- M2 (엠투) - 홍대
+- Cakeshop (케이크샵) - 이태원
+- Cream (크림) - 해운대
+- 청담 나이트클럽 - 청담
+- Lounge Arzu (라운지 아르주) - 강남
+- Code Lounge (코드 라운지) - 청담
+- 일산룸 - 일산
+- 일산명월관요정 - 일산
+
+## Features / 기능
+- 카테고리별 업소 검색
+- 지역별 업소 탐색
+- 인기 업소 랭킹
+- 이벤트 & 파티 캘린더
+- 커뮤니티 (자유게시판, 후기, 파티 모집, 팁, 패션 가이드, Q&A)
+- 업소 비교 도구
+- 가격 가이드
+- 안전 가이드
+- 나이트라이프 성향 퀴즈
+- 매거진 콘텐츠
+
+## Coverage / 서비스 지역
+서울 (강남, 홍대, 이태원, 청담, 신림, 건대), 부산 (해운대, 서면, 경성대), 경기 (일산, 수원, 파주), 대구, 대전, 인천, 울산
+
+## URL
+https://neon-nightlife.pages.dev
+
+## Language / 언어
+한국어 (Korean), English
