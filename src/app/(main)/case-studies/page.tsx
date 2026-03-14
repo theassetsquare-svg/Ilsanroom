@@ -10,96 +10,96 @@ export const metadata: Metadata = {
 
 const caseStudies = [
   {
-    venue: "루미에르 라운지",
-    category: "프리미엄 라운지",
-    location: "일산 웨스턴돔",
-    period: "도입 6개월",
-    image: "bg-gradient-to-br from-violet-900/40 to-purple-600/20",
+    venue: "일산명월관요정",
+    category: "전통 요정",
+    location: "고양시 일산동구",
+    period: "도입 8개월",
+    image: "bg-gradient-to-br from-emerald-900/40 to-amber-600/20",
     summary:
-      "NEON Pro 도입 후 온라인 노출이 크게 증가하며 신규 고객 유입이 눈에 띄게 늘었습니다. 리뷰 관리 기능으로 고객 만족도가 향상되었습니다.",
+      "일산명월관요정은 NEON 프리미엄 등록 후 온라인 검색 노출이 대폭 증가했습니다. 특히 '일산요정', '일산명월관' 키워드에서 상위 노출을 달성하며, 40~60대 비즈니스 고객층의 예약 문의가 크게 늘었습니다. 리뷰 관리 기능을 적극 활용하여 사장님 답변을 달기 시작한 이후 재방문율이 눈에 띄게 향상되었습니다.",
     quote:
-      "리뷰에 빠르게 답변할 수 있게 되면서 단골 고객이 확실히 늘었어요.",
+      "전통 요정이라는 특수한 업종에서 디지털 마케팅 효과를 실감했습니다. NEON 덕분에 예약이 5배 이상 늘었습니다.",
+    quoteName: "이** 대표",
+    metrics: [
+      {
+        label: "예약 증가율",
+        value: "+520%",
+        icon: TrendingUp,
+        color: "text-green-400",
+      },
+      {
+        label: "월 검색 노출",
+        value: "12,400회",
+        icon: Star,
+        color: "text-yellow-400",
+      },
+      {
+        label: "매출 변화",
+        value: "+89%",
+        icon: DollarSign,
+        color: "text-violet-400",
+      },
+    ],
+  },
+  {
+    venue: "일산룸",
+    category: "프리미엄 룸",
+    location: "고양시 일산서구",
+    period: "도입 6개월",
+    image: "bg-gradient-to-br from-rose-900/40 to-violet-600/20",
+    summary:
+      "일산룸은 NEON 프로 플랜 도입 후 '일산룸' 키워드에서 1위를 유지하고 있습니다. 실시간 통계 대시보드를 통해 어떤 시간대에 방문자가 집중되는지 파악하고, 그에 맞춘 프로모션을 진행하여 비수기 매출까지 안정적으로 관리하고 있습니다. QR코드 프린트 기능으로 오프라인 명함에도 활용 중입니다.",
+    quote:
+      "데이터를 보고 의사결정을 하니까 감으로 하던 때와는 차원이 다릅니다. 이제 없으면 안 될 서비스입니다.",
     quoteName: "김** 대표",
     metrics: [
       {
         label: "방문자 증가율",
-        value: "+184%",
+        value: "+340%",
         icon: TrendingUp,
         color: "text-green-400",
       },
       {
         label: "리뷰 수",
-        value: "127건",
+        value: "197건",
         icon: Star,
         color: "text-yellow-400",
       },
       {
         label: "매출 변화",
-        value: "+42%",
+        value: "+65%",
         icon: DollarSign,
         color: "text-violet-400",
       },
     ],
   },
   {
-    venue: "비트 클럽",
-    category: "나이트클럽",
-    location: "일산 라페스타",
-    period: "도입 4개월",
+    venue: "클럽 옥타곤",
+    category: "메가 클럽",
+    location: "서울시 강남구",
+    period: "도입 12개월",
     image: "bg-gradient-to-br from-blue-900/40 to-cyan-600/20",
     summary:
-      "젊은 층을 타깃으로 NEON 노출 순위 최적화를 진행했습니다. 이벤트 프로모션과 연계해 주말 예약률이 대폭 상승했습니다.",
+      "아시아 대표 메가 클럽 옥타곤은 NEON 엔터프라이즈 플랜을 통해 API 연동까지 완료했습니다. 실시간 이벤트 업데이트, DJ 스케줄 자동 동기화, VIP 예약 시스템 연계 등 운영 효율이 크게 개선되었습니다. NEON을 통한 예약 전환율이 기존 채널 대비 3.2배 높게 나타났습니다.",
     quote:
-      "NEON 대시보드로 어떤 이벤트가 효과적인지 데이터로 확인할 수 있어 좋습니다.",
+      "대형 클럽도 결국 디지털 플랫폼이 핵심입니다. NEON의 분석 도구 덕분에 마케팅 ROI를 정확히 측정할 수 있게 되었습니다.",
     quoteName: "박** 매니저",
     metrics: [
       {
-        label: "방문자 증가율",
-        value: "+256%",
+        label: "예약 전환율",
+        value: "3.2배",
         icon: TrendingUp,
         color: "text-green-400",
       },
       {
-        label: "리뷰 수",
-        value: "89건",
+        label: "API 연동",
+        value: "완료",
         icon: Star,
         color: "text-yellow-400",
       },
       {
-        label: "매출 변화",
-        value: "+67%",
-        icon: DollarSign,
-        color: "text-violet-400",
-      },
-    ],
-  },
-  {
-    venue: "소담 요정",
-    category: "전통 요정",
-    location: "일산 중앙로",
-    period: "도입 8개월",
-    image: "bg-gradient-to-br from-amber-900/40 to-orange-600/20",
-    summary:
-      "전통 요정이라는 특수한 업종에서도 NEON을 통해 온라인 인지도를 높이는 데 성공했습니다. 40-50대 고객층의 앱 유입이 크게 늘었습니다.",
-    quote:
-      "전통 업소도 디지털 시대에 맞게 변해야 한다는 걸 실감했습니다.",
-    quoteName: "이** 대표",
-    metrics: [
-      {
-        label: "방문자 증가율",
-        value: "+98%",
-        icon: TrendingUp,
-        color: "text-green-400",
-      },
-      {
-        label: "리뷰 수",
-        value: "64건",
-        icon: Star,
-        color: "text-yellow-400",
-      },
-      {
-        label: "매출 변화",
-        value: "+31%",
+        label: "운영 효율",
+        value: "+45%",
         icon: DollarSign,
         color: "text-violet-400",
       },

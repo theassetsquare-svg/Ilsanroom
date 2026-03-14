@@ -62,6 +62,22 @@ const articles = [
     date: "2026-02-25",
     readTime: "5분",
   },
+  {
+    id: 7,
+    title: "일산 명월관 요정 — 비즈니스 접대의 새로운 기준",
+    excerpt: "전통 한정식과 국악 라이브가 어우러지는 일산명월관요정. 15가지 코스 요리, 30개 프라이빗 룸, 정찰제 운영으로 비즈니스 접대의 격을 높이는 공간을 소개합니다.",
+    category: "비즈니스",
+    date: "2026-03-12",
+    readTime: "7분",
+  },
+  {
+    id: 8,
+    title: "일산 룸 문화 가이드 — 프라이빗 모임의 정석",
+    excerpt: "일산룸은 경기 서북부를 대표하는 프리미엄 룸 공간입니다. 비즈니스 회식부터 소규모 모임까지, 일산 지역 룸 문화의 특징과 이용 팁을 정리했습니다.",
+    category: "가이드",
+    date: "2026-03-11",
+    readTime: "6분",
+  },
 ];
 
 function getCategoryColor(category: string): string {
@@ -72,6 +88,7 @@ function getCategoryColor(category: string): string {
     "가이드": "bg-green-500/10 text-green-400",
     "여행": "bg-cyan-500/10 text-cyan-400",
     "역사": "bg-orange-500/10 text-orange-400",
+    "비즈니스": "bg-rose-500/10 text-rose-400",
   };
   return colors[category] || "bg-neutral-500/10 text-neutral-400";
 }
