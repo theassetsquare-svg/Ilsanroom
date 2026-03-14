@@ -97,7 +97,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
         {/* ── 가격표 ── */}
         {activeTab === '가격표' && (
           <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} 가격 안내</h2>
+            <h2 className="mb-4 text-xl font-bold text-neon-text">가격 안내</h2>
             {(venue.priceEntry || venue.priceTable || venue.priceDrink) ? (
               <div className="overflow-hidden rounded-xl border border-neon-border">
                 <table className="w-full text-sm">
@@ -139,7 +139,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
         {/* ── 메뉴·서비스 ── */}
         {activeTab === '메뉴·서비스' && (
           <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} 서비스</h2>
+            <h2 className="mb-4 text-xl font-bold text-neon-text">서비스 안내</h2>
             {venue.features.length > 0 ? (
               <div className="grid gap-3 sm:grid-cols-2">
                 {venue.features.map((f) => (
@@ -158,7 +158,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
         {/* ── 리뷰 ── */}
         {activeTab === '리뷰' && (
           <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} 리뷰</h2>
+            <h2 className="mb-4 text-xl font-bold text-neon-text">방문 리뷰</h2>
             {/* Rating distribution */}
             <div className="mb-6 rounded-xl border border-neon-border bg-neon-surface p-6">
               <div className="flex items-center gap-6">
@@ -185,7 +185,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
         {/* ── 사진갤러리 ── */}
         {activeTab === '사진갤러리' && (
           <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} 사진</h2>
+            <h2 className="mb-4 text-xl font-bold text-neon-text">사진 갤러리</h2>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="aspect-square rounded-xl border border-neon-border bg-neon-surface-2 flex items-center justify-center">
@@ -199,7 +199,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
         {/* ── 이벤트 ── */}
         {activeTab === '이벤트' && (
           <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} 이벤트</h2>
+            <h2 className="mb-4 text-xl font-bold text-neon-text">이벤트</h2>
             <p className="text-neon-text-muted">현재 진행 중인 이벤트가 없습니다.</p>
           </div>
         )}
@@ -245,7 +245,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
         {/* ── VS투표 ── */}
         {activeTab === 'VS투표' && (
           <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} VS 대결</h2>
+            <h2 className="mb-4 text-xl font-bold text-neon-text">VS 대결</h2>
             <p className="mb-6 text-sm text-neon-text-muted">이 {CATEGORY_SYNONYMS[venue.category] || '업소'}와 비슷한 곳, 어디가 더 좋을까?</p>
             <div className="rounded-xl border border-neon-pink/30 bg-neon-bg p-6 text-center">
               <p className="text-sm text-neon-text-muted mb-4">VS 투표 기능은 메인 페이지에서 이용 가능합니다.</p>
