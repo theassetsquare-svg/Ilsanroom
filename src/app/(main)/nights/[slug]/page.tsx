@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import VenueDetailPage from '@/components/venue/VenueDetailPage';
+import { getHookingTitle, getHookingDescription } from '@/lib/seo-hooks';
 import { getVenueBySlug, getRelatedVenues, getVenuesByCategory } from '@/data/venues';
 
 export function generateStaticParams() {
@@ -14,8 +15,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const venue = getVenueBySlug(slug);
   if (!venue) return { title: '나이트를 찾을 수 없습니다 | 일산룸포털' };
   return {
-    title: `${venue.nameKo} 후기,가격,예약 | 일산룸포털`,
-    description: venue.description,
+    title: getHookingTitle(venue),
+    description: getHookingDescription(venue),
     openGraph: { title: `${venue.nameKo} | 일산룸포털`, description: venue.shortDescription },
   };
 }

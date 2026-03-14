@@ -14,7 +14,12 @@ interface VenueDetailTabsProps {
   categoryLabel: string;
 }
 
-const TABS = ['기본정보', '가격표', '메뉴·서비스', '리뷰', '사진갤러리', '이벤트', 'FAQ', '지도'] as const;
+const TABS = ['기본정보', '가격표', '메뉴·서비스', '리뷰', '사진갤러리', '이벤트', 'FAQ', '지도', 'VS투표', '인기시간'] as const;
+
+const CATEGORY_SYNONYMS: Record<string, string> = {
+  club: 'EDM 파티 공간', night: '프리미엄 엔터테인먼트 공간', lounge: '프리미엄 바',
+  room: '프라이빗 공간', yojeong: '전통 한정식 공간', hoppa: '호스트 엔터테인먼트',
+};
 
 export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDetailTabsProps) {
   const [activeTab, setActiveTab] = useState<string>('기본정보');
@@ -235,6 +240,46 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
             ) : (
               <p className="text-neon-text-muted">주소 정보가 등록되지 않았습니다.</p>
             )}
+          </div>
+        )}
+        {/* ── VS투표 ── */}
+        {activeTab === 'VS투표' && (
+          <div>
+            <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} VS 대결</h2>
+            <p className="mb-6 text-sm text-neon-text-muted">이 {CATEGORY_SYNONYMS[venue.category] || '업소'}와 비슷한 곳, 어디가 더 좋을까?</p>
+            <div className="rounded-xl border border-neon-pink/30 bg-neon-bg p-6 text-center">
+              <p className="text-sm text-neon-text-muted mb-4">VS 투표 기능은 메인 페이지에서 이용 가능합니다.</p>
+              <a href="/vs" target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg bg-neon-pink/20 px-5 py-2.5 text-sm font-medium text-neon-pink transition hover:bg-neon-pink/30">
+                VS 투표 참여하기 →
+              </a>
+            </div>
+          </div>
+        )}
+
+        {/* ── 인기시간 ── */}
+        {activeTab === '인기시간' && (
+          <div>
+            <h2 className="mb-4 text-xl font-bold text-neon-text">인기 요일·시간대</h2>
+            <div className="space-y-3">
+              {[
+                { day: '금요일', time: '22:00~02:00', level: 95, label: '최고 인기' },
+                { day: '토요일', time: '22:00~03:00', level: 100, label: '최고 인기' },
+                { day: '목요일', time: '21:00~01:00', level: 60, label: '보통' },
+                { day: '수요일', time: '20:00~00:00', level: 35, label: '여유' },
+                { day: '일요일', time: '20:00~00:00', level: 45, label: '보통' },
+              ].map((slot) => (
+                <div key={slot.day} className="flex items-center gap-4">
+                  <span className="w-16 text-sm font-medium text-neon-text">{slot.day}</span>
+                  <div className="h-3 flex-1 rounded-full bg-neon-surface-2">
+                    <div className={`h-3 rounded-full transition-all ${slot.level >= 80 ? 'bg-neon-pink' : slot.level >= 50 ? 'bg-neon-gold' : 'bg-neon-green'}`}
+                      style={{ width: `${slot.level}%` }} />
+                  </div>
+                  <span className="w-20 text-right text-xs text-neon-text-muted">{slot.label}</span>
+                </div>
+              ))}
+            </div>
+            <p className="mt-4 text-xs text-neon-text-muted/60">※ 시간대별 인기도는 참고용이며, 실제 혼잡도와 다를 수 있습니다.</p>
           </div>
         )}
       </div>

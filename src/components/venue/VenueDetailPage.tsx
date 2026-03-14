@@ -90,6 +90,19 @@ export default function VenueDetailPage({
         </section>
       )}
 
+      {/* [D] 첫 방문 가이드 */}
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+        <Link href="/guide" target="_blank" rel="noopener noreferrer" className="block rounded-2xl border border-neon-gold/30 bg-neon-gold/5 p-5 transition hover:border-neon-gold/50 card-hover">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">📖</span>
+            <div>
+              <p className="text-sm font-bold text-neon-text">{categoryLabel} 처음이세요?</p>
+              <p className="text-xs text-neon-text-muted">복장, 예산, 매너 — 첫 방문 완벽 가이드 보기</p>
+            </div>
+          </div>
+        </Link>
+      </section>
+
       {/* Bottom Recommendations */}
       {related.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
@@ -105,6 +118,19 @@ export default function VenueDetailPage({
           </div>
         </section>
       )}
+
+      {/* [C] 숨은 명소 */}
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+        <Link href="/hidden" target="_blank" rel="noopener noreferrer" className="block rounded-2xl border border-neon-accent/30 bg-neon-accent/5 p-5 transition hover:border-neon-accent/50 card-hover">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">💎</span>
+            <div>
+              <p className="text-sm font-bold text-neon-text">이 업소 몰랐지? — 매주 숨은 명소 발굴</p>
+              <p className="text-xs text-neon-text-muted">다른 사이트에서 찾기 어려운 알짜 업소를 만나보세요</p>
+            </div>
+          </div>
+        </Link>
+      </section>
 
       {/* Tags for SEO */}
       <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6">
