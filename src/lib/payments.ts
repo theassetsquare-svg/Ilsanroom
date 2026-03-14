@@ -1,189 +1,153 @@
-/**
- * 토스페이먼츠 결제 모듈
- * Toss Payments integration layer
- */
+// Toss Payments integration for NEON SaaS
 
-const TOSS_CLIENT_KEY = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY ?? "";
-const TOSS_SECRET_KEY = process.env.TOSS_SECRET_KEY ?? "";
-const TOSS_API_BASE = "https://api.tosspayments.com/v1";
+const TOSS_CLIENT_KEY = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY || '';
+const TOSS_SECRET_KEY = process.env.TOSS_SECRET_KEY || '';
+const API_URL = 'https://api.tosspayments.com/v1';
 
-// ─── Types ───────────────────────────────────────────────────────────
-
-export interface PaymentRequest {
+export interface SubscriptionPayment {
+  customerKey: string;
+  billingKey?: string;
+  planId: string;
+  amount: number;
   orderId: string;
   orderName: string;
-  amount: number;
-  currency?: "KRW" | "USD";
-  customerName: string;
-  customerEmail?: string;
-  customerPhone?: string;
-  method?: "카드" | "가상계좌" | "간편결제" | "휴대폰" | "계좌이체";
-  successUrl: string;
-  failUrl: string;
-  metadata?: Record<string, string>;
 }
 
 export interface PaymentResult {
-  paymentKey: string;
+  success: boolean;
+  paymentKey?: string;
   orderId: string;
-  orderName: string;
-  status:
-    | "READY"
-    | "IN_PROGRESS"
-    | "WAITING_FOR_DEPOSIT"
-    | "DONE"
-    | "CANCELED"
-    | "PARTIAL_CANCELED"
-    | "ABORTED"
-    | "EXPIRED";
   amount: number;
-  currency: string;
-  method: string;
-  approvedAt: string | null;
-  receiptUrl: string | null;
-  card?: {
-    company: string;
-    number: string;
-    installmentPlanMonths: number;
-    isInterestFree: boolean;
-  };
-  cancels?: PaymentCancel[];
+  status: string;
+  error?: string;
 }
 
-export interface PaymentCancel {
-  cancelAmount: number;
-  cancelReason: string;
-  canceledAt: string;
-  refundStatus: "NONE" | "PENDING" | "FAILED" | "PARTIAL_REFUNDED" | "REFUNDED";
-}
+export const PLAN_PRICES: Record<string, number> = {
+  free: 0,
+  basic: 99000,
+  pro: 299000,
+  premium: 599000,
+};
 
-export interface PaymentError {
-  code: string;
-  message: string;
-}
+export const PLAN_NAMES: Record<string, string> = {
+  free: '무료',
+  basic: '베이직',
+  pro: '프로',
+  premium: '프리미엄',
+};
 
-// ─── Helpers ─────────────────────────────────────────────────────────
+// Request billing key for subscription
+export async function requestBillingKey(customerKey: string): Promise<{ billingKey: string } | null> {
+  if (!TOSS_SECRET_KEY) {
+    console.warn('[Payments] TOSS_SECRET_KEY not configured');
+    return { billingKey: `mock_billing_${customerKey}_${Date.now()}` };
+  }
 
-function generatePaymentKey(): string {
-  return `tviva${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
-}
-
-function authHeader(): string {
-  return `Basic ${Buffer.from(`${TOSS_SECRET_KEY}:`).toString("base64")}`;
-}
-
-// ─── Functions ───────────────────────────────────────────────────────
-
-/**
- * 결제 요청 생성
- * Creates a new payment request and returns a checkout URL + payment key.
- */
-export async function createPayment(
-  request: PaymentRequest
-): Promise<PaymentResult> {
-  // TODO: Replace with actual Toss Payments API call
-  // POST ${TOSS_API_BASE}/payments
-  // Headers: Authorization: ${authHeader()}
-
-  const paymentKey = generatePaymentKey();
-
-  const result: PaymentResult = {
-    paymentKey,
-    orderId: request.orderId,
-    orderName: request.orderName,
-    status: "READY",
-    amount: request.amount,
-    currency: request.currency ?? "KRW",
-    method: request.method ?? "카드",
-    approvedAt: null,
-    receiptUrl: null,
-  };
-
-  console.log(
-    `[payments] createPayment: orderId=${request.orderId}, amount=${request.amount}, clientKey=${TOSS_CLIENT_KEY.slice(0, 8)}...`
-  );
-
-  return result;
-}
-
-/**
- * 결제 승인 (confirm)
- * Called after user completes checkout on the Toss widget.
- */
-export async function confirmPayment(
-  paymentKey: string,
-  orderId: string,
-  amount: number
-): Promise<PaymentResult> {
-  // TODO: Replace with actual Toss Payments API call
-  // POST ${TOSS_API_BASE}/payments/confirm
-  // Body: { paymentKey, orderId, amount }
-  // Headers: Authorization: ${authHeader()}
-
-  const result: PaymentResult = {
-    paymentKey,
-    orderId,
-    orderName: "주문 확인",
-    status: "DONE",
-    amount,
-    currency: "KRW",
-    method: "카드",
-    approvedAt: new Date().toISOString(),
-    receiptUrl: `https://dashboard.tosspayments.com/receipt/mock/${paymentKey}`,
-    card: {
-      company: "삼성카드",
-      number: "4321-****-****-1234",
-      installmentPlanMonths: 0,
-      isInterestFree: false,
-    },
-  };
-
-  console.log(
-    `[payments] confirmPayment: paymentKey=${paymentKey}, orderId=${orderId}, amount=${amount}`
-  );
-
-  return result;
-}
-
-/**
- * 결제 취소 (전액 또는 부분)
- */
-export async function cancelPayment(
-  paymentKey: string,
-  cancelReason: string,
-  cancelAmount?: number
-): Promise<PaymentResult> {
-  // TODO: Replace with actual Toss Payments API call
-  // POST ${TOSS_API_BASE}/payments/${paymentKey}/cancel
-  // Body: { cancelReason, cancelAmount }
-  // Headers: Authorization: ${authHeader()}
-
-  const now = new Date().toISOString();
-  const amount = cancelAmount ?? 50000;
-
-  const result: PaymentResult = {
-    paymentKey,
-    orderId: `order_${Date.now()}`,
-    orderName: "취소된 주문",
-    status: cancelAmount ? "PARTIAL_CANCELED" : "CANCELED",
-    amount,
-    currency: "KRW",
-    method: "카드",
-    approvedAt: now,
-    receiptUrl: null,
-    cancels: [
-      {
-        cancelAmount: amount,
-        cancelReason,
-        canceledAt: now,
-        refundStatus: "REFUNDED",
+  try {
+    const response = await fetch(`${API_URL}/billing/authorizations/issue`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${Buffer.from(`${TOSS_SECRET_KEY}:`).toString('base64')}`,
+        'Content-Type': 'application/json',
       },
-    ],
+      body: JSON.stringify({ customerKey }),
+    });
+    return response.json();
+  } catch (error) {
+    console.error('[Payments] Billing key request failed:', error);
+    return null;
+  }
+}
+
+// Process subscription payment
+export async function processSubscriptionPayment(payment: SubscriptionPayment): Promise<PaymentResult> {
+  if (!TOSS_SECRET_KEY) {
+    return {
+      success: true,
+      paymentKey: `mock_payment_${Date.now()}`,
+      orderId: payment.orderId,
+      amount: payment.amount,
+      status: 'DONE',
+    };
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/billing/${payment.billingKey}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${Buffer.from(`${TOSS_SECRET_KEY}:`).toString('base64')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        customerKey: payment.customerKey,
+        amount: payment.amount,
+        orderId: payment.orderId,
+        orderName: payment.orderName,
+      }),
+    });
+    const data = await response.json();
+    return {
+      success: data.status === 'DONE',
+      paymentKey: data.paymentKey,
+      orderId: data.orderId,
+      amount: data.totalAmount,
+      status: data.status,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      orderId: payment.orderId,
+      amount: payment.amount,
+      status: 'FAILED',
+      error: String(error),
+    };
+  }
+}
+
+// Cancel payment
+export async function cancelPayment(paymentKey: string, reason: string): Promise<{ success: boolean }> {
+  if (!TOSS_SECRET_KEY) {
+    return { success: true };
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/payments/${paymentKey}/cancel`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${Buffer.from(`${TOSS_SECRET_KEY}:`).toString('base64')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ cancelReason: reason }),
+    });
+    const data = await response.json();
+    return { success: data.status === 'CANCELED' };
+  } catch {
+    return { success: false };
+  }
+}
+
+// Retry failed payment
+export async function retryPayment(payment: SubscriptionPayment, maxRetries = 3): Promise<PaymentResult> {
+  let lastResult: PaymentResult = {
+    success: false,
+    orderId: payment.orderId,
+    amount: payment.amount,
+    status: 'FAILED',
   };
 
-  console.log(
-    `[payments] cancelPayment: paymentKey=${paymentKey}, reason="${cancelReason}", amount=${amount}`
-  );
+  for (let i = 0; i < maxRetries; i++) {
+    lastResult = await processSubscriptionPayment(payment);
+    if (lastResult.success) return lastResult;
+    // Wait before retry (exponential backoff)
+    await new Promise(resolve => setTimeout(resolve, Math.pow(2, i) * 1000));
+  }
 
-  return result;
+  return lastResult;
+}
+
+// Generate order ID
+export function generateOrderId(planId: string): string {
+  const timestamp = Date.now().toString(36);
+  const random = Math.random().toString(36).slice(2, 8);
+  return `NEON_${planId}_${timestamp}_${random}`.toUpperCase();
 }
