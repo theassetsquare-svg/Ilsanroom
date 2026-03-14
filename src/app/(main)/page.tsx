@@ -123,7 +123,7 @@ const instaHashtags = [
   { tag: '#일산룸', desc: '프리미엄 룸 인테리어', url: 'https://www.instagram.com/explore/tags/일산룸/' },
   { tag: '#일산명월관', desc: '전통 한정식 코스', url: 'https://www.instagram.com/explore/tags/일산명월관/' },
   { tag: '#강남클럽', desc: '주말 파티 현장', url: 'https://www.instagram.com/explore/tags/강남클럽/' },
-  { tag: '#홍대클럽', desc: '힙합 & EDM', url: 'https://www.instagram.com/explore/tags/홍대클럽/' },
+  { tag: '#강남호빠', desc: '호스트클럽 문화', url: 'https://www.instagram.com/explore/tags/강남호빠/' },
   { tag: '#일산요정', desc: '국악 라이브 연주', url: 'https://www.instagram.com/explore/tags/일산요정/' },
   { tag: '#나이트라이프', desc: '전국 나이트 문화', url: 'https://www.instagram.com/explore/tags/나이트라이프/' },
 ];

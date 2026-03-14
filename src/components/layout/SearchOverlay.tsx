@@ -3,14 +3,14 @@
 import { useEffect, useRef } from 'react';
 
 const popularTerms = [
-  '강남 클럽',
-  '홍대 클럽',
-  '강남 나이트',
+  '일산 룸',
   '일산 요정',
+  '강남 클럽',
   '강남 라운지',
-  '부산 클럽',
-  '이태원 호빠',
-  '건대 룸',
+  '강남 호빠',
+  '부산 나이트',
+  '수원 나이트',
+  '부산 룸',
 ];
 
 interface SearchOverlayProps {
