@@ -89,7 +89,7 @@
   --color-neon-surface-2: #F0F0F8;
   --color-neon-border: #E0E0EC;
   --color-neon-text: #1A1A2E;
-  --color-neon-text-muted: #64648A;
+  --color-neon-text-muted: #4A4A6A;
   color-scheme: light;
 }
 
@@ -127,6 +127,34 @@
 
 [data-theme="light"] .neon-box-glow {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* ★ 호빠 페이지 라이트모드 핑크 텍스트 대비 보정 */
+[data-theme="light"] .text-pink-300 {
+  color: #be185d !important;
+}
+[data-theme="light"] .text-pink-200\/70 {
+  color: rgba(157, 23, 77, 0.85) !important;
+}
+[data-theme="light"] .text-pink-200\/60 {
+  color: rgba(157, 23, 77, 0.75) !important;
+}
+[data-theme="light"] .text-pink-300\/60 {
+  color: rgba(190, 24, 93, 0.7) !important;
+}
+[data-theme="light"] .bg-pink-950\/20,
+[data-theme="light"] .bg-pink-950\/30 {
+  background-color: rgba(253, 242, 248, 0.8) !important;
+}
+[data-theme="light"] .from-pink-950\/30 {
+  --tw-gradient-from: rgba(253, 242, 248, 0.8) !important;
+}
+[data-theme="light"] .to-rose-950\/20 {
+  --tw-gradient-to: rgba(255, 241, 242, 0.6) !important;
+}
+[data-theme="light"] .border-pink-400\/20,
+[data-theme="light"] .border-pink-400\/15 {
+  border-color: rgba(244, 114, 182, 0.3) !important;
 }
 
 /* ★ 모바일 가독성 — 한글 최적화 */

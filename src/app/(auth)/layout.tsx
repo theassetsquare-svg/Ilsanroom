@@ -10,7 +10,7 @@ export default function AuthLayout({
           <a href="/" className="inline-block text-2xl font-black text-neon-primary neon-glow">
             오늘밤어디
           </a>
-          <p className="mt-2 text-sm text-neon-text-muted">나이트라이프 포털</p>
+          <p className="mt-2 text-sm text-neon-text-muted">오늘밤어디</p>
         </div>
         <div className="rounded-2xl border border-neon-border bg-neon-surface p-8">
           {children}

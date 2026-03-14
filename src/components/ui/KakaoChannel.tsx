@@ -6,7 +6,7 @@ export default function KakaoChannel() {
   const [showTooltip, setShowTooltip] = useState(true);
 
   return (
-    <div className="fixed right-4 bottom-20 z-40 flex flex-col items-end gap-2 md:bottom-6">
+    <div className="fixed right-4 bottom-24 z-40 flex flex-col items-end gap-2 md:bottom-6">
       {/* Tooltip */}
       {showTooltip && (
         <div className="animate-fade-in relative rounded-xl bg-[#FEE500] px-4 py-2.5 shadow-lg">

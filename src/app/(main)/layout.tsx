@@ -2,9 +2,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import MobileNav from '@/components/layout/MobileNav';
 import BackToTop from '@/components/layout/BackToTop';
-import LiveVisitors from '@/components/ui/LiveVisitors';
 import ExitIntent from '@/components/popups/ExitIntent';
-import SocialProof from '@/components/saas/SocialProof';
 import KakaoChannel from '@/components/ui/KakaoChannel';
 
 export default function MainLayout({
@@ -19,9 +17,7 @@ export default function MainLayout({
       <Footer />
       <MobileNav />
       <BackToTop />
-      <LiveVisitors />
       <ExitIntent />
-      <SocialProof />
       <KakaoChannel />
     </div>
   );

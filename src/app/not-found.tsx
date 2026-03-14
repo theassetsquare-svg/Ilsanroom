@@ -1,21 +1,33 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { getPopularVenues } from '@/data/venues';
 
 export const metadata: Metadata = {
   title: '404 - 업소를 못 찾겠어요 | 오늘밤어디',
   description: '요청하신 페이지를 찾을 수 없습니다. 인기 업소를 확인해 보세요.',
 };
 
-const popularVenues = [
-  { href: '/rooms/ilsan/ilsan-room', label: '일산룸', category: '룸' },
-  { href: '/yojeong/ilsan/ilsan-myeongwolgwan-yojeong', label: '일산명월관요정', category: '요정' },
-  { href: '/clubs/gangnam/club-octagon', label: '클럽 옥타곤', category: '클럽' },
-  { href: '/nights/gangnam-race-night', label: '강남 레이스나이트', category: '나이트' },
-  { href: '/clubs/hongdae/club-ace-hongdae', label: '클럽 에이스 홍대', category: '클럽' },
-  { href: '/lounges/gangnam-lounge-arzu', label: '라운지 아르주', category: '라운지' },
-];
+function getCategoryHref(category: string, slug: string, region: string) {
+  const pathMap: Record<string, string> = {
+    club: `/clubs/${region}/${slug}`,
+    night: `/nights/${slug}`,
+    lounge: `/lounges/${slug}`,
+    room: `/rooms/${region}/${slug}`,
+    yojeong: `/yojeong/${region}/${slug}`,
+    hoppa: `/hoppa/${slug}`,
+    collatek: `/collatek/${slug}`,
+  };
+  return pathMap[category] || `/${category}/${slug}`;
+}
+
+function getCategoryLabel(cat: string) {
+  const map: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠', collatek: '콜라텍' };
+  return map[cat] || cat;
+}
 
 export default function NotFound() {
+  const popularVenues = getPopularVenues(6);
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-neon-bg px-4 text-center">
       <div className="mb-8">
@@ -58,19 +70,19 @@ export default function NotFound() {
         <div className="grid grid-cols-2 gap-3">
           {popularVenues.map((v) => (
             <Link
-              key={v.href}
-              href={v.href}
+              key={v.id}
+              href={getCategoryHref(v.category, v.slug, v.region)}
               className="glass rounded-xl px-4 py-3 text-left transition-all card-hover"
             >
-              <span className="text-xs text-neon-primary">{v.category}</span>
-              <p className="text-sm font-medium text-neon-text">{v.label}</p>
+              <span className="text-xs text-neon-primary">{getCategoryLabel(v.category)}</span>
+              <p className="text-sm font-medium text-neon-text">{v.nameKo}</p>
             </Link>
           ))}
         </div>
       </div>
 
       <div className="mt-16 text-neon-text-muted/30">
-        <p className="text-xs">오늘밤어디 - 일산 룸·요정·나이트라이프 포털</p>
+        <p className="text-xs">오늘밤어디 - 일산 룸·요정·나이트라이프 정보</p>
       </div>
     </div>
   );
