@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import VenueDetailPage from '@/components/venue/VenueDetailPage';
 import { getHookingTitle, getHookingDescription } from '@/lib/seo-hooks';
+import { getVenueOgImage } from '@/lib/og-image';
 import { getVenueBySlug, getRelatedVenues, getVenuesByCategory } from '@/data/venues';
 
 export function generateStaticParams() {
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: getHookingTitle(venue),
     description: getHookingDescription(venue),
-    openGraph: { title: `${venue.nameKo} | 일산룸포털`, description: venue.shortDescription },
+    openGraph: { title: `${venue.nameKo} | 일산룸포털`, description: venue.shortDescription, images: [{ url: getVenueOgImage(venue.nameKo, venue.category), width: 1200, height: 630 }] },
   };
 }
 

@@ -28,11 +28,13 @@ export const metadata: Metadata = {
     description:
       '일산 룸, 요정, 나이트, 라운지, 클럽, 호빠 업소 정보를 일산룸포털에서 확인하세요.',
     url: 'https://ilsanroom.pages.dev',
+    images: [{ url: 'https://ilsanroom.pages.dev/og/default.svg', width: 1200, height: 630, alt: '일산룸포털 — 전국 나이트라이프 업소 정보' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '일산룸포털 | 일산 룸·요정·나이트·라운지·클럽·호빠 정보',
     description: '일산 룸, 요정, 나이트, 라운지, 클럽, 호빠 업소 정보를 한곳에서.',
+    images: ['https://ilsanroom.pages.dev/og/default.svg'],
   },
   robots: {
     index: true,
