@@ -55,7 +55,7 @@ const sections = [
     title: "인프라 & 성능",
     items: [
       { task: "Cloudflare Pages 배포", status: "done", note: "GitHub 자동 배포" },
-      { task: "커스텀 도메인 연결", status: "pending", note: "nightlife.kr 또는 neon-nightlife.com" },
+      { task: "커스텀 도메인 연결", status: "pending", note: "nightlife.kr 또는 ilsanroom.pages.dev" },
       { task: "SSL 인증서", status: "pending", note: "Cloudflare 자동 발급" },
       { task: "Sentry 에러 모니터링", status: "done", note: "클라이언트+서버 에러 캡처" },
       { task: "모바일 반응형", status: "done", note: "전 페이지 반응형" },
@@ -86,7 +86,7 @@ const businessEssentials = [
 
 const domainStrategy = [
   { domain: "nightlife.kr", desc: ".kr 도메인 - 한국 검색엔진 최적화에 유리" },
-  { domain: "neon-nightlife.com", desc: ".com 도메인 - 글로벌 확장성" },
+  { domain: "ilsanroom.pages.dev", desc: ".com 도메인 - 글로벌 확장성" },
   { domain: "neon.club", desc: ".club 도메인 - 나이트라이프 브랜드 적합" },
 ];
 

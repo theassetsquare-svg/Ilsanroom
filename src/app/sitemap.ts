@@ -3,7 +3,7 @@ export const dynamic = "force-static";
 import type { MetadataRoute } from "next";
 import { venues } from "@/data/venues";
 
-const BASE_URL = "https://neon-nightlife.com";
+const BASE_URL = "https://ilsanroom.pages.dev";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -161,6 +161,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/community/guidelines`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.4 },
     // Help
     { url: `${BASE_URL}/help`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
+    { url: `${BASE_URL}/gallery`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.5 },
     { url: `${BASE_URL}/status`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 0.3 },
   ];
 

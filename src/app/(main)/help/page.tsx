@@ -48,7 +48,7 @@ const faqCategories: FaqCategory[] = [
       {
         question: "문의는 어떻게 할 수 있나요?",
         answer:
-          "이메일(support@neon-nightlife.com) 또는 카카오톡 채널(@일산룸포털고객센터)로 문의하실 수 있습니다. 운영시간은 평일 10:00~18:00이며, 긴급 문의는 24시간 접수 가능합니다.",
+          "이메일(support@ilsanroom.pages.dev) 또는 카카오톡 채널(@일산룸포털고객센터)로 문의하실 수 있습니다. 운영시간은 평일 10:00~18:00이며, 긴급 문의는 24시간 접수 가능합니다.",
       },
     ],
   },
@@ -314,7 +314,7 @@ export default function HelpPage() {
               <div>
                 <h3 className="text-sm font-semibold">이메일</h3>
                 <p className="mt-1 text-xs text-neon-text-muted">
-                  support@neon-nightlife.com
+                  support@ilsanroom.pages.dev
                 </p>
                 <p className="mt-0.5 text-xs text-neon-text-muted/60">
                   24시간 접수 가능

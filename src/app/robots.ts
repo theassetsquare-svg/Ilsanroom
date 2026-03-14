@@ -40,6 +40,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://neon-nightlife.com/sitemap.xml",
+    sitemap: "https://ilsanroom.pages.dev/sitemap.xml",
   };
 }

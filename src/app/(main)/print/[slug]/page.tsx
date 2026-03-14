@@ -62,7 +62,7 @@ export default async function PrintPage({ params }: Props) {
             </div>
             <div className="text-right">
               <p className="text-xs text-neutral-500">일산룸포털</p>
-              <p className="text-xs text-neutral-500">neon-nightlife.com</p>
+              <p className="text-xs text-neutral-500">ilsanroom.pages.dev</p>
             </div>
           </div>
         </div>

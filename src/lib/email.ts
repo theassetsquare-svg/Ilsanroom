@@ -33,7 +33,7 @@ export interface EmailResult {
 // ─── Config ──────────────────────────────────────────────────────────
 
 const DEFAULT_FROM =
-  process.env.EMAIL_FROM ?? "일산룸포털 <noreply@neon-nightlife.com>";
+  process.env.EMAIL_FROM ?? "일산룸포털 <noreply@ilsanroom.pages.dev>";
 
 // ─── Core ────────────────────────────────────────────────────────────
 
@@ -87,7 +87,7 @@ export async function sendWelcomeEmail(
     <li>커뮤니티 참여</li>
     <li>이벤트 및 파티 정보</li>
   </ul>
-  <a href="https://neon-nightlife.com" style="display:inline-block;background:#7c3aed;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:16px;">시작하기</a>
+  <a href="https://ilsanroom.pages.dev" style="display:inline-block;background:#7c3aed;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:16px;">시작하기</a>
   <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0 16px;">
   <p style="font-size:12px;color:#9ca3af;">본 메일은 일산룸포털 회원가입 시 자동 발송됩니다.</p>
 </body>

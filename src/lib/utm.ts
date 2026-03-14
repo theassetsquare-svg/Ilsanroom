@@ -9,7 +9,7 @@ interface UTMParams {
 }
 
 export function addUTMParams(url: string, params: UTMParams): string {
-  const urlObj = new URL(url, 'https://neon-nightlife.com');
+  const urlObj = new URL(url, 'https://ilsanroom.pages.dev');
   urlObj.searchParams.set('utm_source', params.source);
   urlObj.searchParams.set('utm_medium', params.medium);
   urlObj.searchParams.set('utm_campaign', params.campaign);
@@ -19,7 +19,7 @@ export function addUTMParams(url: string, params: UTMParams): string {
 }
 
 export function generateShareLink(postId: string, board: string, platform: 'kakao' | 'twitter' | 'facebook' | 'link'): string {
-  const baseUrl = `https://neon-nightlife.com/community/${board}/${postId}`;
+  const baseUrl = `https://ilsanroom.pages.dev/community/${board}/${postId}`;
   return addUTMParams(baseUrl, {
     source: platform,
     medium: 'social',
@@ -29,7 +29,7 @@ export function generateShareLink(postId: string, board: string, platform: 'kaka
 }
 
 export function generateReferralLink(userId: string): string {
-  return addUTMParams('https://neon-nightlife.com/signup', {
+  return addUTMParams('https://ilsanroom.pages.dev/signup', {
     source: 'referral',
     medium: 'user',
     campaign: 'referral_program',

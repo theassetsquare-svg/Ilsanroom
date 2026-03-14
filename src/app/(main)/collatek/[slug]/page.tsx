@@ -125,7 +125,7 @@ export default async function CollatekDetailPage({ params }: Props) {
               </dl>
               <div className="mt-6 flex justify-center">
                 <QRCode
-                  url={`https://neon-nightlife.com/collatek/${venue.slug}`}
+                  url={`https://ilsanroom.pages.dev/collatek/${venue.slug}`}
                   venueName={venue.nameKo}
                 />
               </div>

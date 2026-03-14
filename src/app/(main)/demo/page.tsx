@@ -79,7 +79,7 @@ export default function DemoPage() {
               <div className="h-3 w-3 rounded-full bg-green-500" />
             </div>
             <span className="text-xs text-neutral-500">
-              demo.neon-nightlife.com
+              demo.ilsanroom.pages.dev
             </span>
             <div className="w-14" />
           </div>
