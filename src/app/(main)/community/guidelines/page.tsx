@@ -74,10 +74,10 @@ const sections = [
     icon: "🏆",
     title: "레벨 시스템",
     levels: [
-      { name: "뉴비", range: "0 ~ 99 XP", color: "text-neutral-400", badge: "⬜" },
+      { name: "뉴비", range: "0 ~ 99 XP", color: "text-neon-text-muted", badge: "⬜" },
       { name: "클러버", range: "100 ~ 499 XP", color: "text-blue-400", badge: "🟦" },
       { name: "파티피플", range: "500 ~ 1,499 XP", color: "text-purple-400", badge: "🟪" },
-      { name: "VIP", range: "1,500 ~ 4,999 XP", color: "text-yellow-400", badge: "🟨" },
+      { name: "VIP", range: "1,500 ~ 4,999 XP", color: "text-neon-gold", badge: "🟨" },
       { name: "레전드", range: "5,000+ XP", color: "text-red-400", badge: "🟥" },
     ],
     xpRules: [
@@ -100,12 +100,12 @@ const sections = [
 
 export default function GuidelinesPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-12">
         {/* Header */}
         <div className="mb-12 text-center">
           <h1 className="text-4xl font-bold">커뮤니티 가이드라인</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-neutral-400">
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-neon-text-muted">
             일산룸포털 커뮤니티는 모든 회원이 안전하고 즐겁게 소통할 수 있는 공간을 지향합니다.
             아래 가이드라인을 숙지하시고, 함께 건전한 나이트라이프 문화를 만들어 주세요.
           </p>
@@ -114,15 +114,15 @@ export default function GuidelinesPage() {
         {/* Sections */}
         <div className="space-y-8">
           {/* Section 1: Basic Rules */}
-          <section className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
+          <section className="rounded-2xl border border-neon-border bg-neon-surface p-6">
             <div className="mb-4 flex items-center gap-3">
               <span className="text-2xl">📜</span>
               <h2 className="text-xl font-bold">기본 규칙</h2>
             </div>
             <ul className="space-y-3">
               {sections[0].items!.map((item, i) => (
-                <li key={i} className="flex items-start gap-3 text-neutral-300">
-                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-violet-500" />
+                <li key={i} className="flex items-start gap-3 text-neon-text">
+                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-neon-primary-light" />
                   <span className="text-sm leading-relaxed">{item}</span>
                 </li>
               ))}
@@ -130,15 +130,15 @@ export default function GuidelinesPage() {
           </section>
 
           {/* Section 2: Prohibited Content */}
-          <section className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
+          <section className="rounded-2xl border border-neon-border bg-neon-surface p-6">
             <div className="mb-4 flex items-center gap-3">
               <span className="text-2xl">🚫</span>
               <h2 className="text-xl font-bold">금지 콘텐츠</h2>
             </div>
             <ul className="space-y-3">
               {sections[1].items!.map((item, i) => (
-                <li key={i} className="flex items-start gap-3 text-neutral-300">
-                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-red-500" />
+                <li key={i} className="flex items-start gap-3 text-neon-text">
+                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-neon-red" />
                   <span className="text-sm leading-relaxed">{item}</span>
                 </li>
               ))}
@@ -146,15 +146,15 @@ export default function GuidelinesPage() {
           </section>
 
           {/* Section 3: Review Guide */}
-          <section className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
+          <section className="rounded-2xl border border-neon-border bg-neon-surface p-6">
             <div className="mb-4 flex items-center gap-3">
               <span className="text-2xl">✍️</span>
               <h2 className="text-xl font-bold">리뷰 작성 가이드</h2>
             </div>
             <ul className="space-y-3">
               {sections[2].items!.map((item, i) => (
-                <li key={i} className="flex items-start gap-3 text-neutral-300">
-                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-emerald-500" />
+                <li key={i} className="flex items-start gap-3 text-neon-text">
+                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-neon-green" />
                   <span className="text-sm leading-relaxed">{item}</span>
                 </li>
               ))}
@@ -162,20 +162,20 @@ export default function GuidelinesPage() {
           </section>
 
           {/* Section 4: Report Process */}
-          <section className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
+          <section className="rounded-2xl border border-neon-border bg-neon-surface p-6">
             <div className="mb-4 flex items-center gap-3">
               <span className="text-2xl">⚖️</span>
               <h2 className="text-xl font-bold">신고 및 제재 절차</h2>
             </div>
             <div className="space-y-4">
               {sections[3].steps!.map((s, i) => (
-                <div key={i} className="flex gap-4 rounded-xl border border-neutral-800 bg-neutral-950/50 p-4">
-                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-violet-600 text-sm font-bold">
+                <div key={i} className="flex gap-4 rounded-xl border border-neon-border bg-neon-bg/50 p-4">
+                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-neon-primary text-sm font-bold">
                     {i + 1}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white">{s.step}</h3>
-                    <p className="mt-1 text-sm leading-relaxed text-neutral-400">{s.description}</p>
+                    <h3 className="font-semibold text-neon-text">{s.step}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-neon-text-muted">{s.description}</p>
                   </div>
                 </div>
               ))}
@@ -183,31 +183,31 @@ export default function GuidelinesPage() {
           </section>
 
           {/* Section 5: Level System */}
-          <section className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
+          <section className="rounded-2xl border border-neon-border bg-neon-surface p-6">
             <div className="mb-4 flex items-center gap-3">
               <span className="text-2xl">🏆</span>
               <h2 className="text-xl font-bold">레벨 시스템</h2>
             </div>
-            <p className="mb-6 text-sm text-neutral-400">
+            <p className="mb-6 text-sm text-neon-text-muted">
               커뮤니티 활동을 통해 XP를 획득하고, 레벨을 올려보세요. 높은 레벨일수록 특별한 혜택이 주어집니다.
             </p>
 
             {/* Level Table */}
-            <div className="mb-6 overflow-hidden rounded-xl border border-neutral-800">
+            <div className="mb-6 overflow-hidden rounded-xl border border-neon-border">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-neutral-800 bg-neutral-950/50">
-                    <th className="px-4 py-3 text-left font-medium text-neutral-400">배지</th>
-                    <th className="px-4 py-3 text-left font-medium text-neutral-400">등급</th>
-                    <th className="px-4 py-3 text-left font-medium text-neutral-400">필요 XP</th>
+                  <tr className="border-b border-neon-border bg-neon-bg/50">
+                    <th className="px-4 py-3 text-left font-medium text-neon-text-muted">배지</th>
+                    <th className="px-4 py-3 text-left font-medium text-neon-text-muted">등급</th>
+                    <th className="px-4 py-3 text-left font-medium text-neon-text-muted">필요 XP</th>
                   </tr>
                 </thead>
                 <tbody>
                   {sections[4].levels!.map((level, i) => (
-                    <tr key={i} className="border-b border-neutral-800/50 last:border-0">
+                    <tr key={i} className="border-b border-neon-border/50 last:border-0">
                       <td className="px-4 py-3">{level.badge}</td>
                       <td className={`px-4 py-3 font-medium ${level.color}`}>{level.name}</td>
-                      <td className="px-4 py-3 text-neutral-300">{level.range}</td>
+                      <td className="px-4 py-3 text-neon-text">{level.range}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -215,45 +215,45 @@ export default function GuidelinesPage() {
             </div>
 
             {/* XP Rules */}
-            <h3 className="mb-3 font-semibold text-white">XP 획득 방법</h3>
+            <h3 className="mb-3 font-semibold text-neon-text">XP 획득 방법</h3>
             <div className="grid gap-2 sm:grid-cols-2">
               {sections[4].xpRules!.map((rule, i) => (
-                <div key={i} className="flex items-center justify-between rounded-lg border border-neutral-800 bg-neutral-950/50 px-4 py-2.5">
-                  <span className="text-sm text-neutral-300">{rule.action}</span>
-                  <span className="text-sm font-medium text-violet-400">{rule.xp}</span>
+                <div key={i} className="flex items-center justify-between rounded-lg border border-neon-border bg-neon-bg/50 px-4 py-2.5">
+                  <span className="text-sm text-neon-text">{rule.action}</span>
+                  <span className="text-sm font-medium text-neon-primary-light">{rule.xp}</span>
                 </div>
               ))}
             </div>
           </section>
 
           {/* Section 6: Contact */}
-          <section className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
+          <section className="rounded-2xl border border-neon-border bg-neon-surface p-6">
             <div className="mb-4 flex items-center gap-3">
               <span className="text-2xl">📞</span>
               <h2 className="text-xl font-bold">문의 안내</h2>
             </div>
-            <p className="mb-4 text-sm leading-relaxed text-neutral-300">
+            <p className="mb-4 text-sm leading-relaxed text-neon-text">
               가이드라인에 대한 궁금한 점이나, 부당한 제재에 대한 이의 신청, 기타 커뮤니티 관련 문의는
               아래 페이지를 통해 접수하실 수 있습니다.
             </p>
             <Link
               href="/help"
-              className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-3 text-sm font-medium transition hover:bg-violet-500"
+              className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-6 py-3 text-sm font-medium transition hover:bg-neon-primary-light"
             >
               고객센터 바로가기
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>
-            <p className="mt-4 text-xs text-neutral-500">
+            <p className="mt-4 text-xs text-neon-text-muted">
               신고 처리 결과는 영업일 기준 1~3일 이내에 알림으로 안내드립니다.
             </p>
           </section>
         </div>
 
         {/* Footer Note */}
-        <div className="mt-12 rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 text-center">
-          <p className="text-sm text-neutral-400">
+        <div className="mt-12 rounded-xl border border-neon-border bg-neon-surface/50 p-6 text-center">
+          <p className="text-sm text-neon-text-muted">
             본 가이드라인은 2026년 3월 14일에 마지막으로 업데이트되었습니다.
             <br />
             일산룸포털은 커뮤니티 환경 개선을 위해 가이드라인을 수시로 업데이트할 수 있습니다.

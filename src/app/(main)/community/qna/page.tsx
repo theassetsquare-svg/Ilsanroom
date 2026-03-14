@@ -81,17 +81,17 @@ const sampleQuestions = [
 
 export default function QnAPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <Link href="/community" className="mb-2 inline-block text-sm text-neutral-500 hover:text-violet-400">
+            <Link href="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
               ← 커뮤니티
             </Link>
             <h1 className="text-3xl font-bold">Q&A</h1>
-            <p className="mt-2 text-neutral-400">궁금한 점을 질문하고 답변받기</p>
+            <p className="mt-2 text-neon-text-muted">궁금한 점을 질문하고 답변받기</p>
           </div>
-          <button className="rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-medium transition hover:bg-violet-500">
+          <button className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light">
             질문하기
           </button>
         </div>
@@ -100,7 +100,7 @@ export default function QnAPage() {
           {["전체", "미해결", "해결됨", "인기순"].map((tab) => (
             <button
               key={tab}
-              className="rounded-lg bg-neutral-900 px-4 py-2 text-sm text-neutral-400 transition hover:bg-neutral-800 hover:text-white first:bg-violet-600 first:text-white"
+              className="rounded-lg bg-neon-surface px-4 py-2 text-sm text-neon-text-muted transition hover:bg-neon-surface-2 hover:text-neon-text first:bg-neon-primary first:text-neon-text"
             >
               {tab}
             </button>
@@ -111,34 +111,34 @@ export default function QnAPage() {
           {sampleQuestions.map((q) => (
             <div
               key={q.id}
-              className="flex items-center gap-4 rounded-2xl border border-neutral-800 bg-neutral-900 p-5 transition hover:border-neutral-700"
+              className="flex items-center gap-4 rounded-2xl border border-neon-border bg-neon-surface p-5 transition hover:border-neon-border"
             >
               <div
                 className={`flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl text-xs ${
                   q.solved
-                    ? "bg-green-500/10 text-green-400"
-                    : "bg-neutral-800 text-neutral-400"
+                    ? "bg-neon-green/10 text-neon-green"
+                    : "bg-neon-surface-2 text-neon-text-muted"
                 }`}
               >
                 <span className="text-lg font-bold">{q.answers}</span>
                 <span>답변</span>
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="truncate text-sm font-semibold hover:text-violet-400">
+                <h3 className="truncate text-sm font-semibold hover:text-neon-primary-light">
                   {q.solved && (
-                    <span className="mr-2 text-xs text-green-400">[해결]</span>
+                    <span className="mr-2 text-xs text-neon-green">[해결]</span>
                   )}
                   {q.title}
                 </h3>
                 <div className="mt-2 flex items-center gap-2">
                   {q.tags.map((tag) => (
-                    <span key={tag} className="rounded-full bg-neutral-800 px-2 py-0.5 text-xs text-neutral-500">
+                    <span key={tag} className="rounded-full bg-neon-surface-2 px-2 py-0.5 text-xs text-neon-text-muted">
                       {tag}
                     </span>
                   ))}
                 </div>
               </div>
-              <div className="text-right text-xs text-neutral-500">
+              <div className="text-right text-xs text-neon-text-muted">
                 <div>♥ {q.likes}</div>
                 <div className="mt-1">{q.author}</div>
               </div>

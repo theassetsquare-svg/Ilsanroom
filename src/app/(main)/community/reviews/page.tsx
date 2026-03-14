@@ -63,29 +63,29 @@ function StarRating({ rating }: { rating: number }) {
       {[1, 2, 3, 4, 5].map((star) => (
         <span
           key={star}
-          className={star <= Math.round(rating) ? "text-yellow-400" : "text-neutral-700"}
+          className={star <= Math.round(rating) ? "text-neon-gold" : "text-neutral-700"}
         >
           ★
         </span>
       ))}
-      <span className="ml-1 text-sm text-neutral-400">{rating}</span>
+      <span className="ml-1 text-sm text-neon-text-muted">{rating}</span>
     </div>
   );
 }
 
 export default function ReviewsPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <Link href="/community" className="mb-2 inline-block text-sm text-neutral-500 hover:text-violet-400">
+            <Link href="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
               ← 커뮤니티
             </Link>
             <h1 className="text-3xl font-bold">후기 게시판</h1>
-            <p className="mt-2 text-neutral-400">실제 방문자들의 솔직한 리뷰</p>
+            <p className="mt-2 text-neon-text-muted">실제 방문자들의 솔직한 리뷰</p>
           </div>
-          <button className="rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-medium transition hover:bg-violet-500">
+          <button className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light">
             후기 작성
           </button>
         </div>
@@ -94,7 +94,7 @@ export default function ReviewsPage() {
           {["전체", "클럽", "나이트", "라운지", "호빠"].map((tab) => (
             <button
               key={tab}
-              className="rounded-lg bg-neutral-900 px-4 py-2 text-sm text-neutral-400 transition hover:bg-neutral-800 hover:text-white first:bg-violet-600 first:text-white"
+              className="rounded-lg bg-neon-surface px-4 py-2 text-sm text-neon-text-muted transition hover:bg-neon-surface-2 hover:text-neon-text first:bg-neon-primary first:text-neon-text"
             >
               {tab}
             </button>
@@ -105,32 +105,32 @@ export default function ReviewsPage() {
           {sampleReviews.map((review) => (
             <div
               key={review.id}
-              className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6 transition hover:border-neutral-700"
+              className="rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-border"
             >
               <div className="mb-3 flex items-start justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold hover:text-violet-400">
+                  <h3 className="text-lg font-semibold hover:text-neon-primary-light">
                     {review.title}
                   </h3>
-                  <div className="mt-1 flex items-center gap-3 text-sm text-neutral-500">
+                  <div className="mt-1 flex items-center gap-3 text-sm text-neon-text-muted">
                     <span>{review.author}</span>
                     <span>·</span>
                     <span>{review.date}</span>
-                    <span className="rounded-full bg-violet-500/10 px-2 py-0.5 text-xs text-violet-400">
+                    <span className="rounded-full bg-neon-primary-light/10 px-2 py-0.5 text-xs text-neon-primary-light">
                       {review.region}
                     </span>
                   </div>
                 </div>
                 <StarRating rating={review.rating} />
               </div>
-              <p className="mb-4 text-sm leading-relaxed text-neutral-300">
+              <p className="mb-4 text-sm leading-relaxed text-neon-text">
                 {review.excerpt}
               </p>
               <div className="flex items-center justify-between">
-                <span className="rounded-lg bg-neutral-800 px-3 py-1 text-xs text-neutral-400">
+                <span className="rounded-lg bg-neon-surface-2 px-3 py-1 text-xs text-neon-text-muted">
                   {review.venue}
                 </span>
-                <div className="flex gap-4 text-xs text-neutral-500">
+                <div className="flex gap-4 text-xs text-neon-text-muted">
                   <span>♥ {review.likes}</span>
                   <span>💬 {review.comments}</span>
                 </div>

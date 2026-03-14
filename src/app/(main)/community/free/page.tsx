@@ -19,17 +19,17 @@ const samplePosts = [
 
 export default function FreeBoardPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <Link href="/community" className="mb-2 inline-block text-sm text-neutral-500 hover:text-violet-400">
+            <Link href="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
               ← 커뮤니티
             </Link>
             <h1 className="text-3xl font-bold">자유게시판</h1>
-            <p className="mt-2 text-neutral-400">자유롭게 이야기 나누는 공간</p>
+            <p className="mt-2 text-neon-text-muted">자유롭게 이야기 나누는 공간</p>
           </div>
-          <button className="rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-medium transition hover:bg-violet-500">
+          <button className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light">
             글쓰기
           </button>
         </div>
@@ -38,34 +38,34 @@ export default function FreeBoardPage() {
           {["전체", "인기", "최신", "댓글많은"].map((tab) => (
             <button
               key={tab}
-              className="rounded-lg bg-neutral-900 px-4 py-2 text-sm text-neutral-400 transition hover:bg-neutral-800 hover:text-white first:bg-violet-600 first:text-white"
+              className="rounded-lg bg-neon-surface px-4 py-2 text-sm text-neon-text-muted transition hover:bg-neon-surface-2 hover:text-neon-text first:bg-neon-primary first:text-neon-text"
             >
               {tab}
             </button>
           ))}
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-neutral-800">
+        <div className="overflow-hidden rounded-2xl border border-neon-border">
           {samplePosts.map((post, i) => (
             <div
               key={post.id}
-              className={`flex items-center justify-between px-5 py-4 transition hover:bg-neutral-900 ${
-                i !== samplePosts.length - 1 ? "border-b border-neutral-800" : ""
+              className={`flex items-center justify-between px-5 py-4 transition hover:bg-neon-surface ${
+                i !== samplePosts.length - 1 ? "border-b border-neon-border" : ""
               }`}
             >
               <div className="min-w-0 flex-1">
-                <h3 className="truncate text-sm font-medium hover:text-violet-400">
+                <h3 className="truncate text-sm font-medium hover:text-neon-primary-light">
                   {post.title}
                   {post.comments > 30 && (
-                    <span className="ml-2 text-xs text-violet-400">[{post.comments}]</span>
+                    <span className="ml-2 text-xs text-neon-primary-light">[{post.comments}]</span>
                   )}
                 </h3>
-                <div className="mt-1 flex gap-3 text-xs text-neutral-500">
+                <div className="mt-1 flex gap-3 text-xs text-neon-text-muted">
                   <span>{post.author}</span>
                   <span>{post.date}</span>
                 </div>
               </div>
-              <div className="flex gap-4 text-xs text-neutral-500">
+              <div className="flex gap-4 text-xs text-neon-text-muted">
                 <span>조회 {post.views}</span>
                 <span>♥ {post.likes}</span>
               </div>
@@ -79,8 +79,8 @@ export default function FreeBoardPage() {
               key={page}
               className={`flex h-9 w-9 items-center justify-center rounded-lg text-sm transition ${
                 page === 1
-                  ? "bg-violet-600 text-white"
-                  : "bg-neutral-900 text-neutral-400 hover:bg-neutral-800"
+                  ? "bg-neon-primary text-neon-text"
+                  : "bg-neon-surface text-neon-text-muted hover:bg-neon-surface-2"
               }`}
             >
               {page}

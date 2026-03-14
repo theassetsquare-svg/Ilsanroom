@@ -68,27 +68,27 @@ const dressCodeGuide = [
 
 export default function FashionPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">
         <div className="mb-8">
-          <Link href="/community" className="mb-2 inline-block text-sm text-neutral-500 hover:text-violet-400">
+          <Link href="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
             ← 커뮤니티
           </Link>
           <h1 className="text-3xl font-bold">패션 가이드</h1>
-          <p className="mt-2 text-neutral-400">드레스코드와 스타일링 정보</p>
+          <p className="mt-2 text-neon-text-muted">드레스코드와 스타일링 정보</p>
         </div>
 
-        <div className="mb-10 rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
-          <h2 className="mb-4 text-xl font-bold text-violet-400">업종별 드레스코드 기본 가이드</h2>
+        <div className="mb-10 rounded-2xl border border-neon-border bg-neon-surface p-6">
+          <h2 className="mb-4 text-xl font-bold text-neon-primary-light">업종별 드레스코드 기본 가이드</h2>
           <div className="space-y-3">
             {dressCodeGuide.map((item) => (
-              <div key={item.venue} className="flex items-start gap-4 rounded-xl bg-neutral-950 p-4">
-                <span className="shrink-0 rounded-lg bg-violet-600/20 px-3 py-1 text-sm font-medium text-violet-400">
+              <div key={item.venue} className="flex items-start gap-4 rounded-xl bg-neon-bg p-4">
+                <span className="shrink-0 rounded-lg bg-neon-primary/20 px-3 py-1 text-sm font-medium text-neon-primary-light">
                   {item.venue}
                 </span>
                 <div>
                   <span className="text-sm font-medium">{item.level}</span>
-                  <p className="mt-1 text-xs text-neutral-400">{item.description}</p>
+                  <p className="mt-1 text-xs text-neon-text-muted">{item.description}</p>
                 </div>
               </div>
             ))}
@@ -100,27 +100,27 @@ export default function FashionPage() {
           {fashionGuides.map((guide) => (
             <div
               key={guide.id}
-              className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6 transition hover:border-violet-500/30"
+              className="rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/30"
             >
               <div className="mb-2 flex items-center gap-2">
-                <span className="rounded-full bg-violet-500/10 px-2.5 py-0.5 text-xs text-violet-400">
+                <span className="rounded-full bg-neon-primary-light/10 px-2.5 py-0.5 text-xs text-neon-primary-light">
                   {guide.category}
                 </span>
-                <span className="text-xs text-neutral-500">{guide.date}</span>
+                <span className="text-xs text-neon-text-muted">{guide.date}</span>
               </div>
-              <h3 className="mb-3 text-lg font-semibold hover:text-violet-400">
+              <h3 className="mb-3 text-lg font-semibold hover:text-neon-primary-light">
                 {guide.title}
               </h3>
               <div className="mb-3 flex flex-wrap gap-2">
                 {guide.tags.map((tag) => (
-                  <span key={tag} className="rounded-full bg-neutral-800 px-2.5 py-0.5 text-xs text-neutral-400">
+                  <span key={tag} className="rounded-full bg-neon-surface-2 px-2.5 py-0.5 text-xs text-neon-text-muted">
                     #{tag}
                   </span>
                 ))}
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-neutral-500">{guide.author}</span>
-                <div className="flex gap-4 text-xs text-neutral-500">
+                <span className="text-sm text-neon-text-muted">{guide.author}</span>
+                <div className="flex gap-4 text-xs text-neon-text-muted">
                   <span>♥ {guide.likes}</span>
                   <span>💬 {guide.comments}</span>
                 </div>

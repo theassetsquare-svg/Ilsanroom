@@ -53,13 +53,13 @@ const sections = [
 
 export default function CommunityPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-5xl px-4 py-16">
         <div className="mb-12 text-center">
           <h1 className="mb-4 text-4xl font-bold">
-            <span className="text-violet-400">일산룸포털</span> 커뮤니티
+            <span className="text-neon-primary-light">일산룸포털</span> 커뮤니티
           </h1>
-          <p className="text-lg text-neutral-400">
+          <p className="text-lg text-neon-text-muted">
             나이트라이프를 사랑하는 사람들의 소통 공간
           </p>
         </div>
@@ -69,23 +69,23 @@ export default function CommunityPage() {
             <Link
               key={section.href}
               href={section.href}
-              className="group rounded-2xl border border-neutral-800 bg-neutral-900 p-6 transition-all hover:border-violet-500/50 hover:bg-neutral-900/80"
+              className="group rounded-2xl border border-neon-border bg-neon-surface p-6 transition-all hover:border-neon-primary/50 hover:bg-neon-surface/80"
             >
               <div className="mb-4 text-4xl">{section.icon}</div>
-              <h2 className="mb-2 text-xl font-semibold group-hover:text-violet-400">
+              <h2 className="mb-2 text-xl font-semibold group-hover:text-neon-primary-light">
                 {section.title}
               </h2>
-              <p className="mb-4 text-sm text-neutral-400">
+              <p className="mb-4 text-sm text-neon-text-muted">
                 {section.description}
               </p>
-              <div className="text-xs text-neutral-500">
-                게시글 <span className="text-violet-400 font-medium">{section.count.toLocaleString()}</span>개
+              <div className="text-xs text-neon-text-muted">
+                게시글 <span className="text-neon-primary-light font-medium">{section.count.toLocaleString()}</span>개
               </div>
             </Link>
           ))}
         </div>
 
-        <div className="mt-16 rounded-2xl border border-neutral-800 bg-neutral-900 p-8">
+        <div className="mt-16 rounded-2xl border border-neon-border bg-neon-surface p-8">
           <h2 className="mb-6 text-2xl font-bold">최근 인기글</h2>
           <div className="space-y-4">
             {[
@@ -97,15 +97,15 @@ export default function CommunityPage() {
             ].map((post, i) => (
               <div
                 key={i}
-                className="flex items-center justify-between rounded-xl border border-neutral-800 bg-neutral-950 px-5 py-4 transition hover:border-neutral-700"
+                className="flex items-center justify-between rounded-xl border border-neon-border bg-neon-bg px-5 py-4 transition hover:border-neon-border"
               >
                 <div className="flex items-center gap-4">
-                  <span className="rounded-full bg-violet-500/10 px-3 py-1 text-xs text-violet-400">
+                  <span className="rounded-full bg-neon-primary-light/10 px-3 py-1 text-xs text-neon-primary-light">
                     {post.category}
                   </span>
                   <span className="text-sm font-medium">{post.title}</span>
                 </div>
-                <div className="flex gap-4 text-xs text-neutral-500">
+                <div className="flex gap-4 text-xs text-neon-text-muted">
                   <span>♥ {post.likes}</span>
                   <span>💬 {post.comments}</span>
                 </div>

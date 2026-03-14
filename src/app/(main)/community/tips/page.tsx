@@ -66,21 +66,21 @@ const sampleTips = [
 
 export default function TipsPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">
         <div className="mb-8">
-          <Link href="/community" className="mb-2 inline-block text-sm text-neutral-500 hover:text-violet-400">
+          <Link href="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
             ← 커뮤니티
           </Link>
           <h1 className="text-3xl font-bold">팁 & 노하우</h1>
-          <p className="mt-2 text-neutral-400">나이트라이프 고수들의 꿀팁 모음</p>
+          <p className="mt-2 text-neon-text-muted">나이트라이프 고수들의 꿀팁 모음</p>
         </div>
 
         <div className="mb-6 flex gap-3">
           {["전체", "입문", "고급", "문화", "정보", "안전"].map((tab) => (
             <button
               key={tab}
-              className="rounded-lg bg-neutral-900 px-4 py-2 text-sm text-neutral-400 transition hover:bg-neutral-800 hover:text-white first:bg-violet-600 first:text-white"
+              className="rounded-lg bg-neon-surface px-4 py-2 text-sm text-neon-text-muted transition hover:bg-neon-surface-2 hover:text-neon-text first:bg-neon-primary first:text-neon-text"
             >
               {tab}
             </button>
@@ -91,23 +91,23 @@ export default function TipsPage() {
           {sampleTips.map((tip) => (
             <div
               key={tip.id}
-              className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6 transition hover:border-violet-500/30"
+              className="rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/30"
             >
               <div className="mb-2 flex items-center gap-2">
-                <span className="rounded-full bg-violet-500/10 px-2.5 py-0.5 text-xs text-violet-400">
+                <span className="rounded-full bg-neon-primary-light/10 px-2.5 py-0.5 text-xs text-neon-primary-light">
                   {tip.category}
                 </span>
-                <span className="text-xs text-neutral-500">{tip.date}</span>
+                <span className="text-xs text-neon-text-muted">{tip.date}</span>
               </div>
-              <h3 className="mb-2 text-lg font-semibold hover:text-violet-400">
+              <h3 className="mb-2 text-lg font-semibold hover:text-neon-primary-light">
                 {tip.title}
               </h3>
-              <p className="mb-4 text-sm leading-relaxed text-neutral-400">
+              <p className="mb-4 text-sm leading-relaxed text-neon-text-muted">
                 {tip.excerpt}
               </p>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-neutral-500">{tip.author}</span>
-                <div className="flex gap-4 text-xs text-neutral-500">
+                <span className="text-sm text-neon-text-muted">{tip.author}</span>
+                <div className="flex gap-4 text-xs text-neon-text-muted">
                   <span>♥ {tip.likes}</span>
                   <span>💬 {tip.comments}</span>
                   <span>🔖 {tip.bookmarks}</span>

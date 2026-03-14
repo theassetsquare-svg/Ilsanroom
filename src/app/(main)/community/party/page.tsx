@@ -1,10 +1,9 @@
-import type { Metadata } from "next";
+'use client';
+
+import { useState } from 'react';
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "파티 모집 - 일산룸포털 커뮤니티",
-  description: "함께 즐길 파티 멤버를 모집하세요. 클럽, 나이트, 라운지 동행 찾기.",
-};
+// metadata moved to layout or handled differently for client component
 
 const sampleParties = [
   {
@@ -69,19 +68,48 @@ const sampleParties = [
   },
 ];
 
+function NbbangCalc() {
+  const [total, setTotal] = useState('');
+  const [people, setPeople] = useState('');
+  const perPerson = total && people && Number(people) > 0 ? Math.ceil(Number(total) / Number(people)) : 0;
+
+  return (
+    <div className="mb-8 rounded-2xl border border-neon-accent/30 bg-neon-surface p-5">
+      <h3 className="mb-3 text-sm font-bold text-neon-accent">N빵 계산기</h3>
+      <div className="flex flex-wrap items-end gap-3">
+        <div>
+          <label className="block text-xs text-neon-text-muted mb-1">총 금액 (원)</label>
+          <input type="number" value={total} onChange={(e) => setTotal(e.target.value)} placeholder="500000"
+            className="w-32 rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-accent" />
+        </div>
+        <div>
+          <label className="block text-xs text-neon-text-muted mb-1">인원 수</label>
+          <input type="number" value={people} onChange={(e) => setPeople(e.target.value)} placeholder="4"
+            className="w-20 rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-accent" />
+        </div>
+        <div className="text-sm">
+          {perPerson > 0 && (
+            <span className="font-bold text-neon-accent">1인당 {perPerson.toLocaleString()}원</span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function PartyRecruitPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <Link href="/community" className="mb-2 inline-block text-sm text-neutral-500 hover:text-violet-400">
+            <Link href="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
               ← 커뮤니티
             </Link>
             <h1 className="text-3xl font-bold">파티 모집</h1>
-            <p className="mt-2 text-neutral-400">함께 즐길 파티 멤버를 찾아보세요</p>
+            <p className="mt-2 text-neon-text-muted">함께 즐길 파티 멤버를 찾아보세요</p>
           </div>
-          <button className="rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-medium transition hover:bg-violet-500">
+          <button className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light">
             모집글 작성
           </button>
         </div>
@@ -90,18 +118,20 @@ export default function PartyRecruitPage() {
           {["전체", "강남", "홍대", "이태원", "청담", "해운대"].map((tab) => (
             <button
               key={tab}
-              className="shrink-0 rounded-lg bg-neutral-900 px-4 py-2 text-sm text-neutral-400 transition hover:bg-neutral-800 hover:text-white first:bg-violet-600 first:text-white"
+              className="shrink-0 rounded-lg bg-neon-surface px-4 py-2 text-sm text-neon-text-muted transition hover:bg-neon-surface-2 hover:text-neon-text first:bg-neon-primary first:text-neon-text"
             >
               {tab}
             </button>
           ))}
         </div>
 
+        <NbbangCalc />
+
         <div className="space-y-4">
           {sampleParties.map((party) => (
             <div
               key={party.id}
-              className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6 transition hover:border-neutral-700"
+              className="rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-border"
             >
               <div className="mb-3 flex items-start justify-between">
                 <div>
@@ -109,20 +139,20 @@ export default function PartyRecruitPage() {
                     <span
                       className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                         party.status === "모집중"
-                          ? "bg-green-500/10 text-green-400"
-                          : "bg-neutral-700 text-neutral-400"
+                          ? "bg-neon-green/10 text-neon-green"
+                          : "bg-neon-surface-2 text-neon-text-muted"
                       }`}
                     >
                       {party.status}
                     </span>
-                    <span className="rounded-full bg-violet-500/10 px-2 py-0.5 text-xs text-violet-400">
+                    <span className="rounded-full bg-neon-primary-light/10 px-2 py-0.5 text-xs text-neon-primary-light">
                       {party.region}
                     </span>
                   </div>
                   <h3 className="text-lg font-semibold">{party.title}</h3>
                 </div>
               </div>
-              <div className="mb-4 flex flex-wrap gap-4 text-sm text-neutral-400">
+              <div className="mb-4 flex flex-wrap gap-4 text-sm text-neon-text-muted">
                 <span>📅 {party.date}</span>
                 <span>👥 {party.currentMembers}/{party.maxMembers}명</span>
                 <span>🎂 {party.ageRange}</span>
@@ -132,16 +162,16 @@ export default function PartyRecruitPage() {
                   {Array.from({ length: party.currentMembers }).map((_, i) => (
                     <div
                       key={i}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-neutral-900 bg-neutral-700 text-xs"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-neutral-900 bg-neon-surface-2 text-xs"
                     >
                       {i + 1}
                     </div>
                   ))}
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-xs text-neutral-500">💬 {party.comments}</span>
+                  <span className="text-xs text-neon-text-muted">💬 {party.comments}</span>
                   {party.status === "모집중" && (
-                    <button className="rounded-lg bg-violet-600/20 px-4 py-1.5 text-xs font-medium text-violet-400 transition hover:bg-violet-600/30">
+                    <button className="rounded-lg bg-neon-primary/20 px-4 py-1.5 text-xs font-medium text-neon-primary-light transition hover:bg-neon-primary/30">
                       참여 신청
                     </button>
                   )}
