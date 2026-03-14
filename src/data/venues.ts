@@ -900,6 +900,102 @@ export const venues: Venue[] = [
     staffPhone: undefined,
     district: '해운대',
   },
+
+  // ══════════════════════════════════════════════════════════════
+  // 웹 검색 확인 추가 — 호빠 (2026년 3월 영업중 확인)
+  // ══════════════════════════════════════════════════════════════
+  {
+    id: 'v-hoppa-boston', slug: 'gangnam-hoppa-boston', name: 'Gangnam Hoppa Boston', nameKo: '강남보스턴호빠',
+    category: 'hoppa' as const, region: 'gangnam', regionKo: '강남', address: '서울 강남구 삼성동 143-27',
+    description: '강남보스턴호빠는 서울 강남구 삼성동에 위치한 호스트클럽으로, 365일 영업하며 강남 호빠 씬에서 높은 인지도를 보유하고 있습니다. 공식 웹사이트(gangnamhostclub.com)를 통해 영업 정보가 확인되며, 세련된 인테리어와 전문 호스트진을 갖추고 있습니다. 여성 고객을 위한 프리미엄 서비스를 제공하며, 소규모 프라이빗 룸부터 단체 파티 룸까지 다양한 공간을 갖추고 있습니다.',
+    shortDescription: '강남 삼성동 프리미엄 호스트클럽. 365일 영업, 전문 호스트 서비스.',
+    features: ['365일 영업', '프라이빗 룸', '전문 호스트'], atmosphere: ['세련된', '프리미엄'],
+    ageGroup: '20대~40대 여성', dressCode: '', bestTime: '', parking: '', nearbyStation: '',
+    imageUrl: '', rating: 0, reviewCount: 0, isPremium: false, isVerified: false,
+    status: 'verified_open' as const, openHours: '365일 영업',
+    tags: ['강남호빠', '보스턴', '강남호스트바', '삼성동호빠'], staffNickname: undefined, staffPhone: undefined, district: '삼성동',
+  },
+  {
+    id: 'v-hoppa-beast', slug: 'suwon-hoppa-beast', name: 'Suwon Hoppa Beast', nameKo: '수원비스트호빠',
+    category: 'hoppa' as const, region: 'suwon', regionKo: '수원', address: '',
+    description: '수원비스트호빠는 경기도 수원시 인계동에 위치한 호스트클럽으로, "인계동 1등 호빠"를 표방하며 활발히 영업 중입니다. 공식 웹사이트(suwonbeast.com)를 통해 영업 정보가 확인되며, 수원 지역 여성 고객들에게 높은 인지도를 보유하고 있습니다. 전문 호스트가 상주하며 다양한 이벤트를 진행합니다.',
+    shortDescription: '수원 인계동 대표 호스트클럽. "인계동 1등 호빠".',
+    features: ['인계동 위치', '전문 호스트', '이벤트 진행'], atmosphere: ['활기찬', '친근한'],
+    ageGroup: '20대~40대 여성', dressCode: '', bestTime: '', parking: '', nearbyStation: '',
+    imageUrl: '', rating: 0, reviewCount: 0, isPremium: false, isVerified: false,
+    status: 'verified_open' as const, openHours: '',
+    tags: ['수원호빠', '비스트', '인계동호빠', '수원호스트바'], staffNickname: undefined, staffPhone: undefined, district: '인계동',
+  },
+  {
+    id: 'v-hoppa-perfect', slug: 'daegu-hoppa-perfect', name: 'Daegu Hoppa Perfect', nameKo: '대구퍼펙트호빠',
+    category: 'hoppa' as const, region: 'daegu', regionKo: '대구', address: '대구 엘리에나호텔 지하',
+    description: '대구퍼펙트호빠는 대구 동성로 엘리에나호텔 지하에 위치한 대형 호스트클럽으로, 룸 70개 규모를 자랑합니다. 365일 24시간 영업하며 공식 웹사이트(hobbatok.com)를 통해 영업 정보가 확인됩니다. 대구 호빠 시장에서 최대 규모의 업소로 알려져 있습니다.',
+    shortDescription: '대구 동성로 대형 호스트클럽. 룸 70개, 365일 24시간 영업.',
+    features: ['룸 70개', '365일 24시간', '대형 규모'], atmosphere: ['대형', '활기찬'],
+    ageGroup: '20대~40대 여성', dressCode: '', bestTime: '', parking: '', nearbyStation: '',
+    imageUrl: '', rating: 0, reviewCount: 0, isPremium: false, isVerified: false,
+    status: 'verified_open' as const, openHours: '365일 24시간',
+    tags: ['대구호빠', '퍼펙트', '동성로호빠', '대구호스트바'], staffNickname: undefined, staffPhone: undefined, district: '동성로',
+  },
+  {
+    id: 'v-hoppa-eclipse', slug: 'daejeon-hoppa-eclipse', name: 'Daejeon Hoppa Eclipse', nameKo: '대전이클립스호빠',
+    category: 'hoppa' as const, region: 'daejeon', regionKo: '대전', address: '대전 봉명동',
+    description: '대전이클립스호빠는 대전 봉명동에 위치한 호스트클럽으로, "대전 No.1 호스트바"를 표방하며 영업 중입니다. 공식 웹사이트를 통해 영업 정보가 확인되며, 대전 지역 여성 고객들에게 인지도 높은 업소입니다.',
+    shortDescription: '대전 봉명동 대표 호스트클럽. "대전 No.1 호스트바".',
+    features: ['봉명동 위치', '전문 호스트'], atmosphere: ['세련된'],
+    ageGroup: '20대~40대 여성', dressCode: '', bestTime: '', parking: '', nearbyStation: '',
+    imageUrl: '', rating: 0, reviewCount: 0, isPremium: false, isVerified: false,
+    status: 'verified_open' as const, openHours: '',
+    tags: ['대전호빠', '이클립스', '봉명동호빠', '대전호스트바'], staffNickname: undefined, staffPhone: undefined, district: '봉명동',
+  },
+  {
+    id: 'v-hoppa-michelin', slug: 'haeundae-hoppa-michelin', name: 'Haeundae Hoppa Michelin', nameKo: '해운대미슐랭호빠',
+    category: 'hoppa' as const, region: 'busan', regionKo: '부산', address: '',
+    description: '해운대미슐랭호빠는 부산 해운대에 위치한 호스트클럽으로, 공식 웹사이트(busanhoba.imweb.me)를 통해 영업 정보가 확인됩니다. 해운대 해변 인근에 위치하여 관광객과 현지 여성 고객 모두 방문하며, 세련된 분위기의 호스트 서비스를 제공합니다.',
+    shortDescription: '해운대 호스트클럽. 해변 인근, 세련된 호스트 서비스.',
+    features: ['해운대 위치', '전문 호스트'], atmosphere: ['세련된', '해변'],
+    ageGroup: '20대~40대 여성', dressCode: '', bestTime: '', parking: '', nearbyStation: '',
+    imageUrl: '', rating: 0, reviewCount: 0, isPremium: false, isVerified: false,
+    status: 'verified_open' as const, openHours: '',
+    tags: ['해운대호빠', '미슐랭', '부산호빠', '해운대호스트바'], staffNickname: undefined, staffPhone: undefined, district: '해운대',
+  },
+  {
+    id: 'v-hoppa-aura-busan', slug: 'busan-hoppa-aura', name: 'Busan Hoppa Aura', nameKo: '부산아우라호빠',
+    category: 'hoppa' as const, region: 'busan', regionKo: '부산', address: '',
+    description: '부산아우라호빠는 부산 광안리·서면·해운대 등 부산 주요 지역에서 운영하는 호스트클럽으로, 공식 웹사이트(auraboys.com)를 통해 365일 24시간 문의 가능합니다. 부산 호빠 시장에서 인지도 높은 브랜드로, 전문 호스트진과 다양한 이벤트를 제공합니다.',
+    shortDescription: '부산 아우라 호스트클럽. 365일 24시간 문의, 부산 주요 지역.',
+    features: ['365일 24시간', '부산 다지역'], atmosphere: ['활기찬', '친근한'],
+    ageGroup: '20대~40대 여성', dressCode: '', bestTime: '', parking: '', nearbyStation: '',
+    imageUrl: '', rating: 0, reviewCount: 0, isPremium: false, isVerified: false,
+    status: 'verified_open' as const, openHours: '365일 24시간 문의',
+    tags: ['부산호빠', '아우라', '광안리호빠', '서면호빠'], staffNickname: undefined, staffPhone: undefined, district: '부산',
+  },
+
+  // ══════════════════════════════════════════════════════════════
+  // 웹 검색 확인 추가 — 룸 (순수 룸만, 하이퍼블릭/셔츠룸 제외)
+  // ══════════════════════════════════════════════════════════════
+  {
+    id: 'v-room-grand-haeundae', slug: 'haeundae-grand-room', name: 'Haeundae Grand Room', nameKo: '해운대더그랜드룸',
+    category: 'room' as const, region: 'busan', regionKo: '부산', address: '',
+    description: '해운대더그랜드룸은 부산 해운대에 위치한 대형 룸 업소로, 55개 룸을 보유한 1종 유흥업소입니다. 365일 17시부터 04시까지 영업하며, 정찰제로 운영됩니다. 다수의 활성 웹사이트에서 영업 정보가 확인되며, 비즈니스 접대와 고급 모임에 적합한 공간을 제공합니다.',
+    shortDescription: '해운대 대형 룸. 55개 룸, 1종유흥업소, 365일 영업, 정찰제.',
+    features: ['55개 룸', '1종 유흥업소', '정찰제', '365일 영업'], atmosphere: ['대형', '고급', '비즈니스'],
+    ageGroup: '30대~50대', dressCode: '비즈니스 캐주얼', bestTime: '저녁 19시 이후', parking: '', nearbyStation: '',
+    imageUrl: '', rating: 0, reviewCount: 0, isPremium: false, isVerified: false,
+    status: 'verified_open' as const, openHours: '17:00~04:00 (365일)',
+    tags: ['해운대룸', '더그랜드룸', '부산룸', '해운대', '비즈니스접대'], staffNickname: undefined, staffPhone: undefined, district: '해운대',
+  },
+  {
+    id: 'v-room-today-daegu', slug: 'daegu-room-today', name: 'Daegu Room Today', nameKo: '대구투데이룸',
+    category: 'room' as const, region: 'daegu', regionKo: '대구', address: '대구 황금동',
+    description: '대구투데이룸은 대구 황금동(동대구역 인근)에 위치한 룸 업소로, 20개 룸과 약 100명의 스태프를 보유하고 있습니다. 활성 웹사이트를 통해 영업 정보가 확인되며, 대구 지역 비즈니스 접대와 모임에 적합한 공간을 제공합니다.',
+    shortDescription: '대구 황금동 룸. 20개 룸, 스태프 100명, 동대구역 인근.',
+    features: ['20개 룸', '스태프 100명', '동대구역 인근'], atmosphere: ['비즈니스', '대형'],
+    ageGroup: '30대~50대', dressCode: '', bestTime: '', parking: '', nearbyStation: '동대구역',
+    imageUrl: '', rating: 0, reviewCount: 0, isPremium: false, isVerified: false,
+    status: 'verified_open' as const, openHours: '',
+    tags: ['대구룸', '투데이', '황금동룸', '대구', '동대구역'], staffNickname: undefined, staffPhone: undefined, district: '황금동',
+  },
 ];
 
 // ── Helper Functions ──────────────────────────────────────
