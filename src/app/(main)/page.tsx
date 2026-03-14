@@ -143,7 +143,7 @@ export default function HomePage() {
         '@type': 'WebSite',
         name: '오늘밤어디',
         url: 'https://ilsanroom.pages.dev',
-        description: '일산룸, 일산명월관요정 등 전국 나이트라이프 업소 정보 포털',
+        description: '일산룸, 일산명월관요정 등 전국 나이트라이프 정보 사이트',
         potentialAction: {
           '@type': 'SearchAction',
           target: { '@type': 'EntryPoint', urlTemplate: 'https://ilsanroom.pages.dev/map?q={search_term_string}' },
@@ -443,7 +443,7 @@ export default function HomePage() {
           <div className="space-y-4 text-sm leading-relaxed text-neon-text-muted/70">
             <p>
               오늘밤어디은 일산룸, 일산명월관요정을 비롯한 전국의 나이트, 클럽, 라운지, 룸, 요정, 호빠
-              업소 정보를 한곳에 모은 나이트라이프 전문 포털입니다. 서울 강남, 홍대, 이태원부터
+              업소 정보를 한곳에 모은 나이트라이프 전문 사이트입니다. 서울 강남, 홍대, 이태원부터
               부산 해운대, 경기 일산, 수원, 대구, 광주, 대전, 인천, 울산까지 전국 주요 지역의
               검증된 업소 정보와 이용 가이드를 제공합니다.
             </p>

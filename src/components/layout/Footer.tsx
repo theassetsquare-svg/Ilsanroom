@@ -7,7 +7,6 @@ const categoryLinks = [
   { href: '/rooms', label: '룸' },
   { href: '/yojeong', label: '요정' },
   { href: '/hoppa', label: '호빠' },
-  { href: '/collatek', label: '콜라텍' },
 ];
 
 const communityLinks = [
