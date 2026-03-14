@@ -13,7 +13,7 @@ const MESSAGES: SocialProofMessage[] = [
   {
     id: 1,
     avatar: '강',
-    message: '방금 강남에서 3명이 라운지 정보를 조회했습니다',
+    message: '방금 3명이 수원찬스돔나이트 정보를 조회했습니다',
     time: '방금 전',
   },
   {

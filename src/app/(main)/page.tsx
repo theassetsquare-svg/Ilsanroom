@@ -6,11 +6,14 @@ import JsonLd from '@/components/seo/JsonLd';
 import HeroSearch from '@/components/home/HeroSearch';
 import HotWidget from '@/components/home/HotWidget';
 import QuizCTA from '@/components/home/QuizCTA';
+import HomeRoulette from '@/components/home/HomeRoulette';
+import HomeVSBattle from '@/components/home/HomeVSBattle';
+import PopularTimeWidget from '@/components/home/PopularTimeWidget';
 import { categories, getPopularVenues, getVenueBySlug } from '@/data/venues';
 import type { Venue, VenueCategory } from '@/types';
 
 export const metadata: Metadata = {
-  title: '일산룸, 일산명월관요정 | 일산룸포털 - 전국 클럽·나이트·라운지·룸·요정·호빠',
+  title: '일산룸포털 — 오늘밤 어디가? 전국 나이트/클럽/라운지 실시간 정보',
   description: '일산룸, 일산명월관요정 등 전국 나이트라이프 업소 정보를 한눈에. 클럽, 나이트, 라운지, 룸, 요정, 호빠 인기 업소 검색, 리뷰, 이벤트 정보를 일산룸포털에서 확인하세요.',
   openGraph: {
     title: '일산룸, 일산명월관요정 | 일산룸포털',
@@ -281,6 +284,12 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ═══════ 4a. [A] 오늘 갈 곳 룰렛 ═══════ */}
+      <HomeRoulette />
+
+      {/* ═══════ 4b. [B] VS 대결 투표 ═══════ */}
+      <HomeVSBattle />
+
       {/* ═══════ 5. 지역 이동 ═══════ */}
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
         <h2 className="mb-6 text-xl font-bold text-neon-text">지역별 업소 찾기</h2>
@@ -301,6 +310,24 @@ export default function HomePage() {
 
       {/* ═══════ 6. 퀴즈 CTA ═══════ */}
       <QuizCTA />
+
+      {/* ═══════ 6b. [D] 첫 방문 가이드 배너 ═══════ */}
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+        <Link href="/guide" target="_blank" rel="noopener noreferrer" className="group block">
+          <div className="rounded-2xl border border-neon-gold/30 bg-gradient-to-r from-neon-gold/5 via-neon-surface to-neon-gold/5 p-6 sm:p-8 transition-all hover:border-neon-gold/50 card-hover">
+            <div className="flex items-center gap-4">
+              <span className="text-4xl">📖</span>
+              <div>
+                <h3 className="text-lg font-bold text-neon-text">나이트 처음이세요? 이것만 알면 됩니다</h3>
+                <p className="text-sm text-neon-text-muted">뭐 입고? 얼마? 혼자 가도 돼? — 업종별 첫 방문 완벽 가이드</p>
+              </div>
+              <span className="hidden sm:inline-flex items-center gap-1 shrink-0 rounded-xl border border-neon-gold/40 px-5 py-2.5 text-sm font-semibold text-neon-gold transition group-hover:bg-neon-gold/10">
+                가이드 보기 →
+              </span>
+            </div>
+          </div>
+        </Link>
+      </section>
 
       {/* ═══════ 7. 최신 후기 ═══════ */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
@@ -371,6 +398,9 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* ═══════ 9b. [E] 오늘 인기 시간대 ═══════ */}
+      <PopularTimeWidget />
 
       {/* ═══════ 10. 업주 유치 배너 ═══════ */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
