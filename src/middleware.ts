@@ -1,155 +1,157 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-/**
- * Next.js Middleware
- * - Rate limiting (100 req/min per IP, in-memory)
- * - Auth guard for /admin routes
- * - Bypasses static files and public routes
- */
+// Tier-based rate limits (requests per minute)
+const RATE_LIMITS: Record<string, number> = {
+  free: 100,
+  basic: 300,
+  pro: 1000,
+  premium: 5000,
+};
 
-// ─── Rate Limiter State ──────────────────────────────────────────────
+// In-memory rate limit store
+const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
 
-interface RateLimitEntry {
-  count: number;
-  resetAt: number; // Unix timestamp in ms
-}
-
-const rateLimitMap = new Map<string, RateLimitEntry>();
-
-const RATE_LIMIT_MAX = 100;
-const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
-
-// Periodic cleanup to prevent memory leak (every 5 minutes)
-const CLEANUP_INTERVAL_MS = 5 * 60 * 1000;
+// Clean up expired entries periodically
 let lastCleanup = Date.now();
-
-function cleanupExpiredEntries(): void {
+function cleanupStore() {
   const now = Date.now();
-  if (now - lastCleanup < CLEANUP_INTERVAL_MS) return;
+  if (now - lastCleanup < 60000) return;
   lastCleanup = now;
-
-  for (const [ip, entry] of rateLimitMap) {
-    if (now > entry.resetAt) {
-      rateLimitMap.delete(ip);
+  for (const [key, value] of rateLimitStore) {
+    if (now > value.resetAt) {
+      rateLimitStore.delete(key);
     }
   }
 }
 
-// ─── Route Matchers ──────────────────────────────────────────────────
+function getRateLimit(request: NextRequest): number {
+  const tierCookie = request.cookies.get("user_tier")?.value;
+  const tier = tierCookie && RATE_LIMITS[tierCookie] ? tierCookie : "free";
+  return RATE_LIMITS[tier];
+}
 
-/** Routes that skip middleware entirely */
-const PUBLIC_FILE_PATTERN = /\.(.*)$/; // files with extensions
-const SKIP_PREFIXES = [
-  "/_next",
-  "/api/health",
-  "/favicon.ico",
-  "/robots.txt",
-  "/sitemap.xml",
-  "/llms.txt",
-  "/manifest.json",
-];
+function checkRateLimit(ip: string, limit: number): { allowed: boolean; remaining: number; resetAt: number } {
+  cleanupStore();
+  const now = Date.now();
+  const key = ip;
+  const entry = rateLimitStore.get(key);
 
-const PUBLIC_ROUTES = [
+  if (!entry || now > entry.resetAt) {
+    const resetAt = now + 60000;
+    rateLimitStore.set(key, { count: 1, resetAt });
+    return { allowed: true, remaining: limit - 1, resetAt };
+  }
+
+  entry.count++;
+  if (entry.count > limit) {
+    return { allowed: false, remaining: 0, resetAt: entry.resetAt };
+  }
+
+  return { allowed: true, remaining: limit - entry.count, resetAt: entry.resetAt };
+}
+
+// Public routes that don't require auth
+const publicPaths = [
   "/",
+  "/clubs",
+  "/nights",
+  "/lounges",
+  "/rooms",
+  "/yojeong",
+  "/hoppa",
+  "/collatek",
+  "/community",
+  "/events",
+  "/ranking",
+  "/map",
+  "/magazine",
+  "/quiz",
+  "/compare",
+  "/price",
+  "/safety",
   "/login",
   "/signup",
-  "/forgot-password",
-  "/verify-email",
+  "/terms",
+  "/privacy",
+  "/disclaimer",
+  "/venue-terms",
+  "/help",
+  "/status",
+  "/pricing",
+  "/for-business",
+  "/case-studies",
+  "/demo",
+  "/referral",
+  "/api/health",
+  "/api/v1",
 ];
 
-function shouldSkip(pathname: string): boolean {
-  if (PUBLIC_FILE_PATTERN.test(pathname)) return true;
-  return SKIP_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+function isPublicPath(pathname: string): boolean {
+  return publicPaths.some(
+    (p) => pathname === p || pathname.startsWith(p + "/")
+  );
 }
 
-function isPublicRoute(pathname: string): boolean {
-  return PUBLIC_ROUTES.includes(pathname);
+function isStaticAsset(pathname: string): boolean {
+  return (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/favicon") ||
+    pathname.includes(".")
+  );
 }
 
-// ─── Middleware ───────────────────────────────────────────────────────
-
-export function middleware(request: NextRequest): NextResponse {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 1. Skip static files and infrastructure routes
-  if (shouldSkip(pathname)) {
+  // Skip static assets
+  if (isStaticAsset(pathname)) {
     return NextResponse.next();
   }
 
-  // 2. Rate limiting
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    request.headers.get("x-real-ip") ??
-    "unknown";
+  // Rate limiting for API routes
+  if (pathname.startsWith("/api")) {
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
+    const limit = getRateLimit(request);
+    const { allowed, remaining, resetAt } = checkRateLimit(ip, limit);
 
-  cleanupExpiredEntries();
+    if (!allowed) {
+      return NextResponse.json(
+        { error: "요청 한도를 초과했습니다. 잠시 후 다시 시도해 주세요." },
+        {
+          status: 429,
+          headers: {
+            "X-RateLimit-Limit": limit.toString(),
+            "X-RateLimit-Remaining": "0",
+            "X-RateLimit-Reset": Math.ceil(resetAt / 1000).toString(),
+            "Retry-After": Math.ceil((resetAt - Date.now()) / 1000).toString(),
+          },
+        }
+      );
+    }
 
-  const now = Date.now();
-  let entry = rateLimitMap.get(ip);
-
-  if (!entry || now > entry.resetAt) {
-    entry = { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS };
-    rateLimitMap.set(ip, entry);
-  } else {
-    entry.count++;
+    const response = NextResponse.next();
+    response.headers.set("X-RateLimit-Limit", limit.toString());
+    response.headers.set("X-RateLimit-Remaining", remaining.toString());
+    response.headers.set("X-RateLimit-Reset", Math.ceil(resetAt / 1000).toString());
+    return response;
   }
 
-  if (entry.count > RATE_LIMIT_MAX) {
-    const retryAfter = Math.ceil((entry.resetAt - now) / 1000);
-    return new NextResponse(
-      JSON.stringify({ error: "Too many requests", retryAfter }),
-      {
-        status: 429,
-        headers: {
-          "Content-Type": "application/json",
-          "Retry-After": String(retryAfter),
-          "X-RateLimit-Limit": String(RATE_LIMIT_MAX),
-          "X-RateLimit-Remaining": "0",
-          "X-RateLimit-Reset": String(Math.ceil(entry.resetAt / 1000)),
-        },
-      }
-    );
-  }
-
-  // Add rate limit info headers
-  const response = NextResponse.next();
-  response.headers.set("X-RateLimit-Limit", String(RATE_LIMIT_MAX));
-  response.headers.set(
-    "X-RateLimit-Remaining",
-    String(Math.max(0, RATE_LIMIT_MAX - entry.count))
-  );
-  response.headers.set(
-    "X-RateLimit-Reset",
-    String(Math.ceil(entry.resetAt / 1000))
-  );
-
-  // 3. Auth guard for /admin routes
-  if (pathname.startsWith("/admin")) {
-    const sessionCookie =
-      request.cookies.get("session")?.value ??
-      request.cookies.get("__session")?.value;
-
-    if (!sessionCookie) {
-      const loginUrl = request.nextUrl.clone();
-      loginUrl.pathname = "/login";
+  // Auth check for admin routes
+  if (pathname.startsWith("/dashboard") || pathname.startsWith("/billing") || pathname.startsWith("/analytics") || pathname.startsWith("/onboarding")) {
+    const session = request.cookies.get("session")?.value || request.cookies.get("__session")?.value;
+    if (!session) {
+      const loginUrl = new URL("/login", request.url);
       loginUrl.searchParams.set("redirect", pathname);
       return NextResponse.redirect(loginUrl);
     }
   }
 
-  return response;
+  return NextResponse.next();
 }
 
-// ─── Config ──────────────────────────────────────────────────────────
-
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization)
-     * - favicon.ico
-     */
-    "/((?!_next/static|_next/image|favicon.ico).*)",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)"],
 };

@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
 import './globals.css';
+import Toast from '@/components/ui/Toast';
+import AgeVerification from '@/components/popups/AgeVerification';
+import CookieConsent from '@/components/popups/CookieConsent';
 
 const notoSansKR = Noto_Sans_KR({
   subsets: ['latin'],
@@ -43,6 +46,12 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  verification: {
+    google: 'google-site-verification-code',
+    other: {
+      'naver-site-verification': 'naver-verification-code',
+    },
+  },
 };
 
 export const viewport: Viewport = {
@@ -59,7 +68,19 @@ export default function RootLayout({
   return (
     <html lang="ko" className={notoSansKR.variable}>
       <body className={`${notoSansKR.className} bg-neon-bg text-neon-text antialiased`}>
+        {/* GA4 */}
+        {process.env.NEXT_PUBLIC_GA4_ID && (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA4_ID}`} />
+            <script dangerouslySetInnerHTML={{
+              __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${process.env.NEXT_PUBLIC_GA4_ID}');`
+            }} />
+          </>
+        )}
         {children}
+        <Toast />
+        <AgeVerification />
+        <CookieConsent />
       </body>
     </html>
   );

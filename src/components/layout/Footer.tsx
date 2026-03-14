@@ -90,6 +90,37 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Regional Links */}
+        <div className="mt-8 border-t border-neon-border pt-6">
+          <h3 className="mb-3 text-sm font-semibold text-neon-text">전국 지역</h3>
+          <div className="flex flex-wrap gap-x-4 gap-y-1">
+            {[
+              { href: '/clubs/gangnam', label: '강남' },
+              { href: '/clubs/hongdae', label: '홍대' },
+              { href: '/clubs/itaewon', label: '이태원' },
+              { href: '/rooms/ilsan', label: '일산' },
+              { href: '/clubs/geondae', label: '건대' },
+              { href: '/clubs/sinchon', label: '신촌' },
+              { href: '/clubs/apgujeong', label: '압구정' },
+              { href: '/clubs/busan', label: '부산' },
+              { href: '/clubs/daegu', label: '대구' },
+              { href: '/clubs/daejeon', label: '대전' },
+              { href: '/clubs/gwangju', label: '광주' },
+              { href: '/clubs/jeju', label: '제주' },
+              { href: '/clubs/suwon', label: '수원' },
+              { href: '/clubs/incheon', label: '인천' },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-xs text-neon-text-muted transition-colors hover:text-neon-primary-light"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {/* Bottom bar */}
         <div className="mt-10 border-t border-neon-border pt-6">
           <p className="text-center text-xs text-neon-text-muted">

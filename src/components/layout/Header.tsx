@@ -5,6 +5,7 @@ import Link from 'next/link';
 import MobileNav from './MobileNav';
 import SearchOverlay from './SearchOverlay';
 import ScrollProgress from './ScrollProgress';
+import ThemeToggle from '../ui/ThemeToggle';
 
 const navLinks = [
   { href: '/clubs', label: '클럽' },
@@ -47,6 +48,7 @@ export default function Header() {
 
           {/* Actions */}
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             {/* Search button */}
             <button
               onClick={() => setSearchOpen(true)}
