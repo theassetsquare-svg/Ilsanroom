@@ -133,14 +133,14 @@ const faqs = [
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-7xl px-4 py-16">
         {/* Header */}
         <div className="mb-16 text-center">
           <h1 className="mb-4 text-4xl font-bold">
-            요금제 <span className="text-violet-400">비교</span>
+            요금제 <span className="text-neon-primary-light">비교</span>
           </h1>
-          <p className="mx-auto max-w-lg text-lg text-neutral-400">
+          <p className="mx-auto max-w-lg text-lg text-neon-text-muted">
             비즈니스 규모에 맞는 플랜을 선택하세요. 언제든지 업그레이드하거나
             변경할 수 있습니다.
           </p>
@@ -154,13 +154,13 @@ export default function PricingPage() {
               className={`relative flex flex-col rounded-2xl border ${
                 plan.highlighted
                   ? "border-violet-500 shadow-lg shadow-violet-500/20"
-                  : "border-neutral-800"
-              } bg-neutral-900 p-8`}
+                  : "border-neon-border"
+              } bg-neon-surface p-8`}
             >
               {plan.badge && (
                 <span
-                  className={`absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-semibold text-white ${
-                    plan.highlighted ? "bg-violet-600" : "bg-neutral-700"
+                  className={`absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-semibold text-neon-text ${
+                    plan.highlighted ? "bg-neon-primary" : "bg-neon-surface-2"
                   }`}
                 >
                   {plan.badge}
@@ -173,13 +173,13 @@ export default function PricingPage() {
                   <span className="text-4xl font-extrabold">
                     ₩{plan.price}
                   </span>
-                  <span className="text-sm text-neutral-400">
+                  <span className="text-sm text-neon-text-muted">
                     {plan.period === "영구 무료"
                       ? plan.period
                       : `/ ${plan.period}`}
                   </span>
                 </div>
-                <p className="mt-2 text-sm text-neutral-400">
+                <p className="mt-2 text-sm text-neon-text-muted">
                   {plan.description}
                 </p>
               </div>
@@ -188,13 +188,13 @@ export default function PricingPage() {
                 {plan.features.map((f) => (
                   <li key={f.text} className="flex items-center gap-2 text-sm">
                     {f.included ? (
-                      <Check className="h-4 w-4 shrink-0 text-violet-400" />
+                      <Check className="h-4 w-4 shrink-0 text-neon-primary-light" />
                     ) : (
-                      <X className="h-4 w-4 shrink-0 text-neutral-600" />
+                      <X className="h-4 w-4 shrink-0 text-neon-text-muted/60" />
                     )}
                     <span
                       className={
-                        f.included ? "text-neutral-200" : "text-neutral-500"
+                        f.included ? "text-neutral-200" : "text-neon-text-muted"
                       }
                     >
                       {f.text}
@@ -207,8 +207,8 @@ export default function PricingPage() {
                 href={plan.ctaLink}
                 className={`block rounded-xl px-6 py-3 text-center text-sm font-semibold transition-colors ${
                   plan.highlighted
-                    ? "bg-violet-600 text-white hover:bg-violet-500"
-                    : "border border-neutral-600 text-white hover:bg-neutral-800"
+                    ? "bg-neon-primary text-neon-text hover:bg-neon-primary-light"
+                    : "border border-neutral-600 text-neon-text hover:bg-neon-surface-2"
                 }`}
               >
                 {plan.cta}
@@ -220,15 +220,15 @@ export default function PricingPage() {
         {/* 14-day Trial CTA Banner */}
         <div className="mt-16 rounded-2xl border border-violet-500/30 bg-gradient-to-r from-violet-900/40 to-neutral-900 p-10 text-center">
           <h3 className="mb-3 text-3xl font-bold">
-            14일 프로 <span className="text-violet-400">무료 체험</span>
+            14일 프로 <span className="text-neon-primary-light">무료 체험</span>
           </h3>
-          <p className="mx-auto mb-6 max-w-md text-neutral-400">
+          <p className="mx-auto mb-6 max-w-md text-neon-text-muted">
             신용카드 없이 바로 시작하세요. 프로 플랜의 모든 기능을 14일간 무료로
             체험할 수 있습니다.
           </p>
           <Link
             href="/admin/onboarding?plan=pro&trial=true"
-            className="inline-block rounded-xl bg-violet-600 px-8 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-violet-500"
+            className="inline-block rounded-xl bg-neon-primary px-8 py-3.5 text-sm font-semibold text-neon-text transition-colors hover:bg-neon-primary-light"
           >
             무료 체험 시작하기
           </Link>
@@ -237,21 +237,21 @@ export default function PricingPage() {
         {/* FAQ Section */}
         <div className="mt-16">
           <h3 className="mb-8 text-center text-2xl font-bold">
-            자주 묻는 <span className="text-violet-400">질문</span>
+            자주 묻는 <span className="text-neon-primary-light">질문</span>
           </h3>
           <div className="mx-auto max-w-3xl space-y-4">
             {faqs.map((faq) => (
               <details
                 key={faq.question}
-                className="group rounded-xl border border-neutral-800 bg-neutral-900"
+                className="group rounded-xl border border-neon-border bg-neon-surface"
               >
                 <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-sm font-semibold text-neutral-200 [&::-webkit-details-marker]:hidden">
                   {faq.question}
-                  <span className="ml-2 text-neutral-500 transition-transform group-open:rotate-45">
+                  <span className="ml-2 text-neon-text-muted transition-transform group-open:rotate-45">
                     +
                   </span>
                 </summary>
-                <div className="px-6 pb-4 text-sm leading-relaxed text-neutral-400">
+                <div className="px-6 pb-4 text-sm leading-relaxed text-neon-text-muted">
                   {faq.answer}
                 </div>
               </details>
@@ -260,14 +260,14 @@ export default function PricingPage() {
         </div>
 
         {/* Bottom Help */}
-        <div className="mt-16 rounded-2xl border border-neutral-800 bg-neutral-900 p-8 text-center">
+        <div className="mt-16 rounded-2xl border border-neon-border bg-neon-surface p-8 text-center">
           <h3 className="mb-2 text-xl font-bold">궁금한 점이 있으신가요?</h3>
-          <p className="mb-4 text-sm text-neutral-400">
+          <p className="mb-4 text-sm text-neon-text-muted">
             요금제, 결제, 환불 등 궁금한 사항은 고객센터에서 확인하세요.
           </p>
           <Link
             href="/help"
-            className="inline-block rounded-xl bg-neutral-800 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-neutral-700"
+            className="inline-block rounded-xl bg-neon-surface-2 px-6 py-2.5 text-sm font-medium text-neon-text transition-colors hover:bg-neon-surface-2"
           >
             고객센터 바로가기
           </Link>

@@ -114,21 +114,21 @@ export default function OnboardingPage() {
   };
 
   const inputClass =
-    "mt-1.5 w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2.5 text-sm text-white placeholder-neutral-500 outline-none transition-colors focus:border-violet-500 focus:ring-1 focus:ring-violet-500";
+    "mt-1.5 w-full rounded-lg border border-neon-border bg-neon-surface-2 px-4 py-2.5 text-sm text-neon-text placeholder-neutral-500 outline-none transition-colors focus:border-violet-500 focus:ring-1 focus:ring-violet-500";
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-3xl px-4 py-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold">업소 등록</h1>
-          <p className="mt-1 text-sm text-neutral-400">
+          <p className="mt-1 text-sm text-neon-text-muted">
             간단한 4단계로 업소를 등록하세요.
           </p>
         </div>
 
         {/* Progress Bar */}
-        <div className="mb-8 rounded-xl border border-neutral-800 bg-neutral-900 p-6">
+        <div className="mb-8 rounded-xl border border-neon-border bg-neon-surface p-6">
           <div className="flex items-center justify-between">
             {steps.map((step, idx) => (
               <div key={step.number} className="flex items-center">
@@ -136,10 +136,10 @@ export default function OnboardingPage() {
                   <div
                     className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold transition-colors ${
                       step.number === currentStep
-                        ? "bg-violet-600 text-white"
+                        ? "bg-neon-primary text-neon-text"
                         : step.number < currentStep
-                        ? "bg-green-600 text-white"
-                        : "bg-neutral-800 text-neutral-500"
+                        ? "bg-green-600 text-neon-text"
+                        : "bg-neon-surface-2 text-neon-text-muted"
                     }`}
                   >
                     {step.number < currentStep ? (
@@ -163,10 +163,10 @@ export default function OnboardingPage() {
                   <span
                     className={`mt-2 text-xs font-medium ${
                       step.number === currentStep
-                        ? "text-violet-400"
+                        ? "text-neon-primary-light"
                         : step.number < currentStep
-                        ? "text-green-400"
-                        : "text-neutral-500"
+                        ? "text-neon-green"
+                        : "text-neon-text-muted"
                     }`}
                   >
                     {step.label}
@@ -177,7 +177,7 @@ export default function OnboardingPage() {
                     className={`mx-2 h-px w-12 sm:w-20 ${
                       step.number < currentStep
                         ? "bg-green-600"
-                        : "bg-neutral-700"
+                        : "bg-neon-surface-2"
                     }`}
                   />
                 )}
@@ -188,17 +188,17 @@ export default function OnboardingPage() {
 
         {/* Step 1: Business Info */}
         {currentStep === 1 && (
-          <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-6">
+          <div className="rounded-xl border border-neon-border bg-neon-surface p-6">
             <h2 className="text-lg font-semibold">
-              <span className="text-violet-400">Step 1.</span> 업소정보 입력
+              <span className="text-neon-primary-light">Step 1.</span> 업소정보 입력
             </h2>
-            <p className="mt-1 text-sm text-neutral-400">
+            <p className="mt-1 text-sm text-neon-text-muted">
               기본 업소 정보를 입력해 주세요.
             </p>
 
             <div className="mt-6 space-y-5">
               <div>
-                <label className="block text-sm font-medium text-neutral-300">
+                <label className="block text-sm font-medium text-neon-text">
                   업소명 <span className="text-red-400">*</span>
                 </label>
                 <input
@@ -212,7 +212,7 @@ export default function OnboardingPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-neutral-300">
+                <label className="block text-sm font-medium text-neon-text">
                   카테고리 <span className="text-red-400">*</span>
                 </label>
                 <select
@@ -230,7 +230,7 @@ export default function OnboardingPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-neutral-300">
+                <label className="block text-sm font-medium text-neon-text">
                   주소 <span className="text-red-400">*</span>
                 </label>
                 <input
@@ -244,7 +244,7 @@ export default function OnboardingPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-neutral-300">
+                <label className="block text-sm font-medium text-neon-text">
                   영업시간 <span className="text-red-400">*</span>
                 </label>
                 <input
@@ -258,7 +258,7 @@ export default function OnboardingPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-neutral-300">
+                <label className="block text-sm font-medium text-neon-text">
                   소개
                 </label>
                 <textarea
@@ -273,7 +273,7 @@ export default function OnboardingPage() {
 
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-neutral-300">
+                  <label className="block text-sm font-medium text-neon-text">
                     주요 연령대
                   </label>
                   <select
@@ -291,7 +291,7 @@ export default function OnboardingPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-neutral-300">
+                  <label className="block text-sm font-medium text-neon-text">
                     드레스코드
                   </label>
                   <select
@@ -314,11 +314,11 @@ export default function OnboardingPage() {
 
         {/* Step 2: Photos */}
         {currentStep === 2 && (
-          <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-6">
+          <div className="rounded-xl border border-neon-border bg-neon-surface p-6">
             <h2 className="text-lg font-semibold">
-              <span className="text-violet-400">Step 2.</span> 사진 등록
+              <span className="text-neon-primary-light">Step 2.</span> 사진 등록
             </h2>
-            <p className="mt-1 text-sm text-neutral-400">
+            <p className="mt-1 text-sm text-neon-text-muted">
               업소 사진을 등록해 주세요. 최대 10장까지 가능합니다.
             </p>
 
@@ -326,8 +326,8 @@ export default function OnboardingPage() {
             <div
               className={`mt-6 flex min-h-[200px] flex-col items-center justify-center rounded-xl border-2 border-dashed transition-colors ${
                 dragOver
-                  ? "border-violet-500 bg-violet-600/10"
-                  : "border-neutral-700 bg-neutral-800/50"
+                  ? "border-violet-500 bg-neon-primary/10"
+                  : "border-neon-border bg-neon-surface-2/50"
               }`}
               onDragOver={(e) => {
                 e.preventDefault();
@@ -340,18 +340,18 @@ export default function OnboardingPage() {
                 handleFakeUpload();
               }}
             >
-              <div className="text-4xl text-neutral-500">📁</div>
-              <p className="mt-3 text-sm text-neutral-400">
+              <div className="text-4xl text-neon-text-muted">📁</div>
+              <p className="mt-3 text-sm text-neon-text-muted">
                 사진을 여기에 드래그하거나
               </p>
               <button
                 type="button"
                 onClick={handleFakeUpload}
-                className="mt-2 rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium transition hover:bg-violet-500"
+                className="mt-2 rounded-lg bg-neon-primary px-4 py-2 text-sm font-medium transition hover:bg-neon-primary-light"
               >
                 파일 선택
               </button>
-              <p className="mt-2 text-xs text-neutral-500">
+              <p className="mt-2 text-xs text-neon-text-muted">
                 JPG, PNG (최대 5MB 각, 최대 10장) - {photos.length}/10 등록됨
               </p>
             </div>
@@ -359,26 +359,26 @@ export default function OnboardingPage() {
             {/* Thumbnail Grid */}
             {photos.length > 0 && (
               <div className="mt-6">
-                <h3 className="mb-3 text-sm font-medium text-neutral-300">
+                <h3 className="mb-3 text-sm font-medium text-neon-text">
                   등록된 사진
                 </h3>
                 <div className="grid grid-cols-5 gap-3">
                   {photos.map((photo, index) => (
                     <div
                       key={index}
-                      className="group relative aspect-square rounded-lg border border-neutral-700 bg-neutral-800"
+                      className="group relative aspect-square rounded-lg border border-neon-border bg-neon-surface-2"
                     >
-                      <div className="flex h-full items-center justify-center text-xs text-neutral-500">
+                      <div className="flex h-full items-center justify-center text-xs text-neon-text-muted">
                         {photo}
                       </div>
                       <button
                         onClick={() => removePhoto(index)}
-                        className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white opacity-0 transition group-hover:opacity-100"
+                        className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-neon-text opacity-0 transition group-hover:opacity-100"
                       >
                         x
                       </button>
                       {index === 0 && (
-                        <span className="absolute bottom-1 left-1 rounded bg-violet-600 px-1.5 py-0.5 text-[10px] font-medium">
+                        <span className="absolute bottom-1 left-1 rounded bg-neon-primary px-1.5 py-0.5 text-[10px] font-medium">
                           대표
                         </span>
                       )}
@@ -393,12 +393,12 @@ export default function OnboardingPage() {
         {/* Step 3: Plan & Payment */}
         {currentStep === 3 && (
           <div className="space-y-6">
-            <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-6">
+            <div className="rounded-xl border border-neon-border bg-neon-surface p-6">
               <h2 className="text-lg font-semibold">
-                <span className="text-violet-400">Step 3.</span> 요금제 선택 및
+                <span className="text-neon-primary-light">Step 3.</span> 요금제 선택 및
                 결제
               </h2>
-              <p className="mt-1 text-sm text-neutral-400">
+              <p className="mt-1 text-sm text-neon-text-muted">
                 비즈니스에 맞는 요금제를 선택하세요.
               </p>
 
@@ -411,15 +411,15 @@ export default function OnboardingPage() {
                     onClick={() => setSelectedPlan(plan.name)}
                     className={`relative rounded-xl border p-5 text-left transition ${
                       selectedPlan === plan.name
-                        ? "border-violet-500 bg-violet-600/10"
-                        : "border-neutral-700 bg-neutral-800 hover:border-neutral-600"
+                        ? "border-violet-500 bg-neon-primary/10"
+                        : "border-neon-border bg-neon-surface-2 hover:border-neutral-600"
                     } ${plan.highlighted ? "ring-1 ring-violet-500" : ""}`}
                   >
                     {plan.tag && (
                       <span
                         className={`absolute -top-2.5 right-3 rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
                           plan.highlighted
-                            ? "bg-violet-600 text-white"
+                            ? "bg-neon-primary text-neon-text"
                             : "bg-yellow-500 text-black"
                         }`}
                       >
@@ -429,11 +429,11 @@ export default function OnboardingPage() {
                     <div className="mb-3">
                       <h3 className="text-lg font-bold">{plan.name}</h3>
                       <div className="mt-1">
-                        <span className="text-2xl font-bold text-violet-400">
+                        <span className="text-2xl font-bold text-neon-primary-light">
                           {plan.price === "0" ? "무료" : `${plan.price}원`}
                         </span>
                         {plan.period && (
-                          <span className="text-sm text-neutral-400">
+                          <span className="text-sm text-neon-text-muted">
                             {plan.period}
                           </span>
                         )}
@@ -443,15 +443,15 @@ export default function OnboardingPage() {
                       {plan.features.map((f) => (
                         <li
                           key={f}
-                          className="flex items-center gap-2 text-sm text-neutral-300"
+                          className="flex items-center gap-2 text-sm text-neon-text"
                         >
-                          <span className="text-violet-400">&#10003;</span>
+                          <span className="text-neon-primary-light">&#10003;</span>
                           {f}
                         </li>
                       ))}
                     </ul>
                     {selectedPlan === plan.name && (
-                      <div className="mt-3 text-center text-xs font-medium text-violet-400">
+                      <div className="mt-3 text-center text-xs font-medium text-neon-primary-light">
                         선택됨
                       </div>
                     )}
@@ -462,17 +462,17 @@ export default function OnboardingPage() {
 
             {/* Payment Form */}
             {selectedPlan !== "무료" && (
-              <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-6">
+              <div className="rounded-xl border border-neon-border bg-neon-surface p-6">
                 <h3 className="mb-4 font-semibold">결제 정보</h3>
                 {selectedPlan === "프로" && (
-                  <div className="mb-4 rounded-lg bg-violet-600/10 p-3 text-sm text-violet-300">
+                  <div className="mb-4 rounded-lg bg-neon-primary/10 p-3 text-sm text-violet-300">
                     14일 프로 무료 체험이 적용됩니다. 체험 기간 종료 후 자동
                     결제됩니다.
                   </div>
                 )}
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-neutral-300">
+                    <label className="block text-sm font-medium text-neon-text">
                       카드번호
                     </label>
                     <input
@@ -483,7 +483,7 @@ export default function OnboardingPage() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-neutral-300">
+                      <label className="block text-sm font-medium text-neon-text">
                         유효기간
                       </label>
                       <input
@@ -493,7 +493,7 @@ export default function OnboardingPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-neutral-300">
+                      <label className="block text-sm font-medium text-neon-text">
                         CVC
                       </label>
                       <input
@@ -511,7 +511,7 @@ export default function OnboardingPage() {
 
         {/* Step 4: Complete */}
         {currentStep === 4 && (
-          <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-8 text-center">
+          <div className="rounded-xl border border-neon-border bg-neon-surface p-8 text-center">
             {/* Confetti Animation */}
             <style>{`
               @keyframes confetti-fall {
@@ -549,39 +549,39 @@ export default function OnboardingPage() {
             ))}
 
             <div className="mb-4 text-6xl">&#127881;</div>
-            <h2 className="mb-2 text-2xl font-bold text-violet-400">
+            <h2 className="mb-2 text-2xl font-bold text-neon-primary-light">
               등록 완료!
             </h2>
-            <p className="mb-6 text-neutral-400">
+            <p className="mb-6 text-neon-text-muted">
               업소 등록이 성공적으로 완료되었습니다.
             </p>
 
             {/* Registration Summary */}
-            <div className="mx-auto mb-8 max-w-md rounded-xl border border-neutral-700 bg-neutral-800 p-5 text-left">
-              <h3 className="mb-3 text-sm font-semibold text-neutral-300">
+            <div className="mx-auto mb-8 max-w-md rounded-xl border border-neon-border bg-neon-surface-2 p-5 text-left">
+              <h3 className="mb-3 text-sm font-semibold text-neon-text">
                 등록 요약
               </h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-neutral-400">업소명</span>
-                  <span className="text-white">
+                  <span className="text-neon-text-muted">업소명</span>
+                  <span className="text-neon-text">
                     {formData.name || "미입력"}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-neutral-400">카테고리</span>
-                  <span className="text-white">
+                  <span className="text-neon-text-muted">카테고리</span>
+                  <span className="text-neon-text">
                     {categories.find((c) => c.value === formData.category)
                       ?.label || "미선택"}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-neutral-400">등록 사진</span>
-                  <span className="text-white">{photos.length}장</span>
+                  <span className="text-neon-text-muted">등록 사진</span>
+                  <span className="text-neon-text">{photos.length}장</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-neutral-400">선택 요금제</span>
-                  <span className="font-medium text-violet-400">
+                  <span className="text-neon-text-muted">선택 요금제</span>
+                  <span className="font-medium text-neon-primary-light">
                     {selectedPlan}
                   </span>
                 </div>
@@ -590,7 +590,7 @@ export default function OnboardingPage() {
 
             <a
               href="/dashboard"
-              className="inline-block rounded-xl bg-violet-600 px-8 py-3 font-medium transition hover:bg-violet-500"
+              className="inline-block rounded-xl bg-neon-primary px-8 py-3 font-medium transition hover:bg-neon-primary-light"
             >
               대시보드로 이동
             </a>
@@ -606,8 +606,8 @@ export default function OnboardingPage() {
               disabled={currentStep === 1}
               className={`rounded-lg px-6 py-2.5 text-sm font-medium transition ${
                 currentStep === 1
-                  ? "cursor-not-allowed text-neutral-600"
-                  : "border border-neutral-700 bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
+                  ? "cursor-not-allowed text-neon-text-muted/60"
+                  : "border border-neon-border bg-neon-surface-2 text-neon-text hover:bg-neon-surface-2"
               }`}
             >
               &larr; 이전
@@ -615,7 +615,7 @@ export default function OnboardingPage() {
             <button
               type="button"
               onClick={handleNext}
-              className="rounded-lg bg-violet-600 px-6 py-2.5 text-sm font-medium transition hover:bg-violet-500"
+              className="rounded-lg bg-neon-primary px-6 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light"
             >
               {currentStep === 3 ? "등록 완료" : "다음 단계"} &rarr;
             </button>

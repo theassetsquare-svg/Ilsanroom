@@ -100,21 +100,21 @@ const articles = [
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">
         {/* Header */}
         <div className="mb-12 text-center">
           <h1 className="mb-4 text-4xl font-bold">
-            이용<span className="text-violet-400">약관</span>
+            이용<span className="text-neon-primary-light">약관</span>
           </h1>
-          <p className="text-lg text-neutral-400">
+          <p className="text-lg text-neon-text-muted">
             일산룸포털 서비스 이용약관
           </p>
         </div>
 
         {/* Updated date */}
-        <div className="mb-10 rounded-xl border border-neutral-800 bg-neutral-900 px-6 py-4 text-sm text-neutral-400">
-          <span className="font-medium text-neutral-300">최종 수정일:</span>{" "}
+        <div className="mb-10 rounded-xl border border-neon-border bg-neon-surface px-6 py-4 text-sm text-neon-text-muted">
+          <span className="font-medium text-neon-text">최종 수정일:</span>{" "}
           2026년 3월 14일
         </div>
 
@@ -123,15 +123,15 @@ export default function TermsPage() {
           {articles.map((article) => (
             <article
               key={article.number}
-              className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6 md:p-8"
+              className="rounded-2xl border border-neon-border bg-neon-surface p-6 md:p-8"
             >
               <h2 className="mb-4 text-lg font-bold">
-                <span className="text-violet-400">{article.number}</span>{" "}
+                <span className="text-neon-primary-light">{article.number}</span>{" "}
                 ({article.title})
               </h2>
 
               {article.content && (
-                <p className="text-sm leading-relaxed text-neutral-300">
+                <p className="text-sm leading-relaxed text-neon-text">
                   {article.content}
                 </p>
               )}
@@ -141,9 +141,9 @@ export default function TermsPage() {
                   {article.items.map((item, i) => (
                     <li
                       key={i}
-                      className="flex items-start gap-3 text-sm leading-relaxed text-neutral-300"
+                      className="flex items-start gap-3 text-sm leading-relaxed text-neon-text"
                     >
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-violet-600/20 text-xs font-medium text-violet-400">
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-neon-primary/20 text-xs font-medium text-neon-primary-light">
                         {i + 1}
                       </span>
                       {item}
@@ -156,10 +156,10 @@ export default function TermsPage() {
         </div>
 
         {/* Footer note */}
-        <div className="mt-12 rounded-xl border border-violet-500/20 bg-violet-500/5 p-6 text-center">
-          <p className="text-sm text-neutral-400">
+        <div className="mt-12 rounded-xl border border-violet-500/20 bg-neon-primary-light/5 p-6 text-center">
+          <p className="text-sm text-neon-text-muted">
             본 약관에 대해 궁금한 사항이 있으시면{" "}
-            <span className="font-medium text-violet-400">support@neon.com</span>
+            <span className="font-medium text-neon-primary-light">support@neon.com</span>
             으로 문의해 주세요.
           </p>
         </div>

@@ -92,19 +92,19 @@ export default function DashboardPage() {
   const maxValue = Math.max(...weeklyData.map((d) => d.value));
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-6xl px-4 py-8">
         {/* Header */}
         <div className="mb-8 flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold">업주 대시보드</h1>
-            <p className="mt-1 text-neutral-400">안녕하세요, 관리자님</p>
+            <p className="mt-1 text-neon-text-muted">안녕하세요, 관리자님</p>
           </div>
           <div className="flex gap-3">
-            <button className="rounded-xl border border-neutral-700 bg-neutral-900 px-4 py-2 text-sm transition hover:bg-neutral-800">
+            <button className="rounded-xl border border-neon-border bg-neon-surface px-4 py-2 text-sm transition hover:bg-neon-surface-2">
               업소 페이지 보기
             </button>
-            <button className="rounded-xl bg-violet-600 px-4 py-2 text-sm font-medium transition hover:bg-violet-500">
+            <button className="rounded-xl bg-neon-primary px-4 py-2 text-sm font-medium transition hover:bg-neon-primary-light">
               공지 등록
             </button>
           </div>
@@ -115,14 +115,14 @@ export default function DashboardPage() {
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="rounded-2xl border border-neutral-800 bg-neutral-900 p-5"
+              className="rounded-2xl border border-neon-border bg-neon-surface p-5"
             >
-              <p className="text-sm text-neutral-400">{stat.label}</p>
+              <p className="text-sm text-neon-text-muted">{stat.label}</p>
               <div className="mt-2 flex items-end justify-between">
                 <span className="text-3xl font-bold">{stat.value}</span>
                 <span
                   className={`text-sm font-medium ${
-                    stat.positive ? "text-green-400" : "text-red-400"
+                    stat.positive ? "text-neon-green" : "text-red-400"
                   }`}
                 >
                   {stat.change}
@@ -133,17 +133,17 @@ export default function DashboardPage() {
         </div>
 
         {/* Weekly Trend Chart */}
-        <div className="mb-8 rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
+        <div className="mb-8 rounded-2xl border border-neon-border bg-neon-surface p-6">
           <h2 className="mb-4 text-xl font-bold">주간 조회수 추이</h2>
           <div className="flex h-48 items-end justify-between gap-2 px-4">
             {weeklyData.map((d, i) => (
               <div key={i} className="flex flex-1 flex-col items-center gap-2">
-                <span className="text-xs text-neutral-400">{d.value}</span>
+                <span className="text-xs text-neon-text-muted">{d.value}</span>
                 <div
                   className="w-full rounded-t-lg bg-gradient-to-t from-violet-600 to-violet-400 transition-all hover:from-violet-500 hover:to-violet-300"
                   style={{ height: `${(d.value / maxValue) * 100}%` }}
                 />
-                <span className="text-xs text-neutral-500">{d.day}</span>
+                <span className="text-xs text-neon-text-muted">{d.day}</span>
               </div>
             ))}
           </div>
@@ -157,27 +157,27 @@ export default function DashboardPage() {
               {recentReviews.map((review) => (
                 <div
                   key={review.id}
-                  className="rounded-2xl border border-neutral-800 bg-neutral-900 p-5"
+                  className="rounded-2xl border border-neon-border bg-neon-surface p-5"
                 >
                   <div className="mb-2 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span className="font-medium">{review.author}</span>
-                      <span className="text-sm text-yellow-400">
+                      <span className="text-sm text-neon-gold">
                         {"★".repeat(review.rating)}
                         {"☆".repeat(5 - review.rating)}
                       </span>
                     </div>
-                    <span className="text-xs text-neutral-500">
+                    <span className="text-xs text-neon-text-muted">
                       {review.date}
                     </span>
                   </div>
-                  <p className="mb-3 text-sm text-neutral-300">{review.text}</p>
+                  <p className="mb-3 text-sm text-neon-text">{review.text}</p>
                   {review.replied ? (
-                    <span className="inline-block rounded-full bg-green-500/10 px-3 py-1 text-xs text-green-400">
+                    <span className="inline-block rounded-full bg-neon-green/10 px-3 py-1 text-xs text-neon-green">
                       답변 완료
                     </span>
                   ) : (
-                    <button className="rounded-lg border border-violet-500/50 bg-violet-600/10 px-4 py-1.5 text-xs font-medium text-violet-400 transition hover:bg-violet-600/20">
+                    <button className="rounded-lg border border-violet-500/50 bg-neon-primary/10 px-4 py-1.5 text-xs font-medium text-neon-primary-light transition hover:bg-neon-primary/20">
                       답변하기
                     </button>
                   )}
@@ -193,23 +193,23 @@ export default function DashboardPage() {
               {upcomingEvents.map((event) => (
                 <div
                   key={event.id}
-                  className="rounded-2xl border border-neutral-800 bg-neutral-900 p-5"
+                  className="rounded-2xl border border-neon-border bg-neon-surface p-5"
                 >
                   <div className="mb-1 flex items-center justify-between">
-                    <h3 className="font-semibold text-violet-400">
+                    <h3 className="font-semibold text-neon-primary-light">
                       {event.title}
                     </h3>
-                    <button className="rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-1 text-xs text-neutral-300 transition hover:bg-neutral-700">
+                    <button className="rounded-lg border border-neon-border bg-neon-surface-2 px-3 py-1 text-xs text-neon-text transition hover:bg-neon-surface-2">
                       수정
                     </button>
                   </div>
-                  <p className="mb-1 text-xs text-neutral-500">{event.date}</p>
-                  <p className="text-sm text-neutral-400">
+                  <p className="mb-1 text-xs text-neon-text-muted">{event.date}</p>
+                  <p className="text-sm text-neon-text-muted">
                     {event.description}
                   </p>
                 </div>
               ))}
-              <button className="w-full rounded-2xl border border-dashed border-neutral-700 bg-neutral-900/50 py-4 text-sm text-neutral-500 transition hover:border-violet-500/50 hover:text-violet-400">
+              <button className="w-full rounded-2xl border border-dashed border-neon-border bg-neon-surface/50 py-4 text-sm text-neon-text-muted transition hover:border-neon-primary/50 hover:text-neon-primary-light">
                 + 새 이벤트 등록
               </button>
             </div>
@@ -219,10 +219,10 @@ export default function DashboardPage() {
         {/* Reservation Management */}
         <div className="mb-8">
           <h2 className="mb-4 text-xl font-bold">예약 관리</h2>
-          <div className="overflow-x-auto rounded-2xl border border-neutral-800 bg-neutral-900">
+          <div className="overflow-x-auto rounded-2xl border border-neon-border bg-neon-surface">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-neutral-800 text-neutral-400">
+                <tr className="border-b border-neon-border text-neon-text-muted">
                   <th className="px-5 py-3 text-left font-medium">날짜</th>
                   <th className="px-5 py-3 text-left font-medium">인원</th>
                   <th className="px-5 py-3 text-left font-medium">상태</th>
@@ -236,28 +236,28 @@ export default function DashboardPage() {
                   return (
                     <tr
                       key={res.id}
-                      className="border-b border-neutral-800/50 last:border-0"
+                      className="border-b border-neon-border/50 last:border-0"
                     >
-                      <td className="px-5 py-3 text-neutral-300">
+                      <td className="px-5 py-3 text-neon-text">
                         {res.date}
                       </td>
-                      <td className="px-5 py-3 text-neutral-300">
+                      <td className="px-5 py-3 text-neon-text">
                         {res.people}명
                       </td>
                       <td className="px-5 py-3">
                         <span
                           className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${
                             status === "확인됨"
-                              ? "bg-green-500/10 text-green-400"
+                              ? "bg-neon-green/10 text-neon-green"
                               : status === "거절됨"
                               ? "bg-red-500/10 text-red-400"
-                              : "bg-yellow-500/10 text-yellow-400"
+                              : "bg-yellow-500/10 text-neon-gold"
                           }`}
                         >
                           {status}
                         </span>
                       </td>
-                      <td className="px-5 py-3 text-neutral-400">{res.note}</td>
+                      <td className="px-5 py-3 text-neon-text-muted">{res.note}</td>
                       <td className="px-5 py-3 text-right">
                         {status === "대기중" ? (
                           <div className="flex justify-end gap-2">
@@ -265,7 +265,7 @@ export default function DashboardPage() {
                               onClick={() =>
                                 handleReservation(res.id, "확인됨")
                               }
-                              className="rounded-lg bg-green-600/20 px-3 py-1 text-xs text-green-400 transition hover:bg-green-600/30"
+                              className="rounded-lg bg-green-600/20 px-3 py-1 text-xs text-neon-green transition hover:bg-green-600/30"
                             >
                               확인
                             </button>
@@ -279,7 +279,7 @@ export default function DashboardPage() {
                             </button>
                           </div>
                         ) : (
-                          <span className="text-xs text-neutral-500">
+                          <span className="text-xs text-neon-text-muted">
                             처리됨
                           </span>
                         )}
@@ -300,9 +300,9 @@ export default function DashboardPage() {
               <a
                 key={link.label}
                 href={link.href}
-                className="flex items-center gap-4 rounded-2xl border border-neutral-800 bg-neutral-900 p-5 transition hover:border-violet-500/50 hover:bg-neutral-900/80"
+                className="flex items-center gap-4 rounded-2xl border border-neon-border bg-neon-surface p-5 transition hover:border-neon-primary/50 hover:bg-neon-surface/80"
               >
-                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-600/10 text-2xl">
+                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-neon-primary/10 text-2xl">
                   {link.icon}
                 </span>
                 <span className="font-semibold">{link.label}</span>
@@ -316,44 +316,44 @@ export default function DashboardPage() {
           <h2 className="mb-4 text-xl font-bold">구독 현황</h2>
           <div className="grid gap-6 sm:grid-cols-3">
             <div>
-              <p className="text-sm text-neutral-400">현재 플랜</p>
-              <p className="mt-1 text-lg font-bold text-violet-400">
+              <p className="text-sm text-neon-text-muted">현재 플랜</p>
+              <p className="mt-1 text-lg font-bold text-neon-primary-light">
                 프로 플랜
               </p>
-              <span className="mt-1 inline-block rounded-full bg-violet-600/20 px-2.5 py-0.5 text-xs text-violet-300">
+              <span className="mt-1 inline-block rounded-full bg-neon-primary/20 px-2.5 py-0.5 text-xs text-violet-300">
                 PRO
               </span>
             </div>
             <div>
-              <p className="text-sm text-neutral-400">다음 결제일</p>
-              <p className="mt-1 text-lg font-bold text-white">2026-04-14</p>
-              <p className="mt-1 text-xs text-neutral-500">
+              <p className="text-sm text-neon-text-muted">다음 결제일</p>
+              <p className="mt-1 text-lg font-bold text-neon-text">2026-04-14</p>
+              <p className="mt-1 text-xs text-neon-text-muted">
                 월 49,000원 자동 결제
               </p>
             </div>
             <div>
-              <p className="text-sm text-neutral-400">이용량</p>
+              <p className="text-sm text-neon-text-muted">이용량</p>
               <div className="mt-2 space-y-2">
                 <div>
                   <div className="mb-1 flex justify-between text-xs">
-                    <span className="text-neutral-400">사진 등록</span>
-                    <span className="text-neutral-300">24 / 50</span>
+                    <span className="text-neon-text-muted">사진 등록</span>
+                    <span className="text-neon-text">24 / 50</span>
                   </div>
-                  <div className="h-1.5 rounded-full bg-neutral-800">
+                  <div className="h-1.5 rounded-full bg-neon-surface-2">
                     <div
-                      className="h-full rounded-full bg-violet-500"
+                      className="h-full rounded-full bg-neon-primary-light"
                       style={{ width: "48%" }}
                     />
                   </div>
                 </div>
                 <div>
                   <div className="mb-1 flex justify-between text-xs">
-                    <span className="text-neutral-400">이벤트 등록</span>
-                    <span className="text-neutral-300">2 / 10</span>
+                    <span className="text-neon-text-muted">이벤트 등록</span>
+                    <span className="text-neon-text">2 / 10</span>
                   </div>
-                  <div className="h-1.5 rounded-full bg-neutral-800">
+                  <div className="h-1.5 rounded-full bg-neon-surface-2">
                     <div
-                      className="h-full rounded-full bg-violet-500"
+                      className="h-full rounded-full bg-neon-primary-light"
                       style={{ width: "20%" }}
                     />
                   </div>

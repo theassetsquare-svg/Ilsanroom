@@ -178,13 +178,13 @@ const testimonials = [
 
 export default function ForBusinessPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 via-purple-600/10 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent" />
         <div className="relative mx-auto max-w-5xl px-4 py-28 text-center md:py-36">
-          <span className="mb-4 inline-block rounded-full bg-violet-600/20 px-4 py-1.5 text-xs font-medium text-violet-400">
+          <span className="mb-4 inline-block rounded-full bg-neon-primary/20 px-4 py-1.5 text-xs font-medium text-neon-primary-light">
             업주 전용
           </span>
           <h1 className="mb-6 text-4xl font-extrabold leading-tight md:text-5xl lg:text-6xl">
@@ -194,36 +194,36 @@ export default function ForBusinessPage() {
               매출 300% 올리세요
             </span>
           </h1>
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-neutral-400">
+          <p className="mx-auto mb-10 max-w-2xl text-lg text-neon-text-muted">
             검색 노출, 리뷰 관리, 실시간 통계, 예약 시스템까지. 일산룸포털 하나로
             나이트라이프 비즈니스의 모든 것을 관리하세요.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/admin/onboarding?plan=pro&trial=true"
-              className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-10 py-4 text-sm font-semibold text-white shadow-lg shadow-violet-600/25 transition-all hover:bg-violet-500 hover:shadow-violet-500/30"
+              className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-10 py-4 text-sm font-semibold text-neon-text shadow-lg shadow-violet-600/25 transition-all hover:bg-neon-primary-light hover:shadow-violet-500/30"
             >
               14일 무료 체험 시작하기
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="/pricing"
-              className="inline-flex items-center gap-2 rounded-xl border border-neutral-700 px-8 py-4 text-sm font-semibold text-white transition-colors hover:bg-neutral-800"
+              className="inline-flex items-center gap-2 rounded-xl border border-neon-border px-8 py-4 text-sm font-semibold text-neon-text transition-colors hover:bg-neon-surface-2"
             >
               요금제 비교하기
             </Link>
           </div>
-          <div className="mt-6 flex flex-wrap justify-center gap-6 text-xs text-neutral-500">
+          <div className="mt-6 flex flex-wrap justify-center gap-6 text-xs text-neon-text-muted">
             <span className="flex items-center gap-1.5">
-              <Zap className="h-3.5 w-3.5 text-violet-400" />
+              <Zap className="h-3.5 w-3.5 text-neon-primary-light" />
               즉시 가입
             </span>
             <span className="flex items-center gap-1.5">
-              <CreditCard className="h-3.5 w-3.5 text-violet-400" />
+              <CreditCard className="h-3.5 w-3.5 text-neon-primary-light" />
               신용카드 불필요
             </span>
             <span className="flex items-center gap-1.5">
-              <Shield className="h-3.5 w-3.5 text-violet-400" />
+              <Shield className="h-3.5 w-3.5 text-neon-primary-light" />
               언제든 해지
             </span>
           </div>
@@ -231,14 +231,14 @@ export default function ForBusinessPage() {
       </section>
 
       {/* Stats Bar */}
-      <section className="border-y border-neutral-800 bg-neutral-900/50">
+      <section className="border-y border-neon-border bg-neon-surface/50">
         <div className="mx-auto grid max-w-5xl grid-cols-2 gap-6 px-4 py-12 md:grid-cols-4">
           {stats.map((s) => (
             <div key={s.label} className="text-center">
-              <p className="text-3xl font-extrabold text-violet-400">
+              <p className="text-3xl font-extrabold text-neon-primary-light">
                 {s.value}
               </p>
-              <p className="mt-1 text-sm text-neutral-400">{s.label}</p>
+              <p className="mt-1 text-sm text-neon-text-muted">{s.label}</p>
             </div>
           ))}
         </div>
@@ -247,22 +247,22 @@ export default function ForBusinessPage() {
       {/* Features Grid */}
       <section className="mx-auto max-w-5xl px-4 py-20">
         <h2 className="mb-4 text-center text-3xl font-bold">
-          왜 <span className="text-violet-400">일산룸포털</span>인가요?
+          왜 <span className="text-neon-primary-light">일산룸포털</span>인가요?
         </h2>
-        <p className="mx-auto mb-12 max-w-xl text-center text-sm text-neutral-400">
+        <p className="mx-auto mb-12 max-w-xl text-center text-sm text-neon-text-muted">
           업소 운영에 필요한 모든 도구를 하나의 플랫폼에서 제공합니다.
         </p>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {features.map((f) => (
             <div
               key={f.title}
-              className="rounded-2xl border border-neutral-800 bg-neutral-900 p-8 transition-colors hover:border-violet-500/30"
+              className="rounded-2xl border border-neon-border bg-neon-surface p-8 transition-colors hover:border-neon-primary/30"
             >
-              <div className="mb-4 inline-flex rounded-xl bg-violet-600/20 p-3">
-                <f.icon className="h-6 w-6 text-violet-400" />
+              <div className="mb-4 inline-flex rounded-xl bg-neon-primary/20 p-3">
+                <f.icon className="h-6 w-6 text-neon-primary-light" />
               </div>
               <h3 className="mb-2 text-lg font-bold">{f.title}</h3>
-              <p className="text-sm leading-relaxed text-neutral-400">
+              <p className="text-sm leading-relaxed text-neon-text-muted">
                 {f.description}
               </p>
             </div>
@@ -273,36 +273,36 @@ export default function ForBusinessPage() {
       {/* How It Works */}
       <section className="mx-auto max-w-5xl px-4 py-20">
         <h2 className="mb-4 text-center text-3xl font-bold">
-          시작은 <span className="text-violet-400">간단합니다</span>
+          시작은 <span className="text-neon-primary-light">간단합니다</span>
         </h2>
-        <p className="mx-auto mb-12 max-w-md text-center text-sm text-neutral-400">
+        <p className="mx-auto mb-12 max-w-md text-center text-sm text-neon-text-muted">
           3단계만 거치면 일산룸포털의 모든 기능을 사용할 수 있습니다.
         </p>
         <div className="grid gap-6 md:grid-cols-3">
           {steps.map((item) => (
             <div
               key={item.step}
-              className="relative rounded-2xl border border-neutral-800 bg-neutral-900 p-8 text-center"
+              className="relative rounded-2xl border border-neon-border bg-neon-surface p-8 text-center"
             >
-              <span className="mb-4 inline-block text-4xl font-extrabold text-violet-400/30">
+              <span className="mb-4 inline-block text-4xl font-extrabold text-neon-primary-light/30">
                 {item.step}
               </span>
               <h3 className="mb-2 text-lg font-bold">{item.title}</h3>
-              <p className="text-sm text-neutral-400">{item.description}</p>
+              <p className="text-sm text-neon-text-muted">{item.description}</p>
             </div>
           ))}
         </div>
         <div className="mt-8 flex justify-center">
-          <div className="hidden items-center gap-2 text-xs text-neutral-500 md:flex">
-            <span className="rounded-full bg-violet-600/20 px-3 py-1 text-violet-400">
+          <div className="hidden items-center gap-2 text-xs text-neon-text-muted md:flex">
+            <span className="rounded-full bg-neon-primary/20 px-3 py-1 text-neon-primary-light">
               가입
             </span>
-            <ArrowRight className="h-3 w-3 text-neutral-600" />
-            <span className="rounded-full bg-violet-600/20 px-3 py-1 text-violet-400">
+            <ArrowRight className="h-3 w-3 text-neon-text-muted/60" />
+            <span className="rounded-full bg-neon-primary/20 px-3 py-1 text-neon-primary-light">
               업소 등록
             </span>
-            <ArrowRight className="h-3 w-3 text-neutral-600" />
-            <span className="rounded-full bg-violet-600/20 px-3 py-1 text-violet-400">
+            <ArrowRight className="h-3 w-3 text-neon-text-muted/60" />
+            <span className="rounded-full bg-neon-primary/20 px-3 py-1 text-neon-primary-light">
               매출 성장
             </span>
           </div>
@@ -310,31 +310,31 @@ export default function ForBusinessPage() {
       </section>
 
       {/* Case Studies */}
-      <section className="border-y border-neutral-800 bg-neutral-900/30">
+      <section className="border-y border-neon-border bg-neon-surface/30">
         <div className="mx-auto max-w-5xl px-4 py-20">
           <h2 className="mb-4 text-center text-3xl font-bold">
-            실제 <span className="text-violet-400">성과</span>
+            실제 <span className="text-neon-primary-light">성과</span>
           </h2>
-          <p className="mx-auto mb-12 max-w-md text-center text-sm text-neutral-400">
+          <p className="mx-auto mb-12 max-w-md text-center text-sm text-neon-text-muted">
             일산룸포털을 도입한 업소들의 실제 성장 사례입니다.
           </p>
           <div className="grid gap-6 md:grid-cols-3">
             {caseStudies.map((cs) => (
               <div
                 key={cs.name}
-                className="rounded-2xl border border-neutral-800 bg-neutral-900 p-8 text-center"
+                className="rounded-2xl border border-neon-border bg-neon-surface p-8 text-center"
               >
-                <TrendingUp className="mx-auto mb-3 h-8 w-8 text-green-400" />
-                <p className="text-4xl font-extrabold text-violet-400">
+                <TrendingUp className="mx-auto mb-3 h-8 w-8 text-neon-green" />
+                <p className="text-4xl font-extrabold text-neon-primary-light">
                   {cs.metric}
                 </p>
-                <p className="mt-1 text-sm font-medium text-neutral-300">
+                <p className="mt-1 text-sm font-medium text-neon-text">
                   {cs.description}
                 </p>
-                <p className="mt-1 text-xs font-semibold text-violet-400">
+                <p className="mt-1 text-xs font-semibold text-neon-primary-light">
                   {cs.name}
                 </p>
-                <p className="mt-3 text-xs leading-relaxed text-neutral-500">
+                <p className="mt-3 text-xs leading-relaxed text-neon-text-muted">
                   {cs.detail}
                 </p>
               </div>
@@ -346,9 +346,9 @@ export default function ForBusinessPage() {
       {/* Pricing Summary */}
       <section className="mx-auto max-w-5xl px-4 py-20">
         <h2 className="mb-4 text-center text-3xl font-bold">
-          합리적인 <span className="text-violet-400">요금제</span>
+          합리적인 <span className="text-neon-primary-light">요금제</span>
         </h2>
-        <p className="mx-auto mb-12 max-w-md text-center text-sm text-neutral-400">
+        <p className="mx-auto mb-12 max-w-md text-center text-sm text-neon-text-muted">
           비즈니스 규모에 맞는 플랜을 선택하세요.
         </p>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -357,27 +357,27 @@ export default function ForBusinessPage() {
               key={plan.name}
               className={`rounded-2xl border p-6 ${
                 plan.highlighted
-                  ? "border-violet-500 bg-violet-600/10 ring-1 ring-violet-500/50"
-                  : "border-neutral-800 bg-neutral-900"
+                  ? "border-violet-500 bg-neon-primary/10 ring-1 ring-violet-500/50"
+                  : "border-neon-border bg-neon-surface"
               }`}
             >
               {plan.highlighted && (
-                <span className="mb-3 inline-block rounded-full bg-violet-600 px-3 py-0.5 text-xs font-medium text-white">
+                <span className="mb-3 inline-block rounded-full bg-neon-primary px-3 py-0.5 text-xs font-medium text-neon-text">
                   인기
                 </span>
               )}
               <h3 className="text-lg font-bold">{plan.name}</h3>
               <div className="mt-2 mb-4">
                 <span className="text-2xl font-extrabold">{plan.price}</span>
-                <span className="text-sm text-neutral-400">{plan.period}</span>
+                <span className="text-sm text-neon-text-muted">{plan.period}</span>
               </div>
               <ul className="space-y-2">
                 {plan.features.map((f) => (
                   <li
                     key={f}
-                    className="flex items-start gap-2 text-sm text-neutral-400"
+                    className="flex items-start gap-2 text-sm text-neon-text-muted"
                   >
-                    <CheckCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-violet-400" />
+                    <CheckCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-neon-primary-light" />
                     {f}
                   </li>
                 ))}
@@ -388,7 +388,7 @@ export default function ForBusinessPage() {
         <div className="mt-8 text-center">
           <Link
             href="/pricing"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-violet-400 transition-colors hover:text-violet-300"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-neon-primary-light transition-colors hover:text-violet-300"
           >
             전체 요금제 비교하기
             <ArrowRight className="h-4 w-4" />
@@ -397,28 +397,28 @@ export default function ForBusinessPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="border-y border-neutral-800 bg-neutral-900/30">
+      <section className="border-y border-neon-border bg-neon-surface/30">
         <div className="mx-auto max-w-5xl px-4 py-20">
           <h2 className="mb-12 text-center text-3xl font-bold">
-            업주 <span className="text-violet-400">후기</span>
+            업주 <span className="text-neon-primary-light">후기</span>
           </h2>
           <div className="grid gap-6 md:grid-cols-3">
             {testimonials.map((t, i) => (
               <div
                 key={i}
-                className="rounded-2xl border border-neutral-800 bg-neutral-900 p-8"
+                className="rounded-2xl border border-neon-border bg-neon-surface p-8"
               >
-                <div className="mb-4 flex gap-1 text-yellow-400">
+                <div className="mb-4 flex gap-1 text-neon-gold">
                   {Array.from({ length: t.rating }).map((_, j) => (
                     <Star key={j} className="h-4 w-4 fill-current" />
                   ))}
                 </div>
-                <p className="mb-6 text-sm leading-relaxed text-neutral-300">
+                <p className="mb-6 text-sm leading-relaxed text-neon-text">
                   &ldquo;{t.text}&rdquo;
                 </p>
                 <div>
                   <p className="text-sm font-semibold">{t.name}</p>
-                  <p className="text-xs text-neutral-500">{t.venue}</p>
+                  <p className="text-xs text-neon-text-muted">{t.venue}</p>
                 </div>
               </div>
             ))}
@@ -429,32 +429,32 @@ export default function ForBusinessPage() {
       {/* Final CTA */}
       <section className="mx-auto max-w-5xl px-4 py-20">
         <div className="rounded-2xl border border-violet-500/20 bg-gradient-to-r from-violet-600/10 via-purple-600/10 to-violet-600/10 p-12 text-center md:p-16">
-          <Zap className="mx-auto mb-4 h-12 w-12 text-violet-400" />
+          <Zap className="mx-auto mb-4 h-12 w-12 text-neon-primary-light" />
           <h2 className="mb-4 text-3xl font-bold md:text-4xl">
             지금 바로 시작하세요
           </h2>
-          <p className="mx-auto mb-8 max-w-lg text-neutral-400">
+          <p className="mx-auto mb-8 max-w-lg text-neon-text-muted">
             14일 프로 무료 체험으로 일산룸포털의 모든 기능을 경험하세요. 신용카드 없이
             시작하고, 언제든 해지할 수 있습니다.
           </p>
           <Link
             href="/admin/onboarding?plan=pro&trial=true"
-            className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-12 py-4 text-base font-semibold text-white shadow-lg shadow-violet-600/25 transition-all hover:bg-violet-500 hover:shadow-violet-500/30"
+            className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-12 py-4 text-base font-semibold text-neon-text shadow-lg shadow-violet-600/25 transition-all hover:bg-neon-primary-light hover:shadow-violet-500/30"
           >
             14일 프로 무료 체험 시작하기
             <ArrowRight className="h-5 w-5" />
           </Link>
-          <div className="mt-6 flex flex-wrap justify-center gap-6 text-xs text-neutral-500">
+          <div className="mt-6 flex flex-wrap justify-center gap-6 text-xs text-neon-text-muted">
             <span className="flex items-center gap-1.5">
-              <Zap className="h-3.5 w-3.5 text-violet-400" />
+              <Zap className="h-3.5 w-3.5 text-neon-primary-light" />
               즉시 가입
             </span>
             <span className="flex items-center gap-1.5">
-              <CreditCard className="h-3.5 w-3.5 text-violet-400" />
+              <CreditCard className="h-3.5 w-3.5 text-neon-primary-light" />
               신용카드 불필요
             </span>
             <span className="flex items-center gap-1.5">
-              <Shield className="h-3.5 w-3.5 text-violet-400" />
+              <Shield className="h-3.5 w-3.5 text-neon-primary-light" />
               언제든 해지
             </span>
           </div>

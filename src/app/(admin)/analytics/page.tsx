@@ -25,7 +25,7 @@ export default function AnalyticsPage() {
   ];
 
   const trafficSources = [
-    { source: "네이버 검색", percentage: 42, color: "bg-violet-500" },
+    { source: "네이버 검색", percentage: 42, color: "bg-neon-primary-light" },
     { source: "구글 검색", percentage: 28, color: "bg-violet-400" },
     { source: "직접 방문", percentage: 18, color: "bg-violet-300" },
     { source: "SNS 유입", percentage: 8, color: "bg-violet-200" },
@@ -39,7 +39,7 @@ export default function AnalyticsPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold">통계</h1>
-        <p className="mt-1 text-sm text-neutral-400">
+        <p className="mt-1 text-sm text-neon-text-muted">
           업소 페이지의 상세 트래픽과 성과를 확인합니다.
         </p>
       </div>
@@ -49,9 +49,9 @@ export default function AnalyticsPage() {
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="rounded-xl border border-neutral-800 bg-neutral-900 p-5"
+            className="rounded-xl border border-neon-border bg-neon-surface p-5"
           >
-            <p className="text-sm text-neutral-400">{stat.label}</p>
+            <p className="text-sm text-neon-text-muted">{stat.label}</p>
             <p className="mt-2 text-2xl font-bold">{stat.value}</p>
             <p
               className={`mt-1 text-xs font-medium ${
@@ -65,20 +65,20 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Bar Chart */}
-      <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-6">
+      <div className="rounded-xl border border-neon-border bg-neon-surface p-6">
         <h2 className="text-lg font-semibold">주간 페이지뷰</h2>
-        <p className="mt-1 text-sm text-neutral-400">최근 7일 방문 추이</p>
+        <p className="mt-1 text-sm text-neon-text-muted">최근 7일 방문 추이</p>
         <div className="mt-6 flex items-end gap-3" style={{ height: 200 }}>
           {chartData.map((bar) => (
             <div key={bar.label} className="flex flex-1 flex-col items-center gap-2">
-              <span className="text-xs text-neutral-400">{bar.value}</span>
+              <span className="text-xs text-neon-text-muted">{bar.value}</span>
               <div
                 className="w-full rounded-t-md bg-gradient-to-t from-violet-600 to-violet-400 transition-all"
                 style={{
                   height: `${(bar.value / maxChartValue) * 160}px`,
                 }}
               />
-              <span className="text-xs text-neutral-500">{bar.label}</span>
+              <span className="text-xs text-neon-text-muted">{bar.label}</span>
             </div>
           ))}
         </div>
@@ -86,12 +86,12 @@ export default function AnalyticsPage() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Top Search Keywords */}
-        <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-6">
+        <div className="rounded-xl border border-neon-border bg-neon-surface p-6">
           <h2 className="text-lg font-semibold">인기 검색 키워드</h2>
           <div className="mt-4 overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-neutral-800 text-left text-neutral-400">
+                <tr className="border-b border-neon-border text-left text-neon-text-muted">
                   <th className="pb-3 pr-4 font-medium">키워드</th>
                   <th className="pb-3 pr-4 font-medium">노출</th>
                   <th className="pb-3 pr-4 font-medium">클릭</th>
@@ -100,13 +100,13 @@ export default function AnalyticsPage() {
               </thead>
               <tbody className="divide-y divide-neutral-800">
                 {keywords.map((row) => (
-                  <tr key={row.keyword} className="text-neutral-300">
-                    <td className="py-2.5 pr-4 font-medium text-white">
+                  <tr key={row.keyword} className="text-neon-text">
+                    <td className="py-2.5 pr-4 font-medium text-neon-text">
                       {row.keyword}
                     </td>
                     <td className="py-2.5 pr-4">{row.impressions}</td>
                     <td className="py-2.5 pr-4">{row.clicks}</td>
-                    <td className="py-2.5 text-violet-400">{row.ctr}</td>
+                    <td className="py-2.5 text-neon-primary-light">{row.ctr}</td>
                   </tr>
                 ))}
               </tbody>
@@ -115,16 +115,16 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Traffic Sources */}
-        <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-6">
+        <div className="rounded-xl border border-neon-border bg-neon-surface p-6">
           <h2 className="text-lg font-semibold">트래픽 소스</h2>
           <div className="mt-4 space-y-4">
             {trafficSources.map((src) => (
               <div key={src.source}>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-neutral-300">{src.source}</span>
+                  <span className="text-neon-text">{src.source}</span>
                   <span className="font-medium">{src.percentage}%</span>
                 </div>
-                <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-neutral-800">
+                <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-neon-surface-2">
                   <div
                     className={`h-full rounded-full ${src.color} transition-all`}
                     style={{ width: `${src.percentage}%` }}

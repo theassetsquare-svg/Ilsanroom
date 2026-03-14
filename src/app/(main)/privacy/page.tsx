@@ -142,29 +142,29 @@ const sections = [
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">
         {/* Header */}
         <div className="mb-12 text-center">
           <h1 className="mb-4 text-4xl font-bold">
-            개인정보<span className="text-violet-400">처리방침</span>
+            개인정보<span className="text-neon-primary-light">처리방침</span>
           </h1>
-          <p className="text-lg text-neutral-400">
+          <p className="text-lg text-neon-text-muted">
             일산룸포털은 이용자의 개인정보를 소중히 보호합니다
           </p>
         </div>
 
         {/* Updated date */}
-        <div className="mb-10 rounded-xl border border-neutral-800 bg-neutral-900 px-6 py-4 text-sm text-neutral-400">
-          <span className="font-medium text-neutral-300">시행일:</span> 2026년
+        <div className="mb-10 rounded-xl border border-neon-border bg-neon-surface px-6 py-4 text-sm text-neon-text-muted">
+          <span className="font-medium text-neon-text">시행일:</span> 2026년
           3월 14일 |{" "}
-          <span className="font-medium text-neutral-300">최종 수정일:</span>{" "}
+          <span className="font-medium text-neon-text">최종 수정일:</span>{" "}
           2026년 3월 14일
         </div>
 
         {/* Introduction */}
-        <div className="mb-10 rounded-2xl border border-violet-500/20 bg-violet-500/5 p-6 md:p-8">
-          <p className="text-sm leading-relaxed text-neutral-300">
+        <div className="mb-10 rounded-2xl border border-violet-500/20 bg-neon-primary-light/5 p-6 md:p-8">
+          <p className="text-sm leading-relaxed text-neon-text">
             일산룸포털(이하 &quot;회사&quot;)은 개인정보보호법, 정보통신망 이용촉진 및
             정보보호 등에 관한 법률 등 관련 법령에 따라 이용자의 개인정보를
             보호하고 이와 관련한 고충을 신속하게 처리하기 위하여 다음과 같이
@@ -177,11 +177,11 @@ export default function PrivacyPage() {
           {sections.map((section) => (
             <article
               key={section.number}
-              className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6 md:p-8"
+              className="rounded-2xl border border-neon-border bg-neon-surface p-6 md:p-8"
             >
               <h2 className="mb-4 text-lg font-bold">
                 <span className="flex items-center gap-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-violet-600/20 text-sm font-bold text-violet-400">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neon-primary/20 text-sm font-bold text-neon-primary-light">
                     {section.number}
                   </span>
                   {section.title}
@@ -189,7 +189,7 @@ export default function PrivacyPage() {
               </h2>
 
               {section.description && (
-                <p className="mb-4 text-sm leading-relaxed text-neutral-400">
+                <p className="mb-4 text-sm leading-relaxed text-neon-text-muted">
                   {section.description}
                 </p>
               )}
@@ -199,7 +199,7 @@ export default function PrivacyPage() {
                   {section.items.map((item, i) => (
                     <li
                       key={i}
-                      className="flex items-start gap-2 text-sm leading-relaxed text-neutral-300"
+                      className="flex items-start gap-2 text-sm leading-relaxed text-neon-text"
                     >
                       <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-violet-400" />
                       {item}
@@ -211,14 +211,14 @@ export default function PrivacyPage() {
               {section.subsections &&
                 section.subsections.map((sub) => (
                   <div key={sub.subtitle} className="mb-4 last:mb-0">
-                    <h3 className="mb-3 text-sm font-semibold text-violet-400">
+                    <h3 className="mb-3 text-sm font-semibold text-neon-primary-light">
                       {sub.subtitle}
                     </h3>
                     <ul className="space-y-2.5">
                       {sub.items.map((item, i) => (
                         <li
                           key={i}
-                          className="flex items-start gap-2 text-sm leading-relaxed text-neutral-300"
+                          className="flex items-start gap-2 text-sm leading-relaxed text-neon-text"
                         >
                           <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-violet-400" />
                           {item}
@@ -232,10 +232,10 @@ export default function PrivacyPage() {
         </div>
 
         {/* Footer note */}
-        <div className="mt-12 rounded-xl border border-neutral-800 bg-neutral-900 p-6 text-center">
-          <p className="text-sm text-neutral-400">
+        <div className="mt-12 rounded-xl border border-neon-border bg-neon-surface p-6 text-center">
+          <p className="text-sm text-neon-text-muted">
             본 개인정보처리방침에 대해 궁금한 사항이 있으시면{" "}
-            <span className="font-medium text-violet-400">privacy@neon.com</span>
+            <span className="font-medium text-neon-primary-light">privacy@neon.com</span>
             으로 문의해 주세요.
           </p>
         </div>

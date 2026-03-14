@@ -18,18 +18,18 @@ export default function AdminLayout({
   const pathname = usePathname();
 
   return (
-    <div className="flex min-h-screen bg-neutral-950 text-white">
+    <div className="flex min-h-screen bg-neon-bg text-neon-text">
       {/* Sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-neutral-900 border-r border-neutral-800">
+      <aside className="fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-neon-surface border-r border-neon-border">
         {/* Brand */}
-        <div className="flex h-16 items-center gap-2 px-6 border-b border-neutral-800">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600">
+        <div className="flex h-16 items-center gap-2 px-6 border-b border-neon-border">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-neon-primary">
             <span className="text-sm font-bold tracking-tight">N</span>
           </div>
           <span className="text-xl font-bold tracking-wider bg-gradient-to-r from-violet-400 to-violet-200 bg-clip-text text-transparent">
             일산룸포털
           </span>
-          <span className="ml-1 rounded bg-violet-600/20 px-1.5 py-0.5 text-[10px] font-medium text-violet-400">
+          <span className="ml-1 rounded bg-neon-primary/20 px-1.5 py-0.5 text-[10px] font-medium text-neon-primary-light">
             ADMIN
           </span>
         </div>
@@ -46,8 +46,8 @@ export default function AdminLayout({
                 href={item.href}
                 className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-violet-600/15 text-violet-400"
-                    : "text-neutral-400 hover:bg-neutral-800 hover:text-white"
+                    ? "bg-neon-primary/15 text-neon-primary-light"
+                    : "text-neon-text-muted hover:bg-neon-surface-2 hover:text-neon-text"
                 }`}
               >
                 <svg
@@ -70,8 +70,8 @@ export default function AdminLayout({
         </nav>
 
         {/* Footer */}
-        <div className="border-t border-neutral-800 px-4 py-3">
-          <p className="text-xs text-neutral-500">&copy; 2026 일산룸포털 Platform</p>
+        <div className="border-t border-neon-border px-4 py-3">
+          <p className="text-xs text-neon-text-muted">&copy; 2026 일산룸포털 Platform</p>
         </div>
       </aside>
 

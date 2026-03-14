@@ -45,7 +45,7 @@ const rewards = [
     reward: "추천 1건당 800 일산룸포털 포인트",
     color: "from-neutral-400 to-neutral-600",
     borderColor: "border-neutral-500/30",
-    textColor: "text-neutral-300",
+    textColor: "text-neon-text",
   },
   {
     tier: "골드",
@@ -53,7 +53,7 @@ const rewards = [
     reward: "추천 1건당 1,200 일산룸포털 포인트 + 프리미엄 1주 무료",
     color: "from-yellow-500 to-yellow-700",
     borderColor: "border-yellow-600/30",
-    textColor: "text-yellow-400",
+    textColor: "text-neon-gold",
   },
   {
     tier: "다이아몬드",
@@ -61,7 +61,7 @@ const rewards = [
     reward: "추천 1건당 2,000 일산룸포털 포인트 + 프리미엄 1개월 무료",
     color: "from-violet-500 to-violet-700",
     borderColor: "border-violet-500/30",
-    textColor: "text-violet-400",
+    textColor: "text-neon-primary-light",
   },
 ];
 
@@ -90,19 +90,19 @@ const faqs = [
 
 export default function ReferralPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">
         {/* Hero */}
         <div className="mb-16 text-center">
-          <div className="mb-4 inline-flex rounded-full bg-violet-600/20 px-4 py-1.5 text-sm font-medium text-violet-400">
+          <div className="mb-4 inline-flex rounded-full bg-neon-primary/20 px-4 py-1.5 text-sm font-medium text-neon-primary-light">
             일산룸포털 추천 프로그램
           </div>
           <h1 className="mb-4 text-4xl font-bold md:text-5xl">
             친구를 초대하고
             <br />
-            <span className="text-violet-400">보상을 받으세요</span>
+            <span className="text-neon-primary-light">보상을 받으세요</span>
           </h1>
-          <p className="mx-auto max-w-xl text-lg text-neutral-400">
+          <p className="mx-auto max-w-xl text-lg text-neon-text-muted">
             추천 링크를 공유하면 당신과 친구 모두에게 일산룸포털 포인트가 지급됩니다.
             추천할수록 등급이 올라가고, 보상도 커집니다.
           </p>
@@ -111,20 +111,20 @@ export default function ReferralPage() {
         {/* How it works */}
         <div className="mb-16">
           <h2 className="mb-8 text-center text-2xl font-bold">
-            이렇게 <span className="text-violet-400">진행됩니다</span>
+            이렇게 <span className="text-neon-primary-light">진행됩니다</span>
           </h2>
           <div className="grid gap-6 md:grid-cols-3">
             {steps.map((step) => (
               <div
                 key={step.step}
-                className="relative rounded-2xl border border-neutral-800 bg-neutral-900 p-6 text-center"
+                className="relative rounded-2xl border border-neon-border bg-neon-surface p-6 text-center"
               >
                 <div className="mb-4 text-4xl">{step.icon}</div>
-                <div className="mb-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-violet-600 text-sm font-bold">
+                <div className="mb-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-neon-primary text-sm font-bold">
                   {step.step}
                 </div>
                 <h3 className="mb-2 text-lg font-bold">{step.title}</h3>
-                <p className="text-sm leading-relaxed text-neutral-400">
+                <p className="text-sm leading-relaxed text-neon-text-muted">
                   {step.description}
                 </p>
               </div>
@@ -135,23 +135,23 @@ export default function ReferralPage() {
         {/* Rewards structure */}
         <div className="mb-16">
           <h2 className="mb-8 text-center text-2xl font-bold">
-            보상 <span className="text-violet-400">등급</span>
+            보상 <span className="text-neon-primary-light">등급</span>
           </h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {rewards.map((tier) => (
               <div
                 key={tier.tier}
-                className={`rounded-2xl border ${tier.borderColor} bg-neutral-900 p-6`}
+                className={`rounded-2xl border ${tier.borderColor} bg-neon-surface p-6`}
               >
                 <div className="mb-3 flex items-center justify-between">
                   <h3 className={`text-lg font-bold ${tier.textColor}`}>
                     {tier.tier}
                   </h3>
-                  <span className="rounded-full bg-neutral-800 px-3 py-1 text-xs text-neutral-400">
+                  <span className="rounded-full bg-neon-surface-2 px-3 py-1 text-xs text-neon-text-muted">
                     {tier.range}
                   </span>
                 </div>
-                <p className="text-sm text-neutral-300">{tier.reward}</p>
+                <p className="text-sm text-neon-text">{tier.reward}</p>
               </div>
             ))}
           </div>
@@ -160,14 +160,14 @@ export default function ReferralPage() {
         {/* Referral bonus highlight */}
         <div className="mb-16 rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-500/10 to-violet-900/10 p-8 text-center md:p-12">
           <h2 className="mb-3 text-2xl font-bold">피추천인 혜택</h2>
-          <p className="mb-6 text-neutral-400">
+          <p className="mb-6 text-neon-text-muted">
             추천 링크를 통해 가입한 친구도 혜택을 받습니다
           </p>
-          <div className="inline-flex flex-col items-center rounded-2xl bg-neutral-900/80 px-8 py-6">
-            <span className="mb-2 text-3xl font-bold text-violet-400">
+          <div className="inline-flex flex-col items-center rounded-2xl bg-neon-surface/80 px-8 py-6">
+            <span className="mb-2 text-3xl font-bold text-neon-primary-light">
               300P
             </span>
-            <span className="text-sm text-neutral-400">
+            <span className="text-sm text-neon-text-muted">
               가입 즉시 일산룸포털 포인트 지급
             </span>
           </div>
@@ -176,18 +176,18 @@ export default function ReferralPage() {
         {/* FAQ */}
         <div className="mb-16">
           <h2 className="mb-8 text-center text-2xl font-bold">
-            자주 묻는 <span className="text-violet-400">질문</span>
+            자주 묻는 <span className="text-neon-primary-light">질문</span>
           </h2>
           <div className="space-y-4">
             {faqs.map((faq, i) => (
               <div
                 key={i}
-                className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6"
+                className="rounded-2xl border border-neon-border bg-neon-surface p-6"
               >
                 <h3 className="mb-2 font-bold text-neutral-200">
                   Q. {faq.q}
                 </h3>
-                <p className="text-sm leading-relaxed text-neutral-400">
+                <p className="text-sm leading-relaxed text-neon-text-muted">
                   A. {faq.a}
                 </p>
               </div>
@@ -200,19 +200,19 @@ export default function ReferralPage() {
           <h2 className="mb-3 text-2xl font-bold">
             지금 바로 시작하세요
           </h2>
-          <p className="mb-6 text-neutral-400">
+          <p className="mb-6 text-neon-text-muted">
             로그인 후 내 프로필에서 추천 링크를 확인할 수 있습니다
           </p>
           <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <a
               href="/signup"
-              className="inline-flex rounded-xl bg-violet-600 px-8 py-3 font-medium text-white transition hover:bg-violet-500"
+              className="inline-flex rounded-xl bg-neon-primary px-8 py-3 font-medium text-neon-text transition hover:bg-neon-primary-light"
             >
               회원가입
             </a>
             <a
               href="/login"
-              className="inline-flex rounded-xl border border-neutral-700 bg-neutral-900 px-8 py-3 font-medium text-white transition hover:bg-neutral-800"
+              className="inline-flex rounded-xl border border-neon-border bg-neon-surface px-8 py-3 font-medium text-neon-text transition hover:bg-neon-surface-2"
             >
               로그인
             </a>

@@ -59,14 +59,14 @@ const disclaimerSections = [
 
 export default function DisclaimerPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">
         {/* Header */}
         <div className="mb-12 text-center">
           <h1 className="mb-4 text-4xl font-bold">
-            면책<span className="text-violet-400">조항</span>
+            면책<span className="text-neon-primary-light">조항</span>
           </h1>
-          <p className="text-lg text-neutral-400">
+          <p className="text-lg text-neon-text-muted">
             서비스 이용 전 반드시 확인해 주세요
           </p>
         </div>
@@ -77,7 +77,7 @@ export default function DisclaimerPage() {
             <span className="text-2xl">⚠️</span>
             <div>
               <h2 className="mb-2 font-bold text-amber-400">중요 안내</h2>
-              <p className="text-sm leading-relaxed text-neutral-300">
+              <p className="text-sm leading-relaxed text-neon-text">
                 일산룸포털 서비스는 나이트라이프 업소에 대한 정보를
                 제공하는 플랫폼입니다. 본 서비스에 게시된 모든 정보는 정보 제공
                 목적으로만 사용되며, 어떠한 형태의 보증이나 추천을 의미하지
@@ -89,8 +89,8 @@ export default function DisclaimerPage() {
         </div>
 
         {/* Updated date */}
-        <div className="mb-10 rounded-xl border border-neutral-800 bg-neutral-900 px-6 py-4 text-sm text-neutral-400">
-          <span className="font-medium text-neutral-300">최종 수정일:</span>{" "}
+        <div className="mb-10 rounded-xl border border-neon-border bg-neon-surface px-6 py-4 text-sm text-neon-text-muted">
+          <span className="font-medium text-neon-text">최종 수정일:</span>{" "}
           2026년 3월 14일
         </div>
 
@@ -99,13 +99,13 @@ export default function DisclaimerPage() {
           {disclaimerSections.map((section, index) => (
             <article
               key={index}
-              className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6 md:p-8"
+              className="rounded-2xl border border-neon-border bg-neon-surface p-6 md:p-8"
             >
               <h2 className="mb-4 flex items-center gap-3 text-lg font-bold">
                 <span className="text-2xl">{section.icon}</span>
                 {section.title}
               </h2>
-              <p className="text-sm leading-relaxed text-neutral-300">
+              <p className="text-sm leading-relaxed text-neon-text">
                 {section.content}
               </p>
             </article>
@@ -113,9 +113,9 @@ export default function DisclaimerPage() {
         </div>
 
         {/* Summary box */}
-        <div className="mt-12 rounded-2xl border border-violet-500/20 bg-violet-500/5 p-6 md:p-8 text-center">
-          <h2 className="mb-4 text-xl font-bold text-violet-400">요약</h2>
-          <p className="mx-auto max-w-2xl text-sm leading-relaxed text-neutral-300">
+        <div className="mt-12 rounded-2xl border border-violet-500/20 bg-neon-primary-light/5 p-6 md:p-8 text-center">
+          <h2 className="mb-4 text-xl font-bold text-neon-primary-light">요약</h2>
+          <p className="mx-auto max-w-2xl text-sm leading-relaxed text-neon-text">
             일산룸포털은 업소 정보를 모아서 보여주는 정보 플랫폼입니다. 업소의 실제
             운영 상황과 서비스 품질은 해당 업소에 직접 확인하시기 바랍니다. 모든
             정보는 참고용이며, 이용에 따른 책임은 이용자 본인에게 있습니다.
@@ -124,9 +124,9 @@ export default function DisclaimerPage() {
 
         {/* Contact */}
         <div className="mt-8 text-center">
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-neon-text-muted">
             문의사항:{" "}
-            <span className="font-medium text-violet-400">
+            <span className="font-medium text-neon-primary-light">
               support@neon.com
             </span>
           </p>

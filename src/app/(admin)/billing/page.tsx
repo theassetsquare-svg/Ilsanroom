@@ -28,18 +28,18 @@ export default function BillingPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold">결제관리</h1>
-        <p className="mt-1 text-sm text-neutral-400">
+        <p className="mt-1 text-sm text-neon-text-muted">
           구독 플랜 및 결제 내역을 관리합니다.
         </p>
       </div>
 
       {/* Current Plan */}
-      <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-6">
+      <div className="rounded-xl border border-neon-border bg-neon-surface p-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-neutral-400">현재 요금제</p>
-            <p className="mt-1 text-2xl font-bold text-violet-400">프리미엄</p>
-            <p className="mt-1 text-sm text-neutral-500">
+            <p className="text-sm text-neon-text-muted">현재 요금제</p>
+            <p className="mt-1 text-2xl font-bold text-neon-primary-light">프리미엄</p>
+            <p className="mt-1 text-sm text-neon-text-muted">
               월 ₩99,000 &middot; 모든 기능 포함
             </p>
           </div>
@@ -51,28 +51,28 @@ export default function BillingPage() {
           </div>
         </div>
         <div className="mt-6 flex gap-3">
-          <button className="rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium hover:bg-violet-500 transition-colors">
+          <button className="rounded-lg bg-neon-primary px-4 py-2 text-sm font-medium hover:bg-neon-primary-light transition-colors">
             요금제 변경
           </button>
-          <button className="rounded-lg border border-neutral-700 px-4 py-2 text-sm font-medium text-neutral-300 hover:bg-neutral-800 transition-colors">
+          <button className="rounded-lg border border-neon-border px-4 py-2 text-sm font-medium text-neon-text hover:bg-neon-surface-2 transition-colors">
             구독 취소
           </button>
         </div>
       </div>
 
       {/* Next Billing Date */}
-      <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-6">
+      <div className="rounded-xl border border-neon-border bg-neon-surface p-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-neutral-400">다음 결제일</p>
+            <p className="text-sm text-neon-text-muted">다음 결제일</p>
             <p className="mt-1 text-lg font-semibold">2026년 4월 1일</p>
-            <p className="mt-1 text-sm text-neutral-500">
+            <p className="mt-1 text-sm text-neon-text-muted">
               자동 결제 &middot; ₩99,000
             </p>
           </div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-violet-600/10">
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-neon-primary/10">
             <svg
-              className="h-6 w-6 text-violet-400"
+              className="h-6 w-6 text-neon-primary-light"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -89,31 +89,31 @@ export default function BillingPage() {
       </div>
 
       {/* Payment Method */}
-      <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-6">
+      <div className="rounded-xl border border-neon-border bg-neon-surface p-6">
         <h2 className="text-lg font-semibold">결제 수단</h2>
-        <div className="mt-4 flex items-center justify-between rounded-lg border border-neutral-700 bg-neutral-800 p-4">
+        <div className="mt-4 flex items-center justify-between rounded-lg border border-neon-border bg-neon-surface-2 p-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-14 items-center justify-center rounded bg-neutral-700 text-xs font-bold text-neutral-300">
+            <div className="flex h-10 w-14 items-center justify-center rounded bg-neon-surface-2 text-xs font-bold text-neon-text">
               VISA
             </div>
             <div>
               <p className="text-sm font-medium">**** **** **** 4242</p>
-              <p className="text-xs text-neutral-500">만료 12/28</p>
+              <p className="text-xs text-neon-text-muted">만료 12/28</p>
             </div>
           </div>
-          <button className="text-sm text-violet-400 hover:text-violet-300 transition-colors">
+          <button className="text-sm text-neon-primary-light hover:text-violet-300 transition-colors">
             변경
           </button>
         </div>
       </div>
 
       {/* Payment History */}
-      <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-6">
+      <div className="rounded-xl border border-neon-border bg-neon-surface p-6">
         <h2 className="text-lg font-semibold">결제 내역</h2>
         <div className="mt-4 overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-neutral-800 text-left text-neutral-400">
+              <tr className="border-b border-neon-border text-left text-neon-text-muted">
                 <th className="pb-3 pr-4 font-medium">인보이스</th>
                 <th className="pb-3 pr-4 font-medium">날짜</th>
                 <th className="pb-3 pr-4 font-medium">요금제</th>
@@ -123,11 +123,11 @@ export default function BillingPage() {
             </thead>
             <tbody className="divide-y divide-neutral-800">
               {paymentHistory.map((row) => (
-                <tr key={row.id} className="text-neutral-300">
+                <tr key={row.id} className="text-neon-text">
                   <td className="py-3 pr-4 font-mono text-xs">{row.id}</td>
                   <td className="py-3 pr-4">{row.date}</td>
                   <td className="py-3 pr-4">{row.plan}</td>
-                  <td className="py-3 pr-4 font-medium text-white">
+                  <td className="py-3 pr-4 font-medium text-neon-text">
                     {row.amount}
                   </td>
                   <td className="py-3">

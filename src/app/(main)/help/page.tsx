@@ -158,21 +158,21 @@ function AccordionItem({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-b border-neutral-800 last:border-b-0">
+    <div className="border-b border-neon-border last:border-b-0">
       <button
         onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between py-5 text-left transition-colors hover:text-violet-400"
+        className="flex w-full items-center justify-between py-5 text-left transition-colors hover:text-neon-primary-light"
       >
         <span className="pr-4 text-sm font-medium">{question}</span>
         <ChevronDown
-          className={`h-4 w-4 shrink-0 text-neutral-400 transition-transform duration-200 ${
+          className={`h-4 w-4 shrink-0 text-neon-text-muted transition-transform duration-200 ${
             open ? "rotate-180" : ""
           }`}
         />
       </button>
       {open && (
         <div className="pb-5">
-          <p className="text-sm leading-relaxed text-neutral-400">{answer}</p>
+          <p className="text-sm leading-relaxed text-neon-text-muted">{answer}</p>
         </div>
       )}
     </div>
@@ -185,12 +185,12 @@ function CategorySection({ category }: { category: FaqCategory }) {
   return (
     <div className="mb-8">
       <div className="mb-4 flex items-center gap-3">
-        <div className="inline-flex rounded-lg bg-violet-600/20 p-2">
-          <Icon className="h-4 w-4 text-violet-400" />
+        <div className="inline-flex rounded-lg bg-neon-primary/20 p-2">
+          <Icon className="h-4 w-4 text-neon-primary-light" />
         </div>
         <h3 className="text-lg font-bold">{category.name}</h3>
       </div>
-      <div className="rounded-2xl border border-neutral-800 bg-neutral-900 px-6">
+      <div className="rounded-2xl border border-neon-border bg-neon-surface px-6">
         {category.items.map((item) => (
           <AccordionItem
             key={item.question}
@@ -227,22 +227,22 @@ export default function HelpPage() {
     : faqCategories;
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-3xl px-4 py-16">
         {/* Header */}
         <div className="mb-12 text-center">
-          <HelpCircle className="mx-auto mb-4 h-10 w-10 text-violet-400" />
+          <HelpCircle className="mx-auto mb-4 h-10 w-10 text-neon-primary-light" />
           <h1 className="mb-4 text-4xl font-bold">
-            고객 <span className="text-violet-400">센터</span>
+            고객 <span className="text-neon-primary-light">센터</span>
           </h1>
-          <p className="text-lg text-neutral-400">
+          <p className="text-lg text-neon-text-muted">
             궁금한 점을 검색하거나 카테고리별 자주 묻는 질문을 확인하세요.
           </p>
         </div>
 
         {/* Search */}
         <div className="relative mb-8">
-          <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-500" />
+          <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-neon-text-muted" />
           <input
             type="text"
             placeholder="질문을 검색하세요..."
@@ -251,7 +251,7 @@ export default function HelpPage() {
               setSearchQuery(e.target.value);
               if (e.target.value) setActiveCategory(null);
             }}
-            className="w-full rounded-xl border border-neutral-800 bg-neutral-900 py-3.5 pl-12 pr-4 text-sm text-white placeholder-neutral-500 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
+            className="w-full rounded-xl border border-neon-border bg-neon-surface py-3.5 pl-12 pr-4 text-sm text-neon-text placeholder-neutral-500 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500"
           />
         </div>
 
@@ -262,8 +262,8 @@ export default function HelpPage() {
               onClick={() => setActiveCategory(null)}
               className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${
                 activeCategory === null
-                  ? "bg-violet-600 text-white"
-                  : "bg-neutral-800 text-neutral-400 hover:bg-neutral-700"
+                  ? "bg-neon-primary text-neon-text"
+                  : "bg-neon-surface-2 text-neon-text-muted hover:bg-neon-surface-2"
               }`}
             >
               전체
@@ -274,8 +274,8 @@ export default function HelpPage() {
                 onClick={() => setActiveCategory(cat.name)}
                 className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${
                   activeCategory === cat.name
-                    ? "bg-violet-600 text-white"
-                    : "bg-neutral-800 text-neutral-400 hover:bg-neutral-700"
+                    ? "bg-neon-primary text-neon-text"
+                    : "bg-neon-surface-2 text-neon-text-muted hover:bg-neon-surface-2"
                 }`}
               >
                 {cat.name}
@@ -291,12 +291,12 @@ export default function HelpPage() {
               <CategorySection key={cat.name} category={cat} />
             ))
           ) : (
-            <div className="rounded-2xl border border-neutral-800 bg-neutral-900 py-12 text-center">
-              <Search className="mx-auto mb-3 h-8 w-8 text-neutral-600" />
-              <p className="text-sm text-neutral-500">
+            <div className="rounded-2xl border border-neon-border bg-neon-surface py-12 text-center">
+              <Search className="mx-auto mb-3 h-8 w-8 text-neon-text-muted/60" />
+              <p className="text-sm text-neon-text-muted">
                 &ldquo;{searchQuery}&rdquo;에 대한 검색 결과가 없습니다.
               </p>
-              <p className="mt-1 text-xs text-neutral-600">
+              <p className="mt-1 text-xs text-neon-text-muted/60">
                 아래 연락처로 직접 문의해 주세요.
               </p>
             </div>
@@ -306,41 +306,41 @@ export default function HelpPage() {
         {/* Contact Section */}
         <div className="mb-8">
           <h2 className="mb-6 text-xl font-bold">
-            직접 <span className="text-violet-400">문의하기</span>
+            직접 <span className="text-neon-primary-light">문의하기</span>
           </h2>
           <div className="grid gap-4 sm:grid-cols-3">
-            <div className="flex items-start gap-4 rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
-              <Mail className="mt-0.5 h-6 w-6 shrink-0 text-violet-400" />
+            <div className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6">
+              <Mail className="mt-0.5 h-6 w-6 shrink-0 text-neon-primary-light" />
               <div>
                 <h3 className="text-sm font-semibold">이메일</h3>
-                <p className="mt-1 text-xs text-neutral-400">
+                <p className="mt-1 text-xs text-neon-text-muted">
                   support@neon-nightlife.com
                 </p>
-                <p className="mt-0.5 text-xs text-neutral-600">
+                <p className="mt-0.5 text-xs text-neon-text-muted/60">
                   24시간 접수 가능
                 </p>
               </div>
             </div>
-            <div className="flex items-start gap-4 rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
-              <MessageCircle className="mt-0.5 h-6 w-6 shrink-0 text-violet-400" />
+            <div className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6">
+              <MessageCircle className="mt-0.5 h-6 w-6 shrink-0 text-neon-primary-light" />
               <div>
                 <h3 className="text-sm font-semibold">카카오톡 채널</h3>
-                <p className="mt-1 text-xs text-neutral-400">
+                <p className="mt-1 text-xs text-neon-text-muted">
                   @일산룸포털고객센터
                 </p>
-                <p className="mt-0.5 text-xs text-neutral-600">
+                <p className="mt-0.5 text-xs text-neon-text-muted/60">
                   실시간 채팅 상담
                 </p>
               </div>
             </div>
-            <div className="flex items-start gap-4 rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
-              <Clock className="mt-0.5 h-6 w-6 shrink-0 text-violet-400" />
+            <div className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6">
+              <Clock className="mt-0.5 h-6 w-6 shrink-0 text-neon-primary-light" />
               <div>
                 <h3 className="text-sm font-semibold">운영시간</h3>
-                <p className="mt-1 text-xs text-neutral-400">
+                <p className="mt-1 text-xs text-neon-text-muted">
                   평일 10:00 ~ 18:00
                 </p>
-                <p className="mt-0.5 text-xs text-neutral-600">
+                <p className="mt-0.5 text-xs text-neon-text-muted/60">
                   주말 및 공휴일 휴무
                 </p>
               </div>
