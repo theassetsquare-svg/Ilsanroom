@@ -1,6 +1,11 @@
+export const dynamic = "force-static";
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase";
 import { venues } from "@/data/venues";
+
+export function generateStaticParams() {
+  return venues.filter(v => v.status !== 'closed_or_unclear').map(v => ({ id: v.slug }));
+}
 
 export async function GET(
   _request: NextRequest,

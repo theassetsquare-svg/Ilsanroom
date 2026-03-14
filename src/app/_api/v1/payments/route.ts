@@ -1,3 +1,4 @@
+export const dynamic = "force-static";
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { processSubscriptionPayment, cancelPayment, PLAN_PRICES, PLAN_NAMES, generateOrderId } from '@/lib/payments';
