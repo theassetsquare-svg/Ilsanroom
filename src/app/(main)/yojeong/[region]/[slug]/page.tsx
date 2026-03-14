@@ -1,51 +1,102 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Card from '@/components/ui/Card';
-import Badge from '@/components/ui/Badge';
-import Breadcrumb from '@/components/layout/Breadcrumb';
-import PageViewTracker from '@/components/venue/PageViewTracker';
-import PremiumBadge from '@/components/venue/PremiumBadge';
-import VenueHero from '@/components/venue/VenueHero';
-import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
-import VenueJsonLd from '@/components/venue/VenueJsonLd';
-import ReviewSection from '@/components/venue/ReviewSection';
-import QRCode from '@/components/venue/QRCode';
+import VenueDetailPage from '@/components/venue/VenueDetailPage';
 import { getVenueBySlug, getRelatedVenues, getVenuesByCategory } from '@/data/venues';
-import type { Venue } from '@/types';
 
 export function generateStaticParams() {
-  return getVenuesByCategory('yojeong').map((v) => ({
-    region: v.region,
-    slug: v.slug,
-  }));
+  return getVenuesByCategory('yojeong').map((v) => ({ region: v.region, slug: v.slug }));
 }
 
-interface Props {
-  params: Promise<{ region: string; slug: string }>;
-}
+interface Props { params: Promise<{ region: string; slug: string }> }
 
 const regionNames: Record<string, string> = {
-  gangnam: '강남', ilsan: '일산', cheongdam: '청담',
-  busan: '부산', daegu: '대구', daejeon: '대전', suwon: '수원', gwangju: '광주', jongno: '종로',
+  gangnam: '강남', ilsan: '일산', cheongdam: '청담', jongno: '종로',
+  busan: '부산', daegu: '대구', daejeon: '대전', suwon: '수원', gwangju: '광주', jeju: '제주', yeouido: '여의도',
 };
-
-function RelatedCard({ venue }: { venue: Venue }) {
-  return (
-    <Card href={`/yojeong/${venue.region}/${venue.slug}`}>
-      <h3 className="text-base font-bold text-white mb-1">{venue.nameKo}</h3>
-      <p className="text-sm text-neutral-500">{venue.regionKo}</p>
-    </Card>
-  );
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const venue = getVenueBySlug(slug);
   if (!venue) return { title: '요정을 찾을 수 없습니다 | 일산룸포털' };
   return {
-    title: `${venue.nameKo} - ${venue.regionKo} 요정 | 일산룸포털`,
+    title: `${venue.nameKo} 후기,가격,예약 | 일산룸포털`,
     description: venue.description,
+    openGraph: { title: `${venue.nameKo} | 일산룸포털`, description: venue.shortDescription },
   };
+}
+
+const defaultFaqs = (name: string) => [
+  { question: `${name}의 위치는 어디인가요?`, answer: `${name}의 정확한 위치는 기본정보 탭에서 확인할 수 있습니다. 지도 탭에서 카카오맵으로도 확인 가능합니다.` },
+  { question: `${name}의 영업시간은?`, answer: `영업시간은 기본정보 탭에서 확인하세요. 방문 전 전화로 확인하시는 것을 권장합니다.` },
+  { question: `${name}에 주차가 가능한가요?`, answer: `주차 가능 여부는 기본정보 탭에서 확인할 수 있습니다. 발렛 서비스 여부도 업소에 문의해 주세요.` },
+  { question: `${name}에서 어떤 음식을 제공하나요?`, answer: `${name}에서 제공하는 한정식 코스와 메뉴는 메뉴·서비스 탭에서 확인할 수 있습니다. 코스 구성은 업소에 문의해 주세요.` },
+  { question: `${name}의 예약은 어떻게 하나요?`, answer: `전화 연결을 통해 예약이 가능합니다. 하단의 전화 버튼을 눌러 직접 문의해 주세요.` },
+  { question: `${name}의 가격대는 어느 정도인가요?`, answer: `가격표 탭에서 확인할 수 있습니다. 정확한 가격은 방문 시 변동될 수 있으므로 업소에 직접 확인하세요.` },
+  { question: `${name}에 단체 이용이 가능한가요?`, answer: `단체 이용 가능 여부와 수용 인원은 업소에 직접 문의해 주세요. 사전 예약을 권장합니다.` },
+  { question: `${name}의 분위기는 어떤가요?`, answer: `${name}의 분위기와 특징은 기본정보 탭에서 확인할 수 있습니다. 실제 방문 후기도 리뷰 탭에서 확인하세요.` },
+];
+
+/* ★ 일산명월관요정 전용 FAQ 10개+ */
+const myeongwolgwanFaqs = [
+  { question: '일산명월관요정의 위치는 어디인가요?', answer: '일산명월관요정은 경기도 고양시 일산동구 장항로 895-1에 위치해 있습니다. 마두역에서 도보 약 10분 거리이며, 건물 내 전용 주차장도 이용 가능합니다.' },
+  { question: '일산명월관요정의 한정식 코스는 어떻게 구성되나요?', answer: '일산명월관요정은 15가지 이상의 한정식 코스를 정찰제로 운영합니다. 계절별 신선한 식재료를 사용하며, 전채부터 후식까지 전통 한식의 정수를 맛볼 수 있습니다. 코스 구성은 인원과 예산에 따라 조절 가능합니다.' },
+  { question: '일산명월관요정에서 국악 공연을 볼 수 있나요?', answer: '네, 일산명월관요정에서는 국악 라이브 공연을 즐길 수 있습니다. 가야금, 해금 등 전통 악기 연주가 식사와 함께 제공되어 격조 높은 분위기를 더합니다.' },
+  { question: '일산명월관요정의 룸은 몇 개인가요?', answer: '일산명월관요정은 총 30개의 프라이빗 룸을 갖추고 있습니다. 1인실부터 20인실까지 다양한 규모의 룸이 있어 소규모 모임부터 대규모 연회까지 수용 가능합니다.' },
+  { question: '일산명월관요정에서 비즈니스 접대가 가능한가요?', answer: '일산명월관요정은 비즈니스 접대에 최적화된 공간입니다. 격조 있는 분위기, 한정식 코스, 국악 공연이 어우러져 중요한 비즈니스 미팅이나 VIP 접대에 적합합니다. 신실장에게 사전 예약 시 맞춤 서비스를 받을 수 있습니다.' },
+  { question: '일산명월관요정의 예약은 어떻게 하나요?', answer: '일산명월관요정은 신실장(010-3695-4929)에게 전화하여 예약할 수 있습니다. 인원, 일시, 코스 선택을 미리 알려주시면 최적의 룸과 코스를 안내받을 수 있습니다.' },
+  { question: '일산명월관요정의 가격은 얼마인가요?', answer: '일산명월관요정은 정찰제로 운영되어 투명한 가격 정책을 유지합니다. 가격표 탭에서 대략적인 가격대를 확인할 수 있으며, 정확한 코스별 가격은 전화 문의를 통해 안내받으실 수 있습니다.' },
+  { question: '일산명월관요정에 주차가 가능한가요?', answer: '네, 일산명월관요정은 건물 내 전용 주차장을 보유하고 있습니다. 발렛 주차 서비스도 이용 가능하여 편리하게 방문하실 수 있습니다.' },
+  { question: '일산명월관요정은 가족 모임에도 적합한가요?', answer: '물론입니다. 일산명월관요정은 돌잔치, 생일, 환갑, 칠순, 상견례 등 가족 기념일에도 많이 이용됩니다. 프라이빗 룸과 한정식 코스가 격식 있는 가족 모임에 최적의 환경을 제공합니다.' },
+  { question: '일산명월관요정의 드레스코드가 있나요?', answer: '일산명월관요정은 세미 포멀 이상의 복장을 권장합니다. 전통 요정의 격조에 맞는 복장으로 방문해 주시면 더욱 쾌적한 시간을 보내실 수 있습니다.' },
+  { question: '일산명월관요정은 몇 시까지 영업하나요?', answer: '일산명월관요정의 정확한 영업시간은 기본정보 탭에서 확인하거나 신실장(010-3695-4929)에게 문의해 주세요. 저녁 6시~10시가 가장 추천하는 방문 시간대입니다.' },
+];
+
+/* ★ 일산명월관요정 전용 SEO 콘텐츠 2000자+ */
+function MyeongwolgwanExtraContent() {
+  return (
+    <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-8 space-y-6">
+      <h2 className="text-xl font-bold text-neon-text">일산명월관요정 — 일산 대표 전통 요정 완벽 가이드</h2>
+      <div className="space-y-4 text-sm leading-relaxed text-neon-text-muted/80">
+        <p>
+          일산명월관요정은 경기도 고양시 일산동구 장항로 895-1에 위치한 일산 지역 최고의 전통 요정입니다.
+          일산명월관요정은 한정식 코스 요리와 국악 라이브 공연을 함께 제공하는 격조 높은 공간으로,
+          비즈니스 접대, 가족 기념일, 각종 연회에 최적화되어 있습니다. 일산명월관요정의 가장 큰 특징은
+          총 30개의 프라이빗 룸을 갖추고 있어 1인부터 20인까지 다양한 규모의 모임을 수용할 수 있다는 점입니다.
+        </p>
+        <p>
+          일산명월관요정에서는 15가지 이상의 한정식 코스를 정찰제로 운영하고 있습니다.
+          계절마다 바뀌는 신선한 식재료를 활용한 전통 한정식은 일산명월관요정의 자랑입니다.
+          전채, 구절판, 한방탕, 생선회, 갈비찜, 전골 등 한국 전통 요리의 정수를 맛볼 수 있으며,
+          모든 코스는 숙련된 조리사가 정성껏 준비합니다. 일산명월관요정의 정찰제 운영 방식은
+          가격에 대한 걱정 없이 편안하게 식사를 즐길 수 있도록 해줍니다.
+        </p>
+        <p>
+          일산명월관요정의 또 다른 매력은 국악 라이브 공연입니다. 가야금, 해금, 대금 등
+          전통 악기의 아름다운 선율이 식사와 함께 흐르며, 한국 전통 문화의 아름다움을 직접 체험할 수 있습니다.
+          일산명월관요정은 단순한 식사 공간을 넘어 전통 문화를 향유하는 복합 문화 공간으로서의 가치를 지닙니다.
+        </p>
+        <p>
+          일산명월관요정은 신실장(010-3695-4929)이 전반적인 운영을 총괄하고 있습니다.
+          사전 예약 시 인원, 목적, 예산에 맞춰 최적의 코스와 룸을 추천받을 수 있습니다.
+          일산명월관요정은 마두역에서 도보 약 10분 거리에 위치해 있으며,
+          건물 내 전용 주차장과 발렛 서비스를 제공하여 차량으로도 편리하게 방문할 수 있습니다.
+        </p>
+        <p>
+          일산에서 격식 있는 접대 장소를 찾거나, 특별한 가족 모임을 계획하고 계신다면
+          일산명월관요정이 최적의 선택입니다. 돌잔치, 생일, 환갑, 칠순, 상견례 등
+          모든 종류의 기념일 행사에 적합하며, 프라이빗 룸 환경에서 프라이버시가 보장됩니다.
+          일산명월관요정은 오랜 전통과 경험을 바탕으로 고객 한 분 한 분에게
+          최고 수준의 서비스를 제공하는 것을 목표로 하고 있습니다.
+        </p>
+        <p>
+          일산명월관요정을 방문하시려면 세미 포멀 이상의 복장을 권장합니다.
+          전통 요정의 격조에 맞는 복장으로 방문해 주시면 더욱 쾌적한 시간을 보내실 수 있습니다.
+          추천 방문 시간은 저녁 6시부터 10시 사이이며, 주말과 공휴일에는 사전 예약이 필수입니다.
+          일산명월관요정에 대한 자세한 정보나 예약은 신실장(010-3695-4929)에게 문의해 주세요.
+        </p>
+      </div>
+    </div>
+  );
 }
 
 export default async function YojeongDetailPage({ params }: Props) {
@@ -54,240 +105,21 @@ export default async function YojeongDetailPage({ params }: Props) {
   if (!venue || venue.category !== 'yojeong') notFound();
 
   const regionKo = regionNames[region] || region;
-  const related = getRelatedVenues(venue, 4);
+  const related = getRelatedVenues(venue, 6);
   const isMyeongwolgwan = slug === 'ilsan-myeongwolgwan-yojeong';
 
-  const faqItems = isMyeongwolgwan ? [
-    { question: '일산명월관요정은 예약이 필수인가요?', answer: '네, 예약제로 운영됩니다. 원활한 서비스 제공을 위해 방문 전 사전 예약을 권장합니다.' },
-    { question: '주차 공간은 충분한가요?', answer: '전용 주차장을 완비하고 있으며, 대형 차량(버스 등)도 주차 가능합니다.' },
-    { question: '국악 연주는 항상 제공되나요?', answer: '기본적으로 저녁 시간대에 국악 연주가 진행됩니다. 특별 공연이 필요한 경우 사전 문의를 부탁드립니다.' },
-    { question: '단체 모임도 가능한가요?', answer: '최대 20인까지 수용 가능한 대형 룸이 있으며, 여러 룸을 연결하여 더 큰 규모의 행사도 진행할 수 있습니다.' },
-    { question: '드레스코드가 있나요?', answer: '포멀한 복장을 권장하며, 한복 착용도 환영합니다. 캐주얼한 복장은 자제해 주시기 바랍니다.' },
-  ] : undefined;
-
   return (
-    <div className="bg-neutral-950 pb-20">
-      <PageViewTracker venueId={venue.id} venueName={venue.nameKo} category={venue.category} region={venue.region} />
-      <VenueJsonLd
-        venue={venue}
-        breadcrumbItems={[
-          { name: '일산룸포털', url: '/' },
-          { name: '요정', url: '/yojeong' },
-          { name: regionKo, url: `/yojeong/${region}` },
-          { name: venue.nameKo, url: `/yojeong/${region}/${venue.slug}` },
-        ]}
-        faqItems={faqItems}
-        reviews={[
-          { author: '김**', rating: 5, text: '분위기도 좋고 서비스도 최고였습니다.', date: '2026-03-10' },
-          { author: '이**', rating: 4, text: '전체적으로 만족스러웠습니다.', date: '2026-03-05' },
-        ]}
-      />
-
-      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-        <Breadcrumb items={[
-          { label: '요정', href: '/yojeong' },
-          { label: regionKo, href: `/yojeong/${region}` },
-          { label: venue.nameKo },
-        ]} />
-      </section>
-
-      <VenueHero
-        name={venue.nameKo}
-        staffNickname={venue.staffNickname}
-        rating={venue.rating}
-        reviewCount={venue.reviewCount}
-        isPremium={venue.isPremium}
-        isVerified={venue.isVerified}
-        category={venue.category}
-        regionKo={venue.regionKo}
-      />
-
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
-        <div className="grid gap-10 lg:grid-cols-3">
-          <div className="lg:col-span-2 space-y-8">
-            <div>
-              <h2 className="mb-3 text-xl font-bold text-white">소개</h2>
-              <p className="leading-relaxed text-neutral-400">{venue.description}</p>
-            </div>
-
-            {isMyeongwolgwan && (
-              <>
-                <div>
-                  <h2 className="mb-3 text-xl font-bold text-white">한국 전통 요정 문화</h2>
-                  <p className="leading-relaxed text-neutral-400">
-                    한국 전통 요정은 조선시대부터 이어져 온 격조 높은 접대 문화의 공간입니다.
-                    일산명월관요정은 이러한 전통을 현대적으로 재해석하여,
-                    한옥의 멋과 현대적 편의를 동시에 갖추고 있습니다.
-                    전통 건축 양식의 아름다움 속에서 정성 가득한 한정식과
-                    우아한 국악 선율을 즐길 수 있는 독특한 경험을 선사합니다.
-                  </p>
-                </div>
-
-                <div>
-                  <h2 className="mb-3 text-xl font-bold text-white">15가지 한정식 코스 요리</h2>
-                  <p className="mb-4 leading-relaxed text-neutral-400">
-                    일산명월관요정의 한정식 코스는 계절 식재료를 엄선하여 구성한 15가지 코스로 이루어져 있습니다.
-                    전채부터 후식까지 전통 조리법을 기반으로 하되 현대적인 플레이팅을 적용하여
-                    시각적 즐거움까지 더합니다. 숙련된 조리사가 매일 신선한 재료로 정성껏 준비합니다.
-                  </p>
-                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                    {['전채 모듬', '계절 나물', '해물 전골', '갈비찜', '생선구이',
-                      '궁중 떡볶이', '한방 삼계탕', '잡채', '전 모듬', '비빔밥',
-                      '계절 과일', '전통 후식', '식혜', '한방차', '떡 모듬'].map((item) => (
-                      <div key={item} className="rounded-lg border border-neutral-800 bg-neutral-900/50 px-3 py-2 text-center text-sm text-neutral-400">
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <h2 className="mb-3 text-xl font-bold text-white">국악 연주 서비스</h2>
-                  <p className="leading-relaxed text-neutral-400">
-                    전문 국악 연주자가 가야금, 거문고, 대금, 해금 등 전통 악기로
-                    품격 있는 연주를 선보입니다. 식사와 함께 또는 별도 시간에
-                    국악 공연을 감상할 수 있으며, 특별 행사 시 맞춤형 공연도 가능합니다.
-                  </p>
-                </div>
-
-                <div>
-                  <h2 className="mb-3 text-xl font-bold text-white">프라이빗 룸 안내</h2>
-                  <p className="mb-4 leading-relaxed text-neutral-400">
-                    일산명월관요정은 1인실부터 20인실까지 총 30개의 프라이빗 룸을 보유하고 있습니다.
-                    각 룸은 전통 한옥 양식의 내부 디자인과 현대적인 냉난방 시스템을 갖추고 있으며,
-                    비즈니스 접대, VIP 모임, 가족 행사 등 다양한 용도로 활용할 수 있습니다.
-                  </p>
-                  <div className="grid gap-3 sm:grid-cols-3">
-                    <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-4 text-center">
-                      <p className="text-2xl font-bold text-violet-400">1~4인</p>
-                      <p className="mt-1 text-xs text-neutral-500">소규모 밀담</p>
-                    </div>
-                    <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-4 text-center">
-                      <p className="text-2xl font-bold text-violet-400">5~10인</p>
-                      <p className="mt-1 text-xs text-neutral-500">비즈니스 접대</p>
-                    </div>
-                    <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-4 text-center">
-                      <p className="text-2xl font-bold text-violet-400">11~20인</p>
-                      <p className="mt-1 text-xs text-neutral-500">단체 모임</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <h2 className="mb-3 text-xl font-bold text-white">비즈니스 접대와 VIP 모임</h2>
-                  <p className="leading-relaxed text-neutral-400">
-                    일산명월관요정은 기업 접대와 VIP 모임에 최적화된 서비스를 제공합니다.
-                    전담 매니저가 배정되어 모임의 성격에 맞는 룸 배치, 메뉴 구성,
-                    공연 일정을 맞춤 설계합니다. 정찰제 운영으로 투명한 가격 정책을
-                    유지하고 있어 안심하고 이용하실 수 있습니다.
-                  </p>
-                </div>
-              </>
-            )}
-
-            <div>
-              <h2 className="mb-3 text-xl font-bold text-white">특징</h2>
-              <ul className="grid grid-cols-2 gap-2">
-                {venue.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-neutral-400">
-                    <span className="text-emerald-400">●</span> {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h2 className="mb-3 text-xl font-bold text-white">분위기</h2>
-              <div className="flex flex-wrap gap-2">
-                {venue.atmosphere.map((a) => <Badge key={a} variant="yojeong">{a}</Badge>)}
-              </div>
-            </div>
-            <div>
-              <h2 className="mb-3 text-xl font-bold text-white">태그</h2>
-              <div className="flex flex-wrap gap-2">
-                {venue.tags.map((t) => <Badge key={t}>#{t}</Badge>)}
-              </div>
-            </div>
-
-            {isMyeongwolgwan && (
-              <div>
-                <h2 className="mb-4 text-xl font-bold text-white">자주 묻는 질문</h2>
-                <div className="space-y-4">
-                  {[
-                    { q: '일산명월관요정은 예약이 필수인가요?', a: '네, 예약제로 운영됩니다. 원활한 서비스 제공을 위해 방문 전 사전 예약을 권장합니다.' },
-                    { q: '주차 공간은 충분한가요?', a: '전용 주차장을 완비하고 있으며, 대형 차량(버스 등)도 주차 가능합니다.' },
-                    { q: '국악 연주는 항상 제공되나요?', a: '기본적으로 저녁 시간대에 국악 연주가 진행됩니다. 특별 공연이 필요한 경우 사전 문의를 부탁드립니다.' },
-                    { q: '단체 모임도 가능한가요?', a: '최대 20인까지 수용 가능한 대형 룸이 있으며, 여러 룸을 연결하여 더 큰 규모의 행사도 진행할 수 있습니다.' },
-                    { q: '드레스코드가 있나요?', a: '포멀한 복장을 권장하며, 한복 착용도 환영합니다. 캐주얼한 복장은 자제해 주시기 바랍니다.' },
-                  ].map((faq) => (
-                    <div key={faq.q} className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5">
-                      <h3 className="mb-2 font-semibold text-white">{faq.q}</h3>
-                      <p className="text-sm leading-relaxed text-neutral-400">{faq.a}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="space-y-4">
-            <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
-              <h3 className="mb-4 font-bold text-white">기본 정보</h3>
-              <dl className="space-y-3 text-sm">
-                <div><dt className="text-neutral-600">위치</dt><dd className="text-neutral-300">{venue.address}</dd></div>
-                <div><dt className="text-neutral-600">영업시간</dt><dd className="text-neutral-300">{venue.openHours}</dd></div>
-                <div><dt className="text-neutral-600">연령대</dt><dd className="text-neutral-300">{venue.ageGroup}</dd></div>
-                <div><dt className="text-neutral-600">드레스코드</dt><dd className="text-neutral-300">{venue.dressCode}</dd></div>
-                <div><dt className="text-neutral-600">주차</dt><dd className="text-neutral-300">{venue.parking}</dd></div>
-                <div><dt className="text-neutral-600">가까운 역</dt><dd className="text-neutral-300">{venue.nearbyStation}</dd></div>
-                <div><dt className="text-neutral-600">추천 방문 시간</dt><dd className="text-neutral-300">{venue.bestTime}</dd></div>
-              </dl>
-              <div className="mt-6 flex justify-center">
-                <QRCode
-                  url={`https://neon-nightlife.com/yojeong/${venue.region}/${venue.slug}`}
-                  venueName={venue.nameKo}
-                />
-              </div>
-              <a
-                href={`/print/${venue.slug}`}
-                target="_blank"
-                className="mt-4 block text-center text-xs text-neutral-600 transition hover:text-violet-400"
-              >
-                프린트용 페이지 →
-              </a>
-            </div>
-
-            {isMyeongwolgwan && (
-              <div className="rounded-2xl border border-violet-500/20 bg-violet-950/20 p-6">
-                <h3 className="mb-3 font-bold text-violet-400">운영 방식</h3>
-                <ul className="space-y-2 text-sm text-neutral-400">
-                  <li>● 완전 예약제 운영</li>
-                  <li>● 정찰제 가격 정책</li>
-                  <li>● 전담 매니저 배정</li>
-                  <li>● 맞춤형 메뉴 구성 가능</li>
-                </ul>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
-        <ReviewSection venueId={venue.id} venueName={venue.nameKo} />
-      </section>
-
-      {related.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6">
-          <h2 className="mb-6 text-xl font-bold text-white">관련 업소</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {related.map((v) => <RelatedCard key={v.id} venue={v} />)}
-          </div>
-        </section>
-      )}
-      <StickyPhoneBar
-        phone={venue.staffPhone}
-        staffName={venue.staffNickname}
-        venueName={venue.nameKo}
-      />
-    </div>
+    <VenueDetailPage
+      venue={venue}
+      categoryLabel="요정"
+      categoryPath="/yojeong"
+      regionKo={regionKo}
+      regionPath={`/yojeong/${region}`}
+      detailPath={`/yojeong/${region}/${slug}`}
+      faqs={isMyeongwolgwan ? myeongwolgwanFaqs : defaultFaqs(venue.nameKo)}
+      related={related}
+      relatedHrefFn={(v) => `/yojeong/${v.region}/${v.slug}`}
+      extraContent={isMyeongwolgwan ? <MyeongwolgwanExtraContent /> : undefined}
+    />
   );
 }

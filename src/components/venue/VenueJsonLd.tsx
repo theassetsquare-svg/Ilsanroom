@@ -22,7 +22,7 @@ interface VenueJsonLdProps {
   siteUrl?: string;
 }
 
-export default function VenueJsonLd({ venue, breadcrumbItems, faqItems, reviews, siteUrl = 'https://neon-nightlife.com' }: VenueJsonLdProps) {
+export default function VenueJsonLd({ venue, breadcrumbItems, faqItems, reviews, siteUrl = 'https://ilsanroom.pages.dev' }: VenueJsonLdProps) {
   const categoryTypeMap: Record<string, string> = {
     club: 'NightClub',
     night: 'NightClub',
