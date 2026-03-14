@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   verification: {
-    google: 'google-site-verification-code',
+    google: 'HJjm7MRxykCQ7d_9L7glaTeeaWrmJIzAKY0BcNcfm88',
     other: {
       'naver-site-verification': 'naver-verification-code',
     },
