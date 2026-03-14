@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
+import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
-  title: '나이트 | 일산룸포털 - 전국 나이트클럽 소셜댄스 정보',
-  description:
-    '전국 나이트클럽 정보. 강남·수원·부산·대구·인천 나이트. 부킹 시스템, 부스/룸/테이블/홀, 라이브 밴드, 소셜 댄스 정보를 일산룸포털에서 확인하세요.',
+  title: '나이트 | 일산룸포털 - 전국 나이트클럽 소셜댄스 부킹',
+  description: '전국 나이트클럽 정보. 부킹 시스템, 부스/룸/테이블/홀, 라이브 밴드, 소셜 댄스 정보를 일산룸포털에서.',
+  openGraph: { images: [{ url: 'https://placehold.co/1200x630/F43F5E/ffffff/png?text=나이트 | 일산룸포털', width: 1200, height: 630 }] },
 };
 
 const regions = [
@@ -19,32 +20,47 @@ const regions = [
 
 export default function NightsPage() {
   const venues = getVenuesByCategory('night');
-
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      <Breadcrumb items={[{ label: '나이트' }]} />
-
-      <div className="mt-6 mb-10">
-        <h1 className="text-3xl font-extrabold text-neon-text mb-4">나이트</h1>
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 space-y-12">
+      <div>
+        <Breadcrumb items={[{ label: '나이트' }]} />
+        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">나이트</h1>
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6">
-          <p className="text-sm leading-relaxed text-neon-text-muted/80">
+          <p className="text-base leading-relaxed text-neon-text-muted">
             나이트클럽(나이트)은 소셜 댄스를 중심으로 운영되는 사교 공간으로, 클럽과는 완전히 다른 업종입니다.
             주로 30대~50대 고객이 방문하며, 라이브 밴드가 트로트·팝·발라드 등 다양한 음악을 연주하는 가운데
             파트너와 함께 춤을 즐기는 것이 핵심입니다. 부킹 시스템을 통해 이성 간 매칭이 이루어지며,
-            좌석은 부스, 룸, 테이블, 홀 등 다양한 형태로 구성됩니다.
-            양주 등 주류를 주문하여 웨이터 서비스를 받으며 즐기는 것이 일반적인 이용 방식입니다.
-            수원찬스돔나이트처럼 365일 운영하는 대형 업소부터 지역 밀착형 소규모 나이트까지 전국에 분포해 있으며,
-            각 지역마다 고유한 분위기와 고객층이 형성되어 있습니다. 처음 방문하시는 분도 웨이터 안내를 통해
-            편안하게 즐길 수 있으니, 관심 있는 업소에 사전 전화로 문의해 보시기 바랍니다.
+            좌석은 부스, 룸, 테이블, 홀 등 다양한 형태로 구성됩니다. 양주 등 주류를 주문하여 웨이터 서비스를
+            받으며 즐기는 것이 일반적입니다. 수원찬스돔나이트처럼 365일 운영하는 대형 업소부터
+            지역 밀착형 소규모까지 전국에 분포해 있으며, 처음 방문하시는 분도 웨이터 안내를 통해
+            편안하게 즐길 수 있습니다.
           </p>
         </div>
       </div>
 
-      <VenueListClient
-        venues={venues}
-        hrefPattern="/nights/{slug}"
-        regions={regions}
+      <VenueListClient venues={venues} hrefPattern="/nights/{slug}" regions={regions} />
+
+      <FirstVisitGuide category="나이트"
+        dress="세미 포멀~포멀 권장. 정장 또는 셋업이 기본. 너무 캐주얼하면 분위기에 안 맞을 수 있음."
+        budget="입장료 1~3만원 + 양주 1병 10~30만원. 부스/룸 추가 비용 발생. 웨이터 팁 별도."
+        alone="웨이터에게 안내 요청하면 부스 배정. 부킹 시스템으로 파트너 매칭 가능."
+        reservation="부스는 사전 예약 권장. 금토 저녁에는 일찍 가야 좋은 자리 확보 가능."
       />
+
+      <PopularTimes slots={[
+        { day: '금요일', time: '21:00~02:00', level: 95 },
+        { day: '토요일', time: '21:00~03:00', level: 100 },
+        { day: '목요일', time: '20:00~01:00', level: 55 },
+        { day: '수요일', time: '20:00~00:00', level: 35 },
+        { day: '일요일', time: '19:00~23:00', level: 40 },
+      ]} />
+
+      <CategoryVSBattle venueA="수원찬스돔나이트" venueB="인천아라비안나이트" topic="경기 나이트 최강자는?" />
+
+      <RelatedMagazine articles={[
+        { title: '처음 나이트 가는 분을 위한 A to Z 매너 가이드', tag: '입문' },
+        { title: '전국 나이트클럽 지역별 특징 총정리', tag: '정보' },
+      ]} />
     </div>
   );
 }
