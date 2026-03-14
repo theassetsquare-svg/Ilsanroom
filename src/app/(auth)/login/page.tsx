@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "로그인 - NEON 나이트라이프",
-  description: "NEON 나이트라이프 계정에 로그인하세요.",
+  title: "로그인 - 일산룸포털",
+  description: "일산룸포털 계정에 로그인하세요.",
 };
 
 export default function LoginPage() {

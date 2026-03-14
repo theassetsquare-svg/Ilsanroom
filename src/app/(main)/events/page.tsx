@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "이벤트 & 파티 캘린더 - NEON 나이트라이프",
+  title: "이벤트 & 파티 캘린더 - 일산룸포털",
   description: "최신 나이트라이프 이벤트와 파티 일정을 확인하세요. 클럽, 나이트, 라운지 이벤트 총정리.",
 };
 
 const upcomingEvents = [
   {
     id: 1,
-    title: "NEON RAVE: 봄맞이 EDM 페스티벌",
+    title: "일산룸포털 RAVE: 봄맞이 EDM 페스티벌",
     venue: "Club Race",
     region: "강남",
     date: "2026-03-22",

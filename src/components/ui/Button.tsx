@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost';
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'glow' | 'danger';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface ButtonBaseProps {
@@ -19,6 +19,8 @@ interface ButtonAsButton extends ButtonBaseProps {
 
 interface ButtonAsLink extends ButtonBaseProps {
   href: string;
+  target?: string;
+  rel?: string;
   onClick?: never;
   type?: never;
   disabled?: never;
@@ -33,6 +35,10 @@ const variantStyles: Record<ButtonVariant, string> = {
     'border border-neon-primary/40 text-neon-primary-light hover:bg-neon-primary/10',
   ghost:
     'text-neon-text-muted hover:bg-neon-surface-2 hover:text-neon-text',
+  glow:
+    'bg-gradient-to-r from-neon-primary to-neon-accent text-white btn-glow hover:shadow-[0_0_20px_rgba(139,92,246,0.4)]',
+  danger:
+    'bg-neon-red/10 text-neon-red border border-neon-red/30 hover:bg-neon-red/20',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -51,8 +57,9 @@ export default function Button({
   const classes = `inline-flex items-center justify-center font-medium transition-all duration-200 ${variantStyles[variant]} ${sizeStyles[size]} ${className}`;
 
   if ('href' in props && props.href) {
+    const { href, target, rel, ...rest } = props as ButtonAsLink;
     return (
-      <Link href={props.href} className={classes}>
+      <Link href={href} target={target || '_blank'} rel={rel || 'noopener noreferrer'} className={classes}>
         {children}
       </Link>
     );

@@ -17,9 +17,9 @@ import {
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "업주 전용 - NEON | 내 업소를 등록하고 매출을 올리세요",
+  title: "업주 전용 - 일산룸포털 | 내 업소를 등록하고 매출을 올리세요",
   description:
-    "NEON에 업소를 등록하면 검색 노출 증가, 리뷰 관리, 실시간 통계, 예약 시스템까지. 14일 무료 체험으로 매출 성장을 경험하세요.",
+    "일산룸포털에 업소를 등록하면 검색 노출 증가, 리뷰 관리, 실시간 통계, 예약 시스템까지. 14일 무료 체험으로 매출 성장을 경험하세요.",
 };
 
 const features = [
@@ -27,7 +27,7 @@ const features = [
     icon: Eye,
     title: "검색 노출 증가",
     description:
-      "NEON 플랫폼 내 프리미엄 검색 노출로 잠재 고객에게 더 많이 보여집니다. SEO 최적화와 카테고리 상위 배치를 지원합니다.",
+      "일산룸포털 플랫폼 내 프리미엄 검색 노출로 잠재 고객에게 더 많이 보여집니다. SEO 최적화와 카테고리 상위 배치를 지원합니다.",
   },
   {
     icon: MessageSquare,
@@ -45,7 +45,7 @@ const features = [
     icon: BadgeCheck,
     title: "프리미엄 배지",
     description:
-      "NEON 인증 배지로 신뢰도를 높이세요. 인증 업소는 고객 클릭률이 평균 2.3배 높습니다.",
+      "일산룸포털 인증 배지로 신뢰도를 높이세요. 인증 업소는 고객 클릭률이 평균 2.3배 높습니다.",
   },
   {
     icon: CalendarCheck,
@@ -57,7 +57,7 @@ const features = [
     icon: Megaphone,
     title: "이벤트 프로모션",
     description:
-      "특별 이벤트, 할인 프로모션을 NEON 플랫폼에서 직접 홍보하세요. 타겟 고객에게 푸시 알림으로 전달됩니다.",
+      "특별 이벤트, 할인 프로모션을 일산룸포털 플랫폼에서 직접 홍보하세요. 타겟 고객에게 푸시 알림으로 전달됩니다.",
   },
 ];
 
@@ -72,7 +72,7 @@ const steps = [
   {
     step: "01",
     title: "가입",
-    description: "무료로 NEON 업주 계정을 생성합니다. 1분이면 충분합니다.",
+    description: "무료로 일산룸포털 업주 계정을 생성합니다. 1분이면 충분합니다.",
   },
   {
     step: "02",
@@ -93,7 +93,7 @@ const caseStudies = [
     name: "일산명월관",
     metric: "+520%",
     description: "검색 노출 증가",
-    detail: "NEON 등록 3개월 만에 온라인 문의량 5배 이상 증가",
+    detail: "일산룸포털 등록 3개월 만에 온라인 문의량 5배 이상 증가",
   },
   {
     name: "일산룸",
@@ -157,7 +157,7 @@ const plans = [
 
 const testimonials = [
   {
-    text: "NEON 도입 후 신규 고객이 눈에 띄게 늘었습니다. 대시보드 덕분에 어떤 프로모션이 효과적인지 바로 알 수 있어요. 매출이 2배 이상 올랐습니다.",
+    text: "일산룸포털 도입 후 신규 고객이 눈에 띄게 늘었습니다. 대시보드 덕분에 어떤 프로모션이 효과적인지 바로 알 수 있어요. 매출이 2배 이상 올랐습니다.",
     name: "김** 대표",
     venue: "일산명월관",
     rating: 5,
@@ -188,14 +188,14 @@ export default function ForBusinessPage() {
             업주 전용
           </span>
           <h1 className="mb-6 text-4xl font-extrabold leading-tight md:text-5xl lg:text-6xl">
-            내 업소를 NEON에 등록하고
+            내 업소를 일산룸포털에 등록하고
             <br />
             <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
               매출 300% 올리세요
             </span>
           </h1>
           <p className="mx-auto mb-10 max-w-2xl text-lg text-neutral-400">
-            검색 노출, 리뷰 관리, 실시간 통계, 예약 시스템까지. NEON 하나로
+            검색 노출, 리뷰 관리, 실시간 통계, 예약 시스템까지. 일산룸포털 하나로
             나이트라이프 비즈니스의 모든 것을 관리하세요.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -247,7 +247,7 @@ export default function ForBusinessPage() {
       {/* Features Grid */}
       <section className="mx-auto max-w-5xl px-4 py-20">
         <h2 className="mb-4 text-center text-3xl font-bold">
-          왜 <span className="text-violet-400">NEON</span>인가요?
+          왜 <span className="text-violet-400">일산룸포털</span>인가요?
         </h2>
         <p className="mx-auto mb-12 max-w-xl text-center text-sm text-neutral-400">
           업소 운영에 필요한 모든 도구를 하나의 플랫폼에서 제공합니다.
@@ -276,7 +276,7 @@ export default function ForBusinessPage() {
           시작은 <span className="text-violet-400">간단합니다</span>
         </h2>
         <p className="mx-auto mb-12 max-w-md text-center text-sm text-neutral-400">
-          3단계만 거치면 NEON의 모든 기능을 사용할 수 있습니다.
+          3단계만 거치면 일산룸포털의 모든 기능을 사용할 수 있습니다.
         </p>
         <div className="grid gap-6 md:grid-cols-3">
           {steps.map((item) => (
@@ -316,7 +316,7 @@ export default function ForBusinessPage() {
             실제 <span className="text-violet-400">성과</span>
           </h2>
           <p className="mx-auto mb-12 max-w-md text-center text-sm text-neutral-400">
-            NEON을 도입한 업소들의 실제 성장 사례입니다.
+            일산룸포털을 도입한 업소들의 실제 성장 사례입니다.
           </p>
           <div className="grid gap-6 md:grid-cols-3">
             {caseStudies.map((cs) => (
@@ -434,7 +434,7 @@ export default function ForBusinessPage() {
             지금 바로 시작하세요
           </h2>
           <p className="mx-auto mb-8 max-w-lg text-neutral-400">
-            14일 프로 무료 체험으로 NEON의 모든 기능을 경험하세요. 신용카드 없이
+            14일 프로 무료 체험으로 일산룸포털의 모든 기능을 경험하세요. 신용카드 없이
             시작하고, 언제든 해지할 수 있습니다.
           </p>
           <Link

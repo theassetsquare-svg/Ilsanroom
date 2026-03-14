@@ -6,7 +6,7 @@ import { getVenuesByCategory, getVenueBySlug } from '@/data/venues';
 import type { Venue } from '@/types';
 
 export const metadata: Metadata = {
-  title: '룸 | NEON - 일산룸 · 강남룸 · 전국 프리미엄 룸 정보',
+  title: '룸 | 일산룸포털 - 일산룸 · 강남룸 · 전국 프리미엄 룸 정보',
   description:
     '대한민국 전국 프리미엄 룸 정보. 일산룸, 강남룸, 홍대룸 등 지역별 룸 시설 리스트. 프라이빗 공간, VIP 서비스, 비즈니스 모임 최적화 룸 안내.',
 };

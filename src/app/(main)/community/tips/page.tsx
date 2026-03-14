@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "팁 & 노하우 - NEON 커뮤니티",
+  title: "팁 & 노하우 - 일산룸포털 커뮤니티",
   description: "나이트라이프 고수들의 꿀팁과 노하우. 클럽, 나이트, 라운지 이용 팁을 공유합니다.",
 };
 

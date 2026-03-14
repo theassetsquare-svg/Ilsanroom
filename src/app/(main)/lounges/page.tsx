@@ -5,7 +5,7 @@ import { getVenuesByCategory } from '@/data/venues';
 import type { Venue } from '@/types';
 
 export const metadata: Metadata = {
-  title: '라운지 | NEON - 강남 · 청담 · 압구정 프리미엄 라운지',
+  title: '라운지 | 일산룸포털 - 강남 · 청담 · 압구정 프리미엄 라운지',
   description:
     '대한민국 프리미엄 라운지 정보. 강남, 청담, 압구정, 논현 등 서울 핵심 지역의 하이엔드 라운지 리스트와 상세 정보를 확인하세요. 골드 라운지, 블랙 라운지, VIP 공간.',
 };

@@ -4,21 +4,21 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-950 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-neon-bg px-4">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <a href="/" className="inline-block text-3xl font-bold text-white">
-            <span className="text-violet-400">NEON</span>
+          <a href="/" className="inline-block text-2xl font-black text-neon-primary neon-glow">
+            일산룸포털
           </a>
-          <p className="mt-2 text-sm text-neutral-500">나이트라이프 포털</p>
+          <p className="mt-2 text-sm text-neon-text-muted">나이트라이프 포털</p>
         </div>
-        <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-8">
+        <div className="rounded-2xl border border-neon-border bg-neon-surface p-8">
           {children}
         </div>
-        <p className="mt-6 text-center text-xs text-neutral-600">
-          계속 진행하면 NEON의{" "}
-          <a href="#" className="text-violet-400 hover:underline">이용약관</a> 및{" "}
-          <a href="#" className="text-violet-400 hover:underline">개인정보처리방침</a>에 동의하는 것으로 간주됩니다.
+        <p className="mt-6 text-center text-xs text-neon-text-muted/60">
+          계속 진행하면 일산룸포털의{" "}
+          <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-neon-primary-light hover:underline">이용약관</a> 및{" "}
+          <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-neon-primary-light hover:underline">개인정보처리방침</a>에 동의하는 것으로 간주됩니다.
         </p>
       </div>
     </div>

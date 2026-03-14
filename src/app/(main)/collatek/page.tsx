@@ -5,7 +5,7 @@ import { getVenuesByCategory } from '@/data/venues';
 import type { Venue } from '@/types';
 
 export const metadata: Metadata = {
-  title: '콜라텍 | NEON - 중장년 사교댄스 · 트로트 · 콜라텍 정보',
+  title: '콜라텍 | 일산룸포털 - 중장년 사교댄스 · 트로트 · 콜라텍 정보',
   description:
     '전국 콜라텍 정보. 40~60대 중장년층을 위한 사교댄스 공간. 트로트, 폭스트롯, 왈츠를 즐길 수 있는 건전한 여가 문화 공간을 소개합니다.',
 };

@@ -414,7 +414,7 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
       <h2 className="mb-2 text-2xl font-bold text-neon-text">가입 완료!</h2>
       <p className="mb-8 text-sm text-neon-text-muted">
         <span className="font-semibold text-neon-primary-light">{selectedPlan}</span> 플랜으로
-        NEON에 오신 것을 환영합니다
+        일산룸포털에 오신 것을 환영합니다
       </p>
 
       <button

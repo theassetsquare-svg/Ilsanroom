@@ -50,7 +50,7 @@ const TIERS: PricingTier[] = [
   },
   {
     name: '베이직',
-    price: '₩29,000',
+    price: '₩99,000',
     period: '/ 월',
     features: {
       '업소 등록': true,
@@ -70,7 +70,7 @@ const TIERS: PricingTier[] = [
   },
   {
     name: '프로',
-    price: '₩49,000',
+    price: '₩299,000',
     period: '/ 월',
     features: {
       '업소 등록': true,
@@ -90,7 +90,7 @@ const TIERS: PricingTier[] = [
   },
   {
     name: '프리미엄',
-    price: '₩99,000',
+    price: '₩599,000',
     period: '/ 월',
     features: {
       '업소 등록': true,

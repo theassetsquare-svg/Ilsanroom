@@ -6,7 +6,7 @@ import { getVenuesByCategory, getVenueBySlug } from '@/data/venues';
 import type { Venue } from '@/types';
 
 export const metadata: Metadata = {
-  title: '요정 | NEON - 일산명월관요정 · 전통 요정 · 한정식 · 국악',
+  title: '요정 | 일산룸포털 - 일산명월관요정 · 전통 요정 · 한정식 · 국악',
   description:
     '대한민국 전통 요정 정보. 일산명월관요정, 일산요정 등 격조 높은 요정 리스트와 상세 정보. 한정식 코스, 국악 연주, 프라이빗 룸, 비즈니스 접대 안내.',
 };

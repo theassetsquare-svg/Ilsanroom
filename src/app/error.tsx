@@ -27,7 +27,7 @@ export default function Error({
       <div className="flex gap-3">
         <button
           onClick={reset}
-          className="rounded-xl bg-neon-primary px-6 py-3 font-medium text-white transition hover:bg-neon-primary-light"
+          className="rounded-xl bg-neon-primary px-6 py-3 font-medium text-white transition hover:bg-neon-primary-light btn-glow"
         >
           다시 시도
         </button>

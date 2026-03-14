@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "업소 등록 약관 - NEON 나이트라이프",
+  title: "업소 등록 약관 - 일산룸포털",
   description:
-    "NEON 나이트라이프 업소 등록 약관. 업소 등록 조건, 콘텐츠 가이드라인, 금지 사항, 결제 조건을 안내합니다.",
+    "일산룸포털 업소 등록 약관. 업소 등록 조건, 콘텐츠 가이드라인, 금지 사항, 결제 조건을 안내합니다.",
 };
 
 const sections = [
@@ -11,7 +11,7 @@ const sections = [
     number: 1,
     title: "총칙",
     items: [
-      '본 약관은 NEON(이하 "플랫폼")에 업소 정보를 등록하고자 하는 사업자(이하 "등록 업소")와 플랫폼 간의 권리, 의무 및 책임사항을 규정합니다.',
+      '본 약관은 일산룸포털(이하 "플랫폼")에 업소 정보를 등록하고자 하는 사업자(이하 "등록 업소")와 플랫폼 간의 권리, 의무 및 책임사항을 규정합니다.',
       "등록 업소는 본 약관에 동의함으로써 플랫폼의 서비스를 이용할 수 있습니다.",
       "본 약관에서 정하지 않은 사항은 관련 법령 및 플랫폼의 이용약관에 따릅니다.",
     ],
@@ -150,7 +150,7 @@ export default function VenueTermsPage() {
             업소 등록 <span className="text-violet-400">약관</span>
           </h1>
           <p className="text-lg text-neutral-400">
-            NEON 플랫폼에 업소를 등록하기 위한 이용 약관
+            일산룸포털 플랫폼에 업소를 등록하기 위한 이용 약관
           </p>
         </div>
 
@@ -166,7 +166,7 @@ export default function VenueTermsPage() {
             업소 사장님이신가요?
           </h2>
           <p className="mb-4 text-sm leading-relaxed text-neutral-300">
-            NEON에 업소를 등록하고 더 많은 고객에게 다가가세요. 기본 등록은
+            일산룸포털에 업소를 등록하고 더 많은 고객에게 다가가세요. 기본 등록은
             무료이며, 프리미엄 서비스를 통해 더 높은 노출 효과를 얻을 수
             있습니다. 등록 전 아래 약관을 반드시 확인해 주세요.
           </p>

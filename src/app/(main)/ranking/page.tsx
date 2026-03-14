@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { venues } from "@/data/venues";
 
 export const metadata: Metadata = {
-  title: "인기 업소 랭킹 - NEON 나이트라이프",
+  title: "인기 업소 랭킹 - 일산룸포털",
   description: "카테고리별 인기 나이트라이프 업소 랭킹. 클럽, 나이트, 라운지, 호빠 TOP 순위를 확인하세요.",
 };
 

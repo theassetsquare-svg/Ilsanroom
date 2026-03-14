@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "커뮤니티 - NEON 나이트라이프",
+  title: "커뮤니티 - 일산룸포털",
   description: "나이트라이프를 즐기는 사람들의 커뮤니티. 자유게시판, 후기, 파티 모집, 팁, 패션 가이드, Q&A까지.",
 };
 
@@ -57,7 +57,7 @@ export default function CommunityPage() {
       <div className="mx-auto max-w-5xl px-4 py-16">
         <div className="mb-12 text-center">
           <h1 className="mb-4 text-4xl font-bold">
-            <span className="text-violet-400">NEON</span> 커뮤니티
+            <span className="text-violet-400">일산룸포털</span> 커뮤니티
           </h1>
           <p className="text-lg text-neutral-400">
             나이트라이프를 사랑하는 사람들의 소통 공간

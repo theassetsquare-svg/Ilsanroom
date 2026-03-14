@@ -41,9 +41,9 @@ function RelatedCard({ venue }: { venue: Venue }) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const venue = getVenueBySlug(slug);
-  if (!venue) return { title: '요정을 찾을 수 없습니다 | NEON' };
+  if (!venue) return { title: '요정을 찾을 수 없습니다 | 일산룸포털' };
   return {
-    title: `${venue.nameKo} - ${venue.regionKo} 요정 | NEON`,
+    title: `${venue.nameKo} - ${venue.regionKo} 요정 | 일산룸포털`,
     description: venue.description,
   };
 }
@@ -71,7 +71,7 @@ export default async function YojeongDetailPage({ params }: Props) {
       <VenueJsonLd
         venue={venue}
         breadcrumbItems={[
-          { name: 'NEON', url: '/' },
+          { name: '일산룸포털', url: '/' },
           { name: '요정', url: '/yojeong' },
           { name: regionKo, url: `/yojeong/${region}` },
           { name: venue.nameKo, url: `/yojeong/${region}/${venue.slug}` },

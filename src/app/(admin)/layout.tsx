@@ -27,7 +27,7 @@ export default function AdminLayout({
             <span className="text-sm font-bold tracking-tight">N</span>
           </div>
           <span className="text-xl font-bold tracking-wider bg-gradient-to-r from-violet-400 to-violet-200 bg-clip-text text-transparent">
-            NEON
+            일산룸포털
           </span>
           <span className="ml-1 rounded bg-violet-600/20 px-1.5 py-0.5 text-[10px] font-medium text-violet-400">
             ADMIN
@@ -71,7 +71,7 @@ export default function AdminLayout({
 
         {/* Footer */}
         <div className="border-t border-neutral-800 px-4 py-3">
-          <p className="text-xs text-neutral-500">&copy; 2026 NEON Platform</p>
+          <p className="text-xs text-neutral-500">&copy; 2026 일산룸포털 Platform</p>
         </div>
       </aside>
 

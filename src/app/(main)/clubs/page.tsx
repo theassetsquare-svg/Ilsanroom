@@ -5,7 +5,7 @@ import { getVenuesByCategory } from '@/data/venues';
 import type { Venue } from '@/types';
 
 export const metadata: Metadata = {
-  title: '클럽 | NEON - EDM · 힙합 · 테크노 전국 인기 클럽 정보',
+  title: '클럽 | 일산룸포털 - EDM · 힙합 · 테크노 전국 인기 클럽 정보',
   description:
     '대한민국 전국 인기 클럽 정보를 한눈에. 강남 EDM 클럽, 홍대 힙합 클럽, 이태원 글로벌 클럽까지 장르별·지역별 클럽 리스트와 DJ 스케줄, 입장 정보를 확인하세요.',
 };
@@ -95,7 +95,7 @@ export default function ClubsPage() {
               이태원(글로벌·다문화)이라는 세 축으로 나뉘며, 각 지역마다 뚜렷한 음악적
               정체성을 가지고 있습니다. 사운드 시스템은 Funktion-One, d&b audiotechnik 등
               세계 정상급 장비를 도입한 곳이 대부분이며, 조명과 영상 연출 수준도
-              글로벌 스탠다드에 도달했습니다. NEON에서 각 클럽의 장르, 분위기, DJ 스케줄을
+              글로벌 스탠다드에 도달했습니다. 일산룸포털에서 각 클럽의 장르, 분위기, DJ 스케줄을
               확인하고 나에게 맞는 파티를 찾아보세요.
             </p>
           </div>

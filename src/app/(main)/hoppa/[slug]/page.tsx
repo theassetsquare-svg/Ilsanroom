@@ -35,9 +35,9 @@ function RelatedCard({ venue }: { venue: Venue }) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const venue = getVenueBySlug(slug);
-  if (!venue) return { title: '호빠를 찾을 수 없습니다 | NEON' };
+  if (!venue) return { title: '호빠를 찾을 수 없습니다 | 일산룸포털' };
   return {
-    title: `${venue.nameKo} - ${venue.regionKo} 호빠 | NEON`,
+    title: `${venue.nameKo} - ${venue.regionKo} 호빠 | 일산룸포털`,
     description: venue.description,
   };
 }
@@ -55,7 +55,7 @@ export default async function HoppaDetailPage({ params }: Props) {
       <VenueJsonLd
         venue={venue}
         breadcrumbItems={[
-          { name: 'NEON', url: '/' },
+          { name: '일산룸포털', url: '/' },
           { name: '호빠', url: '/hoppa' },
           { name: venue.nameKo, url: `/hoppa/${venue.slug}` },
         ]}

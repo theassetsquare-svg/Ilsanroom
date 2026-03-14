@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "매거진 - NEON 나이트라이프",
+  title: "매거진 - 일산룸포털",
   description: "나이트라이프 문화, 트렌드, 인터뷰 등 다양한 콘텐츠를 만나보세요.",
 };
 
@@ -99,7 +99,7 @@ export default function MagazinePage() {
       <div className="mx-auto max-w-5xl px-4 py-16">
         <div className="mb-12 text-center">
           <h1 className="mb-4 text-4xl font-bold">
-            NEON <span className="text-violet-400">매거진</span>
+            일산룸포털 <span className="text-violet-400">매거진</span>
           </h1>
           <p className="text-lg text-neutral-400">
             나이트라이프 문화와 트렌드 이야기

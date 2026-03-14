@@ -5,10 +5,11 @@ interface CardProps {
   children: React.ReactNode;
   href?: string;
   newTab?: boolean;
+  hover?: boolean;
 }
 
-export default function Card({ className = '', children, href, newTab = true }: CardProps) {
-  const classes = `glass rounded-2xl p-5 transition-all duration-300 neon-box-glow-hover ${className}`;
+export default function Card({ className = '', children, href, newTab = true, hover = true }: CardProps) {
+  const classes = `glass rounded-2xl p-5 transition-all duration-300 neon-box-glow-hover ${hover ? 'card-hover' : ''} ${className}`;
 
   if (href) {
     return (

@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { region } = await params;
   const regionKo = regionNames[region] || region;
   return {
-    title: `${regionKo} 요정 | NEON - ${regionKo}요정 정보`,
+    title: `${regionKo} 요정 | 일산룸포털 - ${regionKo}요정 정보`,
     description: `${regionKo} 지역 전통 요정 리스트. ${regionKo}요정의 시설, 한정식, 서비스를 비교하고 나에게 맞는 요정을 찾아보세요.`,
   };
 }

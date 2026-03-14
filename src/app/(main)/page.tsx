@@ -11,14 +11,14 @@ import { categories, getPopularVenues, getVenueBySlug, getVenuesByCategory } fro
 import type { Venue, VenueCategory } from '@/types';
 
 export const metadata: Metadata = {
-  title: '일산룸 · 일산명월관요정 | NEON 대한민국 No.1 나이트라이프 가이드',
-  description: '일산룸, 일산명월관요정 등 대한민국 나이트라이프 정보를 한눈에. 클럽, 나이트, 라운지, 룸, 요정, 호빠 전국 101개 인기 업소 정보와 리뷰를 NEON에서 확인하세요.',
+  title: '일산룸 · 일산명월관요정 | 일산룸포털 대한민국 No.1 나이트라이프 가이드',
+  description: '일산룸, 일산명월관요정 등 대한민국 나이트라이프 정보를 한눈에. 클럽, 나이트, 라운지, 룸, 요정, 호빠 전국 101개 인기 업소 정보와 리뷰를 일산룸포털에서 확인하세요.',
   openGraph: {
-    title: '일산룸 · 일산명월관요정 | NEON 나이트라이프',
+    title: '일산룸 · 일산명월관요정 | 일산룸포털',
     description: '클럽, 나이트, 라운지, 룸, 요정, 호빠 — 전국 101개 업소 정보. 일산룸, 일산명월관요정 프리미엄 추천.',
     type: 'website',
     locale: 'ko_KR',
-    siteName: 'NEON 나이트라이프',
+    siteName: '일산룸포털',
   },
 };
 
@@ -91,7 +91,7 @@ export default function HomePage() {
       <JsonLd data={{
         '@context': 'https://schema.org',
         '@type': 'WebSite',
-        name: 'NEON 나이트라이프',
+        name: '일산룸포털',
         url: 'https://neon-nightlife.com',
         description: '대한민국 No.1 나이트라이프 가이드',
         potentialAction: {
@@ -132,7 +132,7 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:py-40">
           <div className="text-center">
             <Badge variant="premium" className="mb-6 text-sm">
-              NEON GUIDE 2026
+              일산룸포털 GUIDE 2026
             </Badge>
             <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
               대한민국 No.1
@@ -168,7 +168,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="mb-8 flex items-center gap-3">
           <div className="h-px flex-1 bg-gradient-to-r from-violet-500/50 to-transparent" />
-          <h2 className="text-sm font-bold tracking-[0.3em] text-violet-400">NEON PREMIUM PICK</h2>
+          <h2 className="text-sm font-bold tracking-[0.3em] text-violet-400">일산룸포털 PREMIUM PICK</h2>
           <div className="h-px flex-1 bg-gradient-to-l from-violet-500/50 to-transparent" />
         </div>
 
@@ -291,7 +291,7 @@ export default function HomePage() {
             { tag: '#강남클럽', desc: '주말 파티 현장', likes: 567 },
             { tag: '#홍대나이트', desc: '라이브 공연', likes: 345 },
             { tag: '#일산요정', desc: '국악 라이브 연주', likes: 156 },
-            { tag: '#네온나이트라이프', desc: 'NEON 추천 업소', likes: 423 },
+            { tag: '#네온나이트라이프', desc: '일산룸포털 추천 업소', likes: 423 },
           ].map((post, i) => (
             <div
               key={i}
@@ -317,10 +317,10 @@ export default function HomePage() {
       {/* SEO Text Section */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="rounded-2xl border border-neutral-800/50 bg-neutral-900/30 p-8">
-          <h2 className="mb-4 text-xl font-bold text-white">대한민국 나이트라이프 가이드 NEON</h2>
+          <h2 className="mb-4 text-xl font-bold text-white">대한민국 나이트라이프 가이드 일산룸포털</h2>
           <div className="space-y-4 text-sm leading-relaxed text-neutral-500">
             <p>
-              NEON은 대한민국 전역의 나이트, 클럽, 라운지, 룸, 요정, 호빠 정보를 한곳에 모은
+              일산룸포털은 대한민국 전역의 나이트, 클럽, 라운지, 룸, 요정, 호빠 정보를 한곳에 모은
               나이트라이프 전문 디렉토리입니다. 서울 강남, 홍대, 이태원부터 부산 해운대, 경기 일산까지
               검증된 업소 정보와 이용 가이드를 제공합니다.
             </p>
@@ -330,7 +330,7 @@ export default function HomePage() {
               전통과 현대가 어우러진 격조 높은 공간도 소개하고 있습니다.
             </p>
             <p>
-              NEON에서 제공하는 모든 정보는 실제 방문 검증을 기반으로 하며,
+              일산룸포털에서 제공하는 모든 정보는 실제 방문 검증을 기반으로 하며,
               분위기, 서비스, 접근성 등 다양한 기준으로 평가합니다.
               즐겁고 안전한 밤 문화를 위한 정확한 정보를 만나보세요.
             </p>
@@ -351,7 +351,7 @@ export default function HomePage() {
                   <span className="text-violet-400"> 매출 300%</span> 올리세요
                 </h3>
                 <p className="text-neutral-400">
-                  NEON에 업소를 등록하면 월 평균 방문자 1,200명 이상 노출됩니다.
+                  일산룸포털에 업소를 등록하면 월 평균 방문자 1,200명 이상 노출됩니다.
                   무료로 시작해 보세요.
                 </p>
               </div>

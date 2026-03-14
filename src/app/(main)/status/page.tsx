@@ -231,7 +231,7 @@ export default function StatusPage() {
             <h2 className="text-lg font-bold">모니터링</h2>
           </div>
           <p className="text-sm text-neutral-400 leading-relaxed">
-            NEON은 <span className="text-white font-medium">Uptime Robot</span>을 통해 1분 간격으로
+            일산룸포털은 <span className="text-white font-medium">Uptime Robot</span>을 통해 1분 간격으로
             모든 서비스의 가용성을 모니터링하고 있습니다. 장애 발생 시 자동으로 알림이 전송되며,
             운영팀이 즉시 대응합니다.
           </p>

@@ -42,9 +42,9 @@ function RelatedCard({ venue }: { venue: Venue }) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const venue = getVenueBySlug(slug);
-  if (!venue) return { title: '클럽을 찾을 수 없습니다 | NEON' };
+  if (!venue) return { title: '클럽을 찾을 수 없습니다 | 일산룸포털' };
   return {
-    title: `${venue.nameKo} - ${venue.regionKo} 클럽 | NEON`,
+    title: `${venue.nameKo} - ${venue.regionKo} 클럽 | 일산룸포털`,
     description: venue.description,
   };
 }
@@ -63,7 +63,7 @@ export default async function ClubDetailPage({ params }: Props) {
       <VenueJsonLd
         venue={venue}
         breadcrumbItems={[
-          { name: 'NEON', url: '/' },
+          { name: '일산룸포털', url: '/' },
           { name: '클럽', url: '/clubs' },
           { name: regionKo, url: `/clubs/${region}` },
           { name: venue.nameKo, url: `/clubs/${region}/${venue.slug}` },

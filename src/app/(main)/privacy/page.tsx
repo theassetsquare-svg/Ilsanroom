@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "개인정보처리방침 - NEON 나이트라이프",
+  title: "개인정보처리방침 - 일산룸포털",
   description:
-    "NEON 나이트라이프 개인정보처리방침. 수집항목, 이용목적, 보유기간, 제3자 제공 등 개인정보 처리에 관한 사항을 안내합니다.",
+    "일산룸포털 개인정보처리방침. 수집항목, 이용목적, 보유기간, 제3자 제공 등 개인정보 처리에 관한 사항을 안내합니다.",
 };
 
 const sections = [
@@ -130,7 +130,7 @@ const sections = [
     description:
       "회사는 개인정보 처리에 관한 업무를 총괄하여 책임지고, 이와 관련한 불만 처리 및 피해 구제를 위해 아래와 같이 개인정보 보호 책임자를 지정하고 있습니다.",
     items: [
-      "개인정보 보호 책임자: NEON 개인정보보호팀",
+      "개인정보 보호 책임자: 일산룸포털 개인정보보호팀",
       "문의: privacy@neon.com",
       "기타 개인정보 침해에 관한 신고나 상담은 아래 기관에 문의하실 수 있습니다:",
       "개인정보침해 신고센터 (privacy.kisa.or.kr / 118)",
@@ -150,7 +150,7 @@ export default function PrivacyPage() {
             개인정보<span className="text-violet-400">처리방침</span>
           </h1>
           <p className="text-lg text-neutral-400">
-            NEON은 이용자의 개인정보를 소중히 보호합니다
+            일산룸포털은 이용자의 개인정보를 소중히 보호합니다
           </p>
         </div>
 
@@ -165,7 +165,7 @@ export default function PrivacyPage() {
         {/* Introduction */}
         <div className="mb-10 rounded-2xl border border-violet-500/20 bg-violet-500/5 p-6 md:p-8">
           <p className="text-sm leading-relaxed text-neutral-300">
-            NEON(이하 &quot;회사&quot;)은 개인정보보호법, 정보통신망 이용촉진 및
+            일산룸포털(이하 &quot;회사&quot;)은 개인정보보호법, 정보통신망 이용촉진 및
             정보보호 등에 관한 법률 등 관련 법령에 따라 이용자의 개인정보를
             보호하고 이와 관련한 고충을 신속하게 처리하기 위하여 다음과 같이
             개인정보처리방침을 수립하여 공개합니다.

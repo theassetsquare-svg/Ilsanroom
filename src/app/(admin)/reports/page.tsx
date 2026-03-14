@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "신고 관리 - NEON 관리자",
+  title: "신고 관리 - 일산룸포털 관리자",
   description: "커뮤니티 신고 접수 및 처리 현황을 관리합니다.",
 };
 

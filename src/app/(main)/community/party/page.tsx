@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "파티 모집 - NEON 커뮤니티",
+  title: "파티 모집 - 일산룸포털 커뮤니티",
   description: "함께 즐길 파티 멤버를 모집하세요. 클럽, 나이트, 라운지 동행 찾기.",
 };
 

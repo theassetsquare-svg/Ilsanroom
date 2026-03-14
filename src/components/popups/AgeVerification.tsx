@@ -35,7 +35,7 @@ export default function AgeVerification() {
         {/* Logo */}
         <div className="mb-6">
           <span className="neon-glow text-3xl font-black tracking-wider text-neon-primary">
-            NEON
+            일산룸포털
           </span>
         </div>
 

@@ -3,9 +3,9 @@ import Link from "next/link";
 import { Check, X } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "요금제 - NEON 나이트라이프 SaaS",
+  title: "요금제 - 일산룸포털 SaaS",
   description:
-    "NEON 업주 요금제 비교. 무료부터 프리미엄까지 최적의 플랜을 선택하세요.",
+    "일산룸포털 업주 요금제 비교. 무료부터 프리미엄까지 최적의 플랜을 선택하세요.",
 };
 
 const plans = [

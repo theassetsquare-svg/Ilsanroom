@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "안전 가이드 - NEON 나이트라이프",
+  title: "안전 가이드 - 일산룸포털",
   description: "나이트라이프를 안전하게 즐기기 위한 가이드. 음주 안전, 교통, 긴급 연락처 정보.",
 };
 
@@ -148,7 +148,7 @@ export default function SafetyPage() {
           <h2 className="mb-4 text-2xl font-bold text-violet-400">책임감 있는 음주</h2>
           <p className="mx-auto max-w-lg text-sm leading-relaxed text-neutral-300">
             나이트라이프는 즐거운 경험이어야 합니다. 자신과 주변 사람의 안전을 항상 먼저 생각하고,
-            음주는 적당히, 귀가는 안전하게. NEON은 모두의 안전한 밤 문화를 응원합니다.
+            음주는 적당히, 귀가는 안전하게. 일산룸포털은 모두의 안전한 밤 문화를 응원합니다.
           </p>
         </div>
       </div>

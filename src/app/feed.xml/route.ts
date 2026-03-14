@@ -22,15 +22,15 @@ export async function GET() {
       <guid>${siteUrl}/magazine/${a.slug}</guid>
       <pubDate>${new Date(a.date).toUTCString()}</pubDate>
       <category>${a.category}</category>
-      <description><![CDATA[NEON 매거진 - ${a.title}]]></description>
+      <description><![CDATA[일산룸포털 매거진 - ${a.title}]]></description>
     </item>`).join('');
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>NEON 나이트라이프 매거진</title>
+    <title>일산룸포털 매거진</title>
     <link>${siteUrl}/magazine</link>
-    <description>대한민국 No.1 나이트라이프 가이드 NEON의 매거진과 커뮤니티 소식</description>
+    <description>대한민국 No.1 나이트라이프 가이드 일산룸포털의 매거진과 커뮤니티 소식</description>
     <language>ko</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>
