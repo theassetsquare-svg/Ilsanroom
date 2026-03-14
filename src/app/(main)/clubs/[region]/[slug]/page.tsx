@@ -3,6 +3,11 @@ import { notFound } from 'next/navigation';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import Breadcrumb from '@/components/layout/Breadcrumb';
+import PageViewTracker from '@/components/venue/PageViewTracker';
+import PremiumBadge from '@/components/venue/PremiumBadge';
+import VenueJsonLd from '@/components/venue/VenueJsonLd';
+import ReviewSection from '@/components/venue/ReviewSection';
+import QRCode from '@/components/venue/QRCode';
 import { getVenueBySlug, getRelatedVenues, getVenuesByCategory } from '@/data/venues';
 import type { Venue } from '@/types';
 
@@ -52,6 +57,21 @@ export default async function ClubDetailPage({ params }: Props) {
 
   return (
     <div className="bg-neutral-950">
+      <PageViewTracker venueId={venue.id} venueName={venue.nameKo} category={venue.category} region={venue.region} />
+      <VenueJsonLd
+        venue={venue}
+        breadcrumbItems={[
+          { name: 'NEON', url: '/' },
+          { name: '클럽', url: '/clubs' },
+          { name: regionKo, url: `/clubs/${region}` },
+          { name: venue.nameKo, url: `/clubs/${region}/${venue.slug}` },
+        ]}
+        reviews={[
+          { author: '김**', rating: 5, text: '분위기도 좋고 서비스도 최고였습니다.', date: '2026-03-10' },
+          { author: '이**', rating: 4, text: '전체적으로 만족스러웠습니다.', date: '2026-03-05' },
+        ]}
+      />
+
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
         <Breadcrumb items={[
           { label: '클럽', href: '/clubs' },
@@ -63,11 +83,8 @@ export default async function ClubDetailPage({ params }: Props) {
       <section className="relative overflow-hidden border-b border-neutral-800">
         <div className="absolute inset-0 bg-gradient-to-b from-violet-950/30 to-neutral-950" />
         <div className="relative mx-auto max-w-7xl px-4 pb-12 sm:px-6">
-          <div className="flex flex-wrap gap-2 mb-4">
-            {venue.isPremium && <Badge variant="premium">PREMIUM</Badge>}
-            {venue.isVerified && <Badge variant="verified">인증됨</Badge>}
-          </div>
-          <h1 className="text-3xl font-extrabold text-white sm:text-4xl">{venue.nameKo}</h1>
+          <PremiumBadge isPremium={venue.isPremium} isVerified={venue.isVerified} />
+          <h1 className="mt-4 text-3xl font-extrabold text-white sm:text-4xl">{venue.nameKo}</h1>
           <div className="mt-3 flex items-center gap-3 text-neutral-400">
             <span className="flex items-center gap-1"><span className="text-yellow-500">★</span> {venue.rating}</span>
             <span>·</span>
@@ -121,9 +138,26 @@ export default async function ClubDetailPage({ params }: Props) {
                 <div><dt className="text-neutral-600">가까운 역</dt><dd className="text-neutral-300">{venue.nearbyStation}</dd></div>
                 <div><dt className="text-neutral-600">추천 방문 시간</dt><dd className="text-neutral-300">{venue.bestTime}</dd></div>
               </dl>
+              <div className="mt-6 flex justify-center">
+                <QRCode
+                  url={`https://neon-nightlife.com/clubs/${venue.region}/${venue.slug}`}
+                  venueName={venue.nameKo}
+                />
+              </div>
+              <a
+                href={`/print/${venue.slug}`}
+                target="_blank"
+                className="mt-4 block text-center text-xs text-neutral-600 transition hover:text-violet-400"
+              >
+                프린트용 페이지 →
+              </a>
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+        <ReviewSection venueId={venue.id} venueName={venue.nameKo} />
       </section>
 
       {related.length > 0 && (

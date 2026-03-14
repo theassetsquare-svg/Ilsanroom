@@ -3,7 +3,11 @@ import { notFound } from 'next/navigation';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import Breadcrumb from '@/components/layout/Breadcrumb';
-import JsonLd from '@/components/seo/JsonLd';
+import PageViewTracker from '@/components/venue/PageViewTracker';
+import PremiumBadge from '@/components/venue/PremiumBadge';
+import VenueJsonLd from '@/components/venue/VenueJsonLd';
+import ReviewSection from '@/components/venue/ReviewSection';
+import QRCode from '@/components/venue/QRCode';
 import { getVenueBySlug, getRelatedVenues, getVenuesByCategory } from '@/data/venues';
 import type { Venue } from '@/types';
 
@@ -50,29 +54,31 @@ export default async function YojeongDetailPage({ params }: Props) {
   const related = getRelatedVenues(venue, 4);
   const isMyeongwolgwan = slug === 'ilsan-myeongwolgwan-yojeong';
 
-  const jsonLdData: Record<string, unknown> = {
-    '@context': 'https://schema.org',
-    '@type': 'Restaurant',
-    name: venue.nameKo,
-    description: venue.description,
-    address: { '@type': 'PostalAddress', streetAddress: venue.address, addressCountry: 'KR' },
-    aggregateRating: { '@type': 'AggregateRating', ratingValue: venue.rating, reviewCount: venue.reviewCount },
-    openingHours: venue.openHours,
-    servesCuisine: '한정식',
-    priceRange: '$$$$',
-  };
-
-  if (isMyeongwolgwan) {
-    jsonLdData['hasMenu'] = {
-      '@type': 'Menu',
-      name: '15가지 한정식 코스',
-      description: '계절 식재료를 활용한 전통 한정식 코스 요리',
-    };
-  }
+  const faqItems = isMyeongwolgwan ? [
+    { question: '일산명월관요정은 예약이 필수인가요?', answer: '네, 예약제로 운영됩니다. 원활한 서비스 제공을 위해 방문 전 사전 예약을 권장합니다.' },
+    { question: '주차 공간은 충분한가요?', answer: '전용 주차장을 완비하고 있으며, 대형 차량(버스 등)도 주차 가능합니다.' },
+    { question: '국악 연주는 항상 제공되나요?', answer: '기본적으로 저녁 시간대에 국악 연주가 진행됩니다. 특별 공연이 필요한 경우 사전 문의를 부탁드립니다.' },
+    { question: '단체 모임도 가능한가요?', answer: '최대 20인까지 수용 가능한 대형 룸이 있으며, 여러 룸을 연결하여 더 큰 규모의 행사도 진행할 수 있습니다.' },
+    { question: '드레스코드가 있나요?', answer: '포멀한 복장을 권장하며, 한복 착용도 환영합니다. 캐주얼한 복장은 자제해 주시기 바랍니다.' },
+  ] : undefined;
 
   return (
     <div className="bg-neutral-950">
-      <JsonLd data={jsonLdData} />
+      <PageViewTracker venueId={venue.id} venueName={venue.nameKo} category={venue.category} region={venue.region} />
+      <VenueJsonLd
+        venue={venue}
+        breadcrumbItems={[
+          { name: 'NEON', url: '/' },
+          { name: '요정', url: '/yojeong' },
+          { name: regionKo, url: `/yojeong/${region}` },
+          { name: venue.nameKo, url: `/yojeong/${region}/${venue.slug}` },
+        ]}
+        faqItems={faqItems}
+        reviews={[
+          { author: '김**', rating: 5, text: '분위기도 좋고 서비스도 최고였습니다.', date: '2026-03-10' },
+          { author: '이**', rating: 4, text: '전체적으로 만족스러웠습니다.', date: '2026-03-05' },
+        ]}
+      />
 
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
         <Breadcrumb items={[
@@ -85,11 +91,8 @@ export default async function YojeongDetailPage({ params }: Props) {
       <section className="relative overflow-hidden border-b border-neutral-800">
         <div className="absolute inset-0 bg-gradient-to-b from-emerald-950/30 to-neutral-950" />
         <div className="relative mx-auto max-w-7xl px-4 pb-12 sm:px-6">
-          <div className="flex flex-wrap gap-2 mb-4">
-            {venue.isPremium && <Badge variant="premium">PREMIUM</Badge>}
-            {venue.isVerified && <Badge variant="verified">인증됨</Badge>}
-          </div>
-          <h1 className="text-3xl font-extrabold text-white sm:text-4xl">{venue.nameKo}</h1>
+          <PremiumBadge isPremium={venue.isPremium} isVerified={venue.isVerified} />
+          <h1 className="mt-4 text-3xl font-extrabold text-white sm:text-4xl">{venue.nameKo}</h1>
           <div className="mt-3 flex items-center gap-3 text-neutral-400">
             <span className="flex items-center gap-1"><span className="text-yellow-500">★</span> {venue.rating}</span>
             <span>·</span><span>리뷰 {venue.reviewCount}개</span>
@@ -237,6 +240,19 @@ export default async function YojeongDetailPage({ params }: Props) {
                 <div><dt className="text-neutral-600">가까운 역</dt><dd className="text-neutral-300">{venue.nearbyStation}</dd></div>
                 <div><dt className="text-neutral-600">추천 방문 시간</dt><dd className="text-neutral-300">{venue.bestTime}</dd></div>
               </dl>
+              <div className="mt-6 flex justify-center">
+                <QRCode
+                  url={`https://neon-nightlife.com/yojeong/${venue.region}/${venue.slug}`}
+                  venueName={venue.nameKo}
+                />
+              </div>
+              <a
+                href={`/print/${venue.slug}`}
+                target="_blank"
+                className="mt-4 block text-center text-xs text-neutral-600 transition hover:text-violet-400"
+              >
+                프린트용 페이지 →
+              </a>
             </div>
 
             {isMyeongwolgwan && (
@@ -252,6 +268,10 @@ export default async function YojeongDetailPage({ params }: Props) {
             )}
           </div>
         </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+        <ReviewSection venueId={venue.id} venueName={venue.nameKo} />
       </section>
 
       {related.length > 0 && (
