@@ -33,6 +33,23 @@ export function getHookingTitle(venue: Venue): string {
     'busan-hoppa-star': '부산호빠스타 — 부산 호스트 씬의 떠오르는 별',
     'jangandong-hoppa-bbangbbang': '장안동호빠빵빵 — 동북 서울의 가성비 호스트 맛집',
     'haeundae-goguryeo': '해운대고구려 — 부산 해운대 룸 60개, 비즈니스 접대의 끝판왕',
+    // S1~S2 추가 업소
+    'gangnam-hoppa-boston': '강남보스턴호빠 — 삼성동 365일, 강남 호빠의 새로운 기준',
+    'suwon-hoppa-beast': '수원비스트호빠 — 인계동 1등, 수원 여성들의 선택',
+    'daegu-hoppa-perfect': '대구퍼펙트호빠 — 룸 70개, 대구 최대 호스트클럽',
+    'daejeon-hoppa-eclipse': '대전이클립스호빠 — 봉명동 No.1, 대전 밤의 중심',
+    'haeundae-hoppa-michelin': '해운대미슐랭호빠 — 해변 옆 프리미엄 호스트 경험',
+    'busan-hoppa-aura': '부산아우라호빠 — 365일 24시간, 부산 전역 커버',
+    'haeundae-grand-room': '해운대더그랜드룸 — 55개 룸, 해운대 비즈니스 접대 명가',
+    'daegu-room-today': '대구투데이룸 — 스태프 100명, 동대구역 5분',
+    'hongdae-hoppa-palace': '홍대호빠 궁전 — 홍대 No.1, 자유로운 밤의 왕궁',
+    'ulsan-hoppa-waltz': '울산호빠 왈츠 — 삼산동 365일, 울산 여성의 아지트',
+    'gwangju-hoppa-ace': '광주호빠 에이스 — 상무지구 훈남 천국',
+    'busan-hoppa-manz': '부산호빠 맨즈 — 광안리 신규 오픈, 해변 바로 앞',
+    'haeundae-hoppa-kkantappiya': '해운대호빠 깐따삐야 — 부산 1번 가게, 픽업 서비스',
+    'jeonju-hoppa-gallery': '전주호빠 갤러리 — 전주 No.1, 24시간 영업',
+    'dongtan-hoppa-sky': '동탄호빠 스카이 — 동탄 유일, 경기남부 여성 필수',
+    'jeju-hoppa-w': '제주호빠 W — 제주도 유일, 24시간 영업',
   };
 
   if (hooks[venue.slug]) return hooks[venue.slug] + ' ';
