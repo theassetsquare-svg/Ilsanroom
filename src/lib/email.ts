@@ -33,7 +33,7 @@ export interface EmailResult {
 // ─── Config ──────────────────────────────────────────────────────────
 
 const DEFAULT_FROM =
-  process.env.EMAIL_FROM ?? "일산룸포털 <noreply@ilsanroom.pages.dev>";
+  process.env.EMAIL_FROM ?? "일산룸포털 <qotjsdnr123@naver.com>";
 
 // ─── Core ────────────────────────────────────────────────────────────
 

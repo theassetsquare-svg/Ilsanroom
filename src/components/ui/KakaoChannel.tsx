@@ -26,7 +26,7 @@ export default function KakaoChannel() {
 
       {/* Kakao Button → 오늘밤어디 채널 */}
       <a
-        href="https://pf.kakao.com/_NEON"
+        href="https://pf.kakao.com/_xnKxmxj/chat"
         target="_blank"
         rel="noopener noreferrer"
         className="flex h-14 w-14 items-center justify-center rounded-full bg-[#FEE500] shadow-lg transition-transform hover:scale-110"

@@ -193,9 +193,11 @@ export default function HeroSearch() {
       {showResults && results.length > 0 && (
         <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-96 overflow-y-auto rounded-2xl border border-neon-border bg-neon-surface/95 shadow-2xl backdrop-blur-lg animate-fade-in">
           {results.map((v) => (
-            <button
+            <a
               key={v.id || v.slug}
-              onClick={() => handleResultClick(v)}
+              href={getCategoryHref(v.category, v.slug, v.region)}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex w-full items-center gap-3 border-b border-neon-border/50 px-4 py-3 text-left transition-colors hover:bg-neon-surface-2 last:border-b-0"
             >
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-neon-primary/10 text-sm font-bold text-neon-primary">
@@ -211,7 +213,7 @@ export default function HeroSearch() {
               {v.isPremium && (
                 <span className="shrink-0 rounded-full bg-neon-gold/10 px-2 py-0.5 text-[10px] font-bold text-neon-gold">PREMIUM</span>
               )}
-            </button>
+            </a>
           ))}
         </div>
       )}
