@@ -9,11 +9,11 @@ export const metadata: Metadata = {
 
 const events = [
   { id: 'e1', title: '강남 클럽 레이스 EDM 파티', venue: '강남클럽레이스', date: '2026-03-21', time: '23:00', region: '강남', category: '클럽' },
-  { id: 'e2', title: '홍대 NB2 힙합 나이트', venue: '클럽NB2', date: '2026-03-22', time: '22:00', region: '홍대', category: '클럽' },
+  { id: 'e2', title: '강남클럽 레이스 EDM 위크엔드', venue: '강남클럽 레이스', date: '2026-03-22', time: '23:00', region: '강남', category: '클럽' },
   { id: 'e3', title: '일산명월관요정 봄 한정식 특별 코스', venue: '일산명월관요정', date: '2026-03-25', time: '18:00', region: '일산', category: '요정' },
   { id: 'e4', title: '수원찬스돔 주말 스페셜', venue: '수원찬스돔나이트', date: '2026-03-29', time: '20:00', region: '수원', category: '나이트' },
-  { id: 'e5', title: '부산 클럽806 스프링 페스티벌', venue: '부산클럽806', date: '2026-04-05', time: '23:00', region: '부산', category: '클럽' },
-  { id: 'e6', title: '청담 H2O 나이트 VIP 이벤트', venue: '청담H2O나이트', date: '2026-04-12', time: '20:00', region: '청담', category: '나이트' },
+  { id: 'e5', title: '부산연산동물나이트 봄 스페셜', venue: '부산연산동물나이트', date: '2026-04-05', time: '20:00', region: '부산', category: '나이트' },
+  { id: 'e6', title: '청담H2O나이트 VIP 이벤트', venue: '청담H2O나이트', date: '2026-04-12', time: '20:00', region: '청담', category: '나이트' },
 ];
 
 const months = ['3월', '4월'];
