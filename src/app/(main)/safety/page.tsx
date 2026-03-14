@@ -5,6 +5,8 @@ import dynamic from 'next/dynamic';
 const AlcoholCalculator = dynamic(() => import('@/components/interactive/SafetyTools').then((m) => ({ default: m.AlcoholCalculator })), { ssr: false });
 const EmergencyContacts = dynamic(() => import('@/components/interactive/SafetyTools').then((m) => ({ default: m.EmergencyContacts })), { ssr: false });
 const LastTrainInfo = dynamic(() => import('@/components/interactive/SafetyTools').then((m) => ({ default: m.LastTrainInfo })), { ssr: false });
+const QuickDriverCall = dynamic(() => import('@/components/interactive/KillerFeatures').then((m) => ({ default: m.QuickDriverCall })), { ssr: false });
+const HangoverFood = dynamic(() => import('@/components/interactive/KillerFeatures').then((m) => ({ default: m.HangoverFood })), { ssr: false });
 
 export default function SafetyPage() {
   return (
@@ -53,6 +55,11 @@ export default function SafetyPage() {
           </div>
         </div>
       </div>
+      {/* [T] 대리운전 원클릭 */}
+      <QuickDriverCall />
+
+      {/* [AG] 해장 맛집 */}
+      <HangoverFood />
     </div>
   );
 }
