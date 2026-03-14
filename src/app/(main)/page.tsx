@@ -3,6 +3,10 @@ import Link from 'next/link';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import JsonLd from '@/components/seo/JsonLd';
+import PersonalizedPicks from '@/components/recommendations/PersonalizedPicks';
+import TimeBasedPicks from '@/components/recommendations/TimeBasedPicks';
+import WeatherPicks from '@/components/recommendations/WeatherPicks';
+import RecentlyViewed from '@/components/recommendations/RecentlyViewed';
 import { categories, getPopularVenues, getVenueBySlug, getVenuesByCategory } from '@/data/venues';
 import type { Venue, VenueCategory } from '@/types';
 
@@ -256,6 +260,12 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* Recommendations */}
+      <RecentlyViewed />
+      <TimeBasedPicks />
+      <PersonalizedPicks />
+      <WeatherPicks />
 
       {/* Instagram Feed */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
