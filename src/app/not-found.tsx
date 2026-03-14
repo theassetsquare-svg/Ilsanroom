@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: '404 - 업소를 못 찾겠어요 | 일산룸포털',
+  title: '404 - 업소를 못 찾겠어요 | 오늘밤어디',
   description: '요청하신 페이지를 찾을 수 없습니다. 인기 업소를 확인해 보세요.',
 };
 
@@ -70,7 +70,7 @@ export default function NotFound() {
       </div>
 
       <div className="mt-16 text-neon-text-muted/30">
-        <p className="text-xs">일산룸포털 - 일산 룸·요정·나이트라이프 포털</p>
+        <p className="text-xs">오늘밤어디 - 일산 룸·요정·나이트라이프 포털</p>
       </div>
     </div>
   );

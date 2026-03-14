@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase';
 import type { Venue } from '@/types';
 import { venues as localVenues } from '@/data/venues';
 
@@ -48,71 +47,19 @@ export default function HeroSearch() {
     }
 
     setLoading(true);
-    let searchResults: Venue[] = [];
 
-    try {
-      const supabase = createClient();
-      if (supabase && q.trim()) {
-        const { data } = await supabase
-          .from('venues')
-          .select('*')
-          .or(`name_ko.ilike.%${q}%,region_ko.ilike.%${q}%`)
-          .limit(10);
-
-        if (data && data.length > 0) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          searchResults = (data as any[]).map((d) => ({
-            id: d.id,
-            slug: d.slug,
-            name: d.name,
-            nameKo: d.name_ko,
-            category: d.category as Venue['category'],
-            region: d.region,
-            regionKo: d.region_ko,
-            address: d.address || '',
-            description: d.description || '',
-            shortDescription: d.short_description || '',
-            features: d.features || [],
-            atmosphere: d.atmosphere || [],
-            ageGroup: d.age_group || '',
-            dressCode: d.dress_code || '',
-            bestTime: d.best_time || '',
-            parking: d.parking || '',
-            nearbyStation: d.nearby_station || '',
-            imageUrl: d.image_url || '',
-            rating: d.rating || 0,
-            reviewCount: d.review_count || 0,
-            isPremium: d.is_premium || false,
-            isVerified: d.is_verified || false,
-            status: (d.status || 'unknown') as Venue['status'],
-            openHours: d.open_hours || '',
-            tags: d.tags || [],
-            staffNickname: d.staff_nickname || undefined,
-            staffPhone: d.staff_phone || undefined,
-            district: d.district || undefined,
-          }));
-        }
-      }
-    } catch {
-      // Supabase unavailable, use local fallback
-    }
-
-    // Fallback to local data
-    if (searchResults.length === 0) {
-      const lowerQ = q.toLowerCase();
-      searchResults = localVenues.filter((v) => {
-        if (v.status === 'closed_or_unclear') return false;
-        const matchesQuery = !q.trim() ||
-          v.nameKo.toLowerCase().includes(lowerQ) ||
-          v.regionKo.toLowerCase().includes(lowerQ) ||
-          v.tags.some((t) => t.toLowerCase().includes(lowerQ)) ||
-          v.description.toLowerCase().includes(lowerQ);
-        const matchesCat = cat === 'all' || v.category === cat;
-        return matchesQuery && matchesCat;
-      });
-    } else if (cat !== 'all') {
-      searchResults = searchResults.filter((v) => v.category === cat);
-    }
+    // ★ 항상 로컬 데이터에서 검색 (즉시, 확실)
+    const lowerQ = q.toLowerCase();
+    let searchResults = localVenues.filter((v) => {
+      if (v.status === 'closed_or_unclear') return false;
+      const matchesQuery = !q.trim() ||
+        v.nameKo.toLowerCase().includes(lowerQ) ||
+        v.regionKo.toLowerCase().includes(lowerQ) ||
+        v.tags.some((t) => t.toLowerCase().includes(lowerQ)) ||
+        v.description.toLowerCase().includes(lowerQ);
+      const matchesCat = cat === 'all' || v.category === cat;
+      return matchesQuery && matchesCat;
+    });
 
     setResults(searchResults.slice(0, 8));
     setShowResults(true);

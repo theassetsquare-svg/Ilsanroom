@@ -5,9 +5,9 @@ import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from
 import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
-  title: '라운지 | 일산룸포털 - 강남·압구정·이태원 프리미엄 라운지바',
+  title: '라운지 | 오늘밤어디 - 강남·압구정·이태원 프리미엄 라운지바',
   description: '전국 프리미엄 라운지 정보. 강남, 압구정, 이태원 라운지바. 칵테일, 프라이빗 공간.',
-  openGraph: { images: [{ url: 'https://placehold.co/1200x630/06B6D4/ffffff/png?text=라운지 | 일산룸포털', width: 1200, height: 630 }] },
+  openGraph: { images: [{ url: 'https://placehold.co/1200x630/06B6D4/ffffff/png?text=라운지 | 오늘밤어디', width: 1200, height: 630 }] },
 };
 
 const regions = [

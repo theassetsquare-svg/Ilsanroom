@@ -147,9 +147,9 @@ export default function ProfileClient() {
         </div>
       </div>
 
-      {/* 일산룸포털 Points */}
+      {/* 오늘밤어디 Points */}
       <div className="mb-8">
-        <h2 className="mb-4 text-lg font-bold text-neon-text">일산룸포털 포인트</h2>
+        <h2 className="mb-4 text-lg font-bold text-neon-text">오늘밤어디 포인트</h2>
         <div className="rounded-xl border border-neon-border bg-neon-bg p-5">
           <div className="mb-3 flex items-center justify-between">
             <span className="text-sm text-neon-text-muted">보유 포인트</span>

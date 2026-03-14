@@ -13,20 +13,20 @@ import { categories, getPopularVenues, getVenueBySlug } from '@/data/venues';
 import type { Venue, VenueCategory } from '@/types';
 
 export const metadata: Metadata = {
-  title: '일산룸포털 — 오늘밤 어디가? 전국 나이트/클럽/라운지 실시간 정보',
-  description: '일산룸, 일산명월관요정 등 전국 나이트라이프 업소 정보를 한눈에. 클럽, 나이트, 라운지, 룸, 요정, 호빠 인기 업소 검색, 리뷰, 이벤트 정보를 일산룸포털에서 확인하세요.',
+  title: '오늘밤어디 — 오늘밤 어디가? 전국 나이트/클럽/라운지 실시간 정보',
+  description: '일산룸, 일산명월관요정 등 전국 나이트라이프 업소 정보를 한눈에. 클럽, 나이트, 라운지, 룸, 요정, 호빠 인기 업소 검색, 리뷰, 이벤트 정보를 오늘밤어디에서 확인하세요.',
   openGraph: {
-    title: '일산룸, 일산명월관요정 | 일산룸포털',
+    title: '일산룸, 일산명월관요정 | 오늘밤어디',
     description: '클럽, 나이트, 라운지, 룸, 요정, 호빠 — 전국 인기 업소 정보. 일산룸, 일산명월관요정 프리미엄 추천.',
     type: 'website',
     locale: 'ko_KR',
-    siteName: '일산룸포털',
+    siteName: '오늘밤어디',
     url: 'https://ilsanroom.pages.dev',
-    images: [{ url: 'https://ilsanroom.pages.dev/og/default.svg', width: 1200, height: 630, alt: '일산룸포털 — 오늘밤 어디가?' }],
+    images: [{ url: 'https://ilsanroom.pages.dev/og/default.svg', width: 1200, height: 630, alt: '오늘밤어디 — 오늘밤 어디가?' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '일산룸포털 — 오늘밤 어디가?',
+    title: '오늘밤어디 — 오늘밤 어디가?',
     images: ['https://ilsanroom.pages.dev/og/default.svg'],
   },
 };
@@ -141,7 +141,7 @@ export default function HomePage() {
       <JsonLd data={{
         '@context': 'https://schema.org',
         '@type': 'WebSite',
-        name: '일산룸포털',
+        name: '오늘밤어디',
         url: 'https://ilsanroom.pages.dev',
         description: '일산룸, 일산명월관요정 등 전국 나이트라이프 업소 정보 포털',
         potentialAction: {
@@ -180,7 +180,7 @@ export default function HomePage() {
 
         <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:py-32">
           <div className="text-center">
-            <Badge variant="premium" className="mb-6 text-sm">일산룸포털 GUIDE 2026</Badge>
+            <Badge variant="premium" className="mb-6 text-sm">오늘밤어디 GUIDE 2026</Badge>
             <h1 className="text-4xl font-extrabold tracking-tight text-neon-text sm:text-5xl lg:text-6xl">
               일산룸 · 일산명월관요정
               <br />
@@ -420,7 +420,7 @@ export default function HomePage() {
                   내 업소를 등록하고 <span className="text-neon-primary">매출 300%</span> 올리세요
                 </h3>
                 <p className="text-neon-text-muted">
-                  일산룸포털에 업소를 등록하면 월 평균 방문자 1,200명 이상 노출됩니다. 무료로 시작해 보세요.
+                  오늘밤어디에 업소를 등록하면 월 평균 방문자 1,200명 이상 노출됩니다. 무료로 시작해 보세요.
                 </p>
               </div>
               <div className="mt-6 sm:mt-0 sm:ml-8 shrink-0">
@@ -439,10 +439,10 @@ export default function HomePage() {
       {/* ═══════ SEO Text ═══════ */}
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-8">
-          <h2 className="mb-4 text-xl font-bold text-neon-text">일산룸포털 — 일산룸, 일산명월관요정 전국 나이트라이프 가이드</h2>
+          <h2 className="mb-4 text-xl font-bold text-neon-text">오늘밤어디 — 일산룸, 일산명월관요정 전국 나이트라이프 가이드</h2>
           <div className="space-y-4 text-sm leading-relaxed text-neon-text-muted/70">
             <p>
-              일산룸포털은 일산룸, 일산명월관요정을 비롯한 전국의 나이트, 클럽, 라운지, 룸, 요정, 호빠
+              오늘밤어디은 일산룸, 일산명월관요정을 비롯한 전국의 나이트, 클럽, 라운지, 룸, 요정, 호빠
               업소 정보를 한곳에 모은 나이트라이프 전문 포털입니다. 서울 강남, 홍대, 이태원부터
               부산 해운대, 경기 일산, 수원, 대구, 광주, 대전, 인천, 울산까지 전국 주요 지역의
               검증된 업소 정보와 이용 가이드를 제공합니다.
@@ -455,7 +455,7 @@ export default function HomePage() {
             <p>
               클럽과 나이트는 완전히 다른 업종입니다. 클럽은 EDM, 힙합 등 전자음악 중심의 공간이고,
               나이트(나이트클럽)는 소셜 댄스와 라이브 밴드가 있는 사교 공간입니다.
-              일산룸포털에서는 이러한 업종 차이를 명확히 구분하여 정확한 정보를 제공합니다.
+              오늘밤어디에서는 이러한 업종 차이를 명확히 구분하여 정확한 정보를 제공합니다.
             </p>
           </div>
         </div>

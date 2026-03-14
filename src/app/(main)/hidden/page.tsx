@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: '이 업소 몰랐지? 숨은 명소 | 일산룸포털',
+  title: '이 업소 몰랐지? 숨은 명소 | 오늘밤어디',
   description: '매주 발굴하는 숨은 나이트라이프 명소. 다른 사이트에서 찾기 어려운 알짜 업소를 소개합니다.',
 };
 

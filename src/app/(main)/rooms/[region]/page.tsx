@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { region } = await params;
   const regionKo = regionNames[region] || region;
   return {
-    title: `${regionKo} 룸 | 일산룸포털 - ${regionKo}룸 정보`,
+    title: `${regionKo} 룸 | 오늘밤어디 - ${regionKo}룸 정보`,
     description: `${regionKo} 지역 프리미엄 룸 리스트. ${regionKo}룸의 시설, 분위기, 서비스를 비교하고 나에게 맞는 룸을 찾아보세요.`,
   };
 }

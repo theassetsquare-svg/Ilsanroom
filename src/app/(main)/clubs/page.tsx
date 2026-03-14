@@ -5,9 +5,9 @@ import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from
 import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
-  title: '클럽 | 일산룸포털 - 강남·홍대·이태원·부산 EDM 힙합 클럽',
+  title: '클럽 | 오늘밤어디 - 강남·홍대·이태원·부산 EDM 힙합 클럽',
   description: '전국 인기 클럽 정보. 강남 EDM 클럽, 홍대 힙합 클럽, 이태원 글로벌 클럽, 부산 서면 클럽까지 장르별·지역별 클럽 리스트.',
-  openGraph: { images: [{ url: 'https://placehold.co/1200x630/8B5CF6/ffffff/png?text=클럽 | 일산룸포털', width: 1200, height: 630 }] },
+  openGraph: { images: [{ url: 'https://placehold.co/1200x630/8B5CF6/ffffff/png?text=클럽 | 오늘밤어디', width: 1200, height: 630 }] },
 };
 
 const regions = [

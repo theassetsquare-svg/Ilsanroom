@@ -3,7 +3,7 @@ import Link from 'next/link';
 import JsonLd from '@/components/seo/JsonLd';
 
 export const metadata: Metadata = {
-  title: '이벤트 & 파티 캘린더 | 일산룸포털',
+  title: '이벤트 & 파티 캘린더 | 오늘밤어디',
   description: '최신 나이트라이프 이벤트와 파티 일정. 클럽, 나이트, 라운지 이벤트 총정리.',
 };
 
@@ -29,7 +29,7 @@ export default function EventsPage() {
           name: e.title,
           startDate: `${e.date}T${e.time}:00+09:00`,
           location: { '@type': 'Place', name: e.venue, address: { '@type': 'PostalAddress', addressCountry: 'KR' } },
-          organizer: { '@type': 'Organization', name: '일산룸포털', url: 'https://ilsanroom.pages.dev' },
+          organizer: { '@type': 'Organization', name: '오늘밤어디', url: 'https://ilsanroom.pages.dev' },
         }} />
       ))}
 

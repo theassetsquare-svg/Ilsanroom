@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: '매거진 | 일산룸포털 - 나이트라이프 트렌드와 가이드',
-  description: '나이트라이프 문화, 트렌드, 업소 가이드, 인터뷰 등 다양한 콘텐츠를 일산룸포털 매거진에서 확인하세요.',
+  title: '매거진 | 오늘밤어디 - 나이트라이프 트렌드와 가이드',
+  description: '나이트라이프 문화, 트렌드, 업소 가이드, 인터뷰 등 다양한 콘텐츠를 오늘밤어디 매거진에서 확인하세요.',
 };
 
 const articles = [

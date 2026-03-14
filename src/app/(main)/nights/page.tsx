@@ -5,9 +5,9 @@ import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from
 import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
-  title: '나이트 | 일산룸포털 - 전국 나이트클럽 소셜댄스 부킹',
-  description: '전국 나이트클럽 정보. 부킹 시스템, 부스/룸/테이블/홀, 라이브 밴드, 소셜 댄스 정보를 일산룸포털에서.',
-  openGraph: { images: [{ url: 'https://placehold.co/1200x630/F43F5E/ffffff/png?text=나이트 | 일산룸포털', width: 1200, height: 630 }] },
+  title: '나이트 | 오늘밤어디 - 전국 나이트클럽 소셜댄스 부킹',
+  description: '전국 나이트클럽 정보. 부킹 시스템, 부스/룸/테이블/홀, 라이브 밴드, 소셜 댄스 정보를 오늘밤어디에서.',
+  openGraph: { images: [{ url: 'https://placehold.co/1200x630/F43F5E/ffffff/png?text=나이트 | 오늘밤어디', width: 1200, height: 630 }] },
 };
 
 const regions = [

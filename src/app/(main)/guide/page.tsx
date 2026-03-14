@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: '첫 방문 가이드 | 일산룸포털 — 처음 가는 사람 완벽 가이드',
+  title: '첫 방문 가이드 | 오늘밤어디 — 처음 가는 사람 완벽 가이드',
   description: '클럽, 나이트, 라운지, 룸, 요정, 호빠 처음 방문자를 위한 완벽 가이드. 복장, 예산, 매너, 혼자 가도 되는지까지.',
 };
 

@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const venue = getVenueBySlug(slug);
   if (!venue) return { title: '업소를 찾을 수 없습니다' };
   return {
-    title: `${venue.nameKo} - 프린트용 | 일산룸포털`,
+    title: `${venue.nameKo} - 프린트용 | 오늘밤어디`,
     robots: { index: false, follow: false },
   };
 }
@@ -61,7 +61,7 @@ export default async function PrintPage({ params }: Props) {
               </p>
             </div>
             <div className="text-right">
-              <p className="text-xs text-neutral-500">일산룸포털</p>
+              <p className="text-xs text-neutral-500">오늘밤어디</p>
               <p className="text-xs text-neutral-500">ilsanroom.pages.dev</p>
             </div>
           </div>
@@ -122,7 +122,7 @@ export default async function PrintPage({ params }: Props) {
         {/* QR Code placeholder */}
         <div className="mt-8 flex items-center justify-between border-t border-neutral-200 pt-4">
           <p className="text-xs text-neutral-500">
-            이 정보는 일산룸포털에서 제공합니다. 방문 전 업소에 직접 확인하세요.
+            이 정보는 오늘밤어디에서 제공합니다. 방문 전 업소에 직접 확인하세요.
           </p>
           <div className="h-16 w-16 rounded border border-neutral-300 bg-neutral-100 flex items-center justify-center text-[8px] text-neutral-400">
             QR

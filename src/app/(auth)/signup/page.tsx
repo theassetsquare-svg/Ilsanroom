@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "회원가입 - 일산룸포털",
-  description: "일산룸포털에 가입하고 다양한 나이트라이프 정보를 만나보세요.",
+  title: "회원가입 - 오늘밤어디",
+  description: "오늘밤어디에 가입하고 다양한 나이트라이프 정보를 만나보세요.",
 };
 
 export default function SignupPage() {

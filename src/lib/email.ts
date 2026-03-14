@@ -33,7 +33,7 @@ export interface EmailResult {
 // ─── Config ──────────────────────────────────────────────────────────
 
 const DEFAULT_FROM =
-  process.env.EMAIL_FROM ?? "일산룸포털 <qotjsdnr123@naver.com>";
+  process.env.EMAIL_FROM ?? "오늘밤어디 <qotjsdnr123@naver.com>";
 
 // ─── Core ────────────────────────────────────────────────────────────
 
@@ -78,9 +78,9 @@ export async function sendWelcomeEmail(
 <html lang="ko">
 <head><meta charset="utf-8"></head>
 <body style="font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#1a1a1a;">
-  <h1 style="color:#7c3aed;font-size:24px;">일산룸포털에 오신 것을 환영합니다!</h1>
+  <h1 style="color:#7c3aed;font-size:24px;">오늘밤어디에 오신 것을 환영합니다!</h1>
   <p>${userName}님, 회원가입이 완료되었습니다.</p>
-  <p>일산룸포털에서 대한민국 최고의 나이트라이프 정보를 만나보세요.</p>
+  <p>오늘밤어디에서 대한민국 최고의 나이트라이프 정보를 만나보세요.</p>
   <ul>
     <li>인기 업소 랭킹 확인</li>
     <li>지역별 업소 탐색</li>
@@ -89,15 +89,15 @@ export async function sendWelcomeEmail(
   </ul>
   <a href="https://ilsanroom.pages.dev" style="display:inline-block;background:#7c3aed;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:16px;">시작하기</a>
   <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0 16px;">
-  <p style="font-size:12px;color:#9ca3af;">본 메일은 일산룸포털 회원가입 시 자동 발송됩니다.</p>
+  <p style="font-size:12px;color:#9ca3af;">본 메일은 오늘밤어디 회원가입 시 자동 발송됩니다.</p>
 </body>
 </html>`.trim();
 
   return sendEmail({
     to,
-    subject: `${userName}님, 일산룸포털에 오신 것을 환영합니다!`,
+    subject: `${userName}님, 오늘밤어디에 오신 것을 환영합니다!`,
     html,
-    text: `${userName}님, 일산룸포털에 오신 것을 환영합니다! 회원가입이 완료되었습니다.`,
+    text: `${userName}님, 오늘밤어디에 오신 것을 환영합니다! 회원가입이 완료되었습니다.`,
     tags: { type: "welcome" },
   });
 }
@@ -127,7 +127,7 @@ export async function sendVerificationEmail(
 
   return sendEmail({
     to,
-    subject: "[일산룸포털] 이메일 인증을 완료해 주세요",
+    subject: "[오늘밤어디] 이메일 인증을 완료해 주세요",
     html,
     text: `이메일 인증 링크: ${verificationUrl} (24시간 후 만료)`,
     tags: { type: "verification" },

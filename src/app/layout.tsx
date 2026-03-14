@@ -9,30 +9,30 @@ import JsonLd from '@/components/seo/JsonLd';
 
 export const metadata: Metadata = {
   title: {
-    default: '일산룸포털 | 일산 룸·요정·나이트·라운지·클럽·호빠 정보',
-    template: '%s | 일산룸포털',
+    default: '오늘밤어디 | 일산 룸·요정·나이트·라운지·클럽·호빠 정보',
+    template: '%s | 오늘밤어디',
   },
   description:
-    '일산룸포털은 일산 룸, 요정, 나이트, 라운지, 클럽, 호빠 업소 정보를 한곳에 모은 대한민국 나이트라이프 포털입니다. 지역별 업소 검색, 리뷰, 이벤트 정보를 확인하세요.',
+    '오늘밤어디은 일산 룸, 요정, 나이트, 라운지, 클럽, 호빠 업소 정보를 한곳에 모은 대한민국 나이트라이프 포털입니다. 지역별 업소 검색, 리뷰, 이벤트 정보를 확인하세요.',
   keywords: [
     '일산룸', '일산요정', '일산나이트', '일산라운지', '일산클럽', '일산호빠',
     '일산명월관요정', '강남클럽', '홍대클럽', '강남나이트', '강남라운지',
     '부산클럽', '부산나이트', '나이트라이프', '룸', '요정', '호빠',
   ],
-  authors: [{ name: '일산룸포털' }],
+  authors: [{ name: '오늘밤어디' }],
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
-    siteName: '일산룸포털',
-    title: '일산룸포털 | 일산 룸·요정·나이트·라운지·클럽·호빠 정보',
+    siteName: '오늘밤어디',
+    title: '오늘밤어디 | 일산 룸·요정·나이트·라운지·클럽·호빠 정보',
     description:
-      '일산 룸, 요정, 나이트, 라운지, 클럽, 호빠 업소 정보를 일산룸포털에서 확인하세요.',
+      '일산 룸, 요정, 나이트, 라운지, 클럽, 호빠 업소 정보를 오늘밤어디에서 확인하세요.',
     url: 'https://ilsanroom.pages.dev',
-    images: [{ url: 'https://ilsanroom.pages.dev/og/default.svg', width: 1200, height: 630, alt: '일산룸포털 — 전국 나이트라이프 업소 정보' }],
+    images: [{ url: 'https://ilsanroom.pages.dev/og/default.svg', width: 1200, height: 630, alt: '오늘밤어디 — 전국 나이트라이프 업소 정보' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '일산룸포털 | 일산 룸·요정·나이트·라운지·클럽·호빠 정보',
+    title: '오늘밤어디 | 일산 룸·요정·나이트·라운지·클럽·호빠 정보',
     description: '일산 룸, 요정, 나이트, 라운지, 클럽, 호빠 업소 정보를 한곳에서.',
     images: ['https://ilsanroom.pages.dev/og/default.svg'],
   },
@@ -60,7 +60,7 @@ export const viewport: Viewport = {
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: '일산룸포털',
+  name: '오늘밤어디',
   url: 'https://ilsanroom.pages.dev',
   logo: 'https://ilsanroom.pages.dev/favicon.ico',
   description: '일산 룸, 요정, 나이트, 라운지, 클럽, 호빠 업소 정보 포털',
@@ -70,7 +70,7 @@ const organizationJsonLd = {
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: '일산룸포털',
+  name: '오늘밤어디',
   url: 'https://ilsanroom.pages.dev',
   potentialAction: {
     '@type': 'SearchAction',

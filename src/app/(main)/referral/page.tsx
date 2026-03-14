@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "추천 프로그램 - 일산룸포털",
+  title: "추천 프로그램 - 오늘밤어디",
   description:
-    "일산룸포털 추천 프로그램으로 친구를 초대하고 보상을 받으세요. 추천할수록 더 많은 혜택이 쌓입니다.",
+    "오늘밤어디 추천 프로그램으로 친구를 초대하고 보상을 받으세요. 추천할수록 더 많은 혜택이 쌓입니다.",
 };
 
 const steps = [
@@ -18,7 +18,7 @@ const steps = [
     step: 2,
     title: "친구 가입 완료",
     description:
-      "공유한 링크를 통해 친구가 일산룸포털에 회원가입을 완료하면 추천이 인정됩니다.",
+      "공유한 링크를 통해 친구가 오늘밤어디에 회원가입을 완료하면 추천이 인정됩니다.",
     icon: "👤",
   },
   {
@@ -34,7 +34,7 @@ const rewards = [
   {
     tier: "브론즈",
     range: "1~4명 추천",
-    reward: "추천 1건당 500 일산룸포털 포인트",
+    reward: "추천 1건당 500 오늘밤어디 포인트",
     color: "from-amber-700 to-amber-900",
     borderColor: "border-amber-700/30",
     textColor: "text-amber-400",
@@ -42,7 +42,7 @@ const rewards = [
   {
     tier: "실버",
     range: "5~14명 추천",
-    reward: "추천 1건당 800 일산룸포털 포인트",
+    reward: "추천 1건당 800 오늘밤어디 포인트",
     color: "from-neutral-400 to-neutral-600",
     borderColor: "border-neutral-500/30",
     textColor: "text-neon-text",
@@ -50,7 +50,7 @@ const rewards = [
   {
     tier: "골드",
     range: "15~29명 추천",
-    reward: "추천 1건당 1,200 일산룸포털 포인트 + 프리미엄 1주 무료",
+    reward: "추천 1건당 1,200 오늘밤어디 포인트 + 프리미엄 1주 무료",
     color: "from-yellow-500 to-yellow-700",
     borderColor: "border-yellow-600/30",
     textColor: "text-neon-gold",
@@ -58,7 +58,7 @@ const rewards = [
   {
     tier: "다이아몬드",
     range: "30명 이상 추천",
-    reward: "추천 1건당 2,000 일산룸포털 포인트 + 프리미엄 1개월 무료",
+    reward: "추천 1건당 2,000 오늘밤어디 포인트 + 프리미엄 1개월 무료",
     color: "from-violet-500 to-violet-700",
     borderColor: "border-violet-500/30",
     textColor: "text-neon-primary-light",
@@ -71,7 +71,7 @@ const faqs = [
     a: "친구가 회원가입을 완료한 후 24시간 이내에 자동 지급됩니다.",
   },
   {
-    q: "일산룸포털 포인트는 어디에 사용할 수 있나요?",
+    q: "오늘밤어디 포인트는 어디에 사용할 수 있나요?",
     a: "프리미엄 구독 결제, 이벤트 응모, 제휴 업소 할인 쿠폰 교환 등에 사용할 수 있습니다.",
   },
   {
@@ -95,7 +95,7 @@ export default function ReferralPage() {
         {/* Hero */}
         <div className="mb-16 text-center">
           <div className="mb-4 inline-flex rounded-full bg-neon-primary/20 px-4 py-1.5 text-sm font-medium text-neon-primary-light">
-            일산룸포털 추천 프로그램
+            오늘밤어디 추천 프로그램
           </div>
           <h1 className="mb-4 text-4xl font-bold md:text-5xl">
             친구를 초대하고
@@ -103,7 +103,7 @@ export default function ReferralPage() {
             <span className="text-neon-primary-light">보상을 받으세요</span>
           </h1>
           <p className="mx-auto max-w-xl text-lg text-neon-text-muted">
-            추천 링크를 공유하면 당신과 친구 모두에게 일산룸포털 포인트가 지급됩니다.
+            추천 링크를 공유하면 당신과 친구 모두에게 오늘밤어디 포인트가 지급됩니다.
             추천할수록 등급이 올라가고, 보상도 커집니다.
           </p>
         </div>
@@ -168,7 +168,7 @@ export default function ReferralPage() {
               300P
             </span>
             <span className="text-sm text-neon-text-muted">
-              가입 즉시 일산룸포털 포인트 지급
+              가입 즉시 오늘밤어디 포인트 지급
             </span>
           </div>
         </div>

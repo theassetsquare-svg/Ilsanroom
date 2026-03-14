@@ -5,9 +5,9 @@ import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from
 import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
-  title: '호빠 | 일산룸포털 - 강남·부산·장안동 호스트바 정보',
+  title: '호빠 | 오늘밤어디 - 강남·부산·장안동 호스트바 정보',
   description: '전국 호빠(호스트바) 정보. 강남호빠로얄, 부산호빠스타, 장안동호빠빵빵 등 호스트클럽 리스트.',
-  openGraph: { images: [{ url: 'https://placehold.co/1200x630/EC4899/ffffff/png?text=호빠 | 일산룸포털', width: 1200, height: 630 }] },
+  openGraph: { images: [{ url: 'https://placehold.co/1200x630/EC4899/ffffff/png?text=호빠 | 오늘밤어디', width: 1200, height: 630 }] },
 };
 
 const regions = [

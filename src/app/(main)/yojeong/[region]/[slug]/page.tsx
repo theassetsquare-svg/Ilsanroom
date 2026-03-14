@@ -19,11 +19,11 @@ const regionNames: Record<string, string> = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const venue = getVenueBySlug(slug);
-  if (!venue) return { title: '요정을 찾을 수 없습니다 | 일산룸포털' };
+  if (!venue) return { title: '요정을 찾을 수 없습니다 | 오늘밤어디' };
   return {
     title: getHookingTitle(venue),
     description: getHookingDescription(venue),
-    openGraph: { title: `${venue.nameKo} | 일산룸포털`, description: venue.shortDescription, images: [{ url: getVenueOgImage(venue.nameKo, venue.category), width: 1200, height: 630 }] },
+    openGraph: { title: `${venue.nameKo} | 오늘밤어디`, description: venue.shortDescription, images: [{ url: getVenueOgImage(venue.nameKo, venue.category), width: 1200, height: 630 }] },
   };
 }
 

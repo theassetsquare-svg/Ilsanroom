@@ -5,9 +5,9 @@ import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from
 import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
-  title: '룸 | 일산룸포털 - 일산룸·해운대고구려·전국 프라이빗 룸',
+  title: '룸 | 오늘밤어디 - 일산룸·해운대고구려·전국 프라이빗 룸',
   description: '전국 프라이빗 룸 정보. 일산룸, 해운대고구려, 강남룸 등 지역별 룸 시설 리스트.',
-  openGraph: { images: [{ url: 'https://placehold.co/1200x630/F59E0B/ffffff/png?text=룸 | 일산룸포털', width: 1200, height: 630 }] },
+  openGraph: { images: [{ url: 'https://placehold.co/1200x630/F59E0B/ffffff/png?text=룸 | 오늘밤어디', width: 1200, height: 630 }] },
 };
 
 const regions = [

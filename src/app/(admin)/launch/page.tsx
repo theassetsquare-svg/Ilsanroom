@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "런칭 체크리스트 - 일산룸포털 관리자",
-  description: "일산룸포털 SaaS 런칭 전 확인 사항",
+  title: "런칭 체크리스트 - 오늘밤어디 관리자",
+  description: "오늘밤어디 SaaS 런칭 전 확인 사항",
 };
 
 const sections = [
@@ -103,7 +103,7 @@ export default function LaunchChecklistPage() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">런칭 체크리스트</h1>
         <p className="mt-2 text-neutral-400">
-          일산룸포털 SaaS 런칭 전 확인 사항
+          오늘밤어디 SaaS 런칭 전 확인 사항
         </p>
       </div>
 

@@ -39,7 +39,7 @@ export default function VenueDetailPage({
   extraContent,
 }: VenueDetailPageProps) {
   const breadcrumbItems = [
-    { name: '일산룸포털', url: '/' },
+    { name: '오늘밤어디', url: '/' },
     { name: categoryLabel, url: categoryPath },
     { name: regionKo, url: regionPath },
     { name: venue.nameKo, url: detailPath },

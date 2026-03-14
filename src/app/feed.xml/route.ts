@@ -20,13 +20,13 @@ export async function GET() {
       <link>${SITE_URL}/magazine</link>
       <pubDate>${new Date(a.date).toUTCString()}</pubDate>
       <category>${a.category}</category>
-      <description><![CDATA[${a.title} - 일산룸포털 매거진]]></description>
+      <description><![CDATA[${a.title} - 오늘밤어디 매거진]]></description>
     </item>`).join('');
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>일산룸포털 매거진</title>
+    <title>오늘밤어디 매거진</title>
     <link>${SITE_URL}</link>
     <description>일산룸, 일산명월관요정 등 전국 나이트라이프 업소 정보와 가이드</description>
     <language>ko</language>

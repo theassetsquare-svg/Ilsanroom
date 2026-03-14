@@ -1,4 +1,4 @@
-// Toss Payments integration for 일산룸포털 SaaS
+// Toss Payments integration for 오늘밤어디 SaaS
 
 const TOSS_CLIENT_KEY = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY || '';
 const TOSS_SECRET_KEY = process.env.TOSS_SECRET_KEY || '';

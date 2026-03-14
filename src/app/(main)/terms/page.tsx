@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "이용약관 - 일산룸포털",
-  description: "일산룸포털 서비스 이용약관. 서비스 이용 조건, 회원 의무, 책임 제한 등을 안내합니다.",
+  title: "이용약관 - 오늘밤어디",
+  description: "오늘밤어디 서비스 이용약관. 서비스 이용 조건, 회원 의무, 책임 제한 등을 안내합니다.",
 };
 
 const articles = [
@@ -10,7 +10,7 @@ const articles = [
     number: "제1조",
     title: "목적",
     content:
-      '이 약관은 일산룸포털(이하 "회사")이 제공하는 나이트라이프 정보 서비스(이하 "서비스")의 이용과 관련하여 회사와 이용자 간의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.',
+      '이 약관은 오늘밤어디(이하 "회사")이 제공하는 나이트라이프 정보 서비스(이하 "서비스")의 이용과 관련하여 회사와 이용자 간의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.',
   },
   {
     number: "제2조",
@@ -108,7 +108,7 @@ export default function TermsPage() {
             이용<span className="text-neon-primary-light">약관</span>
           </h1>
           <p className="text-lg text-neon-text-muted">
-            일산룸포털 서비스 이용약관
+            오늘밤어디 서비스 이용약관
           </p>
         </div>
 

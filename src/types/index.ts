@@ -1,4 +1,4 @@
-export type VenueCategory = 'club' | 'night' | 'lounge' | 'room' | 'yojeong' | 'hoppa' | 'collatek';
+export type VenueCategory = 'club' | 'night' | 'lounge' | 'room' | 'yojeong' | 'hoppa';
 
 export interface Venue {
   id: string;

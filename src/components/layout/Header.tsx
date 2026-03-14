@@ -29,7 +29,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <span className="neon-glow text-xl font-black tracking-wider text-neon-primary">
-              일산룸포털
+              오늘밤어디
             </span>
           </Link>
 

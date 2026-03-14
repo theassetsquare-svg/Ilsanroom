@@ -1,4 +1,4 @@
-export type VenueCategory = 'club' | 'night' | 'lounge' | 'room' | 'yojeong' | 'hoppa' | 'collatek';
+export type VenueCategory = 'club' | 'night' | 'lounge' | 'room' | 'yojeong' | 'hoppa';
 export type VenueStatus = 'verified_open' | 'unknown' | 'closed_or_unclear';
 export type UserRole = 'user' | 'owner' | 'admin';
 export type SubscriptionPlan = 'free' | 'basic' | 'pro' | 'premium';

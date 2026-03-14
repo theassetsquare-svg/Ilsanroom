@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "커뮤니티 가이드라인 - 일산룸포털",
-  description: "일산룸포털 커뮤니티의 운영 규칙과 가이드라인을 안내합니다. 건전하고 유익한 나이트라이프 커뮤니티를 함께 만들어갑니다.",
+  title: "커뮤니티 가이드라인 - 오늘밤어디",
+  description: "오늘밤어디 커뮤니티의 운영 규칙과 가이드라인을 안내합니다. 건전하고 유익한 나이트라이프 커뮤니티를 함께 만들어갑니다.",
 };
 
 const sections = [
@@ -106,7 +106,7 @@ export default function GuidelinesPage() {
         <div className="mb-12 text-center">
           <h1 className="text-4xl font-bold">커뮤니티 가이드라인</h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-neon-text-muted">
-            일산룸포털 커뮤니티는 모든 회원이 안전하고 즐겁게 소통할 수 있는 공간을 지향합니다.
+            오늘밤어디 커뮤니티는 모든 회원이 안전하고 즐겁게 소통할 수 있는 공간을 지향합니다.
             아래 가이드라인을 숙지하시고, 함께 건전한 나이트라이프 문화를 만들어 주세요.
           </p>
         </div>
@@ -256,7 +256,7 @@ export default function GuidelinesPage() {
           <p className="text-sm text-neon-text-muted">
             본 가이드라인은 2026년 3월 14일에 마지막으로 업데이트되었습니다.
             <br />
-            일산룸포털은 커뮤니티 환경 개선을 위해 가이드라인을 수시로 업데이트할 수 있습니다.
+            오늘밤어디은 커뮤니티 환경 개선을 위해 가이드라인을 수시로 업데이트할 수 있습니다.
           </p>
         </div>
       </div>

@@ -61,7 +61,7 @@ export default function Footer() {
           {/* Site info */}
           <div className="col-span-2 sm:col-span-1">
             <Link href="/" className="neon-glow text-xl font-black tracking-wider text-neon-primary">
-              일산룸포털
+              오늘밤어디
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-neon-text-muted">
               일산 룸, 요정, 나이트, 라운지, 클럽, 호빠 정보를 한곳에서 확인하세요.
@@ -149,7 +149,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-8 border-t border-neon-border pt-6">
           <p className="text-center text-xs text-neon-text-muted">
-            &copy; 2026 일산룸포털. All rights reserved.
+            &copy; 2026 오늘밤어디. All rights reserved.
           </p>
           <p className="mt-2 text-center text-xs text-neon-text-muted/60">
             본 사이트의 정보는 참고용이며, 실제 영업 상황은 현장과 다를 수 있습니다. 방문 전 반드시 해당 업소에 직접 확인하시기 바랍니다.

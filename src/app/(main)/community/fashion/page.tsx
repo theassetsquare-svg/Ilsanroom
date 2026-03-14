@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "패션 가이드 - 일산룸포털 커뮤니티",
+  title: "패션 가이드 - 오늘밤어디 커뮤니티",
   description: "나이트라이프 드레스코드와 스타일링 가이드. 클럽, 나이트, 라운지에 맞는 패션 정보.",
 };
 

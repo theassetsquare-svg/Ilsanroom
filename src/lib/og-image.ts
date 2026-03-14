@@ -32,7 +32,7 @@ export function getVenueOgImage(venueName: string, category: string): string {
   const color = categoryColors[category] || '8B5CF6';
   const label = categoryLabels[category] || '';
   // Use placehold.co as a fallback with text rendering
-  return `https://placehold.co/1200x630/${color}/ffffff/png?text=${encodeURIComponent(`${venueName}\\n${label} | 일산룸포털`)}&font=pretendard`;
+  return `https://placehold.co/1200x630/${color}/ffffff/png?text=${encodeURIComponent(`${venueName}\\n${label} | 오늘밤어디`)}&font=pretendard`;
 }
 
 /**
@@ -48,5 +48,5 @@ export function getDefaultOgImage(): string {
 export function getCategoryOgImage(category: string): string {
   const color = categoryColors[category] || '8B5CF6';
   const label = categoryLabels[category] || '전체';
-  return `https://placehold.co/1200x630/${color}/ffffff/png?text=${encodeURIComponent(`${label} | 일산룸포털`)}&font=pretendard`;
+  return `https://placehold.co/1200x630/${color}/ffffff/png?text=${encodeURIComponent(`${label} | 오늘밤어디`)}&font=pretendard`;
 }

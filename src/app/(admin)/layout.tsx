@@ -27,7 +27,7 @@ export default function AdminLayout({
             <span className="text-sm font-bold tracking-tight">N</span>
           </div>
           <span className="text-xl font-bold tracking-wider bg-gradient-to-r from-violet-400 to-violet-200 bg-clip-text text-transparent">
-            일산룸포털
+            오늘밤어디
           </span>
           <span className="ml-1 rounded bg-neon-primary/20 px-1.5 py-0.5 text-[10px] font-medium text-neon-primary-light">
             ADMIN
@@ -71,7 +71,7 @@ export default function AdminLayout({
 
         {/* Footer */}
         <div className="border-t border-neon-border px-4 py-3">
-          <p className="text-xs text-neon-text-muted">&copy; 2026 일산룸포털 Platform</p>
+          <p className="text-xs text-neon-text-muted">&copy; 2026 오늘밤어디 Platform</p>
         </div>
       </aside>
 
