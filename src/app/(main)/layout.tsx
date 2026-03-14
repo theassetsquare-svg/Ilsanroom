@@ -4,6 +4,7 @@ import BackToTop from '@/components/layout/BackToTop';
 import LiveVisitors from '@/components/ui/LiveVisitors';
 import ExitIntent from '@/components/popups/ExitIntent';
 import SocialProof from '@/components/saas/SocialProof';
+import KakaoChannel from '@/components/ui/KakaoChannel';
 
 export default function MainLayout({
   children,
@@ -19,6 +20,7 @@ export default function MainLayout({
       <LiveVisitors />
       <ExitIntent />
       <SocialProof />
+      <KakaoChannel />
     </div>
   );
 }
