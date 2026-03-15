@@ -3,10 +3,7 @@ import Badge from '@/components/ui/Badge';
 interface VenueHeroProps {
   name: string;
   staffNickname?: string;
-  rating: number;
-  reviewCount: number;
   isPremium: boolean;
-  isVerified: boolean;
   category: string;
   regionKo: string;
 }
@@ -32,10 +29,7 @@ const categoryBgPatterns: Record<string, string> = {
 export default function VenueHero({
   name,
   staffNickname,
-  rating,
-  reviewCount,
   isPremium,
-  isVerified,
   category,
   regionKo,
 }: VenueHeroProps) {
@@ -53,7 +47,6 @@ export default function VenueHero({
         {/* Badges */}
         <div className="mb-4 flex flex-wrap gap-2">
           {isPremium && <Badge variant="premium">PREMIUM</Badge>}
-          {isVerified && <Badge variant="verified">인증됨</Badge>}
         </div>
 
         {/* H1: Venue Name — SEO critical */}
@@ -68,23 +61,9 @@ export default function VenueHero({
           </p>
         )}
 
-        {/* Region + Rating (only if has reviews) */}
+        {/* Region (only if not already in name) */}
         <div className="mt-3 flex items-center gap-3 text-neon-text-muted">
           {!name.includes(regionKo) && <span>{regionKo}</span>}
-          {rating > 0 && (
-            <>
-              <span>·</span>
-              <span className="flex items-center gap-1">
-                <span className="text-neon-gold">★</span> {rating.toFixed(1)}
-              </span>
-            </>
-          )}
-          {reviewCount > 0 && (
-            <>
-              <span>·</span>
-              <span>리뷰 {reviewCount}개</span>
-            </>
-          )}
         </div>
       </div>
     </section>

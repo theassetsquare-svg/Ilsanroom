@@ -6,7 +6,7 @@ import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
   title: '클럽 | 오늘밤어디 - 강남·홍대·이태원·부산 EDM 힙합 클럽',
-  description: '전국 인기 EDM·힙합 파티 정보. 장르별·지역별 댄스홀 리스트. 강남, 홍대, 이태원, 부산까지.',
+  description: 'EDM·힙합·테크노 장르별로 골라가는 재미. 강남 레이스부터 홍대, 이태원, 부산까지 DJ 라인업과 입장료를 한눈에 비교하세요.',
   openGraph: { images: [{ url: 'https://placehold.co/1200x630/8B5CF6/ffffff/png?text=클럽 | 오늘밤어디', width: 1200, height: 630 }] },
 };
 

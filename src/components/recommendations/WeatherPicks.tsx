@@ -20,7 +20,8 @@ const WEATHER_RECS: Record<WeatherType, WeatherRecommendation> = {
     title: '맑은 날씨에 딱!',
     description: '야외 테라스가 있는 곳을 추천드려요',
     venues: [
-      { name: '문 라운지 압구정', reason: '감성 루프탑 라운지', link: '/lounges/moon-lounge-apgujeong' },
+      { name: '압구정라운지 디엠', reason: '감성 하이엔드 라운지', link: '/lounges/apgujeong-dm' },
+      { name: '강남클럽 레이스', reason: '탁 트인 플로어에서 즐기는 나이트', link: '/clubs/gangnam/gangnamclub-race' },
     ],
   },
   rain: {
@@ -29,9 +30,9 @@ const WEATHER_RECS: Record<WeatherType, WeatherRecommendation> = {
     title: '비 오는 밤엔 실내 라운지',
     description: '비 오는 날 분위기 있는 실내 공간을 추천해요',
     venues: [
-      { name: 'DM 라운지', reason: '논현 하이엔드 라운지', link: '/lounges/dm-lounge' },
-      { name: '코드 라운지 강남', reason: '재즈와 함께하는 모던 라운지', link: '/lounges/code-lounge-gangnam' },
-      { name: '일산명월관요정', reason: '빗소리와 국악이 어우러지는 전통 공간', link: '/yojeong/ilsan/ilsan-myeongwolgwan-yojeong' },
+      { name: '압구정라운지 디엠', reason: '프라이빗한 하이엔드 라운지', link: '/lounges/apgujeong-dm' },
+      { name: '일산명월관요정', reason: '빗소리와 국악이 어우러지는 전통 공간', link: '/yojeong/ilsan/ilsanmyeongwolgwanyojeong' },
+      { name: '강남클럽 사운드', reason: '실내에서 즐기는 사운드 클럽', link: '/clubs/gangnam/gangnamclub-sound' },
     ],
   },
   cloudy: {
@@ -40,8 +41,8 @@ const WEATHER_RECS: Record<WeatherType, WeatherRecommendation> = {
     title: '흐린 날엔 분위기 있는 곳으로',
     description: '아늑한 실내 공간을 추천합니다',
     venues: [
-      { name: '펄 라운지 청담', reason: '럭셔리한 분위기', link: '/lounges/pearl-lounge-cheongdam' },
-      { name: '일산룸', reason: '프라이빗한 모임 공간', link: '/rooms/ilsan/ilsan-room' },
+      { name: '일산룸', reason: '프라이빗한 모임 공간', link: '/rooms/ilsan/ilsanroom' },
+      { name: '해운대고구려', reason: '해운대 대표 프리미엄 룸', link: '/rooms/busan-haeundae/haeundaegoguryeo' },
     ],
   },
   snow: {
@@ -50,8 +51,8 @@ const WEATHER_RECS: Record<WeatherType, WeatherRecommendation> = {
     title: '눈 오는 날의 특별한 밤',
     description: '따뜻한 실내에서 즐기는 나이트라이프',
     venues: [
-      { name: '일산명월관요정', reason: '따뜻한 한정식과 국악', link: '/yojeong/ilsan/ilsan-myeongwolgwan-yojeong' },
-      { name: '강남 라운지 아르주', reason: '프리미엄 실내 라운지', link: '/lounges/gangnam-lounge-arzu' },
+      { name: '일산명월관요정', reason: '따뜻한 한정식과 국악', link: '/yojeong/ilsan/ilsanmyeongwolgwanyojeong' },
+      { name: '강남호빠 로얄', reason: '프리미엄 실내 호빠', link: '/hoppa/gangnam-hoppa-royal' },
     ],
   },
   hot: {
@@ -60,7 +61,8 @@ const WEATHER_RECS: Record<WeatherType, WeatherRecommendation> = {
     title: '더운 날엔 시원한 실내로',
     description: '에어컨 빵빵한 곳에서 즐기세요',
     venues: [
-      { name: '클럽 옥타곤', reason: '지하 대형 클럽, 시원한 실내', link: '/clubs/gangnam/club-octagon' },
+      { name: '강남클럽 레이스', reason: '시원한 대형 클럽', link: '/clubs/gangnam/gangnamclub-race' },
+      { name: '강남클럽 사운드', reason: '쾌적한 실내 클럽', link: '/clubs/gangnam/gangnamclub-sound' },
     ],
   },
   cold: {
@@ -69,8 +71,8 @@ const WEATHER_RECS: Record<WeatherType, WeatherRecommendation> = {
     title: '추운 날엔 따뜻한 실내에서',
     description: '따뜻하게 즐길 수 있는 곳을 추천해요',
     venues: [
-      { name: '일산명월관요정', reason: '온돌과 따뜻한 한정식', link: '/yojeong/ilsan/ilsan-myeongwolgwan-yojeong' },
-      { name: 'DM 라운지', reason: '프라이빗한 따뜻한 공간', link: '/lounges/dm-lounge' },
+      { name: '일산명월관요정', reason: '온돌과 따뜻한 한정식', link: '/yojeong/ilsan/ilsanmyeongwolgwanyojeong' },
+      { name: '일산룸', reason: '프라이빗한 따뜻한 공간', link: '/rooms/ilsan/ilsanroom' },
     ],
   },
 };
@@ -101,13 +103,13 @@ export default function WeatherPicks() {
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
-      <div className="overflow-hidden rounded-2xl border border-neutral-800 bg-gradient-to-r from-neutral-900 via-neutral-950 to-neutral-900">
+      <div className="overflow-hidden rounded-2xl border border-neon-border bg-gradient-to-r from-neon-surface via-neon-surface-2 to-neon-surface">
         <div className="p-6 sm:p-8">
           <div className="flex items-center gap-3 mb-4">
             <span className="text-4xl">{weather.icon}</span>
             <div>
-              <h2 className="text-xl font-bold text-white">{weather.title}</h2>
-              <p className="text-sm text-neutral-500">{weather.description}</p>
+              <h2 className="text-xl font-bold text-neon-text">{weather.title}</h2>
+              <p className="text-sm text-neon-text-muted">{weather.description}</p>
             </div>
           </div>
 
@@ -116,13 +118,13 @@ export default function WeatherPicks() {
               <Link
                 key={venue.name}
                 href={venue.link}
-                className="group flex items-center gap-4 rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 transition hover:border-violet-500/40 hover:bg-neutral-900"
+                className="group flex items-center gap-4 rounded-xl border border-neon-border bg-neon-surface/60 p-4 transition hover:border-neon-primary/40 hover:bg-neon-surface-2"
               >
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-white group-hover:text-violet-400 transition">{venue.name}</p>
-                  <p className="mt-0.5 text-xs text-neutral-500">{venue.reason}</p>
+                  <p className="text-sm font-medium text-neon-text group-hover:text-neon-primary-light transition">{venue.name}</p>
+                  <p className="mt-0.5 text-xs text-neon-text-muted">{venue.reason}</p>
                 </div>
-                <span className="text-neutral-700 group-hover:text-violet-400 transition">→</span>
+                <span className="text-neon-text-muted/40 group-hover:text-neon-primary-light transition">→</span>
               </Link>
             ))}
           </div>

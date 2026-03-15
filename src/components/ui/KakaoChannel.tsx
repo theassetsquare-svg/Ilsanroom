@@ -6,7 +6,7 @@ export default function KakaoChannel() {
   const [showTooltip, setShowTooltip] = useState(true);
 
   return (
-    <div className="fixed right-4 bottom-24 z-40 flex flex-col items-end gap-2 md:bottom-6">
+    <div className="fixed right-4 z-40 flex flex-col items-end gap-2" style={{ bottom: 'calc(80px + 16px)' }}>
       {/* Tooltip */}
       {showTooltip && (
         <div className="animate-fade-in relative rounded-xl bg-[#FEE500] px-4 py-2.5 shadow-lg">
@@ -17,14 +17,12 @@ export default function KakaoChannel() {
           >
             ✕
           </button>
-          <p className="text-xs font-medium text-neutral-900">
-            &ldquo;오늘밤어디&rdquo; 채널로 문의하세요!
-          </p>
+          <p className="text-xs font-medium text-neutral-900">카톡 문의</p>
           <div className="absolute -bottom-1.5 right-5 h-3 w-3 rotate-45 bg-[#FEE500]" />
         </div>
       )}
 
-      {/* Kakao Button → 오늘밤어디 채널 */}
+      {/* Kakao Button */}
       <a
         href="http://pf.kakao.com/_YSxjxhX/chat"
         target="_blank"
@@ -32,6 +30,7 @@ export default function KakaoChannel() {
         className="flex h-14 w-14 items-center justify-center rounded-full bg-[#FEE500] shadow-lg transition-transform hover:scale-110"
         aria-label="카카오톡 채널 오늘밤어디 채팅"
         title="카카오톡 채널 오늘밤어디"
+        style={{ minWidth: '48px', minHeight: '48px' }}
       >
         <svg viewBox="0 0 24 24" className="h-7 w-7" fill="#3C1E1E">
           <path d="M12 3C6.48 3 2 6.58 2 10.9c0 2.78 1.86 5.22 4.65 6.6-.14.53-.92 3.31-.95 3.53 0 0-.02.17.09.23.11.07.24.01.24.01.32-.04 3.7-2.42 4.28-2.83.55.08 1.11.12 1.69.12 5.52 0 10-3.58 10-7.97C22 6.58 17.52 3 12 3z"/>

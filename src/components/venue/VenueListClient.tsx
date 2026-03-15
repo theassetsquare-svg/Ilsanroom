@@ -24,7 +24,6 @@ function VenueCard({ venue, href }: { venue: Venue; href: string }) {
     <Card href={href}>
       <div className="flex flex-wrap gap-2 mb-3">
         {venue.isPremium && <Badge variant="premium">PREMIUM</Badge>}
-        {venue.isVerified && <Badge variant="verified">인증됨</Badge>}
       </div>
       <h3 className="text-lg font-bold text-neon-text mb-1">{venue.nameKo}</h3>
       {venue.staffNickname && (
@@ -34,10 +33,7 @@ function VenueCard({ venue, href }: { venue: Venue; href: string }) {
         <p className="mb-2 text-sm text-neon-green">{venue.staffPhone}</p>
       )}
       <div className="mb-2 flex items-center gap-3 text-sm text-neon-text-muted">
-        <span>{venue.regionKo}</span>
-        <span className="flex items-center gap-1">
-          <span className="text-neon-gold">★</span> {venue.rating.toFixed(1)}
-        </span>
+        {!venue.nameKo.includes(venue.regionKo) && <span>{venue.regionKo}</span>}
       </div>
     </Card>
   );

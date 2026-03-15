@@ -158,26 +158,10 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
         {activeTab === '리뷰' && (
           <div>
             <h2 className="mb-4 text-xl font-bold text-neon-text">방문 리뷰</h2>
-            {/* Rating distribution */}
-            <div className="mb-6 rounded-xl border border-neon-border bg-neon-surface p-6">
-              <div className="flex items-center gap-6">
-                <div className="text-center">
-                  <p className="text-4xl font-bold text-neon-text">{venue.rating.toFixed(1)}</p>
-                  <p className="text-neon-gold text-sm">{'★'.repeat(Math.round(venue.rating))}</p>
-                </div>
-                <div className="flex-1 space-y-1">
-                  {[5, 4, 3, 2, 1].map((star) => (
-                    <div key={star} className="flex items-center gap-2">
-                      <span className="w-3 text-xs text-neon-text-muted">{star}</span>
-                      <div className="h-2 flex-1 rounded-full bg-neon-surface-2">
-                        <div className="h-2 rounded-full bg-neon-gold" style={{ width: `${star === Math.round(venue.rating) ? 60 : star === Math.round(venue.rating) - 1 ? 25 : 5}%` }} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            <div className="rounded-xl border border-neon-border bg-neon-surface p-6 text-center">
+              <p className="mb-2 text-neon-text-muted">아직 등록된 리뷰가 없습니다.</p>
+              <p className="text-sm text-neon-text-muted/60">리뷰 작성 기능은 곧 오픈 예정입니다.</p>
             </div>
-            <p className="text-sm text-neon-text-muted">리뷰 작성 기능은 곧 오픈 예정입니다.</p>
           </div>
         )}
 

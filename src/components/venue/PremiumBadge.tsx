@@ -15,14 +15,6 @@ export default function PremiumBadge({ isPremium, isVerified, plan }: PremiumBad
           PREMIUM
         </span>
       )}
-      {isVerified && (
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400">
-          <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-          </svg>
-          인증됨
-        </span>
-      )}
       {plan && plan !== 'free' && (
         <span className="inline-flex items-center gap-1 rounded-full border border-violet-500/30 bg-violet-500/10 px-3 py-1 text-xs font-semibold text-violet-400">
           {plan.toUpperCase()} 구독

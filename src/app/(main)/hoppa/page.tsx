@@ -7,7 +7,7 @@ import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
   title: '호빠 | 오늘밤어디 - 전국 호스트바 정보',
-  description: '전국 호스트바 정보. 강남보스턴, 수원비스트, 대구퍼펙트, 해운대깐따삐야 등 검증된 업소 리스트.',
+  description: '여성 고객을 위한 호스트 엔터테인먼트. 강남 로얄·보스턴, 수원 비스트, 대구 퍼펙트 등 도시별 인기 업소 비교.',
   openGraph: { images: [{ url: 'https://placehold.co/1200x630/EC4899/ffffff/png?text=호빠 | 오늘밤어디', width: 1200, height: 630 }] },
 };
 

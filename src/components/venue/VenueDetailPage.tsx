@@ -52,9 +52,7 @@ export default function VenueDetailPage({
         venue={venue}
         breadcrumbItems={breadcrumbItems}
         faqItems={faqs}
-        reviews={[
-          { author: '방문객', rating: venue.rating, text: `분위기와 서비스 모두 만족스럽습니다. 재방문 의사 있어요.`, date: '2026-03-10' },
-        ]}
+        reviews={[]}
       />
 
       {/* Breadcrumb */}
@@ -70,10 +68,7 @@ export default function VenueDetailPage({
       <VenueHero
         name={venue.nameKo}
         staffNickname={venue.staffNickname}
-        rating={venue.rating}
-        reviewCount={venue.reviewCount}
         isPremium={venue.isPremium}
-        isVerified={venue.isVerified}
         category={venue.category}
         regionKo={venue.regionKo}
       />

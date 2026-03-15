@@ -6,7 +6,7 @@ import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
   title: '라운지 | 오늘밤어디 - 강남·압구정·이태원 프리미엄 라운지바',
-  description: '전국 프리미엄 바 정보. 압구정, 논현, 이태원 칵테일·프라이빗 공간.',
+  description: '시그니처 칵테일과 소파석에서 보내는 조용한 밤. 압구정 디엠, 논현, 이태원 바텐더 추천 공간 모음.',
   openGraph: { images: [{ url: 'https://placehold.co/1200x630/06B6D4/ffffff/png?text=라운지 | 오늘밤어디', width: 1200, height: 630 }] },
 };
 

@@ -54,7 +54,6 @@ function VenueCard({ venue, href, rank }: { venue: Venue; href: string; rank?: n
       )}
       <div className="flex flex-wrap gap-2 mb-3">
         {venue.isPremium && <Badge variant="premium">PREMIUM</Badge>}
-        {venue.isVerified && <Badge variant="verified">인증됨</Badge>}
       </div>
       <h3 className="text-lg font-bold text-neon-text mb-1">{venue.nameKo}</h3>
       <div className="mb-2 flex items-center gap-3 text-sm text-neon-text-muted">

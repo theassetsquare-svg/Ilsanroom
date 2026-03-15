@@ -21,7 +21,7 @@ CREATE TABLE venues (
   slug VARCHAR(200) UNIQUE NOT NULL,
   name VARCHAR(200) NOT NULL,
   name_ko VARCHAR(200) NOT NULL,
-  category VARCHAR(20) NOT NULL, -- club/night/lounge/room/yojeong/hoppa/collatek
+  category VARCHAR(20) NOT NULL, -- club/night/lounge/room/yojeong/hoppa
   region VARCHAR(50) NOT NULL,
   region_ko VARCHAR(50) NOT NULL,
   address TEXT NOT NULL,
