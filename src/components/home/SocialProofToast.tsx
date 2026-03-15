@@ -18,6 +18,8 @@ function getRandomCount() {
 }
 
 export default function SocialProofToast() {
+  // Disabled: no real data yet. Enable when real analytics available.
+  return null;
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState('');
 

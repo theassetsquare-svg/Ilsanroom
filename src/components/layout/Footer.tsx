@@ -1,20 +1,21 @@
 import Link from 'next/link';
+import FooterNewsletter from './FooterNewsletter';
 
 const categoryLinks = [
-  { href: '/clubs', label: '🎵 EDM' },
-  { href: '/nights', label: '🌙 댄스홀' },
-  { href: '/lounges', label: '🍸 바' },
-  { href: '/rooms', label: '🚪 프라이빗' },
-  { href: '/yojeong', label: '🏮 한정식' },
-  { href: '/hoppa', label: '🥂 호스트' },
+  { href: '/clubs', label: '🎵 클럽' },
+  { href: '/nights', label: '🌙 나이트' },
+  { href: '/lounges', label: '🍸 라운지' },
+  { href: '/rooms', label: '🚪 룸' },
+  { href: '/yojeong', label: '🏮 요정' },
+  { href: '/hoppa', label: '🥂 호빠' },
 ];
 
 const communityLinks = [
-  { href: '/community', label: '커뮤니티' },
-  { href: '/events', label: '이벤트' },
-  { href: '/ranking', label: '랭킹' },
-  { href: '/magazine', label: '매거진' },
-  { href: '/quiz', label: '퀴즈' },
+  { href: '/community', label: '게시판' },
+  { href: '/events', label: '행사' },
+  { href: '/ranking', label: '순위' },
+  { href: '/magazine', label: '읽을거리' },
+  { href: '/quiz', label: '테스트' },
 ];
 
 const legalLinks = [
@@ -63,13 +64,13 @@ export default function Footer() {
               오늘밤어디
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-neon-text-muted">
-              전국 야간 업소 정보를 한곳에서 확인하세요.
+              밤 문화 정보를 한곳에서
             </p>
           </div>
 
           {/* Categories */}
           <div>
-            <h3 className="mb-3 text-sm font-semibold text-neon-text">카테고리</h3>
+            <h3 className="mb-3 text-sm font-semibold text-neon-text">둘러보기</h3>
             <ul className="space-y-2">
               {categoryLinks.map((link) => (
                 <li key={link.href}>
@@ -83,7 +84,7 @@ export default function Footer() {
 
           {/* Community */}
           <div>
-            <h3 className="mb-3 text-sm font-semibold text-neon-text">커뮤니티</h3>
+            <h3 className="mb-3 text-sm font-semibold text-neon-text">참여</h3>
             <ul className="space-y-2">
               {communityLinks.map((link) => (
                 <li key={link.href}>
@@ -112,7 +113,7 @@ export default function Footer() {
 
         {/* ★ Regional SEO Links ★ */}
         <div className="mt-8 border-t border-neon-border pt-6">
-          <h3 className="mb-4 text-sm font-semibold text-neon-text">전국 지역별 업소</h3>
+          <h3 className="mb-4 text-sm font-semibold text-neon-text">지역 바로가기</h3>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {Object.entries(regionalLinks).map(([region, links]) => (
               <div key={region}>
@@ -143,6 +144,11 @@ export default function Footer() {
             <Link href="/demo" target="_blank" rel="noopener noreferrer" className="hover:text-neon-primary-light transition-colors">데모</Link>
             <Link href="/referral" target="_blank" rel="noopener noreferrer" className="hover:text-neon-primary-light transition-colors">추천 프로그램</Link>
           </div>
+        </div>
+
+        {/* Newsletter in footer */}
+        <div className="mt-8 border-t border-neon-border pt-6">
+          <FooterNewsletter />
         </div>
 
         {/* Bottom bar */}

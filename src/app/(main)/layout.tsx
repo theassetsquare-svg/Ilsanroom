@@ -2,8 +2,6 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import MobileNav from '@/components/layout/MobileNav';
 import BackToTop from '@/components/layout/BackToTop';
-import ExitIntent from '@/components/popups/ExitIntent';
-import NewsletterPopup from '@/components/popups/NewsletterPopup';
 import KakaoChannel from '@/components/ui/KakaoChannel';
 
 export default function MainLayout({
@@ -18,8 +16,6 @@ export default function MainLayout({
       <Footer />
       <MobileNav />
       <BackToTop />
-      <ExitIntent />
-      <NewsletterPopup />
       <KakaoChannel />
     </div>
   );

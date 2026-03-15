@@ -8,4 +8,4 @@ command = "npm run build"
 [build.environment]
 NODE_VERSION = "20"
 
-pages_build_output_dir = "./out"
+pages_build_output_dir = ".vercel/output/static"

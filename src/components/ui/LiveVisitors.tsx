@@ -11,6 +11,8 @@ function getDelta() {
 }
 
 export default function LiveVisitors() {
+  // Disabled: no real visitor tracking yet
+  return null;
   const [count, setCount] = useState<number | null>(null);
 
   useEffect(() => {

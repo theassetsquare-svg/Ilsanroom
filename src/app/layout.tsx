@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import './globals.css';
 import Toast from '@/components/ui/Toast';
-import AgeVerification from '@/components/popups/AgeVerification';
-import CookieConsent from '@/components/popups/CookieConsent';
 import ThemeProvider from '@/components/ui/ThemeProvider';
 import JsonLd from '@/components/seo/JsonLd';
 
@@ -24,14 +22,14 @@ export const metadata: Metadata = {
     siteName: '오늘밤어디',
     title: '오늘밤어디 — 전국 야간 업소 정보',
     description:
-      '전국 야간 업소 정보를 한곳에서 확인하세요.',
+      '전국 클럽·나이트·라운지·룸·요정·호빠 정보를 한곳에서.',
     url: 'https://ilsanroom.pages.dev',
-    images: [{ url: 'https://ilsanroom.pages.dev/og/default.svg', width: 1200, height: 630, alt: '오늘밤어디 — 전국 업소 정보' }],
+    images: [{ url: 'https://ilsanroom.pages.dev/og/default.svg', width: 1200, height: 630, alt: '전국 클럽·나이트·라운지·룸·요정·호빠 정보' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '오늘밤어디 — 전국 야간 업소 정보',
-    description: '전국 야간 업소 정보를 한곳에서 확인하세요.',
+    title: '전국 클럽·나이트·라운지·룸·요정·호빠 정보',
+    description: '전국 클럽·나이트·라운지·룸·요정·호빠 정보를 한곳에서.',
     images: ['https://ilsanroom.pages.dev/og/default.svg'],
   },
   robots: {
@@ -61,7 +59,7 @@ const organizationJsonLd = {
   name: '오늘밤어디',
   url: 'https://ilsanroom.pages.dev',
   logo: 'https://ilsanroom.pages.dev/favicon.ico',
-  description: '전국 야간 업소 정보 포털',
+  description: '전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보',
   sameAs: [],
 };
 
@@ -108,8 +106,6 @@ export default function RootLayout({
           <JsonLd data={websiteJsonLd} />
           {children}
           <Toast />
-          <AgeVerification />
-          <CookieConsent />
         </ThemeProvider>
 
         {/* GA4 — lazyOnload for CWV */}
