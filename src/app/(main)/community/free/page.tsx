@@ -66,7 +66,7 @@ export default function FreeBoardPage() {
                 </div>
               </div>
               <div className="flex gap-4 text-xs text-neon-text-muted">
-                <span>조회 {post.views}</span>
+                <span>👁 {post.views}</span>
                 <span>♥ {post.likes}</span>
               </div>
             </div>
