@@ -63,7 +63,10 @@ export default function HotWidget() {
             </span>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-neon-text group-hover:text-neon-primary-light">{v.nameKo}</p>
-              <p className="truncate text-[10px] text-neon-text-muted">{v.regionKo} · {getCategoryLabel(v.category)}</p>
+              <p className="truncate text-[10px] text-neon-text-muted">
+                {!v.nameKo.includes(v.regionKo) && <>{v.regionKo} · </>}
+                {v.shortDescription ? <span className="line-clamp-1">{v.shortDescription}</span> : getCategoryLabel(v.category)}
+              </p>
             </div>
           </Link>
         ))}

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "커뮤니티 - 오늘밤어디",
-  description: "나이트라이프를 즐기는 사람들의 커뮤니티. 자유게시판, 후기, 파티 모집, 팁, 패션 가이드, Q&A까지.",
+  description: "밤문화를 즐기는 사람들의 커뮤니티. 자유게시판, 후기, 파티 모집, 팁, 패션 가이드, Q&A까지.",
 };
 
 const sections = [
@@ -30,7 +30,7 @@ const sections = [
   },
   {
     title: "팁 & 노하우",
-    description: "나이트라이프 고수들의 꿀팁",
+    description: "밤놀이 고수들의 꿀팁",
     href: "/community/tips",
     icon: "💡",
     count: 567,
@@ -60,7 +60,7 @@ export default function CommunityPage() {
             <span className="text-neon-primary-light">오늘밤어디</span> 커뮤니티
           </h1>
           <p className="text-lg text-neon-text-muted">
-            나이트라이프를 사랑하는 사람들의 소통 공간
+            밤문화를 사랑하는 사람들의 소통 공간
           </p>
         </div>
 

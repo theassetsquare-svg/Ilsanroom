@@ -90,7 +90,7 @@ const latestReviews = [
 
 /* ── Magazine preview ── */
 const magazineItems = [
-  { title: '2026년 강남 TOP5 — 올해 꼭 가봐야 할 핫플', tag: '추천', href: '/magazine' },
+  { title: '강남 TOP5 — 올해 꼭 가봐야 할 핫플', tag: '추천', href: '/magazine' },
   { title: '전통 격식 공간 완벽 안내서: 접대부터 가족모임까지', tag: '전통', href: '/magazine' },
   { title: '처음 방문하는 분을 위한 A to Z 매너 핸드북', tag: '입문', href: '/magazine' },
   { title: '홍대 vs 이태원 비교 — 어디가 나에게 맞을까?', tag: '비교', href: '/magazine' },
@@ -103,7 +103,7 @@ const instaHashtags = [
   { tag: '#강남클럽', desc: '주말 파티 현장', url: 'https://www.instagram.com/explore/tags/강남클럽/' },
   { tag: '#강남호빠', desc: '호스트클럽 현장', url: 'https://www.instagram.com/explore/tags/강남호빠/' },
   { tag: '#일산요정', desc: '국악 라이브 연주', url: 'https://www.instagram.com/explore/tags/일산요정/' },
-  { tag: '#나이트라이프', desc: '야간 문화 전반', url: 'https://www.instagram.com/explore/tags/나이트라이프/' },
+  { tag: '#부산나이트', desc: '부산 사교 댄스 명소', url: 'https://www.instagram.com/explore/tags/부산나이트/' },
 ];
 
 export default function HomePage() {
@@ -133,7 +133,7 @@ export default function HomePage() {
       <JsonLd data={{
         '@context': 'https://schema.org',
         '@type': 'ItemList',
-        name: '인기 나이트라이프 업소',
+        name: '인기 업소',
         itemListElement: popularVenues.slice(0, 10).map((v, i) => ({
           '@type': 'ListItem',
           position: i + 1,

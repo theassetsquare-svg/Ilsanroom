@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "자유게시판 - 오늘밤어디 커뮤니티",
-  description: "나이트라이프에 관한 자유로운 이야기. 일상, 정보 공유, 잡담까지 편하게 소통하세요.",
+  description: "밤문화에 관한 자유로운 이야기. 일상, 정보 공유, 잡담까지 편하게 소통하세요.",
 };
 
 const samplePosts = [

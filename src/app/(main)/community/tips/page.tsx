@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "팁 & 노하우 - 오늘밤어디 커뮤니티",
-  description: "나이트라이프 고수들의 꿀팁과 노하우. 클럽, 나이트, 라운지 이용 팁을 공유합니다.",
+  description: "밤놀이 고수들의 꿀팁과 노하우. 클럽, 나이트, 라운지 이용 팁을 공유합니다.",
 };
 
 const sampleTips = [
@@ -73,7 +73,7 @@ export default function TipsPage() {
             ← 커뮤니티
           </Link>
           <h1 className="text-3xl font-bold">팁 & 노하우</h1>
-          <p className="mt-2 text-neon-text-muted">나이트라이프 고수들의 꿀팁 모음</p>
+          <p className="mt-2 text-neon-text-muted">밤놀이 고수들의 꿀팁 모음</p>
         </div>
 
         <div className="mb-6 flex gap-3">

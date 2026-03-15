@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Q&A - 오늘밤어디 커뮤니티",
-  description: "나이트라이프에 대한 궁금증을 질문하고 답변을 받아보세요.",
+  description: "밤문화에 대한 궁금증을 질문하고 답변을 받아보세요.",
 };
 
 const sampleQuestions = [

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description:
     '전국 야간 업소 정보를 한곳에서. 지역별 검색, 리뷰, 이벤트 정보를 확인하세요.',
   keywords: [
-    '일산룸', '일산명월관요정', '나이트라이프',
+    '일산룸', '일산명월관요정', '밤문화',
   ],
   authors: [{ name: '오늘밤어디' }],
   openGraph: {

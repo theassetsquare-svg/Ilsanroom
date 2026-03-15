@@ -56,7 +56,7 @@ export default function ClubsPage() {
       <CategoryVSBattle venueA="강남클럽레이스" venueB="클럽NB2" topic="이번 주 EDM 대결 — 논현 vs 홍대" />
 
       <RelatedMagazine articles={[
-        { title: '2026 논현 EDM TOP5 — 올해 꼭 가봐야 할 곳', tag: '추천' },
+        { title: '논현 EDM TOP5 — 올해 꼭 가봐야 할 곳', tag: '추천' },
         { title: '홍대 vs 이태원 — 어디가 나에게 맞을까?', tag: '비교' },
       ]} />
     </div>

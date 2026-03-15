@@ -49,7 +49,7 @@ const WEATHER_RECS: Record<WeatherType, WeatherRecommendation> = {
     type: 'snow',
     icon: '❄️',
     title: '눈 오는 날의 특별한 밤',
-    description: '따뜻한 실내에서 즐기는 나이트라이프',
+    description: '따뜻한 실내에서 즐기는 밤 시간',
     venues: [
       { name: '일산명월관요정', reason: '따뜻한 한정식과 국악', link: '/yojeong/ilsan/ilsanmyeongwolgwanyojeong' },
       { name: '강남호빠 로얄', reason: '프리미엄 실내 호빠', link: '/hoppa/gangnam-hoppa-royal' },

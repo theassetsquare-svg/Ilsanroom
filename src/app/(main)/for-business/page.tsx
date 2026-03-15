@@ -196,7 +196,7 @@ export default function ForBusinessPage() {
           </h1>
           <p className="mx-auto mb-10 max-w-2xl text-lg text-neon-text-muted">
             검색 노출, 리뷰 관리, 실시간 분석지표, 예약 시스템까지. 오늘밤어디 하나로
-            나이트라이프 비즈니스의 모든 것을 관리하세요.
+            밤문화 비즈니스의 모든 것을 관리하세요.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link

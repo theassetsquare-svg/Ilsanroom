@@ -39,7 +39,7 @@ export default function QuizPage() {
 
       {/* MBTI */}
       <section>
-        <h2 className="mb-4 text-xl font-bold text-neon-text">나이트라이프 MBTI (8유형)</h2>
+        <h2 className="mb-4 text-xl font-bold text-neon-text">밤문화 MBTI (8유형)</h2>
         <MBTIQuiz />
       </section>
 

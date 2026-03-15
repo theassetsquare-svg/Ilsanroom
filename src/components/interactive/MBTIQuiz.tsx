@@ -58,7 +58,7 @@ export default function MBTIQuiz() {
     const type = TYPES[result] || TYPES.ENFP;
     return (
       <div className="rounded-2xl border border-neon-primary/30 bg-neon-surface p-8 text-center">
-        <p className="text-sm text-neon-primary-light mb-2">당신의 나이트라이프 MBTI는</p>
+        <p className="text-sm text-neon-primary-light mb-2">당신의 밤문화 MBTI는</p>
         <h3 className="text-3xl font-extrabold text-neon-text mb-2">{result}</h3>
         <h4 className="text-xl font-bold text-neon-gold mb-4">{type.title}</h4>
         <p className="text-sm text-neon-text-muted mb-6">{type.desc}</p>
@@ -70,7 +70,7 @@ export default function MBTIQuiz() {
             ))}
           </div>
         </div>
-        <ShareButtons title={`나의 나이트라이프 MBTI: ${result} - ${type.title}`} />
+        <ShareButtons title={`나의 밤문화 MBTI: ${result} - ${type.title}`} />
         <button onClick={reset} className="mt-4 text-sm text-neon-text-muted hover:text-neon-text">다시 하기</button>
       </div>
     );

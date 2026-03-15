@@ -154,7 +154,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-8 border-t border-neon-border pt-6">
           <p className="text-center text-xs text-neon-text-muted">
-            &copy; 2026 오늘밤어디. All rights reserved.
+            &copy; {new Date().getFullYear()} 오늘밤어디. All rights reserved.
           </p>
           <p className="mt-2 text-center text-xs text-neon-text-muted/60">
             본 사이트의 정보는 참고용이며, 실제 영업 상황은 현장과 다를 수 있습니다. 방문 전 반드시 해당 업소에 직접 확인하시기 바랍니다.

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '매거진 — 나이트라이프 트렌드·가이드 | 오늘밤어디',
+  title: '매거진 — 밤문화 트렌드·가이드 | 오늘밤어디',
   description: '업종별 문화 비교, 지역별 야간업소 특성, 방문 팁까지. 오늘밤어디 매거진에서 확인된 정보만 전합니다.',
 };
 
@@ -60,7 +60,7 @@ export default function MagazinePage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <h1 className="text-2xl font-extrabold text-neon-text mb-1">매거진</h1>
-      <p className="text-sm text-neon-text-muted mb-8">나이트라이프 트렌드, 가이드, 비교 콘텐츠</p>
+      <p className="text-sm text-neon-text-muted mb-8">밤문화 트렌드, 가이드, 비교 콘텐츠</p>
 
       {/* 피처드 */}
       <article className="mb-8 rounded-2xl border border-neon-primary/30 bg-gradient-to-br from-neon-primary/5 via-neon-surface to-neon-bg p-6 sm:p-8 card-hover">

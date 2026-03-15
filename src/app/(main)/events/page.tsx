@@ -3,7 +3,7 @@ import JsonLd from '@/components/seo/JsonLd';
 
 export const metadata: Metadata = {
   title: '이벤트 & 파티 캘린더 | 오늘밤어디',
-  description: '전국 나이트라이프 업소의 최신 행사·파티 일정을 한눈에. 지역별·업종별 이벤트를 캘린더에서 확인하세요.',
+  description: '전국 업소별 최신 행사·파티 일정을 한눈에. 지역별·업종별 이벤트를 캘린더에서 확인하세요.',
 };
 
 const events = [
@@ -41,7 +41,7 @@ export default function EventsPage() {
       ))}
 
       <h1 className="text-2xl font-extrabold text-neon-text mb-1">이벤트·파티 캘린더</h1>
-      <p className="text-sm text-neon-text-muted mb-8">전국 나이트라이프 업소 행사 일정</p>
+      <p className="text-sm text-neon-text-muted mb-8">업소별 행사 일정</p>
 
       {/* 캘린더 */}
       {months.map((m) => {
