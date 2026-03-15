@@ -32,6 +32,8 @@ export interface Venue {
   staffNickname?: string;
   staffPhone?: string;
   district?: string;
+  lat?: number;
+  lng?: number;
 }
 
 export interface CommunityPost {
