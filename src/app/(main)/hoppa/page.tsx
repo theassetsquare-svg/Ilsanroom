@@ -6,8 +6,8 @@ import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from
 import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
-  title: '호빠 | 오늘밤어디 - 강남·부산·대구·대전·홍대·전주·제주 호스트바',
-  description: '전국 호빠(호스트바) 정보. 강남보스턴, 수원비스트, 대구퍼펙트, 해운대깐따삐야 등 검증된 호스트클럽 리스트.',
+  title: '호빠 | 오늘밤어디 - 전국 호스트바 정보',
+  description: '전국 호스트바 정보. 강남보스턴, 수원비스트, 대구퍼펙트, 해운대깐따삐야 등 검증된 업소 리스트.',
   openGraph: { images: [{ url: 'https://placehold.co/1200x630/EC4899/ffffff/png?text=호빠 | 오늘밤어디', width: 1200, height: 630 }] },
 };
 
@@ -39,12 +39,12 @@ export default function HoppaPage() {
             <h2 className="text-lg font-bold text-pink-300">여성을 위한 프리미엄 공간</h2>
           </div>
           <p className="text-base leading-relaxed text-pink-200/70">
-            호스트클럽은 전문 호스트가 여성 고객에게 대화와 엔터테인먼트를 제공하는 여성 전용 공간입니다.
+            이곳은 전문 호스트가 여성 고객에게 대화와 엔터테인먼트를 제공하는 여성 전용 공간입니다.
             프라이빗 룸이나 부스에서 편안하게 시간을 보낼 수 있으며,
-            강남·홍대·부산·대구·대전·수원·광주·울산·전주·제주 등 전국 주요 도시에 위치해 있습니다.
+            논현·홍대·해운대·대구·대전·수원·광주·울산·전주·제주 등 전국 주요 도시에 위치해 있습니다.
             사전 전화 상담을 통해 분위기, 가격, 이용 방법을 안내받을 수 있어
             처음 방문하시는 분도 부담 없이 이용 가능합니다.
-            모든 업소는 구글/네이버 검색을 통해 2026년 현재 영업 중인 곳만 확인하여 등록했습니다.
+            모든 업소는 구글/네이버 검색을 통해 2026년 현재 운영 중인 곳만 확인하여 등록했습니다.
           </p>
         </div>
 
@@ -82,11 +82,11 @@ export default function HoppaPage() {
         { day: '일요일', time: '20:00~00:00', level: 35 },
       ]} />
 
-      <CategoryVSBattle venueA="강남보스턴호빠" venueB="대구퍼펙트호빠" topic="호스트클럽 최강자는?" />
+      <CategoryVSBattle venueA="강남보스턴호빠" venueB="대구퍼펙트호빠" topic="호스트 공간 최강자는?" />
 
       <RelatedMagazine articles={[
-        { title: '호빠 처음 가는 분을 위한 완벽 가이드 — 가격, 매너, 팁', tag: '입문' },
-        { title: '강남 vs 부산 vs 대구 호빠 — 지역별 분위기와 가격 비교', tag: '비교' },
+        { title: '호스트 공간 처음 가는 분을 위한 완벽 가이드 — 가격, 매너, 팁', tag: '입문' },
+        { title: '서울 남부 vs 해운대 vs 대구 — 지역별 분위기와 가격 비교', tag: '비교' },
       ]} />
     </div>
   );

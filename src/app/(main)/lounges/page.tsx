@@ -6,7 +6,7 @@ import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
   title: '라운지 | 오늘밤어디 - 강남·압구정·이태원 프리미엄 라운지바',
-  description: '전국 프리미엄 라운지 정보. 강남, 압구정, 이태원 라운지바. 칵테일, 프라이빗 공간.',
+  description: '전국 프리미엄 바 정보. 압구정, 논현, 이태원 칵테일·프라이빗 공간.',
   openGraph: { images: [{ url: 'https://placehold.co/1200x630/06B6D4/ffffff/png?text=라운지 | 오늘밤어디', width: 1200, height: 630 }] },
 };
 
@@ -27,10 +27,10 @@ export default function LoungesPage() {
           <p className="text-base leading-relaxed text-neon-text-muted">
             라운지는 고급스러운 인테리어와 조용한 분위기에서 칵테일, 와인, 위스키 등 프리미엄 주류를 즐기며
             대화와 사교를 나누는 공간입니다. 소파석이나 프라이빗 부스에서 편안하게 앉아서 시간을 보내는 것이 특징입니다.
-            강남과 압구정 일대에 밀집한 라운지바는 세련된 인테리어와 전문 바텐더의 시그니처 칵테일로 유명하며,
-            이태원 라운지는 다국적 분위기와 독특한 콘셉트가 매력입니다. 소규모 비즈니스 미팅, 지인 모임,
-            커플 데이트 등 목적에 따라 분위기가 다른 라운지를 선택할 수 있습니다.
-            대부분 스마트 캐주얼 이상의 복장을 권장하며, 프라이빗 룸이 있는 곳도 있으니
+            신사동 일대에 밀집한 프리미엄 바는 세련된 인테리어와 전문 바텐더의 시그니처 칵테일로 유명하며,
+            이태원의 프라이빗 공간은 다국적 분위기와 독특한 콘셉트가 매력입니다. 소규모 비즈니스 미팅, 지인 모임,
+            커플 데이트 등 목적에 따라 분위기가 다른 이곳을 선택할 수 있습니다.
+            대부분 스마트 캐주얼 이상의 복장을 권장하며, 논현·청담 일대에는 프라이빗 룸이 있는 곳도 있으니
             사전에 전화로 좌석 유무를 확인하시는 것이 좋습니다.
           </p>
         </div>
@@ -56,8 +56,8 @@ export default function LoungesPage() {
       <CategoryVSBattle venueA="강남라운지아르쥬" venueB="강남라운지하입" topic="압구정 라운지 대결" />
 
       <RelatedMagazine articles={[
-        { title: '강남 프리미엄 라운지 — 분위기로 고르는 가이드', tag: '라운지' },
-        { title: '혼자 가기 좋은 라운지바 TOP5', tag: '혼술' },
+        { title: '논현·청담 프리미엄 바 — 분위기로 고르는 가이드', tag: '추천' },
+        { title: '혼자 가기 좋은 프라이빗 공간 TOP5', tag: '혼술' },
       ]} />
     </div>
   );

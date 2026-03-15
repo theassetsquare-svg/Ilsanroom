@@ -28,7 +28,7 @@ function VenueCard({ venue, href }: { venue: Venue; href: string }) {
       </div>
       <h3 className="text-lg font-bold text-neon-text mb-1">{venue.nameKo}</h3>
       {venue.staffNickname && (
-        <p className="mb-1 text-sm font-medium text-neon-gold">담당: {venue.staffNickname}</p>
+        <p className="mb-1 text-sm font-medium text-neon-gold">{venue.staffNickname}</p>
       )}
       {venue.staffPhone && (
         <p className="mb-2 text-sm text-neon-green">{venue.staffPhone}</p>
@@ -38,12 +38,6 @@ function VenueCard({ venue, href }: { venue: Venue; href: string }) {
         <span className="flex items-center gap-1">
           <span className="text-neon-gold">★</span> {venue.rating.toFixed(1)}
         </span>
-      </div>
-      <p className="text-sm leading-relaxed text-neon-text-muted/70 line-clamp-2">{venue.shortDescription}</p>
-      <div className="mt-3 flex flex-wrap gap-1.5">
-        {venue.tags.slice(0, 3).map((tag) => (
-          <Badge key={tag}>#{tag}</Badge>
-        ))}
       </div>
     </Card>
   );

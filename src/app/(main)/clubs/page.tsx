@@ -6,7 +6,7 @@ import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
   title: '클럽 | 오늘밤어디 - 강남·홍대·이태원·부산 EDM 힙합 클럽',
-  description: '전국 인기 클럽 정보. 강남 EDM 클럽, 홍대 힙합 클럽, 이태원 글로벌 클럽, 부산 서면 클럽까지 장르별·지역별 클럽 리스트.',
+  description: '전국 인기 EDM·힙합 파티 정보. 장르별·지역별 댄스홀 리스트. 강남, 홍대, 이태원, 부산까지.',
   openGraph: { images: [{ url: 'https://placehold.co/1200x630/8B5CF6/ffffff/png?text=클럽 | 오늘밤어디', width: 1200, height: 630 }] },
 };
 
@@ -26,12 +26,12 @@ export default function ClubsPage() {
         <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">클럽</h1>
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6">
           <p className="text-base leading-relaxed text-neon-text-muted">
-            클럽은 DJ가 선곡하는 EDM, 하우스, 테크노, 힙합 등 전자음악을 중심으로 운영되는 엔터테인먼트 공간입니다.
-            나이트클럽(나이트)과는 완전히 다른 업종으로, 20대~30대 초반 고객이 주를 이루며
+            DJ가 선곡하는 EDM, 하우스, 테크노, 힙합 등 전자음악을 중심으로 운영되는 엔터테인먼트 공간입니다.
+            소셜댄스 중심의 사교장과는 완전히 다른 업종으로, 20대~30대 초반 고객이 주를 이루며
             스탠딩 중심의 댄스 플로어에서 음악에 맞춰 자유롭게 즐기는 것이 특징입니다.
-            강남은 대형 EDM 메가 클럽이 밀집해 있으며, 홍대는 인디·힙합·EDM 등 다양한 장르의 중소형 클럽이 특색입니다.
-            이태원은 외국인 비율이 높아 글로벌한 파티 문화를 경험할 수 있고, 부산 서면에도 지역 특색의 클럽 씬이 형성되어 있습니다.
-            국내외 유명 DJ 게스트 공연, 테이블 예약, 드레스코드 등 클럽별 특성을 비교하여 자신에게 맞는 곳을 선택하세요.
+            강남은 대형 EDM 메가 공간이 밀집해 있으며, 홍대는 인디·힙합·EDM 등 다양한 장르의 중소형 공간이 특색입니다.
+            이태원은 외국인 비율이 높아 글로벌한 파티 문화를 경험할 수 있고, 부산 서면에도 지역 특색의 씬이 형성되어 있습니다.
+            국내외 유명 DJ 게스트 공연, 테이블 예약, 드레스코드 등 업소별 특성을 비교하여 자신에게 맞는 곳을 선택하세요.
           </p>
         </div>
       </div>
@@ -53,11 +53,11 @@ export default function ClubsPage() {
         { day: '수요일', time: '22:00~01:00', level: 30 },
       ]} />
 
-      <CategoryVSBattle venueA="강남클럽레이스" venueB="클럽NB2" topic="이번 주 클럽 대결 — 강남 vs 홍대" />
+      <CategoryVSBattle venueA="강남클럽레이스" venueB="클럽NB2" topic="이번 주 EDM 대결 — 논현 vs 홍대" />
 
       <RelatedMagazine articles={[
-        { title: '2026 강남 클럽 TOP5 — 올해 꼭 가봐야 할 곳', tag: '강남' },
-        { title: '홍대 vs 이태원 클럽 — 어디가 나에게 맞을까?', tag: '비교' },
+        { title: '2026 논현 EDM TOP5 — 올해 꼭 가봐야 할 곳', tag: '추천' },
+        { title: '홍대 vs 이태원 — 어디가 나에게 맞을까?', tag: '비교' },
       ]} />
     </div>
   );

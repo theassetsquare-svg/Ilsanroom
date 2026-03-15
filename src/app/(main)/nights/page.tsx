@@ -5,8 +5,8 @@ import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from
 import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
-  title: '나이트 | 오늘밤어디 - 전국 나이트클럽 소셜댄스 부킹',
-  description: '전국 나이트클럽 정보. 부킹 시스템, 부스/룸/테이블/홀, 라이브 밴드, 소셜 댄스 정보를 오늘밤어디에서.',
+  title: '나이트 | 오늘밤어디 - 전국 소셜댄스 부킹 명소',
+  description: '전국 소셜댄스 부킹 명소 정보. 부스/룸/테이블/홀, 라이브 밴드 정보를 한곳에서.',
   openGraph: { images: [{ url: 'https://placehold.co/1200x630/F43F5E/ffffff/png?text=나이트 | 오늘밤어디', width: 1200, height: 630 }] },
 };
 
@@ -24,14 +24,14 @@ export default function NightsPage() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '나이트' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">나이트</h1>
+        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">소셜댄스 · 부킹</h1>
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6">
           <p className="text-base leading-relaxed text-neon-text-muted">
-            나이트클럽(나이트)은 소셜 댄스를 중심으로 운영되는 사교 공간으로, 클럽과는 완전히 다른 업종입니다.
-            주로 30대~50대 고객이 방문하며, 라이브 밴드가 트로트·팝·발라드 등 다양한 음악을 연주하는 가운데
-            파트너와 함께 춤을 즐기는 것이 핵심입니다. 부킹 시스템을 통해 이성 간 매칭이 이루어지며,
+            소셜 댄스 중심의 사교 공간으로, EDM 중심의 댄스홀과는 완전히 다른 업종입니다.
+            주로 30대~50대 고객이 방문하며, 라이브 밴드가 트로트·팝·발라드 등 다양한 음악을 연주합니다.
+            파트너와 함께 춤을 즐기는 것이 핵심이며, 부킹 시스템을 통해 이성 간 매칭이 이루어집니다.
             좌석은 부스, 룸, 테이블, 홀 등 다양한 형태로 구성됩니다. 양주 등 주류를 주문하여 웨이터 서비스를
-            받으며 즐기는 것이 일반적입니다. 수원찬스돔나이트처럼 365일 운영하는 대형 업소부터
+            받으며 즐기는 것이 일반적입니다. 365일 운영하는 대형 업소부터
             지역 밀착형 소규모까지 전국에 분포해 있으며, 처음 방문하시는 분도 웨이터 안내를 통해
             편안하게 즐길 수 있습니다.
           </p>
@@ -58,8 +58,8 @@ export default function NightsPage() {
       <CategoryVSBattle venueA="수원찬스돔나이트" venueB="인천아라비안나이트" topic="경기 나이트 최강자는?" />
 
       <RelatedMagazine articles={[
-        { title: '처음 나이트 가는 분을 위한 A to Z 매너 가이드', tag: '입문' },
-        { title: '전국 나이트클럽 지역별 특징 총정리', tag: '정보' },
+        { title: '처음 방문하는 분을 위한 A to Z 매너 가이드', tag: '입문' },
+        { title: '전국 소셜댄스 명소 지역별 특징 총정리', tag: '정보' },
       ]} />
     </div>
   );

@@ -17,7 +17,7 @@ export function FirstVisitGuide({ category, dress, budget, alone, reservation }:
   return (
     <div className="rounded-2xl border border-neon-gold/30 bg-neon-surface p-6">
       <h2 className="text-xl font-bold text-neon-text mb-4 flex items-center gap-2">
-        <span className="text-2xl">📖</span> {category} 처음이세요?
+        <span className="text-2xl">📖</span> 처음 방문이세요?
       </h2>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="rounded-xl bg-neon-bg p-4">

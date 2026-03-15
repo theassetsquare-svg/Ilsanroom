@@ -21,6 +21,7 @@ function getCategoryHref(category: string, slug: string, region: string) {
 
 export default function PricePage() {
   const [category, setCategory] = useState<CategoryFilter>('all');
+  const [showAll, setShowAll] = useState(false);
 
   const filtered = useMemo(() => {
     return venues
@@ -32,6 +33,8 @@ export default function PricePage() {
         return b.rating - a.rating;
       });
   }, [category]);
+
+  const displayed = showAll ? filtered : filtered.slice(0, 8);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
@@ -62,7 +65,6 @@ export default function PricePage() {
             <thead>
               <tr className="border-b border-neon-border bg-neon-surface-2">
                 <th className="px-4 py-3 text-left font-semibold text-neon-text">업소명</th>
-                <th className="px-4 py-3 text-left font-semibold text-neon-text">카테고리</th>
                 <th className="px-4 py-3 text-left font-semibold text-neon-text">지역</th>
                 <th className="px-4 py-3 text-left font-semibold text-neon-text">입장료</th>
                 <th className="px-4 py-3 text-left font-semibold text-neon-text">주대/룸</th>
@@ -71,7 +73,7 @@ export default function PricePage() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((v) => (
+              {displayed.map((v) => (
                 <tr key={v.id} className="border-b border-neon-border/50 hover:bg-neon-surface-2/50 transition-colors">
                   <td className="px-4 py-3">
                     <Link
@@ -84,7 +86,6 @@ export default function PricePage() {
                     </Link>
                     {v.isPremium && <span className="ml-2 text-[10px] text-neon-gold">PREMIUM</span>}
                   </td>
-                  <td className="px-4 py-3 text-neon-text-muted">{categoryLabels[v.category] || v.category}</td>
                   <td className="px-4 py-3 text-neon-text-muted">{v.regionKo}</td>
                   <td className="px-4 py-3 text-neon-text">{v.priceEntry || '-'}</td>
                   <td className="px-4 py-3 text-neon-text">{v.priceTable || '-'}</td>
@@ -99,6 +100,11 @@ export default function PricePage() {
         <p className="py-20 text-center text-neon-text-muted">가격 정보가 등록된 업소가 없습니다.</p>
       )}
 
+      {!showAll && filtered.length > 8 && (
+        <button onClick={() => setShowAll(true)} className="mt-4 w-full rounded-xl border border-neon-border py-3 text-sm text-neon-primary-light hover:bg-neon-surface transition">
+          전체 {filtered.length}개 업소 보기
+        </button>
+      )}
       <p className="mt-6 text-xs text-neon-text-muted/60">
         ※ 가격은 업소 사정에 따라 변동될 수 있습니다. 방문 전 반드시 해당 업소에 직접 확인하시기 바랍니다.
       </p>
