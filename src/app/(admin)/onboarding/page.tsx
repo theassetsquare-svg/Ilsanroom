@@ -4,8 +4,8 @@ import { useState } from "react";
 
 const steps = [
   { number: 1, label: "업소정보" },
-  { number: 2, label: "사진등록" },
-  { number: 3, label: "요금제+결제" },
+  { number: 2, label: "이미지추가" },
+  { number: 3, label: "요금제+납부" },
   { number: 4, label: "완료" },
 ];
 
@@ -14,7 +14,7 @@ const plans = [
     name: "무료",
     price: "0",
     period: "",
-    features: ["기본 업소 등록", "월 5건 리뷰 확인", "기본 통계"],
+    features: ["초급 매장 게시", "월 5건 리뷰 점검", "초급 통계"],
     highlighted: false,
     tag: null,
   },
@@ -23,10 +23,10 @@ const plans = [
     price: "29,000",
     period: "/월",
     features: [
-      "사진 20장 등록",
-      "리뷰 무제한 확인",
-      "기본 통계 + 검색 노출",
-      "이벤트 3건 등록",
+      "이미지 20장 추가",
+      "리뷰 무제한 점검",
+      "초급 통계 + 검색 노출",
+      "이벤트 3건 작성",
     ],
     highlighted: false,
     tag: null,
@@ -36,10 +36,10 @@ const plans = [
     price: "49,000",
     period: "/월",
     features: [
-      "사진 50장 등록",
+      "포토 50장 추가",
       "리뷰 무제한 + 답변",
       "상세 통계 + 경쟁 분석",
-      "이벤트 10건 등록",
+      "이벤트 10건 신청",
       "상위 노출 우선권",
     ],
     highlighted: true,
@@ -50,7 +50,7 @@ const plans = [
     price: "99,000",
     period: "/월",
     features: [
-      "사진 무제한",
+      "비주얼 무제한",
       "리뷰 관리 + AI 답변",
       "전체 통계 + 리포트",
       "이벤트 무제한",
@@ -121,9 +121,9 @@ export default function OnboardingPage() {
       <div className="mx-auto max-w-3xl px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold">업소 등록</h1>
+          <h1 className="text-2xl font-bold">매장 입력</h1>
           <p className="mt-1 text-sm text-neon-text-muted">
-            간단한 4단계로 업소를 등록하세요.
+            간단한 4단계로 장소를 추가하세요.
           </p>
         </div>
 
@@ -190,23 +190,23 @@ export default function OnboardingPage() {
         {currentStep === 1 && (
           <div className="rounded-xl border border-neon-border bg-neon-surface p-6">
             <h2 className="text-lg font-semibold">
-              <span className="text-neon-primary-light">Step 1.</span> 업소정보 입력
+              <span className="text-neon-primary-light">Step 1.</span> 매장정보 입력
             </h2>
             <p className="mt-1 text-sm text-neon-text-muted">
-              기본 업소 정보를 입력해 주세요.
+              초급 가게 정보를 입력해 주세요.
             </p>
 
             <div className="mt-6 space-y-5">
               <div>
                 <label className="block text-sm font-medium text-neon-text">
-                  업소명 <span className="text-red-400">*</span>
+                  매장명 <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  placeholder="업소 이름을 입력하세요"
+                  placeholder="장소 이름을 입력하세요"
                   className={inputClass}
                 />
               </div>
@@ -266,7 +266,7 @@ export default function OnboardingPage() {
                   value={formData.description}
                   onChange={handleInputChange}
                   rows={4}
-                  placeholder="업소에 대한 간단한 소개를 작성해 주세요"
+                  placeholder="매장에 대한 간단한 소개를 작성해 주세요"
                   className={`${inputClass} resize-none`}
                 />
               </div>
@@ -316,10 +316,10 @@ export default function OnboardingPage() {
         {currentStep === 2 && (
           <div className="rounded-xl border border-neon-border bg-neon-surface p-6">
             <h2 className="text-lg font-semibold">
-              <span className="text-neon-primary-light">Step 2.</span> 사진 등록
+              <span className="text-neon-primary-light">Step 2.</span> 이미지 추가
             </h2>
             <p className="mt-1 text-sm text-neon-text-muted">
-              업소 사진을 등록해 주세요. 최대 10장까지 가능합니다.
+              매장 사진을 첨부해 주세요. 최대 10장까지 가능합니다.
             </p>
 
             {/* Drag & Drop Area */}
@@ -342,7 +342,7 @@ export default function OnboardingPage() {
             >
               <div className="text-4xl text-neon-text-muted">📁</div>
               <p className="mt-3 text-sm text-neon-text-muted">
-                사진을 여기에 드래그하거나
+                이미지를 여기에 드래그하거나
               </p>
               <button
                 type="button"
@@ -352,7 +352,7 @@ export default function OnboardingPage() {
                 파일 선택
               </button>
               <p className="mt-2 text-xs text-neon-text-muted">
-                JPG, PNG (최대 5MB 각, 최대 10장) - {photos.length}/10 등록됨
+                JPG, PNG (최대 5MB 각, 최대 10장) - {photos.length}/10 첨부됨
               </p>
             </div>
 
@@ -360,7 +360,7 @@ export default function OnboardingPage() {
             {photos.length > 0 && (
               <div className="mt-6">
                 <h3 className="mb-3 text-sm font-medium text-neon-text">
-                  등록된 사진
+                  첨부된 포토
                 </h3>
                 <div className="grid grid-cols-5 gap-3">
                   {photos.map((photo, index) => (
@@ -396,7 +396,7 @@ export default function OnboardingPage() {
             <div className="rounded-xl border border-neon-border bg-neon-surface p-6">
               <h2 className="text-lg font-semibold">
                 <span className="text-neon-primary-light">Step 3.</span> 요금제 선택 및
-                결제
+                납부
               </h2>
               <p className="mt-1 text-sm text-neon-text-muted">
                 비즈니스에 맞는 요금제를 선택하세요.
@@ -463,11 +463,11 @@ export default function OnboardingPage() {
             {/* Payment Form */}
             {selectedPlan !== "무료" && (
               <div className="rounded-xl border border-neon-border bg-neon-surface p-6">
-                <h3 className="mb-4 font-semibold">결제 정보</h3>
+                <h3 className="mb-4 font-semibold">납부 정보</h3>
                 {selectedPlan === "프로" && (
                   <div className="mb-4 rounded-lg bg-neon-primary/10 p-3 text-sm text-violet-300">
                     14일 프로 무료 체험이 적용됩니다. 체험 기간 종료 후 자동
-                    결제됩니다.
+                    납부됩니다.
                   </div>
                 )}
                 <div className="space-y-4">
@@ -550,20 +550,20 @@ export default function OnboardingPage() {
 
             <div className="mb-4 text-6xl">&#127881;</div>
             <h2 className="mb-2 text-2xl font-bold text-neon-primary-light">
-              등록 완료!
+              게시 완료!
             </h2>
             <p className="mb-6 text-neon-text-muted">
-              업소 등록이 성공적으로 완료되었습니다.
+              장소 입력이 성공적으로 완료되었습니다.
             </p>
 
             {/* Registration Summary */}
             <div className="mx-auto mb-8 max-w-md rounded-xl border border-neon-border bg-neon-surface-2 p-5 text-left">
               <h3 className="mb-3 text-sm font-semibold text-neon-text">
-                등록 요약
+                작성 요약
               </h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-neon-text-muted">업소명</span>
+                  <span className="text-neon-text-muted">매장명</span>
                   <span className="text-neon-text">
                     {formData.name || "미입력"}
                   </span>
@@ -576,7 +576,7 @@ export default function OnboardingPage() {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-neon-text-muted">등록 사진</span>
+                  <span className="text-neon-text-muted">첨부 이미지</span>
                   <span className="text-neon-text">{photos.length}장</span>
                 </div>
                 <div className="flex justify-between">
@@ -617,7 +617,7 @@ export default function OnboardingPage() {
               onClick={handleNext}
               className="rounded-lg bg-neon-primary px-6 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light"
             >
-              {currentStep === 3 ? "등록 완료" : "다음 단계"} &rarr;
+              {currentStep === 3 ? "신청 완료" : "다음 단계"} &rarr;
             </button>
           </div>
         )}

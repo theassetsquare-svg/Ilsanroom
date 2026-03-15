@@ -17,9 +17,9 @@ import {
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "업주 전용 - 오늘밤어디 | 내 업소를 등록하고 매출을 올리세요",
+  title: "업주 전용 - 오늘밤어디 | 내 업소를 입력하고 매출을 올리세요",
   description:
-    "오늘밤어디에 업소를 등록하면 검색 노출 증가, 리뷰 관리, 실시간 통계, 예약 시스템까지. 14일 무료 체험으로 매출 성장을 경험하세요.",
+    "오늘밤어디에 업소를 입력하면 검색 노출 증가, 후기 관리, 실시간 분석지표, 접수 시스템까지. 14일 0원 체험으로 매출 성장을 경험하세요.",
 };
 
 const features = [
@@ -27,37 +27,37 @@ const features = [
     icon: Eye,
     title: "검색 노출 증가",
     description:
-      "오늘밤어디 플랫폼 내 프리미엄 검색 노출로 잠재 고객에게 더 많이 보여집니다. SEO 최적화와 카테고리 상위 배치를 지원합니다.",
+      "오늘밤어디 플랫폼 내 프리미엄 검색 노출로 잠재 손님에게 더 많이 보여집니다. SEO 최적화와 카테고리 상위 배치를 지원합니다.",
   },
   {
     icon: MessageSquare,
     title: "리뷰 관리",
     description:
-      "고객 리뷰에 즉시 답변하고 평판을 관리하세요. 리뷰 알림과 감성 분석 도구로 고객 만족도를 높일 수 있습니다.",
+      "손님 후기에 즉시 답변하고 평판을 관리하세요. 리뷰 알림과 감성 분석 도구로 손님 만족도를 높일 수 갖춰져있습니다.",
   },
   {
     icon: BarChart3,
-    title: "실시간 통계",
+    title: "실시간 분석지표",
     description:
-      "방문자 수, 페이지 조회, 전환율 등 핵심 지표를 실시간 대시보드로 확인합니다. 데이터 기반 의사결정이 가능합니다.",
+      "방문자 수, 페이지 조회, 전환율 등 핵심 지표를 실시간 대시보드로 파악합니다. 데이터 기반 의사결정이 수행합니다.",
   },
   {
     icon: BadgeCheck,
-    title: "프리미엄 배지",
+    title: "프리미엄 뱃지",
     description:
-      "오늘밤어디 인증 배지로 신뢰도를 높이세요. 인증 업소는 고객 클릭률이 평균 2.3배 높습니다.",
+      "오늘밤어디 인증 뱃지로 신뢰도를 높이세요. 인증 매장은 손님 클릭률이 평균 2.3배 높습니다.",
   },
   {
     icon: CalendarCheck,
     title: "예약 시스템",
     description:
-      "온라인 예약 접수부터 확인, 리마인더까지 자동화합니다. 노쇼율 감소와 테이블 회전율 향상을 동시에 달성하세요.",
+      "온라인 예약 접수부터 파악, 리마인더까지 자동화합니다. 노쇼율 감소와 테이블 회전율 향상을 동시에 달성하세요.",
   },
   {
     icon: Megaphone,
     title: "이벤트 프로모션",
     description:
-      "특별 이벤트, 할인 프로모션을 오늘밤어디 플랫폼에서 직접 홍보하세요. 타겟 고객에게 푸시 알림으로 전달됩니다.",
+      "특별 이벤트, 할인 프로모션을 저희 플랫폼에서 직접 홍보하세요. 타겟 손님에게 푸시 알림으로 전달됩니다.",
   },
 ];
 
@@ -72,19 +72,19 @@ const steps = [
   {
     step: "01",
     title: "가입",
-    description: "무료로 오늘밤어디 업주 계정을 생성합니다. 1분이면 충분합니다.",
+    description: "무상으로 본 서비스 업주 계정을 생성합니다. 1분이면 충분합니다.",
   },
   {
     step: "02",
     title: "업소 등록",
     description:
-      "업소 정보, 사진, 운영 시간, 메뉴를 입력합니다. 가이드를 따라 쉽게 완성하세요.",
+      "매장 정보, 사진, 운영 시간, 메뉴를 입력합니다. 가이드를 따라 쉽게 완성하세요.",
   },
   {
     step: "03",
     title: "매출 성장",
     description:
-      "대시보드에서 성과를 확인하고 최적화합니다. 고객이 찾아옵니다.",
+      "대시보드에서 성과를 확인하고 최적화합니다. 손님이 찾아옵니다.",
   },
 ];
 
@@ -93,19 +93,19 @@ const caseStudies = [
     name: "일산명월관",
     metric: "+520%",
     description: "검색 노출 증가",
-    detail: "오늘밤어디 등록 3개월 만에 온라인 문의량 5배 이상 증가",
+    detail: "저희 플랫폼 등록 3개월 만에 온라인 문의량 5배 이상 증가",
   },
   {
     name: "일산룸",
     metric: "+340%",
     description: "예약 전환율 상승",
-    detail: "예약 시스템 도입 후 노쇼율 60% 감소, 매출 3.4배 성장",
+    detail: "부킹 시스템 도입 후 노쇼율 60% 감소, 수익 3.4배 성장",
   },
   {
     name: "옥타곤",
     metric: "3.2x",
     description: "매출 성장",
-    detail: "프리미엄 배지와 이벤트 프로모션으로 주말 매출 3.2배 달성",
+    detail: "프리미엄 뱃지와 이벤트 프로모션으로 주말 수입 3.2배 달성",
   },
 ];
 
@@ -114,7 +114,7 @@ const plans = [
     name: "무료",
     price: "₩0",
     period: "/월",
-    features: ["업소 프로필 1개", "기본 월간 통계", "리뷰 알림"],
+    features: ["가게 프로필 1개", "필수 월간 분석지표", "리뷰 알림"],
     highlighted: false,
   },
   {
@@ -123,9 +123,9 @@ const plans = [
     period: "/월",
     features: [
       "프리미엄 검색 노출",
-      "실시간 통계 대시보드",
+      "실시간 분석지표 대시보드",
       "리뷰 관리 도구",
-      "인증 배지",
+      "인증 뱃지",
     ],
     highlighted: true,
   },
@@ -134,10 +134,10 @@ const plans = [
     price: "₩99,000",
     period: "/월",
     features: [
-      "프로 플랜 전체 기능",
+      "프로 서비스안 전체 기능",
       "예약 시스템",
       "이벤트 프로모션",
-      "우선 고객 지원",
+      "우선 손님 지원",
     ],
     highlighted: false,
   },
@@ -146,8 +146,8 @@ const plans = [
     price: "맞춤 견적",
     period: "",
     features: [
-      "멀티 업소 관리",
-      "전담 매니저 배정",
+      "멀티 매장 관리",
+      "전담 컨설턴트 배정",
       "API 연동",
       "맞춤 리포트",
     ],
@@ -157,14 +157,14 @@ const plans = [
 
 const testimonials = [
   {
-    text: "오늘밤어디 도입 후 신규 고객이 눈에 띄게 늘었습니다. 대시보드 덕분에 어떤 프로모션이 효과적인지 바로 알 수 있어요. 매출이 2배 이상 올랐습니다.",
+    text: "당사 서비스 도입 후 신규 손님이 눈에 띄게 늘었습니다. 대시보드 덕분에 어떤 프로모션이 효과적인지 바로 알 수 있어요. 수익이 2배 이상 올랐습니다.",
     name: "김** 대표",
     venue: "일산명월관",
     rating: 5,
   },
   {
-    text: "리뷰 관리 기능이 정말 유용합니다. 고객 피드백에 빠르게 대응하면서 평점이 3.2에서 4.7로 크게 올랐어요. 이제 없으면 안 될 도구입니다.",
-    name: "박** 매니저",
+    text: "리뷰 관리 기능이 정말 유용합니다. 손님 피드백에 빠르게 대응하면서 평점이 3.2에서 4.7로 크게 올랐어요. 이제 없으면 안 될 도구입니다.",
+    name: "박** 컨설턴트",
     venue: "일산룸",
     rating: 5,
   },
@@ -195,7 +195,7 @@ export default function ForBusinessPage() {
             </span>
           </h1>
           <p className="mx-auto mb-10 max-w-2xl text-lg text-neon-text-muted">
-            검색 노출, 리뷰 관리, 실시간 통계, 예약 시스템까지. 오늘밤어디 하나로
+            검색 노출, 리뷰 관리, 실시간 분석지표, 예약 시스템까지. 오늘밤어디 하나로
             나이트라이프 비즈니스의 모든 것을 관리하세요.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -203,7 +203,7 @@ export default function ForBusinessPage() {
               href="/admin/onboarding?plan=pro&trial=true"
               className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-10 py-4 text-sm font-semibold text-neon-text shadow-lg shadow-violet-600/25 transition-all hover:bg-neon-primary-light hover:shadow-violet-500/30"
             >
-              14일 무료 체험 시작하기
+              14일 무료 체험 착수하기
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
@@ -250,7 +250,7 @@ export default function ForBusinessPage() {
           왜 <span className="text-neon-primary-light">오늘밤어디</span>인가요?
         </h2>
         <p className="mx-auto mb-12 max-w-xl text-center text-sm text-neon-text-muted">
-          업소 운영에 필요한 모든 도구를 하나의 플랫폼에서 제공합니다.
+          매장 운영에 필요한 전체 도구를 하나의 플랫폼에서 제공합니다.
         </p>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {features.map((f) => (
@@ -273,10 +273,10 @@ export default function ForBusinessPage() {
       {/* How It Works */}
       <section className="mx-auto max-w-5xl px-4 py-20">
         <h2 className="mb-4 text-center text-3xl font-bold">
-          시작은 <span className="text-neon-primary-light">간단합니다</span>
+          착수은 <span className="text-neon-primary-light">간단합니다</span>
         </h2>
         <p className="mx-auto mb-12 max-w-md text-center text-sm text-neon-text-muted">
-          3단계만 거치면 오늘밤어디의 모든 기능을 사용할 수 있습니다.
+          3단계만 거치면 저희 플랫폼의 모든 기능을 사용할 수 갖춰져있습니다.
         </p>
         <div className="grid gap-6 md:grid-cols-3">
           {steps.map((item) => (
@@ -316,7 +316,7 @@ export default function ForBusinessPage() {
             실제 <span className="text-neon-primary-light">성과</span>
           </h2>
           <p className="mx-auto mb-12 max-w-md text-center text-sm text-neon-text-muted">
-            오늘밤어디을 도입한 업소들의 실제 성장 사례입니다.
+            저희 플랫폼을 도입한 가게들의 실제 성장 사례입니다.
           </p>
           <div className="grid gap-6 md:grid-cols-3">
             {caseStudies.map((cs) => (
@@ -349,7 +349,7 @@ export default function ForBusinessPage() {
           합리적인 <span className="text-neon-primary-light">요금제</span>
         </h2>
         <p className="mx-auto mb-12 max-w-md text-center text-sm text-neon-text-muted">
-          비즈니스 규모에 맞는 플랜을 선택하세요.
+          비즈니스 규모에 맞는 서비스안을 선정하세요.
         </p>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {plans.map((plan) => (
@@ -431,17 +431,17 @@ export default function ForBusinessPage() {
         <div className="rounded-2xl border border-violet-500/20 bg-gradient-to-r from-violet-600/10 via-purple-600/10 to-violet-600/10 p-12 text-center md:p-16">
           <Zap className="mx-auto mb-4 h-12 w-12 text-neon-primary-light" />
           <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-            지금 바로 시작하세요
+            지금 바로 착수하세요
           </h2>
           <p className="mx-auto mb-8 max-w-lg text-neon-text-muted">
-            14일 프로 무료 체험으로 오늘밤어디의 모든 기능을 경험하세요. 신용카드 없이
-            시작하고, 언제든 해지할 수 있습니다.
+            14일 프로 무료 체험으로 당사의 모든 기능을 경험하세요. 신용카드 없이
+            착수하고, 언제든 해지할 수 갖춰져있습니다.
           </p>
           <Link
             href="/admin/onboarding?plan=pro&trial=true"
             className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-12 py-4 text-base font-semibold text-neon-text shadow-lg shadow-violet-600/25 transition-all hover:bg-neon-primary-light hover:shadow-violet-500/30"
           >
-            14일 프로 무료 체험 시작하기
+            14일 프로 무료 체험 착수하기
             <ArrowRight className="h-5 w-5" />
           </Link>
           <div className="mt-6 flex flex-wrap justify-center gap-6 text-xs text-neon-text-muted">

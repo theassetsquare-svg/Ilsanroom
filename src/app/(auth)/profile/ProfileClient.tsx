@@ -156,11 +156,11 @@ export default function ProfileClient() {
             <span className="text-xl font-bold text-neon-primary-light">0 P</span>
           </div>
           <div className="flex items-center justify-between text-sm text-neon-text-muted">
-            <span>추천 포인트</span>
+            <span>추천 적립금</span>
             <span>0 P</span>
           </div>
           <div className="mt-3 flex items-center justify-between text-sm text-neon-text-muted">
-            <span>활동 포인트</span>
+            <span>활동 리워드</span>
             <span>0 P</span>
           </div>
         </div>
@@ -203,9 +203,6 @@ export default function ProfileClient() {
         <h2 className="mb-4 text-lg font-bold text-neon-text">계정 관리</h2>
         <div className="space-y-3">
           <button className="w-full rounded-xl border border-neon-border bg-neon-bg py-3 text-sm font-medium text-neon-text transition hover:bg-neon-surface-2">
-            비밀번호 변경
-          </button>
-          <button className="w-full rounded-xl border border-neon-border bg-neon-bg py-3 text-sm font-medium text-neon-text transition hover:bg-neon-surface-2">
             로그아웃
           </button>
         </div>
@@ -222,11 +219,11 @@ export default function ProfileClient() {
             <span className="mt-0.5 text-red-400">&#9888;</span>
             <div>
               <p className="text-sm font-medium text-red-300">
-                회원 탈퇴 시 30일간 유예 기간이 주어지며, 이후 모든 데이터가
+                회원 해지 시 30일간 유예 기간이 주어지며, 이후 모든 데이터가
                 영구 삭제됩니다.
               </p>
               <p className="mt-2 text-xs text-neon-text-muted">
-                탈퇴 후 30일 이내에 로그인하면 탈퇴가 취소됩니다.
+                해지 후 30일 이내에 로그인하면 삭제가 취소됩니다.
               </p>
             </div>
           </div>
@@ -251,7 +248,7 @@ export default function ProfileClient() {
                   취소
                 </button>
                 <button className="flex-1 rounded-xl bg-red-600 py-2.5 text-sm font-medium text-neon-text transition hover:bg-red-500">
-                  탈퇴 확인
+                  탈회 확인
                 </button>
               </div>
             </div>

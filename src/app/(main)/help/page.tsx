@@ -31,24 +31,24 @@ const faqCategories: FaqCategory[] = [
     icon: HelpCircle,
     items: [
       {
-        question: "오늘밤어디은 어떤 서비스인가요?",
+        question: "당사은 어떤 서비스인가요?",
         answer:
-          "오늘밤어디은 나이트라이프 업소(룸, 라운지, 클럽, 요정 등)를 위한 올인원 디지털 플랫폼입니다. 업소 검색, 리뷰, 예약, 커뮤니티 기능을 제공하며, 업주에게는 노출 관리, 데이터 분석, 예약 시스템 등 비즈니스 도구를 제공합니다.",
+          "당사는 나이트라이프 상점(룸, 라운지, 클럽, 요정 등)를 위한 올인원 디지털 플랫폼입니다. 매장 검색, 방문후기, 예약, 커뮤니티 도구를 제공하며, 업주에게는 게재 관리, 데이터 인사이트, 예약 체계 등 전문 수단를 제공합니다.",
       },
       {
         question: "가입은 어떻게 하나요?",
         answer:
-          "홈페이지 우측 상단의 '가입' 버튼을 클릭하세요. 이메일 또는 카카오 계정으로 간편하게 가입할 수 있습니다. 가입 후 바로 업소 검색, 리뷰 작성, 커뮤니티 참여가 가능합니다.",
+          "홈페이지 우측 상단의 '로그인' 버튼을 클릭하세요. 카카오, 네이버, 구글 소셜 계정으로 간편하게 시작할 수 존재합니다. 가입 후 바로 매장 검색, 방문후기 작성, 커뮤니티 참여가 허용합니다.",
       },
       {
         question: "무료로 이용할 수 있는 기능은 무엇인가요?",
         answer:
-          "일반 사용자는 업소 검색, 리뷰 열람, 커뮤니티 글 읽기 등 모든 기본 기능을 무료로 이용할 수 있습니다. 업주의 경우 무료 플랜에서 업소 프로필 1개 등록, 기본 월간 통계 확인, 리뷰 알림 수신이 가능합니다.",
+          "일반 사용자는 장소 검색, 방문후기 열람, 커뮤니티 글 읽기 등 모든 기초 도구를 무료로 이용할 수 존재합니다. 업주의 경우 무료 요금안에서 상점 소개란 1개 생성, 기초 월간 지표 조회, 방문후기 알림 수신이 허용합니다.",
       },
       {
         question: "문의는 어떻게 할 수 있나요?",
         answer:
-          "이메일(support@ilsanroom.pages.dev) 또는 카카오톡 채널(@오늘밤어디고객센터)로 문의하실 수 있습니다. 운영시간은 평일 10:00~18:00이며, 긴급 문의는 24시간 접수 가능합니다.",
+          "이메일(support@ilsanroom.pages.dev) 또는 카카오톡 채널(@당사문의자센터)로 문의하실 수 존재합니다. 구동시간은 평일 10:00~18:00이며, 긴급 문의는 24시간 접수 허용합니다.",
       },
     ],
   },
@@ -57,50 +57,50 @@ const faqCategories: FaqCategory[] = [
     icon: Store,
     items: [
       {
-        question: "업소는 어떻게 등록하나요?",
+        question: "상점는 어떻게 생성하나요?",
         answer:
-          "업주 계정으로 로그인 후 대시보드에서 '업소 등록' 버튼을 클릭하세요. 업소명, 주소, 카테고리, 운영 시간, 사진 등을 입력하면 됩니다. 검토 후 24시간 이내에 등록이 완료됩니다.",
+          "업주 계정으로 로그인 후 관리화면에서 '상점 등록' 버튼을 클릭하세요. 상점명, 주소, 카테고리, 구동 시간, 사진 등을 입력하면 됩니다. 검토 후 24시간 이내에 등록이 완료됩니다.",
       },
       {
         question: "요금제별 차이점은 무엇인가요?",
         answer:
-          "무료 플랜은 기본 프로필과 월간 통계를 제공합니다. 프로(₩49,000/월) 플랜은 프리미엄 검색 노출, 실시간 통계, 리뷰 관리 도구, 인증 배지를 포함합니다. 비즈니스(₩99,000/월) 플랜은 예약 시스템, 이벤트 프로모션, 우선 고객 지원이 추가됩니다. 엔터프라이즈는 맞춤 견적으로 멀티 업소 관리와 전담 매니저를 제공합니다.",
+          "무료 요금안은 기초 소개란과 월간 지표를 제공합니다. 프로(₩49,000/월) 요금안은 골드 검색 게재, 실시간 지표, 방문후기 관리 수단, 검증 마크를 포함합니다. 전문(₩99,000/월) 요금안은 예약 체계, 프로모션 프로모션, 우선 문의자 지원이 추가됩니다. 커스텀형는 커스텀 견적으로 멀티 매장 관리와 전담 어드바이저를 제공합니다.",
       },
       {
-        question: "결제는 어떻게 하나요?",
+        question: "납부는 어떤 방법으로 하나요?",
         answer:
-          "신용카드, 체크카드, 계좌이체를 지원합니다. 대시보드 → 설정 → 결제에서 결제 수단을 등록하고 원하는 플랜을 선택하세요. 엔터프라이즈 플랜은 세금계산서 발행 및 청구서 결제도 가능합니다.",
+          "카드, 체크카드, 계좌이체를 받습니다. 관리화면 → 설정 → 과금에서 지불 수단을 등록하고 원하는 요금안을 고르기하세요. 커스텀형 요금안은 세금계산서 발행 및 청구서 납부도 됩니다.",
       },
       {
-        question: "프리미엄 배지는 어떻게 받나요?",
+        question: "골드 마크는 어떻게 받나요?",
         answer:
-          "프로 또는 그 이상의 플랜에 가입하면 자동으로 오늘밤어디 인증 배지가 부여됩니다. 배지는 업소 프로필, 검색 결과, 카테고리 페이지에 표시되어 고객 신뢰도와 클릭률을 높여줍니다. 인증 업소는 평균 2.3배 높은 클릭률을 기록합니다.",
+          "프로 또는 그 이상의 요금안에 가입하면 자동으로 당사 검증 마크가 부여됩니다. 마크는 상점 소개란, 검색 결과, 카테고리 페이지에 표시되어 문의자 신뢰도와 클릭률을 높여줍니다. 검증 가게는 평균 2.3배 높은 클릭률을 기록합니다.",
       },
     ],
   },
   {
-    name: "결제",
+    name: "과금",
     icon: CreditCard,
     items: [
       {
-        question: "환불 정책은 어떻게 되나요?",
+        question: "반환금 정책은 어떻게 되나요?",
         answer:
-          "결제 후 7일 이내에 환불 요청 시 전액 환불됩니다. 7일 이후에는 남은 기간에 대해 일할 계산하여 환불합니다. 환불 요청은 대시보드 → 설정 → 결제 → 환불 요청 또는 고객센터를 통해 가능합니다.",
+          "과금 후 7일 이내에 반환금 요청 시 전액 반환금됩니다. 7일 이후에는 남은 기간에 대해 일할 계산하여 반환금합니다. 반환금 요청은 관리화면 → 설정 → 과금 → 반환금 요청 또는 문의자센터를 통해 허용합니다.",
       },
       {
-        question: "결제 카드를 변경하려면 어떻게 하나요?",
+        question: "과금 카드를 변경하는 절차가 궁금합니다",
         answer:
-          "대시보드 → 설정 → 결제 → 결제 수단 관리에서 새 카드를 등록하고 기본 결제 수단으로 설정하세요. 기존 카드는 삭제하거나 보조 결제 수단으로 유지할 수 있습니다.",
+          "관리화면 → 설정 → 과금 → 지불 수단 관리에서 새 카드를 등록하고 기초 과금 수단으로 설정하세요. 기존 카드는 삭제하거나 보조 수단으로 유지할 수 존재합니다.",
       },
       {
-        question: "연간 결제 시 할인이 있나요?",
+        question: "1년 납부 시 할인이 있나요?",
         answer:
-          "네, 연간 결제 시 20% 할인이 적용됩니다. 프로 플랜 기준 월 ₩49,000 → 연간 ₩470,400(월 ₩39,200)으로 이용 가능합니다. 연간 플랜 전환은 대시보드에서 언제든 가능합니다.",
+          "네, 1년 과금 시 20% 할인이 적용됩니다. 프로 요금안 기준 월 ₩49,000 → 1년 ₩470,400(월 ₩39,200)으로 이용할 수 존재합니다. 1년 요금안 전환은 관리화면에서 언제든 지원됩니다.",
       },
       {
-        question: "무료 체험 기간이 끝나면 어떻게 되나요?",
+        question: "무료 체험 기간이 끝나면 어떤 과정을 거치나요?",
         answer:
-          "14일 무료 체험 종료 후 자동으로 무료 플랜으로 전환됩니다. 별도의 결제가 발생하지 않으며, 원할 때 유료 플랜으로 업그레이드할 수 있습니다. 체험 중 등록한 데이터는 모두 유지됩니다.",
+          "14일 무료 체험 종료 후 자동으로 무료 요금안으로 전환됩니다. 별도의 과금이 발생하지 않으며, 원할 때 유료 요금안으로 업그레이드할 수 존재합니다. 체험 중 등록한 데이터는 모두 유지됩니다.",
       },
     ],
   },
@@ -111,17 +111,17 @@ const faqCategories: FaqCategory[] = [
       {
         question: "커뮤니티에 글을 쓰려면 어떻게 하나요?",
         answer:
-          "로그인 후 커뮤니티 페이지에서 '글쓰기' 버튼을 클릭하세요. 카테고리를 선택하고 제목과 내용을 작성하면 됩니다. 이미지 첨부도 가능합니다. 첫 글 작성 시 커뮤니티 가이드라인을 확인해 주세요.",
+          "로그인 후 커뮤니티 페이지에서 '글쓰기' 버튼을 클릭하세요. 카테고리를 고르기하고 제목과 내용을 작성하면 됩니다. 이미지 첨부도 허용합니다. 첫 글 작성 시 커뮤니티 가이드라인을 조회해 주세요.",
       },
       {
         question: "부적절한 게시글이나 댓글을 신고하려면?",
         answer:
-          "해당 게시글 또는 댓글의 우측 상단 '...' 메뉴에서 '신고하기'를 선택하세요. 신고 사유를 선택하면 운영팀이 검토 후 조치합니다. 일반적으로 1~3 영업일 이내에 처리됩니다.",
+          "해당 게시글 또는 댓글의 우측 상단 '...' 메뉴에서 '신고하기'를 고르기하세요. 신고 사유를 고르기하면 구동팀이 검토 후 조치합니다. 일반적으로 1~3 영업일 이내에 진행됩니다.",
       },
       {
-        question: "레벨 시스템은 어떻게 작동하나요?",
+        question: "레벨 체계은 어떻게 작동하나요?",
         answer:
-          "활동에 따라 경험치가 쌓이고 레벨이 올라갑니다. 글 작성(+10), 댓글(+5), 좋아요 받기(+2) 등으로 경험치를 얻을 수 있습니다. 레벨이 높아지면 프로필 배지, 특별 이모지, 우선 노출 등 혜택이 주어집니다.",
+          "활동에 따라 경험치가 쌓이고 레벨이 올라갑니다. 글 작성(+10), 댓글(+5), 좋아요 받기(+2) 등으로 경험치를 얻게 됩니다. 레벨이 높아지면 소개란 마크, 특별 이모지, 우선 게재 등 혜택이 주어집니다.",
       },
     ],
   },
@@ -132,17 +132,17 @@ const faqCategories: FaqCategory[] = [
       {
         question: "어떤 브라우저를 지원하나요?",
         answer:
-          "Chrome, Safari, Firefox, Edge의 최신 2개 버전을 공식 지원합니다. 모바일에서는 iOS Safari와 Android Chrome을 지원합니다. Internet Explorer는 지원하지 않습니다.",
+          "Chrome, Safari, Firefox, Edge의 최신 2개 버전을 공식 받습니다. 모바일에서는 iOS Safari와 Android Chrome을 받습니다. Internet Explorer는 지원하지 않습니다.",
       },
       {
         question: "모바일 앱은 언제 출시되나요?",
         answer:
-          "모바일 앱은 현재 개발 중이며 2026년 상반기 출시를 목표로 하고 있습니다. 출시 전까지는 모바일 웹 브라우저에서 최적화된 환경으로 이용하실 수 있습니다. 앱 출시 알림을 받으시려면 뉴스레터를 구독해 주세요.",
+          "모바일 앱은 현재 개발 중이며 2026년 상반기 출시를 목표로 합니다. 출시 전까지는 모바일 웹 브라우저에서 최적화된 환경으로 이용하실 수 존재합니다. 앱 출시 알림을 받으시려면 뉴스레터를 구독해 주세요.",
       },
       {
         question: "API를 사용할 수 있나요?",
         answer:
-          "엔터프라이즈 플랜에서 REST API를 제공합니다. 업소 정보 조회, 예약 관리, 리뷰 데이터 연동 등이 가능합니다. API 문서는 엔터프라이즈 가입 후 대시보드에서 확인할 수 있으며, 전담 매니저가 연동을 지원합니다.",
+          "커스텀형 요금안에서 REST API를 제공합니다. 상점 정보 조회, 예약 관리, 방문후기 데이터 연동 등이 허용합니다. API 문서는 커스텀형 가입 후 관리화면에서 확인할 수 있으며, 전담 어드바이저가 연동을 받습니다.",
       },
     ],
   },
@@ -233,7 +233,7 @@ export default function HelpPage() {
         <div className="mb-12 text-center">
           <HelpCircle className="mx-auto mb-4 h-10 w-10 text-neon-primary-light" />
           <h1 className="mb-4 text-4xl font-bold">
-            고객 <span className="text-neon-primary-light">센터</span>
+            문의자 <span className="text-neon-primary-light">센터</span>
           </h1>
           <p className="text-lg text-neon-text-muted">
             궁금한 점을 검색하거나 카테고리별 자주 묻는 질문을 확인하세요.
@@ -308,35 +308,36 @@ export default function HelpPage() {
           <h2 className="mb-6 text-xl font-bold">
             직접 <span className="text-neon-primary-light">문의하기</span>
           </h2>
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-3 mb-8">
             <div className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6">
               <Mail className="mt-0.5 h-6 w-6 shrink-0 text-neon-primary-light" />
               <div>
                 <h3 className="text-sm font-semibold">이메일</h3>
                 <p className="mt-1 text-xs text-neon-text-muted">
-                  support@ilsanroom.pages.dev
+                  qotjsdnr123@naver.com
                 </p>
                 <p className="mt-0.5 text-xs text-neon-text-muted/60">
-                  24시간 접수 가능
+                  24시간 접수 허용
                 </p>
               </div>
             </div>
-            <div className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6">
+            <a href="https://pf.kakao.com/_xgxkxaT" target="_blank" rel="noopener noreferrer"
+              className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/40">
               <MessageCircle className="mt-0.5 h-6 w-6 shrink-0 text-neon-primary-light" />
               <div>
                 <h3 className="text-sm font-semibold">카카오톡 채널</h3>
                 <p className="mt-1 text-xs text-neon-text-muted">
-                  @오늘밤어디고객센터
+                  @당사문의자센터
                 </p>
                 <p className="mt-0.5 text-xs text-neon-text-muted/60">
                   실시간 채팅 상담
                 </p>
               </div>
-            </div>
+            </a>
             <div className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6">
               <Clock className="mt-0.5 h-6 w-6 shrink-0 text-neon-primary-light" />
               <div>
-                <h3 className="text-sm font-semibold">운영시간</h3>
+                <h3 className="text-sm font-semibold">구동시간</h3>
                 <p className="mt-1 text-xs text-neon-text-muted">
                   평일 10:00 ~ 18:00
                 </p>
@@ -345,6 +346,36 @@ export default function HelpPage() {
                 </p>
               </div>
             </div>
+          </div>
+
+          {/* Contact Form */}
+          <div className="rounded-2xl border border-neon-border bg-neon-surface p-6">
+            <h3 className="mb-4 text-sm font-bold">문의 양식</h3>
+            <form onSubmit={(e) => { e.preventDefault(); alert('문의가 접수되었습니다. qotjsdnr123@naver.com으로 답변 드리겠습니다.'); }} className="space-y-4">
+              <div>
+                <label className="mb-1.5 block text-xs font-medium text-neon-text-muted">이름</label>
+                <input type="text" required placeholder="이름을 입력하세요"
+                  className="w-full rounded-xl border border-neon-border bg-neon-bg px-4 py-3 text-sm text-neon-text placeholder-neutral-500 outline-none focus:border-violet-500" />
+              </div>
+              <div>
+                <label className="mb-1.5 block text-xs font-medium text-neon-text-muted">이메일</label>
+                <input type="email" required placeholder="답변 받으실 이메일"
+                  className="w-full rounded-xl border border-neon-border bg-neon-bg px-4 py-3 text-sm text-neon-text placeholder-neutral-500 outline-none focus:border-violet-500" />
+              </div>
+              <div>
+                <label className="mb-1.5 block text-xs font-medium text-neon-text-muted">문의 내용</label>
+                <textarea required rows={4} placeholder="문의 내용을 작성해 주세요"
+                  className="w-full rounded-xl border border-neon-border bg-neon-bg px-4 py-3 text-sm text-neon-text placeholder-neutral-500 outline-none focus:border-violet-500 resize-none" />
+              </div>
+              <button type="submit"
+                className="w-full rounded-xl bg-neon-primary py-3 text-sm font-semibold text-neon-text transition hover:bg-neon-primary-light"
+                style={{ minHeight: 48 }}>
+                문의 보내기
+              </button>
+              <p className="text-[10px] text-neon-text-muted/60 text-center">
+                문의 내용은 qotjsdnr123@naver.com으로 전달됩니다
+              </p>
+            </form>
           </div>
         </div>
       </div>

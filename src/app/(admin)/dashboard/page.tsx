@@ -65,15 +65,15 @@ const upcomingEvents = [
     id: 2,
     title: "봄맞이 프로모션",
     date: "2026-03-22 ~ 2026-04-05",
-    description: "음료 1+1 및 룸 이용료 20% 할인 이벤트",
+    description: "음료 1+1 및 룸 이용료 20% 할인 프로모션",
   },
 ];
 
 const quickLinks = [
   { label: "업소 정보 수정", icon: "📋", href: "#" },
-  { label: "사진 관리", icon: "📸", href: "#" },
+  { label: "사진 운영", icon: "📸", href: "#" },
   { label: "가격 수정", icon: "💰", href: "#" },
-  { label: "이벤트 등록", icon: "🎉", href: "#" },
+  { label: "행사 추가", icon: "🎉", href: "#" },
   { label: "구독 관리", icon: "👑", href: "#" },
   { label: "인보이스", icon: "🧾", href: "#" },
 ];
@@ -105,7 +105,7 @@ export default function DashboardPage() {
               업소 페이지 보기
             </button>
             <button className="rounded-xl bg-neon-primary px-4 py-2 text-sm font-medium transition hover:bg-neon-primary-light">
-              공지 등록
+              공지 작성
             </button>
           </div>
         </div>
@@ -188,7 +188,7 @@ export default function DashboardPage() {
 
           {/* Event Management */}
           <div>
-            <h2 className="mb-4 text-xl font-bold">이벤트 관리</h2>
+            <h2 className="mb-4 text-xl font-bold">행사 운영</h2>
             <div className="space-y-3">
               {upcomingEvents.map((event) => (
                 <div
@@ -210,7 +210,7 @@ export default function DashboardPage() {
                 </div>
               ))}
               <button className="w-full rounded-2xl border border-dashed border-neon-border bg-neon-surface/50 py-4 text-sm text-neon-text-muted transition hover:border-neon-primary/50 hover:text-neon-primary-light">
-                + 새 이벤트 등록
+                + 새 행사 추가
               </button>
             </div>
           </div>
@@ -227,7 +227,7 @@ export default function DashboardPage() {
                   <th className="px-5 py-3 text-left font-medium">인원</th>
                   <th className="px-5 py-3 text-left font-medium">상태</th>
                   <th className="px-5 py-3 text-left font-medium">특이사항</th>
-                  <th className="px-5 py-3 text-right font-medium">관리</th>
+                  <th className="px-5 py-3 text-right font-medium">처리</th>
                 </tr>
               </thead>
               <tbody>
@@ -336,7 +336,7 @@ export default function DashboardPage() {
               <div className="mt-2 space-y-2">
                 <div>
                   <div className="mb-1 flex justify-between text-xs">
-                    <span className="text-neon-text-muted">사진 등록</span>
+                    <span className="text-neon-text-muted">사진 게시</span>
                     <span className="text-neon-text">24 / 50</span>
                   </div>
                   <div className="h-1.5 rounded-full bg-neon-surface-2">
@@ -348,7 +348,7 @@ export default function DashboardPage() {
                 </div>
                 <div>
                   <div className="mb-1 flex justify-between text-xs">
-                    <span className="text-neon-text-muted">이벤트 등록</span>
+                    <span className="text-neon-text-muted">프로모션 게시</span>
                     <span className="text-neon-text">2 / 10</span>
                   </div>
                   <div className="h-1.5 rounded-full bg-neon-surface-2">

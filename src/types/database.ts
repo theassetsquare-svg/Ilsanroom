@@ -181,6 +181,14 @@ export interface DbWebhookLog {
   created_at: string;
 }
 
+export interface DbNewsletter {
+  id: string;
+  email: string;
+  subscribed_at: string;
+  source: string | null;
+  unsubscribed_at: string | null;
+}
+
 // Supabase Database type for full type safety
 export interface Database {
   public: {
@@ -198,6 +206,7 @@ export interface Database {
       analytics_events: { Row: DbAnalyticsEvent; Insert: Partial<DbAnalyticsEvent>; Update: Partial<DbAnalyticsEvent> };
       referrals: { Row: DbReferral; Insert: Partial<DbReferral>; Update: Partial<DbReferral> };
       webhook_logs: { Row: DbWebhookLog; Insert: Partial<DbWebhookLog>; Update: Partial<DbWebhookLog> };
+      newsletter: { Row: DbNewsletter; Insert: Partial<DbNewsletter>; Update: Partial<DbNewsletter> };
     };
   };
 }
