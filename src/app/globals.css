@@ -448,3 +448,82 @@ body {
 .pb-safe {
   padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
 }
+
+/* ★ Light mode — 모든 텍스트 가독성 강화 ★ */
+[data-theme="light"] .text-neon-text {
+  color: #111118 !important;
+}
+
+[data-theme="light"] .text-neon-text-muted {
+  color: #3A3A5A !important;
+}
+
+[data-theme="light"] .text-white {
+  color: #111118 !important;
+}
+
+[data-theme="light"] .text-neon-gold {
+  color: #92400E !important;
+}
+
+[data-theme="light"] .text-neon-green {
+  color: #065F46 !important;
+}
+
+[data-theme="light"] .text-neon-accent {
+  color: #0E7490 !important;
+}
+
+[data-theme="light"] .text-neon-pink {
+  color: #9F1239 !important;
+}
+
+[data-theme="light"] .text-neon-primary {
+  color: #6D28D9 !important;
+}
+
+[data-theme="light"] .text-neon-primary-light {
+  color: #7C3AED !important;
+}
+
+[data-theme="light"] .gradient-text {
+  background: linear-gradient(135deg, #6D28D9, #0E7490);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Light mode card hover */
+[data-theme="light"] .card-hover:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* ★ Venue card grid — 높이 통일 ★ */
+.venue-card-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 640px) {
+  .venue-card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .venue-card-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.venue-card-grid > * {
+  min-height: 120px;
+}
+
+/* Focus visible for a11y */
+*:focus-visible {
+  outline: 2px solid #8B5CF6;
+  outline-offset: 2px;
+  border-radius: 4px;
+}

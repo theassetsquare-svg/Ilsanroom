@@ -23,12 +23,12 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     siteName: '오늘밤어디',
     url: 'https://ilsanroom.pages.dev',
-    images: [{ url: 'https://ilsanroom.pages.dev/og/default.svg', width: 1200, height: 630, alt: '오늘밤어디 — 오늘밤 어디가?' }],
+    images: [{ url: 'https://placehold.co/1200x630/8B5CF6/ffffff/png?text=%EC%98%A4%EB%8A%98%EB%B0%A4%EC%96%B4%EB%94%94', width: 1200, height: 630, alt: '오늘밤어디 — 전국 밤문화 정보' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '오늘밤어디 — 오늘밤 어디가?',
-    images: ['https://ilsanroom.pages.dev/og/default.svg'],
+    title: '오늘밤어디 — 전국 밤문화 정보',
+    images: ['https://placehold.co/1200x630/8B5CF6/ffffff/png?text=%EC%98%A4%EB%8A%98%EB%B0%A4%EC%96%B4%EB%94%94'],
   },
 };
 
@@ -47,18 +47,20 @@ function getCategoryHref(category: string, slug: string, region: string) {
 function VenueCard({ venue, href, rank }: { venue: Venue; href: string; rank?: number }) {
   return (
     <Card href={href}>
-      {rank && (
-        <span className="absolute -left-1 -top-1 flex h-7 w-7 items-center justify-center rounded-full bg-neon-primary text-xs font-bold text-white shadow-md">
-          {rank}
-        </span>
-      )}
-      <div className="flex flex-wrap gap-2 mb-3">
-        {venue.isPremium && <Badge variant="premium">PREMIUM</Badge>}
-      </div>
-      <h3 className="text-lg font-bold text-neon-text mb-1">{venue.nameKo}</h3>
-      <div className="mb-2 flex items-center gap-3 text-sm text-neon-text-muted">
-        {!venue.nameKo.includes(venue.regionKo) && <span>{venue.regionKo}</span>}
-        {venue.shortDescription && <span className="line-clamp-1 text-xs">{venue.shortDescription}</span>}
+      <div className="flex h-full min-h-[100px] flex-col justify-between">
+        <div>
+          {rank && (
+            <span className="mb-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-neon-primary text-[10px] font-bold text-white">
+              {rank}
+            </span>
+          )}
+          {venue.isPremium && <Badge variant="premium" className="mb-2 block w-fit">PREMIUM</Badge>}
+          <h3 className="text-sm font-bold text-neon-text leading-tight line-clamp-2 sm:text-base">{venue.nameKo}</h3>
+        </div>
+        <p className="mt-2 text-xs text-neon-text-muted line-clamp-1">
+          {!venue.nameKo.includes(venue.regionKo) ? venue.regionKo : ''}
+          {venue.shortDescription && <> · {venue.shortDescription}</>}
+        </p>
       </div>
     </Card>
   );
@@ -249,7 +251,7 @@ export default function HomePage() {
             전체 랭킹 →
           </Link>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="venue-card-grid">
           {popularVenues.slice(0, 10).map((venue, i) => (
             <div key={venue.id} className="relative">
               <VenueCard venue={venue} href={getCategoryHref(venue.category, venue.slug, venue.region)} rank={i + 1} />

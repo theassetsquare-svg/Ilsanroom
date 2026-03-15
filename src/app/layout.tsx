@@ -24,13 +24,13 @@ export const metadata: Metadata = {
     description:
       '전국 클럽·나이트·라운지·룸·요정·호빠 정보를 한곳에서.',
     url: 'https://ilsanroom.pages.dev',
-    images: [{ url: 'https://ilsanroom.pages.dev/og/default.svg', width: 1200, height: 630, alt: '전국 클럽·나이트·라운지·룸·요정·호빠 정보' }],
+    images: [{ url: 'https://placehold.co/1200x630/8B5CF6/ffffff/png?text=%EC%98%A4%EB%8A%98%EB%B0%A4%EC%96%B4%EB%94%94', width: 1200, height: 630, alt: '오늘밤어디 — 전국 클럽·나이트·라운지·룸·요정·호빠' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '전국 클럽·나이트·라운지·룸·요정·호빠 정보',
     description: '전국 클럽·나이트·라운지·룸·요정·호빠 정보를 한곳에서.',
-    images: ['https://ilsanroom.pages.dev/og/default.svg'],
+    images: ['https://placehold.co/1200x630/8B5CF6/ffffff/png?text=%EC%98%A4%EB%8A%98%EB%B0%A4%EC%96%B4%EB%94%94'],
   },
   robots: {
     index: true,
