@@ -63,7 +63,7 @@ export default function Footer() {
               오늘밤어디
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-neon-text-muted">
-              일산 룸, 요정, 나이트, 라운지, 클럽, 호빠 정보를 한곳에서 확인하세요.
+              전국 야간 업소 정보를 한곳에서 확인하세요.
             </p>
           </div>
 

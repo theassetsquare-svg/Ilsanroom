@@ -55,8 +55,6 @@ export default function HotWidget() {
           <Link
             key={v.id}
             href={getCategoryHref(v.category, v.slug, v.region)}
-            target="_blank"
-            rel="noopener noreferrer"
             className="group flex items-center gap-3 rounded-xl border border-neon-border bg-neon-surface/50 px-4 py-3 transition-all hover:border-neon-primary/40 card-hover"
           >
             <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sm font-bold text-white ${

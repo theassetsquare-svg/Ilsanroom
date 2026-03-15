@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import type { Venue } from '@/types';
 import { venues as localVenues } from '@/data/venues';
 
@@ -14,6 +15,11 @@ const CATEGORY_FILTERS = [
   { key: 'yojeong', label: '요정' },
   { key: 'hoppa', label: '호빠' },
 ] as const;
+
+const POPULAR_TAGS = [
+  '일산룸', '일산요정', '강남클럽', '강남라운지',
+  '강남호빠', '부산나이트', '수원나이트', '부산룸',
+];
 
 function getCategoryHref(category: string, slug: string, region: string) {
   const pathMap: Record<string, string> = {
@@ -136,15 +142,29 @@ export default function HeroSearch() {
         ))}
       </div>
 
+      {/* Popular Tags */}
+      {!showResults && (
+        <div className="mt-4 flex flex-wrap justify-center gap-2">
+          {POPULAR_TAGS.map((tag) => (
+            <button
+              key={tag}
+              onClick={() => { setQuery(tag); }}
+              className="rounded-full border border-neon-border bg-neon-surface/50 px-3 py-1.5 text-xs text-neon-text-muted transition-all hover:border-neon-primary/40 hover:text-neon-text"
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Results Dropdown */}
       {showResults && results.length > 0 && (
         <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-96 overflow-y-auto rounded-2xl border border-neon-border bg-neon-surface/95 shadow-2xl backdrop-blur-lg animate-fade-in">
           {results.map((v) => (
-            <a
+            <Link
               key={v.id || v.slug}
               href={getCategoryHref(v.category, v.slug, v.region)}
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={() => { setShowResults(false); setQuery(''); }}
               className="flex w-full items-center gap-3 border-b border-neon-border/50 px-4 py-3 text-left transition-colors hover:bg-neon-surface-2 last:border-b-0"
             >
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-neon-primary/10 text-sm font-bold text-neon-primary">
@@ -160,7 +180,7 @@ export default function HeroSearch() {
               {v.isPremium && (
                 <span className="shrink-0 rounded-full bg-neon-gold/10 px-2 py-0.5 text-[10px] font-bold text-neon-gold">PREMIUM</span>
               )}
-            </a>
+            </Link>
           ))}
         </div>
       )}

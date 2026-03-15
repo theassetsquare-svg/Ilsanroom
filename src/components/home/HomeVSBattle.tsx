@@ -4,7 +4,7 @@ import { useState } from 'react';
 import ShareButtons from '@/components/interactive/ShareButtons';
 
 const BATTLES = [
-  { a: '강남클럽레이스', b: '클럽NB2', topic: '이번 주 인기 클럽 대결' },
+  { a: '강남클럽레이스', b: '클럽NB2', topic: '이번 주 인기 대결' },
   { a: '수원찬스돔나이트', b: '인천아라비안나이트', topic: '경기 나이트 최강자는?' },
   { a: '일산룸', b: '해운대고구려', topic: '프리미엄 룸 대결' },
   { a: '일산명월관요정', b: '강남라운지아르쥬', topic: '접대 장소 대결' },
