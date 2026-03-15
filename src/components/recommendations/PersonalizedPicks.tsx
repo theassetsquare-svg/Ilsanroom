@@ -43,7 +43,6 @@ function getCategoryPath(venue: Venue): string {
     room: `/rooms/${venue.region}/${venue.slug}`,
     yojeong: `/yojeong/${venue.region}/${venue.slug}`,
     hoppa: `/hoppa/${venue.slug}`,
-    collatek: `/collatek/${venue.slug}`,
   };
   return paths[venue.category] || `/${venue.category}/${venue.slug}`;
 }

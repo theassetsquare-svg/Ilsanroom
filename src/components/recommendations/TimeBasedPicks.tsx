@@ -16,7 +16,6 @@ const TIME_SLOTS: TimeSlot[] = [
     greeting: '좋은 아침이에요',
     emoji: '☀️',
     courses: [
-      { title: '모닝 콜라텍', venues: ['강남 그랜드 콜라텍', '일산 스타 콜라텍'], links: ['/collatek/gangnam-grand-collatek', '/collatek/ilsan-star-collatek'] },
     ],
   },
   {
@@ -24,7 +23,6 @@ const TIME_SLOTS: TimeSlot[] = [
     greeting: '활기찬 오후네요',
     emoji: '🌤️',
     courses: [
-      { title: '오후 사교댄스', venues: ['영등포 로얄 콜라텍', '해운대 콜라텍'], links: ['/collatek/yeongdeungpo-royal-collatek', '/collatek/busan-haeundae-collatek'] },
     ],
   },
   {

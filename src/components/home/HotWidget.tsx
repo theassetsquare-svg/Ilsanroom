@@ -13,13 +13,12 @@ function getCategoryHref(category: string, slug: string, region: string) {
     room: `/rooms/${region}/${slug}`,
     yojeong: `/yojeong/${region}/${slug}`,
     hoppa: `/hoppa/${slug}`,
-    collatek: `/collatek/${slug}`,
   };
   return pathMap[category] || `/${category}/${slug}`;
 }
 
 function getCategoryLabel(cat: string) {
-  const map: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠', collatek: '콜라텍' };
+  const map: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
   return map[cat] || cat;
 }
 

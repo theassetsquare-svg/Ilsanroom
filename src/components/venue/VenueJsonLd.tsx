@@ -30,7 +30,7 @@ export default function VenueJsonLd({ venue, breadcrumbItems, faqItems, reviews,
     room: 'EntertainmentBusiness',
     yojeong: 'Restaurant',
     hoppa: 'BarOrPub',
-    collatek: 'EntertainmentBusiness',
+
   };
 
   const businessType = categoryTypeMap[venue.category] || 'LocalBusiness';

@@ -37,7 +37,6 @@ const CATEGORIES = [
   { value: 'yojeong', label: '요정' },
   { value: 'club', label: '클럽' },
   { value: 'hoppa', label: '호빠' },
-  { value: 'collatek', label: '콜라텍' },
 ];
 
 const PLANS = [

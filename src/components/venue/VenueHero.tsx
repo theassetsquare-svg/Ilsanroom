@@ -18,7 +18,6 @@ const categoryGradients: Record<string, string> = {
   room: 'from-rose-950/80 via-neon-surface to-neon-bg',
   yojeong: 'from-emerald-950/80 via-neon-surface to-neon-bg',
   hoppa: 'from-pink-950/80 via-neon-surface to-neon-bg',
-  collatek: 'from-orange-950/80 via-neon-surface to-neon-bg',
 };
 
 const categoryBgPatterns: Record<string, string> = {
@@ -28,7 +27,6 @@ const categoryBgPatterns: Record<string, string> = {
   room: 'from-rose-600/20 via-transparent to-transparent',
   yojeong: 'from-emerald-600/20 via-transparent to-transparent',
   hoppa: 'from-pink-600/20 via-transparent to-transparent',
-  collatek: 'from-orange-600/20 via-transparent to-transparent',
 };
 
 export default function VenueHero({

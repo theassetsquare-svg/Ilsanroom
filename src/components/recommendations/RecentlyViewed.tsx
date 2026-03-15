@@ -13,14 +13,13 @@ function getCategoryPath(venue: Venue): string {
     room: `/rooms/${venue.region}/${venue.slug}`,
     yojeong: `/yojeong/${venue.region}/${venue.slug}`,
     hoppa: `/hoppa/${venue.slug}`,
-    collatek: `/collatek/${venue.slug}`,
   };
   return paths[venue.category] || `/${venue.category}/${venue.slug}`;
 }
 
 const categoryLabels: Record<string, string> = {
   club: '클럽', night: '나이트', lounge: '라운지', room: '룸',
-  yojeong: '요정', hoppa: '호빠', collatek: '콜라텍',
+  yojeong: '요정', hoppa: '호빠',
 };
 
 export default function RecentlyViewed() {

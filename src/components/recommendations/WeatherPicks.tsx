@@ -20,7 +20,6 @@ const WEATHER_RECS: Record<WeatherType, WeatherRecommendation> = {
     title: '맑은 날씨에 딱!',
     description: '야외 테라스가 있는 곳을 추천드려요',
     venues: [
-      { name: '해운대 콜라텍', reason: '야외 테라스 선셋 댄스', link: '/collatek/busan-haeundae-collatek' },
       { name: '문 라운지 압구정', reason: '감성 루프탑 라운지', link: '/lounges/moon-lounge-apgujeong' },
     ],
   },
@@ -62,7 +61,6 @@ const WEATHER_RECS: Record<WeatherType, WeatherRecommendation> = {
     description: '에어컨 빵빵한 곳에서 즐기세요',
     venues: [
       { name: '클럽 옥타곤', reason: '지하 대형 클럽, 시원한 실내', link: '/clubs/gangnam/club-octagon' },
-      { name: '강남 그랜드 콜라텍', reason: '냉방 완비 대형 댄스홀', link: '/collatek/gangnam-grand-collatek' },
     ],
   },
   cold: {

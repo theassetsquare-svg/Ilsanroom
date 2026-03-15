@@ -29,7 +29,6 @@ function getCategoryHref(category: string, slug: string, region: string) {
     room: `/rooms/${region}/${slug}`,
     yojeong: `/yojeong/${region}/${slug}`,
     hoppa: `/hoppa/${slug}`,
-    collatek: `/collatek/${slug}`,
   };
   return pathMap[category] || `/${category}/${slug}`;
 }

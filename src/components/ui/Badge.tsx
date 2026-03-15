@@ -1,4 +1,4 @@
-type BadgeVariant = 'default' | 'premium' | 'verified' | 'club' | 'night' | 'lounge' | 'room' | 'yojeong' | 'hoppa' | 'collatek';
+type BadgeVariant = 'default' | 'premium' | 'verified' | 'club' | 'night' | 'lounge' | 'room' | 'yojeong' | 'hoppa' ;
 
 interface BadgeProps {
   variant?: BadgeVariant;
@@ -16,7 +16,6 @@ const variantStyles: Record<BadgeVariant, string> = {
   room: 'bg-rose-500/10 text-rose-400 border-rose-500/30',
   yojeong: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
   hoppa: 'bg-pink-500/10 text-pink-400 border-pink-500/30',
-  collatek: 'bg-orange-500/10 text-orange-400 border-orange-500/30',
 };
 
 export default function Badge({

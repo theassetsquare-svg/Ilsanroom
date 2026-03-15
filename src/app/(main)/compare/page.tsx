@@ -8,7 +8,7 @@ import type { Venue } from '@/types';
 
 const categoryLabels: Record<string, string> = {
   club: '클럽', night: '나이트', lounge: '라운지', room: '룸',
-  yojeong: '요정', hoppa: '호빠', collatek: '콜라텍',
+  yojeong: '요정', hoppa: '호빠',
 };
 
 function getCategoryHref(v: Venue) {

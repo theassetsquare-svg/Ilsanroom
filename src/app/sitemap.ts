@@ -50,12 +50,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${BASE_URL}/collatek`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
       url: `${BASE_URL}/ranking`,
       lastModified: new Date(),
       changeFrequency: "weekly",
@@ -179,9 +173,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
                 ? "rooms"
                 : venue.category === "yojeong"
                   ? "yojeong"
-                  : venue.category === "hoppa"
-                    ? "hoppa"
-                    : "collatek";
+                  : "hoppa";
 
       const needsRegion = ['club', 'room', 'yojeong'];
       const url = needsRegion.includes(venue.category)
