@@ -10,7 +10,7 @@ export function getHookingTitle(venue: Venue): string {
     // ── 사용자 지정 22+4개 업소 ──
     'ilsan-room': '일산룸 — 신실장이 직접 운영하는 일산 프리미엄 룸의 기준',
     'ilsan-myeongwolgwan-yojeong': '일산명월관요정 — 15가지 한정식에 국악 라이브, 접대의 끝판왕',
-    'busan-yeonsan-mul-night': '부산연산동물나이트 — 부산 부킹률 1위, 따봉이 보장하는 밤',
+    'busan-yeonsan-mul-night': '부산연산동물나이트 — 연제구 부킹률 1위, 따봉이 보장하는 밤',
     'seongnam-shampoo-night': '성남샴푸나이트 — 박찬호가 안내하는 성남 사교의 성지',
     'suwon-chancedom-night': '수원찬스돔나이트 — 강호동이 직접 안내하는 수원 밤의 전설',
     'suyu-shampoo-night': '수유샴푸나이트 — 강북 직장인이 퇴근 후 향하는 곳',

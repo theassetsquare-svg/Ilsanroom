@@ -52,12 +52,12 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
         {activeTab === '기본정보' && (
           <div className="space-y-6">
             <div>
-              <h2 className="mb-3 text-xl font-bold text-neon-text">{venue.nameKo} 소개</h2>
+              <h2 className="mb-3 text-xl font-bold text-neon-text">소개</h2>
               <p className="leading-relaxed text-neon-text-muted">{venue.description}</p>
             </div>
             {venue.features.length > 0 && (
               <div>
-                <h3 className="mb-3 text-lg font-bold text-neon-text">{venue.nameKo} 특징</h3>
+                <h3 className="mb-3 text-lg font-bold text-neon-text">주요 특징</h3>
                 <ul className="grid grid-cols-2 gap-2">
                   {venue.features.map((f) => (
                     <li key={f} className="flex items-center gap-2 text-sm text-neon-text-muted">
@@ -68,7 +68,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
               </div>
             )}
             <div className="rounded-2xl border border-neon-border bg-neon-surface p-6">
-              <h3 className="mb-4 font-bold text-neon-text">{venue.nameKo} 기본 정보</h3>
+              <h3 className="mb-4 font-bold text-neon-text">기본 정보</h3>
               <dl className="space-y-3 text-sm">
                 {venue.address && <div><dt className="text-neon-text-muted/60">위치</dt><dd className="text-neon-text">{venue.address}</dd></div>}
                 {venue.openHours && <div><dt className="text-neon-text-muted/60">영업시간</dt><dd className="text-neon-text">{venue.openHours}</dd></div>}
@@ -77,7 +77,6 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
                 {venue.parking && <div><dt className="text-neon-text-muted/60">주차</dt><dd className="text-neon-text">{venue.parking}</dd></div>}
                 {venue.nearbyStation && <div><dt className="text-neon-text-muted/60">가까운 역</dt><dd className="text-neon-text">{venue.nearbyStation}</dd></div>}
                 {venue.bestTime && <div><dt className="text-neon-text-muted/60">추천 방문 시간</dt><dd className="text-neon-text">{venue.bestTime}</dd></div>}
-                <div><dt className="text-neon-text-muted/60">카테고리</dt><dd className="text-neon-text">{categoryLabel}</dd></div>
                 <div><dt className="text-neon-text-muted/60">지역</dt><dd className="text-neon-text">{venue.regionKo}</dd></div>
               </dl>
             </div>
@@ -207,7 +206,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
         {/* ── FAQ ── */}
         {activeTab === 'FAQ' && (
           <div>
-            <h2 className="mb-6 text-xl font-bold text-neon-text">{venue.nameKo} 자주 묻는 질문</h2>
+            <h2 className="mb-6 text-xl font-bold text-neon-text">자주 묻는 질문</h2>
             <div className="space-y-4">
               {faqs.map((faq, i) => (
                 <div key={i} className="rounded-xl border border-neon-border bg-neon-surface p-5">
@@ -222,7 +221,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
         {/* ── 지도 ── */}
         {activeTab === '지도' && (
           <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} 위치</h2>
+            <h2 className="mb-4 text-xl font-bold text-neon-text">위치 안내</h2>
             {venue.address ? (
               <div>
                 <div className="mb-4 rounded-xl border border-neon-border bg-neon-surface-2 p-8 text-center" style={{ minHeight: '300px' }}>

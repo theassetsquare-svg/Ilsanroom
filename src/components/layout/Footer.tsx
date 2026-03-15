@@ -1,12 +1,12 @@
 import Link from 'next/link';
 
 const categoryLinks = [
-  { href: '/clubs', label: '클럽' },
-  { href: '/nights', label: '나이트' },
-  { href: '/lounges', label: '라운지' },
-  { href: '/rooms', label: '룸' },
-  { href: '/yojeong', label: '요정' },
-  { href: '/hoppa', label: '호빠' },
+  { href: '/clubs', label: '🎵 EDM' },
+  { href: '/nights', label: '🌙 댄스홀' },
+  { href: '/lounges', label: '🍸 바' },
+  { href: '/rooms', label: '🚪 프라이빗' },
+  { href: '/yojeong', label: '🏮 한정식' },
+  { href: '/hoppa', label: '🥂 호스트' },
 ];
 
 const communityLinks = [
@@ -40,8 +40,8 @@ const regionalLinks = {
     { href: '/nights/suwon', label: '수원' },
     { href: '/clubs/incheon', label: '인천' },
   ],
-  '부산': [
-    { href: '/clubs/busan', label: '부산' },
+  '부산·경남': [
+    { href: '/clubs/busan', label: '서면' },
     { href: '/nights/haeundae', label: '해운대' },
   ],
   '기타': [

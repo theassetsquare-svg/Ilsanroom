@@ -53,7 +53,7 @@ export default function VenueDetailPage({
         breadcrumbItems={breadcrumbItems}
         faqItems={faqs}
         reviews={[
-          { author: '방문객', rating: venue.rating, text: `${venue.nameKo}은(는) 분위기도 좋고 서비스도 만족스럽습니다.`, date: '2026-03-10' },
+          { author: '방문객', rating: venue.rating, text: `분위기와 서비스 모두 만족스럽습니다. 재방문 의사 있어요.`, date: '2026-03-10' },
         ]}
       />
 
@@ -96,7 +96,7 @@ export default function VenueDetailPage({
           <div className="flex items-center gap-3">
             <span className="text-2xl">📖</span>
             <div>
-              <p className="text-sm font-bold text-neon-text">{categoryLabel} 처음이세요?</p>
+              <p className="text-sm font-bold text-neon-text">처음 방문이세요?</p>
               <p className="text-xs text-neon-text-muted">복장, 예산, 매너 — 첫 방문 완벽 가이드 보기</p>
             </div>
           </div>
@@ -107,12 +107,12 @@ export default function VenueDetailPage({
       {related.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
           <h2 className="mb-6 text-xl font-bold text-neon-text">비슷한 업소</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {related.slice(0, 3).map((v) => (
+          <div className="grid gap-4 sm:grid-cols-2">
+            {related.slice(0, 2).map((v) => (
               <Card key={v.id} href={relatedHrefFn(v)}>
                 <h3 className="text-base font-bold text-neon-text mb-1">{v.nameKo}</h3>
-                {v.staffNickname && <p className="text-xs text-neon-gold">담당: {v.staffNickname}</p>}
-                <p className="text-sm text-neon-text-muted">{v.regionKo} · {categoryLabel}</p>
+                {v.staffNickname && <p className="text-xs text-neon-gold">{v.staffNickname}</p>}
+                <p className="text-sm text-neon-text-muted">추천</p>
               </Card>
             ))}
           </div>
@@ -132,14 +132,6 @@ export default function VenueDetailPage({
         </Link>
       </section>
 
-      {/* Tags for SEO */}
-      <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6">
-        <div className="flex flex-wrap gap-2">
-          {venue.tags.map((t) => (
-            <span key={t} className="rounded-full border border-neon-border bg-neon-surface-2 px-3 py-1 text-xs text-neon-text-muted">#{t}</span>
-          ))}
-        </div>
-      </section>
 
       {/* Sticky Phone Bar */}
       <StickyPhoneBar
