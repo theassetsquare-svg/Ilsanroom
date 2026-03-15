@@ -17,8 +17,8 @@ interface VenueDetailTabsProps {
 const TABS = ['기본정보', '가격표', '메뉴·서비스', '리뷰', '사진갤러리', '이벤트', 'FAQ', '지도', 'VS투표', '인기시간'] as const;
 
 const CATEGORY_SYNONYMS: Record<string, string> = {
-  club: 'EDM 파티 공간', night: '프리미엄 엔터테인먼트 공간', lounge: '프리미엄 바',
-  room: '프라이빗 공간', yojeong: '전통 한정식 공간', hoppa: '호스트 엔터테인먼트',
+  club: 'EDM 파티홀', night: '댄스홀', lounge: '프리미엄 바',
+  room: '프라이빗 룸', yojeong: '전통 한정식', hoppa: '호스트 엔터테인먼트',
 };
 
 export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDetailTabsProps) {

@@ -68,19 +68,23 @@ export default function VenueHero({
           </p>
         )}
 
-        {/* Rating + Region */}
+        {/* Region + Rating (only if has reviews) */}
         <div className="mt-3 flex items-center gap-3 text-neon-text-muted">
-          <span className="flex items-center gap-1">
-            <span className="text-neon-gold">★</span> {rating.toFixed(1)}
-          </span>
+          {!name.includes(regionKo) && <span>{regionKo}</span>}
+          {rating > 0 && (
+            <>
+              <span>·</span>
+              <span className="flex items-center gap-1">
+                <span className="text-neon-gold">★</span> {rating.toFixed(1)}
+              </span>
+            </>
+          )}
           {reviewCount > 0 && (
             <>
               <span>·</span>
               <span>리뷰 {reviewCount}개</span>
             </>
           )}
-          <span>·</span>
-          <span>{regionKo}</span>
         </div>
       </div>
     </section>
