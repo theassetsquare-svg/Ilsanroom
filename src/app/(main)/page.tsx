@@ -15,10 +15,10 @@ import type { Venue } from '@/types';
 
 export const metadata: Metadata = {
   title: '오늘밤어디 — 일산룸, 일산명월관요정, 전국 나이트/클럽/라운지 실시간 정보',
-  description: '일산룸, 일산명월관요정 등 전국 야간 업소 정보를 한눈에. 인기 업소 검색, 리뷰, 이벤트 정보를 확인하세요.',
+  description: '일산룸, 일산명월관요정 등 전국 클럽·나이트·라운지·룸·요정·호빠 정보를 한눈에. 인기 검색, 리뷰, 이벤트를 확인하세요.',
   openGraph: {
     title: '오늘밤어디 — 일산룸, 일산명월관요정, 전국 나이트/클럽/라운지 실시간 정보',
-    description: '전국 인기 야간 업소 정보. 일산룸, 일산명월관요정 프리미엄 추천.',
+    description: '전국 인기 클럽·나이트·라운지·룸·요정·호빠 정보.',
     type: 'website',
     locale: 'ko_KR',
     siteName: '오늘밤어디',
@@ -58,11 +58,8 @@ function VenueCard({ venue, href, rank }: { venue: Venue; href: string; rank?: n
       </div>
       <h3 className="text-lg font-bold text-neon-text mb-1">{venue.nameKo}</h3>
       <div className="mb-2 flex items-center gap-3 text-sm text-neon-text-muted">
-        <span>{venue.regionKo}</span>
-        <span className="flex items-center gap-1">
-          <span className="text-neon-gold">★</span>
-          {venue.rating}
-        </span>
+        {!venue.nameKo.includes(venue.regionKo) && <span>{venue.regionKo}</span>}
+        {venue.shortDescription && <span className="line-clamp-1 text-xs">{venue.shortDescription}</span>}
       </div>
     </Card>
   );
@@ -84,35 +81,35 @@ const regions = [
   { label: '제주', href: '/clubs/jeju' },
 ];
 
-/* ── Fake latest reviews ── */
+/* ── Latest reviews (placeholder — from real venues only) ── */
 const latestReviews = [
-  { venue: '일산명월관요정', author: '김**', text: '한정식 코스가 정말 훌륭했습니다. 국악 공연도 감동적이었어요.', rating: 5, date: '2026-03-12' },
-  { venue: '강남클럽레이스', author: '이**', text: 'EDM 사운드가 압도적입니다. 강남 최고 수준이라고 생각해요.', rating: 4.5, date: '2026-03-11' },
-  { venue: '수원찬스돔나이트', author: '박**', text: '365일 운영이라 언제든 갈 수 있어서 좋습니다. 분위기도 좋아요.', rating: 4, date: '2026-03-10' },
-  { venue: '클럽NB2', author: '최**', text: '홍대 힙합 클럽의 정석. 20년 넘게 이어온 레전드 클럽입니다.', rating: 4.5, date: '2026-03-09' },
+  { venue: '일산명월관요정', author: '김**', text: '한정식 코스가 정말 훌륭했습니다. 국악 공연도 감동적이었어요.', date: '2026-03-12' },
+  { venue: '강남클럽 레이스', author: '이**', text: '베이스 사운드에 몸이 먼저 반응합니다. 강남 최고 수준.', date: '2026-03-11' },
+  { venue: '수원찬스돔나이트', author: '박**', text: '돔 구조가 만들어내는 공간감이 독특해요. 강호동 담당자 재밌음.', date: '2026-03-10' },
+  { venue: '해운대고구려', author: '최**', text: '룸이 60개 넘으니까 웨이팅 없이 바로 들어갈 수 있어서 좋아요.', date: '2026-03-09' },
 ];
 
 /* ── Magazine preview ── */
 const magazineItems = [
   { title: '2026년 강남 TOP5 — 올해 꼭 가봐야 할 핫플', tag: '추천', href: '/magazine' },
-  { title: '전통 요정 완벽 가이드: 접대부터 가족모임까지', tag: '요정', href: '/magazine' },
-  { title: '처음 방문하는 분을 위한 A to Z 매너 가이드', tag: '입문', href: '/magazine' },
+  { title: '전통 격식 공간 완벽 안내서: 접대부터 가족모임까지', tag: '전통', href: '/magazine' },
+  { title: '처음 방문하는 분을 위한 A to Z 매너 핸드북', tag: '입문', href: '/magazine' },
   { title: '홍대 vs 이태원 비교 — 어디가 나에게 맞을까?', tag: '비교', href: '/magazine' },
 ];
 
 /* ── Instagram hashtags ── */
 const instaHashtags = [
   { tag: '#일산룸', desc: '프리미엄 룸 인테리어', url: 'https://www.instagram.com/explore/tags/일산룸/' },
-  { tag: '#일산명월관', desc: '전통 한정식 코스', url: 'https://www.instagram.com/explore/tags/일산명월관/' },
+  { tag: '#일산명월관', desc: '전통 코스 요리', url: 'https://www.instagram.com/explore/tags/일산명월관/' },
   { tag: '#강남클럽', desc: '주말 파티 현장', url: 'https://www.instagram.com/explore/tags/강남클럽/' },
-  { tag: '#강남호빠', desc: '호스트클럽 문화', url: 'https://www.instagram.com/explore/tags/강남호빠/' },
+  { tag: '#강남호빠', desc: '호스트클럽 현장', url: 'https://www.instagram.com/explore/tags/강남호빠/' },
   { tag: '#일산요정', desc: '국악 라이브 연주', url: 'https://www.instagram.com/explore/tags/일산요정/' },
   { tag: '#나이트라이프', desc: '야간 문화 전반', url: 'https://www.instagram.com/explore/tags/나이트라이프/' },
 ];
 
 export default function HomePage() {
-  const ilsanRoom = getVenueBySlug('ilsan-room');
-  const ilsanYojeong = getVenueBySlug('ilsan-myeongwolgwan-yojeong');
+  const ilsanRoom = getVenueBySlug('ilsanroom');
+  const ilsanYojeong = getVenueBySlug('ilsanmyeongwolgwanyojeong');
   const popularVenues = getPopularVenues(10);
 
   return (
@@ -125,7 +122,7 @@ export default function HomePage() {
         '@type': 'WebSite',
         name: '오늘밤어디',
         url: 'https://ilsanroom.pages.dev',
-        description: '일산룸, 일산명월관요정 등 전국 나이트라이프 정보 사이트',
+        description: '전국 6종 밤 생활 안내 사이트',
         potentialAction: {
           '@type': 'SearchAction',
           target: { '@type': 'EntryPoint', urlTemplate: 'https://ilsanroom.pages.dev/map?q={search_term_string}' },
@@ -146,7 +143,7 @@ export default function HomePage() {
       }} />
 
       {/* ═══════ 1. HERO — particles bg + search + quick filter ═══════ */}
-      <section className="relative overflow-hidden" style={{ minHeight: '520px' }}>
+      <section className="relative overflow-hidden" style={{ minHeight: '380px' }}>
         {/* Particle-like bg */}
         <div className="absolute inset-0 bg-gradient-to-b from-neon-primary/10 via-neon-bg to-neon-bg" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-neon-primary/15 via-transparent to-transparent" />
@@ -160,16 +157,13 @@ export default function HomePage() {
           <div className="absolute top-44 left-[75%] h-1 w-1 rounded-full bg-neon-accent/25 animate-pulse" style={{ animationDelay: '1.2s' }} />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:py-32">
+        <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
           <div className="text-center">
-            <Badge variant="premium" className="mb-6 text-sm">오늘밤어디 GUIDE 2026</Badge>
-            <h1 className="text-4xl font-extrabold tracking-tight text-neon-text sm:text-5xl lg:text-6xl">
-              일산룸 · 일산명월관요정
-              <br />
-              <span className="gradient-text">전국 나이트라이프 가이드</span>
+            <h1 className="text-3xl font-extrabold tracking-tight text-neon-text sm:text-4xl lg:text-5xl">
+              <span className="gradient-text">오늘밤어디</span>
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-neon-text-muted">
-              전국 인기 업소 정보를 한곳에서 검색하세요
+            <p className="mx-auto mt-4 max-w-2xl text-base text-neon-text-muted sm:text-lg">
+              전국 클럽 · 나이트 · 라운지 · 룸 · 요정 · 호빠 실시간 정보
             </p>
 
             {/* ★ Working Search Bar ★ */}
@@ -191,7 +185,7 @@ export default function HomePage() {
         <div className="grid gap-6 md:grid-cols-2">
           {/* 일산룸 — Gold Glow */}
           {ilsanRoom && (
-            <Link href="/rooms/ilsan/ilsan-room" className="group block">
+            <Link href="/rooms/ilsan/ilsanroom" className="group block">
               <div className="relative min-h-[380px] overflow-hidden rounded-2xl border border-neon-gold/30 bg-neon-surface transition-all duration-500 hover:border-neon-gold/60 hover:shadow-2xl hover:shadow-neon-gold/15">
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-900/30 via-neon-surface to-neon-bg" />
                 <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-neon-gold/8 blur-3xl transition-all duration-500 group-hover:bg-neon-gold/15" />
@@ -206,9 +200,7 @@ export default function HomePage() {
                     고양시 최고급 프라이빗 공간. 비즈니스 모임과 소규모 회식에 최적화된 서비스.
                   </p>
                   <div className="flex items-center gap-3 text-sm text-neon-text-muted">
-                    <span className="flex items-center gap-1"><span className="text-neon-gold">★</span> {ilsanRoom.rating}</span>
-                    <span>·</span>
-                    <span>{ilsanRoom.regionKo}</span>
+                    <span>{ilsanRoom.features?.slice(0, 2).join(' · ')}</span>
                   </div>
                   <span className="mt-4 inline-flex items-center text-sm font-medium text-neon-gold transition-colors group-hover:text-neon-gold/80">
                     자세히 보기 →
@@ -220,7 +212,7 @@ export default function HomePage() {
 
           {/* 일산명월관요정 — Violet Glow */}
           {ilsanYojeong && (
-            <Link href="/yojeong/ilsan/ilsan-myeongwolgwan-yojeong" className="group block">
+            <Link href="/yojeong/ilsan/ilsanmyeongwolgwanyojeong" className="group block">
               <div className="relative min-h-[380px] overflow-hidden rounded-2xl border border-neon-primary/30 bg-neon-surface transition-all duration-500 hover:border-neon-primary/60 hover:shadow-2xl hover:shadow-neon-primary/15">
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-900/30 via-neon-surface to-neon-bg" />
                 <div className="absolute -left-20 -bottom-20 h-60 w-60 rounded-full bg-neon-primary/8 blur-3xl transition-all duration-500 group-hover:bg-neon-primary/15" />
@@ -235,9 +227,7 @@ export default function HomePage() {
                     한정식 코스와 국악 라이브, 총 30개 프라이빗 룸. 정찰제 운영. 비즈니스 접대와 기념일에 최적.
                   </p>
                   <div className="flex items-center gap-3 text-sm text-neon-text-muted">
-                    <span className="flex items-center gap-1"><span className="text-neon-gold">★</span> {ilsanYojeong.rating}</span>
-                    <span>·</span>
-                    <span>{ilsanYojeong.regionKo} · {ilsanYojeong.address}</span>
+                    <span>{ilsanYojeong.features?.slice(0, 2).join(' · ')}</span>
                   </div>
                   <span className="mt-4 inline-flex items-center text-sm font-medium text-neon-primary-light transition-colors group-hover:text-neon-primary">
                     자세히 보기 →
@@ -301,8 +291,8 @@ export default function HomePage() {
             <div className="flex items-center gap-4">
               <span className="text-4xl">📖</span>
               <div>
-                <h3 className="text-lg font-bold text-neon-text">야간 업소 처음이세요? 이것만 알면 됩니다</h3>
-                <p className="text-sm text-neon-text-muted">뭐 입고? 얼마? 혼자 가도 돼? — 업종별 첫 방문 완벽 가이드</p>
+                <h3 className="text-lg font-bold text-neon-text">밤 문화 처음이세요? 이것만 알면 됩니다</h3>
+                <p className="text-sm text-neon-text-muted">뭐 입고? 얼마? 혼자 가도 돼? — 업종별 첫 방문 필수 정보</p>
               </div>
               <span className="hidden sm:inline-flex items-center gap-1 shrink-0 rounded-xl border border-neon-gold/40 px-5 py-2.5 text-sm font-semibold text-neon-gold transition group-hover:bg-neon-gold/10">
                 가이드 보기 →
@@ -323,10 +313,6 @@ export default function HomePage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {latestReviews.map((review, i) => (
             <div key={i} className="glass rounded-2xl p-5 card-hover">
-              <div className="mb-2 flex items-center gap-2">
-                <span className="text-neon-gold text-sm">{'★'.repeat(Math.floor(review.rating))}</span>
-                <span className="text-xs text-neon-text-muted">{review.rating}</span>
-              </div>
               <p className="mb-3 text-sm leading-relaxed text-neon-text line-clamp-3">&ldquo;{review.text}&rdquo;</p>
               <div className="flex items-center justify-between text-xs text-neon-text-muted">
                 <span>{review.author} · {review.venue}</span>
@@ -359,7 +345,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="mb-8 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-neon-text">인스타그램</h2>
-          <span className="text-sm text-neon-pink">#일산룸 #일산명월관</span>
+          <span className="text-sm text-neon-pink">#프리미엄룸 #코스요리</span>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {instaHashtags.map((post, i) => (
