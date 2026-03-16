@@ -56,11 +56,10 @@ export default function HotWidget() {
             href={getCategoryHref(v.category, v.slug, v.region)}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-3 rounded-xl border border-neon-border bg-neon-surface/50 px-4 py-3 transition-all hover:border-neon-primary/40 card-hover"
+            className="group flex items-center gap-3 rounded-2xl border border-neon-border bg-neon-surface/50 px-4 py-4 transition-all hover:border-neon-primary/40 card-hover"
+            style={{ minHeight: '80px' }}
           >
-            <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sm font-bold text-white ${
-              i === 0 ? 'bg-neon-pink' : i === 1 ? 'bg-neon-primary' : i === 2 ? 'bg-neon-accent' : 'bg-neon-surface-2'
-            }`}>
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#8B5CF6] text-sm font-bold text-white">
               {i + 1}
             </span>
             <div className="min-w-0 flex-1">

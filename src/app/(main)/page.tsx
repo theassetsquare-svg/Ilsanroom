@@ -13,7 +13,7 @@ import { getPopularVenues, getVenueBySlug, categories } from '@/data/venues';
 import type { Venue } from '@/types';
 
 export const metadata: Metadata = {
-  title: { absolute: '오늘밤어디 — 전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보' },
+  title: { absolute: '전국 밤문화 완전 가이드 | 오늘밤어디' },
   description: '일산룸, 일산명월관요정 등 전국 123개 업소 정보를 한눈에. 실시간 인기 순위, 첫 방문 가이드, VS 대결 투표까지.',
   openGraph: {
     title: '오늘밤어디 — 전국 밤문화 123개 업소 실시간 정보',
@@ -185,9 +185,9 @@ export default function HomePage() {
         <div className="grid gap-4 sm:grid-cols-2">
           {ilsanRoom && (
             <Link href="/rooms/ilsan/ilsanroom" target="_blank" rel="noopener noreferrer" className="group block">
-              <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-5 transition-all hover:shadow-lg card-hover">
+              <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-5 transition-all hover:shadow-lg card-hover" style={{ minHeight: '160px' }}>
                 <Badge variant="premium" className="mb-3">PREMIUM</Badge>
-                <h3 className="text-lg font-bold text-neon-text group-hover:text-amber-700 transition-colors">{ilsanRoom.nameKo}</h3>
+                <h3 className="text-base font-bold text-neon-text group-hover:text-amber-700 transition-colors">{ilsanRoom.nameKo}</h3>
                 <p className="mt-1 text-sm font-medium text-amber-700">신실장 (총책임자)</p>
                 <p className="mt-2 text-xs text-neon-text-muted line-clamp-2">{ilsanRoom.shortDescription}</p>
                 <span className="mt-3 inline-block text-xs font-medium text-amber-600">자세히 보기 →</span>
@@ -196,9 +196,9 @@ export default function HomePage() {
           )}
           {ilsanYojeong && (
             <Link href="/yojeong/ilsan/ilsanmyeongwolgwanyojeong" target="_blank" rel="noopener noreferrer" className="group block">
-              <div className="rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 to-white p-5 transition-all hover:shadow-lg card-hover">
+              <div className="rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 to-white p-5 transition-all hover:shadow-lg card-hover" style={{ minHeight: '160px' }}>
                 <Badge variant="premium" className="mb-3">PREMIUM</Badge>
-                <h3 className="text-lg font-bold text-neon-text group-hover:text-violet-700 transition-colors">{ilsanYojeong.nameKo}</h3>
+                <h3 className="text-base font-bold text-neon-text group-hover:text-violet-700 transition-colors">{ilsanYojeong.nameKo}</h3>
                 <p className="mt-1 text-sm font-medium text-violet-700">신실장</p>
                 <p className="mt-2 text-xs text-neon-text-muted line-clamp-2">{ilsanYojeong.shortDescription}</p>
                 <span className="mt-3 inline-block text-xs font-medium text-violet-600">자세히 보기 →</span>
