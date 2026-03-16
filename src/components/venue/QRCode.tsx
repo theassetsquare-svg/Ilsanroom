@@ -93,11 +93,11 @@ export default function QRCode({ url, size = 150, venueName }: QRCodeProps) {
         ref={canvasRef}
         width={size}
         height={size}
-        className="rounded-lg border border-neutral-700 bg-white"
+        className="rounded-lg border border-neon-border bg-white"
       />
       <button
         onClick={handlePrint}
-        className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-1.5 text-xs text-neutral-300 transition hover:bg-neutral-700"
+        className="inline-flex items-center gap-1.5 rounded-lg border border-neon-border bg-neon-surface-2 px-3 py-1.5 text-xs text-neon-text-muted transition hover:bg-neon-surface"
       >
         <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />

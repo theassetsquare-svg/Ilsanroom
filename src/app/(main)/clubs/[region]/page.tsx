@@ -50,14 +50,14 @@ export default async function RegionalClubsPage({ params }: Props) {
   const clubs = getVenuesByCategoryAndRegion('club', region);
 
   return (
-    <div className="bg-neutral-950">
+    <div className="bg-neon-bg">
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
         <Breadcrumb items={[{ label: '클럽', href: '/clubs' }, { label: regionKo }]} />
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-6 sm:px-6">
-        <h1 className="text-3xl font-extrabold text-white">{regionKo} 클럽</h1>
-        <p className="mt-3 text-neutral-400">{regionKo} 지역의 인기 클럽을 소개합니다.</p>
+        <h1 className="text-3xl font-extrabold text-neon-text">{regionKo} 클럽</h1>
+        <p className="mt-3 text-neon-text-muted">{regionKo} 지역의 인기 클럽을 소개합니다.</p>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6">
@@ -67,7 +67,7 @@ export default async function RegionalClubsPage({ params }: Props) {
           ))}
         </div>
         {clubs.length === 0 && (
-          <p className="py-20 text-center text-neutral-600">{regionKo} 지역에 등록된 클럽이 없습니다.</p>
+          <p className="py-20 text-center text-neon-text-muted">{regionKo} 지역에 등록된 클럽이 없습니다.</p>
         )}
       </section>
     </div>

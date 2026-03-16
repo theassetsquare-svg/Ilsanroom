@@ -61,7 +61,7 @@ function StarDisplay({ rating }: { rating: number }) {
   return (
     <div className="flex gap-0.5">
       {[1, 2, 3, 4, 5].map((s) => (
-        <svg key={s} className={`h-4 w-4 ${s <= rating ? 'text-amber-400' : 'text-neutral-700'}`} fill="currentColor" viewBox="0 0 20 20">
+        <svg key={s} className={`h-4 w-4 ${s <= rating ? 'text-amber-400' : 'text-neon-text-muted'}`} fill="currentColor" viewBox="0 0 20 20">
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
       ))}
@@ -84,23 +84,23 @@ export default function ReviewSection({ venueId, venueName, initialReviews }: Re
 
   return (
     <div>
-      <h2 className="mb-4 text-xl font-bold text-white">리뷰 ({reviews.length})</h2>
+      <h2 className="mb-4 text-xl font-bold text-neon-text">리뷰 ({reviews.length})</h2>
       <div className="space-y-4">
         {reviews.map((review) => (
-          <div key={review.id} className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5">
+          <div key={review.id} className="rounded-xl border border-neon-border bg-neon-surface/50 p-5">
             <div className="mb-2 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-800 text-sm font-bold text-neutral-400">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neon-surface-2 text-sm font-bold text-neon-text-muted">
                   {review.author.charAt(0)}
                 </div>
                 <div>
-                  <span className="text-sm font-medium text-neutral-300">{review.author}</span>
-                  <span className="ml-2 text-xs text-neutral-600">{review.date}</span>
+                  <span className="text-sm font-medium text-neon-text-muted">{review.author}</span>
+                  <span className="ml-2 text-xs text-neon-text-muted">{review.date}</span>
                 </div>
               </div>
               <StarDisplay rating={review.rating} />
             </div>
-            <p className="text-sm leading-relaxed text-neutral-400">{review.content}</p>
+            <p className="text-sm leading-relaxed text-neon-text-muted">{review.content}</p>
 
             <div className="mt-3 flex items-center gap-3">
               <button
@@ -108,7 +108,7 @@ export default function ReviewSection({ venueId, venueName, initialReviews }: Re
                 className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs transition ${
                   helpfulClicked.has(review.id)
                     ? 'bg-violet-500/20 text-violet-400'
-                    : 'bg-neutral-800 text-neutral-500 hover:text-neutral-300'
+                    : 'bg-neon-surface-2 text-neon-text-muted hover:text-neon-text-muted'
                 }`}
               >
                 👍 도움됨 {review.helpful + (helpfulClicked.has(review.id) ? 1 : 0)}

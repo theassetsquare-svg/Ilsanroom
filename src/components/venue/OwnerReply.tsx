@@ -14,9 +14,9 @@ export default function OwnerReply({ ownerName = '사장님', reply, repliedAt }
           </svg>
           사장님 답변
         </span>
-        <span className="text-[10px] text-neutral-600">{repliedAt}</span>
+        <span className="text-[10px] text-neon-text-muted">{repliedAt}</span>
       </div>
-      <p className="text-sm leading-relaxed text-neutral-400">{reply}</p>
+      <p className="text-sm leading-relaxed text-neon-text-muted">{reply}</p>
     </div>
   );
 }

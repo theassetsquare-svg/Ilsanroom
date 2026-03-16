@@ -111,7 +111,7 @@ export default function StatusPage() {
         <div className="mb-12 rounded-2xl border border-neon-border bg-neon-surface p-8 text-center">
           <div className="mb-2 flex items-center justify-center gap-2">
             <Shield className="h-5 w-5 text-neon-primary-light" />
-            <p className="text-sm font-medium text-neutral-300">서비스 업타임</p>
+            <p className="text-sm font-medium text-neon-text-muted">서비스 업타임</p>
           </div>
           <p className="text-5xl font-extrabold text-neon-primary-light">99.9%</p>
           <p className="mt-2 text-xs text-neon-text-muted">월간 평균 가동률</p>
@@ -130,7 +130,7 @@ export default function StatusPage() {
             >
               <div className="flex items-center gap-4">
                 <div className="rounded-xl bg-neon-surface-2 p-2.5">
-                  <sys.icon className="h-5 w-5 text-neutral-300" />
+                  <sys.icon className="h-5 w-5 text-neon-text-muted" />
                 </div>
                 <div>
                   <h3 className="text-sm font-semibold">{sys.name}</h3>
@@ -219,7 +219,7 @@ export default function StatusPage() {
               </div>
             ))}
           </div>
-          <p className="mt-6 text-center text-xs text-neutral-600">
+          <p className="mt-6 text-center text-xs text-neon-text-muted">
             이전 인시던트 기록은 보관 정책에 따라 90일간 유지됩니다.
           </p>
         </div>
@@ -274,7 +274,7 @@ export default function StatusPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="이메일 주소를 입력하세요"
                 required
-                className="flex-1 rounded-xl border border-neutral-700 bg-neon-bg px-4 py-3 text-sm text-neon-text placeholder-neutral-600 outline-none transition focus:border-violet-500"
+                className="flex-1 rounded-xl border border-neon-border bg-neon-bg px-4 py-3 text-sm text-neon-text placeholder-neon-text-muted outline-none transition focus:border-violet-500"
               />
               <button
                 type="submit"

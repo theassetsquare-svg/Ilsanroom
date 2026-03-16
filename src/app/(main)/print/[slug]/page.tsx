@@ -56,13 +56,13 @@ export default async function PrintPage({ params }: Props) {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-extrabold">{venue.nameKo}</h1>
-              <p className="mt-1 text-sm text-neutral-600">
+              <p className="mt-1 text-sm text-neon-text-muted">
                 {venue.regionKo} · {categoryLabels[venue.category] || venue.category}
               </p>
             </div>
             <div className="text-right">
-              <p className="text-xs text-neutral-500">오늘밤어디</p>
-              <p className="text-xs text-neutral-500">ilsanroom.pages.dev</p>
+              <p className="text-xs text-neon-text-muted">오늘밤어디</p>
+              <p className="text-xs text-neon-text-muted">ilsanroom.pages.dev</p>
             </div>
           </div>
         </div>
@@ -73,7 +73,7 @@ export default async function PrintPage({ params }: Props) {
             <span className="text-2xl font-bold">{venue.rating}</span>
             <span className="text-amber-500">★</span>
           </div>
-          <span className="text-sm text-neutral-600">리뷰 {venue.reviewCount}개</span>
+          <span className="text-sm text-neon-text-muted">리뷰 {venue.reviewCount}개</span>
           {venue.isPremium && (
             <span className="rounded-full border border-amber-500 px-2 py-0.5 text-xs font-bold text-amber-600">PREMIUM</span>
           )}
@@ -87,12 +87,12 @@ export default async function PrintPage({ params }: Props) {
 
         {/* Info Grid */}
         <div className="mb-6 grid grid-cols-2 gap-4 rounded-lg border border-neutral-200 p-4">
-          <div><span className="text-xs text-neutral-500">위치</span><p className="text-sm">{venue.address}</p></div>
-          <div><span className="text-xs text-neutral-500">영업시간</span><p className="text-sm">{venue.openHours}</p></div>
-          <div><span className="text-xs text-neutral-500">연령대</span><p className="text-sm">{venue.ageGroup}</p></div>
-          <div><span className="text-xs text-neutral-500">드레스코드</span><p className="text-sm">{venue.dressCode}</p></div>
-          <div><span className="text-xs text-neutral-500">주차</span><p className="text-sm">{venue.parking}</p></div>
-          <div><span className="text-xs text-neutral-500">가까운 역</span><p className="text-sm">{venue.nearbyStation}</p></div>
+          <div><span className="text-xs text-neon-text-muted">위치</span><p className="text-sm">{venue.address}</p></div>
+          <div><span className="text-xs text-neon-text-muted">영업시간</span><p className="text-sm">{venue.openHours}</p></div>
+          <div><span className="text-xs text-neon-text-muted">연령대</span><p className="text-sm">{venue.ageGroup}</p></div>
+          <div><span className="text-xs text-neon-text-muted">드레스코드</span><p className="text-sm">{venue.dressCode}</p></div>
+          <div><span className="text-xs text-neon-text-muted">주차</span><p className="text-sm">{venue.parking}</p></div>
+          <div><span className="text-xs text-neon-text-muted">가까운 역</span><p className="text-sm">{venue.nearbyStation}</p></div>
         </div>
 
         {/* Features */}
@@ -121,10 +121,10 @@ export default async function PrintPage({ params }: Props) {
 
         {/* QR Code placeholder */}
         <div className="mt-8 flex items-center justify-between border-t border-neutral-200 pt-4">
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-neon-text-muted">
             이 정보는 오늘밤어디에서 제공합니다. 방문 전 업소에 직접 확인하세요.
           </p>
-          <div className="h-16 w-16 rounded border border-neutral-300 bg-neutral-100 flex items-center justify-center text-[8px] text-neutral-400">
+          <div className="h-16 w-16 rounded border border-neutral-300 bg-neutral-100 flex items-center justify-center text-[8px] text-neon-text-muted">
             QR
           </div>
         </div>

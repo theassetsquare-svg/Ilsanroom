@@ -38,8 +38,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { region } = await params;
   const regionKo = regionNames[region] || region;
   return {
-    title: `${regionKo} 룸 | 오늘밤어디 - ${regionKo}룸 정보`,
-    description: `${regionKo} 지역 프리미엄 룸 리스트. ${regionKo}룸의 시설, 분위기, 서비스를 비교하고 나에게 맞는 룸을 찾아보세요.`,
+    title: `${regionKo} 룸 | 오늘밤어디 - ${regionKo} 프라이빗 공간 정보`,
+    description: `${regionKo} 지역 프리미엄 프라이빗 공간 리스트. 시설, 분위기, 서비스를 비교하고 나에게 맞는 곳을 찾아보세요.`,
   };
 }
 
@@ -50,25 +50,25 @@ export default async function RegionalRoomsPage({ params }: Props) {
   const isIlsan = region === 'ilsan';
 
   return (
-    <div className="bg-neutral-950">
+    <div className="bg-neon-bg">
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
         <Breadcrumb items={[{ label: '룸', href: '/rooms' }, { label: regionKo }]} />
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-6 sm:px-6">
-        <h1 className="text-3xl font-extrabold text-white">{regionKo} 룸</h1>
-        <p className="mt-3 text-neutral-400">{regionKo} 지역의 프리미엄 룸을 소개합니다.</p>
+        <h1 className="text-3xl font-extrabold text-neon-text">{regionKo} 룸</h1>
+        <p className="mt-3 text-neon-text-muted">{regionKo} 지역의 프리미엄 프라이빗 공간을 소개합니다.</p>
       </section>
 
       {isIlsan && (
         <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6">
-          <div className="rounded-xl border border-rose-800/30 bg-rose-950/20 p-6">
-            <h2 className="mb-3 text-lg font-bold text-white">일산룸 안내</h2>
-            <p className="text-sm leading-relaxed text-neutral-400">
-              일산룸은 고양시 일산 지역을 중심으로 발달한 프라이빗 룸 문화를 대표합니다.
+          <div className="rounded-xl border border-neon-border bg-white p-6">
+            <h2 className="mb-3 text-lg font-bold text-neon-text">일산 프라이빗 공간 안내</h2>
+            <p className="text-sm leading-relaxed text-neon-text-muted">
+              고양시 일산 지역을 중심으로 발달한 프라이빗 문화를 대표하는 공간입니다.
               교통이 편리한 일산 신도시 상권에 위치하여 직장인 회식, 비즈니스 접대,
               가족 모임 등 다양한 용도로 활용되고 있습니다.
-              최신 인테리어와 고급 음향 시설을 갖춘 일산 지역 룸 정보를 확인해 보세요.
+              최신 인테리어와 고급 음향 시설을 갖춘 일산 지역 독립 공간 정보를 확인해 보세요.
             </p>
           </div>
         </section>
@@ -79,7 +79,7 @@ export default async function RegionalRoomsPage({ params }: Props) {
           {rooms.map((venue) => <VenueCard key={venue.id} venue={venue} region={region} />)}
         </div>
         {rooms.length === 0 && (
-          <p className="py-20 text-center text-neutral-600">{regionKo} 지역에 등록된 룸이 없습니다.</p>
+          <p className="py-20 text-center text-neon-text-muted">{regionKo} 지역에 등록된 프라이빗 공간이 없습니다.</p>
         )}
       </section>
     </div>

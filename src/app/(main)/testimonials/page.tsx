@@ -76,9 +76,9 @@ function getPlanColor(plan: string): string {
     "프리미엄": "bg-violet-500/10 text-violet-400 border-violet-500/20",
     "프로": "bg-blue-500/10 text-blue-400 border-blue-500/20",
     "엔터프라이즈": "bg-amber-500/10 text-amber-400 border-amber-500/20",
-    "베이직": "bg-neutral-500/10 text-neutral-400 border-neutral-500/20",
+    "베이직": "bg-neutral-500/10 text-neon-text-muted border-neutral-500/20",
   };
-  return colors[plan] || "bg-neutral-500/10 text-neutral-400 border-neutral-500/20";
+  return colors[plan] || "bg-neutral-500/10 text-neon-text-muted border-neutral-500/20";
 }
 
 export default function TestimonialsPage() {

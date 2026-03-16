@@ -103,7 +103,7 @@ const statusStyles: Record<ReportStatus, string> = {
   "대기중": "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
   "검토중": "bg-blue-500/10 text-blue-400 border-blue-500/20",
   "처리완료": "bg-green-500/10 text-green-400 border-green-500/20",
-  "기각": "bg-neutral-500/10 text-neutral-400 border-neutral-500/20",
+  "기각": "bg-neutral-500/10 text-neon-text-muted border-neutral-500/20",
 };
 
 const typeStyles: Record<string, string> = {
@@ -114,16 +114,16 @@ const typeStyles: Record<string, string> = {
 
 export default function ReportsPage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-7xl px-4 py-8">
         {/* Header */}
         <div className="mb-8 flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold">신고 관리</h1>
-            <p className="mt-1 text-neutral-400">커뮤니티 신고 현황을 확인하고 처리합니다</p>
+            <p className="mt-1 text-neon-text-muted">커뮤니티 신고 현황을 확인하고 처리합니다</p>
           </div>
           <div className="flex gap-3">
-            <button className="rounded-xl border border-neutral-700 bg-neutral-900 px-4 py-2 text-sm transition hover:bg-neutral-800">
+            <button className="rounded-xl border border-neon-border bg-white px-4 py-2 text-sm transition hover:bg-neon-surface-2">
               필터
             </button>
             <button className="rounded-xl bg-violet-600 px-4 py-2 text-sm font-medium transition hover:bg-violet-500">
@@ -137,10 +137,10 @@ export default function ReportsPage() {
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="rounded-2xl border border-neutral-800 bg-neutral-900 p-5"
+              className="rounded-2xl border border-neon-border bg-white p-5"
             >
               <div className="flex items-center justify-between">
-                <span className="text-sm text-neutral-400">{stat.label}</span>
+                <span className="text-sm text-neon-text-muted">{stat.label}</span>
                 <span className="text-xl">{stat.icon}</span>
               </div>
               <p className="mt-2 text-3xl font-bold">{stat.value}</p>
@@ -149,38 +149,38 @@ export default function ReportsPage() {
         </div>
 
         {/* Table */}
-        <div className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900">
+        <div className="overflow-hidden rounded-2xl border border-neon-border bg-white">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-neutral-800 bg-neutral-950/50">
-                  <th className="whitespace-nowrap px-4 py-3.5 text-left font-medium text-neutral-400">유형</th>
-                  <th className="whitespace-nowrap px-4 py-3.5 text-left font-medium text-neutral-400">콘텐츠</th>
-                  <th className="whitespace-nowrap px-4 py-3.5 text-left font-medium text-neutral-400">신고사유</th>
-                  <th className="whitespace-nowrap px-4 py-3.5 text-left font-medium text-neutral-400">신고자</th>
-                  <th className="whitespace-nowrap px-4 py-3.5 text-left font-medium text-neutral-400">날짜</th>
-                  <th className="whitespace-nowrap px-4 py-3.5 text-left font-medium text-neutral-400">상태</th>
-                  <th className="whitespace-nowrap px-4 py-3.5 text-left font-medium text-neutral-400">액션</th>
+                <tr className="border-b border-neon-border bg-neon-bg/50">
+                  <th className="whitespace-nowrap px-4 py-3.5 text-left font-medium text-neon-text-muted">유형</th>
+                  <th className="whitespace-nowrap px-4 py-3.5 text-left font-medium text-neon-text-muted">콘텐츠</th>
+                  <th className="whitespace-nowrap px-4 py-3.5 text-left font-medium text-neon-text-muted">신고사유</th>
+                  <th className="whitespace-nowrap px-4 py-3.5 text-left font-medium text-neon-text-muted">신고자</th>
+                  <th className="whitespace-nowrap px-4 py-3.5 text-left font-medium text-neon-text-muted">날짜</th>
+                  <th className="whitespace-nowrap px-4 py-3.5 text-left font-medium text-neon-text-muted">상태</th>
+                  <th className="whitespace-nowrap px-4 py-3.5 text-left font-medium text-neon-text-muted">액션</th>
                 </tr>
               </thead>
               <tbody>
                 {reports.map((report) => (
-                  <tr key={report.id} className="border-b border-neutral-800/50 transition hover:bg-neutral-800/30 last:border-0">
+                  <tr key={report.id} className="border-b border-neon-border/50 transition hover:bg-neon-surface-2/30 last:border-0">
                     <td className="whitespace-nowrap px-4 py-3.5">
                       <span className={`inline-block rounded-md px-2 py-1 text-xs font-medium ${typeStyles[report.type]}`}>
                         {report.type}
                       </span>
                     </td>
-                    <td className="max-w-[200px] truncate px-4 py-3.5 text-neutral-300">
+                    <td className="max-w-[200px] truncate px-4 py-3.5 text-neon-text-muted">
                       {report.content}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-3.5 text-neutral-300">
+                    <td className="whitespace-nowrap px-4 py-3.5 text-neon-text-muted">
                       {report.reason}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-3.5 text-neutral-400">
+                    <td className="whitespace-nowrap px-4 py-3.5 text-neon-text-muted">
                       {report.reporter}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-3.5 text-neutral-400">
+                    <td className="whitespace-nowrap px-4 py-3.5 text-neon-text-muted">
                       {report.date}
                     </td>
                     <td className="whitespace-nowrap px-4 py-3.5">
@@ -198,16 +198,16 @@ export default function ReportsPage() {
                             <button className="rounded-lg bg-red-600/20 px-3 py-1.5 text-xs font-medium text-red-400 transition hover:bg-red-600/30">
                               삭제
                             </button>
-                            <button className="rounded-lg bg-neutral-700/30 px-3 py-1.5 text-xs font-medium text-neutral-400 transition hover:bg-neutral-700/50">
+                            <button className="rounded-lg bg-neon-surface-2/30 px-3 py-1.5 text-xs font-medium text-neon-text-muted transition hover:bg-neon-surface-2/50">
                               기각
                             </button>
                           </>
                         )}
                         {report.status === "처리완료" && (
-                          <span className="text-xs text-neutral-500">처리됨</span>
+                          <span className="text-xs text-neon-text-muted">처리됨</span>
                         )}
                         {report.status === "기각" && (
-                          <span className="text-xs text-neutral-500">기각됨</span>
+                          <span className="text-xs text-neon-text-muted">기각됨</span>
                         )}
                       </div>
                     </td>
@@ -219,14 +219,14 @@ export default function ReportsPage() {
         </div>
 
         {/* Pagination hint */}
-        <div className="mt-4 flex items-center justify-between text-sm text-neutral-500">
+        <div className="mt-4 flex items-center justify-between text-sm text-neon-text-muted">
           <span>총 156건 중 1-8 표시</span>
           <div className="flex gap-2">
-            <button className="rounded-lg border border-neutral-700 px-3 py-1.5 transition hover:bg-neutral-800">이전</button>
+            <button className="rounded-lg border border-neon-border px-3 py-1.5 transition hover:bg-neon-surface-2">이전</button>
             <button className="rounded-lg bg-violet-600 px-3 py-1.5 text-white">1</button>
-            <button className="rounded-lg border border-neutral-700 px-3 py-1.5 transition hover:bg-neutral-800">2</button>
-            <button className="rounded-lg border border-neutral-700 px-3 py-1.5 transition hover:bg-neutral-800">3</button>
-            <button className="rounded-lg border border-neutral-700 px-3 py-1.5 transition hover:bg-neutral-800">다음</button>
+            <button className="rounded-lg border border-neon-border px-3 py-1.5 transition hover:bg-neon-surface-2">2</button>
+            <button className="rounded-lg border border-neon-border px-3 py-1.5 transition hover:bg-neon-surface-2">3</button>
+            <button className="rounded-lg border border-neon-border px-3 py-1.5 transition hover:bg-neon-surface-2">다음</button>
           </div>
         </div>
       </div>

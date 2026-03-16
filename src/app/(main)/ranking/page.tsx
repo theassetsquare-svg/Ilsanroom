@@ -106,7 +106,7 @@ export default function RankingPage() {
               style={{ minHeight: 60 }}>
               {/* 순위 */}
               <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-sm font-bold ${
-                i === 0 ? 'bg-neon-gold/20 text-neon-gold' : i === 1 ? 'bg-neutral-400/20 text-neutral-300' : i === 2 ? 'bg-amber-800/20 text-amber-500' : 'bg-neon-surface-2 text-neon-text-muted'
+                i === 0 ? 'bg-neon-gold/20 text-neon-gold' : i === 1 ? 'bg-neutral-400/20 text-neon-text-muted' : i === 2 ? 'bg-amber-800/20 text-amber-500' : 'bg-neon-surface-2 text-neon-text-muted'
               }`}>{i + 1}</span>
 
               {/* 카테고리 도트 */}

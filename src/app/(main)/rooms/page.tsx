@@ -5,8 +5,8 @@ import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from
 import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
-  title: '룸 | 오늘밤어디 - 일산룸·해운대고구려·전국 프라이빗 룸',
-  description: '방음 처리된 독립 공간에서 모임·회식·접대까지. 일산룸 신실장 직접 안내, 해운대고구려 60개 룸 정찰제 운영.',
+  title: '룸 | 오늘밤어디 - 일산룸·해운대고구려·전국 프라이빗 공간',
+  description: '방음 완비된 독립 공간에서 모임·회식·비즈니스까지. 일산룸부터 해운대고구려 60개+ 정찰제 공간까지 전국 비교.',
   openGraph: { images: [{ url: 'https://placehold.co/1200x630/F59E0B/ffffff/png?text=룸 | 오늘밤어디', width: 1200, height: 630 }] },
 };
 
@@ -26,12 +26,10 @@ export default function RoomsPage() {
         <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">룸</h1>
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6">
           <p className="text-base leading-relaxed text-neon-text-muted">
-            프라이빗한 독립 공간에서 소규모 모임, 비즈니스 미팅, 회식, 생일파티를 즐길 수 있는 업종입니다.
-            홀이나 부스와 달리 완전히 분리된 개별 공간이라 프라이버시가 보장되고,
-            각 공간마다 사운드 시스템과 조명이 독립 설치되어 있습니다.
-            일산룸은 신실장(총책임자)이 운영하는 일산 대표 프리미엄 공간이며,
-            해운대고구려는 마린시티에 위치한 60개+ 대형 업소로 정찰제와 픽업 서비스를 제공합니다.
-            강남, 홍대, 건대 등 서울 주요 지역과 수원, 해운대, 대구 등 전국에 다양한 콘셉트가 있으며,
+            완전히 분리된 독립 공간에서 소규모 모임, 비즈니스 미팅, 회식, 생일파티까지 진행하는 프라이빗 업종입니다.
+            홀이나 부스와 달리 개별 공간이 벽으로 완전 분리되어 프라이버시가 보장되고,
+            각각 사운드 시스템과 조명이 독립 설치되어 있습니다.
+            일산 지역 대표 프리미엄 공간부터 해운대 마린시티 60개+ 대형 업소까지 전국에 다양한 콘셉트가 있으며,
             인원과 예산에 맞게 사전 예약 후 방문하시면 최적의 서비스를 받을 수 있습니다.
           </p>
         </div>
@@ -39,11 +37,11 @@ export default function RoomsPage() {
 
       <VenueListClient venues={venues} hrefPattern="/rooms/{region}/{slug}" regions={regions} />
 
-      <FirstVisitGuide category="룸"
+      <FirstVisitGuide category="프라이빗 공간"
         dress="캐주얼~비즈니스 캐주얼. 모임 목적에 맞게 조절."
-        budget="룸 이용료 + 음료. 업소마다 다름. 사전 전화 문의 필수."
+        budget="공간 이용료 + 음료. 업소마다 다름. 사전 전화 문의 필수."
         alone="보통 2인 이상 이용. 1인 가능 여부 업소에 확인."
-        reservation="사전 예약 필수. 원하는 크기의 룸을 확보하려면 미리 연락."
+        reservation="사전 예약 필수. 원하는 크기의 공간을 확보하려면 미리 연락."
       />
 
       <PopularTimes slots={[
@@ -54,11 +52,11 @@ export default function RoomsPage() {
         { day: '일요일', time: '17:00~22:00', level: 35 },
       ]} />
 
-      <CategoryVSBattle venueA="일산룸" venueB="해운대고구려" topic="프리미엄 프라이빗 공간 대결" />
+      <CategoryVSBattle venueA="일산룸" venueB="해운대고구려" topic="프리미엄 독립 공간 대결" />
 
       <RelatedMagazine articles={[
-        { title: '비즈니스 접대에 최적인 프라이빗 공간 가이드', tag: '비즈니스' },
-        { title: '해운대고구려 — 마린시티 60개 독립 공간의 비밀', tag: '부산' },
+        { title: '비즈니스 접대에 최적인 독립 공간 가이드', tag: '비즈니스' },
+        { title: '해운대고구려 — 마린시티 60개 개별 공간의 비밀', tag: '부산' },
       ]} />
     </div>
   );

@@ -50,7 +50,7 @@ export default function ShareWithUTM({ postId, board, title }: ShareWithUTMProps
       </button>
       <button
         onClick={handleTwitter}
-        className="rounded-lg bg-neutral-800 px-2.5 py-1.5 text-xs text-neutral-300 transition hover:bg-neutral-700"
+        className="rounded-lg bg-neon-surface-2 px-2.5 py-1.5 text-xs text-neon-text-muted transition hover:bg-neon-surface"
       >
         트위터
       </button>

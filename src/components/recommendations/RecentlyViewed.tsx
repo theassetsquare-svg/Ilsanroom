@@ -39,17 +39,17 @@ export default function RecentlyViewed() {
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      <h2 className="mb-4 text-lg font-bold text-white">최근 본 업소</h2>
+      <h2 className="mb-4 text-lg font-bold text-neon-text">최근 본 업소</h2>
       <div className="flex gap-3 overflow-x-auto pb-2">
         {recent.map(venue => (
           <Link
             key={venue.id}
             href={getCategoryPath(venue)}
-            className="flex min-w-[200px] items-center gap-3 rounded-xl border border-neutral-800 bg-neutral-900/50 px-4 py-3 transition hover:border-violet-500/40"
+            className="flex min-w-[200px] items-center gap-3 rounded-xl border border-neon-border bg-neon-surface/50 px-4 py-3 transition hover:border-violet-500/40"
           >
             <div>
-              <p className="text-sm font-medium text-white">{venue.nameKo}</p>
-              <p className="text-xs text-neutral-500">{categoryLabels[venue.category]} · {venue.regionKo}</p>
+              <p className="text-sm font-medium text-neon-text">{venue.nameKo}</p>
+              <p className="text-xs text-neon-text-muted">{categoryLabels[venue.category]} · {venue.regionKo}</p>
             </div>
           </Link>
         ))}

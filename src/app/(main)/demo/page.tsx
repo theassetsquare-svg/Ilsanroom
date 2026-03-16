@@ -53,7 +53,7 @@ export default function DemoPage() {
   const [activeTab, setActiveTab] = useState("대시보드");
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-6xl px-4 py-16">
         {/* Header */}
         <div className="mb-12 text-center">
@@ -63,22 +63,22 @@ export default function DemoPage() {
           <h1 className="mb-4 text-4xl font-bold">
             업주 <span className="text-violet-400">대시보드</span> 미리보기
           </h1>
-          <p className="mx-auto max-w-lg text-lg text-neutral-400">
+          <p className="mx-auto max-w-lg text-lg text-neon-text-muted">
             오늘밤어디 Pro 대시보드를 직접 체험해보세요. 실제 데이터 기반의
             인터랙티브 데모입니다.
           </p>
         </div>
 
         {/* Demo Dashboard */}
-        <div className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900">
+        <div className="overflow-hidden rounded-2xl border border-neon-border bg-white">
           {/* Demo Top Bar */}
-          <div className="flex items-center justify-between border-b border-neutral-800 px-6 py-3">
+          <div className="flex items-center justify-between border-b border-neon-border px-6 py-3">
             <div className="flex items-center gap-2">
               <div className="h-3 w-3 rounded-full bg-red-500" />
               <div className="h-3 w-3 rounded-full bg-yellow-500" />
               <div className="h-3 w-3 rounded-full bg-green-500" />
             </div>
-            <span className="text-xs text-neutral-500">
+            <span className="text-xs text-neon-text-muted">
               demo.ilsanroom.pages.dev
             </span>
             <div className="w-14" />
@@ -86,10 +86,10 @@ export default function DemoPage() {
 
           <div className="flex">
             {/* Sidebar */}
-            <div className="hidden w-48 shrink-0 border-r border-neutral-800 p-4 md:block">
+            <div className="hidden w-48 shrink-0 border-r border-neon-border p-4 md:block">
               <div className="mb-6">
                 <span className="text-sm font-bold text-violet-400">오늘밤어디</span>
-                <span className="ml-1 text-xs text-neutral-500">Pro</span>
+                <span className="ml-1 text-xs text-neon-text-muted">Pro</span>
               </div>
               <nav className="space-y-1">
                 {sidebarItems.map((item) => (
@@ -99,7 +99,7 @@ export default function DemoPage() {
                     className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm transition-colors ${
                       activeTab === item.label
                         ? "bg-violet-600/20 text-violet-400"
-                        : "text-neutral-400 hover:bg-neutral-800 hover:text-white"
+                        : "text-neon-text-muted hover:bg-neon-surface-2 hover:text-neon-text"
                     }`}
                   >
                     <item.icon className="h-4 w-4" />
@@ -114,7 +114,7 @@ export default function DemoPage() {
               <div className="mb-6 flex items-center justify-between">
                 <div>
                   <h2 className="text-lg font-bold">대시보드</h2>
-                  <p className="text-xs text-neutral-500">
+                  <p className="text-xs text-neon-text-muted">
                     마지막 업데이트: 방금 전
                   </p>
                 </div>
@@ -128,22 +128,22 @@ export default function DemoPage() {
                 {mockStats.map((stat) => (
                   <div
                     key={stat.label}
-                    className="rounded-xl bg-neutral-950 p-4"
+                    className="rounded-xl bg-neon-bg p-4"
                   >
                     <div className="mb-2 flex items-center justify-between">
-                      <stat.icon className="h-4 w-4 text-neutral-500" />
+                      <stat.icon className="h-4 w-4 text-neon-text-muted" />
                       <span className="text-xs text-green-400">
                         {stat.change}
                       </span>
                     </div>
                     <p className="text-2xl font-bold">{stat.value}</p>
-                    <p className="text-xs text-neutral-500">{stat.label}</p>
+                    <p className="text-xs text-neon-text-muted">{stat.label}</p>
                   </div>
                 ))}
               </div>
 
               {/* Chart Placeholder */}
-              <div className="mb-6 rounded-xl bg-neutral-950 p-4">
+              <div className="mb-6 rounded-xl bg-neon-bg p-4">
                 <h3 className="mb-4 text-sm font-semibold">주간 방문자 추이</h3>
                 <div className="flex h-32 items-end gap-2">
                   {[40, 65, 55, 80, 72, 90, 85].map((h, i) => (
@@ -155,8 +155,8 @@ export default function DemoPage() {
                         className="w-full rounded-t bg-violet-600/60"
                         style={{ height: `${h}%` }}
                       />
-                      <span className="text-[10px] text-neutral-600">
-                        {["월", "화", "수", "목", "금", "토", "일"][i]}
+                      <span className="text-[10px] text-neon-text-muted">
+                        {["\uC6D4", "\uD654", "\uC218", "\uBAA9", "\uAE08", "\uD1A0", "\uC77C"][i]}
                       </span>
                     </div>
                   ))}
@@ -164,13 +164,13 @@ export default function DemoPage() {
               </div>
 
               {/* Recent Reviews */}
-              <div className="rounded-xl bg-neutral-950 p-4">
+              <div className="rounded-xl bg-neon-bg p-4">
                 <h3 className="mb-4 text-sm font-semibold">최근 리뷰</h3>
                 <div className="space-y-3">
                   {mockReviews.map((review, i) => (
                     <div
                       key={i}
-                      className="flex items-start justify-between rounded-lg bg-neutral-900 p-3"
+                      className="flex items-start justify-between rounded-lg bg-white p-3"
                     >
                       <div className="flex-1">
                         <div className="mb-1 flex items-center gap-2">
@@ -181,11 +181,11 @@ export default function DemoPage() {
                             {"★".repeat(review.rating)}
                           </span>
                         </div>
-                        <p className="text-xs text-neutral-400">
+                        <p className="text-xs text-neon-text-muted">
                           {review.text}
                         </p>
                       </div>
-                      <span className="shrink-0 text-[10px] text-neutral-600">
+                      <span className="shrink-0 text-[10px] text-neon-text-muted">
                         {review.date}
                       </span>
                     </div>
@@ -198,7 +198,7 @@ export default function DemoPage() {
 
         {/* CTA */}
         <div className="mt-12 text-center">
-          <p className="mb-4 text-sm text-neutral-400">
+          <p className="mb-4 text-sm text-neon-text-muted">
             실제 데이터로 업소를 관리하고 싶으신가요?
           </p>
           <Link

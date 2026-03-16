@@ -102,8 +102,8 @@ export default function PersonalizedPicks() {
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-white">당신이 좋아할 곳</h2>
-          <p className="mt-1 text-sm text-neutral-500">최근 활동 기반 맞춤 추천</p>
+          <h2 className="text-xl font-bold text-neon-text">당신이 좋아할 곳</h2>
+          <p className="mt-1 text-sm text-neon-text-muted">최근 활동 기반 맞춤 추천</p>
         </div>
         <span className="rounded-full bg-violet-500/10 px-3 py-1 text-xs text-violet-400">AI 추천</span>
       </div>
@@ -112,20 +112,20 @@ export default function PersonalizedPicks() {
           <Link
             key={venue.id}
             href={getCategoryPath(venue)}
-            className="group rounded-2xl border border-neutral-800 bg-neutral-900/50 p-5 transition-all hover:border-violet-500/40 hover:bg-neutral-900"
+            className="group rounded-2xl border border-neon-border bg-neon-surface/50 p-5 transition-all hover:border-violet-500/40 hover:bg-white"
           >
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-lg font-bold text-white group-hover:text-violet-400 transition">{venue.nameKo}</span>
+              <span className="text-lg font-bold text-neon-text group-hover:text-violet-400 transition">{venue.nameKo}</span>
               {venue.isPremium && (
                 <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-bold text-amber-400">P</span>
               )}
             </div>
-            <div className="flex items-center gap-2 text-sm text-neutral-500">
+            <div className="flex items-center gap-2 text-sm text-neon-text-muted">
               <span>{venue.regionKo}</span>
               <span>·</span>
               <span className="text-amber-400">★ {venue.rating}</span>
             </div>
-            <p className="mt-2 text-xs text-neutral-600 line-clamp-2">{venue.shortDescription}</p>
+            <p className="mt-2 text-xs text-neon-text-muted line-clamp-2">{venue.shortDescription}</p>
           </Link>
         ))}
       </div>

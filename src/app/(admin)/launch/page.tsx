@@ -102,24 +102,24 @@ export default function LaunchChecklistPage() {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold tracking-tight">런칭 체크리스트</h1>
-        <p className="mt-2 text-neutral-400">
+        <p className="mt-2 text-neon-text-muted">
           오늘밤어디 SaaS 런칭 전 확인 사항
         </p>
       </div>
 
       {/* Progress Bar */}
-      <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-6">
+      <div className="rounded-xl border border-neon-border bg-white p-6">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-medium text-neutral-300">전체 진행률</span>
+          <span className="text-sm font-medium text-neon-text-muted">전체 진행률</span>
           <span className="text-2xl font-bold text-violet-400">{progressPercent}%</span>
         </div>
-        <div className="h-3 w-full overflow-hidden rounded-full bg-neutral-800">
+        <div className="h-3 w-full overflow-hidden rounded-full bg-neon-surface-2">
           <div
             className="h-full rounded-full bg-gradient-to-r from-violet-600 to-violet-400 transition-all duration-500"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
-        <div className="mt-3 flex gap-6 text-sm text-neutral-400">
+        <div className="mt-3 flex gap-6 text-sm text-neon-text-muted">
           <span className="flex items-center gap-1.5">
             <span className="inline-block h-2.5 w-2.5 rounded-full bg-emerald-500" />
             완료: {doneItems}개
@@ -142,15 +142,15 @@ export default function LaunchChecklistPage() {
         return (
           <div
             key={section.title}
-            className="rounded-xl border border-neutral-800 bg-neutral-900 overflow-hidden"
+            className="rounded-xl border border-neon-border bg-white overflow-hidden"
           >
-            <div className="flex items-center justify-between border-b border-neutral-800 px-6 py-4">
+            <div className="flex items-center justify-between border-b border-neon-border px-6 py-4">
               <h2 className="text-lg font-semibold">{section.title}</h2>
-              <span className="rounded-full bg-neutral-800 px-3 py-1 text-xs font-medium text-neutral-300">
+              <span className="rounded-full bg-neon-surface-2 px-3 py-1 text-xs font-medium text-neon-text-muted">
                 {sectionDone}/{sectionTotal}
               </span>
             </div>
-            <ul className="divide-y divide-neutral-800/50">
+            <ul className="divide-y divide-neon-border/50">
               {section.items.map((item) => (
                 <li key={item.task} className="flex items-start gap-3 px-6 py-3.5">
                   {item.status === "done" ? (
@@ -181,12 +181,12 @@ export default function LaunchChecklistPage() {
                   <div className="flex-1 min-w-0">
                     <p
                       className={`text-sm font-medium ${
-                        item.status === "done" ? "text-neutral-300" : "text-white"
+                        item.status === "done" ? "text-neon-text-muted" : "text-neon-text"
                       }`}
                     >
                       {item.task}
                     </p>
-                    <p className="mt-0.5 text-xs text-neutral-500">{item.note}</p>
+                    <p className="mt-0.5 text-xs text-neon-text-muted">{item.note}</p>
                   </div>
                   <span
                     className={`mt-0.5 flex-shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium ${
@@ -227,8 +227,8 @@ export default function LaunchChecklistPage() {
             <li key={be.item} className="flex gap-3">
               <span className="mt-1 flex-shrink-0 text-amber-500">&#8226;</span>
               <div>
-                <p className="text-sm font-medium text-white">{be.item}</p>
-                <p className="mt-0.5 text-xs text-neutral-400">{be.detail}</p>
+                <p className="text-sm font-medium text-neon-text">{be.item}</p>
+                <p className="mt-0.5 text-xs text-neon-text-muted">{be.detail}</p>
               </div>
             </li>
           ))}
@@ -255,15 +255,15 @@ export default function LaunchChecklistPage() {
         </div>
         <div className="space-y-2 mb-4">
           {domainStrategy.map((d) => (
-            <div key={d.domain} className="flex items-center gap-3 rounded-lg bg-neutral-900/50 px-4 py-2.5">
+            <div key={d.domain} className="flex items-center gap-3 rounded-lg bg-neon-surface/50 px-4 py-2.5">
               <code className="text-sm font-mono text-violet-300">{d.domain}</code>
-              <span className="text-xs text-neutral-400">{d.desc}</span>
+              <span className="text-xs text-neon-text-muted">{d.desc}</span>
             </div>
           ))}
         </div>
-        <div className="rounded-lg bg-neutral-900/50 p-4">
-          <p className="text-sm font-medium text-neutral-300 mb-2">Cloudflare Pages 설정 순서</p>
-          <ol className="space-y-1.5 text-xs text-neutral-400">
+        <div className="rounded-lg bg-neon-surface/50 p-4">
+          <p className="text-sm font-medium text-neon-text-muted mb-2">Cloudflare Pages 설정 순서</p>
+          <ol className="space-y-1.5 text-xs text-neon-text-muted">
             <li>1. Cloudflare Dashboard &rarr; Pages &rarr; 프로젝트 선택</li>
             <li>2. Custom domains &rarr; Set up a custom domain</li>
             <li>3. 도메인 입력 후 DNS 레코드 자동 설정 확인</li>
@@ -275,17 +275,17 @@ export default function LaunchChecklistPage() {
 
       {/* Summary Stats */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-5 text-center">
+        <div className="rounded-xl border border-neon-border bg-white p-5 text-center">
           <p className="text-3xl font-bold text-emerald-400">{doneItems}</p>
-          <p className="mt-1 text-sm text-neutral-400">완료 항목</p>
+          <p className="mt-1 text-sm text-neon-text-muted">완료 항목</p>
         </div>
-        <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-5 text-center">
+        <div className="rounded-xl border border-neon-border bg-white p-5 text-center">
           <p className="text-3xl font-bold text-amber-400">{pendingItems}</p>
-          <p className="mt-1 text-sm text-neutral-400">대기 항목</p>
+          <p className="mt-1 text-sm text-neon-text-muted">대기 항목</p>
         </div>
-        <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-5 text-center">
+        <div className="rounded-xl border border-neon-border bg-white p-5 text-center">
           <p className="text-3xl font-bold text-violet-400">{progressPercent}%</p>
-          <p className="mt-1 text-sm text-neutral-400">진행률</p>
+          <p className="mt-1 text-sm text-neon-text-muted">진행률</p>
         </div>
       </div>
     </div>
