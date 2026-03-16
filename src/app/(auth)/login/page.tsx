@@ -60,15 +60,6 @@ export default function LoginPage() {
           {loading === 'google' ? '연결 중...' : 'Google로 시작하기'}
         </button>
 
-        <button
-          onClick={() => handleLogin('kakao')}
-          disabled={loading !== null}
-          className="flex w-full items-center justify-center gap-3 rounded-xl bg-[#03C75A] py-3.5 text-sm font-bold text-white transition hover:bg-[#02B550] disabled:opacity-60"
-          style={{ minHeight: '48px' }}
-        >
-          <span className="text-lg font-black">N</span>
-          {loading ? '연결 중...' : '네이버로 시작하기'}
-        </button>
       </div>
 
       <p className="mt-8 text-center text-sm text-neon-text-muted">

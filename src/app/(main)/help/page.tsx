@@ -321,7 +321,7 @@ export default function HelpPage() {
                 </p>
               </div>
             </div>
-            <a href="https://pf.kakao.com/_xgxkxaT" target="_blank" rel="noopener noreferrer"
+            <a href="http://pf.kakao.com/_YSxjxhX/chat" target="_blank" rel="noopener noreferrer"
               className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/40">
               <MessageCircle className="mt-0.5 h-6 w-6 shrink-0 text-neon-primary-light" />
               <div>
