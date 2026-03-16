@@ -17,8 +17,8 @@ const CATEGORY_FILTERS = [
 ] as const;
 
 const POPULAR_TAGS = [
-  '일산룸', '일산요정', '강남클럽', '강남라운지',
-  '강남호빠', '부산나이트', '수원나이트', '부산룸',
+  '일산룸', '일산명월관요정', '강남클럽', '압구정클럽',
+  '강남호빠', '부산나이트', '수원나이트', '해운대고구려',
 ];
 
 function getCategoryHref(category: string, slug: string, region: string) {

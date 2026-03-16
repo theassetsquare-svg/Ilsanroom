@@ -7,13 +7,13 @@ import type { Venue } from '@/types';
 
 const popularTerms = [
   '일산룸',
-  '일산요정',
+  '일산명월관요정',
   '강남클럽',
-  '강남라운지',
+  '압구정클럽',
   '강남호빠',
   '부산나이트',
   '수원나이트',
-  '부산룸',
+  '해운대고구려',
 ];
 
 function getCategoryHref(category: string, slug: string, region: string) {

@@ -9,7 +9,7 @@ import QuizCTA from '@/components/home/QuizCTA';
 import HomeRoulette from '@/components/home/HomeRoulette';
 import HomeVSBattle from '@/components/home/HomeVSBattle';
 import PopularTimeWidget from '@/components/home/PopularTimeWidget';
-import { getPopularVenues, categories } from '@/data/venues';
+import { getPopularVenues, getVenueBySlug, categories } from '@/data/venues';
 import type { Venue } from '@/types';
 
 export const metadata: Metadata = {
@@ -118,6 +118,8 @@ const instaHashtags = [
 
 export default function HomePage() {
   const popularVenues = getPopularVenues(10);
+  const ilsanRoom = getVenueBySlug('ilsanroom');
+  const ilsanYojeong = getVenueBySlug('ilsanmyeongwolgwanyojeong');
 
   return (
     <div className="bg-neon-bg">
@@ -178,7 +180,35 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════ 2. 지금 뜨는 TOP 5 ═══════ */}
+      {/* ═══════ 2. PREMIUM — 일산룸 + 명월관 ═══════ */}
+      <section className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+        <div className="grid gap-4 sm:grid-cols-2">
+          {ilsanRoom && (
+            <Link href="/rooms/ilsan/ilsanroom" className="group block">
+              <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-5 transition-all hover:shadow-lg card-hover">
+                <Badge variant="premium" className="mb-3">PREMIUM</Badge>
+                <h3 className="text-lg font-bold text-neon-text group-hover:text-amber-700 transition-colors">{ilsanRoom.nameKo}</h3>
+                <p className="mt-1 text-sm font-medium text-amber-700">신실장 (총책임자)</p>
+                <p className="mt-2 text-xs text-neon-text-muted line-clamp-2">{ilsanRoom.shortDescription}</p>
+                <span className="mt-3 inline-block text-xs font-medium text-amber-600">자세히 보기 →</span>
+              </div>
+            </Link>
+          )}
+          {ilsanYojeong && (
+            <Link href="/yojeong/ilsan/ilsanmyeongwolgwanyojeong" className="group block">
+              <div className="rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 to-white p-5 transition-all hover:shadow-lg card-hover">
+                <Badge variant="premium" className="mb-3">PREMIUM</Badge>
+                <h3 className="text-lg font-bold text-neon-text group-hover:text-violet-700 transition-colors">{ilsanYojeong.nameKo}</h3>
+                <p className="mt-1 text-sm font-medium text-violet-700">신실장</p>
+                <p className="mt-2 text-xs text-neon-text-muted line-clamp-2">{ilsanYojeong.shortDescription}</p>
+                <span className="mt-3 inline-block text-xs font-medium text-violet-600">자세히 보기 →</span>
+              </div>
+            </Link>
+          )}
+        </div>
+      </section>
+
+      {/* ═══════ 3. 지금 뜨는 TOP 5 ═══════ */}
       <HotWidget />
 
       {/* ═══════ 3. 오늘 갈 곳 룰렛 ═══════ */}
