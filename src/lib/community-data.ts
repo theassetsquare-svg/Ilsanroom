@@ -61,7 +61,7 @@ export const freePosts: Post[] = [
     comments: [makeComment('c3', 'f2', 'solo', '저도요 ㅋㅋ 혼클 마스터입니다')],
   },
   {
-    id: 'f3', board: 'free', title: '나이트라이프 입문 3개월차 소감',
+    id: 'f3', board: 'free', title: '밤문화 입문 3개월차 소감',
     content: '처음에는 클럽이 뭔지도 몰랐는데 3개월 다니다 보니 이제 좀 알겠네요. 음악 장르도 구분되고, 각 클럽의 분위기 차이도 느껴지고... 이 글에서는 3개월간 배운 것들을 정리해볼게요. 첫째, 혼자 가도 괜찮습니다. 둘째, 드레스코드는 생각보다 중요합니다. 셋째, 수분 보충을 꼭 하세요. 넷째, 귀마개를 챙기세요. 다섯째, 첫 잔은 천천히.',
     excerpt: '처음에는 클럽이 뭔지도 몰랐는데 3개월 다니다 보니...',
     author: authors.newbie, createdAt: '2026-03-12T15:00:00Z',
@@ -284,7 +284,7 @@ export const tipsPosts: Post[] = [
     comments: [],
   },
   {
-    id: 't4', board: 'tips', title: '지역별 나이트라이프 특징 총정리',
+    id: 't4', board: 'tips', title: '지역별 밤문화 특징 총정리',
     content: '강남, 홍대, 이태원, 청담, 해운대... 각 지역마다 다른 분위기와 특징을 한눈에 비교해보세요. 강남은 VIP 문화, 홍대는 자유분방, 이태원은 글로벌, 청담은 프리미엄, 해운대는 리조트 느낌.',
     excerpt: '강남, 홍대, 이태원, 청담, 해운대...',
     author: authors.tour, createdAt: '2026-03-07T16:00:00Z',
