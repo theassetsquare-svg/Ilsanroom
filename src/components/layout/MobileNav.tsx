@@ -1,7 +1,9 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { createClient } from '@/lib/supabase';
 
 const tabs = [
   {
@@ -42,19 +44,27 @@ const tabs = [
       </svg>
     ),
   },
-  {
-    href: '/login',
-    label: '마이',
-    icon: (
-      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-      </svg>
-    ),
-  },
 ];
+
+const myIcon = (
+  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+  </svg>
+);
 
 export default function MobileNav() {
   const pathname = usePathname();
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    if (!supabase) return;
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   const isActive = (tab: typeof tabs[0]) => {
     if (tab.href === '/' && pathname === '/') return true;
@@ -65,8 +75,11 @@ export default function MobileNav() {
     return pathname.startsWith(tab.href);
   };
 
+  const myHref = user ? '/profile' : '/login';
+  const myActive = pathname === '/profile' || pathname === '/login';
+
   return (
-    <nav className="fixed right-0 bottom-0 left-0 z-50 border-t border-neon-border bg-neon-surface/95 backdrop-blur-lg pb-safe md:hidden">
+    <nav className="fixed right-0 bottom-0 left-0 z-50 border-t border-neon-border bg-white/95 backdrop-blur-lg pb-safe md:hidden">
       <div className="flex items-center justify-around px-2 pt-2 pb-1">
         {tabs.map((tab) => {
           const active = isActive(tab);
@@ -75,9 +88,7 @@ export default function MobileNav() {
               key={tab.href}
               href={tab.href}
               className={`flex flex-col items-center gap-0.5 rounded-lg px-3 py-1.5 text-[10px] font-medium transition-colors ${
-                active
-                  ? 'text-neon-primary'
-                  : 'text-neon-text-muted hover:text-neon-text'
+                active ? 'text-neon-primary' : 'text-neon-text-muted hover:text-neon-text'
               }`}
             >
               <span className={active ? 'text-neon-primary' : ''}>{tab.icon}</span>
@@ -85,6 +96,19 @@ export default function MobileNav() {
             </Link>
           );
         })}
+        <Link
+          href={myHref}
+          className={`flex flex-col items-center gap-0.5 rounded-lg px-3 py-1.5 text-[10px] font-medium transition-colors ${
+            myActive ? 'text-neon-primary' : 'text-neon-text-muted hover:text-neon-text'
+          }`}
+        >
+          {user?.user_metadata?.avatar_url ? (
+            <img src={user.user_metadata.avatar_url} alt="" className="h-5 w-5 rounded-full" />
+          ) : (
+            <span className={myActive ? 'text-neon-primary' : ''}>{myIcon}</span>
+          )}
+          {user ? '마이' : '로그인'}
+        </Link>
       </div>
     </nav>
   );
