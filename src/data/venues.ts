@@ -26,9 +26,11 @@ export function getVenuesByCategoryAndRegion(category: VenueCategory, region: st
 }
 
 export function getRelatedVenues(venue: Venue, count = 6): Venue[] {
-  return venues
-    .filter(v => v.id !== venue.id && v.status !== 'closed_or_unclear' && (v.category === venue.category || v.region === venue.region))
-    .slice(0, count);
+  const sameCategory = venues.filter(v => v.id !== venue.id && v.status !== 'closed_or_unclear' && v.category === venue.category);
+  if (sameCategory.length >= count) return sameCategory.slice(0, count);
+  const sameRegion = venues.filter(v => v.id !== venue.id && v.status !== 'closed_or_unclear' && v.category === venue.category && v.region === venue.region);
+  const otherSameCategory = sameCategory.filter(v => v.region !== venue.region);
+  return [...sameRegion, ...otherSameCategory].slice(0, count);
 }
 
 export const venues: Venue[] = [
