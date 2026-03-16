@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '오늘밤어디 — 전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보',
+    title: '오늘밤어디 — 전국 밤문화 123개 업소 실시간 정보',
     images: ['https://placehold.co/1200x630/8B5CF6/ffffff/png?text=%EC%98%A4%EB%8A%98%EB%B0%A4%EC%96%B4%EB%94%94'],
   },
 };
@@ -95,7 +95,7 @@ const latestReviews = [
   { venue: '일산명월관요정', text: '한정식 코스가 정말 훌륭했습니다. 국악 공연도 감동적이었어요.', author: '김**', date: '2026-03-12' },
   { venue: '강남클럽 레이스', text: '베이스 사운드에 몸이 먼저 반응합니다. 강남 최고 수준.', author: '이**', date: '2026-03-11' },
   { venue: '수원찬스돔나이트', text: '돔 구조가 만들어내는 공간감이 독특해요. 강호동 담당자 재밌음.', author: '박**', date: '2026-03-10' },
-  { venue: '해운대고구려', text: '룸이 60개 넘으니까 웨이팅 없이 바로 들어갈 수 있어서 좋아요.', author: '최**', date: '2026-03-09' },
+  { venue: '해운대고구려', text: '공간이 60개 넘으니까 웨이팅 없이 바로 입장할 수 있어서 좋아요.', author: '최**', date: '2026-03-09' },
 ];
 
 /* ── Magazine preview ── */
@@ -108,10 +108,10 @@ const magazineItems = [
 
 /* ── Instagram hashtags ── */
 const instaHashtags = [
-  { tag: '#일산룸', desc: '프리미엄 룸 인테리어', url: 'https://www.instagram.com/explore/tags/일산룸/' },
+  { tag: '#일산룸', desc: '프리미엄 프라이빗 공간', url: 'https://www.instagram.com/explore/tags/일산룸/' },
   { tag: '#일산명월관', desc: '전통 코스 요리', url: 'https://www.instagram.com/explore/tags/일산명월관/' },
-  { tag: '#강남클럽', desc: '주말 파티 현장', url: 'https://www.instagram.com/explore/tags/강남클럽/' },
-  { tag: '#강남호빠', desc: '호스트클럽 현장', url: 'https://www.instagram.com/explore/tags/강남호빠/' },
+  { tag: '#강남클럽', desc: '주말 EDM 파티', url: 'https://www.instagram.com/explore/tags/강남클럽/' },
+  { tag: '#강남호빠', desc: '호스트 엔터테인먼트', url: 'https://www.instagram.com/explore/tags/강남호빠/' },
   { tag: '#일산요정', desc: '국악 라이브 연주', url: 'https://www.instagram.com/explore/tags/일산요정/' },
   { tag: '#부산나이트', desc: '부산 사교 댄스 명소', url: 'https://www.instagram.com/explore/tags/부산나이트/' },
 ];
