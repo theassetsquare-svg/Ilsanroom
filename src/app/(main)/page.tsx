@@ -169,7 +169,7 @@ export default function HomePage() {
           {/* 6종 카테고리 아이콘 */}
           <div className="mt-8 grid grid-cols-6 gap-3">
             {categories.map((cat) => (
-              <Link key={cat.key} href={cat.path} className="group flex flex-col items-center gap-1.5 rounded-xl p-3 transition-all hover:bg-white/80">
+              <Link key={cat.key} href={cat.path} target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-1.5 rounded-xl p-3 transition-all hover:bg-white/80">
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-2xl shadow-sm transition-all group-hover:shadow-md group-hover:scale-105">
                   {cat.icon}
                 </span>
@@ -184,7 +184,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
         <div className="grid gap-4 sm:grid-cols-2">
           {ilsanRoom && (
-            <Link href="/rooms/ilsan/ilsanroom" className="group block">
+            <Link href="/rooms/ilsan/ilsanroom" target="_blank" rel="noopener noreferrer" className="group block">
               <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-5 transition-all hover:shadow-lg card-hover">
                 <Badge variant="premium" className="mb-3">PREMIUM</Badge>
                 <h3 className="text-lg font-bold text-neon-text group-hover:text-amber-700 transition-colors">{ilsanRoom.nameKo}</h3>
@@ -195,7 +195,7 @@ export default function HomePage() {
             </Link>
           )}
           {ilsanYojeong && (
-            <Link href="/yojeong/ilsan/ilsanmyeongwolgwanyojeong" className="group block">
+            <Link href="/yojeong/ilsan/ilsanmyeongwolgwanyojeong" target="_blank" rel="noopener noreferrer" className="group block">
               <div className="rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 to-white p-5 transition-all hover:shadow-lg card-hover">
                 <Badge variant="premium" className="mb-3">PREMIUM</Badge>
                 <h3 className="text-lg font-bold text-neon-text group-hover:text-violet-700 transition-colors">{ilsanYojeong.nameKo}</h3>
@@ -225,6 +225,8 @@ export default function HomePage() {
             <Link
               key={r.label}
               href={r.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="rounded-xl border border-neon-border bg-white px-5 py-3 text-sm font-medium text-neon-text-muted transition-all hover:border-neon-primary/40 hover:text-neon-text card-hover"
             >
               {r.label}
@@ -238,7 +240,7 @@ export default function HomePage() {
 
       {/* ═══════ 7. 첫 방문 가이드 배너 ═══════ */}
       <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
-        <Link href="/guide" className="group block">
+        <Link href="/guide" target="_blank" rel="noopener noreferrer" className="group block">
           <div className="rounded-2xl border border-neon-border bg-white p-5 sm:p-6 transition-all hover:shadow-md card-hover">
             <div className="flex items-center gap-4">
               <span className="text-3xl">📖</span>
@@ -258,7 +260,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-neon-text">인기 업소 TOP 10</h2>
-          <Link href="/ranking" className="text-sm text-neon-primary hover:underline">
+          <Link href="/ranking" target="_blank" rel="noopener noreferrer" className="text-sm text-neon-primary hover:underline">
             전체 랭킹 →
           </Link>
         </div>
@@ -275,7 +277,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-neon-text">최신 후기</h2>
-          <Link href="/community/reviews" className="text-sm text-neon-primary hover:underline">
+          <Link href="/community/reviews" target="_blank" rel="noopener noreferrer" className="text-sm text-neon-primary hover:underline">
             전체 후기 →
           </Link>
         </div>
@@ -296,13 +298,13 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-neon-text">매거진</h2>
-          <Link href="/magazine" className="text-sm text-neon-primary hover:underline">
+          <Link href="/magazine" target="_blank" rel="noopener noreferrer" className="text-sm text-neon-primary hover:underline">
             더보기 →
           </Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {magazineItems.map((item, i) => (
-            <Link key={i} href={item.href} className="rounded-2xl border border-neon-border bg-white p-5 card-hover block">
+            <Link key={i} href={item.href} target="_blank" rel="noopener noreferrer" className="rounded-2xl border border-neon-border bg-white p-5 card-hover block">
               <Badge className="mb-3">{item.tag}</Badge>
               <h3 className="text-sm font-semibold text-neon-text leading-snug line-clamp-2">{item.title}</h3>
             </Link>
@@ -339,7 +341,7 @@ export default function HomePage() {
 
       {/* ═══════ 13. 업주 유치 배너 ═══════ */}
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
-        <Link href="/for-business" className="group block">
+        <Link href="/for-business" target="_blank" rel="noopener noreferrer" className="group block">
           <div className="relative overflow-hidden rounded-2xl border border-neon-primary/20 bg-gradient-to-r from-violet-50 via-white to-cyan-50 p-8 sm:p-12 transition-all hover:shadow-lg">
             <div className="relative flex flex-col items-center text-center sm:flex-row sm:justify-between sm:text-left">
               <div>

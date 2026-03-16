@@ -163,6 +163,8 @@ export default function HeroSearch() {
             <Link
               key={v.id || v.slug}
               href={getCategoryHref(v.category, v.slug, v.region)}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => { setShowResults(false); setQuery(''); }}
               className="flex w-full items-center gap-3 border-b border-neon-border/50 px-4 py-3 text-left transition-colors hover:bg-neon-surface-2 last:border-b-0"
             >

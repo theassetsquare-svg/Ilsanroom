@@ -70,7 +70,7 @@ export default function HomeVSBattle() {
                   )}
                 </button>
                 {venue && (
-                  <Link href={getCategoryHref(venue.category, venue.slug, venue.region)} className="text-center text-xs text-neon-primary hover:underline">
+                  <Link href={getCategoryHref(venue.category, venue.slug, venue.region)} target="_blank" rel="noopener noreferrer" className="text-center text-xs text-neon-primary hover:underline">
                     상세 보기 →
                   </Link>
                 )}

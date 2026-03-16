@@ -69,6 +69,8 @@ export default function CommunityPage() {
             <Link
               key={section.href}
               href={section.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group rounded-2xl border border-neon-border bg-neon-surface p-6 transition-all hover:border-neon-primary/50 hover:bg-neon-surface/80"
             >
               <div className="mb-4 text-4xl">{section.icon}</div>

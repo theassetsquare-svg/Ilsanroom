@@ -102,6 +102,7 @@ export default function RankingPage() {
           const score = v.rating || 4;
           return (
             <Link key={v.id} href={getCategoryHref(v.category, v.slug, v.region)}
+              target="_blank" rel="noopener noreferrer"
               className="flex items-center gap-3 sm:gap-4 rounded-xl border border-neon-border bg-neon-surface px-4 py-3 transition hover:border-neon-primary/40 card-hover"
               style={{ minHeight: 60 }}>
               {/* 순위 */}

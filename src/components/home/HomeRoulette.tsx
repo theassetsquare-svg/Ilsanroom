@@ -55,6 +55,7 @@ export default function HomeRoulette() {
           </button>
           {result && !spinning && (
             <a href={getCategoryHref(result.category, result.slug, result.region)}
+              target="_blank" rel="noopener noreferrer"
               className="rounded-xl border border-neon-primary/40 px-6 py-3 text-sm font-semibold text-neon-primary-light transition hover:bg-neon-primary/10">
               상세 보기 →
             </a>
