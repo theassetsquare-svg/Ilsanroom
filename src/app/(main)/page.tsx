@@ -14,10 +14,10 @@ import type { Venue } from '@/types';
 
 export const metadata: Metadata = {
   title: '오늘밤어디 — 전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보',
-  description: '일산룸, 일산명월관요정 등 전국 108개 업소 정보를 한눈에. 실시간 인기 순위, 첫 방문 가이드, VS 대결 투표까지.',
+  description: '일산룸, 일산명월관요정 등 전국 123개 업소 정보를 한눈에. 실시간 인기 순위, 첫 방문 가이드, VS 대결 투표까지.',
   openGraph: {
-    title: '오늘밤어디 — 전국 밤문화 108개 업소 실시간 정보',
-    description: '전국 108개 업소 정보. 실시간 인기 순위, 첫 방문 가이드, VS 대결 투표.',
+    title: '오늘밤어디 — 전국 밤문화 123개 업소 실시간 정보',
+    description: '전국 123개 업소 정보. 실시간 인기 순위, 첫 방문 가이드, VS 대결 투표.',
     type: 'website',
     locale: 'ko_KR',
     siteName: '오늘밤어디',
