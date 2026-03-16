@@ -1030,7 +1030,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-037',
-    slug: '천안스타돔나이트',
+    slug: 'cheonanstardomnight',
     name: '천안스타돔나이트',
     nameKo: '천안스타돔나이트',
     category: 'night' as VenueCategory,
@@ -1058,7 +1058,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-038',
-    slug: '천안코리아나이트',
+    slug: 'cheonankoreanight',
     name: '천안코리아나이트',
     nameKo: '천안코리아나이트',
     category: 'night' as VenueCategory,
@@ -1086,7 +1086,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-039',
-    slug: '대전세븐나이트',
+    slug: 'daejeonsevennight',
     name: '대전세븐나이트',
     nameKo: '대전세븐나이트',
     category: 'night' as VenueCategory,
@@ -1114,7 +1114,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-040',
-    slug: '대전원나이트',
+    slug: 'daejeononenight',
     name: '대전원나이트',
     nameKo: '대전원나이트',
     category: 'night' as VenueCategory,
@@ -1142,7 +1142,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-041',
-    slug: '대전봉명나이트',
+    slug: 'daejeonbongmyeongnight',
     name: '대전봉명나이트',
     nameKo: '대전봉명나이트',
     category: 'night' as VenueCategory,
@@ -1170,7 +1170,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-042',
-    slug: '대전한국관나이트',
+    slug: 'daejeonhangukgwannight',
     name: '대전한국관나이트',
     nameKo: '대전한국관나이트',
     category: 'night' as VenueCategory,
@@ -1198,7 +1198,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-043',
-    slug: '청주돈텔마마나이트',
+    slug: 'cheongjudontellmamanight',
     name: '청주돈텔마마나이트',
     nameKo: '청주돈텔마마나이트',
     category: 'night' as VenueCategory,
@@ -1226,7 +1226,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-044',
-    slug: '청주호박나이트',
+    slug: 'cheongjuhobaknight',
     name: '청주호박나이트',
     nameKo: '청주호박나이트',
     category: 'night' as VenueCategory,
@@ -1254,7 +1254,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-045',
-    slug: '서산호박나이트',
+    slug: 'seosanhobaknight',
     name: '서산호박나이트',
     nameKo: '서산호박나이트',
     category: 'night' as VenueCategory,
@@ -1282,7 +1282,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-046',
-    slug: '대구한국관나이트',
+    slug: 'daeguhangukgwannight',
     name: '대구한국관나이트',
     nameKo: '대구한국관나이트',
     category: 'night' as VenueCategory,
@@ -1310,7 +1310,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-047',
-    slug: '대구호박나이트',
+    slug: 'daeguhobaknight',
     name: '대구호박나이트',
     nameKo: '대구호박나이트',
     category: 'night' as VenueCategory,
@@ -1338,7 +1338,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-048',
-    slug: '대구바밤바나이트',
+    slug: 'daegubabambanight',
     name: '대구바밤바나이트',
     nameKo: '대구바밤바나이트',
     category: 'night' as VenueCategory,
@@ -1366,7 +1366,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-049',
-    slug: '대구토토가나이트',
+    slug: 'daegutotoganight',
     name: '대구토토가나이트',
     nameKo: '대구토토가나이트',
     category: 'night' as VenueCategory,
@@ -1394,7 +1394,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-050',
-    slug: '구미호박나이트',
+    slug: 'gumihobaknight',
     name: '구미호박나이트',
     nameKo: '구미호박나이트',
     category: 'night' as VenueCategory,
@@ -1422,7 +1422,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-051',
-    slug: '부산연산동물나이트',
+    slug: 'busanyeonsandongmulnight',
     name: '부산연산동물나이트',
     nameKo: '부산연산동물나이트',
     category: 'night' as VenueCategory,
@@ -1452,7 +1452,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-052',
-    slug: '부산아시아드나이트',
+    slug: 'busanasiadnight',
     name: '부산아시아드나이트',
     nameKo: '부산아시아드나이트',
     category: 'night' as VenueCategory,
@@ -1480,7 +1480,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-053',
-    slug: '부산물나이트',
+    slug: 'busanmulnight',
     name: '부산물나이트',
     nameKo: '부산물나이트',
     category: 'night' as VenueCategory,
@@ -1508,7 +1508,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-054',
-    slug: '울산뉴월드나이트',
+    slug: 'ulsannewworldnight',
     name: '울산뉴월드나이트',
     nameKo: '울산뉴월드나이트',
     category: 'night' as VenueCategory,
@@ -1536,7 +1536,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-055',
-    slug: '울산챔피언나이트',
+    slug: 'ulsanchampionnight',
     name: '울산챔피언나이트',
     nameKo: '울산챔피언나이트',
     category: 'night' as VenueCategory,
@@ -1566,7 +1566,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-056',
-    slug: '광주상무나이트',
+    slug: 'gwangjusangmunight',
     name: '광주상무나이트',
     nameKo: '광주상무나이트',
     category: 'night' as VenueCategory,
@@ -1594,7 +1594,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-057',
-    slug: '광주토토밤나이트',
+    slug: 'gwangjutotonight',
     name: '광주토토밤나이트',
     nameKo: '광주토토밤나이트',
     category: 'night' as VenueCategory,
@@ -1622,7 +1622,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-058',
-    slug: '광주첨단엠파나이트',
+    slug: 'gwangjucheomdanempanight',
     name: '광주첨단엠파나이트',
     nameKo: '광주첨단엠파나이트',
     category: 'night' as VenueCategory,
@@ -1650,7 +1650,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-059',
-    slug: '광주mgm나이트',
+    slug: 'gwangjumgmnight',
     name: '광주MGM나이트',
     nameKo: '광주MGM나이트',
     category: 'night' as VenueCategory,
@@ -1678,7 +1678,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-060',
-    slug: '광주올나이트',
+    slug: 'gwangjuallnight',
     name: '광주올나이트',
     nameKo: '광주올나이트',
     category: 'night' as VenueCategory,
@@ -1706,7 +1706,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-061',
-    slug: '제주나이트',
+    slug: 'jejunight',
     name: '제주나이트',
     nameKo: '제주나이트',
     category: 'night' as VenueCategory,
@@ -1734,7 +1734,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-062',
-    slug: '강남클럽-레이스',
+    slug: 'gangnamclub-race',
     name: '강남클럽 레이스',
     nameKo: '강남클럽 레이스',
     category: 'club' as VenueCategory,
@@ -1762,7 +1762,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-063',
-    slug: '강남클럽-사운드',
+    slug: 'gangnamclub-sound',
     name: '강남클럽 사운드',
     nameKo: '강남클럽 사운드',
     category: 'club' as VenueCategory,
@@ -1790,7 +1790,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-064',
-    slug: '강남클럽-jack',
+    slug: 'gangnamclub-jack',
     name: '강남클럽 Jack',
     nameKo: '강남클럽 Jack',
     category: 'club' as VenueCategory,
@@ -1818,7 +1818,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-065',
-    slug: '강남클럽-피크',
+    slug: 'gangnamclub-peak',
     name: '강남클럽 피크',
     nameKo: '강남클럽 피크',
     category: 'club' as VenueCategory,
@@ -1846,7 +1846,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-066',
-    slug: '강남클럽-미로',
+    slug: 'gangnamclub-miro',
     name: '강남클럽 미로',
     nameKo: '강남클럽 미로',
     category: 'club' as VenueCategory,
@@ -1874,7 +1874,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-067',
-    slug: '강남클럽-유토피아',
+    slug: 'gangnamclub-utopia',
     name: '강남클럽 유토피아',
     nameKo: '강남클럽 유토피아',
     category: 'club' as VenueCategory,
@@ -1902,7 +1902,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-068',
-    slug: '강남클럽-라퓨타',
+    slug: 'gangnamclub-laputa',
     name: '강남클럽 라퓨타',
     nameKo: '강남클럽 라퓨타',
     category: 'club' as VenueCategory,
@@ -1930,7 +1930,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-069',
-    slug: '강남클럽-페이스',
+    slug: 'gangnamclub-face',
     name: '강남클럽 페이스',
     nameKo: '강남클럽 페이스',
     category: 'club' as VenueCategory,
@@ -1958,7 +1958,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-070',
-    slug: '강남클럽-밤앤밤',
+    slug: 'gangnamclub-bamnbam',
     name: '강남클럽 밤앤밤',
     nameKo: '강남클럽 밤앤밤',
     category: 'club' as VenueCategory,
@@ -1986,7 +1986,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-071',
-    slug: '강남클럽-아르떼',
+    slug: 'gangnamclub-arte',
     name: '강남클럽 아르떼',
     nameKo: '강남클럽 아르떼',
     category: 'club' as VenueCategory,
@@ -2014,7 +2014,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-072',
-    slug: '압구정클럽-하입',
+    slug: 'apgujeongclub-hype',
     name: '압구정클럽 하입',
     nameKo: '압구정클럽 하입',
     category: 'club' as VenueCategory,
@@ -2042,7 +2042,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-073',
-    slug: '압구정클럽-인트로',
+    slug: 'apgujeongclub-intro',
     name: '압구정클럽 인트로',
     nameKo: '압구정클럽 인트로',
     category: 'club' as VenueCategory,
@@ -2070,7 +2070,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-074',
-    slug: '압구정클럽-컬러',
+    slug: 'apgujeongclub-color',
     name: '압구정클럽 컬러',
     nameKo: '압구정클럽 컬러',
     category: 'club' as VenueCategory,
@@ -2098,7 +2098,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-075',
-    slug: '압구정클럽-디브릿지',
+    slug: 'apgujeongclub-dbridge',
     name: '압구정클럽 디브릿지',
     nameKo: '압구정클럽 디브릿지',
     category: 'club' as VenueCategory,
@@ -2126,7 +2126,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-076',
-    slug: '압구정클럽-캔디맨',
+    slug: 'apgujeongclub-candyman',
     name: '압구정클럽 캔디맨',
     nameKo: '압구정클럽 캔디맨',
     category: 'club' as VenueCategory,
@@ -2154,7 +2154,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-077',
-    slug: '압구정클럽-무인',
+    slug: 'apgujeongclub-muin',
     name: '압구정클럽 무인',
     nameKo: '압구정클럽 무인',
     category: 'club' as VenueCategory,
@@ -2182,7 +2182,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-078',
-    slug: '압구정코드라운지',
+    slug: 'apgujeongcodelounge',
     name: '압구정코드라운지',
     nameKo: '압구정코드라운지',
     category: 'lounge' as VenueCategory,
@@ -2210,7 +2210,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-079',
-    slug: '청담클럽-아르쥬',
+    slug: 'cheongdamclub-arju',
     name: '청담클럽 아르쥬',
     nameKo: '청담클럽 아르쥬',
     category: 'club' as VenueCategory,
@@ -2238,7 +2238,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-080',
-    slug: '이태원클럽-유토피아',
+    slug: 'itaewonclub-utopia',
     name: '이태원클럽 유토피아',
     nameKo: '이태원클럽 유토피아',
     category: 'club' as VenueCategory,
@@ -2266,7 +2266,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-081',
-    slug: '이태원클럽-메이드',
+    slug: 'itaewonclub-maid',
     name: '이태원클럽 메이드',
     nameKo: '이태원클럽 메이드',
     category: 'club' as VenueCategory,
@@ -2294,7 +2294,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-082',
-    slug: '이태원클럽-프리즘',
+    slug: 'itaewonclub-prism',
     name: '이태원클럽 프리즘',
     nameKo: '이태원클럽 프리즘',
     category: 'club' as VenueCategory,
@@ -2322,7 +2322,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-083',
-    slug: '이태원개판포차',
+    slug: 'itaewongaepanpocha',
     name: '이태원개판포차',
     nameKo: '이태원개판포차',
     category: 'club' as VenueCategory,
@@ -2350,7 +2350,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-084',
-    slug: '홍대클럽-버뮤다',
+    slug: 'hongdaeclub-bermuda',
     name: '홍대클럽 버뮤다',
     nameKo: '홍대클럽 버뮤다',
     category: 'club' as VenueCategory,
@@ -2378,7 +2378,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-085',
-    slug: '홍대클럽-퍼시픽',
+    slug: 'hongdaeclub-pacific',
     name: '홍대클럽 퍼시픽',
     nameKo: '홍대클럽 퍼시픽',
     category: 'club' as VenueCategory,
@@ -2406,7 +2406,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-086',
-    slug: '홍대클럽-메이드',
+    slug: 'hongdaeclub-maid',
     name: '홍대클럽 메이드',
     nameKo: '홍대클럽 메이드',
     category: 'club' as VenueCategory,
@@ -2434,7 +2434,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-087',
-    slug: '홍대클럽-도깨비',
+    slug: 'hongdaeclub-dokkaebi',
     name: '홍대클럽 도깨비',
     nameKo: '홍대클럽 도깨비',
     category: 'club' as VenueCategory,
@@ -2462,7 +2462,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-088',
-    slug: '노원청춘포차',
+    slug: 'nowoncheongchunpocha',
     name: '노원청춘포차',
     nameKo: '노원청춘포차',
     category: 'club' as VenueCategory,
@@ -2490,7 +2490,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-089',
-    slug: '용산드래곤시티',
+    slug: 'yongsandragoncity',
     name: '용산드래곤시티',
     nameKo: '용산드래곤시티',
     category: 'club' as VenueCategory,
@@ -2518,7 +2518,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-090',
-    slug: '서울반얀트리',
+    slug: 'seoulbanyantree',
     name: '서울반얀트리',
     nameKo: '서울반얀트리',
     category: 'club' as VenueCategory,
@@ -2546,7 +2546,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-091',
-    slug: '일산클럽-cj',
+    slug: 'ilsanclub-cj',
     name: '일산클럽 CJ',
     nameKo: '일산클럽 CJ',
     category: 'club' as VenueCategory,
@@ -2574,7 +2574,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-092',
-    slug: '의정부아레나',
+    slug: 'uijeongbuarena',
     name: '의정부아레나',
     nameKo: '의정부아레나',
     category: 'club' as VenueCategory,
@@ -2602,7 +2602,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-093',
-    slug: '용인사거리별밤',
+    slug: 'yonginbyeolbam',
     name: '용인사거리별밤',
     nameKo: '용인사거리별밤',
     category: 'club' as VenueCategory,
@@ -2630,7 +2630,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-094',
-    slug: '부천클럽-파라곤',
+    slug: 'bucheonclub-paragon',
     name: '부천클럽 파라곤',
     nameKo: '부천클럽 파라곤',
     category: 'club' as VenueCategory,
@@ -2658,7 +2658,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-095',
-    slug: '인천파라다이스씨티',
+    slug: 'incheonparadisecity',
     name: '인천파라다이스씨티',
     nameKo: '인천파라다이스씨티',
     category: 'club' as VenueCategory,
@@ -2686,7 +2686,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-096',
-    slug: '청주클럽-슈퍼문',
+    slug: 'cheongju-supermoon',
     name: '청주클럽 슈퍼문',
     nameKo: '청주클럽 슈퍼문',
     category: 'club' as VenueCategory,
@@ -2714,7 +2714,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-097',
-    slug: '대전설탕클럽',
+    slug: 'daejeonsugarclub',
     name: '대전설탕클럽',
     nameKo: '대전설탕클럽',
     category: 'club' as VenueCategory,
@@ -2742,7 +2742,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-098',
-    slug: '압구정라운지-디엠',
+    slug: 'apgujeonglounge-dm',
     name: '압구정라운지 디엠',
     nameKo: '압구정라운지 디엠',
     category: 'lounge' as VenueCategory,
@@ -2770,7 +2770,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-099',
-    slug: '압구정이디엇라운지',
+    slug: 'apgujeongidiotlounge',
     name: '압구정이디엇라운지',
     nameKo: '압구정이디엇라운지',
     category: 'lounge' as VenueCategory,
@@ -2798,7 +2798,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-100',
-    slug: '강남호빠-로얄',
+    slug: 'gangnamhoppa-royal',
     name: '강남호빠 로얄',
     nameKo: '강남호빠 로얄',
     category: 'hoppa' as VenueCategory,
@@ -2826,7 +2826,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-101',
-    slug: '부산호빠-스타',
+    slug: 'busanhoppa-star',
     name: '부산호빠 스타',
     nameKo: '부산호빠 스타',
     category: 'hoppa' as VenueCategory,
@@ -2854,7 +2854,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-102',
-    slug: '장안동호빠-빵빵',
+    slug: 'jangandonghoppa-bbangbbang',
     name: '장안동호빠 빵빵',
     nameKo: '장안동호빠 빵빵',
     category: 'hoppa' as VenueCategory,
@@ -2882,7 +2882,7 @@ export const venues: Venue[] = [
   },
   {
     id: 'v-103',
-    slug: '건대호빠-w',
+    slug: 'geondaehoppa-w',
     name: '건대호빠 W',
     nameKo: '건대호빠 W',
     category: 'hoppa' as VenueCategory,
