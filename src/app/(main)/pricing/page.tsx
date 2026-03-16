@@ -29,7 +29,7 @@ const plans = [
       { text: "전담 매니저", included: false },
     ],
     cta: "무료로 시작",
-    ctaLink: "/admin/onboarding",
+    ctaLink: "/onboarding",
     highlighted: false,
     badge: null,
   },
@@ -52,7 +52,7 @@ const plans = [
       { text: "전담 매니저", included: false },
     ],
     cta: "베이직 시작",
-    ctaLink: "/admin/onboarding?plan=basic",
+    ctaLink: "/onboarding?plan=basic",
     highlighted: false,
     badge: null,
   },
@@ -75,7 +75,7 @@ const plans = [
       { text: "전담 매니저", included: false },
     ],
     cta: "14일 무료 체험",
-    ctaLink: "/admin/onboarding?plan=pro&trial=true",
+    ctaLink: "/onboarding?plan=pro&trial=true",
     highlighted: true,
     badge: "가장 인기",
   },
@@ -217,7 +217,7 @@ export default function PricingPage() {
             카드 등록 없이 바로 시작하세요. 프로 플랜의 모든 기능을 14일간 무료로 이용할 수 있습니다.
           </p>
           <Link
-            href="/admin/onboarding?plan=pro&trial=true"
+            href="/onboarding?plan=pro&trial=true"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block rounded-xl bg-neon-primary px-8 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-neon-primary-light"

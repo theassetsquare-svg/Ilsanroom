@@ -22,7 +22,7 @@ export default function PricingCTA({ planId, label, highlighted }: { planId: str
   return (
     <>
       <button
-        onClick={() => isPaid ? setShowPayment(true) : (window.location.href = '/admin/onboarding')}
+        onClick={() => isPaid ? setShowPayment(true) : (window.location.href = '/onboarding')}
         className={`block w-full rounded-xl px-6 py-3 text-center text-sm font-semibold transition-colors ${
           highlighted
             ? 'bg-neon-primary text-neon-text hover:bg-neon-primary-light'

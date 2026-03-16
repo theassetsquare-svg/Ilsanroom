@@ -200,7 +200,7 @@ export default function ForBusinessPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
-              href="/admin/onboarding?plan=pro&trial=true"
+              href="/onboarding?plan=pro&trial=true"
               className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-10 py-4 text-sm font-semibold text-neon-text shadow-lg shadow-violet-600/25 transition-all hover:bg-neon-primary-light hover:shadow-violet-500/30"
             >
               14일 무료 체험 착수하기
@@ -438,7 +438,7 @@ export default function ForBusinessPage() {
             착수하고, 언제든 해지할 수 갖춰져있습니다.
           </p>
           <Link
-            href="/admin/onboarding?plan=pro&trial=true"
+            href="/onboarding?plan=pro&trial=true"
             className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-12 py-4 text-base font-semibold text-neon-text shadow-lg shadow-violet-600/25 transition-all hover:bg-neon-primary-light hover:shadow-violet-500/30"
           >
             14일 프로 무료 체험 착수하기

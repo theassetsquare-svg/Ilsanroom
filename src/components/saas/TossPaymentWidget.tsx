@@ -62,7 +62,7 @@ export default function TossPaymentWidget({ planId, onClose }: TossPaymentWidget
         orderId,
         orderName: `오늘밤어디 ${planName} 플랜`,
         customerName: '업주',
-        successUrl: `${window.location.origin}/admin/onboarding?payment=success&orderId=${orderId}`,
+        successUrl: `${window.location.origin}/onboarding?payment=success&orderId=${orderId}`,
         failUrl: `${window.location.origin}/pricing?payment=fail`,
       });
     } catch (err: any) {
@@ -106,7 +106,7 @@ export default function TossPaymentWidget({ planId, onClose }: TossPaymentWidget
         ) : amount === 0 ? (
           <div className="py-4 text-center">
             <p className="text-sm text-neon-text-muted mb-4">무료 플랜은 결제 없이 바로 시작할 수 있습니다.</p>
-            <a href="/admin/onboarding" className="inline-block rounded-xl bg-neon-primary px-6 py-3 text-sm font-semibold text-neon-text transition hover:bg-neon-primary-light" style={{ minHeight: 48 }}>
+            <a href="/onboarding" className="inline-block rounded-xl bg-neon-primary px-6 py-3 text-sm font-semibold text-neon-text transition hover:bg-neon-primary-light" style={{ minHeight: 48 }}>
               무료로 시작하기
             </a>
           </div>
