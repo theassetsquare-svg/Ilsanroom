@@ -6,7 +6,7 @@ interface SkeletonProps {
 export default function Skeleton({ className = '', variant = 'shimmer' }: SkeletonProps) {
   return (
     <div
-      className={`rounded-lg ${variant === 'neon' ? 'neon-skeleton bg-neon-surface-2' : 'shimmer'} ${className}`}
+      className={`rounded-lg ${variant === 'neon' ? 'bg-neon-surface-2 animate-pulse' : 'shimmer'} ${className}`}
       aria-hidden="true"
     />
   );
@@ -14,7 +14,7 @@ export default function Skeleton({ className = '', variant = 'shimmer' }: Skelet
 
 export function SkeletonCard() {
   return (
-    <div className="glass rounded-2xl p-5">
+    <div className="rounded-2xl border border-neon-border bg-white p-5">
       <Skeleton className="mb-4 h-40 w-full rounded-xl" variant="neon" />
       <Skeleton className="mb-2 h-5 w-3/4" />
       <Skeleton className="mb-3 h-4 w-1/2" />

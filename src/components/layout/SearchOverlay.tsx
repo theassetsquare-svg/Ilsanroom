@@ -83,7 +83,7 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
   if (!open) return null;
 
   return (
-    <div className="animate-fade-in fixed inset-0 z-50 flex items-start justify-center bg-black/80 backdrop-blur-md pt-24" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+    <div className="animate-fade-in fixed inset-0 z-50 flex items-start justify-center bg-black/40 backdrop-blur-sm pt-24" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       <div className="w-full max-w-2xl px-4">
         <div className="mb-4 flex justify-end">
           <button onClick={onClose} className="rounded-lg p-2 text-neon-text-muted transition-colors hover:text-neon-text" aria-label="검색 닫기">
