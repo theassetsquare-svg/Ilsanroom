@@ -87,7 +87,7 @@ const businessEssentials = [
 const domainStrategy = [
   { domain: "nightlife.kr", desc: ".kr 도메인 - 한국 검색엔진 최적화에 유리" },
   { domain: "ilsanroom.pages.dev", desc: ".com 도메인 - 글로벌 확장성" },
-  { domain: "neon.club", desc: ".club 도메인 - 나이트라이프 브랜드 적합" },
+  { domain: "neon.club", desc: ".club 도메인 - 밤문화 브랜드 적합" },
 ];
 
 export default function LaunchChecklistPage() {

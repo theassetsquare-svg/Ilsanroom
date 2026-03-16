@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { region } = await params;
   const regionKo = regionNames[region] || region;
   return {
-    title: `${regionKo} 요정 | 오늘밤어디 - ${regionKo} 전통 한정식 공간`,
+    title: { absolute: `${regionKo} 요정 | 오늘밤어디 - ${regionKo} 전통 한정식 공간` },
     description: `${regionKo} 지역 전통 한정식 문화 공간 리스트. 코스 요리, 국악 공연, 프라이빗 다이닝을 비교하고 나에게 맞는 곳을 찾아보세요.`,
   };
 }

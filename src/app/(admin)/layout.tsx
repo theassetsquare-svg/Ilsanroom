@@ -71,7 +71,7 @@ export default function AdminLayout({
 
         {/* Footer */}
         <div className="border-t border-neon-border px-4 py-3">
-          <p className="text-xs text-neon-text-muted">&copy; 2026 오늘밤어디 Platform</p>
+          <p className="text-xs text-neon-text-muted">&copy; {new Date().getFullYear()} 오늘밤어디 Platform</p>
         </div>
       </aside>
 

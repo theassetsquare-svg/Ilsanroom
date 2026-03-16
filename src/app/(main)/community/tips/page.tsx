@@ -42,7 +42,7 @@ const sampleTips = [
   },
   {
     id: 4,
-    title: "지역별 나이트라이프 특징 총정리",
+    title: "지역별 밤문화 특징 총정리",
     author: "전국투어",
     date: "2026-03-07",
     category: "정보",

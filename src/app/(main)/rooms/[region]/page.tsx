@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { region } = await params;
   const regionKo = regionNames[region] || region;
   return {
-    title: `${regionKo} 룸 | 오늘밤어디 - ${regionKo} 프라이빗 공간 정보`,
+    title: { absolute: `${regionKo} 룸 | 오늘밤어디 - ${regionKo} 프라이빗 공간 정보` },
     description: `${regionKo} 지역 프리미엄 프라이빗 공간 리스트. 시설, 분위기, 서비스를 비교하고 나에게 맞는 곳을 찾아보세요.`,
   };
 }

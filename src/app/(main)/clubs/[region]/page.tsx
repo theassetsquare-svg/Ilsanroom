@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { region } = await params;
   const regionKo = regionNames[region] || region;
   return {
-    title: `${regionKo} 클럽 | 오늘밤어디`,
+    title: { absolute: `${regionKo} 클럽 | 오늘밤어디` },
     description: `${regionKo} 지역 인기 클럽 리스트. ${regionKo}의 다양한 클럽 정보와 리뷰를 확인하세요.`,
   };
 }

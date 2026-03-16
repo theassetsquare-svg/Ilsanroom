@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const samplePosts = [
   { id: 1, title: "오늘 강남 클럽 분위기 어떤가요?", author: "파티러버", date: "2026-03-13", views: 342, likes: 28, comments: 15 },
   { id: 2, title: "주말마다 클럽 가는 사람 저만 그런가요 ㅋㅋ", author: "위켄드홀릭", date: "2026-03-13", views: 567, likes: 89, comments: 34 },
-  { id: 3, title: "나이트라이프 입문 3개월차 소감", author: "뉴비탈출", date: "2026-03-12", views: 891, likes: 156, comments: 42 },
+  { id: 3, title: "밤문화 입문 3개월차 소감", author: "뉴비탈출", date: "2026-03-12", views: 891, likes: 156, comments: 42 },
   { id: 4, title: "해운대 여름 시즌 시작되면 어디가 제일 좋나요", author: "부산사람", date: "2026-03-12", views: 234, likes: 45, comments: 23 },
   { id: 5, title: "혼자 클럽 가본 사람 있나요? 후기 공유", author: "솔로댄서", date: "2026-03-11", views: 1203, likes: 234, comments: 78 },
   { id: 6, title: "요즘 홍대 트렌드가 바뀐 것 같아요", author: "홍대매니아", date: "2026-03-11", views: 456, likes: 67, comments: 29 },

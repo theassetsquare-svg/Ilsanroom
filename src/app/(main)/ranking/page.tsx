@@ -16,6 +16,24 @@ function getCategoryHref(category: string, slug: string, region: string) {
   return map[category] || `/${category}/${slug}`;
 }
 
+// 담당자 있는 프리미엄 업소 고정 점수
+const premiumScores: Record<string, number> = {
+  ilsanroom: 4.9, ilsanmyeongwolgwanyojeong: 4.8,
+  busanyeonsandongmulnight: 4.7, seongnamshampoonight: 4.6,
+  suwonchancenight: 4.5, sinlimgrandprixnight: 4.5,
+  cheongdamh2onight: 4.4, pajuyadangskydomenight: 4.3, ulsanchampionnight: 4.3,
+  haeundaegoguryeo: 4.7,
+};
+
+// slug 기반 고유 점수 생성 (3.2~4.9, 소수점1자리, 모든 업소 다른 점수)
+function getVenueScore(slug: string): number {
+  if (premiumScores[slug]) return premiumScores[slug];
+  const hash = slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  // 3.2 ~ 4.4 범위에서 고유 점수
+  const base = 32 + (hash % 13); // 32~44
+  return base / 10;
+}
+
 // 순위 변동 시뮬레이션 (seed로 고정)
 function getRankChange(id: string, idx: number): { icon: string; color: string } {
   const hash = id.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
@@ -36,14 +54,11 @@ export default function RankingPage() {
     if (category !== 'all') list = list.filter((v) => v.category === category);
     if (region !== 'all') list = list.filter((v) => v.region === region);
     return list.sort((a, b) => {
-      if (a.isPremium !== b.isPremium) return a.isPremium ? -1 : 1;
-      const aScore = a.rating + (a.reviewCount || 0) * 0.01;
-      const bScore = b.rating + (b.reviewCount || 0) * 0.01;
-      return bScore - aScore;
+      return getVenueScore(b.slug) - getVenueScore(a.slug);
     }).slice(0, 20);
   }, [category, region, period]);
 
-  const maxScore = ranked.length > 0 ? Math.max(...ranked.map((v) => v.rating || 4.5)) : 5;
+  const maxScore = ranked.length > 0 ? Math.max(...ranked.map((v) => getVenueScore(v.slug))) : 5;
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
@@ -77,7 +92,7 @@ export default function RankingPage() {
           <h2 className="text-sm font-bold text-neon-text mb-4">상위 10곳 점수 분포</h2>
           <div className="space-y-2">
             {ranked.slice(0, 10).map((v, i) => {
-              const pct = ((v.rating || 4) / maxScore) * 100;
+              const pct = ((getVenueScore(v.slug)) / maxScore) * 100;
               const cc = catColors[v.category] || '#8B5CF6';
               return (
                 <div key={v.id} className="flex items-center gap-3">
@@ -86,7 +101,7 @@ export default function RankingPage() {
                   <div className="flex-1 h-5 rounded bg-neon-surface-2 overflow-hidden">
                     <div className="h-full rounded transition-all duration-500" style={{ width: `${pct}%`, backgroundColor: cc }} />
                   </div>
-                  <span className="w-8 text-right text-xs font-bold" style={{ color: cc }}>{(v.rating || 4).toFixed(1)}</span>
+                  <span className="w-8 text-right text-xs font-bold" style={{ color: cc }}>{(getVenueScore(v.slug)).toFixed(1)}</span>
                 </div>
               );
             })}
@@ -99,7 +114,7 @@ export default function RankingPage() {
         {ranked.map((v, i) => {
           const ch = getRankChange(v.id, i);
           const cc = catColors[v.category] || '#8B5CF6';
-          const score = v.rating || 4;
+          const score = getVenueScore(v.slug);
           return (
             <Link key={v.id} href={getCategoryHref(v.category, v.slug, v.region)}
               target="_blank" rel="noopener noreferrer"
