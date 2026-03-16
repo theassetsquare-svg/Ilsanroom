@@ -4,7 +4,7 @@ compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
 
 [build]
-command = "npm run build && npx @cloudflare/next-on-pages"
+command = "npx @cloudflare/next-on-pages"
 
 [build.environment]
 NODE_VERSION = "20"
