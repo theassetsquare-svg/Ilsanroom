@@ -30,7 +30,7 @@ function getResponse(input: string): string {
       const matches = openVenues.filter((v) => regions.includes(v.region));
       if (matches.length > 0) {
         const top3 = matches.sort((a, b) => b.rating - a.rating).slice(0, 3);
-        return `${keyword} 지역 추천 업소입니다:\n${top3.map((v) => `• ${v.nameKo} (${v.category === 'club' ? '클럽' : v.category === 'night' ? '나이트' : v.category === 'lounge' ? '라운지' : v.category === 'room' ? '룸' : v.category === 'yojeong' ? '요정' : '호빠'}) ★${v.rating}`).join('\n')}`;
+        return `${keyword} 지역 추천 업소입니다:\n${top3.map((v) => `• ${v.nameKo} (${v.category === 'club' ? '클럽' : v.category === 'night' ? '나이트' : v.category === 'lounge' ? '라운지' : v.category === 'room' ? '룸' : v.category === 'yojeong' ? '요정' : '호빠'}) ${v.staffNickname ? v.staffNickname : ''}`).join('\n')}`;
       }
     }
   }
@@ -38,11 +38,11 @@ function getResponse(input: string): string {
   // Category match
   if (lower.includes('클럽')) {
     const clubs = openVenues.filter((v) => v.category === 'club').sort((a, b) => b.rating - a.rating).slice(0, 3);
-    return `인기 클럽 추천:\n${clubs.map((v) => `• ${v.nameKo} (${v.regionKo}) ★${v.rating}`).join('\n')}`;
+    return `인기 클럽 추천:\n${clubs.map((v) => `• ${v.nameKo} (${v.regionKo}) ${v.staffNickname ? v.staffNickname : ''}`).join('\n')}`;
   }
   if (lower.includes('나이트')) {
     const nights = openVenues.filter((v) => v.category === 'night').sort((a, b) => b.rating - a.rating).slice(0, 3);
-    return `인기 나이트 추천:\n${nights.map((v) => `• ${v.nameKo} (${v.regionKo}) ★${v.rating}`).join('\n')}`;
+    return `인기 나이트 추천:\n${nights.map((v) => `• ${v.nameKo} (${v.regionKo}) ${v.staffNickname ? v.staffNickname : ''}`).join('\n')}`;
   }
   if (lower.includes('접대') || lower.includes('요정') || lower.includes('한정식')) {
     return '접대 장소로는 일산명월관요정(신실장 010-3695-4929)을 추천합니다. 한정식 코스와 국악 라이브를 즐길 수 있는 격조 높은 요정입니다.';
