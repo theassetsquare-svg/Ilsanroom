@@ -53,7 +53,7 @@ export default function LoungesPage() {
         { day: '일요일', time: '18:00~23:00', level: 40 },
       ]} />
 
-      <CategoryVSBattle venueA="강남라운지아르쥬" venueB="강남라운지하입" topic="압구정 라운지 대결" />
+      <CategoryVSBattle venueA="압구정라운지 디엠" venueB="압구정이디엇라운지" topic="압구정 프리미엄 라운지 대결" />
 
       <RelatedMagazine articles={[
         { title: '논현·청담 프리미엄 바 — 분위기로 고르는 가이드', tag: '추천' },

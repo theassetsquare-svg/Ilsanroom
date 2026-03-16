@@ -53,7 +53,7 @@ export default function ClubsPage() {
         { day: '수요일', time: '22:00~01:00', level: 30 },
       ]} />
 
-      <CategoryVSBattle venueA="강남클럽레이스" venueB="클럽NB2" topic="이번 주 EDM 대결 — 논현 vs 홍대" />
+      <CategoryVSBattle venueA="강남클럽 레이스" venueB="압구정클럽 하입" topic="강남 vs 압구정 — EDM 파티 대결" />
 
       <RelatedMagazine articles={[
         { title: '논현 EDM TOP5 — 올해 꼭 가봐야 할 곳', tag: '추천' },
