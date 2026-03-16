@@ -58,9 +58,11 @@ export default function Header() {
               </svg>
             </button>
 
-            {/* Login */}
+            {/* Login — 새탭 */}
             <Link
               href="/login"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hidden rounded-lg px-3 py-2 text-sm font-medium text-neon-text-muted transition-colors hover:bg-neon-surface-2 hover:text-neon-text sm:block"
             >
               로그인
