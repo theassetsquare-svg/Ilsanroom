@@ -182,6 +182,7 @@ export default function HomePage() {
 
       {/* ═══════ 2. PREMIUM — 일산룸 + 명월관 ═══════ */}
       <section className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+        <h2 className="sr-only">프리미엄 업소</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {ilsanRoom && (
             <Link href="/rooms/ilsan/ilsanroom" target="_blank" rel="noopener noreferrer" className="group block h-full">

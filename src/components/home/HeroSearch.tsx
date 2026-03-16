@@ -189,7 +189,7 @@ export default function HeroSearch() {
       {showResults && query.trim() && results.length === 0 && !loading && (
         <div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-2xl border border-neon-border bg-neon-surface/95 p-6 text-center shadow-2xl backdrop-blur-lg animate-fade-in">
           <p className="text-sm text-neon-text-muted">검색 결과가 없습니다</p>
-          <p className="mt-1 text-xs text-neon-text-muted/60">다른 키워드로 검색해 보세요</p>
+          <p className="mt-1 text-xs text-neon-text-muted">다른 키워드로 검색해 보세요</p>
         </div>
       )}
     </div>
