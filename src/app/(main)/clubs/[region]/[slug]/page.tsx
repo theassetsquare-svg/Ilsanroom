@@ -19,7 +19,7 @@ const regionNames: Record<string, string> = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const venue = getVenueBySlug(slug);
-  if (!venue) return { title: '클럽을 찾을 수 없습니다 | 오늘밤어디' };
+  if (!venue) return { title: { absolute: '클럽을 찾을 수 없습니다 | 오늘밤어디' } };
   return {
     title: getHookingTitle(venue),
     description: getHookingDescription(venue),

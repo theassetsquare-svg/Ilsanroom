@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "후기 게시판 - 오늘밤어디 커뮤니티",
+  title: { absolute: "후기 게시판 - 오늘밤어디 커뮤니티" },
   description: "실제 방문자들의 솔직한 업소 후기. 클럽, 나이트, 라운지 리뷰를 확인하세요.",
 };
 
@@ -79,7 +79,7 @@ export default function ReviewsPage() {
       <div className="mx-auto max-w-4xl px-4 py-16">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <Link href="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
+            <Link href="/community" target="_blank" rel="noopener noreferrer" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
               ← 커뮤니티
             </Link>
             <h1 className="text-3xl font-bold">후기 게시판</h1>

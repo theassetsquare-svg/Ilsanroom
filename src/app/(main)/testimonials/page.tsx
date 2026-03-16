@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "업주 후기 - 오늘밤어디",
+  title: { absolute: "업주 후기 - 오늘밤어디" },
   description:
     "오늘밤어디를 사용하는 업주들의 실제 후기와 추천사. 매출 증가, 노출 확대, 리뷰 관리까지.",
 };

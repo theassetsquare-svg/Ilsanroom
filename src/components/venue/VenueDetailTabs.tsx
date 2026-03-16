@@ -172,7 +172,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="aspect-square rounded-xl border border-neon-border bg-neon-surface-2 flex items-center justify-center">
-                  <span className="text-neon-text-muted/30 text-sm">사진 준비중</span>
+                  <span className="text-neon-text-muted text-sm">사진 준비중</span>
                 </div>
               ))}
             </div>

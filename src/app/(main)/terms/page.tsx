@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "이용약관 - 본사",
+  title: { absolute: "이용약관 | 오늘밤어디" },
   description: "본사 시스템 이용약관. 시스템 이용 조건, 회원 책무, 책임 제한 등을 안내시행합니다.",
 };
 

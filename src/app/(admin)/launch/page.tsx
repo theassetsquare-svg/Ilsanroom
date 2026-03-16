@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "런칭 체크리스트 - 오늘밤어디 관리자",
+  title: { absolute: "런칭 체크리스트 - 오늘밤어디 관리자" },
   description: "오늘밤어디 SaaS 런칭 전 확인 사항",
 };
 

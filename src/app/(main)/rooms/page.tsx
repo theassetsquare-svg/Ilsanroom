@@ -5,7 +5,7 @@ import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from
 import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
-  title: '룸 | 오늘밤어디 - 일산룸·해운대고구려·전국 프라이빗 공간',
+  title: { absolute: '룸 | 오늘밤어디 - 일산룸·해운대고구려·전국 프라이빗 공간' },
   description: '방음 완비된 독립 공간에서 모임·회식·비즈니스까지. 일산룸부터 해운대고구려 60개+ 정찰제 공간까지 전국 비교.',
   openGraph: { images: [{ url: 'https://placehold.co/1200x630/F59E0B/ffffff/png?text=룸 | 오늘밤어디', width: 1200, height: 630 }] },
 };

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "개인개인자료처리방침 - 오늘밤어디",
+  title: { absolute: "개인정보처리방침 - 오늘밤어디" },
   description:
     "오늘밤어디 개인개인자료처리방침. 수집항목, 이용활용처, 보유기간, 제3자 제공 등 회원 데이터 처리에 관한 조건을 안내합니다.",
 };

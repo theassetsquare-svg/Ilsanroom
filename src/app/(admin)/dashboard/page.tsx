@@ -312,7 +312,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Subscription Status */}
-        <div className="rounded-2xl border border-violet-500/30 bg-gradient-to-br from-violet-600/5 to-neutral-900 p-6">
+        <div className="rounded-2xl border border-violet-500/30 bg-gradient-to-br from-violet-600/5 to-violet-50 p-6">
           <h2 className="mb-4 text-xl font-bold">구독 현황</h2>
           <div className="grid gap-6 sm:grid-cols-3">
             <div>

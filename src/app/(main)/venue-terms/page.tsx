@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "점포 기재 규정 - 오늘밤어디",
+  title: { absolute: "점포 기재 규정 - 오늘밤어디" },
   description:
     "오늘밤어디 점포 기재 규정. 가게 기재 조건, 게시물 가이드라인, 금지 사항, 결제 조건을 안내합니다.",
 };

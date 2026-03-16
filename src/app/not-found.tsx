@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { getPopularVenues } from '@/data/venues';
 
 export const metadata: Metadata = {
-  title: '404 - 페이지를 찾을 수 없습니다 | 오늘밤어디',
+  title: { absolute: '404 - 페이지를 찾을 수 없습니다 | 오늘밤어디' },
   description: '요청하신 페이지를 찾을 수 없습니다. 인기 업소를 확인해 보세요.',
 };
 
@@ -75,7 +75,7 @@ export default function NotFound() {
         </div>
       </div>
 
-      <div className="mt-16 text-neon-text-muted/30">
+      <div className="mt-16 text-neon-text-muted/60">
         <p className="text-xs">오늘밤어디</p>
       </div>
     </div>

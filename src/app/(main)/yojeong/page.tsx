@@ -5,7 +5,7 @@ import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from
 import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
-  title: '요정 | 오늘밤어디 - 일산명월관·전국 전통 한정식 문화 공간',
+  title: { absolute: '요정 | 오늘밤어디 - 일산명월관·전국 전통 한정식 문화 공간' },
   description: '15가지 한정식 코스에 국악 라이브까지. 일산명월관의 격조 높은 비즈니스 접대·기념일 맞춤 다이닝.',
   openGraph: { images: [{ url: 'https://placehold.co/1200x630/10B981/ffffff/png?text=요정 | 오늘밤어디', width: 1200, height: 630 }] },
 };

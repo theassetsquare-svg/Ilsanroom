@@ -23,7 +23,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
         </li>
         {items.map((item, i) => (
           <li key={i} className="flex items-center gap-1">
-            <span className="text-neon-text-muted/40">/</span>
+            <span className="text-neon-text-muted/60">/</span>
             {item.href ? (
               <Link
                 href={item.href}

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import JsonLd from '@/components/seo/JsonLd';
 
 export const metadata: Metadata = {
-  title: '이벤트 & 파티 캘린더 | 오늘밤어디',
+  title: { absolute: '이벤트 & 파티 캘린더 | 오늘밤어디' },
   description: '전국 업소별 최신 행사·파티 일정을 한눈에. 지역별·업종별 이벤트를 캘린더에서 확인하세요.',
 };
 

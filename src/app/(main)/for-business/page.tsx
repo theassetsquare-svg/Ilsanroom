@@ -17,7 +17,7 @@ import {
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "업주 전용 - 오늘밤어디 | 내 업소를 입력하고 매출을 올리세요",
+  title: { absolute: "업주 전용 - 오늘밤어디 | 내 업소를 입력하고 매출을 올리세요" },
   description:
     "오늘밤어디에 업소를 입력하면 검색 노출 증가, 후기 관리, 실시간 분석지표, 접수 시스템까지. 14일 0원 체험으로 매출 성장을 경험하세요.",
 };
@@ -182,7 +182,7 @@ export default function ForBusinessPage() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 via-purple-600/10 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
         <div className="relative mx-auto max-w-5xl px-4 py-28 text-center md:py-36">
           <span className="mb-4 inline-block rounded-full bg-neon-primary/20 px-4 py-1.5 text-xs font-medium text-neon-primary-light">
             업주 전용

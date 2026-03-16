@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Q&A - 오늘밤어디 커뮤니티",
+  title: { absolute: "Q&A - 오늘밤어디 커뮤니티" },
   description: "밤문화에 대한 궁금증을 질문하고 답변을 받아보세요.",
 };
 
@@ -85,7 +85,7 @@ export default function QnAPage() {
       <div className="mx-auto max-w-4xl px-4 py-16">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <Link href="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
+            <Link href="/community" target="_blank" rel="noopener noreferrer" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
               ← 커뮤니티
             </Link>
             <h1 className="text-3xl font-bold">Q&A</h1>

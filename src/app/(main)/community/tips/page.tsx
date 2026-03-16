@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "팁 & 노하우 - 오늘밤어디 커뮤니티",
+  title: { absolute: "팁 & 노하우 - 오늘밤어디 커뮤니티" },
   description: "밤놀이 고수들의 꿀팁과 노하우. 클럽, 나이트, 라운지 이용 팁을 공유합니다.",
 };
 
@@ -69,7 +69,7 @@ export default function TipsPage() {
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">
         <div className="mb-8">
-          <Link href="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
+          <Link href="/community" target="_blank" rel="noopener noreferrer" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
             ← 커뮤니티
           </Link>
           <h1 className="text-3xl font-bold">팁 & 노하우</h1>

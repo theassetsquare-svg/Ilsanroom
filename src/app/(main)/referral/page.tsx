@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "추천 프로그램 - 오늘밤어디",
+  title: { absolute: "추천 프로그램 - 오늘밤어디" },
   description:
     "오늘밤어디 알림 프로그램으로 친구를 안내하고 보상을 받으세요. 알릴수록 더 많은 혜택이 쌓입니다.",
 };
@@ -158,7 +158,7 @@ export default function ReferralPage() {
         </div>
 
         {/* Referral bonus highlight */}
-        <div className="mb-16 rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-500/10 to-violet-900/10 p-8 text-center md:p-12">
+        <div className="mb-16 rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-500/10 to-violet-50 p-8 text-center md:p-12">
           <h2 className="mb-3 text-2xl font-bold">피추천인 혜택</h2>
           <p className="mb-6 text-neon-text-muted">
             초대 경로를 통해 가입한 친구도 혜택을 받습니다
@@ -184,7 +184,7 @@ export default function ReferralPage() {
                 key={i}
                 className="rounded-2xl border border-neon-border bg-neon-surface p-6"
               >
-                <h3 className="mb-2 font-bold text-neutral-200">
+                <h3 className="mb-2 font-bold text-neon-text">
                   Q. {faq.q}
                 </h3>
                 <p className="text-sm leading-relaxed text-neon-text-muted">
@@ -196,7 +196,7 @@ export default function ReferralPage() {
         </div>
 
         {/* CTA */}
-        <div className="rounded-2xl border border-violet-500/30 bg-gradient-to-r from-violet-600/20 to-violet-900/20 p-8 text-center md:p-12">
+        <div className="rounded-2xl border border-violet-500/30 bg-gradient-to-r from-violet-600/20 to-violet-100 p-8 text-center md:p-12">
           <h2 className="mb-3 text-2xl font-bold">
             지금 바로 시작하세요
           </h2>

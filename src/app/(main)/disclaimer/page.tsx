@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "면책조항 - 오늘밤어디",
+  title: { absolute: "면책조항 - 오늘밤어디" },
   description:
     "오늘밤어디 면책조항. 매장 내역의 정확성, 플랫폼 이용에 관한 책임 제한 사항을 안내합니다.",
 };

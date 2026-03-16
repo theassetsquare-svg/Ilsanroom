@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '입점 사례 연구 | 오늘밤어디 — 업주 성공 스토리',
+  title: { absolute: '입점 사례 연구 | 오늘밤어디 — 업주 성공 스토리' },
   description: '오늘밤어디에 입점한 업주들의 온라인 노출 개선·신규 방문객 확보·브랜드 인지도 향상 사례를 확인하세요.',
 };
 

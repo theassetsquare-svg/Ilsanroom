@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "커뮤니티 가이드라인 - 오늘밤어디",
+  title: { absolute: "커뮤니티 가이드라인 - 오늘밤어디" },
   description: "오늘밤어디 커뮤니티 운영 규칙과 가이드라인. 건전하고 유익한 소통 공간을 함께 만들어갑니다.",
 };
 

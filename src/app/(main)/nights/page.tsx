@@ -5,7 +5,7 @@ import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from
 import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
-  title: '나이트 | 오늘밤어디 - 전국 소셜댄스 부킹 명소',
+  title: { absolute: '나이트 | 오늘밤어디 - 전국 소셜댄스 부킹 명소' },
   description: '라이브 밴드와 소셜 댄스를 동시에 즐기는 사교 공간. 수원찬스돔, 부산연산동물 등 지역별 명소와 드레스코드·이용 팁 안내.',
   openGraph: { images: [{ url: 'https://placehold.co/1200x630/F43F5E/ffffff/png?text=나이트 | 오늘밤어디', width: 1200, height: 630 }] },
 };

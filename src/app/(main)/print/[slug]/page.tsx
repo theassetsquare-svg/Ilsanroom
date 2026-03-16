@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const venue = getVenueBySlug(slug);
   if (!venue) return { title: '업소를 찾을 수 없습니다' };
   return {
-    title: `${venue.nameKo} - 프린트용 | 오늘밤어디`,
+    title: { absolute: `${venue.nameKo} - 프린트용 | 오늘밤어디` },
     robots: { index: false, follow: false },
   };
 }
