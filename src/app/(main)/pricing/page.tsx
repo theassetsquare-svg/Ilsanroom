@@ -4,7 +4,7 @@ import { Check, X } from "lucide-react";
 import PricingCTA from "@/components/saas/PricingCTA";
 
 export const metadata: Metadata = {
-  title: "업주 요금제 비교 | 오늘밤어디",
+  title: { absolute: "업주 요금제 비교 | 오늘밤어디" },
   description:
     "업소 규모에 맞는 요금제를 선택하세요. 무료부터 하이엔드까지, 14일 무료 체험 가능.",
 };
