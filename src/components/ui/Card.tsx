@@ -9,7 +9,7 @@ interface CardProps {
 }
 
 export default function Card({ className = '', children, href, newTab = true, hover = true }: CardProps) {
-  const classes = `glass rounded-2xl p-5 transition-all duration-300 neon-box-glow-hover ${hover ? 'card-hover' : ''} ${className}`;
+  const classes = `rounded-2xl border border-neon-border bg-white p-5 transition-all duration-300 ${hover ? 'card-hover' : ''} ${className}`;
 
   if (href) {
     return (
@@ -17,7 +17,7 @@ export default function Card({ className = '', children, href, newTab = true, ho
         href={href}
         target={newTab ? '_blank' : undefined}
         rel={newTab ? 'noopener noreferrer' : undefined}
-        className={`block ${classes}`}
+        className={`block cursor-pointer ${classes}`}
       >
         {children}
       </Link>

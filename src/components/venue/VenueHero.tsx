@@ -9,21 +9,21 @@ interface VenueHeroProps {
 }
 
 const categoryGradients: Record<string, string> = {
-  club: 'from-violet-950/80 via-neon-surface to-neon-bg',
-  night: 'from-blue-950/80 via-neon-surface to-neon-bg',
-  lounge: 'from-amber-950/80 via-neon-surface to-neon-bg',
-  room: 'from-rose-950/80 via-neon-surface to-neon-bg',
-  yojeong: 'from-emerald-950/80 via-neon-surface to-neon-bg',
-  hoppa: 'from-pink-950/80 via-neon-surface to-neon-bg',
+  club: 'from-violet-100 via-neon-bg to-neon-bg',
+  night: 'from-blue-100 via-neon-bg to-neon-bg',
+  lounge: 'from-amber-100 via-neon-bg to-neon-bg',
+  room: 'from-rose-100 via-neon-bg to-neon-bg',
+  yojeong: 'from-emerald-100 via-neon-bg to-neon-bg',
+  hoppa: 'from-pink-100 via-neon-bg to-neon-bg',
 };
 
 const categoryBgPatterns: Record<string, string> = {
-  club: 'from-violet-600/20 via-transparent to-transparent',
-  night: 'from-blue-600/20 via-transparent to-transparent',
-  lounge: 'from-amber-600/20 via-transparent to-transparent',
-  room: 'from-rose-600/20 via-transparent to-transparent',
-  yojeong: 'from-emerald-600/20 via-transparent to-transparent',
-  hoppa: 'from-pink-600/20 via-transparent to-transparent',
+  club: 'from-violet-200/30 via-transparent to-transparent',
+  night: 'from-blue-200/30 via-transparent to-transparent',
+  lounge: 'from-amber-200/30 via-transparent to-transparent',
+  room: 'from-rose-200/30 via-transparent to-transparent',
+  yojeong: 'from-emerald-200/30 via-transparent to-transparent',
+  hoppa: 'from-pink-200/30 via-transparent to-transparent',
 };
 
 export default function VenueHero({
@@ -37,31 +37,25 @@ export default function VenueHero({
   const bgPattern = categoryBgPatterns[category] || categoryBgPatterns.club;
 
   return (
-    <section className="relative min-h-[280px] overflow-hidden border-b border-neon-border sm:min-h-[340px]">
-      {/* Background gradient */}
+    <section className="relative min-h-[240px] overflow-hidden border-b border-neon-border sm:min-h-[300px]">
       <div className={`absolute inset-0 bg-gradient-to-b ${gradient}`} />
       <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] ${bgPattern}`} />
 
-      {/* Content overlay */}
-      <div className="relative mx-auto flex min-h-[280px] max-w-7xl flex-col justify-end px-4 pb-8 sm:min-h-[340px] sm:px-6">
-        {/* Badges */}
+      <div className="relative mx-auto flex min-h-[240px] max-w-7xl flex-col justify-end px-4 pb-8 sm:min-h-[300px] sm:px-6">
         <div className="mb-4 flex flex-wrap gap-2">
           {isPremium && <Badge variant="premium">PREMIUM</Badge>}
         </div>
 
-        {/* H1: Venue Name — SEO critical */}
-        <h1 className="text-3xl font-extrabold text-white sm:text-4xl lg:text-5xl">
+        <h1 className="text-3xl font-extrabold text-neon-text sm:text-4xl lg:text-5xl">
           {name}
         </h1>
 
-        {/* Staff Nickname — gold #F59E0B */}
         {staffNickname && (
           <p className="mt-2 text-base font-semibold text-neon-gold sm:text-lg">
             담당: {staffNickname}
           </p>
         )}
 
-        {/* Region (only if not already in name) */}
         <div className="mt-3 flex items-center gap-3 text-neon-text-muted">
           {!name.includes(regionKo) && <span>{regionKo}</span>}
         </div>

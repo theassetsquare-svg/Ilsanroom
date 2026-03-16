@@ -60,11 +60,11 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Site info */}
           <div className="col-span-2 sm:col-span-1">
-            <Link href="/" className="neon-glow text-xl font-black tracking-wider text-neon-primary">
+            <Link href="/" className="text-xl font-black tracking-wider text-neon-primary">
               오늘밤어디
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-neon-text-muted">
-              밤 문화 정보를 한곳에서
+              전국 클럽·나이트·라운지·룸·요정·호빠 정보
             </p>
           </div>
 

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import SearchOverlay from './SearchOverlay';
 import ScrollProgress from './ScrollProgress';
-import ThemeToggle from '../ui/ThemeToggle';
 
 const navLinks = [
   { href: '/clubs', label: '클럽' },
@@ -28,7 +27,7 @@ export default function Header() {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <span className="neon-glow text-xl font-black tracking-wider text-neon-primary">
+            <span className="text-xl font-black tracking-wider text-neon-primary">
               오늘밤어디
             </span>
           </Link>
@@ -58,8 +57,6 @@ export default function Header() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </button>
-
-            <ThemeToggle />
 
             {/* Login */}
             <Link

@@ -58,103 +58,28 @@
   src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/woff2/Pretendard-Black.woff2') format('woff2');
 }
 
+/* ★ LIGHT MODE ONLY — 다크모드 없음 ★ */
 @theme inline {
-  --color-neon-bg: #07070D;
-  --color-neon-surface: #0F0F18;
-  --color-neon-surface-2: #1A1A2E;
-  --color-neon-border: #2A2A3E;
-  --color-neon-text: #E8E8F0;
-  --color-neon-text-muted: #9898B0;
-  --color-neon-primary: #8B5CF6;
-  --color-neon-primary-light: #A78BFA;
-  --color-neon-primary-dark: #6D28D9;
-  --color-neon-accent: #06B6D4;
-  --color-neon-accent-light: #22D3EE;
-  --color-neon-pink: #F43F5E;
-  --color-neon-gold: #F59E0B;
-  --color-neon-green: #10B981;
-  --color-neon-red: #EF4444;
-  --font-sans: 'Pretendard', 'Pretendard Variable', system-ui, -apple-system, sans-serif;
-}
-
-/* Default dark scheme */
-:root {
-  color-scheme: dark;
-}
-
-/* Light mode overrides via next-themes */
-[data-theme="light"] {
   --color-neon-bg: #F8F8FC;
   --color-neon-surface: #FFFFFF;
   --color-neon-surface-2: #F0F0F8;
   --color-neon-border: #E0E0EC;
-  --color-neon-text: #1A1A2E;
+  --color-neon-text: #111118;
   --color-neon-text-muted: #4A4A6A;
+  --color-neon-primary: #8B5CF6;
+  --color-neon-primary-light: #7C3AED;
+  --color-neon-primary-dark: #6D28D9;
+  --color-neon-accent: #0891B2;
+  --color-neon-accent-light: #06B6D4;
+  --color-neon-pink: #E11D48;
+  --color-neon-gold: #B45309;
+  --color-neon-green: #059669;
+  --color-neon-red: #DC2626;
+  --font-sans: 'Pretendard', 'Pretendard Variable', system-ui, -apple-system, sans-serif;
+}
+
+:root {
   color-scheme: light;
-}
-
-[data-theme="light"] body {
-  background-color: #F8F8FC;
-  color: #1A1A2E;
-}
-
-[data-theme="light"] .glass {
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-[data-theme="light"] .glass-strong {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-[data-theme="light"] ::-webkit-scrollbar-track {
-  background: #F8F8FC;
-}
-
-[data-theme="light"] ::-webkit-scrollbar-thumb {
-  background: #D4D4E4;
-}
-
-[data-theme="light"] .shimmer {
-  background: linear-gradient(90deg, #E8E8F0 25%, #D4D4E4 50%, #E8E8F0 75%);
-  background-size: 200% 100%;
-}
-
-[data-theme="light"] .neon-glow {
-  text-shadow: none;
-}
-
-[data-theme="light"] .neon-box-glow {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* ★ 호빠 페이지 라이트모드 핑크 텍스트 대비 보정 */
-[data-theme="light"] .text-pink-300 {
-  color: #be185d !important;
-}
-[data-theme="light"] .text-pink-200\/70 {
-  color: rgba(157, 23, 77, 0.85) !important;
-}
-[data-theme="light"] .text-pink-200\/60 {
-  color: rgba(157, 23, 77, 0.75) !important;
-}
-[data-theme="light"] .text-pink-300\/60 {
-  color: rgba(190, 24, 93, 0.7) !important;
-}
-[data-theme="light"] .bg-pink-950\/20,
-[data-theme="light"] .bg-pink-950\/30 {
-  background-color: rgba(253, 242, 248, 0.8) !important;
-}
-[data-theme="light"] .from-pink-950\/30 {
-  --tw-gradient-from: rgba(253, 242, 248, 0.8) !important;
-}
-[data-theme="light"] .to-rose-950\/20 {
-  --tw-gradient-to: rgba(255, 241, 242, 0.6) !important;
-}
-[data-theme="light"] .border-pink-400\/20,
-[data-theme="light"] .border-pink-400\/15 {
-  border-color: rgba(244, 114, 182, 0.3) !important;
 }
 
 /* ★ 모바일 가독성 — 한글 최적화 */
@@ -162,6 +87,11 @@ body {
   word-break: keep-all;
   overflow-wrap: break-word;
   letter-spacing: -0.02em;
+  background-color: #F8F8FC;
+  color: #111118;
+  font-family: 'Pretendard', 'Pretendard Variable', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 p, li, dd, td, th, span, a {
@@ -175,8 +105,8 @@ h3 { font-size: clamp(1.125rem, 3vw, 1.375rem); line-height: 1.4; }
 /* 모바일 최소 본문 16px 보장 */
 @media (max-width: 640px) {
   body { font-size: 16px; }
-  .text-sm { font-size: 0.9375rem; /* 15px */ }
-  .text-xs { font-size: 0.8125rem; /* 13px */ }
+  .text-sm { font-size: 0.9375rem; }
+  .text-xs { font-size: 0.8125rem; }
 }
 
 /* Smooth scrolling */
@@ -184,164 +114,107 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar — light */
 ::-webkit-scrollbar {
   width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #07070D;
+  background: #F8F8FC;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2A2A3E;
+  background: #D4D4E4;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3A3A50;
+  background: #B0B0C4;
 }
 
-/* Base body */
-body {
-  background-color: #07070D;
-  color: #E8E8F0;
-  font-family: 'Pretendard', 'Pretendard Variable', system-ui, -apple-system, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Glass morphism utility */
+/* Glass morphism — light */
 .glass {
-  background: rgba(15, 15, 24, 0.8);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(139, 92, 246, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .glass-strong {
-  background: rgba(15, 15, 24, 0.95);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(139, 92, 246, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-/* Neon glow effects — primary purple */
+/* Accent text — no neon glow in light mode */
 .neon-glow {
-  text-shadow:
-    0 0 7px rgba(139, 92, 246, 0.6),
-    0 0 20px rgba(139, 92, 246, 0.4),
-    0 0 40px rgba(139, 92, 246, 0.2);
+  text-shadow: none;
 }
 
 .neon-glow-cyan {
-  text-shadow:
-    0 0 7px rgba(6, 182, 212, 0.6),
-    0 0 20px rgba(6, 182, 212, 0.4),
-    0 0 40px rgba(6, 182, 212, 0.2);
+  text-shadow: none;
 }
 
 .neon-glow-pink {
-  text-shadow:
-    0 0 7px rgba(244, 63, 94, 0.6),
-    0 0 20px rgba(244, 63, 94, 0.4),
-    0 0 40px rgba(244, 63, 94, 0.2);
+  text-shadow: none;
 }
 
 .neon-box-glow {
-  box-shadow:
-    0 0 15px rgba(139, 92, 246, 0.15),
-    0 0 30px rgba(139, 92, 246, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .neon-box-glow-hover:hover {
-  box-shadow:
-    0 0 20px rgba(139, 92, 246, 0.25),
-    0 0 40px rgba(139, 92, 246, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .neon-box-glow-cyan {
-  box-shadow:
-    0 0 15px rgba(6, 182, 212, 0.15),
-    0 0 30px rgba(6, 182, 212, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* Gradient text utility */
 .gradient-text {
-  background: linear-gradient(135deg, #8B5CF6, #06B6D4);
+  background: linear-gradient(135deg, #6D28D9, #0891B2);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-pink {
-  background: linear-gradient(135deg, #8B5CF6, #F43F5E);
+  background: linear-gradient(135deg, #7C3AED, #E11D48);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-gold {
-  background: linear-gradient(135deg, #F59E0B, #FBBF24);
+  background: linear-gradient(135deg, #B45309, #D97706);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Shimmer animation for skeletons — neon pulse */
+/* Shimmer animation for skeletons */
 @keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 .shimmer {
-  background: linear-gradient(
-    90deg,
-    #1A1A2E 25%,
-    #2A2A3E 37%,
-    rgba(139, 92, 246, 0.08) 50%,
-    #2A2A3E 63%,
-    #1A1A2E 75%
-  );
+  background: linear-gradient(90deg, #E8E8F0 25%, #D4D4E4 50%, #E8E8F0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.8s ease-in-out infinite;
 }
 
-/* Neon pulse skeleton variant */
-@keyframes neonPulse {
-  0%, 100% {
-    opacity: 0.4;
-    box-shadow: 0 0 0 rgba(139, 92, 246, 0);
-  }
-  50% {
-    opacity: 0.7;
-    box-shadow: 0 0 8px rgba(139, 92, 246, 0.1);
-  }
-}
-
-.neon-skeleton {
-  animation: neonPulse 2s ease-in-out infinite;
-}
-
 /* Scroll progress bar */
 .scroll-progress {
-  background: linear-gradient(90deg, #8B5CF6, #06B6D4);
+  background: linear-gradient(90deg, #8B5CF6, #0891B2);
 }
 
 /* Fade in animation */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in {
@@ -350,12 +223,8 @@ body {
 
 /* Slide in from right */
 @keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
 }
 
 .animate-slide-in-right {
@@ -364,14 +233,8 @@ body {
 
 /* Slide in from top */
 @keyframes slideInTop {
-  from {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-100%); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-slide-in-top {
@@ -380,14 +243,8 @@ body {
 
 /* Slide in from bottom */
 @keyframes slideInBottom {
-  from {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-slide-in-bottom {
@@ -396,42 +253,32 @@ body {
 
 /* Scale in */
 @keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .animate-scale-in {
   animation: scaleIn 0.2s ease-out;
 }
 
-/* Glow button animation */
+/* Glow button — subtle in light mode */
 @keyframes glowPulse {
-  0%, 100% {
-    box-shadow: 0 0 5px rgba(139, 92, 246, 0.3), 0 0 20px rgba(139, 92, 246, 0.1);
-  }
-  50% {
-    box-shadow: 0 0 10px rgba(139, 92, 246, 0.5), 0 0 30px rgba(139, 92, 246, 0.2);
-  }
+  0%, 100% { box-shadow: 0 2px 8px rgba(139, 92, 246, 0.15); }
+  50% { box-shadow: 0 4px 16px rgba(139, 92, 246, 0.25); }
 }
 
 .btn-glow {
   animation: glowPulse 2s ease-in-out infinite;
 }
 
-/* Card hover scale */
+/* Card hover */
 .card-hover {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card-hover:hover {
   transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.15), 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 /* Hide scrollbar for horizontal scroll */
@@ -447,55 +294,6 @@ body {
 /* Fixed bottom bar safe area */
 .pb-safe {
   padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
-}
-
-/* ★ Light mode — 모든 텍스트 가독성 강화 ★ */
-[data-theme="light"] .text-neon-text {
-  color: #111118 !important;
-}
-
-[data-theme="light"] .text-neon-text-muted {
-  color: #3A3A5A !important;
-}
-
-[data-theme="light"] .text-white {
-  color: #111118 !important;
-}
-
-[data-theme="light"] .text-neon-gold {
-  color: #92400E !important;
-}
-
-[data-theme="light"] .text-neon-green {
-  color: #065F46 !important;
-}
-
-[data-theme="light"] .text-neon-accent {
-  color: #0E7490 !important;
-}
-
-[data-theme="light"] .text-neon-pink {
-  color: #9F1239 !important;
-}
-
-[data-theme="light"] .text-neon-primary {
-  color: #6D28D9 !important;
-}
-
-[data-theme="light"] .text-neon-primary-light {
-  color: #7C3AED !important;
-}
-
-[data-theme="light"] .gradient-text {
-  background: linear-gradient(135deg, #6D28D9, #0E7490);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Light mode card hover */
-[data-theme="light"] .card-hover:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 /* ★ Venue card grid — 높이 통일 ★ */
@@ -526,4 +324,16 @@ body {
   outline: 2px solid #8B5CF6;
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* ★ 호빠 페이지 여성 친화 색상 */
+.hoppa-theme .text-pink-300 {
+  color: #be185d;
+}
+.hoppa-theme .text-pink-200\/70 {
+  color: rgba(157, 23, 77, 0.85);
+}
+.hoppa-theme .bg-pink-950\/20,
+.hoppa-theme .bg-pink-950\/30 {
+  background-color: rgba(253, 242, 248, 0.8);
 }

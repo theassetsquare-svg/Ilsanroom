@@ -8,23 +8,21 @@ export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPh
   if (!phone) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-neon-primary/30 bg-gradient-to-r from-neon-primary-dark via-neon-primary to-neon-primary-dark backdrop-blur-md">
+    <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-neon-border bg-white/95 backdrop-blur-md shadow-lg">
       <div className="mx-auto flex h-14 md:h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
         <div className="min-w-0 flex-1">
-          <p className="truncate text-xs md:text-base font-bold text-white">
+          <p className="truncate text-sm md:text-base font-bold text-neon-text">
             {venueName}
           </p>
           {staffName && (
-            <p className="truncate text-xs text-white/80">
+            <p className="truncate text-xs md:text-sm text-neon-text-muted">
               담당: {staffName}
             </p>
           )}
         </div>
         <a
           href={`tel:${phone.replace(/-/g, '')}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="ml-4 inline-flex shrink-0 items-center gap-2 rounded-xl bg-neon-green px-6 py-3 text-base md:text-lg font-bold text-white shadow-lg shadow-neon-green/30 transition hover:bg-neon-green/90 active:scale-95"
+          className="ml-4 inline-flex shrink-0 items-center gap-2 rounded-xl bg-neon-green px-5 py-2.5 md:px-6 md:py-3 text-sm md:text-base font-bold text-white shadow-md transition hover:bg-neon-green/90 active:scale-95"
           style={{ minHeight: '44px', minWidth: '44px' }}
           aria-label={`${venueName} 전화걸기 ${phone}`}
         >

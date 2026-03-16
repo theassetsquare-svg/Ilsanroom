@@ -2,55 +2,44 @@ import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import './globals.css';
 import Toast from '@/components/ui/Toast';
-import ThemeProvider from '@/components/ui/ThemeProvider';
 import JsonLd from '@/components/seo/JsonLd';
 
 export const metadata: Metadata = {
   title: {
-    default: '오늘밤어디 — 전국 야간 업소 정보',
+    default: '오늘밤어디 — 전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보',
     template: '%s | 오늘밤어디',
   },
   description:
-    '전국 야간 업소 정보를 한곳에서. 지역별 검색, 리뷰, 이벤트 정보를 확인하세요.',
-  keywords: [
-    '일산룸', '일산명월관요정', '밤문화',
-  ],
+    '전국 클럽·나이트·라운지·룸·요정·호빠 정보를 한곳에서. 지역별 검색, 실시간 인기 업소, 첫 방문 가이드까지.',
+  keywords: ['일산룸', '일산명월관요정', '강남클럽', '부산나이트', '호빠', '라운지'],
   authors: [{ name: '오늘밤어디' }],
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
     siteName: '오늘밤어디',
-    title: '오늘밤어디 — 전국 야간 업소 정보',
-    description:
-      '전국 클럽·나이트·라운지·룸·요정·호빠 정보를 한곳에서.',
+    title: '오늘밤어디 — 전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보',
+    description: '전국 클럽·나이트·라운지·룸·요정·호빠 정보를 한곳에서.',
     url: 'https://ilsanroom.pages.dev',
     images: [{ url: 'https://placehold.co/1200x630/8B5CF6/ffffff/png?text=%EC%98%A4%EB%8A%98%EB%B0%A4%EC%96%B4%EB%94%94', width: 1200, height: 630, alt: '오늘밤어디 — 전국 클럽·나이트·라운지·룸·요정·호빠' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '전국 클럽·나이트·라운지·룸·요정·호빠 정보',
+    title: '오늘밤어디 — 전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보',
     description: '전국 클럽·나이트·라운지·룸·요정·호빠 정보를 한곳에서.',
     images: ['https://placehold.co/1200x630/8B5CF6/ffffff/png?text=%EC%98%A4%EB%8A%98%EB%B0%A4%EC%96%B4%EB%94%94'],
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
   verification: {
     google: 'HJjm7MRxykCQ7d_9L7glaTeeaWrmJIzAKY0BcNcfm88',
-    other: {
-      'naver-site-verification': 'e2bdcc448d2478d84e7d457455eaf954fcb24cd9',
-    },
+    other: { 'naver-site-verification': 'e2bdcc448d2478d84e7d457455eaf954fcb24cd9' },
   },
-  alternates: {
-    canonical: 'https://ilsanroom.pages.dev',
-  },
+  alternates: { canonical: 'https://ilsanroom.pages.dev' },
 };
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#8B5CF6',
+  themeColor: '#F8F8FC',
 };
 
 const organizationJsonLd = {
@@ -70,28 +59,16 @@ const websiteJsonLd = {
   url: 'https://ilsanroom.pages.dev',
   potentialAction: {
     '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: 'https://ilsanroom.pages.dev/map?q={search_term_string}',
-    },
+    target: { '@type': 'EntryPoint', urlTemplate: 'https://ilsanroom.pages.dev/map?q={search_term_string}' },
     'query-input': 'required name=search_term_string',
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" suppressHydrationWarning>
+    <html lang="ko">
       <head>
-        {/* Pretendard font preload */}
-        <link
-          rel="preconnect"
-          href="https://cdn.jsdelivr.net"
-          crossOrigin="anonymous"
-        />
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
         <link
           rel="preload"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/woff2/Pretendard-Regular.woff2"
@@ -101,12 +78,10 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-neon-bg text-neon-text antialiased">
-        <ThemeProvider>
-          <JsonLd data={organizationJsonLd} />
-          <JsonLd data={websiteJsonLd} />
-          {children}
-          <Toast />
-        </ThemeProvider>
+        <JsonLd data={organizationJsonLd} />
+        <JsonLd data={websiteJsonLd} />
+        {children}
+        <Toast />
 
         {/* GA4 — lazyOnload for CWV */}
         {process.env.NEXT_PUBLIC_GA4_ID && (

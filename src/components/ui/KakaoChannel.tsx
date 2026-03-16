@@ -12,7 +12,7 @@ export default function KakaoChannel() {
         <div className="animate-fade-in relative rounded-xl bg-[#FEE500] px-4 py-2.5 shadow-lg">
           <button
             onClick={() => setShowTooltip(false)}
-            className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-neon-surface text-[10px] text-neon-text"
+            className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[10px] text-neutral-600 shadow"
             aria-label="닫기"
           >
             ✕

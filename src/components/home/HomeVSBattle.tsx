@@ -1,14 +1,25 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
+import { venues } from '@/data/venues';
 import ShareButtons from '@/components/interactive/ShareButtons';
 
+function getCategoryHref(category: string, slug: string, region: string) {
+  const map: Record<string, string> = { club: `/clubs/${region}/${slug}`, night: `/nights/${slug}`, lounge: `/lounges/${slug}`, room: `/rooms/${region}/${slug}`, yojeong: `/yojeong/${region}/${slug}`, hoppa: `/hoppa/${slug}` };
+  return map[category] || `/${category}/${slug}`;
+}
+
+function findVenue(name: string) {
+  return venues.find((v) => v.nameKo === name);
+}
+
 const BATTLES = [
-  { a: '강남클럽레이스', b: '클럽NB2', topic: '이번 주 인기 대결' },
+  { a: '강남클럽 레이스', b: '압구정클럽 하입', topic: '강남 vs 압구정 대결' },
   { a: '수원찬스돔나이트', b: '인천아라비안나이트', topic: '경기 나이트 최강자는?' },
   { a: '일산룸', b: '해운대고구려', topic: '프리미엄 룸 대결' },
-  { a: '일산명월관요정', b: '강남라운지아르쥬', topic: '접대 장소 대결' },
-  { a: '강남호빠로얄', b: '부산호빠스타', topic: '호빠 양대 산맥' },
+  { a: '일산명월관요정', b: '청담클럽 아르쥬', topic: '접대 장소 대결' },
+  { a: '강남호빠 로얄', b: '부산호빠 스타', topic: '호빠 양대 산맥' },
 ];
 
 export default function HomeVSBattle() {
@@ -17,7 +28,7 @@ export default function HomeVSBattle() {
   const [voted, setVoted] = useState<Record<number, 'a' | 'b'>>({});
 
   const battle = BATTLES[battleIdx];
-  const v = votes[battleIdx] || { a: Math.floor(Math.random() * 30) + 20, b: Math.floor(Math.random() * 30) + 20 };
+  const v = votes[battleIdx] || { a: 32, b: 28 };
   const total = v.a + v.b;
   const hasVoted = voted[battleIdx];
 
@@ -30,30 +41,40 @@ export default function HomeVSBattle() {
     setVoted((prev) => ({ ...prev, [battleIdx]: side }));
   };
 
+  const venueA = findVenue(battle.a);
+  const venueB = findVenue(battle.b);
+
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
-      <div className="rounded-2xl border border-neon-pink/30 bg-neon-surface p-8">
+      <div className="rounded-2xl border border-neon-pink/20 bg-neon-surface p-6 sm:p-8">
         <h2 className="text-center text-xl font-bold text-neon-text mb-1">VS 대결 투표</h2>
         <p className="text-center text-sm text-neon-pink mb-6">{battle.topic}</p>
 
         <div className="grid grid-cols-2 gap-4 mb-6">
           {(['a', 'b'] as const).map((side) => {
             const name = battle[side];
+            const venue = side === 'a' ? venueA : venueB;
             const isVoted = hasVoted === side;
-            const color = side === 'a' ? 'neon-primary' : 'neon-accent';
             return (
-              <button key={side} onClick={() => vote(side)}
-                className={`rounded-xl border-2 p-6 text-center transition-all ${isVoted ? `border-${color} bg-${color}/10` : 'border-neon-border hover:border-neon-primary/50'}`}>
-                <span className="text-lg font-bold text-neon-text">{name}</span>
-                {hasVoted && total > 0 && (
-                  <div className="mt-3">
-                    <div className="h-2 rounded-full bg-neon-surface-2">
-                      <div className={`h-2 rounded-full bg-${color} transition-all`} style={{ width: `${((side === 'a' ? v.a : v.b) / total) * 100}%` }} />
+              <div key={side} className="flex flex-col gap-2">
+                <button onClick={() => vote(side)}
+                  className={`rounded-xl border-2 p-6 text-center transition-all cursor-pointer ${isVoted ? 'border-neon-primary bg-neon-primary/5' : 'border-neon-border hover:border-neon-primary/50'}`}>
+                  <span className="text-base sm:text-lg font-bold text-neon-text">{name}</span>
+                  {hasVoted && total > 0 && (
+                    <div className="mt-3">
+                      <div className="h-2 rounded-full bg-neon-surface-2">
+                        <div className="h-2 rounded-full bg-neon-primary transition-all" style={{ width: `${((side === 'a' ? v.a : v.b) / total) * 100}%` }} />
+                      </div>
+                      <span className="mt-1 block text-xs text-neon-text-muted">{Math.round(((side === 'a' ? v.a : v.b) / total) * 100)}% ({side === 'a' ? v.a : v.b}표)</span>
                     </div>
-                    <span className="mt-1 text-xs text-neon-text-muted">{Math.round(((side === 'a' ? v.a : v.b) / total) * 100)}% ({side === 'a' ? v.a : v.b}표)</span>
-                  </div>
+                  )}
+                </button>
+                {venue && (
+                  <Link href={getCategoryHref(venue.category, venue.slug, venue.region)} className="text-center text-xs text-neon-primary hover:underline">
+                    상세 보기 →
+                  </Link>
                 )}
-              </button>
+              </div>
             );
           })}
         </div>
