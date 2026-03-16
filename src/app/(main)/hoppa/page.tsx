@@ -12,12 +12,21 @@ export const metadata: Metadata = {
 
 const regions = [
   { key: 'gangnam', label: '강남' },
+  { key: 'hongdae', label: '홍대' },
+  { key: 'sinlim', label: '신림' },
   { key: 'geondae', label: '건대' },
-  { key: 'jangan', label: '장안동' },
+  { key: 'jangandong', label: '장안동' },
+  { key: 'songpa', label: '송파' },
+  { key: 'yeongdeungpo', label: '영등포' },
   { key: 'suwon', label: '수원' },
+  { key: 'incheon', label: '인천' },
   { key: 'busan-haeundae', label: '해운대' },
   { key: 'busan', label: '부산' },
+  { key: 'daegu', label: '대구' },
   { key: 'daejeon', label: '대전' },
+  { key: 'gwangju', label: '광주' },
+  { key: 'ulsan', label: '울산' },
+  { key: 'jeju', label: '제주' },
 ];
 
 export default function HoppaPage() {
