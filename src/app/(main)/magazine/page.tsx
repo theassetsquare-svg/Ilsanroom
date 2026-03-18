@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: { absolute: '매거진 — 밤문화 트렌드·가이드 | 오늘밤어디' },
-  description: '업종별 문화 비교, 지역별 야간업소 특성, 방문 팁까지. 오늘밤어디 매거진에서 확인된 정보만 전합니다.',
+  description: '업종별 문화 분석, 지역별 야간업소 특성, 방문 팁까지. 오늘밤어디 매거진에서 확인된 정보만 전합니다.',
 };
 
 const articles = [

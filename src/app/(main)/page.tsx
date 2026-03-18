@@ -129,7 +129,7 @@ export default function HomePage() {
         '@type': 'WebSite',
         name: '오늘밤어디',
         url: 'https://ilsanroom.pages.dev',
-        description: '전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보',
+        description: '전국 클럽·나이트·라운지·프라이빗공간·요정·호빠 실시간 정보',
         potentialAction: {
           '@type': 'SearchAction',
           target: { '@type': 'EntryPoint', urlTemplate: 'https://ilsanroom.pages.dev/map?q={search_term_string}' },
