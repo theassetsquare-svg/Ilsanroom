@@ -194,7 +194,7 @@ export default function PricingPage() {
                     )}
                     <span
                       className={
-                        f.included ? "text-neon-text" : "text-neon-text-muted/70"
+                        f.included ? "text-neon-text" : "text-neon-text-subtle"
                       }
                     >
                       {f.text}

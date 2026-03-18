@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 const events = [
   { id: 'e1', title: '강남클럽 레이스 EDM 위크엔드', venue: '강남클럽 레이스', date: '2026-03-21', time: '23:00', region: '강남', category: '클럽', desc: '강남 대표 EDM 파티. 해외 게스트 DJ 라인업과 함께하는 주말 페스티벌 분위기.' },
   { id: 'e2', title: '일산명월관요정 봄 한정식 특선', venue: '일산명월관요정', date: '2026-03-25', time: '18:00', region: '일산', category: '요정', desc: '봄 제철 식재료로 구성한 한정식 특선 코스. 국악 라이브 공연 포함.' },
-  { id: 'e3', title: '수원찬스돔 주말 스페셜', venue: '수원찬스돔나이트', date: '2026-03-29', time: '20:00', region: '수원', category: '나이트', desc: '돔 구조 사운드홀에서 펼쳐지는 수원 대표 주말 퍼포먼스.' },
-  { id: 'e4', title: '부산 연산 물나이트 봄맞이 축제', venue: '부산 연산 물 나이트', date: '2026-04-05', time: '20:00', region: '부산', category: '나이트', desc: '연산동 대형 홀에서 열리는 봄 시즌 개막 축제. 라이브 밴드 3팀 출연.' },
-  { id: 'e5', title: '청담H2O 프리미엄 VIP 나이트', venue: '청담H2O나이트', date: '2026-04-12', time: '21:00', region: '청담', category: '나이트', desc: '워터 테마 VIP 전용 이벤트. 프리미엄 양주 테이스팅과 라이브 DJ.' },
-  { id: 'e6', title: '대전세븐 7주년 기념 파티', venue: '대전세븐나이트', date: '2026-04-19', time: '20:00', region: '대전', category: '나이트', desc: '7가지 테마 공간을 오픈하는 대전세븐 개업 7주년 특별 행사.' },
+  { id: 'e3', title: '수원찬스돔 주말 스페셜', venue: '수원찬스돔나이트', date: '2026-03-29', time: '20:00', region: '수원', category: '소셜댄스', desc: '돔 구조 사운드홀에서 펼쳐지는 수원 대표 주말 퍼포먼스.' },
+  { id: 'e4', title: '부산 연산동 봄맞이 축제', venue: '부산연산동물나이트', date: '2026-04-05', time: '20:00', region: '부산', category: '소셜댄스', desc: '연산동 대형 홀에서 열리는 봄 시즌 개막 축제. 라이브 밴드 3팀 출연.' },
+  { id: 'e5', title: '청담H2O 프리미엄 VIP 이벤트', venue: '청담H2O나이트', date: '2026-04-12', time: '21:00', region: '청담', category: '프리미엄', desc: '워터 테마 VIP 전용 이벤트. 프리미엄 양주 테이스팅과 라이브 DJ.' },
+  { id: 'e6', title: '대전세븐 7주년 기념 파티', venue: '대전세븐나이트', date: '2026-04-19', time: '20:00', region: '대전', category: '기념행사', desc: '7가지 테마 공간을 오픈하는 대전세븐 개업 7주년 특별 행사.' },
 ];
 
 const months = [
@@ -82,7 +82,7 @@ export default function EventsPage() {
                   <div className="min-w-0 flex-1">
                     <h3 className="text-sm font-bold text-neon-text mb-1">{e.title}</h3>
                     <p className="text-xs text-neon-text-muted line-clamp-2 mb-1">{e.desc}</p>
-                    <p className="text-[10px] text-neon-text-muted/70">{e.venue} · {e.region} · {e.time}</p>
+                    <p className="text-[10px] text-neon-text-subtle">{e.venue} · {e.region} · {e.time}</p>
                   </div>
                   <span className="shrink-0 rounded-full bg-neon-primary/10 px-2.5 py-1 text-[10px] text-neon-primary-light self-start">{e.category}</span>
                 </div>
