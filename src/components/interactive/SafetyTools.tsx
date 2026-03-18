@@ -43,7 +43,7 @@ export function AlcoholCalculator() {
           </p>
         </div>
       )}
-      <p className="mt-3 text-[10px] text-neon-text-muted/60">※ 참고용 계산입니다. 정확한 혈중알코올농도는 개인차가 있습니다. 음주 후에는 절대 운전하지 마세요.</p>
+      <p className="mt-3 text-[10px] text-neon-text-subtle">※ 참고용 계산입니다. 정확한 혈중알코올농도는 개인차가 있습니다. 음주 후에는 절대 운전하지 마세요.</p>
     </div>
   );
 }

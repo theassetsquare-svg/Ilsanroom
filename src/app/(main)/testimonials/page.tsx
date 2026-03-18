@@ -125,7 +125,7 @@ export default function TestimonialsPage() {
                 &ldquo;{t.text}&rdquo;
               </p>
 
-              <p className="text-xs text-neon-text-muted/60">
+              <p className="text-xs text-neon-text-subtle">
                 이용 시작: {t.since}
               </p>
             </div>

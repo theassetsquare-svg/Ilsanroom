@@ -75,7 +75,7 @@ export default function NotFound() {
         </div>
       </div>
 
-      <div className="mt-16 text-neon-text-muted/60">
+      <div className="mt-16 text-neon-text-subtle">
         <p className="text-xs">오늘밤어디</p>
       </div>
     </div>

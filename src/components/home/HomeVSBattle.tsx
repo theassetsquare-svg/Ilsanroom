@@ -83,7 +83,7 @@ export default function HomeVSBattle() {
           <button onClick={() => setBattleIdx((p) => (p + 1) % BATTLES.length)} className="text-sm text-neon-text-muted hover:text-neon-text">다음 대결 →</button>
           {hasVoted && <ShareButtons title={`VS 대결: ${battle.a} vs ${battle.b}`} />}
         </div>
-        {!hasVoted && <p className="mt-3 text-center text-xs text-neon-text-muted/60">투표하면 결과를 볼 수 있습니다</p>}
+        {!hasVoted && <p className="mt-3 text-center text-xs text-neon-text-subtle">투표하면 결과를 볼 수 있습니다</p>}
       </div>
     </section>
   );

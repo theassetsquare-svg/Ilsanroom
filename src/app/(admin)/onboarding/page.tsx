@@ -606,7 +606,7 @@ export default function OnboardingPage() {
               disabled={currentStep === 1}
               className={`rounded-lg px-6 py-2.5 text-sm font-medium transition ${
                 currentStep === 1
-                  ? "cursor-not-allowed text-neon-text-muted/60"
+                  ? "cursor-not-allowed text-neon-text-subtle"
                   : "border border-neon-border bg-neon-surface-2 text-neon-text hover:bg-neon-surface-2"
               }`}
             >

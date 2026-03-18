@@ -79,7 +79,7 @@ export default function MagazinePage() {
             <span className="rounded-full bg-neon-primary/10 px-2.5 py-0.5 text-[10px] text-neon-primary-light">{a.tag}</span>
             <h3 className="mt-3 text-sm font-bold text-neon-text leading-snug line-clamp-2">{a.title}</h3>
             <p className="mt-2 text-xs text-neon-text-muted line-clamp-3 leading-relaxed">{a.excerpt}</p>
-            <div className="mt-3 flex items-center gap-2 text-[10px] text-neon-text-muted/60">
+            <div className="mt-3 flex items-center gap-2 text-[10px] text-neon-text-subtle">
               <span>{a.date}</span><span>·</span><span>{a.readMin}분 소요</span>
             </div>
           </article>

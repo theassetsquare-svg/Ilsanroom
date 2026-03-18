@@ -99,7 +99,7 @@ export function CategoryVSBattle({ venueA, venueB, topic }: { venueA: string; ve
         ))}
       </div>
       {voted && <ShareButtons title={`VS: ${venueA} vs ${venueB}`} />}
-      {!voted && <p className="text-center text-xs text-neon-text-muted/60">투표하면 결과 확인 가능</p>}
+      {!voted && <p className="text-center text-xs text-neon-text-subtle">투표하면 결과 확인 가능</p>}
     </div>
   );
 }

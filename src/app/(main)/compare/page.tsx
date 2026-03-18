@@ -82,20 +82,20 @@ export default function ComparePage() {
                 {v.isPremium && <Badge variant="premium" className="mb-3">PREMIUM</Badge>}
 
                 <dl className="space-y-2 text-sm">
-                  <div><dt className="text-neon-text-muted/60">카테고리</dt><dd className="text-neon-text">{categoryLabels[v.category]}</dd></div>
-                  <div><dt className="text-neon-text-muted/60">지역</dt><dd className="text-neon-text">{v.regionKo}</dd></div>
-                  <div><dt className="text-neon-text-muted/60">평점</dt><dd className="text-neon-gold">★ {v.rating.toFixed(1)}</dd></div>
-                  {v.staffNickname && <div><dt className="text-neon-text-muted/60">담당</dt><dd className="text-neon-gold">{v.staffNickname}</dd></div>}
-                  <div><dt className="text-neon-text-muted/60">입장료</dt><dd className="text-neon-text">{v.priceEntry || '-'}</dd></div>
-                  <div><dt className="text-neon-text-muted/60">주대/룸</dt><dd className="text-neon-text">{v.priceTable || '-'}</dd></div>
-                  <div><dt className="text-neon-text-muted/60">음료</dt><dd className="text-neon-text">{v.priceDrink || '-'}</dd></div>
-                  {v.openHours && <div><dt className="text-neon-text-muted/60">영업시간</dt><dd className="text-neon-text">{v.openHours}</dd></div>}
-                  {v.dressCode && <div><dt className="text-neon-text-muted/60">드레스코드</dt><dd className="text-neon-text">{v.dressCode}</dd></div>}
+                  <div><dt className="text-neon-text-subtle">카테고리</dt><dd className="text-neon-text">{categoryLabels[v.category]}</dd></div>
+                  <div><dt className="text-neon-text-subtle">지역</dt><dd className="text-neon-text">{v.regionKo}</dd></div>
+                  <div><dt className="text-neon-text-subtle">평점</dt><dd className="text-neon-gold">★ {v.rating.toFixed(1)}</dd></div>
+                  {v.staffNickname && <div><dt className="text-neon-text-subtle">담당</dt><dd className="text-neon-gold">{v.staffNickname}</dd></div>}
+                  <div><dt className="text-neon-text-subtle">입장료</dt><dd className="text-neon-text">{v.priceEntry || '-'}</dd></div>
+                  <div><dt className="text-neon-text-subtle">주대/룸</dt><dd className="text-neon-text">{v.priceTable || '-'}</dd></div>
+                  <div><dt className="text-neon-text-subtle">음료</dt><dd className="text-neon-text">{v.priceDrink || '-'}</dd></div>
+                  {v.openHours && <div><dt className="text-neon-text-subtle">영업시간</dt><dd className="text-neon-text">{v.openHours}</dd></div>}
+                  {v.dressCode && <div><dt className="text-neon-text-subtle">드레스코드</dt><dd className="text-neon-text">{v.dressCode}</dd></div>}
                 </dl>
 
                 {v.features.length > 0 && (
                   <div className="mt-4">
-                    <p className="text-xs text-neon-text-muted/60 mb-1">특징</p>
+                    <p className="text-xs text-neon-text-subtle mb-1">특징</p>
                     <div className="flex flex-wrap gap-1">
                       {v.features.slice(0, 4).map((f) => (
                         <span key={f} className="rounded-full bg-neon-surface-2 px-2 py-0.5 text-[10px] text-neon-text-muted">{f}</span>

@@ -292,11 +292,11 @@ export default function HelpPage() {
             ))
           ) : (
             <div className="rounded-2xl border border-neon-border bg-neon-surface py-12 text-center">
-              <Search className="mx-auto mb-3 h-8 w-8 text-neon-text-muted/60" />
+              <Search className="mx-auto mb-3 h-8 w-8 text-neon-text-subtle" />
               <p className="text-sm text-neon-text-muted">
                 &ldquo;{searchQuery}&rdquo;에 대한 검색 결과가 없습니다.
               </p>
-              <p className="mt-1 text-xs text-neon-text-muted/60">
+              <p className="mt-1 text-xs text-neon-text-subtle">
                 아래 연락처로 직접 문의해 주세요.
               </p>
             </div>
@@ -316,7 +316,7 @@ export default function HelpPage() {
                 <p className="mt-1 text-xs text-neon-text-muted">
                   qotjsdnr123@naver.com
                 </p>
-                <p className="mt-0.5 text-xs text-neon-text-muted/60">
+                <p className="mt-0.5 text-xs text-neon-text-subtle">
                   24시간 접수 허용
                 </p>
               </div>
@@ -329,7 +329,7 @@ export default function HelpPage() {
                 <p className="mt-1 text-xs text-neon-text-muted">
                   @당사문의자센터
                 </p>
-                <p className="mt-0.5 text-xs text-neon-text-muted/60">
+                <p className="mt-0.5 text-xs text-neon-text-subtle">
                   실시간 채팅 상담
                 </p>
               </div>
@@ -341,7 +341,7 @@ export default function HelpPage() {
                 <p className="mt-1 text-xs text-neon-text-muted">
                   평일 10:00 ~ 18:00
                 </p>
-                <p className="mt-0.5 text-xs text-neon-text-muted/60">
+                <p className="mt-0.5 text-xs text-neon-text-subtle">
                   주말 및 공휴일 휴무
                 </p>
               </div>
@@ -372,7 +372,7 @@ export default function HelpPage() {
                 style={{ minHeight: 48 }}>
                 문의 보내기
               </button>
-              <p className="text-[10px] text-neon-text-muted/60 text-center">
+              <p className="text-[10px] text-neon-text-subtle text-center">
                 문의 내용은 qotjsdnr123@naver.com으로 전달됩니다
               </p>
             </form>

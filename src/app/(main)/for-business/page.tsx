@@ -297,11 +297,11 @@ export default function ForBusinessPage() {
             <span className="rounded-full bg-neon-primary/20 px-3 py-1 text-neon-primary-light">
               가입
             </span>
-            <ArrowRight className="h-3 w-3 text-neon-text-muted/60" />
+            <ArrowRight className="h-3 w-3 text-neon-text-subtle" />
             <span className="rounded-full bg-neon-primary/20 px-3 py-1 text-neon-primary-light">
               업소 등록
             </span>
-            <ArrowRight className="h-3 w-3 text-neon-text-muted/60" />
+            <ArrowRight className="h-3 w-3 text-neon-text-subtle" />
             <span className="rounded-full bg-neon-primary/20 px-3 py-1 text-neon-primary-light">
               매출 성장
             </span>

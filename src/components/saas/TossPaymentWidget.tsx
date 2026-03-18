@@ -90,7 +90,7 @@ export default function TossPaymentWidget({ planId, onClose }: TossPaymentWidget
             <span className="text-lg font-bold text-neon-primary-light">₩{amount.toLocaleString()}</span>
           </div>
           <div className="mt-2 pt-2 border-t border-neon-border">
-            <span className="text-[10px] text-neon-text-muted/60">월 정기결제 · 토스페이먼츠 처리</span>
+            <span className="text-[10px] text-neon-text-subtle">월 정기결제 · 토스페이먼츠 처리</span>
           </div>
         </div>
 
@@ -119,7 +119,7 @@ export default function TossPaymentWidget({ planId, onClose }: TossPaymentWidget
             >
               토스페이먼츠로 결제하기
             </button>
-            <p className="text-[10px] text-neon-text-muted/60 text-center">
+            <p className="text-[10px] text-neon-text-subtle text-center">
               테스트 모드: test_ck_ 키 사용 중 · 실제 결제 없음
             </p>
           </div>

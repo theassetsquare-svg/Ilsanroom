@@ -105,7 +105,7 @@ export default function PricePage() {
           전체 {filtered.length}개 업소 보기
         </button>
       )}
-      <p className="mt-6 text-xs text-neon-text-muted/60">
+      <p className="mt-6 text-xs text-neon-text-subtle">
         ※ 가격은 업소 사정에 따라 변동될 수 있습니다. 방문 전 반드시 해당 업소에 직접 확인하시기 바랍니다.
       </p>
     </div>

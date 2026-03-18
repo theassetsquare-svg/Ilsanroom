@@ -70,14 +70,14 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
             <div className="rounded-2xl border border-neon-border bg-neon-surface p-6">
               <h3 className="mb-4 font-bold text-neon-text">기본 정보</h3>
               <dl className="space-y-3 text-sm">
-                {venue.address && <div><dt className="text-neon-text-muted/60">위치</dt><dd className="text-neon-text">{venue.address}</dd></div>}
-                {venue.openHours && <div><dt className="text-neon-text-muted/60">영업시간</dt><dd className="text-neon-text">{venue.openHours}</dd></div>}
-                {venue.ageGroup && <div><dt className="text-neon-text-muted/60">연령대</dt><dd className="text-neon-text">{venue.ageGroup}</dd></div>}
-                {venue.dressCode && <div><dt className="text-neon-text-muted/60">드레스코드</dt><dd className="text-neon-text">{venue.dressCode}</dd></div>}
-                {venue.parking && <div><dt className="text-neon-text-muted/60">주차</dt><dd className="text-neon-text">{venue.parking}</dd></div>}
-                {venue.nearbyStation && <div><dt className="text-neon-text-muted/60">가까운 역</dt><dd className="text-neon-text">{venue.nearbyStation}</dd></div>}
-                {venue.bestTime && <div><dt className="text-neon-text-muted/60">추천 방문 시간</dt><dd className="text-neon-text">{venue.bestTime}</dd></div>}
-                <div><dt className="text-neon-text-muted/60">지역</dt><dd className="text-neon-text">{venue.regionKo}</dd></div>
+                {venue.address && <div><dt className="text-neon-text-subtle">위치</dt><dd className="text-neon-text">{venue.address}</dd></div>}
+                {venue.openHours && <div><dt className="text-neon-text-subtle">영업시간</dt><dd className="text-neon-text">{venue.openHours}</dd></div>}
+                {venue.ageGroup && <div><dt className="text-neon-text-subtle">연령대</dt><dd className="text-neon-text">{venue.ageGroup}</dd></div>}
+                {venue.dressCode && <div><dt className="text-neon-text-subtle">드레스코드</dt><dd className="text-neon-text">{venue.dressCode}</dd></div>}
+                {venue.parking && <div><dt className="text-neon-text-subtle">주차</dt><dd className="text-neon-text">{venue.parking}</dd></div>}
+                {venue.nearbyStation && <div><dt className="text-neon-text-subtle">가까운 역</dt><dd className="text-neon-text">{venue.nearbyStation}</dd></div>}
+                {venue.bestTime && <div><dt className="text-neon-text-subtle">추천 방문 시간</dt><dd className="text-neon-text">{venue.bestTime}</dd></div>}
+                <div><dt className="text-neon-text-subtle">지역</dt><dd className="text-neon-text">{venue.regionKo}</dd></div>
               </dl>
             </div>
             {venue.atmosphere.length > 0 && (
@@ -131,7 +131,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
             ) : (
               <p className="text-neon-text-muted">가격 정보가 등록되지 않았습니다. 업소에 직접 문의해 주세요.</p>
             )}
-            <p className="mt-4 text-xs text-neon-text-muted/60">※ 가격은 변동될 수 있으며, 정확한 금액은 업소에 직접 확인하시기 바랍니다.</p>
+            <p className="mt-4 text-xs text-neon-text-subtle">※ 가격은 변동될 수 있으며, 정확한 금액은 업소에 직접 확인하시기 바랍니다.</p>
           </div>
         )}
 
@@ -160,7 +160,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
             <h2 className="mb-4 text-xl font-bold text-neon-text">방문 리뷰</h2>
             <div className="rounded-xl border border-neon-border bg-neon-surface p-6 text-center">
               <p className="mb-2 text-neon-text-muted">아직 등록된 리뷰가 없습니다.</p>
-              <p className="text-sm text-neon-text-muted/60">리뷰 작성 기능은 곧 오픈 예정입니다.</p>
+              <p className="text-sm text-neon-text-subtle">리뷰 작성 기능은 곧 오픈 예정입니다.</p>
             </div>
           </div>
         )}
@@ -262,7 +262,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
                 </div>
               ))}
             </div>
-            <p className="mt-4 text-xs text-neon-text-muted/60">※ 시간대별 인기도는 참고용이며, 실제 혼잡도와 다를 수 있습니다.</p>
+            <p className="mt-4 text-xs text-neon-text-subtle">※ 시간대별 인기도는 참고용이며, 실제 혼잡도와 다를 수 있습니다.</p>
           </div>
         )}
       </div>

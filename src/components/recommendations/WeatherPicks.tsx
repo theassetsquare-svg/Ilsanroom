@@ -124,7 +124,7 @@ export default function WeatherPicks() {
                   <p className="text-sm font-medium text-neon-text group-hover:text-neon-primary-light transition">{venue.name}</p>
                   <p className="mt-0.5 text-xs text-neon-text-muted">{venue.reason}</p>
                 </div>
-                <span className="text-neon-text-muted/60 group-hover:text-neon-primary-light transition">→</span>
+                <span className="text-neon-text-subtle group-hover:text-neon-primary-light transition">→</span>
               </Link>
             ))}
           </div>

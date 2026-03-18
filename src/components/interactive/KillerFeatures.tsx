@@ -122,7 +122,7 @@ export function DrinkBudgetCalc() {
           <p className="text-sm text-neon-text-muted mt-1">1인당 {perPerson.toLocaleString()}원</p>
         </div>
       )}
-      <p className="mt-3 text-[10px] text-neon-text-muted/60">※ 참고용 예상 금액입니다. 실제 비용은 업소마다 다릅니다.</p>
+      <p className="mt-3 text-[10px] text-neon-text-subtle">※ 참고용 예상 금액입니다. 실제 비용은 업소마다 다릅니다.</p>
     </div>
   );
 }
