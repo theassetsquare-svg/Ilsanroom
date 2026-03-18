@@ -9,6 +9,7 @@ import QuizCTA from '@/components/home/QuizCTA';
 import HomeRoulette from '@/components/home/HomeRoulette';
 import HomeVSBattle from '@/components/home/HomeVSBattle';
 import PopularTimeWidget from '@/components/home/PopularTimeWidget';
+import EngagementSection from '@/components/engagement/EngagementSection';
 import { getPopularVenues, getVenueBySlug, categories } from '@/data/venues';
 import type { Venue } from '@/types';
 
@@ -369,6 +370,9 @@ export default function HomePage() {
           </div>
         </Link>
       </section>
+
+      {/* ═══════ 14~16. 중독성 엔진: 스트릭+FOMO+무한피드 ═══════ */}
+      <EngagementSection />
 
       {/* ═══════ SEO Text ═══════ */}
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
