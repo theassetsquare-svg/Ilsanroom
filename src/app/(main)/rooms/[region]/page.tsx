@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const regionKo = regionNames[region] || region;
   return {
     title: { absolute: `${regionKo} 룸 | 오늘밤어디 - ${regionKo} 프라이빗 공간 정보` },
-    description: `${regionKo} 지역 프리미엄 프라이빗 공간 리스트. 시설, 분위기, 서비스를 비교하고 나에게 맞는 곳을 찾아보세요.`,
+    description: `${regionKo} 프라이빗 공간 모음. 방음 수준, 좌석 배치, 가격대를 한눈에 확인하세요.`,
   };
 }
 
