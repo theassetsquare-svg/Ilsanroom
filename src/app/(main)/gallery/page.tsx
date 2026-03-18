@@ -84,7 +84,7 @@ export default function GalleryPage() {
             </div>
             <h3 className="text-lg font-bold text-neon-text mb-1">{lightboxItem.venueName}</h3>
             <p className="text-xs text-neon-text-muted mb-2">{lightboxItem.region} · {CAT_LABELS[lightboxItem.category]}</p>
-            <p className="text-xs text-neon-text-muted/80 leading-relaxed">{lightboxItem.shortDesc}</p>
+            <p className="text-xs text-neon-text-muted leading-relaxed">{lightboxItem.shortDesc}</p>
 
             {/* Prev / Next */}
             <div className="flex justify-between mt-5">
@@ -99,7 +99,7 @@ export default function GalleryPage() {
         </div>
       )}
 
-      <p className="mt-6 text-center text-[10px] text-neon-text-muted/50">업소 실제 사진은 업주 등록 후 게시됩니다</p>
+      <p className="mt-6 text-center text-[10px] text-neon-text-subtle">업소 실제 사진은 업주 등록 후 게시됩니다</p>
     </div>
   );
 }

@@ -260,7 +260,7 @@ export default function PricingTable({ onSelect, compact = false }: PricingTable
                   {tier.features[feature] ? <CheckIcon /> : <XIcon />}
                   <span
                     className={
-                      tier.features[feature] ? 'text-neon-text' : 'text-neon-text-muted/50'
+                      tier.features[feature] ? 'text-neon-text' : 'text-neon-text-subtle'
                     }
                   >
                     {feature}

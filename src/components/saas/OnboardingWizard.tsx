@@ -239,7 +239,7 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
 
       <div>
         <label className="mb-1.5 block text-sm font-medium text-neon-text-muted">
-          소개 <span className="text-neon-text-muted/50">(선택)</span>
+          소개 <span className="text-neon-text-subtle">(선택)</span>
         </label>
         <textarea
           value={business.description}

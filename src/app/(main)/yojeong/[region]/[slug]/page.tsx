@@ -58,7 +58,7 @@ function MyeongwolgwanExtraContent() {
   return (
     <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-8 space-y-6">
       <h2 className="text-xl font-bold text-neon-text">고양시 장항로의 격조 — 한정식과 국악이 만나는 공간</h2>
-      <div className="space-y-4 text-sm leading-relaxed text-neon-text-muted/80">
+      <div className="space-y-4 text-sm leading-relaxed text-neon-text-muted">
         <p>
           일산명월관요정은 경기도 고양시 일산동구 장항로 895-1에 자리한 격조 높은 한정식 문화 공간입니다.
           한정식 코스 요리와 국악 라이브 공연을 동시에 즐길 수 있는 이곳은

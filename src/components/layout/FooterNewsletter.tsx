@@ -34,7 +34,7 @@ export default function FooterNewsletter() {
           </button>
         </form>
       )}
-      <p className="mt-2 text-center text-[10px] text-neon-text-muted/50">qotjsdnr123@naver.com 발송 · 언제든 해지</p>
+      <p className="mt-2 text-center text-[10px] text-neon-text-subtle">qotjsdnr123@naver.com 발송 · 언제든 해지</p>
     </div>
   );
 }

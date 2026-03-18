@@ -196,7 +196,7 @@ export default function MapPage() {
                   style={{ minHeight: 40 }}>
                   카카오맵에서 열기
                 </a>
-                <p className="text-[11px] text-neon-text-muted/50">NEXT_PUBLIC_KAKAO_JS_KEY 설정 후 자동 연동</p>
+                <p className="text-[11px] text-neon-text-subtle">NEXT_PUBLIC_KAKAO_JS_KEY 설정 후 자동 연동</p>
               </div>
             )}
           </div>

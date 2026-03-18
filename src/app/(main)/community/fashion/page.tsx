@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const fashionGuides = [
   {
     id: 1,
-    title: "클럽별 드레스코드 완벽 정리 2026",
+    title: "업종별 드레스코드 완벽 정리 2026",
     author: "패션에디터",
     date: "2026-03-12",
     category: "드레스코드",
