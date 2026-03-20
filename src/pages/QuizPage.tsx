@@ -1,16 +1,14 @@
-
-
 import { lazy, Suspense } from 'react';
 
-const MBTIQuiz = dynamic(() => import('@/components/interactive/MBTIQuiz'), { ssr: false });
-const Roulette = dynamic(() => import('@/components/interactive/Roulette'), { ssr: false });
-const VSBattle = dynamic(() => import('@/components/interactive/VSBattle'), { ssr: false });
-const DressCodeChecker = dynamic(() => import('@/components/interactive/DressCodeChecker'), { ssr: false });
-const AIChatbot = dynamic(() => import('@/components/interactive/AIChatbot'), { ssr: false });
-const HotRightNow = dynamic(() => import('@/components/interactive/KillerFeatures').then(m => ({ default: m.HotRightNow })), { ssr: false });
-const AttendanceCheck = dynamic(() => import('@/components/interactive/KillerFeatures').then(m => ({ default: m.AttendanceCheck })), { ssr: false });
-const DrinkBudgetCalc = dynamic(() => import('@/components/interactive/KillerFeatures').then(m => ({ default: m.DrinkBudgetCalc })), { ssr: false });
-const InviteFriend = dynamic(() => import('@/components/interactive/KillerFeatures').then(m => ({ default: m.InviteFriend })), { ssr: false });
+const MBTIQuiz = lazy(() => import('@/components/interactive/MBTIQuiz'));
+const Roulette = lazy(() => import('@/components/interactive/Roulette'));
+const VSBattle = lazy(() => import('@/components/interactive/VSBattle'));
+const DressCodeChecker = lazy(() => import('@/components/interactive/DressCodeChecker'));
+const AIChatbot = lazy(() => import('@/components/interactive/AIChatbot'));
+const HotRightNow = lazy(() => import('@/components/interactive/KillerFeatures').then(m => ({ default: m.HotRightNow })));
+const AttendanceCheck = lazy(() => import('@/components/interactive/KillerFeatures').then(m => ({ default: m.AttendanceCheck })));
+const DrinkBudgetCalc = lazy(() => import('@/components/interactive/KillerFeatures').then(m => ({ default: m.DrinkBudgetCalc })));
+const InviteFriend = lazy(() => import('@/components/interactive/KillerFeatures').then(m => ({ default: m.InviteFriend })));
 
 export default function QuizPage() {
   return (
@@ -23,52 +21,52 @@ export default function QuizPage() {
       {/* [F] 지금 핫한 곳 */}
       <section>
         <h2 className="mb-4 text-xl font-bold text-neon-text">지금 이 시간 핫한 곳</h2>
-        <HotRightNow />
+        <Suspense fallback={null}><HotRightNow /></Suspense>
       </section>
 
       {/* AI Chatbot */}
       <section>
         <h2 className="mb-4 text-xl font-bold text-neon-text">오늘밤뭐하지? AI 챗봇</h2>
-        <AIChatbot />
+        <Suspense fallback={null}><AIChatbot /></Suspense>
       </section>
 
       {/* [O] 출석 도장 */}
       <section>
-        <AttendanceCheck />
+        <Suspense fallback={null}><AttendanceCheck /></Suspense>
       </section>
 
       {/* MBTI */}
       <section>
         <h2 className="mb-4 text-xl font-bold text-neon-text">밤문화 MBTI (8유형)</h2>
-        <MBTIQuiz />
+        <Suspense fallback={null}><MBTIQuiz /></Suspense>
       </section>
 
       {/* 룰렛 */}
       <section>
         <h2 className="mb-4 text-xl font-bold text-neon-text">행운의 업소 룰렛</h2>
-        <Roulette />
+        <Suspense fallback={null}><Roulette /></Suspense>
       </section>
 
       {/* VS 배틀 */}
       <section>
         <h2 className="mb-4 text-xl font-bold text-neon-text">VS 배틀 투표</h2>
-        <VSBattle />
+        <Suspense fallback={null}><VSBattle /></Suspense>
       </section>
 
       {/* 드레스코드 */}
       <section>
         <h2 className="mb-4 text-xl font-bold text-neon-text">드레스코드 체커</h2>
-        <DressCodeChecker />
+        <Suspense fallback={null}><DressCodeChecker /></Suspense>
       </section>
 
       {/* [S] 술값 계산기 */}
       <section>
-        <DrinkBudgetCalc />
+        <Suspense fallback={null}><DrinkBudgetCalc /></Suspense>
       </section>
 
       {/* [AK] 친구 초대 */}
       <section>
-        <InviteFriend />
+        <Suspense fallback={null}><InviteFriend /></Suspense>
       </section>
     </div>
   );

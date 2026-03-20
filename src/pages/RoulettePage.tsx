@@ -1,9 +1,7 @@
-
-
 import { lazy, Suspense } from 'react';
 
-const Roulette = dynamic(() => import('@/components/interactive/Roulette'), { ssr: false });
-const AIChatbot = dynamic(() => import('@/components/interactive/AIChatbot'), { ssr: false });
+const Roulette = lazy(() => import('@/components/interactive/Roulette'));
+const AIChatbot = lazy(() => import('@/components/interactive/AIChatbot'));
 
 export default function RoulettePage() {
   return (
@@ -12,10 +10,10 @@ export default function RoulettePage() {
         <h1 className="text-3xl font-extrabold text-neon-text mb-2">오늘 갈 곳 룰렛</h1>
         <p className="text-neon-text-muted">어디 갈지 못 정하겠다면? 운에 맡겨보세요!</p>
       </div>
-      <Roulette />
+      <Suspense fallback={null}><Roulette /></Suspense>
       <section>
         <h2 className="mb-4 text-xl font-bold text-neon-text">AI에게 물어보기</h2>
-        <AIChatbot />
+        <Suspense fallback={null}><AIChatbot /></Suspense>
       </section>
     </div>
   );

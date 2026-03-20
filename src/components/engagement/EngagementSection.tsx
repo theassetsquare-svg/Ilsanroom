@@ -1,17 +1,15 @@
-
-
 import { lazy, Suspense } from 'react';
 
-const StreakAndProgress = dynamic(() => import('./StreakAndProgress'), { ssr: false });
-const CountdownUrgency = dynamic(() => import('./CountdownUrgency'), { ssr: false });
-const InfiniteDiscoveryFeed = dynamic(() => import('./InfiniteDiscoveryFeed'), { ssr: false });
+const StreakAndProgress = lazy(() => import('./StreakAndProgress'));
+const CountdownUrgency = lazy(() => import('./CountdownUrgency'));
+const InfiniteDiscoveryFeed = lazy(() => import('./InfiniteDiscoveryFeed'));
 
 export default function EngagementSection() {
   return (
     <>
-      <StreakAndProgress />
-      <CountdownUrgency />
-      <InfiniteDiscoveryFeed />
+      <Suspense fallback={null}><StreakAndProgress /></Suspense>
+      <Suspense fallback={null}><CountdownUrgency /></Suspense>
+      <Suspense fallback={null}><InfiniteDiscoveryFeed /></Suspense>
     </>
   );
 }

@@ -1,12 +1,10 @@
-
-
 import { lazy, Suspense } from 'react';
 
-const AlcoholCalculator = dynamic(() => import('@/components/interactive/SafetyTools').then((m) => ({ default: m.AlcoholCalculator })), { ssr: false });
-const EmergencyContacts = dynamic(() => import('@/components/interactive/SafetyTools').then((m) => ({ default: m.EmergencyContacts })), { ssr: false });
-const LastTrainInfo = dynamic(() => import('@/components/interactive/SafetyTools').then((m) => ({ default: m.LastTrainInfo })), { ssr: false });
-const QuickDriverCall = dynamic(() => import('@/components/interactive/KillerFeatures').then((m) => ({ default: m.QuickDriverCall })), { ssr: false });
-const HangoverFood = dynamic(() => import('@/components/interactive/KillerFeatures').then((m) => ({ default: m.HangoverFood })), { ssr: false });
+const AlcoholCalculator = lazy(() => import('@/components/interactive/SafetyTools').then((m) => ({ default: m.AlcoholCalculator })));
+const EmergencyContacts = lazy(() => import('@/components/interactive/SafetyTools').then((m) => ({ default: m.EmergencyContacts })));
+const LastTrainInfo = lazy(() => import('@/components/interactive/SafetyTools').then((m) => ({ default: m.LastTrainInfo })));
+const QuickDriverCall = lazy(() => import('@/components/interactive/KillerFeatures').then((m) => ({ default: m.QuickDriverCall })));
+const HangoverFood = lazy(() => import('@/components/interactive/KillerFeatures').then((m) => ({ default: m.HangoverFood })));
 
 export default function SafetyPage() {
   return (
@@ -17,13 +15,13 @@ export default function SafetyPage() {
       </div>
 
       {/* 긴급 연락처 */}
-      <EmergencyContacts />
+      <Suspense fallback={null}><EmergencyContacts /></Suspense>
 
       {/* 음주 계산기 */}
-      <AlcoholCalculator />
+      <Suspense fallback={null}><AlcoholCalculator /></Suspense>
 
       {/* 막차 정보 */}
-      <LastTrainInfo />
+      <Suspense fallback={null}><LastTrainInfo /></Suspense>
 
       {/* 안전 수칙 */}
       <div className="rounded-2xl border border-neon-border bg-neon-surface p-6">
@@ -56,10 +54,10 @@ export default function SafetyPage() {
         </div>
       </div>
       {/* [T] 대리운전 원클릭 */}
-      <QuickDriverCall />
+      <Suspense fallback={null}><QuickDriverCall /></Suspense>
 
       {/* [AG] 해장 맛집 */}
-      <HangoverFood />
+      <Suspense fallback={null}><HangoverFood /></Suspense>
     </div>
   );
 }
