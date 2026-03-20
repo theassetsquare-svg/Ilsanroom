@@ -146,8 +146,15 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Newsletter in footer */}
+        {/* ★ 광고문의 — 가장 눈에 띄게! */}
         <div className="mt-8 border-t border-neon-border pt-6">
+          <p className="text-center text-lg font-bold text-neon-primary">
+            광고문의 카톡 <span className="rounded-lg bg-neon-primary/10 px-3 py-1 text-neon-primary-dark">besta12</span>
+          </p>
+        </div>
+
+        {/* Newsletter in footer */}
+        <div className="mt-6 border-t border-neon-border pt-6">
           <FooterNewsletter />
         </div>
 

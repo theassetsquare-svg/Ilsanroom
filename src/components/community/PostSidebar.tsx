@@ -15,13 +15,7 @@ export default function PostSidebar({ currentPost, relatedPosts }: PostSidebarPr
     <aside className="space-y-6">
       {/* Read Time */}
       <div className="rounded-xl border border-neon-border bg-white p-4">
-        <div className="flex items-center gap-2 text-sm text-neon-text-muted">
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span>읽기 시간: <strong className="text-neon-text">{currentPost.readTimeMin}분</strong></span>
-        </div>
-        <div className="mt-2 flex items-center gap-4 text-xs text-neon-text-muted">
+        <div className="flex items-center gap-4 text-xs text-neon-text-muted">
           <span>조회 {currentPost.views.toLocaleString()}</span>
           <span>좋아요 {currentPost.likes}</span>
           <span>댓글 {currentPost.commentCount}</span>

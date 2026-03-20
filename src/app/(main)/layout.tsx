@@ -2,7 +2,6 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import MobileNav from '@/components/layout/MobileNav';
 import BackToTop from '@/components/layout/BackToTop';
-import KakaoChannel from '@/components/ui/KakaoChannel';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -18,7 +17,6 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       <Footer />
       <MobileNav />
       <BackToTop />
-      <KakaoChannel />
     </div>
   );
 }

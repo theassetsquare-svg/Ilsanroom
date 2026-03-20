@@ -321,19 +321,18 @@ export default function HelpPage() {
                 </p>
               </div>
             </div>
-            <a href="http://pf.kakao.com/_YSxjxhX/chat" target="_blank" rel="noopener noreferrer"
-              className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/40">
+            <div className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6">
               <MessageCircle className="mt-0.5 h-6 w-6 shrink-0 text-neon-primary-light" />
               <div>
-                <h3 className="text-sm font-semibold">카카오톡 채널</h3>
+                <h3 className="text-sm font-semibold">카톡 문의</h3>
                 <p className="mt-1 text-xs text-neon-text-muted">
-                  @당사문의자센터
+                  카카오톡 ID: besta12
                 </p>
                 <p className="mt-0.5 text-xs text-neon-text-subtle">
-                  실시간 채팅 상담
+                  광고문의 및 상담
                 </p>
               </div>
-            </a>
+            </div>
             <div className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6">
               <Clock className="mt-0.5 h-6 w-6 shrink-0 text-neon-primary-light" />
               <div>

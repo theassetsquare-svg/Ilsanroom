@@ -114,7 +114,7 @@ const instaHashtags = [
   { tag: '#명월관요정', desc: '전통 코스 요리', url: 'https://www.instagram.com/explore/tags/명월관요정/' },
   { tag: '#강남클럽', desc: '주말 EDM 파티', url: 'https://www.instagram.com/explore/tags/강남클럽/' },
   { tag: '#강남호빠', desc: '호스트 엔터테인먼트', url: 'https://www.instagram.com/explore/tags/강남호빠/' },
-  { tag: '#전통요정', desc: '국악 라이브 연주', url: 'https://www.instagram.com/explore/tags/전통요정/' },
+  { tag: '#전통한정식', desc: '국악 라이브 연주', url: 'https://www.instagram.com/explore/tags/전통한정식/' },
   { tag: '#부산나이트', desc: '부산 사교 댄스 명소', url: 'https://www.instagram.com/explore/tags/부산나이트/' },
 ];
 
