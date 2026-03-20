@@ -15,7 +15,7 @@ import type { Venue } from '@/types';
 
 export const metadata: Metadata = {
   title: { absolute: '전국 밤문화 완전 가이드 | 오늘밤어디' },
-  description: '일산룸, 일산명월관요정 등 전국 123개 업소 정보를 한눈에. 실시간 인기 순위, 첫 방문 가이드, VS 대결 투표까지.',
+  description: '전국 127개 밤문화 업소 정보를 한눈에. 실시간 인기 순위, 첫 방문 가이드, VS 대결 투표까지 — 오늘밤 갈 곳을 찾아보세요.',
   openGraph: {
     title: '오늘밤어디 — 전국 밤문화 123개 업소 실시간 정보',
     description: '전국 123개 업소 정보. 실시간 인기 순위, 첫 방문 가이드, VS 대결 투표.',
@@ -110,10 +110,10 @@ const magazineItems = [
 /* ── Instagram hashtags ── */
 const instaHashtags = [
   { tag: '#일산룸', desc: '프리미엄 프라이빗 공간', url: 'https://www.instagram.com/explore/tags/일산룸/' },
-  { tag: '#일산명월관', desc: '전통 코스 요리', url: 'https://www.instagram.com/explore/tags/일산명월관/' },
+  { tag: '#명월관요정', desc: '전통 코스 요리', url: 'https://www.instagram.com/explore/tags/명월관요정/' },
   { tag: '#강남클럽', desc: '주말 EDM 파티', url: 'https://www.instagram.com/explore/tags/강남클럽/' },
   { tag: '#강남호빠', desc: '호스트 엔터테인먼트', url: 'https://www.instagram.com/explore/tags/강남호빠/' },
-  { tag: '#일산요정', desc: '국악 라이브 연주', url: 'https://www.instagram.com/explore/tags/일산요정/' },
+  { tag: '#전통요정', desc: '국악 라이브 연주', url: 'https://www.instagram.com/explore/tags/전통요정/' },
   { tag: '#부산나이트', desc: '부산 사교 댄스 명소', url: 'https://www.instagram.com/explore/tags/부산나이트/' },
 ];
 
@@ -380,8 +380,8 @@ export default function HomePage() {
           <h2 className="mb-4 text-lg font-bold text-neon-text">업종별 특징과 이용 팁</h2>
           <div className="space-y-4 text-sm leading-relaxed text-neon-text-muted">
             <p>
-              일산룸은 고양시 중심가에서 프라이빗한 모임 공간을 찾는 분들에게 인기 있는 곳이고,
-              일산명월관은 장항로에 위치한 전통 한정식 문화 공간으로 비즈니스 접대와 기념일 행사에 적합합니다.
+              고양시 중심가에서 프라이빗한 모임 공간을 찾는 분들에게 인기 있는 곳부터,
+              장항로에 위치한 전통 한정식 문화 공간까지 비즈니스 접대와 기념일 행사에 적합한 곳이 모여 있습니다.
             </p>
             <p>
               EDM 중심의 댄스홀과 소셜 댄스 기반의 사교장은 완전히 다른 업종입니다.
