@@ -46,16 +46,20 @@ export default function VenueJsonLd({ venue, breadcrumbItems, faqItems, reviews,
       streetAddress: venue.address,
       addressCountry: 'KR',
     },
-    aggregateRating: {
+    openingHours: venue.openHours,
+    url: `${siteUrl}/${venue.category === 'club' ? 'clubs' : venue.category === 'night' ? 'nights' : venue.category === 'lounge' ? 'lounges' : venue.category === 'room' ? 'rooms' : venue.category}/${venue.slug}`,
+  };
+
+  // aggregateRating — only when real reviews exist (ratingValue:0 = Google error)
+  if (venue.rating > 0 && venue.reviewCount > 0) {
+    localBusiness.aggregateRating = {
       '@type': 'AggregateRating',
       ratingValue: venue.rating,
       reviewCount: venue.reviewCount,
       bestRating: 5,
       worstRating: 1,
-    },
-    openingHours: venue.openHours,
-    url: `${siteUrl}/${venue.category === 'club' ? 'clubs' : venue.category === 'night' ? 'nights' : venue.category === 'lounge' ? 'lounges' : venue.category === 'room' ? 'rooms' : venue.category}/${venue.slug}`,
-  };
+    };
+  }
 
   if (venue.priceEntry || venue.priceTable) {
     localBusiness.priceRange = venue.priceTable || venue.priceEntry || '';
