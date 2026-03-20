@@ -10,6 +10,7 @@ interface VenueJsonLdProps {
     openHours: string;
     category: string;
     regionKo: string;
+    district?: string;
     slug: string;
     features: string[];
     priceEntry?: string;
@@ -43,7 +44,9 @@ export default function VenueJsonLd({ venue, breadcrumbItems, faqItems, reviews,
     description: venue.description,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: venue.address,
+      streetAddress: venue.address || `${venue.regionKo} ${venue.nameKo}`,
+      addressLocality: venue.district || venue.regionKo,
+      addressRegion: venue.regionKo,
       addressCountry: 'KR',
     },
     openingHours: venue.openHours,

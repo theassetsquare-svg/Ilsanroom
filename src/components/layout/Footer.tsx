@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import FooterNewsletter from './FooterNewsletter';
 
 const categoryLinks = [
   { href: '/clubs', label: '🎵 클럽' },
@@ -153,18 +152,13 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Newsletter in footer */}
-        <div className="mt-6 border-t border-neon-border pt-6">
-          <FooterNewsletter />
-        </div>
-
         {/* Bottom bar */}
         <div className="mt-8 border-t border-neon-border pt-6">
           <p className="text-center text-xs text-neon-text-muted">
             &copy; {new Date().getFullYear()} 오늘밤어디. All rights reserved.
           </p>
-          <p className="mt-2 text-center text-xs text-neon-text-subtle">
-            본 사이트의 정보는 참고용이며, 실제 영업 상황은 현장과 다를 수 있습니다. 방문 전 반드시 해당 업소에 직접 확인하시기 바랍니다.
+          <p className="mt-2 text-center text-xs text-neon-text-muted">
+            직접 확인하고 전문가가 분석합니다
           </p>
         </div>
       </div>

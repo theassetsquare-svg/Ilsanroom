@@ -62,7 +62,6 @@ export const venues: Venue[] = [
     tags: ['일산룸', '프라이빗', '비즈니스', 'VIP'],
     district: '일산',
     staffNickname: '신실장',
-    staffPhone: '010-3695-4929',
   },
   {
     id: 'v-002',
@@ -120,7 +119,6 @@ export const venues: Venue[] = [
     tags: ['일산요정', '한정식', '국악', '프라이빗룸', '비즈니스접대'],
     district: '일산',
     staffNickname: '신실장',
-    staffPhone: '010-3695-4929',
   },
   {
     id: 'v-004',

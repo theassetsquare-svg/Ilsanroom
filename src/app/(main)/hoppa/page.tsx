@@ -7,7 +7,7 @@ import { getVenuesByCategory } from '@/data/venues';
 export const metadata: Metadata = {
   title: { absolute: '호빠 | 오늘밤어디 - 전국 호스트바 정보' },
   description: '여성 고객을 위한 프리미엄 호스트 엔터테인먼트. 강남 로얄·어게인, 수원 비스트, 해운대 깐따삐야 등 전국 인기 호스트바 정보.',
-  openGraph: { images: [{ url: 'https://placehold.co/1200x630/DB2777/ffffff/png?text=%ED%98%B8%EB%B9%A0+%7C+%EC%98%A4%EB%8A%98%EB%B0%A4%EC%96%B4%EB%94%94', width: 1200, height: 630 }] },
+  openGraph: { images: [{ url: 'https://ilsanroom.pages.dev/api/og?title=오늘밤어디&subtitle=밤문화+정보&bg=%238B5CF6', width: 1200, height: 630 }] },
 };
 
 const regions = [

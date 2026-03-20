@@ -20,13 +20,13 @@ export const metadata: Metadata = {
     title: '오늘밤어디 — 전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보',
     description: '전국 클럽·나이트·라운지·룸·요정·호빠 정보를 한곳에서.',
     url: 'https://ilsanroom.pages.dev',
-    images: [{ url: 'https://placehold.co/1200x630/8B5CF6/ffffff/png?text=%EC%98%A4%EB%8A%98%EB%B0%A4%EC%96%B4%EB%94%94', width: 1200, height: 630, alt: '오늘밤어디 — 전국 클럽·나이트·라운지·룸·요정·호빠' }],
+    images: [{ url: 'https://ilsanroom.pages.dev/api/og?title=%EC%98%A4%EB%8A%98%EB%B0%A4%EC%96%B4%EB%94%94&subtitle=%EC%A0%84%EA%B5%AD+%EB%B0%A4%EB%AC%B8%ED%99%94+%EC%8B%A4%EC%8B%9C%EA%B0%84+%EC%A0%95%EB%B3%B4&bg=%238B5CF6', width: 1200, height: 630, alt: '오늘밤어디 — 전국 클럽·나이트·라운지·룸·요정·호빠' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: '오늘밤어디 — 전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보',
     description: '전국 클럽·나이트·라운지·룸·요정·호빠 정보를 한곳에서.',
-    images: ['https://placehold.co/1200x630/8B5CF6/ffffff/png?text=%EC%98%A4%EB%8A%98%EB%B0%A4%EC%96%B4%EB%94%94'],
+    images: ['https://ilsanroom.pages.dev/api/og?title=%EC%98%A4%EB%8A%98%EB%B0%A4%EC%96%B4%EB%94%94&subtitle=%EC%A0%84%EA%B5%AD+%EB%B0%A4%EB%AC%B8%ED%99%94+%EC%8B%A4%EC%8B%9C%EA%B0%84+%EC%A0%95%EB%B3%B4&bg=%238B5CF6'],
   },
   robots: { index: true, follow: true },
   verification: {

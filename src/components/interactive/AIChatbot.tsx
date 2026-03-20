@@ -45,10 +45,10 @@ function getResponse(input: string): string {
     return `인기 나이트 추천:\n${nights.map((v) => `• ${v.nameKo} (${v.regionKo}) ${v.staffNickname ? v.staffNickname : ''}`).join('\n')}`;
   }
   if (lower.includes('접대') || lower.includes('요정') || lower.includes('한정식')) {
-    return '접대 장소로는 일산명월관요정(신실장 010-3695-4929)을 추천합니다. 한정식 코스와 국악 라이브를 즐길 수 있는 격조 높은 요정입니다.';
+    return '접대 장소로는 일산명월관요정(신실장)을 추천합니다. 한정식 코스와 국악 라이브를 즐길 수 있는 격조 높은 요정입니다.';
   }
   if (lower.includes('룸') || lower.includes('프라이빗')) {
-    return '프라이빗 룸으로는 일산룸(신실장 010-3695-4929)을 추천합니다. 비즈니스 미팅과 소규모 회식에 최적입니다.';
+    return '프라이빗 룸으로는 일산룸(신실장)을 추천합니다. 비즈니스 미팅과 소규모 회식에 최적입니다.';
   }
   if (lower.includes('혼자') || lower.includes('혼클')) {
     return '혼자 가기 좋은 곳:\n• 라운지: 바 카운터에서 칵테일 즐기기\n• 클럽: 음악에 집중하며 자유롭게\n처음이라면 라운지부터 시작해보세요!';
