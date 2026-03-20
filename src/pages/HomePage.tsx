@@ -85,9 +85,9 @@ const latestReviews = [
 
 /* ── Magazine preview ── */
 const magazineItems = [
-  { title: '강남 TOP5 — 올해 꼭 가봐야 할 핫플', tag: '추천', href: '/magazine' },
+  { title: '강남 TOP5 — 올해 꼭 가봐야 할 핫플', tag: '엄선', href: '/magazine' },
   { title: '전통 격식 공간 완벽 안내서: 접대부터 가족모임까지', tag: '전통', href: '/magazine' },
-  { title: '처음 방문하는 분을 위한 A to Z 매너 핸드북', tag: '입문', href: '/magazine' },
+  { title: '처음 찾아가는 분을 위한 A to Z 매너 핸드북', tag: '입문', href: '/magazine' },
   { title: '홍대 vs 이태원 비교 — 어디가 나에게 맞을까?', tag: '비교', href: '/magazine' },
 ];
 
@@ -114,7 +114,7 @@ export default function HomePage() {
         '@type': 'WebSite',
         name: '오늘밤어디',
         url: 'https://ilsanroom.pages.dev',
-        description: '전국 클럽·나이트·라운지·프라이빗공간·요정·호빠 실시간 정보',
+        description: '전국 댄스홀·나이트·라운지·프라이빗공간·요정·호빠 실시간 정보',
         potentialAction: {
           '@type': 'SearchAction',
           target: { '@type': 'EntryPoint', urlTemplate: 'https://ilsanroom.pages.dev/map?q={search_term_string}' },
@@ -125,7 +125,7 @@ export default function HomePage() {
       <JsonLd data={{
         '@context': 'https://schema.org',
         '@type': 'ItemList',
-        name: '인기 업소',
+        name: '인기 매장',
         itemListElement: popularVenues.slice(0, 10).map((v, i) => ({
           '@type': 'ListItem',
           position: i + 1,
@@ -142,7 +142,7 @@ export default function HomePage() {
               <span className="gradient-text">오늘밤어디</span>
             </h1>
             <p className="mx-auto mt-3 max-w-xl text-base text-neon-text-muted sm:text-lg">
-              전국 클럽 · 나이트 · 라운지 · 룸 · 요정 · 호빠 실시간 정보
+              전국 댄스홀 · 나이트 · 라운지 · 룸 · 요정 · 호빠 실시간 정보
             </p>
 
             {/* Search Bar */}
@@ -167,7 +167,7 @@ export default function HomePage() {
 
       {/* ═══════ 2. PREMIUM — 일산룸 + 명월관 ═══════ */}
       <section className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-        <h2 className="sr-only">프리미엄 업소</h2>
+        <h2 className="sr-only">프리미엄 매장</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {ilsanRoom && (
             <Link href="/rooms/ilsan/ilsanroom" className="group block h-full">
@@ -207,9 +207,9 @@ export default function HomePage() {
       {/* ═══════ 4. VS 대결 투표 ═══════ */}
       <HomeVSBattle />
 
-      {/* ═══════ 5. 지역별 업소 찾기 ═══════ */}
+      {/* ═══════ 5. 지역별 장소 찾기 ═══════ */}
       <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
-        <h2 className="mb-5 text-xl font-bold text-neon-text">지역별 업소 찾기</h2>
+        <h2 className="mb-5 text-xl font-bold text-neon-text">지역별 장소 찾기</h2>
         <div className="flex flex-wrap gap-3">
           {regions.map((r) => (
             <Link key={r.label}
@@ -225,7 +225,7 @@ export default function HomePage() {
       {/* ═══════ 6. 퀴즈 CTA ═══════ */}
       <QuizCTA />
 
-      {/* ═══════ 7. 첫 방문 가이드 배너 ═══════ */}
+      {/* ═══════ 7. 첫 이용 가이드 배너 ═══════ */}
       <section className="mx-auto max-w-[1200px] px-4 py-6 sm:px-6">
         <Link href="/guide" className="group block">
           <div className="rounded-2xl border border-neon-border bg-white p-5 sm:p-6 transition-all hover:shadow-md card-hover">
@@ -233,7 +233,7 @@ export default function HomePage() {
               <span className="text-3xl">📖</span>
               <div className="flex-1">
                 <h3 className="text-base font-bold text-neon-text sm:text-lg">처음이세요? 이것만 알면 됩니다</h3>
-                <p className="text-sm text-neon-text-muted">뭐 입고? 얼마? 혼자 가도 돼? — 업종별 첫 방문 필수 정보</p>
+                <p className="text-sm text-neon-text-muted">뭐 입고? 얼마? 혼자 가도 돼? — 카테고리별 첫 이용 필수 정보</p>
               </div>
               <span className="hidden sm:inline-flex items-center gap-1 shrink-0 rounded-xl border border-neon-border px-5 py-2.5 text-sm font-semibold text-neon-primary transition group-hover:bg-neon-primary/5">
                 가이드 보기 →
@@ -246,7 +246,7 @@ export default function HomePage() {
       {/* ═══════ 8. 인기 TOP 10 ═══════ */}
       <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-neon-text">인기 업소 TOP 10</h2>
+          <h2 className="text-2xl font-bold text-neon-text">인기 스팟 TOP 10</h2>
           <Link href="/ranking" className="text-sm text-neon-primary hover:underline">
             전체 랭킹 →
           </Link>
@@ -325,17 +325,17 @@ export default function HomePage() {
       {/* ═══════ 12. 인기 시간대 ═══════ */}
       <PopularTimeWidget />
 
-      {/* ═══════ 13. 업주 유치 배너 ═══════ */}
+      {/* ═══════ 13. 사업자 유치 배너 ═══════ */}
       <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
         <Link href="/for-business" className="group block">
           <div className="relative overflow-hidden rounded-2xl border border-neon-primary/20 bg-gradient-to-r from-violet-50 via-white to-cyan-50 p-8 sm:p-12 transition-all hover:shadow-lg">
             <div className="relative flex flex-col items-center text-center sm:flex-row sm:justify-between sm:text-left">
               <div>
                 <h3 className="mb-2 text-2xl font-bold text-neon-text sm:text-3xl">
-                  내 업소를 등록하고 <span className="text-neon-primary">매출 300%</span> 올리세요
+                  내 가게를 등록하고 <span className="text-neon-primary">매출 300%</span> 올리세요
                 </h3>
                 <p className="text-neon-text-muted">
-                  등록 시 월 평균 방문자 1,200명 이상 노출. 무료 체험으로 시작해 보세요.
+                  등록 시 월 평균 유입 1,200명 이상 노출. 무료 체험으로 시작해 보세요.
                 </p>
               </div>
               <div className="mt-6 sm:mt-0 sm:ml-8 shrink-0">
@@ -357,7 +357,7 @@ export default function HomePage() {
       {/* ═══════ SEO Text ═══════ */}
       <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
         <div className="rounded-2xl border border-neon-border bg-white p-8">
-          <h2 className="mb-4 text-lg font-bold text-neon-text">업종별 특징과 이용 팁</h2>
+          <h2 className="mb-4 text-lg font-bold text-neon-text">카테고리별 특징과 이용 팁</h2>
           <div className="space-y-4 text-sm leading-relaxed text-neon-text-muted">
             <p>
               고양시 중심가에서 프라이빗한 모임 공간을 찾는 분들에게 인기 있는 곳부터,

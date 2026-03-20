@@ -20,12 +20,13 @@ export default function ClubsPage() {
         <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">클럽</h1>
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6">
           <p className="text-base leading-relaxed text-neon-text-muted">
-            DJ가 선곡하는 EDM, 하우스, 테크노, 힙합 등 전자음악을 중심으로 운영되는 엔터테인먼트 공간입니다.
-            소셜댄스 중심의 사교장과는 완전히 다른 업종으로, 20대~30대 초반 고객이 주를 이루며
-            스탠딩 중심의 댄스 플로어에서 음악에 맞춰 자유롭게 즐기는 것이 특징입니다.
-            강남은 대형 EDM 메가 공간이 밀집해 있으며, 홍대는 인디·힙합 등 다양한 장르의 중소형 파티 공간이 특색입니다.
-            이태원은 외국인 비율이 높아 글로벌한 파티 문화를 경험할 수 있고, 부산 서면에도 지역 특색의 씬이 형성되어 있습니다.
-            국내외 유명 DJ 게스트 공연, 테이블 예약, 드레스코드 등 업소별 특성을 비교하여 자신에게 맞는 곳을 선택하세요.
+            EDM, 하우스, 테크노, 힙합 등 전자음악 장르별로 특화된 DJ가 턴테이블을 돌리며 밤새 에너지를 이끄는 댄스 공간입니다.
+            20대~30대 초반이 주 연령층이며, 금요일 자정부터 토요일 새벽 4시까지가 가장 열기가 뜨거운 피크 타임입니다.
+            강남권 대형 베뉴는 1,000명 이상 수용하는 메가 플로어를 갖추고 해외 게스트 DJ 라인업을 정기적으로 선보입니다.
+            홍대 인근은 인디·얼터너티브 씬과 결합한 중소규모 파티가 독자적 문화를 형성하고 있으며,
+            이태원은 외국인 비율이 높아 다국적 페스티벌 분위기를 경험할 수 있습니다.
+            스탠딩 중심의 댄스 플로어에서 조명과 사운드 시스템에 몸을 맡기는 것이 핵심 매력이니,
+            드레스코드와 테이블 예약 여부를 사전에 확인한 뒤 방문하세요.
           </p>
         </div>
       </div>
@@ -47,7 +48,7 @@ export default function ClubsPage() {
         { day: '수요일', time: '22:00~01:00', level: 30 },
       ]} />
 
-      <CategoryVSBattle venueA="강남청담클럽 레이스" venueB="압구정클럽 하입" topic="강남 vs 압구정 — EDM 파티 대결" />
+      <CategoryVSBattle venueA="청담 레이스" venueB="압구정 하입" topic="강남 vs 압구정 — EDM 파티 대결" />
 
       <RelatedMagazine articles={[
         { title: '논현 EDM TOP5 — 올해 꼭 가봐야 할 곳', tag: '추천' },

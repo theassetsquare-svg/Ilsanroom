@@ -1,76 +1,94 @@
-
-
-import { useState } from 'react';
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
-// metadata moved to layout or handled differently for client component
+type PartyStatus = "모집중" | "마감임박" | "마감";
+
+const statusStyles: Record<PartyStatus, string> = {
+  "모집중": "bg-neon-green/15 text-neon-green",
+  "마감임박": "bg-neon-gold/15 text-neon-gold",
+  "마감": "bg-neon-surface-2 text-neon-text-muted",
+};
+
+function getDday(dateStr: string): string {
+  const target = new Date(dateStr);
+  const now = new Date("2026-03-20");
+  const diff = Math.ceil((target.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  if (diff === 0) return "D-DAY";
+  if (diff > 0) return `D-${diff}`;
+  return `D+${Math.abs(diff)}`;
+}
 
 const sampleParties = [
   {
     id: 1,
-    title: "이번 토요일 강남 클럽 같이 가실 분!",
-    author: "파티메이커",
-    date: "2026-03-15",
-    region: "강남",
-    currentMembers: 3,
+    title: "이번 주말 일산 라운지 동행 구합니다",
+    author: "라운지호스트",
+    eventDate: "2026-03-22",
+    region: "일산",
+    currentMembers: 2,
     maxMembers: 6,
-    ageRange: "20대 중반~30대 초반",
-    status: "모집중",
-    comments: 12,
+    ageRange: "20대 후반~30대",
+    status: "모집중" as PartyStatus,
+    comments: 7,
+    description: "토요일 저녁 8시 라페스타 근처 라운지에서 만나서 가볍게 한잔하려고 합니다.",
   },
   {
     id: 2,
-    title: "홍대 클럽 투어 멤버 구합니다 (3/21)",
-    author: "홍대가이드",
-    date: "2026-03-21",
-    region: "홍대",
-    currentMembers: 4,
-    maxMembers: 8,
-    ageRange: "20대",
-    status: "모집중",
-    comments: 8,
+    title: "3/21(토) 일산 나이트 첫 도전 같이 갈 분",
+    author: "입문희망자",
+    eventDate: "2026-03-21",
+    region: "일산",
+    currentMembers: 3,
+    maxMembers: 4,
+    ageRange: "20대 중반",
+    status: "마감임박" as PartyStatus,
+    comments: 11,
+    description: "혼자 가기 부담스러워서 함께할 분을 찾습니다. 초보 환영이에요!",
   },
   {
     id: 3,
-    title: "해운대 주말 파티 동행 모집",
-    author: "부산파티",
-    date: "2026-03-22",
-    region: "해운대",
-    currentMembers: 2,
-    maxMembers: 5,
-    ageRange: "20대~30대",
-    status: "모집중",
-    comments: 6,
+    title: "주엽역 와인바 소규모 모임 (4명 한정)",
+    author: "와인소모임",
+    eventDate: "2026-03-28",
+    region: "일산",
+    currentMembers: 1,
+    maxMembers: 4,
+    ageRange: "30대",
+    status: "모집중" as PartyStatus,
+    comments: 3,
+    description: "와인 시음하며 편하게 대화 나눌 분을 모집합니다. 와인 초심자도 대환영.",
   },
   {
     id: 4,
-    title: "이태원 라운지 바 호핑 같이 하실 분",
-    author: "이태원러버",
-    date: "2026-03-16",
-    region: "이태원",
-    currentMembers: 5,
-    maxMembers: 5,
-    ageRange: "20대 후반~30대",
-    status: "마감",
-    comments: 15,
+    title: "킨텍스 인근 금요 정모 (정기)",
+    author: "금요밤지기",
+    eventDate: "2026-03-27",
+    region: "일산",
+    currentMembers: 8,
+    maxMembers: 8,
+    ageRange: "20대~30대",
+    status: "마감" as PartyStatus,
+    comments: 19,
+    description: "매주 금요일 킨텍스 근처에서 진행하는 정기 모임입니다. 다음 주차 신청은 월요일 오픈!",
   },
   {
     id: 5,
-    title: "청담 나이트 첫 방문 같이 가요",
-    author: "나이트입문",
-    date: "2026-03-29",
-    region: "청담",
+    title: "백석동 신상 바 탐방 동행자 모집",
+    author: "신상탐험가",
+    eventDate: "2026-03-29",
+    region: "일산",
     currentMembers: 2,
-    maxMembers: 4,
-    ageRange: "30대",
-    status: "모집중",
-    comments: 4,
+    maxMembers: 5,
+    ageRange: "20대 후반",
+    status: "모집중" as PartyStatus,
+    comments: 5,
+    description: "새로 오픈한 곳들을 돌아보며 솔직하게 비교해보려 합니다. 리뷰 작성도 함께해요.",
   },
 ];
 
 function NbbangCalc() {
-  const [total, setTotal] = useState('');
-  const [people, setPeople] = useState('');
+  const [total, setTotal] = useState("");
+  const [people, setPeople] = useState("");
   const perPerson = total && people && Number(people) > 0 ? Math.ceil(Number(total) / Number(people)) : 0;
 
   return (
@@ -83,7 +101,7 @@ function NbbangCalc() {
             className="w-32 rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-accent" />
         </div>
         <div>
-          <label className="block text-xs text-neon-text-muted mb-1">인원 수</label>
+          <label className="block text-xs text-neon-text-muted mb-1">인원</label>
           <input type="number" value={people} onChange={(e) => setPeople(e.target.value)} placeholder="4"
             className="w-20 rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-accent" />
         </div>
@@ -98,87 +116,111 @@ function NbbangCalc() {
 }
 
 export default function PartyRecruitPage() {
+  const [statusFilter, setStatusFilter] = useState<PartyStatus | "전체">("전체");
+  const filtered = statusFilter === "전체"
+    ? sampleParties
+    : sampleParties.filter((p) => p.status === statusFilter);
+
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">
+        {/* Header */}
         <div className="mb-8 flex items-center justify-between">
           <div>
             <Link to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
               ← 커뮤니티
             </Link>
-            <h1 className="text-3xl font-bold">파티 모집</h1>
-            <p className="mt-2 text-neon-text-muted">함께 즐길 파티 멤버를 찾아보세요</p>
+            <h1 className="text-3xl font-bold">동행 모집 게시판</h1>
+            <p className="mt-2 text-neon-text-muted">
+              함께 갈 멤버를 찾거나, 열린 모임에 합류하세요
+            </p>
           </div>
           <button className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light">
-            모집글 작성
+            모집글 올리기
           </button>
         </div>
 
-        <div className="mb-6 flex gap-3 overflow-x-auto">
-          {["전체", "강남", "홍대", "이태원", "청담", "해운대"].map((tab) => (
+        {/* Status Filter */}
+        <div className="mb-6 flex gap-2">
+          {(["전체", "모집중", "마감임박", "마감"] as const).map((s) => (
             <button
-              key={tab}
-              className="shrink-0 rounded-lg bg-neon-surface px-4 py-2 text-sm text-neon-text-muted transition hover:bg-neon-surface-2 hover:text-neon-text first:bg-neon-primary first:text-neon-text"
+              key={s}
+              onClick={() => setStatusFilter(s)}
+              className={`rounded-full px-4 py-1.5 text-sm transition ${
+                statusFilter === s
+                  ? "bg-neon-primary text-neon-text"
+                  : "border border-neon-border text-neon-text-muted hover:border-neon-primary/50"
+              }`}
             >
-              {tab}
+              {s}
             </button>
           ))}
         </div>
 
         <NbbangCalc />
 
+        {/* Party Cards */}
         <div className="space-y-4">
-          {sampleParties.map((party) => (
-            <div
-              key={party.id}
-              className="rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-border"
-            >
-              <div className="mb-3 flex items-start justify-between">
-                <div>
-                  <div className="mb-2 flex items-center gap-2">
-                    <span
-                      className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        party.status === "모집중"
-                          ? "bg-neon-green/10 text-neon-green"
-                          : "bg-neon-surface-2 text-neon-text-muted"
-                      }`}
-                    >
-                      {party.status}
+          {filtered.map((party) => {
+            const dday = getDday(party.eventDate);
+            const fillPct = Math.round((party.currentMembers / party.maxMembers) * 100);
+
+            return (
+              <div
+                key={party.id}
+                className="rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/30"
+              >
+                {/* Top Row: Date Badge + Status */}
+                <div className="mb-3 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="rounded-lg bg-neon-primary/20 px-3 py-1 text-sm font-bold text-neon-primary-light">
+                      {dday}
                     </span>
-                    <span className="rounded-full bg-neon-primary-light/10 px-2 py-0.5 text-xs text-neon-primary-light">
-                      {party.region}
+                    <span className="text-xs text-neon-text-muted">{party.eventDate}</span>
+                  </div>
+                  <span className={`rounded-full px-3 py-1 text-xs font-medium ${statusStyles[party.status]}`}>
+                    {party.status}
+                  </span>
+                </div>
+
+                {/* Title */}
+                <h3 className="mb-2 text-lg font-semibold">{party.title}</h3>
+                <p className="mb-4 text-sm text-neon-text-muted">{party.description}</p>
+
+                {/* Participant Bar */}
+                <div className="mb-4">
+                  <div className="mb-1 flex items-center justify-between text-xs">
+                    <span className="text-neon-text-muted">참여 현황</span>
+                    <span className="font-medium">
+                      {party.currentMembers}/{party.maxMembers}명
                     </span>
                   </div>
-                  <h3 className="text-lg font-semibold">{party.title}</h3>
-                </div>
-              </div>
-              <div className="mb-4 flex flex-wrap gap-4 text-sm text-neon-text-muted">
-                <span>📅 {party.date}</span>
-                <span>👥 {party.currentMembers}/{party.maxMembers}명</span>
-                <span>🎂 {party.ageRange}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex -space-x-2">
-                  {Array.from({ length: party.currentMembers }).map((_, i) => (
+                  <div className="h-2.5 w-full rounded-full bg-neon-surface-2">
                     <div
-                      key={i}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-neutral-900 bg-neon-surface-2 text-xs"
-                    >
-                      {i + 1}
-                    </div>
-                  ))}
+                      className={`h-2.5 rounded-full transition-all ${
+                        fillPct >= 100 ? "bg-neon-text-muted" : fillPct >= 75 ? "bg-neon-gold" : "bg-neon-green"
+                      }`}
+                      style={{ width: `${fillPct}%` }}
+                    />
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-xs text-neon-text-muted">💬 {party.comments}</span>
-                  {party.status === "모집중" && (
+
+                {/* Meta + Action */}
+                <div className="flex items-center justify-between">
+                  <div className="flex flex-wrap gap-3 text-xs text-neon-text-muted">
+                    <span>{party.region}</span>
+                    <span>{party.ageRange}</span>
+                    <span>💬 {party.comments}</span>
+                  </div>
+                  {party.status !== "마감" && (
                     <button className="rounded-lg bg-neon-primary/20 px-4 py-1.5 text-xs font-medium text-neon-primary-light transition hover:bg-neon-primary/30">
                       참여 신청
                     </button>
                   )}
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
