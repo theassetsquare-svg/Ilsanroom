@@ -51,17 +51,17 @@ export default async function RegionalRoomsPage({ params }: Props) {
 
   return (
     <div className="bg-neon-bg">
-      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
         <Breadcrumb items={[{ label: '룸', href: '/rooms' }, { label: regionKo }]} />
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-6 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
         <h1 className="text-3xl font-extrabold text-neon-text">{regionKo} 룸</h1>
         <p className="mt-3 text-neon-text-muted">{regionKo} 지역의 프리미엄 프라이빗 공간을 소개합니다.</p>
       </section>
 
       {isIlsan && (
-        <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6">
+        <section className="mx-auto max-w-[1200px] px-4 pb-8 sm:px-6">
           <div className="rounded-xl border border-neon-border bg-white p-6">
             <h2 className="mb-3 text-lg font-bold text-neon-text">일산 프라이빗 공간 안내</h2>
             <p className="text-sm leading-relaxed text-neon-text-muted">
@@ -74,7 +74,7 @@ export default async function RegionalRoomsPage({ params }: Props) {
         </section>
       )}
 
-      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 pb-20 sm:px-6">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {rooms.map((venue) => <VenueCard key={venue.id} venue={venue} region={region} />)}
         </div>

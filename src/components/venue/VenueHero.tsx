@@ -41,7 +41,7 @@ export default function VenueHero({
       <div className={`absolute inset-0 bg-gradient-to-b ${gradient}`} />
       <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] ${bgPattern}`} />
 
-      <div className="relative mx-auto flex min-h-[240px] max-w-7xl flex-col justify-end px-4 pb-8 sm:min-h-[300px] sm:px-6">
+      <div className="relative mx-auto flex min-h-[240px] max-w-[1200px] flex-col justify-end px-4 pb-8 sm:min-h-[300px] sm:px-6">
         <div className="mb-4 flex flex-wrap gap-2">
           {isPremium && <Badge variant="premium">PREMIUM</Badge>}
         </div>

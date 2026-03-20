@@ -42,7 +42,7 @@ export default function HotWidget() {
   if (venues.length === 0) return null;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+    <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
       <div className="mb-6 flex items-center gap-3">
         <div className={`h-3 w-3 rounded-full bg-neon-pink transition-all duration-300 ${pulse ? 'scale-125 shadow-[0_0_12px_rgba(244,63,94,0.6)]' : 'scale-100'}`} />
         <h2 className="text-xl font-bold text-neon-text">지금 뜨는 TOP 5</h2>

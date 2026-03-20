@@ -9,7 +9,7 @@ export default function GlobalError({
 }) {
   return (
     <html lang="ko">
-      <body className="flex min-h-screen items-center justify-center px-4 text-center" style={{ backgroundColor: '#F8F8FC', color: '#111111' }}>
+      <body className="flex min-h-screen items-center justify-center px-4 text-center" style={{ backgroundColor: '#F5F5F5', color: '#111111' }}>
         <div>
           <div className="mb-6 mx-auto flex h-20 w-20 items-center justify-center rounded-full" style={{ backgroundColor: 'rgba(220,38,38,0.08)' }}>
             <svg className="h-10 w-10" style={{ color: '#DC2626' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -1,10 +1,10 @@
 // ── Level System ────────────────────────────────────────
 export const LEVELS = [
-  { name: '뉴비', minXp: 0, color: 'text-neutral-400', bg: 'bg-neutral-700', icon: '🌱' },
-  { name: '클러버', minXp: 100, color: 'text-blue-400', bg: 'bg-blue-500/20', icon: '🎵' },
-  { name: '파티피플', minXp: 500, color: 'text-violet-400', bg: 'bg-violet-500/20', icon: '🎉' },
-  { name: 'VIP', minXp: 2000, color: 'text-amber-400', bg: 'bg-amber-500/20', icon: '👑' },
-  { name: '레전드', minXp: 5000, color: 'text-rose-400', bg: 'bg-rose-500/20', icon: '🔥' },
+  { name: '뉴비', minXp: 0, color: 'text-neutral-600', bg: 'bg-neutral-100', icon: '🌱' },
+  { name: '클러버', minXp: 100, color: 'text-blue-700', bg: 'bg-blue-100', icon: '🎵' },
+  { name: '파티피플', minXp: 500, color: 'text-violet-700', bg: 'bg-violet-100', icon: '🎉' },
+  { name: 'VIP', minXp: 2000, color: 'text-amber-700', bg: 'bg-amber-100', icon: '👑' },
+  { name: '레전드', minXp: 5000, color: 'text-rose-700', bg: 'bg-rose-100', icon: '🔥' },
 ] as const;
 
 export type LevelName = (typeof LEVELS)[number]['name'];

@@ -27,7 +27,7 @@ export default function HomeRoulette() {
   };
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+    <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
       <div className="rounded-2xl border border-neon-accent/30 bg-neon-surface p-8">
         <div className="flex items-center justify-between mb-6">
           <div>

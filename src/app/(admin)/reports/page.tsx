@@ -115,7 +115,7 @@ const typeStyles: Record<string, string> = {
 export default function ReportsPage() {
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
-      <div className="mx-auto max-w-7xl px-4 py-8">
+      <div className="mx-auto max-w-[1200px] px-4 py-8">
         {/* Header */}
         <div className="mb-8 flex items-center justify-between">
           <div>

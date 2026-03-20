@@ -7,32 +7,27 @@ import { getVenuesByCategory } from '@/data/venues';
 export const metadata: Metadata = {
   title: { absolute: '호빠 | 오늘밤어디 - 전국 호스트바 정보' },
   description: '여성 고객을 위한 프리미엄 호스트 엔터테인먼트. 강남 로얄·어게인, 수원 비스트, 해운대 깐따삐야 등 전국 인기 호스트바 정보.',
-  openGraph: { images: [{ url: 'https://ilsanroom.pages.dev/api/og?title=오늘밤어디&subtitle=밤문화+정보&bg=%238B5CF6', width: 1200, height: 630 }] },
+  openGraph: { images: [{ url: 'https://ilsanroom.pages.dev/og/hoppa.svg', width: 1200, height: 630 }] },
 };
 
 const regions = [
   { key: 'gangnam', label: '강남' },
   { key: 'hongdae', label: '홍대' },
-  { key: 'sinlim', label: '신림' },
   { key: 'geondae', label: '건대' },
+  { key: 'jangan', label: '장안동' },
   { key: 'jangandong', label: '장안동' },
-  { key: 'songpa', label: '송파' },
-  { key: 'yeongdeungpo', label: '영등포' },
   { key: 'suwon', label: '수원' },
-  { key: 'incheon', label: '인천' },
   { key: 'busan-haeundae', label: '해운대' },
   { key: 'busan', label: '부산' },
   { key: 'daegu', label: '대구' },
   { key: 'daejeon', label: '대전' },
-  { key: 'gwangju', label: '광주' },
-  { key: 'ulsan', label: '울산' },
-  { key: 'jeju', label: '제주' },
+  { key: 'jeonju', label: '전주' },
 ];
 
 export default function HoppaPage() {
   const venues = getVenuesByCategory('hoppa');
   return (
-    <div className="hoppa-theme mx-auto max-w-7xl px-4 py-8 sm:px-6 space-y-12">
+    <div className="hoppa-theme mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '호빠' }]} />
         <h1 className="mt-6 text-3xl font-extrabold text-pink-700 mb-4">
@@ -48,8 +43,8 @@ export default function HoppaPage() {
           <p className="text-base leading-relaxed text-pink-900/70">
             전문 호스트가 여성 고객에게 대화와 엔터테인먼트를 제공하는 여성 전용 프라이빗 공간입니다.
             편안한 분위기에서 대화와 게임을 즐기며 스트레스를 풀 수 있는 곳으로,
-            강남·홍대·건대·장안동·수원·해운대·부산·대구·대전·인천·광주·울산·제주 등
-            전국 주요 도시에 25곳 이상 위치해 있습니다.
+            강남·홍대·건대·장안동·수원·해운대·부산·대구·대전·전주 등
+            전국 주요 도시에 18곳이 등록되어 있습니다.
             TC(타임차지) 방식으로 운영되며, 사전 전화 한 통이면 분위기와 이용 방법을
             바로 안내받을 수 있어서 처음 방문하시는 분도 부담 없이 이용할 수 있습니다.
             친구 생일, 회식 2차, 스트레스 해소 등 다양한 목적으로 방문하시는 여성분들이 많고,

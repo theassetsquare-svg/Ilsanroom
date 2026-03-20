@@ -38,7 +38,7 @@ export default function RecentlyViewed() {
   if (recent.length === 0) return null;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+    <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
       <h2 className="mb-4 text-lg font-bold text-neon-text">최근 본 업소</h2>
       <div className="flex gap-3 overflow-x-auto pb-2">
         {recent.map(venue => (

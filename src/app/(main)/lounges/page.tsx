@@ -7,7 +7,7 @@ import { getVenuesByCategory } from '@/data/venues';
 export const metadata: Metadata = {
   title: { absolute: '라운지 | 오늘밤어디 - 강남·압구정·이태원 프리미엄 라운지바' },
   description: '시그니처 칵테일과 소파석에서 보내는 조용한 밤. 압구정 디엠, 논현, 이태원 바텐더 추천 공간 모음.',
-  openGraph: { images: [{ url: 'https://ilsanroom.pages.dev/api/og?title=오늘밤어디&subtitle=밤문화+정보&bg=%238B5CF6', width: 1200, height: 630 }] },
+  openGraph: { images: [{ url: 'https://ilsanroom.pages.dev/og/lounges.svg', width: 1200, height: 630 }] },
 };
 
 const regions = [
@@ -19,7 +19,7 @@ const regions = [
 export default function LoungesPage() {
   const venues = getVenuesByCategory('lounge');
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 space-y-12">
+    <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '라운지' }]} />
         <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">라운지</h1>

@@ -6,8 +6,8 @@ import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
   title: { absolute: '룸 | 오늘밤어디 - 일산룸·해운대고구려·전국 프라이빗 공간' },
-  description: '방음 완비된 독립 공간에서 모임·회식·비즈니스까지. 일산룸부터 해운대고구려 60개+ 정찰제 공간까지 전국 비교.',
-  openGraph: { images: [{ url: 'https://ilsanroom.pages.dev/api/og?title=오늘밤어디&subtitle=밤문화+정보&bg=%238B5CF6', width: 1200, height: 630 }] },
+  description: '방음 완비된 독립 공간에서 모임·회식·기념일까지. 일산룸, 해운대고구려 등 60개+ 정찰제 프라이빗 장소를 한 곳에서.',
+  openGraph: { images: [{ url: 'https://ilsanroom.pages.dev/og/rooms.svg', width: 1200, height: 630 }] },
 };
 
 const regions = [
@@ -20,7 +20,7 @@ const regions = [
 export default function RoomsPage() {
   const venues = getVenuesByCategory('room');
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 space-y-12">
+    <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '룸' }]} />
         <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">룸</h1>

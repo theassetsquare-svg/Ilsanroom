@@ -7,7 +7,7 @@ import { getVenuesByCategory } from '@/data/venues';
 export const metadata: Metadata = {
   title: { absolute: '클럽 | 오늘밤어디 - 강남·홍대·이태원·부산 EDM 힙합 클럽' },
   description: 'EDM·힙합·테크노 장르별로 골라가는 재미. 강남 레이스부터 홍대, 이태원, 부산까지 DJ 라인업과 입장료를 한눈에 비교하세요.',
-  openGraph: { images: [{ url: 'https://ilsanroom.pages.dev/api/og?title=오늘밤어디&subtitle=밤문화+정보&bg=%238B5CF6', width: 1200, height: 630 }] },
+  openGraph: { images: [{ url: 'https://ilsanroom.pages.dev/og/clubs.svg', width: 1200, height: 630 }] },
 };
 
 const regions = [
@@ -20,7 +20,7 @@ const regions = [
 export default function ClubsPage() {
   const venues = getVenuesByCategory('club');
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 space-y-12">
+    <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '클럽' }]} />
         <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">클럽</h1>
@@ -53,7 +53,7 @@ export default function ClubsPage() {
         { day: '수요일', time: '22:00~01:00', level: 30 },
       ]} />
 
-      <CategoryVSBattle venueA="강남클럽 레이스" venueB="압구정클럽 하입" topic="강남 vs 압구정 — EDM 파티 대결" />
+      <CategoryVSBattle venueA="강남청담클럽 레이스" venueB="압구정클럽 하입" topic="강남 vs 압구정 — EDM 파티 대결" />
 
       <RelatedMagazine articles={[
         { title: '논현 EDM TOP5 — 올해 꼭 가봐야 할 곳', tag: '추천' },

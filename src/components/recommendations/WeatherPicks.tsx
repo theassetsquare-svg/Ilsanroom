@@ -21,7 +21,7 @@ const WEATHER_RECS: Record<WeatherType, WeatherRecommendation> = {
     description: '야외 테라스가 있는 곳을 추천드려요',
     venues: [
       { name: '압구정라운지 디엠', reason: '감성 하이엔드 라운지', link: '/lounges/apgujeong-dm' },
-      { name: '강남클럽 레이스', reason: '탁 트인 플로어에서 즐기는 나이트', link: '/clubs/gangnam/gangnamclub-race' },
+      { name: '강남청담클럽 레이스', reason: '탁 트인 플로어에서 즐기는 나이트', link: '/clubs/gangnam/gangnamclub-race' },
     ],
   },
   rain: {
@@ -32,7 +32,7 @@ const WEATHER_RECS: Record<WeatherType, WeatherRecommendation> = {
     venues: [
       { name: '압구정라운지 디엠', reason: '프라이빗한 하이엔드 라운지', link: '/lounges/apgujeong-dm' },
       { name: '일산명월관요정', reason: '빗소리와 국악이 어우러지는 전통 공간', link: '/yojeong/ilsan/ilsanmyeongwolgwanyojeong' },
-      { name: '강남클럽 사운드', reason: '실내에서 즐기는 사운드 클럽', link: '/clubs/gangnam/gangnamclub-sound' },
+      { name: '강남청담클럽 사운드', reason: '실내에서 즐기는 사운드 클럽', link: '/clubs/gangnam/gangnamclub-sound' },
     ],
   },
   cloudy: {
@@ -61,8 +61,8 @@ const WEATHER_RECS: Record<WeatherType, WeatherRecommendation> = {
     title: '더운 날엔 시원한 실내로',
     description: '에어컨 빵빵한 곳에서 즐기세요',
     venues: [
-      { name: '강남클럽 레이스', reason: '시원한 대형 클럽', link: '/clubs/gangnam/gangnamclub-race' },
-      { name: '강남클럽 사운드', reason: '쾌적한 실내 클럽', link: '/clubs/gangnam/gangnamclub-sound' },
+      { name: '강남청담클럽 레이스', reason: '시원한 대형 클럽', link: '/clubs/gangnam/gangnamclub-race' },
+      { name: '강남청담클럽 사운드', reason: '쾌적한 실내 클럽', link: '/clubs/gangnam/gangnamclub-sound' },
     ],
   },
   cold: {
@@ -102,7 +102,7 @@ export default function WeatherPicks() {
   if (!weather) return null;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+    <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
       <div className="overflow-hidden rounded-2xl border border-neon-border bg-gradient-to-r from-neon-surface via-neon-surface-2 to-neon-surface">
         <div className="p-6 sm:p-8">
           <div className="flex items-center gap-3 mb-4">

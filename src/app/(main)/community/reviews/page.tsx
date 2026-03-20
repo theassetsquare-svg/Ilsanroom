@@ -21,10 +21,10 @@ const sampleReviews = [
   },
   {
     id: 2,
-    title: "홍대 M2 금요일 밤 솔직 리뷰",
+    title: "홍대클럽 버뮤다 금요일 밤 솔직 리뷰",
     author: "홍대프로",
     date: "2026-03-12",
-    venue: "M2",
+    venue: "홍대클럽 버뮤다",
     region: "홍대",
     rating: 4.0,
     likes: 67,

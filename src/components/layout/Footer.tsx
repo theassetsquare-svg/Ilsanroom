@@ -1,12 +1,15 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 
 const categoryLinks = [
-  { href: '/clubs', label: '🎵 클럽' },
-  { href: '/nights', label: '🌙 나이트' },
-  { href: '/lounges', label: '🍸 라운지' },
-  { href: '/rooms', label: '🚪 룸' },
-  { href: '/yojeong', label: '🏮 요정' },
-  { href: '/hoppa', label: '🥂 호빠' },
+  { href: '/clubs', label: '클럽' },
+  { href: '/nights', label: '나이트' },
+  { href: '/lounges', label: '라운지' },
+  { href: '/rooms', label: '룸' },
+  { href: '/yojeong', label: '요정' },
+  { href: '/hoppa', label: '호빠' },
 ];
 
 const communityLinks = [
@@ -32,30 +35,83 @@ const regionalLinks = {
     { href: '/clubs/hongdae', label: '홍대' },
     { href: '/clubs/itaewon', label: '이태원' },
     { href: '/clubs/apgujeong', label: '압구정' },
-    { href: '/lounges/sinsa', label: '신사' },
-    { href: '/clubs/geondae', label: '건대' },
+    { href: '/clubs/cheongdam', label: '청담' },
+    { href: '/clubs/sinlim', label: '신림' },
+    { href: '/clubs/nowon', label: '노원' },
+    { href: '/clubs/yongsan', label: '용산' },
   ],
-  '경기': [
+  '경기·인천': [
     { href: '/rooms/ilsan', label: '일산' },
     { href: '/nights/suwon', label: '수원' },
     { href: '/clubs/incheon', label: '인천' },
+    { href: '/nights/bucheon', label: '부천' },
+    { href: '/nights/ansan', label: '안산' },
+    { href: '/nights/seongnam', label: '성남' },
+    { href: '/nights/gimpo', label: '김포' },
+    { href: '/nights/paju', label: '파주' },
   ],
   '부산·경남': [
-    { href: '/clubs/busan', label: '서면' },
-    { href: '/nights/haeundae', label: '해운대' },
+    { href: '/nights/busan', label: '부산' },
+    { href: '/rooms/haeundae', label: '해운대' },
+    { href: '/nights/ulsan', label: '울산' },
   ],
-  '기타': [
-    { href: '/clubs/daegu', label: '대구' },
-    { href: '/clubs/gwangju', label: '광주' },
-    { href: '/clubs/daejeon', label: '대전' },
-    { href: '/clubs/jeju', label: '제주' },
+  '충청·전라·제주': [
+    { href: '/nights/daejeon', label: '대전' },
+    { href: '/nights/cheonan', label: '천안' },
+    { href: '/nights/cheongju', label: '청주' },
+    { href: '/nights/daegu', label: '대구' },
+    { href: '/nights/gwangju', label: '광주' },
+    { href: '/nights/jeju', label: '제주' },
   ],
 };
+
+function NewsletterForm() {
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    setSubmitted(true);
+    setEmail('');
+  };
+  return (
+    <form onSubmit={handleSubmit} className="flex gap-2">
+      {submitted ? (
+        <p className="text-sm font-medium text-neon-green">구독 완료! 감사합니다.</p>
+      ) : (
+        <>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="이메일 주소"
+            className="flex-1 rounded-xl border border-neon-border bg-white px-4 py-2.5 text-sm text-neon-text placeholder:text-neon-text-subtle focus:border-neon-primary focus:outline-none"
+            required
+          />
+          <button
+            type="submit"
+            className="shrink-0 rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-neon-primary-light"
+          >
+            구독
+          </button>
+        </>
+      )}
+    </form>
+  );
+}
 
 export default function Footer() {
   return (
     <footer className="border-t border-neon-border bg-neon-surface pb-20 md:pb-0">
-      <div className="mx-auto max-w-7xl px-4 py-12">
+      <div className="mx-auto max-w-[1200px] px-4 py-12">
+        {/* ★★★ 광고문의 — 푸터 최상단, 모든 페이지 ★★★ */}
+        <div className="mb-10 rounded-2xl border-2 border-neon-primary/30 bg-gradient-to-r from-violet-50 to-white px-6 py-6 text-center">
+          <p className="text-xl font-extrabold text-neon-text sm:text-2xl">
+            광고문의 카톡{' '}
+            <span className="inline-block rounded-xl bg-neon-primary px-5 py-1.5 text-white">besta12</span>
+          </p>
+        </div>
+
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Site info */}
           <div className="col-span-2 sm:col-span-1">
@@ -145,11 +201,14 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* ★ 광고문의 — 가장 눈에 띄게! */}
+
+        {/* Newsletter */}
         <div className="mt-8 border-t border-neon-border pt-6">
-          <p className="text-center text-lg font-bold text-neon-primary">
-            광고문의 카톡 <span className="rounded-lg bg-neon-primary/10 px-3 py-1 text-neon-primary-dark">besta12</span>
-          </p>
+          <div className="mx-auto max-w-md text-center">
+            <h3 className="mb-2 text-sm font-semibold text-neon-text">주간 소식 받기</h3>
+            <p className="mb-3 text-xs text-neon-text-muted">새로운 업소, 이벤트, 인기 순위를 매주 이메일로</p>
+            <NewsletterForm />
+          </div>
         </div>
 
         {/* Bottom bar */}

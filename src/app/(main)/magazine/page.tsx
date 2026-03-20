@@ -2,14 +2,14 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: { absolute: '매거진 — 밤문화 트렌드·가이드 | 오늘밤어디' },
-  description: '업종별 문화 분석, 지역별 야간업소 특성, 방문 팁까지. 오늘밤어디 매거진에서 확인된 정보만 전합니다.',
+  description: 'EDM 파티홀과 소셜 댄스홀의 차이, 강남 5대 DJ 공연장 비교, 일산명월관 한정식 심층 리뷰까지. 현장 취재 기반 칼럼.',
 };
 
 const articles = [
   {
     id: 'a1',
     title: '강남 EDM 클럽 5곳 — 2026 현장 비교',
-    excerpt: '강남클럽 레이스와 강남클럽 사운드를 포함해, 올해 강남에서 가장 주목받는 EDM 공연장 5곳의 음향 시스템·분위기·입장 조건을 현장 방문 기준으로 비교합니다.',
+    excerpt: '강남청담클럽 레이스와 강남청담클럽 사운드를 포함해, 올해 강남에서 가장 주목받는 EDM 공연장 5곳의 음향 시스템·분위기·입장 조건을 현장 방문 기준으로 비교합니다.',
     tag: '비교',
     date: '2026-03-12',
     readMin: 5,

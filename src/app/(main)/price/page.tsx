@@ -37,7 +37,7 @@ export default function PricePage() {
   const displayed = showAll ? filtered : filtered.slice(0, 8);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
       <h1 className="text-3xl font-extrabold text-neon-text mb-2">가격 비교표</h1>
       <p className="text-neon-text-muted mb-8">확인된 가격 정보만 표시됩니다. 정확한 금액은 업소에 직접 확인하세요.</p>
 

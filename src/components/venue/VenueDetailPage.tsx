@@ -56,7 +56,7 @@ export default function VenueDetailPage({
       />
 
       {/* Breadcrumb */}
-      <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 py-6 sm:px-6">
         <Breadcrumb items={[
           { label: categoryLabel, href: categoryPath },
           { label: regionKo, href: regionPath },
@@ -74,19 +74,19 @@ export default function VenueDetailPage({
       />
 
       {/* 8-Tab Content */}
-      <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 pt-8 sm:px-6">
         <VenueDetailTabs venue={venue} faqs={faqs} categoryLabel={categoryLabel} />
       </section>
 
       {/* Extra Content (e.g. 일산명월관 전용 2000자 SEO) */}
       {extraContent && (
-        <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+        <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
           {extraContent}
         </section>
       )}
 
       {/* [D] 첫 방문 가이드 */}
-      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
         <Link href="/guide" target="_blank" rel="noopener noreferrer" className="block rounded-2xl border border-neon-gold/30 bg-neon-gold/5 p-5 transition hover:border-neon-gold/50 card-hover">
           <div className="flex items-center gap-3">
             <span className="text-2xl">📖</span>
@@ -100,7 +100,7 @@ export default function VenueDetailPage({
 
       {/* Bottom Recommendations */}
       {related.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+        <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
           <h2 className="mb-6 text-xl font-bold text-neon-text">비슷한 업소</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {related.slice(0, 2).map((v) => (
@@ -115,7 +115,7 @@ export default function VenueDetailPage({
       )}
 
       {/* [C] 숨은 명소 */}
-      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
         <Link href="/hidden" target="_blank" rel="noopener noreferrer" className="block rounded-2xl border border-neon-accent/30 bg-neon-accent/5 p-5 transition hover:border-neon-accent/50 card-hover">
           <div className="flex items-center gap-3">
             <span className="text-2xl">💎</span>

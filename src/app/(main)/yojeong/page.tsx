@@ -6,8 +6,8 @@ import { getVenuesByCategory } from '@/data/venues';
 
 export const metadata: Metadata = {
   title: { absolute: '요정 | 오늘밤어디 - 일산명월관·전국 전통 한정식 문화 공간' },
-  description: '15가지 한정식 코스에 국악 라이브까지. 일산명월관의 격조 높은 비즈니스 접대·기념일 맞춤 다이닝.',
-  openGraph: { images: [{ url: 'https://ilsanroom.pages.dev/api/og?title=오늘밤어디&subtitle=밤문화+정보&bg=%238B5CF6', width: 1200, height: 630 }] },
+  description: '15가지 한정식 코스에 국악 라이브까지. 일산명월관의 격조 있는 접대·기념일 전용 다이닝 안내.',
+  openGraph: { images: [{ url: 'https://ilsanroom.pages.dev/og/yojeong.svg', width: 1200, height: 630 }] },
 };
 
 const regions = [
@@ -19,17 +19,17 @@ const regions = [
 export default function YojeongPage() {
   const venues = getVenuesByCategory('yojeong');
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 space-y-12">
+    <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '요정' }]} />
         <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">요정</h1>
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6">
           <p className="text-base leading-relaxed text-neon-text-muted">
-            한국 전통 한정식 코스 요리와 국악 라이브 공연을 함께 제공하는 격조 높은 문화 공간입니다.
+            한국 전통 코스 요리와 국악 라이브 공연을 함께 제공하는 격조 높은 문화 공간입니다.
             프라이빗한 독립 다이닝에서 정갈한 서비스를 받으며, 가야금·해금·대금 등 고유한 악기의 선율과 함께 식사를 즐기는 것이
             이 업종의 핵심입니다. 비즈니스 접대, VIP 미팅, 돌잔치, 환갑·칠순 잔치, 상견례 등
             격식이 필요한 자리에 최적입니다.
-            일산명월관은 고양시 일산동구 장항로 895-1에 위치한 일산 대표 한정식 공간으로,
+            일산명월관은 고양시 일산동구 장항로 895-1에 위치한 일산 대표 전통 다이닝 공간으로,
             총 30개 프라이빗 공간과 정찰제를 운영하며 신실장이 전반을 총괄합니다.
             이런 전통 형태로 운영되는 곳은 전국에 많지 않아 희소성이 높습니다.
             방문 시 세미 포멀 이상의 복장을 권장하며, 사전 예약이 필수입니다.
@@ -54,11 +54,11 @@ export default function YojeongPage() {
         { day: '일요일', time: '12:00~15:00', level: 50 },
       ]} />
 
-      <CategoryVSBattle venueA="일산명월관요정" venueB="청담클럽 아르쥬" topic="접대 장소 대결 — 전통 한정식 vs 모던" />
+      <CategoryVSBattle venueA="일산명월관요정" venueB="강남청담클럽 아르쥬" topic="접대 장소 대결 — 전통 한정식 vs 모던" />
 
       <RelatedMagazine articles={[
         { title: '일산명월관 완벽 가이드: 접대부터 가족모임까지', tag: '전통' },
-        { title: '한국 전통 한정식 문화 공간의 역사와 현재', tag: '문화' },
+        { title: '한국 전통 코스 요리 문화 공간의 역사와 현재', tag: '문화' },
       ]} />
     </div>
   );

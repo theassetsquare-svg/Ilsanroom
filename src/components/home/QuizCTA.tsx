@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function QuizCTA() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+    <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
       <Link href="/quiz" target="_blank" rel="noopener noreferrer" className="group block">
         <div className="relative overflow-hidden rounded-2xl border border-neon-accent/30 bg-gradient-to-r from-neon-accent/5 via-neon-surface to-neon-primary/5 p-8 transition-all hover:border-neon-accent/50 card-hover">
           <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-neon-accent/5 blur-2xl" />

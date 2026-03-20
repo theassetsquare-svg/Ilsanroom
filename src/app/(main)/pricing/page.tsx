@@ -135,7 +135,7 @@ const faqs = [
 export default function PricingPage() {
   return (
     <div className="min-h-screen bg-neon-bg">
-      <div className="mx-auto max-w-7xl px-4 py-16">
+      <div className="mx-auto max-w-[1200px] px-4 py-16">
         {/* Header */}
         <div className="mb-16 text-center">
           <h1 className="mb-4 text-4xl font-bold text-neon-text">

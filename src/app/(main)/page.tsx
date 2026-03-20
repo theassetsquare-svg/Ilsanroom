@@ -16,20 +16,20 @@ import type { Venue } from '@/types';
 
 export const metadata: Metadata = {
   title: { absolute: '전국 밤문화 완전 가이드 | 오늘밤어디' },
-  description: '전국 127개 밤문화 업소 정보를 한눈에. 실시간 인기 순위, 첫 방문 가이드, VS 대결 투표까지 — 오늘밤 갈 곳을 찾아보세요.',
+  description: '오늘 갈 곳 룰렛, VS 대결 투표, 밤문화 MBTI 테스트까지. 130개 업소 중 나에게 딱 맞는 한 곳을 골라보세요.',
   openGraph: {
-    title: '오늘밤어디 — 전국 밤문화 123개 업소 실시간 정보',
-    description: '전국 123개 업소 정보. 실시간 인기 순위, 첫 방문 가이드, VS 대결 투표.',
+    title: '오늘밤어디 — 룰렛·VS투표·MBTI로 고르는 야간 문화',
+    description: '오늘 갈 곳 룰렛, VS 대결 투표, 밤문화 MBTI 테스트까지. 130개 업소 중 딱 맞는 한 곳을 골라보세요.',
     type: 'website',
     locale: 'ko_KR',
     siteName: '오늘밤어디',
     url: 'https://ilsanroom.pages.dev',
-    images: [{ url: 'https://ilsanroom.pages.dev/api/og?title=%EC%98%A4%EB%8A%98%EB%B0%A4%EC%96%B4%EB%94%94&subtitle=%EC%A0%84%EA%B5%AD+%EB%B0%A4%EB%AC%B8%ED%99%94+%EC%8B%A4%EC%8B%9C%EA%B0%84+%EC%A0%95%EB%B3%B4&bg=%238B5CF6', width: 1200, height: 630, alt: '오늘밤어디' }],
+    images: [{ url: 'https://ilsanroom.pages.dev/og/main.svg', width: 1200, height: 630, alt: '오늘밤어디' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '오늘밤어디 — 전국 밤문화 123개 업소 실시간 정보',
-    images: ['https://ilsanroom.pages.dev/api/og?title=%EC%98%A4%EB%8A%98%EB%B0%A4%EC%96%B4%EB%94%94&subtitle=%EC%A0%84%EA%B5%AD+%EB%B0%A4%EB%AC%B8%ED%99%94+%EC%8B%A4%EC%8B%9C%EA%B0%84+%EC%A0%95%EB%B3%B4&bg=%238B5CF6'],
+    title: '오늘밤어디 — 룰렛·VS투표·MBTI로 고르는 야간 문화',
+    images: ['https://ilsanroom.pages.dev/og/main.svg'],
   },
 };
 
@@ -55,14 +55,16 @@ function VenueCard({ venue, href, rank }: { venue: Venue; href: string; rank?: n
   const nameIncludesCategory = venue.nameKo.includes(getCategoryLabel(venue.category));
   return (
     <Card href={href}>
-      <div className="flex h-full min-h-[100px] flex-col justify-between">
+      <div className="flex h-full flex-col justify-between">
         <div>
-          {rank && (
-            <span className="mb-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-neon-primary text-[10px] font-bold text-white">
-              {rank}
-            </span>
-          )}
-          {venue.isPremium && <Badge variant="premium" className="mb-2 block w-fit">PREMIUM</Badge>}
+          <div className="mb-2 flex items-center gap-2">
+            {rank != null && (
+              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-neon-primary text-xs font-bold text-white">
+                {rank}
+              </span>
+            )}
+            {venue.isPremium && <Badge variant="premium">PREMIUM</Badge>}
+          </div>
           <h3 className="text-sm font-bold text-neon-text leading-tight line-clamp-2 sm:text-base">{venue.nameKo}</h3>
         </div>
         <p className="mt-2 text-xs text-neon-text-muted line-clamp-1">
@@ -95,7 +97,7 @@ const regions = [
 /* ── Latest reviews (real venues only) ── */
 const latestReviews = [
   { venue: '일산명월관요정', text: '한정식 코스가 정말 훌륭했습니다. 국악 공연도 감동적이었어요.', author: '김**', date: '2026-03-12' },
-  { venue: '강남클럽 레이스', text: '베이스 사운드에 몸이 먼저 반응합니다. 강남 최고 수준.', author: '이**', date: '2026-03-11' },
+  { venue: '강남청담클럽 레이스', text: '베이스 사운드에 몸이 먼저 반응합니다. 강남 최고 수준.', author: '이**', date: '2026-03-11' },
   { venue: '수원찬스돔나이트', text: '돔 구조가 만들어내는 공간감이 독특해요. 강호동 담당자 재밌음.', author: '박**', date: '2026-03-10' },
   { venue: '해운대고구려', text: '공간이 60개 넘으니까 웨이팅 없이 바로 입장할 수 있어서 좋아요.', author: '최**', date: '2026-03-09' },
 ];
@@ -112,7 +114,7 @@ const magazineItems = [
 const instaHashtags = [
   { tag: '#일산룸', desc: '프리미엄 프라이빗 공간', url: 'https://www.instagram.com/explore/tags/일산룸/' },
   { tag: '#명월관요정', desc: '전통 코스 요리', url: 'https://www.instagram.com/explore/tags/명월관요정/' },
-  { tag: '#강남클럽', desc: '주말 EDM 파티', url: 'https://www.instagram.com/explore/tags/강남클럽/' },
+  { tag: '#강남청담클럽', desc: '주말 EDM 파티', url: 'https://www.instagram.com/explore/tags/강남청담클럽/' },
   { tag: '#강남호빠', desc: '호스트 엔터테인먼트', url: 'https://www.instagram.com/explore/tags/강남호빠/' },
   { tag: '#전통한정식', desc: '국악 라이브 연주', url: 'https://www.instagram.com/explore/tags/전통한정식/' },
   { tag: '#부산나이트', desc: '부산 사교 댄스 명소', url: 'https://www.instagram.com/explore/tags/부산나이트/' },
@@ -225,7 +227,7 @@ export default function HomePage() {
       <HomeVSBattle />
 
       {/* ═══════ 5. 지역별 업소 찾기 ═══════ */}
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
         <h2 className="mb-5 text-xl font-bold text-neon-text">지역별 업소 찾기</h2>
         <div className="flex flex-wrap gap-3">
           {regions.map((r) => (
@@ -246,7 +248,7 @@ export default function HomePage() {
       <QuizCTA />
 
       {/* ═══════ 7. 첫 방문 가이드 배너 ═══════ */}
-      <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 py-6 sm:px-6">
         <Link href="/guide" target="_blank" rel="noopener noreferrer" className="group block">
           <div className="rounded-2xl border border-neon-border bg-white p-5 sm:p-6 transition-all hover:shadow-md card-hover">
             <div className="flex items-center gap-4">
@@ -264,7 +266,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════ 8. 인기 TOP 10 ═══════ */}
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-neon-text">인기 업소 TOP 10</h2>
           <Link href="/ranking" target="_blank" rel="noopener noreferrer" className="text-sm text-neon-primary hover:underline">
@@ -281,7 +283,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════ 9. 최신 후기 ═══════ */}
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-neon-text">최신 후기</h2>
           <Link href="/community/reviews" target="_blank" rel="noopener noreferrer" className="text-sm text-neon-primary hover:underline">
@@ -302,7 +304,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════ 10. 매거진 ═══════ */}
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-neon-text">매거진</h2>
           <Link href="/magazine" target="_blank" rel="noopener noreferrer" className="text-sm text-neon-primary hover:underline">
@@ -320,7 +322,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════ 11. 인스타그램 — 가로 스크롤 ═══════ */}
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
         <h2 className="mb-6 text-xl font-bold text-neon-text">인스타그램</h2>
         <HorizontalScroll itemWidth={140}>
           {instaHashtags.map((post, i) => (
@@ -346,7 +348,7 @@ export default function HomePage() {
       <PopularTimeWidget />
 
       {/* ═══════ 13. 업주 유치 배너 ═══════ */}
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
         <Link href="/for-business" target="_blank" rel="noopener noreferrer" className="group block">
           <div className="relative overflow-hidden rounded-2xl border border-neon-primary/20 bg-gradient-to-r from-violet-50 via-white to-cyan-50 p-8 sm:p-12 transition-all hover:shadow-lg">
             <div className="relative flex flex-col items-center text-center sm:flex-row sm:justify-between sm:text-left">
@@ -375,7 +377,7 @@ export default function HomePage() {
       <EngagementSection />
 
       {/* ═══════ SEO Text ═══════ */}
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
         <div className="rounded-2xl border border-neon-border bg-white p-8">
           <h2 className="mb-4 text-lg font-bold text-neon-text">업종별 특징과 이용 팁</h2>
           <div className="space-y-4 text-sm leading-relaxed text-neon-text-muted">

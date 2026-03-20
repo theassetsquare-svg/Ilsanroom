@@ -34,7 +34,7 @@ export default function GalleryPage() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
       <h1 className="text-2xl font-extrabold text-neon-text mb-1">포토 갤러리</h1>
       <p className="text-sm text-neon-text-muted mb-6">현장 분위기를 사진으로 확인하세요</p>
 

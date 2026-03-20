@@ -139,7 +139,7 @@ export default function MapPage() {
     <div className="min-h-screen bg-neon-bg">
       {/* 상단 필터 */}
       <div className="border-b border-neon-border bg-neon-surface/80 backdrop-blur-lg sticky top-16 z-30">
-        <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6">
+        <div className="mx-auto max-w-[1200px] px-4 py-3 sm:px-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <h1 className="text-lg font-bold text-neon-text shrink-0">위치 탐색</h1>
 
@@ -183,7 +183,7 @@ export default function MapPage() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6">
+      <div className="mx-auto max-w-[1200px] px-4 py-4 sm:px-6">
         {/* 카카오맵 */}
         <div className="mb-6 rounded-2xl border border-neon-border overflow-hidden" style={{ height: 'min(60vh, 500px)' }}>
           <div ref={mapRef} className="w-full h-full" id="kakao-map">

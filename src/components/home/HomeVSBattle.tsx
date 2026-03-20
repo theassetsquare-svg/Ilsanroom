@@ -15,10 +15,10 @@ function findVenue(name: string) {
 }
 
 const BATTLES = [
-  { a: '강남클럽 레이스', b: '압구정클럽 하입', topic: '강남 vs 압구정 대결' },
+  { a: '강남청담클럽 레이스', b: '압구정클럽 하입', topic: '강남 vs 압구정 대결' },
   { a: '수원찬스돔나이트', b: '인천아라비안나이트', topic: '경기 나이트 최강자는?' },
   { a: '일산룸', b: '해운대고구려', topic: '프리미엄 룸 대결' },
-  { a: '일산명월관요정', b: '청담클럽 아르쥬', topic: '접대 장소 대결' },
+  { a: '일산명월관요정', b: '강남청담클럽 아르쥬', topic: '접대 장소 대결' },
   { a: '강남호빠 로얄', b: '부산호빠 스타', topic: '호빠 양대 산맥' },
 ];
 
@@ -45,7 +45,7 @@ export default function HomeVSBattle() {
   const venueB = findVenue(battle.b);
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+    <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
       <div className="rounded-2xl border border-neon-pink/20 bg-neon-surface p-6 sm:p-8">
         <h2 className="text-center text-xl font-bold text-neon-text mb-1">VS 대결 투표</h2>
         <p className="text-center text-sm text-neon-pink mb-6">{battle.topic}</p>

@@ -99,7 +99,7 @@ export default function PersonalizedPicks() {
   if (!mounted || recommendations.length === 0) return null;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+    <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold text-neon-text">당신이 좋아할 곳</h2>

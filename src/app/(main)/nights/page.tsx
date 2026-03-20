@@ -7,7 +7,7 @@ import { getVenuesByCategory } from '@/data/venues';
 export const metadata: Metadata = {
   title: { absolute: '나이트 | 오늘밤어디 - 전국 소셜댄스 부킹 명소' },
   description: '라이브 밴드와 소셜 댄스를 동시에 즐기는 사교 공간. 수원찬스돔, 부산연산동물 등 지역별 명소와 드레스코드·이용 팁 안내.',
-  openGraph: { images: [{ url: 'https://ilsanroom.pages.dev/api/og?title=오늘밤어디&subtitle=밤문화+정보&bg=%238B5CF6', width: 1200, height: 630 }] },
+  openGraph: { images: [{ url: 'https://ilsanroom.pages.dev/og/nights.svg', width: 1200, height: 630 }] },
 };
 
 const regions = [
@@ -21,7 +21,7 @@ const regions = [
 export default function NightsPage() {
   const venues = getVenuesByCategory('night');
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 space-y-12">
+    <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '나이트' }]} />
         <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">소셜댄스 · 부킹</h1>

@@ -9,7 +9,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       <Header />
       {/* 19세 안내 — 텍스트 배너 (팝업 아님) */}
       <div className="border-b border-neon-border bg-neon-surface">
-        <p className="mx-auto max-w-7xl px-4 py-2 text-center text-xs text-neon-text-muted">
+        <p className="mx-auto max-w-[1200px] px-4 py-2 text-center text-xs text-neon-text-muted">
           본 사이트는 만 19세 이상 이용 가능합니다
         </p>
       </div>

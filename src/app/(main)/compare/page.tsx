@@ -46,7 +46,7 @@ export default function ComparePage() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
       <h1 className="text-3xl font-extrabold text-neon-text mb-2">업소 비교</h1>
       <p className="text-neon-text-muted mb-8">2~3곳을 선택하여 나란히 비교하고 투표하세요.</p>
 

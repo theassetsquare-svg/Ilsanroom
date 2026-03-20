@@ -51,16 +51,16 @@ export default async function RegionalClubsPage({ params }: Props) {
 
   return (
     <div className="bg-neon-bg">
-      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
         <Breadcrumb items={[{ label: '클럽', href: '/clubs' }, { label: regionKo }]} />
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-6 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
         <h1 className="text-3xl font-extrabold text-neon-text">{regionKo} 클럽</h1>
         <p className="mt-3 text-neon-text-muted">{regionKo} 지역의 인기 클럽을 소개합니다.</p>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 pb-20 sm:px-6">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {clubs.map((venue) => (
             <VenueCard key={venue.id} venue={venue} href={`/clubs/${region}/${venue.slug}`} />
