@@ -1,7 +1,7 @@
-'use client';
+
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { venues } from '@/data/venues';
 
 /**
@@ -92,11 +92,8 @@ export default function CountdownUrgency() {
         {/* 3 picks */}
         <div className="space-y-3">
           {picks.map((v, i) => (
-            <Link
-              key={v.id}
+            <Link key={v.id}
               href={getCategoryHref(v)}
-              target="_blank"
-              rel="noopener noreferrer"
               className="group flex items-center gap-4 rounded-xl bg-white/80 px-4 py-3 transition hover:bg-white hover:shadow-sm"
               style={{ minHeight: 56 }}
             >

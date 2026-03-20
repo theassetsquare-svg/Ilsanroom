@@ -1,7 +1,7 @@
-'use client';
+
 
 import { useState } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { venues } from '@/data/venues';
 import ShareButtons from '@/components/interactive/ShareButtons';
 
@@ -70,7 +70,7 @@ export default function HomeVSBattle() {
                   )}
                 </button>
                 {venue && (
-                  <Link href={getCategoryHref(venue.category, venue.slug, venue.region)} target="_blank" rel="noopener noreferrer" className="text-center text-xs text-neon-primary hover:underline">
+                  <Link href={getCategoryHref(venue.category, venue.slug, venue.region)} className="text-center text-xs text-neon-primary hover:underline">
                     상세 보기 →
                   </Link>
                 )}

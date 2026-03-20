@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'glow' | 'danger';
 type ButtonSize = 'sm' | 'md' | 'lg';

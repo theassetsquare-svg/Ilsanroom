@@ -1,4 +1,0 @@
-name = "ilsanroom"
-pages_build_output_dir = ".open-next"
-compatibility_date = "2025-03-14"
-compatibility_flags = ["nodejs_compat"]

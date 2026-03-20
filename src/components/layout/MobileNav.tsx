@@ -1,8 +1,8 @@
-'use client';
+
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { createClient } from '@/lib/supabase';
 
 const tabs = [
@@ -53,7 +53,7 @@ const myIcon = (
 );
 
 export default function MobileNav() {
-  const pathname = usePathname();
+  const { pathname } = useLocation();
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {

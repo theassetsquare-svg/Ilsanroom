@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+
 import type { VenueCategory } from '@/types';
 
 const categoryNames: Record<VenueCategory, string> = {

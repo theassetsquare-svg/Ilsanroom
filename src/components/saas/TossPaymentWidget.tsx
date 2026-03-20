@@ -1,4 +1,4 @@
-'use client';
+
 
 import { useEffect, useRef, useState } from 'react';
 import { PLAN_PRICES, PLAN_NAMES, generateOrderId } from '@/lib/payments';

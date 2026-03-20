@@ -1,6 +1,6 @@
-'use client';
 
-import dynamic from 'next/dynamic';
+
+import { lazy, Suspense } from 'react';
 
 const StreakAndProgress = dynamic(() => import('./StreakAndProgress'), { ssr: false });
 const CountdownUrgency = dynamic(() => import('./CountdownUrgency'), { ssr: false });

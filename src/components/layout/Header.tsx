@@ -1,7 +1,7 @@
-'use client';
+
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import SearchOverlay from './SearchOverlay';
 import ScrollProgress from './ScrollProgress';
 import { createClient } from '@/lib/supabase';
@@ -55,11 +55,8 @@ export default function Header() {
 
           <nav className="hidden items-center gap-0.5 lg:flex">
             {navLinks.map((link) => (
-              <Link
-                key={link.href}
+              <Link key={link.href}
                 href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="rounded-lg px-2.5 py-2 text-sm font-medium text-neon-text-muted transition-colors hover:bg-neon-surface-2 hover:text-neon-text"
               >
                 {link.label}
@@ -80,10 +77,7 @@ export default function Header() {
 
             {user ? (
               <div className="hidden sm:flex items-center gap-2">
-                <Link
-                  href="/profile"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link href="/profile"
                   className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-neon-text-muted transition-colors hover:bg-neon-surface-2 hover:text-neon-text"
                 >
                   {user.user_metadata?.avatar_url ? (
@@ -103,10 +97,7 @@ export default function Header() {
                 </button>
               </div>
             ) : (
-              <Link
-                href="/login"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link href="/login"
                 className="hidden rounded-lg px-3 py-2 text-sm font-medium text-neon-text-muted transition-colors hover:bg-neon-surface-2 hover:text-neon-text sm:block"
               >
                 로그인

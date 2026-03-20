@@ -1,7 +1,7 @@
-'use client';
+
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 type WeatherType = 'clear' | 'cloudy' | 'rain' | 'snow' | 'hot' | 'cold';
 

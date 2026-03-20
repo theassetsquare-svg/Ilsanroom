@@ -1,4 +1,4 @@
-'use client';
+
 
 import { useEffect, useState } from 'react';
 import { getVariant, trackABEvent } from '@/lib/ab-test';

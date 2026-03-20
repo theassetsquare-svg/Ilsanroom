@@ -1,8 +1,8 @@
-'use client';
+
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import type { Venue } from '@/types';
 import { venues as localVenues } from '@/data/venues';
 
@@ -41,7 +41,7 @@ export default function HeroSearch() {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
+  const navigate = useNavigate();
 
   // Search: try Supabase first, fallback to local data
   const search = useCallback(async (q: string, cat: string) => {
@@ -98,7 +98,7 @@ export default function HeroSearch() {
   const handleResultClick = (venue: Venue) => {
     setShowResults(false);
     setQuery('');
-    router.push(getCategoryHref(venue.category, venue.slug, venue.region));
+    navigate(getCategoryHref(venue.category, venue.slug, venue.region));
   };
 
   return (
@@ -160,11 +160,8 @@ export default function HeroSearch() {
       {showResults && results.length > 0 && (
         <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-96 overflow-y-auto rounded-2xl border border-neon-border bg-neon-surface/95 shadow-2xl backdrop-blur-lg animate-fade-in">
           {results.map((v) => (
-            <Link
-              key={v.id || v.slug}
+            <Link key={v.id || v.slug}
               href={getCategoryHref(v.category, v.slug, v.region)}
-              target="_blank"
-              rel="noopener noreferrer"
               onClick={() => { setShowResults(false); setQuery(''); }}
               className="flex w-full items-center gap-3 border-b border-neon-border/50 px-4 py-3 text-left transition-colors hover:bg-neon-surface-2 last:border-b-0"
             >

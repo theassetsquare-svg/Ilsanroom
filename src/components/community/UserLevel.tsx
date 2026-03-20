@@ -1,4 +1,4 @@
-'use client';
+
 
 import { getLevelInfo, type LevelName, LEVELS } from '@/lib/community-types';
 

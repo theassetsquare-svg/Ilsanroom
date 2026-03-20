@@ -1,7 +1,7 @@
-'use client';
+
 
 import { useState } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 const categoryLinks = [
   { href: '/clubs', label: '클럽' },
@@ -115,7 +115,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Site info */}
           <div className="col-span-2 sm:col-span-1">
-            <Link href="/" target="_blank" rel="noopener noreferrer" className="text-xl font-black tracking-wider text-neon-primary">
+            <Link href="/" className="text-xl font-black tracking-wider text-neon-primary">
               오늘밤어디
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-neon-text-muted">
@@ -129,7 +129,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {categoryLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} target="_blank" rel="noopener noreferrer" className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
+                  <Link href={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
                     {link.label}
                   </Link>
                 </li>
@@ -143,7 +143,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {communityLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} target="_blank" rel="noopener noreferrer" className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
+                  <Link href={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
                     {link.label}
                   </Link>
                 </li>
@@ -157,7 +157,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {legalLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} target="_blank" rel="noopener noreferrer" className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
+                  <Link href={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
                     {link.label}
                   </Link>
                 </li>
@@ -175,11 +175,8 @@ export default function Footer() {
                 <h4 className="mb-2 text-xs font-semibold text-neon-accent">{region}</h4>
                 <div className="flex flex-wrap gap-x-3 gap-y-1">
                   {links.map((link) => (
-                    <Link
-                      key={link.href}
+                    <Link key={link.href}
                       href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
                       className="text-xs text-neon-text-muted transition-colors hover:text-neon-primary-light"
                     >
                       {link.label}
@@ -194,13 +191,12 @@ export default function Footer() {
         {/* SaaS / Business links */}
         <div className="mt-6 border-t border-neon-border pt-6">
           <div className="flex flex-wrap justify-center gap-4 text-xs text-neon-text-muted">
-            <Link href="/pricing" target="_blank" rel="noopener noreferrer" className="hover:text-neon-primary-light transition-colors">업주 요금제</Link>
-            <Link href="/for-business" target="_blank" rel="noopener noreferrer" className="hover:text-neon-primary-light transition-colors">업주 입점</Link>
-            <Link href="/demo" target="_blank" rel="noopener noreferrer" className="hover:text-neon-primary-light transition-colors">데모</Link>
-            <Link href="/referral" target="_blank" rel="noopener noreferrer" className="hover:text-neon-primary-light transition-colors">추천 프로그램</Link>
+            <Link href="/pricing" className="hover:text-neon-primary-light transition-colors">업주 요금제</Link>
+            <Link href="/for-business" className="hover:text-neon-primary-light transition-colors">업주 입점</Link>
+            <Link href="/demo" className="hover:text-neon-primary-light transition-colors">데모</Link>
+            <Link href="/referral" className="hover:text-neon-primary-light transition-colors">추천 프로그램</Link>
           </div>
         </div>
-
 
         {/* Newsletter */}
         <div className="mt-8 border-t border-neon-border pt-6">
