@@ -305,6 +305,16 @@ html {
   min-height: 120px;
 }
 
+/* ★ 가독성 — 연한 회색 텍스트 금지. 최소 #555 */
+.text-neon-text-muted { color: #555555 !important; }
+.text-neon-text-subtle { color: #666666 !important; }
+
+/* ★ 카드 높이 통일 */
+.venue-card-grid > * > a,
+.venue-card-grid > * > div {
+  height: 100%;
+}
+
 /* Focus visible for a11y */
 *:focus-visible {
   outline: 2px solid #8B5CF6;
