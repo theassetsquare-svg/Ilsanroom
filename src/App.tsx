@@ -55,7 +55,6 @@ const PricingPage = lazy(() => import('./pages/PricingPage'));
 const EventsPage = lazy(() => import('./pages/EventsPage'));
 const PrintPage = lazy(() => import('./pages/PrintPage'));
 const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
-const SignupPage = lazy(() => import('./pages/auth/SignupPage'));
 const ProfilePage = lazy(() => import('./pages/auth/ProfilePage'));
 const AuthCallbackPage = lazy(() => import('./pages/auth/AuthCallbackPage'));
 const DashboardPage = lazy(() => import('./pages/admin/DashboardPage'));
@@ -137,7 +136,6 @@ export default function App() {
           <Route path="/print/:slug" element={<PrintPage />} />
           {/* Auth */}
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/auth/callback" element={<AuthCallbackPage />} />
           {/* Admin */}
