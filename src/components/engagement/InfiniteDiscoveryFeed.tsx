@@ -140,7 +140,7 @@ export default function InfiniteDiscoveryFeed() {
         {feedItems.map((item, idx) => {
           if (item.type === 'venue') {
             return (
-              <Link key={`v-${idx}`}
+              <Link target="_blank" rel="noopener noreferrer" key={`v-${idx}`}
                 to={getCategoryHref(item.venue)}
                 className="group block rounded-2xl border border-[#E5E7EB] bg-white p-5 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
               >

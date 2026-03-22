@@ -40,7 +40,7 @@ export default function HiddenPage() {
 
       <div className="space-y-6">
         {hiddenGems.map((gem) => (
-          <Link key={gem.name} to={gem.href} className="block rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/40 card-hover">
+          <Link target="_blank" rel="noopener noreferrer" key={gem.name} to={gem.href} className="block rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/40 card-hover">
             <div className="flex items-center gap-2 mb-2">
               <span className="rounded-full bg-neon-accent/10 px-3 py-1 text-xs text-neon-accent">{gem.week}</span>
               <span className="text-xs text-neon-text-muted">{gem.region} · {gem.category}</span>

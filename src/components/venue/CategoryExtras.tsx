@@ -37,7 +37,7 @@ export function FirstVisitGuide({ category, dress, budget, alone, reservation }:
           <p className="text-sm text-neon-text-muted leading-relaxed">{reservation}</p>
         </div>
       </div>
-      <Link to="/guide" className="mt-4 inline-flex items-center gap-1 text-sm text-neon-gold hover:underline">
+      <Link target="_blank" rel="noopener noreferrer" to="/guide" className="mt-4 inline-flex items-center gap-1 text-sm text-neon-gold hover:underline">
         전체 가이드 보기 →
       </Link>
     </div>
@@ -111,7 +111,7 @@ export function RelatedMagazine({ articles }: { articles: { title: string; tag: 
       <h2 className="text-xl font-bold text-neon-text mb-4">관련 매거진</h2>
       <div className="grid gap-3 sm:grid-cols-2">
         {articles.map((a, i) => (
-          <Link key={i} to="/magazine" className="rounded-xl border border-neon-border bg-neon-surface p-4 card-hover block">
+          <Link target="_blank" rel="noopener noreferrer" key={i} to="/magazine" className="rounded-xl border border-neon-border bg-neon-surface p-4 card-hover block">
             <span className="rounded-full bg-neon-primary/10 px-2 py-0.5 text-xs text-neon-primary-light">{a.tag}</span>
             <p className="mt-2 text-sm font-semibold text-neon-text leading-snug">{a.title}</p>
           </Link>

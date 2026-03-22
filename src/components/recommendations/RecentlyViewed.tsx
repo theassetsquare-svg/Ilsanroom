@@ -42,7 +42,7 @@ export default function RecentlyViewed() {
       <h2 className="mb-4 text-lg font-bold text-neon-text">최근 본 업소</h2>
       <div className="flex gap-3 overflow-x-auto pb-2">
         {recent.map(venue => (
-          <Link
+          <Link target="_blank" rel="noopener noreferrer"
             key={venue.id}
             to={getCategoryPath(venue)}
             className="flex min-w-[200px] items-center gap-3 rounded-xl border border-neon-border bg-neon-surface/50 px-4 py-3 transition hover:border-violet-500/40"

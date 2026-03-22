@@ -120,7 +120,7 @@ export default function FashionPage() {
       <div className="mx-auto max-w-5xl px-4 py-16">
         {/* Header */}
         <div className="mb-10">
-          <Link to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
+          <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
             ← 커뮤니티
           </Link>
           <h1 className="text-3xl font-bold">스타일 갤러리</h1>

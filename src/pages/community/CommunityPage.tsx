@@ -62,7 +62,7 @@ export default function CommunityPage() {
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {sections.map((section) => (
-            <Link key={section.href}
+            <Link target="_blank" rel="noopener noreferrer" key={section.href}
               to={section.href}
               className="group rounded-2xl border border-neon-border bg-neon-surface p-6 transition-all hover:border-neon-primary/50 hover:bg-neon-surface/80"
             >

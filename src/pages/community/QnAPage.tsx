@@ -104,7 +104,7 @@ export default function QnAPage() {
       <div className="mx-auto max-w-4xl px-4 py-16">
         {/* Header */}
         <div className="mb-10">
-          <Link to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
+          <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
             ← 커뮤니티
           </Link>
           <h1 className="text-3xl font-bold">궁금한 건 여기서 해결하세요</h1>

@@ -116,7 +116,7 @@ export default function StreakAndProgress() {
             <p className="text-xs font-semibold text-[#BE185D] mb-2">🎯 아직 안 한 활동이 있어요!</p>
             <div className="space-y-2">
               {todos.map((todo, i) => (
-                <Link key={i}
+                <Link target="_blank" rel="noopener noreferrer" key={i}
                   to={todo.href}
                   className="flex items-center gap-3 rounded-xl bg-[#FDF2F8] px-4 py-3 text-sm transition hover:bg-[#FCE7F3]"
                   style={{ minHeight: 44 }}

@@ -129,7 +129,7 @@ export default function PartyRecruitPage() {
         {/* Header */}
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <Link to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
+            <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
               ← 커뮤니티
             </Link>
             <h1 className="text-3xl font-bold">동행 모집 게시판</h1>

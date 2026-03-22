@@ -563,7 +563,7 @@ function VenueSlide({
         )}
 
         {/* Detail link */}
-        <Link
+        <Link target="_blank" rel="noopener noreferrer"
           to={getCategoryHref(venue)}
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--neon-primary,#7c3aed)] hover:bg-[var(--neon-primary,#7c3aed)]/80 text-white text-sm font-semibold transition-colors"
         >

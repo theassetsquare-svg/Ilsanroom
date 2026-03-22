@@ -194,14 +194,14 @@ export default function ForBusinessPage() {
             밤문화 비즈니스의 모든 것을 관리하세요.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link
+            <Link target="_blank" rel="noopener noreferrer"
               to="/onboarding?plan=pro&trial=true"
               className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-10 py-4 text-sm font-semibold text-neon-text shadow-lg shadow-violet-600/25 transition-all hover:bg-neon-primary-light hover:shadow-violet-500/30"
             >
               14일 무료 체험 착수하기
               <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link
+            <Link target="_blank" rel="noopener noreferrer"
               to="/pricing"
               className="inline-flex items-center gap-2 rounded-xl border border-neon-border px-8 py-4 text-sm font-semibold text-neon-text transition-colors hover:bg-neon-surface-2"
             >
@@ -381,7 +381,7 @@ export default function ForBusinessPage() {
           ))}
         </div>
         <div className="mt-8 text-center">
-          <Link
+          <Link target="_blank" rel="noopener noreferrer"
             to="/pricing"
             className="inline-flex items-center gap-2 text-sm font-semibold text-neon-primary-light transition-colors hover:text-violet-300"
           >
@@ -432,7 +432,7 @@ export default function ForBusinessPage() {
             14일 프로 무료 체험으로 당사의 모든 기능을 경험하세요. 신용카드 없이
             착수하고, 언제든 해지할 수 갖춰져있습니다.
           </p>
-          <Link
+          <Link target="_blank" rel="noopener noreferrer"
             to="/onboarding?plan=pro&trial=true"
             className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-12 py-4 text-base font-semibold text-neon-text shadow-lg shadow-violet-600/25 transition-all hover:bg-neon-primary-light hover:shadow-violet-500/30"
           >

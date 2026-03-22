@@ -117,7 +117,7 @@ export default function RankingPage() {
           const cc = catColors[v.category] || '#8B5CF6';
           const score = getVenueScore(v.slug);
           return (
-            <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)}
+            <Link target="_blank" rel="noopener noreferrer" key={v.id} to={getCategoryHref(v.category, v.slug, v.region)}
               className="flex items-center gap-3 sm:gap-4 rounded-xl border border-neon-border bg-neon-surface px-4 py-3 transition hover:border-neon-primary/40 card-hover"
               style={{ minHeight: 60 }}>
               {/* 순위 */}

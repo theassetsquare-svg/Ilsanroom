@@ -115,7 +115,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Site info */}
           <div className="col-span-2 sm:col-span-1">
-            <Link to="/" className="text-xl font-black tracking-wider text-neon-primary">
+            <Link target="_blank" rel="noopener noreferrer" to="/" className="text-xl font-black tracking-wider text-neon-primary">
               밤키
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-neon-text-muted">
@@ -129,7 +129,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {categoryLinks.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
+                  <Link target="_blank" rel="noopener noreferrer" to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
                     {link.label}
                   </Link>
                 </li>
@@ -143,7 +143,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {communityLinks.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
+                  <Link target="_blank" rel="noopener noreferrer" to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
                     {link.label}
                   </Link>
                 </li>
@@ -157,7 +157,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {legalLinks.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
+                  <Link target="_blank" rel="noopener noreferrer" to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
                     {link.label}
                   </Link>
                 </li>
@@ -175,7 +175,7 @@ export default function Footer() {
                 <h4 className="mb-2 text-xs font-semibold text-neon-accent">{region}</h4>
                 <div className="flex flex-wrap gap-x-3 gap-y-1">
                   {links.map((link) => (
-                    <Link key={link.href}
+                    <Link target="_blank" rel="noopener noreferrer" key={link.href}
                       to={link.href}
                       className="text-xs text-neon-text-muted transition-colors hover:text-neon-primary-light"
                     >
@@ -191,10 +191,10 @@ export default function Footer() {
         {/* SaaS / Business links */}
         <div className="mt-6 border-t border-neon-border pt-6">
           <div className="flex flex-wrap justify-center gap-4 text-xs text-neon-text-muted">
-            <Link to="/pricing" className="hover:text-neon-primary-light transition-colors">업주 요금제</Link>
-            <Link to="/for-business" className="hover:text-neon-primary-light transition-colors">업주 입점</Link>
-            <Link to="/demo" className="hover:text-neon-primary-light transition-colors">데모</Link>
-            <Link to="/referral" className="hover:text-neon-primary-light transition-colors">추천 프로그램</Link>
+            <Link target="_blank" rel="noopener noreferrer" to="/pricing" className="hover:text-neon-primary-light transition-colors">업주 요금제</Link>
+            <Link target="_blank" rel="noopener noreferrer" to="/for-business" className="hover:text-neon-primary-light transition-colors">업주 입점</Link>
+            <Link target="_blank" rel="noopener noreferrer" to="/demo" className="hover:text-neon-primary-light transition-colors">데모</Link>
+            <Link target="_blank" rel="noopener noreferrer" to="/referral" className="hover:text-neon-primary-light transition-colors">추천 프로그램</Link>
           </div>
         </div>
 

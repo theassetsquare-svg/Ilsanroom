@@ -135,7 +135,7 @@ export default function TestimonialsPage() {
           <p className="mb-6 text-sm text-neon-text-muted">
             밤키에 업소를 등록하고 성장을 경험하세요.
           </p>
-          <Link
+          <Link target="_blank" rel="noopener noreferrer"
             to="/for-business"
             className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-neon-primary-light"
           >

@@ -225,7 +225,7 @@ export default function MapPage() {
                 {vList.map((v) => {
                   const s = MARKER_STYLES[v.category] || MARKER_STYLES.club;
                   return (
-                    <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)}
+                    <Link target="_blank" rel="noopener noreferrer" key={v.id} to={getCategoryHref(v.category, v.slug, v.region)}
                       className="flex items-center gap-3 rounded-xl border border-neon-border bg-neon-surface px-4 py-3 transition hover:border-neon-primary/40 card-hover"
                       style={{ minHeight: 56 }}>
                       <span className="h-3 w-3 shrink-0 rounded-full" style={{ backgroundColor: s.color }} />

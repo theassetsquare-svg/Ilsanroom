@@ -96,7 +96,7 @@ export default function TimeBasedPicks() {
             <h3 className="mb-4 text-lg font-bold text-violet-400">{course.title}</h3>
             <div className="space-y-3">
               {course.venues.map((name, i) => (
-                <Link
+                <Link target="_blank" rel="noopener noreferrer"
                   key={name}
                   to={course.links[i]}
                   className="flex items-center gap-3 rounded-xl bg-neon-surface/80 border border-neon-border/50 px-4 py-3 transition hover:border-violet-500/50 hover:bg-neon-surface"

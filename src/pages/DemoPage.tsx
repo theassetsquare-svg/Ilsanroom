@@ -203,7 +203,7 @@ export default function DemoPage() {
           <p className="mb-4 text-sm text-neon-text-muted">
             실제 데이터로 업소를 관리하고 싶으신가요?
           </p>
-          <Link
+          <Link target="_blank" rel="noopener noreferrer"
             to="/pricing"
             className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-violet-500"
           >

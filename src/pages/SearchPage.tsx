@@ -133,7 +133,7 @@ export default function SearchPage() {
       ) : (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {results.map(venue => (
-            <Link key={venue.id}
+            <Link target="_blank" rel="noopener noreferrer" key={venue.id}
               to={getCategoryPath(venue)}
               className="group flex flex-col rounded-2xl border border-[#E5E7EB] bg-white p-4 shadow-sm transition hover:border-[#8B5CF6] hover:shadow-md"
               style={{ minHeight: 140 }}

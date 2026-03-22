@@ -155,7 +155,7 @@ export default function HomePage() {
           {/* 6종 카테고리 아이콘 */}
           <div className="mt-8 grid grid-cols-6 gap-3">
             {categories.map((cat) => (
-              <Link key={cat.key} to={cat.path} className="group flex flex-col items-center gap-1.5 rounded-xl p-3 transition-all hover:bg-white/80">
+              <Link target="_blank" rel="noopener noreferrer" key={cat.key} to={cat.path} className="group flex flex-col items-center gap-1.5 rounded-xl p-3 transition-all hover:bg-white/80">
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-2xl shadow-sm transition-all group-hover:shadow-md group-hover:scale-105">
                   {cat.icon}
                 </span>
@@ -171,7 +171,7 @@ export default function HomePage() {
         <h2 className="sr-only">프리미엄 매장</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {ilsanRoom && (
-            <Link to="/rooms/ilsan/ilsanroom" className="group block h-full">
+            <Link target="_blank" rel="noopener noreferrer" to="/rooms/ilsan/ilsanroom" className="group block h-full">
               <div className="flex h-full flex-col justify-between rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-5 transition-all hover:shadow-lg card-hover">
                 <div>
                   <Badge variant="premium" className="mb-3">PREMIUM</Badge>
@@ -185,7 +185,7 @@ export default function HomePage() {
             </Link>
           )}
           {ilsanYojeong && (
-            <Link to="/yojeong/ilsan/ilsanmyeongwolgwanyojeong" className="group block h-full">
+            <Link target="_blank" rel="noopener noreferrer" to="/yojeong/ilsan/ilsanmyeongwolgwanyojeong" className="group block h-full">
               <div className="flex h-full flex-col justify-between rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 to-white p-5 transition-all hover:shadow-lg card-hover">
                 <div>
                   <Badge variant="premium" className="mb-3">PREMIUM</Badge>
@@ -215,7 +215,7 @@ export default function HomePage() {
         <h2 className="mb-5 text-xl font-bold text-neon-text">지역별 장소 찾기</h2>
         <div className="flex flex-wrap gap-3">
           {regions.map((r) => (
-            <Link key={r.label}
+            <Link target="_blank" rel="noopener noreferrer" key={r.label}
               to={r.href}
               className="rounded-xl border border-neon-border bg-white px-5 py-3 text-sm font-medium text-neon-text-muted transition-all hover:border-neon-primary/40 hover:text-neon-text card-hover"
             >
@@ -230,7 +230,7 @@ export default function HomePage() {
 
       {/* ═══════ 7. 첫 이용 가이드 배너 ═══════ */}
       <section className="mx-auto max-w-[1200px] px-4 py-6 sm:px-6">
-        <Link to="/guide" className="group block">
+        <Link target="_blank" rel="noopener noreferrer" to="/guide" className="group block">
           <div className="rounded-2xl border border-neon-border bg-white p-5 sm:p-6 transition-all hover:shadow-md card-hover">
             <div className="flex items-center gap-4">
               <span className="text-3xl">📖</span>
@@ -250,7 +250,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-neon-text">인기 스팟 TOP 10</h2>
-          <Link to="/ranking" className="text-sm text-neon-primary hover:underline">
+          <Link target="_blank" rel="noopener noreferrer" to="/ranking" className="text-sm text-neon-primary hover:underline">
             전체 랭킹 →
           </Link>
         </div>
@@ -267,7 +267,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-neon-text">최신 후기</h2>
-          <Link to="/community/reviews" className="text-sm text-neon-primary hover:underline">
+          <Link target="_blank" rel="noopener noreferrer" to="/community/reviews" className="text-sm text-neon-primary hover:underline">
             전체 후기 →
           </Link>
         </div>
@@ -288,13 +288,13 @@ export default function HomePage() {
       <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-neon-text">매거진</h2>
-          <Link to="/magazine" className="text-sm text-neon-primary hover:underline">
+          <Link target="_blank" rel="noopener noreferrer" to="/magazine" className="text-sm text-neon-primary hover:underline">
             더보기 →
           </Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {magazineItems.map((item, i) => (
-            <Link key={i} to={item.href} className="rounded-2xl border border-neon-border bg-white p-5 card-hover block">
+            <Link target="_blank" rel="noopener noreferrer" key={i} to={item.href} className="rounded-2xl border border-neon-border bg-white p-5 card-hover block">
               <Badge className="mb-3">{item.tag}</Badge>
               <h3 className="text-sm font-semibold text-neon-text leading-snug line-clamp-2">{item.title}</h3>
             </Link>
@@ -330,7 +330,7 @@ export default function HomePage() {
 
       {/* ═══════ 13. 사업자 유치 배너 ═══════ */}
       <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
-        <Link to="/for-business" className="group block">
+        <Link target="_blank" rel="noopener noreferrer" to="/for-business" className="group block">
           <div className="relative overflow-hidden rounded-2xl border border-neon-primary/20 bg-gradient-to-r from-violet-50 via-white to-cyan-50 p-8 sm:p-12 transition-all hover:shadow-lg">
             <div className="relative flex flex-col items-center text-center sm:flex-row sm:justify-between sm:text-left">
               <div>
@@ -370,7 +370,7 @@ export default function HomePage() {
             const todayVenue = popularVenues[todayIdx];
             if (!todayVenue) return null;
             return (
-              <Link to={getCategoryHref(todayVenue.category, todayVenue.slug, todayVenue.region)} className="block mt-3 rounded-xl border border-neon-border bg-white p-4 card-hover">
+              <Link target="_blank" rel="noopener noreferrer" to={getCategoryHref(todayVenue.category, todayVenue.slug, todayVenue.region)} className="block mt-3 rounded-xl border border-neon-border bg-white p-4 card-hover">
                 <h3 className="text-base font-bold text-neon-text">{todayVenue.nameKo}</h3>
                 <p className="mt-1 text-sm text-neon-text-muted line-clamp-2">{todayVenue.shortDescription}</p>
                 <span className="mt-2 inline-block text-xs font-medium text-neon-primary">자세히 보기 →</span>

@@ -47,13 +47,13 @@ export default function Header() {
       <ScrollProgress />
       <header className="glass-strong fixed top-0 right-0 left-0 z-50">
         <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-4">
-          <Link to="/" className="flex items-center gap-2 shrink-0">
+          <Link target="_blank" rel="noopener noreferrer" to="/" className="flex items-center gap-2 shrink-0">
             <img src="/logo.svg" alt="밤키" className="h-8" />
           </Link>
 
           <nav className="hidden items-center gap-0.5 lg:flex">
             {navLinks.map((link) => (
-              <Link key={link.href}
+              <Link target="_blank" rel="noopener noreferrer" key={link.href}
                 to={link.href}
                 className="rounded-lg px-2.5 py-2 text-sm font-medium text-neon-text-muted transition-colors hover:bg-neon-surface-2 hover:text-neon-text"
               >
@@ -75,7 +75,7 @@ export default function Header() {
 
             {user ? (
               <div className="hidden sm:flex items-center gap-2">
-                <Link to="/profile"
+                <Link target="_blank" rel="noopener noreferrer" to="/profile"
                   className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-neon-text-muted transition-colors hover:bg-neon-surface-2 hover:text-neon-text"
                 >
                   {user.user_metadata?.avatar_url ? (
@@ -95,7 +95,7 @@ export default function Header() {
                 </button>
               </div>
             ) : (
-              <Link to="/login"
+              <Link target="_blank" rel="noopener noreferrer" to="/login"
                 className="hidden rounded-lg px-3 py-2 text-sm font-medium text-neon-text-muted transition-colors hover:bg-neon-surface-2 hover:text-neon-text sm:block"
               >
                 로그인

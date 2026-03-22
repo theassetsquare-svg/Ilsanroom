@@ -211,7 +211,7 @@ export default function PricingPage() {
           <p className="mx-auto mb-6 max-w-md text-base text-neon-text-muted leading-relaxed">
             카드 등록 없이 바로 시작하세요. 프로 플랜의 모든 기능을 14일간 무료로 이용할 수 있습니다.
           </p>
-          <Link to="/onboarding?plan=pro&trial=true"
+          <Link target="_blank" rel="noopener noreferrer" to="/onboarding?plan=pro&trial=true"
             className="inline-block rounded-xl bg-neon-primary px-8 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-neon-primary-light"
           >
             무료 체험 시작하기
@@ -249,7 +249,7 @@ export default function PricingPage() {
           <p className="mb-4 text-sm text-neon-text-muted leading-relaxed">
             요금제, 결제, 환불 등 궁금한 사항은 고객센터에서 확인하세요.
           </p>
-          <Link to="/help"
+          <Link target="_blank" rel="noopener noreferrer" to="/help"
             className="inline-block rounded-xl border border-neon-border bg-neon-surface-2 px-6 py-2.5 text-sm font-medium text-neon-text transition-colors hover:bg-neon-border"
           >
             고객센터 바로가기

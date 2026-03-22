@@ -51,7 +51,7 @@ export default function HotWidget() {
 
       <div className="grid gap-3 sm:grid-cols-5">
         {venues.map((v, i) => (
-          <Link key={v.id}
+          <Link target="_blank" rel="noopener noreferrer" key={v.id}
             to={getCategoryHref(v.category, v.slug, v.region)}
             className="group flex items-center gap-3 rounded-2xl border border-neon-border bg-neon-surface/50 px-4 py-4 transition-all hover:border-neon-primary/40 card-hover"
             style={{ minHeight: '80px' }}
