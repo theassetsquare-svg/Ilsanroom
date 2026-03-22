@@ -324,7 +324,7 @@ export default function HelpPage() {
             <div className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6">
               <MessageCircle className="mt-0.5 h-6 w-6 shrink-0 text-neon-primary-light" />
               <div>
-                <h3 className="text-sm font-semibold">카톡 문의</h3>
+                <h3 className="text-sm font-semibold">광고문의 카톡</h3>
                 <p className="mt-1 text-xs text-neon-text-muted">
                   카카오톡 ID: besta12
                 </p>

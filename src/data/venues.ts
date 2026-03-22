@@ -1533,6 +1533,8 @@ export const venues: Venue[] = [
     openHours: '',
     tags: ['부산나이트'],
     district: '부산',
+    staffNickname: '따봉',
+    staffPhone: '010-7942-9076',
   },
   {
     id: 'v-054',

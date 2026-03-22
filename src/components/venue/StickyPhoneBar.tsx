@@ -33,14 +33,14 @@ export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPh
     );
   }
 
-  // 허용 번호가 아니거나 전화번호 없는 업소: 카톡 문의
+  // 허용 번호가 아니거나 전화번호 없는 업소: 광고문의 카톡 besta12
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center px-4 pb-3 md:pb-4">
       <div
         className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#FEE500] px-6 py-3.5 text-base font-bold text-[#3C1E1E] shadow-lg"
         style={{ maxWidth: '400px', minHeight: '48px' }}
       >
-        <span>카톡 문의</span>
+        <span>광고문의 카톡</span>
         <span className="rounded-lg bg-white/40 px-3 py-0.5">besta12</span>
       </div>
     </div>

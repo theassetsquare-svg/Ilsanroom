@@ -177,7 +177,7 @@ export default function HomePage() {
                   <p className="mt-1 text-sm font-medium text-amber-700">신실장 (총책임자)</p>
                   <p className="mt-2 text-xs text-neon-text-muted line-clamp-2">{ilsanRoom.shortDescription}</p>
                 </div>
-                <span className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#FEE500] px-4 py-2 text-xs font-bold text-[#3C1E1E]" onClick={(e) => e.stopPropagation()}>카톡 문의 besta12</span>
+                <span className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#FEE500] px-4 py-2 text-xs font-bold text-[#3C1E1E]" onClick={(e) => e.stopPropagation()}>광고문의 카톡 besta12</span>
               </div>
             </Link>
           )}
@@ -190,7 +190,7 @@ export default function HomePage() {
                   <p className="mt-1 text-sm font-medium text-violet-700">신실장</p>
                   <p className="mt-2 text-xs text-neon-text-muted line-clamp-2">{ilsanYojeong.shortDescription}</p>
                 </div>
-                <span className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#FEE500] px-4 py-2 text-xs font-bold text-[#3C1E1E]" onClick={(e) => e.stopPropagation()}>카톡 문의 besta12</span>
+                <span className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#FEE500] px-4 py-2 text-xs font-bold text-[#3C1E1E]" onClick={(e) => e.stopPropagation()}>광고문의 카톡 besta12</span>
               </div>
             </Link>
           )}
