@@ -38,10 +38,11 @@ export default function VenueDetailPage({
   relatedHrefFn,
   extraContent,
 }: VenueDetailPageProps) {
+  const nameHasRegion = venue.nameKo.includes(regionKo);
   const breadcrumbItems = [
     { name: '밤키', url: '/' },
     { name: categoryLabel, url: categoryPath },
-    { name: regionKo, url: regionPath },
+    ...(nameHasRegion ? [] : [{ name: regionKo, url: regionPath }]),
     { name: venue.nameKo, url: detailPath },
   ];
 
@@ -55,11 +56,11 @@ export default function VenueDetailPage({
         reviews={[]}
       />
 
-      {/* Breadcrumb */}
+      {/* Breadcrumb — 이름에 지역 포함 시 지역 단계 생략 (중복 방지) */}
       <section className="mx-auto max-w-[1200px] px-4 py-6 sm:px-6">
         <Breadcrumb items={[
           { label: categoryLabel, href: categoryPath },
-          { label: regionKo, href: regionPath },
+          ...(venue.nameKo.includes(regionKo) ? [] : [{ label: regionKo, href: regionPath }]),
           { label: venue.nameKo },
         ]} />
       </section>
