@@ -16,16 +16,19 @@ export default function LoungesPage() {
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '라운지' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">라운지</h1>
-        <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6">
+        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">프리미엄 칵테일 바 · 라운지</h1>
+        <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
+          <p className="text-lg font-bold text-neon-text">
+            조명이 어둡다. 소파가 깊다. 바텐더가 흔드는 셰이커 소리만 들린다.
+          </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
-            낮은 조명 아래 소파석에 앉아 전문 바텐더가 만든 시그니처 칵테일을 홀짝이며 조용한 대화를 나누는 프리미엄 공간입니다.
-            비즈니스 접대, 소규모 투자 미팅, 커플 기념일 등 격식과 품격이 필요한 자리에 최적화되어 있습니다.
-            청담·논현 일대의 VIP 전용 바는 예약제로 운영하며 독립 부스마다 전담 스태프가 배치됩니다.
-            위스키, 내추럴 와인, 크래프트 진토닉 등 주류 셀렉션이 세분화되어 있어 취향에 맞는 한 잔을 골라 마시는 재미가 있습니다.
-            음악 볼륨을 낮게 유지하는 곳이 대부분이라 대화에 집중하기 좋고,
-            스마트 캐주얼 이상의 복장이면 어디든 무난하게 입장할 수 있습니다.
-            주말 저녁은 만석이 잦으니 방문 당일 전화로 잔여 좌석을 확인하시길 권합니다.
+            시끄러운 곳이 싫은 사람한테 딱이다. 음악은 깔리는데 대화가 안 묻힌다. 맞은편 사람 얼굴이 잘 보이고, 목소리가 선명하게 들린다. 그래서 비즈니스 접대나 소개팅 장소로 인기다. 분위기 잡아주니까.
+          </p>
+          <p className="text-base leading-relaxed text-neon-text-muted">
+            압구정·청담 일대에 집중되어 있다. VIP 전용 부스는 예약제로 운영하고, 부스마다 전담 스태프가 붙는다. 바 카운터에 앉으면 바텐더가 취향을 물어보고 시그니처 칵테일을 만들어준다. 위스키 셀렉션이 100종 넘는 곳도 있고, 내추럴 와인이나 크래프트 진토닉에 특화된 곳도 있다.
+          </p>
+          <p className="text-base leading-relaxed text-neon-text-muted">
+            혼자 와서 바 카운터에 앉는 사람도 많다. 오히려 혼자 오는 게 자연스러운 곳이다. 칵테일 한 잔에 1.5~3만원 정도. 스마트 캐주얼이면 어디든 들어간다. 주말 저녁은 만석이 잦으니 당일 전화로 자리 확인하는 게 안전하다.
           </p>
         </div>
       </div>

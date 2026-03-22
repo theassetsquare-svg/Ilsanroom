@@ -17,16 +17,19 @@ export default function RoomsPage() {
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '룸' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">룸</h1>
-        <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6">
+        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">프라이빗 모임 공간</h1>
+        <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
+          <p className="text-lg font-bold text-neon-text">
+            문 닫으면 바깥 소리가 안 들린다. 우리만의 공간이 시작된다.
+          </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
-            벽으로 완전 분리된 개별 공간에서 노래방 기기, 독립 음향, 개별 조명을 갖추고 프라이버시를 보장하는 모임 전용 업종입니다.
-            4인 소형부터 30인 이상 대형까지 다양한 크기가 준비되어 있어 생일파티, 회식 2차, 동창회, 기업 워크숍 뒤풀이까지
-            인원 규모에 맞춰 선택할 수 있습니다.
-            일산·분당·수원 등 수도권 외곽 거점에는 주차장을 갖춘 대형 시설이 밀집해 있고,
-            해운대 마린시티에는 오션뷰를 활용한 60개 이상 개별 공간을 갖춘 대형 업소도 있습니다.
-            예약 시 희망 인원, 예산, 음식 주문 여부를 미리 알려주면 딱 맞는 크기의 자리를 배정받을 수 있으니
-            반드시 사전 전화 상담 후 방문하세요.
+            벽으로 완전히 분리된 독립 공간이다. 옆에서 아무리 시끄럽게 해도 이쪽은 조용하다. 방음이 되니까 비즈니스 얘기를 해도 되고, 마음껏 노래를 불러도 된다. 독립 음향, 개별 조명, 노래방 기기까지 갖춰진 곳이 대부분이다.
+          </p>
+          <p className="text-base leading-relaxed text-neon-text-muted">
+            4인 소형부터 30인 넘는 대형까지 크기가 다양하다. 생일파티, 회식 2차, 동창회, 기업 워크숍 뒤풀이까지 인원에 맞게 고르면 된다. 일산은 신실장이 전화 한 통이면 인원수에 맞는 자리를 바로 잡아준다. 해운대 마린시티에는 개별 공간이 60개 넘는 대형 시설도 있다.
+          </p>
+          <p className="text-base leading-relaxed text-neon-text-muted">
+            핵심은 사전 전화다. 원하는 인원, 예산, 음식 주문 여부를 미리 말하면 딱 맞는 크기를 배정받는다. 금토는 빨리 차니까 이틀 전에는 연락하자. 주중은 한산해서 여유롭게 쓸 수 있다. 주차장 있는 곳이 많아서 차 끌고 가기도 좋다.
           </p>
         </div>
       </div>

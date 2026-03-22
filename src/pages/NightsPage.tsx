@@ -18,15 +18,22 @@ export default function NightsPage() {
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '나이트' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">소셜댄스 · 부킹</h1>
-        <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6">
+        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">소셜댄스 · 부킹 명소</h1>
+        <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
+          <p className="text-lg font-bold text-neon-text">
+            토요일 밤 9시. 밴드가 첫 곡을 시작하면 홀 전체가 움직인다.
+          </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
-            지루박, 부르스, 자이브 같은 소셜댄스를 파트너와 함께 추며 사교를 즐기는 한국 고유의 나이트 문화입니다.
-            무대 위에서 라이브 밴드가 트로트·팝·발라드를 연주하면, 플로어 위 손님들이 자연스럽게 호흡을 맞춰 춤을 시작합니다.
-            30대 후반부터 50대까지 폭넓은 연령대가 방문하며, 부킹 시스템을 통해 처음 만난 상대와도 부담 없이 한 곡을 함께할 수 있습니다.
-            웨이터가 좌석 안내부터 부킹 중개까지 전 과정을 돕기 때문에, 초보자도 어렵지 않게 현장 분위기에 적응할 수 있습니다.
-            금·토요일 밤 9시 이후가 가장 활기차며, 365일 매일 문을 여는 대형 홀부터 지역 단골 위주의 소규모 업소까지 전국에 분포합니다.
-            양주 한 병과 과일 안주를 곁들이며 춤과 대화를 번갈아 즐기는 여유로운 저녁을 경험해 보세요.
+            웨이터가 테이블로 다가와 "저쪽 분이 같이 춤추고 싶어하십니다" 하면, 자연스럽게 플로어로 나간다. 이게 부킹이다. 처음 만난 사람과 지루박 한 곡을 추는 동안 어색함은 사라지고, 대화가 시작된다. 한국에만 있는 독특한 사교 문화다.
+          </p>
+          <p className="text-base leading-relaxed text-neon-text-muted">
+            라이브 밴드가 트로트·팝·발라드를 번갈아 연주한다. 무대 바로 앞 플로어에서 춤추는 사람들, 부스에 앉아 양주 마시며 구경하는 사람들, 웨이터가 분주하게 오가는 모습이 한 공간에 섞인다. 30대 후반부터 50대까지 연령대가 넓다. 20대가 가면 오히려 귀여워해주셔서 대접받는다는 후기도 있다.
+          </p>
+          <p className="text-base leading-relaxed text-neon-text-muted">
+            시스템은 간단하다. 들어가면 웨이터가 부스를 안내한다. 양주 한 병 시키고 과일 안주 받으면 준비 끝. 춤추고 싶으면 플로어로 나가면 되고, 앉아서 분위기만 즐겨도 된다. 부킹은 거절해도 전혀 문제 없다. 강제 아니다.
+          </p>
+          <p className="text-base leading-relaxed text-neon-text-muted">
+            전국 58곳이 등록되어 있다. 수원찬스돔처럼 돔 구조로 유명한 곳, 부산연산동물처럼 부킹률 1위인 곳, 각각 개성이 확실하다. 금·토 밤 9시가 피크고, 365일 매일 여는 곳도 많다.
           </p>
         </div>
       </div>

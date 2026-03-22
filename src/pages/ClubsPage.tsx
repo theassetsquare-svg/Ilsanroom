@@ -17,16 +17,22 @@ export default function ClubsPage() {
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '클럽' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">클럽</h1>
-        <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6">
+        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">전국 EDM · 힙합 파티 공간</h1>
+        <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
+          <p className="text-lg font-bold text-neon-text">
+            금요일 밤 11시. 강남 한복판 지하로 내려가는 계단에 줄이 50m다.
+          </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
-            EDM, 하우스, 테크노, 힙합 등 전자음악 장르별로 특화된 DJ가 턴테이블을 돌리며 밤새 에너지를 이끄는 댄스 공간입니다.
-            20대~30대 초반이 주 연령층이며, 금요일 자정부터 토요일 새벽 4시까지가 가장 열기가 뜨거운 피크 타임입니다.
-            강남권 대형 베뉴는 1,000명 이상 수용하는 메가 플로어를 갖추고 해외 게스트 DJ 라인업을 정기적으로 선보입니다.
-            홍대 인근은 인디·얼터너티브 씬과 결합한 중소규모 파티가 독자적 문화를 형성하고 있으며,
-            이태원은 외국인 비율이 높아 다국적 페스티벌 분위기를 경험할 수 있습니다.
-            스탠딩 중심의 댄스 플로어에서 조명과 사운드 시스템에 몸을 맡기는 것이 핵심 매력이니,
-            드레스코드와 테이블 예약 여부를 사전에 확인한 뒤 방문하세요.
+            문이 열리는 순간 베이스가 가슴을 때린다. 조명이 천장에서 바닥까지 쏟아지고, DJ가 턴테이블 위에서 손을 올리면 500명이 동시에 점프한다. 이게 EDM 파티 공간의 진짜 매력이다.
+          </p>
+          <p className="text-base leading-relaxed text-neon-text-muted">
+            강남·청담 쪽 대형 베뉴는 1,000명 넘게 들어가는 메가 플로어를 운영한다. 해외 게스트 DJ가 정기적으로 오고, 사운드 시스템은 일본·유럽에서 직수입한 장비를 쓴다. 테이블을 잡으면 전담 스태프가 붙고, 일반 입장은 바 카운터에서 음료 하나 들고 플로어로 합류하면 된다.
+          </p>
+          <p className="text-base leading-relaxed text-neon-text-muted">
+            홍대 쪽은 분위기가 다르다. 200~300명 규모 중소형 공간에서 인디·얼터너티브 장르가 섞인다. 입장료가 강남 절반 수준이고, 분위기가 자유로워서 처음 가는 사람도 어색하지 않다. 이태원은 외국인 비율이 높아서 영어가 섞인 다국적 파티 느낌이다.
+          </p>
+          <p className="text-base leading-relaxed text-neon-text-muted">
+            드레스코드는 업소마다 다르니까 가기 전에 확인하자. 슬리퍼·운동복은 거의 다 안 된다. 셔츠에 슬랙스면 어디든 무난하다. 금토 자정 이후가 피크 타임이고, 목요일은 레이디스 나이트로 여성 무료 입장하는 곳도 있다.
           </p>
         </div>
       </div>
