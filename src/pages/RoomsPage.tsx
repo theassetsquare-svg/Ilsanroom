@@ -1,4 +1,5 @@
 
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
@@ -12,6 +13,7 @@ const regions = [
 ];
 
 export default function RoomsPage() {
+  useDocumentMeta('문 닫으면 우리만의 공간, 프라이빗 모임 | 밤키', '일산·해운대 프라이빗 독립 공간. 4인 소형부터 30인 대형까지 인원별 맞춤 안내.');
   const venues = getVenuesByCategory('room');
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">

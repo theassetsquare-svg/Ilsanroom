@@ -1,4 +1,5 @@
 
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
@@ -19,6 +20,7 @@ const regions = [
 ];
 
 export default function HoppaPage() {
+  useDocumentMeta('혼자 가도 돼요? 오히려 혼자 오는 분이 더 많다 | 밤키', '여성 전용 사교 공간 18곳. 가격 투명, 안전 확인 완료. 사전 전화 한 통이면 준비 끝.');
   const venues = getVenuesByCategory('hoppa');
   return (
     <div className="hoppa-theme mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">

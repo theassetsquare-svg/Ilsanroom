@@ -1,4 +1,5 @@
 
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
@@ -13,6 +14,7 @@ const regions = [
 ];
 
 export default function NightsPage() {
+  useDocumentMeta('밴드가 첫 곡 시작하면 홀 전체가 움직인다 | 밤키', '전국 58곳 소셜댄스 부킹 명소. 초보도 3분이면 적응하는 현장 분위기를 확인하세요.');
   const venues = getVenuesByCategory('night');
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">

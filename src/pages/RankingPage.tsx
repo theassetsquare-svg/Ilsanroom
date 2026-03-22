@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues } from '@/data/venues';
 
 const catLabels: Record<string, string> = { all: '모두', club: '파티', night: '소셜댄스', lounge: '프리미엄바', room: '프라이빗', yojeong: '한정식', hoppa: '호스트' };

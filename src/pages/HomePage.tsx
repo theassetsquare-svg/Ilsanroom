@@ -1,4 +1,5 @@
 
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { Link } from 'react-router-dom';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
@@ -101,6 +102,7 @@ const instaHashtags = [
 ];
 
 export default function HomePage() {
+  useDocumentMeta('밤키 — 전국 밤문화 실시간 정보, 솔직 비교', '117개 업소 솔직 후기와 실시간 인기 순위. 검색 한 번이면 오늘 밤 갈 곳이 정해진다.');
   const popularVenues = getPopularVenues(10);
   const ilsanRoom = getVenueBySlug('ilsanroom');
   const ilsanYojeong = getVenueBySlug('ilsanmyeongwolgwanyojeong');

@@ -1,4 +1,5 @@
 import { lazy, Suspense } from 'react';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const MBTIQuiz = lazy(() => import('@/components/interactive/MBTIQuiz'));
 const Roulette = lazy(() => import('@/components/interactive/Roulette'));

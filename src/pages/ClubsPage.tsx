@@ -1,4 +1,5 @@
 
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
@@ -12,6 +13,7 @@ const regions = [
 ];
 
 export default function ClubsPage() {
+  useDocumentMeta('금요일 밤 줄 50m, 그래도 들어가야 하는 이유 | 밤키', '강남·홍대·이태원 EDM 파티 공간 35곳. 드레스코드부터 입장 팁까지 솔직하게 비교했다.');
   const venues = getVenuesByCategory('club');
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">

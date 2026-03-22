@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues } from '@/data/venues';
 
 const MARKER_STYLES: Record<string, { color: string; bg: string; text: string; label: string }> = {

@@ -1,4 +1,5 @@
 
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
@@ -11,6 +12,7 @@ const regions = [
 ];
 
 export default function YojeongPage() {
+  useDocumentMeta('가야금 선율에 15가지 한정식, 접대의 끝판왕 | 밤키', '한정식 코스와 국악 라이브가 어우러지는 전통 접대 문화. 외국인 접대에서도 높은 평가.');
   const venues = getVenuesByCategory('yojeong');
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">

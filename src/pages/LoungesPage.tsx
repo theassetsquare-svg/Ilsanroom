@@ -1,4 +1,5 @@
 
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
@@ -11,6 +12,7 @@ const regions = [
 ];
 
 export default function LoungesPage() {
+  useDocumentMeta('셰이커 소리만 들리는 곳, 대화에 집중하고 싶다면 | 밤키', '압구정·청담 프리미엄 칵테일 바 3곳. 비즈니스 접대와 데이트에 딱 맞는 분위기 비교.');
   const venues = getVenuesByCategory('lounge');
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
