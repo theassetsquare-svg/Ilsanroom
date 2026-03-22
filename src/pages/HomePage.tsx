@@ -175,9 +175,10 @@ export default function HomePage() {
                   <Badge variant="premium" className="mb-3">PREMIUM</Badge>
                   <h3 className="text-base font-bold text-neon-text group-hover:text-amber-700 transition-colors">{ilsanRoom.nameKo}</h3>
                   <p className="mt-1 text-sm font-medium text-amber-700">신실장 (총책임자)</p>
+                  <p className="mt-1 text-sm font-bold text-amber-800">010-3695-4929</p>
                   <p className="mt-2 text-xs text-neon-text-muted line-clamp-2">{ilsanRoom.shortDescription}</p>
                 </div>
-                <span className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#FEE500] px-4 py-2 text-xs font-bold text-[#3C1E1E]" onClick={(e) => e.stopPropagation()}>광고문의 카톡 besta12</span>
+                <a href="tel:01036954929" className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#22C55E] px-4 py-2 text-xs font-bold text-white hover:bg-[#16A34A] transition" onClick={(e) => e.stopPropagation()}>📞 신실장 전화하기</a>
               </div>
             </Link>
           )}
@@ -188,9 +189,10 @@ export default function HomePage() {
                   <Badge variant="premium" className="mb-3">PREMIUM</Badge>
                   <h3 className="text-base font-bold text-neon-text group-hover:text-violet-700 transition-colors">{ilsanYojeong.nameKo}</h3>
                   <p className="mt-1 text-sm font-medium text-violet-700">신실장</p>
+                  <p className="mt-1 text-sm font-bold text-violet-800">010-3695-4929</p>
                   <p className="mt-2 text-xs text-neon-text-muted line-clamp-2">{ilsanYojeong.shortDescription}</p>
                 </div>
-                <span className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#FEE500] px-4 py-2 text-xs font-bold text-[#3C1E1E]" onClick={(e) => e.stopPropagation()}>광고문의 카톡 besta12</span>
+                <a href="tel:01036954929" className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#22C55E] px-4 py-2 text-xs font-bold text-white hover:bg-[#16A34A] transition" onClick={(e) => e.stopPropagation()}>📞 신실장 전화하기</a>
               </div>
             </Link>
           )}
