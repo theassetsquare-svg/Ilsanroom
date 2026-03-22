@@ -47,9 +47,9 @@ const faqCategories: FaqCategory[] = [
           "일반 사용자는 장소 검색, 방문후기 열람, 커뮤니티 글 읽기 등 모든 기초 도구를 무료로 이용할 수 존재합니다. 업주의 경우 무료 플랜에서 상점 소개란 1개 생성, 기초 월간 지표 조회, 방문후기 알림 수신이 허용합니다.",
       },
       {
-        question: "문의는 어떻게 할 수 있나요?",
+        question: "연락 방법이 궁금해요",
         answer:
-          "이메일(support@ilsanroom.pages.dev) 또는 카카오톡 채널(@당사문의자센터)로 문의하실 수 존재합니다. 구동시간은 평일 10:00~18:00이며, 긴급 문의는 24시간 접수 허용합니다.",
+          "이메일(support@ilsanroom.pages.dev) 또는 카카오톡 besta12로 연락 가능합니다. 운영시간은 평일 10:00~18:00이며, 긴급 건은 24시간 접수합니다.",
       },
     ],
   },
@@ -235,7 +235,7 @@ export default function HelpPage() {
         <div className="mb-12 text-center">
           <HelpCircle className="mx-auto mb-4 h-10 w-10 text-neon-primary-light" />
           <h1 className="mb-4 text-4xl font-bold">
-            문의자 <span className="text-neon-primary-light">센터</span>
+            고객 <span className="text-neon-primary-light">센터</span>
           </h1>
           <p className="text-lg text-neon-text-muted">
             궁금한 점을 검색하거나 카테고리별 자주 묻는 질문을 확인하세요.
@@ -299,7 +299,7 @@ export default function HelpPage() {
                 &ldquo;{searchQuery}&rdquo;에 대한 검색 결과가 없습니다.
               </p>
               <p className="mt-1 text-xs text-neon-text-subtle">
-                아래 연락처로 직접 문의해 주세요.
+                아래 연락처로 직접 연락해 주세요.
               </p>
             </div>
           )}
@@ -308,7 +308,7 @@ export default function HelpPage() {
         {/* Contact Section */}
         <div className="mb-8">
           <h2 className="mb-6 text-xl font-bold">
-            직접 <span className="text-neon-primary-light">문의하기</span>
+            직접 <span className="text-neon-primary-light">연락하기</span>
           </h2>
           <div className="grid gap-4 sm:grid-cols-3 mb-8">
             <div className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6">
@@ -351,8 +351,8 @@ export default function HelpPage() {
 
           {/* Contact Form */}
           <div className="rounded-2xl border border-neon-border bg-neon-surface p-6">
-            <h3 className="mb-4 text-sm font-bold">문의 양식</h3>
-            <form onSubmit={(e) => { e.preventDefault(); alert('문의가 접수되었습니다. qotjsdnr123@naver.com으로 답변 드리겠습니다.'); }} className="space-y-4">
+            <h3 className="mb-4 text-sm font-bold">연락 양식</h3>
+            <form onSubmit={(e) => { e.preventDefault(); alert('접수되었습니다. qotjsdnr123@naver.com으로 답변 드리겠습니다.'); }} className="space-y-4">
               <div>
                 <label className="mb-1.5 block text-xs font-medium text-neon-text-muted">이름</label>
                 <input type="text" required placeholder="이름을 입력하세요"
@@ -364,8 +364,8 @@ export default function HelpPage() {
                   className="w-full rounded-xl border border-neon-border bg-neon-bg px-4 py-3 text-sm text-neon-text placeholder-neutral-500 outline-none focus:border-violet-500" />
               </div>
               <div>
-                <label className="mb-1.5 block text-xs font-medium text-neon-text-muted">문의 내용</label>
-                <textarea required rows={4} placeholder="문의 내용을 작성해 주세요"
+                <label className="mb-1.5 block text-xs font-medium text-neon-text-muted">내용</label>
+                <textarea required rows={4} placeholder="내용을 작성해 주세요"
                   className="w-full rounded-xl border border-neon-border bg-neon-bg px-4 py-3 text-sm text-neon-text placeholder-neutral-500 outline-none focus:border-violet-500 resize-none" />
               </div>
               <button type="submit"
