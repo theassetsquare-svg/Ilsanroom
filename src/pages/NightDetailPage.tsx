@@ -1,5 +1,5 @@
 import { useParams , Navigate } from 'react-router-dom';
-
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import VenueDetailPage from '@/components/venue/VenueDetailPage';
 import { getHookingTitle, getHookingDescription } from '@/lib/seo-hooks';
 import { getVenueOgImageBySlug } from '@/lib/og-image';
@@ -19,7 +19,7 @@ const defaultFaqs = (name: string) => [
 export default function NightDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const venue = getVenueBySlug(slug);
-
+  useDocumentMeta(getHookingTitle(venue!) + ' | 밤키', getHookingDescription(venue!));
   const related = getRelatedVenues(venue, 6);
 
   return (

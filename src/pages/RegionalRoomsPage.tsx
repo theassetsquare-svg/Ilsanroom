@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
@@ -55,6 +56,7 @@ function RoomCard({ venue, region }: { venue: Venue; region: string }) {
 export default function RegionalRoomsPage() {
   const { region } = useParams<{ region: string }>();
   const regionKo = regionNames[region] || region;
+  useDocumentMeta(`${regionKo} 프라이빗 공간 | 밤키`, `${regionKo} 지역 프라이빗 모임 공간.`);
   const rooms = getVenuesByCategoryAndRegion('room', region);
   const [activePurpose, setActivePurpose] = useState<string | null>(null);
 

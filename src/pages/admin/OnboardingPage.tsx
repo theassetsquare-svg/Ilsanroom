@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const steps = [
   { number: 1, label: "업소정보" },
@@ -73,6 +74,7 @@ const categories = [
 ];
 
 export default function OnboardingPage() {
+  useDocumentMeta('업소 등록 시작 | 밤키', '4단계만 따라오면 등록 완료.');
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedPlan, setSelectedPlan] = useState("프로");
   const [formData, setFormData] = useState({

@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
@@ -45,6 +46,7 @@ function YojeongCard({ venue, region }: { venue: Venue; region: string }) {
 export default function RegionalYojeongPage() {
   const { region } = useParams<{ region: string }>();
   const regionKo = regionNames[region] || region;
+  useDocumentMeta(`${regionKo} 전통 접대 공간 | 밤키`, `${regionKo} 지역 한정식·국악 전통 접대.`);
   const yojeongs = getVenuesByCategoryAndRegion('yojeong', region);
 
   return (

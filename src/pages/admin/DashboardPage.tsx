@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const stats = [
   { label: "오늘 조회수", value: "1,284", change: "+12.5%", positive: true },
@@ -79,6 +80,7 @@ const quickLinks = [
 ];
 
 export default function DashboardPage() {
+  useDocumentMeta('업주 대시보드 | 밤키', '내 업소 조회수, 리뷰, 예약 현황.');
   const [reservationStatuses, setReservationStatuses] = useState<
     Record<number, string>
   >(

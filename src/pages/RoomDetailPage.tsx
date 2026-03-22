@@ -1,6 +1,7 @@
 import { useParams , Navigate } from 'react-router-dom';
 
 import VenueDetailPage from '@/components/venue/VenueDetailPage';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { getHookingTitle, getHookingDescription } from '@/lib/seo-hooks';
 import { getVenueOgImageBySlug } from '@/lib/og-image';
 import { getVenueBySlug, getRelatedVenues, getVenuesByCategory } from '@/data/venues';
@@ -24,6 +25,7 @@ const defaultFaqs = (name: string) => [
 export default function RoomDetailPage() {
   const { region, slug } = useParams<{ region: string; slug: string }>();
   const venue = getVenueBySlug(slug);
+  useDocumentMeta(getHookingTitle(venue!) + ' | 밤키', getHookingDescription(venue!));
 
   const regionKo = regionNames[region] || region;
   const related = getRelatedVenues(venue, 6);

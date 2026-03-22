@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
@@ -45,6 +46,7 @@ function ClubCard({ venue, href }: { venue: Venue; href: string }) {
 export default function RegionalClubsPage() {
   const { region } = useParams<{ region: string }>();
   const regionKo = regionNames[region] || region;
+  useDocumentMeta(`${regionKo} 파티 공간 | 밤키`, `${regionKo} 지역 EDM 파티 공간 목록.`);
   const clubs = getVenuesByCategoryAndRegion('club', region);
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
 

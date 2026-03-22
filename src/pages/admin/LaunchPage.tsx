@@ -1,3 +1,4 @@
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const sections = [
   {
@@ -85,6 +86,7 @@ const domainStrategy = [
 ];
 
 export default function LaunchChecklistPage() {
+  useDocumentMeta('런칭 준비 | 밤키', '업소 등록 완료 후 최종 확인.');
   const allItems = sections.flatMap((s) => s.items);
   const totalItems = allItems.length;
   const doneItems = allItems.filter((i) => i.status === "done").length;
