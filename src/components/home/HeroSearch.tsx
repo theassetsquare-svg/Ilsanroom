@@ -17,7 +17,7 @@ const CATEGORY_FILTERS = [
 ] as const;
 
 const POPULAR_TAGS = [
-  '일산룸', '일산명월관요정', '강남청담클럽', '압구정클럽',
+  '일산룸', '일산명월관요정', '강남클럽', '압구정클럽',
   '강남호빠', '부산나이트', '수원나이트', '해운대고구려',
 ];
 
@@ -114,7 +114,7 @@ export default function HeroSearch() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => { if (query.trim() || activeFilter !== 'all') setShowResults(true); }}
-          placeholder="업소명, 지역으로 검색 (예: 일산룸, 강남청담클럽)"
+          placeholder="업소명, 지역으로 검색 (예: 일산룸, 강남클럽)"
           className="w-full rounded-2xl border border-neon-border bg-neon-surface/80 py-4 pl-12 pr-4 text-neon-text placeholder-[#999] outline-none backdrop-blur-sm transition-all focus:border-neon-primary/50 focus:shadow-lg focus:shadow-neon-primary/10"
         />
         {loading && (

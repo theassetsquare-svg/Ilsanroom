@@ -48,9 +48,7 @@ export default function Header() {
       <header className="glass-strong fixed top-0 right-0 left-0 z-50">
         <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-4">
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <span className="text-xl font-black tracking-wider text-neon-primary">
-              밤키
-            </span>
+            <img src="/logo.svg" alt="밤키" className="h-8" />
           </Link>
 
           <nav className="hidden items-center gap-0.5 lg:flex">

@@ -8,7 +8,7 @@ import type { Venue } from '@/types';
 const popularTerms = [
   '일산룸',
   '일산명월관요정',
-  '강남청담클럽',
+  '강남클럽',
   '압구정클럽',
   '강남호빠',
   '부산나이트',

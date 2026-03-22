@@ -49,7 +49,6 @@ export default function PostSidebar({ currentPost, relatedPosts }: PostSidebarPr
                 <div className="mt-1 flex items-center gap-2 text-[10px] text-neon-text-muted">
                   <span className="rounded bg-neon-surface-2 px-1.5 py-0.5">{boardLabels[post.board]}</span>
                   <span>♥ {post.likes}</span>
-                  <span>{post.readTimeMin}분</span>
                 </div>
               </div>
             ))}

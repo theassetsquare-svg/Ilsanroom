@@ -14,7 +14,7 @@ interface VenueDetailTabsProps {
   categoryLabel: string;
 }
 
-const TABS = ['기본정보', '가격표', '메뉴·서비스', '리뷰', '사진갤러리', '이벤트', 'FAQ', '지도', 'VS투표', '인기시간'] as const;
+const TABS = ['기본정보', '메뉴·서비스', '리뷰', '사진갤러리', '이벤트', 'FAQ', '지도', 'VS투표', '인기시간'] as const;
 
 const CATEGORY_SYNONYMS: Record<string, string> = {
   club: 'EDM 파티홀', night: '댄스홀', lounge: '프리미엄 바',
@@ -90,48 +90,6 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
                 </div>
               </div>
             )}
-          </div>
-        )}
-
-        {/* ── 가격표 ── */}
-        {activeTab === '가격표' && (
-          <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">가격 안내</h2>
-            {(venue.priceEntry || venue.priceTable || venue.priceDrink) ? (
-              <div className="overflow-hidden rounded-xl border border-neon-border">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-neon-border bg-neon-surface-2">
-                      <th className="px-4 py-3 text-left font-semibold text-neon-text">항목</th>
-                      <th className="px-4 py-3 text-left font-semibold text-neon-text">가격</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {venue.priceEntry && (
-                      <tr className="border-b border-neon-border/50">
-                        <td className="px-4 py-3 text-neon-text-muted">입장료</td>
-                        <td className="px-4 py-3 text-neon-text">{venue.priceEntry}</td>
-                      </tr>
-                    )}
-                    {venue.priceTable && (
-                      <tr className="border-b border-neon-border/50">
-                        <td className="px-4 py-3 text-neon-text-muted">테이블/룸</td>
-                        <td className="px-4 py-3 text-neon-text">{venue.priceTable}</td>
-                      </tr>
-                    )}
-                    {venue.priceDrink && (
-                      <tr>
-                        <td className="px-4 py-3 text-neon-text-muted">음료/주류</td>
-                        <td className="px-4 py-3 text-neon-text">{venue.priceDrink}</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <p className="text-neon-text-muted">가격 정보가 등록되지 않았습니다. 업소에 직접 문의해 주세요.</p>
-            )}
-            <p className="mt-4 text-xs text-neon-text-subtle">※ 가격은 변동될 수 있으며, 정확한 금액은 업소에 직접 확인하시기 바랍니다.</p>
           </div>
         )}
 

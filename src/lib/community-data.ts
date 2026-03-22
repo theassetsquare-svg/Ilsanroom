@@ -36,14 +36,14 @@ function makeComment(id: string, postId: string, authorKey: string, content: str
 export const freePosts: Post[] = [
   {
     id: 'f1', board: 'free', title: '오늘 강남 클럽 분위기 어떤가요?',
-    content: '주말인데 강남 클럽 분위기 어떤지 궁금합니다. 강남청담클럽 레이스나 압구정클럽 하입 가보신 분 계신가요? 오늘 처음 갈 건데 혼자라서 좀 걱정되네요. 보통 몇 시쯤 가는 게 좋을까요? 드레스코드도 궁금합니다.',
+    content: '주말인데 강남 클럽 분위기 어떤지 궁금합니다. 강남클럽 레이스나 압구정클럽 하입 가보신 분 계신가요? 오늘 처음 갈 건데 혼자라서 좀 걱정되네요. 보통 몇 시쯤 가는 게 좋을까요? 드레스코드도 궁금합니다.',
     excerpt: '주말인데 강남 클럽 분위기 어떤지 궁금합니다...',
     author: authors.party, createdAt: '2026-03-13T20:30:00Z',
     views: 342, likes: 28, isLiked: false, isBookmarked: false,
     commentCount: 15, images: [], hashtags: ['강남', '클럽', '주말'],
     readTimeMin: 1, isPopular: false, isReported: false,
     comments: [
-      makeComment('c1', 'f1', 'clubmaster', '강남청담클럽 레이스는 12시 넘어서 가야 분위기 제대로 나요. 드레스코드는 스마트 캐주얼이면 충분!', [
+      makeComment('c1', 'f1', 'clubmaster', '강남클럽 레이스는 12시 넘어서 가야 분위기 제대로 나요. 드레스코드는 스마트 캐주얼이면 충분!', [
         makeComment('c1-1', 'f1', 'party', '감사합니다! 그럼 11시 반쯤 출발하면 되겠네요'),
         makeComment('c1-2', 'f1', 'newbie', '저도 궁금했는데 도움 됐어요'),
       ]),
@@ -111,7 +111,7 @@ export const freePosts: Post[] = [
     views: 678, likes: 98, isLiked: false, isBookmarked: false,
     commentCount: 51, images: [], hashtags: ['장르', 'EDM', '테크노'],
     readTimeMin: 1, isPopular: true, isReported: false,
-    comments: [makeComment('c8', 'f7', 'clubmaster', '테크노는 압구정클럽 인트로, 하우스는 강남청담클럽 아르쥬, EDM은 강남청담클럽 레이스가 대표적이에요')],
+    comments: [makeComment('c8', 'f7', 'clubmaster', '테크노는 압구정클럽 인트로, 하우스는 강남클럽 아르쥬, EDM은 강남클럽 레이스가 대표적이에요')],
   },
   {
     id: 'f8', board: 'free', title: '이태원 vs 청담 라운지 고민 중',
@@ -128,37 +128,37 @@ export const freePosts: Post[] = [
 // ── Review Posts ────────────────────────────────────────
 export const reviewPosts: Post[] = [
   {
-    id: 'r1', board: 'reviews', title: '강남청담클럽 레이스 주말 방문 후기',
+    id: 'r1', board: 'reviews', title: '강남클럽 레이스 주말 방문 후기',
     content: '사운드 시스템이 정말 좋았고, DJ 라인업도 만족스러웠습니다. VIP 테이블 서비스도 깔끔하고 직원들이 친절했어요. 다만 주말이라 사람이 엄청 많아서 댄스플로어는 좀 답답했습니다. 가격대는 VIP 테이블 80만원 정도였고, 입장료는 3만원이었습니다. 전체적으로 만족스러운 경험이었고 다음에 또 가고 싶습니다.',
     excerpt: '사운드 시스템이 정말 좋았고, DJ 라인업도 만족스러웠습니다...',
     author: authors.clubmaster, createdAt: '2026-03-13T10:00:00Z',
     views: 567, likes: 89, isLiked: false, isBookmarked: false,
     commentCount: 23, images: [], hashtags: ['강남', '레이스', '클럽후기'],
     readTimeMin: 2, isPopular: true, isReported: false,
-    venueTag: '강남청담클럽 레이스', venueRegion: '강남', rating: 4.5,
-    comments: [makeComment('cr1', 'r1', 'party', '강남청담클럽 레이스 VIP 서비스 진짜 좋죠')],
+    venueTag: '강남클럽 레이스', venueRegion: '강남', rating: 4.5,
+    comments: [makeComment('cr1', 'r1', 'party', '강남클럽 레이스 VIP 서비스 진짜 좋죠')],
   },
   {
-    id: 'r2', board: 'reviews', title: '강남청담클럽 사운드 금요일 밤 솔직 리뷰',
+    id: 'r2', board: 'reviews', title: '강남클럽 사운드 금요일 밤 솔직 리뷰',
     content: '음악은 항상 좋은데 주말에는 사람이 너무 많아서 조금 답답할 수 있어요. 평일에 가면 훨씬 쾌적하게 즐길 수 있습니다. 사운드 퀄리티는 강남 클럽 중에서 상위권이고, DJ 믹싱도 안정적이에요. 입장료 1만5천원 정도.',
     excerpt: '음악은 항상 좋은데 주말에는 사람이 너무 많아서...',
     author: authors.hongdae, createdAt: '2026-03-12T20:00:00Z',
     views: 345, likes: 67, isLiked: false, isBookmarked: false,
     commentCount: 31, images: [], hashtags: ['강남', '사운드', '클럽후기'],
     readTimeMin: 1, isPopular: false, isReported: false,
-    venueTag: '강남청담클럽 사운드', venueRegion: '강남', rating: 4.0,
+    venueTag: '강남클럽 사운드', venueRegion: '강남', rating: 4.0,
     comments: [],
   },
   {
-    id: 'r3', board: 'reviews', title: '강남청담클럽 레이스 처음 가봤는데...',
+    id: 'r3', board: 'reviews', title: '강남클럽 레이스 처음 가봤는데...',
     content: '분위기가 정말 다르더라고요. 라이브 밴드 퀄리티가 상당하고, 연령대가 좀 있어서 차분하게 즐길 수 있었습니다. 댄스홀이 넓어서 답답한 느낌 없이 춤출 수 있었고, 무료 댄스 레슨도 진행하더라고요. 정장 입고 가야 해서 준비는 좀 필요했지만 그만큼 격식 있는 분위기였습니다.',
     excerpt: '분위기가 정말 다르더라고요. 라이브 밴드 퀄리티가 상당하고...',
     author: authors.newbie, createdAt: '2026-03-12T15:00:00Z',
     views: 789, likes: 145, isLiked: false, isBookmarked: false,
     commentCount: 38, images: [], hashtags: ['강남', '클럽', '첫방문'],
     readTimeMin: 2, isPopular: true, isReported: false,
-    venueTag: '강남청담클럽 레이스', venueRegion: '강남', rating: 4.8,
-    comments: [makeComment('cr3', 'r3', 'dance', '강남청담클럽 레이스 밴드 퀄리티 진짜 인정합니다')],
+    venueTag: '강남클럽 레이스', venueRegion: '강남', rating: 4.8,
+    comments: [makeComment('cr3', 'r3', 'dance', '강남클럽 레이스 밴드 퀄리티 진짜 인정합니다')],
   },
   {
     id: 'r4', board: 'reviews', title: '부산연산동물나이트 오션뷰 후기',
@@ -188,8 +188,8 @@ export const reviewPosts: Post[] = [
 export const partyPosts: Post[] = [
   {
     id: 'p1', board: 'party', title: '이번 토요일 강남 클럽 같이 가실 분!',
-    content: '이번 토요일 강남청담클럽 레이스 VIP 테이블 잡아놨는데, 같이 갈 멤버 구합니다. 비용은 N빵 예정이고, 술은 각자 취향대로. 20대 중후반~30대 초반 남녀 모두 환영합니다.',
-    excerpt: '이번 토요일 강남청담클럽 레이스 VIP 테이블 잡아놨는데...',
+    content: '이번 토요일 강남클럽 레이스 VIP 테이블 잡아놨는데, 같이 갈 멤버 구합니다. 비용은 N빵 예정이고, 술은 각자 취향대로. 20대 중후반~30대 초반 남녀 모두 환영합니다.',
+    excerpt: '이번 토요일 강남클럽 레이스 VIP 테이블 잡아놨는데...',
     author: authors.party, createdAt: '2026-03-13T14:00:00Z',
     views: 456, likes: 34, isLiked: false, isBookmarked: false,
     commentCount: 12, images: [], hashtags: ['강남', '레이스', 'N빵'],
@@ -200,7 +200,7 @@ export const partyPosts: Post[] = [
   },
   {
     id: 'p2', board: 'party', title: '홍대 클럽 투어 멤버 구합니다 (3/21)',
-    content: '강남 클럽 3~4곳 돌아볼 예정입니다. 강남청담클럽 사운드 → 압구정클럽 하입 → 압구정클럽 인트로 루트로 생각 중이에요. 중간에 포차에서 간단히 먹고 이동할 계획. 교통비 제외 1인당 10만원 정도 예상.',
+    content: '강남 클럽 3~4곳 돌아볼 예정입니다. 강남클럽 사운드 → 압구정클럽 하입 → 압구정클럽 인트로 루트로 생각 중이에요. 중간에 포차에서 간단히 먹고 이동할 계획. 교통비 제외 1인당 10만원 정도 예상.',
     excerpt: '강남 클럽 3~4곳 돌아볼 예정입니다...',
     author: authors.hongdae, createdAt: '2026-03-13T10:00:00Z',
     views: 345, likes: 45, isLiked: false, isBookmarked: false,
@@ -311,7 +311,7 @@ export const tipsPosts: Post[] = [
 export const fashionPosts: Post[] = [
   {
     id: 'fa1', board: 'fashion', title: '클럽별 드레스코드 완벽 정리 2026',
-    content: '각 클럽별 드레스코드를 정리했습니다. 강남청담클럽 레이스는 스마트 캐주얼, 압구정클럽 하입은 자유, 압구정클럽 인트로는 완전 자유. 나이트는 대부분 정장 필수입니다. 라운지는 매장마다 다르니 사전 확인 필수.',
+    content: '각 클럽별 드레스코드를 정리했습니다. 강남클럽 레이스는 스마트 캐주얼, 압구정클럽 하입은 자유, 압구정클럽 인트로는 완전 자유. 나이트는 대부분 정장 필수입니다. 라운지는 매장마다 다르니 사전 확인 필수.',
     excerpt: '각 클럽별 드레스코드를 정리했습니다...',
     author: authors.fashion, createdAt: '2026-03-12T10:00:00Z',
     views: 2345, likes: 567, isLiked: false, isBookmarked: false,

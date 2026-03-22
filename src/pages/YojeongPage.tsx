@@ -47,7 +47,7 @@ export default function YojeongPage() {
         { day: '일요일', time: '12:00~15:00', level: 50 },
       ]} />
 
-      <CategoryVSBattle venueA="일산명월관요정" venueB="강남청담클럽 아르쥬" topic="접대 장소 대결 — 전통 한정식 vs 모던" />
+      <CategoryVSBattle venueA="일산명월관요정" venueB="강남클럽 아르쥬" topic="접대 장소 대결 — 전통 한정식 vs 모던" />
 
       <RelatedMagazine articles={[
         { title: '일산명월관 완벽 가이드: 접대부터 가족모임까지', tag: '전통' },

@@ -54,7 +54,7 @@ export default function SearchPage() {
     return filtered;
   }, [query, selectedCategory]);
 
-  const popular = ['일산룸', '강남청담클럽', '부산나이트', '호빠', '해운대', '수원', '라운지', '요정'];
+  const popular = ['일산룸', '강남클럽', '부산나이트', '호빠', '해운대', '수원', '라운지', '요정'];
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -117,7 +117,7 @@ export default function SearchPage() {
           <p className="mb-2 text-lg font-semibold text-[#111]">검색 결과가 없어요</p>
           <p className="mb-4 text-sm text-[#555]">다른 키워드로 검색해보세요</p>
           <div className="flex flex-wrap justify-center gap-2">
-            {['일산룸', '강남청담클럽 레이스', '부산연산동물나이트', '강남호빠 로얄', '일산명월관요정'].map(s => (
+            {['일산룸', '강남클럽 레이스', '부산연산동물나이트', '강남호빠 로얄', '일산명월관요정'].map(s => (
               <button
                 key={s}
                 onClick={() => setQuery(s)}
