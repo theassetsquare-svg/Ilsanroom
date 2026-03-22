@@ -131,15 +131,17 @@ export function getHookingTitle(venue: Venue): string {
 
   if (hooks[venue.nameKo]) return hooks[venue.nameKo];
 
-  // Fallback: generate from venue data (no region duplication)
-  const nameHasRegion = venue.nameKo.includes(venue.regionKo);
+  // Fallback: 지역 중복 절대 방지
+  // regionKo가 "부산 해운대" 같이 2단어인 경우도 각 단어별로 체크
+  const regionParts = venue.regionKo.split(/\s+/).filter((p: string) => p.length >= 2);
+  const nameHasAnyRegion = regionParts.some((p: string) => venue.nameKo.includes(p));
   const trait = venue.staffNickname
-    ? `${venue.staffNickname}이(가) 이끄는 ${nameHasRegion ? '' : venue.regionKo + ' '}명소`
+    ? `${venue.staffNickname}이(가) 이끄는 명소`
     : venue.isPremium
       ? `프리미엄 ${getCategoryKo(venue.category)}`
-      : `${nameHasRegion ? '' : venue.regionKo + ' '}특별한 ${getCategoryKo(venue.category)}`;
+      : `특별한 ${getCategoryKo(venue.category)}`;
 
-  return `${venue.nameKo} — ${trait}`.replace(/\s+/g, ' ').trim();
+  return `${venue.nameKo} — ${trait}`;
 }
 
 function getCategoryKo(cat: string): string {
