@@ -180,7 +180,7 @@ export default function HomePage() {
                   <p className="mt-1 text-sm font-bold text-amber-800">010-3695-4929</p>
                   <p className="mt-2 text-xs text-neon-text-muted line-clamp-2">{ilsanRoom.shortDescription}</p>
                 </div>
-                <a href="tel:01036954929" className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#22C55E] px-4 py-2 text-xs font-bold text-white hover:bg-[#16A34A] transition" onClick={(e) => e.stopPropagation()}>📞 신실장 전화하기</a>
+                <a href="tel:01036954929" className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#15803D] px-4 py-2 text-xs font-bold text-white hover:bg-[#166534] transition" onClick={(e) => e.stopPropagation()}>📞 신실장 전화하기</a>
               </div>
             </Link>
           )}
@@ -194,7 +194,7 @@ export default function HomePage() {
                   <p className="mt-1 text-sm font-bold text-violet-800">010-3695-4929</p>
                   <p className="mt-2 text-xs text-neon-text-muted line-clamp-2">{ilsanYojeong.shortDescription}</p>
                 </div>
-                <a href="tel:01036954929" className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#22C55E] px-4 py-2 text-xs font-bold text-white hover:bg-[#16A34A] transition" onClick={(e) => e.stopPropagation()}>📞 신실장 전화하기</a>
+                <a href="tel:01036954929" className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#15803D] px-4 py-2 text-xs font-bold text-white hover:bg-[#166534] transition" onClick={(e) => e.stopPropagation()}>📞 신실장 전화하기</a>
               </div>
             </Link>
           )}

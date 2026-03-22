@@ -23,7 +23,7 @@ export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPh
           href={`tel:${phone.replace(/-/g, '')}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#22C55E] px-6 py-3.5 text-base font-bold text-white shadow-lg transition hover:bg-[#16A34A] active:scale-95"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#15803D] px-6 py-3.5 text-base font-bold text-white shadow-lg transition hover:bg-[#166534] active:scale-95"
           style={{ maxWidth: '400px', minHeight: '48px' }}
           aria-label={`${venueName} 전화걸기 ${phone}`}
         >

@@ -6,7 +6,7 @@
   font-weight: 400;
   font-display: swap;
   font-style: normal;
-  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/woff2/Pretendard-Regular.woff2') format('woff2');
+  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/woff2/Pretendard-Regular.subset.woff2') format('woff2');
   size-adjust: 100%;
 }
 
@@ -15,7 +15,7 @@
   font-weight: 600;
   font-display: swap;
   font-style: normal;
-  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/woff2/Pretendard-SemiBold.woff2') format('woff2');
+  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/woff2/Pretendard-SemiBold.subset.woff2') format('woff2');
   size-adjust: 100%;
 }
 
@@ -24,7 +24,7 @@
   font-weight: 700;
   font-display: swap;
   font-style: normal;
-  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/woff2/Pretendard-Bold.woff2') format('woff2');
+  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/woff2/Pretendard-Bold.subset.woff2') format('woff2');
   size-adjust: 100%;
 }
 
@@ -37,12 +37,12 @@
   --color-neon-text: #111111;
   --color-neon-text-muted: #555555;
   --color-neon-text-subtle: #666666;
-  --color-neon-primary: #8B5CF6;
-  --color-neon-primary-light: #7C3AED;
-  --color-neon-primary-dark: #6D28D9;
-  --color-neon-accent: #0891B2;
-  --color-neon-accent-light: #06B6D4;
-  --color-neon-pink: #E11D48;
+  --color-neon-primary: #7C3AED;
+  --color-neon-primary-light: #6D28D9;
+  --color-neon-primary-dark: #5B21B6;
+  --color-neon-accent: #0E7490;
+  --color-neon-accent-light: #0891B2;
+  --color-neon-pink: #BE123C;
   --color-neon-gold: #B45309;
   --color-neon-green: #059669;
   --color-neon-red: #DC2626;
