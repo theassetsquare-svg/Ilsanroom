@@ -1,6 +1,6 @@
-
 import { Link } from 'react-router-dom';
 import { getPopularVenues } from '@/data/venues';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 function getCategoryHref(category: string, slug: string, region: string) {
   const pathMap: Record<string, string> = {
@@ -20,6 +20,7 @@ function getCategoryLabel(cat: string) {
 }
 
 export default function NotFound() {
+  useDocumentMeta('페이지를 찾을 수 없습니다 | 밤키', '찾는 페이지가 없지만 지금 핫한 업소를 추천합니다.');
   const popularVenues = getPopularVenues(6);
 
   return (

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 type PartyStatus = "모집중" | "마감임박" | "마감";
 
@@ -116,6 +117,7 @@ function NbbangCalc() {
 }
 
 export default function PartyRecruitPage() {
+  useDocumentMeta('파티 모집 — 같이 갈 사람 찾기 | 밤키', '오늘 밤 같이 갈 사람? N빵 모집부터 일정까지.');
   const [statusFilter, setStatusFilter] = useState<PartyStatus | "전체">("전체");
   const filtered = statusFilter === "전체"
     ? sampleParties

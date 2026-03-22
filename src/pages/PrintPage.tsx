@@ -2,8 +2,10 @@ import { useParams , Navigate } from 'react-router-dom';
 
 import { getVenueBySlug, venues } from '@/data/venues';
 import PrintButton from '@/components/ui/PrintButton';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function PrintPage() {
+  useDocumentMeta('인쇄용 페이지 | 밤키', '업소 정보 인쇄 페이지.');
   const { slug } = useParams<{ slug: string }>();
   const venue = slug ? getVenueBySlug(slug) : undefined;
 

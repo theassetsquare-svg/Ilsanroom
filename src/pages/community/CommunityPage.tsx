@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const sections = [
   {
@@ -46,6 +47,7 @@ const sections = [
 ];
 
 export default function CommunityPage() {
+  useDocumentMeta('밤문화 커뮤니티 | 밤키', '자유게시판, 솔직 후기, 파티 모집, 패션 팁.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-5xl px-4 py-16">

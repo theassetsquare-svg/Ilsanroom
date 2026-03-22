@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { venues } from '@/data/venues';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const CAT_LABELS: Record<string, string> = { club: 'EDM존', night: '댄스존', lounge: '바존', room: '개인실', yojeong: '한식관', hoppa: '호스트존' };
 const CAT_COLORS: Record<string, string> = { club: '#7c3aed', night: '#ec4899', lounge: '#06b6d4', room: '#f59e0b', yojeong: '#ef4444', hoppa: '#f472b6' };
@@ -19,6 +20,7 @@ const galleryItems = venues
   }));
 
 export default function GalleryPage() {
+  useDocumentMeta('전국 업소 분위기 사진 갤러리 | 밤키', '가기 전에 눈으로 먼저 확인. 업소별 분위기 사진 모음.');
   const [lightboxId, setLightboxId] = useState<string | null>(null);
   const [filter, setFilter] = useState('all');
 

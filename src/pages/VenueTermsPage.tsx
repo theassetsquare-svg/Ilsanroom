@@ -1,3 +1,4 @@
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const sections = [
   {
@@ -134,6 +135,7 @@ const sections = [
 ];
 
 export default function VenueTermsPage() {
+  useDocumentMeta('업소등록약관 | 밤키', '업소 등록 및 광고 이용 약관.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">

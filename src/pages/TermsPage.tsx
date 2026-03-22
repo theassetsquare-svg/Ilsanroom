@@ -1,3 +1,4 @@
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const articles = [
   {
@@ -93,6 +94,7 @@ const articles = [
 ];
 
 export default function TermsPage() {
+  useDocumentMeta('이용약관 | 밤키', '밤키 서비스 이용약관.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">

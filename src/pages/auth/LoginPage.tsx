@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 function signInWith(provider: 'kakao' | 'google') {
   const supabase = createClient();
@@ -18,6 +19,7 @@ function signInWith(provider: 'kakao' | 'google') {
 }
 
 export default function LoginPage() {
+  useDocumentMeta('로그인 — 카카오·구글로 3초 시작 | 밤키', '소셜 계정으로 간편 시작. 별도 회원가입 없이 바로 이용.');
   const [loading, setLoading] = useState<string | null>(null);
 
   const handleLogin = (provider: 'kakao' | 'google') => {

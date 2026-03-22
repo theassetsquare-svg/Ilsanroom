@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 type VenueType = "라운지" | "나이트" | "바" | "요정";
 
@@ -104,6 +105,7 @@ function SuitabilityDots({ score }: { score: number }) {
 }
 
 export default function FashionPage() {
+  useDocumentMeta('뭐 입고 가야 해? 패션 가이드 | 밤키', '업종별 드레스코드와 코디 추천.');
   const [venueFilter, setVenueFilter] = useState<VenueType | "전체">("전체");
 
   const sorted = [...outfitCards].sort((a, b) => {

@@ -1,3 +1,4 @@
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const sections = [
   {
@@ -134,6 +135,7 @@ const sections = [
 ];
 
 export default function PrivacyPage() {
+  useDocumentMeta('개인정보처리방침 | 밤키', '밤키 개인정보 수집·이용·보호 정책.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">

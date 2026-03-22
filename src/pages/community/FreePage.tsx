@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const hotPosts = [
   { id: 101, title: "일산 밤문화 입문기 — 3개월 차 솔직 소감", author: "야행성루키", date: "2026-03-19", comments: 74 },
@@ -20,6 +21,7 @@ const recentPosts = [
 ];
 
 export default function FreeBoardPage() {
+  useDocumentMeta('자유게시판 | 밤키', '밤문화 잡담, 추천, 질문 자유롭게.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-3xl px-4 py-16">

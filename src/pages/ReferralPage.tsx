@@ -1,3 +1,4 @@
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const steps = [
   {
@@ -82,6 +83,7 @@ const faqs = [
 ];
 
 export default function ReferralPage() {
+  useDocumentMeta('친구 초대하면 둘 다 VIP | 밤키', '카톡 링크 공유로 친구 초대. 둘 다 VIP 혜택.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">

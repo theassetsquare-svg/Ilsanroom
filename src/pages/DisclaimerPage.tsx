@@ -1,3 +1,4 @@
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const disclaimerSections = [
   {
@@ -51,6 +52,7 @@ const disclaimerSections = [
 ];
 
 export default function DisclaimerPage() {
+  useDocumentMeta('면책조항 | 밤키', '밤키 서비스 이용 시 유의사항.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">

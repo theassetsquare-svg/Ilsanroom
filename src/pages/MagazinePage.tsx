@@ -1,4 +1,4 @@
-
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const articles = [
   {
@@ -52,6 +52,7 @@ const articles = [
 ];
 
 export default function MagazinePage() {
+  useDocumentMeta('읽다 보면 가고 싶어지는 밤문화 매거진 | 밤키', '강남 TOP5, 첫 방문 핸드북, 지역별 비교 콘텐츠.');
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <h1 className="text-2xl font-extrabold text-neon-text mb-1">매거진</h1>

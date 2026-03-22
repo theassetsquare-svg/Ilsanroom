@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 type Category = "초보자" | "절약" | "안전" | "매너";
 type Difficulty = "쉬움" | "보통" | "고급";
@@ -95,6 +96,7 @@ const tipCards = [
 const categories: Array<Category | "전체"> = ["전체", "초보자", "절약", "안전", "매너"];
 
 export default function TipsPage() {
+  useDocumentMeta('초보자 팁·안전 가이드 | 밤키', '첫 방문부터 안전 귀가까지 실전 팁.');
   const [activeCat, setActiveCat] = useState<Category | "전체">("전체");
 
   const filtered = activeCat === "전체" ? tipCards : tipCards.filter((t) => t.category === activeCat);

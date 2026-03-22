@@ -1,4 +1,4 @@
-
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const caseStudies = [
   {
@@ -40,6 +40,7 @@ const caseStudies = [
 ];
 
 export default function CaseStudiesPage() {
+  useDocumentMeta('매출이 올라간 실제 사례 | 밤키', '밤키 등록 후 매출 변화를 경험한 이야기.');
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <h1 className="text-2xl font-extrabold text-neon-text mb-1">입점 사례 연구</h1>

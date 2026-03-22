@@ -1,4 +1,5 @@
 import { lazy, Suspense } from 'react';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const AlcoholCalculator = lazy(() => import('@/components/interactive/SafetyTools').then((m) => ({ default: m.AlcoholCalculator })));
 const EmergencyContacts = lazy(() => import('@/components/interactive/SafetyTools').then((m) => ({ default: m.EmergencyContacts })));
@@ -7,6 +8,7 @@ const QuickDriverCall = lazy(() => import('@/components/interactive/KillerFeatur
 const HangoverFood = lazy(() => import('@/components/interactive/KillerFeatures').then((m) => ({ default: m.HangoverFood })));
 
 export default function SafetyPage() {
+  useDocumentMeta('음주 계산기부터 SOS 긴급 연락까지 | 밤키', '안전 귀가 필수 도구. 음주량 계산, 택시 호출, 112 원클릭.');
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 space-y-8">
       <div className="text-center">

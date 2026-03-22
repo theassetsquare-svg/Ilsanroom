@@ -12,6 +12,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const mockStats = [
   { label: "오늘 방문자", value: "1,284", change: "+12%", icon: Eye },
@@ -50,6 +51,7 @@ const sidebarItems = [
 ];
 
 export default function DemoPage() {
+  useDocumentMeta('업주 데모 체험 | 밤키', '업주 대시보드를 가입 없이 바로 체험.');
   const [activeTab, setActiveTab] = useState("대시보드");
 
   return (

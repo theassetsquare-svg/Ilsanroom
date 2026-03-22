@@ -12,6 +12,7 @@ import {
   Mail,
 } from "lucide-react";
 import { useState } from "react";
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const systems = [
   {
@@ -77,6 +78,7 @@ const uptimeDays = Array.from({ length: 30 }).map((_, i) => {
 });
 
 export default function StatusPage() {
+  useDocumentMeta('서비스 상태 | 밤키', '밤키 서비스 운영 현황 확인.');
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 

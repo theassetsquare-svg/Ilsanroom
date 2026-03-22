@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Check, X } from "lucide-react";
 import PricingCTA from "@/components/saas/PricingCTA";
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const plans = [
   {
@@ -126,6 +127,7 @@ const faqs = [
 ];
 
 export default function PricingPage() {
+  useDocumentMeta('업주님, 14일 무료 체험으로 시작하세요 | 밤키', '무료부터 프리미엄 4단계. 체험 후 결정. 해지도 원클릭.');
   return (
     <div className="min-h-screen bg-neon-bg">
       <div className="mx-auto max-w-[1200px] px-4 py-16">

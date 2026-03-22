@@ -13,6 +13,7 @@ import {
   Code,
   Store,
 } from "lucide-react";
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 interface FaqItem {
   question: string;
@@ -204,6 +205,7 @@ function CategorySection({ category }: { category: FaqCategory }) {
 }
 
 export default function HelpPage() {
+  useDocumentMeta('궁금한 거 있으면 여기서 해결 | 밤키', '자주 묻는 질문과 광고문의 카톡 besta12.');
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 

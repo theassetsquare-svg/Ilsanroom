@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Search, MapPin, ArrowRight } from 'lucide-react';
 import { venues, categories } from '@/data/venues';
 import type { Venue } from '@/types';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 function getCategoryLabel(key: string): string {
   const cat = categories.find(c => c.key === key);
@@ -28,6 +29,7 @@ function getCategoryPath(venue: Venue): string {
 }
 
 export default function SearchPage() {
+  useDocumentMeta('검색 결과 | 밤키', '전국 117개 업소에서 원하는 곳을 찾아보세요.');
   const [query, setQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 

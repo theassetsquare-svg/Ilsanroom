@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { venues } from '@/data/venues';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 type CategoryFilter = 'all' | 'club' | 'night' | 'lounge' | 'room' | 'yojeong' | 'hoppa';
 
@@ -20,6 +21,7 @@ function getCategoryHref(category: string, slug: string, region: string) {
 }
 
 export default function PricePage() {
+  useDocumentMeta('업종별 이용 가이드 | 밤키', '카테고리별 이용 방법과 분위기 비교.');
   const [category, setCategory] = useState<CategoryFilter>('all');
   const [showAll, setShowAll] = useState(false);
 

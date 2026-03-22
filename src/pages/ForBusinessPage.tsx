@@ -14,6 +14,7 @@ import {
   Zap,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const features = [
   {
@@ -170,6 +171,7 @@ const testimonials = [
 ];
 
 export default function ForBusinessPage() {
+  useDocumentMeta('내 가게 등록하면 월 1,200명이 본다 | 밤키', '검색 상위노출, 프리미엄 뱃지, 리뷰 관리 대시보드.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       {/* Hero */}
