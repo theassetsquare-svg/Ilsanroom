@@ -34,7 +34,7 @@ const testimonials = [
   },
   {
     name: "최** 매니저",
-    venue: "강남클럽 레이스",
+    venue: "강남청담클럽 레이스",
     category: "클럽",
     region: "강남",
     rating: 5,

@@ -4,8 +4,18 @@ interface StickyPhoneBarProps {
   venueName: string;
 }
 
+const ALLOWED_PHONES = [
+  '010-7942-9076', // 따봉
+  '010-3987-6885', // 박찬호
+  '010-9354-1323', // 강호동
+  '010-4241-3748', // 태양
+  '010-5655-4866', // 펩시맨
+  '010-8255-3509', // 막내
+  '010-5653-0069', // 춘자
+];
+
 export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPhoneBarProps) {
-  if (phone) {
+  if (phone && ALLOWED_PHONES.includes(phone)) {
     return (
       <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center px-4 pb-3 md:pb-4">
         <a
@@ -23,15 +33,15 @@ export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPh
     );
   }
 
-  // 전화번호 없는 업소: 카톡 문의
+  // 허용 번호가 아니거나 전화번호 없는 업소: 카톡 문의
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center px-4 pb-3 md:pb-4">
       <div
-        className="flex w-full items-center justify-center gap-2 rounded-xl bg-neon-primary px-6 py-3.5 text-base font-bold text-white shadow-lg"
+        className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#FEE500] px-6 py-3.5 text-base font-bold text-[#3C1E1E] shadow-lg"
         style={{ maxWidth: '400px', minHeight: '48px' }}
       >
-        <span>광고문의 카톡</span>
-        <span className="rounded-lg bg-white/20 px-3 py-0.5">besta12</span>
+        <span>카톡 문의</span>
+        <span className="rounded-lg bg-white/40 px-3 py-0.5">besta12</span>
       </div>
     </div>
   );

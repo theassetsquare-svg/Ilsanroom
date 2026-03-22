@@ -77,7 +77,7 @@ const regions = [
 /* ── Latest reviews (real venues only) ── */
 const latestReviews = [
   { venue: '일산명월관요정', text: '한정식 코스가 정말 훌륭했습니다. 국악 공연도 감동적이었어요.', author: '김**', date: '2026-03-12' },
-  { venue: '강남클럽 레이스', text: '베이스 사운드에 몸이 먼저 반응합니다. 강남 최고 수준.', author: '이**', date: '2026-03-11' },
+  { venue: '강남청담클럽 레이스', text: '베이스 사운드에 몸이 먼저 반응합니다. 강남 최고 수준.', author: '이**', date: '2026-03-11' },
   { venue: '수원찬스돔나이트', text: '돔 구조가 만들어내는 공간감이 독특해요. 강호동 담당자 재밌음.', author: '박**', date: '2026-03-10' },
   { venue: '해운대고구려', text: '공간이 60개 넘으니까 웨이팅 없이 바로 입장할 수 있어서 좋아요.', author: '최**', date: '2026-03-09' },
 ];
@@ -94,7 +94,7 @@ const magazineItems = [
 const instaHashtags = [
   { tag: '#일산룸', desc: '프리미엄 프라이빗 공간', url: 'https://www.instagram.com/explore/tags/일산룸/' },
   { tag: '#명월관요정', desc: '전통 코스 요리', url: 'https://www.instagram.com/explore/tags/명월관요정/' },
-  { tag: '#강남클럽', desc: '주말 EDM 파티', url: 'https://www.instagram.com/explore/tags/강남클럽/' },
+  { tag: '#강남청담클럽', desc: '주말 EDM 파티', url: 'https://www.instagram.com/explore/tags/강남청담클럽/' },
   { tag: '#강남호빠', desc: '호스트 엔터테인먼트', url: 'https://www.instagram.com/explore/tags/강남호빠/' },
   { tag: '#전통한정식', desc: '국악 라이브 연주', url: 'https://www.instagram.com/explore/tags/전통한정식/' },
   { tag: '#부산나이트', desc: '부산 사교 댄스 명소', url: 'https://www.instagram.com/explore/tags/부산나이트/' },
@@ -175,10 +175,9 @@ export default function HomePage() {
                   <Badge variant="premium" className="mb-3">PREMIUM</Badge>
                   <h3 className="text-base font-bold text-neon-text group-hover:text-amber-700 transition-colors">{ilsanRoom.nameKo}</h3>
                   <p className="mt-1 text-sm font-medium text-amber-700">신실장 (총책임자)</p>
-                  <p className="mt-1 text-sm font-bold text-amber-800">010-3695-4929</p>
                   <p className="mt-2 text-xs text-neon-text-muted line-clamp-2">{ilsanRoom.shortDescription}</p>
                 </div>
-                <a href="tel:010-3695-4929" className="mt-3 inline-flex items-center gap-1 rounded-lg bg-amber-500 px-4 py-2 text-xs font-bold text-white hover:bg-amber-600 transition" onClick={(e) => e.stopPropagation()}>📞 전화하기</a>
+                <span className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#FEE500] px-4 py-2 text-xs font-bold text-[#3C1E1E]" onClick={(e) => e.stopPropagation()}>카톡 문의 besta12</span>
               </div>
             </Link>
           )}
@@ -189,10 +188,9 @@ export default function HomePage() {
                   <Badge variant="premium" className="mb-3">PREMIUM</Badge>
                   <h3 className="text-base font-bold text-neon-text group-hover:text-violet-700 transition-colors">{ilsanYojeong.nameKo}</h3>
                   <p className="mt-1 text-sm font-medium text-violet-700">신실장</p>
-                  <p className="mt-1 text-sm font-bold text-violet-800">010-3695-4929</p>
                   <p className="mt-2 text-xs text-neon-text-muted line-clamp-2">{ilsanYojeong.shortDescription}</p>
                 </div>
-                <a href="tel:010-3695-4929" className="mt-3 inline-flex items-center gap-1 rounded-lg bg-violet-500 px-4 py-2 text-xs font-bold text-white hover:bg-violet-600 transition" onClick={(e) => e.stopPropagation()}>📞 전화하기</a>
+                <span className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#FEE500] px-4 py-2 text-xs font-bold text-[#3C1E1E]" onClick={(e) => e.stopPropagation()}>카톡 문의 besta12</span>
               </div>
             </Link>
           )}

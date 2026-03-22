@@ -37,7 +37,7 @@ const TIME_SLOTS: TimeSlot[] = [
     greeting: '밤이 시작됩니다',
     emoji: '🌙',
     courses: [
-      { title: '나이트 입문 코스', venues: ['수원찬스돔나이트', '강남클럽 레이스'], links: ['/nights/suwonchansdomnight', '/clubs/gangnam/gangnamclub-race'] },
+      { title: '나이트 입문 코스', venues: ['수원찬스돔나이트', '강남청담클럽 레이스'], links: ['/nights/suwonchansdomnight', '/clubs/gangnam/gangnamclub-race'] },
       { title: '프리미엄 룸 코스', venues: ['일산룸', '해운대고구려'], links: ['/rooms/ilsan/ilsanroom', '/rooms/busan-haeundae/haeundaegoguryeo'] },
     ],
   },
@@ -46,7 +46,7 @@ const TIME_SLOTS: TimeSlot[] = [
     greeting: '지금이 가장 뜨거운 시간',
     emoji: '🔥',
     courses: [
-      { title: '지금 핫한 클럽', venues: ['강남클럽 레이스', '강남클럽 사운드', '압구정클럽 하입'], links: ['/clubs/gangnam/gangnamclub-race', '/clubs/gangnam/gangnamclub-sound', '/clubs/apgujeong/apgujeongclub-hype'] },
+      { title: '지금 핫한 클럽', venues: ['강남청담클럽 레이스', '강남청담클럽 사운드', '압구정클럽 하입'], links: ['/clubs/gangnam/gangnamclub-race', '/clubs/gangnam/gangnamclub-sound', '/clubs/apgujeong/apgujeongclub-hype'] },
       { title: '호빠 투어', venues: ['강남호빠 로얄', '압구정라운지 디엠'], links: ['/hoppa/gangnam-hoppa-royal', '/lounges/apgujeong-dm'] },
     ],
   },
