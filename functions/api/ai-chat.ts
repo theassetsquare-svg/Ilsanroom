@@ -23,7 +23,7 @@ interface RequestBody {
   history?: ChatMessage[];
 }
 
-const SYSTEM_PROMPT = `당신은 "오늘밤어디"의 AI 추천 도우미입니다.
+const SYSTEM_PROMPT = `당신은 "밤키"의 AI 추천 도우미입니다.
 한국의 클럽, 나이트, 라운지, 룸, 요정, 호빠 업소를 추천해줍니다.
 
 규칙:

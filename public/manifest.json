@@ -1,6 +1,6 @@
 {
-  "name": "오늘밤어디 — 전국 클럽·나이트·라운지·룸·요정·호빠",
-  "short_name": "오늘밤어디",
+  "name": "밤키 — 전국 클럽·나이트·라운지·룸·요정·호빠",
+  "short_name": "밤키",
   "description": "전국 클럽, 나이트, 라운지, 룸, 요정, 호빠 업소 정보",
   "start_url": "/",
   "display": "standalone",
