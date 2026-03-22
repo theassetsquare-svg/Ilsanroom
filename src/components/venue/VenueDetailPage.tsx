@@ -39,7 +39,7 @@ export default function VenueDetailPage({
   extraContent,
 }: VenueDetailPageProps) {
   const breadcrumbItems = [
-    { name: '오늘밤어디', url: '/' },
+    { name: '밤키', url: '/' },
     { name: categoryLabel, url: categoryPath },
     { name: regionKo, url: regionPath },
     { name: venue.nameKo, url: detailPath },
@@ -87,7 +87,7 @@ export default function VenueDetailPage({
 
       {/* [D] 첫 방문 가이드 */}
       <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
-        <Link href="/guide" className="block rounded-2xl border border-neon-gold/30 bg-neon-gold/5 p-5 transition hover:border-neon-gold/50 card-hover">
+        <Link to="/guide" className="block rounded-2xl border border-neon-gold/30 bg-neon-gold/5 p-5 transition hover:border-neon-gold/50 card-hover">
           <div className="flex items-center gap-3">
             <span className="text-2xl">📖</span>
             <div>
@@ -116,7 +116,7 @@ export default function VenueDetailPage({
 
       {/* [C] 숨은 명소 */}
       <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
-        <Link href="/hidden" className="block rounded-2xl border border-neon-accent/30 bg-neon-accent/5 p-5 transition hover:border-neon-accent/50 card-hover">
+        <Link to="/hidden" className="block rounded-2xl border border-neon-accent/30 bg-neon-accent/5 p-5 transition hover:border-neon-accent/50 card-hover">
           <div className="flex items-center gap-3">
             <span className="text-2xl">💎</span>
             <div>

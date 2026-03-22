@@ -2,7 +2,7 @@ import type { Venue } from '@/types';
 
 /**
  * Generate unique hooking title for each venue.
- * Format: "[가게이름] — [고유 매력 한줄] | 오늘밤어디"
+ * Format: "[가게이름] — [고유 매력 한줄] | 밤키"
  * NO duplicate titles. Each venue gets a unique hook.
  */
 export function getHookingTitle(venue: Venue): string {

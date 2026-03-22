@@ -10,7 +10,7 @@ interface ShareButtonProps {
 }
 
 export default function ShareButton({
-  title = '오늘밤어디',
+  title = '밤키',
   text = '이 업소 정보를 확인해 보세요!',
   url,
   className = '',

@@ -1,7 +1,7 @@
-// Toss Payments integration for 오늘밤어디 SaaS
+// Toss Payments integration for 밤키 SaaS
 
-const TOSS_CLIENT_KEY = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY || '';
-const TOSS_SECRET_KEY = process.env.TOSS_SECRET_KEY || '';
+const TOSS_CLIENT_KEY = import.meta.env.VITE_TOSS_CLIENT_KEY || '';
+const TOSS_SECRET_KEY = import.meta.env.VITE_TOSS_SECRET_KEY || '';
 const API_URL = 'https://api.tosspayments.com/v1';
 
 export interface SubscriptionPayment {

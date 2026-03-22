@@ -98,7 +98,7 @@ export default function TimeBasedPicks() {
               {course.venues.map((name, i) => (
                 <Link
                   key={name}
-                  href={course.links[i]}
+                  to={course.links[i]}
                   className="flex items-center gap-3 rounded-xl bg-neon-surface/80 border border-neon-border/50 px-4 py-3 transition hover:border-violet-500/50 hover:bg-neon-surface"
                 >
                   <span className="flex h-7 w-7 items-center justify-center rounded-full bg-violet-500/20 text-xs font-bold text-violet-400">

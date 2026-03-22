@@ -1,8 +1,8 @@
 import { createClient as supabaseCreateClient } from '@supabase/supabase-js';
 import type { Database } from '@/types/database';
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://rkqnblbajhnehmxfnvri.supabase.co';
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_hjLH8puvrYsVNPt38KR0kQ_v99vtC3c';
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://rkqnblbajhnehmxfnvri.supabase.co';
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_hjLH8puvrYsVNPt38KR0kQ_v99vtC3c';
 
 // Client-side singleton — direct SDK queries, no API routes
 let clientInstance: ReturnType<typeof supabaseCreateClient<Database>> | null = null;

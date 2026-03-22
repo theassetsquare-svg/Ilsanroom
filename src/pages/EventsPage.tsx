@@ -31,7 +31,7 @@ export default function EventsPage() {
           eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
           eventStatus: 'https://schema.org/EventScheduled',
           location: { '@type': 'Place', name: e.venue, address: { '@type': 'PostalAddress', addressRegion: e.region, addressCountry: 'KR' } },
-          organizer: { '@type': 'Organization', name: '오늘밤어디', url: 'https://ilsanroom.pages.dev' },
+          organizer: { '@type': 'Organization', name: '밤키', url: 'https://ilsanroom.pages.dev' },
         }} />
       ))}
 

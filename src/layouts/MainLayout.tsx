@@ -20,7 +20,7 @@ const TikTokFeed = lazy(() => import('@/components/engagement/TikTokFeed'));
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: '오늘밤어디',
+  name: '밤키',
   url: 'https://ilsanroom.pages.dev',
   logo: 'https://ilsanroom.pages.dev/favicon.ico',
   description: '솔직한 후기로 고르는 야간 문화 비교 서비스',
@@ -30,7 +30,7 @@ const organizationJsonLd = {
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: '오늘밤어디',
+  name: '밤키',
   url: 'https://ilsanroom.pages.dev',
   potentialAction: {
     '@type': 'SearchAction',

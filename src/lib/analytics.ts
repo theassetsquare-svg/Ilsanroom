@@ -38,7 +38,7 @@ declare global {
 
 // ─── Config ──────────────────────────────────────────────────────────
 
-const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID ?? "";
+const GA4_ID = import.meta.env.VITE_GA4_ID ?? "";
 
 // ─── Helpers ─────────────────────────────────────────────────────────
 
@@ -67,7 +67,7 @@ export function trackPageView(url: string, title?: string): void {
     });
   }
 
-  if (process.env.NODE_ENV === "development") {
+  if (import.meta.env.MODE === "development") {
     console.log(`[analytics] pageview: ${url}${title ? ` — ${title}` : ""}`);
   }
 }
@@ -92,7 +92,7 @@ export function trackEvent(event: GtagEvent): void {
     });
   }
 
-  if (process.env.NODE_ENV === "development") {
+  if (import.meta.env.MODE === "development") {
     console.log(`[analytics] event:`, event);
   }
 }
@@ -123,7 +123,7 @@ export function trackConversion(
     });
   }
 
-  if (process.env.NODE_ENV === "development") {
+  if (import.meta.env.MODE === "development") {
     console.log(`[analytics] conversion: ${conversionName}`, params);
   }
 }

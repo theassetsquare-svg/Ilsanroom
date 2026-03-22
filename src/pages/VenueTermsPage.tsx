@@ -4,7 +4,7 @@ const sections = [
     number: 1,
     title: "총칙",
     items: [
-      '본 규정은 오늘밤어디(이하 "플랫폼")에 점포 상세사항를 게시하고자 하는 사업자(이하 "게시 업소")와 플랫폼 간의 권리, 소임 및 책임사항을 규정합니다.',
+      '본 규정은 밤키(이하 "플랫폼")에 점포 상세사항를 게시하고자 하는 사업자(이하 "게시 업소")와 플랫폼 간의 권리, 소임 및 책임사항을 규정합니다.',
       "기재 영업장은 본 조항에 동의함으로써 운영사 기능을 이용할 수 있게 됩니다.",
       "본 규정에서 정하지 않은 사항은 관련 법적규범 및 사이트의 이용약관에 따릅니다.",
     ],
@@ -143,7 +143,7 @@ export default function VenueTermsPage() {
             매장 입점 <span className="text-neon-primary-light">규정</span>
           </h1>
           <p className="text-lg text-neon-text-muted">
-            오늘밤어디에 매장을 게시하기 위한 이용 조항
+            밤키에 매장을 게시하기 위한 이용 조항
           </p>
         </div>
 
@@ -159,7 +159,7 @@ export default function VenueTermsPage() {
             매장 사장님이신가요?
           </h2>
           <p className="mb-4 text-sm leading-relaxed text-neon-text">
-            오늘밤어디에 매장을 입점하고 더 많은 고객에게 다가가세요. 기본 게시는
+            밤키에 매장을 입점하고 더 많은 고객에게 다가가세요. 기본 게시는
             무료이며, 프리미엄 기능을 이용하여 더 높은 노출 효과를 얻을 수
             있습니다. 신청 전 아래 규정을 반드시 확인해 주세요.
           </p>

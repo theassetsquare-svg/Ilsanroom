@@ -1,6 +1,6 @@
 // Sentry error monitoring integration
 
-const SENTRY_DSN = process.env.SENTRY_DSN || '';
+const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN || '';
 
 interface SentryEvent {
   message: string;

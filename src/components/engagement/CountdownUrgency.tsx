@@ -93,7 +93,7 @@ export default function CountdownUrgency() {
         <div className="space-y-3">
           {picks.map((v, i) => (
             <Link key={v.id}
-              href={getCategoryHref(v)}
+              to={getCategoryHref(v)}
               className="group flex items-center gap-4 rounded-xl bg-white/80 px-4 py-3 transition hover:bg-white hover:shadow-sm"
               style={{ minHeight: 56 }}
             >

@@ -64,7 +64,7 @@ export default function DemoPage() {
             업주 <span className="text-violet-400">대시보드</span> 미리보기
           </h1>
           <p className="mx-auto max-w-lg text-lg text-neon-text-muted">
-            오늘밤어디 Pro 대시보드를 직접 체험해보세요. 실제 데이터 기반의
+            밤키 Pro 대시보드를 직접 체험해보세요. 실제 데이터 기반의
             인터랙티브 데모입니다.
           </p>
         </div>
@@ -88,7 +88,7 @@ export default function DemoPage() {
             {/* Sidebar */}
             <div className="hidden w-48 shrink-0 border-r border-neon-border p-4 md:block">
               <div className="mb-6">
-                <span className="text-sm font-bold text-violet-400">오늘밤어디</span>
+                <span className="text-sm font-bold text-violet-400">밤키</span>
                 <span className="ml-1 text-xs text-neon-text-muted">Pro</span>
               </div>
               <nav className="space-y-1">

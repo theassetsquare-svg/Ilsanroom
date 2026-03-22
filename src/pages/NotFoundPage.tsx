@@ -40,13 +40,13 @@ export default function NotFound() {
 
       <div className="flex gap-4 mb-12 mt-6">
         <Link
-          href="/"
+          to="/"
           className="rounded-xl bg-neon-primary px-6 py-3 font-medium text-white transition hover:bg-neon-primary-light"
         >
           홈으로 돌아가기
         </Link>
         <Link
-          href="/map"
+          to="/map"
           className="rounded-xl border border-neon-border px-6 py-3 font-medium text-neon-text-muted transition hover:bg-neon-surface-2"
         >
           지도에서 찾기
@@ -60,7 +60,7 @@ export default function NotFound() {
           {popularVenues.map((v) => (
             <Link
               key={v.id}
-              href={getCategoryHref(v.category, v.slug, v.region)}
+              to={getCategoryHref(v.category, v.slug, v.region)}
               className="rounded-xl border border-neon-border bg-white px-4 py-3 text-left transition-all card-hover"
             >
               <span className="text-xs text-neon-primary">{getCategoryLabel(v.category)}</span>
@@ -71,7 +71,7 @@ export default function NotFound() {
       </div>
 
       <div className="mt-16 text-neon-text-subtle">
-        <p className="text-xs">오늘밤어디</p>
+        <p className="text-xs">밤키</p>
       </div>
     </div>
   );

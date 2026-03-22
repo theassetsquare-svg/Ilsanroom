@@ -15,7 +15,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
       <ol className="flex flex-wrap items-center gap-1 text-sm text-neon-text-muted">
         <li>
           <Link
-            href="/"
+            to="/"
             className="transition-colors hover:text-neon-primary-light"
           >
             홈
@@ -26,7 +26,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
             <span className="text-neon-text-subtle">/</span>
             {item.href ? (
               <Link
-                href={item.href}
+                to={item.href}
                 className="transition-colors hover:text-neon-primary-light"
               >
                 {item.label}

@@ -12,7 +12,7 @@ function signInWith(provider: 'kakao' | 'google') {
   supabase.auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: 'https://ilsanroom.pages.dev/',
+      redirectTo: `${window.location.origin}${import.meta.env.BASE_URL}auth/callback`,
     },
   });
 }
@@ -63,7 +63,7 @@ export default function LoginPage() {
       </div>
 
       <p className="mt-8 text-center text-sm text-neon-text-muted">
-        로그인하면 오늘밤어디의{' '}
+        로그인하면 밤키의{' '}
         <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-neon-primary hover:underline">이용약관</a> 및{' '}
         <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-neon-primary hover:underline">개인정보처리방침</a>에 동의하는 것으로 간주됩니다.
       </p>

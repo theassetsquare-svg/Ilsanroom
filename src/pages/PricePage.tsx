@@ -76,7 +76,7 @@ export default function PricePage() {
               {displayed.map((v) => (
                 <tr key={v.id} className="border-b border-neon-border/50 hover:bg-neon-surface-2/50 transition-colors">
                   <td className="px-4 py-3">
-                    <Link href={getCategoryHref(v.category, v.slug, v.region)}
+                    <Link to={getCategoryHref(v.category, v.slug, v.region)}
                       className="font-medium text-neon-primary-light hover:text-neon-primary hover:underline"
                     >
                       {v.nameKo}

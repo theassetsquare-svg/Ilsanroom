@@ -48,7 +48,7 @@ const FACTS = [
 
 const CHALLENGES = [
   '이번 주 목표: 안 가본 카테고리 1곳 방문하기',
-  '친구 3명에게 오늘밤어디 공유하면 VIP 뱃지 획득',
+  '친구 3명에게 밤키 공유하면 VIP 뱃지 획득',
   '리뷰 1개 작성하면 포인트 50점 적립',
   '룰렛 3번 돌리면 숨겨진 업소 추천 해금',
   'VS 투표 5번 참여하면 다음 주 트렌드 미리보기',
@@ -141,7 +141,7 @@ export default function InfiniteDiscoveryFeed() {
           if (item.type === 'venue') {
             return (
               <Link key={`v-${idx}`}
-                href={getCategoryHref(item.venue)}
+                to={getCategoryHref(item.venue)}
                 className="group block rounded-2xl border border-[#E5E7EB] bg-white p-5 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
               >
                 <div className="flex items-start gap-4">

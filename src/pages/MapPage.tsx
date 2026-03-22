@@ -69,7 +69,7 @@ export default function MapPage() {
 
   // Kakao Map init
   useEffect(() => {
-    const kakaoKey = process.env.NEXT_PUBLIC_KAKAO_JS_KEY;
+    const kakaoKey = import.meta.env.VITE_KAKAO_JS_KEY;
     if (!kakaoKey || !mapRef.current) return;
 
     const initMap = () => {
@@ -187,7 +187,7 @@ export default function MapPage() {
         {/* 카카오맵 */}
         <div className="mb-6 rounded-2xl border border-neon-border overflow-hidden" style={{ height: 'min(60vh, 500px)' }}>
           <div ref={mapRef} className="w-full h-full" id="kakao-map">
-            {!process.env.NEXT_PUBLIC_KAKAO_JS_KEY && (
+            {!import.meta.env.VITE_KAKAO_JS_KEY && (
               <div className="flex h-full items-center justify-center flex-col gap-3 bg-neon-surface-2">
                 <p className="text-neon-text-muted text-sm">카카오맵 연동 대기</p>
                 <a href={`https://map.kakao.com/?q=${encodeURIComponent('일산 밤문화')}`}
@@ -196,7 +196,7 @@ export default function MapPage() {
                   style={{ minHeight: 40 }}>
                   카카오맵에서 열기
                 </a>
-                <p className="text-[11px] text-neon-text-subtle">NEXT_PUBLIC_KAKAO_JS_KEY 설정 후 자동 연동</p>
+                <p className="text-[11px] text-neon-text-subtle">VITE_KAKAO_JS_KEY 설정 후 자동 연동</p>
               </div>
             )}
           </div>
@@ -224,7 +224,7 @@ export default function MapPage() {
                 {vList.map((v) => {
                   const s = MARKER_STYLES[v.category] || MARKER_STYLES.club;
                   return (
-                    <Link key={v.id} href={getCategoryHref(v.category, v.slug, v.region)}
+                    <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)}
                       className="flex items-center gap-3 rounded-xl border border-neon-border bg-neon-surface px-4 py-3 transition hover:border-neon-primary/40 card-hover"
                       style={{ minHeight: 56 }}>
                       <span className="h-3 w-3 shrink-0 rounded-full" style={{ backgroundColor: s.color }} />

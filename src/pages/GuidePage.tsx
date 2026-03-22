@@ -97,7 +97,7 @@ export default function GuidePage() {
       </div>
 
       <div className="mt-12 text-center">
-        <Link href="/quiz" className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-8 py-4 text-lg font-bold text-white btn-glow transition hover:bg-neon-primary-light">
+        <Link to="/quiz" className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-8 py-4 text-lg font-bold text-white btn-glow transition hover:bg-neon-primary-light">
           나에게 맞는 곳 찾기 퀴즈 →
         </Link>
       </div>

@@ -97,7 +97,7 @@ export default function LaunchChecklistPage() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">런칭 체크리스트</h1>
         <p className="mt-2 text-neon-text-muted">
-          오늘밤어디 SaaS 런칭 전 확인 사항
+          밤키 SaaS 런칭 전 확인 사항
         </p>
       </div>
 

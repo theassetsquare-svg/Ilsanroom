@@ -8,7 +8,7 @@ const testimonials = [
     category: "요정",
     region: "일산",
     rating: 5,
-    text: "전통 한정식 공간이라 디지털 마케팅이 어려울 줄 알았는데, 오늘밤어디에 등록한 뒤 40~60대 비즈니스 고객 예약이 늘었습니다. 사장님 답변 기능으로 리뷰 관리도 수월해졌고요.",
+    text: "전통 한정식 공간이라 디지털 마케팅이 어려울 줄 알았는데, 밤키에 등록한 뒤 40~60대 비즈니스 고객 예약이 늘었습니다. 사장님 답변 기능으로 리뷰 관리도 수월해졌고요.",
     plan: "프리미엄",
     since: "2025년 7월",
   },
@@ -18,7 +18,7 @@ const testimonials = [
     category: "룸",
     region: "일산",
     rating: 5,
-    text: "오늘밤어디 대시보드로 방문자 패턴을 분석하고 비수기 프로모션을 설계했더니 매출이 안정되었습니다. QR코드 기능도 명함에 활용 중입니다.",
+    text: "밤키 대시보드로 방문자 패턴을 분석하고 비수기 프로모션을 설계했더니 매출이 안정되었습니다. QR코드 기능도 명함에 활용 중입니다.",
     plan: "프로",
     since: "2025년 9월",
   },
@@ -28,7 +28,7 @@ const testimonials = [
     category: "나이트",
     region: "수원",
     rating: 5,
-    text: "수원 지역에서 온라인 홍보가 어려운 업종인데, 오늘밤어디 덕분에 신규 고객이 많이 유입되었습니다. 이벤트 등록 기능이 특히 유용합니다.",
+    text: "수원 지역에서 온라인 홍보가 어려운 업종인데, 밤키 덕분에 신규 고객이 많이 유입되었습니다. 이벤트 등록 기능이 특히 유용합니다.",
     plan: "프로",
     since: "2025년 11월",
   },
@@ -84,7 +84,7 @@ export default function TestimonialsPage() {
             업주 <span className="text-neon-primary-light">후기</span>
           </h1>
           <p className="mx-auto max-w-lg text-lg text-neon-text-muted">
-            오늘밤어디를 사용하는 업주들의 실제 후기와 추천사를 확인하세요.
+            밤키를 사용하는 업주들의 실제 후기와 추천사를 확인하세요.
           </p>
         </div>
 
@@ -131,7 +131,7 @@ export default function TestimonialsPage() {
             지금 무료로 시작하기
           </h3>
           <p className="mb-6 text-sm text-neon-text-muted">
-            오늘밤어디에 업소를 등록하고 성장을 경험하세요.
+            밤키에 업소를 등록하고 성장을 경험하세요.
           </p>
           <Link
             to="/for-business"

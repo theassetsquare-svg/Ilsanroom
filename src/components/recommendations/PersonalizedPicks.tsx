@@ -111,7 +111,7 @@ export default function PersonalizedPicks() {
         {recommendations.map(venue => (
           <Link
             key={venue.id}
-            href={getCategoryPath(venue)}
+            to={getCategoryPath(venue)}
             className="group rounded-2xl border border-neon-border bg-neon-surface/50 p-5 transition-all hover:border-violet-500/40 hover:bg-white"
           >
             <div className="mb-2 flex items-center justify-between">

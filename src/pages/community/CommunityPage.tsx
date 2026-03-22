@@ -51,7 +51,7 @@ export default function CommunityPage() {
       <div className="mx-auto max-w-5xl px-4 py-16">
         <div className="mb-12 text-center">
           <h1 className="mb-4 text-4xl font-bold">
-            <span className="text-neon-primary-light">오늘밤어디</span> 커뮤니티
+            <span className="text-neon-primary-light">밤키</span> 커뮤니티
           </h1>
           <p className="text-lg text-neon-text-muted">
             밤문화를 사랑하는 사람들의 소통 공간

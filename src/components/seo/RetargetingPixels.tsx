@@ -1,6 +1,6 @@
 export default function RetargetingPixels() {
-  const gadsId = process.env.NEXT_PUBLIC_GADS_ID;
-  const naverAccountId = process.env.NEXT_PUBLIC_NAVER_ACCOUNT_ID;
+  const gadsId = import.meta.env.VITE_GADS_ID;
+  const naverAccountId = import.meta.env.VITE_NAVER_ACCOUNT_ID;
 
   return (
     <>

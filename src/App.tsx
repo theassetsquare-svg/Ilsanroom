@@ -57,6 +57,7 @@ const PrintPage = lazy(() => import('./pages/PrintPage'));
 const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 const SignupPage = lazy(() => import('./pages/auth/SignupPage'));
 const ProfilePage = lazy(() => import('./pages/auth/ProfilePage'));
+const AuthCallbackPage = lazy(() => import('./pages/auth/AuthCallbackPage'));
 const DashboardPage = lazy(() => import('./pages/admin/DashboardPage'));
 const AnalyticsPage = lazy(() => import('./pages/admin/AnalyticsPage'));
 const BillingPage = lazy(() => import('./pages/admin/BillingPage'));
@@ -138,6 +139,7 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/auth/callback" element={<AuthCallbackPage />} />
           {/* Admin */}
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/analytics" element={<AnalyticsPage />} />

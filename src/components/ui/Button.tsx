@@ -59,7 +59,7 @@ export default function Button({
   if ('href' in props && props.href) {
     const { href, target, rel, ...rest } = props as ButtonAsLink;
     return (
-      <Link href={href} target={target || '_blank'} rel={rel || 'noopener noreferrer'} className={classes}>
+      <Link to={href} target={target || '_blank'} rel={rel || 'noopener noreferrer'} className={classes}>
         {children}
       </Link>
     );

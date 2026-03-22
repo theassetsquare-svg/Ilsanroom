@@ -161,7 +161,7 @@ export default function HeroSearch() {
         <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-96 overflow-y-auto rounded-2xl border border-neon-border bg-neon-surface/95 shadow-2xl backdrop-blur-lg animate-fade-in">
           {results.map((v) => (
             <Link key={v.id || v.slug}
-              href={getCategoryHref(v.category, v.slug, v.region)}
+              to={getCategoryHref(v.category, v.slug, v.region)}
               onClick={() => { setShowResults(false); setQuery(''); }}
               className="flex w-full items-center gap-3 border-b border-neon-border/50 px-4 py-3 text-left transition-colors hover:bg-neon-surface-2 last:border-b-0"
             >

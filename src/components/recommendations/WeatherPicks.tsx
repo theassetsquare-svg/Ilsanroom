@@ -117,7 +117,7 @@ export default function WeatherPicks() {
             {weather.venues.map((venue) => (
               <Link
                 key={venue.name}
-                href={venue.link}
+                to={venue.link}
                 className="group flex items-center gap-4 rounded-xl border border-neon-border bg-neon-surface/60 p-4 transition hover:border-neon-primary/40 hover:bg-neon-surface-2"
               >
                 <div className="flex-1">

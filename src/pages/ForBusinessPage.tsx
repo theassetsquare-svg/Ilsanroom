@@ -20,7 +20,7 @@ const features = [
     icon: Eye,
     title: "검색 노출 증가",
     description:
-      "오늘밤어디 플랫폼 내 프리미엄 검색 노출로 잠재 손님에게 더 많이 보여집니다. SEO 최적화와 카테고리 상위 배치를 지원합니다.",
+      "밤키 플랫폼 내 프리미엄 검색 노출로 잠재 손님에게 더 많이 보여집니다. SEO 최적화와 카테고리 상위 배치를 지원합니다.",
   },
   {
     icon: MessageSquare,
@@ -38,7 +38,7 @@ const features = [
     icon: BadgeCheck,
     title: "프리미엄 뱃지",
     description:
-      "오늘밤어디 인증 뱃지로 신뢰도를 높이세요. 인증 매장은 손님 클릭률이 평균 2.3배 높습니다.",
+      "밤키 인증 뱃지로 신뢰도를 높이세요. 인증 매장은 손님 클릭률이 평균 2.3배 높습니다.",
   },
   {
     icon: CalendarCheck,
@@ -181,14 +181,14 @@ export default function ForBusinessPage() {
             업주 전용
           </span>
           <h1 className="mb-6 text-4xl font-extrabold leading-tight md:text-5xl lg:text-6xl">
-            내 업소를 오늘밤어디에 등록하고
+            내 업소를 밤키에 등록하고
             <br />
             <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
               매출 300% 올리세요
             </span>
           </h1>
           <p className="mx-auto mb-10 max-w-2xl text-lg text-neon-text-muted">
-            검색 노출, 리뷰 관리, 실시간 분석지표, 예약 시스템까지. 오늘밤어디 하나로
+            검색 노출, 리뷰 관리, 실시간 분석지표, 예약 시스템까지. 밤키 하나로
             밤문화 비즈니스의 모든 것을 관리하세요.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -240,7 +240,7 @@ export default function ForBusinessPage() {
       {/* Features Grid */}
       <section className="mx-auto max-w-5xl px-4 py-20">
         <h2 className="mb-4 text-center text-3xl font-bold">
-          왜 <span className="text-neon-primary-light">오늘밤어디</span>인가요?
+          왜 <span className="text-neon-primary-light">밤키</span>인가요?
         </h2>
         <p className="mx-auto mb-12 max-w-xl text-center text-sm text-neon-text-muted">
           매장 운영에 필요한 전체 도구를 하나의 플랫폼에서 제공합니다.

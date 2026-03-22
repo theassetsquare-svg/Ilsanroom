@@ -13,7 +13,7 @@ export default function TossPaymentWidget({ planId, onClose }: TossPaymentWidget
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const clientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY || 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
+  const clientKey = import.meta.env.VITE_TOSS_CLIENT_KEY || 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
   const amount = PLAN_PRICES[planId] || 0;
   const planName = PLAN_NAMES[planId] || planId;
 
@@ -60,7 +60,7 @@ export default function TossPaymentWidget({ planId, onClose }: TossPaymentWidget
       await tossPayments.requestPayment('카드', {
         amount,
         orderId,
-        orderName: `오늘밤어디 ${planName} 플랜`,
+        orderName: `밤키 ${planName} 플랜`,
         customerName: '업주',
         successUrl: `${window.location.origin}/onboarding?payment=success&orderId=${orderId}`,
         failUrl: `${window.location.origin}/pricing?payment=fail`,

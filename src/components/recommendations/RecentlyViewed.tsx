@@ -44,7 +44,7 @@ export default function RecentlyViewed() {
         {recent.map(venue => (
           <Link
             key={venue.id}
-            href={getCategoryPath(venue)}
+            to={getCategoryPath(venue)}
             className="flex min-w-[200px] items-center gap-3 rounded-xl border border-neon-border bg-neon-surface/50 px-4 py-3 transition hover:border-violet-500/40"
           >
             <div>

@@ -115,8 +115,8 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Site info */}
           <div className="col-span-2 sm:col-span-1">
-            <Link href="/" className="text-xl font-black tracking-wider text-neon-primary">
-              오늘밤어디
+            <Link to="/" className="text-xl font-black tracking-wider text-neon-primary">
+              밤키
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-neon-text-muted">
               전국 클럽·나이트·라운지·룸·요정·호빠 정보
@@ -129,7 +129,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {categoryLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
+                  <Link to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
                     {link.label}
                   </Link>
                 </li>
@@ -143,7 +143,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {communityLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
+                  <Link to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
                     {link.label}
                   </Link>
                 </li>
@@ -157,7 +157,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {legalLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
+                  <Link to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
                     {link.label}
                   </Link>
                 </li>
@@ -176,7 +176,7 @@ export default function Footer() {
                 <div className="flex flex-wrap gap-x-3 gap-y-1">
                   {links.map((link) => (
                     <Link key={link.href}
-                      href={link.href}
+                      to={link.href}
                       className="text-xs text-neon-text-muted transition-colors hover:text-neon-primary-light"
                     >
                       {link.label}
@@ -191,10 +191,10 @@ export default function Footer() {
         {/* SaaS / Business links */}
         <div className="mt-6 border-t border-neon-border pt-6">
           <div className="flex flex-wrap justify-center gap-4 text-xs text-neon-text-muted">
-            <Link href="/pricing" className="hover:text-neon-primary-light transition-colors">업주 요금제</Link>
-            <Link href="/for-business" className="hover:text-neon-primary-light transition-colors">업주 입점</Link>
-            <Link href="/demo" className="hover:text-neon-primary-light transition-colors">데모</Link>
-            <Link href="/referral" className="hover:text-neon-primary-light transition-colors">추천 프로그램</Link>
+            <Link to="/pricing" className="hover:text-neon-primary-light transition-colors">업주 요금제</Link>
+            <Link to="/for-business" className="hover:text-neon-primary-light transition-colors">업주 입점</Link>
+            <Link to="/demo" className="hover:text-neon-primary-light transition-colors">데모</Link>
+            <Link to="/referral" className="hover:text-neon-primary-light transition-colors">추천 프로그램</Link>
           </div>
         </div>
 
@@ -210,7 +210,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-8 border-t border-neon-border pt-6">
           <p className="text-center text-xs text-neon-text-muted">
-            &copy; {new Date().getFullYear()} 오늘밤어디. All rights reserved.
+            &copy; {new Date().getFullYear()} 밤키. All rights reserved.
           </p>
           <p className="mt-2 text-center text-xs text-neon-text-muted">
             직접 확인하고 전문가가 분석합니다

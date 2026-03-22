@@ -14,7 +14,7 @@ export default function Card({ className = '', children, href, newTab = true, ho
   if (href) {
     return (
       <Link
-        href={href}
+        to={href}
         target={newTab ? '_blank' : undefined}
         rel={newTab ? 'noopener noreferrer' : undefined}
         className={`block cursor-pointer ${classes}`}

@@ -113,7 +113,7 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
             {results.map((v) => (
               <Link
                 key={v.id || v.slug}
-                href={getCategoryHref(v.category, v.slug, v.region)}
+                to={getCategoryHref(v.category, v.slug, v.region)}
                 onClick={onClose}
                 className="flex items-center gap-3 border-b border-neon-border/50 px-4 py-3 transition-colors hover:bg-neon-surface-2 last:border-b-0"
               >

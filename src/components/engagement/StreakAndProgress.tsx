@@ -117,7 +117,7 @@ export default function StreakAndProgress() {
             <div className="space-y-2">
               {todos.map((todo, i) => (
                 <Link key={i}
-                  href={todo.href}
+                  to={todo.href}
                   className="flex items-center gap-3 rounded-xl bg-[#FDF2F8] px-4 py-3 text-sm transition hover:bg-[#FCE7F3]"
                   style={{ minHeight: 44 }}
                 >
