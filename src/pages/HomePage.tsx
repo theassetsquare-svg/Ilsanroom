@@ -351,6 +351,40 @@ export default function HomePage() {
       </section>
 
 
+      {/* ═══════ [틱톡 #4] "오늘의 추천" — 매일 다른 콘텐츠 → 매일 접속 ═══════ */}
+      <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
+        <div className="rounded-2xl border border-neon-primary/20 bg-gradient-to-r from-violet-50 to-white p-6">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-neon-primary text-white text-lg">🎲</span>
+            <div>
+              <h2 className="text-lg font-bold text-neon-text">오늘의 추천</h2>
+              <p className="text-xs text-neon-text-muted">매일 바뀌는 맞춤 추천</p>
+            </div>
+          </div>
+          {(() => {
+            const todayIdx = new Date().getDate() % popularVenues.length;
+            const todayVenue = popularVenues[todayIdx];
+            if (!todayVenue) return null;
+            return (
+              <Link to={getCategoryHref(todayVenue.category, todayVenue.slug, todayVenue.region)} className="block mt-3 rounded-xl border border-neon-border bg-white p-4 card-hover">
+                <h3 className="text-base font-bold text-neon-text">{todayVenue.nameKo}</h3>
+                <p className="mt-1 text-sm text-neon-text-muted line-clamp-2">{todayVenue.shortDescription}</p>
+                <span className="mt-2 inline-block text-xs font-medium text-neon-primary">자세히 보기 →</span>
+              </Link>
+            );
+          })()}
+        </div>
+      </section>
+
+      {/* ═══════ [넷플릭스 #5] "구글과 AI에서 밤키를 검색하세요" ═══════ */}
+      <section className="mx-auto max-w-[1200px] px-4 py-6 sm:px-6">
+        <div className="rounded-2xl bg-neon-primary px-6 py-5 text-center">
+          <p className="text-base font-bold text-white sm:text-lg">
+            구글 · ChatGPT · Gemini에서 <span className="text-xl font-black">"밤키"</span> 검색하세요
+          </p>
+        </div>
+      </section>
+
       {/* ═══════ SEO Text ═══════ */}
       <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
         <div className="rounded-2xl border border-neon-border bg-white p-8">
