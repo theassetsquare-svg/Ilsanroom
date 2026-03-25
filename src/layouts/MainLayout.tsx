@@ -1,11 +1,13 @@
 import { Outlet, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import MobileNav from '@/components/layout/MobileNav';
 import BackToTop from '@/components/layout/BackToTop';
 import Toast from '@/components/ui/Toast';
 import JsonLd from '@/components/seo/JsonLd';
+
+const GlobalEngagement = lazy(() => import('@/components/engagement/GlobalEngagement'));
 
 const organizationJsonLd = {
   '@context': 'https://schema.org',
@@ -56,6 +58,9 @@ export default function MainLayout() {
       <MobileNav />
       <BackToTop />
       <Toast />
+      <Suspense fallback={null}>
+        <GlobalEngagement />
+      </Suspense>
     </div>
   );
 }

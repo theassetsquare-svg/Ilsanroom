@@ -47,8 +47,8 @@ export default function ComboMeter() {
     } catch { /* noop */ }
 
     // Initialize refs
-    prevViewCount.current = store.viewedVenues.length;
-    prevLikeCount.current = Object.values(store.likes).filter(v => v > 0).length;
+    prevViewCount.current = store.venuesViewed.length;
+    prevLikeCount.current = store.likedVenues.length;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -63,8 +63,8 @@ export default function ComboMeter() {
 
   // Detect actions from store changes
   useEffect(() => {
-    const currentViews = store.viewedVenues.length;
-    const currentLikes = Object.values(store.likes).filter(v => v > 0).length;
+    const currentViews = store.venuesViewed.length;
+    const currentLikes = store.likedVenues.length;
 
     let actionCount = 0;
     if (currentViews > prevViewCount.current) actionCount += currentViews - prevViewCount.current;
@@ -92,7 +92,7 @@ export default function ComboMeter() {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [store.viewedVenues.length, JSON.stringify(store.likes)]);
+  }, [store.venuesViewed.length, store.likedVenues.length]);
 
   // Countdown timer
   useEffect(() => {

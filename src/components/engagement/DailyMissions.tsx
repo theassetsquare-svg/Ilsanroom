@@ -115,8 +115,8 @@ export default function DailyMissions() {
   useEffect(() => {
     if (!missionState) return;
     const progress: Record<string, number> = { ...missionState.progress };
-    const views = store.viewedVenues.length;
-    const likeCount = Object.values(store.likes).filter(v => v > 0).length;
+    const views = store.venuesViewed.length;
+    const likeCount = store.likedVenues.length;
 
     // Auto-detect progress for relevant missions
     if (missionState.selectedIds.includes('view_3')) {
@@ -134,7 +134,7 @@ export default function DailyMissions() {
     saveMissionState(updated);
     // Only re-run when store values change
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [store.viewedVenues.length, Object.values(store.likes).filter(v => v > 0).length]);
+  }, [store.venuesViewed.length, store.likedVenues.length]);
 
   // Countdown timer
   useEffect(() => {

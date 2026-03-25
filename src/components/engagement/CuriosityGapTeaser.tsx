@@ -1,0 +1,161 @@
+import { useState, useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { venues } from '@/data/venues';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, ArrowRight, Lock, Eye } from 'lucide-react';
+
+/**
+ * Curiosity Gap Teaser
+ *
+ * Periodically shows partially-revealed teasers that create curiosity.
+ * "이 업소의 숨겨진 비밀..." with blurred text.
+ * Drives exploration by making users want to "uncover" content.
+ */
+
+const TEASERS = [
+  {
+    hook: '강남에서 가장 핫한 업소는?',
+    preview: '지금 실시간 인기 1위...',
+    href: '/ranking',
+    cta: '랭킹 확인하기',
+  },
+  {
+    hook: '오늘 밤 운명의 장소를 찾아보세요',
+    preview: '당신의 MBTI에 딱 맞는 곳이...',
+    href: '/quiz',
+    cta: 'MBTI 테스트',
+  },
+  {
+    hook: '이 업소 vs 저 업소, 승자는?',
+    preview: '지금까지 투표 결과가...',
+    href: '/vs',
+    cta: 'VS 대결 참여',
+  },
+  {
+    hook: '오늘의 럭키 업소를 돌려보세요',
+    preview: '운명의 룰렛이 당신을 기다...',
+    href: '/roulette',
+    cta: '룰렛 돌리기',
+  },
+  {
+    hook: '숨겨진 맛집급 업소 발견',
+    preview: '아는 사람만 아는 곳...',
+    href: '/hidden',
+    cta: '숨겨진 업소 보기',
+  },
+];
+
+function getRandomTeaser(exclude: number): { teaser: typeof TEASERS[0]; venue: typeof venues[0]; index: number } {
+  let idx = Math.floor(Math.random() * TEASERS.length);
+  if (idx === exclude) idx = (idx + 1) % TEASERS.length;
+  const openVenues = venues.filter(v => v.status !== 'closed_or_unclear');
+  const venue = openVenues[Math.floor(Math.random() * openVenues.length)];
+  return { teaser: TEASERS[idx], venue, index: idx };
+}
+
+export default function CuriosityGapTeaser() {
+  const { pathname } = useLocation();
+  const [visible, setVisible] = useState(false);
+  const [data, setData] = useState<ReturnType<typeof getRandomTeaser> | null>(null);
+  const lastIndexRef = useRef(-1);
+  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const showCountRef = useRef(0);
+
+  const scheduleNext = () => {
+    if (showCountRef.current >= 8) return; // Max per session
+    const delay = (Math.floor(Math.random() * 3) + 3) * 60 * 1000; // 3-6 minutes
+    timerRef.current = setTimeout(() => {
+      const d = getRandomTeaser(lastIndexRef.current);
+      lastIndexRef.current = d.index;
+      setData(d);
+      setVisible(true);
+      showCountRef.current++;
+
+      // Auto-dismiss after 15 seconds
+      setTimeout(() => setVisible(false), 15000);
+    }, delay);
+  };
+
+  useEffect(() => {
+    // First teaser after 90s
+    timerRef.current = setTimeout(() => {
+      const d = getRandomTeaser(-1);
+      lastIndexRef.current = d.index;
+      setData(d);
+      setVisible(true);
+      showCountRef.current++;
+
+      setTimeout(() => setVisible(false), 15000);
+      scheduleNext();
+    }, 90000);
+
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, []);
+
+  // Hide on navigation
+  useEffect(() => {
+    setVisible(false);
+  }, [pathname]);
+
+  const handleClose = () => {
+    setVisible(false);
+    scheduleNext();
+  };
+
+  if (!data) return null;
+
+  return (
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          className="fixed bottom-20 right-4 z-[73] w-72"
+          initial={{ x: 300, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: 300, opacity: 0 }}
+          transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+        >
+          <div className="rounded-2xl border border-purple-100 bg-white shadow-xl overflow-hidden">
+            <div className="relative px-4 pt-4 pb-3">
+              <button
+                onClick={handleClose}
+                className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-100 transition"
+              >
+                <X size={14} className="text-gray-400" />
+              </button>
+
+              {/* Hook */}
+              <div className="flex items-center gap-2 mb-2">
+                <Eye size={14} className="text-[#8B5CF6]" />
+                <p className="text-xs font-bold text-[#8B5CF6]">발견</p>
+              </div>
+              <p className="text-sm font-bold text-[#111] mb-1">{data.teaser.hook}</p>
+
+              {/* Blurred preview (curiosity gap) */}
+              <div className="relative mb-3">
+                <p className="text-xs text-[#555] blur-[3px] select-none">
+                  {data.teaser.preview} {data.venue.nameKo}는 평점 {data.venue.rating}점으로...
+                </p>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="flex items-center gap-1 rounded-full bg-[#F3F0FF] px-3 py-1 text-[10px] font-medium text-[#8B5CF6]">
+                    <Lock size={10} />
+                    클릭해서 확인
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <Link
+              to={data.teaser.href}
+              onClick={handleClose}
+              className="flex items-center justify-between bg-gradient-to-r from-[#F3F0FF] to-[#EDE9FE] px-4 py-3 text-sm font-semibold text-[#8B5CF6] hover:from-[#EDE9FE] hover:to-[#DDD6FE] transition"
+            >
+              <span>{data.teaser.cta}</span>
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
