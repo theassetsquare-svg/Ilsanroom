@@ -16,6 +16,7 @@ interface VenueJsonLdProps {
     priceEntry?: string;
     priceTable?: string;
     priceDrink?: string;
+    staffPhone?: string;
   };
   breadcrumbItems: { name: string; url: string }[];
   faqItems?: { question: string; answer: string }[];
@@ -50,6 +51,8 @@ export default function VenueJsonLd({ venue, breadcrumbItems, faqItems, reviews,
       addressCountry: 'KR',
     },
     openingHours: venue.openHours,
+    image: `${siteUrl}/og/${venue.slug}.svg`,
+    telephone: venue.staffPhone || undefined,
     url: `${siteUrl}/${venue.category === 'club' ? 'clubs' : venue.category === 'night' ? 'nights' : venue.category === 'lounge' ? 'lounges' : venue.category === 'room' ? 'rooms' : venue.category}/${venue.slug}`,
   };
 

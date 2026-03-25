@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import PageViewTracker from '@/components/venue/PageViewTracker';
 import VenueHero from '@/components/venue/VenueHero';
@@ -7,6 +8,8 @@ import VenueJsonLd from '@/components/venue/VenueJsonLd';
 import VenueDetailTabs from '@/components/venue/VenueDetailTabs';
 import Card from '@/components/ui/Card';
 import type { Venue } from '@/types';
+
+const VenueSeoContent = lazy(() => import('@/components/venue/VenueSeoContent'));
 
 interface FAQ {
   question: string;
@@ -77,6 +80,13 @@ export default function VenueDetailPage({
       {/* 8-Tab Content */}
       <section className="mx-auto max-w-[1200px] px-4 pt-8 sm:px-6">
         <VenueDetailTabs venue={venue} faqs={faqs} categoryLabel={categoryLabel} />
+      </section>
+
+      {/* SEO Content — 모든 업소에 자동 1000자+ 고유 콘텐츠 */}
+      <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
+        <Suspense fallback={null}>
+          <VenueSeoContent venue={venue} />
+        </Suspense>
       </section>
 
       {/* Extra Content (e.g. 일산명월관 전용 2000자 SEO) */}

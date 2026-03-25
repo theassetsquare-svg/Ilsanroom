@@ -2,6 +2,7 @@ import { useParams, Navigate } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import VenueDetailPage from '@/components/venue/VenueDetailPage';
 import { getHookingTitle, getHookingDescription } from '@/lib/seo-hooks';
+import { getVenueOgImageBySlug } from '@/lib/og-image';
 import { getVenueBySlug, getRelatedVenues } from '@/data/venues';
 
 const regionNames: Record<string, string> = {
@@ -24,7 +25,7 @@ export default function ClubDetailPage() {
   const { region, slug } = useParams<{ region: string; slug: string }>();
   const venue = getVenueBySlug(slug!);
   if (!venue || venue.category !== 'club') return <Navigate to="/404" replace />;
-  useDocumentMeta(getHookingTitle(venue) + ' | 밤키', getHookingDescription(venue));
+  useDocumentMeta(getHookingTitle(venue) + ' | 밤키', getHookingDescription(venue), getVenueOgImageBySlug(venue.slug));
   const regionKo = regionNames[region!] || region!;
   const related = getRelatedVenues(venue, 6);
 

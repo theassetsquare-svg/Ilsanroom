@@ -19,7 +19,7 @@ const defaultFaqs = (name: string) => [
 export default function NightDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const venue = getVenueBySlug(slug);
-  useDocumentMeta(getHookingTitle(venue!) + ' | 밤키', getHookingDescription(venue!));
+  useDocumentMeta(getHookingTitle(venue!) + ' | 밤키', getHookingDescription(venue!), getVenueOgImageBySlug(venue!.slug));
   const related = getRelatedVenues(venue, 6);
 
   return (
