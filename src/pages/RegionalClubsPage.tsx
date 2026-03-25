@@ -46,7 +46,7 @@ function ClubCard({ venue, href }: { venue: Venue; href: string }) {
 export default function RegionalClubsPage() {
   const { region } = useParams<{ region: string }>();
   const regionKo = regionNames[region] || region;
-  useDocumentMeta(`${regionKo} 파티 공간 | 밤키`, `${regionKo} 지역 EDM 파티 공간 목록.`);
+  useDocumentMeta(`${regionKo} 파티 공간 | 밤키`, `${regionKo}에서 터지는 파티 공간, 한눈에 비교.`);
   const clubs = getVenuesByCategoryAndRegion('club', region);
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
 

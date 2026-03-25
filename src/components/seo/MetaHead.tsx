@@ -18,7 +18,7 @@ const categoryDescriptions: Record<VenueCategory, { title: string; desc: string;
   },
   night: {
     title: '소셜댄스·부킹 명소 가이드',
-    desc: '전국 소셜댄스 부킹 명소를 소개합니다. 지루박, 부르스부터 라이브 밴드까지, 초보도 편하게 즐길 수 있는 곳.',
+    desc: '전국 소셜댄스 부킹 명소를 소개합니다. 지루박, 부르스부터 라이브 밴드까지, 초보도 3분이면 적응하는 곳.',
     ogDesc: '전국 소셜댄스 부킹 명소. 초보 가이드부터 인기 업소 비교까지.',
   },
   lounge: {
@@ -64,10 +64,10 @@ export function generateVenueMeta(
   const categoryName = categoryNames[category];
   return {
     title: `${venueName} — ${regionKo} ${categoryName}`,
-    description: description.slice(0, 155),
+    description: description.slice(0, 150),
     openGraph: {
       title: `${venueName} | 밤키`,
-      description: description.slice(0, 155),
+      description: description.slice(0, 150),
     },
   };
 }
