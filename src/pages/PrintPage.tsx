@@ -107,7 +107,7 @@ export default function PrintPage() {
         {/* QR Code placeholder */}
         <div className="mt-8 flex items-center justify-between border-t border-neutral-200 pt-4">
           <p className="text-xs text-neon-text-muted">
-            이 정보는 밤키에서 제공합니다. 방문 전 업소에 직접 확인하세요.
+            이 정보는 밤키에서 가져온 내용입니다. 방문 전 업소에 직접 확인하세요.
           </p>
           <div className="h-16 w-16 rounded border border-neutral-300 bg-neutral-100 flex items-center justify-center text-[8px] text-neon-text-muted">
             QR

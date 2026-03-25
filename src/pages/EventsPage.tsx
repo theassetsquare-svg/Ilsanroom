@@ -6,7 +6,7 @@ const events = [
   { id: 'e2', title: '일산명월관요정 봄 한정식 특선', venue: '일산명월관요정', date: '2026-03-25', time: '18:00', region: '일산', category: '요정', desc: '봄 제철 식재료로 구성한 한정식 특선 코스. 국악 라이브 공연 포함.' },
   { id: 'e3', title: '수원찬스돔 주말 스페셜', venue: '수원찬스돔나이트', date: '2026-03-29', time: '20:00', region: '수원', category: '소셜댄스', desc: '돔 구조 사운드홀에서 펼쳐지는 수원 대표 주말 퍼포먼스.' },
   { id: 'e4', title: '부산 연산동 봄맞이 축제', venue: '부산연산동물나이트', date: '2026-04-05', time: '20:00', region: '부산', category: '소셜댄스', desc: '연산동 대형 홀에서 열리는 봄 시즌 개막 축제. 라이브 밴드 3팀 출연.' },
-  { id: 'e5', title: '청담H2O 프리미엄 VIP 이벤트', venue: '청담H2O나이트', date: '2026-04-12', time: '21:00', region: '청담', category: '프리미엄', desc: '워터 테마 VIP 전용 이벤트. 프리미엄 양주 테이스팅과 라이브 DJ.' },
+  { id: 'e5', title: '청담H2O VIP 한정 이벤트', venue: '청담H2O나이트', date: '2026-04-12', time: '21:00', region: '청담', category: 'VIP', desc: '워터 테마 VIP 전용 이벤트. 고급 양주 테이스팅과 라이브 DJ.' },
   { id: 'e6', title: '대전세븐 7주년 기념 파티', venue: '대전세븐나이트', date: '2026-04-19', time: '20:00', region: '대전', category: '기념행사', desc: '7가지 테마 공간을 오픈하는 대전세븐 개업 7주년 특별 행사.' },
 ];
 

@@ -18,7 +18,7 @@ const MILESTONES: Milestone[] = [
   { minutes: 20, emoji: '💎', label: '마니아 보너스', points: 100 },
   { minutes: 30, emoji: '👑', label: 'VIP 보너스', points: 150, extra: '숨겨진 업소 언락' },
   { minutes: 45, emoji: '🏆', label: '전설 보너스', points: 200 },
-  { minutes: 60, emoji: '✨', label: '신화 보너스', points: 300, extra: '프리미엄 뱃지' },
+  { minutes: 60, emoji: '✨', label: '신화 보너스', points: 300, extra: '한정 뱃지' },
   { minutes: 90, emoji: '💫', label: 'ULTIMATE', points: 500 },
 ];
 

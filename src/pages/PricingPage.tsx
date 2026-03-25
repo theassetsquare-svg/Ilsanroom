@@ -19,7 +19,7 @@ const plans = [
       { text: "예약 관리", included: false },
       { text: "상위 노출", included: false },
       { text: "고객 분석 리포트", included: false },
-      { text: "프리미엄 뱃지", included: false },
+      { text: "인증 뱃지", included: false },
       { text: "전담 매니저", included: false },
     ],
     cta: "무료로 시작",
@@ -42,7 +42,7 @@ const plans = [
       { text: "예약 관리", included: true },
       { text: "상위 노출", included: false },
       { text: "고객 분석 리포트", included: false },
-      { text: "프리미엄 뱃지", included: false },
+      { text: "인증 뱃지", included: false },
       { text: "전담 매니저", included: false },
     ],
     cta: "베이직 시작",
@@ -65,7 +65,7 @@ const plans = [
       { text: "예약 관리", included: true },
       { text: "상위 노출 (지역 1위)", included: true },
       { text: "고객 분석 리포트", included: true },
-      { text: "프리미엄 뱃지", included: true },
+      { text: "인증 뱃지", included: true },
       { text: "전담 매니저", included: false },
     ],
     cta: "14일 무료 체험",
@@ -88,7 +88,7 @@ const plans = [
       { text: "예약 관리", included: true },
       { text: "상위 노출 (전국 TOP)", included: true },
       { text: "고객 분석 리포트", included: true },
-      { text: "프리미엄 뱃지", included: true },
+      { text: "인증 뱃지", included: true },
       { text: "전담 매니저 + API", included: true },
     ],
     cta: "상담 신청",
@@ -112,7 +112,7 @@ const faqs = [
   {
     question: "플랜 변경이 자유로운가요?",
     answer:
-      "네, 언제든지 상위 또는 하위 요금제로 변경할 수 있습니다. 상위로 변경 시 차액만 청구되고, 하위로 변경 시 다음 갱신일부터 적용됩니다.",
+      "네, 언제든지 상위나 하위 요금제로 바꾸면 됩니다. 올리면 차액만 내고, 내리면 다음 갱신일부터 바뀝니다.",
   },
   {
     question: "무료 체험 후 자동 결제되나요?",
@@ -127,7 +127,7 @@ const faqs = [
 ];
 
 export default function PricingPage() {
-  useDocumentMeta('업주님, 14일 무료 체험으로 시작하세요 | 밤키', '무료부터 프리미엄 4단계. 체험 후 결정. 해지도 원클릭.');
+  useDocumentMeta('업주님, 14일 무료 체험으로 시작하세요 | 밤키', '무료부터 하이엔드까지 4단계. 체험 후 결정. 해지도 원클릭.');
   return (
     <div className="min-h-screen bg-neon-bg">
       <div className="mx-auto max-w-[1200px] px-4 py-16">
@@ -137,7 +137,7 @@ export default function PricingPage() {
             업주 <span className="text-neon-primary">요금제</span>
           </h1>
           <p className="mx-auto max-w-lg text-lg leading-relaxed text-neon-text-muted">
-            업소 규모에 맞는 플랜을 선택하세요. 언제든지 업그레이드하거나 변경할 수 있습니다.
+            업소 규모에 맞는 플랜을 골라보세요. 언제든 업그레이드하거나 바꿔도 됩니다.
           </p>
         </div>
 
@@ -209,7 +209,7 @@ export default function PricingPage() {
             14일 프로 <span className="text-neon-primary">무료 체험</span>
           </h3>
           <p className="mx-auto mb-6 max-w-md text-base text-neon-text-muted leading-relaxed">
-            카드 등록 없이 바로 시작하세요. 프로 플랜의 모든 기능을 14일간 무료로 이용할 수 있습니다.
+            카드 등록 없이 바로 시작하세요. 프로 플랜 기능 전부 14일간 무료로 써보세요.
           </p>
           <Link target="_blank" rel="noopener noreferrer" to="/onboarding?plan=pro&trial=true"
             className="inline-block rounded-xl bg-neon-primary px-8 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-neon-primary-light"

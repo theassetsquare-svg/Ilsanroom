@@ -105,7 +105,7 @@ export default function TossPaymentWidget({ planId, onClose }: TossPaymentWidget
           </div>
         ) : amount === 0 ? (
           <div className="py-4 text-center">
-            <p className="text-sm text-neon-text-muted mb-4">무료 플랜은 결제 없이 바로 시작할 수 있습니다.</p>
+            <p className="text-sm text-neon-text-muted mb-4">무료 플랜은 결제 없이 바로 시작하세요.</p>
             <a href="/onboarding" className="inline-block rounded-xl bg-neon-primary px-6 py-3 text-sm font-semibold text-neon-text transition hover:bg-neon-primary-light" style={{ minHeight: 48 }}>
               무료로 시작하기
             </a>

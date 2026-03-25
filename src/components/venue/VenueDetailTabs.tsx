@@ -17,7 +17,7 @@ interface VenueDetailTabsProps {
 const TABS = ['기본정보', '메뉴·서비스', '리뷰', '사진갤러리', '이벤트', 'FAQ', '지도', 'VS투표', '인기시간'] as const;
 
 const CATEGORY_SYNONYMS: Record<string, string> = {
-  club: 'EDM 파티홀', night: '댄스홀', lounge: '프리미엄 바',
+  club: 'EDM 파티홀', night: '댄스홀', lounge: '감성 칵테일 바',
   room: '프라이빗 룸', yojeong: '전통 한정식', hoppa: '호스트 엔터테인먼트',
 };
 

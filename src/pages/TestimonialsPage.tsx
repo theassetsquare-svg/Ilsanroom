@@ -49,7 +49,7 @@ const testimonials = [
     category: "라운지",
     region: "압구정",
     rating: 5,
-    text: "프리미엄 배지 덕분에 고급 라운지 이미지가 더 강화되었어요. VIP 고객 유치에 큰 도움이 됩니다.",
+    text: "인증 배지 달고 나니까 라운지 격이 달라 보이더라고요. VIP 손님이 먼저 찾아옵니다.",
     plan: "프리미엄",
     since: "2025년 5월",
   },

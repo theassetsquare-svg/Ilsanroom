@@ -38,7 +38,7 @@ const TIME_SLOTS: TimeSlot[] = [
     emoji: '🌙',
     courses: [
       { title: '나이트 입문 코스', venues: ['수원찬스돔나이트', '강남청담클럽 레이스'], links: ['/nights/suwonchansdomnight', '/clubs/gangnam/gangnamclub-race'] },
-      { title: '프리미엄 룸 코스', venues: ['일산룸', '해운대고구려'], links: ['/rooms/ilsan/ilsanroom', '/rooms/busan-haeundae/haeundaegoguryeo'] },
+      { title: '격 있는 룸 코스', venues: ['일산룸', '해운대고구려'], links: ['/rooms/ilsan/ilsanroom', '/rooms/busan-haeundae/haeundaegoguryeo'] },
     ],
   },
   {

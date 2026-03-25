@@ -60,7 +60,7 @@ const PLANS = [
     name: '프로',
     price: '₩49,000',
     period: '/ 월',
-    features: ['베이직 전체', '프리미엄 배지', '이벤트 등록', 'API 접근'],
+    features: ['베이직 전체', '인증 배지', '이벤트 등록', 'API 접근'],
     popular: true,
     border: 'border-neon-primary',
     btn: 'bg-gradient-to-r from-neon-primary to-neon-primary-dark text-white shadow-lg shadow-neon-primary/20 hover:from-neon-primary-light hover:to-neon-primary',

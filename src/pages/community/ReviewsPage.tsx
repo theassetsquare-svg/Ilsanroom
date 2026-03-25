@@ -66,7 +66,7 @@ const sampleReviews = [
     helpful: 55,
     comments: 18,
     hasPhoto: false,
-    excerpt: "접대 매너와 한정식 퀄리티 모두 수준급이었습니다. 비용이 좀 있지만 특별한 자리에 어울리는 장소예요.",
+    excerpt: "접대 매너와 한정식 퀄리티 모두 수준급이었습니다. 비용이 좀 있지만 중요한 자리에 딱 맞는 장소예요.",
   },
 ];
 

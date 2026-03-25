@@ -53,7 +53,7 @@ export default function RoomsPage() {
         { day: '일요일', time: '17:00~22:00', level: 35 },
       ]} />
 
-      <CategoryVSBattle venueA="일산룸" venueB="해운대고구려" topic="프리미엄 독립 공간 대결" />
+      <CategoryVSBattle venueA="일산룸" venueB="해운대고구려" topic="독립 공간 맞대결" />
 
       <RelatedMagazine articles={[
         { title: '비즈니스 접대에 최적인 독립 공간 가이드', tag: '비즈니스' },

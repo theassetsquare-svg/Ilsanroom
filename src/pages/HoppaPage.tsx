@@ -34,7 +34,7 @@ export default function HoppaPage() {
         <div className="rounded-2xl border border-pink-200 bg-gradient-to-r from-pink-50 via-white to-rose-50 p-6 mb-6">
           <div className="flex items-center gap-3 mb-3">
             <span className="text-2xl">💎</span>
-            <h2 className="text-lg font-bold text-pink-700">여성을 위한 프리미엄 공간</h2>
+            <h2 className="text-lg font-bold text-pink-700">여성을 위한 격이 다른 공간</h2>
           </div>
           <div className="space-y-4">
             <p className="text-lg font-bold text-pink-800">

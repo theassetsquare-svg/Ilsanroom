@@ -115,9 +115,9 @@ export default function ChurnModal({ open, onClose, onCancel }: ChurnModalProps)
             />
           </svg>
         </div>
-        <h3 className="text-xl font-bold text-neon-text">특별 할인을 드립니다</h3>
+        <h3 className="text-xl font-bold text-neon-text">잠깐, 할인 혜택이 있어요</h3>
         <p className="mt-2 text-sm text-neon-text-muted">
-          떠나시기 전에 특별 혜택을 확인해 보세요
+          떠나시기 전에 이 혜택만 확인해 보세요
         </p>
       </div>
 

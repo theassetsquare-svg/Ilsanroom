@@ -42,17 +42,17 @@ const WEATHER_RECS: Record<WeatherType, WeatherRecommendation> = {
     description: '아늑한 실내 공간을 추천합니다',
     venues: [
       { name: '일산룸', reason: '프라이빗한 모임 공간', link: '/rooms/ilsan/ilsanroom' },
-      { name: '해운대고구려', reason: '해운대 대표 프리미엄 룸', link: '/rooms/busan-haeundae/haeundaegoguryeo' },
+      { name: '해운대고구려', reason: '해운대에서 이름난 룸', link: '/rooms/busan-haeundae/haeundaegoguryeo' },
     ],
   },
   snow: {
     type: 'snow',
     icon: '❄️',
-    title: '눈 오는 날의 특별한 밤',
+    title: '눈 오는 날, 감성 터지는 밤',
     description: '따뜻한 실내에서 즐기는 밤 시간',
     venues: [
       { name: '일산명월관요정', reason: '따뜻한 한정식과 국악', link: '/yojeong/ilsan/ilsanmyeongwolgwanyojeong' },
-      { name: '강남호빠 로얄', reason: '프리미엄 실내 호빠', link: '/hoppa/gangnam-hoppa-royal' },
+      { name: '강남호빠 로얄', reason: '따뜻하고 분위기 좋은 호빠', link: '/hoppa/gangnam-hoppa-royal' },
     ],
   },
   hot: {

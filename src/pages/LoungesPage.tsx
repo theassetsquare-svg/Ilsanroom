@@ -12,13 +12,13 @@ const regions = [
 ];
 
 export default function LoungesPage() {
-  useDocumentMeta('셰이커 소리만 들리는 곳, 대화에 집중하고 싶다면 | 밤키', '압구정·청담 프리미엄 칵테일 바 3곳. 비즈니스 접대와 데이트에 딱 맞는 분위기 비교.');
+  useDocumentMeta('셰이커 소리만 들리는 곳, 대화에 집중하고 싶다면 | 밤키', '압구정·청담 감각적인 칵테일 바 3곳. 비즈니스 접대와 데이트에 딱 맞는 분위기 비교.');
   const venues = getVenuesByCategory('lounge');
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '라운지' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">프리미엄 칵테일 바 · 라운지</h1>
+        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">감각적인 칵테일 바 · 라운지</h1>
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             조명이 어둡다. 소파가 깊다. 바텐더가 흔드는 셰이커 소리만 들린다.
@@ -37,7 +37,7 @@ export default function LoungesPage() {
 
       <VenueListClient venues={venues} hrefPattern="/lounges/{slug}" regions={regions} />
 
-      <FirstVisitGuide category="프리미엄 바"
+      <FirstVisitGuide category="칵테일 바"
         dress="스마트 캐주얼 이상. 세련된 복장 권장. 운동복·슬리퍼 비추."
         budget="칵테일 1잔 1.5~3만원. 프라이빗 부스는 최소 주문 금액 있을 수 있음."
         alone="혼자 방문 매우 적합. 바 카운터에서 바텐더와 대화하며 칵테일 즐기기."
@@ -52,10 +52,10 @@ export default function LoungesPage() {
         { day: '일요일', time: '18:00~23:00', level: 40 },
       ]} />
 
-      <CategoryVSBattle venueA="압구정 디엠" venueB="압구정 이디엇" topic="압구정 프리미엄 칵테일 바 대결" />
+      <CategoryVSBattle venueA="압구정 디엠" venueB="압구정 이디엇" topic="압구정 칵테일 바 맞대결" />
 
       <RelatedMagazine articles={[
-        { title: '논현·청담 프리미엄 바 — 분위기로 고르는 가이드', tag: '추천' },
+        { title: '논현·청담 분위기 좋은 바 — 취향별 고르는 가이드', tag: '추천' },
         { title: '혼자 가기 좋은 프라이빗 공간 TOP5', tag: '혼술' },
       ]} />
     </div>

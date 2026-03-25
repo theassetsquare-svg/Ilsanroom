@@ -21,13 +21,13 @@ const features = [
     icon: Eye,
     title: "검색 노출 증가",
     description:
-      "밤키 플랫폼 내 프리미엄 검색 노출로 잠재 손님에게 더 많이 보여집니다. SEO 최적화와 카테고리 상위 배치를 지원합니다.",
+      "밤키에서 검색하면 내 가게가 먼저 뜬다. SEO 최적화와 카테고리 상위 배치까지 알아서 잡아준다.",
   },
   {
     icon: MessageSquare,
     title: "리뷰 관리",
     description:
-      "손님 후기에 즉시 답변하고 평판을 관리하세요. 리뷰 알림과 감성 분석 도구로 손님 만족도를 높일 수 갖춰져있습니다.",
+      "손님 후기에 즉시 답변하고 평판을 관리하세요. 리뷰 알림과 감성 분석 도구가 갖춰져 있어 손님 만족도가 올라간다.",
   },
   {
     icon: BarChart3,
@@ -151,7 +151,7 @@ const plans = [
 
 const testimonials = [
   {
-    text: "당사 서비스 도입 후 신규 손님이 눈에 띄게 늘었습니다. 대시보드 덕분에 어떤 프로모션이 효과적인지 바로 알 수 있어요. 수익이 2배 이상 올랐습니다.",
+    text: "밤키 도입하고 신규 손님이 눈에 띄게 늘었어요. 대시보드 보면 어떤 프로모션이 먹히는지 바로 보여요. 수익이 2배 넘게 올랐습니다.",
     name: "김** 대표",
     venue: "일산명월관",
     rating: 5,
@@ -245,7 +245,7 @@ export default function ForBusinessPage() {
           왜 <span className="text-neon-primary-light">밤키</span>인가요?
         </h2>
         <p className="mx-auto mb-12 max-w-xl text-center text-sm text-neon-text-muted">
-          매장 운영에 필요한 전체 도구를 하나의 플랫폼에서 제공합니다.
+          매장 운영에 필요한 도구, 여기 다 있다.
         </p>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {features.map((f) => (
@@ -271,7 +271,7 @@ export default function ForBusinessPage() {
           착수은 <span className="text-neon-primary-light">간단합니다</span>
         </h2>
         <p className="mx-auto mb-12 max-w-md text-center text-sm text-neon-text-muted">
-          3단계만 거치면 저희 플랫폼의 모든 기능을 사용할 수 갖춰져있습니다.
+          3단계면 끝. 모든 기능이 바로 열린다.
         </p>
         <div className="grid gap-6 md:grid-cols-3">
           {steps.map((item) => (
@@ -429,8 +429,8 @@ export default function ForBusinessPage() {
             지금 바로 착수하세요
           </h2>
           <p className="mx-auto mb-8 max-w-lg text-neon-text-muted">
-            14일 프로 무료 체험으로 당사의 모든 기능을 경험하세요. 신용카드 없이
-            착수하고, 언제든 해지할 수 갖춰져있습니다.
+            14일 프로 무료 체험으로 모든 기능을 직접 써보세요. 신용카드 없이
+            시작하고, 맘에 안 들면 언제든 해지하면 된다.
           </p>
           <Link target="_blank" rel="noopener noreferrer"
             to="/onboarding?plan=pro&trial=true"

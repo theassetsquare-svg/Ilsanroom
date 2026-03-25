@@ -93,7 +93,7 @@ const magazineItems = [
 
 /* ── Instagram hashtags ── */
 const instaHashtags = [
-  { tag: '#일산룸', desc: '프리미엄 프라이빗 공간', url: 'https://www.instagram.com/explore/tags/일산룸/' },
+  { tag: '#일산룸', desc: '우리만의 독립 공간', url: 'https://www.instagram.com/explore/tags/일산룸/' },
   { tag: '#명월관요정', desc: '전통 코스 요리', url: 'https://www.instagram.com/explore/tags/명월관요정/' },
   { tag: '#강남청담클럽', desc: '주말 EDM 파티', url: 'https://www.instagram.com/explore/tags/강남청담클럽/' },
   { tag: '#강남호빠', desc: '호스트 엔터테인먼트', url: 'https://www.instagram.com/explore/tags/강남호빠/' },
@@ -168,7 +168,7 @@ export default function HomePage() {
 
       {/* ═══════ 2. PREMIUM — 일산룸 + 명월관 ═══════ */}
       <section className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-        <h2 className="sr-only">프리미엄 매장</h2>
+        <h2 className="sr-only">추천 매장</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {ilsanRoom && (
             <Link target="_blank" rel="noopener noreferrer" to="/rooms/ilsan/ilsanroom" className="group block h-full">

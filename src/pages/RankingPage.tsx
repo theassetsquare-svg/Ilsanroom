@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues } from '@/data/venues';
 
-const catLabels: Record<string, string> = { all: '모두', club: '파티', night: '소셜댄스', lounge: '프리미엄바', room: '프라이빗', yojeong: '한정식', hoppa: '호스트' };
+const catLabels: Record<string, string> = { all: '모두', club: '파티', night: '소셜댄스', lounge: '칵테일바', room: '프라이빗', yojeong: '한정식', hoppa: '호스트' };
 const regionLabels: Record<string, string> = { all: '전지역', gangnam: '강남권', hongdae: '홍대권', itaewon: '이태원권', ilsan: '일산권', busan: '부산권', daegu: '대구권', suwon: '수원권', incheon: '인천권' };
 const catColors: Record<string, string> = { club: '#7c3aed', night: '#ec4899', lounge: '#06b6d4', room: '#f59e0b', yojeong: '#ef4444', hoppa: '#f472b6' };
 
@@ -17,7 +17,7 @@ function getCategoryHref(category: string, slug: string, region: string) {
   return map[category] || `/${category}/${slug}`;
 }
 
-// 담당자 있는 프리미엄 업소 고정 점수
+// 담당자 있는 인기 업소 고정 점수
 const premiumScores: Record<string, number> = {
   ilsanroom: 4.9, ilsanmyeongwolgwanyojeong: 4.8,
   busanyeonsandongmulnight: 4.7, seongnamshampoonight: 4.6,

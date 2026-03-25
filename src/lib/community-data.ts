@@ -162,7 +162,7 @@ export const reviewPosts: Post[] = [
   },
   {
     id: 'r4', board: 'reviews', title: '부산연산동물나이트 오션뷰 후기',
-    content: '테라스에서 보는 오션뷰가 진짜 압도적입니다. 밤에 해운대 바다를 배경으로 춤추는 건 정말 특별한 경험이에요. 여름 되면 사람 엄청 많아질 듯. 가격은 입장료 5만원에 테이블 80만원 정도. 부산 여행 중이라면 꼭 가보세요.',
+    content: '테라스에서 보는 오션뷰가 진짜 압도적입니다. 밤에 해운대 바다를 배경으로 춤추는 건 진짜 잊을 수 없어요. 여름 되면 사람 엄청 많아질 듯. 가격은 입장료 5만원에 테이블 80만원 정도. 부산 여행 중이라면 꼭 가보세요.',
     excerpt: '테라스에서 보는 오션뷰가 진짜 압도적입니다...',
     author: authors.busan, createdAt: '2026-03-11T18:00:00Z',
     views: 456, likes: 56, isLiked: false, isBookmarked: false,
@@ -285,7 +285,7 @@ export const tipsPosts: Post[] = [
   },
   {
     id: 't4', board: 'tips', title: '지역별 밤문화 특징 총정리',
-    content: '강남, 홍대, 이태원, 청담, 해운대... 각 지역마다 다른 분위기와 특징을 한눈에 비교해보세요. 강남은 VIP 문화, 홍대는 자유분방, 이태원은 글로벌, 청담은 프리미엄, 해운대는 리조트 느낌.',
+    content: '강남, 홍대, 이태원, 청담, 해운대... 각 지역마다 다른 분위기와 특징을 한눈에 비교해보세요. 강남은 VIP 문화, 홍대는 자유분방, 이태원은 글로벌, 청담은 고급 감성, 해운대는 리조트 느낌.',
     excerpt: '강남, 홍대, 이태원, 청담, 해운대...',
     author: authors.tour, createdAt: '2026-03-07T16:00:00Z',
     views: 2100, likes: 523, isLiked: false, isBookmarked: false,
