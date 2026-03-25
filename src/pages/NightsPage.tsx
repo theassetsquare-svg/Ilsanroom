@@ -14,7 +14,7 @@ const regions = [
 ];
 
 export default function NightsPage() {
-  useDocumentMeta('밴드가 첫 곡 시작하면 홀 전체가 움직인다 | 밤키', '전국 58곳 소셜댄스 부킹 명소. 초보도 3분이면 적응하는 현장 분위기를 확인하세요.');
+  useDocumentMeta('밴드가 첫 곡 시작하면 홀 전체가 움직인다 | 밤키', '전국 58곳 소셜댄스 부킹 명소. 초보도 3분이면 적응하는 현장 느낌을 확인하세요.');
   const venues = getVenuesByCategory('night');
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
@@ -26,16 +26,16 @@ export default function NightsPage() {
             토요일 밤 9시. 밴드가 첫 곡을 시작하면 홀 전체가 움직인다.
           </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
-            웨이터가 테이블로 다가와 "저쪽 분이 같이 춤추고 싶어하십니다" 하면, 자연스럽게 플로어로 나간다. 이게 부킹이다. 처음 만난 사람과 지루박 한 곡을 추는 동안 어색함은 사라지고, 대화가 시작된다. 한국에만 있는 독특한 사교 문화다.
+            웨이터가 테이블로 다가와 "저쪽 분이 같이 춤추고 싶어하십니다" 하면, 자연스럽게 댄스홀로 나간다. 이게 부킹이다. 처음 만난 사람과 지루박 한 곡을 추는 동안 어색함은 사라지고, 대화가 시작된다. 한국에만 있는 독특한 사교 문화다.
           </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
-            라이브 밴드가 트로트·팝·발라드를 번갈아 연주한다. 무대 바로 앞 플로어에서 춤추는 사람들, 부스에 앉아 양주 마시며 구경하는 사람들, 웨이터가 분주하게 오가는 모습이 한 공간에 섞인다. 30대 후반부터 50대까지 연령대가 넓다. 20대가 가면 오히려 귀여워해주셔서 대접받는다는 후기도 있다.
+            라이브 밴드가 트로트·팝·발라드를 번갈아 연주한다. 무대 바로 앞 댄스홀에서 춤추는 사람들, 자리에 앉아 양주 마시며 구경하는 사람들, 웨이터가 분주하게 오가는 모습이 한 공간에 섞인다. 30대 후반부터 50대까지 연령대가 넓다. 20대가 가면 오히려 귀여워해주셔서 대접받는다는 후기도 있다.
           </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
-            시스템은 간단하다. 들어가면 웨이터가 부스를 안내한다. 양주 한 병 시키고 과일 안주 받으면 준비 끝. 춤추고 싶으면 플로어로 나가면 되고, 앉아서 분위기만 즐겨도 된다. 부킹은 거절해도 전혀 문제 없다. 강제 아니다.
+            시스템은 간단하다. 들어가면 웨이터가 좌석을 안내한다. 양주 한 병 시키고 과일 안주 받으면 준비 끝. 춤추고 싶으면 댄스홀로 나가면 되고, 앉아서 무드만 즐겨도 된다. 부킹은 거절해도 전혀 문제 없다. 강제 아니다.
           </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
-            전국 58곳이 등록되어 있다. 수원찬스돔처럼 돔 구조로 유명한 곳, 부산연산동물처럼 부킹률 1위인 곳, 각각 개성이 확실하다. 금·토 밤 9시가 피크고, 365일 매일 여는 곳도 많다.
+            전국 58곳이 등록되어 있다. 수원찬스돔처럼 돔 구조로 유명한 곳, 부산연산동물처럼 부킹률 1위인 곳, 각각 개성이 확실하다. 금·토 밤 9시가 절정이고, 365일 매일 여는 곳도 많다.
           </p>
         </div>
       </div>
@@ -43,10 +43,10 @@ export default function NightsPage() {
       <VenueListClient venues={venues} hrefPattern="/nights/{slug}" regions={regions} />
 
       <FirstVisitGuide category="나이트"
-        dress="세미 포멀~포멀 권장. 정장 또는 셋업이 기본. 너무 캐주얼하면 분위기에 안 맞을 수 있음."
-        budget="입장료 1~3만원 + 양주 1병 10~30만원. 부스/룸 추가 비용 발생. 웨이터 팁 별도."
+        dress="세미 포멀~포멀 권장. 정장 또는 셋업이 기본. 너무 캐주얼하면 무드에 안 맞을 수 있음."
+        budget="방문비 1~3만원 + 양주 1병 10~30만원. 부스/룸 추가 비용 발생. 웨이터 팁 별도."
         alone="웨이터에게 안내 요청하면 부스 배정. 부킹 시스템으로 파트너 매칭 가능."
-        reservation="부스는 사전 예약 권장. 금토 저녁에는 일찍 가야 좋은 자리 확보 가능."
+        reservation="좌석은 미리 예약 권장. 금토 저녁에는 일찍 가야 좋은 자리 확보 가능."
       />
 
       <PopularTimes slots={[
@@ -60,8 +60,8 @@ export default function NightsPage() {
       <CategoryVSBattle venueA="수원찬스돔나이트" venueB="인천아라비안나이트" topic="경기 소셜댄스홀 최강자는?" />
 
       <RelatedMagazine articles={[
-        { title: '처음 방문하는 분을 위한 A to Z 매너 가이드', tag: '입문' },
-        { title: '전국 소셜댄스 명소 지역별 특징 총정리', tag: '정보' },
+        { title: '처음 방문하는 분을 위한 A to Z 매너 안내', tag: '입문' },
+        { title: '전국 소셜댄스 명소 동네별 특징 총정리', tag: '정보' },
       ]} />
     </div>
   );

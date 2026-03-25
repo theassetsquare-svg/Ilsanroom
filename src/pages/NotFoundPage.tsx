@@ -15,12 +15,12 @@ function getCategoryHref(category: string, slug: string, region: string) {
 }
 
 function getCategoryLabel(cat: string) {
-  const map: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
+  const map: Record<string, string> = { club: 'CLUB', night: 'NIGHT', lounge: 'LOUNGE', room: 'ROOM', yojeong: '한식주점', hoppa: 'HOPPA' };
   return map[cat] || cat;
 }
 
 export default function NotFound() {
-  useDocumentMeta('페이지를 찾을 수 없습니다 | 밤키', '찾는 페이지가 없지만 지금 핫한 업소를 추천합니다.');
+  useDocumentMeta('페이지를 찾을 수 없습니다 | 밤키', '찾는 페이지가 없지만 지금 핫한 곳을 안내합니다.');
   const popularVenues = getPopularVenues(6);
 
   return (
@@ -36,7 +36,7 @@ export default function NotFound() {
         페이지를 찾을 수 없습니다
       </h2>
       <p className="mb-2 text-neon-text-muted">
-        찾으시는 페이지가 이동되었거나 존재하지 않는 주소입니다.
+        요청한 주소가 이동되었거나 더 이상 존재하지 않습니다.
       </p>
 
       <div className="flex gap-4 mb-12 mt-6">
@@ -50,13 +50,13 @@ export default function NotFound() {
           to="/map"
           className="rounded-xl border border-neon-border px-6 py-3 font-medium text-neon-text-muted transition hover:bg-neon-surface-2"
         >
-          지도에서 찾기
+          지도 탐색
         </Link>
       </div>
 
       {/* 인기 추천 — DB에서 가져옴 */}
       <div className="w-full max-w-lg">
-        <h3 className="mb-4 text-sm font-semibold text-neon-primary">인기 업소 추천</h3>
+        <h3 className="mb-4 text-sm font-semibold text-neon-primary">지금 핫한 곳</h3>
         <div className="grid grid-cols-2 gap-3">
           {popularVenues.map((v) => (
             <Link target="_blank" rel="noopener noreferrer"

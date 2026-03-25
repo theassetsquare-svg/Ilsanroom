@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
-type Category = "초보자" | "절약" | "안전" | "매너";
+type Category = "입문" | "절약" | "보호" | "예절";
 type Difficulty = "쉬움" | "보통" | "고급";
 
 const categoryIcons: Record<Category, string> = {
-  "초보자": "🌱",
+  "입문": "🌱",
   "절약": "💰",
-  "안전": "🛡️",
-  "매너": "🤝",
+  "보호": "🛡️",
+  "예절": "🤝",
 };
 
 const difficultyColors: Record<Difficulty, string> = {
@@ -22,7 +22,7 @@ const tipCards = [
   {
     id: 1,
     title: "첫 방문 전 확인해야 할 세 가지",
-    category: "초보자" as Category,
+    category: "입문" as Category,
     difficulty: "쉬움" as Difficulty,
     author: "길잡이",
     bookmarks: 312,
@@ -39,8 +39,8 @@ const tipCards = [
   },
   {
     id: 3,
-    title: "안전 귀가를 위한 사전 준비",
-    category: "안전" as Category,
+    title: "무사히 귀가하기 위한 사전 준비",
+    category: "보호" as Category,
     difficulty: "쉬움" as Difficulty,
     author: "세이프가드",
     bookmarks: 405,
@@ -48,10 +48,10 @@ const tipCards = [
   },
   {
     id: 4,
-    title: "테이블 매너 기본 에티켓",
-    category: "매너" as Category,
+    title: "테이블 기본 룰",
+    category: "예절" as Category,
     difficulty: "보통" as Difficulty,
-    author: "에티켓코치",
+    author: "예절코치",
     bookmarks: 189,
     summary: "주변 테이블에 소음으로 불편을 주지 않도록 하고, 직원에게 정중하게 요청하는 것이 기본입니다.",
   },
@@ -67,25 +67,25 @@ const tipCards = [
   {
     id: 6,
     title: "분위기 파악하고 자연스럽게 즐기기",
-    category: "초보자" as Category,
+    category: "입문" as Category,
     difficulty: "보통" as Difficulty,
     author: "분위기메이커",
     bookmarks: 156,
-    summary: "도착 후 30분은 관찰 시간으로 두세요. 음악 장르, 연령대, 전체적인 흐름을 파악하면 훨씬 편안해집니다.",
+    summary: "도착 후 30분은 관찰 시간으로 두세요. 음악 장르, 연령대, 큰 흐름을 파악하면 훨씬 편안해집니다.",
   },
   {
     id: 7,
     title: "응급 상황 대처 가이드",
-    category: "안전" as Category,
+    category: "보호" as Category,
     difficulty: "고급" as Difficulty,
     author: "응급매뉴얼",
     bookmarks: 367,
-    summary: "과음으로 인한 응급 상황 발생 시 직원에게 즉시 알리고, 119 연락 및 구토 시 옆으로 눕히는 것이 중요합니다.",
+    summary: "과음으로 인한 응급 상황 발생 시 직원에게 즉시 알리고, 119 연락 및 구토 시 옆으로 눕히는 것이 중요합니다. 조심해서 나쁠 건 없습니다.",
   },
   {
     id: 8,
     title: "VIP석 활용 노하우",
-    category: "매너" as Category,
+    category: "예절" as Category,
     difficulty: "고급" as Difficulty,
     author: "VIP안내원",
     bookmarks: 201,
@@ -93,13 +93,15 @@ const tipCards = [
   },
 ];
 
-const categories: Array<Category | "전체"> = ["전체", "초보자", "절약", "안전", "매너"];
+const ALL = "전체" as const;
+const categories: Array<Category | typeof ALL> = [ALL, "입문", "절약", "보호", "예절"];
+const catLabel: Record<string, string> = { "전체": "통합" };
 
 export default function TipsPage() {
-  useDocumentMeta('초보자 팁·안전 가이드 | 밤키', '첫 방문부터 안전 귀가까지 실전 팁.');
-  const [activeCat, setActiveCat] = useState<Category | "전체">("전체");
+  useDocumentMeta('입문자 팁·주의사항 가이드 | 밤키', '첫 방문부터 무사 귀가까지 실전 팁.');
+  const [activeCat, setActiveCat] = useState<Category | "전체">(ALL);
 
-  const filtered = activeCat === "전체" ? tipCards : tipCards.filter((t) => t.category === activeCat);
+  const filtered = activeCat === ALL ? tipCards : tipCards.filter((t) => t.category === activeCat);
 
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
@@ -127,8 +129,8 @@ export default function TipsPage() {
                   : "border border-neon-border text-neon-text-muted hover:border-neon-primary/50"
               }`}
             >
-              {cat !== "전체" && <span>{categoryIcons[cat]}</span>}
-              {cat}
+              {cat !== ALL && <span>{categoryIcons[cat]}</span>}
+              {catLabel[cat] ?? cat}
             </button>
           ))}
         </div>

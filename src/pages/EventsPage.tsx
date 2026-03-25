@@ -18,7 +18,7 @@ const months = [
 const DOW = ['일', '월', '화', '수', '목', '금', '토'];
 
 export default function EventsPage() {
-  useDocumentMeta('이번 주말 전국 파티·이벤트 캘린더 | 밤키', 'DJ 공연, 이벤트 일정을 한눈에 확인하세요.');
+  useDocumentMeta('이번 주말 전국 파티·행사 캘린더 | 밤키', 'DJ 공연, 행사 일정을 한눈에 확인하세요.');
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       {/* Event JSON-LD */}
@@ -36,8 +36,8 @@ export default function EventsPage() {
         }} />
       ))}
 
-      <h1 className="text-2xl font-extrabold text-neon-text mb-1">이벤트·파티 캘린더</h1>
-      <p className="text-sm text-neon-text-muted mb-8">업소별 행사 일정</p>
+      <h1 className="text-2xl font-extrabold text-neon-text mb-1">행사·파티 캘린더</h1>
+      <p className="text-sm text-neon-text-muted mb-8">업소별 특집 일정</p>
 
       {/* 캘린더 */}
       {months.map((m) => {

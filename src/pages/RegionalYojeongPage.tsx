@@ -46,7 +46,7 @@ function YojeongCard({ venue, region }: { venue: Venue; region: string }) {
 export default function RegionalYojeongPage() {
   const { region } = useParams<{ region: string }>();
   const regionKo = regionNames[region] || region;
-  useDocumentMeta(`${regionKo} 전통 접대 공간 | 밤키`, `${regionKo} 한정식·국악 접대, 여긴 격이 다르다.`);
+  useDocumentMeta(`${regionKo} 일대 한식 접객 공간 | 밤키`, `${regionKo} 한정식·국악 접객, 여긴 격이 다르다.`);
   const yojeongs = getVenuesByCategoryAndRegion('yojeong', region);
 
   return (
@@ -56,20 +56,20 @@ export default function RegionalYojeongPage() {
       </section>
 
       <section className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
-        <h1 className="text-3xl font-extrabold text-neon-text">{regionKo} 전통 요정</h1>
+        <h1 className="text-3xl font-extrabold text-neon-text">{regionKo} 일대 요정</h1>
         <p className="mt-3 text-neon-text-muted">
-          {regionKo}의 한국 전통 접대 문화를 경험할 수 있는 곳입니다. 격식 있는 자리에 적합합니다.
+          {regionKo} 일대에서 한국 고유 접객 문화를 경험할 수 있는 곳입니다. 격조 높은 자리에 적합합니다.
         </p>
       </section>
 
       {/* 문화적 맥락 안내 */}
       <section className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
         <div className="rounded-xl border border-amber-200 bg-amber-50 p-5">
-          <h2 className="mb-2 text-base font-bold text-amber-800">요정 문화란?</h2>
+          <h2 className="mb-2 text-base font-bold text-amber-800">요정이란 어떤 곳?</h2>
           <p className="text-sm leading-relaxed text-amber-900/80">
-            요정은 한국 고유의 고급 접대 양식으로, 한옥 또는 전통 건축 양식의 독립된 방에서
-            코스 한정식과 함께 대화를 나누는 격식 높은 만남의 장소입니다. 과거 정치인과
-            기업인이 주로 이용했으며, 현재는 귀빈 초대와 잊지 못할 기념일에 활용됩니다.
+            요정은 한옥 또는 전통식 건물의 독립 좌석에서 코스 한정식과 함께 대화를 나누는
+            격조 높은 만남의 장소입니다. 과거 정치인과 기업인이 주로 이용했으며,
+            현재는 귀빈 초대와 잊지 못할 기념일에 활용됩니다.
             단순한 식사를 넘어 한국의 미학과 예절이 담긴 독자적 문화 체험입니다.
           </p>
         </div>
@@ -78,7 +78,7 @@ export default function RegionalYojeongPage() {
       {/* 코스 요리 안내 */}
       <section className="mx-auto max-w-[1200px] px-4 pb-8 sm:px-6">
         <div className="rounded-xl border border-neon-border bg-white p-5">
-          <h2 className="mb-3 text-base font-bold text-neon-text">코스 요리 안내</h2>
+          <h2 className="mb-3 text-base font-bold text-neon-text">코스 요리 살펴보기</h2>
           <div className="grid gap-3 sm:grid-cols-3">
             <div className="rounded-lg bg-stone-50 p-3 text-center">
               <p className="font-semibold text-stone-700">기본 코스</p>
@@ -101,7 +101,7 @@ export default function RegionalYojeongPage() {
           {yojeongs.map((venue) => <YojeongCard key={venue.id} venue={venue} region={region} />)}
         </div>
         {yojeongs.length === 0 && (
-          <p className="py-20 text-center text-neon-text-muted">{regionKo} 지역에 등록된 요정이 없습니다.</p>
+          <p className="py-20 text-center text-neon-text-muted">{regionKo} 일대에 등록된 매장이 없습니다.</p>
         )}
       </section>
     </div>

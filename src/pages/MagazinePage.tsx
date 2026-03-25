@@ -3,9 +3,9 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 const articles = [
   {
     id: 'a1',
-    title: '강남 EDM 클럽 5곳 — 2026 현장 비교',
-    excerpt: '강남청담클럽 레이스와 강남청담클럽 사운드를 포함해, 올해 강남에서 가장 주목받는 EDM 공연장 5곳의 음향 시스템·분위기·입장 조건을 현장 방문 기준으로 비교합니다.',
-    tag: '비교',
+    title: '강남 EDM 클럽 5곳 — 2026 현장 대결',
+    excerpt: '강남청담클럽 레이스와 강남청담클럽 사운드를 포함해, 올해 강남에서 가장 주목받는 EDM 공연장 5곳의 음향 시스템·분위기·입장 조건을 현장 방문 기준으로 분석합니다.',
+    tag: '분석',
     date: '2026-03-12',
     readMin: 5,
   },
@@ -35,9 +35,9 @@ const articles = [
   },
   {
     id: 'a5',
-    title: '홍대·이태원 — 서울 양대 파티 타운 비교',
-    excerpt: '인디·힙합 중심의 홍대와 다문화·레게톤 중심의 이태원. 서울 대표 두 파티 타운의 문화·접근성·평균 소비를 비교합니다.',
-    tag: '비교',
+    title: '홍대·이태원 — 서울 양대 파티 타운 맞대결',
+    excerpt: '인디·힙합 중심의 홍대와 다문화·레게톤 중심의 이태원. 서울 대표 두 파티 타운의 문화·접근성·평균 소비를 분석합니다.',
+    tag: '대결',
     date: '2026-03-03',
     readMin: 5,
   },
@@ -52,11 +52,11 @@ const articles = [
 ];
 
 export default function MagazinePage() {
-  useDocumentMeta('읽다 보면 가고 싶어지는 밤문화 매거진 | 밤키', '강남 TOP5, 첫 방문 핸드북, 지역별 비교 콘텐츠.');
+  useDocumentMeta('읽다 보면 가고 싶어지는 밤문화 매거진 | 밤키', '강남 TOP5, 첫 방문 핸드북, 지역별 분석 콘텐츠.');
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <h1 className="text-2xl font-extrabold text-neon-text mb-1">매거진</h1>
-      <p className="text-sm text-neon-text-muted mb-8">밤문화 트렌드, 가이드, 비교 콘텐츠</p>
+      <p className="text-sm text-neon-text-muted mb-8">밤문화 트렌드, 가이드, 분석 콘텐츠</p>
 
       {/* 피처드 */}
       <article className="mb-8 rounded-2xl border border-neon-primary/30 bg-gradient-to-br from-neon-primary/5 via-neon-surface to-neon-bg p-6 sm:p-8 card-hover">

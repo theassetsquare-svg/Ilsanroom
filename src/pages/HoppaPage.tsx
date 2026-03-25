@@ -20,7 +20,7 @@ const regions = [
 ];
 
 export default function HoppaPage() {
-  useDocumentMeta('혼자 가도 돼요? 오히려 혼자 오는 분이 더 많다 | 밤키', '여성 전용 사교 공간 18곳. 가격 투명, 안전 확인 완료. 사전 전화 한 통이면 준비 끝.');
+  useDocumentMeta('혼자 가도 돼요? 오히려 1인 손님이 더 많다 | 밤키', '여성 전용 사교 공간 18곳. 가격 투명, 안전 확인 완료. 사전 전화 한 통이면 준비 끝.');
   const venues = getVenuesByCategory('hoppa');
   return (
     <div className="hoppa-theme mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
@@ -38,7 +38,7 @@ export default function HoppaPage() {
           </div>
           <div className="space-y-4">
             <p className="text-lg font-bold text-pink-800">
-              "혼자 가도 돼요?" — 물론이다. 오히려 혼자 오는 분이 더 많다.
+              "혼자 가도 돼요?" — 물론이다. 오히려 1인 방문이 더 많다.
             </p>
             <p className="text-base leading-relaxed text-pink-900/70">
               처음 가면 살짝 떨린다. 문 열고 들어가면 직원이 바로 안내해준다. 자리에 앉으면 호스트가 와서 인사한다. 대화가 시작된다. 마술을 보여주기도 하고, 보드게임을 같이 하기도 하고, 노래를 불러주기도 한다. 호스트마다 스타일이 전부 다르다.
@@ -47,12 +47,12 @@ export default function HoppaPage() {
               TC(타임차지) 방식이라 시간 단위로 요금이 붙는다. 1시간 3~5만원대가 보통이고, 음료는 따로다. 전화할 때 "예산 얼마 정도예요" 하면 딱 맞게 안내해준다. 바가지는 없다. 사전 상담이 핵심이다.
             </p>
             <p className="text-base leading-relaxed text-pink-900/70">
-              친구 생일 서프라이즈, 직장 모임, 스트레스 풀러 혼자 오는 경우까지 방문 목적이 다양하다. 1인 고객 비율이 절반에 가깝다. 전국 18곳이 등록되어 있고, 전부 영업 중인지 직접 확인했다.
+              친구 생일 서프라이즈, 회사 회식, 스트레스 풀러 솔로로 오는 경우까지 방문 목적이 폭넓다. 1인 고객 비율이 절반에 가깝다. 전국 18곳이 등록되어 있고, 전부 영업 중인지 직접 확인했다.
             </p>
           </div>
         </div>
 
-        {/* 안전·가격·혼자 안내 카드 */}
+        {/* 안전·가격·1인 안내 카드 */}
         <div className="grid gap-4 sm:grid-cols-3 mb-6">
           <div className="rounded-xl border border-pink-200 bg-pink-50 p-4">
             <h3 className="text-sm font-bold text-pink-700 mb-2">💰 가격 투명</h3>
@@ -63,8 +63,8 @@ export default function HoppaPage() {
             <p className="text-sm text-pink-900/60">모든 등록 업소는 영업 확인 완료. 불쾌한 상황 시 직원에게 즉시 요청.</p>
           </div>
           <div className="rounded-xl border border-pink-200 bg-pink-50 p-4">
-            <h3 className="text-sm font-bold text-pink-700 mb-2">👩 혼자도 OK</h3>
-            <p className="text-sm text-pink-900/60">혼자 방문해도 직원이 친절하게 안내. 오히려 혼자 오는 분이 더 많다.</p>
+            <h3 className="text-sm font-bold text-pink-700 mb-2">👩 1인도 OK</h3>
+            <p className="text-sm text-pink-900/60">단독 방문해도 직원이 친절하게 안내. 오히려 1인 손님이 더 많다.</p>
           </div>
         </div>
       </div>
@@ -72,10 +72,10 @@ export default function HoppaPage() {
       <VenueListClient venues={venues} hrefPattern="/hoppa/{slug}" regions={regions} />
 
       <FirstVisitGuide category="호빠"
-        dress="깔끔한 복장이면 충분. 편안하면서 예쁜 옷이면 더 좋다. 운동복만 아니면 된다."
+        dress="깔끔한 옷차림이면 충분. 편안하면서 예쁜 옷이면 더 좋다. 운동복만 아니면 된다."
         budget="TC(타임차지) 1시간 3~5만원대가 일반적. 주대(음료)는 별도. 사전에 전화로 총 예상 비용 꼭 확인."
-        alone="혼자 방문 완전 가능! 오히려 혼자 오시는 분이 많다. 직원이 처음부터 끝까지 안내해준다."
-        reservation="사전 전화 상담 강력 권장. 원하는 시간·인원·예산을 미리 말하면 딱 맞는 안내를 받을 수 있다."
+        alone="혼자 방문 완전 가능! 오히려 솔로 손님이 많다. 직원이 처음부터 끝까지 안내해준다."
+        reservation="전화 상담 강력 권장. 원하는 시간·명수·예산을 미리 말하면 딱 맞는 안내를 받을 수 있다."
       />
 
       <PopularTimes slots={[
@@ -86,11 +86,11 @@ export default function HoppaPage() {
         { day: '일요일', time: '20:00~00:00', level: 35 },
       ]} />
 
-      <CategoryVSBattle venueA="강남 로얄" venueB="강남 어게인" topic="강남 호스트바 최강자는?" />
+      <CategoryVSBattle venueA="강남 로얄" venueB="강남 어게인" topic="해당 지역 호스트바 최강자는?" />
 
       <RelatedMagazine articles={[
         { title: '호스트 공간 처음 가는 분을 위한 완벽 가이드', tag: '입문' },
-        { title: '강남 vs 해운대 — 지역별 분위기와 가격 비교', tag: '비교' },
+        { title: '수도권 vs 해운대 — 권역별 느낌과 가격 비교', tag: '비교' },
       ]} />
     </div>
   );

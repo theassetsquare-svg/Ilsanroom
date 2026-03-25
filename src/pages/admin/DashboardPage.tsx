@@ -49,9 +49,9 @@ const recentReviews = [
 
 const reservations = [
   { id: 1, date: "2026-03-14", people: 4, status: "대기중", note: "생일파티" },
-  { id: 2, date: "2026-03-14", people: 8, status: "확인됨", note: "단체모임" },
+  { id: 2, date: "2026-03-14", people: 8, status: "승인", note: "단체모임" },
   { id: 3, date: "2026-03-15", people: 2, status: "대기중", note: "-" },
-  { id: 4, date: "2026-03-15", people: 6, status: "확인됨", note: "VIP룸 요청" },
+  { id: 4, date: "2026-03-15", people: 6, status: "완료", note: "VIP룸 요청" },
   { id: 5, date: "2026-03-16", people: 10, status: "대기중", note: "회식" },
 ];
 
@@ -249,7 +249,7 @@ export default function DashboardPage() {
                       <td className="px-5 py-3">
                         <span
                           className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                            status === "확인됨"
+                            (status === "확인됨" || status === "승인" || status === "완료")
                               ? "bg-neon-green/10 text-neon-green"
                               : status === "거절됨"
                               ? "bg-red-500/10 text-red-400"

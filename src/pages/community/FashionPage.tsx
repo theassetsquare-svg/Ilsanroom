@@ -2,9 +2,17 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
-type VenueType = "라운지" | "나이트" | "바" | "요정";
+type VenueType = "lounge" | "night" | "bar" | "yojeong";
+type FilterType = VenueType | "all";
 
-const venueFilters: Array<VenueType | "전체"> = ["전체", "라운지", "나이트", "바", "요정"];
+const venueLabel: Record<VenueType, string> = {
+  lounge: "칵테일 바",
+  night: "댄스 공간",
+  bar: "바",
+  yojeong: "한식 접대",
+};
+
+const venueFilters: Array<FilterType> = ["all", "lounge", "night", "bar", "yojeong"];
 
 interface OutfitCard {
   id: number;
@@ -22,7 +30,7 @@ const outfitCards: OutfitCard[] = [
     title: "셋업 수트로 완성하는 단정한 스타일",
     author: "수트마스터",
     tags: ["셋업", "포멀", "남성"],
-    suitability: { "라운지": 5, "나이트": 5, "바": 4, "요정": 5 },
+    suitability: { lounge: 5, night: 5, bar: 4, yojeong: 5 },
     saves: 284,
     season: "사계절",
   },
@@ -31,7 +39,7 @@ const outfitCards: OutfitCard[] = [
     title: "여름 린넨 코디 — 시원하면서 격식 유지",
     author: "린넨매니아",
     tags: ["린넨", "여름", "캐주얼"],
-    suitability: { "라운지": 4, "나이트": 3, "바": 5, "요정": 3 },
+    suitability: { lounge: 4, night: 3, bar: 5, yojeong: 3 },
     saves: 197,
     season: "여름",
   },
@@ -40,7 +48,7 @@ const outfitCards: OutfitCard[] = [
     title: "미니멀 원피스 + 힐 조합",
     author: "원피스퀸",
     tags: ["원피스", "여성", "미니멀"],
-    suitability: { "라운지": 5, "나이트": 4, "바": 5, "요정": 3 },
+    suitability: { lounge: 5, night: 4, bar: 5, yojeong: 3 },
     saves: 341,
     season: "봄·가을",
   },
@@ -49,34 +57,34 @@ const outfitCards: OutfitCard[] = [
     title: "가죽 재킷으로 포인트 주기",
     author: "레더팬",
     tags: ["재킷", "스트릿", "유니섹스"],
-    suitability: { "라운지": 3, "나이트": 5, "바": 4, "요정": 2 },
+    suitability: { lounge: 3, night: 5, bar: 4, yojeong: 2 },
     saves: 156,
     season: "가을·겨울",
   },
   {
     id: 5,
-    title: "한복 퓨전 — 요정 방문 특별 코디",
+    title: "한복 퓨전 — 전통 접대 공간 방문 차림",
     author: "퓨전한복",
     tags: ["한복", "퓨전", "특별"],
-    suitability: { "라운지": 2, "나이트": 1, "바": 2, "요정": 5 },
+    suitability: { lounge: 2, night: 1, bar: 2, yojeong: 5 },
     saves: 223,
     season: "사계절",
   },
   {
     id: 6,
-    title: "올블랙 코디의 정석",
+    title: "올블랙 스타일링의 정석",
     author: "블랙무드",
     tags: ["올블랙", "시크", "유니섹스"],
-    suitability: { "라운지": 5, "나이트": 5, "바": 5, "요정": 3 },
+    suitability: { lounge: 5, night: 5, bar: 5, yojeong: 3 },
     saves: 412,
     season: "사계절",
   },
   {
     id: 7,
-    title: "니트 + 슬랙스 — 겨울 데이트 코디",
+    title: "니트 + 슬랙스 — 겨울 데이트 복장",
     author: "겨울감성",
     tags: ["니트", "겨울", "데이트"],
-    suitability: { "라운지": 4, "나이트": 3, "바": 4, "요정": 3 },
+    suitability: { lounge: 4, night: 3, bar: 4, yojeong: 3 },
     saves: 178,
     season: "겨울",
   },
@@ -85,7 +93,7 @@ const outfitCards: OutfitCard[] = [
     title: "액세서리 하나로 분위기 전환",
     author: "포인트장인",
     tags: ["액세서리", "시계", "목걸이"],
-    suitability: { "라운지": 4, "나이트": 4, "바": 3, "요정": 3 },
+    suitability: { lounge: 4, night: 4, bar: 3, yojeong: 3 },
     saves: 265,
     season: "사계절",
   },
@@ -105,11 +113,11 @@ function SuitabilityDots({ score }: { score: number }) {
 }
 
 export default function FashionPage() {
-  useDocumentMeta('뭐 입고 가야 해? 패션 가이드 | 밤키', '업종별 드레스코드와 코디 추천.');
-  const [venueFilter, setVenueFilter] = useState<VenueType | "전체">("전체");
+  useDocumentMeta('뭐 입고 가야 해? 패션 가이드 | 밤키', '업종별 드레스코드와 스타일링 추천.');
+  const [venueFilter, setVenueFilter] = useState<FilterType>("all");
 
   const sorted = [...outfitCards].sort((a, b) => {
-    if (venueFilter !== "전체") {
+    if (venueFilter !== "all") {
       return b.suitability[venueFilter] - a.suitability[venueFilter];
     }
     return b.saves - a.saves;
@@ -125,7 +133,7 @@ export default function FashionPage() {
           </Link>
           <h1 className="text-3xl font-bold">스타일 갤러리</h1>
           <p className="mt-2 text-neon-text-muted">
-            장소 유형에 맞는 착장 영감을 얻고, 나만의 코디를 공유하세요
+            장소 유형에 맞는 착장 영감을 얻고, 나만의 스타일을 공유하세요
           </p>
         </div>
 
@@ -141,7 +149,7 @@ export default function FashionPage() {
                   : "border border-neon-border text-neon-text-muted hover:border-neon-primary/50"
               }`}
             >
-              {v === "전체" ? "전체 유형" : `${v} 적합도 순`}
+              {v === "all" ? "모든 유형" : `${venueLabel[v]} 적합도 순`}
             </button>
           ))}
         </div>
@@ -157,7 +165,7 @@ export default function FashionPage() {
               <div className="flex aspect-[3/4] items-center justify-center bg-gradient-to-br from-neon-surface-2 to-neon-bg">
                 <div className="text-center text-neon-text-muted">
                   <div className="text-4xl mb-2">👔</div>
-                  <div className="text-xs">코디 이미지</div>
+                  <div className="text-xs">착장 이미지</div>
                 </div>
               </div>
 
@@ -181,7 +189,7 @@ export default function FashionPage() {
                 <div className="mb-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs">
                   {(Object.entries(card.suitability) as [VenueType, number][]).map(([venue, score]) => (
                     <div key={venue} className="flex items-center justify-between">
-                      <span className="text-neon-text-muted">{venue}</span>
+                      <span className="text-neon-text-muted">{venueLabel[venue]}</span>
                       <SuitabilityDots score={score} />
                     </div>
                   ))}

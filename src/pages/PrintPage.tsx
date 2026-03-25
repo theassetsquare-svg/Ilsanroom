@@ -5,7 +5,7 @@ import PrintButton from '@/components/ui/PrintButton';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function PrintPage() {
-  useDocumentMeta('인쇄용 페이지 | 밤키', '업소 정보 인쇄 페이지.');
+  useDocumentMeta('인쇄용 페이지 | 밤키', '상세 정보 출력 페이지.');
   const { slug } = useParams<{ slug: string }>();
   const venue = slug ? getVenueBySlug(slug) : undefined;
 
@@ -14,8 +14,8 @@ export default function PrintPage() {
   }
 
   const categoryLabels: Record<string, string> = {
-    club: '클럽', night: '나이트', lounge: '라운지',
-    room: '룸', yojeong: '요정', hoppa: '호빠',
+    club: 'CLUB', night: 'NIGHT', lounge: 'LOUNGE',
+    room: 'ROOM', yojeong: '한식주점', hoppa: 'HOPPA',
   };
 
   return (
@@ -66,23 +66,23 @@ export default function PrintPage() {
 
         {/* Description */}
         <div className="mb-6">
-          <h2 className="mb-2 text-lg font-bold">소개</h2>
+          <h2 className="mb-2 text-lg font-bold">한줄 요약</h2>
           <p className="text-sm leading-relaxed text-neutral-700">{venue.description}</p>
         </div>
 
         {/* Info Grid */}
         <div className="mb-6 grid grid-cols-2 gap-4 rounded-lg border border-neutral-200 p-4">
-          <div><span className="text-xs text-neon-text-muted">위치</span><p className="text-sm">{venue.address}</p></div>
-          <div><span className="text-xs text-neon-text-muted">영업시간</span><p className="text-sm">{venue.openHours}</p></div>
+          <div><span className="text-xs text-neon-text-muted">주소</span><p className="text-sm">{venue.address}</p></div>
+          <div><span className="text-xs text-neon-text-muted">운영 시간</span><p className="text-sm">{venue.openHours}</p></div>
           <div><span className="text-xs text-neon-text-muted">연령대</span><p className="text-sm">{venue.ageGroup}</p></div>
-          <div><span className="text-xs text-neon-text-muted">드레스코드</span><p className="text-sm">{venue.dressCode}</p></div>
+          <div><span className="text-xs text-neon-text-muted">착장 기준</span><p className="text-sm">{venue.dressCode}</p></div>
           <div><span className="text-xs text-neon-text-muted">주차</span><p className="text-sm">{venue.parking}</p></div>
-          <div><span className="text-xs text-neon-text-muted">가까운 역</span><p className="text-sm">{venue.nearbyStation}</p></div>
+          <div><span className="text-xs text-neon-text-muted">인근 역</span><p className="text-sm">{venue.nearbyStation}</p></div>
         </div>
 
         {/* Features */}
         <div className="mb-6">
-          <h2 className="mb-2 text-lg font-bold">특징</h2>
+          <h2 className="mb-2 text-lg font-bold">핵심 포인트</h2>
           <ul className="grid grid-cols-2 gap-1">
             {venue.features.map((f) => (
               <li key={f} className="flex items-center gap-1.5 text-sm">
@@ -95,11 +95,11 @@ export default function PrintPage() {
         {/* Price Info */}
         {(venue.priceEntry || venue.priceTable || venue.priceDrink) && (
           <div className="mb-6">
-            <h2 className="mb-2 text-lg font-bold">가격 안내</h2>
+            <h2 className="mb-2 text-lg font-bold">요금표</h2>
             <div className="rounded-lg border border-neutral-200 p-4 text-sm">
-              {venue.priceEntry && <p>입장료: {venue.priceEntry}</p>}
-              {venue.priceTable && <p>테이블: {venue.priceTable}</p>}
-              {venue.priceDrink && <p>음료: {venue.priceDrink}</p>}
+              {venue.priceEntry && <p>입장: {venue.priceEntry}</p>}
+              {venue.priceTable && <p>좌석: {venue.priceTable}</p>}
+              {venue.priceDrink && <p>드링크: {venue.priceDrink}</p>}
             </div>
           </div>
         )}
@@ -107,7 +107,7 @@ export default function PrintPage() {
         {/* QR Code placeholder */}
         <div className="mt-8 flex items-center justify-between border-t border-neutral-200 pt-4">
           <p className="text-xs text-neon-text-muted">
-            이 정보는 밤키에서 가져온 내용입니다. 방문 전 업소에 직접 확인하세요.
+            이 자료는 밤키에서 가져온 내용입니다. 방문 전 매장에 직접 확인하세요.
           </p>
           <div className="h-16 w-16 rounded border border-neutral-300 bg-neutral-100 flex items-center justify-center text-[8px] text-neon-text-muted">
             QR

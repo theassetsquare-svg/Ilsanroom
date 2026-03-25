@@ -27,7 +27,7 @@ const systems = [
     name: "웹 애플리케이션",
     description: "프론트엔드 및 대시보드",
     icon: Globe,
-    status: "정상",
+    status: "운영 중",
     uptime: "99.99%",
     responseTime: "18ms",
   },
@@ -35,7 +35,7 @@ const systems = [
     name: "데이터베이스",
     description: "주 DB 및 읽기 복제본",
     icon: Database,
-    status: "정상",
+    status: "이상 없음",
     uptime: "99.97%",
     responseTime: "8ms",
   },
@@ -52,19 +52,19 @@ const systems = [
 const recentIncidents = [
   {
     date: "2026-03-01",
-    title: "CDN 캐시 갱신 지연",
+    title: "CDN 캐시 갱신 느림",
     duration: "약 15분",
     resolved: true,
   },
   {
     date: "2026-02-14",
-    title: "DB 읽기 복제본 일시 지연",
+    title: "DB 읽기 복제본 일시 중단",
     duration: "약 8분",
     resolved: true,
   },
   {
     date: "2026-01-28",
-    title: "API 서버 응답 지연",
+    title: "API 서버 응답 속도 저하",
     duration: "약 22분",
     resolved: true,
   },
@@ -74,7 +74,7 @@ const recentIncidents = [
 const uptimeDays = Array.from({ length: 30 }).map((_, i) => {
   if (i === 12) return { status: 'degraded' as const, label: '일부 지연 발생' };
   if (i === 25) return { status: 'degraded' as const, label: '일부 지연 발생' };
-  return { status: 'ok' as const, label: '정상' };
+  return { status: 'ok' as const, label: '이상 없음' };
 });
 
 export default function StatusPage() {
@@ -104,7 +104,7 @@ export default function StatusPage() {
               <span className="relative inline-flex h-3 w-3 rounded-full bg-neon-green" />
             </span>
             <span className="text-sm font-medium text-neon-green">
-              모든 시스템 정상 운영 중
+              모든 시스템 이상 없이 가동 중
             </span>
           </div>
         </div>

@@ -15,17 +15,17 @@ import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const mockStats = [
-  { label: "오늘 방문자", value: "1,284", change: "+12%", icon: Eye },
-  { label: "평균 평점", value: "4.7", change: "+0.3", icon: Star },
-  { label: "이번 주 리뷰", value: "38", change: "+8", icon: MessageSquare },
-  { label: "노출 순위", value: "3위", change: "▲2", icon: TrendingUp },
+  { label: "오늘 유입수", value: "1,284", change: "+12%", icon: Eye },
+  { label: "평균 별점", value: "4.7", change: "+0.3", icon: Star },
+  { label: "이번 주 후기", value: "38", change: "+8", icon: MessageSquare },
+  { label: "검색 순위", value: "3위", change: "▲2", icon: TrendingUp },
 ];
 
 const mockReviews = [
   {
     user: "김**",
     rating: 5,
-    text: "분위기 최고! 음악 선곡도 좋고 스태프 친절해요.",
+    text: "느낌 최고! 음악 선곡도 좋고 스태프 친절해요.",
     date: "2시간 전",
   },
   {
@@ -37,22 +37,22 @@ const mockReviews = [
   {
     user: "박**",
     rating: 5,
-    text: "인테리어 새로 한 듯 깔끔해졌네요. 추천합니다.",
+    text: "인테리어 새로 한 듯 깔끔해졌네요. 또 올게요.",
     date: "1일 전",
   },
 ];
 
 const sidebarItems = [
-  { icon: BarChart3, label: "대시보드", active: true },
-  { icon: MessageSquare, label: "리뷰 관리", active: false },
-  { icon: Eye, label: "노출 분석", active: false },
+  { icon: BarChart3, label: "현황판", active: true },
+  { icon: MessageSquare, label: "후기 운영", active: false },
+  { icon: Eye, label: "유입 파악", active: false },
   { icon: Bell, label: "알림", active: false },
   { icon: Settings, label: "설정", active: false },
 ];
 
 export default function DemoPage() {
-  useDocumentMeta('업주 데모 체험 | 밤키', '업주 대시보드를 가입 없이 바로 체험.');
-  const [activeTab, setActiveTab] = useState("대시보드");
+  useDocumentMeta('사장님 데모 체험 | 밤키', '사장님 전용 화면을 가입 없이 바로 체험.');
+  const [activeTab, setActiveTab] = useState("현황판");
 
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
@@ -63,10 +63,10 @@ export default function DemoPage() {
             데모 체험
           </span>
           <h1 className="mb-4 text-4xl font-bold">
-            업주 <span className="text-violet-400">대시보드</span> 미리보기
+            사장님 <span className="text-violet-400">현황판</span> 미리보기
           </h1>
           <p className="mx-auto max-w-lg text-lg text-neon-text-muted">
-            밤키 Pro 대시보드를 직접 체험해보세요. 실제 데이터 기반의
+            밤키 Pro 현황판을 직접 체험해보세요. 실제 수치 기반의
             인터랙티브 데모입니다.
           </p>
         </div>
@@ -115,7 +115,7 @@ export default function DemoPage() {
             <div className="flex-1 p-6">
               <div className="mb-6 flex items-center justify-between">
                 <div>
-                  <h2 className="text-lg font-bold">대시보드</h2>
+                  <h2 className="text-lg font-bold">현황판</h2>
                   <p className="text-xs text-neon-text-muted">
                     마지막 업데이트: 방금 전
                   </p>
@@ -146,7 +146,7 @@ export default function DemoPage() {
 
               {/* Chart Placeholder */}
               <div className="mb-6 rounded-xl bg-neon-bg p-4">
-                <h3 className="mb-4 text-sm font-semibold">주간 방문자 추이</h3>
+                <h3 className="mb-4 text-sm font-semibold">주간 유입 추이</h3>
                 <div className="flex h-32 items-end gap-2">
                   {[40, 65, 55, 80, 72, 90, 85].map((h, i) => (
                     <div
@@ -167,7 +167,7 @@ export default function DemoPage() {
 
               {/* Recent Reviews */}
               <div className="rounded-xl bg-neon-bg p-4">
-                <h3 className="mb-4 text-sm font-semibold">최근 리뷰</h3>
+                <h3 className="mb-4 text-sm font-semibold">최근 후기</h3>
                 <div className="space-y-3">
                   {mockReviews.map((review, i) => (
                     <div
@@ -201,7 +201,7 @@ export default function DemoPage() {
         {/* CTA */}
         <div className="mt-12 text-center">
           <p className="mb-4 text-sm text-neon-text-muted">
-            실제 데이터로 업소를 관리하고 싶으신가요?
+            실제 수치로 매장을 운영하고 싶으신가요?
           </p>
           <Link target="_blank" rel="noopener noreferrer"
             to="/pricing"

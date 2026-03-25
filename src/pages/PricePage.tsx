@@ -21,7 +21,7 @@ function getCategoryHref(category: string, slug: string, region: string) {
 }
 
 export default function PricePage() {
-  useDocumentMeta('업종별 이용 가이드 | 밤키', '카테고리별 이용 방법과 분위기 비교.');
+  useDocumentMeta('업종별 이용 가이드 | 밤키', '카테고리별 이용 방법과 느낌 살펴보기.');
   const [category, setCategory] = useState<CategoryFilter>('all');
   const [showAll, setShowAll] = useState(false);
 
@@ -40,8 +40,8 @@ export default function PricePage() {
 
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
-      <h1 className="text-3xl font-extrabold text-neon-text mb-2">가격 비교표</h1>
-      <p className="text-neon-text-muted mb-8">확인된 가격 정보만 표시됩니다. 정확한 금액은 업소에 직접 확인하세요.</p>
+      <h1 className="text-3xl font-extrabold text-neon-text mb-2">요금 한눈에 보기</h1>
+      <p className="text-neon-text-muted mb-8">확인된 요금 정보만 표시됩니다. 정확한 금액은 매장에 직접 확인하세요.</p>
 
       {/* Category Filter */}
       <div className="mb-6 flex flex-wrap gap-2">
@@ -66,12 +66,12 @@ export default function PricePage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-neon-border bg-neon-surface-2">
-                <th className="px-4 py-3 text-left font-semibold text-neon-text">업소명</th>
-                <th className="px-4 py-3 text-left font-semibold text-neon-text">지역</th>
-                <th className="px-4 py-3 text-left font-semibold text-neon-text">입장료</th>
+                <th className="px-4 py-3 text-left font-semibold text-neon-text">매장명</th>
+                <th className="px-4 py-3 text-left font-semibold text-neon-text">권역</th>
+                <th className="px-4 py-3 text-left font-semibold text-neon-text">입장</th>
                 <th className="px-4 py-3 text-left font-semibold text-neon-text">주대/룸</th>
-                <th className="px-4 py-3 text-left font-semibold text-neon-text">음료/주류</th>
-                <th className="px-4 py-3 text-left font-semibold text-neon-text">평점</th>
+                <th className="px-4 py-3 text-left font-semibold text-neon-text">드링크</th>
+                <th className="px-4 py-3 text-left font-semibold text-neon-text">별점</th>
               </tr>
             </thead>
             <tbody>
@@ -96,16 +96,16 @@ export default function PricePage() {
           </table>
         </div>
       ) : (
-        <p className="py-20 text-center text-neon-text-muted">가격 정보가 등록된 업소가 없습니다.</p>
+        <p className="py-20 text-center text-neon-text-muted">요금 정보가 등록된 매장이 없습니다.</p>
       )}
 
       {!showAll && filtered.length > 8 && (
         <button onClick={() => setShowAll(true)} className="mt-4 w-full rounded-xl border border-neon-border py-3 text-sm text-neon-primary-light hover:bg-neon-surface transition">
-          전체 {filtered.length}개 업소 보기
+          전체 {filtered.length}개 매장 보기
         </button>
       )}
       <p className="mt-6 text-xs text-neon-text-subtle">
-        ※ 가격은 업소 사정에 따라 변동될 수 있습니다. 방문 전 반드시 해당 업소에 직접 확인하시기 바랍니다.
+        ※ 요금은 매장 사정에 따라 변동될 수 있습니다. 방문 전 반드시 해당 매장에 직접 확인하시기 바랍니다.
       </p>
     </div>
   );

@@ -36,15 +36,15 @@ const rewards = [
   {
     tier: "실버",
     range: "5~14명 홍보",
-    reward: "소개 1건당 800 적립금",
+    reward: "1건당 800 적립금",
     color: "from-neutral-400 to-neutral-600",
     borderColor: "border-neutral-500/30",
     textColor: "text-neon-text",
   },
   {
     tier: "골드",
-    range: "15~29명 권유",
-    reward: "권유 1건당 1,200 적립금 + 프리미엄 1주 무료",
+    range: "15~29명 추천",
+    reward: "1건당 1,200 적립금 + 프리미엄 1주 무료",
     color: "from-yellow-500 to-yellow-700",
     borderColor: "border-yellow-600/30",
     textColor: "text-neon-gold",
@@ -69,7 +69,7 @@ const faqs = [
     a: "프리미엄 구독 결제, 이벤트 응모, 제휴 업소 할인 쿠폰 교환 등에 쓰면 됩니다.",
   },
   {
-    q: "권유 인원에 제한이 있나요?",
+    q: "추천 인원에 제한이 있나요?",
     a: "제한 없습니다. 많이 소개할수록 등급이 올라가고 보상도 커집니다.",
   },
   {
@@ -78,7 +78,7 @@ const faqs = [
   },
   {
     q: "초대 현황은 어디서 확인하나요?",
-    a: "내 프로필 > 소개 프로그램 탭에서 초대 현황, 누적 리워드, 등급이 실시간으로 보입니다.",
+    a: "내 프로필 > 소개 프로그램 탭에서 링크 공유 현황, 누적 리워드, 등급이 실시간으로 보입니다.",
   },
 ];
 
@@ -90,7 +90,7 @@ export default function ReferralPage() {
         {/* Hero */}
         <div className="mb-16 text-center">
           <div className="mb-4 inline-flex rounded-full bg-neon-primary/20 px-4 py-1.5 text-sm font-medium text-neon-primary-light">
-            저희 소개 프로그램
+            저희 알리기 프로그램
           </div>
           <h1 className="mb-4 text-4xl font-bold md:text-5xl">
             친구를 알리고
@@ -98,7 +98,7 @@ export default function ReferralPage() {
             <span className="text-neon-primary-light">보상을 받으세요</span>
           </h1>
           <p className="mx-auto max-w-xl text-lg text-neon-text-muted">
-            초대 URL을 공유하면 당신과 친구 모두에게 리워드가 지급됩니다.
+            소개 URL을 공유하면 당신과 친구 모두에게 리워드가 지급됩니다.
             소개할수록 등급이 올라가고, 보상도 커집니다.
           </p>
         </div>
@@ -156,7 +156,7 @@ export default function ReferralPage() {
         <div className="mb-16 rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-500/10 to-violet-50 p-8 text-center md:p-12">
           <h2 className="mb-3 text-2xl font-bold">피추천인 혜택</h2>
           <p className="mb-6 text-neon-text-muted">
-            초대 경로를 통해 가입한 친구도 혜택을 받습니다
+            링크 공유 경로를 통해 가입한 친구도 혜택을 받습니다
           </p>
           <div className="inline-flex flex-col items-center rounded-2xl bg-neon-surface/80 px-8 py-6">
             <span className="mb-2 text-3xl font-bold text-neon-primary-light">
@@ -196,7 +196,7 @@ export default function ReferralPage() {
             지금 바로 시작하세요
           </h2>
           <p className="mb-6 text-neon-text-muted">
-            로그인 후 내 프로필에서 권유 주소를 바로 확인하세요
+            로그인 후 내 프로필에서 전달 주소를 바로 확인하세요
           </p>
           <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <a

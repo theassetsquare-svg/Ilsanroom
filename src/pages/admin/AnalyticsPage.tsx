@@ -22,9 +22,9 @@ export default function AnalyticsPage() {
   const keywords = [
     { keyword: "일산 룸", impressions: "2,341", clicks: "187", ctr: "8.0%" },
     { keyword: "일산 요정", impressions: "1,892", clicks: "134", ctr: "7.1%" },
-    { keyword: "일산 노래방", impressions: "1,204", clicks: "89", ctr: "7.4%" },
-    { keyword: "일산 2차", impressions: "987", clicks: "52", ctr: "5.3%" },
-    { keyword: "일산 룸싸롱", impressions: "756", clicks: "41", ctr: "5.4%" },
+    { keyword: "해당 지역 노래방", impressions: "1,204", clicks: "89", ctr: "7.4%" },
+    { keyword: "매장 근처 2차", impressions: "987", clicks: "52", ctr: "5.3%" },
+    { keyword: "해당 업소 룸싸롱", impressions: "756", clicks: "41", ctr: "5.4%" },
   ];
 
   const trafficSources = [

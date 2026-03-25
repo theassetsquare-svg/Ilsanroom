@@ -2,12 +2,18 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
-type PartyStatus = "모집중" | "마감임박" | "마감";
+type PartyStatus = "모집중" | "곧 마감" | "끝" | "신청 가능" | "자리 있음" | "완료" | "열린 모임" | "거의 찬 번개" | "종결";
 
 const statusStyles: Record<PartyStatus, string> = {
   "모집중": "bg-neon-green/15 text-neon-green",
-  "마감임박": "bg-neon-gold/15 text-neon-gold",
-  "마감": "bg-neon-surface-2 text-neon-text-muted",
+  "신청 가능": "bg-neon-green/15 text-neon-green",
+  "자리 있음": "bg-neon-green/15 text-neon-green",
+  "열린 모임": "bg-neon-green/15 text-neon-green",
+  "거의 찬 번개": "bg-neon-gold/15 text-neon-gold",
+  "곧 마감": "bg-neon-gold/15 text-neon-gold",
+  "끝": "bg-neon-surface-2 text-neon-text-muted",
+  "완료": "bg-neon-surface-2 text-neon-text-muted",
+  "종결": "bg-neon-surface-2 text-neon-text-muted",
 };
 
 function getDday(dateStr: string): string {
@@ -22,40 +28,40 @@ function getDday(dateStr: string): string {
 const sampleParties = [
   {
     id: 1,
-    title: "이번 주말 일산 라운지 동행 구합니다",
+    title: "이번 주말 근처 라운지 동행 구합니다",
     author: "라운지호스트",
     eventDate: "2026-03-22",
     region: "일산",
     currentMembers: 2,
     maxMembers: 6,
     ageRange: "20대 후반~30대",
-    status: "모집중" as PartyStatus,
+    status: "열린 모임" as PartyStatus,
     comments: 7,
     description: "토요일 저녁 8시 라페스타 근처 라운지에서 만나서 가볍게 한잔하려고 합니다.",
   },
   {
     id: 2,
-    title: "3/21(토) 일산 나이트 첫 도전 같이 갈 분",
+    title: "3/21(토) 해당 지역 나이트 첫 도전 같이 갈 분",
     author: "입문희망자",
     eventDate: "2026-03-21",
     region: "일산",
     currentMembers: 3,
     maxMembers: 4,
     ageRange: "20대 중반",
-    status: "마감임박" as PartyStatus,
+    status: "거의 찬 번개" as PartyStatus,
     comments: 11,
     description: "혼자 가기 부담스러워서 함께할 분을 찾습니다. 초보 환영이에요!",
   },
   {
     id: 3,
-    title: "주엽역 와인바 소규모 모임 (4명 한정)",
+    title: "주엽역 와인바 소규모 약속 (4명 한정)",
     author: "와인소모임",
     eventDate: "2026-03-28",
     region: "일산",
     currentMembers: 1,
     maxMembers: 4,
     ageRange: "30대",
-    status: "모집중" as PartyStatus,
+    status: "신청 가능" as PartyStatus,
     comments: 3,
     description: "와인 시음하며 편하게 대화 나눌 분을 모집합니다. 와인 초심자도 대환영.",
   },
@@ -64,24 +70,24 @@ const sampleParties = [
     title: "킨텍스 인근 금요 정모 (정기)",
     author: "금요밤지기",
     eventDate: "2026-03-27",
-    region: "일산",
+    region: "해당 지역",
     currentMembers: 8,
     maxMembers: 8,
     ageRange: "20대~30대",
-    status: "마감" as PartyStatus,
+    status: "끝" as PartyStatus,
     comments: 19,
-    description: "매주 금요일 킨텍스 근처에서 진행하는 정기 모임입니다. 다음 주차 신청은 월요일 오픈!",
+    description: "매주 금요일 킨텍스 근처에서 진행하는 정기 번개입니다. 다음 주차 신청은 월요일 오픈!",
   },
   {
     id: 5,
     title: "백석동 신상 바 탐방 동행자 모집",
     author: "신상탐험가",
     eventDate: "2026-03-29",
-    region: "일산",
+    region: "근처",
     currentMembers: 2,
     maxMembers: 5,
     ageRange: "20대 후반",
-    status: "모집중" as PartyStatus,
+    status: "자리 있음" as PartyStatus,
     comments: 5,
     description: "새로 오픈한 곳들을 돌아보며 솔직하게 비교해보려 합니다. 리뷰 작성도 함께해요.",
   },
@@ -134,7 +140,7 @@ export default function PartyRecruitPage() {
             </Link>
             <h1 className="text-3xl font-bold">동행 모집 게시판</h1>
             <p className="mt-2 text-neon-text-muted">
-              함께 갈 멤버를 찾거나, 열린 모임에 합류하세요
+              함께 갈 멤버를 찾거나, 열린 약속에 합류하세요
             </p>
           </div>
           <button className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light">
@@ -144,7 +150,7 @@ export default function PartyRecruitPage() {
 
         {/* Status Filter */}
         <div className="mb-6 flex gap-2">
-          {(["전체", "모집중", "마감임박", "마감"] as const).map((s) => (
+          {(["전체", "모집중", "신청 가능", "자리 있음", "열린 모임", "곧 마감", "끝", "완료", "종결"] as const).map((s) => (
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
@@ -192,7 +198,7 @@ export default function PartyRecruitPage() {
                 {/* Participant Bar */}
                 <div className="mb-4">
                   <div className="mb-1 flex items-center justify-between text-xs">
-                    <span className="text-neon-text-muted">참여 현황</span>
+                    <span className="text-neon-text-muted">합류 현황</span>
                     <span className="font-medium">
                       {party.currentMembers}/{party.maxMembers}명
                     </span>
@@ -214,9 +220,9 @@ export default function PartyRecruitPage() {
                     <span>{party.ageRange}</span>
                     <span>💬 {party.comments}</span>
                   </div>
-                  {party.status !== "마감" && (
+                  {party.status !== "끝" && party.status !== "종결" && (
                     <button className="rounded-lg bg-neon-primary/20 px-4 py-1.5 text-xs font-medium text-neon-primary-light transition hover:bg-neon-primary/30">
-                      참여 신청
+                      합류 신청
                     </button>
                   )}
                 </div>

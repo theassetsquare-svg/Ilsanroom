@@ -83,13 +83,13 @@ export default function RegionalRoomsPage() {
       <section className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
         <h1 className="text-3xl font-extrabold text-neon-text">{regionKo} 룸</h1>
         <p className="mt-3 text-neon-text-muted">
-          {regionKo}에서 프라이빗한 모임을 위한 공간입니다. 인원과 목적에 맞는 곳을 찾아보세요.
+          {regionKo}에서 프라이빗한 자리를 위한 공간입니다. 인원과 목적에 맞는 곳을 찾아보세요.
         </p>
       </section>
 
-      {/* 인원별 추천 */}
+      {/* 인원별 안내 */}
       <section className="mx-auto max-w-[1200px] px-4 pb-4 sm:px-6">
-        <h2 className="mb-3 text-base font-bold text-neon-text">인원별 추천</h2>
+        <h2 className="mb-3 text-base font-bold text-neon-text">인원별 안내</h2>
         <div className="grid grid-cols-3 gap-3">
           {SIZE_TAGS.map(({ label, min, max }) => {
             const count = rooms.filter((v) => {
@@ -99,7 +99,7 @@ export default function RegionalRoomsPage() {
             return (
               <div key={label} className="rounded-lg border border-neon-border bg-white p-3 text-center">
                 <p className="text-lg font-bold text-teal-600">{label}</p>
-                <p className="mt-1 text-xs text-neon-text-muted">{count > 0 ? `${count}곳 운영 중` : '정보 준비 중'}</p>
+                <p className="mt-1 text-xs text-neon-text-muted">{count > 0 ? `${count}곳 확인됨` : '정보 준비 중'}</p>
               </div>
             );
           })}
@@ -108,7 +108,7 @@ export default function RegionalRoomsPage() {
 
       {/* 목적별 필터 */}
       <section className="mx-auto max-w-[1200px] px-4 pb-8 sm:px-6">
-        <h2 className="mb-3 text-base font-bold text-neon-text">목적별 탐색</h2>
+        <h2 className="mb-3 text-base font-bold text-neon-text">용도별 탐색</h2>
         <div className="flex gap-2">
           {PURPOSE_FILTERS.map((purpose) => (
             <button
@@ -138,8 +138,8 @@ export default function RegionalRoomsPage() {
         {filtered.length === 0 && (
           <p className="py-20 text-center text-neon-text-muted">
             {activePurpose
-              ? `${regionKo}에서 "${activePurpose}" 조건의 프라이빗 공간을 찾지 못했습니다.`
-              : `${regionKo} 지역에 등록된 프라이빗 공간이 없습니다.`}
+              ? `${regionKo}에서 "${activePurpose}" 조건에 해당하는 프라이빗 공간이 없습니다.`
+              : `${regionKo} 동네에 등록된 프라이빗 공간이 없습니다.`}
           </p>
         )}
       </section>

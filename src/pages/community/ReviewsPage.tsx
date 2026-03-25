@@ -5,8 +5,8 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 const sampleReviews = [
   {
     id: 1,
-    title: "일산 라페스타 라운지 — 분위기 최고였어요",
-    author: "일산단골",
+    title: "라페스타 라운지 — 분위기 최고였어요",
+    author: "해당 지역 단골",
     date: "2026-03-18",
     venue: "라페스타 라운지",
     region: "일산",
@@ -22,7 +22,7 @@ const sampleReviews = [
     author: "야행성직장인",
     date: "2026-03-17",
     venue: "킨텍스 나이트",
-    region: "일산",
+    region: "해당 업소",
     rating: 3,
     helpful: 31,
     comments: 22,
@@ -35,7 +35,7 @@ const sampleReviews = [
     author: "맛집헌터",
     date: "2026-03-16",
     venue: "백석 프라이빗바",
-    region: "일산",
+    region: "해당 지역",
     rating: 4,
     helpful: 63,
     comments: 9,

@@ -13,19 +13,19 @@ const regions = [
 ];
 
 export default function RoomsPage() {
-  useDocumentMeta('문 닫으면 우리만의 공간, 프라이빗 모임 | 밤키', '일산·해운대 프라이빗 독립 공간. 4인 소형부터 30인 대형까지 인원별 맞춤 안내.');
+  useDocumentMeta('문 닫으면 우리만의 공간, 프라이빗 모임 | 밤키', '일산·해운대 프라이빗 독립 룸. 4인 소형부터 30인 대형까지 인원별 맞춤 안내.');
   const venues = getVenuesByCategory('room');
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '룸' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">프라이빗 모임 공간</h1>
+        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">프라이빗 모임 장소</h1>
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
-            문 닫으면 바깥 소리가 안 들린다. 우리만의 공간이 시작된다.
+            문 닫으면 바깥 소리가 안 들린다. 우리만의 시간이 시작된다.
           </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
-            벽으로 완전히 분리된 독립 공간이다. 옆에서 아무리 시끄럽게 해도 이쪽은 조용하다. 방음이 되니까 비즈니스 얘기를 해도 되고, 마음껏 노래를 불러도 된다. 독립 음향, 개별 조명, 노래방 기기까지 갖춰진 곳이 대부분이다.
+            벽으로 완전히 분리된 독립 룸이다. 옆에서 아무리 시끄럽게 해도 이쪽은 조용하다. 방음이 되니까 비즈니스 얘기를 해도 되고, 마음껏 노래를 불러도 된다. 독립 음향, 개별 조명, 노래방 기기까지 갖춰진 곳이 대부분이다.
           </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
             4인 소형부터 30인 넘는 대형까지 크기가 다양하다. 생일파티, 회식 2차, 동창회, 기업 워크숍 뒤풀이까지 인원에 맞게 고르면 된다. 일산은 신실장이 전화 한 통이면 인원수에 맞는 자리를 바로 잡아준다. 해운대 마린시티에는 개별 공간이 60개 넘는 대형 시설도 있다.
@@ -38,11 +38,11 @@ export default function RoomsPage() {
 
       <VenueListClient venues={venues} hrefPattern="/rooms/{region}/{slug}" regions={regions} />
 
-      <FirstVisitGuide category="프라이빗 공간"
+      <FirstVisitGuide category="프라이빗 룸"
         dress="캐주얼~비즈니스 캐주얼. 모임 목적에 맞게 조절."
-        budget="공간 이용료 + 음료. 업소마다 다름. 사전 전화 문의 필수."
-        alone="보통 2인 이상 이용. 1인 가능 여부 업소에 확인."
-        reservation="사전 예약 필수. 원하는 크기의 공간을 확보하려면 미리 연락."
+        budget="공간 이용료 + 음료. 매장마다 다름. 사전 전화 문의 필수."
+        alone="보통 2인 이상 이용. 1인 가능 여부 매장에 확인."
+        reservation="사전 예약 필수. 원하는 크기의 룸을 확보하려면 미리 연락."
       />
 
       <PopularTimes slots={[
@@ -53,11 +53,11 @@ export default function RoomsPage() {
         { day: '일요일', time: '17:00~22:00', level: 35 },
       ]} />
 
-      <CategoryVSBattle venueA="일산룸" venueB="해운대고구려" topic="독립 공간 맞대결" />
+      <CategoryVSBattle venueA="일산룸" venueB="해운대고구려" topic="독립 룸 맞대결" />
 
       <RelatedMagazine articles={[
-        { title: '비즈니스 접대에 최적인 독립 공간 가이드', tag: '비즈니스' },
-        { title: '해운대고구려 — 마린시티 60개 개별 공간의 비밀', tag: '부산' },
+        { title: '비즈니스 접대에 최적인 독립 룸 안내', tag: '비즈니스' },
+        { title: '해운대고구려 — 마린시티 60개 개별 룸의 비밀', tag: '부산' },
       ]} />
     </div>
   );
