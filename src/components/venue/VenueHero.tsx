@@ -6,6 +6,7 @@ interface VenueHeroProps {
   isPremium: boolean;
   category: string;
   regionKo: string;
+  slug?: string;
 }
 
 const categoryGradients: Record<string, string> = {
@@ -32,6 +33,7 @@ export default function VenueHero({
   isPremium,
   category,
   regionKo,
+  slug,
 }: VenueHeroProps) {
   const gradient = categoryGradients[category] || categoryGradients.club;
   const bgPattern = categoryBgPatterns[category] || categoryBgPatterns.club;
@@ -40,6 +42,7 @@ export default function VenueHero({
     <section className="relative min-h-[240px] overflow-hidden border-b border-neon-border sm:min-h-[300px]">
       <div className={`absolute inset-0 bg-gradient-to-b ${gradient}`} />
       <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] ${bgPattern}`} />
+      {slug && <img src={`/og/${slug}.svg`} alt={`${name} 대표 이미지`} className="sr-only" width="1" height="1" loading="lazy" />}
 
       <div className="relative mx-auto flex min-h-[240px] max-w-[1200px] flex-col justify-end px-4 pb-8 sm:min-h-[300px] sm:px-6">
         <div className="mb-4 flex flex-wrap gap-2">

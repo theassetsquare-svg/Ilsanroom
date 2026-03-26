@@ -9,6 +9,7 @@ interface VenueJsonLdProps {
     reviewCount: number;
     openHours: string;
     category: string;
+    region: string;
     regionKo: string;
     district?: string;
     slug: string;
@@ -21,10 +22,11 @@ interface VenueJsonLdProps {
   breadcrumbItems: { name: string; url: string }[];
   faqItems?: { question: string; answer: string }[];
   reviews?: { author: string; rating: number; text: string; date: string }[];
+  detailPath?: string;
   siteUrl?: string;
 }
 
-export default function VenueJsonLd({ venue, breadcrumbItems, faqItems, reviews, siteUrl = 'https://ilsanroom.pages.dev' }: VenueJsonLdProps) {
+export default function VenueJsonLd({ venue, breadcrumbItems, faqItems, reviews, detailPath, siteUrl = 'https://ilsanroom.pages.dev' }: VenueJsonLdProps) {
   const categoryTypeMap: Record<string, string> = {
     club: 'NightClub',
     night: 'NightClub',
@@ -53,7 +55,7 @@ export default function VenueJsonLd({ venue, breadcrumbItems, faqItems, reviews,
     openingHours: venue.openHours,
     image: `${siteUrl}/og/${venue.slug}.svg`,
     telephone: venue.staffPhone || undefined,
-    url: `${siteUrl}/${venue.category === 'club' ? 'clubs' : venue.category === 'night' ? 'nights' : venue.category === 'lounge' ? 'lounges' : venue.category === 'room' ? 'rooms' : venue.category}/${venue.slug}`,
+    url: detailPath ? `${siteUrl}${detailPath}` : `${siteUrl}/${venue.category === 'club' ? 'clubs' : venue.category === 'night' ? 'nights' : venue.category === 'lounge' ? 'lounges' : venue.category === 'room' ? 'rooms' : venue.category}/${venue.slug}`,
   };
 
   // aggregateRating — only when real reviews exist (ratingValue:0 = Google error)

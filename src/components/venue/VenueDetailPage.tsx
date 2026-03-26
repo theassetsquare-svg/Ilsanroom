@@ -61,6 +61,7 @@ export default function VenueDetailPage({
         breadcrumbItems={breadcrumbItems}
         faqItems={faqs}
         reviews={[]}
+        detailPath={detailPath}
       />
 
       {/* Breadcrumb — 이름에 지역 포함 시 지역 단계 생략 (중복 방지) */}
@@ -79,6 +80,7 @@ export default function VenueDetailPage({
         isPremium={venue.isPremium}
         category={venue.category}
         regionKo={venue.regionKo}
+        slug={venue.slug}
       />
 
       {/* 8-Tab Content */}
