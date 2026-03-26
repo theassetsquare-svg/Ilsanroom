@@ -151,12 +151,25 @@ function getCategoryKo(cat: string): string {
 
 export function getHookingDescription(venue: Venue): string {
   let base = venue.shortDescription || venue.description.slice(0, 100);
-  // 이름에 포함된 지역 단어가 설명에도 있으면 설명에서 제거
+
+  // 1차: regionKo에 포함된 지역어 제거
   const regionParts = venue.regionKo.split(/\s+/).filter((p: string) => p.length >= 2);
   for (const rp of regionParts) {
     if (venue.nameKo.includes(rp)) {
-      base = base.replace(new RegExp(rp + '\\s*', 'g'), '');
+      base = base.replace(new RegExp(rp + '[동구시]?\\s*', 'g'), '');
     }
   }
+
+  // 2차: 이름 속 한글 2자+ 단어가 설명에도 있으면 제거 (지역 중복 방지)
+  const nameWords = venue.nameKo.match(/[가-힣]{2,}/g) || [];
+  for (const nw of nameWords) {
+    if (nw.length >= 2 && base.includes(nw)) {
+      base = base.replace(new RegExp(nw + '[동구시]?\\s*', 'g'), '');
+    }
+  }
+
+  // 앞뒤 공백 정리
+  base = base.replace(/^\s+/, '').replace(/\s{2,}/g, ' ');
+
   return `${venue.nameKo} — ${base}`.slice(0, 150);
 }
