@@ -72,7 +72,7 @@ export default function RegionalClubsPage() {
       <section className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
         <h1 className="text-3xl font-extrabold text-neon-text">{regionKo} 클럽</h1>
         <p className="mt-3 text-neon-text-muted">
-          {regionKo} 지역의 댄스홀과 파티 공간을 소개합니다. 음악 장르, 분위기, 연령대별로 비교해보세요.
+          {regionKo} 지역의 댄스홀과 파티 공간 총정리. 음악 장르, 분위기, 연령대별로 비교해봐.
         </p>
       </section>
 

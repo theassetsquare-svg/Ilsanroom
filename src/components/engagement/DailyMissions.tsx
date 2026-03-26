@@ -26,7 +26,7 @@ const ALL_MISSIONS: MissionDef[] = [
   { id: 'stay_10',   icon: <Flame className="w-4 h-4" />,  title: '10분 체류하기',         description: '사이트에서 10분 이상 머물러 보세요',         reward: 40, goal: 10, href: null },
   { id: 'view_5',    icon: <Star className="w-4 h-4" />,   title: '5개 업소 탐색하기',     description: '업소 5곳의 상세 페이지를 탐색하세요',        reward: 50, goal: 5, href: '/lounges' },
   { id: 'share_1',   icon: <Gift className="w-4 h-4" />,   title: '친구에게 공유하기',      description: '업소 정보를 친구에게 공유해보세요',           reward: 25, goal: 1, href: null },
-  { id: 'dresscheck', icon: <Check className="w-4 h-4" />, title: '드레스코드 체크하기',    description: '가이드에서 드레스코드를 확인하세요',          reward: 15, goal: 1, href: '/guide' },
+  { id: 'dresscheck', icon: <Check className="w-4 h-4" />, title: '드레스코드 체크하기',    description: '가이드에서 드레스코드 한번 봐봐',          reward: 15, goal: 1, href: '/guide' },
 ];
 
 const DAILY_MISSION_COUNT = 6;

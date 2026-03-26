@@ -238,7 +238,7 @@ export default function HelpPage() {
             고객 <span className="text-neon-primary-light">센터</span>
           </h1>
           <p className="text-lg text-neon-text-muted">
-            궁금한 점을 검색하거나 카테고리별 자주 묻는 질문을 확인하세요.
+            궁금한 점을 검색하거나 카테고리별 자주 묻는 질문 모아뒀어.
           </p>
         </div>
 

@@ -196,7 +196,7 @@ export default function ReferralPage() {
             지금 바로 시작하세요
           </h2>
           <p className="mb-6 text-neon-text-muted">
-            로그인 후 내 프로필에서 전달 주소를 바로 확인하세요
+            로그인 후 내 프로필에서 전달 주소를 바로 가져가
           </p>
           <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <a

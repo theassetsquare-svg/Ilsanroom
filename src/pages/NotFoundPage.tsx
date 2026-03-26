@@ -20,7 +20,7 @@ function getCategoryLabel(cat: string) {
 }
 
 export default function NotFound() {
-  useDocumentMeta('페이지를 찾을 수 없습니다 | 밤키', '찾는 페이지가 없지만 지금 핫한 곳을 안내합니다.');
+  useDocumentMeta('엇, 여기 아닌데? | 밤키', '페이지를 못 찾았어. 대신 지금 핫한 곳 보여줄게.');
   const popularVenues = getPopularVenues(6);
 
   return (

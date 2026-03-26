@@ -247,7 +247,7 @@ export default function PricingPage() {
         <div className="mt-16 rounded-2xl border border-neon-border bg-white p-8 text-center">
           <h3 className="mb-2 text-xl font-bold text-neon-text">궁금한 점이 있으신가요?</h3>
           <p className="mb-4 text-sm text-neon-text-muted leading-relaxed">
-            요금제, 결제, 환불 등 궁금한 사항은 고객센터에서 확인하세요.
+            요금제, 결제, 환불 등 궁금한 사항은 고객센터에서 바로 풀어줄게.
           </p>
           <Link target="_blank" rel="noopener noreferrer" to="/help"
             className="inline-block rounded-xl border border-neon-border bg-neon-surface-2 px-6 py-2.5 text-sm font-medium text-neon-text transition-colors hover:bg-neon-border"

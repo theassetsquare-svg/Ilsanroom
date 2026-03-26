@@ -41,7 +41,7 @@ export default function PricePage() {
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
       <h1 className="text-3xl font-extrabold text-neon-text mb-2">요금 한눈에 보기</h1>
-      <p className="text-neon-text-muted mb-8">확인된 요금 정보만 표시됩니다. 정확한 금액은 매장에 직접 확인하세요.</p>
+      <p className="text-neon-text-muted mb-8">확인된 요금 정보만 표시됩니다. 정확한 금액은 매장에 직접 물어봐.</p>
 
       {/* Category Filter */}
       <div className="mb-6 flex flex-wrap gap-2">

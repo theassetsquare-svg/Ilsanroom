@@ -64,7 +64,7 @@ export default function GuidePage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
       <h1 className="text-3xl font-extrabold text-neon-text mb-2">첫 방문 완벽 가이드</h1>
-      <p className="text-neon-text-muted mb-10">처음 가는 곳이 걱정된다면? 업종별 안내서를 확인하세요.</p>
+      <p className="text-neon-text-muted mb-10">처음 가는 곳이 걱정된다면? 업종별 안내서 여기 있어.</p>
 
       <div className="space-y-8">
         {guides.map((g) => (

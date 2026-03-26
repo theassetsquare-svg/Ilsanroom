@@ -29,7 +29,7 @@ function getCategoryPath(venue: Venue): string {
 }
 
 export default function SearchPage() {
-  useDocumentMeta('검색 결과 | 밤키', '전국 117개 업소에서 원하는 곳을 찾아보세요.');
+  useDocumentMeta('뭐 찾고 있어? 여기서 바로 검색 | 밤키', '117곳 중에서 지역·카테고리·이름으로 딱 맞는 곳 골라줌.');
   const [query, setQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 

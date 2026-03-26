@@ -86,7 +86,7 @@ export default function TestimonialsPage() {
             업주 <span className="text-neon-primary-light">후기</span>
           </h1>
           <p className="mx-auto max-w-lg text-lg text-neon-text-muted">
-            밤키를 사용하는 업주들의 실제 후기와 추천사를 확인하세요.
+            밤키를 사용하는 업주들의 실제 후기와 추천사를 직접 봐.
           </p>
         </div>
 
