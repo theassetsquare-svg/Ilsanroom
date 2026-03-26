@@ -90,6 +90,8 @@ export interface DbPost {
   category: string;
   title: string;
   content: string;
+  venue_slug: string | null;
+  rating: number | null;
   likes: number;
   views: number;
   is_pinned: boolean;
@@ -163,6 +165,13 @@ export interface DbAnalyticsEvent {
   created_at: string;
 }
 
+export interface DbFavorite {
+  id: string;
+  user_id: string;
+  venue_slug: string;
+  created_at: string;
+}
+
 export interface DbReferral {
   id: string;
   referrer_id: string | null;
@@ -189,24 +198,32 @@ export interface DbNewsletter {
   unsubscribed_at: string | null;
 }
 
+// Helper: make all fields optional except specified required ones
+type InsertType<T> = Partial<T> & Record<string, unknown>;
+
 // Supabase Database type for full type safety
 export interface Database {
   public: {
     Tables: {
-      users: { Row: DbUser; Insert: Partial<DbUser>; Update: Partial<DbUser> };
-      venues: { Row: DbVenue; Insert: Partial<DbVenue>; Update: Partial<DbVenue> };
-      reviews: { Row: DbReview; Insert: Partial<DbReview>; Update: Partial<DbReview> };
-      events: { Row: DbEvent; Insert: Partial<DbEvent>; Update: Partial<DbEvent> };
-      posts: { Row: DbPost; Insert: Partial<DbPost>; Update: Partial<DbPost> };
-      comments: { Row: DbComment; Insert: Partial<DbComment>; Update: Partial<DbComment> };
-      reservations: { Row: DbReservation; Insert: Partial<DbReservation>; Update: Partial<DbReservation> };
-      venue_prices: { Row: DbVenuePrice; Insert: Partial<DbVenuePrice>; Update: Partial<DbVenuePrice> };
-      subscriptions: { Row: DbSubscription; Insert: Partial<DbSubscription>; Update: Partial<DbSubscription> };
-      invoices: { Row: DbInvoice; Insert: Partial<DbInvoice>; Update: Partial<DbInvoice> };
-      analytics_events: { Row: DbAnalyticsEvent; Insert: Partial<DbAnalyticsEvent>; Update: Partial<DbAnalyticsEvent> };
-      referrals: { Row: DbReferral; Insert: Partial<DbReferral>; Update: Partial<DbReferral> };
-      webhook_logs: { Row: DbWebhookLog; Insert: Partial<DbWebhookLog>; Update: Partial<DbWebhookLog> };
-      newsletter: { Row: DbNewsletter; Insert: Partial<DbNewsletter>; Update: Partial<DbNewsletter> };
+      users: { Row: DbUser; Insert: InsertType<DbUser>; Update: Partial<DbUser> };
+      venues: { Row: DbVenue; Insert: InsertType<DbVenue>; Update: Partial<DbVenue> };
+      reviews: { Row: DbReview; Insert: InsertType<DbReview>; Update: Partial<DbReview> };
+      events: { Row: DbEvent; Insert: InsertType<DbEvent>; Update: Partial<DbEvent> };
+      posts: { Row: DbPost; Insert: InsertType<DbPost>; Update: Partial<DbPost> };
+      comments: { Row: DbComment; Insert: InsertType<DbComment>; Update: Partial<DbComment> };
+      reservations: { Row: DbReservation; Insert: InsertType<DbReservation>; Update: Partial<DbReservation> };
+      venue_prices: { Row: DbVenuePrice; Insert: InsertType<DbVenuePrice>; Update: Partial<DbVenuePrice> };
+      subscriptions: { Row: DbSubscription; Insert: InsertType<DbSubscription>; Update: Partial<DbSubscription> };
+      invoices: { Row: DbInvoice; Insert: InsertType<DbInvoice>; Update: Partial<DbInvoice> };
+      analytics_events: { Row: DbAnalyticsEvent; Insert: InsertType<DbAnalyticsEvent>; Update: Partial<DbAnalyticsEvent> };
+      favorites: { Row: DbFavorite; Insert: InsertType<DbFavorite>; Update: Partial<DbFavorite> };
+      referrals: { Row: DbReferral; Insert: InsertType<DbReferral>; Update: Partial<DbReferral> };
+      webhook_logs: { Row: DbWebhookLog; Insert: InsertType<DbWebhookLog>; Update: Partial<DbWebhookLog> };
+      newsletter: { Row: DbNewsletter; Insert: InsertType<DbNewsletter>; Update: Partial<DbNewsletter> };
+    };
+    Functions: {
+      increment_views: { Args: { post_id: string }; Returns: void };
+      append_viewed_venue: { Args: { uid: string; slug: string }; Returns: void };
     };
   };
 }

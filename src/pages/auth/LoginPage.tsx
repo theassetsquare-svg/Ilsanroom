@@ -1,5 +1,3 @@
-
-
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -19,22 +17,79 @@ function signInWith(provider: 'kakao' | 'google') {
 }
 
 export default function LoginPage() {
-  useDocumentMeta('로그인 — 카카오·구글로 3초 시작 | 밤키', '소셜 계정으로 간편 시작. 별도 회원가입 없이 바로 이용.');
+  useDocumentMeta('로그인 — 카카오·이메일로 3초 시작 | 밤키', '소셜 계정 또는 이메일로 간편 시작. 별도 회원가입 없이 바로 이용.');
   const [loading, setLoading] = useState<string | null>(null);
+  const [mode, setMode] = useState<'login' | 'signup'>('login');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [emailSuccess, setEmailSuccess] = useState('');
 
   const handleLogin = (provider: 'kakao' | 'google') => {
     setLoading(provider);
     signInWith(provider);
-    // 3초 후 로딩 해제 (리다이렉트 안 되면)
     setTimeout(() => setLoading(null), 3000);
   };
 
+  const handleEmailAuth = async () => {
+    if (!email.trim() || !password.trim()) {
+      setEmailError('이메일과 비밀번호를 입력해주세요');
+      return;
+    }
+    if (password.length < 6) {
+      setEmailError('비밀번호는 6자 이상이어야 합니다');
+      return;
+    }
+
+    const supabase = createClient();
+    if (!supabase) {
+      setEmailError('Supabase 연결 실패');
+      return;
+    }
+
+    setLoading('email');
+    setEmailError('');
+    setEmailSuccess('');
+
+    if (mode === 'signup') {
+      const { error } = await supabase.auth.signUp({
+        email: email.trim(),
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}${import.meta.env.BASE_URL}auth/callback`,
+        },
+      });
+      setLoading(null);
+      if (error) {
+        setEmailError(error.message);
+      } else {
+        setEmailSuccess('인증 메일을 발송했습니다. 메일함을 확인해주세요.');
+      }
+    } else {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
+      setLoading(null);
+      if (error) {
+        setEmailError(error.message === 'Invalid login credentials' ? '이메일 또는 비밀번호가 일치하지 않습니다' : error.message);
+      } else {
+        window.location.href = '/';
+      }
+    }
+  };
+
   return (
-    <div>
-      <h1 className="mb-6 text-center text-2xl font-bold text-neon-text">로그인</h1>
-      <p className="mb-8 text-center text-sm text-neon-text-muted">소셜 계정으로 간편하게 시작하세요</p>
+    <div className="mx-auto max-w-sm px-4 py-12">
+      <h1 className="mb-6 text-center text-2xl font-bold text-neon-text">
+        {mode === 'login' ? '로그인' : '회원가입'}
+      </h1>
+      <p className="mb-8 text-center text-sm text-neon-text-muted">
+        {mode === 'login' ? '소셜 계정 또는 이메일로 간편하게 시작하세요' : '이메일로 새 계정을 만드세요'}
+      </p>
 
       <div className="space-y-3">
+        {/* Kakao */}
         <button
           onClick={() => handleLogin('kakao')}
           disabled={loading === 'kakao'}
@@ -47,6 +102,7 @@ export default function LoginPage() {
           {loading === 'kakao' ? '연결 중...' : '카카오로 시작하기'}
         </button>
 
+        {/* Google */}
         <button
           onClick={() => handleLogin('google')}
           disabled={loading === 'google'}
@@ -61,10 +117,53 @@ export default function LoginPage() {
           </svg>
           {loading === 'google' ? '연결 중...' : 'Google로 시작하기'}
         </button>
-
       </div>
 
-      <p className="mt-8 text-center text-sm text-neon-text-muted">
+      {/* Divider */}
+      <div className="my-6 flex items-center gap-3">
+        <div className="h-px flex-1 bg-neon-border" />
+        <span className="text-xs text-neon-text-muted">또는 이메일로</span>
+        <div className="h-px flex-1 bg-neon-border" />
+      </div>
+
+      {/* Email auth */}
+      <div className="space-y-3">
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="이메일 주소"
+          className="w-full rounded-xl border border-neon-border bg-neon-bg px-4 py-3 text-sm text-neon-text outline-none focus:border-neon-primary transition"
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleEmailAuth()}
+          placeholder="비밀번호 (6자 이상)"
+          className="w-full rounded-xl border border-neon-border bg-neon-bg px-4 py-3 text-sm text-neon-text outline-none focus:border-neon-primary transition"
+        />
+
+        {emailError && <p className="text-sm text-red-500">{emailError}</p>}
+        {emailSuccess && <p className="text-sm text-green-600">{emailSuccess}</p>}
+
+        <button
+          onClick={handleEmailAuth}
+          disabled={loading === 'email'}
+          className="flex w-full items-center justify-center rounded-xl bg-neon-primary py-3.5 text-sm font-bold text-white transition hover:bg-neon-primary-light disabled:opacity-60"
+        >
+          {loading === 'email' ? '처리 중...' : mode === 'login' ? '이메일로 로그인' : '회원가입'}
+        </button>
+
+        <button
+          onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); setEmailError(''); setEmailSuccess(''); }}
+          className="w-full text-center text-sm text-neon-text-muted hover:text-neon-primary transition"
+        >
+          {mode === 'login' ? '계정이 없으신가요? 회원가입' : '이미 계정이 있으신가요? 로그인'}
+        </button>
+      </div>
+
+      <p className="mt-8 text-center text-xs text-neon-text-muted">
         로그인하면 밤키의{' '}
         <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-neon-primary hover:underline">이용약관</a> 및{' '}
         <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-neon-primary hover:underline">개인정보처리방침</a>에 동의하는 것으로 간주됩니다.

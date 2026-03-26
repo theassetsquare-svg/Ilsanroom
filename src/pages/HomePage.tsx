@@ -1,6 +1,7 @@
 
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { Link } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import JsonLd from '@/components/seo/JsonLd';
@@ -11,8 +12,14 @@ import HomeRoulette from '@/components/home/HomeRoulette';
 import HomeVSBattle from '@/components/home/HomeVSBattle';
 import PopularTimeWidget from '@/components/home/PopularTimeWidget';
 import HorizontalScroll, { ScrollItem } from '@/components/ui/HorizontalScroll';
+import ErrorBoundary from '@/components/ui/ErrorBoundary';
 import { getPopularVenues, getVenueBySlug, categories } from '@/data/venues';
 import type { Venue } from '@/types';
+
+const AIRecommend = lazy(() => import('@/components/ai/AIRecommend'));
+const AITasteAnalysis = lazy(() => import('@/components/ai/AITasteAnalysis'));
+const AICourseRecommend = lazy(() => import('@/components/ai/AICourseRecommend'));
+const HomeCommunityHub = lazy(() => import('@/components/home/HomeCommunityHub'));
 
 function getCategoryHref(category: string, slug: string, region: string) {
   const pathMap: Record<string, string> = {
@@ -203,6 +210,38 @@ export default function HomePage() {
 
       {/* ═══════ 3. 지금 뜨는 TOP 5 ═══════ */}
       <HotWidget />
+
+      {/* ═══════ AI 추천 섹션 ═══════ */}
+      <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-neon-text">AI 추천</h2>
+          <p className="text-sm text-neon-text-muted mt-1">인공지능이 딱 맞는 장소를 찾아드립니다</p>
+        </div>
+        <div className="grid gap-6 lg:grid-cols-3">
+          <ErrorBoundary>
+            <Suspense fallback={<div className="h-64 animate-pulse rounded-2xl bg-violet-50" />}>
+              <AIRecommend />
+            </Suspense>
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Suspense fallback={<div className="h-64 animate-pulse rounded-2xl bg-cyan-50" />}>
+              <AITasteAnalysis />
+            </Suspense>
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Suspense fallback={<div className="h-64 animate-pulse rounded-2xl bg-amber-50" />}>
+              <AICourseRecommend />
+            </Suspense>
+          </ErrorBoundary>
+        </div>
+      </section>
+
+      {/* ═══════ 커뮤니티 허브 ═══════ */}
+      <ErrorBoundary>
+        <Suspense fallback={<div className="mx-auto max-w-[1200px] px-4 py-12"><div className="h-48 animate-pulse rounded-2xl bg-neon-surface-2" /></div>}>
+          <HomeCommunityHub />
+        </Suspense>
+      </ErrorBoundary>
 
       {/* ═══════ 3. 오늘 갈 곳 룰렛 ═══════ */}
       <HomeRoulette />
