@@ -136,7 +136,7 @@ export default function VenueDetailPage({
             <span className="text-2xl">💎</span>
             <div>
               <p className="text-sm font-bold text-neon-text">이 업소 몰랐지? — 매주 숨은 명소 발굴</p>
-              <p className="text-xs text-neon-text-muted">다른 사이트에서 찾기 어려운 알짜 업소를 만나보세요</p>
+              <p className="text-xs text-neon-text-muted">다른 데서 안 나오는 숨은 곳들, 여기서만 파냄</p>
             </div>
           </div>
         </Link>

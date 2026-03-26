@@ -261,7 +261,7 @@ export default function StatusPage() {
           </div>
           <p className="text-sm text-neon-text-muted mb-6">
             서비스 상태 변경 알림을 이메일로 받으세요. 장애 발생, 복구, 예정된 유지보수 소식을
-            실시간으로 전달해 드립니다.
+            바로바로 알려줘요.
           </p>
           {subscribed ? (
             <div className="flex items-center gap-2 rounded-xl bg-neon-green/10 p-4">

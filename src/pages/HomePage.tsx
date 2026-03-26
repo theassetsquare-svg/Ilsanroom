@@ -216,7 +216,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-neon-text">AI 추천</h2>
-          <p className="text-sm text-neon-text-muted mt-1">인공지능이 딱 맞는 장소를 찾아드립니다</p>
+          <p className="text-sm text-neon-text-muted mt-1">어디 갈지 모르겠으면, 여기서 물어봐</p>
         </div>
         <div className="grid gap-6 lg:grid-cols-3">
           <ErrorBoundary>

@@ -26,7 +26,7 @@ const tipCards = [
     difficulty: "쉬움" as Difficulty,
     author: "길잡이",
     bookmarks: 312,
-    summary: "영업시간, 위치, 복장 규정을 미리 파악하면 당황할 일이 없습니다. 홈페이지나 SNS에서 최신 정보를 확인하세요.",
+    summary: "영업시간, 위치, 복장 규정을 미리 파악하면 당황할 일이 없습니다. 홈페이지나 SNS에서 최신 정보 챙겨둬.",
   },
   {
     id: 2,
@@ -89,7 +89,7 @@ const tipCards = [
     difficulty: "고급" as Difficulty,
     author: "VIP안내원",
     bookmarks: 201,
-    summary: "VIP석 예약 시 최소 주문 금액을 확인하세요. 담당 직원과 소통하며 원하는 서비스를 명확히 요청하는 것이 핵심입니다.",
+    summary: "VIP석 예약할 때 최소 주문 금액 알아둬. 담당 직원과 소통하며 원하는 서비스를 명확히 요청하는 것이 핵심입니다.",
   },
 ];
 

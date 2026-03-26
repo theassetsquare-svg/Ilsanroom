@@ -104,7 +104,7 @@ export default function ReviewsPage() {
           </Link>
           <h1 className="text-3xl font-bold">방문 후기 모아보기</h1>
           <p className="mt-2 text-neon-text-muted">
-            직접 다녀온 회원들의 생생한 경험담을 확인하세요
+            직접 다녀온 사람들의 생생한 경험담 모아봤다
           </p>
         </div>
 

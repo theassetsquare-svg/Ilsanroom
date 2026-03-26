@@ -12,10 +12,10 @@ export default function QuizCTA() {
             <div>
               <p className="text-sm font-medium text-neon-accent mb-1">취향 테스트</p>
               <h3 className="text-xl font-bold text-neon-text sm:text-2xl">
-                나에게 맞는 업소는? 30초 퀴즈로 알아보세요
+                나에게 맞는 업소는? 30초 퀴즈로 찾아봐
               </h3>
               <p className="mt-2 text-sm text-neon-text-muted">
-                취향, 예산, 분위기 기반으로 맞춤 업소를 추천해 드립니다.
+                취향, 예산, 분위기 넣으면 딱 맞는 곳 골라줌.
               </p>
             </div>
             <span className="mt-4 sm:mt-0 sm:ml-6 shrink-0 inline-flex items-center gap-2 rounded-xl border border-neon-accent/40 px-6 py-3 text-sm font-semibold text-neon-accent transition-all group-hover:bg-neon-accent/10">

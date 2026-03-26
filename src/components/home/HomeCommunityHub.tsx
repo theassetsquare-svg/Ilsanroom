@@ -40,7 +40,7 @@ export default function HomeCommunityHub() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-neon-text">커뮤니티</h2>
-          <p className="text-sm text-neon-text-muted mt-1">밤문화를 사랑하는 사람들의 소통 공간</p>
+          <p className="text-sm text-neon-text-muted mt-1">같은 밤을 보내는 사람들끼리 수다 떠는 곳</p>
         </div>
         <div className="flex gap-2">
           {user && (

@@ -104,7 +104,7 @@ export const freePosts: Post[] = [
     comments: [],
   },
   {
-    id: 'f7', board: 'free', title: '클럽 음악 장르별 추천 부탁드립니다',
+    id: 'f7', board: 'free', title: '클럽 음악 장르별 추천 좀 해주세요',
     content: 'EDM은 알겠는데 테크노, 하우스, 트랜스 차이를 잘 모르겠어요. 각 장르별로 추천 클럽 알려주시면 감사하겠습니다. 강남이나 홍대 위주로요.',
     excerpt: 'EDM은 알겠는데 테크노, 하우스, 트랜스 차이를...',
     author: authors.music, createdAt: '2026-03-10T20:00:00Z',
@@ -263,7 +263,7 @@ export const tipsPosts: Post[] = [
   },
   {
     id: 't2', board: 'tips', title: 'VIP 테이블 200% 활용하는 방법',
-    content: 'VIP 테이블 예약의 장단점, 가성비 좋은 이용법, 그리고 테이블 매너까지 알려드립니다. 인원수에 맞는 테이블 선택이 가장 중요하고, 음료 주문은 한 번에 하는 것보다 나눠서 하는 게 좋습니다.',
+    content: 'VIP 테이블 예약의 장단점이랑 가성비 좋게 쓰는 법, 매너까지 정리해봤다. 인원수에 맞는 테이블 고르는 게 제일 중요하고, 음료는 한 번에 몰아서 시키는 것보다 나눠서 주문하는 게 낫더라.',
     excerpt: 'VIP 테이블 예약의 장단점, 가성비 좋은 이용법...',
     author: authors.vip, createdAt: '2026-03-09T14:00:00Z',
     views: 1567, likes: 312, isLiked: false, isBookmarked: false,

@@ -105,7 +105,7 @@ export default function AICourseRecommend() {
         <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-xl">🗺️</span>
         <div>
           <h3 className="text-lg font-bold text-neon-text">AI 코스 추천</h3>
-          <p className="text-xs text-neon-text-muted">시간대별 완벽한 밤 코스를 짜드립니다</p>
+          <p className="text-xs text-neon-text-muted">저녁부터 새벽까지, 동선 짜는 게 귀찮잖아요</p>
         </div>
       </div>
 
@@ -128,7 +128,7 @@ export default function AICourseRecommend() {
       {loading && (
         <div className="flex items-center justify-center gap-2 py-8">
           <div className="h-5 w-5 animate-spin rounded-full border-2 border-amber-400 border-t-transparent" />
-          <span className="text-sm text-amber-600">코스를 구성하고 있습니다...</span>
+          <span className="text-sm text-amber-600">코스 짜는 중...</span>
         </div>
       )}
 

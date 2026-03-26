@@ -48,7 +48,7 @@ export default function MainLayout() {
       <Header />
       <div className="border-b border-neon-border bg-neon-surface">
         <p className="mx-auto max-w-[1200px] px-4 py-2 text-center text-xs text-neon-text-muted">
-          본 사이트는 만 19세 이상 이용 가능합니다
+          만 19세 이상만 들어올 수 있어요
         </p>
       </div>
       <main className="flex-1 pt-16 pb-20 md:pb-14">

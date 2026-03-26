@@ -93,7 +93,7 @@ export default function AIRecommend() {
         <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-100 text-xl">🤖</span>
         <div>
           <h3 className="text-lg font-bold text-neon-text">AI 맞춤 추천</h3>
-          <p className="text-xs text-neon-text-muted">"강남 4명 추천"처럼 입력하세요</p>
+          <p className="text-xs text-neon-text-muted">지역이랑 인원 던져봐. 3초면 골라줌</p>
         </div>
       </div>
 
@@ -129,7 +129,7 @@ export default function AIRecommend() {
       {loading && (
         <div className="mt-6 flex items-center justify-center gap-2 py-8">
           <div className="h-5 w-5 animate-spin rounded-full border-2 border-violet-400 border-t-transparent" />
-          <span className="text-sm text-violet-600">AI가 최적의 장소를 찾고 있습니다...</span>
+          <span className="text-sm text-violet-600">딱 맞는 곳 찾는 중...</span>
         </div>
       )}
 

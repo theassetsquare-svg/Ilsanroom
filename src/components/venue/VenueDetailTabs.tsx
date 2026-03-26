@@ -189,7 +189,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
             <h2 className="mb-4 text-xl font-bold text-neon-text">VS 대결</h2>
             <p className="mb-6 text-sm text-neon-text-muted">이 {CATEGORY_SYNONYMS[venue.category] || '업소'}와 비슷한 곳, 어디가 더 좋을까?</p>
             <div className="rounded-xl border border-neon-pink/30 bg-neon-bg p-6 text-center">
-              <p className="text-sm text-neon-text-muted mb-4">VS 투표 기능은 메인 페이지에서 이용 가능합니다.</p>
+              <p className="text-sm text-neon-text-muted mb-4">VS 투표는 메인 페이지에서 해볼 수 있어요.</p>
               <a href="/vs" target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg bg-neon-pink/20 px-5 py-2.5 text-sm font-medium text-neon-pink transition hover:bg-neon-pink/30">
                 VS 투표 참여하기 →

@@ -140,7 +140,7 @@ export default function PartyRecruitPage() {
             </Link>
             <h1 className="text-3xl font-bold">동행 모집 게시판</h1>
             <p className="mt-2 text-neon-text-muted">
-              함께 갈 멤버를 찾거나, 열린 약속에 합류하세요
+              같이 갈 사람 찾거나, 열린 약속에 끼어들어 봐
             </p>
           </div>
           <button className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light">

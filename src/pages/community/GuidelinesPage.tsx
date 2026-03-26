@@ -230,7 +230,7 @@ export default function GuidelinesPage() {
             </div>
             <p className="mb-4 text-sm leading-relaxed text-neon-text">
               규칙에 대한 궁금한 점이나, 부당한 제재에 대한 이의 신청, 기타 관련 문의는
-              아래 페이지를 거쳐 접수 가능합니다.
+              아래 페이지에서 접수하면 돼요.
             </p>
             <Link target="_blank" rel="noopener noreferrer"
               to="/help"
@@ -242,7 +242,7 @@ export default function GuidelinesPage() {
               </svg>
             </Link>
             <p className="mt-4 text-xs text-neon-text-muted">
-              신고 처리 결과는 영업일 기준 1~3일 이내에 알림으로 안내드립니다.
+              신고 처리 결과는 영업일 기준 1~3일 안에 알림으로 알려줘요.
             </p>
           </section>
         </div>

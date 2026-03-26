@@ -56,7 +56,7 @@ export default function CommunityPage() {
             <span className="text-neon-primary-light">밤키</span> 커뮤니티
           </h1>
           <p className="text-lg text-neon-text-muted">
-            밤문화를 사랑하는 사람들의 소통 공간
+            같은 밤을 보내는 사람들끼리 떠드는 곳
           </p>
         </div>
 

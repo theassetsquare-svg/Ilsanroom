@@ -102,14 +102,14 @@ export default function AITasteAnalysis() {
         <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-100 text-xl">🧠</span>
         <div>
           <h3 className="text-lg font-bold text-neon-text">AI 취향 분석</h3>
-          <p className="text-xs text-neon-text-muted">과거 조회한 업소 기반으로 취향을 파악합니다</p>
+          <p className="text-xs text-neon-text-muted">당신이 뭘 봤는지 뒤져서 취향 잡아줌</p>
         </div>
       </div>
 
       {!profile && !loading && (
         <div className="text-center py-4">
           <p className="text-sm text-neon-text-muted mb-4">
-            {user ? '최근 본 업소를 분석해서 맞춤 추천을 드립니다' : '로그인하면 더 정확한 분석이 가능합니다'}
+            {user ? '최근에 뭘 봤는지 뒤져보고, 당신 취향에 맞는 곳을 골라줄게요' : '로그인하면 더 정확하게 골라줘요'}
           </p>
           <button
             onClick={handleAnalyze}
@@ -123,7 +123,7 @@ export default function AITasteAnalysis() {
       {loading && (
         <div className="flex items-center justify-center gap-2 py-8">
           <div className="h-5 w-5 animate-spin rounded-full border-2 border-cyan-400 border-t-transparent" />
-          <span className="text-sm text-cyan-600">취향을 분석하고 있습니다...</span>
+          <span className="text-sm text-cyan-600">취향 파악 중...</span>
         </div>
       )}
 

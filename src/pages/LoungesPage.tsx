@@ -38,7 +38,7 @@ export default function LoungesPage() {
       <VenueListClient venues={venues} hrefPattern="/lounges/{slug}" regions={regions} />
 
       <FirstVisitGuide category="칵테일 바"
-        dress="세미포멀 편한 차림 이상. 세련된 착장 추천. 트레이닝·샌들 비추."
+        dress="세미포멀 편한 차림 이상. 깔끔하게 차려입으면 OK. 트레이닝·샌들 비추."
         budget="드링크 1잔 1.5~3만 원. 프라이빗 부스는 최소 주문 금액 있을 수 있음."
         alone="1인 입장 매우 적합. 바에서 바텐더와 대화하며 한 잔 즐기기."
         reservation="금토 저녁은 미리 연락 추천. 월~목은 워크인 가능한 곳이 많음."
