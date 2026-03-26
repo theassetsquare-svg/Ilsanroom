@@ -20,6 +20,7 @@ const AIRecommend = lazy(() => import('@/components/ai/AIRecommend'));
 const AITasteAnalysis = lazy(() => import('@/components/ai/AITasteAnalysis'));
 const AICourseRecommend = lazy(() => import('@/components/ai/AICourseRecommend'));
 const HomeCommunityHub = lazy(() => import('@/components/home/HomeCommunityHub'));
+const InfiniteDiscoveryFeed = lazy(() => import('@/components/engagement/InfiniteDiscoveryFeed'));
 
 function getCategoryHref(category: string, slug: string, region: string) {
   const pathMap: Record<string, string> = {
@@ -427,6 +428,13 @@ export default function HomePage() {
           </p>
         </div>
       </section>
+
+      {/* ═══════ 무한 발견 피드 (틱톡식) ═══════ */}
+      <ErrorBoundary>
+        <Suspense fallback={<div className="mx-auto max-w-3xl px-4 py-12"><div className="h-48 animate-pulse rounded-2xl bg-neon-surface-2" /></div>}>
+          <InfiniteDiscoveryFeed />
+        </Suspense>
+      </ErrorBoundary>
 
       {/* ═══════ SEO Text ═══════ */}
       <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">

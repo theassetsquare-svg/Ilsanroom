@@ -30,6 +30,7 @@ const DailyLoginReward = lazy(() => import('./DailyLoginReward'));
 const ScrollDepthReward = lazy(() => import('./ScrollDepthReward'));
 const AutoNextSuggestion = lazy(() => import('./AutoNextSuggestion'));
 const CuriosityGapTeaser = lazy(() => import('./CuriosityGapTeaser'));
+const TikTokLauncher = lazy(() => import('./TikTokLauncher'));
 
 export default function GlobalEngagement() {
   const initSession = useEngagementStore((s) => s.initSession);
@@ -82,6 +83,9 @@ export default function GlobalEngagement() {
       <SlotMachinePopup />
       <DailyLoginReward />
       <CuriosityGapTeaser />
+
+      {/* Layer 5: TikTok-style feed launcher */}
+      <TikTokLauncher />
     </Suspense>
   );
 }

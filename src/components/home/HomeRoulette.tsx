@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { venues } from '@/data/venues';
 import ShareButtons from '@/components/interactive/ShareButtons';
+import { useEngagementStore } from '@/lib/engagement-store';
 
 function getCategoryHref(category: string, slug: string, region: string) {
   const map: Record<string, string> = { club: `/clubs/${region}/${slug}`, night: `/nights/${slug}`, lounge: `/lounges/${slug}`, room: `/rooms/${region}/${slug}`, yojeong: `/yojeong/${region}/${slug}`, hoppa: `/hoppa/${slug}` };
@@ -16,13 +17,15 @@ export default function HomeRoulette() {
   const [spinCount, setSpinCount] = useState(0);
   const openVenues = venues.filter((v) => v.status !== 'closed_or_unclear');
 
+  const engUseRoulette = useEngagementStore((s) => s.useRoulette);
+
   const spin = () => {
     setSpinning(true); setResult(null);
     let count = 0;
     const interval = setInterval(() => {
       const random = openVenues[Math.floor(Math.random() * openVenues.length)];
       setResult(random); count++;
-      if (count > 20) { clearInterval(interval); setSpinning(false); setSpinCount((p) => p + 1); }
+      if (count > 20) { clearInterval(interval); setSpinning(false); setSpinCount((p) => p + 1); engUseRoulette(); }
     }, 80);
   };
 

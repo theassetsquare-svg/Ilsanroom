@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { venues } from '@/data/venues';
 import ShareButtons from '@/components/interactive/ShareButtons';
+import { useEngagementStore } from '@/lib/engagement-store';
 
 function getCategoryHref(category: string, slug: string, region: string) {
   const map: Record<string, string> = { club: `/clubs/${region}/${slug}`, night: `/nights/${slug}`, lounge: `/lounges/${slug}`, room: `/rooms/${region}/${slug}`, yojeong: `/yojeong/${region}/${slug}`, hoppa: `/hoppa/${slug}` };
@@ -32,6 +33,8 @@ export default function HomeVSBattle() {
   const total = v.a + v.b;
   const hasVoted = voted[battleIdx];
 
+  const engVote = useEngagementStore((s) => s.vote);
+
   const vote = (side: 'a' | 'b') => {
     if (hasVoted) return;
     setVotes((prev) => ({
@@ -39,6 +42,7 @@ export default function HomeVSBattle() {
       [battleIdx]: { a: (prev[battleIdx]?.a || v.a) + (side === 'a' ? 1 : 0), b: (prev[battleIdx]?.b || v.b) + (side === 'b' ? 1 : 0) },
     }));
     setVoted((prev) => ({ ...prev, [battleIdx]: side }));
+    engVote(`battle-${battleIdx}`);
   };
 
   const venueA = findVenue(battle.a);

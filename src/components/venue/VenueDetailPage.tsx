@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import PageViewTracker from '@/components/venue/PageViewTracker';
 import VenueHero from '@/components/venue/VenueHero';
@@ -7,6 +7,7 @@ import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
 import VenueJsonLd from '@/components/venue/VenueJsonLd';
 import VenueDetailTabs from '@/components/venue/VenueDetailTabs';
 import Card from '@/components/ui/Card';
+import { useEngagementStore } from '@/lib/engagement-store';
 import type { Venue } from '@/types';
 
 const VenueSeoContent = lazy(() => import('@/components/venue/VenueSeoContent'));
@@ -41,6 +42,9 @@ export default function VenueDetailPage({
   relatedHrefFn,
   extraContent,
 }: VenueDetailPageProps) {
+  const trackView = useEngagementStore((s) => s.trackView);
+  useEffect(() => { trackView(venue.slug); }, [venue.slug, trackView]);
+
   const nameHasRegion = venue.nameKo.includes(regionKo);
   const breadcrumbItems = [
     { name: '밤키', url: '/' },

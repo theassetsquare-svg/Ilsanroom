@@ -399,12 +399,12 @@ export default function TikTokFeed({ isOpen, onClose }: TikTokFeedProps) {
               bookmarked={!!bookmarks[item.venue.id]}
               onLike={() => {
                 setLikes((l) => ({ ...l, [item.venue.id]: !l[item.venue.id] }));
-                store.toggleLike(item.venue.id);
+                store.like(item.venue.id);
                 lastInteraction.current = Date.now();
               }}
               onBookmark={() => {
                 setBookmarks((b) => ({ ...b, [item.venue.id]: !b[item.venue.id] }));
-                store.toggleBookmark(item.venue.id);
+                store.bookmark(item.venue.id);
                 lastInteraction.current = Date.now();
               }}
               onShare={() => {

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import type { Venue } from '@/types';
 import { venues as localVenues } from '@/data/venues';
+import { useEngagementStore } from '@/lib/engagement-store';
 
 const CATEGORY_FILTERS = [
   { key: 'all', label: '전체' },
@@ -42,6 +43,7 @@ export default function HeroSearch() {
   const inputRef = useRef<HTMLInputElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const engSearch = useEngagementStore((s) => s.search);
 
   // Search: try Supabase first, fallback to local data
   const search = useCallback(async (q: string, cat: string) => {
@@ -52,6 +54,7 @@ export default function HeroSearch() {
     }
 
     setLoading(true);
+    engSearch();
 
     // ★ 항상 로컬 데이터에서 검색 (즉시, 확실)
     const lowerQ = q.toLowerCase();
