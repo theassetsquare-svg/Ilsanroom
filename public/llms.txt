@@ -1,148 +1,19 @@
-# 밤키 — 전국 클럽·나이트·라운지·룸·요정·호빠 정보
-> 전국 117개 업소 정보를 한곳에서. 실시간 인기 순위, AI 추천, 커뮤니티까지.
+# 밤키 (BAMKEY)
+사이트 주소: https://ilsanroom.pages.dev/
 
-## 사이트 정보
-- 이름: 밤키 (BAMKEY)
-- URL: https://ilsanroom.pages.dev
-- 주제: 대한민국 전국 클럽·나이트·라운지·룸·요정·호빠 업소 정보 플랫폼
-- 언어: 한국어 (ko)
-- 최종 업데이트: 2026-03-26
+## 서비스 설명
+전국 클럽, 나이트, 라운지, 룸살롱, 요정, 호빠 업소 실시간 정보 플랫폼.
+업소명, 지역으로 검색 가능하며 PREMIUM 업소는 상단 노출됨.
 
-## 카테고리 (6종)
-- 클럽: DJ EDM·힙합·테크노. 20~30대. 스탠딩 댄스 플로어.
-- 나이트: 소셜 댄스·라이브 밴드. 30~50대. 부킹, 테이블.
-- 라운지: 감성 칵테일바. 소파석, 독립 부스.
-- 룸: 독립 공간. 비즈니스 미팅, 회식.
-- 요정: 한정식 코스 + 국악 라이브.
-- 호빠: 여성 전용 사교 공간.
+## 카테고리
+- 클럽, 나이트, 라운지, 룸, 요정, 호빠
 
-## 주요 페이지
-- https://ilsanroom.pages.dev/ — 메인
-- https://ilsanroom.pages.dev/clubs — 클럽 목록
-- https://ilsanroom.pages.dev/nights — 나이트 목록
-- https://ilsanroom.pages.dev/lounges — 라운지 목록
-- https://ilsanroom.pages.dev/rooms — 룸 목록
-- https://ilsanroom.pages.dev/yojeong — 요정 목록
-- https://ilsanroom.pages.dev/hoppa — 호빠 목록
-- https://ilsanroom.pages.dev/ranking — 인기 랭킹
-- https://ilsanroom.pages.dev/map — 지도
-- https://ilsanroom.pages.dev/community — 커뮤니티
+## 주요 지역 태그
+일산룸, 일산명월관요정, 강남청담클럽, 압구정클럽, 강남호빠, 부산나이트, 수원나이트, 해운대고구려
 
-## 전체 업소 목록 (117곳)
-- 일산룸 (룸): https://ilsanroom.pages.dev/rooms/ilsan/ilsanroom — 깔끔한 인테리어와 프라이빗 서비스. 신실장 직접 안내.
-- 해운대고구려 (룸): https://ilsanroom.pages.dev/rooms/busan-haeundae/haeundaegoguryeo — 마린시티 대형 룸. 60개+ 룸, 정찰제, 픽업 서비스.
-- 일산명월관요정 (요정): https://ilsanroom.pages.dev/yojeong/ilsan/ilsanmyeongwolgwanyojeong — 15가지 한정식, 국악 라이브, 프라이빗 룸 30개. 신실장 안내.
-- 청담H2O나이트 (나이트): https://ilsanroom.pages.dev/nights/cheongdamh2onight — 한복판에 자리잡은 격이 다른 댄스홀. 워터 테마 인테리어가 독특한데, 천장에서 물방울...
-- 강남줄리아나나이트 (나이트): https://ilsanroom.pages.dev/nights/gangnamjuliananight — 역세권에서 오래 자리를 지켜온 댄스홀. 트로트와 댄스팝이 번갈아 나오면서 연령대 불문...
-- 신림그랑프리나이트 (나이트): https://ilsanroom.pages.dev/nights/sinlimgrandprixnight — 관악구 터줏대감 격 댄스홀. 역에서 도보 7분, 라이브 밴드가...
-- 상봉동한국관나이트 (나이트): https://ilsanroom.pages.dev/nights/sangbonghangukgwannight — 서울 중랑구 전통 있는 댄스홀. 한국관이라는 이름처럼 한국적인 정서가 물씬...
-- 수유샴푸나이트 (나이트): https://ilsanroom.pages.dev/nights/suyushampoonight — 서울 강북 랜드마크급 댄스홀. 역에서 도보 5분이라 접근성이 최상이고, 트로트...
-- 독산국빈관나이트 (나이트): https://ilsanroom.pages.dev/nights/doksangukbingwannight — 금천구 국빈관 브랜드 댄스홀. 이름에서 느껴지듯 격식 있는 ...
-- 답십리돈텔마마나이트 (나이트): https://ilsanroom.pages.dev/nights/dapsimnidontellmamanight — 동대문구 돈텔마마 브랜드 댄스홀. 이름이 재미있는데, 실제로 ...
-- 강서나이트 (나이트): https://ilsanroom.pages.dev/nights/gangseonight — 서울 서부 지역 밀착형 댄스홀. 이름이 직관적이라 찾기 쉽다. 마곡·화곡 주민 단골 ...
-- 영등포터미널나이트 (나이트): https://ilsanroom.pages.dev/nights/yeongdeungpoterminalnight — 터미널 인근에 위치한 댄스홀. 교통 요충지답게 접근성이 매우 좋고, 여러 노선 버스...
-- 노원호박나이트 (나이트): https://ilsanroom.pages.dev/nights/nowonhobaknight — 호박 브랜드 댄스홀. 전국적으로 체인을 운영하는 브랜드라 어느...
-- 노원스타나이트 (나이트): https://ilsanroom.pages.dev/nights/nowonstarnight — 호박나이트와는 또 다른 맛의 댄스홀. 스타라는 이름답게 조명 연출에 투자한 곳...
-- 길동찬스나이트 (나이트): https://ilsanroom.pages.dev/nights/gildongchancenight — 찬스 브랜드 댄스홀. 사거리 근처라 찾기 쉽고, 송파·하남에서도 접근성이 좋다.
-- 일산샴푸나이트 (나이트): https://ilsanroom.pages.dev/nights/ilsanshampoonight — 중심가에 위치한 인기 댄스홀. 주말이면 항상 만석을 이룬다는 소문이 과장이 아닌 곳이...
-- 일산물나이트 (나이트): https://ilsanroom.pages.dev/nights/ilsanmulnight — "물나이트" 하면 누구나 아는 댄스홀. 물이라는 이름은 부산 물나이트에서 유래한 ...
-- 파주야당스카이돔나이트 (나이트): https://ilsanroom.pages.dev/nights/pajuyadangskydomenight — 야당동에 자리잡은 경기 북부 최대 규모의 댄스홀. 스카이돔이라는 이름처럼 천장이 돔 ...
-- 화정한국관나이트 (나이트): https://ilsanroom.pages.dev/nights/hwajeonghangukgwannight — 고양시 전통 브랜드 댄스홀. 역 인근이라 접근 편하고, 격식 있는 사교 문화가 살아있다.
-- 김포호박나이트 (나이트): https://ilsanroom.pages.dev/nights/gimpohobaknight — 호박 브랜드 댄스홀. 신도시 개발로 인구가 늘면서 이 곳도 점점 활기를...
-- 김포썸나이트 (나이트): https://ilsanroom.pages.dev/nights/gimposomenight — 호박나이트와 쌍벽을 이루는 댄스홀. 썸이라는 이름답게 젊은 감각의 인테리어와 프로...
-- 구리호박나이트 (나이트): https://ilsanroom.pages.dev/nights/gurihobaknight — 호박 브랜드 댄스홀. 남양주 지역 주민들과 함께하는 밤문화 거점으로 자리잡은 ...
-- 의정부한국관나이트 (나이트): https://ilsanroom.pages.dev/nights/uijeongbuhangukgwannight — 한국관 브랜드 댄스홀. 1호선 역 근처라 대중교통 접근이 좋고, ...
-- 수원찬스돔나이트 (나이트): https://ilsanroom.pages.dev/nights/suwonchancenight — 인계동에 위치한 돔 형태의 독특한 댄스홀. 들어서는 순간 천장의 돔 구조가 만들어내는...
-- 수원코리아나이트 (나이트): https://ilsanroom.pages.dev/nights/suwonkoreanight — 찬스돔과 함께 양대 댄스홀로 꼽히는 곳. 코리아라는 이름에서 느껴지는 정통 분위기...
-- 오산호박나이트 (나이트): https://ilsanroom.pages.dev/nights/osanhobaknight — 호박 브랜드 댄스홀. 화성 지역 주민들과 함께하는 밤 놀이터 역할을 하는 곳이...
-- 성남국빈관나이트 (나이트): https://ilsanroom.pages.dev/nights/seongnamgukbingwannight — 국빈관 브랜드 댄스홀. 이름답게 격식과 품위를 중시하는 분위기...
-- 인덕원국빈관나이트 (나이트): https://ilsanroom.pages.dev/nights/indeokvon-gukbingwan-night — 역 도보권, 국빈관 브랜드 사교댄스홀. 과천·안양 지역 중장년층 사교 모임의 중심지.
-- 성남샴푸나이트 (나이트): https://ilsanroom.pages.dev/nights/seongnamshampoonight — 지역 최대 규모의 댄스홀. 화려한 조명과 대형 댄스플로어가 이 곳의 상징이다. 박찬호...
-- 분당퐁퐁나이트 (나이트): https://ilsanroom.pages.dev/nights/bundangpongpongnight — 신도시에 위치한 댄스홀. 지역 특성상 전체적으로 깔끔하고 신경 쓴 분위기를...
-- 평택호박나이트 (나이트): https://ilsanroom.pages.dev/nights/pyeongtaekhobaknight — 자리잡은 호박 브랜드 댄스홀. 미군 기지가 있는 특성상 외국인 손님도 가끔 ...
-- 인천아라비안나이트 (나이트): https://ilsanroom.pages.dev/nights/incheonarabiannight — 구월동에 위치한 이국적 분위기의 댄스홀. 아라비안이라는 이름답게 중동풍 인테리어가 특...
-- 부천메리트나이트 (나이트): https://ilsanroom.pages.dev/nights/bucheonmeritnight — 가성비와 시설 면에서 장점이 확실한 댄스홀. 메리트라는 이름 그대로 장점이 분명하다...
-- 부천고래나이트 (나이트): https://ilsanroom.pages.dev/nights/bucheongoraenight — 메리트와 양대 산맥인 원미구 댄스홀. 유머러스한 이름과 달리 실력은 진지하다.
-- 안산히트나이트 (나이트): https://ilsanroom.pages.dev/nights/ansanhitnight — 지역 밤문화의 히트작. 히트라는 이름처럼 매주 단골이 찾는 댄스홀. 공단 도...
-- 안산돈텔마마나이트 (나이트): https://ilsanroom.pages.dev/nights/ansandontellmamanight — 히트나이트와 쌍벽을 이루는 돈텔마마 브랜드 댄스홀. 돈텔마마는 전국에 지점이 있는...
-- 천안스타돔나이트 (나이트): https://ilsanroom.pages.dev/nights/cheonanstardomnight — 시내 중심에 자리잡은 스타돔. 돔 구조 천장이 만들어내는 웅장한 공간감이 일단 압도적
-- 천안코리아나이트 (나이트): https://ilsanroom.pages.dev/nights/cheonankoreanight — 스타돔과 함께 거론되는 전통 있는 댄스홀. 코리아라는 이름에서 느껴지듯 정통 사교
-- 대전세븐나이트 (나이트): https://ilsanroom.pages.dev/nights/daejeonsevennight — 둔산동 중심에 위치한 격이 다른 댄스홀. 럭키세븐 컨셉에 맞춰 7가지 테마 공간을 갖추
-- 대전원나이트 (나이트): https://ilsanroom.pages.dev/nights/daejeononenight — 세븐과 다른 결의 재미가 있는 댄스홀. 원(one)이라는 이름처럼 "하나면 충분하
-- 대전봉명나이트 (나이트): https://ilsanroom.pages.dev/nights/daejeonbongmyeongnight — 유성구 댄스홀. 온천 관광 특구와 가까워서 출장 온 손님이 많다. 금요일 밤 줄 서는 이유가 있다.
-- 대전한국관나이트 (나이트): https://ilsanroom.pages.dev/nights/daejeonhangukgwannight — 전국 브랜드답게 격식과 편안함을 둘 다 잡았다. 둔산동 직장인 퇴근 후 단골.
-- 청주돈텔마마나이트 (나이트): https://ilsanroom.pages.dev/nights/cheongjudontellmamanight — 충북 돈텔마마 브랜드 댄스홀. 시내 중심가에 있어서 접근이 편하고, 
-- 청주호박나이트 (나이트): https://ilsanroom.pages.dev/nights/cheongjuhobaknight — 호박 브랜드 댄스홀. 돈텔마마가 모던한 느낌이라면, 호박은 좀 더 전통적이고 
-- 서산호박나이트 (나이트): https://ilsanroom.pages.dev/nights/seosanhobaknight — 충남 호박 브랜드 댄스홀. 태안·당진 주민들도 찾는 밤문화 거점이다.
-- 대구한국관나이트 (나이트): https://ilsanroom.pages.dev/nights/daeguhangukgwannight — 중구에 위치한 한국관 브랜드 댄스홀. 밤문화의 중심인 동성로 인근에 자리잡고 있
-- 대구호박나이트 (나이트): https://ilsanroom.pages.dev/nights/daeguhobaknight — 편안함이 강점인 브랜드 댄스홀. 한국관이 격식이라면 여긴 릴랙스 모드.
-- 대구바밤바나이트 (나이트): https://ilsanroom.pages.dev/nights/daegubabambanight — 독특한 이름으로 존재감을 드러내는 댄스홀. 바밤바라는 이름이 호기심을 자극하는데,
-- 대구토토가나이트 (나이트): https://ilsanroom.pages.dev/nights/daegutotoganight — 토토가 브랜드 댄스홀. 이름이 주는 발랄한 느낌 그대로, 상대적으
-- 구미호박나이트 (나이트): https://ilsanroom.pages.dev/nights/gumihobaknight — 경북 호박 브랜드 댄스홀. 산업단지 인근이라 공단 근무자들이 퇴근 후
-- 부산연산동물나이트 (나이트): https://ilsanroom.pages.dev/nights/busanyeonsandongmulnight — 연산동의 전설적인 댄스홀. 따봉이라는 닉네임의 담당자가 엄지를 치켜세우며 맞이해주는 곳이다
-- 부산아시아드나이트 (나이트): https://ilsanroom.pages.dev/nights/busanasiadnight — 연제구에 위치한 대형 댄스홀. 아시아드라는 이름은 인근의 아시아드 주경기장에서 유래했
-- 부산물나이트 (나이트): https://ilsanroom.pages.dev/nights/busanmulnight — 물나이트 하면 바로 이곳. 물이라는 브랜드명이 시민들에게 깊이 각인된 댄스홀
-- 울산뉴월드나이트 (나이트): https://ilsanroom.pages.dev/nights/ulsannewworldnight — 남구에 위치한 대형 댄스홀. 뉴월드라는 이름처럼 새로운 세계를 지향하는 곳인데, 실제
-- 울산챔피언나이트 (나이트): https://ilsanroom.pages.dev/nights/ulsanchampionnight — 삼산동에 위치한 밤문화의 챔피언. 춘자라는 닉네임의 담당자가 특유의 쾌활함으로 
-- 광주상무나이트 (나이트): https://ilsanroom.pages.dev/nights/gwangjusangmunight — 서구 상무지구에 위치한 댄스홀. 신도시인 상무지구답게 주변 인프라가 잘 갖춰져 
-- 광주토토밤나이트 (나이트): https://ilsanroom.pages.dev/nights/gwangjutotonight — 독특한 이름으로 눈에 띄는 댄스홀. 토토밤이라는 이름이 주는 재미있는 느낌 그대로
-- 광주첨단엠파나이트 (나이트): https://ilsanroom.pages.dev/nights/gwangjucheomdanempanight — 첨단지구에 위치한 엠파(MPA) 브랜드 댄스홀. 첨단지구는 신흥 개발 지역이라
-- 광주MGM나이트 (나이트): https://ilsanroom.pages.dev/nights/gwangjumgmnight — MGM 브랜드 댄스홀. 라스베이거스의 MGM에서 이름을 따온 건지는 모르겠지만, 화
-- 광주올나이트 (나이트): https://ilsanroom.pages.dev/nights/gwangjuallnight — 올나이트라는 이름처럼 밤새 즐길 수 있는 댄스홀. 영업시간이 타 댄스홀보다 넉넉한
-- 제주나이트 (나이트): https://ilsanroom.pages.dev/nights/jejunight — 유일의 나이트 댄스홀. 중심가에 위치해 있어 관광객과 현지 주민 모두 접근이
-- 강남청담클럽 레이스 (클럽): https://ilsanroom.pages.dev/clubs/gangnam/gangnamclub-race — 줄이 가장 긴 EDM 클럽. 주말 밤이면 입장 대기줄이 건물을 한 바퀴 돈다는 전설이 있을 
-- 강남청담클럽 사운드 (클럽): https://ilsanroom.pages.dev/clubs/gangnam/gangnamclub-sound — 이름 그대로 사운드에 진심인 클럽. 음향 시스템에 투자를 아끼지 않아서, 같은 곡이라도 여기서 들으면 느낌이
-- 강남청담클럽 Jack (클럽): https://ilsanroom.pages.dev/clubs/gangnam/gangnamclub-jack — 잭이라는 이름에서 느껴지는 캐주얼한 분위기 그대로, 격식보다는 즐거움을 추구하는 클럽이다. 힙합과 R&B 비
-- 강남청담클럽 피크 (클럽): https://ilsanroom.pages.dev/clubs/gangnam/gangnamclub-peak — 클럽 중에서도 피크타임의 에너지가 남다른 곳. 자정을 넘기면 플로어의 열기가 최고조에 달하는데, 그 순
-- 강남청담클럽 미로 (클럽): https://ilsanroom.pages.dev/clubs/gangnam/gangnamclub-miro — 미로라는 이름답게 내부 구조가 독특하다. 여러 공간이 미로처럼 연결되어 있어서 돌아다니면서 다른 분위기를 즐
-- 강남청담클럽 유토피아 (클럽): https://ilsanroom.pages.dev/clubs/gangnam/gangnamclub-utopia — 유토피아라는 이름에 걸맞게 "이상적인 클럽"을 지향하는 곳이다. 사운드·조명·공간·서비스 어느 하나 빠지지 
-- 강남청담클럽 라퓨타 (클럽): https://ilsanroom.pages.dev/clubs/gangnam/gangnamclub-laputa — 천공의 성 라퓨타에서 이름을 따왔는지는 모르겠지만, 확실히 고공비행하는 듯한 파티 경험을 주는 클럽이다. 높
-- 강남청담클럽 페이스 (클럽): https://ilsanroom.pages.dev/clubs/gangnam/gangnamclub-face — 페이스라는 이름처럼 얼굴이 곧 입장권인 곳... 이라기보다는 페이스(pace)의 의미가 더 강한, 자기만의 
-- 강남청담클럽 밤앤밤 (클럽): https://ilsanroom.pages.dev/clubs/gangnam/gangnamclub-bamnbam — 이름처럼 밤을 두 배로 즐기는 곳. 새벽까지 쉬지 않는 논스톱 파티, 밀도가 확실히 다르다.
-- 강남청담클럽 아르떼 (클럽): https://ilsanroom.pages.dev/clubs/gangnam/gangnamclub-arte — 아르떼(Arte)라는 이름 그대로 예술적 감성을 추구하는 클럽이다. 내부 인테리어에 현대미술 작품이 전시되어
-- 압구정클럽 하입 (클럽): https://ilsanroom.pages.dev/clubs/apgujeong/apgujeongclub-hype — 로데오거리 인근의 하입(Hype) 클럽. 이름부터가 트렌디한데, 실제로 클럽 씬에서 가장 화제
-- 압구정클럽 인트로 (클럽): https://ilsanroom.pages.dev/clubs/apgujeong/apgujeongclub-intro — 인트로와 디엠이 통합 운영되면서 탄생한 메가 클럽. 두 곳의 장점이 합쳐져서 공간이 넓어졌고, 프로그램도 더
-- 압구정클럽 컬러 (클럽): https://ilsanroom.pages.dev/clubs/apgujeong/apgujeongclub-color — 컬러라는 이름답게 다채로운 분위기를 자랑하는 클럽. 라운지가 아닌 클럽이다(가끔 라운지로 오해받는데 확실한 
-- 압구정클럽 디브릿지 (클럽): https://ilsanroom.pages.dev/clubs/apgujeong/apgujeongclub-dbridge — 디브릿지(D-Bridge)라는 이름에서 연상되듯 다리를 건너듯 일상에서 파티로 넘어가는 경험을 주는 클럽. 
-- 압구정클럽 캔디맨 (클럽): https://ilsanroom.pages.dev/clubs/apgujeong/apgujeongclub-candyman — 캔디맨이라는 달콤한 이름과는 다르게 꽤 하드한 EDM을 틀어주는 클럽. 기대와 반전이 있는 곳이랄까. 베이스
-- 압구정클럽 무인 (클럽): https://ilsanroom.pages.dev/clubs/apgujeong/apgujeongclub-muin — 무인(Mooin)이라는 이름이 독특한 클럽. 무인도에 표류한 듯한 에스닉한 인테리어가 시선을 사로잡
-- 압구정코드라운지 (라운지): https://ilsanroom.pages.dev/lounges/apgujeongcodelounge — 격 있는 라운지. 클럽의 시끄러움 없이 좋은 음악과 칵테일을 즐기고 싶은 분들을 위한 공간이
-- 강남청담클럽 아르쥬 (클럽): https://ilsanroom.pages.dev/clubs/cheongdam/cheongdamclub-arju — 아르쥬. 이름부터 프렌치 감성이 물씬 풍기는데, 실제로 인테리어도 유럽풍 럭셔리 분위기다.
-- 이태원클럽 유토피아 (클럽): https://ilsanroom.pages.dev/clubs/itaewon/itaewonclub-utopia — 유토피아. 강남에도 같은 이름이 있지만 분위기는 완전히 다르다. 특유의 다문화 에너지가 넘치
-- 이태원클럽 메이드 (클럽): https://ilsanroom.pages.dev/clubs/itaewon/itaewonclub-maid — 메이드(Made)라는 이름으로 운영되는 클럽. 홍대에도 같은 이름이 있지만 별도 운영이다. 
-- 이태원클럽 프리즘 (클럽): https://ilsanroom.pages.dev/clubs/itaewon/itaewonclub-prism — 빛을 분산시키는 프리즘처럼, 온갖 색깔의 음악을 들려주는 클럽. EDM·하우스·테크노를 베이스로 
-- 이태원개판포차 (클럽): https://ilsanroom.pages.dev/clubs/itaewon/itaewongaepanpocha — 이름부터 심상치 않은 독보적인 공간. 개판이라는 이름 그대로 형식 따위 없이 그냥 신나게 놀자는 콘
-- 홍대클럽 버뮤다 (클럽): https://ilsanroom.pages.dev/clubs/hongdae/hongdaeclub-bermuda — 클럽 거리의 터줏대감. 버뮤다 삼각지대처럼 한번 빠지면 헤어나올 수 없다는 의미인지, 실제로 중독성 있
-- 홍대클럽 퍼시픽 (클럽): https://ilsanroom.pages.dev/clubs/hongdae/hongdaeclub-pacific — 태평양(Pacific)이라는 이름에 걸맞게 넓고 시원한 느낌의 클럽. 클럽 중 공간이 넉넉한 편이라 북
-- 홍대클럽 메이드 (클럽): https://ilsanroom.pages.dev/clubs/hongdae/hongdaeclub-maid — 메이드(Made)라는 이름으로 운영되는 클럽. 이태원에도 같은 이름이 있지만 독립 운영이고 분위기도
-- 홍대클럽 도깨비 (클럽): https://ilsanroom.pages.dev/clubs/hongdae/hongdaeclub-dokkaebi — 도깨비라는 한국적인 이름이 인상적인 클럽. 인테리어에도 도깨비 모티프가 곳곳에 숨어있어서 찾는 재미가
-- 노원청춘포차 (클럽): https://ilsanroom.pages.dev/clubs/nowon/nowoncheongchunpocha — 젊은 에너지가 모이는 곳. 청춘이라는 이름답게 20~30대 손님이 주를 이루고, 포차 콘셉트라 음
-- 용산드래곤시티 (클럽): https://ilsanroom.pages.dev/clubs/yongsan/yongsandragoncity — 복합단지 내 클럽. 시설이 깔끔하고 서비스 퀄리티가 남다르다. 남산 뷰는 덤.
-- 서울반얀트리 (클럽): https://ilsanroom.pages.dev/clubs/seoul/seoulbanyantree — 반얀트리 호텔에 위치한 루프탑 클럽/라운지. 남산 아래에서 야경을 바라보며 파티를 즐길 수 있는 
-- 일산클럽 CJ (클럽): https://ilsanroom.pages.dev/clubs/ilsan/ilsanclub-cj — 유일하게 본격적인 EDM 클럽 문화를 즐길 수 있는 곳. 서울까지 나가지 않아도 되니까 파주·김포에서도 온다.
-- 의정부아레나 (클럽): https://ilsanroom.pages.dev/clubs/uijeongbu/uijeongbuarena — 클럽 분위기를 즐기고 싶을 때 가는 곳. 아레나(Arena)라는 이름답게 경기장 같은 열기가 넘치
-- 용인사거리별밤 (클럽): https://ilsanroom.pages.dev/clubs/yongin/yonginbyeolbam — 수지·기흥 지역 주민들의 밤을 책임지는 곳. 별밤이라는 이름 그대로 별빛 같은 조명 연출이 특징이고, 
-- 부천클럽 파라곤 (클럽): https://ilsanroom.pages.dev/clubs/bucheon/bucheonclub-paragon — 가장 핫한 클럽 공간. 파라곤(Paragon)이라는 이름에서 느껴지듯 클럽 씬의 모범을 자처
-- 인천파라다이스씨티 (클럽): https://ilsanroom.pages.dev/clubs/incheon/incheonparadisecity — 영종도 파라다이스시티 복합리조트 내에 위치한 클럽. 카지노, 호텔, 스파와 함께 운영되는 리조트 클럽이
-- 청주클럽 슈퍼문 (클럽): https://ilsanroom.pages.dev/clubs/cheongju/cheongju-supermoon — 충북에서 가장 핫한 클럽. 슈퍼문이라는 이름처럼 잊지 못할 밤을 만들어주는 곳이다. 시내 중심에 위치
-- 대전설탕클럽 (클럽): https://ilsanroom.pages.dev/clubs/daejeon/daejeonsugarclub — 가장 달콤한 밤을 보낼 수 있는 곳. 설탕이라는 이름이 주는 달달한 이미지 그대로, 분위기가 밝고 
-- 압구정라운지 디엠 (라운지): https://ilsanroom.pages.dev/lounges/apgujeonglounge-dm — 청담 경계에 위치한 격 있는 라운지. DM이라는 이름은 Dream Makers의 약자라는 설이 있다.
-- 압구정이디엇라운지 (라운지): https://ilsanroom.pages.dev/lounges/apgujeongidiotlounge — 이디엇(Idiot)이라는 도발적인 이름의 라운지. 이름과는 다르게 꽤 감각 있는 공간이다. 조명이 은은하고 좌석
-- 강남호빠 로얄 (호빠): https://ilsanroom.pages.dev/hoppa/gangnamhoppa-royal — 로얄(Royal). 이름처럼 퀄리티 높은 서비스를 자랑하는 호스트바다. 지역 여성 고객들 사이에
-- 부산호빠 스타 (호빠): https://ilsanroom.pages.dev/hoppa/busanhoppa-star — 가장 이름이 알려진 호스트바. 스타라는 이름답게 호스트들의 외모와 서비스가 별처럼 빛나는 곳이라는 
-- 장안동호빠 빵빵 (호빠): https://ilsanroom.pages.dev/hoppa/jangandonghoppa-bbangbbang — 재미있는 이름의 호스트바. 빵빵이라는 이름이 주는 유쾌한 이미지 그대로, 호스트들이 웃음을 
-- 건대호빠 W (호빠): https://ilsanroom.pages.dev/hoppa/geondaehoppa-w — 역 인근에 위치한 W 호스트바. W라는 간결한 이름답게 인테리어도 미니멀하고 깔끔한 편이다.
-- 수원호빠 비스트 (호빠): https://ilsanroom.pages.dev/hoppa/suwonhoppa-beast — 인계동 대표 호빠. 경기권 최대 규모. 오후 7시~새벽 5시 운영.
-- 해운대호빠 깐따삐야 (호빠): https://ilsanroom.pages.dev/hoppa/haeundaehoppa-kkantappiya — 대표 호스트바. 바다 근처 위치, 픽업 서비스 제공.
-- 해운대호빠 미슐랭 (호빠): https://ilsanroom.pages.dev/hoppa/haeundaehoppa-michelin — 퀄리티 높은 호스트바. 올초이스 방식. 마린시티 인근.
-- 대전호빠 이클립스 (호빠): https://ilsanroom.pages.dev/hoppa/daejeonhoppa-eclipse — 대표 호스트바. 유성구/중구 접근 편리. 합리적 가격.
-- 수원호빠 아우라 (호빠): https://ilsanroom.pages.dev/hoppa/suwonhoppa-aura — 인계동 소재 호빠. 경력 호스트 위주 운영.
-- 부산호빠 맨즈 (호빠): https://ilsanroom.pages.dev/hoppa/busanhoppa-menz — 광안리 소재 호빠. 털털한 감성.
-- 부산호빠 아우라 (호빠): https://ilsanroom.pages.dev/hoppa/busanhoppa-aura — 서면/해운대/광안리 커버. 지역 맞춤 안내.
-- 해운대호빠 벨벳 (호빠): https://ilsanroom.pages.dev/hoppa/haeundaehoppa-velvet — 관광지구 호빠. 차분한 무드, 와인 감성.
-- 대구호빠 퍼펙트 (호빠): https://ilsanroom.pages.dev/hoppa/daeguhoppa-perfect — 엘리에나호텔 지하, 룸 70개 대규모 호빠.
-- 강남호빠 어게인 (호빠): https://ilsanroom.pages.dev/hoppa/gangnam-hoppa-again — 삼성동 넓은 홀, 호스트 선택지 풍부. 매니저 추천 시스템.
-- 강남호빠 플러팅 (호빠): https://ilsanroom.pages.dev/hoppa/gangnam-hoppa-flirting — 역삼동 감각 잡은 인테리어. 투명한 가격, 젊은 에너지.
-- 장안동호빠 플렉스 (호빠): https://ilsanroom.pages.dev/hoppa/jangandong-hoppa-flex — 체계적 예약 시스템. 화려한 인테리어.
-- 전주호빠 갤러리 (호빠): https://ilsanroom.pages.dev/hoppa/jeonju-hoppa-gallery — 대표 호빠. 갤러리 콘셉트 인테리어, 소규모 친밀함.
-- 홍대호빠 (호빠): https://ilsanroom.pages.dev/hoppa/hongdae-hoppa — 역 도보 5분, 24시간 영업 여성 전용 호스트바.
+## 수익 구조
+- PREMIUM 업소 광고비 (상단 노출)
+- 업소 등록비
+
+## 연락처
+010-3695-4929
