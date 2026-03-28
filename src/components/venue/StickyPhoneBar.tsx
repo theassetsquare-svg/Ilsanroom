@@ -18,7 +18,7 @@ const ALLOWED_PHONES = [
 export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPhoneBarProps) {
   if (phone && ALLOWED_PHONES.includes(phone)) {
     return (
-      <div className="fixed bottom-[60px] md:bottom-0 left-0 right-0 z-[90] flex justify-center px-4 pb-2">
+      <div className="fixed bottom-[60px] left-0 right-0 z-[90] flex justify-center px-4 pb-2 md:bottom-6 md:right-6 md:left-auto md:w-auto md:px-0">
         <a
           href={`tel:${phone.replace(/-/g, '')}`}
           className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#15803D] px-6 py-3.5 text-base font-bold text-white shadow-lg transition hover:bg-[#166534] active:scale-95"

@@ -85,7 +85,7 @@ export default function SessionRewardBar() {
       <AnimatePresence>
         {expanded && (
           <motion.div
-            className="fixed bottom-12 left-0 right-0 z-[71] bg-white border-t border-gray-100 shadow-2xl rounded-t-2xl max-h-[60vh] overflow-y-auto"
+            className="fixed bottom-12 left-0 right-0 z-[71] md:relative md:bottom-auto md:z-auto bg-white border-t border-gray-100 shadow-2xl rounded-t-2xl max-h-[60vh] overflow-y-auto"
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
@@ -135,7 +135,7 @@ export default function SessionRewardBar() {
         )}
       </AnimatePresence>
 
-      <div className="fixed bottom-0 left-0 right-0 z-[72] h-12 bg-white/95 backdrop-blur-md border-t border-gray-100 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
+      <div className="fixed bottom-0 left-0 right-0 z-[72] h-12 bg-white/95 backdrop-blur-md border-t border-gray-100 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] md:relative md:bottom-auto md:z-auto md:mt-4 md:rounded-xl md:shadow-md">
         <div className="flex h-full items-center justify-between px-4 max-w-screen-xl mx-auto">
           <div className="flex items-center gap-2">
             <span className="text-base">{levelInfo.name.split(' ')[0]}</span>

@@ -354,10 +354,47 @@ html {
   background-color: #FDF2F8;
 }
 
-/* 업소 상세페이지: 전화바와 겹치는 하단 요소 숨기기 */
-.venue-detail-page [class*="SessionRewardBar"],
-.venue-detail-page #engagement-reward-bar,
-.venue-detail-page #engagement-missions,
-.venue-detail-page #tiktok-launcher {
-  display: none !important;
+/* ═══════ PC (768px+): 하단고정 금지, 본문 안에 배치 ═══════ */
+@media (min-width: 768px) {
+  /* PC: 하단 모바일 네비 숨김 (상단 메뉴 사용) */
+  nav[class*="fixed right-0 bottom-0 left-0"] {
+    display: none !important;
+  }
+
+  /* PC: SessionRewardBar 본문 안으로 */
+  div[class*="fixed bottom-0"][class*="z-\\[72\\]"] {
+    position: relative !important;
+    bottom: auto !important;
+    z-index: auto !important;
+  }
+
+  /* PC: AutoNextSuggestion 본문 안으로 */
+  div[class*="fixed bottom-16"][class*="z-\\[74\\]"] {
+    position: relative !important;
+    bottom: auto !important;
+    z-index: auto !important;
+  }
+
+  /* PC: 모든 fixed bottom engagement 요소 본문 안으로 */
+  div[class*="fixed bottom-20"],
+  div[class*="fixed bottom-24"],
+  div[class*="fixed right-4 bottom-16"] {
+    position: relative !important;
+    bottom: auto !important;
+    right: auto !important;
+    z-index: auto !important;
+  }
+}
+
+/* ═══════ 모바일 (767px-): 겹침 방지 레이아웃 ═══════ */
+@media (max-width: 767px) {
+  /* 업소 상세페이지: engagement 전부 숨기고 전화바만 */
+  .venue-detail-page div[class*="fixed bottom-0"][class*="z-\\[72\\]"],
+  .venue-detail-page div[class*="fixed bottom-16"][class*="z-\\[74\\]"],
+  .venue-detail-page div[class*="fixed bottom-20"],
+  .venue-detail-page div[class*="fixed bottom-24"],
+  .venue-detail-page div[class*="fixed right-4 bottom-16"],
+  .venue-detail-page div[class*="fixed bottom-12"] {
+    display: none !important;
+  }
 }

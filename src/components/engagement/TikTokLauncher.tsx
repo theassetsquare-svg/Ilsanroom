@@ -21,7 +21,7 @@ export default function TikTokLauncher() {
         {!open && (
           <motion.button
             onClick={handleClick}
-            className="fixed right-4 bottom-16 z-[60] flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-pink-500 text-white shadow-lg shadow-violet-500/30 md:bottom-14"
+            className="fixed right-4 bottom-16 z-[60] flex h-14 w-14 md:hidden items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-pink-500 text-white shadow-lg shadow-violet-500/30 md:bottom-14"
             initial={{ scale: 0, opacity: 0 }}
             animate={{
               scale: pulse ? [1, 1.15, 1] : 1,
