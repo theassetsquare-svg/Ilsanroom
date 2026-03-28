@@ -21,6 +21,8 @@ const AITasteAnalysis = lazy(() => import('@/components/ai/AITasteAnalysis'));
 const AICourseRecommend = lazy(() => import('@/components/ai/AICourseRecommend'));
 const HomeCommunityHub = lazy(() => import('@/components/home/HomeCommunityHub'));
 const InfiniteDiscoveryFeed = lazy(() => import('@/components/engagement/InfiniteDiscoveryFeed'));
+const NightFortune = lazy(() => import('@/components/engagement/NightFortune'));
+const NearbyFood = lazy(() => import('@/components/engagement/NearbyFood'));
 
 function getCategoryHref(category: string, slug: string, region: string) {
   const pathMap: Record<string, string> = {
@@ -429,10 +431,24 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ═══════ 밤문화 운세 ═══════ */}
+      <ErrorBoundary>
+        <Suspense fallback={null}>
+          <NightFortune />
+        </Suspense>
+      </ErrorBoundary>
+
       {/* ═══════ 무한 발견 피드 (틱톡식) ═══════ */}
       <ErrorBoundary>
         <Suspense fallback={<div className="mx-auto max-w-3xl px-4 py-12"><div className="h-48 animate-pulse rounded-2xl bg-neon-surface-2" /></div>}>
           <InfiniteDiscoveryFeed />
+        </Suspense>
+      </ErrorBoundary>
+
+      {/* ═══════ 주변 맛집/해장 ═══════ */}
+      <ErrorBoundary>
+        <Suspense fallback={null}>
+          <NearbyFood />
         </Suspense>
       </ErrorBoundary>
 
