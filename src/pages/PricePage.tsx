@@ -21,7 +21,7 @@ function getCategoryHref(category: string, slug: string, region: string) {
 }
 
 export default function PricePage() {
-  useDocumentMeta('업종별 이용 가이드 | 밤키', '카테고리별 이용 방법과 느낌 살펴보기.');
+  useDocumentMeta('업종별 이용 가이드 | 플밤', '카테고리별 이용 방법과 느낌 살펴보기.');
   const [category, setCategory] = useState<CategoryFilter>('all');
   const [showAll, setShowAll] = useState(false);
 

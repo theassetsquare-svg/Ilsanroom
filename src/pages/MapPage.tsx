@@ -23,7 +23,7 @@ function getCategoryHref(category: string, slug: string, region: string) {
 }
 
 export default function MapPage() {
-  useDocumentMeta('내 근처 지금 열린 곳, 지도로 바로 찾기 | 밤키', '현재 위치 기반 영업 중인 업소 실시간 지도.');
+  useDocumentMeta('내 근처 지금 열린 곳, 지도로 바로 찾기 | 플밤', '현재 위치 기반 영업 중인 업소 실시간 지도.');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [gpsStatus, setGpsStatus] = useState<'idle' | 'loading' | 'granted' | 'denied'>('idle');

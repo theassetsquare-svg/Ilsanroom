@@ -20,14 +20,15 @@ export function getVenueOgImage(venueName: string, category: string, staffNickna
   };
   const bg = categoryColors[category] || '#7C3AED';
   const label = categoryLabels[category] || '';
-  const params = new URLSearchParams({ title: venueName, subtitle: `${label} | 밤키`, bg });
+  const params = new URLSearchParams({ title: venueName, subtitle: `${label} | 플밤`, bg });
   if (staffNickname) params.set('staff', `담당: ${staffNickname}`);
   return `${SITE_URL}/api/og?${params.toString()}`;
 }
 
-/** 업소 상세 OG image (slug 기반 — 정적 파일) */
+/** 업소 상세 OG image (slug 기반 — 실제 사진 우선, 없으면 SVG 폴백) */
 export function getVenueOgImageBySlug(slug: string): string {
-  return `${SITE_URL}/og/${slug}.svg`;
+  // Real venue photo takes priority over text SVG
+  return `${SITE_URL}/venues/${slug}-1.jpg`;
 }
 
 /** 카테고리 페이지 OG image */

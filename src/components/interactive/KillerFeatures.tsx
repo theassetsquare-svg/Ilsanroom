@@ -165,7 +165,7 @@ export function InviteFriend() {
   const link = typeof window !== 'undefined' ? window.location.origin + '?ref=friend' : 'https://ilsanroom.pages.dev?ref=friend';
 
   const copy = async () => {
-    try { await navigator.clipboard.writeText(`밤키 — 전국 나이트/클럽/호빠 정보 ${link}`); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch {}
+    try { await navigator.clipboard.writeText(`플밤 — 전국 나이트/클럽/호빠 정보 ${link}`); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch {}
   };
 
   return (

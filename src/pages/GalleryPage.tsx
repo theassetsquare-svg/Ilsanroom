@@ -20,7 +20,7 @@ const galleryItems = venues
   }));
 
 export default function GalleryPage() {
-  useDocumentMeta('전국 업소 분위기 사진 갤러리 | 밤키', '가기 전에 눈으로 먼저 확인. 업소별 분위기 사진 모음.');
+  useDocumentMeta('전국 업소 분위기 사진 갤러리 | 플밤', '가기 전에 눈으로 먼저 확인. 업소별 분위기 사진 모음.');
   const [lightboxId, setLightboxId] = useState<string | null>(null);
   const [filter, setFilter] = useState('all');
 

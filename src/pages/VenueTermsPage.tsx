@@ -5,7 +5,7 @@ const sections = [
     number: 1,
     title: "총칙",
     items: [
-      '본 규정은 밤키(이하 "플랫폼")에 점포 상세사항를 게시하고자 하는 사업자(이하 "게시 업소")와 플랫폼 간의 권리, 소임 및 책임사항을 규정합니다.',
+      '본 규정은 플밤(이하 "플랫폼")에 점포 상세사항를 게시하고자 하는 사업자(이하 "게시 업소")와 플랫폼 간의 권리, 소임 및 책임사항을 규정합니다.',
       "기재 영업장은 본 조항에 동의함으로써 운영사 기능을 이용할 수 있게 됩니다.",
       "본 규정에서 정하지 않은 사항은 관련 법적규범 및 사이트의 이용약관에 따릅니다.",
     ],
@@ -69,7 +69,7 @@ const sections = [
         subtitle: "요금 체계",
         items: [
           "기본 신청: 무료 (기본 가게 상세사항 게시)",
-          "프리미엄 신청: 월 정액제 (상위 노출, 프로모션 배너, 상세 통계 포함)",
+          "프리미엄 신청: 월 정액제 (플밤 내 우선 노출, 프로모션 배너, 상세 통계 포함)",
           "광고 상품: 별도 협의 (메인 페이지 노출, 이벤트 프로모션 등)",
         ],
       },
@@ -135,7 +135,7 @@ const sections = [
 ];
 
 export default function VenueTermsPage() {
-  useDocumentMeta('업소등록약관 | 밤키', '업소 등록 및 광고 이용 약관.');
+  useDocumentMeta('업소등록약관 | 플밤', '업소 등록 및 광고 이용 약관.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">
@@ -145,7 +145,7 @@ export default function VenueTermsPage() {
             매장 입점 <span className="text-neon-primary-light">규정</span>
           </h1>
           <p className="text-lg text-neon-text-muted">
-            밤키에 매장을 게시하기 위한 이용 조항
+            플밤에 매장을 게시하기 위한 이용 조항
           </p>
         </div>
 
@@ -161,7 +161,7 @@ export default function VenueTermsPage() {
             매장 사장님이신가요?
           </h2>
           <p className="mb-4 text-sm leading-relaxed text-neon-text">
-            밤키에 매장을 입점하고 더 많은 고객에게 다가가세요. 기본 게시는
+            플밤에 매장을 입점하고 더 많은 고객에게 다가가세요. 기본 게시는
             무료이며, 프리미엄 기능을 이용하여 더 높은 노출 효과를 얻을 수
             있습니다. 신청 전 아래 규정을 반드시 확인해 주세요.
           </p>

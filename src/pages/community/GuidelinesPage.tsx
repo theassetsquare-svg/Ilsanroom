@@ -94,7 +94,7 @@ const sections = [
 ];
 
 export default function GuidelinesPage() {
-  useDocumentMeta('커뮤니티 이용 규칙 | 밤키', '밤키 커뮤니티 기본 규칙과 금지 사항.');
+  useDocumentMeta('커뮤니티 이용 규칙 | 플밤', '플밤 커뮤니티 기본 규칙과 금지 사항.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-12">

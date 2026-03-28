@@ -6,6 +6,7 @@ import VenueHero from '@/components/venue/VenueHero';
 import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
 import VenueJsonLd from '@/components/venue/VenueJsonLd';
 import VenueDetailTabs from '@/components/venue/VenueDetailTabs';
+import VenueGallery from '@/components/venue/VenueGallery';
 import Card from '@/components/ui/Card';
 import { useEngagementStore } from '@/lib/engagement-store';
 import type { Venue } from '@/types';
@@ -47,7 +48,7 @@ export default function VenueDetailPage({
 
   const nameHasRegion = venue.nameKo.includes(regionKo);
   const breadcrumbItems = [
-    { name: '밤키', url: '/' },
+    { name: '플밤', url: '/' },
     { name: categoryLabel, url: categoryPath },
     ...(nameHasRegion ? [] : [{ name: regionKo, url: regionPath }]),
     { name: venue.nameKo, url: detailPath },
@@ -82,6 +83,11 @@ export default function VenueDetailPage({
         regionKo={venue.regionKo}
         slug={venue.slug}
       />
+
+      {/* Venue Photo Gallery */}
+      <section className="mx-auto max-w-[1200px] px-4 pt-8 sm:px-6">
+        <VenueGallery slug={venue.slug} name={venue.nameKo} />
+      </section>
 
       {/* 8-Tab Content */}
       <section className="mx-auto max-w-[1200px] px-4 pt-8 sm:px-6">

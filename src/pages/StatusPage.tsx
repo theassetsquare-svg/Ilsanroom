@@ -78,7 +78,7 @@ const uptimeDays = Array.from({ length: 30 }).map((_, i) => {
 });
 
 export default function StatusPage() {
-  useDocumentMeta('서비스 상태 | 밤키', '밤키 서비스 운영 현황 확인.');
+  useDocumentMeta('서비스 상태 | 플밤', '플밤 서비스 운영 현황 확인.');
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
@@ -233,7 +233,7 @@ export default function StatusPage() {
             <h2 className="text-lg font-bold">모니터링</h2>
           </div>
           <p className="text-sm text-neon-text-muted leading-relaxed">
-            밤키은 <span className="text-neon-text font-medium">Uptime Robot</span>을 통해 1분 간격으로
+            플밤은 <span className="text-neon-text font-medium">Uptime Robot</span>을 통해 1분 간격으로
             모든 서비스의 가용성을 모니터링하고 있습니다. 장애 발생 시 자동으로 알림이 전송되며,
             운영팀이 즉시 대응합니다.
           </p>

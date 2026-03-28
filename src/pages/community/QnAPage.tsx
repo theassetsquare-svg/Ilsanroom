@@ -91,7 +91,7 @@ const userQuestions = [
 ];
 
 export default function QnAPage() {
-  useDocumentMeta('자주 묻는 질문 Q&A | 밤키', '처음 가는 분들이 가장 많이 묻는 질문과 답변.');
+  useDocumentMeta('자주 묻는 질문 Q&A | 플밤', '처음 가는 분들이 가장 많이 묻는 질문과 답변.');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("전체");
 

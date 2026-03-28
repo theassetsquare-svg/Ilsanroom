@@ -17,7 +17,7 @@ const plans = [
       { text: "이벤트 등록", included: false },
       { text: "후기 답변", included: false },
       { text: "예약 관리", included: false },
-      { text: "상위 노출", included: false },
+      { text: "플밤 내 우선 노출", included: false },
       { text: "고객 분석 리포트", included: false },
       { text: "인증 뱃지", included: false },
       { text: "전담 매니저", included: false },
@@ -40,7 +40,7 @@ const plans = [
       { text: "이벤트 등록 (월 5개)", included: true },
       { text: "후기 답변", included: true },
       { text: "예약 관리", included: true },
-      { text: "상위 노출", included: false },
+      { text: "플밤 내 우선 노출", included: false },
       { text: "고객 분석 리포트", included: false },
       { text: "인증 뱃지", included: false },
       { text: "전담 매니저", included: false },
@@ -63,7 +63,7 @@ const plans = [
       { text: "이벤트 가입 (무제한)", included: true },
       { text: "리뷰 답변", included: true },
       { text: "예약 관리", included: true },
-      { text: "상위 노출 (지역 1위)", included: true },
+      { text: "플밤 내 우선 노출 (지역 상단)", included: true },
       { text: "고객 분석 리포트", included: true },
       { text: "인증 뱃지", included: true },
       { text: "전담 매니저", included: false },
@@ -86,7 +86,7 @@ const plans = [
       { text: "이벤트 입점 (무제한)", included: true },
       { text: "평가 답변", included: true },
       { text: "예약 관리", included: true },
-      { text: "상위 노출 (전국 TOP)", included: true },
+      { text: "플밤 내 최상단 노출 (전 지역)", included: true },
       { text: "고객 분석 리포트", included: true },
       { text: "인증 뱃지", included: true },
       { text: "전담 매니저 + API", included: true },
@@ -127,7 +127,7 @@ const faqs = [
 ];
 
 export default function PricingPage() {
-  useDocumentMeta('업주님, 14일 무료 체험으로 시작하세요 | 밤키', '0원부터 하이엔드까지 4단계. 체험 후 결정. 해지도 원클릭.');
+  useDocumentMeta('업주님, 14일 무료 체험으로 시작하세요 | 플밤', '0원부터 하이엔드까지 4단계. 체험 후 결정. 해지도 원클릭.');
   return (
     <div className="min-h-screen bg-neon-bg">
       <div className="mx-auto max-w-[1200px] px-4 py-16">
@@ -203,19 +203,21 @@ export default function PricingPage() {
           ))}
         </div>
 
-        {/* 14-day Trial CTA Banner */}
-        <div className="mt-16 rounded-2xl border border-neon-primary/30 bg-gradient-to-r from-violet-50 via-white to-violet-50 p-10 text-center">
+        {/* KakaoTalk CTA Banner */}
+        <div className="mt-16 rounded-2xl border border-[#FEE500]/50 bg-gradient-to-r from-yellow-50 via-white to-yellow-50 p-10 text-center">
           <h3 className="mb-3 text-3xl font-bold text-neon-text">
-            14일 프로 <span className="text-neon-primary">체험</span>
+            광고 <span className="text-neon-primary">문의</span>
           </h3>
           <p className="mx-auto mb-6 max-w-md text-base text-neon-text-muted leading-relaxed">
-            카드 정보 없이 바로 시작하세요. 프로 플랜 기능 전부 14일간 비용 없이 써보세요.
+            요금제 선택이 어려우시다면 카카오톡으로 편하게 상담받으세요. 맞춤 플랜을 추천해 드립니다.
           </p>
-          <Link target="_blank" rel="noopener noreferrer" to="/onboarding?plan=pro&trial=true"
-            className="inline-block rounded-xl bg-neon-primary px-8 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-neon-primary-light"
+          <a href="https://pf.kakao.com/besta12/chat" target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#FEE500] px-8 py-3.5 text-sm font-semibold text-[#191919] transition-colors hover:bg-[#FDD835]"
           >
-            체험 시작하기
-          </Link>
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.477 3 2 6.463 2 10.691c0 2.724 1.8 5.113 4.508 6.459-.2.744-.723 2.694-.828 3.112-.13.52.19.513.4.373.164-.109 2.612-1.78 3.67-2.502.725.104 1.476.158 2.25.158 5.523 0 10-3.463 10-7.6S17.523 3 12 3Z" /></svg>
+            카카오톡 상담
+          </a>
+          <p className="mt-3 text-[11px] text-neon-text-subtle">카드결제는 곧 오픈 예정입니다</p>
         </div>
 
         {/* FAQ Section */}

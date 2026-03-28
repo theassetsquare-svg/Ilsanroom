@@ -80,7 +80,7 @@ const quickLinks = [
 ];
 
 export default function DashboardPage() {
-  useDocumentMeta('업주 대시보드 | 밤키', '내 업소 조회수, 리뷰, 예약 현황.');
+  useDocumentMeta('업주 대시보드 | 플밤', '내 업소 조회수, 리뷰, 예약 현황.');
   const [reservationStatuses, setReservationStatuses] = useState<
     Record<number, string>
   >(

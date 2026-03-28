@@ -124,7 +124,7 @@ const sections = [
     description:
       "회사는 가입자 데이터 처리에 관한 업무를 총괄하여 책임지고, 이와 유관된 불만 처리 및 피해 구제를 위해 아래와 같이 개인자료보호 책임자를 지정합니다.",
     items: [
-      "개인자료보호 책임자: 밤키 데이터보호팀",
+      "개인자료보호 책임자: 플밤 데이터보호팀",
       "문의: privacy@neon.com",
       "기타 사용자 개인자료 침해에 대한 신고나 상담은 아래 기관에 문의하실 수 있습니다:",
       "개인개인자료침해 신고센터 (privacy.kisa.or.kr / 118)",
@@ -135,7 +135,7 @@ const sections = [
 ];
 
 export default function PrivacyPage() {
-  useDocumentMeta('개인정보처리방침 | 밤키', '밤키 개인정보 수집·이용·보호 정책.');
+  useDocumentMeta('개인정보처리방침 | 플밤', '플밤 개인정보 수집·이용·보호 정책.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">
@@ -145,7 +145,7 @@ export default function PrivacyPage() {
             개인개인자료<span className="text-neon-primary-light">처리방침</span>
           </h1>
           <p className="text-lg text-neon-text-muted">
-            밤키은 회원의 소중한 개인자료를 안전히 보호합니다
+            플밤은 회원의 소중한 개인자료를 안전히 보호합니다
           </p>
         </div>
 
@@ -160,7 +160,7 @@ export default function PrivacyPage() {
         {/* Introduction */}
         <div className="mb-10 rounded-2xl border border-violet-500/20 bg-neon-primary-light/5 p-6 md:p-8">
           <p className="text-sm leading-relaxed text-neon-text">
-            밤키(이하 &quot;회사&quot;)은 개인개인자료보호법, 개인자료통신망 이용촉진 및
+            플밤(이하 &quot;회사&quot;)은 개인개인자료보호법, 개인자료통신망 이용촉진 및
             개인자료보호 등에 관한 법률 등 유관 관계법에 따라 이용자의 개인 데이터를
             보호하고 이와 유관한 고충을 신속하게 처리하기 위하여 다음과 같이
             개인개인자료처리방침을 수립하여 공개합니다.

@@ -46,7 +46,7 @@ function YojeongCard({ venue, region }: { venue: Venue; region: string }) {
 export default function RegionalYojeongPage() {
   const { region } = useParams<{ region: string }>();
   const regionKo = regionNames[region] || region;
-  useDocumentMeta(`${regionKo} 일대 한식 접객 공간 | 밤키`, `${regionKo} 한정식·국악 접객, 여긴 격이 다르다.`);
+  useDocumentMeta(`${regionKo} 일대 한식 접객 공간 | 플밤`, `${regionKo} 한정식·국악 접객, 여긴 격이 다르다.`);
   const yojeongs = getVenuesByCategoryAndRegion('yojeong', region);
 
   return (

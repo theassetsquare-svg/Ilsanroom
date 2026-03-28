@@ -88,7 +88,7 @@ function MyeongwolgwanExtraContent() {
 export default function YojeongDetailPage() {
   const { region, slug } = useParams<{ region: string; slug: string }>();
   const venue = getVenueBySlug(slug);
-  useDocumentMeta(getHookingTitle(venue!) + ' | 밤키', getHookingDescription(venue!), getVenueOgImageBySlug(venue!.slug));
+  useDocumentMeta(getHookingTitle(venue!) + ' | 플밤', getHookingDescription(venue!), getVenueOgImageBySlug(venue!.slug));
 
   const regionKo = regionNames[region] || region;
   const related = getRelatedVenues(venue, 6);

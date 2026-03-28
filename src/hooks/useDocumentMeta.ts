@@ -33,7 +33,7 @@ export function useDocumentMeta(title: string, description: string, ogImage?: st
     setMeta('property', 'og:type', 'website');
     setMeta('property', 'og:url', currentUrl);
     setMeta('property', 'og:locale', 'ko_KR');
-    setMeta('property', 'og:site_name', '밤키');
+    setMeta('property', 'og:site_name', '플밤');
 
     if (ogImage) {
       setMeta('property', 'og:image', ogImage);

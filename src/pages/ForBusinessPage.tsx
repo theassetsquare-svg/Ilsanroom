@@ -19,9 +19,9 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 const features = [
   {
     icon: Eye,
-    title: "검색 노출 증가",
+    title: "플밤 내 우선 노출",
     description:
-      "밤키에서 검색하면 내 가게가 먼저 뜬다. SEO 최적화와 카테고리 상위 배치까지 알아서 잡아준다.",
+      "플밤 사이트에서 다른 업소보다 먼저 보입니다. 카테고리 상단 배치로 손님 눈에 가장 먼저 들어옵니다.",
   },
   {
     icon: MessageSquare,
@@ -39,7 +39,7 @@ const features = [
     icon: BadgeCheck,
     title: "프리미엄 뱃지",
     description:
-      "밤키 인증 뱃지로 신뢰도를 높이세요. 인증 매장은 손님 클릭률이 평균 2.3배 높습니다.",
+      "플밤 인증 뱃지로 신뢰도를 높이세요. 인증 매장은 손님 클릭률이 평균 2.3배 높습니다.",
   },
   {
     icon: CalendarCheck,
@@ -116,7 +116,7 @@ const plans = [
     price: "₩49,000",
     period: "/월",
     features: [
-      "프리미엄 검색 노출",
+      "플밤 내 우선 노출",
       "실시간 분석지표 대시보드",
       "리뷰 관리 도구",
       "인증 뱃지",
@@ -151,7 +151,7 @@ const plans = [
 
 const testimonials = [
   {
-    text: "밤키 도입하고 신규 손님이 눈에 띄게 늘었어요. 대시보드 보면 어떤 프로모션이 먹히는지 바로 보여요. 수익이 2배 넘게 올랐습니다.",
+    text: "플밤 도입하고 신규 손님이 눈에 띄게 늘었어요. 대시보드 보면 어떤 프로모션이 먹히는지 바로 보여요. 수익이 2배 넘게 올랐습니다.",
     name: "김** 대표",
     venue: "일산명월관",
     rating: 5,
@@ -171,7 +171,7 @@ const testimonials = [
 ];
 
 export default function ForBusinessPage() {
-  useDocumentMeta('내 가게 등록하면 월 1,200명이 본다 | 밤키', '검색 상위노출, 프리미엄 뱃지, 리뷰 관리 대시보드.');
+  useDocumentMeta('내 가게 등록하면 월 1,200명이 본다 | 플밤', '플밤 내 우선 노출, 프리미엄 뱃지, 리뷰 관리 대시보드.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       {/* Hero */}
@@ -183,14 +183,14 @@ export default function ForBusinessPage() {
             업주 전용
           </span>
           <h1 className="mb-6 text-4xl font-extrabold leading-tight md:text-5xl lg:text-6xl">
-            내 업소를 밤키에 등록하고
+            내 업소를 플밤에 등록하고
             <br />
             <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
               매출 300% 올리세요
             </span>
           </h1>
           <p className="mx-auto mb-10 max-w-2xl text-lg text-neon-text-muted">
-            검색 노출, 리뷰 관리, 실시간 분석지표, 예약 시스템까지. 밤키 하나로
+            검색 노출, 리뷰 관리, 실시간 분석지표, 예약 시스템까지. 플밤 하나로
             밤문화 비즈니스의 모든 것을 관리하세요.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -242,7 +242,7 @@ export default function ForBusinessPage() {
       {/* Features Grid */}
       <section className="mx-auto max-w-5xl px-4 py-20">
         <h2 className="mb-4 text-center text-3xl font-bold">
-          왜 <span className="text-neon-primary-light">밤키</span>인가요?
+          왜 <span className="text-neon-primary-light">플밤</span>인가요?
         </h2>
         <p className="mx-auto mb-12 max-w-xl text-center text-sm text-neon-text-muted">
           매장 운영에 필요한 도구, 여기 다 있다.

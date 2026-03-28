@@ -12,7 +12,7 @@ const GlobalEngagement = lazy(() => import('@/components/engagement/GlobalEngage
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: '밤키',
+  name: '플밤',
   url: 'https://ilsanroom.pages.dev',
   logo: 'https://ilsanroom.pages.dev/favicon.ico',
   description: '전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보',
@@ -22,7 +22,7 @@ const organizationJsonLd = {
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: '밤키',
+  name: '플밤',
   url: 'https://ilsanroom.pages.dev',
   potentialAction: {
     '@type': 'SearchAction',

@@ -21,7 +21,7 @@ function getCategoryHref(v: Venue) {
 }
 
 export default function ComparePage() {
-  useDocumentMeta('나란히 비교하면 답이 보인다 | 밤키', '2~3곳을 한 화면에서 분위기·특징·후기 비교.');
+  useDocumentMeta('나란히 비교하면 답이 보인다 | 플밤', '2~3곳을 한 화면에서 분위기·특징·후기 비교.');
   const [selected, setSelected] = useState<string[]>([]);
   const [votes, setVotes] = useState<Record<string, number>>({});
 

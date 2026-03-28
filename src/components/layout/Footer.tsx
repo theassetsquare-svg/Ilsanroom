@@ -1,6 +1,5 @@
 
 
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const categoryLinks = [
@@ -65,45 +64,17 @@ const regionalLinks = {
   ],
 };
 
-function NewsletterForm() {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) return;
-    setSubmitted(true);
-    setEmail('');
-  };
-  return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
-      {submitted ? (
-        <p className="text-sm font-medium text-neon-green">구독 완료! 감사합니다.</p>
-      ) : (
-        <>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="이메일 주소"
-            className="flex-1 rounded-xl border border-neon-border bg-white px-4 py-2.5 text-sm text-neon-text placeholder:text-neon-text-subtle focus:border-neon-primary focus:outline-none"
-            required
-          />
-          <button
-            type="submit"
-            className="shrink-0 rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-neon-primary-light"
-          >
-            구독
-          </button>
-        </>
-      )}
-    </form>
-  );
-}
-
 export default function Footer() {
   return (
     <footer className="border-t border-neon-border bg-neon-surface pb-20 md:pb-0">
       <div className="mx-auto max-w-[1200px] px-4 py-12">
+        {/* ★★★ "구글·AI에서 플밤을 검색하세요" — 모든 페이지 노출 ★★★ */}
+        <div className="mb-10 rounded-2xl bg-neon-primary px-6 py-5 text-center">
+          <p className="text-base font-bold text-white sm:text-lg">
+            구글 · ChatGPT · Gemini에서 <span className="text-xl font-black">"플밤"</span> 검색하세요
+          </p>
+        </div>
+
         {/* ★★★ 광고문의 — 푸터 최상단, 모든 페이지 ★★★ */}
         <div className="mb-10 rounded-2xl border-2 border-neon-primary/30 bg-gradient-to-r from-violet-50 to-white px-6 py-6 text-center">
           <p className="text-xl font-extrabold text-neon-text sm:text-2xl">
@@ -115,8 +86,8 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Site info */}
           <div className="col-span-2 sm:col-span-1">
-            <Link target="_blank" rel="noopener noreferrer" to="/" className="text-xl font-black tracking-wider text-neon-primary">
-              밤키
+            <Link to="/" className="text-xl font-black tracking-wider text-neon-primary">
+              플밤
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-neon-text-muted">
               전국 클럽·나이트·라운지·룸·요정·호빠 정보
@@ -129,7 +100,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {categoryLinks.map((link) => (
                 <li key={link.href}>
-                  <Link target="_blank" rel="noopener noreferrer" to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
+                  <Link to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
                     {link.label}
                   </Link>
                 </li>
@@ -143,7 +114,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {communityLinks.map((link) => (
                 <li key={link.href}>
-                  <Link target="_blank" rel="noopener noreferrer" to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
+                  <Link to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
                     {link.label}
                   </Link>
                 </li>
@@ -157,7 +128,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {legalLinks.map((link) => (
                 <li key={link.href}>
-                  <Link target="_blank" rel="noopener noreferrer" to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
+                  <Link to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
                     {link.label}
                   </Link>
                 </li>
@@ -175,7 +146,7 @@ export default function Footer() {
                 <h4 className="mb-2 text-xs font-semibold text-neon-accent">{region}</h4>
                 <div className="flex flex-wrap gap-x-3 gap-y-1">
                   {links.map((link) => (
-                    <Link target="_blank" rel="noopener noreferrer" key={link.href}
+                    <Link key={link.href}
                       to={link.href}
                       className="text-xs text-neon-text-muted transition-colors hover:text-neon-primary-light"
                     >
@@ -188,29 +159,10 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* SaaS / Business links */}
-        <div className="mt-6 border-t border-neon-border pt-6">
-          <div className="flex flex-wrap justify-center gap-4 text-xs text-neon-text-muted">
-            <Link target="_blank" rel="noopener noreferrer" to="/pricing" className="hover:text-neon-primary-light transition-colors">업주 요금제</Link>
-            <Link target="_blank" rel="noopener noreferrer" to="/for-business" className="hover:text-neon-primary-light transition-colors">업주 입점</Link>
-            <Link target="_blank" rel="noopener noreferrer" to="/demo" className="hover:text-neon-primary-light transition-colors">데모</Link>
-            <Link target="_blank" rel="noopener noreferrer" to="/referral" className="hover:text-neon-primary-light transition-colors">추천 프로그램</Link>
-          </div>
-        </div>
-
-        {/* Newsletter */}
-        <div className="mt-8 border-t border-neon-border pt-6">
-          <div className="mx-auto max-w-md text-center">
-            <h3 className="mb-2 text-sm font-semibold text-neon-text">주간 소식 받기</h3>
-            <p className="mb-3 text-xs text-neon-text-muted">새로운 업소, 이벤트, 인기 순위를 매주 이메일로</p>
-            <NewsletterForm />
-          </div>
-        </div>
-
         {/* Bottom bar */}
         <div className="mt-8 border-t border-neon-border pt-6">
           <p className="text-center text-xs text-neon-text-muted">
-            &copy; {new Date().getFullYear()} 밤키. All rights reserved.
+            &copy; {new Date().getFullYear()} 강남청담클럽. All rights reserved.
           </p>
           <p className="mt-2 text-center text-xs text-neon-text-muted">
             직접 확인하고 전문가가 분석합니다
