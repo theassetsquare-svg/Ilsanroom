@@ -35,8 +35,8 @@
   --color-neon-surface-2: #F0F0F5;
   --color-neon-border: #D1D5DB;
   --color-neon-text: #111111;
-  --color-neon-text-muted: #555555;
-  --color-neon-text-subtle: #666666;
+  --color-neon-text-muted: #333333;
+  --color-neon-text-subtle: #444444;
   --color-neon-primary: #7C3AED;
   --color-neon-primary-light: #6D28D9;
   --color-neon-primary-dark: #5B21B6;
@@ -107,17 +107,13 @@ html {
 
 /* Glass morphism — light */
 .glass {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .glass-strong {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 /* Accent text — no neon glow in light mode */
@@ -316,9 +312,9 @@ html {
   }
 }
 
-/* ★ 가독성 — 연한 회색 텍스트 금지. 최소 #555 */
-.text-neon-text-muted { color: #555555 !important; }
-.text-neon-text-subtle { color: #666666 !important; }
+/* ★ 가독성 — 모든 텍스트 선명하게 */
+.text-neon-text-muted { color: #333333 !important; }
+.text-neon-text-subtle { color: #444444 !important; }
 
 /* ★ 카드 높이 통일 */
 .venue-card-grid > * > a,
