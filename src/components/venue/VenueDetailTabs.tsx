@@ -16,6 +16,39 @@ interface VenueDetailTabsProps {
 
 const TABS = ['기본정보', '메뉴·서비스', '리뷰', '사진갤러리', '이벤트', 'FAQ', '지도', 'VS투표', '인기시간'] as const;
 
+function GalleryImage({ slug, name, num }: { slug: string; name: string; num: number }) {
+  const [src, setSrc] = useState(`/venues/${slug}-${num}.jpg`);
+  const [loaded, setLoaded] = useState(false);
+  const [failed, setFailed] = useState(false);
+
+  const handleError = () => {
+    if (src.endsWith('.jpg')) setSrc(`/venues/${slug}-${num}.webp`);
+    else if (src.endsWith('.webp')) setSrc(`/venues/${slug}-${num}.png`);
+    else setFailed(true);
+  };
+
+  if (failed) return null;
+
+  return (
+    <div className="relative overflow-hidden rounded-xl bg-neon-surface-2">
+      <img
+        src={src}
+        alt={name}
+        width={600}
+        height={400}
+        loading="lazy"
+        onLoad={() => setLoaded(true)}
+        onError={handleError}
+        className={`w-full object-cover transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        style={{ aspectRatio: '3/2' }}
+      />
+      {!loaded && !failed && (
+        <div className="absolute inset-0 animate-pulse bg-neon-surface-2" style={{ aspectRatio: '3/2' }} />
+      )}
+    </div>
+  );
+}
+
 const CATEGORY_SYNONYMS: Record<string, string> = {
   club: 'EDM 파티홀', night: '댄스홀', lounge: '감성 칵테일 바',
   room: '프라이빗 룸', yojeong: '전통 한정식', hoppa: '호스트 엔터테인먼트',
@@ -128,10 +161,8 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
           <div>
             <h2 className="mb-4 text-xl font-bold text-neon-text">사진 갤러리</h2>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="aspect-square rounded-xl border border-neon-border bg-neon-surface-2 flex items-center justify-center">
-                  <span className="text-neon-text-muted text-sm">사진 준비중</span>
-                </div>
+              {[1, 2, 3, 4, 5, 6].map((n) => (
+                <GalleryImage key={n} slug={venue.slug} name={venue.nameKo} num={n} />
               ))}
             </div>
           </div>
