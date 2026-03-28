@@ -14,7 +14,7 @@ interface ImageSlot {
 
 export default function VenueGallery({ slug, name }: VenueGalleryProps) {
   const [slots, setSlots] = useState<ImageSlot[]>(() =>
-    [1, 2, 3, 4, 5, 6].map((n) => ({
+    [1, 2, 3, 4].map((n) => ({
       src: `/venues/${slug}-${n}.jpg`,
       fallback: `/venues/${slug}-${n}.webp`,
       loaded: false,
@@ -30,12 +30,8 @@ export default function VenueGallery({ slug, name }: VenueGalleryProps) {
     setSlots((prev) =>
       prev.map((s, i) => {
         if (i !== idx) return s;
-        if (s.src.endsWith('.jpg')) {
-          return { ...s, src: s.fallback };
-        }
-        if (s.src.endsWith('.webp')) {
-          return { ...s, src: s.src.replace('.webp', '.png') };
-        }
+        if (s.src.endsWith('.jpg')) return { ...s, src: s.fallback };
+        if (s.src.endsWith('.webp')) return { ...s, src: s.src.replace('.webp', '.png') };
         return { ...s, failed: true };
       })
     );
@@ -46,7 +42,7 @@ export default function VenueGallery({ slug, name }: VenueGalleryProps) {
 
   return (
     <div className="my-8">
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2">
         {slots.map((slot, idx) =>
           slot.failed ? null : (
             <div key={idx} className="relative overflow-hidden rounded-xl bg-neon-surface-2">

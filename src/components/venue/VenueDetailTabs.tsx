@@ -17,13 +17,13 @@ interface VenueDetailTabsProps {
 const TABS = ['기본정보', '메뉴·서비스', '리뷰', '사진갤러리', '이벤트', 'FAQ', '지도', 'VS투표', '인기시간'] as const;
 
 function GalleryImage({ slug, name, num }: { slug: string; name: string; num: number }) {
-  const [src, setSrc] = useState(`/venues/${slug}-${num}.jpg`);
+  const [src, setSrc] = useState(`/venues/${slug}-g${num}.jpg`);
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
 
   const handleError = () => {
-    if (src.endsWith('.jpg')) setSrc(`/venues/${slug}-${num}.webp`);
-    else if (src.endsWith('.webp')) setSrc(`/venues/${slug}-${num}.png`);
+    if (src.endsWith('.jpg')) setSrc(`/venues/${slug}-g${num}.webp`);
+    else if (src.endsWith('.webp')) setSrc(`/venues/${slug}-g${num}.png`);
     else setFailed(true);
   };
 
