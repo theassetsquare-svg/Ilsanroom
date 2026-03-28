@@ -353,3 +353,11 @@ html {
 .hoppa-theme .bg-pink-950\/30 {
   background-color: #FDF2F8;
 }
+
+/* 업소 상세페이지: 전화바와 겹치는 하단 요소 숨기기 */
+.venue-detail-page [class*="SessionRewardBar"],
+.venue-detail-page #engagement-reward-bar,
+.venue-detail-page #engagement-missions,
+.venue-detail-page #tiktok-launcher {
+  display: none !important;
+}

@@ -46,6 +46,12 @@ export default function VenueDetailPage({
   const trackView = useEngagementStore((s) => s.trackView);
   useEffect(() => { trackView(venue.slug); }, [venue.slug, trackView]);
 
+  // 업소 상세페이지: 전화바와 겹치는 하단 engagement 요소 숨기기
+  useEffect(() => {
+    document.body.classList.add('venue-detail-page');
+    return () => { document.body.classList.remove('venue-detail-page'); };
+  }, []);
+
   const nameHasRegion = venue.nameKo.includes(regionKo);
   const breadcrumbItems = [
     { name: '놀쿨', url: '/' },

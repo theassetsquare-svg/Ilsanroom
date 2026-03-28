@@ -40,6 +40,11 @@ function ScrollToTop() {
 }
 
 export default function MainLayout() {
+  const { pathname } = useLocation();
+  // 업소 상세페이지: /clubs/*/*, /nights/*, /lounges/*, /rooms/*/*, /yojeong/*/*, /hoppa/*
+  const isVenueDetail = /^\/(clubs|nights|lounges|rooms|yojeong|hoppa)\/[^/]+(\/[^/]+)?$/.test(pathname)
+    && pathname.split('/').length >= 3;
+
   return (
     <div className="flex min-h-screen flex-col">
       <ScrollToTop />
@@ -64,9 +69,12 @@ export default function MainLayout() {
       <MobileNav />
       <BackToTop />
       <Toast />
-      <Suspense fallback={null}>
-        <GlobalEngagement />
-      </Suspense>
+      {/* 업소 상세페이지에서는 전화바와 겹치므로 engagement 숨김 */}
+      {!isVenueDetail && (
+        <Suspense fallback={null}>
+          <GlobalEngagement />
+        </Suspense>
+      )}
     </div>
   );
 }
