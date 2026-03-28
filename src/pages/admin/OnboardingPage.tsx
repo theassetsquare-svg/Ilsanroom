@@ -380,7 +380,7 @@ export default function OnboardingPage() {
                         x
                       </button>
                       {index === 0 && (
-                        <span className="absolute bottom-1 left-1 rounded bg-neon-primary px-1.5 py-0.5 text-[10px] font-medium">
+                        <span className="absolute bottom-1 left-1 rounded bg-neon-primary px-1.5 py-0.5 text-xs font-medium">
                           대표
                         </span>
                       )}
@@ -419,7 +419,7 @@ export default function OnboardingPage() {
                   >
                     {plan.tag && (
                       <span
-                        className={`absolute -top-2.5 right-3 rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
+                        className={`absolute -top-2.5 right-3 rounded-full px-2.5 py-0.5 text-xs font-bold ${
                           plan.highlighted
                             ? "bg-neon-primary text-neon-text"
                             : "bg-yellow-500 text-black"

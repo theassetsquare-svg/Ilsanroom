@@ -106,7 +106,7 @@ export default function MapPage() {
             image: markerImage,
             title: v.nameKo,
           });
-          const infoContent = `<div style="padding:8px 12px;font-size:13px;font-family:Pretendard,sans-serif;white-space:nowrap;"><strong>${v.nameKo}</strong><br/><span style="color:#888">${ms.label} · ${v.regionKo}</span></div>`;
+          const infoContent = `<div style="padding:8px 12px;font-size:13px;font-family:Pretendard,sans-serif;white-space:nowrap;"><strong>${v.nameKo}</strong><br/><span style="color:#333">${ms.label} · ${v.regionKo}</span></div>`;
           const infowindow = new kakao.maps.InfoWindow({ content: infoContent });
           kakao.maps.event.addListener(marker, 'mouseover', () => infowindow.open(map, marker));
           kakao.maps.event.addListener(marker, 'mouseout', () => infowindow.close());
@@ -198,7 +198,7 @@ export default function MapPage() {
                   style={{ minHeight: 40 }}>
                   카카오맵에서 열기
                 </a>
-                <p className="text-[11px] text-neon-text-subtle">VITE_KAKAO_JS_KEY 설정 후 자동 연동</p>
+                <p className="text-xs text-neon-text-subtle">VITE_KAKAO_JS_KEY 설정 후 자동 연동</p>
               </div>
             )}
           </div>
@@ -220,7 +220,7 @@ export default function MapPage() {
             <section key={region}>
               <h2 className="mb-3 text-base font-bold text-neon-text flex items-center gap-2">
                 {region}
-                <span className="rounded-full bg-neon-surface-2 px-2 py-0.5 text-[11px] text-neon-text-muted">{vList.length}</span>
+                <span className="rounded-full bg-neon-surface-2 px-2 py-0.5 text-xs text-neon-text-muted">{vList.length}</span>
               </h2>
               <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
                 {vList.map((v) => {

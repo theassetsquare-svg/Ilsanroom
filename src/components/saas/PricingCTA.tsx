@@ -38,7 +38,7 @@ export default function PricingCTA({ planId, label, highlighted }: { planId: str
         <KakaoIcon className="h-5 w-5" />
         카카오톡 상담
       </a>
-      <p className="text-center text-[11px] text-neon-text-subtle">
+      <p className="text-center text-xs text-neon-text-subtle">
         카드결제는 곧 오픈 예정입니다
       </p>
     </div>

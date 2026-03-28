@@ -40,13 +40,13 @@ export default function HoppaPage() {
             <p className="text-lg font-bold text-pink-800">
               "혼자 가도 돼요?" — 물론이다. 오히려 1인 방문이 더 많다.
             </p>
-            <p className="text-base leading-relaxed text-pink-900/70">
+            <p className="text-base leading-relaxed text-pink-900">
               처음 가면 살짝 떨린다. 문 열고 들어가면 직원이 바로 안내해준다. 자리에 앉으면 호스트가 와서 인사한다. 대화가 시작된다. 마술을 보여주기도 하고, 보드게임을 같이 하기도 하고, 노래를 불러주기도 한다. 호스트마다 스타일이 전부 다르다.
             </p>
-            <p className="text-base leading-relaxed text-pink-900/70">
+            <p className="text-base leading-relaxed text-pink-900">
               TC(타임차지) 방식이라 시간 단위로 요금이 붙는다. 1시간 3~5만원대가 보통이고, 음료는 따로다. 전화할 때 "예산 얼마 정도예요" 하면 딱 맞게 안내해준다. 바가지는 없다. 사전 상담이 핵심이다.
             </p>
-            <p className="text-base leading-relaxed text-pink-900/70">
+            <p className="text-base leading-relaxed text-pink-900">
               친구 생일 서프라이즈, 회사 회식, 스트레스 풀러 솔로로 오는 경우까지 방문 목적이 폭넓다. 1인 고객 비율이 절반에 가깝다. 전국 18곳이 등록되어 있고, 전부 영업 중인지 직접 확인했다.
             </p>
           </div>
@@ -56,15 +56,15 @@ export default function HoppaPage() {
         <div className="grid gap-4 sm:grid-cols-3 mb-6">
           <div className="rounded-xl border border-pink-200 bg-pink-50 p-4">
             <h3 className="text-sm font-bold text-pink-700 mb-2">💰 가격 투명</h3>
-            <p className="text-sm text-pink-900/60">TC(타임차지)·주대 가격을 사전 전화로 확인 가능. 바가지 걱정 없다.</p>
+            <p className="text-sm text-pink-900">TC(타임차지)·주대 가격을 사전 전화로 확인 가능. 바가지 걱정 없다.</p>
           </div>
           <div className="rounded-xl border border-pink-200 bg-pink-50 p-4">
             <h3 className="text-sm font-bold text-pink-700 mb-2">🛡️ 안전 이용</h3>
-            <p className="text-sm text-pink-900/60">모든 등록 업소는 영업 확인 완료. 불쾌한 상황 시 직원에게 즉시 요청.</p>
+            <p className="text-sm text-pink-900">모든 등록 업소는 영업 확인 완료. 불쾌한 상황 시 직원에게 즉시 요청.</p>
           </div>
           <div className="rounded-xl border border-pink-200 bg-pink-50 p-4">
             <h3 className="text-sm font-bold text-pink-700 mb-2">👩 1인도 OK</h3>
-            <p className="text-sm text-pink-900/60">단독 방문해도 직원이 친절하게 안내. 오히려 1인 손님이 더 많다.</p>
+            <p className="text-sm text-pink-900">단독 방문해도 직원이 친절하게 안내. 오히려 1인 손님이 더 많다.</p>
           </div>
         </div>
       </div>

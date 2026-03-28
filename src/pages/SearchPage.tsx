@@ -69,7 +69,7 @@ export default function SearchPage() {
           value={query}
           onChange={e => setQuery(e.target.value)}
           placeholder="업소명, 지역, 카테고리로 검색"
-          className="w-full rounded-2xl border border-[#D1D5DB] bg-white py-3.5 pl-12 pr-4 text-base text-[#111] placeholder-[#999] shadow-sm outline-none focus:border-[#8B5CF6] focus:ring-2 focus:ring-[#8B5CF6]/20"
+          className="w-full rounded-2xl border border-[#D1D5DB] bg-white py-3.5 pl-12 pr-4 text-base text-[#111] placeholder-[#666] shadow-sm outline-none focus:border-[#8B5CF6] focus:ring-2 focus:ring-[#8B5CF6]/20"
           style={{ minHeight: 48 }}
           autoFocus
         />

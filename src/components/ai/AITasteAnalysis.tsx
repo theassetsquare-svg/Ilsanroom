@@ -143,7 +143,7 @@ export default function AITasteAnalysis() {
             {profile.keywords.length > 0 && (
               <div className="flex flex-wrap gap-1.5">
                 {profile.keywords.map(k => (
-                  <span key={k} className="rounded bg-white px-2 py-0.5 text-[11px] text-cyan-600 border border-cyan-200">#{k}</span>
+                  <span key={k} className="rounded bg-white px-2 py-0.5 text-xs text-cyan-600 border border-cyan-200">#{k}</span>
                 ))}
               </div>
             )}

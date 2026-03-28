@@ -103,7 +103,7 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="업소명, 지역, 카테고리 검색..."
-            className="w-full rounded-xl border border-neon-border bg-neon-surface py-4 pr-4 pl-12 text-lg text-neon-text placeholder-[#999] outline-none transition-colors focus:border-neon-primary"
+            className="w-full rounded-xl border border-neon-border bg-neon-surface py-4 pr-4 pl-12 text-lg text-neon-text placeholder-[#666] outline-none transition-colors focus:border-neon-primary"
           />
         </div>
 
@@ -127,7 +127,7 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
                   </p>
                 </div>
                 {v.isPremium && (
-                  <span className="shrink-0 rounded-full bg-neon-gold/10 px-2 py-0.5 text-[10px] font-bold text-neon-gold">PREMIUM</span>
+                  <span className="shrink-0 rounded-full bg-neon-gold/10 px-2 py-0.5 text-xs font-bold text-neon-gold">PREMIUM</span>
                 )}
               </Link>
             ))}

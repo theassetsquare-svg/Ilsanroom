@@ -180,7 +180,7 @@ export default function StatusPage() {
               />
             ))}
           </div>
-          <div className="mt-3 flex items-center justify-between text-[10px] text-neon-text-muted">
+          <div className="mt-3 flex items-center justify-between text-xs text-neon-text-muted">
             <span>30일 전</span>
             <div className="flex items-center gap-3">
               <span className="flex items-center gap-1">

@@ -95,7 +95,7 @@ export default function WritePostModal({ open, onClose, defaultCategory = 'free'
                 <button
                   key={s}
                   onClick={() => setRating(s)}
-                  className={`text-2xl transition ${s <= rating ? 'text-amber-400' : 'text-gray-300'}`}
+                  className={`text-2xl transition ${s <= rating ? 'text-amber-400' : 'text-gray-400'}`}
                 >
                   ★
                 </button>

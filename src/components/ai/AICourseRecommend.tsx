@@ -153,7 +153,7 @@ export default function AICourseRecommend() {
                     </div>
                     <h4 className="text-sm font-bold text-neon-text">{step.venue.nameKo}</h4>
                     <p className="text-xs text-neon-text-muted mt-1">{step.description}</p>
-                    <div className="mt-2 flex gap-2 text-[11px]">
+                    <div className="mt-2 flex gap-2 text-xs">
                       <span className="rounded bg-amber-50 px-2 py-0.5 text-amber-600">{getCategoryLabel(step.venue.category)}</span>
                       <span className="text-amber-600">★ {step.venue.rating}</span>
                     </div>

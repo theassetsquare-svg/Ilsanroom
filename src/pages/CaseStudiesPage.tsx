@@ -56,7 +56,7 @@ export default function CaseStudiesPage() {
               </div>
               <div className="text-right shrink-0">
                 <p className="text-xl sm:text-2xl font-extrabold text-neon-green">{cs.metric}</p>
-                <p className="text-[10px] text-neon-text-muted">{cs.metricLabel}</p>
+                <p className="text-xs text-neon-text-muted">{cs.metricLabel}</p>
               </div>
             </div>
 

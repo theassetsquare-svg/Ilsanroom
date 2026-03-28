@@ -39,10 +39,10 @@ export default function PopularTimeWidget() {
               <p className={`text-sm font-semibold mb-2 ${isCurrent ? 'text-neon-text' : 'text-neon-text-muted'}`}>{slot.label}</p>
               <div className="space-y-1">
                 {slot.venues.map((v) => (
-                  <p key={v} className="text-[11px] text-neon-text-muted truncate">{v}</p>
+                  <p key={v} className="text-xs text-neon-text-muted truncate">{v}</p>
                 ))}
               </div>
-              {isCurrent && <p className="mt-2 text-[10px] text-neon-pink/80">{slot.tip}</p>}
+              {isCurrent && <p className="mt-2 text-xs text-neon-pink/80">{slot.tip}</p>}
             </div>
           );
         })}

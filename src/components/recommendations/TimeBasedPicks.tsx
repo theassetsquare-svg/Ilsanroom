@@ -80,7 +80,7 @@ export default function TimeBasedPicks() {
           <span className="text-3xl">{slot.emoji}</span>
           <div>
             <h2 className="text-xl font-bold text-neon-text">{slot.greeting}</h2>
-            <p className="text-sm text-neon-text/50">
+            <p className="text-sm text-neon-text-muted">
               지금 시각 {hour}시 — 이런 곳은 어떠세요?
             </p>
           </div>
@@ -105,7 +105,7 @@ export default function TimeBasedPicks() {
                     {i + 1}
                   </span>
                   <span className="text-sm font-medium text-neon-text">{name}</span>
-                  <span className="ml-auto text-xs text-neon-text/40">→</span>
+                  <span className="ml-auto text-xs text-neon-text-muted">→</span>
                 </Link>
               ))}
             </div>

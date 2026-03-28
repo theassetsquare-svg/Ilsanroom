@@ -145,7 +145,7 @@ export default function AutoNextSuggestion() {
         >
           <div className="mx-auto max-w-lg rounded-2xl border border-gray-200 bg-white/95 backdrop-blur-md p-4 shadow-2xl">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-medium text-[#888]">다음 추천</p>
+              <p className="text-xs font-medium text-[#333]">다음 추천</p>
               <button onClick={handleDismiss} className="p-1 rounded-full hover:bg-gray-100 transition">
                 <X size={14} className="text-gray-400" />
               </button>

@@ -17,7 +17,7 @@ export default function Rating({ rating, reviewCount, size = 'sm' }: RatingProps
           return (
             <svg
               key={star}
-              className={`${starSize} ${filled ? 'text-neon-gold' : half ? 'text-neon-gold/50' : 'text-neon-border'}`}
+              className={`${starSize} ${filled ? 'text-neon-gold' : half ? 'text-neon-gold' : 'text-neon-border'}`}
               fill="currentColor"
               viewBox="0 0 20 20"
             >

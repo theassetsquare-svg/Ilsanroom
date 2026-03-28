@@ -46,7 +46,7 @@ export default function PostSidebar({ currentPost, relatedPosts }: PostSidebarPr
                 <p className="text-sm text-neon-text-muted line-clamp-2 transition group-hover:text-violet-400">
                   {post.title}
                 </p>
-                <div className="mt-1 flex items-center gap-2 text-[10px] text-neon-text-muted">
+                <div className="mt-1 flex items-center gap-2 text-xs text-neon-text-muted">
                   <span className="rounded bg-neon-surface-2 px-1.5 py-0.5">{boardLabels[post.board]}</span>
                   <span>♥ {post.likes}</span>
                 </div>

@@ -133,7 +133,7 @@ export default function RankingPage() {
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <h3 className="truncate text-sm font-bold text-neon-text">{v.nameKo}</h3>
-                  {v.isPremium && <span className="text-[10px] font-semibold text-neon-gold bg-neon-gold/10 px-1.5 py-0.5 rounded">P</span>}
+                  {v.isPremium && <span className="text-xs font-semibold text-neon-gold bg-neon-gold/10 px-1.5 py-0.5 rounded">P</span>}
                 </div>
                 <p className="text-xs text-neon-text-muted">{v.regionKo} · {catLabels[v.category] || v.category}</p>
               </div>

@@ -373,7 +373,7 @@ export default function HelpPage() {
                 style={{ minHeight: 48 }}>
                 문의 보내기
               </button>
-              <p className="text-[10px] text-neon-text-subtle text-center">
+              <p className="text-xs text-neon-text-subtle text-center">
                 문의 내용은 qotjsdnr123@naver.com으로 전달됩니다
               </p>
             </form>

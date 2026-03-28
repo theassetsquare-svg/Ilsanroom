@@ -83,7 +83,7 @@ export default function PricePage() {
                     >
                       {v.nameKo}
                     </Link>
-                    {v.isPremium && <span className="ml-2 text-[10px] text-neon-gold">PREMIUM</span>}
+                    {v.isPremium && <span className="ml-2 text-xs text-neon-gold">PREMIUM</span>}
                   </td>
                   <td className="px-4 py-3 text-neon-text-muted">{v.regionKo}</td>
                   <td className="px-4 py-3 text-neon-text">{v.priceEntry || '-'}</td>

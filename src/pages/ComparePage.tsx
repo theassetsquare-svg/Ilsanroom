@@ -100,7 +100,7 @@ export default function ComparePage() {
                     <p className="text-xs text-neon-text-subtle mb-1">특징</p>
                     <div className="flex flex-wrap gap-1">
                       {v.features.slice(0, 4).map((f) => (
-                        <span key={f} className="rounded-full bg-neon-surface-2 px-2 py-0.5 text-[10px] text-neon-text-muted">{f}</span>
+                        <span key={f} className="rounded-full bg-neon-surface-2 px-2 py-0.5 text-xs text-neon-text-muted">{f}</span>
                       ))}
                     </div>
                   </div>

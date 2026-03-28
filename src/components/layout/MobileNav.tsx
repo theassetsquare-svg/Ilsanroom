@@ -87,7 +87,7 @@ export default function MobileNav() {
             <Link target="_blank" rel="noopener noreferrer"
               key={tab.href}
               to={tab.href}
-              className={`flex flex-col items-center gap-0.5 rounded-lg px-3 py-1.5 text-[10px] font-medium transition-colors ${
+              className={`flex flex-col items-center gap-0.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
                 active ? 'text-neon-primary' : 'text-neon-text-muted hover:text-neon-text'
               }`}
             >
@@ -98,7 +98,7 @@ export default function MobileNav() {
         })}
         <Link target="_blank" rel="noopener noreferrer"
           to={myHref}
-          className={`flex flex-col items-center gap-0.5 rounded-lg px-3 py-1.5 text-[10px] font-medium transition-colors ${
+          className={`flex flex-col items-center gap-0.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
             myActive ? 'text-neon-primary' : 'text-neon-text-muted hover:text-neon-text'
           }`}
         >

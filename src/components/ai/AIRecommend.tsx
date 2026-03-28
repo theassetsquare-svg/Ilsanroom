@@ -144,10 +144,10 @@ export default function AIRecommend() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <h4 className="text-sm font-bold text-neon-text truncate">{v.nameKo}</h4>
-                  {v.isPremium && <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-700">PREMIUM</span>}
+                  {v.isPremium && <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs font-bold text-amber-700">PREMIUM</span>}
                 </div>
                 <p className="mt-1 text-xs text-neon-text-muted line-clamp-1">{v.shortDescription}</p>
-                <div className="mt-2 flex gap-2 text-[11px] text-neon-text-muted">
+                <div className="mt-2 flex gap-2 text-xs text-neon-text-muted">
                   <span className="rounded bg-violet-50 px-2 py-0.5">{v.regionKo}</span>
                   <span className="rounded bg-violet-50 px-2 py-0.5">{getCategoryLabel(v.category)}</span>
                   <span className="text-amber-600">★ {v.rating}</span>

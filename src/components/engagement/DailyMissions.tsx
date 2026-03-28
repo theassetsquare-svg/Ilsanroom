@@ -170,12 +170,12 @@ export default function DailyMissions() {
       >
         <Target className="w-6 h-6 text-white" />
         {incompleteCount > 0 && (
-          <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#EF4444] text-[10px] font-bold text-white">
+          <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#EF4444] text-xs font-bold text-white">
             {incompleteCount}
           </span>
         )}
         {allClear && (
-          <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#F59E0B] text-[10px]">
+          <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#F59E0B] text-xs">
             <Check className="w-3 h-3 text-white" />
           </span>
         )}
@@ -215,7 +215,7 @@ export default function DailyMissions() {
                       <Target className="w-5 h-5 text-[#8B5CF6]" />
                       오늘의 미션
                     </h2>
-                    <p className="text-xs text-[#888] mt-0.5">
+                    <p className="text-xs text-[#333] mt-0.5">
                       {dateLabel} &middot; 완료: {completedCount}/{DAILY_MISSION_COUNT}
                     </p>
                   </div>
@@ -274,12 +274,12 @@ export default function DailyMissions() {
                             <p className={`text-sm font-semibold ${done ? 'text-[#059669] line-through' : 'text-[#111]'}`}>
                               {mission.title}
                             </p>
-                            <p className="text-xs text-[#888] mt-0.5">{mission.description}</p>
+                            <p className="text-xs text-[#333] mt-0.5">{mission.description}</p>
 
                             {/* Progress bar */}
                             {!done && (
                               <div className="mt-2">
-                                <div className="flex justify-between text-[10px] text-[#888] mb-0.5">
+                                <div className="flex justify-between text-xs text-[#333] mb-0.5">
                                   <span>{prog}/{mission.goal}</span>
                                   <span>{progressPct}%</span>
                                 </div>
@@ -296,7 +296,7 @@ export default function DailyMissions() {
                           {/* Reward / Status */}
                           <div className="shrink-0 text-right">
                             {done ? (
-                              <span className="inline-block rounded-full bg-[#059669] px-2 py-0.5 text-[10px] font-bold text-white">
+                              <span className="inline-block rounded-full bg-[#059669] px-2 py-0.5 text-xs font-bold text-white">
                                 완료!
                               </span>
                             ) : (
@@ -336,7 +336,7 @@ export default function DailyMissions() {
                 </AnimatePresence>
 
                 {/* Reset countdown */}
-                <div className="mt-5 flex items-center justify-center gap-1.5 text-xs text-[#888]">
+                <div className="mt-5 flex items-center justify-center gap-1.5 text-xs text-[#333]">
                   <Flame className="w-3.5 h-3.5 text-[#EF4444]" />
                   <span>리셋까지 {countdown.hours}시간 {countdown.minutes}분</span>
                 </div>

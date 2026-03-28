@@ -94,7 +94,7 @@ export default function SessionRewardBar() {
             <div className="p-5">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-base font-bold text-[#111]">세션 보상 타임라인</h3>
-                <span className="text-xs text-[#888]">접속 {sessionMinutes}분</span>
+                <span className="text-xs text-[#333]">접속 {sessionMinutes}분</span>
               </div>
               <div className="relative pl-8">
                 <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-gray-200" />
@@ -121,7 +121,7 @@ export default function SessionRewardBar() {
                             {reached ? '획득!' : `+${m.points}P`}
                           </span>
                         </div>
-                        <p className="text-xs text-[#888] mt-0.5">
+                        <p className="text-xs text-[#333] mt-0.5">
                           {m.minutes}분 체류
                           {m.extra && <span className="text-[#EC4899] ml-1">+ {m.extra}</span>}
                         </p>
@@ -143,7 +143,7 @@ export default function SessionRewardBar() {
               <Flame size={14} className="text-orange-500" />
               <span className="text-xs font-bold text-[#111]">{store.streak}</span>
             </div>
-            <span className="text-[10px] font-medium text-[#8B5CF6] bg-purple-50 px-1.5 py-0.5 rounded-full">
+            <span className="text-xs font-medium text-[#8B5CF6] bg-purple-50 px-1.5 py-0.5 rounded-full">
               Lv.{levelInfo.level} {levelInfo.name.split(' ')[1] || ''}
             </span>
           </div>
@@ -156,7 +156,7 @@ export default function SessionRewardBar() {
                 transition={{ duration: 1, ease: 'easeOut' }}
               />
             </div>
-            <p className="text-[9px] text-[#999] text-center mt-0.5">{Math.round(levelInfo.progress * 100)}%</p>
+            <p className="text-xs text-[#333] text-center mt-0.5">{Math.round(levelInfo.progress * 100)}%</p>
           </div>
           <div className="flex items-center gap-2">
             <div className="relative">
@@ -181,7 +181,7 @@ export default function SessionRewardBar() {
               aria-label={expanded ? '닫기' : '보상 보기'}
             >
               <motion.div animate={{ rotate: expanded ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                <ChevronUp size={16} className="text-[#888]" />
+                <ChevronUp size={16} className="text-[#333]" />
               </motion.div>
             </button>
           </div>

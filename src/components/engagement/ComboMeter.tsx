@@ -181,7 +181,7 @@ export default function ComboMeter() {
               <motion.span
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={`block text-center text-[9px] font-black tracking-widest mt-0.5 ${tier.color} ${tier.glow}`}
+                className={`block text-center text-xs font-black tracking-widest mt-0.5 ${tier.color} ${tier.glow}`}
               >
                 {tier.label}
               </motion.span>

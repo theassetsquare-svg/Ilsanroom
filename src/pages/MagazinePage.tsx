@@ -72,10 +72,10 @@ export default function MagazinePage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {articles.slice(1).map((a) => (
           <article key={a.id} className="rounded-2xl border border-neon-border bg-neon-surface p-5 card-hover" style={{ minHeight: 180 }}>
-            <span className="rounded-full bg-neon-primary/10 px-2.5 py-0.5 text-[10px] text-neon-primary-light">{a.tag}</span>
+            <span className="rounded-full bg-neon-primary/10 px-2.5 py-0.5 text-xs text-neon-primary-light">{a.tag}</span>
             <h3 className="mt-3 text-sm font-bold text-neon-text leading-snug line-clamp-2">{a.title}</h3>
             <p className="mt-2 text-xs text-neon-text-muted line-clamp-3 leading-relaxed">{a.excerpt}</p>
-            <div className="mt-3 flex items-center gap-2 text-[10px] text-neon-text-subtle">
+            <div className="mt-3 flex items-center gap-2 text-xs text-neon-text-subtle">
               <span>{a.date}</span><span>·</span><span>{a.readMin}분 소요</span>
             </div>
           </article>

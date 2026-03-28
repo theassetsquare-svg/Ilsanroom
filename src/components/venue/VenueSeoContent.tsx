@@ -395,7 +395,7 @@ export default function VenueSeoContent({ venue }: { venue: Venue }) {
   }
 
   return (
-    <section className="mt-8 space-y-4 text-gray-300 text-[15px] leading-relaxed">
+    <section className="mt-8 space-y-4 text-neon-text-muted text-[15px] leading-relaxed">
       {paragraphs.map((text, i) => (
         <p key={i}>{text}</p>
       ))}

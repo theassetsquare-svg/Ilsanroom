@@ -105,7 +105,7 @@ export default function TestimonialsPage() {
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-neon-text">{t.name}</span>
                     <span
-                      className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${getPlanColor(t.plan)}`}
+                      className={`rounded-full border px-2 py-0.5 text-xs font-medium ${getPlanColor(t.plan)}`}
                     >
                       {t.plan}
                     </span>

@@ -159,7 +159,7 @@ function CountdownRing({ seconds, onDone }: { seconds: number; onDone: () => voi
   const offset = c - (pct / 100) * c;
 
   return (
-    <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex items-center gap-2 text-white/60 text-xs">
+    <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex items-center gap-2 text-white text-xs">
       <svg width="32" height="32" className="-rotate-90">
         <circle cx="16" cy="16" r={r} fill="none" stroke="white" strokeOpacity={0.15} strokeWidth={2} />
         <circle
@@ -348,7 +348,7 @@ export default function TikTokFeed({ isOpen, onClose }: TikTokFeedProps) {
     >
       {/* Top bar */}
       <div className="absolute top-0 inset-x-0 z-20 flex items-center justify-between px-4 py-3 bg-gradient-to-b from-black/60 to-transparent">
-        <span className="text-white/60 text-sm font-medium">
+        <span className="text-white text-sm font-medium">
           {current + 1} / {feed.length}
         </span>
         <button
@@ -363,7 +363,7 @@ export default function TikTokFeed({ isOpen, onClose }: TikTokFeedProps) {
       {current > 0 && (
         <button
           onClick={goPrev}
-          className="absolute top-14 left-1/2 -translate-x-1/2 z-20 text-white/30 hover:text-white/60 transition-colors"
+          className="absolute top-14 left-1/2 -translate-x-1/2 z-20 text-white/70 hover:text-white transition-colors"
         >
           <ChevronUp className="w-6 h-6 animate-bounce" />
         </button>
@@ -371,7 +371,7 @@ export default function TikTokFeed({ isOpen, onClose }: TikTokFeedProps) {
       {current < feed.length - 1 && (
         <button
           onClick={goNext}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 text-white/30 hover:text-white/60 transition-colors"
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 text-white/70 hover:text-white transition-colors"
         >
           <ChevronDown className="w-6 h-6 animate-bounce" />
         </button>
@@ -515,7 +515,7 @@ function VenueSlide({
           <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-white/80 text-xs font-medium border border-white/10">
             {CAT_LABEL[venue.category] || venue.category}
           </span>
-          <span className="flex items-center gap-1 text-white/60 text-xs">
+          <span className="flex items-center gap-1 text-white text-xs">
             <MapPin className="w-3 h-3" />
             {venue.regionKo}
           </span>
@@ -535,11 +535,11 @@ function VenueSlide({
                 className={`w-4 h-4 ${
                   i < Math.round(venue.rating)
                     ? 'text-[var(--neon-accent,#f59e0b)] fill-[var(--neon-accent,#f59e0b)]'
-                    : 'text-white/20'
+                    : 'text-white/80'
                 }`}
               />
             ))}
-            <span className="text-white/60 text-sm ml-1">{venue.rating.toFixed(1)}</span>
+            <span className="text-white text-sm ml-1">{venue.rating.toFixed(1)}</span>
           </div>
         )}
 
@@ -554,7 +554,7 @@ function VenueSlide({
             {venue.features.slice(0, 4).map((f) => (
               <span
                 key={f}
-                className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-white/60 text-xs"
+                className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-white text-xs"
               >
                 {f}
               </span>
@@ -646,7 +646,7 @@ function PollSlide({
             )}
             <span className="relative z-10 text-white font-medium">{a}</span>
             {voted && (
-              <span className="relative z-10 float-right text-white/60 text-sm">{fakeA}%</span>
+              <span className="relative z-10 float-right text-white text-sm">{fakeA}%</span>
             )}
           </button>
           <button
@@ -667,7 +667,7 @@ function PollSlide({
             )}
             <span className="relative z-10 text-white font-medium">{b}</span>
             {voted && (
-              <span className="relative z-10 float-right text-white/60 text-sm">{fakeB}%</span>
+              <span className="relative z-10 float-right text-white text-sm">{fakeB}%</span>
             )}
           </button>
         </div>

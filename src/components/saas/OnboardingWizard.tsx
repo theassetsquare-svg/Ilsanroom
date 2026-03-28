@@ -272,7 +272,7 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
             } bg-neon-surface hover:bg-neon-surface-2/50`}
           >
             {plan.popular && (
-              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full bg-neon-primary px-2.5 py-0.5 text-[10px] font-bold text-white">
+              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full bg-neon-primary px-2.5 py-0.5 text-xs font-bold text-white">
                 인기
               </span>
             )}

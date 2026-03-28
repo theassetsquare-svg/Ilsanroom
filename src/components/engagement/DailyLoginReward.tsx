@@ -216,7 +216,7 @@ export default function DailyLoginReward() {
                     );
                   })}
                 </motion.div>
-                <p className="mt-1.5 text-center text-[10px] text-[#888]">
+                <p className="mt-1.5 text-center text-xs text-[#333]">
                   7일 연속 방문하면 특별 보너스!
                 </p>
               </div>

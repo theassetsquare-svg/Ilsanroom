@@ -157,7 +157,7 @@ export default function DemoPage() {
                         className="w-full rounded-t bg-violet-600/60"
                         style={{ height: `${h}%` }}
                       />
-                      <span className="text-[10px] text-neon-text-muted">
+                      <span className="text-xs text-neon-text-muted">
                         {["\uC6D4", "\uD654", "\uC218", "\uBAA9", "\uAE08", "\uD1A0", "\uC77C"][i]}
                       </span>
                     </div>
@@ -187,7 +187,7 @@ export default function DemoPage() {
                           {review.text}
                         </p>
                       </div>
-                      <span className="shrink-0 text-[10px] text-neon-text-muted">
+                      <span className="shrink-0 text-xs text-neon-text-muted">
                         {review.date}
                       </span>
                     </div>

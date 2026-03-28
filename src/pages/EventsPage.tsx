@@ -54,7 +54,7 @@ export default function EventsPage() {
             <div className="mb-4 rounded-xl border border-neon-border bg-neon-surface p-4 overflow-x-auto">
               <div className="grid grid-cols-7 gap-1 min-w-[280px]">
                 {DOW.map((d) => (
-                  <div key={d} className="text-center text-[10px] font-medium text-neon-text-muted py-1">{d}</div>
+                  <div key={d} className="text-center text-xs font-medium text-neon-text-muted py-1">{d}</div>
                 ))}
                 {cells.map((c) => (
                   <div key={c.key} className={`text-center text-xs py-1.5 rounded-lg ${
@@ -72,15 +72,15 @@ export default function EventsPage() {
                 <div key={e.id} className="flex items-start gap-4 rounded-xl border border-neon-border bg-neon-surface px-4 py-4 sm:px-5 card-hover" style={{ minHeight: 72 }}>
                   <div className="shrink-0 w-12 text-center">
                     <p className="text-xl font-bold text-neon-text leading-tight">{e.date.split('-')[2]}</p>
-                    <p className="text-[10px] text-neon-text-muted">{m.label.slice(6)}</p>
+                    <p className="text-xs text-neon-text-muted">{m.label.slice(6)}</p>
                   </div>
                   <div className="h-10 w-px bg-neon-border shrink-0 self-center" />
                   <div className="min-w-0 flex-1">
                     <h3 className="text-sm font-bold text-neon-text mb-1">{e.title}</h3>
                     <p className="text-xs text-neon-text-muted line-clamp-2 mb-1">{e.desc}</p>
-                    <p className="text-[10px] text-neon-text-subtle">{e.venue} · {e.region} · {e.time}</p>
+                    <p className="text-xs text-neon-text-subtle">{e.venue} · {e.region} · {e.time}</p>
                   </div>
-                  <span className="shrink-0 rounded-full bg-neon-primary/10 px-2.5 py-1 text-[10px] text-neon-primary-light self-start">{e.category}</span>
+                  <span className="shrink-0 rounded-full bg-neon-primary/10 px-2.5 py-1 text-xs text-neon-primary-light self-start">{e.category}</span>
                 </div>
               ))}
               {monthEvents.length === 0 && (

@@ -117,7 +117,7 @@ export default function ExitGuard() {
                   </button>
                   <button
                     onClick={() => setShowModal(false)}
-                    className="w-full rounded-xl border border-gray-200 px-6 py-3 text-sm font-medium text-[#888] transition hover:bg-gray-50 active:scale-[0.98]"
+                    className="w-full rounded-xl border border-gray-200 px-6 py-3 text-sm font-medium text-[#333] transition hover:bg-gray-50 active:scale-[0.98]"
                   >
                     나중에 올게요
                   </button>

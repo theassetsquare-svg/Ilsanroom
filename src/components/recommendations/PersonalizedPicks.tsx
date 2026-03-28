@@ -117,7 +117,7 @@ export default function PersonalizedPicks() {
             <div className="mb-2 flex items-center justify-between">
               <span className="text-lg font-bold text-neon-text group-hover:text-violet-400 transition">{venue.nameKo}</span>
               {venue.isPremium && (
-                <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-bold text-amber-400">P</span>
+                <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-bold text-amber-400">P</span>
               )}
             </div>
             <div className="flex items-center gap-2 text-sm text-neon-text-muted">

@@ -67,7 +67,7 @@ export default function GalleryPage() {
                 {item.category === 'club' ? '🎵' : item.category === 'night' ? '🌙' : item.category === 'lounge' ? '🍸' : item.category === 'room' ? '🚪' : item.category === 'yojeong' ? '🏮' : '🥂'}
               </span>
               <span className="text-xs font-medium text-neon-text">{item.venueName}</span>
-              <span className="text-[10px] text-neon-text-muted">{item.region} · {CAT_LABELS[item.category]}</span>
+              <span className="text-xs text-neon-text-muted">{item.region} · {CAT_LABELS[item.category]}</span>
             </div>
           </button>
         ))}
@@ -101,7 +101,7 @@ export default function GalleryPage() {
         </div>
       )}
 
-      <p className="mt-6 text-center text-[10px] text-neon-text-subtle">업소 실제 사진은 업주 등록 후 게시됩니다</p>
+      <p className="mt-6 text-center text-xs text-neon-text-subtle">업소 실제 사진은 업주 등록 후 게시됩니다</p>
     </div>
   );
 }

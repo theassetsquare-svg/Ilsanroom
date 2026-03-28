@@ -67,7 +67,7 @@ export default function HomeCommunityHub() {
           >
             <span className="text-2xl">{b.icon}</span>
             <span className="text-sm font-bold text-neon-text group-hover:text-neon-primary">{b.label}</span>
-            <span className="text-[11px] text-neon-text-muted">{b.desc}</span>
+            <span className="text-xs text-neon-text-muted">{b.desc}</span>
           </Link>
         ))}
       </div>

@@ -185,7 +185,7 @@ export default function LaunchChecklistPage() {
                     <p className="mt-0.5 text-xs text-neon-text-muted">{item.note}</p>
                   </div>
                   <span
-                    className={`mt-0.5 flex-shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                    className={`mt-0.5 flex-shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${
                       item.status === "done"
                         ? "bg-emerald-500/10 text-emerald-400"
                         : "bg-amber-500/10 text-amber-400"

@@ -217,7 +217,7 @@ export default function PricingPage() {
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.477 3 2 6.463 2 10.691c0 2.724 1.8 5.113 4.508 6.459-.2.744-.723 2.694-.828 3.112-.13.52.19.513.4.373.164-.109 2.612-1.78 3.67-2.502.725.104 1.476.158 2.25.158 5.523 0 10-3.463 10-7.6S17.523 3 12 3Z" /></svg>
             카카오톡 상담
           </a>
-          <p className="mt-3 text-[11px] text-neon-text-subtle">카드결제는 곧 오픈 예정입니다</p>
+          <p className="mt-3 text-xs text-neon-text-subtle">카드결제는 곧 오픈 예정입니다</p>
         </div>
 
         {/* FAQ Section */}

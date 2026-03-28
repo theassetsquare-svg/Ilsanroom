@@ -136,7 +136,7 @@ export default function CuriosityGapTeaser() {
                   {data.teaser.preview} {data.venue.nameKo}는 평점 {data.venue.rating}점으로...
                 </p>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="flex items-center gap-1 rounded-full bg-[#F3F0FF] px-3 py-1 text-[10px] font-medium text-[#8B5CF6]">
+                  <span className="flex items-center gap-1 rounded-full bg-[#F3F0FF] px-3 py-1 text-xs font-medium text-[#8B5CF6]">
                     <Lock size={10} />
                     클릭해서 확인
                   </span>
