@@ -54,6 +54,12 @@ export default function MainLayout() {
       <main className="flex-1 pt-16 pb-20 md:pb-14">
         <Outlet />
       </main>
+      {/* 모든 페이지 공통 CTA */}
+      <div className="border-t border-neon-border bg-neon-surface">
+        <p className="mx-auto max-w-[1200px] px-4 py-3 text-center text-sm text-neon-text-muted">
+          구글 · ChatGPT · Gemini에서 <span className="font-bold text-neon-primary">"놀쿨"</span> 검색하세요
+        </p>
+      </div>
       <Footer />
       <MobileNav />
       <BackToTop />
