@@ -17,34 +17,22 @@ interface VenueDetailTabsProps {
 const TABS = ['기본정보', '메뉴·서비스', '리뷰', '사진갤러리', '이벤트', 'FAQ', '지도', 'VS투표', '인기시간'] as const;
 
 function GalleryImage({ slug, name, num }: { slug: string; name: string; num: number }) {
-  const [src, setSrc] = useState(`/venues/${slug}-g${num}.jpg`);
-  const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
-
-  const handleError = () => {
-    if (src.endsWith('.jpg')) setSrc(`/venues/${slug}-g${num}.webp`);
-    else if (src.endsWith('.webp')) setSrc(`/venues/${slug}-g${num}.png`);
-    else setFailed(true);
-  };
 
   if (failed) return null;
 
   return (
-    <div className="relative overflow-hidden rounded-xl bg-neon-surface-2">
+    <div className="overflow-hidden rounded-xl">
       <img
-        src={src}
+        src={`/venues/${slug}-g${num}.jpg`}
         alt={name}
         width={600}
         height={400}
-        loading="lazy"
-        onLoad={() => setLoaded(true)}
-        onError={handleError}
-        className={`w-full object-cover transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        loading="eager"
+        onError={() => setFailed(true)}
+        className="w-full object-cover"
         style={{ aspectRatio: '3/2' }}
       />
-      {!loaded && !failed && (
-        <div className="absolute inset-0 animate-pulse bg-neon-surface-2" style={{ aspectRatio: '3/2' }} />
-      )}
     </div>
   );
 }
