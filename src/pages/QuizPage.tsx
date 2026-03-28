@@ -28,7 +28,7 @@ export default function QuizPage() {
 
       {/* AI Chatbot */}
       <section>
-        <h2 className="mb-4 text-xl font-bold text-neon-text">오늘밤뭐하지? AI 챗봇</h2>
+        <h2 className="mb-4 text-xl font-bold text-neon-text">플밤 AI 챗봇</h2>
         <Suspense fallback={null}><AIChatbot /></Suspense>
       </section>
 

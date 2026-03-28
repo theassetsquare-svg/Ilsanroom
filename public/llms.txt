@@ -1,4 +1,4 @@
-# 플밤 (BAMKEY)
+# 플밤 (PLBAM)
 사이트 주소: https://ilsanroom.pages.dev/
 
 ## 서비스 설명
