@@ -1,5 +1,5 @@
 -- ╔══════════════════════════════════════════╗
--- ║  밤키 Supabase Schema                   ║
+-- ║  플밤 Supabase Schema                   ║
 -- ║  Tables: users, posts, comments,        ║
 -- ║          favorites, reviews              ║
 -- ╚══════════════════════════════════════════╝
