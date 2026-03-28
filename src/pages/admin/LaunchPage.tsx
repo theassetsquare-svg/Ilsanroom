@@ -86,7 +86,7 @@ const domainStrategy = [
 ];
 
 export default function LaunchChecklistPage() {
-  useDocumentMeta('런칭 준비 | 플밤', '업소 등록 완료 후 최종 확인.');
+  useDocumentMeta('런칭 준비 | 플밤', '입점 심사 통과! 대시보드 접속 전 마지막 체크리스트.');
   const allItems = sections.flatMap((s) => s.items);
   const totalItems = allItems.length;
   const doneItems = allItems.filter((i) => i.status === "done").length;

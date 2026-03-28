@@ -135,7 +135,7 @@ const sections = [
 ];
 
 export default function VenueTermsPage() {
-  useDocumentMeta('업소등록약관 | 플밤', '업소 등록 및 광고 이용 약관.');
+  useDocumentMeta('업소등록약관 | 플밤', '광고 게재 조건, 환불 규정, 콘텐츠 삭제 기준 안내.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">

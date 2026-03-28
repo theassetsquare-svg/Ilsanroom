@@ -94,7 +94,7 @@ const articles = [
 ];
 
 export default function TermsPage() {
-  useDocumentMeta('이용약관 | 플밤', '플밤 서비스 이용약관.');
+  useDocumentMeta('이용약관 | 플밤', '회원가입부터 탈퇴까지 권리와 의무 정리.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">

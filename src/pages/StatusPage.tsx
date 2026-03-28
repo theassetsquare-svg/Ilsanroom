@@ -78,7 +78,7 @@ const uptimeDays = Array.from({ length: 30 }).map((_, i) => {
 });
 
 export default function StatusPage() {
-  useDocumentMeta('서비스 상태 | 플밤', '플밤 서비스 운영 현황 확인.');
+  useDocumentMeta('서비스 상태 | 플밤', '서버 가동률, 점검 일정, 장애 알림 현황판.');
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 

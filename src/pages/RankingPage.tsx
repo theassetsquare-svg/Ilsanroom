@@ -46,7 +46,7 @@ function getRankChange(id: string, idx: number): { icon: string; color: string }
 }
 
 export default function RankingPage() {
-  useDocumentMeta('지금 가장 핫한 곳 TOP 10, 실시간 순위 | 플밤', '조회수·후기 기반 실시간 인기 업소 랭킹.');
+  useDocumentMeta('지금 가장 핫한 곳 TOP 10, 실시간 순위 | 플밤', '지금 가장 핫한 곳 순서대로. 조회수 기준 TOP 30 실시간 랭킹.');
   const [category, setCategory] = useState('all');
   const [region, setRegion] = useState('all');
   const [period, setPeriod] = useState<'daily' | 'weekly' | 'monthly'>('weekly');

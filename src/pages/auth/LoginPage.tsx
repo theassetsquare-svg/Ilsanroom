@@ -17,7 +17,7 @@ function signInWith(provider: 'kakao' | 'google') {
 }
 
 export default function LoginPage() {
-  useDocumentMeta('로그인 — 카카오·이메일로 3초 시작 | 플밤', '소셜 계정 또는 이메일로 간편 시작. 별도 회원가입 없이 바로 이용.');
+  useDocumentMeta('로그인 — 카카오·이메일로 3초 시작 | 플밤', '카카오 탭 한 번이면 끝. 3초 후에 글 쓰고 후기 남긴다.');
   const [loading, setLoading] = useState<string | null>(null);
   const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [email, setEmail] = useState('');

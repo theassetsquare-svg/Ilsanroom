@@ -74,7 +74,7 @@ const categories = [
 ];
 
 export default function OnboardingPage() {
-  useDocumentMeta('업소 등록 시작 | 플밤', '4단계만 따라오면 등록 완료.');
+  useDocumentMeta('업소 등록 시작 | 플밤', '상호명 치고, 사진 올리고, 번호 넣으면 3분 만에 완료.');
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedPlan, setSelectedPlan] = useState("프로");
   const [formData, setFormData] = useState({

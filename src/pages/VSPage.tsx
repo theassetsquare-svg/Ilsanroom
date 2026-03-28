@@ -4,7 +4,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 const VSBattle = lazy(() => import('@/components/interactive/VSBattle'));
 
 export default function VSPage() {
-  useDocumentMeta('이번 주 대결, 한 표가 승부를 가른다 | 플밤', '인기 업소끼리 실시간 투표 배틀. 매주 새 대결 업데이트.');
+  useDocumentMeta('이번 주 대결, 한 표가 승부를 가른다 | 플밤', '레이스 vs 하입, 찬스돔 vs 줄리아나. 누가 이기나 투표해봐.');
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 space-y-8">
       <div className="text-center">
