@@ -14,7 +14,7 @@ interface ImageSlot {
 
 export default function VenueGallery({ slug, name }: VenueGalleryProps) {
   const [slots, setSlots] = useState<ImageSlot[]>(() =>
-    [2, 3, 4].map((n) => ({
+    [1, 2, 3, 4, 5, 6].map((n) => ({
       src: `/venues/${slug}-${n}.jpg`,
       fallback: `/venues/${slug}-${n}.webp`,
       loaded: false,
@@ -30,9 +30,11 @@ export default function VenueGallery({ slug, name }: VenueGalleryProps) {
     setSlots((prev) =>
       prev.map((s, i) => {
         if (i !== idx) return s;
-        // Try webp fallback
         if (s.src.endsWith('.jpg')) {
           return { ...s, src: s.fallback };
+        }
+        if (s.src.endsWith('.webp')) {
+          return { ...s, src: s.src.replace('.webp', '.png') };
         }
         return { ...s, failed: true };
       })
@@ -50,7 +52,7 @@ export default function VenueGallery({ slug, name }: VenueGalleryProps) {
             <div key={idx} className="relative overflow-hidden rounded-xl bg-neon-surface-2">
               <img
                 src={slot.src}
-                alt={`${name} 내부 ${idx + 1}`}
+                alt={name}
                 width={600}
                 height={400}
                 loading="lazy"
