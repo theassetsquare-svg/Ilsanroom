@@ -137,7 +137,7 @@ export default function AutoNextSuggestion() {
     <AnimatePresence>
       {show && nextVenue && (
         <motion.div
-          className="fixed bottom-16 left-0 right-0 z-[74] px-4 md:relative md:bottom-auto md:z-auto md:mt-4"
+          className="relative px-4 mt-4"
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}

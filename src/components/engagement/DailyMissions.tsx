@@ -163,7 +163,7 @@ export default function DailyMissions() {
       {/* Floating button */}
       <motion.button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-24 right-4 z-50 flex h-14 w-14 md:hidden items-center justify-center rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#6D28D9] shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 transition-shadow"
+        className="fixed bottom-[72px] left-4 z-[30] flex h-14 w-14 md:hidden items-center justify-center rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#6D28D9] shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 transition-shadow"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         aria-label="오늘의 미션 열기"
@@ -196,7 +196,7 @@ export default function DailyMissions() {
 
             {/* Panel */}
             <motion.div
-              className="fixed bottom-0 left-0 right-0 z-[70] max-h-[60vh] overflow-y-auto rounded-t-3xl bg-white shadow-2xl"
+              className="fixed bottom-[56px] left-0 right-0 z-[40] max-h-[50vh] overflow-y-auto rounded-t-3xl bg-white shadow-2xl"
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
