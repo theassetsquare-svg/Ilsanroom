@@ -94,7 +94,7 @@ const latestReviews = [
 /* ── Magazine preview ── */
 const magazineItems = [
   { title: '강남 TOP5 — 올해 꼭 가봐야 할 핫플', tag: '엄선', href: '/magazine' },
-  { title: '전통 격식 공간 완벽 안내서: 접대부터 특별한 자리까지', tag: '전통', href: '/magazine' },
+  { title: '전통 격식 공간 완벽 안내서: 접대부터 기념일까지', tag: '전통', href: '/magazine' },
   { title: '처음 찾아가는 분을 위한 A to Z 매너 핸드북', tag: '입문', href: '/magazine' },
   { title: '홍대 vs 이태원 비교 — 어디가 나에게 맞을까?', tag: '비교', href: '/magazine' },
 ];
