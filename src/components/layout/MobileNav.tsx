@@ -84,7 +84,7 @@ export default function MobileNav() {
         {tabs.map((tab) => {
           const active = isActive(tab);
           return (
-            <Link target="_blank" rel="noopener noreferrer"
+            <Link
               key={tab.href}
               to={tab.href}
               className={`flex flex-col items-center gap-0.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
@@ -96,7 +96,7 @@ export default function MobileNav() {
             </Link>
           );
         })}
-        <Link target="_blank" rel="noopener noreferrer"
+        <Link
           to={myHref}
           className={`flex flex-col items-center gap-0.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
             myActive ? 'text-neon-primary' : 'text-neon-text-muted hover:text-neon-text'
