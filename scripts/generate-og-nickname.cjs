@@ -8,8 +8,6 @@ const OG_DIR = path.join(__dirname, '..', 'public', 'og');
 const WIDTH = 1200;
 const HEIGHT = 630;
 
-// Nickname mapping (user-specified)
-// 수유샴푸/인덕원국빈관/해운대고구려 = 제외
 const NICKNAME_MAP = {
   'ilsanmyeongwolgwanyojeong': '신실장',
   'ilsanroom': '신실장',
@@ -40,43 +38,31 @@ function findImage(slug) {
 
 async function generateOg(slug, nickname) {
   const imgPath = findImage(slug);
-  if (!imgPath) {
-    console.log(`SKIP ${slug}: no source image`);
-    return;
-  }
-
+  if (!imgPath) { console.log(`SKIP ${slug}: no image`); return; }
   const outPath = path.join(OG_DIR, `${slug}.jpg`);
 
   try {
-    // Resize source image to 1200x630 (cover)
     const resized = await sharp(imgPath)
       .resize(WIDTH, HEIGHT, { fit: 'cover', position: 'center' })
       .toBuffer();
 
-    // Create bottom overlay bar (lower 1/3 with semi-transparent black)
     const barHeight = Math.round(HEIGHT / 3);
     const barY = HEIGHT - barHeight;
-
-    // SVG overlay with nickname text
     const fontSize = Math.round(barHeight * 0.55);
+
     const svgOverlay = `
-      <svg width="${WIDTH}" height="${HEIGHT}">
-        <rect x="0" y="${barY}" width="${WIDTH}" height="${barHeight}" fill="rgba(0,0,0,0.6)"/>
+      <svg width="${WIDTH}" height="${HEIGHT}" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="${barY}" width="${WIDTH}" height="${barHeight}" fill="rgba(0,0,0,0.65)"/>
         <text x="${WIDTH / 2}" y="${barY + barHeight / 2 + fontSize * 0.35}"
               text-anchor="middle"
-              font-family="Arial,sans-serif"
+              font-family="Pretendard"
               font-weight="900"
               font-size="${fontSize}"
               fill="white">${nickname}</text>
       </svg>`;
 
-    // Composite: base image + overlay
     await sharp(resized)
-      .composite([{
-        input: Buffer.from(svgOverlay),
-        top: 0,
-        left: 0,
-      }])
+      .composite([{ input: Buffer.from(svgOverlay), top: 0, left: 0 }])
       .jpeg({ quality: 85 })
       .toFile(outPath);
 
@@ -88,12 +74,10 @@ async function generateOg(slug, nickname) {
 }
 
 async function main() {
-  console.log(`Generating ${Object.keys(NICKNAME_MAP).length} OG images with nicknames...`);
-
+  console.log(`Generating ${Object.keys(NICKNAME_MAP).length} OG images...`);
   for (const [slug, nickname] of Object.entries(NICKNAME_MAP)) {
     await generateOg(slug, nickname);
   }
-
   console.log('Done!');
 }
 
