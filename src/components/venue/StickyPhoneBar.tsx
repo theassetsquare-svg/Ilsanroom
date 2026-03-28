@@ -18,11 +18,9 @@ const ALLOWED_PHONES = [
 export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPhoneBarProps) {
   if (phone && ALLOWED_PHONES.includes(phone)) {
     return (
-      <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center px-4 pb-3 md:pb-4">
+      <div className="fixed bottom-14 left-0 right-0 z-[90] flex justify-center px-4 pb-2">
         <a
           href={`tel:${phone.replace(/-/g, '')}`}
-          target="_blank"
-          rel="noopener noreferrer"
           className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#15803D] px-6 py-3.5 text-base font-bold text-white shadow-lg transition hover:bg-[#166534] active:scale-95"
           style={{ maxWidth: '400px', minHeight: '48px' }}
           aria-label={`${venueName} 전화걸기 ${phone}`}
