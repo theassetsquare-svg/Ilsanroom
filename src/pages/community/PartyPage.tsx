@@ -123,7 +123,7 @@ function NbbangCalc() {
 }
 
 export default function PartyRecruitPage() {
-  useDocumentMeta('파티 모집 — 같이 갈 사람 찾기 | 놀쿨', '같이 갈 사람 손! N빵 모집, 날짜 맞추기, 인원 모으기.');
+  useDocumentMeta('파티 모집 — 같이 갈 사람 찾기', '같이 갈 사람 손! N빵 모집, 날짜 맞추기, 인원 모으기.');
   const [statusFilter, setStatusFilter] = useState<PartyStatus | "전체">("전체");
   const filtered = statusFilter === "전체"
     ? sampleParties

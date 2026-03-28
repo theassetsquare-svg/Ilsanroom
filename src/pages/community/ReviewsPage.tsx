@@ -82,7 +82,7 @@ function StarDisplay({ rating, size = "md" }: { rating: number; size?: "sm" | "m
 }
 
 export default function ReviewsPage() {
-  useDocumentMeta('업소 솔직 후기 게시판 | 놀쿨', '직접 가본 사람들의 솔직한 후기와 별점.');
+  useDocumentMeta('방문자 솔직 리뷰 모음', '직접 가본 사람들의 솔직한 후기와 별점.');
   const [starFilter, setStarFilter] = useState<number | null>(null);
   const [photoOnly, setPhotoOnly] = useState(false);
   const [sortByHelpful, setSortByHelpful] = useState(false);

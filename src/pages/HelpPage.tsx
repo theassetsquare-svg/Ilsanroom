@@ -205,7 +205,7 @@ function CategorySection({ category }: { category: FaqCategory }) {
 }
 
 export default function HelpPage() {
-  useDocumentMeta('궁금한 거 있으면 여기서 해결 | 놀쿨', '입장료, 드레스코드, 나이 제한? 궁금한 거 여기서 해결.');
+  useDocumentMeta('궁금한 거 있으면 여기서 해결', '입장료, 드레스코드, 나이 제한? 궁금한 거 여기서 해결.');
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 

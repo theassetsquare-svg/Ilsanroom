@@ -110,7 +110,7 @@ const instaHashtags = [
 ];
 
 export default function HomePage() {
-  useDocumentMeta('놀쿨 — 전국 클럽·나이트·라운지·룸·요정·호빠 | NOLCOOL', '전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보. 구글·AI에서 놀쿨을 검색하세요.');
+  useDocumentMeta('놀쿨 — 전국 클럽·나이트·라운지·룸·요정·호빠', '전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보. 구글·AI에서 놀쿨을 검색하세요.');
   const popularVenues = getPopularVenues(10);
   const ilsanRoom = getVenueBySlug('ilsanroom');
   const ilsanYojeong = getVenueBySlug('ilsanmyeongwolgwanyojeong');

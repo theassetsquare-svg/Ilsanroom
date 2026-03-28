@@ -40,7 +40,7 @@ const caseStudies = [
 ];
 
 export default function CaseStudiesPage() {
-  useDocumentMeta('매출이 올라간 실제 사례 | 놀쿨', '수원찬스돔, 강남청담클럽이 겪은 매출 변화. 그래프가 증명한다.');
+  useDocumentMeta('매출이 올라간 성공 사례', '수원찬스돔, 강남청담클럽이 겪은 매출 변화. 그래프가 증명한다.');
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <h1 className="text-2xl font-extrabold text-neon-text mb-1">입점 사례 연구</h1>

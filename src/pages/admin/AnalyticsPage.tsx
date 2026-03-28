@@ -1,7 +1,7 @@
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function AnalyticsPage() {
-  useDocumentMeta('업소 분석 리포트 | 놀쿨', '어디서 왔고, 뭘 눌렀고, 몇 명이 전화했는지 그래프로.');
+  useDocumentMeta('가맹점 분석 리포트', '어디서 왔고, 뭘 눌렀고, 몇 명이 전화했는지 그래프로.');
   const stats = [
     { label: "총 페이지뷰", value: "12,847", change: "+14.2%", up: true },
     { label: "검색 노출", value: "8,392", change: "+8.7%", up: true },

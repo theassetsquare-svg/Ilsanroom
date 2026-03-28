@@ -94,7 +94,7 @@ const sections = [
 ];
 
 export default function GuidelinesPage() {
-  useDocumentMeta('커뮤니티 이용 규칙 | 놀쿨', '놀쿨 커뮤니티 기본 규칙과 금지 사항.');
+  useDocumentMeta('게시판 운영 규칙', '놀쿨 커뮤니티 기본 규칙과 금지 사항.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-12">

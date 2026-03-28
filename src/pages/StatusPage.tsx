@@ -78,7 +78,7 @@ const uptimeDays = Array.from({ length: 30 }).map((_, i) => {
 });
 
 export default function StatusPage() {
-  useDocumentMeta('서비스 상태 | 놀쿨', '서버 가동률, 점검 일정, 장애 알림 현황판.');
+  useDocumentMeta('서비스 상태', '서버 가동률, 점검 일정, 장애 알림 현황판.');
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 

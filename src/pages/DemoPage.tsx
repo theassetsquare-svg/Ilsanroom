@@ -51,7 +51,7 @@ const sidebarItems = [
 ];
 
 export default function DemoPage() {
-  useDocumentMeta('사장님 데모 체험 | 놀쿨', '10초면 끝나는 사장님 화면 미리보기. 가입 따위 필요 없다.');
+  useDocumentMeta('사장님 데모 체험', '10초면 끝나는 사장님 화면 미리보기. 가입 따위 필요 없다.');
   const [activeTab, setActiveTab] = useState("현황판");
 
   return (

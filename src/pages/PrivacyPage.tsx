@@ -135,7 +135,7 @@ const sections = [
 ];
 
 export default function PrivacyPage() {
-  useDocumentMeta('개인정보처리방침 | 놀쿨', '어떤 데이터를 모으고, 어디에 쓰고, 언제 지우는지.');
+  useDocumentMeta('개인정보처리방침', '어떤 데이터를 모으고, 어디에 쓰고, 언제 지우는지.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">

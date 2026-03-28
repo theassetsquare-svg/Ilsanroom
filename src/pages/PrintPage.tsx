@@ -5,7 +5,7 @@ import PrintButton from '@/components/ui/PrintButton';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function PrintPage() {
-  useDocumentMeta('인쇄용 페이지 | 놀쿨', '상세 정보 출력 페이지.');
+  useDocumentMeta('인쇄용 페이지', '상세 정보 출력 페이지.');
   const { slug } = useParams<{ slug: string }>();
   const venue = slug ? getVenueBySlug(slug) : undefined;
 

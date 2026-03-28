@@ -52,7 +52,7 @@ const disclaimerSections = [
 ];
 
 export default function DisclaimerPage() {
-  useDocumentMeta('면책조항 | 놀쿨', '이 사이트 내용은 참고용. 법적 효력이나 보증은 없다.');
+  useDocumentMeta('면책조항', '이 사이트 내용은 참고용. 법적 효력이나 보증은 없다.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">

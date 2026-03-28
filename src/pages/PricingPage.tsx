@@ -127,7 +127,7 @@ const faqs = [
 ];
 
 export default function PricingPage() {
-  useDocumentMeta('업주님, 14일 무료 체험으로 시작하세요 | 놀쿨', '0원부터 하이엔드까지 4단계. 체험 후 결정. 해지도 원클릭.');
+  useDocumentMeta('업주님, 14일 무료 체험으로 시작하세요', '0원부터 하이엔드까지 4단계. 체험 후 결정. 해지도 원클릭.');
   return (
     <div className="min-h-screen bg-neon-bg">
       <div className="mx-auto max-w-[1200px] px-4 py-16">

@@ -86,7 +86,7 @@ const domainStrategy = [
 ];
 
 export default function LaunchChecklistPage() {
-  useDocumentMeta('런칭 준비 | 놀쿨', '입점 심사 통과! 대시보드 접속 전 마지막 체크리스트.');
+  useDocumentMeta('런칭 준비', '입점 심사 통과! 대시보드 접속 전 마지막 체크리스트.');
   const allItems = sections.flatMap((s) => s.items);
   const totalItems = allItems.length;
   const doneItems = allItems.filter((i) => i.status === "done").length;

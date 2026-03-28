@@ -12,7 +12,7 @@ const regions = [
 ];
 
 export default function LoungesPage() {
-  useDocumentMeta('셰이커 소리만 들리는 곳, 대화에 집중하고 싶다면 | 놀쿨', '압구정·청담 감각적인 바 3곳. 비즈니스 접대와 데이트에 딱 맞는 무드 살펴보기.');
+  useDocumentMeta('셰이커 소리만 들리는 곳, 대화에 집중하고 싶다면', '압구정·청담 감각적인 바 3곳. 비즈니스 접대와 데이트에 딱 맞는 무드 살펴보기.');
   const venues = getVenuesByCategory('lounge');
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">

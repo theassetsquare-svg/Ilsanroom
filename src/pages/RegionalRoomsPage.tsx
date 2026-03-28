@@ -56,7 +56,7 @@ function RoomCard({ venue, region }: { venue: Venue; region: string }) {
 export default function RegionalRoomsPage() {
   const { region } = useParams<{ region: string }>();
   const regionKo = regionNames[region] || region;
-  useDocumentMeta(`${regionKo} 프라이빗 공간 | 놀쿨`, `${regionKo} 프라이빗 룸 리스트. 소규모 미팅부터 단체 회식까지.`);
+  useDocumentMeta(`${regionKo} 프라이빗 공간`, `${regionKo} 프라이빗 룸 리스트. 소규모 미팅부터 단체 회식까지.`);
   const rooms = getVenuesByCategoryAndRegion('room', region);
   const [activePurpose, setActivePurpose] = useState<string | null>(null);
 

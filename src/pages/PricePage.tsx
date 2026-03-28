@@ -21,7 +21,7 @@ function getCategoryHref(category: string, slug: string, region: string) {
 }
 
 export default function PricePage() {
-  useDocumentMeta('업종별 이용 가이드 | 놀쿨', '양주 한 병에 얼마? 입장료는? 카테고리별 시세 미리 파악.');
+  useDocumentMeta('업종별 시세 안내', '양주 한 병에 얼마? 입장료는? 카테고리별 시세 미리 파악.');
   const [category, setCategory] = useState<CategoryFilter>('all');
   const [showAll, setShowAll] = useState(false);
 

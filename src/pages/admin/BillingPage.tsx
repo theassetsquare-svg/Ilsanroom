@@ -1,7 +1,7 @@
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function BillingPage() {
-  useDocumentMeta('결제 관리 | 놀쿨', '구독 상태, 결제 내역, 요금제 변경.');
+  useDocumentMeta('결제 관리', '구독 상태, 결제 내역, 요금제 변경.');
   const paymentHistory = [
     {
       id: "INV-2026-001",

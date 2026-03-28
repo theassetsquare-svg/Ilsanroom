@@ -13,7 +13,7 @@ const regions = [
 ];
 
 export default function ClubsPage() {
-  useDocumentMeta('금요일 밤 줄 50m, 그래도 들어가야 하는 이유 | 놀쿨', '금요일 자정, 지하 계단에 줄 50m. 베이스가 가슴을 때리는 35곳 전격 비교.');
+  useDocumentMeta('금요일 밤 줄 50m, 그래도 들어가야 하는 이유', '금요일 자정, 지하 계단에 줄 50m. 베이스가 가슴을 때리는 35곳 전격 비교.');
   const venues = getVenuesByCategory('club');
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">

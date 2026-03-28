@@ -20,7 +20,7 @@ const defaultFaqs = (name: string) => [
 export default function HoppaDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const venue = getVenueBySlug(slug);
-  useDocumentMeta(getHookingTitle(venue!) + ' | 놀쿨', getHookingDescription(venue!), getVenueOgImageBySlug(venue!.slug));
+  useDocumentMeta(getHookingTitle(venue!) + '', getHookingDescription(venue!), getVenueOgImageBySlug(venue!.slug));
 
   const related = getRelatedVenues(venue, 6);
 

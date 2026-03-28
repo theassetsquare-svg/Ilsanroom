@@ -20,7 +20,7 @@ const galleryItems = venues
   }));
 
 export default function GalleryPage() {
-  useDocumentMeta('전국 업소 분위기 사진 갤러리 | 놀쿨', '실내 조명, 무대, 테이블 배치. 가기 전에 사진으로 미리 둘러봐.');
+  useDocumentMeta('전국 매장 분위기 사진 갤러리', '실내 조명, 무대, 테이블 배치. 가기 전에 사진으로 미리 둘러봐.');
   const [lightboxId, setLightboxId] = useState<string | null>(null);
   const [filter, setFilter] = useState('all');
 

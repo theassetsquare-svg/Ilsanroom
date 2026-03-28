@@ -17,7 +17,7 @@ function signInWith(provider: 'kakao' | 'google') {
 }
 
 export default function LoginPage() {
-  useDocumentMeta('로그인 — 카카오·이메일로 3초 시작 | 놀쿨', '카카오 탭 한 번이면 끝. 3초 후에 글 쓰고 후기 남긴다.');
+  useDocumentMeta('로그인 — 카카오·이메일로 3초 완료', '카카오 탭 한 번이면 끝. 3초 후에 글 쓰고 후기 남긴다.');
   const [loading, setLoading] = useState<string | null>(null);
   const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [email, setEmail] = useState('');

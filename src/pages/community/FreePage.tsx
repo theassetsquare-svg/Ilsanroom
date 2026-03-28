@@ -21,7 +21,7 @@ const recentPosts = [
 ];
 
 export default function FreeBoardPage() {
-  useDocumentMeta('자유게시판 | 놀쿨', '아무 얘기나 해도 되는 곳. 잡담부터 꿀정보까지.');
+  useDocumentMeta('자유게시판', '아무 얘기나 해도 되는 곳. 잡담부터 꿀정보까지.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-3xl px-4 py-16">

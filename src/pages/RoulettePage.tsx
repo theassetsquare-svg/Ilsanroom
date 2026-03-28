@@ -5,7 +5,7 @@ const Roulette = lazy(() => import('@/components/interactive/Roulette'));
 const AIChatbot = lazy(() => import('@/components/interactive/AIChatbot'));
 
 export default function RoulettePage() {
-  useDocumentMeta('오늘 어디 갈지 못 정했으면 돌려봐 | 놀쿨', '못 정하겠으면 돌려. 운명이 골라주는 오늘의 행선지.');
+  useDocumentMeta('오늘 어디 갈지 못 정했으면 돌려봐', '못 정하겠으면 돌려. 운명이 골라주는 오늘의 행선지.');
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 space-y-12">
       <div className="text-center">

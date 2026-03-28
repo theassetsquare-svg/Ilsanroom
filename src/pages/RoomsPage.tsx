@@ -13,7 +13,7 @@ const regions = [
 ];
 
 export default function RoomsPage() {
-  useDocumentMeta('문 닫으면 우리만의 공간, 프라이빗 모임 | 놀쿨', '문 닫으면 세상이 사라진다. 4인 소모임부터 30인 대연회까지 딱 맞는 크기로.');
+  useDocumentMeta('문 닫으면 우리만의 공간, 프라이빗 모임', '문 닫으면 세상이 사라진다. 4인 소모임부터 30인 대연회까지 딱 맞는 크기로.');
   const venues = getVenuesByCategory('room');
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
