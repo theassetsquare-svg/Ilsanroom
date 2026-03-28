@@ -47,8 +47,8 @@ export default function Header() {
       <ScrollProgress />
       <header className="glass-strong fixed top-0 right-0 left-0 z-50">
         <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-4">
-          <Link target="_blank" rel="noopener noreferrer" to="/" className="flex items-center gap-2 shrink-0">
-            <img src="/logo.svg" alt="플밤 PLBAM" height="40" className="h-10" />
+          <Link to="/" className="shrink-0 text-lg font-black tracking-wider text-neon-primary">
+            PLBAM
           </Link>
 
           <nav className="hidden items-center gap-0.5 lg:flex">

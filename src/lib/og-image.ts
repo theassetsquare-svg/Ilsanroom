@@ -18,12 +18,6 @@ const NICKNAME_OG_SLUGS = new Set([
   'pajuyadangskydomenight',
   'ulsanchampionnight',
   'gangnamjuliananight',
-  'sangbonghangukgwannight',
-  'hwajeonghangukgwannight',
-  'suwonkoreanight',
-  'bundangpongpongnight',
-  'busanasiadnight',
-  'ulsannewworldnight',
 ]);
 
 /** 업소 상세 OG image (slug 기반) */
