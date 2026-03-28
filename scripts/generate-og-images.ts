@@ -84,7 +84,7 @@ function generateSvg(title: string, subtitle: string, bg: string, staff?: string
   <text x="600" y="${titleY}" text-anchor="middle" font-family="sans-serif" font-size="${titleSize}" font-weight="bold" fill="white">${escapeXml(title)}</text>
   ${staffLine}
   <text x="600" y="${subtitleY}" text-anchor="middle" font-family="sans-serif" font-size="26" fill="rgba(255,255,255,0.7)">${escapeXml(subtitle)}</text>
-  <text x="600" y="540" text-anchor="middle" font-family="sans-serif" font-size="20" fill="rgba(255,255,255,0.4)">플밤 — ilsanroom.pages.dev</text>
+  <text x="600" y="540" text-anchor="middle" font-family="sans-serif" font-size="20" fill="rgba(255,255,255,0.4)">놀쿨 — ilsanroom.pages.dev</text>
 </svg>`;
 }
 
@@ -93,12 +93,12 @@ const outDir = path.resolve(__dirname, '../public/og');
 if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
 
 // 1. Main page
-fs.writeFileSync(path.join(outDir, 'main.svg'), generateSvg('플밤', '전국 클럽·나이트·라운지·룸·요정·호빠', '#8B5CF6'));
+fs.writeFileSync(path.join(outDir, 'main.svg'), generateSvg('놀쿨', '전국 클럽·나이트·라운지·룸·요정·호빠', '#8B5CF6'));
 
 // 2. Category pages
 for (const [cat, label] of Object.entries(categoryLabels)) {
   const color = categoryColors[cat] || '#8B5CF6';
-  fs.writeFileSync(path.join(outDir, `${cat === 'club' ? 'clubs' : cat === 'night' ? 'nights' : cat === 'lounge' ? 'lounges' : cat === 'room' ? 'rooms' : cat}.svg`), generateSvg(`${label} 전체보기`, '플밤', color));
+  fs.writeFileSync(path.join(outDir, `${cat === 'club' ? 'clubs' : cat === 'night' ? 'nights' : cat === 'lounge' ? 'lounges' : cat === 'room' ? 'rooms' : cat}.svg`), generateSvg(`${label} 전체보기`, '놀쿨', color));
 }
 
 // 3. Each venue
@@ -106,7 +106,7 @@ for (const v of venues) {
   const color = categoryColors[v.category] || '#8B5CF6';
   const label = categoryLabels[v.category] || '';
   const staffText = v.staffNickname ? `담당: ${v.staffNickname}` : undefined;
-  fs.writeFileSync(path.join(outDir, `${v.slug}.svg`), generateSvg(v.nameKo, `${label} | 플밤`, color, staffText));
+  fs.writeFileSync(path.join(outDir, `${v.slug}.svg`), generateSvg(v.nameKo, `${label} | 놀쿨`, color, staffText));
 }
 
 // 4. Utility pages
@@ -123,7 +123,7 @@ const utilPages = [
   { file: '404', title: '404', bg: '#555555' },
 ];
 for (const p of utilPages) {
-  fs.writeFileSync(path.join(outDir, `${p.file}.svg`), generateSvg(p.title, '플밤', p.bg));
+  fs.writeFileSync(path.join(outDir, `${p.file}.svg`), generateSvg(p.title, '놀쿨', p.bg));
 }
 
 console.log(`✅ Generated ${venues.length + 6 + utilPages.length + 1} OG images in public/og/`);

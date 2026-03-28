@@ -17,7 +17,7 @@ function signInWith(provider: 'kakao' | 'google') {
 }
 
 export default function LoginPage() {
-  useDocumentMeta('로그인 — 카카오·이메일로 3초 시작 | 플밤', '카카오 탭 한 번이면 끝. 3초 후에 글 쓰고 후기 남긴다.');
+  useDocumentMeta('로그인 — 카카오·이메일로 3초 시작 | 놀쿨', '카카오 탭 한 번이면 끝. 3초 후에 글 쓰고 후기 남긴다.');
   const [loading, setLoading] = useState<string | null>(null);
   const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [email, setEmail] = useState('');
@@ -164,7 +164,7 @@ export default function LoginPage() {
       </div>
 
       <p className="mt-8 text-center text-xs text-neon-text-muted">
-        로그인하면 플밤의{' '}
+        로그인하면 놀쿨의{' '}
         <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-neon-primary hover:underline">이용약관</a> 및{' '}
         <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-neon-primary hover:underline">개인정보처리방침</a>에 동의하는 것으로 간주됩니다.
       </p>

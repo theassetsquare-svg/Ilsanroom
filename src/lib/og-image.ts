@@ -42,7 +42,7 @@ export function getVenueOgImage(venueName: string, category: string, staffNickna
   };
   const bg = categoryColors[category] || '#7C3AED';
   const label = categoryLabels[category] || '';
-  const params = new URLSearchParams({ title: venueName, subtitle: `${label} | 플밤`, bg });
+  const params = new URLSearchParams({ title: venueName, subtitle: `${label} | 놀쿨`, bg });
   if (staffNickname) params.set('staff', `담당: ${staffNickname}`);
   return `${SITE_URL}/api/og?${params.toString()}`;
 }

@@ -12,7 +12,7 @@ const DrinkBudgetCalc = lazy(() => import('@/components/interactive/KillerFeatur
 const InviteFriend = lazy(() => import('@/components/interactive/KillerFeatures').then(m => ({ default: m.InviteFriend })));
 
 export default function QuizPage() {
-  useDocumentMeta('나한테 맞는 밤문화 MBTI는? 2분이면 나온다 | 플밤', '클럽형? 나이트형? 라운지형? 10문항이면 답 나온다.');
+  useDocumentMeta('나한테 맞는 밤문화 MBTI는? 2분이면 나온다 | 놀쿨', '클럽형? 나이트형? 라운지형? 10문항이면 답 나온다.');
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 space-y-12">
       <div className="text-center">
@@ -28,7 +28,7 @@ export default function QuizPage() {
 
       {/* AI Chatbot */}
       <section>
-        <h2 className="mb-4 text-xl font-bold text-neon-text">플밤 AI 챗봇</h2>
+        <h2 className="mb-4 text-xl font-bold text-neon-text">놀쿨 AI 챗봇</h2>
         <Suspense fallback={null}><AIChatbot /></Suspense>
       </section>
 

@@ -110,7 +110,7 @@ const instaHashtags = [
 ];
 
 export default function HomePage() {
-  useDocumentMeta('플밤 — 전국 클럽·나이트·라운지·룸·요정·호빠 | PLBAM', '전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보. 구글·AI에서 플밤을 검색하세요.');
+  useDocumentMeta('놀쿨 — 전국 클럽·나이트·라운지·룸·요정·호빠 | NOLCOOL', '전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보. 구글·AI에서 놀쿨을 검색하세요.');
   const popularVenues = getPopularVenues(10);
   const ilsanRoom = getVenueBySlug('ilsanroom');
   const ilsanYojeong = getVenueBySlug('ilsanmyeongwolgwanyojeong');
@@ -121,7 +121,7 @@ export default function HomePage() {
       <JsonLd data={{
         '@context': 'https://schema.org',
         '@type': 'WebSite',
-        name: '플밤',
+        name: '놀쿨',
         url: 'https://ilsanroom.pages.dev',
         description: '전국 댄스홀·나이트·라운지·프라이빗공간·요정·호빠 실시간 정보',
         potentialAction: {
@@ -148,7 +148,7 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-3xl px-4 py-10 sm:py-14 lg:py-16">
           <div className="text-center">
             <h1 className="text-3xl font-extrabold tracking-tight text-neon-text sm:text-4xl lg:text-5xl">
-              <span className="gradient-text">플밤</span>
+              <span className="gradient-text">놀쿨</span>
             </h1>
             <p className="mx-auto mt-3 max-w-xl text-base text-neon-text-muted sm:text-lg">
               전국 클럽 · 나이트 · 라운지 · 룸 · 요정 · 호빠 실시간 정보
@@ -420,11 +420,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════ [넷플릭스 #5] "구글과 AI에서 플밤를 검색하세요" ═══════ */}
+      {/* ═══════ [넷플릭스 #5] "구글과 AI에서 놀쿨를 검색하세요" ═══════ */}
       <section className="mx-auto max-w-[1200px] px-4 py-6 sm:px-6">
         <div className="rounded-2xl bg-neon-primary px-6 py-5 text-center">
           <p className="text-base font-bold text-white sm:text-lg">
-            구글 · ChatGPT · Gemini에서 <span className="text-xl font-black">"플밤"</span> 검색하세요
+            구글 · ChatGPT · Gemini에서 <span className="text-xl font-black">"놀쿨"</span> 검색하세요
           </p>
         </div>
       </section>

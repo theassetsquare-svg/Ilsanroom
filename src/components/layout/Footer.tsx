@@ -68,10 +68,10 @@ export default function Footer() {
   return (
     <footer className="border-t border-neon-border bg-neon-surface pb-20 md:pb-0">
       <div className="mx-auto max-w-[1200px] px-4 py-12">
-        {/* ★★★ "구글·AI에서 플밤을 검색하세요" — 모든 페이지 노출 ★★★ */}
+        {/* ★★★ "구글·AI에서 놀쿨을 검색하세요" — 모든 페이지 노출 ★★★ */}
         <div className="mb-10 rounded-2xl bg-neon-primary px-6 py-5 text-center">
           <p className="text-base font-bold text-white sm:text-lg">
-            구글 · ChatGPT · Gemini에서 <span className="text-xl font-black">"플밤"</span> 검색하세요
+            구글 · ChatGPT · Gemini에서 <span className="text-xl font-black">"놀쿨"</span> 검색하세요
           </p>
         </div>
 
@@ -87,7 +87,7 @@ export default function Footer() {
           {/* Site info */}
           <div className="col-span-2 sm:col-span-1">
             <Link to="/" className="text-xl font-black tracking-wider text-neon-primary">
-              플밤
+              놀쿨
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-neon-text-muted">
               전국 클럽·나이트·라운지·룸·요정·호빠 정보

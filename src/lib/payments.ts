@@ -1,4 +1,4 @@
-// Toss Payments integration for 플밤 SaaS
+// Toss Payments integration for 놀쿨 SaaS
 
 const TOSS_CLIENT_KEY = import.meta.env.VITE_TOSS_CLIENT_KEY || '';
 const TOSS_SECRET_KEY = import.meta.env.VITE_TOSS_SECRET_KEY || '';

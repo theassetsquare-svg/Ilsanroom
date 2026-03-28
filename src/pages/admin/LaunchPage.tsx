@@ -5,7 +5,7 @@ const sections = [
     title: "데이터 & 콘텐츠",
     items: [
       { task: "100+ 업소 데이터 완성", status: "done", note: "101개 업소 등록 완료" },
-      { task: "일산룸/명월관 메인 상단 프리미엄 카드", status: "done", note: "프리미엄 2개 플밤 내 상단 노출" },
+      { task: "일산룸/명월관 메인 상단 프리미엄 카드", status: "done", note: "프리미엄 2개 놀쿨 내 상단 노출" },
       { task: "모든 가게이름 SEO (title/H1/JSON-LD)", status: "done", note: "7개 카테고리 상세 페이지 구조화 데이터" },
       { task: "매거진 콘텐츠 8개 시드", status: "done", note: "SEO 아티클 포함" },
       { task: "커뮤니티 6종 게시판 + 샘플 데이터", status: "done", note: "자유/후기/파티/팁/패션/QnA" },
@@ -86,7 +86,7 @@ const domainStrategy = [
 ];
 
 export default function LaunchChecklistPage() {
-  useDocumentMeta('런칭 준비 | 플밤', '입점 심사 통과! 대시보드 접속 전 마지막 체크리스트.');
+  useDocumentMeta('런칭 준비 | 놀쿨', '입점 심사 통과! 대시보드 접속 전 마지막 체크리스트.');
   const allItems = sections.flatMap((s) => s.items);
   const totalItems = allItems.length;
   const doneItems = allItems.filter((i) => i.status === "done").length;
@@ -99,7 +99,7 @@ export default function LaunchChecklistPage() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">런칭 체크리스트</h1>
         <p className="mt-2 text-neon-text-muted">
-          플밤 SaaS 런칭 전 확인 사항
+          놀쿨 SaaS 런칭 전 확인 사항
         </p>
       </div>
 

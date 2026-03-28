@@ -41,7 +41,7 @@ const plans = [
       "리뷰 무제한 + 답변",
       "상세 통계 + 경쟁 분석",
       "이벤트 10건 신청",
-      "플밤 내 우선 노출",
+      "놀쿨 내 우선 노출",
     ],
     highlighted: true,
     tag: "14일 무료 체험",
@@ -55,7 +55,7 @@ const plans = [
       "리뷰 관리 + AI 답변",
       "전체 통계 + 리포트",
       "이벤트 무제한",
-      "플밤 내 최상단 노출 + 골드 뱃지",
+      "놀쿨 내 최상단 노출 + 골드 뱃지",
       "전담 매니저 배정",
     ],
     highlighted: false,
@@ -74,7 +74,7 @@ const categories = [
 ];
 
 export default function OnboardingPage() {
-  useDocumentMeta('업소 등록 시작 | 플밤', '상호명 치고, 사진 올리고, 번호 넣으면 3분 만에 완료.');
+  useDocumentMeta('업소 등록 시작 | 놀쿨', '상호명 치고, 사진 올리고, 번호 넣으면 3분 만에 완료.');
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedPlan, setSelectedPlan] = useState("프로");
   const [formData, setFormData] = useState({

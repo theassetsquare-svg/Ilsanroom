@@ -47,13 +47,13 @@ const sections = [
 ];
 
 export default function CommunityPage() {
-  useDocumentMeta('밤문화 커뮤니티 | 플밤', '같은 밤을 보내는 사람들끼리 수다 떠는 광장.');
+  useDocumentMeta('밤문화 커뮤니티 | 놀쿨', '같은 밤을 보내는 사람들끼리 수다 떠는 광장.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-5xl px-4 py-16">
         <div className="mb-12 text-center">
           <h1 className="mb-4 text-4xl font-bold">
-            <span className="text-neon-primary-light">플밤</span> 커뮤니티
+            <span className="text-neon-primary-light">놀쿨</span> 커뮤니티
           </h1>
           <p className="text-lg text-neon-text-muted">
             같은 밤을 보내는 사람들끼리 떠드는 곳

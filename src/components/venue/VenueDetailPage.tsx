@@ -48,7 +48,7 @@ export default function VenueDetailPage({
 
   const nameHasRegion = venue.nameKo.includes(regionKo);
   const breadcrumbItems = [
-    { name: '플밤', url: '/' },
+    { name: '놀쿨', url: '/' },
     { name: categoryLabel, url: categoryPath },
     ...(nameHasRegion ? [] : [{ name: regionKo, url: regionPath }]),
     { name: venue.nameKo, url: detailPath },

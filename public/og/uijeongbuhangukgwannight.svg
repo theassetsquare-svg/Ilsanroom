@@ -1,14 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#EC4899;stop-opacity:1"/>
-      <stop offset="100%" style="stop-color:#1a1a2e;stop-opacity:1"/>
-    </linearGradient>
-  </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
-  <rect x="60" y="60" width="1080" height="510" rx="24" fill="rgba(255,255,255,0.08)"/>
-  <text x="600" y="280" text-anchor="middle" font-family="sans-serif" font-size="60" font-weight="bold" fill="white">의정부한국관나이트</text>
-  
-  <text x="600" y="355" text-anchor="middle" font-family="sans-serif" font-size="26" fill="rgba(255,255,255,0.7)">나이트 | 플밤</text>
-  <text x="600" y="540" text-anchor="middle" font-family="sans-serif" font-size="20" fill="rgba(255,255,255,0.4)">플밤 — ilsanroom.pages.dev</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><defs><linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#EC4899;stop-opacity:1"/><stop offset="100%" style="stop-color:#1a1a2e;stop-opacity:1"/></linearGradient></defs><rect width="1200" height="630" fill="url(#bg)"/><rect x="60" y="60" width="1080" height="510" rx="24" fill="rgba(255,255,255,0.08)"/><text x="600" y="280" text-anchor="middle" font-family="sans-serif" font-size="60" font-weight="bold" fill="white">의정부한국관나이트</text><text x="600" y="355" text-anchor="middle" font-family="sans-serif" font-size="26" fill="rgba(255,255,255,0.7)">나이트 | 놀쿨</text><text x="600" y="540" text-anchor="middle" font-family="sans-serif" font-size="20" fill="rgba(255,255,255,0.4)">놀쿨 — ilsanroom.pages.dev</text></svg>

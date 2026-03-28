@@ -49,7 +49,7 @@ export function generateCategoryMeta(category: VenueCategory): Metadata {
     title: meta.title,
     description: meta.desc,
     openGraph: {
-      title: `${meta.title} | 플밤`,
+      title: `${meta.title} | 놀쿨`,
       description: meta.ogDesc,
     },
   };
@@ -66,7 +66,7 @@ export function generateVenueMeta(
     title: `${venueName} — ${regionKo} ${categoryName}`,
     description: description.slice(0, 150),
     openGraph: {
-      title: `${venueName} | 플밤`,
+      title: `${venueName} | 놀쿨`,
       description: description.slice(0, 150),
     },
   };

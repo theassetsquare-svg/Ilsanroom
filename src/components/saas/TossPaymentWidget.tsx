@@ -60,7 +60,7 @@ export default function TossPaymentWidget({ planId, onClose }: TossPaymentWidget
       await tossPayments.requestPayment('카드', {
         amount,
         orderId,
-        orderName: `플밤 ${planName} 플랜`,
+        orderName: `놀쿨 ${planName} 플랜`,
         customerName: '업주',
         successUrl: `${window.location.origin}/onboarding?payment=success&orderId=${orderId}`,
         failUrl: `${window.location.origin}/pricing?payment=fail`,

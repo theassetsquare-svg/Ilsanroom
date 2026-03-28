@@ -18,7 +18,7 @@ const months = [
 const DOW = ['일', '월', '화', '수', '목', '금', '토'];
 
 export default function EventsPage() {
-  useDocumentMeta('이번 주말 전국 파티·행사 캘린더 | 플밤', '해외 DJ 라인업, 할인 행사, 특집 파티. 놓치기 전에 달력 표시.');
+  useDocumentMeta('이번 주말 전국 파티·행사 캘린더 | 놀쿨', '해외 DJ 라인업, 할인 행사, 특집 파티. 놓치기 전에 달력 표시.');
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       {/* Event JSON-LD */}
@@ -32,7 +32,7 @@ export default function EventsPage() {
           eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
           eventStatus: 'https://schema.org/EventScheduled',
           location: { '@type': 'Place', name: e.venue, address: { '@type': 'PostalAddress', addressRegion: e.region, addressCountry: 'KR' } },
-          organizer: { '@type': 'Organization', name: '플밤', url: 'https://ilsanroom.pages.dev' },
+          organizer: { '@type': 'Organization', name: '놀쿨', url: 'https://ilsanroom.pages.dev' },
         }} />
       ))}
 

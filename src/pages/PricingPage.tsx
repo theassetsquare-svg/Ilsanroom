@@ -17,7 +17,7 @@ const plans = [
       { text: "이벤트 등록", included: false },
       { text: "후기 답변", included: false },
       { text: "예약 관리", included: false },
-      { text: "플밤 내 우선 노출", included: false },
+      { text: "놀쿨 내 우선 노출", included: false },
       { text: "고객 분석 리포트", included: false },
       { text: "인증 뱃지", included: false },
       { text: "전담 매니저", included: false },
@@ -40,7 +40,7 @@ const plans = [
       { text: "이벤트 등록 (월 5개)", included: true },
       { text: "후기 답변", included: true },
       { text: "예약 관리", included: true },
-      { text: "플밤 내 우선 노출", included: false },
+      { text: "놀쿨 내 우선 노출", included: false },
       { text: "고객 분석 리포트", included: false },
       { text: "인증 뱃지", included: false },
       { text: "전담 매니저", included: false },
@@ -63,7 +63,7 @@ const plans = [
       { text: "이벤트 가입 (무제한)", included: true },
       { text: "리뷰 답변", included: true },
       { text: "예약 관리", included: true },
-      { text: "플밤 내 우선 노출 (지역 상단)", included: true },
+      { text: "놀쿨 내 우선 노출 (지역 상단)", included: true },
       { text: "고객 분석 리포트", included: true },
       { text: "인증 뱃지", included: true },
       { text: "전담 매니저", included: false },
@@ -86,7 +86,7 @@ const plans = [
       { text: "이벤트 입점 (무제한)", included: true },
       { text: "평가 답변", included: true },
       { text: "예약 관리", included: true },
-      { text: "플밤 내 최상단 노출 (전 지역)", included: true },
+      { text: "놀쿨 내 최상단 노출 (전 지역)", included: true },
       { text: "고객 분석 리포트", included: true },
       { text: "인증 뱃지", included: true },
       { text: "전담 매니저 + API", included: true },
@@ -127,7 +127,7 @@ const faqs = [
 ];
 
 export default function PricingPage() {
-  useDocumentMeta('업주님, 14일 무료 체험으로 시작하세요 | 플밤', '0원부터 하이엔드까지 4단계. 체험 후 결정. 해지도 원클릭.');
+  useDocumentMeta('업주님, 14일 무료 체험으로 시작하세요 | 놀쿨', '0원부터 하이엔드까지 4단계. 체험 후 결정. 해지도 원클릭.');
   return (
     <div className="min-h-screen bg-neon-bg">
       <div className="mx-auto max-w-[1200px] px-4 py-16">

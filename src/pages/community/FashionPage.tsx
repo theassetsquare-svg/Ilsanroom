@@ -113,7 +113,7 @@ function SuitabilityDots({ score }: { score: number }) {
 }
 
 export default function FashionPage() {
-  useDocumentMeta('뭐 입고 가야 해? 패션 가이드 | 플밤', '셔츠냐 정장이냐, 운동화 되냐 안 되냐. 옷 고민 끝.');
+  useDocumentMeta('뭐 입고 가야 해? 패션 가이드 | 놀쿨', '셔츠냐 정장이냐, 운동화 되냐 안 되냐. 옷 고민 끝.');
   const [venueFilter, setVenueFilter] = useState<FilterType>("all");
 
   const sorted = [...outfitCards].sort((a, b) => {

@@ -63,7 +63,7 @@ function getResponse(input: string): string {
 
 export default function AIChatbot() {
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'bot', text: '안녕하세요! "플밤" AI입니다. 어떤 곳을 찾고 계신가요?' },
+    { role: 'bot', text: '안녕하세요! "놀쿨" AI입니다. 어떤 곳을 찾고 계신가요?' },
   ]);
   const [input, setInput] = useState('');
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -83,7 +83,7 @@ export default function AIChatbot() {
   return (
     <div className="rounded-2xl border border-neon-primary/30 bg-neon-surface overflow-hidden">
       <div className="bg-gradient-to-r from-neon-primary to-neon-accent px-5 py-3">
-        <h3 className="text-sm font-bold text-white">플밤 AI</h3>
+        <h3 className="text-sm font-bold text-white">놀쿨 AI</h3>
       </div>
 
       <div className="h-80 overflow-y-auto p-4 space-y-3">

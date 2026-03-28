@@ -20,7 +20,7 @@ function getCategoryLabel(cat: string) {
 }
 
 export default function NotFound() {
-  useDocumentMeta('엇, 여기 아닌데? | 플밤', '길을 잃었다. 괜찮아, 대신 지금 뜨는 곳 보여줄게.');
+  useDocumentMeta('엇, 여기 아닌데? | 놀쿨', '길을 잃었다. 괜찮아, 대신 지금 뜨는 곳 보여줄게.');
   const popularVenues = getPopularVenues(6);
 
   return (
@@ -72,7 +72,7 @@ export default function NotFound() {
       </div>
 
       <div className="mt-16 text-neon-text-subtle">
-        <p className="text-xs">플밤</p>
+        <p className="text-xs">놀쿨</p>
       </div>
     </div>
   );

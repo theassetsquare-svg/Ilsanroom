@@ -40,7 +40,7 @@ async function sendEmail(env: Env, to: string, subject: string, html: string) {
       'Authorization': `Bearer ${env.RESEND_API_KEY}`,
     },
     body: JSON.stringify({
-      from: '플밤 <noreply@ilsanroom.pages.dev>',
+      from: '놀쿨 <noreply@ilsanroom.pages.dev>',
       to: [to],
       subject,
       html,
@@ -89,7 +89,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         // 관리자에게 알림
         if (NOTIFICATION_EMAIL) {
-          await sendEmail(context.env, NOTIFICATION_EMAIL, `[플밤] 문의: ${name}`,
+          await sendEmail(context.env, NOTIFICATION_EMAIL, `[놀쿨] 문의: ${name}`,
             `<h2>새 문의</h2>
             <p><strong>이름:</strong> ${name}</p>
             <p><strong>이메일:</strong> ${email}</p>
@@ -99,13 +99,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         }
 
         // 사용자에게 자동 응답
-        await sendEmail(context.env, email, '[플밤] 문의가 접수되었습니다',
+        await sendEmail(context.env, email, '[놀쿨] 문의가 접수되었습니다',
           `<div style="font-family:sans-serif;max-width:480px;margin:0 auto">
             <h2 style="color:#8B5CF6">문의 접수 완료</h2>
             <p>${name}님, 문의해 주셔서 감사합니다.</p>
             <p>보내주신 내용을 확인 후 영업일 기준 1-2일 내에 답변 드리겠습니다.</p>
             <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
-            <p style="color:#888;font-size:12px">플밤 | ilsanroom.pages.dev</p>
+            <p style="color:#888;font-size:12px">놀쿨 | ilsanroom.pages.dev</p>
           </div>`
         );
 
@@ -120,7 +120,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         }
 
         if (NOTIFICATION_EMAIL) {
-          await sendEmail(context.env, NOTIFICATION_EMAIL, `[플밤] 업소 문의: ${venueSlug}`,
+          await sendEmail(context.env, NOTIFICATION_EMAIL, `[놀쿨] 업소 문의: ${venueSlug}`,
             `<h2>업소 문의</h2>
             <p><strong>업소:</strong> ${venueSlug}</p>
             <p><strong>이름:</strong> ${name}</p>
@@ -129,13 +129,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           );
         }
 
-        await sendEmail(context.env, email, '[플밤] 업소 문의가 접수되었습니다',
+        await sendEmail(context.env, email, '[놀쿨] 업소 문의가 접수되었습니다',
           `<div style="font-family:sans-serif;max-width:480px;margin:0 auto">
             <h2 style="color:#8B5CF6">업소 문의 접수 완료</h2>
             <p>${name}님, 해당 업소에 대한 문의가 접수되었습니다.</p>
             <p>확인 후 안내 드리겠습니다.</p>
             <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
-            <p style="color:#888;font-size:12px">플밤 | ilsanroom.pages.dev</p>
+            <p style="color:#888;font-size:12px">놀쿨 | ilsanroom.pages.dev</p>
           </div>`
         );
 
@@ -150,7 +150,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         }
 
         if (NOTIFICATION_EMAIL) {
-          await sendEmail(context.env, NOTIFICATION_EMAIL, `[플밤] 신고 접수: ${postId}`,
+          await sendEmail(context.env, NOTIFICATION_EMAIL, `[놀쿨] 신고 접수: ${postId}`,
             `<h2>게시물 신고</h2>
             <p><strong>게시물 ID:</strong> ${postId}</p>
             <p><strong>사유:</strong> ${reason}</p>
@@ -168,10 +168,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           return Response.json({ error: '이메일이 필요합니다.' }, { status: 400 });
         }
 
-        await sendEmail(context.env, email, '플밤에 오신 것을 환영합니다! 🎉',
+        await sendEmail(context.env, email, '놀쿨에 오신 것을 환영합니다! 🎉',
           `<div style="font-family:sans-serif;max-width:480px;margin:0 auto">
             <h2 style="color:#8B5CF6">환영합니다${name ? `, ${name}` : ''}! 🎉</h2>
-            <p>플밤 회원이 되신 것을 축하합니다.</p>
+            <p>놀쿨 회원이 되신 것을 축하합니다.</p>
             <p>전국 117개 이상의 매장 정보를 비교하고, 나에게 딱 맞는 곳을 찾아보세요.</p>
             <ul>
               <li>🎰 룰렛으로 랜덤 추천 받기</li>
@@ -180,7 +180,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             </ul>
             <a href="https://ilsanroom.pages.dev" style="display:inline-block;padding:12px 24px;background:#8B5CF6;color:#fff;text-decoration:none;border-radius:8px;margin-top:16px">둘러보기</a>
             <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
-            <p style="color:#888;font-size:12px">플밤 | ilsanroom.pages.dev</p>
+            <p style="color:#888;font-size:12px">놀쿨 | ilsanroom.pages.dev</p>
           </div>`
         );
 

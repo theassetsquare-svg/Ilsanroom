@@ -29,7 +29,7 @@ function getCategoryPath(venue: Venue): string {
 }
 
 export default function SearchPage() {
-  useDocumentMeta('뭐 찾고 있어? 여기서 바로 검색 | 플밤', '117곳 중에서 지역·카테고리·이름으로 딱 맞는 곳 골라줌.');
+  useDocumentMeta('뭐 찾고 있어? 여기서 바로 검색 | 놀쿨', '117곳 중에서 지역·카테고리·이름으로 딱 맞는 곳 골라줌.');
   const [query, setQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 

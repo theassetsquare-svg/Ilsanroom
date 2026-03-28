@@ -83,7 +83,7 @@ const quickLinks = [
 ];
 
 export default function DashboardPage() {
-  useDocumentMeta('업주 대시보드 | 플밤', '사장님만 보는 비밀 화면. 오늘 누가 얼마나 봤나 체크.');
+  useDocumentMeta('업주 대시보드 | 놀쿨', '사장님만 보는 비밀 화면. 오늘 누가 얼마나 봤나 체크.');
   const { user, loading: authLoading } = useAuth();
   const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
 

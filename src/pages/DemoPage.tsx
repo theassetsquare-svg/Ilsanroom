@@ -51,7 +51,7 @@ const sidebarItems = [
 ];
 
 export default function DemoPage() {
-  useDocumentMeta('사장님 데모 체험 | 플밤', '10초면 끝나는 사장님 화면 미리보기. 가입 따위 필요 없다.');
+  useDocumentMeta('사장님 데모 체험 | 놀쿨', '10초면 끝나는 사장님 화면 미리보기. 가입 따위 필요 없다.');
   const [activeTab, setActiveTab] = useState("현황판");
 
   return (
@@ -66,7 +66,7 @@ export default function DemoPage() {
             사장님 <span className="text-violet-400">현황판</span> 미리보기
           </h1>
           <p className="mx-auto max-w-lg text-lg text-neon-text-muted">
-            플밤 Pro 현황판을 직접 체험해보세요. 실제 수치 기반의
+            놀쿨 Pro 현황판을 직접 체험해보세요. 실제 수치 기반의
             인터랙티브 데모입니다.
           </p>
         </div>
@@ -90,7 +90,7 @@ export default function DemoPage() {
             {/* Sidebar */}
             <div className="hidden w-48 shrink-0 border-r border-neon-border p-4 md:block">
               <div className="mb-6">
-                <span className="text-sm font-bold text-violet-400">플밤</span>
+                <span className="text-sm font-bold text-violet-400">놀쿨</span>
                 <span className="ml-1 text-xs text-neon-text-muted">Pro</span>
               </div>
               <nav className="space-y-1">

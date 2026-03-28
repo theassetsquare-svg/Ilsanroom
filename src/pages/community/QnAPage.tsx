@@ -91,7 +91,7 @@ const userQuestions = [
 ];
 
 export default function QnAPage() {
-  useDocumentMeta('자주 묻는 질문 Q&A | 플밤', '혼자 가도 되나요? 뭐 입고 가요? 신규 방문자 필독 Q&A.');
+  useDocumentMeta('자주 묻는 질문 Q&A | 놀쿨', '혼자 가도 되나요? 뭐 입고 가요? 신규 방문자 필독 Q&A.');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("전체");
 

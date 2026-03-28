@@ -25,7 +25,7 @@ export default function ClubDetailPage() {
   const { region, slug } = useParams<{ region: string; slug: string }>();
   const venue = getVenueBySlug(slug!);
   if (!venue || venue.category !== 'club') return <Navigate to="/404" replace />;
-  useDocumentMeta(getHookingTitle(venue) + ' | 플밤', getHookingDescription(venue), getVenueOgImageBySlug(venue.slug));
+  useDocumentMeta(getHookingTitle(venue) + ' | 놀쿨', getHookingDescription(venue), getVenueOgImageBySlug(venue.slug));
   const regionKo = regionNames[region!] || region!;
   const related = getRelatedVenues(venue, 6);
 

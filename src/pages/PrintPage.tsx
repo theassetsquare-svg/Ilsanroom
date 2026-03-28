@@ -5,7 +5,7 @@ import PrintButton from '@/components/ui/PrintButton';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function PrintPage() {
-  useDocumentMeta('인쇄용 페이지 | 플밤', '상세 정보 출력 페이지.');
+  useDocumentMeta('인쇄용 페이지 | 놀쿨', '상세 정보 출력 페이지.');
   const { slug } = useParams<{ slug: string }>();
   const venue = slug ? getVenueBySlug(slug) : undefined;
 
@@ -46,7 +46,7 @@ export default function PrintPage() {
               </p>
             </div>
             <div className="text-right">
-              <p className="text-xs text-neon-text-muted">플밤</p>
+              <p className="text-xs text-neon-text-muted">놀쿨</p>
               <p className="text-xs text-neon-text-muted">ilsanroom.pages.dev</p>
             </div>
           </div>
@@ -107,7 +107,7 @@ export default function PrintPage() {
         {/* QR Code placeholder */}
         <div className="mt-8 flex items-center justify-between border-t border-neutral-200 pt-4">
           <p className="text-xs text-neon-text-muted">
-            이 자료는 플밤에서 가져온 내용입니다. 방문 전 매장에 직접 물어봐.
+            이 자료는 놀쿨에서 가져온 내용입니다. 방문 전 매장에 직접 물어봐.
           </p>
           <div className="h-16 w-16 rounded border border-neutral-300 bg-neutral-100 flex items-center justify-center text-xs text-neon-text-muted">
             QR

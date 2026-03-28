@@ -32,7 +32,7 @@ const hiddenGems = [
 ];
 
 export default function HiddenPage() {
-  useDocumentMeta('아무도 모르는 숨은 명소, 이번 주 공개 | 플밤', '단골만 아는 숨겨진 곳. 매주 1곳씩 비밀리에 공개.');
+  useDocumentMeta('아무도 모르는 숨은 명소, 이번 주 공개 | 놀쿨', '단골만 아는 숨겨진 곳. 매주 1곳씩 비밀리에 공개.');
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
       <h1 className="text-3xl font-extrabold text-neon-text mb-2">이 업소 몰랐지?</h1>
