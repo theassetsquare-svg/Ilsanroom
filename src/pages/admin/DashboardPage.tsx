@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
+import { useAuth } from '@/hooks/useAuth';
+
+const ADMIN_EMAILS = ['qotjsdnr123@naver.com'];
 
 const stats = [
   { label: "오늘 조회수", value: "1,284", change: "+12.5%", positive: true },
@@ -81,6 +84,12 @@ const quickLinks = [
 
 export default function DashboardPage() {
   useDocumentMeta('업주 대시보드 | 플밤', '내 업소 조회수, 리뷰, 예약 현황.');
+  const { user, loading: authLoading } = useAuth();
+  const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
+
+  if (authLoading) return <div className="flex min-h-[60vh] items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-neon-primary border-t-transparent" /></div>;
+  if (!user || !isAdmin) return <div className="mx-auto max-w-md px-4 py-20 text-center"><h1 className="text-2xl font-bold text-neon-text mb-4">관리자 전용</h1><p className="text-neon-text-muted mb-6">이 페이지는 관리자만 접근할 수 있습니다.</p><a href="/login" className="inline-block rounded-xl bg-neon-primary px-6 py-3 text-sm font-bold text-white">로그인</a></div>;
+
   const [reservationStatuses, setReservationStatuses] = useState<
     Record<number, string>
   >(
