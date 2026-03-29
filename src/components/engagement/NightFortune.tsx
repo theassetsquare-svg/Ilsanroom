@@ -63,13 +63,13 @@ export default function NightFortune() {
   ];
 
   return (
-    <div className="rounded-2xl border-2 border-yellow-400 bg-[#1c1028] p-4 shadow-lg">
+    <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-md">
       {/* Header */}
       <div className="mb-3 text-center">
-        <p className="text-base font-bold text-yellow-400 mb-0.5">
+        <p className="text-sm font-semibold text-gray-500 mb-0.5">
           🌙 {dateLabel} 운세
         </p>
-        <h3 className="text-2xl font-black text-yellow-300">
+        <h3 className="text-xl font-black text-gray-900">
           밤문화 운세
         </h3>
       </div>
@@ -77,9 +77,9 @@ export default function NightFortune() {
       {/* Fortune categories */}
       <div className="space-y-1.5 mb-3">
         {categories.map((cat) => (
-          <div key={cat.label} className="flex items-center justify-between bg-white/10 rounded-lg px-3 py-1.5">
-            <span className="text-base font-bold text-white">{cat.label}</span>
-            <span className="text-lg font-bold text-yellow-400">
+          <div key={cat.label} className="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2">
+            <span className="text-base font-bold text-gray-900">{cat.label}</span>
+            <span className="text-lg font-bold text-amber-500">
               {getStars(cat.score)}
             </span>
           </div>
@@ -87,15 +87,15 @@ export default function NightFortune() {
       </div>
 
       {/* Lucky venue */}
-      <div className="text-center mb-2 bg-yellow-400/15 rounded-xl py-2">
-        <p className="text-sm font-bold text-white mb-1">오늘의 럭키 업종</p>
-        <span className="text-xl font-black text-yellow-400">
+      <div className="text-center mb-2 bg-purple-50 rounded-xl py-2.5">
+        <p className="text-sm font-bold text-gray-600 mb-1">오늘의 럭키 업종</p>
+        <span className="text-xl font-black text-purple-700">
           🎯 {luckyVenue}
         </span>
       </div>
 
       {/* Fortune message */}
-      <p className="text-center text-base font-bold text-white leading-snug">
+      <p className="text-center text-base font-bold text-gray-800 leading-snug">
         ✨ {message}
       </p>
     </div>
