@@ -162,7 +162,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-8 border-t border-neon-border pt-6">
           <p className="text-center text-xs text-neon-text-muted">
-            &copy; {new Date().getFullYear()} 강남청담클럽. All rights reserved.
+            &copy; {new Date().getFullYear()} 놀쿨. All rights reserved.
           </p>
           <p className="mt-2 text-center text-xs text-neon-text-muted">
             직접 확인하고 전문가가 분석합니다
