@@ -5,12 +5,14 @@ const CountdownUrgency = lazy(() => import('./CountdownUrgency'));
 const InfiniteDiscoveryFeed = lazy(() => import('./InfiniteDiscoveryFeed'));
 const NightFortune = lazy(() => import('./NightFortune'));
 const NearbyFood = lazy(() => import('./NearbyFood'));
+const OneLineReview = lazy(() => import('./OneLineReview'));
 
 export default function EngagementSection() {
   return (
     <>
       <Suspense fallback={null}><StreakAndProgress /></Suspense>
       <Suspense fallback={null}><NightFortune /></Suspense>
+      <Suspense fallback={null}><OneLineReview /></Suspense>
       <Suspense fallback={null}><CountdownUrgency /></Suspense>
       <Suspense fallback={null}><InfiniteDiscoveryFeed /></Suspense>
       <Suspense fallback={null}><NearbyFood /></Suspense>
