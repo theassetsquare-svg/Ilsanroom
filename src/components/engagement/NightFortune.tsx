@@ -63,23 +63,23 @@ export default function NightFortune() {
   ];
 
   return (
-    <div className="rounded-2xl border border-purple-200 bg-gradient-to-br from-[#1a1025] to-[#2d1b4e] p-5 shadow-lg">
+    <div className="rounded-2xl border border-purple-400/60 bg-gradient-to-br from-[#1a1025] to-[#2d1b4e] p-5 shadow-lg">
       {/* Header */}
       <div className="mb-4 text-center">
-        <p className="text-xs font-medium text-[var(--neon-accent,#f59e0b)] tracking-wider mb-1">
+        <p className="text-sm font-semibold text-amber-400 tracking-wider mb-1">
           {dateLabel} 운세
         </p>
-        <h3 className="text-lg font-bold text-white">
+        <h3 className="text-xl font-extrabold text-white drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]">
           밤문화 운세
         </h3>
       </div>
 
       {/* Fortune categories */}
-      <div className="space-y-2 mb-4">
+      <div className="space-y-2.5 mb-4">
         {categories.map((cat) => (
           <div key={cat.label} className="flex items-center justify-between">
-            <span className="text-sm text-purple-200 w-20">{cat.label}</span>
-            <span className="text-sm tracking-wider text-[var(--neon-accent,#f59e0b)]">
+            <span className="text-[15px] font-semibold text-white w-20">{cat.label}</span>
+            <span className="text-base tracking-wider text-amber-400 drop-shadow-[0_0_4px_rgba(245,158,11,0.4)]">
               {getStars(cat.score)}
             </span>
           </div>
@@ -87,18 +87,18 @@ export default function NightFortune() {
       </div>
 
       {/* Divider */}
-      <div className="border-t border-purple-400/30 my-4" />
+      <div className="border-t border-purple-400/40 my-4" />
 
       {/* Lucky venue */}
       <div className="text-center mb-3">
-        <p className="text-xs text-purple-300 mb-1">오늘의 럭키 업종</p>
-        <span className="inline-block rounded-full bg-[var(--neon-primary,#7c3aed)]/20 border border-[var(--neon-primary,#7c3aed)]/50 px-4 py-1.5 text-sm font-bold text-[var(--neon-accent,#f59e0b)]">
+        <p className="text-sm font-medium text-purple-100 mb-1.5">오늘의 럭키 업종</p>
+        <span className="inline-block rounded-full bg-purple-600/30 border border-purple-400/60 px-4 py-1.5 text-base font-extrabold text-amber-300 drop-shadow-[0_0_6px_rgba(245,158,11,0.3)]">
           {luckyVenue}
         </span>
       </div>
 
       {/* Fortune message */}
-      <p className="text-center text-sm text-purple-100 leading-relaxed">
+      <p className="text-center text-[15px] font-medium text-white/90 leading-relaxed">
         {message}
       </p>
     </div>
