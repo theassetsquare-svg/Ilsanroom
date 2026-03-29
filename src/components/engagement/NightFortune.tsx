@@ -63,7 +63,7 @@ export default function NightFortune() {
   ];
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-md">
+    <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-md mx-auto max-w-sm text-center">
       {/* Header */}
       <div className="mb-3 text-center">
         <p className="text-sm font-semibold text-gray-500 mb-0.5">
@@ -75,10 +75,10 @@ export default function NightFortune() {
       </div>
 
       {/* Fortune categories */}
-      <div className="space-y-1.5 mb-3 mx-auto max-w-[260px]">
+      <div className="space-y-1.5 mb-3">
         {categories.map((cat) => (
-          <div key={cat.label} className="flex items-center justify-center gap-3 bg-gray-50 rounded-lg py-2">
-            <span className="text-base font-bold text-gray-900 w-[72px] text-right">{cat.label}</span>
+          <div key={cat.label} className="flex items-center justify-center gap-2 bg-gray-50 rounded-lg py-2">
+            <span className="text-base font-bold text-gray-900">{cat.label}</span>
             <span className="text-lg font-bold text-amber-500">
               {getStars(cat.score)}
             </span>
