@@ -75,10 +75,10 @@ export default function NightFortune() {
       </div>
 
       {/* Fortune categories */}
-      <div className="space-y-1.5 mb-3">
+      <div className="space-y-1.5 mb-3 mx-auto max-w-[260px]">
         {categories.map((cat) => (
-          <div key={cat.label} className="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2">
-            <span className="text-base font-bold text-gray-900">{cat.label}</span>
+          <div key={cat.label} className="flex items-center justify-center gap-3 bg-gray-50 rounded-lg py-2">
+            <span className="text-base font-bold text-gray-900 w-[72px] text-right">{cat.label}</span>
             <span className="text-lg font-bold text-amber-500">
               {getStars(cat.score)}
             </span>
