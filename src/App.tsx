@@ -62,6 +62,7 @@ const AnalyticsPage = lazy(() => import('./pages/admin/AnalyticsPage'));
 const BillingPage = lazy(() => import('./pages/admin/BillingPage'));
 const OnboardingPage = lazy(() => import('./pages/admin/OnboardingPage'));
 const LaunchPage = lazy(() => import('./pages/admin/LaunchPage'));
+const VenueManagePage = lazy(() => import('./pages/admin/VenueManagePage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 function PageLoading() {
@@ -144,6 +145,7 @@ export default function App() {
           <Route path="/billing" element={<BillingPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/launch" element={<LaunchPage />} />
+          <Route path="/admin/venues" element={<VenueManagePage />} />
           {/* 404 */}
           <Route path="*" element={<NotFoundPage />} />
         </Route>
