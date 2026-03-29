@@ -37,9 +37,9 @@ const features = [
   },
   {
     icon: BadgeCheck,
-    title: "프리미엄 뱃지",
+    title: "인증 뱃지",
     description:
-      "놀쿨 인증 뱃지로 신뢰도를 높이세요. 인증 매장은 손님 클릭률이 평균 2.3배 높습니다.",
+      "놀쿨 인증 뱃지 달리면 클릭률이 2.3배 올라갑니다. 손님이 먼저 신뢰하거든요.",
   },
   {
     icon: CalendarCheck,
@@ -99,7 +99,7 @@ const caseStudies = [
     name: "강남청담클럽 레이스",
     metric: "3.2x",
     description: "매출 성장",
-    detail: "프리미엄 뱃지와 이벤트 프로모션으로 주말 수입 3.2배 달성",
+    detail: "인증 뱃지와 이벤트 프로모션으로 주말 수입 3.2배 달성",
   },
 ];
 
