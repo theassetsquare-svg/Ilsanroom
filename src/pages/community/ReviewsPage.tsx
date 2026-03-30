@@ -100,7 +100,7 @@ function StarDisplay({ rating, size = "md" }: { rating: number; size?: "sm" | "m
 }
 
 export default function ReviewsPage() {
-  useDocumentMeta('방문자 솔직 리뷰 모음', '직접 가본 사람들의 솔직한 후기와 별점.');
+  useDocumentMeta('업소후기 — 직접 가본 솔직 리뷰', '직접 가본 사람들의 솔직한 후기와 별점.');
   const { user } = useAuth();
   const [starFilter, setStarFilter] = useState<number | null>(null);
   const [photoOnly, setPhotoOnly] = useState(false);
@@ -178,7 +178,7 @@ export default function ReviewsPage() {
           <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
             ← 커뮤니티
           </Link>
-          <h1 className="text-3xl font-bold">방문 후기 모아보기</h1>
+          <h1 className="text-3xl font-bold">업소후기</h1>
           <p className="mt-2 text-neon-text-muted">
             직접 다녀온 사람들의 생생한 경험담 모아봤다
           </p>

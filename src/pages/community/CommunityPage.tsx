@@ -3,46 +3,39 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const sections = [
   {
-    title: "자유게시판",
-    description: "자유롭게 이야기 나누는 공간",
-    href: "/community/free",
-    icon: "💬",
-    count: 1284,
-  },
-  {
-    title: "후기 게시판",
-    description: "업소 방문 후기와 솔직한 리뷰",
+    title: "업소후기",
+    description: "직접 가본 솔직한 방문 후기",
     href: "/community/reviews",
     icon: "⭐",
     count: 892,
   },
   {
-    title: "파티 모집",
+    title: "오늘어디갈까",
+    description: "오늘 밤 어디 갈지 같이 고민하는 곳",
+    href: "/community/qna",
+    icon: "🗺️",
+    count: 478,
+  },
+  {
+    title: "파티모임",
     description: "함께 갈 파티 멤버를 찾아보세요",
     href: "/community/party",
     icon: "🎉",
     count: 346,
   },
   {
-    title: "팁 & 노하우",
-    description: "밤놀이 고수들의 꿀팁",
+    title: "꿀팁",
+    description: "밤놀이 고수들의 실전 노하우",
     href: "/community/tips",
     icon: "💡",
     count: 567,
   },
   {
-    title: "패션 가이드",
-    description: "드레스코드와 스타일링 정보",
-    href: "/community/fashion",
-    icon: "👔",
-    count: 231,
-  },
-  {
-    title: "Q&A",
-    description: "궁금한 점을 질문하고 답변받기",
-    href: "/community/qna",
-    icon: "❓",
-    count: 478,
+    title: "자유게시판",
+    description: "자유롭게 이야기 나누는 공간",
+    href: "/community/free",
+    icon: "💬",
+    count: 1284,
   },
 ];
 

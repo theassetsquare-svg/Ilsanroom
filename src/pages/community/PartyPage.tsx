@@ -155,7 +155,7 @@ function NbbangCalc() {
 }
 
 export default function PartyRecruitPage() {
-  useDocumentMeta('파티 모집 — 같이 갈 사람 찾기', '같이 갈 사람 손! N빵 모집, 날짜 맞추기, 인원 모으기.');
+  useDocumentMeta('파티모임 — 같이 갈 사람 찾기', '같이 갈 사람 손! N빵 모집, 날짜 맞추기, 인원 모으기.');
   const { user } = useAuth();
   const [statusFilter, setStatusFilter] = useState<PartyStatus | "전체">("전체");
   const [parties, setParties] = useState<PartyItem[]>(sampleParties);
@@ -219,7 +219,7 @@ export default function PartyRecruitPage() {
             <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
               ← 커뮤니티
             </Link>
-            <h1 className="text-3xl font-bold">동행 모집 게시판</h1>
+            <h1 className="text-3xl font-bold">파티모임</h1>
             <p className="mt-2 text-neon-text-muted">
               같이 갈 사람 찾거나, 열린 약속에 끼어들어 봐
             </p>

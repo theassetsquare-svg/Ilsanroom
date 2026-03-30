@@ -106,7 +106,7 @@ function postToQuestion(post: Post) {
 }
 
 export default function QnAPage() {
-  useDocumentMeta('자주 묻는 질문 Q&A', '혼자 가도 되나요? 뭐 입고 가요? 신규 방문자 필독 Q&A.');
+  useDocumentMeta('오늘어디갈까 — 오늘 밤 추천받기', '오늘 밤 어디 갈지 같이 고민하고 추천받는 게시판.');
   const { user } = useAuth();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("전체");
@@ -170,9 +170,9 @@ export default function QnAPage() {
           <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
             ← 커뮤니티
           </Link>
-          <h1 className="text-3xl font-bold">궁금한 건 여기서 해결하세요</h1>
+          <h1 className="text-3xl font-bold">오늘어디갈까</h1>
           <p className="mt-2 text-neon-text-muted">
-            자주 올라오는 질문을 먼저 확인하고, 원하는 답이 없으면 직접 물어보세요
+            오늘 밤 어디 갈지 추천받고, 같이 고민하는 곳
           </p>
         </div>
 
@@ -185,7 +185,7 @@ export default function QnAPage() {
 
         {/* FAQ Accordion */}
         <section className="mb-12">
-          <h2 className="mb-5 text-xl font-bold text-neon-primary-light">자주 묻는 질문</h2>
+          <h2 className="mb-5 text-xl font-bold text-neon-primary-light">자주 묻는 질문 FAQ</h2>
           <div className="space-y-2">
             {faqItems.map((faq, i) => (
               <div key={i} className="rounded-xl border border-neon-border bg-neon-surface overflow-hidden">
@@ -214,12 +214,12 @@ export default function QnAPage() {
         {/* User Questions */}
         <section>
           <div className="mb-5 flex items-center justify-between">
-            <h2 className="text-xl font-bold">회원 질문 목록</h2>
+            <h2 className="text-xl font-bold">오늘어디갈까 게시글</h2>
             <button
               onClick={handleWriteClick}
               className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light"
             >
-              질문 올리기
+              글쓰기
             </button>
           </div>
 
@@ -297,10 +297,10 @@ export default function QnAPage() {
         {showWriteModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
             <div className="w-full max-w-lg rounded-2xl border border-neon-border bg-neon-surface p-6">
-              <h2 className="mb-4 text-lg font-bold">질문 올리기</h2>
+              <h2 className="mb-4 text-lg font-bold">글쓰기</h2>
               <div className="mb-3">
                 <label className="mb-1 block text-xs text-neon-text-muted">제목</label>
-                <input value={writeTitle} onChange={(e) => setWriteTitle(e.target.value)} placeholder="질문 제목을 입력하세요"
+                <input value={writeTitle} onChange={(e) => setWriteTitle(e.target.value)} placeholder="제목을 입력하세요"
                   className="w-full rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-primary" />
               </div>
               <div className="mb-4">
