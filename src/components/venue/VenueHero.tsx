@@ -65,7 +65,7 @@ export default function VenueHero({
       )}
       {/* Gradient overlay — always shown, heavier when image exists */}
       {hasImage && slug ? (
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
       ) : (
         <>
           <div className={`absolute inset-0 bg-gradient-to-b ${gradient}`} />
@@ -78,7 +78,7 @@ export default function VenueHero({
           {isPremium && <Badge variant="premium">PREMIUM</Badge>}
         </div>
 
-        <h1 className={`text-3xl font-extrabold sm:text-4xl lg:text-5xl ${hasImage && slug ? 'text-white drop-shadow-lg' : 'text-neon-text'}`}>
+        <h1 className={`text-3xl font-extrabold sm:text-4xl lg:text-5xl ${hasImage && slug ? 'text-white' : 'text-neon-text'}`} style={hasImage && slug ? { textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.4)' } : undefined}>
           {name}
         </h1>
 

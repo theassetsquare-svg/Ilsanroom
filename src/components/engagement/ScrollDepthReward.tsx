@@ -24,6 +24,7 @@ export default function ScrollDepthReward() {
   const [toast, setToast] = useState<{ emoji: string; label: string; points: number } | null>(null);
   const claimedRef = useRef<Set<string>>(new Set());
   const pageKeyRef = useRef(pathname);
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   // Reset on page change
   useEffect(() => {
@@ -47,14 +48,18 @@ export default function ScrollDepthReward() {
           claimedRef.current.add(key);
           store.addPoints(m.points, `스크롤 ${m.pct}%`);
           setToast({ emoji: m.emoji, label: m.label, points: m.points });
-          setTimeout(() => setToast(null), 2000);
+          if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+          toastTimerRef.current = setTimeout(() => setToast(null), 2000);
           break; // One at a time
         }
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    };
   }, [pathname, store]);
 
   return (

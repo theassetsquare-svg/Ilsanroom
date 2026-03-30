@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /**
@@ -65,21 +65,29 @@ export default function RewardAnimation() {
   const [reward, setReward] = useState<RewardEvent | null>(null);
   const [visible, setVisible] = useState(false);
 
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
   const handleReward = useCallback((e: Event) => {
     const detail = (e as CustomEvent<RewardEvent>).detail;
     setReward(detail);
     setVisible(true);
 
     const content = getRewardContent(detail.type, detail.value);
-    setTimeout(() => {
+    const t1 = setTimeout(() => {
       setVisible(false);
-      setTimeout(() => setReward(null), 300);
+      const t2 = setTimeout(() => setReward(null), 300);
+      timersRef.current.push(t2);
     }, content.duration);
+    timersRef.current.push(t1);
   }, []);
 
   useEffect(() => {
     window.addEventListener('reward-animation', handleReward);
-    return () => window.removeEventListener('reward-animation', handleReward);
+    return () => {
+      window.removeEventListener('reward-animation', handleReward);
+      timersRef.current.forEach(t => clearTimeout(t));
+      timersRef.current = [];
+    };
   }, [handleReward]);
 
   if (!reward) return null;

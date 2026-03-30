@@ -82,6 +82,8 @@ export default function SocialProofToast() {
   const idRef = useRef(0);
   const mountTimeRef = useRef(Date.now());
 
+  const dismissRef = useRef<ReturnType<typeof setTimeout>>();
+
   const showNextToast = useCallback(() => {
     // Don't show if page loaded less than 10 seconds ago
     if (Date.now() - mountTimeRef.current < 10000) return;
@@ -90,8 +92,9 @@ export default function SocialProofToast() {
     const newToast = generateToast(idRef.current);
     setToast(newToast);
 
-    // Auto-dismiss after 4 seconds
-    setTimeout(() => {
+    // Auto-dismiss after 4 seconds (cleanup previous)
+    if (dismissRef.current) clearTimeout(dismissRef.current);
+    dismissRef.current = setTimeout(() => {
       setToast(prev => (prev?.id === newToast.id ? null : prev));
     }, 4000);
   }, []);
@@ -109,7 +112,10 @@ export default function SocialProofToast() {
 
     scheduleNext();
 
-    return () => clearTimeout(timeout);
+    return () => {
+      clearTimeout(timeout);
+      if (dismissRef.current) clearTimeout(dismissRef.current);
+    };
   }, [showNextToast]);
 
   return (
@@ -118,14 +124,14 @@ export default function SocialProofToast() {
         {toast && (
           <motion.div
             key={toast.id}
-            className={`pointer-events-auto flex items-center gap-2.5 rounded-xl border ${toast.accent} bg-white/90 backdrop-blur-md px-4 py-3 shadow-lg max-w-[320px]`}
+            className={`pointer-events-auto flex items-center gap-2.5 rounded-xl border ${toast.accent} bg-black/80 backdrop-blur-md px-4 py-3 shadow-lg max-w-[320px]`}
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -100, opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           >
             <span className="shrink-0">{toast.icon}</span>
-            <p className="text-xs font-medium text-[#333] leading-relaxed">
+            <p className="text-xs font-medium text-white leading-relaxed" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
               {toast.message}
             </p>
           </motion.div>
