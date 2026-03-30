@@ -152,7 +152,7 @@ export default function AITasteAnalysis() {
           {/* Recommendations */}
           <p className="text-sm font-semibold text-cyan-700">이런 곳은 어때요?</p>
           {profile.recommendations.map((v) => (
-            <Link key={v.id} to={getHref(v)} className="flex items-center gap-3 rounded-xl border border-cyan-100 bg-white p-3 transition hover:shadow-md hover:border-cyan-300">
+            <Link key={v.id} target="_blank" rel="noopener noreferrer" to={getHref(v)} className="flex items-center gap-3 rounded-xl border border-cyan-100 bg-white p-3 transition hover:shadow-md hover:border-cyan-300">
               <div className="flex-1 min-w-0">
                 <h4 className="text-sm font-bold text-neon-text truncate">{v.nameKo}</h4>
                 <p className="text-xs text-neon-text-muted">{v.regionKo} · {getCategoryLabel(v.category)} · ★ {v.rating}</p>

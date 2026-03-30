@@ -146,7 +146,7 @@ export default function CuriosityGapTeaser() {
 
             {/* CTA */}
             <Link
-              to={data.teaser.href}
+              target="_blank" rel="noopener noreferrer" to={data.teaser.href}
               onClick={handleClose}
               className="flex items-center justify-between bg-gradient-to-r from-[#F3F0FF] to-[#EDE9FE] px-4 py-3 text-sm font-semibold text-[#8B5CF6] hover:from-[#EDE9FE] hover:to-[#DDD6FE] transition"
             >

@@ -49,7 +49,7 @@ export default function Header() {
       <header className="glass-strong fixed top-0 right-0 left-0 z-50">
         <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-4">
           <div className="flex items-center gap-3">
-            <Link to="/" className="shrink-0 text-lg font-black tracking-wider text-neon-primary">
+            <Link to="/" target="_blank" rel="noopener noreferrer" className="shrink-0 text-lg font-black tracking-wider text-neon-primary">
               NOLCOOL
             </Link>
             <div className="hidden sm:block">
@@ -61,6 +61,7 @@ export default function Header() {
             {navLinks.map((link) => (
               <Link key={link.href}
                 to={link.href}
+                target="_blank" rel="noopener noreferrer"
                 className="rounded-lg px-2.5 py-2 text-sm font-medium text-neon-text-muted transition-colors hover:bg-neon-surface-2 hover:text-neon-text"
               >
                 {link.label}
@@ -81,7 +82,7 @@ export default function Header() {
 
             {user ? (
               <div className="hidden sm:flex items-center gap-2">
-                <Link to="/profile"
+                <Link to="/profile" target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-neon-text-muted transition-colors hover:bg-neon-surface-2 hover:text-neon-text"
                 >
                   {user.user_metadata?.avatar_url ? (
@@ -101,7 +102,7 @@ export default function Header() {
                 </button>
               </div>
             ) : (
-              <Link to="/login"
+              <Link to="/login" target="_blank" rel="noopener noreferrer"
                 className="hidden rounded-lg px-3 py-2 text-sm font-medium text-neon-text-muted transition-colors hover:bg-neon-surface-2 hover:text-neon-text sm:block"
               >
                 로그인

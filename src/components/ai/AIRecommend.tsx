@@ -137,7 +137,7 @@ export default function AIRecommend() {
         <div className="mt-6 space-y-3">
           <p className="text-sm font-semibold text-violet-700">추천 결과 {results.length}곳</p>
           {results.map((v, i) => (
-            <Link key={v.id} to={getHref(v)} className="flex items-start gap-4 rounded-xl border border-violet-100 bg-white p-4 transition hover:shadow-md hover:border-violet-300">
+            <Link key={v.id} target="_blank" rel="noopener noreferrer" to={getHref(v)} className="flex items-start gap-4 rounded-xl border border-violet-100 bg-white p-4 transition hover:shadow-md hover:border-violet-300">
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-violet-500 text-sm font-bold text-white">
                 {i + 1}
               </span>

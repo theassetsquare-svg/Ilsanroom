@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>전국 나이트 정보 — 58곳 비교</title>
+<meta name="description" content="전국 나이트 정보 — 소셜 댄스, 라이브 밴드, 격 있는 사교의 밤. 지역별 나이트 특징과 분위기를 비교해보세요.">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="놀쿨">
+<meta property="og:title" content="전국 나이트 정보">
+<meta property="og:description" content="전국 나이트 정보 — 소셜 댄스, 라이브 밴드, 격 있는 사교의 밤. 지역별 나이트 특징과 분위기를 비교해보세요.">
+
+<meta name="robots" content="index,follow">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preload" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/woff2/Pretendard-Regular.subset.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/woff2/Pretendard-Bold.subset.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Pretendard';font-weight:400;font-display:swap;src:url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/woff2/Pretendard-Regular.subset.woff2') format('woff2')}
+@font-face{font-family:'Pretendard';font-weight:600;font-display:swap;src:url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/woff2/Pretendard-SemiBold.subset.woff2') format('woff2')}
+@font-face{font-family:'Pretendard';font-weight:700;font-display:swap;src:url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/woff2/Pretendard-Bold.subset.woff2') format('woff2')}
+@font-face{font-family:'Pretendard';font-weight:800;font-display:swap;src:url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/woff2/Pretendard-ExtraBold.subset.woff2') format('woff2')}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:'Pretendard',system-ui,-apple-system,sans-serif;background:#F9FAFB;color:#111;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;height:auto;display:block}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+/* Header */
+.site-header{background:#fff;border-bottom:1px solid #E5E7EB;position:sticky;top:0;z-index:50}
+.site-header .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-size:1.35rem;font-weight:900;color:#7C3AED;letter-spacing:-.02em}
+.logo span{color:#111}
+.nav-cats{display:flex;gap:6px;flex-wrap:wrap}
+.nav-cats a{font-size:.8rem;padding:4px 10px;border-radius:20px;background:#F3F4F6;color:#374151;transition:all .15s}
+.nav-cats a:hover,.nav-cats a.active{background:#7C3AED;color:#fff}
+/* Hero */
+.hero-img{width:100%;aspect-ratio:1/1;max-width:400px;margin:32px auto 0;border-radius:16px;object-fit:cover;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+/* Content */
+.article{background:#fff;border-radius:16px;padding:32px 28px;margin:24px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.article h1{font-size:1.6rem;font-weight:800;margin-bottom:4px;line-height:1.3}
+.article .region-badge{display:inline-block;font-size:.75rem;padding:3px 10px;border-radius:12px;background:#EDE9FE;color:#6D28D9;font-weight:600;margin-bottom:16px}
+.article .desc{font-size:.95rem;color:#222;line-height:1.85;margin-bottom:24px;word-break:keep-all}
+.article .features{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.article .features li{font-size:.8rem;padding:5px 14px;border-radius:20px;background:#F0FDF4;color:#059669;font-weight:500}
+/* Body images */
+.body-imgs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
+.body-imgs img{border-radius:12px;width:100%;aspect-ratio:16/10;object-fit:cover}
+@media(max-width:480px){.body-imgs{grid-template-columns:1fr}}
+/* Info table */
+.info-table{width:100%;border-collapse:collapse;margin-bottom:24px;font-size:.88rem}
+.info-table th{text-align:left;padding:10px 12px;background:#F9FAFB;color:#6B7280;font-weight:600;width:30%;border-bottom:1px solid #F3F4F6}
+.info-table td{padding:10px 12px;border-bottom:1px solid #F3F4F6;color:#111}
+/* CTA */
+.cta-box{background:linear-gradient(135deg,#7C3AED,#6D28D9);border-radius:16px;padding:28px 24px;text-align:center;margin:32px 0}
+.cta-box p{color:rgba(255,255,255,.85);font-size:.92rem;margin-bottom:14px;line-height:1.6}
+.cta-box .btn{display:inline-block;background:#fff;color:#7C3AED;font-weight:700;font-size:1rem;padding:14px 36px;border-radius:12px;transition:transform .15s,box-shadow .15s}
+.cta-box .btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.15)}
+/* Category listing */
+.venue-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin:24px 0}
+.venue-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);transition:transform .15s,box-shadow .15s}
+.venue-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.venue-card img{width:100%;aspect-ratio:1/1;object-fit:cover}
+.venue-card .card-body{padding:16px 18px}
+.venue-card .card-body h3{font-size:1.05rem;font-weight:700;margin-bottom:4px}
+.venue-card .card-body .card-region{font-size:.78rem;color:#6D28D9;font-weight:600;margin-bottom:6px}
+.venue-card .card-body p{font-size:.83rem;color:#555;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+/* Index hero */
+.index-hero{text-align:center;padding:48px 20px 32px}
+.index-hero h1{font-size:2rem;font-weight:900;margin-bottom:8px}
+.index-hero p{font-size:1rem;color:#555;max-width:520px;margin:0 auto}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;margin:32px 0}
+.cat-card{background:#fff;border-radius:14px;padding:24px 16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.06);transition:transform .15s}
+.cat-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.cat-card .cat-icon{font-size:2.2rem;margin-bottom:8px}
+.cat-card .cat-label{font-size:1rem;font-weight:700;color:#111}
+.cat-card .cat-count{font-size:.78rem;color:#7C3AED;font-weight:600;margin-top:4px}
+/* Category header */
+.cat-header{padding:40px 0 20px;text-align:center}
+.cat-header h1{font-size:1.8rem;font-weight:900;margin-bottom:8px}
+.cat-header p{font-size:.92rem;color:#555;max-width:520px;margin:0 auto;line-height:1.7}
+/* Footer */
+.site-footer{background:#fff;border-top:1px solid #E5E7EB;margin-top:48px;padding:32px 20px}
+.footer-cta{text-align:center;margin-bottom:20px}
+.footer-cta .kakao{display:inline-block;background:#7C3AED;color:#fff;font-weight:700;font-size:.95rem;padding:10px 28px;border-radius:10px;margin-bottom:10px}
+.footer-search{font-size:.88rem;color:#555;text-align:center;margin-bottom:16px}
+.footer-search b{color:#7C3AED}
+.footer-copy{text-align:center;font-size:.75rem;color:#9CA3AF}
+/* Breadcrumb */
+.breadcrumb{font-size:.78rem;color:#9CA3AF;padding:12px 0;display:flex;gap:4px;flex-wrap:wrap}
+.breadcrumb a{color:#7C3AED}
+/* Responsive */
+@media(max-width:640px){
+  .nav-cats{display:none}
+  .article{padding:24px 18px}
+  .article h1{font-size:1.3rem}
+  .index-hero h1{font-size:1.5rem}
+  .cat-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+</style>
+</head>
+<body>
+<header class="site-header">
+<div class="wrap">
+  <a href="/index.html" class="logo">놀<span>쿨</span></a>
+  <nav class="nav-cats">
+    <a href="/clubs/index.html">클럽</a><a href="/nights/index.html">나이트</a><a href="/lounges/index.html">라운지</a><a href="/rooms/index.html">룸</a><a href="/yojeong/index.html">요정</a><a href="/hoppa/index.html">호빠</a>
+  </nav>
+</div>
+</header>
+
+<div class="wrap">
+  <div class="breadcrumb">
+    <a href="/index.html">놀쿨</a> &rsaquo;
+    <span>나이트</span>
+  </div>
+  <div class="cat-header">
+    <h1>🌙 전국 나이트 정보</h1>
+    <p>전국 나이트 정보 — 소셜 댄스, 라이브 밴드, 격 있는 사교의 밤. 지역별 나이트 특징과 분위기를 비교해보세요.</p>
+  </div>
+  <div class="venue-grid">
+    
+    <a href="/nights/gangnamjuliananight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="강남줄리아나나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>강남줄리아나나이트</h3>
+        <div class="card-region">강남</div>
+        <p>역세권에서 오래 자리를 지켜온 댄스홀. 트로트와 댄스팝이 번갈아 나오면서 연령대 불문...</p>
+      </div>
+    </a>
+
+    <a href="/nights/gangseonight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="강서나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>강서나이트</h3>
+        <div class="card-region">강서</div>
+        <p>서울 서부 지역 밀착형 댄스홀. 이름이 직관적이라 찾기 쉽다. 마곡·화곡 주민 단골 ...</p>
+      </div>
+    </a>
+
+    <a href="/nights/gwangjusangmunight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="광주상무나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>광주상무나이트</h3>
+        <div class="card-region">광주</div>
+        <p>서구 상무지구에 위치한 댄스홀. 신도시인 상무지구답게 주변 인프라가 잘 갖춰져 </p>
+      </div>
+    </a>
+
+    <a href="/nights/gwangjuallnight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="광주올나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>광주올나이트</h3>
+        <div class="card-region">광주</div>
+        <p>올나이트라는 이름처럼 밤새 즐길 수 있는 댄스홀. 영업시간이 타 댄스홀보다 넉넉한</p>
+      </div>
+    </a>
+
+    <a href="/nights/gwangjucheomdanempanight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="광주첨단엠파나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>광주첨단엠파나이트</h3>
+        <div class="card-region">광주</div>
+        <p>첨단지구에 위치한 엠파(MPA) 브랜드 댄스홀. 첨단지구는 신흥 개발 지역이라</p>
+      </div>
+    </a>
+
+    <a href="/nights/gwangjutotonight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="광주토토밤나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>광주토토밤나이트</h3>
+        <div class="card-region">광주</div>
+        <p>독특한 이름으로 눈에 띄는 댄스홀. 토토밤이라는 이름이 주는 재미있는 느낌 그대로</p>
+      </div>
+    </a>
+
+    <a href="/nights/gwangjumgmnight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="광주MGM나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>광주MGM나이트</h3>
+        <div class="card-region">광주</div>
+        <p>MGM 브랜드 댄스홀. 라스베이거스의 MGM에서 이름을 따온 건지는 모르겠지만, 화</p>
+      </div>
+    </a>
+
+    <a href="/nights/gurihobaknight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="구리호박나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>구리호박나이트</h3>
+        <div class="card-region">구리</div>
+        <p>호박 브랜드 댄스홀. 남양주 지역 주민들과 함께하는 밤문화 거점으로 자리잡은 ...</p>
+      </div>
+    </a>
+
+    <a href="/nights/gumihobaknight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="구미호박나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>구미호박나이트</h3>
+        <div class="card-region">구미</div>
+        <p>경북 호박 브랜드 댄스홀. 산업단지 인근이라 공단 근무자들이 퇴근 후</p>
+      </div>
+    </a>
+
+    <a href="/nights/gildongchancenight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="길동찬스나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>길동찬스나이트</h3>
+        <div class="card-region">길동</div>
+        <p>찬스 브랜드 댄스홀. 사거리 근처라 찾기 쉽고, 송파·하남에서도 접근성이 좋다.</p>
+      </div>
+    </a>
+
+    <a href="/nights/gimposomenight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="김포썸나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>김포썸나이트</h3>
+        <div class="card-region">김포</div>
+        <p>호박나이트와 쌍벽을 이루는 댄스홀. 썸이라는 이름답게 젊은 감각의 인테리어와 프로...</p>
+      </div>
+    </a>
+
+    <a href="/nights/gimpohobaknight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="김포호박나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>김포호박나이트</h3>
+        <div class="card-region">김포</div>
+        <p>호박 브랜드 댄스홀. 신도시 개발로 인구가 늘면서 이 곳도 점점 활기를...</p>
+      </div>
+    </a>
+
+    <a href="/nights/nowonstarnight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="노원스타나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>노원스타나이트</h3>
+        <div class="card-region">노원</div>
+        <p>호박나이트와는 또 다른 맛의 댄스홀. 스타라는 이름답게 조명 연출에 투자한 곳...</p>
+      </div>
+    </a>
+
+    <a href="/nights/nowonhobaknight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="노원호박나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>노원호박나이트</h3>
+        <div class="card-region">노원</div>
+        <p>호박 브랜드 댄스홀. 전국적으로 체인을 운영하는 브랜드라 어느...</p>
+      </div>
+    </a>
+
+    <a href="/nights/dapsimnidontellmamanight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="답십리돈텔마마나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>답십리돈텔마마나이트</h3>
+        <div class="card-region">답십리</div>
+        <p>동대문구 돈텔마마 브랜드 댄스홀. 이름이 재미있는데, 실제로 ...</p>
+      </div>
+    </a>
+
+    <a href="/nights/daegubabambanight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="대구바밤바나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>대구바밤바나이트</h3>
+        <div class="card-region">대구</div>
+        <p>독특한 이름으로 존재감을 드러내는 댄스홀. 바밤바라는 이름이 호기심을 자극하는데,</p>
+      </div>
+    </a>
+
+    <a href="/nights/daegutotoganight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="대구토토가나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>대구토토가나이트</h3>
+        <div class="card-region">대구</div>
+        <p>토토가 브랜드 댄스홀. 이름이 주는 발랄한 느낌 그대로, 상대적으</p>
+      </div>
+    </a>
+
+    <a href="/nights/daeguhangukgwannight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="대구한국관나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>대구한국관나이트</h3>
+        <div class="card-region">대구</div>
+        <p>중구에 위치한 한국관 브랜드 댄스홀. 밤문화의 중심인 동성로 인근에 자리잡고 있</p>
+      </div>
+    </a>
+
+    <a href="/nights/daeguhobaknight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="대구호박나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>대구호박나이트</h3>
+        <div class="card-region">대구</div>
+        <p>편안함이 강점인 브랜드 댄스홀. 한국관이 격식이라면 여긴 릴랙스 모드.</p>
+      </div>
+    </a>
+
+    <a href="/nights/daejeonbongmyeongnight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="대전봉명나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>대전봉명나이트</h3>
+        <div class="card-region">대전</div>
+        <p>유성구 댄스홀. 온천 관광 특구와 가까워서 출장 온 손님이 많다. 금요일 밤 줄 서는 이유가 있다.</p>
+      </div>
+    </a>
+
+    <a href="/nights/daejeonsevennight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="대전세븐나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>대전세븐나이트</h3>
+        <div class="card-region">대전</div>
+        <p>둔산동 중심에 위치한 격이 다른 댄스홀. 럭키세븐 컨셉에 맞춰 7가지 테마 공간을 갖추</p>
+      </div>
+    </a>
+
+    <a href="/nights/daejeononenight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="대전원나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>대전원나이트</h3>
+        <div class="card-region">대전</div>
+        <p>세븐과 다른 결의 재미가 있는 댄스홀. 원(one)이라는 이름처럼 </p>
+      </div>
+    </a>
+
+    <a href="/nights/daejeonhangukgwannight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="대전한국관나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>대전한국관나이트</h3>
+        <div class="card-region">대전</div>
+        <p>전국 브랜드답게 격식과 편안함을 둘 다 잡았다. 둔산동 직장인 퇴근 후 단골.</p>
+      </div>
+    </a>
+
+    <a href="/nights/doksangukbingwannight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="독산국빈관나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>독산국빈관나이트</h3>
+        <div class="card-region">독산</div>
+        <p>금천구 국빈관 브랜드 댄스홀. 이름에서 느껴지듯 격식 있는 ...</p>
+      </div>
+    </a>
+
+    <a href="/nights/busanmulnight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="부산물나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>부산물나이트</h3>
+        <div class="card-region">부산</div>
+        <p>물나이트 하면 바로 이곳. 물이라는 브랜드명이 시민들에게 깊이 각인된 댄스홀</p>
+      </div>
+    </a>
+
+    <a href="/nights/busanasiadnight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="부산아시아드나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>부산아시아드나이트</h3>
+        <div class="card-region">부산</div>
+        <p>연제구에 위치한 대형 댄스홀. 아시아드라는 이름은 인근의 아시아드 주경기장에서 유래했</p>
+      </div>
+    </a>
+
+    <a href="/nights/busanyeonsandongmulnight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="부산연산동물나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>부산연산동물나이트</h3>
+        <div class="card-region">부산 연산동</div>
+        <p>연산동의 전설적인 댄스홀. 따봉이라는 닉네임의 담당자가 엄지를 치켜세우며 맞이해주는 곳이다</p>
+      </div>
+    </a>
+
+    <a href="/nights/bucheongoraenight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="부천고래나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>부천고래나이트</h3>
+        <div class="card-region">부천</div>
+        <p>메리트와 양대 산맥인 원미구 댄스홀. 유머러스한 이름과 달리 실력은 진지하다.</p>
+      </div>
+    </a>
+
+    <a href="/nights/bucheonmeritnight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="부천메리트나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>부천메리트나이트</h3>
+        <div class="card-region">부천</div>
+        <p>가성비와 시설 면에서 장점이 확실한 댄스홀. 메리트라는 이름 그대로 장점이 분명하다...</p>
+      </div>
+    </a>
+
+    <a href="/nights/bundangpongpongnight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="분당퐁퐁나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>분당퐁퐁나이트</h3>
+        <div class="card-region">분당</div>
+        <p>신도시에 위치한 댄스홀. 지역 특성상 전체적으로 깔끔하고 신경 쓴 분위기를...</p>
+      </div>
+    </a>
+
+    <a href="/nights/sangbonghangukgwannight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="상봉동한국관나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>상봉동한국관나이트</h3>
+        <div class="card-region">상봉동</div>
+        <p>서울 중랑구 전통 있는 댄스홀. 한국관이라는 이름처럼 한국적인 정서가 물씬...</p>
+      </div>
+    </a>
+
+    <a href="/nights/seosanhobaknight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="서산호박나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>서산호박나이트</h3>
+        <div class="card-region">서산</div>
+        <p>충남 호박 브랜드 댄스홀. 태안·당진 주민들도 찾는 밤문화 거점이다.</p>
+      </div>
+    </a>
+
+    <a href="/nights/seongnamgukbingwannight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="성남국빈관나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>성남국빈관나이트</h3>
+        <div class="card-region">성남</div>
+        <p>국빈관 브랜드 댄스홀. 이름답게 격식과 품위를 중시하는 분위기...</p>
+      </div>
+    </a>
+
+    <a href="/nights/seongnamshampoonight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="성남샴푸나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>성남샴푸나이트</h3>
+        <div class="card-region">성남</div>
+        <p>지역 최대 규모의 댄스홀. 화려한 조명과 대형 댄스플로어가 이 곳의 상징이다. 박찬호...</p>
+      </div>
+    </a>
+
+    <a href="/nights/suwonchancenight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="수원찬스돔나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>수원찬스돔나이트</h3>
+        <div class="card-region">수원</div>
+        <p>인계동에 위치한 돔 형태의 독특한 댄스홀. 들어서는 순간 천장의 돔 구조가 만들어내는...</p>
+      </div>
+    </a>
+
+    <a href="/nights/suwonkoreanight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="수원코리아나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>수원코리아나이트</h3>
+        <div class="card-region">수원</div>
+        <p>찬스돔과 함께 양대 댄스홀로 꼽히는 곳. 코리아라는 이름에서 느껴지는 정통 분위기...</p>
+      </div>
+    </a>
+
+    <a href="/nights/suyushampoonight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="수유샴푸나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>수유샴푸나이트</h3>
+        <div class="card-region">수유</div>
+        <p>서울 강북 랜드마크급 댄스홀. 역에서 도보 5분이라 접근성이 최상이고, 트로트...</p>
+      </div>
+    </a>
+
+    <a href="/nights/sinlimgrandprixnight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="신림그랑프리나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>신림그랑프리나이트</h3>
+        <div class="card-region">신림</div>
+        <p>관악구 터줏대감 격 댄스홀. 역에서 도보 7분, 라이브 밴드가...</p>
+      </div>
+    </a>
+
+    <a href="/nights/ansandontellmamanight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="안산돈텔마마나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>안산돈텔마마나이트</h3>
+        <div class="card-region">안산</div>
+        <p>히트나이트와 쌍벽을 이루는 돈텔마마 브랜드 댄스홀. 돈텔마마는 전국에 지점이 있는...</p>
+      </div>
+    </a>
+
+    <a href="/nights/ansanhitnight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="안산히트나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>안산히트나이트</h3>
+        <div class="card-region">안산</div>
+        <p>지역 밤문화의 히트작. 히트라는 이름처럼 매주 단골이 찾는 댄스홀. 공단 도...</p>
+      </div>
+    </a>
+
+    <a href="/nights/yeongdeungpoterminalnight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="영등포터미널나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>영등포터미널나이트</h3>
+        <div class="card-region">영등포</div>
+        <p>터미널 인근에 위치한 댄스홀. 교통 요충지답게 접근성이 매우 좋고, 여러 노선 버스...</p>
+      </div>
+    </a>
+
+    <a href="/nights/osanhobaknight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="오산호박나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>오산호박나이트</h3>
+        <div class="card-region">오산</div>
+        <p>호박 브랜드 댄스홀. 화성 지역 주민들과 함께하는 밤 놀이터 역할을 하는 곳이...</p>
+      </div>
+    </a>
+
+    <a href="/nights/ulsannewworldnight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="울산뉴월드나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>울산뉴월드나이트</h3>
+        <div class="card-region">울산</div>
+        <p>남구에 위치한 대형 댄스홀. 뉴월드라는 이름처럼 새로운 세계를 지향하는 곳인데, 실제</p>
+      </div>
+    </a>
+
+    <a href="/nights/ulsanchampionnight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="울산챔피언나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>울산챔피언나이트</h3>
+        <div class="card-region">울산</div>
+        <p>삼산동에 위치한 밤문화의 챔피언. 춘자라는 닉네임의 담당자가 특유의 쾌활함으로 </p>
+      </div>
+    </a>
+
+    <a href="/nights/uijeongbuhangukgwannight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="의정부한국관나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>의정부한국관나이트</h3>
+        <div class="card-region">의정부</div>
+        <p>한국관 브랜드 댄스홀. 1호선 역 근처라 대중교통 접근이 좋고, ...</p>
+      </div>
+    </a>
+
+    <a href="/nights/indeokvon-gukbingwan-night.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="인덕원국빈관나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>인덕원국빈관나이트</h3>
+        <div class="card-region">인덕원</div>
+        <p>역 도보권, 국빈관 브랜드 사교댄스홀. 과천·안양 지역 중장년층 사교 모임의 중심지.</p>
+      </div>
+    </a>
+
+    <a href="/nights/incheonarabiannight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="인천아라비안나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>인천아라비안나이트</h3>
+        <div class="card-region">인천</div>
+        <p>구월동에 위치한 이국적 분위기의 댄스홀. 아라비안이라는 이름답게 중동풍 인테리어가 특...</p>
+      </div>
+    </a>
+
+    <a href="/nights/ilsanmulnight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="일산물나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>일산물나이트</h3>
+        <div class="card-region">일산</div>
+        <p>일산에서 물나이트 하면 누구나 아는 댄스홀로, 일산물나이트는 부산 물사교 공간에서 유래한 브랜드명을 경기 북부에서 성공적으로 이어가고 있는 포인트다. 옛날 노래와 사교 무용 중심의 프로그램 구성이 탄탄하며, 상주하는...</p>
+      </div>
+    </a>
+
+    <a href="/nights/ilsanshampoonight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="일산샴푸나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>일산샴푸나이트</h3>
+        <div class="card-region">일산</div>
+        <p>중심가에 위치한 인기 댄스홀. 주말이면 항상 만석을 이룬다는 소문이 과장이 아닌 곳이...</p>
+      </div>
+    </a>
+
+    <a href="/nights/jejunight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="제주나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>제주나이트</h3>
+        <div class="card-region">제주</div>
+        <p>유일의 나이트 댄스홀. 중심가에 위치해 있어 관광객과 현지 주민 모두 접근이</p>
+      </div>
+    </a>
+
+    <a href="/nights/cheonanstardomnight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="천안스타돔나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>천안스타돔나이트</h3>
+        <div class="card-region">천안</div>
+        <p>시내 중심에 자리잡은 스타돔. 돔 구조 천장이 만들어내는 웅장한 공간감이 일단 압도적</p>
+      </div>
+    </a>
+
+    <a href="/nights/cheonankoreanight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="천안코리아나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>천안코리아나이트</h3>
+        <div class="card-region">천안</div>
+        <p>스타돔과 함께 거론되는 전통 있는 댄스홀. 코리아라는 이름에서 느껴지듯 정통 사교</p>
+      </div>
+    </a>
+
+    <a href="/nights/cheongdamh2onight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="청담H2O나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>청담H2O나이트</h3>
+        <div class="card-region">청담</div>
+        <p>한복판에 자리잡은 격이 다른 댄스홀. 워터 테마 인테리어가 독특한데, 천장에서 물방울...</p>
+      </div>
+    </a>
+
+    <a href="/nights/cheongjudontellmamanight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="청주돈텔마마나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>청주돈텔마마나이트</h3>
+        <div class="card-region">청주</div>
+        <p>충북 돈텔마마 브랜드 댄스홀. 시내 중심가에 있어서 접근이 편하고, </p>
+      </div>
+    </a>
+
+    <a href="/nights/cheongjuhobaknight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="청주호박나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>청주호박나이트</h3>
+        <div class="card-region">청주</div>
+        <p>호박 브랜드 댄스홀. 돈텔마마가 모던한 느낌이라면, 호박은 좀 더 전통적이고 </p>
+      </div>
+    </a>
+
+    <a href="/nights/pajuyadangskydomenight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="파주야당스카이돔나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>파주야당스카이돔나이트</h3>
+        <div class="card-region">파주</div>
+        <p>야당동에 자리잡은 경기 북부 최대 규모의 댄스홀. 스카이돔이라는 이름처럼 천장이 돔 ...</p>
+      </div>
+    </a>
+
+    <a href="/nights/pyeongtaekhobaknight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="평택호박나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>평택호박나이트</h3>
+        <div class="card-region">평택</div>
+        <p>자리잡은 호박 브랜드 댄스홀. 미군 기지가 있는 특성상 외국인 손님도 가끔 ...</p>
+      </div>
+    </a>
+
+    <a href="/nights/hwajeonghangukgwannight.html" class="venue-card">
+      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&h=600&fit=crop" alt="화정한국관나이트" width="300" height="300" loading="lazy">
+      <div class="card-body">
+        <h3>화정한국관나이트</h3>
+        <div class="card-region">화정</div>
+        <p>고양시 전통 브랜드 댄스홀. 역 인근이라 접근 편하고, 격식 있는 사교 문화가 살아있다.</p>
+      </div>
+    </a>
+  </div>
+
+  <div class="cta-box">
+    <p>전국 나이트 실시간 정보, 이벤트, 후기까지<br>놀쿨에서 한번에 확인하세요.</p>
+    <a href="https://ilsanroom.pages.dev/nights" class="btn" target="_blank" rel="noopener">놀쿨에서 확인</a>
+  </div>
+</div>
+<footer class="site-footer">
+<div class="wrap">
+  <div class="footer-cta">
+    <div class="kakao">광고문의 카톡 besta12</div>
+  </div>
+  <p class="footer-search">구글 · ChatGPT · Gemini에서 <b>"놀쿨"</b> 검색하세요</p>
+  <p class="footer-copy">&copy; 2025 놀쿨 — 전국 밤문화 정보</p>
+</div>
+</footer>
+</body>
+</html>

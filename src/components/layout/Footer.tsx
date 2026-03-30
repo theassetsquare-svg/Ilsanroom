@@ -86,7 +86,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Site info */}
           <div className="col-span-2 sm:col-span-1">
-            <Link to="/" className="text-xl font-black tracking-wider text-neon-primary">
+            <Link to="/" target="_blank" rel="noopener noreferrer" className="text-xl font-black tracking-wider text-neon-primary">
               놀쿨
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-neon-text-muted">
@@ -100,7 +100,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {categoryLinks.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
+                  <Link to={link.href} target="_blank" rel="noopener noreferrer" className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
                     {link.label}
                   </Link>
                 </li>
@@ -114,7 +114,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {communityLinks.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
+                  <Link to={link.href} target="_blank" rel="noopener noreferrer" className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
                     {link.label}
                   </Link>
                 </li>
@@ -128,7 +128,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {legalLinks.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
+                  <Link to={link.href} target="_blank" rel="noopener noreferrer" className="text-sm text-neon-text-muted transition-colors hover:text-neon-primary-light">
                     {link.label}
                   </Link>
                 </li>
@@ -148,6 +148,7 @@ export default function Footer() {
                   {links.map((link) => (
                     <Link key={link.href}
                       to={link.href}
+                      target="_blank" rel="noopener noreferrer"
                       className="text-xs text-neon-text-muted transition-colors hover:text-neon-primary-light"
                     >
                       {link.label}

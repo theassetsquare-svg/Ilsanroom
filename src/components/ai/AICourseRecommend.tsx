@@ -145,7 +145,7 @@ export default function AICourseRecommend() {
                   <div className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-500 text-xs font-bold text-white">
                     {i + 1}
                   </div>
-                  <Link to={getHref(step.venue)} className="flex-1 rounded-xl border border-amber-100 bg-white p-4 transition hover:shadow-md hover:border-amber-300">
+                  <Link target="_blank" rel="noopener noreferrer" to={getHref(step.venue)} className="flex-1 rounded-xl border border-amber-100 bg-white p-4 transition hover:shadow-md hover:border-amber-300">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-xs font-bold text-amber-600">{step.time}</span>
                       <span className="text-xs text-neon-text-muted">·</span>
