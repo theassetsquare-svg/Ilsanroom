@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import SearchOverlay from './SearchOverlay';
 import ScrollProgress from './ScrollProgress';
+import LiveVisitors from '@/components/ui/LiveVisitors';
 import { createClient } from '@/lib/supabase';
 
 const navLinks = [
@@ -47,9 +48,14 @@ export default function Header() {
       <ScrollProgress />
       <header className="glass-strong fixed top-0 right-0 left-0 z-50">
         <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-4">
-          <Link to="/" className="shrink-0 text-lg font-black tracking-wider text-neon-primary">
-            NOLCOOL
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link to="/" className="shrink-0 text-lg font-black tracking-wider text-neon-primary">
+              NOLCOOL
+            </Link>
+            <div className="hidden sm:block">
+              <LiveVisitors />
+            </div>
+          </div>
 
           <nav className="hidden items-center gap-0.5 lg:flex">
             {navLinks.map((link) => (
