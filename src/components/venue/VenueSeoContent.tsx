@@ -335,16 +335,24 @@ export default function VenueSeoContent({ venue }: { venue: Venue }) {
   // Select region vibe for opening
   const regionVibe = pick(vibes, seed);
 
-  // Build the venue name reference (used 2-3 times only)
+  // Build the venue name reference — 키워드 밀도 2% 목표 동적 조절
   const vName = venue.nameKo;
+  const nameLen = vName.length;
+  // 총길이 ~1800자 기준 밀도 2% = 36자분 → 횟수 = 36 / 이름길이
+  const targetMentions = Math.max(3, Math.min(8, Math.floor(1800 * 0.02 / nameLen)));
+  let mentionCount = 0;
 
   // ── Paragraph 1: Scene opener with venue name in first 100 chars ──
   const opener = pick(kit.openers, seed);
   const p1 = `${regionVibe}, ${vName}의 문 앞에 선다. ${opener}`;
+  mentionCount++;
 
   // ── Paragraph 2: Category-specific mid section ──
   const midFn1 = pick(kit.midSections, seed, 0);
-  const p2 = midFn1(venue, seed);
+  const p2 = mentionCount < targetMentions
+    ? `${vName}에서 느끼는 첫인상은 이렇다. ${midFn1(venue, seed)}`
+    : midFn1(venue, seed);
+  if (mentionCount < targetMentions) mentionCount++;
 
   // ── Paragraph 3: Features ──
   const p3 = featureNarrative(venue.features, seed);
@@ -363,17 +371,30 @@ export default function VenueSeoContent({ venue }: { venue: Venue }) {
   const p5 = staffParagraph(venue, seed);
 
   // ── Paragraph 6: Access ──
-  const p6 = accessParagraph(venue, seed);
+  const rawP6 = accessParagraph(venue, seed);
+  const p6 = mentionCount < targetMentions
+    ? `${vName}까지 가는 길. ${rawP6}`
+    : rawP6;
+  if (mentionCount < targetMentions) mentionCount++;
 
   // ── Paragraph 7: Best time + dress code ──
-  const p7 = bestTimeParagraph(venue, seed) + (dressCodeNote(venue, seed) ? ' ' + dressCodeNote(venue, seed) : '');
+  const rawP7 = bestTimeParagraph(venue, seed) + (dressCodeNote(venue, seed) ? ' ' + dressCodeNote(venue, seed) : '');
+  const p7 = mentionCount < targetMentions
+    ? `${vName}을(를) 제대로 즐기려면 타이밍이 중요하다. ${rawP7}`
+    : rawP7;
+  if (mentionCount < targetMentions) mentionCount++;
 
   // ── Paragraph 8: Honest note ──
-  const p8 = honestNote(venue, seed);
+  const rawP8 = honestNote(venue, seed);
+  const p8 = mentionCount < targetMentions
+    ? `${vName}에 대해 솔직하게 말하자면. ${rawP8}`
+    : rawP8;
+  if (mentionCount < targetMentions) mentionCount++;
 
-  // ── Paragraph 9: Closer with second venue name mention ──
+  // ── Paragraph 9: Closer with venue name ──
   const closer = pick(kit.closers, seed);
   const p9 = `${vName}. ${closer}`;
+  mentionCount++;
 
   // Collect non-empty paragraphs
   const paragraphs = [p1, p2, p3, p4, p5, p6, p7, p8, p9].filter(Boolean);
