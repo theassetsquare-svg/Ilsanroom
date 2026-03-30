@@ -1,49 +1,42 @@
 
-# 놀쿨 (NOLCOOL) — 나이트라이프 플랫폼
-- 놀쿨 = 나이트·클럽·라운지·룸·요정·호빠! 레저/키즈 아님!
-- 가게이름 = 지역+종류+상호명 전체! 상호명만 쓰면 FAIL!
-- GitHub+Cloudflare 연동. git push = 자동배포. 물어보지 마.
-- seoDescription = 150자 이내! 1000자 금지!
-- 본문 = 1000자+ 베스트셀러 작가처럼! AI 느낌 금지!
-- 이미지 없는 페이지 = FAIL! 5단계까지 검색!
-- 모든 작업 3번 확인 + 라이브 시크릿 모드 확인!
-- 기존 URL 변경 금지!
-- base: '/' 만!
-- 모든 제목에 놀쿨 넣지 마! 메인홈 title만 놀쿨!
-- vite 사용. Next.js 설치 금지!
+# NOLCOOL — Nightlife Platform (NOT leisure/kids!)
+- Categories: Night Club / Club / Lounge / Room / Yojeong / Hoppa ONLY
+- DO NOT create: kids cafe, waterpark, amusement park, jjimjilbang, escape room, bowling
 
+## SEO — Store Name Ranking (1st Priority!)
+- Store name = Region + Type + Business name (ex: 강남클럽 레이스)
+- title: Store name FIRST. NO "놀쿨" in title! Homepage only!
+- meta description: 150 chars MAX! NOT 500+!
+- Keyword density 1.5~2.5% (1000chars=5~7times, 2000chars=8~12times)
+- NO keyword stuffing! Natural flow!
+- Similarity under 10%! Keep working until done!
+- hookTitle: Do NOT repeat words from store name!
+- Show report: density% per page. Don't move to next task until done!
 
-## ★1순위★ 키워드 밀도 = 상위노출 핵심!
-- 가게이름 키워드 밀도 1.5~2.5%! 3회만 넣으면 상위노출 불가!
-- 1000자: 가게이름 5~7회 / 2000자: 8~12회 / 3000자+: 12~15회
-- 자연스럽게! "일산룸을 찾고 있다면" "일산에서 룸을 고를 때"
-- 밀도 1.5% 미만 = 추가! 밀도 3% 초과 = 삭제!
-- 설정 안 되면 = 다음작업 절대 금지! 보고서 보여줘!
+## Images
+- No blank image pages! Search 5 levels deep!
+- 10 images all different! No duplicates!
+- No other advertiser phone numbers or nicknames in images!
+- No price/cost images!
+- Images must match store name!
+- Popup image + Detail body image: WHITE text + shadow + dark overlay! No black text!
+- og:image: Real store photo 1:1 + advertiser nickname big!
 
-## 세계1위 SEO — 가게이름 상위노출!
-- 가게이름(지역+종류+상호명) 검색 → 구글/네이버/AI 1페이지!
-- title: 가게이름 맨 앞! "놀쿨" 넣지 마!
-- h1: 가게이름 1번!
-- meta description: 150자! 가게이름 포함 후킹설명!
-- og:title: 가게이름! og:image: 실제 가게이미지 1:1 + 닉네임 크게!
-- 본문 첫100자: 가게이름! 본문 1000자+: 키워드 3회이내!
-- JSON-LD NightClub! sitemap.xml! robots.txt AI Allow! llms.txt!
-- 유사도 10%이하! 키워드스터핑 금지! hookTitle 가게단어 금지!
-- 모든 제목 같은 단어 2번 나오면 즉시 삭제!
-- 유사도 10% 이하 될 때까지 작업! 멈추지 마!
-- 키워드 스터핑 전부 삭제!
-- 보고서 보여줘: 유사도% + 키워드밀도!
-- 상세페이지 헤더 이미지 글씨: 흰색#FFFFFF + text-shadow + 반투명배경! 검정글씨 금지! 안 보임!
-- 완벽하면 git push → 라이브 확인 → 메인사이트 주소 줘!
-- 이미지에 다른 광고주 전화번호/닉네임 있으면 가져오지 마!
-- 이미지 글씨: 흰색+그림자+반투명배경! 검정글씨 금지! 안 보임!
-- 푸터: 놀쿨 브랜딩! "놀쿨 NOLCOOL" + 광고문의 카톡 besta12!
-- 이미지 = 가게이름과 맞는 이미지만! 다른 가게 이미지 넣으면 FAIL!
-- 가격/요금/금액 들어간 이미지 절대 금지! 가격 없는 깨끗한 이미지만!
+## Writing
+- Bestseller author style! NO AI-sounding text!
+- Banned words: 다양한/특별한/프리미엄/최고의/뛰어난/차별화된/혁신적인/~할수있습니다/~제공합니다
+- Must use: spoken Korean, emotions, metaphors, mix short+long sentences, honest cons
 
-## 1순위! 키워드밀도 = 상위노출 핵심!
-- 가게이름 키워드 밀도 1.5~2.5%!
-- 1000자: 5~7회 / 2000자: 8~12회 / 3000자+: 12~15회
-- 3회만 = 상위노출 불가! 밀도 2%로!
-- 자연스럽게! 스터핑 금지! 밀도 3% 넘으면 삭제!
-- 설정 안 되면 = 다음작업 절대 금지! 보고서 보여줘!
+## Tech
+- GitHub+Cloudflare auto deploy. Just git push! Don't ask!
+- base: '/' ONLY! No /nolcool/ path!
+- No /sub/ path! No sub-route!
+- Keep existing URLs! Never change!
+- Vite ONLY. No Next.js!
+- Fix blank screen: useEffect cleanup for ALL setInterval/setTimeout/addEventListener!
+- persistSession:true + autoRefreshToken:true!
+- Mobile: 16px font, 44px touch, bottom nav fixed, no bar overlap!
+- PC + Mobile bars must not overlap!
+- Verify 3 times + check live in incognito mode!
+- Footer: "놀쿨 NOLCOOL" + KakaoTalk besta12
+- 8 stores without advertiser: NO nickname/phone!
