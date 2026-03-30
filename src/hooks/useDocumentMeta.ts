@@ -7,9 +7,8 @@ import { useEffect } from 'react';
  */
 export function useDocumentMeta(title: string, description: string, ogImage?: string) {
   useEffect(() => {
-    // 모든 페이지 title 끝에 "| 놀쿨" 브랜딩 (이미 포함된 경우 제외)
-    const branded = title.includes('놀쿨') ? title : `${title} | 놀쿨`;
-    document.title = branded;
+    // 메인홈만 놀쿨 포함, 나머지 페이지는 title 그대로
+    document.title = title;
 
     const trimmedDesc = description.slice(0, 150);
     const currentUrl = window.location.href;
@@ -30,7 +29,7 @@ export function useDocumentMeta(title: string, description: string, ogImage?: st
     setMeta('name', 'description', trimmedDesc);
 
     // Open Graph — og:title에 가게이름 전체 포함
-    setMeta('property', 'og:title', branded);
+    setMeta('property', 'og:title', title);
     setMeta('property', 'og:description', trimmedDesc);
     setMeta('property', 'og:type', 'website');
     setMeta('property', 'og:url', currentUrl);
@@ -45,7 +44,7 @@ export function useDocumentMeta(title: string, description: string, ogImage?: st
 
     // Twitter Card
     setMeta('name', 'twitter:card', 'summary_large_image');
-    setMeta('name', 'twitter:title', branded);
+    setMeta('name', 'twitter:title', title);
     setMeta('name', 'twitter:description', trimmedDesc);
     if (ogImage) {
       setMeta('name', 'twitter:image', ogImage);
