@@ -112,10 +112,16 @@ const instaHashtags = [
 ];
 
 export default function HomePage() {
-  useDocumentMeta('놀쿨 — 전국 클럽·나이트·라운지·룸·요정·호빠', '전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보. 구글·AI에서 놀쿨을 검색하세요.');
+  useDocumentMeta('놀쿨 — 전국 클럽·나이트·라운지·룸·요정·호빠 | NOLCOOL', '전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보. 구글·AI에서 놀쿨을 검색하세요.');
   const popularVenues = getPopularVenues(10);
-  const ilsanRoom = getVenueBySlug('ilsanroom');
-  const ilsanYojeong = getVenueBySlug('ilsanmyeongwolgwanyojeong');
+  const advertiserVenues = [
+    'ilsanroom', 'ilsanmyeongwolgwanyojeong',
+    'cheongdamh2onight', 'sinlimgrandprixnight',
+    'pajuyadangskydomenight', 'suwonchancenight',
+    'seongnamshampoonight', 'busanyeonsandongmulnight',
+    'busanmulnight', 'ulsanchampionnight',
+    'suyushampoonight', 'indeokvon-gukbingwan-night',
+  ].map(s => getVenueBySlug(s)).filter(Boolean) as Venue[];
 
   return (
     <div className="bg-neon-bg">
@@ -176,38 +182,36 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════ 2. PREMIUM — 일산룸 + 명월관 ═══════ */}
-      <section className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-        <h2 className="sr-only">추천 매장</h2>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {ilsanRoom && (
-            <Link target="_blank" rel="noopener noreferrer" to="/rooms/ilsan/ilsanroom" className="group block h-full">
-              <div className="flex h-full flex-col justify-between rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-5 transition-all hover:shadow-lg card-hover">
-                <div>
-                  <Badge variant="premium" className="mb-3">PREMIUM</Badge>
-                  <h3 className="text-base font-bold text-neon-text group-hover:text-amber-700 transition-colors">{ilsanRoom.nameKo}</h3>
-                  <p className="mt-1 text-sm font-medium text-amber-700">신실장 (총책임자)</p>
-                  <p className="mt-1 text-sm font-bold text-amber-800">010-3695-4929</p>
-                  <p className="mt-2 text-xs text-neon-text-muted line-clamp-2">{ilsanRoom.shortDescription}</p>
+      {/* ═══════ 2. 광고주 매장 — 썸네일 + 전화 바로 연결 ═══════ */}
+      <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
+        <h2 className="mb-5 text-xl font-bold text-neon-text">추천 매장</h2>
+        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
+          {advertiserVenues.map((venue) => (
+            <Link target="_blank" rel="noopener noreferrer" key={venue.id} to={getCategoryHref(venue.category, venue.slug, venue.region)} className="group block">
+              <div className="overflow-hidden rounded-2xl border border-neon-border bg-white transition-all hover:shadow-lg card-hover">
+                <div className="aspect-square overflow-hidden">
+                  <img src={`/venues/${venue.slug}-1.jpg`} alt={venue.nameKo} className="h-full w-full object-cover transition-transform group-hover:scale-105" loading="lazy" />
                 </div>
-                <a href="tel:01036954929" className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#15803D] px-4 py-2 text-xs font-bold text-white hover:bg-[#166534] transition" onClick={(e) => e.stopPropagation()}>📞 신실장 전화하기</a>
+                <div className="p-3">
+                  {venue.isPremium && <Badge variant="premium" className="mb-1">PREMIUM</Badge>}
+                  <h3 className="text-xs font-bold text-neon-text leading-tight line-clamp-2 sm:text-sm">{venue.nameKo}</h3>
+                  {venue.staffNickname && (
+                    <p className="mt-1 text-xs font-medium text-neon-primary">{venue.staffNickname}</p>
+                  )}
+                  {venue.staffPhone && (
+                    <>
+                      <p className="mt-0.5 text-xs font-bold text-neon-text-muted">{venue.staffPhone}</p>
+                      <a href={`tel:${venue.staffPhone.replace(/-/g, '')}`}
+                         className="mt-2 inline-flex items-center gap-1 rounded-lg bg-[#15803D] px-3 py-1.5 text-xs font-bold text-white hover:bg-[#166534] transition"
+                         onClick={(e) => e.stopPropagation()}>
+                        📞 {venue.staffNickname} 전화하기
+                      </a>
+                    </>
+                  )}
+                </div>
               </div>
             </Link>
-          )}
-          {ilsanYojeong && (
-            <Link target="_blank" rel="noopener noreferrer" to="/yojeong/ilsan/ilsanmyeongwolgwanyojeong" className="group block h-full">
-              <div className="flex h-full flex-col justify-between rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 to-white p-5 transition-all hover:shadow-lg card-hover">
-                <div>
-                  <Badge variant="premium" className="mb-3">PREMIUM</Badge>
-                  <h3 className="text-base font-bold text-neon-text group-hover:text-violet-700 transition-colors">{ilsanYojeong.nameKo}</h3>
-                  <p className="mt-1 text-sm font-medium text-violet-700">신실장</p>
-                  <p className="mt-1 text-sm font-bold text-violet-800">010-3695-4929</p>
-                  <p className="mt-2 text-xs text-neon-text-muted line-clamp-2">{ilsanYojeong.shortDescription}</p>
-                </div>
-                <a href="tel:01036954929" className="mt-3 inline-flex items-center gap-1 rounded-lg bg-[#15803D] px-4 py-2 text-xs font-bold text-white hover:bg-[#166534] transition" onClick={(e) => e.stopPropagation()}>📞 신실장 전화하기</a>
-              </div>
-            </Link>
-          )}
+          ))}
         </div>
       </section>
 
