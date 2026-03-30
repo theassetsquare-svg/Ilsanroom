@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useEngagementStore } from '@/lib/engagement-store';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Gift, Flame, Star } from 'lucide-react';
@@ -36,6 +36,7 @@ export default function DailyLoginReward() {
   const [show, setShow] = useState(false);
   const [claimed, setClaimed] = useState(false);
   const [teaser] = useState(() => DAILY_TEASERS[Math.floor(Math.random() * DAILY_TEASERS.length)]);
+  const claimTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     const today = new Date().toISOString().slice(0, 10);
@@ -60,7 +61,8 @@ export default function DailyLoginReward() {
     if (!claimed) {
       store.claimDailyReward();
       setClaimed(true);
-      setTimeout(() => setShow(false), 2000);
+      if (claimTimerRef.current) clearTimeout(claimTimerRef.current);
+      claimTimerRef.current = setTimeout(() => setShow(false), 2000);
     }
   };
 

@@ -59,6 +59,7 @@ export default function CuriosityGapTeaser() {
   const [data, setData] = useState<ReturnType<typeof getRandomTeaser> | null>(null);
   const lastIndexRef = useRef(-1);
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const dismissRef = useRef<ReturnType<typeof setTimeout>>();
   const showCountRef = useRef(0);
 
   const scheduleNext = () => {
@@ -72,7 +73,8 @@ export default function CuriosityGapTeaser() {
       showCountRef.current++;
 
       // Auto-dismiss after 15 seconds
-      setTimeout(() => setVisible(false), 15000);
+      if (dismissRef.current) clearTimeout(dismissRef.current);
+      dismissRef.current = setTimeout(() => setVisible(false), 15000);
     }, delay);
   };
 
@@ -85,11 +87,15 @@ export default function CuriosityGapTeaser() {
       setVisible(true);
       showCountRef.current++;
 
-      setTimeout(() => setVisible(false), 15000);
+      if (dismissRef.current) clearTimeout(dismissRef.current);
+      dismissRef.current = setTimeout(() => setVisible(false), 15000);
       scheduleNext();
     }, 90000);
 
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      if (dismissRef.current) clearTimeout(dismissRef.current);
+    };
   }, []);
 
   // Hide on navigation

@@ -31,6 +31,8 @@ export default function SessionRewardBar() {
   const [pointDelta, setPointDelta] = useState<number | null>(null);
   const [celebration, setCelebration] = useState<string | null>(null);
   const sessionStartRef = useRef(Date.now());
+  const ptTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const celTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -59,8 +61,10 @@ export default function SessionRewardBar() {
         store.addPoints(m.points, m.label);
         setPointDelta(m.points);
         setCelebration(`${m.emoji} ${m.label}!`);
-        setTimeout(() => setPointDelta(null), 2000);
-        setTimeout(() => setCelebration(null), 3000);
+        if (ptTimerRef.current) clearTimeout(ptTimerRef.current);
+        if (celTimerRef.current) clearTimeout(celTimerRef.current);
+        ptTimerRef.current = setTimeout(() => setPointDelta(null), 2000);
+        celTimerRef.current = setTimeout(() => setCelebration(null), 3000);
       }
     });
   }, [sessionMinutes, claimedMilestones, store]);

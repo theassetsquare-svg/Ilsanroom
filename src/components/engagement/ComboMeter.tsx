@@ -30,6 +30,7 @@ export default function ComboMeter() {
   const lastActionRef = useRef<number>(0);
   const prevViewCount = useRef(0);
   const prevLikeCount = useRef(0);
+  const bonusTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   // Load persisted combo
   useEffect(() => {
@@ -85,7 +86,8 @@ export default function ComboMeter() {
         if (nextBonusTier > prevBonusTier) {
           const bonus = next * 2;
           setBonusText(`+${bonus}P 콤보 보너스!`);
-          setTimeout(() => setBonusText(null), 2000);
+          if (bonusTimerRef.current) clearTimeout(bonusTimerRef.current);
+          bonusTimerRef.current = setTimeout(() => setBonusText(null), 2000);
         }
 
         return next;
