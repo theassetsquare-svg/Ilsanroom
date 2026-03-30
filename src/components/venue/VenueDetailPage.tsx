@@ -131,8 +131,8 @@ export default function VenueDetailPage({
       {related.length > 0 && (
         <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
           <h2 className="mb-6 text-xl font-bold text-neon-text">비슷한 업소</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {related.slice(0, 2).map((v) => (
+          <div className="grid gap-4 sm:grid-cols-3">
+            {related.slice(0, 3).map((v) => (
               <Card key={v.id} href={relatedHrefFn(v)}>
                 <h3 className="text-base font-bold text-neon-text mb-1">{v.nameKo}</h3>
                 {v.staffNickname && <p className="text-xs text-neon-gold">{v.staffNickname}</p>}

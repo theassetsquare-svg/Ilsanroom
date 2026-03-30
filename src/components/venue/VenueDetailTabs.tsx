@@ -74,7 +74,11 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
           <div className="space-y-6">
             <div>
               <h2 className="mb-3 text-xl font-bold text-neon-text">소개</h2>
-              <p className="leading-relaxed text-neon-text-muted">{venue.description}</p>
+              <p className="leading-relaxed text-neon-text-muted">
+                {venue.description.slice(0, 100).includes(venue.nameKo)
+                  ? venue.description
+                  : `${venue.nameKo} — ${venue.description}`}
+              </p>
             </div>
             {venue.features.length > 0 && (
               <div>
