@@ -21,7 +21,7 @@ export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPh
       <div className="fixed bottom-[72px] right-4 z-40 md:bottom-6 md:right-6">
         <a
           href={`tel:${phone.replace(/-/g, '')}`}
-          className="flex items-center gap-2 rounded-full bg-[#15803D] px-5 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-[#166534] active:scale-95"
+          className="flex items-center gap-2 rounded-full bg-[#15803D] px-5 py-3.5 min-h-[44px] text-sm font-bold text-white shadow-lg transition hover:bg-[#166534] active:scale-95"
           aria-label={`${venueName} 전화걸기 ${phone}`}
         >
           <span>📞</span>
