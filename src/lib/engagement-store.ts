@@ -353,7 +353,7 @@ export const useEngagementStore = create<EngagementState>()(
           sessionStartTime: Date.now(),
         };
 
-        // New day -- reset daily counters
+        // New day -- reset daily counters + 출석 포인트 10P
         if (state.lastVisitDate !== today) {
           if (isConsecutiveDay(state.lastVisitDate, today)) {
             updates.streak = state.streak + 1;
@@ -364,6 +364,11 @@ export const useEngagementStore = create<EngagementState>()(
           }
 
           updates.lastVisitDate = today;
+
+          // 24시간 기준 하루 1회 출석 포인트 10P
+          setTimeout(() => {
+            get().addPoints(10, '오늘의 출석 보너스');
+          }, 500);
           updates.venuesViewed = [];
           updates.votedBattles = [];
           updates.quizCompleted = false;
