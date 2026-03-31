@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { useEngagementStore } from '@/lib/engagement-store';
 
 const sampleReviews = [
   {
@@ -102,6 +103,7 @@ function StarDisplay({ rating, size = "md" }: { rating: number; size?: "sm" | "m
 export default function ReviewsPage() {
   useDocumentMeta('업소후기 — 직접 가본 솔직 리뷰', '직접 가본 사람들의 솔직한 후기와 별점.');
   const { user } = useAuth();
+  const points = useEngagementStore((s) => s.points);
   const [starFilter, setStarFilter] = useState<number | null>(null);
   const [photoOnly, setPhotoOnly] = useState(false);
   const [sortByHelpful, setSortByHelpful] = useState(false);
@@ -133,6 +135,7 @@ export default function ReviewsPage() {
       setTimeout(() => setAuthError(false), 3000);
       return;
     }
+    if (points < 300) { alert("🔒 글쓰기는 🔥매니아(300P) 등급부터 가능합니다. 현재 " + points + "P"); return; }
     setShowWriteModal(true);
   };
 

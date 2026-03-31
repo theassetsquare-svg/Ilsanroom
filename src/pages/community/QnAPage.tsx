@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { useEngagementStore } from '@/lib/engagement-store';
 
 const faqItems = [
   {
@@ -108,6 +109,7 @@ function postToQuestion(post: Post) {
 export default function QnAPage() {
   useDocumentMeta('오늘어디갈까 — 오늘 밤 추천받기', '오늘 밤 어디 갈지 같이 고민하고 추천받는 게시판.');
   const { user } = useAuth();
+  const points = useEngagementStore((s) => s.points);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("전체");
   const [questions, setQuestions] = useState(sampleUserQuestions);
@@ -135,6 +137,7 @@ export default function QnAPage() {
       setTimeout(() => setAuthError(false), 3000);
       return;
     }
+    if (points < 300) { alert("🔒 글쓰기는 🔥매니아(300P) 등급부터 가능합니다. 현재 " + points + "P"); return; }
     setShowWriteModal(true);
   };
 

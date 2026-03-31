@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { useEngagementStore } from '@/lib/engagement-store';
 
 const sampleHotPosts = [
   { id: "hot-1", title: "일산 밤문화 입문기 — 3개월 차 솔직 소감", author: "야행성루키", date: "2026-03-19", comments: 74 },
@@ -78,10 +79,18 @@ export default function FreeBoardPage() {
     loadPosts(currentPage);
   }, [currentPage]);
 
+  const points = useEngagementStore((s) => s.points);
+  const [pointAlert, setPointAlert] = useState(false);
+
   const handleWriteClick = () => {
     if (!user) {
       setAuthError(true);
       setTimeout(() => setAuthError(false), 3000);
+      return;
+    }
+    if (points < 300) {
+      setPointAlert(true);
+      setTimeout(() => setPointAlert(false), 4000);
       return;
     }
     setShowWriteModal(true);
@@ -134,6 +143,11 @@ export default function FreeBoardPage() {
         {authError && (
           <div className="mb-4 rounded-xl border border-neon-red/30 bg-neon-red/10 px-5 py-3 text-sm text-neon-red">
             로그인이 필요합니다
+          </div>
+        )}
+        {pointAlert && (
+          <div className="mb-4 rounded-xl px-5 py-3 text-sm" style={{ backgroundColor: '#F8F7FF', border: '1px solid #C4B5FD', color: '#6B21A8' }}>
+            🔒 글쓰기는 🔥매니아(300P) 등급부터 가능합니다. 현재 {points}P — {300 - points}P 더 모으면 해금!
           </div>
         )}
 

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { useEngagementStore } from '@/lib/engagement-store';
 
 type PartyStatus = "모집중" | "곧 마감" | "끝" | "신청 가능" | "자리 있음" | "완료" | "열린 모임" | "거의 찬 번개" | "종결";
 
@@ -157,6 +158,7 @@ function NbbangCalc() {
 export default function PartyRecruitPage() {
   useDocumentMeta('파티모임 — 같이 갈 사람 찾기', '같이 갈 사람 손! N빵 모집, 날짜 맞추기, 인원 모으기.');
   const { user } = useAuth();
+  const points = useEngagementStore((s) => s.points);
   const [statusFilter, setStatusFilter] = useState<PartyStatus | "전체">("전체");
   const [parties, setParties] = useState<PartyItem[]>(sampleParties);
   const [loading, setLoading] = useState(true);
@@ -183,6 +185,7 @@ export default function PartyRecruitPage() {
       setTimeout(() => setAuthError(false), 3000);
       return;
     }
+    if (points < 300) { alert("🔒 글쓰기는 🔥매니아(300P) 등급부터 가능합니다. 현재 " + points + "P"); return; }
     setShowWriteModal(true);
   };
 

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { useEngagementStore } from '@/lib/engagement-store';
 
 type Category = "입문" | "절약" | "보호" | "예절";
 type Difficulty = "쉬움" | "보통" | "고급";
@@ -124,6 +125,7 @@ const catLabel: Record<string, string> = { "전체": "통합" };
 export default function TipsPage() {
   useDocumentMeta('꿀팁 — 밤놀이 실전 노하우', '첫 방문부터 무사 귀가까지 실전 꿀팁 모음.');
   const { user } = useAuth();
+  const points = useEngagementStore((s) => s.points);
   const [activeCat, setActiveCat] = useState<Category | "전체">(ALL);
   const [tips, setTips] = useState<TipCard[]>(sampleTipCards);
   const [loading, setLoading] = useState(true);
@@ -150,6 +152,7 @@ export default function TipsPage() {
       setTimeout(() => setAuthError(false), 3000);
       return;
     }
+    if (points < 300) { alert("🔒 글쓰기는 🔥매니아(300P) 등급부터 가능합니다. 현재 " + points + "P"); return; }
     setShowWriteModal(true);
   };
 

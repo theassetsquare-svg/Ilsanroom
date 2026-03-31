@@ -24,6 +24,7 @@ const InfiniteDiscoveryFeed = lazy(() => import('@/components/engagement/Infinit
 const NightFortune = lazy(() => import('@/components/engagement/NightFortune'));
 const NearbyFood = lazy(() => import('@/components/engagement/NearbyFood'));
 const PointBenefits = lazy(() => import('@/components/engagement/PointBenefits'));
+import PointGate from '@/components/engagement/PointGate';
 
 function getCategoryHref(category: string, slug: string, region: string) {
   const pathMap: Record<string, string> = {
@@ -226,21 +227,27 @@ export default function HomePage() {
           <p className="text-sm text-neon-text-muted mt-1">어디 갈지 모르겠으면, 여기서 물어봐</p>
         </div>
         <div className="grid gap-6 lg:grid-cols-3">
-          <ErrorBoundary>
-            <Suspense fallback={<div className="h-64 animate-pulse rounded-2xl bg-violet-50" />}>
-              <AIRecommend />
-            </Suspense>
-          </ErrorBoundary>
-          <ErrorBoundary>
-            <Suspense fallback={<div className="h-64 animate-pulse rounded-2xl bg-cyan-50" />}>
-              <AITasteAnalysis />
-            </Suspense>
-          </ErrorBoundary>
-          <ErrorBoundary>
-            <Suspense fallback={<div className="h-64 animate-pulse rounded-2xl bg-amber-50" />}>
-              <AICourseRecommend />
-            </Suspense>
-          </ErrorBoundary>
+          <PointGate minPoints={300}>
+            <ErrorBoundary>
+              <Suspense fallback={<div className="h-64 animate-pulse rounded-2xl bg-violet-50" />}>
+                <AIRecommend />
+              </Suspense>
+            </ErrorBoundary>
+          </PointGate>
+          <PointGate minPoints={700}>
+            <ErrorBoundary>
+              <Suspense fallback={<div className="h-64 animate-pulse rounded-2xl bg-cyan-50" />}>
+                <AITasteAnalysis />
+              </Suspense>
+            </ErrorBoundary>
+          </PointGate>
+          <PointGate minPoints={700}>
+            <ErrorBoundary>
+              <Suspense fallback={<div className="h-64 animate-pulse rounded-2xl bg-amber-50" />}>
+                <AICourseRecommend />
+              </Suspense>
+            </ErrorBoundary>
+          </PointGate>
         </div>
       </section>
 
