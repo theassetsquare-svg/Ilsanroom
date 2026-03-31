@@ -39,7 +39,11 @@ export default function SessionRewardBar() {
       const elapsed = Math.floor((Date.now() - sessionStartRef.current) / 60000);
       setSessionMinutes(elapsed);
     }, 10000);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      if (ptTimerRef.current) clearTimeout(ptTimerRef.current);
+      if (celTimerRef.current) clearTimeout(celTimerRef.current);
+    };
   }, []);
 
   useEffect(() => {

@@ -32,11 +32,12 @@ export default function HotWidget() {
 
   // Pulse every 5 seconds (heartbeat effect)
   useEffect(() => {
+    let pulseTimer: ReturnType<typeof setTimeout>;
     const interval = setInterval(() => {
       setPulse(true);
-      setTimeout(() => setPulse(false), 600);
+      pulseTimer = setTimeout(() => setPulse(false), 600);
     }, 5000);
-    return () => clearInterval(interval);
+    return () => { clearInterval(interval); clearTimeout(pulseTimer); };
   }, []);
 
   if (venues.length === 0) return null;

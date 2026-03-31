@@ -66,6 +66,11 @@ export default function DailyLoginReward() {
     }
   };
 
+  // Cleanup ref timer on unmount
+  useEffect(() => {
+    return () => { if (claimTimerRef.current) clearTimeout(claimTimerRef.current); };
+  }, []);
+
   const handleClose = () => setShow(false);
 
   return (

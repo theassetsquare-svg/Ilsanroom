@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { createClient } from '@/lib/supabase';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
@@ -25,10 +25,14 @@ export default function LoginPage() {
   const [emailError, setEmailError] = useState('');
   const [emailSuccess, setEmailSuccess] = useState('');
 
+  const loginTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  useEffect(() => { return () => { if (loginTimerRef.current) clearTimeout(loginTimerRef.current); }; }, []);
+
   const handleLogin = (provider: 'kakao' | 'google') => {
     setLoading(provider);
     signInWith(provider);
-    setTimeout(() => setLoading(null), 3000);
+    if (loginTimerRef.current) clearTimeout(loginTimerRef.current);
+    loginTimerRef.current = setTimeout(() => setLoading(null), 3000);
   };
 
   const handleEmailAuth = async () => {

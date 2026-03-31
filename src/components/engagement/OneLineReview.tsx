@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 const sampleReviews = [
   { id: 1, text: '강남 금요일 밤, 여기 아니면 어디 가겠어요', author: '파티매니아', venue: '강남청담클럽 레이스', time: '2시간 전' },
@@ -14,6 +14,9 @@ export default function OneLineReview() {
   const [input, setInput] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
+  const submitTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  useEffect(() => { return () => { if (submitTimerRef.current) clearTimeout(submitTimerRef.current); }; }, []);
+
   const handleSubmit = () => {
     if (!input.trim() || input.trim().length < 5) return;
     setReviews([
@@ -22,7 +25,8 @@ export default function OneLineReview() {
     ]);
     setInput('');
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 2000);
+    if (submitTimerRef.current) clearTimeout(submitTimerRef.current);
+    submitTimerRef.current = setTimeout(() => setSubmitted(false), 2000);
   };
 
   return (

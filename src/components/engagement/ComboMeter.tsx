@@ -120,6 +120,14 @@ export default function ComboMeter() {
     };
   }, [combo]);
 
+  // Cleanup all ref timers on unmount
+  useEffect(() => {
+    return () => {
+      if (bonusTimerRef.current) clearTimeout(bonusTimerRef.current);
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, []);
+
   const tier = getTier(combo);
   const showCountdownRing = combo >= 2 && timeLeft <= COUNTDOWN_WARN;
   const ringProgress = showCountdownRing ? timeLeft / COUNTDOWN_WARN : 1;

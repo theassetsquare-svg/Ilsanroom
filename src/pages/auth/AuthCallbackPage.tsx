@@ -12,19 +12,21 @@ export default function AuthCallbackPage() {
       return;
     }
 
+    let timer: ReturnType<typeof setTimeout>;
     // Supabase handles the token exchange from the URL hash automatically
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         navigate('/');
       } else {
         // Wait a moment for the hash to be processed
-        setTimeout(() => {
+        timer = setTimeout(() => {
           supabase.auth.getSession().then(({ data: { session: s } }) => {
             navigate(s ? '/' : '/login');
           });
         }, 1000);
       }
     });
+    return () => clearTimeout(timer);
   }, [navigate]);
 
   return (
