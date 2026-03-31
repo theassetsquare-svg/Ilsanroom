@@ -1,12 +1,37 @@
-
-
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { createClient } from '@/lib/supabase';
+import { useEngagementStore } from '@/lib/engagement-store';
+
+function getLevelInfo(points: number) {
+  if (points >= 5000) return { level: '✨ 신화', next: null, nextPoints: null, color: '#F59E0B' };
+  if (points >= 3000) return { level: '🔥 마스터', next: '✨ 신화', nextPoints: 5000, color: '#EF4444' };
+  if (points >= 1500) return { level: '👑 레전드', next: '🔥 마스터', nextPoints: 3000, color: '#EC4899' };
+  if (points >= 700) return { level: '💎 VIP', next: '👑 레전드', nextPoints: 1500, color: '#8B5CF6' };
+  if (points >= 300) return { level: '🔥 매니아', next: '💎 VIP', nextPoints: 700, color: '#F97316' };
+  if (points >= 100) return { level: '⭐ 탐험가', next: '🔥 매니아', nextPoints: 300, color: '#06B6D4' };
+  return { level: '🌱 뉴비', next: '⭐ 탐험가', nextPoints: 100, color: '#22C55E' };
+}
+
+const PERKS = [
+  { points: 0, label: '업소 정보 열람 (상세 절반)', icon: '👁️' },
+  { points: 100, label: '업소 상세 전체 열람 + 댓글 + 조각 글쓰기', icon: '⭐' },
+  { points: 300, label: '커뮤니티 글쓰기 + 업소 찜하기 + AI 추천', icon: '🔥' },
+  { points: 700, label: 'AI 코스 설계 + AI 취향 분석', icon: '💎' },
+  { points: 1500, label: 'AI 전체 해금 + VIP 전용 게시판', icon: '👑' },
+  { points: 3000, label: '월간 무료입장권 추첨 + 명예의 전당', icon: '🔥' },
+  { points: 5000, label: '분기 프라이빗 파티 초대', icon: '✨' },
+];
 
 export default function ProfileClient() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const store = useEngagementStore();
+  const points = store.points;
+  const streak = store.streak;
+  const venuesViewed = store.venuesViewed?.length || 0;
+  const info = getLevelInfo(points);
 
   useEffect(() => {
     const supabase = createClient();
@@ -35,10 +60,10 @@ export default function ProfileClient() {
   if (!user) {
     return (
       <div className="text-center py-16">
-        <p className="text-lg font-bold text-neon-text mb-4">로그인이 필요합니다</p>
-        <a href="/login" className="inline-block rounded-xl bg-neon-primary px-6 py-3 text-sm font-medium text-white transition hover:bg-neon-primary-light">
+        <p className="text-lg font-bold mb-4" style={{ color: '#111' }}>로그인이 필요합니다</p>
+        <Link to="/login" className="inline-block rounded-xl px-6 py-3 text-sm font-medium text-white" style={{ backgroundColor: '#8B5CF6' }}>
           로그인하기
-        </a>
+        </Link>
       </div>
     );
   }
@@ -49,81 +74,127 @@ export default function ProfileClient() {
   const provider = user.app_metadata?.provider || '';
 
   return (
-    <div>
-      <h1 className="mb-8 text-center text-2xl font-bold text-neon-text">내 프로필</h1>
+    <div className="mx-auto max-w-[600px]">
+      <h1 className="mb-8 text-center text-2xl font-bold" style={{ color: '#111' }}>마이페이지</h1>
 
-      {/* Avatar + 이름 */}
-      <div className="mb-8 flex flex-col items-center">
+      {/* 프로필 카드 */}
+      <div className="mb-6 rounded-2xl border bg-white p-6 text-center" style={{ borderColor: '#E5E7EB' }}>
         {avatar ? (
-          <img src={avatar} alt={name} className="mb-4 h-24 w-24 rounded-full border-2 border-neon-border" />
+          <img src={avatar} alt={name} className="mx-auto mb-3 h-20 w-20 rounded-full border-2" style={{ borderColor: info.color }} />
         ) : (
-          <div className="mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-neon-primary/20 text-3xl text-neon-primary font-bold">
+          <div className="mx-auto mb-3 flex h-20 w-20 items-center justify-center rounded-full text-2xl font-bold text-white" style={{ backgroundColor: info.color }}>
             {name.charAt(0)}
           </div>
         )}
-        <p className="text-lg font-bold text-neon-text">{name}</p>
-        <p className="text-sm text-neon-text-muted">{email}</p>
-        <span className="mt-2 rounded-full bg-neon-surface-2 px-3 py-1 text-xs text-neon-text-muted">
-          {provider === 'google' ? 'Google' : provider === 'kakao' ? '카카오' : provider} 로그인
-        </span>
+        <p className="text-lg font-bold" style={{ color: '#111' }}>{name}</p>
+        <p className="text-sm" style={{ color: '#9CA3AF' }}>{email}</p>
+        <div className="mt-2 inline-flex items-center gap-2 rounded-full px-4 py-1.5" style={{ backgroundColor: info.color + '15', color: info.color }}>
+          <span className="text-sm font-bold">{info.level}</span>
+        </div>
       </div>
 
-      {/* 구독 상태 */}
-      <div className="mb-8">
-        <h2 className="mb-4 text-lg font-bold text-neon-text">구독 상태</h2>
-        <div className="rounded-xl border border-neon-border bg-white p-5">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <span className="text-sm font-medium text-neon-text">현재 플랜</span>
-              <p className="text-lg font-bold text-neon-text">무료 플랜</p>
-            </div>
-            <span className="rounded-full bg-neon-surface-2 px-3 py-1 text-xs font-medium text-neon-text-muted">FREE</span>
-          </div>
-          <a href="/pricing" target="_blank" rel="noopener noreferrer"
-            className="block w-full rounded-xl border border-neon-primary bg-neon-primary/5 py-2.5 text-center text-sm font-medium text-neon-primary transition hover:bg-neon-primary/10">
-            프리미엄으로 업그레이드
-          </a>
+      {/* 포인트 + 스트릭 + 탐색 */}
+      <div className="mb-6 grid grid-cols-3 gap-3">
+        <div className="rounded-xl border bg-white p-4 text-center" style={{ borderColor: '#E5E7EB' }}>
+          <p className="text-2xl font-black" style={{ color: '#8B5CF6' }}>{points}</p>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>포인트</p>
         </div>
+        <div className="rounded-xl border bg-white p-4 text-center" style={{ borderColor: '#E5E7EB' }}>
+          <p className="text-2xl font-black" style={{ color: '#F97316' }}>{streak}</p>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>연속출석</p>
+        </div>
+        <div className="rounded-xl border bg-white p-4 text-center" style={{ borderColor: '#E5E7EB' }}>
+          <p className="text-2xl font-black" style={{ color: '#06B6D4' }}>{venuesViewed}</p>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>탐색 업소</p>
+        </div>
+      </div>
+
+      {/* 다음 등급 진행률 */}
+      {info.nextPoints && (
+        <div className="mb-6 rounded-2xl border bg-white p-5" style={{ borderColor: '#E5E7EB' }}>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-bold" style={{ color: '#111' }}>다음 등급: {info.next}</span>
+            <span className="text-sm" style={{ color: '#8B5CF6' }}>{points} / {info.nextPoints}P</span>
+          </div>
+          <div className="h-3 rounded-full" style={{ backgroundColor: '#F3F4F6' }}>
+            <div className="h-full rounded-full transition-all" style={{ width: `${Math.min(100, (points / info.nextPoints) * 100)}%`, backgroundColor: info.color }} />
+          </div>
+          <p className="mt-2 text-xs" style={{ color: '#9CA3AF' }}>
+            {info.nextPoints - points}P 더 모으면 {info.next} 달성!
+          </p>
+        </div>
+      )}
+
+      {/* 등급별 혜택 */}
+      <div className="mb-6 rounded-2xl border bg-white p-5" style={{ borderColor: '#E5E7EB' }}>
+        <h2 className="mb-4 text-base font-bold" style={{ color: '#111' }}>등급별 혜택</h2>
+        <div className="space-y-3">
+          {PERKS.map((perk) => {
+            const unlocked = points >= perk.points;
+            return (
+              <div key={perk.points} className="flex items-center gap-3">
+                <span className={`text-lg ${unlocked ? '' : 'grayscale opacity-40'}`}>{perk.icon}</span>
+                <div className="flex-1">
+                  <p className="text-sm" style={{ color: unlocked ? '#111' : '#9CA3AF' }}>
+                    {perk.label}
+                  </p>
+                </div>
+                <span className="text-xs font-bold" style={{ color: unlocked ? '#22C55E' : '#D1D5DB' }}>
+                  {unlocked ? '해금' : `${perk.points}P`}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 바로가기 */}
+      <div className="mb-6 grid grid-cols-2 gap-3">
+        <Link to="/community/jogak" className="rounded-xl border bg-white p-4 text-center transition hover:shadow-md min-h-[44px]" style={{ borderColor: '#E5E7EB' }}>
+          <span className="text-lg">🧩</span>
+          <p className="text-sm font-medium mt-1" style={{ color: '#111' }}>조각 모집</p>
+        </Link>
+        <Link to="/community" className="rounded-xl border bg-white p-4 text-center transition hover:shadow-md min-h-[44px]" style={{ borderColor: '#E5E7EB' }}>
+          <span className="text-lg">💬</span>
+          <p className="text-sm font-medium mt-1" style={{ color: '#111' }}>커뮤니티</p>
+        </Link>
+        <Link to="/ranking" className="rounded-xl border bg-white p-4 text-center transition hover:shadow-md min-h-[44px]" style={{ borderColor: '#E5E7EB' }}>
+          <span className="text-lg">🏆</span>
+          <p className="text-sm font-medium mt-1" style={{ color: '#111' }}>랭킹</p>
+        </Link>
+        <Link to="/quiz" className="rounded-xl border bg-white p-4 text-center transition hover:shadow-md min-h-[44px]" style={{ borderColor: '#E5E7EB' }}>
+          <span className="text-lg">🎯</span>
+          <p className="text-sm font-medium mt-1" style={{ color: '#111' }}>퀴즈</p>
+        </Link>
       </div>
 
       {/* 로그아웃 */}
-      <div className="mb-8">
-        <button
-          onClick={handleLogout}
-          className="w-full rounded-xl border border-neon-border bg-white py-3 text-sm font-medium text-neon-text transition hover:bg-neon-surface-2"
-        >
-          로그아웃
-        </button>
-      </div>
+      <button
+        onClick={handleLogout}
+        className="mb-6 w-full rounded-xl border bg-white py-3 text-sm font-medium transition hover:bg-gray-50 min-h-[44px]"
+        style={{ borderColor: '#E5E7EB', color: '#555' }}
+      >
+        로그아웃
+      </button>
 
       {/* 회원 탈퇴 */}
-      <div className="my-8 h-px bg-neon-border" />
-      <div>
-        <h2 className="mb-4 text-lg font-bold text-neon-red">회원 탈퇴</h2>
-        <div className="rounded-xl border border-neon-red/20 bg-red-50 p-5">
-          <p className="mb-4 text-sm text-neon-text-muted">
-            탈퇴 시 30일 유예 후 모든 데이터가 삭제됩니다. 30일 내 로그인하면 취소됩니다.
-          </p>
-          {!showDeleteConfirm ? (
-            <button onClick={() => setShowDeleteConfirm(true)}
-              className="w-full rounded-xl border border-neon-red/30 py-3 text-sm font-medium text-neon-red transition hover:bg-red-50">
-              회원 탈퇴 신청
-            </button>
-          ) : (
-            <div className="space-y-3">
-              <p className="text-center text-sm text-neon-red">정말 탈퇴하시겠습니까?</p>
-              <div className="flex gap-3">
-                <button onClick={() => setShowDeleteConfirm(false)}
-                  className="flex-1 rounded-xl border border-neon-border py-2.5 text-sm font-medium text-neon-text transition hover:bg-neon-surface-2">
-                  취소
-                </button>
-                <button className="flex-1 rounded-xl bg-neon-red py-2.5 text-sm font-medium text-white transition hover:bg-red-600">
-                  탈퇴 확인
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
+      <div className="rounded-2xl border p-5" style={{ borderColor: '#FCA5A5', backgroundColor: '#FEF2F2' }}>
+        <p className="text-sm mb-3" style={{ color: '#991B1B' }}>
+          탈퇴 시 30일 유예 후 모든 데이터가 삭제됩니다.
+        </p>
+        {!showDeleteConfirm ? (
+          <button onClick={() => setShowDeleteConfirm(true)}
+            className="w-full rounded-xl border py-2.5 text-sm font-medium transition min-h-[44px]"
+            style={{ borderColor: '#FCA5A5', color: '#DC2626' }}>
+            회원 탈퇴
+          </button>
+        ) : (
+          <div className="flex gap-3">
+            <button onClick={() => setShowDeleteConfirm(false)}
+              className="flex-1 rounded-xl border py-2.5 text-sm min-h-[44px]" style={{ borderColor: '#D1D5DB', color: '#555' }}>취소</button>
+            <button className="flex-1 rounded-xl py-2.5 text-sm font-bold text-white min-h-[44px]" style={{ backgroundColor: '#DC2626' }}>탈퇴 확인</button>
+          </div>
+        )}
       </div>
     </div>
   );
