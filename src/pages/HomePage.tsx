@@ -23,6 +23,7 @@ const HomeCommunityHub = lazy(() => import('@/components/home/HomeCommunityHub')
 const InfiniteDiscoveryFeed = lazy(() => import('@/components/engagement/InfiniteDiscoveryFeed'));
 const NightFortune = lazy(() => import('@/components/engagement/NightFortune'));
 const NearbyFood = lazy(() => import('@/components/engagement/NearbyFood'));
+const PointBenefits = lazy(() => import('@/components/engagement/PointBenefits'));
 
 function getCategoryHref(category: string, slug: string, region: string) {
   const pathMap: Record<string, string> = {
@@ -434,6 +435,13 @@ export default function HomePage() {
           </p>
         </div>
       </section>
+
+      {/* ═══════ 포인트 혜택 안내 ═══════ */}
+      <ErrorBoundary>
+        <Suspense fallback={null}>
+          <PointBenefits />
+        </Suspense>
+      </ErrorBoundary>
 
       {/* ═══════ 밤문화 운세 ═══════ */}
       <ErrorBoundary>
