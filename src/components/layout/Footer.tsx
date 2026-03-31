@@ -13,6 +13,7 @@ const categoryLinks = [
 
 const communityLinks = [
   { href: '/community', label: '게시판' },
+  { href: '/community/jogak', label: '🧩 조각모집' },
   { href: '/events', label: '행사' },
   { href: '/ranking', label: '순위' },
   { href: '/magazine', label: '읽을거리' },

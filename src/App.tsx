@@ -38,6 +38,7 @@ const PartyPage = lazy(() => import('./pages/community/PartyPage'));
 const FreePage = lazy(() => import('./pages/community/FreePage'));
 const FashionPage = lazy(() => import('./pages/community/FashionPage'));
 const GuidelinesPage = lazy(() => import('./pages/community/GuidelinesPage'));
+const JogakPage = lazy(() => import('./pages/community/JogakPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const TermsPage = lazy(() => import('./pages/TermsPage'));
 const DisclaimerPage = lazy(() => import('./pages/DisclaimerPage'));
@@ -116,6 +117,7 @@ export default function App() {
           <Route path="/community/party" element={<PartyPage />} />
           <Route path="/community/free" element={<FreePage />} />
           <Route path="/community/fashion" element={<FashionPage />} />
+          <Route path="/community/jogak" element={<JogakPage />} />
           <Route path="/community/guidelines" element={<GuidelinesPage />} />
           {/* Legal & Info */}
           <Route path="/privacy" element={<PrivacyPage />} />
