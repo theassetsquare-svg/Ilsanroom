@@ -72,10 +72,10 @@ export default function ScrollDepthReward() {
           exit={{ y: -20, opacity: 0 }}
           transition={{ type: 'spring', damping: 20 }}
         >
-          <div className="flex items-center gap-2 rounded-full bg-black/90 backdrop-blur-sm px-5 py-2.5 shadow-2xl border border-white/20">
+          <div className="flex items-center gap-2 rounded-full px-5 py-2.5 shadow-2xl border border-white/20" style={{ backgroundColor: 'rgba(0,0,0,0.92)', color: '#FFFFFF' }}>
             <span className="text-base">{toast.emoji}</span>
-            <span className="text-sm font-bold text-white drop-shadow">{toast.label}</span>
-            <span className="text-sm font-extrabold text-[#34D399] drop-shadow">+{toast.points}P</span>
+            <span className="text-sm font-bold" style={{ color: '#FFFFFF' }}>{toast.label}</span>
+            <span className="text-sm font-extrabold" style={{ color: '#34D399' }}>+{toast.points}P</span>
           </div>
         </motion.div>
       )}
