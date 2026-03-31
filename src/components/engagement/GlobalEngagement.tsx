@@ -1,22 +1,11 @@
-import { useEffect, lazy, Suspense } from 'react';
+import { useEffect, lazy, Suspense, Component, type ReactNode } from 'react';
 import { useEngagementStore } from '@/lib/engagement-store';
 
 /**
  * GlobalEngagement — 모든 페이지에서 작동하는 체류시간 95분+ 시스템
  *
- * 틱톡 + 넷플릭스 + 슬롯머신 심리학 통합:
- *
- * 1. SessionRewardBar: 하단 레벨/포인트/진행률 바 (항상 보임)
- * 2. DailyMissions: 일일 미션 플로팅 버튼 (게임화)
- * 3. SocialProofToast: 실시간 활동 알림 (FOMO)
- * 4. ExitGuard: 이탈 방지 모달 (손실 회피)
- * 5. RewardAnimation: 보상 애니메이션 (도파민)
- * 6. ComboMeter: 연속 액션 콤보 (스트릭 심리)
- * 7. SlotMachinePopup: 가변 간격 랜덤 보상 (슬롯머신)
- * 8. DailyLoginReward: 일일 로그인 보상 (넷플릭스 웰컴백)
- * 9. ScrollDepthReward: 스크롤 깊이 보상 (미시 도파민)
- * 10. AutoNextSuggestion: 다음 콘텐츠 자동 추천 (넷플릭스 오토플레이)
- * 11. CuriosityGapTeaser: 호기심 갭 티저 (자이가르닉 효과)
+ * 각 서브컴포넌트를 개별 ErrorBoundary로 감싸서
+ * 하나가 에러나도 다른 컴포넌트는 정상 작동
  */
 
 const SessionRewardBar = lazy(() => import('./SessionRewardBar'));
@@ -32,22 +21,34 @@ const AutoNextSuggestion = lazy(() => import('./AutoNextSuggestion'));
 const CuriosityGapTeaser = lazy(() => import('./CuriosityGapTeaser'));
 const TikTokLauncher = lazy(() => import('./TikTokLauncher'));
 
+/** Silent ErrorBoundary — 에러 시 아무것도 안 보여줌 (빈 화면 방지) */
+class Silent extends Component<{ children: ReactNode }, { err: boolean }> {
+  state = { err: false };
+  static getDerivedStateFromError() { return { err: true }; }
+  componentDidCatch(e: Error) { console.error('[Engagement]', e.message); }
+  render() { return this.state.err ? null : this.props.children; }
+}
+
+/** 개별 래핑: Suspense + ErrorBoundary */
+function Safe({ children }: { children: ReactNode }) {
+  return (
+    <Silent>
+      <Suspense fallback={null}>{children}</Suspense>
+    </Silent>
+  );
+}
+
 export default function GlobalEngagement() {
   const initSession = useEngagementStore((s) => s.initSession);
   const tick = useEngagementStore((s) => s.tick);
 
-  // Initialize session on mount
-  useEffect(() => {
-    initSession();
-  }, [initSession]);
+  useEffect(() => { initSession(); }, [initSession]);
 
-  // Run tick every second for session time tracking
   useEffect(() => {
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
   }, [tick]);
 
-  // Auto-complete missions when progress meets goals
   useEffect(() => {
     const checkMissions = () => {
       const store = useEngagementStore.getState();
@@ -58,34 +59,33 @@ export default function GlobalEngagement() {
         }
       }
     };
-
     const interval = setInterval(checkMissions, 5000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <Suspense fallback={null}>
+    <>
       {/* Layer 1: Always-visible UI */}
-      <SessionRewardBar />
-      <DailyMissions />
+      <Safe><SessionRewardBar /></Safe>
+      <Safe><DailyMissions /></Safe>
 
-      {/* Layer 2: Passive engagement (timers & scroll) */}
-      <SocialProofToast />
-      <ScrollDepthReward />
-      <ComboMeter />
+      {/* Layer 2: Passive engagement */}
+      <Safe><SocialProofToast /></Safe>
+      <Safe><ScrollDepthReward /></Safe>
+      <Safe><ComboMeter /></Safe>
 
       {/* Layer 3: Triggered overlays */}
-      <ExitGuard />
-      <RewardAnimation />
-      <AutoNextSuggestion />
+      <Safe><ExitGuard /></Safe>
+      <Safe><RewardAnimation /></Safe>
+      <Safe><AutoNextSuggestion /></Safe>
 
       {/* Layer 4: Timed popups */}
-      <SlotMachinePopup />
-      <DailyLoginReward />
-      <CuriosityGapTeaser />
+      <Safe><SlotMachinePopup /></Safe>
+      <Safe><DailyLoginReward /></Safe>
+      <Safe><CuriosityGapTeaser /></Safe>
 
-      {/* Layer 5: TikTok-style feed launcher */}
-      <TikTokLauncher />
-    </Suspense>
+      {/* Layer 5: TikTok-style feed */}
+      <Safe><TikTokLauncher /></Safe>
+    </>
   );
 }

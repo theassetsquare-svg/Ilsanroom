@@ -172,7 +172,7 @@ export default function SessionRewardBar() {
               <AnimatePresence>
                 {pointDelta && (
                   <motion.span
-                    className="absolute -top-4 left-1/2 -translate-x-1/2 text-xs font-bold text-green-500 whitespace-nowrap"
+                    className="absolute -top-5 left-1/2 -translate-x-1/2 text-sm font-extrabold text-[#10B981] whitespace-nowrap drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
                     initial={{ y: 0, opacity: 1 }}
                     animate={{ y: -16, opacity: 0 }}
                     exit={{ opacity: 0 }}
