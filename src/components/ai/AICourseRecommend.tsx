@@ -71,7 +71,7 @@ function buildCourseFromVenues(pool: Venue[], timeSlot: string): CourseStep[] {
 
   if (timeSlot === 'evening' || timeSlot === 'night') {
     const drink = pick(['lounge', 'hoppa', 'room']);
-    if (drink) steps.push({ time: '21:00', label: '2차 분위기', venue: drink, description: '가벼운 음료와 함께 분위기 전환' });
+    if (drink) steps.push({ time: '21:00', label: '다음 장소', venue: drink, description: '가벼운 음료와 함께 분위기 전환' });
   }
 
   const late = pick(['club', 'night', 'lounge']);

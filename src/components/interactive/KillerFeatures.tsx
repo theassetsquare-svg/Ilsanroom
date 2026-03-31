@@ -111,7 +111,7 @@ export function DrinkBudgetCalc() {
           <label className="block text-xs text-neon-text-muted mb-1">차수</label>
           <select value={rounds} onChange={(e) => setRounds(e.target.value)}
             className="w-full rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none">
-            <option value="1">1차만</option><option value="2">2차까지</option><option value="3">3차까지</option>
+            <option value="1">1곳만</option><option value="2">2곳까지</option><option value="3">3곳까지</option>
           </select>
         </div>
       </div>
