@@ -12,7 +12,12 @@ export function createClient() {
     return null;
   }
   if (!clientInstance) {
-    clientInstance = supabaseCreateClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY);
+    clientInstance = supabaseCreateClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+      },
+    });
   }
   return clientInstance;
 }
