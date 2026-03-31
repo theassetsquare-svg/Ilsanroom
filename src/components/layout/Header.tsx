@@ -17,6 +17,7 @@ const navLinks = [
   { href: '/community', label: '커뮤니티' },
   { href: '/ranking', label: '랭킹' },
   { href: '/map', label: '지도' },
+  { href: '/pricing', label: '요금제' },
 ];
 
 export default function Header() {
