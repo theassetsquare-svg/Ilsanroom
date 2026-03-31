@@ -24,8 +24,9 @@ const defaultFaqs = (name: string) => [
 
 export default function RoomDetailPage() {
   const { region, slug } = useParams<{ region: string; slug: string }>();
-  const venue = getVenueBySlug(slug);
-  useDocumentMeta(getHookingTitle(venue!) + '', getHookingDescription(venue!), getVenueOgImageBySlug(venue!.slug));
+  const venue = getVenueBySlug(slug!);
+  if (!venue || venue.category !== 'room') return <Navigate to="/404" replace />;
+  useDocumentMeta(getHookingTitle(venue) + '', getHookingDescription(venue), getVenueOgImageBySlug(venue.slug));
 
   const regionKo = regionNames[region] || region;
   const related = getRelatedVenues(venue, 6);

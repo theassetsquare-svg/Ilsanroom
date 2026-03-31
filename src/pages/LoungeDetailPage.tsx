@@ -19,8 +19,9 @@ const defaultFaqs = (name: string) => [
 
 export default function LoungeDetailPage() {
   const { slug } = useParams<{ slug: string }>();
-  const venue = getVenueBySlug(slug);
-  useDocumentMeta(getHookingTitle(venue!) + '', getHookingDescription(venue!), getVenueOgImageBySlug(venue!.slug));
+  const venue = getVenueBySlug(slug!);
+  if (!venue || venue.category !== 'lounge') return <Navigate to="/404" replace />;
+  useDocumentMeta(getHookingTitle(venue) + '', getHookingDescription(venue), getVenueOgImageBySlug(venue.slug));
 
   const related = getRelatedVenues(venue, 6);
 

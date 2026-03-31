@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
+import ErrorBoundary from './components/ui/ErrorBoundary';
 
 /* ── Pages (lazy-loaded) ── */
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -75,6 +76,7 @@ function PageLoading() {
 
 export default function App() {
   return (
+    <ErrorBoundary>
     <Suspense fallback={<PageLoading />}>
       <Routes>
         <Route element={<MainLayout />}>
@@ -151,5 +153,6 @@ export default function App() {
         </Route>
       </Routes>
     </Suspense>
+    </ErrorBoundary>
   );
 }
