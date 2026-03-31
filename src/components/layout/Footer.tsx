@@ -87,7 +87,7 @@ export default function Footer() {
           {/* Site info */}
           <div className="col-span-2 sm:col-span-1">
             <Link to="/" target="_blank" rel="noopener noreferrer" className="text-xl font-black tracking-wider text-neon-primary">
-              놀쿨
+              놀쿨 <span className="text-sm font-bold text-neon-text-muted">NOLCOOL</span>
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-neon-text-muted">
               전국 클럽·나이트·라운지·룸·요정·호빠 정보
@@ -163,7 +163,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-8 border-t border-neon-border pt-6">
           <p className="text-center text-xs text-neon-text-muted">
-            &copy; {new Date().getFullYear()} 놀쿨. All rights reserved.
+            &copy; {new Date().getFullYear()} 놀쿨 NOLCOOL. All rights reserved.
           </p>
           <p className="mt-2 text-center text-xs text-neon-text-muted">
             직접 확인하고 전문가가 분석합니다
