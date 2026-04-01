@@ -404,8 +404,10 @@ export default function HomePage() {
                         className="h-full w-full object-cover"
                         loading="lazy"
                       />
-                      {/* Region badge */}
-                      <span className="absolute top-2 left-2 rounded-full bg-black/50 px-2 py-0.5 text-xs font-medium text-white backdrop-blur-sm">
+                      {/* Dark gradient overlay for text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
+                      {/* Region badge — WHITE text on dark overlay */}
+                      <span className="absolute top-2 left-2 rounded-full bg-black/60 px-2.5 py-1 text-xs font-bold text-white" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8)' }}>
                         {venue.regionKo}
                       </span>
                     </div>
