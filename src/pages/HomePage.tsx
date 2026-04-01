@@ -207,6 +207,24 @@ export default function HomePage() {
     });
   };
 
+  // === Lucky Roulette ===
+  const [rouletteResult, setRouletteResult] = useState<Venue | null>(null);
+  const [rouletteSpinning, setRouletteSpinning] = useState(false);
+
+  const spinRoulette = () => {
+    if (rouletteSpinning) return;
+    setRouletteSpinning(true);
+    setRouletteResult(null);
+    // Simulate spin for 1.5s then show result
+    const timer = setTimeout(() => {
+      const randomVenue = openVenues[Math.floor(Math.random() * openVenues.length)];
+      setRouletteResult(randomVenue);
+      setRouletteSpinning(false);
+    }, 1500);
+    // Cleanup handled by component unmount
+    return () => clearTimeout(timer);
+  };
+
   // === Greeting animation ===
   const [greetingVisible, setGreetingVisible] = useState(false);
   useEffect(() => {
@@ -367,9 +385,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════ HOME FEED — 2 Column Card Grid ═══════ */}
-      <section className="px-4 py-4">
-        <div className="grid grid-cols-2 gap-3">
+      {/* ═══════ HOME FEED — 2 Column Card Grid (PC: 3-4col) ═══════ */}
+      <section className="px-4 py-4 max-w-[1200px] mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {feedVenues.map((venue, idx) => {
             const cards = [];
 
@@ -377,7 +395,7 @@ export default function HomePage() {
             cards.push(
               <div key={venue.id} className="relative">
                 <Link to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
-                  <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                  <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
                     {/* Photo */}
                     <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
                       <img
@@ -419,81 +437,48 @@ export default function HomePage() {
               </div>
             );
 
-            // Every 5th card — ENGAGEMENT CARD
+            // Every 5th card — VS VOTE
             if ((idx + 1) % 5 === 0) {
-              const engType = Math.floor(idx / 5) % 3;
-              if (engType === 0) {
-                // VS Vote
-                const poll = vsPolls[Math.floor(idx / 5) % vsPolls.length];
-                const voted = vsVotes[idx];
-                cards.push(
-                  <div key={`eng-${idx}`} className="col-span-2 rounded-xl bg-gradient-to-r from-[#EEF2FF] to-[#F3F0FF] p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
-                    <p className="text-xs font-bold text-[#8B5CF6] mb-2">🆚 VS 투표</p>
-                    <p className="text-sm font-bold text-[#111] mb-3">{poll.q}</p>
-                    <div className="grid grid-cols-2 gap-2">
-                      {[poll.a, poll.b].map(opt => (
-                        <button
-                          key={opt}
-                          onClick={() => setVsVotes(prev => ({ ...prev, [idx]: opt }))}
-                          disabled={!!voted}
-                          className={`rounded-xl py-3 text-sm font-bold transition-all ${
-                            voted === opt ? 'bg-[#8B5CF6] text-white' :
-                            voted ? 'bg-white/60 text-[#999]' :
-                            'bg-white text-[#333] active:bg-[#8B5CF6] active:text-white'
-                          }`}
-                          style={{ minHeight: 44 }}
-                        >
-                          {opt}
-                        </button>
-                      ))}
-                    </div>
-                    {voted && (
-                      <p className="mt-2 text-center text-xs text-[#8B5CF6]">
-                        {Math.floor(Math.random() * 30 + 35)}% vs {Math.floor(Math.random() * 30 + 35)}% — 참여 완료!
-                      </p>
-                    )}
+              const poll = vsPolls[Math.floor(idx / 5) % vsPolls.length];
+              const voted = vsVotes[idx];
+              cards.push(
+                <div key={`eng-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#EEF2FF] to-[#F3F0FF] p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                  <p className="text-xs font-bold text-[#8B5CF6] mb-2">🆚 VS 투표</p>
+                  <p className="text-sm font-bold text-[#111] mb-3">{poll.q}</p>
+                  <div className="grid grid-cols-2 gap-2 max-w-md">
+                    {[poll.a, poll.b].map(opt => (
+                      <button
+                        key={opt}
+                        onClick={() => setVsVotes(prev => ({ ...prev, [idx]: opt }))}
+                        disabled={!!voted}
+                        className={`rounded-xl py-3 text-sm font-bold transition-all ${
+                          voted === opt ? 'bg-[#8B5CF6] text-white' :
+                          voted ? 'bg-white/60 text-[#999]' :
+                          'bg-white text-[#333] hover:bg-[#8B5CF6] hover:text-white active:bg-[#8B5CF6] active:text-white'
+                        }`}
+                        style={{ minHeight: 44 }}
+                      >
+                        {opt}
+                      </button>
+                    ))}
                   </div>
-                );
-              } else if (engType === 1) {
-                // Quiz
-                cards.push(
-                  <div key={`eng-${idx}`} className="col-span-2 rounded-xl bg-gradient-to-r from-[#FDF2F8] to-[#FEF3C7] p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
-                    <p className="text-xs font-bold text-[#BE185D] mb-2">🎯 퀴즈</p>
-                    <p className="text-sm font-bold text-[#111] mb-3">당신에게 맞는 밤문화는?</p>
-                    <div className="flex flex-wrap gap-2">
-                      {['EDM에 미친다 🎶', '조용히 마신다 🍷', '춤이 좋다 💃'].map(opt => (
-                        <Link key={opt} to="/quiz" className="rounded-full bg-white px-4 py-2 text-sm font-medium text-[#333] active:bg-[#8B5CF6] active:text-white" style={{ minHeight: 40 }}>
-                          {opt}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                );
-              } else {
-                // Fortune
-                cards.push(
-                  <div key={`eng-${idx}`} className="col-span-2 rounded-xl bg-gradient-to-r from-[#111827] to-[#1E1B4B] p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
-                    <p className="text-xs font-bold text-amber-400 mb-2">🔮 오늘 밤 운세</p>
-                    <p className="text-sm font-bold text-white mb-3">별들이 당신의 밤을 예고합니다...</p>
-                    <Link to="/roulette" className="inline-flex items-center gap-1 rounded-full bg-amber-500 px-4 py-2 text-sm font-bold text-white active:bg-amber-600" style={{ minHeight: 40 }}>
-                      운세 보기 →
-                    </Link>
-                  </div>
-                );
-              }
+                  {voted && (
+                    <p className="mt-2 text-xs text-[#8B5CF6]">
+                      {Math.floor(Math.random() * 30 + 35)}% vs {Math.floor(Math.random() * 30 + 35)}% — 참여 완료!
+                    </p>
+                  )}
+                </div>
+              );
             }
 
-            // Every 8th card — CONTENT CARD
+            // Every 8th card — FORTUNE 운세
             if ((idx + 1) % 8 === 0) {
               cards.push(
-                <div key={`content-${idx}`} className="col-span-2 rounded-xl border border-gray-100 bg-white p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
-                  <p className="text-xs font-bold text-emerald-600 mb-2">📝 직접 가본 후기</p>
-                  <p className="text-sm font-bold text-[#111]">{venue.nameKo}</p>
-                  <p className="mt-1 text-sm text-[#555] line-clamp-2" style={{ lineHeight: 1.7 }}>
-                    {venue.shortDescription}
-                  </p>
-                  <Link to={getCategoryHref(venue.category, venue.slug, venue.region)} className="mt-2 inline-block text-xs font-bold text-[#8B5CF6]">
-                    자세히 보기 →
+                <div key={`fortune-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#111827] to-[#1E1B4B] p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                  <p className="text-xs font-bold text-amber-400 mb-2">🔮 오늘 밤 운세</p>
+                  <p className="text-sm font-bold text-white mb-3">별들이 당신의 밤을 예고합니다...</p>
+                  <Link to="/roulette" className="inline-flex items-center gap-1 rounded-full bg-amber-500 px-4 py-2 text-sm font-bold text-white hover:bg-amber-600 active:bg-amber-600" style={{ minHeight: 44 }}>
+                    운세 보기 →
                   </Link>
                 </div>
               );
@@ -502,7 +487,7 @@ export default function HomePage() {
             // Every 12th card — EDITORIAL
             if ((idx + 1) % 12 === 0) {
               cards.push(
-                <div key={`editorial-${idx}`} className="col-span-2 rounded-xl bg-gradient-to-r from-violet-50 to-white p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                <div key={`editorial-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-violet-50 to-white p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
                   <p className="text-xs font-bold text-[#8B5CF6] mb-2">🔥 에디터 Pick</p>
                   <p className="text-sm font-bold text-[#111]">이번주 TOP5 변동</p>
                   <div className="mt-2 space-y-1">
@@ -524,7 +509,7 @@ export default function HomePage() {
 
         {/* Skeleton / Loading indicator */}
         {feedVenues.length === 0 && (
-          <div className="grid grid-cols-2 gap-3 mt-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-4">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="rounded-xl bg-gray-100 animate-pulse">
                 <div className="aspect-[4/3]" />
@@ -536,6 +521,49 @@ export default function HomePage() {
             ))}
           </div>
         )}
+      </section>
+
+      {/* ═══════ LUCKY ROULETTE ═══════ */}
+      <section className="px-4 py-6 max-w-[1200px] mx-auto">
+        <div className="rounded-2xl bg-gradient-to-br from-[#1E1B4B] to-[#312E81] p-6 text-center overflow-hidden relative">
+          <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 30% 50%, #8B5CF6 0%, transparent 50%), radial-gradient(circle at 70% 50%, #EC4899 0%, transparent 50%)' }} />
+          <div className="relative">
+            <p className="text-2xl mb-1">🎰</p>
+            <h2 className="text-lg font-bold text-white mb-1">Lucky Roulette</h2>
+            <p className="text-sm text-white/80 mb-4" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>오늘 밤 여기 어때? 탭해서 돌려봐!</p>
+            <button
+              onClick={spinRoulette}
+              disabled={rouletteSpinning}
+              className={`inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-bold transition-all ${
+                rouletteSpinning
+                  ? 'bg-white/20 text-white/60 animate-pulse'
+                  : 'bg-white text-[#8B5CF6] hover:bg-gray-100 active:scale-95 shadow-lg'
+              }`}
+              style={{ minHeight: 48 }}
+            >
+              {rouletteSpinning ? '돌리는 중...' : '🎲 돌려보기'}
+            </button>
+
+            {rouletteResult && (
+              <Link
+                to={getCategoryHref(rouletteResult.category, rouletteResult.slug, rouletteResult.region)}
+                className="mt-4 block rounded-xl bg-white/10 backdrop-blur-sm p-4 text-left transition-all hover:bg-white/20 active:scale-[0.98]"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/20 text-lg font-bold text-white">
+                    {rouletteResult.nameKo.charAt(0)}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-base font-bold text-white truncate">{rouletteResult.nameKo}</p>
+                    <p className="text-xs text-white/70" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>{rouletteResult.regionKo} · {catLabel[rouletteResult.category]}</p>
+                  </div>
+                  <span className="text-white text-lg">→</span>
+                </div>
+                <p className="mt-2 text-sm text-white/80 line-clamp-1" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>{rouletteResult.shortDescription}</p>
+              </Link>
+            )}
+          </div>
+        </div>
       </section>
 
       {/* ═══════ INFINITE DISCOVERY FEED ═══════ */}
@@ -560,7 +588,7 @@ export default function HomePage() {
       </ErrorBoundary>
 
       {/* ═══════ GOOGLE/AI CTA ═══════ */}
-      <section className="px-4 py-6">
+      <section className="px-4 py-6 max-w-[1200px] mx-auto">
         <div className="rounded-2xl bg-[#8B5CF6] px-6 py-5 text-center">
           <p className="text-sm font-bold text-white">
             구글 · ChatGPT · Gemini에서 <span className="text-lg font-black">"놀쿨"</span> 검색하세요
@@ -569,7 +597,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════ SEO TEXT ═══════ */}
-      <section className="px-4 pb-8">
+      <section className="px-4 pb-8 max-w-[1200px] mx-auto">
         <div className="rounded-2xl border border-gray-100 bg-[#F5F5F5] p-6">
           <h2 className="mb-3 text-base font-bold text-[#111]">카테고리별 특징과 이용 팁</h2>
           <div className="space-y-3 text-sm leading-relaxed text-[#555]">
