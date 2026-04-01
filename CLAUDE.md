@@ -1,19 +1,29 @@
 # NOLCOOL — Nightlife (NOT kids/leisure)
 ## MUST
-- base: "/" ONLY. BrowserRouter ONLY (no # in URL)
+- base: "/" ONLY. BrowserRouter ONLY. No # in URL
+- Store name (가게이름) = Region+Type+Business. FIRST in title
 - No "놀쿨" in any title except homepage
-- Store name = Region+Type+Business. First in title
-- meta description: 150 chars MAX. Body: 1000+ chars
 - Keyword density 1.5-2.5% (1000c=5-7x, 2000c=8-12x)
-- Internal search ONLY (filter from data, no external)
 - Mobile: 16px font, 1.7 line-height, 44px touch, no bar overlap
-- useEffect cleanup ALL timers. persistSession:true
+- useEffect cleanup ALL timers. persistSession:true. ErrorBoundary
 - Bestseller writing. No AI text. No banned words
-- Images: real store photos. No other ad phone/nickname. No price
-- Popup+detail body image text: WHITE only. No black text
-- Footer: 놀쿨 NOLCOOL + KakaoTalk besta12
+- Internal search ONLY. No external redirect
+## SEO 2026 — Store Name Top Ranking
+- title: Store name first + hook. Under 60 chars
+- meta description: 150 chars MAX. Store name + hook + CTA
+- H1: Store name once. H2: Store name in 3+ subheadings
+- First 100 chars of body: Store name must appear
+- Schema: JSON-LD LocalBusiness + NightClub type
+- og:image: real store photo 1:1. alt="store name"
+- sitemap.xml + robots.txt (Allow: Googlebot, Yeti, GPTBot)
+- llms.txt for AI search (ChatGPT/Perplexity/Gemini)
+- Core Web Vitals: LCP<2.5s, INP<200ms, CLS<0.1
+- Internal links: 3 related venues per page
+- Canonical URL on every page. No duplicates
+- Image: WebP, lazy load, alt=store name
+- E-E-A-T: real visit experience, expert tone, author name
 ## NEVER
-- base: "/nolcool/" or any brand path
-- Auto page transition while user reading
-- Next.js (Vite only). Change existing URLs
-- "키워드 3회" (old rule). "| 놀쿨" in title
+- Auto page transition. Next.js. Change existing URLs
+- "| 놀쿨" in title. Brand path in base
+- Keyword stuffing over 3%. Duplicate content
+- Baby/mom/family/kids images. Banned adult words
