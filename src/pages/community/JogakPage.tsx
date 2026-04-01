@@ -145,7 +145,7 @@ export default function JogakPage() {
       {/* 헤더 */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <Link to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
+          <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
           <h1 className="text-3xl font-bold" style={{ color: '#111' }}>🧩 조각 모집</h1>
           <p className="mt-2 text-sm" style={{ color: '#555' }}>같이 놀러갈 사람을 구하는 게시판</p>
         </div>

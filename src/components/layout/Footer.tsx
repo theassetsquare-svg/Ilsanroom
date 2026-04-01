@@ -147,7 +147,7 @@ export default function Footer() {
                 <h4 className="mb-2 text-xs font-semibold text-neon-accent">{region}</h4>
                 <div className="flex flex-wrap gap-x-3 gap-y-1">
                   {links.map((link) => (
-                    <Link key={link.href}
+                    <Link target="_blank" rel="noopener noreferrer" key={link.href}
                       to={link.href}
                       target="_blank" rel="noopener noreferrer"
                       className="text-xs text-neon-text-muted transition-colors hover:text-neon-primary-light"

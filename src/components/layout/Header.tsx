@@ -71,7 +71,7 @@ export default function Header() {
           </button>
 
           {/* Center: Logo */}
-          <Link to="/" className="flex items-center gap-1.5">
+          <Link target="_blank" rel="noopener noreferrer" to="/" className="flex items-center gap-1.5">
             <span className="text-lg font-black tracking-tight text-[#8B5CF6]">놀쿨</span>
           </Link>
 
@@ -144,7 +144,7 @@ export default function Header() {
                   </div>
                 </div>
               ) : (
-                <Link to="/login" onClick={() => setMenuOpen(false)} className="flex items-center gap-3">
+                <Link target="_blank" rel="noopener noreferrer" to="/login" onClick={() => setMenuOpen(false)} className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200">
                     <svg className="h-5 w-5 text-[#555]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />

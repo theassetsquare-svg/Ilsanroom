@@ -61,7 +61,7 @@ export default function ProfileClient() {
     return (
       <div className="text-center py-16">
         <p className="text-lg font-bold mb-4" style={{ color: '#111' }}>로그인이 필요합니다</p>
-        <Link to="/login" className="inline-block rounded-xl px-6 py-3 text-sm font-medium text-white" style={{ backgroundColor: '#8B5CF6' }}>
+        <Link target="_blank" rel="noopener noreferrer" to="/login" className="inline-block rounded-xl px-6 py-3 text-sm font-medium text-white" style={{ backgroundColor: '#8B5CF6' }}>
           로그인하기
         </Link>
       </div>
@@ -150,19 +150,19 @@ export default function ProfileClient() {
 
       {/* 바로가기 */}
       <div className="mb-6 grid grid-cols-2 gap-3">
-        <Link to="/community/jogak" className="rounded-xl border bg-white p-4 text-center transition hover:shadow-md min-h-[44px]" style={{ borderColor: '#E5E7EB' }}>
+        <Link target="_blank" rel="noopener noreferrer" to="/community/jogak" className="rounded-xl border bg-white p-4 text-center transition hover:shadow-md min-h-[44px]" style={{ borderColor: '#E5E7EB' }}>
           <span className="text-lg">🧩</span>
           <p className="text-sm font-medium mt-1" style={{ color: '#111' }}>조각 모집</p>
         </Link>
-        <Link to="/community" className="rounded-xl border bg-white p-4 text-center transition hover:shadow-md min-h-[44px]" style={{ borderColor: '#E5E7EB' }}>
+        <Link target="_blank" rel="noopener noreferrer" to="/community" className="rounded-xl border bg-white p-4 text-center transition hover:shadow-md min-h-[44px]" style={{ borderColor: '#E5E7EB' }}>
           <span className="text-lg">💬</span>
           <p className="text-sm font-medium mt-1" style={{ color: '#111' }}>커뮤니티</p>
         </Link>
-        <Link to="/ranking" className="rounded-xl border bg-white p-4 text-center transition hover:shadow-md min-h-[44px]" style={{ borderColor: '#E5E7EB' }}>
+        <Link target="_blank" rel="noopener noreferrer" to="/ranking" className="rounded-xl border bg-white p-4 text-center transition hover:shadow-md min-h-[44px]" style={{ borderColor: '#E5E7EB' }}>
           <span className="text-lg">🏆</span>
           <p className="text-sm font-medium mt-1" style={{ color: '#111' }}>랭킹</p>
         </Link>
-        <Link to="/quiz" className="rounded-xl border bg-white p-4 text-center transition hover:shadow-md min-h-[44px]" style={{ borderColor: '#E5E7EB' }}>
+        <Link target="_blank" rel="noopener noreferrer" to="/quiz" className="rounded-xl border bg-white p-4 text-center transition hover:shadow-md min-h-[44px]" style={{ borderColor: '#E5E7EB' }}>
           <span className="text-lg">🎯</span>
           <p className="text-sm font-medium mt-1" style={{ color: '#111' }}>퀴즈</p>
         </Link>

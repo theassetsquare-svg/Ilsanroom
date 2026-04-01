@@ -75,6 +75,8 @@ export default function MobileNav() {
             <Link
               key={tab.href}
               to={tab.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className={`flex flex-col items-center justify-center gap-0.5 px-2 py-1 min-w-[56px] ${
                 active ? 'text-[#8B5CF6]' : 'text-[#555]'
               }`}

@@ -192,7 +192,7 @@ export default function MapPage() {
             {!import.meta.env.VITE_KAKAO_JS_KEY && (
               <div className="flex h-full items-center justify-center flex-col gap-3 bg-neon-surface-2">
                 <p className="text-neon-text-muted text-sm">카카오맵 연동 대기</p>
-                <a href={`https://map.kakao.com/?q=${encodeURIComponent('일산 밤문화')}`}
+                <a target="_blank" rel="noopener noreferrer" href={`https://map.kakao.com/?q=${encodeURIComponent('일산 밤문화')}`}
                   target="_blank" rel="noopener noreferrer"
                   className="rounded-lg bg-[#FEE500] px-4 py-2 text-sm font-medium text-neutral-900 transition hover:bg-[#FDD700]"
                   style={{ minHeight: 40 }}>

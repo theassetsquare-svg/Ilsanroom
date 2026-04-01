@@ -334,7 +334,7 @@ export default function HomePage() {
       <section className="py-3 overflow-x-auto scrollbar-hide">
         <div className="flex gap-3 px-4" style={{ minWidth: 'max-content' }}>
           {categoryIcons.map(cat => (
-            <Link key={cat.label} to={cat.href} className="flex flex-col items-center gap-1.5 min-w-[56px]">
+            <Link target="_blank" rel="noopener noreferrer" key={cat.label} to={cat.href} className="flex flex-col items-center gap-1.5 min-w-[56px]">
               <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${cat.gradient} text-2xl shadow-sm`}>
                 {cat.icon}
               </div>
@@ -394,7 +394,7 @@ export default function HomePage() {
             // Regular venue card
             cards.push(
               <div key={venue.id} className="relative">
-                <Link to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
+                <Link target="_blank" rel="noopener noreferrer" to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
                   <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
                     {/* Photo — 모든 카드 100% 동일 크기 */}
                     <div className="relative w-full bg-gray-200" style={{ aspectRatio: '4/3' }}>
@@ -482,7 +482,7 @@ export default function HomePage() {
                 <div key={`fortune-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
                   <p className="text-xs font-bold text-amber-700 mb-2">🔮 오늘 밤 운세</p>
                   <p className="text-sm font-bold text-[#111] mb-3">별들이 당신의 밤을 예고합니다...</p>
-                  <Link to="/roulette" className="inline-flex items-center gap-1 rounded-full bg-amber-500 px-4 py-2 text-sm font-bold text-white hover:bg-amber-600 active:bg-amber-600" style={{ minHeight: 44 }}>
+                  <Link target="_blank" rel="noopener noreferrer" to="/roulette" className="inline-flex items-center gap-1 rounded-full bg-amber-500 px-4 py-2 text-sm font-bold text-white hover:bg-amber-600 active:bg-amber-600" style={{ minHeight: 44 }}>
                     운세 보기 →
                   </Link>
                 </div>
@@ -497,7 +497,7 @@ export default function HomePage() {
                   <p className="text-sm font-bold text-[#111]">이번주 TOP5 변동</p>
                   <div className="mt-2 space-y-1">
                     {popularVenues.slice(0, 5).map((v, i) => (
-                      <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} className="flex items-center gap-2 py-1">
+                      <Link target="_blank" rel="noopener noreferrer" key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} className="flex items-center gap-2 py-1">
                         <span className={`flex h-5 w-5 items-center justify-center rounded text-xs font-bold ${i < 3 ? 'bg-[#8B5CF6] text-white' : 'bg-gray-200 text-gray-600'}`}>{i + 1}</span>
                         <span className="text-sm text-[#111] truncate">{v.nameKo}</span>
                         <span className="ml-auto text-xs text-[#555]">{v.regionKo}</span>
