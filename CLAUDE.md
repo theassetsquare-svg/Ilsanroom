@@ -1,23 +1,19 @@
-
-# NOLCOOL — Nightlife Platform (NOT leisure/kids!)
-- Categories: Night Club / Club / Lounge / Room / Yojeong / Hoppa ONLY
-- Store name = Region + Type + Business name
-- base: "/" ONLY! No brand-name path!
-- NO "놀쿨" in ANY title! Homepage title ONLY!
-- seoDescription: 150 chars MAX! Body: 1000+ chars!
+# NOLCOOL — Nightlife (NOT kids/leisure)
+## MUST
+- base: "/" ONLY. BrowserRouter ONLY (no # in URL)
+- No "놀쿨" in any title except homepage
+- Store name = Region+Type+Business. First in title
+- meta description: 150 chars MAX. Body: 1000+ chars
 - Keyword density 1.5-2.5% (1000c=5-7x, 2000c=8-12x)
-- NO AI text! Bestseller author style!
-- Images: real store photos, no other ad phone/nickname, no price!
-- Popup + detail body image: WHITE text only! No black!
-- og:image: real photo 1:1 + advertiser nickname big!
-- Blank screen fix: useEffect cleanup ALL timers! persistSession:true!
-- Mobile: 16px font, 1.7 line-height, 44px touch, no bar overlap!
-- Dwell time 10min+! TikTok/Netflix psychology!
-- Footer: "놀쿨 NOLCOOL" + KakaoTalk besta12
-- Keep existing URLs! Never change!
-- Vite ONLY. No Next.js!
-- GitHub+Cloudflare auto deploy. Just git push!
-- Verify 3 times + live incognito check!
-- Similarity under 10%! No keyword stuffing!
-- Same word twice in title = DELETE!
-- 8 stores without advertiser: NO nickname/phone!
+- Internal search ONLY (filter from data, no external)
+- Mobile: 16px font, 1.7 line-height, 44px touch, no bar overlap
+- useEffect cleanup ALL timers. persistSession:true
+- Bestseller writing. No AI text. No banned words
+- Images: real store photos. No other ad phone/nickname. No price
+- Popup+detail body image text: WHITE only. No black text
+- Footer: 놀쿨 NOLCOOL + KakaoTalk besta12
+## NEVER
+- base: "/nolcool/" or any brand path
+- Auto page transition while user reading
+- Next.js (Vite only). Change existing URLs
+- "키워드 3회" (old rule). "| 놀쿨" in title
