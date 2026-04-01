@@ -73,7 +73,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
         {activeTab === '기본정보' && (
           <div className="space-y-6">
             <div>
-              <h2 className="mb-3 text-xl font-bold text-neon-text">소개</h2>
+              <h2 className="mb-3 text-xl font-bold text-neon-text">{venue.nameKo} 소개</h2>
               <p className="leading-relaxed text-neon-text-muted">
                 {venue.description.slice(0, 100).includes(venue.nameKo)
                   ? venue.description
@@ -121,7 +121,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
         {/* ── 메뉴·서비스 ── */}
         {activeTab === '메뉴·서비스' && (
           <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">서비스 안내</h2>
+            <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} 서비스 안내</h2>
             {venue.features.length > 0 ? (
               <div className="grid gap-3 sm:grid-cols-2">
                 {venue.features.map((f) => (
@@ -140,7 +140,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
         {/* ── 리뷰 ── */}
         {activeTab === '리뷰' && (
           <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">방문 리뷰</h2>
+            <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} 방문 리뷰</h2>
             <div className="rounded-xl border border-neon-border bg-neon-surface p-6 text-center">
               <p className="mb-2 text-neon-text-muted">아직 등록된 리뷰가 없습니다.</p>
               <p className="text-sm text-neon-text-subtle">리뷰 작성 기능은 곧 오픈 예정입니다.</p>
@@ -151,7 +151,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
         {/* ── 사진갤러리 ── */}
         {activeTab === '사진갤러리' && (
           <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">사진 갤러리</h2>
+            <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} 사진 갤러리</h2>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {[1, 2, 3, 4, 5, 6].map((n) => (
                 <GalleryImage key={n} slug={venue.slug} name={venue.nameKo} num={n} />
