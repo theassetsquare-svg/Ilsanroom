@@ -396,16 +396,20 @@ export default function HomePage() {
               <div key={venue.id} className="relative">
                 <Link to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
                   <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
-                    {/* Photo — 모든 카드 동일 크기: 고정 높이 + object-cover */}
-                    <div className="relative w-full overflow-hidden bg-gray-200" style={{ paddingBottom: '75%' }}>
+                    {/* Photo — 모든 카드 100% 동일 크기 */}
+                    <div className="relative w-full bg-gray-200" style={{ aspectRatio: '4/3' }}>
                       <img
                         src={`/venues/${venue.slug}-1.jpg`}
                         alt={venue.nameKo}
-                        className="absolute top-0 left-0 w-full h-full object-cover"
                         loading="lazy"
-                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                        onError={(e) => { (e.target as HTMLImageElement).src = ''; (e.target as HTMLImageElement).style.display = 'none'; }}
+                        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
                       />
-                      {/* Region badge — 흰 배경 + 검정 글자 */}
+                      {/* 이미지 로드 실패 시 가게이름 표시 */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-2xl font-bold text-gray-400">{venue.nameKo.charAt(0)}</span>
+                      </div>
+                      {/* Region badge */}
                       <span className="absolute top-2 left-2 z-10 rounded-full bg-white px-2.5 py-1 text-xs font-bold text-[#111] shadow-sm">
                         {venue.regionKo}
                       </span>
