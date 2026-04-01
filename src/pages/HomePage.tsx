@@ -396,17 +396,17 @@ export default function HomePage() {
               <div key={venue.id} className="relative">
                 <Link to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
                   <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
-                    {/* Photo — 모든 카드 동일한 4:3 비율, object-cover로 꽉 채움 */}
-                    <div className="relative overflow-hidden bg-gray-200" style={{ aspectRatio: '4/3' }}>
+                    {/* Photo — 모든 카드 동일 크기: 고정 높이 + object-cover */}
+                    <div className="relative w-full overflow-hidden bg-gray-200" style={{ paddingBottom: '75%' }}>
                       <img
                         src={`/venues/${venue.slug}-1.jpg`}
                         alt={venue.nameKo}
-                        className="absolute inset-0 h-full w-full object-cover"
+                        className="absolute top-0 left-0 w-full h-full object-cover"
                         loading="lazy"
                         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                       />
-                      {/* Region badge — 밝은 흰 배경 + 어두운 글자 (어떤 이미지에서도 보임) */}
-                      <span className="absolute top-2 left-2 rounded-full bg-white px-2.5 py-1 text-xs font-bold text-[#111] shadow-sm">
+                      {/* Region badge — 흰 배경 + 검정 글자 */}
+                      <span className="absolute top-2 left-2 z-10 rounded-full bg-white px-2.5 py-1 text-xs font-bold text-[#111] shadow-sm">
                         {venue.regionKo}
                       </span>
                     </div>

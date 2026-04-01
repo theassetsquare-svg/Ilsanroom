@@ -83,8 +83,10 @@ export default function VenueHero({
         </h1>
 
         {staffNickname && (
-          <p className={`mt-2 text-base font-semibold sm:text-lg ${hasImage && slug ? 'text-yellow-300 drop-shadow' : 'text-neon-gold'}`}>
-            담당: {staffNickname}
+          <p className="mt-3">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-base font-bold text-[#111] shadow-md sm:text-lg">
+              <span className="text-[#8B5CF6]">★</span> 담당: {staffNickname}
+            </span>
           </p>
         )}
 
