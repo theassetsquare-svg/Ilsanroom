@@ -276,12 +276,7 @@ export default function TikTokFeed({ isOpen, onClose }: TikTokFeedProps) {
     else if (e.deltaY < -30) goPrev();
   };
 
-  // Auto-advance
-  const handleAutoAdvance = useCallback(() => {
-    if (Date.now() - lastInteraction.current >= 7500) {
-      goNext();
-    }
-  }, [goNext]);
+  // NO auto-advance — CLAUDE.md: NEVER auto page transition
 
   const handleClose = () => {
     setShowSummary(true);
@@ -378,7 +373,10 @@ export default function TikTokFeed({ isOpen, onClose }: TikTokFeedProps) {
       )}
 
       {/* Auto-advance countdown */}
-      <CountdownRing key={autoKey} seconds={8} onDone={handleAutoAdvance} />
+      {/* Manual next button — no auto-advance */}
+      <button onClick={goNext} className="absolute bottom-24 left-1/2 -translate-x-1/2 flex items-center gap-2 rounded-full bg-white/20 backdrop-blur-sm px-4 py-2 text-white text-xs font-medium active:bg-white/30" style={{ minHeight: 44 }}>
+        다음 보기 →
+      </button>
 
       {/* Content */}
       <AnimatePresence mode="wait" custom={direction}>
