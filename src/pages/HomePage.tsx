@@ -241,7 +241,7 @@ export default function HomePage() {
         className={`px-4 py-2 z-40 transition-all ${searchSticky ? 'fixed top-14 left-0 right-0 bg-white shadow-sm border-b border-gray-100' : ''}`}
       >
         <div className="relative max-w-2xl mx-auto">
-          <svg className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#555]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <input
@@ -251,7 +251,7 @@ export default function HomePage() {
             onChange={e => setSearchQuery(e.target.value)}
             onFocus={() => { if (searchQuery.trim()) setShowSearchResults(true); }}
             placeholder="어디서 놀까? 가게이름, 지역 검색"
-            className="w-full rounded-3xl border-2 border-[#8B5CF6] bg-white py-3 pl-11 pr-12 text-[15px] text-[#111] placeholder-gray-400 outline-none"
+            className="w-full rounded-3xl border-2 border-[#8B5CF6] bg-white py-3 pl-11 pr-12 text-base text-[#111] placeholder-[#888] outline-none"
             style={{ height: 48 }}
           />
           <button className="absolute right-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-[#8B5CF6]" aria-label="AI 음성 검색">
@@ -284,7 +284,7 @@ export default function HomePage() {
           )}
           {showSearchResults && searchQuery.trim() && searchResults.length === 0 && (
             <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-2xl border border-gray-200 bg-white p-4 text-center shadow-xl">
-              <p className="text-sm text-gray-500">검색 결과가 없습니다</p>
+              <p className="text-sm text-[#555]">검색 결과가 없습니다</p>
             </div>
           )}
         </div>
@@ -320,7 +320,7 @@ export default function HomePage() {
               <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${cat.gradient} text-2xl shadow-sm`}>
                 {cat.icon}
               </div>
-              <span className="text-[11px] font-semibold text-[#333]">{cat.label}</span>
+              <span className="text-xs font-semibold text-[#333]">{cat.label}</span>
             </Link>
           ))}
         </div>
@@ -354,7 +354,7 @@ export default function HomePage() {
               key={tab}
               onClick={() => setActiveTab(i)}
               className={`flex-1 py-3 text-center text-sm font-medium transition-all relative ${
-                activeTab === i ? 'text-[#8B5CF6] font-bold' : 'text-gray-500'
+                activeTab === i ? 'text-[#8B5CF6] font-bold' : 'text-[#555]'
               }`}
               style={{ minHeight: 44 }}
             >
@@ -387,13 +387,13 @@ export default function HomePage() {
                         loading="lazy"
                       />
                       {/* Region badge */}
-                      <span className="absolute top-2 left-2 rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm">
+                      <span className="absolute top-2 left-2 rounded-full bg-black/50 px-2 py-0.5 text-xs font-medium text-white backdrop-blur-sm">
                         {venue.regionKo}
                       </span>
                     </div>
                     {/* Info */}
                     <div className="p-3">
-                      <h3 className="text-[15px] font-bold text-[#111] leading-tight line-clamp-1">{venue.nameKo}</h3>
+                      <h3 className="text-base font-bold text-[#111] leading-tight line-clamp-1">{venue.nameKo}</h3>
                       <p className="mt-1 text-xs text-[#555] line-clamp-1">{venue.shortDescription}</p>
                       {/* Real-time viewer */}
                       <div className="mt-2 flex items-center gap-1">
@@ -401,7 +401,7 @@ export default function HomePage() {
                           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
                           <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
                         </span>
-                        <span className="text-[11px] text-red-500 font-medium">지금 {getViewerCount(venue.id)}명 보는 중</span>
+                        <span className="text-xs text-red-500 font-medium">지금 {getViewerCount(venue.id)}명 보는 중</span>
                       </div>
                     </div>
                   </div>
@@ -508,9 +508,9 @@ export default function HomePage() {
                   <div className="mt-2 space-y-1">
                     {popularVenues.slice(0, 5).map((v, i) => (
                       <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} className="flex items-center gap-2 py-1">
-                        <span className={`flex h-5 w-5 items-center justify-center rounded text-[10px] font-bold ${i < 3 ? 'bg-[#8B5CF6] text-white' : 'bg-gray-200 text-gray-600'}`}>{i + 1}</span>
+                        <span className={`flex h-5 w-5 items-center justify-center rounded text-xs font-bold ${i < 3 ? 'bg-[#8B5CF6] text-white' : 'bg-gray-200 text-gray-600'}`}>{i + 1}</span>
                         <span className="text-sm text-[#111] truncate">{v.nameKo}</span>
-                        <span className="ml-auto text-[10px] text-gray-400">{v.regionKo}</span>
+                        <span className="ml-auto text-xs text-[#555]">{v.regionKo}</span>
                       </Link>
                     ))}
                   </div>

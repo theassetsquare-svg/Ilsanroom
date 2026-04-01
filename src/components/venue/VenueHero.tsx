@@ -88,7 +88,7 @@ export default function VenueHero({
           </p>
         )}
 
-        <div className={`mt-3 flex items-center gap-3 ${hasImage && slug ? 'text-white/80' : 'text-neon-text-muted'}`}>
+        <div className={`mt-3 flex items-center gap-3 ${hasImage && slug ? 'text-white' : 'text-neon-text-muted'}`} style={hasImage && slug ? { textShadow: '0 1px 4px rgba(0,0,0,0.6)' } : undefined}>
           {!name.includes(regionKo) && <span>{regionKo}</span>}
         </div>
       </div>

@@ -378,3 +378,37 @@ html {
 /* 2. 전화버튼: bottom:72px right:16px z:40 (StickyPhoneBar에서 설정) */
 /* 3. 미션버튼: bottom:72px left:16px z:30 (DailyMissions에서 설정) */
 /* 4. 레벨바/추천바: position:relative 본문 안 (컴포넌트에서 설정) */
+
+/* ═══════ MOBILE READABILITY — 전체 적용 ═══════ */
+/* 본문 기본: 16px, line-height 1.7, 최소 대비 4.5:1 */
+body {
+  font-size: 16px;
+  line-height: 1.7;
+  letter-spacing: -0.02em;
+  color: #111111;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 모든 p, span, div 본문 텍스트 최소 크기 */
+main p, main span, main li {
+  line-height: 1.7;
+}
+
+/* 이미지 위 텍스트: WHITE only + text-shadow */
+.image-overlay-text {
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.3);
+}
+
+/* 터치 영역 최소 44px */
+@media (pointer: coarse) {
+  button, a, [role="button"] {
+    min-height: 44px;
+  }
+}
+
+/* 이미지 가로 스크롤 방지 */
+main img {
+  max-width: 100%;
+  height: auto;
+}

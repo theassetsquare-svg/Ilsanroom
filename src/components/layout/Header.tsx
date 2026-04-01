@@ -92,7 +92,7 @@ export default function Header() {
                 <img src={user.user_metadata.avatar_url} alt="" className="h-7 w-7 rounded-full" />
               ) : (
                 <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-200">
-                  <svg className="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-4 w-4 text-[#555]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 </div>
@@ -118,7 +118,7 @@ export default function Header() {
               <span className="text-lg font-black text-[#8B5CF6]">놀쿨</span>
               <button
                 onClick={() => setMenuOpen(false)}
-                className="flex h-10 w-10 items-center justify-center rounded-lg text-gray-500 active:bg-gray-100"
+                className="flex h-10 w-10 items-center justify-center rounded-lg text-[#555] active:bg-gray-100"
                 aria-label="메뉴 닫기"
               >
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,7 +146,7 @@ export default function Header() {
               ) : (
                 <Link to="/login" onClick={() => setMenuOpen(false)} className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200">
-                    <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="h-5 w-5 text-[#555]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                   </div>

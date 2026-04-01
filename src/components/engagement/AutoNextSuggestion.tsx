@@ -12,7 +12,7 @@ import type { Venue } from '@/types';
  * to the next recommended venue/content. Creates "just one more" psychology.
  */
 
-const COUNTDOWN_SECONDS = 12;
+// NO auto page transition! User must tap to navigate
 const VENUE_PATHS = ['/clubs/', '/nights/', '/lounges/', '/rooms/', '/yojeong/', '/hoppa/'];
 
 const catLabel: Record<string, string> = {
@@ -57,10 +57,8 @@ export default function AutoNextSuggestion() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const [countdown, setCountdown] = useState(COUNTDOWN_SECONDS);
   const [nextVenue, setNextVenue] = useState<Venue | null>(null);
   const triggeredRef = useRef(false);
-  const intervalRef = useRef<ReturnType<typeof setInterval>>();
   const lastPathRef = useRef(pathname);
 
   // Check if current page is a venue detail page
@@ -72,8 +70,6 @@ export default function AutoNextSuggestion() {
       lastPathRef.current = pathname;
       triggeredRef.current = false;
       setShow(false);
-      setCountdown(COUNTDOWN_SECONDS);
-      if (intervalRef.current) clearInterval(intervalRef.current);
     }
   }, [pathname]);
 
@@ -90,7 +86,6 @@ export default function AutoNextSuggestion() {
       if (venue) {
         setNextVenue(venue);
         setShow(true);
-        setCountdown(COUNTDOWN_SECONDS);
       }
     }
   }, [pathname, isVenuePage]);
@@ -101,35 +96,16 @@ export default function AutoNextSuggestion() {
     return () => window.removeEventListener('scroll', handleReachBottom);
   }, [handleReachBottom, isVenuePage]);
 
-  // Countdown timer
-  useEffect(() => {
-    if (!show || !nextVenue) return;
-
-    intervalRef.current = setInterval(() => {
-      setCountdown(prev => {
-        if (prev <= 1) {
-          clearInterval(intervalRef.current);
-          navigate(getCategoryHref(nextVenue));
-          setShow(false);
-          return COUNTDOWN_SECONDS;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-  }, [show, nextVenue, navigate]);
+  // NO countdown timer — user decides when to navigate
 
   const handleDismiss = () => {
     setShow(false);
-    if (intervalRef.current) clearInterval(intervalRef.current);
   };
 
   const handleGo = () => {
     if (nextVenue) {
       navigate(getCategoryHref(nextVenue));
       setShow(false);
-      if (intervalRef.current) clearInterval(intervalRef.current);
     }
   };
 
@@ -162,35 +138,14 @@ export default function AutoNextSuggestion() {
                 <p className="text-xs text-[#555]">{catLabel[nextVenue.category]} · {nextVenue.regionKo}</p>
               </div>
               <div className="flex items-center gap-2 shrink-0">
-                {/* Countdown ring */}
-                <div className="relative h-10 w-10">
-                  <svg className="h-10 w-10 -rotate-90" viewBox="0 0 36 36">
-                    <circle cx="18" cy="18" r="15" fill="none" stroke="#E5E7EB" strokeWidth="3" />
-                    <circle
-                      cx="18" cy="18" r="15" fill="none"
-                      stroke="#8B5CF6" strokeWidth="3"
-                      strokeDasharray={`${(countdown / COUNTDOWN_SECONDS) * 94.2} 94.2`}
-                      strokeLinecap="round"
-                      className="transition-all duration-1000 ease-linear"
-                    />
-                  </svg>
-                  <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-[#8B5CF6]">
-                    {countdown}
-                  </span>
-                </div>
+                <span className="inline-flex items-center justify-center rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 44 }}>
+                  보러가기
+                </span>
                 <ChevronRight size={18} className="text-[#8B5CF6]" />
               </div>
             </button>
 
-            {/* Progress bar */}
-            <div className="mt-3 h-1 rounded-full bg-gray-100 overflow-hidden">
-              <motion.div
-                className="h-full bg-gradient-to-r from-[#8B5CF6] to-[#06B6D4]"
-                initial={{ width: '100%' }}
-                animate={{ width: '0%' }}
-                transition={{ duration: COUNTDOWN_SECONDS, ease: 'linear' }}
-              />
-            </div>
+            {/* No auto-progress — user taps to navigate */}
           </div>
         </motion.div>
       )}

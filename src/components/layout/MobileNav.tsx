@@ -76,14 +76,14 @@ export default function MobileNav() {
               key={tab.href}
               to={tab.href}
               className={`flex flex-col items-center justify-center gap-0.5 px-2 py-1 min-w-[56px] ${
-                active ? 'text-[#8B5CF6]' : 'text-gray-500'
+                active ? 'text-[#8B5CF6]' : 'text-[#555]'
               }`}
               style={{ minHeight: 44 }}
             >
               <span className={active ? 'drop-shadow-[0_0_6px_rgba(139,92,246,0.4)]' : ''}>
                 {tab.icon(active)}
               </span>
-              <span className={`text-[10px] ${active ? 'font-bold text-[#8B5CF6]' : 'font-medium text-gray-500'}`}>
+              <span className={`text-xs ${active ? 'font-bold text-[#8B5CF6]' : 'font-medium text-[#555]'}`}>
                 {tab.label}
               </span>
             </Link>
