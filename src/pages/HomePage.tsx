@@ -396,18 +396,17 @@ export default function HomePage() {
               <div key={venue.id} className="relative">
                 <Link to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
                   <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
-                    {/* Photo */}
-                    <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                    {/* Photo — 모든 카드 동일한 4:3 비율, object-cover로 꽉 채움 */}
+                    <div className="relative overflow-hidden bg-gray-200" style={{ aspectRatio: '4/3' }}>
                       <img
                         src={`/venues/${venue.slug}-1.jpg`}
                         alt={venue.nameKo}
-                        className="h-full w-full object-cover"
+                        className="absolute inset-0 h-full w-full object-cover"
                         loading="lazy"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                       />
-                      {/* Dark gradient overlay for text readability */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
-                      {/* Region badge — WHITE text on dark overlay */}
-                      <span className="absolute top-2 left-2 rounded-full bg-black/60 px-2.5 py-1 text-xs font-bold text-white" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8)' }}>
+                      {/* Region badge — 밝은 흰 배경 + 어두운 글자 (어떤 이미지에서도 보임) */}
+                      <span className="absolute top-2 left-2 rounded-full bg-white px-2.5 py-1 text-xs font-bold text-[#111] shadow-sm">
                         {venue.regionKo}
                       </span>
                     </div>
@@ -473,12 +472,12 @@ export default function HomePage() {
               );
             }
 
-            // Every 8th card — FORTUNE 운세
+            // Every 8th card — FORTUNE 운세 (밝은 배경 + 어두운 글자)
             if ((idx + 1) % 8 === 0) {
               cards.push(
-                <div key={`fortune-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#111827] to-[#1E1B4B] p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
-                  <p className="text-xs font-bold text-amber-400 mb-2">🔮 오늘 밤 운세</p>
-                  <p className="text-sm font-bold text-white mb-3">별들이 당신의 밤을 예고합니다...</p>
+                <div key={`fortune-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                  <p className="text-xs font-bold text-amber-700 mb-2">🔮 오늘 밤 운세</p>
+                  <p className="text-sm font-bold text-[#111] mb-3">별들이 당신의 밤을 예고합니다...</p>
                   <Link to="/roulette" className="inline-flex items-center gap-1 rounded-full bg-amber-500 px-4 py-2 text-sm font-bold text-white hover:bg-amber-600 active:bg-amber-600" style={{ minHeight: 44 }}>
                     운세 보기 →
                   </Link>
@@ -527,19 +526,18 @@ export default function HomePage() {
 
       {/* ═══════ LUCKY ROULETTE ═══════ */}
       <section className="px-4 py-6 max-w-[1200px] mx-auto">
-        <div className="rounded-2xl bg-gradient-to-br from-[#1E1B4B] to-[#312E81] p-6 text-center overflow-hidden relative">
-          <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 30% 50%, #8B5CF6 0%, transparent 50%), radial-gradient(circle at 70% 50%, #EC4899 0%, transparent 50%)' }} />
+        <div className="rounded-2xl bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 p-6 text-center overflow-hidden relative">
           <div className="relative">
             <p className="text-2xl mb-1">🎰</p>
-            <h2 className="text-lg font-bold text-white mb-1">Lucky Roulette</h2>
-            <p className="text-sm text-white/80 mb-4" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>오늘 밤 여기 어때? 탭해서 돌려봐!</p>
+            <h2 className="text-lg font-bold text-[#111] mb-1">Lucky Roulette</h2>
+            <p className="text-sm text-[#555] mb-4">오늘 밤 여기 어때? 탭해서 돌려봐!</p>
             <button
               onClick={spinRoulette}
               disabled={rouletteSpinning}
               className={`inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-bold transition-all ${
                 rouletteSpinning
-                  ? 'bg-white/20 text-white/60 animate-pulse'
-                  : 'bg-white text-[#8B5CF6] hover:bg-gray-100 active:scale-95 shadow-lg'
+                  ? 'bg-violet-100 text-[#555] animate-pulse'
+                  : 'bg-[#8B5CF6] text-white hover:bg-[#7C3AED] active:scale-95 shadow-lg'
               }`}
               style={{ minHeight: 48 }}
             >
@@ -549,19 +547,19 @@ export default function HomePage() {
             {rouletteResult && (
               <Link
                 to={getCategoryHref(rouletteResult.category, rouletteResult.slug, rouletteResult.region)}
-                className="mt-4 block rounded-xl bg-white/10 backdrop-blur-sm p-4 text-left transition-all hover:bg-white/20 active:scale-[0.98]"
+                className="mt-4 block rounded-xl bg-white border border-violet-200 p-4 text-left transition-all hover:shadow-md active:scale-[0.98]"
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/20 text-lg font-bold text-white">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-lg font-bold text-[#8B5CF6]">
                     {rouletteResult.nameKo.charAt(0)}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-base font-bold text-white truncate">{rouletteResult.nameKo}</p>
-                    <p className="text-xs text-white/70" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>{rouletteResult.regionKo} · {catLabel[rouletteResult.category]}</p>
+                    <p className="text-base font-bold text-[#111] truncate">{rouletteResult.nameKo}</p>
+                    <p className="text-xs text-[#555]">{rouletteResult.regionKo} · {catLabel[rouletteResult.category]}</p>
                   </div>
-                  <span className="text-white text-lg">→</span>
+                  <span className="text-[#8B5CF6] text-lg">→</span>
                 </div>
-                <p className="mt-2 text-sm text-white/80 line-clamp-1" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>{rouletteResult.shortDescription}</p>
+                <p className="mt-2 text-sm text-[#555] line-clamp-1">{rouletteResult.shortDescription}</p>
               </Link>
             )}
           </div>
@@ -591,9 +589,9 @@ export default function HomePage() {
 
       {/* ═══════ GOOGLE/AI CTA ═══════ */}
       <section className="px-4 py-6 max-w-[1200px] mx-auto">
-        <div className="rounded-2xl bg-[#8B5CF6] px-6 py-5 text-center">
-          <p className="text-sm font-bold text-white">
-            구글 · ChatGPT · Gemini에서 <span className="text-lg font-black">"놀쿨"</span> 검색하세요
+        <div className="rounded-2xl bg-violet-50 border border-violet-200 px-6 py-5 text-center">
+          <p className="text-sm font-bold text-[#111]">
+            구글 · ChatGPT · Gemini에서 <span className="text-lg font-black text-[#8B5CF6]">"놀쿨"</span> 검색하세요
           </p>
         </div>
       </section>
