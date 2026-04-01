@@ -1,31 +1,18 @@
 
-import { useDocumentMeta } from '@/hooks/useDocumentMeta';
+import { useState, useEffect, useRef, useMemo, useCallback, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
-import Card from '@/components/ui/Card';
-import Badge from '@/components/ui/Badge';
-import JsonLd from '@/components/seo/JsonLd';
-import HeroSearch from '@/components/home/HeroSearch';
-import HotWidget from '@/components/home/HotWidget';
-import QuizCTA from '@/components/home/QuizCTA';
-import HomeRoulette from '@/components/home/HomeRoulette';
-import HomeVSBattle from '@/components/home/HomeVSBattle';
-import PopularTimeWidget from '@/components/home/PopularTimeWidget';
-import HorizontalScroll, { ScrollItem } from '@/components/ui/HorizontalScroll';
-import ErrorBoundary from '@/components/ui/ErrorBoundary';
-import { getPopularVenues, getVenueBySlug, categories } from '@/data/venues';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
+import { venues as localVenues, getPopularVenues } from '@/data/venues';
 import type { Venue } from '@/types';
+import JsonLd from '@/components/seo/JsonLd';
+import ErrorBoundary from '@/components/ui/ErrorBoundary';
+import { useEngagementStore } from '@/lib/engagement-store';
 
-const AIRecommend = lazy(() => import('@/components/ai/AIRecommend'));
-const AITasteAnalysis = lazy(() => import('@/components/ai/AITasteAnalysis'));
-const AICourseRecommend = lazy(() => import('@/components/ai/AICourseRecommend'));
-const HomeCommunityHub = lazy(() => import('@/components/home/HomeCommunityHub'));
 const InfiniteDiscoveryFeed = lazy(() => import('@/components/engagement/InfiniteDiscoveryFeed'));
 const NightFortune = lazy(() => import('@/components/engagement/NightFortune'));
-const NearbyFood = lazy(() => import('@/components/engagement/NearbyFood'));
 const PointBenefits = lazy(() => import('@/components/engagement/PointBenefits'));
-import PointGate from '@/components/engagement/PointGate';
 
+/* ── Helpers ── */
 function getCategoryHref(category: string, slug: string, region: string) {
   const pathMap: Record<string, string> = {
     club: `/clubs/${region}/${slug}`,
@@ -38,444 +25,554 @@ function getCategoryHref(category: string, slug: string, region: string) {
   return pathMap[category] || `/${category}/${slug}`;
 }
 
-function getCategoryLabel(cat: string) {
-  const map: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
-  return map[cat] || cat;
+const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
+
+function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour >= 18 && hour < 21) return '오늘 밤, 어디로 갈까? 🌙';
+  if (hour >= 21 && hour < 24) return '지금 가장 핫한 곳은? 🔥';
+  if (hour >= 0 && hour < 3) return '새벽까지 놀 수 있는 곳 🌃';
+  return '오늘 밤을 미리 준비하세요 ✨';
 }
 
-function VenueCard({ venue, href, rank }: { venue: Venue; href: string; rank?: number }) {
-  const nameIncludesRegion = venue.nameKo.includes(venue.regionKo);
-  const nameIncludesCategory = venue.nameKo.includes(getCategoryLabel(venue.category));
-  return (
-    <Card href={href}>
-      <div className="flex h-full flex-col justify-between">
-        <div>
-          <div className="mb-2 flex items-center gap-2">
-            {rank != null && (
-              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-neon-primary text-xs font-bold text-white">
-                {rank}
-              </span>
-            )}
-            {venue.isPremium && <Badge variant="premium">PREMIUM</Badge>}
-          </div>
-          <h3 className="text-sm font-bold text-neon-text leading-tight line-clamp-2 sm:text-base">{venue.nameKo}</h3>
-        </div>
-        <p className="mt-2 text-xs text-neon-text-muted line-clamp-1">
-          {!nameIncludesRegion && venue.regionKo}
-          {!nameIncludesRegion && !nameIncludesCategory && ' · '}
-          {!nameIncludesCategory && getCategoryLabel(venue.category)}
-          {venue.staffNickname && <> · {venue.staffNickname}</>}
-        </p>
-      </div>
-    </Card>
-  );
-}
-
-/* ── Region quick-links ── */
-const regions = [
-  { label: '강남', href: '/clubs/gangnam' },
-  { label: '홍대', href: '/clubs/hongdae' },
-  { label: '이태원', href: '/clubs/itaewon' },
-  { label: '일산', href: '/rooms/ilsan' },
-  { label: '부산', href: '/rooms/busan-haeundae' },
-  { label: '대구', href: '/nights/daegu' },
-  { label: '인천', href: '/nights/incheon' },
-  { label: '수원', href: '/nights/suwon' },
-  { label: '대전', href: '/nights/daejeon' },
-  { label: '광주', href: '/nights/gwangju' },
-  { label: '울산', href: '/nights/ulsan' },
-  { label: '제주', href: '/nights/jeju' },
+/* ── Category icons for Naver-style ── */
+const categoryIcons = [
+  { icon: '🎵', label: '나이트', href: '/nights', gradient: 'from-pink-400 to-pink-600' },
+  { icon: '🎤', label: '클럽', href: '/clubs', gradient: 'from-violet-400 to-violet-600' },
+  { icon: '🍸', label: '라운지', href: '/lounges', gradient: 'from-amber-400 to-amber-600' },
+  { icon: '💃', label: '룸', href: '/rooms', gradient: 'from-indigo-400 to-indigo-700' },
+  { icon: '🎶', label: '요정', href: '/yojeong', gradient: 'from-emerald-400 to-emerald-600' },
+  { icon: '🥂', label: '호빠', href: '/hoppa', gradient: 'from-red-400 to-red-600' },
+  { icon: '🔥', label: '실시간', href: '/ranking', gradient: 'from-orange-400 to-orange-600' },
+  { icon: '🆚', label: 'VS', href: '/vs', gradient: 'from-blue-400 to-blue-600' },
+  { icon: '🏆', label: '랭킹', href: '/ranking', gradient: 'from-yellow-400 to-yellow-600' },
 ];
 
-/* ── Latest reviews (real venues only) ── */
-const latestReviews = [
-  { venue: '일산명월관요정', text: '한정식 코스가 정말 훌륭했습니다. 국악 공연도 감동적이었어요.', author: '김**', date: '2026-03-12' },
-  { venue: '강남청담클럽 레이스', text: '베이스 사운드에 몸이 먼저 반응합니다. 강남 최고 수준.', author: '이**', date: '2026-03-11' },
-  { venue: '수원찬스돔나이트', text: '돔 구조가 만들어내는 공간감이 독특해요. 강호동 담당자 재밌음.', author: '박**', date: '2026-03-10' },
-  { venue: '해운대고구려', text: '공간이 60개 넘으니까 웨이팅 없이 바로 입장할 수 있어서 좋아요.', author: '최**', date: '2026-03-09' },
+/* ── Region bubbles ── */
+const regionBubbles = [
+  { label: '전체', value: 'all' },
+  { label: '강남', value: '강남' },
+  { label: '홍대', value: '홍대' },
+  { label: '이태원', value: '이태원' },
+  { label: '부산', value: '부산' },
+  { label: '수원', value: '수원' },
+  { label: '일산', value: '일산' },
+  { label: '대전', value: '대전' },
+  { label: '울산', value: '울산' },
+  { label: '인천', value: '인천' },
 ];
 
-/* ── Magazine preview ── */
-const magazineItems = [
-  { title: '강남 TOP5 — 올해 꼭 가봐야 할 핫플', tag: '엄선', href: '/magazine' },
-  { title: '전통 격식 공간 완벽 안내서: 접대부터 기념일까지', tag: '전통', href: '/magazine' },
-  { title: '처음 찾아가는 분을 위한 A to Z 매너 핸드북', tag: '입문', href: '/magazine' },
-  { title: '홍대 vs 이태원 비교 — 어디가 나에게 맞을까?', tag: '비교', href: '/magazine' },
+/* ── Banner slides ── */
+const bannerSlides = [
+  { text: '🔥 지금 실시간 1위: 강남클럽 레이스', href: '/clubs/gangnam/cheongdamrace', color: 'from-violet-600 to-purple-700' },
+  { text: '🆚 아르쥬 vs 레이스 — 당신의 선택은?', href: '/vs', color: 'from-blue-600 to-indigo-700' },
+  { text: '🎰 오늘의 운세: 당신의 밤은?', href: '/roulette', color: 'from-amber-500 to-orange-600' },
+  { text: '📢 신규 입점: 일산명월관요정', href: '/yojeong/ilsan/ilsanmyeongwolgwanyojeong', color: 'from-emerald-500 to-teal-600' },
 ];
 
-/* ── Instagram hashtags ── */
-const instaHashtags = [
-  { tag: '#일산룸', desc: '우리만의 독립 공간', url: 'https://www.instagram.com/explore/tags/일산룸/' },
-  { tag: '#명월관요정', desc: '전통 코스 요리', url: 'https://www.instagram.com/explore/tags/명월관요정/' },
-  { tag: '#강남청담클럽', desc: '주말 EDM 파티', url: 'https://www.instagram.com/explore/tags/강남청담클럽/' },
-  { tag: '#강남호빠', desc: '호스트 엔터테인먼트', url: 'https://www.instagram.com/explore/tags/강남호빠/' },
-  { tag: '#전통한정식', desc: '국악 라이브 연주', url: 'https://www.instagram.com/explore/tags/전통한정식/' },
-  { tag: '#부산나이트', desc: '부산 사교 댄스 명소', url: 'https://www.instagram.com/explore/tags/부산나이트/' },
+/* ── VS Polls for engagement cards ── */
+const vsPolls = [
+  { q: '강남클럽 레이스 vs 아르쥬 — 어디가 더 좋아?', a: '레이스', b: '아르쥬' },
+  { q: '금요일 밤, 클럽 vs 라운지?', a: '클럽', b: '라운지' },
+  { q: '부산 vs 강남 — 밤문화 어디가 더 핫해?', a: '부산', b: '강남' },
 ];
+
+/* ── Tabs ── */
+const feedTabs = ['🔥실시간인기', '🆕오늘의신규', '⭐에디터추천', '📍내주변'] as const;
+
+/* ══════════════════════════════════════════════════════ */
+/*                    HOMEPAGE                            */
+/* ══════════════════════════════════════════════════════ */
 
 export default function HomePage() {
   useDocumentMeta('놀쿨 — 전국 클럽·나이트·라운지·룸·요정·호빠 | NOLCOOL', '전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보. 구글·AI에서 놀쿨을 검색하세요.');
-  const popularVenues = getPopularVenues(10);
-  const advertiserVenues = [
-    'ilsanroom', 'ilsanmyeongwolgwanyojeong',
-    'cheongdamh2onight', 'sinlimgrandprixnight',
-    'pajuyadangskydomenight', 'suwonchancenight',
-    'seongnamshampoonight', 'busanyeonsandongmulnight',
-    'busanmulnight', 'ulsanchampionnight',
-    'suyushampoonight', 'indeokvon-gukbingwan-night',
-  ].map(s => getVenueBySlug(s)).filter(Boolean) as Venue[];
+
+  // All open venues
+  const openVenues = useMemo(() => localVenues.filter(v => v.status !== 'closed_or_unclear'), []);
+  const popularVenues = getPopularVenues(20);
+
+  // === SEARCH STATE ===
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<Venue[]>([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const engSearch = useEngagementStore((s) => s.search);
+
+  const doSearch = useCallback((q: string) => {
+    if (!q.trim()) { setSearchResults([]); setShowSearchResults(false); return; }
+    engSearch();
+    const lower = q.toLowerCase();
+    const found = localVenues.filter(v => {
+      if (v.status === 'closed_or_unclear') return false;
+      return v.nameKo.toLowerCase().includes(lower) ||
+        v.regionKo.toLowerCase().includes(lower) ||
+        v.tags.some(t => t.toLowerCase().includes(lower));
+    });
+    setSearchResults(found.slice(0, 8));
+    setShowSearchResults(true);
+  }, [engSearch]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => doSearch(searchQuery), 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery, doSearch]);
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) setShowSearchResults(false);
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  // === BANNER STATE ===
+  const [bannerIdx, setBannerIdx] = useState(0);
+  const bannerTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    bannerTimerRef.current = setInterval(() => {
+      setBannerIdx(prev => (prev + 1) % bannerSlides.length);
+    }, 4000);
+    return () => { if (bannerTimerRef.current) clearInterval(bannerTimerRef.current); };
+  }, []);
+
+  // === REGION FILTER ===
+  const [activeRegion, setActiveRegion] = useState('all');
+
+  // === TAB STATE ===
+  const [activeTab, setActiveTab] = useState(0);
+
+  // === STICKY STATES ===
+  const [searchSticky, setSearchSticky] = useState(false);
+  const searchSentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setSearchSticky(!entry.isIntersecting),
+      { threshold: 0 }
+    );
+    if (searchSentinelRef.current) observer.observe(searchSentinelRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // === SHOW TOP BUTTON ===
+  const [showTop, setShowTop] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 500);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // === FEED DATA ===
+  const filteredVenues = useMemo(() => {
+    let list = openVenues;
+    if (activeRegion !== 'all') {
+      list = list.filter(v => v.regionKo.includes(activeRegion));
+    }
+    return list;
+  }, [openVenues, activeRegion]);
+
+  const feedVenues = useMemo(() => {
+    if (activeTab === 0) return filteredVenues.slice(0, 30); // 실시간인기
+    if (activeTab === 1) return [...filteredVenues].reverse().slice(0, 30); // 오늘의신규
+    if (activeTab === 2) return filteredVenues.filter(v => v.isPremium).concat(filteredVenues.filter(v => !v.isPremium)).slice(0, 30); // 에디터추천
+    return filteredVenues.slice(0, 30); // 내주변
+  }, [filteredVenues, activeTab]);
+
+  // === VS Vote state ===
+  const [vsVotes, setVsVotes] = useState<Record<number, string>>({});
+
+  // === Viewer count (fake real-time) ===
+  const viewerCounts = useRef<Record<string, number>>({});
+  const getViewerCount = (id: string) => {
+    if (!viewerCounts.current[id]) viewerCounts.current[id] = Math.floor(Math.random() * 40) + 5;
+    return viewerCounts.current[id];
+  };
+
+  // === Favorites ===
+  const [favorites, setFavorites] = useState<Set<string>>(() => {
+    try {
+      const saved = localStorage.getItem('nolcool_favorites');
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch { return new Set(); }
+  });
+
+  const toggleFavorite = (id: string) => {
+    setFavorites(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      localStorage.setItem('nolcool_favorites', JSON.stringify([...next]));
+      return next;
+    });
+  };
+
+  // === Greeting animation ===
+  const [greetingVisible, setGreetingVisible] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setGreetingVisible(true), 200);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div className="bg-neon-bg">
-      {/* JSON-LD: WebSite + SearchAction */}
+    <div className="bg-white min-h-screen">
+      {/* JSON-LD */}
       <JsonLd data={{
-        '@context': 'https://schema.org',
-        '@type': 'WebSite',
-        name: '놀쿨',
+        '@context': 'https://schema.org', '@type': 'WebSite', name: '놀쿨',
         url: 'https://ilsanroom.pages.dev',
-        description: '전국 댄스홀·나이트·라운지·프라이빗공간·요정·호빠 실시간 정보',
-        potentialAction: {
-          '@type': 'SearchAction',
-          target: { '@type': 'EntryPoint', urlTemplate: 'https://ilsanroom.pages.dev/map?q={search_term_string}' },
-          'query-input': 'required name=search_term_string',
-        },
+        potentialAction: { '@type': 'SearchAction', target: { '@type': 'EntryPoint', urlTemplate: 'https://ilsanroom.pages.dev/map?q={search_term_string}' }, 'query-input': 'required name=search_term_string' },
       }} />
-
       <JsonLd data={{
-        '@context': 'https://schema.org',
-        '@type': 'ItemList',
-        name: '인기 매장',
-        itemListElement: popularVenues.slice(0, 10).map((v, i) => ({
-          '@type': 'ListItem',
-          position: i + 1,
-          item: { '@type': 'LocalBusiness', name: v.nameKo, address: v.address },
-        })),
+        '@context': 'https://schema.org', '@type': 'ItemList', name: '인기 매장',
+        itemListElement: popularVenues.slice(0, 10).map((v, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'LocalBusiness', name: v.nameKo, address: v.address } })),
       }} />
 
-      {/* ═══════ 1. HERO — 검색바 + 카테고리 아이콘 ═══════ */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-violet-50 via-neon-bg to-neon-bg">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-100/60 via-transparent to-transparent" />
-        <div className="relative mx-auto max-w-3xl px-4 py-10 sm:py-14 lg:py-16">
-          <div className="text-center">
-            <h1 className="text-3xl font-extrabold tracking-tight text-neon-text sm:text-4xl lg:text-5xl">
-              <span className="gradient-text">놀쿨</span>
-            </h1>
-            <p className="mx-auto mt-3 max-w-xl text-base text-neon-text-muted sm:text-lg">
-              전국 클럽 · 나이트 · 라운지 · 룸 · 요정 · 호빠 실시간 정보
-            </p>
+      {/* ═══════ GREETING ═══════ */}
+      <section className="pt-2 pb-1 px-4">
+        <p className={`text-center text-sm text-[#555] transition-all duration-700 ${greetingVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
+          {getGreeting()}
+        </p>
+      </section>
 
-            {/* Search Bar */}
-            <div className="mt-8">
-              <HeroSearch />
+      {/* ═══════ SEARCH BAR (becomes sticky) ═══════ */}
+      <div ref={searchSentinelRef} />
+      <div
+        ref={searchRef}
+        className={`px-4 py-2 z-40 transition-all ${searchSticky ? 'fixed top-14 left-0 right-0 bg-white shadow-sm border-b border-gray-100' : ''}`}
+      >
+        <div className="relative max-w-2xl mx-auto">
+          <svg className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            ref={searchInputRef}
+            type="text"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            onFocus={() => { if (searchQuery.trim()) setShowSearchResults(true); }}
+            placeholder="어디서 놀까? 가게이름, 지역 검색"
+            className="w-full rounded-3xl border-2 border-[#8B5CF6] bg-white py-3 pl-11 pr-12 text-[15px] text-[#111] placeholder-gray-400 outline-none"
+            style={{ height: 48 }}
+          />
+          <button className="absolute right-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-[#8B5CF6]" aria-label="AI 음성 검색">
+            <svg className="h-4 w-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
+              <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+            </svg>
+          </button>
+
+          {/* Search Results Dropdown */}
+          {showSearchResults && searchResults.length > 0 && (
+            <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-80 overflow-y-auto rounded-2xl border border-gray-200 bg-white shadow-xl">
+              {searchResults.map(v => (
+                <Link
+                  key={v.id}
+                  to={getCategoryHref(v.category, v.slug, v.region)}
+                  onClick={() => { setShowSearchResults(false); setSearchQuery(''); }}
+                  className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 last:border-b-0 active:bg-gray-50"
+                >
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F3F0FF] text-sm font-bold text-[#8B5CF6]">
+                    {v.nameKo.charAt(0)}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-bold text-[#111] truncate">{v.nameKo}</p>
+                    <p className="text-xs text-[#555]">{v.regionKo} · {catLabel[v.category]}</p>
+                  </div>
+                </Link>
+              ))}
             </div>
-          </div>
+          )}
+          {showSearchResults && searchQuery.trim() && searchResults.length === 0 && (
+            <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-2xl border border-gray-200 bg-white p-4 text-center shadow-xl">
+              <p className="text-sm text-gray-500">검색 결과가 없습니다</p>
+            </div>
+          )}
+        </div>
+      </div>
 
-          {/* 6종 카테고리 아이콘 */}
-          <div className="mt-8 grid grid-cols-6 gap-3">
-            {categories.map((cat) => (
-              <Link target="_blank" rel="noopener noreferrer" key={cat.key} to={cat.path} className="group flex flex-col items-center gap-1.5 rounded-xl p-3 transition-all hover:bg-white/80">
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-2xl shadow-sm transition-all group-hover:shadow-md group-hover:scale-105">
-                  {cat.icon}
-                </span>
-                <span className="text-xs font-semibold text-neon-text-muted group-hover:text-neon-text">{cat.labelKo}</span>
-              </Link>
+      {/* ═══════ AUTO-SLIDE BANNER ═══════ */}
+      <section className="px-4 py-3">
+        <div className="max-w-2xl mx-auto">
+          <Link
+            to={bannerSlides[bannerIdx].href}
+            className={`block rounded-2xl bg-gradient-to-r ${bannerSlides[bannerIdx].color} px-5 py-4 transition-all`}
+          >
+            <p className="text-sm font-bold text-white">{bannerSlides[bannerIdx].text}</p>
+          </Link>
+          {/* Dots */}
+          <div className="flex justify-center gap-1.5 mt-2">
+            {bannerSlides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setBannerIdx(i)}
+                className={`h-1.5 rounded-full transition-all ${i === bannerIdx ? 'w-4 bg-[#8B5CF6]' : 'w-1.5 bg-gray-300'}`}
+              />
             ))}
           </div>
         </div>
       </section>
 
-      {/* ═══════ 2. 광고주 매장 — 썸네일 + 전화 바로 연결 ═══════ */}
-      <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
-        <h2 className="mb-5 text-xl font-bold text-neon-text">추천 매장</h2>
-        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
-          {advertiserVenues.map((venue) => (
-            <Link target="_blank" rel="noopener noreferrer" key={venue.id} to={getCategoryHref(venue.category, venue.slug, venue.region)} className="group block">
-              <div className="overflow-hidden rounded-2xl border border-neon-border bg-white transition-all hover:shadow-lg card-hover">
-                <div className="aspect-square overflow-hidden">
-                  <img src={`/venues/${venue.slug}-1.jpg`} alt={venue.nameKo} className="h-full w-full object-cover transition-transform group-hover:scale-105" loading="lazy" />
-                </div>
-                <div className="p-3">
-                  {venue.isPremium && <Badge variant="premium" className="mb-1">PREMIUM</Badge>}
-                  <h3 className="text-xs font-bold text-neon-text leading-tight line-clamp-2 sm:text-sm">{venue.nameKo}</h3>
-                  {venue.staffNickname && (
-                    <p className="mt-1 text-xs font-medium text-neon-primary">{venue.staffNickname}</p>
-                  )}
-                  {venue.staffPhone && (
-                    <>
-                      <p className="mt-0.5 text-xs font-bold text-neon-text-muted">{venue.staffPhone}</p>
-                      <a href={`tel:${venue.staffPhone.replace(/-/g, '')}`}
-                         className="mt-2 inline-flex items-center gap-1 rounded-lg bg-[#15803D] px-3 py-1.5 text-xs font-bold text-white hover:bg-[#166534] transition"
-                         onClick={(e) => e.stopPropagation()}>
-                        📞 {venue.staffNickname} 전화하기
-                      </a>
-                    </>
-                  )}
-                </div>
+      {/* ═══════ CATEGORY ICONS — Horizontal scroll ═══════ */}
+      <section className="py-3 overflow-x-auto scrollbar-hide">
+        <div className="flex gap-3 px-4" style={{ minWidth: 'max-content' }}>
+          {categoryIcons.map(cat => (
+            <Link key={cat.label} to={cat.href} className="flex flex-col items-center gap-1.5 min-w-[56px]">
+              <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${cat.gradient} text-2xl shadow-sm`}>
+                {cat.icon}
               </div>
+              <span className="text-[11px] font-semibold text-[#333]">{cat.label}</span>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* ═══════ 3. 지금 뜨는 TOP 5 ═══════ */}
-      <HotWidget />
-
-      {/* ═══════ AI 추천 섹션 ═══════ */}
-      <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-neon-text">AI 추천</h2>
-          <p className="text-sm text-neon-text-muted mt-1">어디 갈지 모르겠으면, 여기서 물어봐</p>
-        </div>
-        <div className="grid gap-6 lg:grid-cols-3">
-          <PointGate minPoints={300}>
-            <ErrorBoundary>
-              <Suspense fallback={<div className="h-64 animate-pulse rounded-2xl bg-violet-50" />}>
-                <AIRecommend />
-              </Suspense>
-            </ErrorBoundary>
-          </PointGate>
-          <PointGate minPoints={700}>
-            <ErrorBoundary>
-              <Suspense fallback={<div className="h-64 animate-pulse rounded-2xl bg-cyan-50" />}>
-                <AITasteAnalysis />
-              </Suspense>
-            </ErrorBoundary>
-          </PointGate>
-          <PointGate minPoints={700}>
-            <ErrorBoundary>
-              <Suspense fallback={<div className="h-64 animate-pulse rounded-2xl bg-amber-50" />}>
-                <AICourseRecommend />
-              </Suspense>
-            </ErrorBoundary>
-          </PointGate>
-        </div>
-      </section>
-
-      {/* ═══════ 커뮤니티 허브 ═══════ */}
-      <ErrorBoundary>
-        <Suspense fallback={<div className="mx-auto max-w-[1200px] px-4 py-12"><div className="h-48 animate-pulse rounded-2xl bg-neon-surface-2" /></div>}>
-          <HomeCommunityHub />
-        </Suspense>
-      </ErrorBoundary>
-
-      {/* ═══════ 3. 오늘 갈 곳 룰렛 ═══════ */}
-      <HomeRoulette />
-
-      {/* ═══════ 4. VS 대결 투표 ═══════ */}
-      <HomeVSBattle />
-
-      {/* ═══════ 5. 지역별 장소 찾기 ═══════ */}
-      <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
-        <h2 className="mb-5 text-xl font-bold text-neon-text">지역별 장소 찾기</h2>
-        <div className="flex flex-wrap gap-3">
-          {regions.map((r) => (
-            <Link target="_blank" rel="noopener noreferrer" key={r.label}
-              to={r.href}
-              className="rounded-xl border border-neon-border bg-white px-5 py-3 text-sm font-medium text-neon-text-muted transition-all hover:border-neon-primary/40 hover:text-neon-text card-hover"
+      {/* ═══════ REGION BUBBLES — Horizontal scroll ═══════ */}
+      <section className="py-2 overflow-x-auto scrollbar-hide">
+        <div className="flex gap-2 px-4" style={{ minWidth: 'max-content' }}>
+          {regionBubbles.map(r => (
+            <button
+              key={r.value}
+              onClick={() => setActiveRegion(r.value)}
+              className={`rounded-full px-4 py-2 text-sm font-medium transition-all whitespace-nowrap ${
+                activeRegion === r.value
+                  ? 'bg-[#8B5CF6] text-white shadow-md shadow-purple-200'
+                  : 'border border-gray-300 bg-white text-[#555]'
+              }`}
+              style={{ minHeight: 36 }}
             >
               {r.label}
-            </Link>
+            </button>
           ))}
         </div>
       </section>
 
-      {/* ═══════ 6. 퀴즈 CTA ═══════ */}
-      <QuizCTA />
-
-      {/* ═══════ 7. 첫 이용 가이드 배너 ═══════ */}
-      <section className="mx-auto max-w-[1200px] px-4 py-6 sm:px-6">
-        <Link target="_blank" rel="noopener noreferrer" to="/guide" className="group block">
-          <div className="rounded-2xl border border-neon-border bg-white p-5 sm:p-6 transition-all hover:shadow-md card-hover">
-            <div className="flex items-center gap-4">
-              <span className="text-3xl">📖</span>
-              <div className="flex-1">
-                <h3 className="text-base font-bold text-neon-text sm:text-lg">처음이세요? 이것만 알면 됩니다</h3>
-                <p className="text-sm text-neon-text-muted">뭐 입고? 얼마? 혼자 가도 돼? — 카테고리별 첫 이용 필수 정보</p>
-              </div>
-              <span className="hidden sm:inline-flex items-center gap-1 shrink-0 rounded-xl border border-neon-border px-5 py-2.5 text-sm font-semibold text-neon-primary transition group-hover:bg-neon-primary/5">
-                가이드 보기 →
-              </span>
-            </div>
-          </div>
-        </Link>
-      </section>
-
-      {/* ═══════ 8. 인기 TOP 10 ═══════ */}
-      <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-neon-text">인기 스팟 TOP 10</h2>
-          <Link target="_blank" rel="noopener noreferrer" to="/ranking" className="text-sm text-neon-primary hover:underline">
-            전체 랭킹 →
-          </Link>
-        </div>
-        <div className="venue-card-grid">
-          {popularVenues.slice(0, 10).map((venue, i) => (
-            <div key={venue.id} className="relative">
-              <VenueCard venue={venue} href={getCategoryHref(venue.category, venue.slug, venue.region)} rank={i + 1} />
-            </div>
+      {/* ═══════ TAB SECTION ═══════ */}
+      <section className="border-b border-gray-100 mt-1">
+        <div className="flex">
+          {feedTabs.map((tab, i) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(i)}
+              className={`flex-1 py-3 text-center text-sm font-medium transition-all relative ${
+                activeTab === i ? 'text-[#8B5CF6] font-bold' : 'text-gray-500'
+              }`}
+              style={{ minHeight: 44 }}
+            >
+              {tab}
+              {activeTab === i && (
+                <span className="absolute bottom-0 left-1/4 right-1/4 h-[3px] rounded-full bg-[#8B5CF6]" />
+              )}
+            </button>
           ))}
         </div>
       </section>
 
-      {/* ═══════ 9. 최신 후기 ═══════ */}
-      <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-neon-text">최신 후기</h2>
-          <Link target="_blank" rel="noopener noreferrer" to="/community/reviews" className="text-sm text-neon-primary hover:underline">
-            전체 후기 →
-          </Link>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {latestReviews.map((review, i) => (
-            <div key={i} className="rounded-2xl border border-neon-border bg-white p-5 card-hover">
-              <p className="mb-3 text-sm leading-relaxed text-neon-text line-clamp-3">&ldquo;{review.text}&rdquo;</p>
-              <div className="flex items-center justify-between text-xs text-neon-text-muted">
-                <span>{review.author} · {review.venue}</span>
-                <span>{review.date}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* ═══════ HOME FEED — 2 Column Card Grid ═══════ */}
+      <section className="px-4 py-4">
+        <div className="grid grid-cols-2 gap-3">
+          {feedVenues.map((venue, idx) => {
+            const cards = [];
 
-      {/* ═══════ 10. 매거진 ═══════ */}
-      <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-neon-text">매거진</h2>
-          <Link target="_blank" rel="noopener noreferrer" to="/magazine" className="text-sm text-neon-primary hover:underline">
-            더보기 →
-          </Link>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {magazineItems.map((item, i) => (
-            <Link target="_blank" rel="noopener noreferrer" key={i} to={item.href} className="rounded-2xl border border-neon-border bg-white p-5 card-hover block">
-              <Badge className="mb-3">{item.tag}</Badge>
-              <h3 className="text-sm font-semibold text-neon-text leading-snug line-clamp-2">{item.title}</h3>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* ═══════ 11. 인스타그램 — 가로 스크롤 ═══════ */}
-      <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
-        <h2 className="mb-6 text-xl font-bold text-neon-text">인스타그램</h2>
-        <HorizontalScroll itemWidth={140}>
-          {instaHashtags.map((post, i) => (
-            <ScrollItem key={i} className="w-[130px] sm:w-[150px]">
-              <a
-                href={post.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative flex aspect-square w-full flex-col items-center justify-center overflow-hidden rounded-xl border border-neon-border bg-white p-3 text-center transition-all hover:border-neon-pink/40 card-hover"
-              >
-                <svg className="mb-2 h-6 w-6 text-neon-pink/60 group-hover:text-neon-pink transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-                </svg>
-                <span className="text-xs font-medium text-neon-pink">{post.tag}</span>
-                <span className="mt-1 text-xs text-neon-text-muted">{post.desc}</span>
-              </a>
-            </ScrollItem>
-          ))}
-        </HorizontalScroll>
-      </section>
-
-      {/* ═══════ 12. 인기 시간대 ═══════ */}
-      <PopularTimeWidget />
-
-      {/* ═══════ 13. 사업자 유치 배너 ═══════ */}
-      <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
-        <Link target="_blank" rel="noopener noreferrer" to="/for-business" className="group block">
-          <div className="relative overflow-hidden rounded-2xl border border-neon-primary/20 bg-gradient-to-r from-violet-50 via-white to-cyan-50 p-8 sm:p-12 transition-all hover:shadow-lg">
-            <div className="relative flex flex-col items-center text-center sm:flex-row sm:justify-between sm:text-left">
-              <div>
-                <h3 className="mb-2 text-2xl font-bold text-neon-text sm:text-3xl">
-                  내 가게를 등록하고 <span className="text-neon-primary">매출 300%</span> 올리세요
-                </h3>
-                <p className="text-neon-text-muted">
-                  등록 시 월 평균 유입 1,200명 이상 노출. 무료 체험으로 시작해 보세요.
-                </p>
-              </div>
-              <div className="mt-6 sm:mt-0 sm:ml-8 shrink-0">
-                <span className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-8 py-4 text-lg font-bold text-white btn-glow transition-all group-hover:bg-neon-primary-light">
-                  무료 시작하기
-                  <svg className="h-5 w-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            // Regular venue card
+            cards.push(
+              <div key={venue.id} className="relative">
+                <Link to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
+                  <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                    {/* Photo */}
+                    <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                      <img
+                        src={`/venues/${venue.slug}-1.jpg`}
+                        alt={venue.nameKo}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                      {/* Region badge */}
+                      <span className="absolute top-2 left-2 rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm">
+                        {venue.regionKo}
+                      </span>
+                    </div>
+                    {/* Info */}
+                    <div className="p-3">
+                      <h3 className="text-[15px] font-bold text-[#111] leading-tight line-clamp-1">{venue.nameKo}</h3>
+                      <p className="mt-1 text-xs text-[#555] line-clamp-1">{venue.shortDescription}</p>
+                      {/* Real-time viewer */}
+                      <div className="mt-2 flex items-center gap-1">
+                        <span className="relative flex h-2 w-2">
+                          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
+                          <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+                        </span>
+                        <span className="text-[11px] text-red-500 font-medium">지금 {getViewerCount(venue.id)}명 보는 중</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+                {/* Heart */}
+                <button
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(venue.id); }}
+                  className="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/30 backdrop-blur-sm"
+                  aria-label="찜하기"
+                >
+                  <svg className={`h-4 w-4 ${favorites.has(venue.id) ? 'text-red-500 fill-red-500' : 'text-white'}`} fill={favorites.has(venue.id) ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
-                </span>
+                </button>
               </div>
-            </div>
-          </div>
-        </Link>
-      </section>
-
-
-      {/* ═══════ [틱톡 #4] "오늘의 추천" — 매일 다른 콘텐츠 → 매일 접속 ═══════ */}
-      <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
-        <div className="rounded-2xl border border-neon-primary/20 bg-gradient-to-r from-violet-50 to-white p-6">
-          <div className="flex items-center gap-3 mb-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-neon-primary text-white text-lg">🎲</span>
-            <div>
-              <h2 className="text-lg font-bold text-neon-text">오늘의 추천</h2>
-              <p className="text-xs text-neon-text-muted">매일 바뀌는 맞춤 추천</p>
-            </div>
-          </div>
-          {(() => {
-            const todayIdx = new Date().getDate() % popularVenues.length;
-            const todayVenue = popularVenues[todayIdx];
-            if (!todayVenue) return null;
-            return (
-              <Link target="_blank" rel="noopener noreferrer" to={getCategoryHref(todayVenue.category, todayVenue.slug, todayVenue.region)} className="block mt-3 rounded-xl border border-neon-border bg-white p-4 card-hover">
-                <h3 className="text-base font-bold text-neon-text">{todayVenue.nameKo}</h3>
-                <p className="mt-1 text-sm text-neon-text-muted line-clamp-2">{todayVenue.shortDescription}</p>
-                <span className="mt-2 inline-block text-xs font-medium text-neon-primary">자세히 보기 →</span>
-              </Link>
             );
-          })()}
+
+            // Every 5th card — ENGAGEMENT CARD
+            if ((idx + 1) % 5 === 0) {
+              const engType = Math.floor(idx / 5) % 3;
+              if (engType === 0) {
+                // VS Vote
+                const poll = vsPolls[Math.floor(idx / 5) % vsPolls.length];
+                const voted = vsVotes[idx];
+                cards.push(
+                  <div key={`eng-${idx}`} className="col-span-2 rounded-xl bg-gradient-to-r from-[#EEF2FF] to-[#F3F0FF] p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                    <p className="text-xs font-bold text-[#8B5CF6] mb-2">🆚 VS 투표</p>
+                    <p className="text-sm font-bold text-[#111] mb-3">{poll.q}</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {[poll.a, poll.b].map(opt => (
+                        <button
+                          key={opt}
+                          onClick={() => setVsVotes(prev => ({ ...prev, [idx]: opt }))}
+                          disabled={!!voted}
+                          className={`rounded-xl py-3 text-sm font-bold transition-all ${
+                            voted === opt ? 'bg-[#8B5CF6] text-white' :
+                            voted ? 'bg-white/60 text-[#999]' :
+                            'bg-white text-[#333] active:bg-[#8B5CF6] active:text-white'
+                          }`}
+                          style={{ minHeight: 44 }}
+                        >
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                    {voted && (
+                      <p className="mt-2 text-center text-xs text-[#8B5CF6]">
+                        {Math.floor(Math.random() * 30 + 35)}% vs {Math.floor(Math.random() * 30 + 35)}% — 참여 완료!
+                      </p>
+                    )}
+                  </div>
+                );
+              } else if (engType === 1) {
+                // Quiz
+                cards.push(
+                  <div key={`eng-${idx}`} className="col-span-2 rounded-xl bg-gradient-to-r from-[#FDF2F8] to-[#FEF3C7] p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                    <p className="text-xs font-bold text-[#BE185D] mb-2">🎯 퀴즈</p>
+                    <p className="text-sm font-bold text-[#111] mb-3">당신에게 맞는 밤문화는?</p>
+                    <div className="flex flex-wrap gap-2">
+                      {['EDM에 미친다 🎶', '조용히 마신다 🍷', '춤이 좋다 💃'].map(opt => (
+                        <Link key={opt} to="/quiz" className="rounded-full bg-white px-4 py-2 text-sm font-medium text-[#333] active:bg-[#8B5CF6] active:text-white" style={{ minHeight: 40 }}>
+                          {opt}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              } else {
+                // Fortune
+                cards.push(
+                  <div key={`eng-${idx}`} className="col-span-2 rounded-xl bg-gradient-to-r from-[#111827] to-[#1E1B4B] p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                    <p className="text-xs font-bold text-amber-400 mb-2">🔮 오늘 밤 운세</p>
+                    <p className="text-sm font-bold text-white mb-3">별들이 당신의 밤을 예고합니다...</p>
+                    <Link to="/roulette" className="inline-flex items-center gap-1 rounded-full bg-amber-500 px-4 py-2 text-sm font-bold text-white active:bg-amber-600" style={{ minHeight: 40 }}>
+                      운세 보기 →
+                    </Link>
+                  </div>
+                );
+              }
+            }
+
+            // Every 8th card — CONTENT CARD
+            if ((idx + 1) % 8 === 0) {
+              cards.push(
+                <div key={`content-${idx}`} className="col-span-2 rounded-xl border border-gray-100 bg-white p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                  <p className="text-xs font-bold text-emerald-600 mb-2">📝 직접 가본 후기</p>
+                  <p className="text-sm font-bold text-[#111]">{venue.nameKo}</p>
+                  <p className="mt-1 text-sm text-[#555] line-clamp-2" style={{ lineHeight: 1.7 }}>
+                    {venue.shortDescription}
+                  </p>
+                  <Link to={getCategoryHref(venue.category, venue.slug, venue.region)} className="mt-2 inline-block text-xs font-bold text-[#8B5CF6]">
+                    자세히 보기 →
+                  </Link>
+                </div>
+              );
+            }
+
+            // Every 12th card — EDITORIAL
+            if ((idx + 1) % 12 === 0) {
+              cards.push(
+                <div key={`editorial-${idx}`} className="col-span-2 rounded-xl bg-gradient-to-r from-violet-50 to-white p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+                  <p className="text-xs font-bold text-[#8B5CF6] mb-2">🔥 에디터 Pick</p>
+                  <p className="text-sm font-bold text-[#111]">이번주 TOP5 변동</p>
+                  <div className="mt-2 space-y-1">
+                    {popularVenues.slice(0, 5).map((v, i) => (
+                      <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} className="flex items-center gap-2 py-1">
+                        <span className={`flex h-5 w-5 items-center justify-center rounded text-[10px] font-bold ${i < 3 ? 'bg-[#8B5CF6] text-white' : 'bg-gray-200 text-gray-600'}`}>{i + 1}</span>
+                        <span className="text-sm text-[#111] truncate">{v.nameKo}</span>
+                        <span className="ml-auto text-[10px] text-gray-400">{v.regionKo}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+
+            return cards;
+          })}
         </div>
+
+        {/* Skeleton / Loading indicator */}
+        {feedVenues.length === 0 && (
+          <div className="grid grid-cols-2 gap-3 mt-4">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="rounded-xl bg-gray-100 animate-pulse">
+                <div className="aspect-[4/3]" />
+                <div className="p-3 space-y-2">
+                  <div className="h-4 bg-gray-200 rounded w-3/4" />
+                  <div className="h-3 bg-gray-200 rounded w-1/2" />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
-      {/* ═══════ [넷플릭스 #5] "구글과 AI에서 놀쿨를 검색하세요" ═══════ */}
-      <section className="mx-auto max-w-[1200px] px-4 py-6 sm:px-6">
-        <div className="rounded-2xl bg-neon-primary px-6 py-5 text-center">
-          <p className="text-base font-bold text-white sm:text-lg">
-            구글 · ChatGPT · Gemini에서 <span className="text-xl font-black">"놀쿨"</span> 검색하세요
-          </p>
-        </div>
-      </section>
-
-      {/* ═══════ 포인트 혜택 안내 ═══════ */}
+      {/* ═══════ INFINITE DISCOVERY FEED ═══════ */}
       <ErrorBoundary>
-        <Suspense fallback={null}>
-          <PointBenefits />
+        <Suspense fallback={<div className="px-4 py-8"><div className="h-48 animate-pulse rounded-2xl bg-gray-100" /></div>}>
+          <InfiniteDiscoveryFeed />
         </Suspense>
       </ErrorBoundary>
 
-      {/* ═══════ 밤문화 운세 ═══════ */}
+      {/* ═══════ NIGHT FORTUNE ═══════ */}
       <ErrorBoundary>
         <Suspense fallback={null}>
           <NightFortune />
         </Suspense>
       </ErrorBoundary>
 
-      {/* ═══════ 무한 발견 피드 (틱톡식) ═══════ */}
-      <ErrorBoundary>
-        <Suspense fallback={<div className="mx-auto max-w-3xl px-4 py-12"><div className="h-48 animate-pulse rounded-2xl bg-neon-surface-2" /></div>}>
-          <InfiniteDiscoveryFeed />
-        </Suspense>
-      </ErrorBoundary>
-
-      {/* ═══════ 주변 맛집/해장 ═══════ */}
+      {/* ═══════ POINT BENEFITS ═══════ */}
       <ErrorBoundary>
         <Suspense fallback={null}>
-          <NearbyFood />
+          <PointBenefits />
         </Suspense>
       </ErrorBoundary>
 
-      {/* ═══════ SEO Text ═══════ */}
-      <section className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6">
-        <div className="rounded-2xl border border-neon-border bg-white p-8">
-          <h2 className="mb-4 text-lg font-bold text-neon-text">카테고리별 특징과 이용 팁</h2>
-          <div className="space-y-4 text-sm leading-relaxed text-neon-text-muted">
+      {/* ═══════ GOOGLE/AI CTA ═══════ */}
+      <section className="px-4 py-6">
+        <div className="rounded-2xl bg-[#8B5CF6] px-6 py-5 text-center">
+          <p className="text-sm font-bold text-white">
+            구글 · ChatGPT · Gemini에서 <span className="text-lg font-black">"놀쿨"</span> 검색하세요
+          </p>
+        </div>
+      </section>
+
+      {/* ═══════ SEO TEXT ═══════ */}
+      <section className="px-4 pb-8">
+        <div className="rounded-2xl border border-gray-100 bg-[#F5F5F5] p-6">
+          <h2 className="mb-3 text-base font-bold text-[#111]">카테고리별 특징과 이용 팁</h2>
+          <div className="space-y-3 text-sm leading-relaxed text-[#555]">
             <p>
               고양시 중심가에서 프라이빗한 모임 공간을 찾는 분들에게 인기 있는 곳부터,
               장항로에 위치한 전통 한정식 문화 공간까지 비즈니스 접대와 기념일 행사에 적합한 곳이 모여 있습니다.
@@ -488,6 +585,19 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ═══════ FLOATING ELEMENTS ═══════ */}
+      {/* TOP button */}
+      {showTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="fixed z-40 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 text-xs font-bold text-[#555]"
+          style={{ bottom: 72, left: 16 }}
+          aria-label="맨 위로"
+        >
+          ↑
+        </button>
+      )}
     </div>
   );
 }

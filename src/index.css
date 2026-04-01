@@ -207,6 +207,25 @@ html {
   animation: slideInRight 0.3s ease-out;
 }
 
+/* Slide in from left (hamburger menu) */
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.25s ease-out;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Slide in from top */
 @keyframes slideInTop {
   from { opacity: 0; transform: translateY(-100%); }

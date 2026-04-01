@@ -1,116 +1,94 @@
 
-
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
-import { createClient } from '@/lib/supabase';
+import { Link, useLocation } from 'react-router-dom';
 
 const tabs = [
   {
     href: '/',
     label: '홈',
-    icon: (
-      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+    icon: (active: boolean) => (
+      <svg className="h-5 w-5" fill={active ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={active ? 0 : 2} d={active ? 'M10.707 2.293a1 1 0 00-1.414 0l-7 7A1 1 0 003 11h1v7a2 2 0 002 2h4v-5h4v5h4a2 2 0 002-2v-7h1a1 1 0 00.707-1.707l-7-7z' : 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'} />
       </svg>
     ),
   },
   {
-    href: '/clubs',
-    label: '탐색',
-    matchPrefixes: ['/clubs', '/nights', '/lounges', '/rooms', '/yojeong', '/hoppa'],
-    icon: (
-      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    href: '/gallery',
+    label: '클립',
+    icon: (active: boolean) => (
+      <svg className="h-5 w-5" fill={active ? 'currentColor' : 'none'} stroke={active ? 'none' : 'currentColor'} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={active ? 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z' : 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z'} />
       </svg>
     ),
   },
   {
-    href: '/map',
-    label: '지도',
-    icon: (
-      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
+    href: '/vs',
+    label: 'VS',
+    icon: (active: boolean) => (
+      <div className={`flex h-6 w-6 items-center justify-center rounded-md text-xs font-black ${active ? 'bg-[#8B5CF6] text-white' : 'bg-gray-200 text-gray-600'}`}>
+        VS
+      </div>
     ),
   },
   {
     href: '/community',
     label: '커뮤니티',
-    icon: (
-      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+    matchPrefixes: ['/community'],
+    icon: (active: boolean) => (
+      <div className="relative">
+        <svg className="h-5 w-5" fill={active ? 'currentColor' : 'none'} stroke={active ? 'none' : 'currentColor'} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+        <span className="absolute -top-1 -right-1.5 flex h-2 w-2 rounded-full bg-red-500" />
+      </div>
+    ),
+  },
+  {
+    href: '/profile',
+    label: '마이',
+    fallbackHref: '/login',
+    icon: (active: boolean) => (
+      <svg className="h-5 w-5" fill={active ? 'currentColor' : 'none'} stroke={active ? 'none' : 'currentColor'} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
       </svg>
     ),
   },
 ];
 
-const myIcon = (
-  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-  </svg>
-);
-
 export default function MobileNav() {
   const { pathname } = useLocation();
-  const [user, setUser] = useState<any>(null);
 
-  useEffect(() => {
-    const supabase = createClient();
-    if (!supabase) return;
-    supabase.auth.getUser().then(({ data }) => setUser(data.user));
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const isActive = (tab: typeof tabs[0]) => {
+  const isActive = (tab: typeof tabs[number]) => {
     if (tab.href === '/' && pathname === '/') return true;
     if (tab.href === '/' && pathname !== '/') return false;
     if ('matchPrefixes' in tab && tab.matchPrefixes) {
-      return tab.matchPrefixes.some((p) => pathname.startsWith(p));
+      return tab.matchPrefixes.some((p: string) => pathname.startsWith(p));
     }
     return pathname.startsWith(tab.href);
   };
 
-  const myHref = user ? '/profile' : '/login';
-  const myActive = pathname === '/profile' || pathname === '/login';
-
   return (
-    <nav className="fixed right-0 bottom-0 left-0 z-50 border-t border-neon-border bg-white/95 backdrop-blur-lg pb-safe md:hidden">
-      <div className="flex items-center justify-around px-2 pt-2 pb-1">
+    <nav className="fixed right-0 bottom-0 left-0 z-50 bg-white border-t border-gray-200 pb-safe md:hidden" style={{ boxShadow: '0 -1px 8px rgba(0,0,0,0.06)' }}>
+      <div className="flex items-center justify-around px-1" style={{ height: 56 }}>
         {tabs.map((tab) => {
           const active = isActive(tab);
           return (
             <Link
               key={tab.href}
               to={tab.href}
-              target="_blank" rel="noopener noreferrer"
-              className={`flex min-h-[44px] flex-col items-center justify-center gap-0.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
-                active ? 'text-neon-primary' : 'text-neon-text-muted hover:text-neon-text'
+              className={`flex flex-col items-center justify-center gap-0.5 px-2 py-1 min-w-[56px] ${
+                active ? 'text-[#8B5CF6]' : 'text-gray-500'
               }`}
+              style={{ minHeight: 44 }}
             >
-              <span className={active ? 'text-neon-primary' : ''}>{tab.icon}</span>
-              {tab.label}
+              <span className={active ? 'drop-shadow-[0_0_6px_rgba(139,92,246,0.4)]' : ''}>
+                {tab.icon(active)}
+              </span>
+              <span className={`text-[10px] ${active ? 'font-bold text-[#8B5CF6]' : 'font-medium text-gray-500'}`}>
+                {tab.label}
+              </span>
             </Link>
           );
         })}
-        <Link
-          to={myHref}
-          target="_blank" rel="noopener noreferrer"
-          className={`flex min-h-[44px] flex-col items-center justify-center gap-0.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
-            myActive ? 'text-neon-primary' : 'text-neon-text-muted hover:text-neon-text'
-          }`}
-        >
-          {user?.user_metadata?.avatar_url ? (
-            <img src={user.user_metadata.avatar_url} alt="" className="h-5 w-5 rounded-full" />
-          ) : (
-            <span className={myActive ? 'text-neon-primary' : ''}>{myIcon}</span>
-          )}
-          {user ? '마이' : '로그인'}
-        </Link>
       </div>
     </nav>
   );

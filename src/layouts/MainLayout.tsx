@@ -56,7 +56,7 @@ export default function MainLayout() {
           만 19세 이상만 들어올 수 있어요
         </p>
       </div>
-      <main className="flex-1 pt-16 pb-20 md:pb-14">
+      <main className="flex-1 pt-14 pb-20 md:pb-14">
         <Outlet />
       </main>
       {/* 모든 페이지 공통 CTA */}
