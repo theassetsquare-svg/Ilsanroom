@@ -113,7 +113,7 @@ function SuitabilityDots({ score }: { score: number }) {
 }
 
 export default function FashionPage() {
-  useDocumentMeta('뭐 입고 가야 해? 드레스코드 총정리', '셔츠냐 정장이냐, 운동화 되냐 안 되냐. 옷 고민 끝.');
+  useDocumentMeta('운동화 신고 가도 돼? 업종별 복장 가이드', '클럽·나이트·요정·라운지, 어디냐에 따라 옷이 다르다. 한눈에 정리.');
   const [venueFilter, setVenueFilter] = useState<FilterType>("all");
 
   const sorted = [...outfitCards].sort((a, b) => {

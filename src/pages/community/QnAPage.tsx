@@ -107,7 +107,7 @@ function postToQuestion(post: Post) {
 }
 
 export default function QnAPage() {
-  useDocumentMeta('오늘어디갈까 — 오늘 밤 추천받기', '오늘 밤 어디 갈지 같이 고민하고 추천받는 게시판.');
+  useDocumentMeta('오늘 밤 어디 가냐고? 여기서 추천받아', '갈 곳 못 정한 사람들이 모여서 서로 추천해주는 게시판.');
   const { user } = useAuth();
   const points = useEngagementStore((s) => s.points);
   const [openFaq, setOpenFaq] = useState<number | null>(null);

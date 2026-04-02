@@ -40,7 +40,7 @@ const sampleComments: Record<string, { author: string; text: string; date: strin
 };
 
 export default function JogakPage() {
-  useDocumentMeta('조각 모집 — 같이 놀러갈 사람', '같이 놀러갈 사람을 구하는 게시판. 포인트 100P 이상이면 글 작성 가능.');
+  useDocumentMeta('급하게 한 명 구한다, 조각 모집', '자리 하나 남았을 때, 바로 올리고 바로 구한다. 100P 이상 작성 가능.');
 
   const { user } = useAuth();
   const points = useEngagementStore((s) => s.points);

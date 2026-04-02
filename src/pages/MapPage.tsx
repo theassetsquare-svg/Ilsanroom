@@ -23,7 +23,7 @@ function getCategoryHref(category: string, slug: string, region: string) {
 }
 
 export default function MapPage() {
-  useDocumentMeta('내 근처 열린 매장, 지도로 바로 찾기', 'GPS 켜고 핀 누르면 끝. 걸어서 갈 수 있는 곳만 지도에 쏙.');
+  useDocumentMeta('지금 위치에서 가까운 곳, 지도에 다 떴다', '핀 하나 누르면 전화·길찾기 바로 연결. 내 주변 영업 중인 곳만 표시.');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [gpsStatus, setGpsStatus] = useState<'idle' | 'loading' | 'granted' | 'denied'>('idle');

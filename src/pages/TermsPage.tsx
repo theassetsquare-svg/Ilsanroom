@@ -94,7 +94,7 @@ const articles = [
 ];
 
 export default function TermsPage() {
-  useDocumentMeta('이용약관', '회원가입부터 탈퇴까지 권리와 의무 정리.');
+  useDocumentMeta('서비스 이용약관', '가입, 이용, 탈퇴 시 적용되는 권리와 의무 전문.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">

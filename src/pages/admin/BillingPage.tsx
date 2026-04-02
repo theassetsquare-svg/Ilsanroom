@@ -1,7 +1,7 @@
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function BillingPage() {
-  useDocumentMeta('결제 관리', '구독 상태, 결제 내역, 요금제 변경.');
+  useDocumentMeta('구독·결제 내역 한눈에', '현재 요금제, 결제 이력, 변경·해지 전부 이 페이지에서.');
   const paymentHistory = [
     {
       id: "INV-2026-001",

@@ -52,7 +52,7 @@ const articles = [
 ];
 
 export default function MagazinePage() {
-  useDocumentMeta('읽다 보면 가고 싶어지는 야간 매거진', '강남 TOP5, 첫 방문 핸드북, 지역별 분석 콘텐츠.');
+  useDocumentMeta('밤문화 읽을거리, 여기 다 모았다', '지역 분석, 업종 비교, 현장 리포트. 가기 전에 읽으면 달라지는 글.');
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <h1 className="text-2xl font-extrabold text-neon-text mb-1">매거진</h1>

@@ -12,7 +12,7 @@ const regions = [
 ];
 
 export default function YojeongPage() {
-  useDocumentMeta('가야금 선율에 15가지 정찬, 접대의 끝판왕', '한식 코스와 국악 라이브가 어우러지는 격식 있는 대접 문화. 외국인 만찬에서도 높은 평가.');
+  useDocumentMeta('대금 소리에 정찬 15첩, 한 번 오면 단골 된다', '전통 요정의 격식과 맛을 한 자리에. 비즈니스 만찬, 외국 손님 접대까지 검증된 곳.');
   const venues = getVenuesByCategory('yojeong');
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">

@@ -43,7 +43,7 @@ function postToSimple(post: Post): SimplePost {
 }
 
 export default function FreeBoardPage() {
-  useDocumentMeta('자유게시판', '아무 얘기나 해도 되는 곳. 잡담부터 꿀정보까지.');
+  useDocumentMeta('아무 말 대잔치, 자유게시판', '잡담, 궁금한 거, 웃긴 얘기 다 OK. 규칙만 지키면 뭐든 써.');
   const { user } = useAuth();
   const [recentPosts, setRecentPosts] = useState<SimplePost[]>(sampleRecentPosts);
   const [hotPosts, setHotPosts] = useState<SimplePost[]>(sampleHotPosts);

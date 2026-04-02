@@ -20,7 +20,7 @@ function getCategoryLabel(cat: string) {
 }
 
 export default function NotFound() {
-  useDocumentMeta('엇, 여기 아닌데?', '길을 잃었다. 괜찮아, 대신 지금 뜨는 곳 보여줄게.');
+  useDocumentMeta('페이지를 찾을 수 없습니다', '주소가 바뀌었거나 삭제된 페이지. 대신 인기 업소를 보여줄게.');
   const popularVenues = getPopularVenues(6);
 
   return (

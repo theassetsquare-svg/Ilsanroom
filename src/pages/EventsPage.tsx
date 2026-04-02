@@ -18,7 +18,7 @@ const months = [
 const DOW = ['일', '월', '화', '수', '목', '금', '토'];
 
 export default function EventsPage() {
-  useDocumentMeta('이번 주말 전국 파티·행사 캘린더', '해외 DJ 라인업, 할인 행사, 특집 파티. 놓치기 전에 달력 표시.');
+  useDocumentMeta('놓치면 후회할 이번 달 파티·행사 일정', 'DJ 게스트, 기념행사, 시즌 이벤트. 달력에 표시해두고 가라.');
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       {/* Event JSON-LD */}

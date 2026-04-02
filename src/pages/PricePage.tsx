@@ -21,7 +21,7 @@ function getCategoryHref(category: string, slug: string, region: string) {
 }
 
 export default function PricePage() {
-  useDocumentMeta('업종별 시세 안내', '양주 한 병에 얼마? 입장료는? 카테고리별 시세 미리 파악.');
+  useDocumentMeta('얼마 들어? 업종별 평균 시세표', '입장료, 양주값, 테이블 비용까지. 가기 전에 지갑 사정 맞춰봐.');
   const [category, setCategory] = useState<CategoryFilter>('all');
   const [showAll, setShowAll] = useState(false);
 

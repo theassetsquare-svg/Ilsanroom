@@ -21,7 +21,7 @@ function getCategoryHref(v: Venue) {
 }
 
 export default function ComparePage() {
-  useDocumentMeta('나란히 비교하면 답이 보인다', '여기 vs 저기, 나란히 놓고 고르면 실패가 없다.');
+  useDocumentMeta('두 곳 놓고 따져보면 후회가 없다', '가격·분위기·후기 항목별 비교표. 고민 끝, 선택만 남았다.');
   const [selected, setSelected] = useState<string[]>([]);
   const [votes, setVotes] = useState<Record<string, number>>({});
 

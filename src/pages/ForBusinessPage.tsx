@@ -171,7 +171,7 @@ const testimonials = [
 ];
 
 export default function ForBusinessPage() {
-  useDocumentMeta('내 가게 등록하면 월 1,200명이 본다', '가게 올리면 월 1,200명이 본다. 14일 공짜로 써봐라.');
+  useDocumentMeta('사장님, 가게 올리면 월 1,200명이 봅니다', '14일 무료 체험. 등록만 하면 검색 노출·전화 연결·리뷰 관리 전부 된다.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       {/* Hero */}

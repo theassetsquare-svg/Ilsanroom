@@ -156,7 +156,7 @@ function NbbangCalc() {
 }
 
 export default function PartyRecruitPage() {
-  useDocumentMeta('파티모임 — 같이 갈 사람 찾기', '같이 갈 사람 손! N빵 모집, 날짜 맞추기, 인원 모으기.');
+  useDocumentMeta('같이 갈 사람 손! 파티 멤버 모집', '날짜 맞추고, 인원 채우고, N빵. 혼자 가기 아까울 때 여기서 구해.');
   const { user } = useAuth();
   const points = useEngagementStore((s) => s.points);
   const [statusFilter, setStatusFilter] = useState<PartyStatus | "전체">("전체");

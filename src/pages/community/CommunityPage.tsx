@@ -40,7 +40,7 @@ const sections = [
 ];
 
 export default function CommunityPage() {
-  useDocumentMeta('자유 수다방', '같은 밤을 보내는 사람들끼리 수다 떠는 광장.');
+  useDocumentMeta('밤 사람들이 모이는 커뮤니티', '후기, 꿀팁, 파티 모집, 오늘 밤 추천까지. 같이 노는 사람들의 광장.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-5xl px-4 py-16">

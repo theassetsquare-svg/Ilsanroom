@@ -20,7 +20,7 @@ const galleryItems = venues
   }));
 
 export default function GalleryPage() {
-  useDocumentMeta('전국 매장 분위기 사진 갤러리', '실내 조명, 무대, 테이블 배치. 가기 전에 사진으로 미리 둘러봐.');
+  useDocumentMeta('사진으로 먼저 본다, 매장 내부 실사 갤러리', '조명, 룸 배치, 무대 크기. 직접 가기 전에 눈으로 먼저 확인.');
   const [lightboxId, setLightboxId] = useState<string | null>(null);
   const [filter, setFilter] = useState('all');
 

@@ -94,7 +94,7 @@ const sections = [
 ];
 
 export default function GuidelinesPage() {
-  useDocumentMeta('게시판 운영 규칙', '커뮤니티 기본 규칙과 금지 사항 안내.');
+  useDocumentMeta('이것만 지키면 된다, 커뮤니티 규칙', '광고·욕설·개인정보 노출 금지. 기본 매너만 지키면 자유롭게.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-12">

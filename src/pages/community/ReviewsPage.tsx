@@ -101,7 +101,7 @@ function StarDisplay({ rating, size = "md" }: { rating: number; size?: "sm" | "m
 }
 
 export default function ReviewsPage() {
-  useDocumentMeta('업소후기 — 직접 가본 솔직 리뷰', '직접 가본 사람들의 솔직한 후기와 별점.');
+  useDocumentMeta('가본 사람만 쓸 수 있다, 실제 방문 후기', '별점과 한 줄 평으로 보는 업소 리얼 리뷰. 광고 아닌 진짜 목소리.');
   const { user } = useAuth();
   const points = useEngagementStore((s) => s.points);
   const [starFilter, setStarFilter] = useState<number | null>(null);

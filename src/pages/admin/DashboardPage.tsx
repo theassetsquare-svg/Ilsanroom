@@ -83,7 +83,7 @@ const quickLinks = [
 ];
 
 export default function DashboardPage() {
-  useDocumentMeta('업주 대시보드', '사장님만 보는 비밀 화면. 오늘 누가 얼마나 봤나 체크.');
+  useDocumentMeta('내 매장 현황판, 실시간 확인', '오늘 방문자, 전화 클릭, 인기 시간대. 사장님 전용 데이터.');
   const { user, loading: authLoading } = useAuth();
   const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
 

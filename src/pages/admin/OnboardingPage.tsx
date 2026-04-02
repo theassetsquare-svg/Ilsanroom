@@ -74,7 +74,7 @@ const categories = [
 ];
 
 export default function OnboardingPage() {
-  useDocumentMeta('입점 신청 절차', '상호명 치고, 사진 올리고, 번호 넣으면 3분 만에 완료.');
+  useDocumentMeta('3분이면 끝나는 입점 신청', '상호명, 사진, 연락처만 넣으면 등록 완료. 복잡한 거 없다.');
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedPlan, setSelectedPlan] = useState("프로");
   const [formData, setFormData] = useState({

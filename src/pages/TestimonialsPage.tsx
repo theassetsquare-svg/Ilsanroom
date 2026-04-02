@@ -76,7 +76,7 @@ function getPlanColor(plan: string): string {
 }
 
 export default function TestimonialsPage() {
-  useDocumentMeta('업주님들의 생생한 평가', '"처음엔 반신반의했는데..." 현직 사장님 5명의 생생한 목소리.');
+  useDocumentMeta('현직 사장님 5명이 직접 말한다', '"반신반의했는데 전화가 쏟아졌다." 입점 업주 생생 인터뷰.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-5xl px-4 py-16">

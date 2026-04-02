@@ -51,7 +51,7 @@ const sidebarItems = [
 ];
 
 export default function DemoPage() {
-  useDocumentMeta('사장님 데모 체험', '10초면 끝나는 사장님 화면 미리보기. 가입 따위 필요 없다.');
+  useDocumentMeta('가입 없이 10초면 끝, 업주 화면 미리보기', '대시보드가 어떻게 생겼는지 궁금하면 지금 바로 눌러봐.');
   const [activeTab, setActiveTab] = useState("현황판");
 
   return (

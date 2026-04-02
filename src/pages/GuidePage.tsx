@@ -60,7 +60,7 @@ const guides = [
 ];
 
 export default function GuidePage() {
-  useDocumentMeta('첫 방문? 이것만 알면 어디서든 먹힌다', '슬리퍼 가능? 예산 얼마? 초보자 긴장 풀어주는 입문서.');
+  useDocumentMeta('처음이라 긴장된다고? 이거 읽고 가면 프로다', '드레스코드, 예산, 혼자 가도 되는지까지. 업종별 입문 핵심만 정리했다.');
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
       <h1 className="text-3xl font-extrabold text-neon-text mb-2">첫 방문 완벽 가이드</h1>

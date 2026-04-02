@@ -83,7 +83,7 @@ const faqs = [
 ];
 
 export default function ReferralPage() {
-  useDocumentMeta('친구 초대하면 둘 다 VIP', '카톡 링크 공유로 친구 초대. 둘 다 VIP 혜택.');
+  useDocumentMeta('링크 하나 보내면 둘 다 VIP 된다', '카톡으로 친구 초대. 수락하는 순간 나도 친구도 VIP 등급.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">

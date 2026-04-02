@@ -46,7 +46,7 @@ function getRankChange(id: string, idx: number): { icon: string; color: string }
 }
 
 export default function RankingPage() {
-  useDocumentMeta('가장 핫한 TOP 10 실시간 순위', '인기 순서대로 나열. 조회수 기준 TOP 30 실시간 랭킹.');
+  useDocumentMeta('지금 이 순간, 사람들이 가장 많이 보는 곳', '조회수 기준 TOP 30. 지역별·업종별 필터로 실시간 인기 순위 확인.');
   const [category, setCategory] = useState('all');
   const [region, setRegion] = useState('all');
   const [period, setPeriod] = useState<'daily' | 'weekly' | 'monthly'>('weekly');

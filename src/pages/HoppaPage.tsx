@@ -20,7 +20,7 @@ const regions = [
 ];
 
 export default function HoppaPage() {
-  useDocumentMeta('혼자 가도 돼요? 오히려 1인 손님이 더 많다', '여성 전용 사교 공간 18곳. 가격 투명, 안전 확인 완료. 사전 전화 한 통이면 준비 끝.');
+  useDocumentMeta('처음인데 혼자 가도 괜찮을까? 결론부터, 된다', '여성 전용 사교 공간 18곳 실전 가이드. 시세·분위기·안전 정보 확인하고 가라.');
   const venues = getVenuesByCategory('hoppa');
   return (
     <div className="hoppa-theme mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">

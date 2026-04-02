@@ -14,7 +14,7 @@ const regions = [
 ];
 
 export default function NightsPage() {
-  useDocumentMeta('밴드가 첫 곡 시작하면 홀 전체가 움직인다', '전국 58곳 소셜댄스 부킹 명소. 초보도 3분이면 적응하는 현장 느낌 그대로 담았다.');
+  useDocumentMeta('라이브 밴드가 울리면, 모르는 사람도 파트너가 된다', '소셜댄스 58곳 총집합. 부킹 문화부터 드레스코드까지, 첫 발 딛기 전에 읽어라.');
   const venues = getVenuesByCategory('night');
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">

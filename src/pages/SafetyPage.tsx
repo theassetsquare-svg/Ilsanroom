@@ -8,7 +8,7 @@ const QuickDriverCall = lazy(() => import('@/components/interactive/KillerFeatur
 const HangoverFood = lazy(() => import('@/components/interactive/KillerFeatures').then((m) => ({ default: m.HangoverFood })));
 
 export default function SafetyPage() {
-  useDocumentMeta('음주 계산기부터 SOS 긴급 연락까지', '안전 귀가 필수 도구. 음주량 계산, 택시 호출, 112 원클릭.');
+  useDocumentMeta('취했을 때 이 페이지 하나면 된다', '혈중알코올 계산, 대리운전 호출, 긴급 신고까지 원탭으로 해결.');
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 space-y-8">
       <div className="text-center">

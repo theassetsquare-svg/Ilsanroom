@@ -78,7 +78,7 @@ const uptimeDays = Array.from({ length: 30 }).map((_, i) => {
 });
 
 export default function StatusPage() {
-  useDocumentMeta('서비스 상태', '서버 가동률, 점검 일정, 장애 알림 현황판.');
+  useDocumentMeta('서버 상태·점검 일정 확인', '실시간 가동률과 예정된 점검, 장애 알림을 한눈에.');
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 

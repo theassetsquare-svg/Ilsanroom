@@ -46,7 +46,7 @@ function ClubCard({ venue, href }: { venue: Venue; href: string }) {
 export default function RegionalClubsPage() {
   const { region } = useParams<{ region: string }>();
   const regionKo = regionNames[region] || region;
-  useDocumentMeta(`${regionKo} 파티 공간`, `${regionKo} 지하에서 울리는 베이스. EDM·힙합 파티 스팟 모음.`);
+  useDocumentMeta(`${regionKo} 클럽 리스트`, `${regionKo} EDM·힙합 클럽 모아보기. 입장료, 분위기, 영업시간 비교.`);
   const clubs = getVenuesByCategoryAndRegion('club', region);
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
 
