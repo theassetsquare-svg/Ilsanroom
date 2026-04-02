@@ -8,6 +8,19 @@
 - useEffect cleanup ALL timers. persistSession:true. ErrorBoundary
 - Bestseller writing. No AI text.
 - All links open in new tab! target="_blank" rel="noopener noreferrer" Internal search ONLY
+
+★★★ TITLE RULES — NO DUPLICATE WORDS! ★★★
+Homepage ONLY: "놀쿨 — hook title"
+ALL other pages: Store name + hook. NO 놀쿨! NO same word twice!
+WRONG: "장안동호빠 장안동호빠" → DELETE duplicate!
+WRONG: "강남클럽 레이스 강남 최고" → "강남" twice → DELETE!
+RIGHT: "강남클럽 레이스 — 한번 가면 단골 되는 이유"
+RIGHT: "장안동호빠 — 직접 가본 사람만 아는 진짜 이야기"
+meta description: 150 chars. Store name + hooking. NO duplicate words!
+Check EVERY page title. Same word appears twice = DELETE immediately!
+Do NOT ask. Just fix. Report all titles when done.
+- react-helmet-async for unique title/meta per page! SPA bots fix!
+- Every page UNIQUE hookTitle! No duplicate titles! Fix gold-content.ts!
 ## SEO 2026
 - title: Store name + hook. Under 60 chars
 - meta description: 150 chars. H1+H2 with store name 3+ times
@@ -19,13 +32,3 @@
 - Auto page transition. Next.js. Change existing URLs
 - Brand name in title. Brand path. Stuffing over 3%
 - Baby/mom/family/kids images. No family content (parents birthday/family gathering/reunion/anniversary = DELETE!). Banned adult words
-## ★ CROSS-SITE UNIQUENESS (CRITICAL)
-- Every site for the same store MUST have 100% unique title + body text
-- Similarity between ANY two sites < 10%
-- Each site = different hook angle for the same store
-  - Site A: experience/review angle ("직접 가봤다")
-  - Site B: guide/info angle ("완벽 가이드")
-  - Site C: comparison/ranking angle ("TOP 비교")
-- Body text: completely rewrite from scratch. NEVER reuse sentences across sites
-- Before finalizing: compare all titles across sites. 0% match required
-- If ANY title matches another site = FAIL. Rewrite immediately without asking
