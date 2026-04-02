@@ -19,3 +19,13 @@
 - Auto page transition. Next.js. Change existing URLs
 - Brand name in title. Brand path. Stuffing over 3%
 - Baby/mom/family/kids images. No family content (parents birthday/family gathering/reunion/anniversary = DELETE!). Banned adult words
+## ★ CROSS-SITE UNIQUENESS (CRITICAL)
+- Every site for the same store MUST have 100% unique title + body text
+- Similarity between ANY two sites < 10%
+- Each site = different hook angle for the same store
+  - Site A: experience/review angle ("직접 가봤다")
+  - Site B: guide/info angle ("완벽 가이드")
+  - Site C: comparison/ranking angle ("TOP 비교")
+- Body text: completely rewrite from scratch. NEVER reuse sentences across sites
+- Before finalizing: compare all titles across sites. 0% match required
+- If ANY title matches another site = FAIL. Rewrite immediately without asking
