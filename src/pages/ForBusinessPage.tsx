@@ -19,7 +19,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 const features = [
   {
     icon: Eye,
-    title: "놀쿨 내 우선 노출",
+    title: "사이트 내 우선 노출",
     description:
       "놀쿨 사이트에서 다른 업소보다 먼저 보입니다. 카테고리 상단 배치로 손님 눈에 가장 먼저 들어옵니다.",
   },

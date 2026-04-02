@@ -15,7 +15,7 @@ const caseStudies = [
   },
   {
     id: 'cs2',
-    title: '수원찬스돔나이트 — 놀쿨 내 우선 노출로 주말 방문자 확대',
+    title: '수원찬스돔나이트 — 우선 노출 등록 후 주말 방문자 확대',
     venue: '수원찬스돔나이트',
     region: '수원',
     category: '나이트',

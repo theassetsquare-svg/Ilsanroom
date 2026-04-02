@@ -63,15 +63,16 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
   }, [query, search]);
 
   useEffect(() => {
+    let focusTimer: ReturnType<typeof setTimeout>;
     if (open) {
       document.body.style.overflow = 'hidden';
       setQuery('');
       setResults([]);
-      setTimeout(() => inputRef.current?.focus(), 100);
+      focusTimer = setTimeout(() => inputRef.current?.focus(), 100);
     } else {
       document.body.style.overflow = '';
     }
-    return () => { document.body.style.overflow = ''; };
+    return () => { document.body.style.overflow = ''; clearTimeout(focusTimer); };
   }, [open]);
 
   useEffect(() => {
