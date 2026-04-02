@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
+import { useHelmet } from 'react-helmet-async';
 
 /**
- * 동적으로 document.title과 meta description을 설정
- * 모든 페이지에서 사용 — 후킹 제목 + 150자 이내 메타 설명
- * og:title, og:description, og:image, og:url, canonical, Twitter Card 전부 설정
+ * react-helmet-async + DOM 직접 조작 병행
+ * - Helmet: SSR/프리렌더링 시 head 태그 자동 관리
+ * - useEffect: 클라이언트 SPA 네비게이션 시 즉시 반영
+ * 모든 페이지에서 기존 호출 패턴 그대로 사용
  */
 export function useDocumentMeta(title: string, description: string, ogImage?: string) {
   useEffect(() => {
-    // 메인홈만 놀쿨 포함, 나머지 페이지는 title 그대로
     document.title = title;
 
     const trimmedDesc = description.slice(0, 150);
@@ -28,7 +29,7 @@ export function useDocumentMeta(title: string, description: string, ogImage?: st
     // Standard meta
     setMeta('name', 'description', trimmedDesc);
 
-    // Open Graph — og:title에 가게이름 전체 포함
+    // Open Graph
     setMeta('property', 'og:title', title);
     setMeta('property', 'og:description', trimmedDesc);
     setMeta('property', 'og:type', 'website');
