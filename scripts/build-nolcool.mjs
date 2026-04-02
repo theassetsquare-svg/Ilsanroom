@@ -360,7 +360,7 @@ function buildVenuePage(venue) {
   // ★ CLAUDE.md: title에 "놀쿨" 넣지 마! 가게이름 맨 앞!
   // ★ og:title: 가게이름!
   return htmlShell({
-    title: `${venue.nameKo} — ${venue.regionKo} ${cat.labelKo} 정보`,
+    title: `${venue.nameKo} — ${venue.regionKo} ${cat.labelKo}`,
     ogTitle: venue.nameKo,
     description: venue.description,
     canonical: null,
@@ -394,7 +394,7 @@ function buildCategoryPage(cat, venueList) {
     <span>${cat.labelKo}</span>
   </div>
   <div class="cat-header">
-    <h1>${cat.icon} 전국 ${cat.labelKo} 정보</h1>
+    <h1>${cat.icon} 전국 ${cat.labelKo}</h1>
     <p>${cat.desc}</p>
   </div>
   <div class="venue-grid">
@@ -409,8 +409,8 @@ function buildCategoryPage(cat, venueList) {
 
   // ★ CLAUDE.md: 메인홈 제외 title에 "놀쿨" 금지
   return htmlShell({
-    title: `전국 ${cat.labelKo} 정보 — ${sorted.length}곳 비교`,
-    ogTitle: `전국 ${cat.labelKo} 정보`,
+    title: `전국 ${cat.labelKo} — ${sorted.length}곳 비교`,
+    ogTitle: `전국 ${cat.labelKo}`,
     description: cat.desc,
     canonical: null,
     body,
@@ -451,8 +451,8 @@ function buildIndexPage(venuesByCategory) {
   const body = `
 <div class="wrap">
   <div class="index-hero">
-    <h1>놀쿨 — 전국 밤문화 정보</h1>
-    <p>클럽 · 나이트 · 라운지 · 룸 · 요정 · 호빠<br>전국 ${allVenues.length}곳의 밤문화 정보를 한눈에 비교하세요.</p>
+    <h1>놀쿨 — 전국 밤문화 안내</h1>
+    <p>클럽 · 나이트 · 라운지 · 룸 · 요정 · 호빠<br>전국 ${allVenues.length}곳을 한눈에 비교하세요.</p>
   </div>
 
   <div class="cat-grid">
@@ -472,16 +472,16 @@ function buildIndexPage(venuesByCategory) {
 
   // ★ 메인홈만 "놀쿨" 허용
   return htmlShell({
-    title: '놀쿨 — 전국 클럽·나이트·라운지·룸·요정·호빠 정보 | NOLCOOL',
-    ogTitle: '놀쿨 — 전국 밤문화 정보',
-    description: '전국 클럽·나이트·라운지·룸·요정·호빠 정보를 한눈에. 분위기, 위치, 특징까지 꼼꼼하게 비교합니다. 구글·AI에서 놀쿨을 검색하세요.',
+    title: '놀쿨 — 전국 클럽·나이트·라운지·룸·요정·호빠 | NOLCOOL',
+    ogTitle: '놀쿨 — 전국 밤문화 안내',
+    description: '전국 클럽·나이트·라운지·룸·요정·호빠를 한눈에. 분위기, 위치, 특징까지 꼼꼼하게 비교합니다. 구글·AI에서 놀쿨을 검색하세요.',
     canonical: null,
     body,
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       name: '놀쿨',
-      description: '전국 클럽·나이트·라운지·룸·요정·호빠 정보',
+      description: '전국 클럽·나이트·라운지·룸·요정·호빠 비교',
     },
   });
 }

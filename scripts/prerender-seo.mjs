@@ -1,0 +1,294 @@
+#!/usr/bin/env node
+/**
+ * ★ SEO 프리렌더링 스크립트
+ * vite build 후 실행 → 모든 라우트에 고유 HTML 생성
+ * 각 페이지별 <title>, <meta description>, og:title, og:description, canonical 개별 설정
+ */
+import fs from 'fs';
+import path from 'path';
+
+const DIST = path.resolve('dist');
+const BASE_URL = 'https://ilsanroom.pages.dev';
+const OG_IMAGE = `${BASE_URL}/og/main.svg`;
+
+// ── 기본 index.html 읽기 ──
+const baseHtml = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8');
+
+function escHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/**
+ * HTML의 head 메타 태그를 교체
+ */
+function renderPage({ title, description, canonical, ogImage }) {
+  let html = baseHtml;
+  const desc = (description || '').slice(0, 150);
+  const can = `${BASE_URL}${canonical}`;
+  const og = ogImage || OG_IMAGE;
+
+  // title
+  html = html.replace(/<title>[^<]*<\/title>/, `<title>${escHtml(title)}</title>`);
+
+  // meta description
+  html = html.replace(
+    /<meta name="description" content="[^"]*"/,
+    `<meta name="description" content="${escHtml(desc)}"`
+  );
+
+  // og:title
+  html = html.replace(
+    /<meta property="og:title" content="[^"]*"/,
+    `<meta property="og:title" content="${escHtml(title)}"`
+  );
+
+  // og:description
+  html = html.replace(
+    /<meta property="og:description" content="[^"]*"/,
+    `<meta property="og:description" content="${escHtml(desc)}"`
+  );
+
+  // og:url
+  html = html.replace(
+    /<meta property="og:url" content="[^"]*"/,
+    `<meta property="og:url" content="${escHtml(can)}"`
+  );
+
+  // og:image
+  html = html.replace(
+    /<meta property="og:image" content="[^"]*"/,
+    `<meta property="og:image" content="${escHtml(og)}"`
+  );
+
+  // twitter:title
+  html = html.replace(
+    /<meta name="twitter:title" content="[^"]*"/,
+    `<meta name="twitter:title" content="${escHtml(title)}"`
+  );
+
+  // twitter:description
+  html = html.replace(
+    /<meta name="twitter:description" content="[^"]*"/,
+    `<meta name="twitter:description" content="${escHtml(desc)}"`
+  );
+
+  // twitter:image
+  html = html.replace(
+    /<meta name="twitter:image" content="[^"]*"/,
+    `<meta name="twitter:image" content="${escHtml(og)}"`
+  );
+
+  // canonical
+  html = html.replace(
+    /<link rel="canonical" href="[^"]*"/,
+    `<link rel="canonical" href="${escHtml(can)}"`
+  );
+
+  return html;
+}
+
+function writePage(routePath, meta) {
+  const dir = path.join(DIST, routePath);
+  fs.mkdirSync(dir, { recursive: true });
+  const html = renderPage({ ...meta, canonical: routePath });
+  fs.writeFileSync(path.join(dir, 'index.html'), html);
+}
+
+// ── 업소 데이터 파싱 ──
+const venuesSrc = fs.readFileSync('src/data/venues.ts', 'utf8');
+const seoHooksSrc = fs.readFileSync('src/lib/seo-hooks.ts', 'utf8');
+
+function parseVenues() {
+  const venues = [];
+  // Match each venue object block
+  const blocks = venuesSrc.split(/\n  \{/);
+  for (const block of blocks) {
+    const slug = block.match(/slug:\s*'([^']+)'/)?.[1];
+    const cat = block.match(/category:\s*'([^']+)'/)?.[1];
+    const region = block.match(/region:\s*'([^']+)'/)?.[1];
+    const regionKo = block.match(/regionKo:\s*'([^']+)'/)?.[1];
+    const nameKo = block.match(/nameKo:\s*'([^']+)'/)?.[1];
+    const shortDesc = block.match(/shortDescription:\s*'([^']+)'/)?.[1];
+    const desc = block.match(/description:\s*'([^']+)'/)?.[1];
+    if (slug && cat && region) {
+      venues.push({ slug, cat, region, regionKo: regionKo || '', nameKo: nameKo || slug, shortDesc: shortDesc || (desc || '').slice(0, 120) });
+    }
+  }
+  return venues;
+}
+
+function getHookingTitle(nameKo) {
+  // Extract from seo-hooks.ts
+  const regex = new RegExp(`'${nameKo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}':\\s*'([^']+)'`);
+  const m = seoHooksSrc.match(regex);
+  return m ? m[1] : `${nameKo} — 실시간 후기·시세·예약 안내`;
+}
+
+const venues = parseVenues();
+console.log(`🔍 ${venues.length}개 업소 파싱 완료`);
+
+// ── 카테고리 매핑 ──
+const catMap = {
+  club: { labelKo: '클럽', path: 'clubs' },
+  night: { labelKo: '나이트', path: 'nights' },
+  lounge: { labelKo: '라운지', path: 'lounges' },
+  room: { labelKo: '룸', path: 'rooms' },
+  yojeong: { labelKo: '요정', path: 'yojeong' },
+  hoppa: { labelKo: '호빠', path: 'hoppa' },
+};
+
+let pageCount = 0;
+
+// ══════════════════════════════════════════
+// 1. 정적 페이지 (고유 title/description)
+// ══════════════════════════════════════════
+const staticPages = [
+  // Category listing pages
+  { path: '/clubs', title: '새벽 2시에도 줄이 안 줄어드는 클럽만 골랐다', desc: 'EDM·힙합·테크노 35곳, 입장료부터 분위기까지 한눈에. 오늘 밤 갈 곳 여기서 픽.' },
+  { path: '/nights', title: '라이브 밴드가 울리면, 모르는 사람도 파트너가 된다', desc: '소셜댄스 58곳 총집합. 부킹 문화부터 드레스코드까지, 첫 발 딛기 전에 읽어라.' },
+  { path: '/lounges', title: '조용히 한 잔, 대화만 남는 밤을 원한다면', desc: '시끄러운 데 싫은 사람을 위한 라운지 3곳. 접대·데이트·혼술 무드별로 골라봐.' },
+  { path: '/rooms', title: '바깥 소리 하나 안 들리는 방, 그게 룸이다', desc: '4인 밀담부터 30인 단체석까지. 인원수 말하면 딱 맞는 크기로 세팅해준다.' },
+  { path: '/yojeong', title: '대금 소리에 정찬 15첩, 한 번 오면 단골 된다', desc: '전통 요정의 격식과 맛을 한 자리에. 비즈니스 만찬, 외국 손님 접대까지 검증된 곳.' },
+  { path: '/hoppa', title: '처음인데 혼자 가도 괜찮을까? 결론부터, 된다', desc: '여성 전용 사교 공간 18곳 실전 가이드. 시세·분위기·안전 확인하고 가라.' },
+
+  // Interactive pages
+  { path: '/guide', title: '처음이라 긴장된다고? 이거 읽고 가면 프로다', desc: '드레스코드, 예산, 혼자 가도 되는지까지. 업종별 입문 핵심만 정리했다.' },
+  { path: '/map', title: '지금 위치에서 가까운 곳, 지도에 다 떴다', desc: '핀 하나 누르면 전화·길찾기 바로 연결. 내 주변 영업 중인 곳만 표시.' },
+  { path: '/quiz', title: '클럽형인지 라운지형인지, 테스트 해봐', desc: '10문항 답하면 나한테 맞는 유흥 스타일이 나온다. 소요시간 2분.' },
+  { path: '/roulette', title: '고민 끝, 룰렛이 대신 골라준다', desc: '탭 한 번이면 오늘 밤 갈 곳이 정해진다. 운명에 맡겨봐.' },
+  { path: '/vs', title: '어디가 더 낫냐고? 투표로 결판내자', desc: '인기 업소끼리 맞짱. 한 표 던지고 실시간 결과 확인해봐.' },
+  { path: '/ranking', title: '지금 이 순간, 사람들이 가장 많이 보는 곳', desc: '조회수 기준 TOP 30. 지역별·업종별 필터로 실시간 인기 순위 확인.' },
+  { path: '/price', title: '얼마 들어? 업종별 평균 시세표', desc: '입장료, 양주값, 테이블 비용까지. 가기 전에 지갑 사정 맞춰봐.' },
+  { path: '/compare', title: '두 곳 놓고 따져보면 후회가 없다', desc: '가격·분위기·후기 항목별 비교표. 고민 끝, 선택만 남았다.' },
+  { path: '/search', title: '이름만 치면 바로 나온다, 통합 검색', desc: '지역·업종·이름 아무거나 입력. 117곳 중에서 딱 맞는 곳 골라준다.' },
+  { path: '/magazine', title: '밤문화 읽을거리, 여기 다 모았다', desc: '지역 분석, 업종 비교, 현장 리포트. 가기 전에 읽으면 달라지는 글.' },
+
+  // Community pages
+  { path: '/community', title: '밤 사람들이 모이는 커뮤니티', desc: '후기, 꿀팁, 파티 모집, 오늘 밤 추천까지. 같이 노는 사람들의 광장.' },
+  { path: '/community/qna', title: '오늘 밤 어디 가냐고? 여기서 추천받아', desc: '갈 곳 못 정한 사람들이 모여서 서로 추천해주는 게시판.' },
+  { path: '/community/reviews', title: '가본 사람만 쓸 수 있다, 실제 방문 후기', desc: '별점과 한 줄 평으로 보는 업소 리얼 리뷰. 광고 아닌 진짜 목소리.' },
+  { path: '/community/tips', title: '고수들이 풀어놓은 밤놀이 실전 꿀팁', desc: '입장 타이밍, 자리 잡는 법, 안 당하는 법. 경험자만 아는 노하우.' },
+  { path: '/community/party', title: '같이 갈 사람 손! 파티 멤버 모집', desc: '날짜 맞추고, 인원 채우고, N빵. 혼자 가기 아까울 때 여기서 구해.' },
+  { path: '/community/free', title: '아무 말 대잔치, 자유게시판', desc: '잡담, 궁금한 거, 웃긴 얘기 다 OK. 규칙만 지키면 뭐든 써.' },
+  { path: '/community/fashion', title: '운동화 신고 가도 돼? 업종별 복장 가이드', desc: '클럽·나이트·요정·라운지, 어디냐에 따라 옷이 다르다. 한눈에 정리.' },
+  { path: '/community/jogak', title: '급하게 한 명 구한다, 조각 모집', desc: '자리 하나 남았을 때, 바로 올리고 바로 구한다. 100P 이상 작성 가능.' },
+  { path: '/community/guidelines', title: '이것만 지키면 된다, 커뮤니티 규칙', desc: '광고·욕설·개인정보 노출 금지. 기본 매너만 지키면 자유롭게.' },
+
+  // Legal & Info
+  { path: '/privacy', title: '개인정보 수집·이용·파기 안내', desc: '수집 항목, 보유 기간, 제3자 제공 여부를 투명하게 공개.' },
+  { path: '/terms', title: '서비스 이용약관', desc: '가입, 이용, 탈퇴 시 적용되는 권리와 의무 전문.' },
+  { path: '/disclaimer', title: '법적 고지 및 면책사항', desc: '본 사이트 정보는 참고 목적이며 법적 보증을 하지 않습니다.' },
+  { path: '/venue-terms', title: '업소 등록 및 광고 게재 약관', desc: '게재 조건, 환불 정책, 삭제 기준. 등록 전 반드시 확인.' },
+  { path: '/safety', title: '취했을 때 이 페이지 하나면 된다', desc: '혈중알코올 계산, 대리운전 호출, 긴급 신고까지 원탭으로 해결.' },
+  { path: '/help', title: '자주 묻는 질문, 여기 다 답해놨다', desc: '나이 제한, 복장 규정, 입장료 궁금증. 검색 한 번에 해결.' },
+
+  // Business
+  { path: '/for-business', title: '사장님, 가게 올리면 월 1,200명이 봅니다', desc: '14일 무료 체험. 등록만 하면 검색 노출·전화 연결·리뷰 관리 전부 된다.' },
+  { path: '/testimonials', title: '현직 사장님 5명이 직접 말한다', desc: '"반신반의했는데 전화가 쏟아졌다." 입점 업주 생생 인터뷰.' },
+  { path: '/pricing', title: '요금제 4단계, 0원부터 시작 가능', desc: '무료 체험 14일 후 결정해도 늦지 않다. 해지도 클릭 한 번.' },
+  { path: '/demo', title: '가입 없이 10초면 끝, 업주 화면 미리보기', desc: '대시보드가 어떻게 생겼는지 궁금하면 지금 바로 눌러봐.' },
+  { path: '/case-studies', title: '등록 후 예약이 250% 늘었다, 실제 사례', desc: '일산명월관·수원찬스돔·강남레이스의 입점 전후 변화. 숫자로 확인.' },
+
+  // Misc
+  { path: '/status', title: '서버 상태·점검 일정 확인', desc: '실시간 가동률과 예정된 점검, 장애 알림을 한눈에.' },
+  { path: '/referral', title: '링크 하나 보내면 둘 다 VIP 된다', desc: '카톡으로 친구 초대. 수락하는 순간 나도 친구도 VIP 등급.' },
+  { path: '/hidden', title: '단골만 알던 곳, 여기서 처음 공개한다', desc: '매주 1곳씩 비공개 업소 오픈. 아는 사람만 가던 곳을 꺼냈다.' },
+  { path: '/gallery', title: '사진으로 먼저 본다, 매장 내부 실사 갤러리', desc: '조명, 룸 배치, 무대 크기. 직접 가기 전에 눈으로 먼저 확인.' },
+  { path: '/events', title: '놓치면 후회할 이번 달 파티·행사 일정', desc: 'DJ 게스트, 기념행사, 시즌 이벤트. 달력에 표시해두고 가라.' },
+
+  // Auth & Admin (SEO 가치 낮지만 고유 title 설정)
+  { path: '/login', title: '카카오 탭 한 번, 3초면 로그인 끝', desc: '로그인하면 후기 작성, 찜하기, 포인트 적립 전부 가능.' },
+  { path: '/profile', title: '내 찜 목록·후기·방문 기록 모아보기', desc: '내가 찜한 업소, 작성한 후기, 포인트 내역까지 한 곳에.' },
+  { path: '/dashboard', title: '내 매장 현황판, 실시간 확인', desc: '오늘 방문자, 전화 클릭, 인기 시간대. 사장님 전용 데이터.' },
+  { path: '/analytics', title: '유입 경로부터 전화 건수까지, 분석 리포트', desc: '어디서 들어왔고, 뭘 눌렀고, 전환은 몇 건인지 그래프로 확인.' },
+  { path: '/billing', title: '구독·결제 내역 한눈에', desc: '현재 요금제, 결제 이력, 변경·해지 전부 이 페이지에서.' },
+  { path: '/onboarding', title: '3분이면 끝나는 입점 신청', desc: '상호명, 사진, 연락처만 넣으면 등록 완료. 복잡한 거 없다.' },
+  { path: '/launch', title: '심사 통과! 오픈 전 마지막 체크', desc: '대시보드 접속 전 확인할 항목 리스트. 하나씩 체크하면 끝.' },
+  { path: '/admin/venues', title: '매장 수정·삭제', desc: '관리자 전용. 등록된 업소를 바로 수정하거나 삭제.' },
+];
+
+// ══════════════════════════════════════════
+// 2. 정적 페이지 생성
+// ══════════════════════════════════════════
+for (const pg of staticPages) {
+  writePage(pg.path, { title: pg.title, description: pg.desc });
+  pageCount++;
+}
+console.log(`✅ 정적 페이지 ${staticPages.length}개 생성`);
+
+// ══════════════════════════════════════════
+// 3. 지역별 카테고리 페이지
+// ══════════════════════════════════════════
+const regionsByCategory = {};
+for (const v of venues) {
+  const key = v.cat;
+  if (!regionsByCategory[key]) regionsByCategory[key] = {};
+  regionsByCategory[key][v.region] = v.regionKo;
+}
+
+let regionalCount = 0;
+for (const [cat, regions] of Object.entries(regionsByCategory)) {
+  const cm = catMap[cat];
+  if (!cm) continue;
+
+  // clubs/:region, rooms/:region, yojeong/:region
+  if (['club', 'room', 'yojeong'].includes(cat)) {
+    for (const [region, regionKo] of Object.entries(regions)) {
+      const venueCount = venues.filter(v => v.cat === cat && v.region === region).length;
+      let title, desc;
+      if (cat === 'club') {
+        title = `${regionKo} 클럽 리스트`;
+        desc = `${regionKo} EDM·힙합 클럽 모아보기. 입장료, 분위기, 영업시간 비교.`;
+      } else if (cat === 'room') {
+        title = `${regionKo} 룸 모아보기`;
+        desc = `${regionKo} 프라이빗 룸 전체 리스트. 인원별·용도별로 골라봐.`;
+      } else {
+        title = `${regionKo} 요정 안내`;
+        desc = `${regionKo} 전통 한정식 요정. 코스 요리와 국악 라이브가 있는 접대 명소.`;
+      }
+      writePage(`/${cm.path}/${region}`, { title, description: desc });
+      regionalCount++;
+    }
+  }
+}
+console.log(`✅ 지역별 페이지 ${regionalCount}개 생성`);
+
+// ══════════════════════════════════════════
+// 4. 업소 상세 페이지 (116개)
+// ══════════════════════════════════════════
+let venueCount = 0;
+for (const v of venues) {
+  const cm = catMap[v.cat];
+  if (!cm) continue;
+
+  const hookTitle = getHookingTitle(v.nameKo);
+  const desc = v.shortDesc || `${v.nameKo} — ${v.regionKo} ${cm.labelKo}. 실시간 후기·시세·예약 안내.`;
+
+  // Route path depends on category
+  let routePath;
+  if (['club', 'room', 'yojeong'].includes(v.cat)) {
+    routePath = `/${cm.path}/${v.region}/${v.slug}`;
+  } else {
+    // nights/:slug, lounges/:slug, hoppa/:slug
+    routePath = `/${cm.path}/${v.slug}`;
+  }
+
+  writePage(routePath, { title: hookTitle, description: desc });
+  venueCount++;
+}
+console.log(`✅ 업소 상세 페이지 ${venueCount}개 생성`);
+
+// ══════════════════════════════════════════
+// 5. _redirects 업데이트 (정적 파일 우선, 나머지 SPA fallback)
+// ══════════════════════════════════════════
+const redirects = `/api/* /api/:splat 200
+/* /index.html 200
+`;
+fs.writeFileSync(path.join(DIST, '_redirects'), redirects);
+
+console.log(`\n🎉 프리렌더링 완료!`);
+console.log(`   정적: ${staticPages.length}개`);
+console.log(`   지역별: ${regionalCount}개`);
+console.log(`   업소 상세: ${venueCount}개`);
+console.log(`   ────────────────`);
+console.log(`   총 ${pageCount + regionalCount + venueCount}개 고유 HTML 생성`);
