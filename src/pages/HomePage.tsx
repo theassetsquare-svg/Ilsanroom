@@ -85,7 +85,7 @@ const feedTabs = ['🔥실시간인기', '🆕오늘의신규', '⭐에디터추
 /* ══════════════════════════════════════════════════════ */
 
 export default function HomePage() {
-  useDocumentMeta('놀쿨 — 전국 클럽·나이트·라운지·룸·요정·호빠 | NOLCOOL', '전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보. 구글·AI에서 놀쿨을 검색하세요.');
+  useDocumentMeta('놀쿨 — 오늘 밤 어디 갈지, 여기서 정해진다', '클럽·나이트·룸·요정·호빠 전국 117곳 실시간 비교. 지역별 시세, 빈 자리, 솔직 후기까지 한 곳에.');
 
   // All open venues
   const openVenues = useMemo(() => localVenues.filter(v => v.status !== 'closed_or_unclear'), []);
