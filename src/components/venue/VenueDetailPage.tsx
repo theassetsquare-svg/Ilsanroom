@@ -8,6 +8,7 @@ import VenueJsonLd from '@/components/venue/VenueJsonLd';
 import VenueDetailTabs from '@/components/venue/VenueDetailTabs';
 import VenueGallery from '@/components/venue/VenueGallery';
 import Card from '@/components/ui/Card';
+import ShareButtons from '@/components/interactive/ShareButtons';
 import { useEngagementStore } from '@/lib/engagement-store';
 import type { Venue } from '@/types';
 
@@ -89,6 +90,17 @@ export default function VenueDetailPage({
         regionKo={venue.regionKo}
         slug={venue.slug}
       />
+
+      {/* ═══ Share — 바이럴 루프 ═══ */}
+      <section className="mx-auto max-w-[1200px] px-4 pt-6 sm:px-6">
+        <div className="rounded-2xl bg-gradient-to-r from-[#F3F0FF] to-white border border-[#E9E5FF] p-4">
+          <p className="text-center text-xs font-bold text-[#8B5CF6] mb-2">친구한테 보내기</p>
+          <ShareButtons
+            title={`${venue.nameKo} — 오늘 밤 여기 어때?`}
+            description={venue.shortDescription || venue.description.slice(0, 80)}
+          />
+        </div>
+      </section>
 
       {/* Venue Photo Gallery */}
       <section className="mx-auto max-w-[1200px] px-4 pt-8 sm:px-6">

@@ -238,28 +238,53 @@ export default function HomePage() {
         itemListElement: popularVenues.slice(0, 10).map((v, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'LocalBusiness', name: v.nameKo, address: v.address } })),
       }} />
 
-      {/* ═══════ HERO — Result headline ═══════ */}
-      <section className="px-4 pt-6 pb-2 text-center max-w-2xl mx-auto">
-        <h1 className="text-2xl font-black text-[#111] leading-tight">
-          오늘 밤, 실패 없는 선택
+      {/* ═══════ HERO — Result headline + CTA ═══════ */}
+      <section className="px-4 pt-8 pb-3 text-center max-w-2xl mx-auto">
+        <h1 className="text-[28px] font-black text-[#111] leading-[1.3] tracking-tight">
+          검색 그만.<br />여기서 고르면 실패 없다.
         </h1>
-        <p className="mt-2 text-sm text-[#555]" style={{ lineHeight: 1.7 }}>
-          전국 {openVenues.length}곳 클럽·나이트·룸·요정·호빠 실시간 비교
+        <p className="mt-3 text-[15px] text-[#555]" style={{ lineHeight: 1.7 }}>
+          전국 {openVenues.length}곳 실시간 비교 — 직접 가본 사람의 솔직 후기
         </p>
+        <button
+          onClick={() => searchInputRef.current?.focus()}
+          className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#8B5CF6] px-6 py-3 text-[15px] font-bold text-white shadow-lg shadow-purple-200 transition-all hover:bg-[#7C3AED] active:scale-[0.97]"
+          style={{ minHeight: 48 }}
+        >
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          오늘 밤 갈 곳 찾기
+        </button>
       </section>
 
       {/* ═══════ SOCIAL PROOF ═══════ */}
-      <div className="flex justify-center gap-3 px-4 pb-2">
+      <div className="flex flex-wrap justify-center gap-2 px-4 pb-3">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F3F0FF] px-3 py-1.5 text-xs font-medium text-[#8B5CF6]">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
           </span>
-          이번 달 {monthlyVisitors}명이 찾았다
+          이번 달 {monthlyVisitors}명이 여기서 시작했다
         </span>
         <span className="inline-flex items-center gap-1 rounded-full bg-[#FFF7ED] px-3 py-1.5 text-xs font-medium text-amber-700">
-          평균 만족도 4.7
+          만족도 4.7
         </span>
+        <span className="inline-flex items-center gap-1 rounded-full bg-[#F0FDF4] px-3 py-1.5 text-xs font-medium text-green-700">
+          실패율 3%
+        </span>
+      </div>
+
+      {/* ═══════ PAIN → SOLUTION ═══════ */}
+      <div className="px-4 pb-3 max-w-md mx-auto">
+        <div className="rounded-2xl bg-gradient-to-r from-gray-50 to-white border border-gray-100 p-4">
+          <div className="flex items-start gap-3">
+            <span className="text-2xl shrink-0">😩</span>
+            <div>
+              <p className="text-xs text-[#999] line-through">30분 검색하고 갔는데 별로였던 경험</p>
+              <p className="mt-1 text-sm font-bold text-[#111]">여기서 고르면 그런 일 없다</p>
+              <p className="mt-0.5 text-xs text-[#8B5CF6]">직접 가본 후기만. 광고 리뷰 0건.</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* ═══════ SEARCH BAR (becomes sticky) ═══════ */}
