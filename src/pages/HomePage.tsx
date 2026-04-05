@@ -317,9 +317,9 @@ export default function HomePage() {
         <div className="rounded-2xl bg-gray-50 border border-gray-200 p-4">
           <p className="text-xs font-bold text-red-400 mb-2">BEFORE</p>
           <div className="space-y-1.5">
-            <p className="text-sm text-[#999] line-through">어디 가지? 30분 검색... 결국 별로</p>
-            <p className="text-sm text-[#999] line-through">후기 봤는데 다 광고. 진짜 어딘지 모름</p>
-            <p className="text-sm text-[#999] line-through">갔다가 분위기 최악. 시간·돈 낭비</p>
+            <p className="text-sm text-[#767676] line-through">어디 가지? 30분 검색... 결국 별로</p>
+            <p className="text-sm text-[#767676] line-through">후기 봤는데 다 광고. 진짜 어딘지 모름</p>
+            <p className="text-sm text-[#767676] line-through">갔다가 분위기 최악. 시간·돈 낭비</p>
           </div>
         </div>
         {/* AFTER — Solution */}

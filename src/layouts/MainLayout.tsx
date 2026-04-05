@@ -48,6 +48,7 @@ export default function MainLayout() {
 
   return (
     <div className="flex min-h-screen flex-col">
+      <a href="#main-content" className="skip-nav">본문으로 건너뛰기</a>
       <ScrollToTop />
       <JsonLd data={organizationJsonLd} />
       <JsonLd data={websiteJsonLd} />
@@ -57,7 +58,7 @@ export default function MainLayout() {
           만 19세 이상만 들어올 수 있어요
         </p>
       </div>
-      <main className="flex-1 pt-14 pb-20 md:pb-14">
+      <main id="main-content" className="flex-1 pt-14 pb-20 md:pb-14">
         <Outlet />
       </main>
       {/* 모든 페이지 공통 CTA */}
