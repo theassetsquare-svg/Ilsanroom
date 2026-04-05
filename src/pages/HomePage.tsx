@@ -11,6 +11,16 @@ import { useEngagementStore } from '@/lib/engagement-store';
 const InfiniteDiscoveryFeed = lazy(() => import('@/components/engagement/InfiniteDiscoveryFeed'));
 const NightFortune = lazy(() => import('@/components/engagement/NightFortune'));
 const PointBenefits = lazy(() => import('@/components/engagement/PointBenefits'));
+const LivePulse = lazy(() => import('@/components/engagement/LivePulse'));
+const MysteryCard = lazy(() => import('@/components/engagement/MysteryCard'));
+const MatchQuiz = lazy(() => import('@/components/engagement/MatchQuiz'));
+const PriceHeatmap = lazy(() => import('@/components/engagement/PriceHeatmap'));
+const NightTimeline = lazy(() => import('@/components/engagement/NightTimeline'));
+
+import CountdownTimer from '@/components/engagement/CountdownTimer';
+import SoundWavePreview from '@/components/engagement/SoundWavePreview';
+import EmojiReaction from '@/components/engagement/EmojiReaction';
+const StoryMode = lazy(() => import('@/components/engagement/StoryMode'));
 
 /* ── Helpers ── */
 function getCategoryHref(category: string, slug: string, region: string) {
@@ -205,6 +215,9 @@ export default function HomePage() {
     });
   };
 
+  // === Story Mode ===
+  const [storyVenue, setStoryVenue] = useState<string | null>(null);
+
   // === Lucky Roulette ===
   const [rouletteResult, setRouletteResult] = useState<Venue | null>(null);
   const [rouletteSpinning, setRouletteSpinning] = useState(false);
@@ -255,6 +268,13 @@ export default function HomePage() {
           오늘 밤 갈 곳 찾기
         </button>
       </section>
+
+      {/* ═══════ [1] LIVE PULSE — FOMO counter ═══════ */}
+      <ErrorBoundary>
+        <Suspense fallback={null}>
+          <LivePulse />
+        </Suspense>
+      </ErrorBoundary>
 
       {/* ═══════ SOCIAL PROOF ═══════ */}
       <div className="flex flex-wrap justify-center gap-2 px-4 pb-3">
@@ -477,14 +497,29 @@ export default function HomePage() {
                     <div className="p-3">
                       <h3 className="text-base font-bold text-[#111] leading-tight line-clamp-1">{venue.nameKo}</h3>
                       <p className="mt-1 text-xs text-[#555] line-clamp-1">{venue.shortDescription}</p>
-                      {/* Real-time viewer */}
-                      <div className="mt-2 flex items-center gap-1">
-                        <span className="relative flex h-2 w-2">
-                          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
-                          <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
-                        </span>
-                        <span className="text-xs text-red-500 font-medium">지금 {getViewerCount(venue.id)}명 보는 중</span>
+                      {/* Real-time viewer + Sound Wave [5] */}
+                      <div className="mt-2 flex items-center justify-between gap-1">
+                        <div className="flex items-center gap-1">
+                          <span className="relative flex h-2 w-2">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
+                            <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+                          </span>
+                          <span className="text-xs text-red-500 font-medium">지금 {getViewerCount(venue.id)}명 보는 중</span>
+                        </div>
+                        <SoundWavePreview category={venue.category} />
                       </div>
+                      {/* [3] Countdown Timer — on popular venues */}
+                      {venue.isPremium && <div className="mt-1.5"><CountdownTimer venueName={venue.nameKo} /></div>}
+                      {/* [9] Emoji Reactions */}
+                      <EmojiReaction venueId={venue.id} />
+                      {/* [7] Story button */}
+                      <button
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setStoryVenue(venue.nameKo); }}
+                        className="mt-1.5 flex items-center gap-1 text-[10px] text-[#8B5CF6] font-medium hover:underline"
+                        style={{ minHeight: 24 }}
+                      >
+                        📸 스토리 보기
+                      </button>
                     </div>
                   </div>
                 </Link>
@@ -532,6 +567,17 @@ export default function HomePage() {
                     </p>
                   )}
                 </div>
+              );
+            }
+
+            // Every 7th card — [2] MYSTERY CARD
+            if ((idx + 1) % 7 === 0) {
+              cards.push(
+                <ErrorBoundary key={`mystery-${idx}`}>
+                  <Suspense fallback={null}>
+                    <MysteryCard />
+                  </Suspense>
+                </ErrorBoundary>
               );
             }
 
@@ -586,6 +632,20 @@ export default function HomePage() {
           </div>
         )}
       </section>
+
+      {/* ═══════ [10] NIGHT TIMELINE ═══════ */}
+      <ErrorBoundary>
+        <Suspense fallback={null}>
+          <NightTimeline />
+        </Suspense>
+      </ErrorBoundary>
+
+      {/* ═══════ [8] PRICE HEATMAP ═══════ */}
+      <ErrorBoundary>
+        <Suspense fallback={null}>
+          <PriceHeatmap />
+        </Suspense>
+      </ErrorBoundary>
 
       {/* ═══════ LUCKY ROULETTE ═══════ */}
       <section className="px-4 py-6 max-w-[1200px] mx-auto">
@@ -688,6 +748,22 @@ export default function HomePage() {
         >
           ↑
         </button>
+      )}
+
+      {/* ═══════ [6] MATCH QUIZ — floating button ═══════ */}
+      <ErrorBoundary>
+        <Suspense fallback={null}>
+          <MatchQuiz />
+        </Suspense>
+      </ErrorBoundary>
+
+      {/* ═══════ [7] STORY MODE — full screen overlay ═══════ */}
+      {storyVenue && (
+        <ErrorBoundary>
+          <Suspense fallback={null}>
+            <StoryMode venueName={storyVenue} onClose={() => setStoryVenue(null)} />
+          </Suspense>
+        </ErrorBoundary>
       )}
     </div>
   );

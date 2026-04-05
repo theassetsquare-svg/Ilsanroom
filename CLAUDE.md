@@ -5,7 +5,10 @@
 - Store name = Region+Type+Business. FIRST in title
 - No "놀쿨" in any title except homepage
 - Keyword density 1.5-2.5% (1000c=5-7x, 2000c=8-12x)
-- Mobile: 16px font, 1.7 line-height, 44px touch, no bar overlap
+- Logo "놀쿨" text: font-weight: 300 (thin/light). NOT bold! Thin = elegant = stands out!
+CSS: .logo-text { font-weight: 300; letter-spacing: 0.05em; }
+Only "놀쿨" word is thin. Other text stays normal weight.
+Mobile: 16px font, 1.7 line-height, 44px touch, no bar overlap
 - useEffect cleanup ALL timers. persistSession:true. ErrorBoundary
 - Bestseller writing. No AI text.
 - All links open in new tab! target="_blank" rel="noopener noreferrer" Internal search ONLY
@@ -26,14 +29,14 @@ Do NOT ask. Just fix. Report all titles when done.
 - title: Store name + hook. Under 60 chars
 - meta description: 150 chars. H1+H2 with store name 3+ times
 - Schema: JSON-LD NightClub. og:image: real photo 1:1
-- sitemap.xml + robots.txt (Googlebot/Yeti/GPTBot) + llms.txt
+- robots.txt Allow ALL bots! NO Disallow! sitemap.xml list ALL pages! llms.txt for AI search! (Googlebot/Yeti/GPTBot) + llms.txt
 - Core Web Vitals: LCP<2.5s, INP<200ms, CLS<0.1
 - E-E-A-T: real experience, expert tone. Canonical URL. NEVER duplicate title/content across domains!. og:image 1200x1200 (1:1) every page!
 
 - NEVER use shared content pools! Write UNIQUE 1000+ chars per venue! Takes time = OK! SEO = #1 priority!
 - Time does not matter! Write UNIQUE 1000+ chars per venue! SEO > speed!
 ## NEVER
-- NEVER use shared content pools/arrays! DELETE all shared pools! Time does NOT matter, SEO matters! Write UNIQUE content for EVERY page even if it takes hours! 130 venues x 1000 chars each!
+- NEVER use fake phone numbers! NEVER use placeholder data! Only REAL advertiser phone numbers! No number = leave empty!
 - Auto page transition. Next.js. Change existing URLs
 - Brand name in title. Brand path. Stuffing over 3%
 - Baby/mom/family/kids images. No family content (parents birthday/family gathering/reunion/anniversary = DELETE!). Banned adult words
