@@ -5,6 +5,7 @@ import Footer from '@/components/layout/Footer';
 import MobileNav from '@/components/layout/MobileNav';
 import BackToTop from '@/components/layout/BackToTop';
 import Toast from '@/components/ui/Toast';
+import ErrorBoundary from '@/components/ui/ErrorBoundary';
 import JsonLd from '@/components/seo/JsonLd';
 
 const GlobalEngagement = lazy(() => import('@/components/engagement/GlobalEngagement'));
@@ -71,9 +72,11 @@ export default function MainLayout() {
       <Toast />
       {/* 업소 상세페이지에서는 전화바와 겹치므로 engagement 숨김 */}
       {!isVenueDetail && (
-        <Suspense fallback={null}>
-          <GlobalEngagement />
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense fallback={null}>
+            <GlobalEngagement />
+          </Suspense>
+        </ErrorBoundary>
       )}
     </div>
   );

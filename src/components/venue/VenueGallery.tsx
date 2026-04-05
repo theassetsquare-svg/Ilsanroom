@@ -23,7 +23,7 @@ export default function VenueGallery({ slug, name }: VenueGalleryProps) {
                 alt={name}
                 width={600}
                 height={400}
-                loading="eager"
+                loading="lazy"
                 onError={() => handleError(n)}
                 className="w-full object-cover"
                 style={{ aspectRatio: '3/2' }}

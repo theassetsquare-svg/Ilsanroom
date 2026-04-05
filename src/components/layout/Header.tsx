@@ -89,7 +89,7 @@ export default function Header() {
               aria-label="프로필"
             >
               {user?.user_metadata?.avatar_url ? (
-                <img src={user.user_metadata.avatar_url} alt="" className="h-7 w-7 rounded-full" />
+                <img src={user.user_metadata.avatar_url} alt="" loading="lazy" className="h-7 w-7 rounded-full" />
               ) : (
                 <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-200">
                   <svg className="h-4 w-4 text-[#555]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -132,7 +132,7 @@ export default function Header() {
               {user ? (
                 <div className="flex items-center gap-3">
                   {user.user_metadata?.avatar_url ? (
-                    <img src={user.user_metadata.avatar_url} alt="" className="h-10 w-10 rounded-full" />
+                    <img src={user.user_metadata.avatar_url} alt="" loading="lazy" className="h-10 w-10 rounded-full" />
                   ) : (
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#8B5CF6] text-white font-bold">
                       {(user.user_metadata?.name || user.email || '?').charAt(0)}

@@ -19,7 +19,7 @@ const storySteps: StoryStep[] = [
   { label: '로비', icon: '✨', description: '웨이팅 없이 바로 입장. 직원이 자리까지 안내', bgGradient: 'from-violet-900 to-violet-700' },
   { label: '메인홀', icon: '🎵', description: '사운드 시스템이 다르다. 온몸으로 느끼는 비트', bgGradient: 'from-purple-900 to-purple-700' },
   { label: '바', icon: '🍸', description: '시그니처 칵테일 한 잔. 바텐더 추천이 정답', bgGradient: 'from-indigo-900 to-indigo-700' },
-  { label: 'VIP', icon: '👑', description: '프라이빗 공간. 특별한 날에는 VIP가 답이다', bgGradient: 'from-amber-900 to-amber-700' },
+  { label: 'VIP', icon: '👑', description: '프라이빗 공간. 기념일에는 VIP가 답이다', bgGradient: 'from-amber-900 to-amber-700' },
   { label: '분위기', icon: '🔥', description: '한번 가면 단골 된다. 그 이유를 직접 확인하세요', bgGradient: 'from-red-900 to-red-700' },
 ];
 

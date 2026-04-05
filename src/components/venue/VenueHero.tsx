@@ -58,7 +58,7 @@ export default function VenueHero({
           alt={name}
           width={1200}
           height={630}
-          loading="eager"
+          loading="lazy"
           onError={handleImageError}
           className="absolute inset-0 h-full w-full object-cover"
         />

@@ -14,7 +14,7 @@ const questions = [
     options: [
       { label: '신나게 놀고 싶다!', value: 'energetic' },
       { label: '조용히 한잔 하고 싶다', value: 'chill' },
-      { label: '특별한 날이다', value: 'special' },
+      { label: '기념일이다', value: 'special' },
     ],
   },
   {
@@ -81,7 +81,7 @@ const typeDescriptions: Record<ResultType, string> = {
   lounge: '분위기 있는 공간에서 여유롭게 즐기는 타입. 라운지가 제격이에요.',
   night: '라이브 음악과 함께 흥겨운 밤을 즐기는 당신! 나이트가 어울려요.',
   room: '프라이빗한 공간에서 편하게 즐기고 싶은 당신. 룸이 정답!',
-  yojeong: '특별한 날, 격이 다른 대접을 원하는 당신. 요정이 최고에요.',
+  yojeong: '기념일엔 격이 다른 대접을 받아야지. 요정이 정답이에요.',
   hoppa: '재미있고 유쾌한 분위기를 원하는 당신! 호빠에서 즐겨보세요.',
 };
 

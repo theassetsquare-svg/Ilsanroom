@@ -87,7 +87,7 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
     <div className="animate-fade-in fixed inset-0 z-50 flex items-start justify-center bg-black/40 backdrop-blur-sm pt-24" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       <div className="w-full max-w-2xl px-4">
         <div className="mb-4 flex justify-end">
-          <button onClick={onClose} className="rounded-lg p-2 text-neon-text-muted transition-colors hover:text-neon-text" aria-label="검색 닫기">
+          <button onClick={onClose} className="flex h-11 w-11 items-center justify-center rounded-lg text-neon-text-muted transition-colors hover:text-neon-text" aria-label="검색 닫기">
             <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
