@@ -37,6 +37,7 @@ export default function SlotMachinePopup() {
   const [spinning, setSpinning] = useState(false);
   const [result, setResult] = useState<{ symbols: string[]; points: number; label: string } | null>(null);
   const [displaySymbols, setDisplaySymbols] = useState(['❓', '❓', '❓']);
+  const spinIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const spinCountRef = useRef(0);
 
@@ -55,7 +56,7 @@ export default function SlotMachinePopup() {
     timeoutRef.current = setTimeout(() => {
       setShow(true);
     }, (Math.floor(Math.random() * 2) + 2) * 60 * 1000);
-    return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
+    return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); if (spinIntervalRef.current) clearInterval(spinIntervalRef.current); };
   }, []);
 
   const handleSpin = () => {
@@ -65,7 +66,7 @@ export default function SlotMachinePopup() {
 
     // Animate symbols cycling
     let count = 0;
-    const interval = setInterval(() => {
+    spinIntervalRef.current = setInterval(() => {
       setDisplaySymbols([
         SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
         SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
@@ -73,7 +74,7 @@ export default function SlotMachinePopup() {
       ]);
       count++;
       if (count >= 15) {
-        clearInterval(interval);
+        if (spinIntervalRef.current) clearInterval(spinIntervalRef.current);
         const res = spinResult();
         setResult(res);
         setDisplaySymbols(res.symbols);

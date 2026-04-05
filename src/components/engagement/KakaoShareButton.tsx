@@ -22,7 +22,7 @@ export default function KakaoShareButton({ venueName, venueHref, description, co
     // Try native share first (better on mobile)
     if (navigator.share) {
       navigator.share({
-        title: `${venueName} — 놀쿨`,
+        title: venueName,
         text: shareText,
         url: shareUrl,
       }).catch(() => {});
