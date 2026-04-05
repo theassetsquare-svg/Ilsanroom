@@ -87,8 +87,8 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Site info */}
           <div className="col-span-2 sm:col-span-1">
-            <Link to="/" target="_blank" rel="noopener noreferrer" className="text-xl font-black tracking-wider text-neon-primary">
-              놀쿨 <span className="text-sm font-bold text-neon-text-muted">NOLCOOL</span>
+            <Link to="/" target="_blank" rel="noopener noreferrer" className="text-xl tracking-wider text-neon-primary">
+              <span style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span> <span className="text-sm font-bold text-neon-text-muted">NOLCOOL</span>
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-neon-text-muted">
               전국 클럽·나이트·라운지·룸·요정·호빠 정보
@@ -147,7 +147,7 @@ export default function Footer() {
                 <h4 className="mb-2 text-xs font-semibold text-neon-accent">{region}</h4>
                 <div className="flex flex-wrap gap-x-3 gap-y-1">
                   {links.map((link) => (
-                    <Link target="_blank" rel="noopener noreferrer" key={link.href}
+                    <Link key={link.href}
                       to={link.href}
                       target="_blank" rel="noopener noreferrer"
                       className="text-xs text-neon-text-muted transition-colors hover:text-neon-primary-light"
@@ -164,10 +164,15 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-8 border-t border-neon-border pt-6">
           <p className="text-center text-xs text-neon-text-muted">
-            &copy; {new Date().getFullYear()} 놀쿨 NOLCOOL. All rights reserved.
+            &copy; {new Date().getFullYear()} <span style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span> NOLCOOL. All rights reserved.
           </p>
           <p className="mt-2 text-center text-xs text-neon-text-muted">
             직접 확인하고 전문가가 분석합니다
+          </p>
+          <p className="mt-2 text-center">
+            <a href="https://ilsanroom.pages.dev/" target="_blank" rel="noopener noreferrer" className="text-xs text-neon-primary hover:underline">
+              ilsanroom.pages.dev
+            </a>
           </p>
         </div>
       </div>

@@ -251,8 +251,21 @@ export default function HomePage() {
         itemListElement: popularVenues.slice(0, 10).map((v, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'LocalBusiness', name: v.nameKo, address: v.address } })),
       }} />
 
+      {/* ═══════ GREETING — Time-based ═══════ */}
+      <section className="px-4 pt-6 pb-1 text-center max-w-2xl mx-auto">
+        <p className="text-base text-[#555]">
+          {(() => {
+            const h = new Date().getHours();
+            if (h >= 18 && h < 21) return '오늘 밤, 어디로 갈까? 🌙';
+            if (h >= 21 || h < 4) return '지금이 딱 좋은 시간 🔥';
+            if (h >= 4 && h < 12) return '오늘 밤을 미리 준비하자 ☀️';
+            return '저녁이 기다려지는 시간 🌆';
+          })()}
+        </p>
+      </section>
+
       {/* ═══════ HERO — Result headline + CTA ═══════ */}
-      <section className="px-4 pt-8 pb-3 text-center max-w-2xl mx-auto">
+      <section className="px-4 pt-4 pb-3 text-center max-w-2xl mx-auto">
         <h1 className="text-[28px] font-black text-[#111] leading-[1.3] tracking-tight">
           검색 그만.<br />여기서 고르면 실패 없다.
         </h1>

@@ -71,8 +71,8 @@ export default function Header() {
           </button>
 
           {/* Center: Logo */}
-          <Link target="_blank" rel="noopener noreferrer" to="/" className="flex items-center gap-1.5">
-            <span className="text-lg font-black tracking-tight text-[#8B5CF6]">놀쿨</span>
+          <Link to="/" className="flex items-center gap-1.5">
+            <span className="text-xl tracking-wide text-[#8B5CF6]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span>
           </Link>
 
           {/* Right: Notification + Profile */}
@@ -115,7 +115,7 @@ export default function Header() {
           >
             {/* Menu header */}
             <div className="flex h-14 items-center justify-between px-4 border-b border-gray-100">
-              <span className="text-lg font-black text-[#8B5CF6]">놀쿨</span>
+              <span className="text-lg text-[#8B5CF6]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span>
               <button
                 onClick={() => setMenuOpen(false)}
                 className="flex h-10 w-10 items-center justify-center rounded-lg text-[#555] active:bg-gray-100"
@@ -144,7 +144,7 @@ export default function Header() {
                   </div>
                 </div>
               ) : (
-                <Link target="_blank" rel="noopener noreferrer" to="/login" onClick={() => setMenuOpen(false)} className="flex items-center gap-3">
+                <Link to="/login" onClick={() => setMenuOpen(false)} className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200">
                     <svg className="h-5 w-5 text-[#555]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
