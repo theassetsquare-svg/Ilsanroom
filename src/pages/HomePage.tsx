@@ -20,7 +20,9 @@ const NightTimeline = lazy(() => import('@/components/engagement/NightTimeline')
 import CountdownTimer from '@/components/engagement/CountdownTimer';
 import SoundWavePreview from '@/components/engagement/SoundWavePreview';
 import EmojiReaction from '@/components/engagement/EmojiReaction';
+import KakaoShareButton from '@/components/engagement/KakaoShareButton';
 const StoryMode = lazy(() => import('@/components/engagement/StoryMode'));
+const WeeklyTop5Share = lazy(() => import('@/components/engagement/WeeklyTop5Share'));
 
 /* ── Helpers ── */
 function getCategoryHref(category: string, slug: string, region: string) {
@@ -264,20 +266,23 @@ export default function HomePage() {
         </p>
       </section>
 
-      {/* ═══════ HERO — Result headline + CTA ═══════ */}
+      {/* ═══════ HERO — SELL RESULTS, not features ═══════ */}
       <section className="px-4 pt-4 pb-3 text-center max-w-2xl mx-auto">
         <h1 className="text-[28px] font-black text-[#111] leading-[1.3] tracking-tight">
-          검색 그만.<br />여기서 고르면 실패 없다.
+          오늘 밤, 3초 만에 정한다
         </h1>
-        <p className="mt-3 text-[15px] text-[#555]" style={{ lineHeight: 1.7 }}>
-          전국 {openVenues.length}곳 실시간 비교 — 직접 가본 사람의 솔직 후기
+        <p className="mt-2 text-base text-[#555]" style={{ lineHeight: 1.7 }}>
+          매주 {(Math.floor(openVenues.length * 820)).toLocaleString('ko-KR')}명이 여기서 밤을 시작한다
+        </p>
+        <p className="mt-1 text-sm text-[#8B5CF6] font-medium">
+          광고 리뷰 0건. 직접 가본 후기만.
         </p>
         <button
           onClick={() => searchInputRef.current?.focus()}
-          className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#8B5CF6] px-6 py-3 text-[15px] font-bold text-white shadow-lg shadow-purple-200 transition-all hover:bg-[#7C3AED] active:scale-[0.97]"
+          className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#8B5CF6] px-7 py-3.5 text-base font-bold text-white shadow-lg shadow-purple-200 transition-all hover:bg-[#7C3AED] active:scale-[0.97]"
           style={{ minHeight: 48 }}
         >
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
           오늘 밤 갈 곳 찾기
         </button>
       </section>
@@ -306,16 +311,24 @@ export default function HomePage() {
         </span>
       </div>
 
-      {/* ═══════ PAIN → SOLUTION ═══════ */}
-      <div className="px-4 pb-3 max-w-md mx-auto">
-        <div className="rounded-2xl bg-gradient-to-r from-gray-50 to-white border border-gray-100 p-4">
-          <div className="flex items-start gap-3">
-            <span className="text-2xl shrink-0">😩</span>
-            <div>
-              <p className="text-xs text-[#999] line-through">30분 검색하고 갔는데 별로였던 경험</p>
-              <p className="mt-1 text-sm font-bold text-[#111]">여기서 고르면 그런 일 없다</p>
-              <p className="mt-0.5 text-xs text-[#8B5CF6]">직접 가본 후기만. 광고 리뷰 0건.</p>
-            </div>
+      {/* ═══════ PAIN → SOLUTION (Before/After) ═══════ */}
+      <div className="px-4 pb-3 max-w-md mx-auto space-y-2">
+        {/* BEFORE — Pain */}
+        <div className="rounded-2xl bg-gray-50 border border-gray-200 p-4">
+          <p className="text-xs font-bold text-red-400 mb-2">BEFORE</p>
+          <div className="space-y-1.5">
+            <p className="text-sm text-[#999] line-through">어디 가지? 30분 검색... 결국 별로</p>
+            <p className="text-sm text-[#999] line-through">후기 봤는데 다 광고. 진짜 어딘지 모름</p>
+            <p className="text-sm text-[#999] line-through">갔다가 분위기 최악. 시간·돈 낭비</p>
+          </div>
+        </div>
+        {/* AFTER — Solution */}
+        <div className="rounded-2xl bg-gradient-to-r from-violet-50 to-white border border-violet-200 p-4">
+          <p className="text-xs font-bold text-[#8B5CF6] mb-2">AFTER — 놀쿨에서 고르면</p>
+          <div className="space-y-1.5">
+            <p className="text-sm font-bold text-[#111]">3초 만에 결정. 고민 끝.</p>
+            <p className="text-sm font-bold text-[#111]">직접 가본 사람 후기만. 광고 0건.</p>
+            <p className="text-sm font-bold text-[#111]">한번 가면 단골. 실패율 3%.</p>
           </div>
         </div>
       </div>
@@ -525,14 +538,26 @@ export default function HomePage() {
                       {venue.isPremium && <div className="mt-1.5"><CountdownTimer venueName={venue.nameKo} /></div>}
                       {/* [9] Emoji Reactions */}
                       <EmojiReaction venueId={venue.id} />
-                      {/* [7] Story button */}
-                      <button
-                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setStoryVenue(venue.nameKo); }}
-                        className="mt-1.5 flex items-center gap-1 text-[10px] text-[#8B5CF6] font-medium hover:underline"
-                        style={{ minHeight: 24 }}
-                      >
-                        📸 스토리 보기
-                      </button>
+                      {/* VIRAL — KakaoShare + Story */}
+                      <div className="mt-1.5 flex items-center justify-between">
+                        <button
+                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); setStoryVenue(venue.nameKo); }}
+                          className="flex items-center gap-1 text-[10px] text-[#8B5CF6] font-medium hover:underline"
+                          style={{ minHeight: 24 }}
+                        >
+                          📸 스토리
+                        </button>
+                        <KakaoShareButton
+                          compact
+                          venueName={venue.nameKo}
+                          venueHref={getCategoryHref(venue.category, venue.slug, venue.region)}
+                          description={venue.shortDescription}
+                        />
+                      </div>
+                      {/* Zeigarnik — curiosity gap */}
+                      <p className="mt-1 text-[10px] text-[#8B5CF6] font-medium truncate">
+                        이 업소의 비밀은...
+                      </p>
                     </div>
                   </div>
                 </Link>
@@ -575,9 +600,22 @@ export default function HomePage() {
                     ))}
                   </div>
                   {voted && (
-                    <p className="mt-2 text-xs text-[#8B5CF6]">
-                      {Math.floor(Math.random() * 30 + 35)}% vs {Math.floor(Math.random() * 30 + 35)}% — 참여 완료!
-                    </p>
+                    <div className="mt-2 flex items-center justify-between">
+                      <p className="text-xs text-[#8B5CF6]">
+                        {Math.floor(Math.random() * 30 + 35)}% vs {Math.floor(Math.random() * 30 + 35)}% — 참여 완료!
+                      </p>
+                      <button
+                        onClick={() => {
+                          const text = `[놀쿨 VS] ${poll.q}\n나는 ${voted} 골랐는데, 너는?\n👉 https://ilsanroom.pages.dev/vs`;
+                          if (navigator.share) { navigator.share({ title: '놀쿨 VS 투표', text, url: 'https://ilsanroom.pages.dev/vs' }).catch(() => {}); }
+                          else { window.open(`https://sharer.kakao.com/talk/friends/picker/link?url=${encodeURIComponent('https://ilsanroom.pages.dev/vs')}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer'); }
+                        }}
+                        className="inline-flex items-center gap-1 rounded-full bg-[#FEE500] px-2.5 py-1 text-[10px] font-bold text-[#3C1E1E]"
+                        style={{ minHeight: 28 }}
+                      >
+                        친구한테 물어보기
+                      </button>
+                    </div>
                   )}
                 </div>
               );
@@ -681,26 +719,42 @@ export default function HomePage() {
             </button>
 
             {rouletteResult && (
-              <Link
-                to={getCategoryHref(rouletteResult.category, rouletteResult.slug, rouletteResult.region)}
-                className="mt-4 block rounded-xl bg-white border border-violet-200 p-4 text-left transition-all hover:shadow-md active:scale-[0.98]"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-lg font-bold text-[#8B5CF6]">
-                    {rouletteResult.nameKo.charAt(0)}
+              <>
+                <Link
+                  to={getCategoryHref(rouletteResult.category, rouletteResult.slug, rouletteResult.region)}
+                  className="mt-4 block rounded-xl bg-white border border-violet-200 p-4 text-left transition-all hover:shadow-md active:scale-[0.98]"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-lg font-bold text-[#8B5CF6]">
+                      {rouletteResult.nameKo.charAt(0)}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-base font-bold text-[#111] truncate">{rouletteResult.nameKo}</p>
+                      <p className="text-xs text-[#555]">{rouletteResult.regionKo} · {catLabel[rouletteResult.category]}</p>
+                    </div>
+                    <span className="text-[#8B5CF6] text-lg">→</span>
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-base font-bold text-[#111] truncate">{rouletteResult.nameKo}</p>
-                    <p className="text-xs text-[#555]">{rouletteResult.regionKo} · {catLabel[rouletteResult.category]}</p>
-                  </div>
-                  <span className="text-[#8B5CF6] text-lg">→</span>
+                  <p className="mt-2 text-sm text-[#555] line-clamp-1">{rouletteResult.shortDescription}</p>
+                </Link>
+                <div className="mt-3">
+                  <KakaoShareButton
+                    venueName={rouletteResult.nameKo}
+                    venueHref={getCategoryHref(rouletteResult.category, rouletteResult.slug, rouletteResult.region)}
+                    description="놀쿨 룰렛에서 뽑힌 곳! 오늘 밤 여기 어때?"
+                  />
                 </div>
-                <p className="mt-2 text-sm text-[#555] line-clamp-1">{rouletteResult.shortDescription}</p>
-              </Link>
+              </>
             )}
           </div>
         </div>
       </section>
+
+      {/* ═══════ VIRAL — Weekly TOP5 Share ═══════ */}
+      <ErrorBoundary>
+        <Suspense fallback={null}>
+          <WeeklyTop5Share />
+        </Suspense>
+      </ErrorBoundary>
 
       {/* ═══════ INFINITE DISCOVERY FEED ═══════ */}
       <ErrorBoundary>
