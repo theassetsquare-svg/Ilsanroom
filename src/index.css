@@ -425,6 +425,23 @@ main img {
   top: 0;
 }
 
+/* ★ 검색바 마이크 아이콘 완전 삭제 */
+input::-webkit-search-decoration,
+input::-webkit-search-cancel-button,
+input::-webkit-search-results-button,
+input::-webkit-search-results-decoration,
+input::-webkit-contacts-auto-fill-button,
+input::-webkit-credentials-auto-fill-button,
+input::-webkit-textfield-decoration-container > * {
+  display: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+input[type="text"]::-ms-clear,
+input[type="text"]::-ms-reveal {
+  display: none !important;
+}
+
 /* ★ Lighthouse a11y — 링크/버튼 최소 패딩 */
 a:not([class]) {
   min-height: 44px;
