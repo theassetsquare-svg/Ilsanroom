@@ -311,18 +311,18 @@ export default function HelpPage() {
             직접 <span className="text-neon-primary-light">연락하기</span>
           </h2>
           <div className="grid gap-4 sm:grid-cols-3 mb-8">
-            <div className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6">
+            <a href="mailto:qotjsdnr123@naver.com?subject=[놀쿨] 문의드립니다" className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/40" style={{ minHeight: 44 }}>
               <Mail className="mt-0.5 h-6 w-6 shrink-0 text-neon-primary-light" />
               <div>
-                <h3 className="text-sm font-semibold">이메일</h3>
-                <p className="mt-1 text-xs text-neon-text-muted">
+                <h3 className="text-sm font-semibold" style={{ color: '#111' }}>메일 보내기</h3>
+                <p className="mt-1 text-xs" style={{ color: '#8B5CF6' }}>
                   qotjsdnr123@naver.com
                 </p>
-                <p className="mt-0.5 text-xs text-neon-text-subtle">
-                  24시간 접수 허용
+                <p className="mt-0.5 text-xs" style={{ color: '#555' }}>
+                  확인하는대로 답장드립니다
                 </p>
               </div>
-            </div>
+            </a>
             <div className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6">
               <MessageCircle className="mt-0.5 h-6 w-6 shrink-0 text-neon-primary-light" />
               <div>
@@ -352,29 +352,38 @@ export default function HelpPage() {
           {/* Contact Form */}
           <div className="rounded-2xl border border-neon-border bg-neon-surface p-6">
             <h3 className="mb-4 text-sm font-bold">연락 양식</h3>
-            <form onSubmit={(e) => { e.preventDefault(); alert('접수되었습니다. qotjsdnr123@naver.com으로 답변 드리겠습니다.'); }} className="space-y-4">
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const form = e.target as HTMLFormElement;
+              const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+              const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+              const content = (form.elements.namedItem('content') as HTMLTextAreaElement).value;
+              const subject = encodeURIComponent(`[놀쿨 문의] ${name}`);
+              const body = encodeURIComponent(`보낸 사람: ${name}\n이메일: ${email}\n\n${content}`);
+              window.location.href = `mailto:qotjsdnr123@naver.com?subject=${subject}&body=${body}`;
+            }} className="space-y-4">
               <div>
                 <label className="mb-1.5 block text-xs font-medium text-neon-text-muted">이름</label>
-                <input type="text" required placeholder="이름을 입력하세요"
+                <input type="text" name="name" required placeholder="이름을 입력하세요"
                   className="w-full rounded-xl border border-neon-border bg-neon-bg px-4 py-3 text-sm text-neon-text placeholder-neutral-500 outline-none focus:border-violet-500" />
               </div>
               <div>
                 <label className="mb-1.5 block text-xs font-medium text-neon-text-muted">이메일</label>
-                <input type="email" required placeholder="답변 받으실 이메일"
+                <input type="email" name="email" required placeholder="답변 받으실 이메일"
                   className="w-full rounded-xl border border-neon-border bg-neon-bg px-4 py-3 text-sm text-neon-text placeholder-neutral-500 outline-none focus:border-violet-500" />
               </div>
               <div>
                 <label className="mb-1.5 block text-xs font-medium text-neon-text-muted">내용</label>
-                <textarea required rows={4} placeholder="내용을 작성해 주세요"
+                <textarea name="content" required rows={4} placeholder="내용을 작성해 주세요"
                   className="w-full rounded-xl border border-neon-border bg-neon-bg px-4 py-3 text-sm text-neon-text placeholder-neutral-500 outline-none focus:border-violet-500 resize-none" />
               </div>
               <button type="submit"
-                className="w-full rounded-xl bg-neon-primary py-3 text-sm font-semibold text-neon-text transition hover:bg-neon-primary-light"
-                style={{ minHeight: 48 }}>
-                문의 보내기
+                className="w-full rounded-xl py-3 text-sm font-bold transition"
+                style={{ minHeight: 48, backgroundColor: '#8B5CF6', color: '#FFFFFF' }}>
+                메일 보내기
               </button>
               <p className="text-xs text-neon-text-subtle text-center">
-                문의 내용은 qotjsdnr123@naver.com으로 전달됩니다
+                qotjsdnr123@naver.com으로 메일이 발송됩니다. 확인하는대로 답장드립니다.
               </p>
             </form>
           </div>
