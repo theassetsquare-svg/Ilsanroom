@@ -11,7 +11,13 @@ export default function VSPage() {
         <h1 className="text-3xl font-extrabold text-neon-text mb-2">VS 대결 투표</h1>
         <p className="text-neon-text-muted">업소끼리 실시간 대결! 당신의 선택은?</p>
       </div>
-      <Suspense fallback={null}><VSBattle /></Suspense>
+      <Suspense fallback={
+        <div className="flex min-h-[30vh] items-center justify-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-neon-primary border-t-transparent" />
+        </div>
+      }>
+        <VSBattle />
+      </Suspense>
     </div>
   );
 }
