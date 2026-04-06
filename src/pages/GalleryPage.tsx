@@ -154,18 +154,11 @@ export default function GalleryPage() {
           <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
             <button onClick={() => setShowUpload(false)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>취소</button>
             <h2 className="text-base font-bold" style={{ color: '#111' }}>새 게시물</h2>
-            <button
-              onClick={handleUpload}
-              disabled={!previewUrl || !caption.trim()}
-              className="text-sm font-bold disabled:opacity-30"
-              style={{ color: '#8B5CF6', minHeight: 44 }}
-            >
-              공유
-            </button>
+            <div style={{ width: 44 }} />
           </div>
 
           {/* 본문 — 스크롤 가능 */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto pb-24">
             {/* 사진 */}
             <input ref={fileRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
             {previewUrl ? (
@@ -219,6 +212,18 @@ export default function GalleryPage() {
                 ))}
               </div>
             </div>
+          </div>
+
+          {/* 하단 고정 — 게시하기 버튼 */}
+          <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
+            <button
+              onClick={handleUpload}
+              disabled={!previewUrl || !caption.trim()}
+              className="w-full rounded-xl py-4 text-base font-bold transition active:scale-[0.98] disabled:opacity-30"
+              style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 56 }}
+            >
+              게시하기
+            </button>
           </div>
         </div>
       )}
