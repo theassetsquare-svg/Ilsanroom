@@ -11,10 +11,16 @@ export default function ShareButtons({ title, url, description }: ShareButtonsPr
   const shareUrl = typeof window !== 'undefined' ? (url || window.location.href) : '';
   const shareText = `${title}\n${description || ''}\n${shareUrl}`;
 
-  // 카카오톡 — 링크 공유 (모바일에서 카카오톡 앱으로 바로 열림)
+  // 카카오톡 — 모바일: 네이티브 공유에서 카카오 선택 / PC: URL 복사
   const handleKakao = () => {
-    const kakaoUrl = `https://sharer.kakao.com/talk/friends/picker/link?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(title)}`;
-    window.open(kakaoUrl, '_blank', 'noopener,noreferrer');
+    if (navigator.share) {
+      navigator.share({ title, text: `${title}\n`, url: shareUrl }).catch(() => {});
+    } else {
+      // PC: 클립보드 복사 후 안내
+      navigator.clipboard.writeText(`${title}\n${shareUrl}`).then(() => {
+        alert('링크가 복사되었습니다! 카카오톡에 붙여넣기 해주세요.');
+      }).catch(() => {});
+    }
   };
 
   // Web Share API (모바일 네이티브 공유 시트)

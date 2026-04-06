@@ -29,9 +29,10 @@ export default function KakaoShareButton({ venueName, venueHref, description, co
       return;
     }
 
-    // Fallback to KakaoTalk web share
-    const kakaoUrl = `https://sharer.kakao.com/talk/friends/picker/link?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
-    window.open(kakaoUrl, '_blank', 'noopener,noreferrer');
+    // Fallback: 클립보드 복사
+    navigator.clipboard.writeText(`${shareText}\n${shareUrl}`).then(() => {
+      alert('링크가 복사되었습니다! 카카오톡에 붙여넣기 해주세요.');
+    }).catch(() => {});
   };
 
   if (compact) {

@@ -598,7 +598,7 @@ export default function HomePage() {
                         onClick={() => {
                           const text = `[놀쿨 VS] ${poll.q}\n나는 ${voted} 골랐는데, 너는?\n👉 https://nolcool.com/vs`;
                           if (navigator.share) { navigator.share({ title: '놀쿨 VS 투표', text, url: 'https://nolcool.com/vs' }).catch(() => {}); }
-                          else { window.open(`https://sharer.kakao.com/talk/friends/picker/link?url=${encodeURIComponent('https://nolcool.com/vs')}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer'); }
+                          else { navigator.clipboard.writeText(text).then(() => alert('링크가 복사되었습니다!')).catch(() => {}); }
                         }}
                         className="inline-flex items-center gap-1 rounded-full bg-[#FEE500] px-2.5 py-1 text-[10px] font-bold text-[#3C1E1E]"
                         style={{ minHeight: 28 }}
