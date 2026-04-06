@@ -122,7 +122,7 @@ export default function Header() {
 
       {/* ═══ HAMBURGER SLIDE-IN MENU ═══ */}
       {menuOpen && (
-        <div className="fixed inset-0 z-[60]" onClick={() => setMenuOpen(false)}>
+        <div className="fixed inset-0 z-[200]" onClick={() => setMenuOpen(false)}>
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-black/50 animate-fade-in" />
 
