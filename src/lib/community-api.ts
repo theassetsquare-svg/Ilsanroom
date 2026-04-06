@@ -38,7 +38,7 @@ export async function fetchPosts(category: PostCategory, limit = 20, offset = 0)
   try {
     const { data, count, error } = await supabase
       .from('posts')
-      .select('*, users(nickname, avatar_url)', { count: 'exact' })
+      .select('*', { count: 'exact' })
       .eq('category', category)
       .order('is_pinned', { ascending: false })
       .order('created_at', { ascending: false })
@@ -86,7 +86,7 @@ export async function fetchComments(postId: string) {
   try {
     const { data, error } = await supabase
       .from('comments')
-      .select('*, users(nickname, avatar_url)')
+      .select('*')
       .eq('post_id', postId)
       .order('created_at', { ascending: true });
 
@@ -108,7 +108,7 @@ export async function createComment(postId: string, content: string, parentId?: 
   const { data, error } = await supabase
     .from('comments')
     .insert({ post_id: postId, user_id: user.id, content, parent_id: parentId || null })
-    .select('*, users(nickname, avatar_url)')
+    .select('*')
     .single();
 
   if (error) return { error: error.message };
