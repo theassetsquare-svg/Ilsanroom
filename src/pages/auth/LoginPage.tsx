@@ -2,7 +2,18 @@ import { useState, useRef, useEffect } from 'react';
 import { createClient } from '@/lib/supabase';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
+function isInAppBrowser(): boolean {
+  const ua = navigator.userAgent || '';
+  return /KAKAOTALK|NAVER|Instagram|FBAN|FBAV|Line|DaumApps|everytimeApp/i.test(ua);
+}
+
 function signInWith(provider: 'kakao' | 'google') {
+  // 구글은 인앱브라우저(카톡/네이버/인스타)에서 차단됨
+  if (provider === 'google' && isInAppBrowser()) {
+    alert('구글 로그인은 크롬/사파리에서만 가능합니다.\n\n오른쪽 위 ⋮ 메뉴 → "기본 브라우저에서 열기"를 눌러주세요.');
+    return;
+  }
+
   const supabase = createClient();
   if (!supabase) {
     alert('Supabase 연결이 설정되지 않았습니다. 관리자에게 문의해주세요.');
