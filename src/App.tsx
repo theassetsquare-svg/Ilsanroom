@@ -60,6 +60,7 @@ const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 const ProfilePage = lazy(() => import('./pages/auth/ProfilePage'));
 const AuthCallbackPage = lazy(() => import('./pages/auth/AuthCallbackPage'));
 const DashboardPage = lazy(() => import('./pages/admin/DashboardPage'));
+const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
 const AnalyticsPage = lazy(() => import('./pages/admin/AnalyticsPage'));
 const BillingPage = lazy(() => import('./pages/admin/BillingPage'));
 const OnboardingPage = lazy(() => import('./pages/admin/OnboardingPage'));
@@ -159,6 +160,7 @@ export default function App() {
           <Route path="/auth/callback" element={<AuthCallbackPage />} />
           {/* Admin */}
           <Route path="/dashboard" element={<Navigate to="/" replace />} />
+          <Route path="/admin" element={<AdminPage />} />
           <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/billing" element={<BillingPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
