@@ -120,9 +120,10 @@ export default function ReviewsPage() {
       setLoading(true);
       const { data } = await fetchPosts('reviews');
       if (data.length > 0) {
-        setReviews(data.map(postToReview));
+        // Supabase 글 + 샘플 글 합치기
+        const dbReviews = data.map(postToReview);
+        setReviews([...dbReviews, ...sampleReviews]);
       }
-      // If empty, keep sampleReviews as fallback
       setLoading(false);
     })();
   }, []);
@@ -134,19 +135,16 @@ export default function ReviewsPage() {
   const openReview = (review: typeof sampleReviews[0]) => {
     setViewingReview(review);
     setCommentText('');
-    const dummyComments = [
-      { id: 'dc1', author: '단골손님', text: '동의합니다 분위기 좋았어요', date: '03-20', isMine: false },
-      { id: 'dc2', author: '첫방문', text: '참고할게요 감사합니다!', date: '03-19', isMine: false },
-    ];
-    setReviewComments(dummyComments);
-    fetchComments(review.id).then(data => {
-      if (data.length > 0) {
-        setReviewComments(data.map(c => ({
-          id: c.id,
-          author: c.users?.nickname || '익명',
-          text: c.content,
-          date: c.created_at.slice(5, 10),
-          isMine: c.user_id === user?.id,
+    setReviewComments([]);
+    if (!review.id.startsWith('sample')) {
+      fetchComments(review.id).then(data => {
+        if (data.length > 0) {
+          setReviewComments(data.map(c => ({
+            id: c.id,
+            author: '사용자',
+            text: c.content,
+            date: c.created_at?.slice(5, 10) || '',
+            isMine: c.user_id === user?.id,
         })));
       }
     });
@@ -421,11 +419,27 @@ export default function ReviewsPage() {
                 <button onClick={() => setViewingReview(null)} style={{ minWidth: 44, minHeight: 44, color: '#555' }}>✕</button>
               </div>
               <h2 className="text-xl font-bold mb-2" style={{ color: '#111' }}>{viewingReview.title}</h2>
-              <div className="flex items-center gap-2 text-xs mb-4" style={{ color: '#999' }}>
-                <span style={{ color: '#555' }}>{viewingReview.author}</span>
-                <span>·</span>
-                <span>{viewingReview.date}</span>
-                {viewingReview.venue && <><span>·</span><span style={{ color: '#8B5CF6' }}>{viewingReview.venue}</span></>}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2 text-xs" style={{ color: '#999' }}>
+                  <span style={{ color: '#555' }}>{viewingReview.author}</span>
+                  <span>·</span>
+                  <span>{viewingReview.date}</span>
+                  {viewingReview.venue && <><span>·</span><span style={{ color: '#8B5CF6' }}>{viewingReview.venue}</span></>}
+                </div>
+                {user && (
+                  <button
+                    onClick={async () => {
+                      if (!confirm('글을 삭제하시겠습니까?')) return;
+                      const result = await deletePost(viewingReview.id);
+                      if (result.error) { alert('삭제 실패: ' + result.error); return; }
+                      alert('삭제되었습니다');
+                      setViewingReview(null);
+                      setReviews(prev => prev.filter(r => r.id !== viewingReview.id));
+                    }}
+                    className="text-xs shrink-0" style={{ color: '#EF4444', minHeight: 32 }}>
+                    글 삭제
+                  </button>
+                )}
               </div>
               <div className="rounded-xl p-4 mb-4" style={{ backgroundColor: '#F9FAFB' }}>
                 <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{viewingReview.excerpt}</p>
