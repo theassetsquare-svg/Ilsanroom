@@ -7,20 +7,20 @@ const VIP_BENEFITS = [
   { icon: '⚡', title: '인기 업소 예약 우선권', desc: '대기줄 없이 바로 입장. VIP 전용 예약 채널' },
   { icon: '📩', title: '시크릿 TOP3 독점 알림', desc: '매주 금요일, VIP만 받는 이번 주 핫플 시크릿 리스트' },
   { icon: '📊', title: '실시간 분위기 업데이트', desc: '지금 이 순간 어디가 핫한지 실시간 확인' },
-  { icon: '💰', title: '평생 50% 할인', desc: '선착순 300명 한정. 월 9,900원 → 4,900원 평생 적용' },
+  { icon: '💰', title: '얼리버드 특별 가격', desc: '선착순 300명 한정 특별 멤버십 가격 적용' },
   { icon: '🎁', title: '얼리버드 전용 혜택', desc: '신규 기능 우선 체험 + VIP 전용 이벤트 초대' },
 ];
 
 const TESTIMONIALS = [
   { name: 'J****', text: '매주 금요일 시크릿 리스트만 보고 가는데, 한 번도 실패한 적 없음. 진짜 숨겨진 곳들이라 사람도 적당하고 분위기 최고.', role: '강남 직장인' },
-  { name: 'M****', text: '예약 우선권 때문에 가입했는데, 주말 레이스 대기 0분. 이것만으로도 4,900원 본전 뽑고도 남음.', role: '홍대 단골' },
+  { name: 'M****', text: '예약 우선권 때문에 가입했는데, 주말 레이스 대기 0분. 이것만으로도 VIP 본전 뽑고도 남음.', role: '홍대 단골' },
   { name: 'K****', text: '분위기 업데이트가 리얼타임이라 헛걸음 없음. 친구들한테 추천했더니 다 가입함.', role: '일산 거주' },
 ];
 
 export default function WaitlistPage() {
   useDocumentMeta(
     'VIP 대기자 등록 — 선착순 300명 평생 혜택',
-    '놀쿨 VIP 선착순 300명 모집. 숨겨진 업소 리스트, 예약 우선권, 매주 시크릿 TOP3 알림, 평생 50% 할인.'
+    '놀쿨 VIP 선착순 300명 모집. 숨겨진 업소 리스트, 예약 우선권, 매주 시크릿 TOP3 알림, 얼리버드 특별 혜택.'
   );
 
   const [name, setName] = useState('');
@@ -87,12 +87,8 @@ export default function WaitlistPage() {
       {/* Pricing comparison */}
       <section className="mx-auto mb-10 max-w-md rounded-2xl border-2 border-neon-primary bg-neon-surface p-6 shadow-lg">
         <div className="mb-4 text-center">
-          <p className="text-sm text-neon-muted line-through">정가 월 9,900원</p>
-          <div className="flex items-baseline justify-center gap-2">
-            <span className="text-4xl font-bold text-neon-primary">4,900</span>
-            <span className="text-lg text-neon-muted">원/월</span>
-          </div>
-          <p className="mt-1 text-sm font-medium text-green-600">선착순 300명 평생 50% 할인</p>
+          <h2 className="text-2xl font-bold text-neon-primary">VIP 얼리버드 등록</h2>
+          <p className="mt-1 text-sm text-neon-muted">선착순 300명 한정 특별 혜택</p>
         </div>
 
         {!submitted ? (
@@ -171,7 +167,7 @@ export default function WaitlistPage() {
         <div className="space-y-3">
           {[
             { q: '지금 결제해야 하나요?', a: '아닙니다. 이메일만 등록하시면 됩니다. 정식 런칭 시 VIP 전용 안내를 보내드립니다.' },
-            { q: '평생 50% 할인이 진짜인가요?', a: '네. 선착순 300명에게 적용되는 얼리버드 혜택으로, 한 번 적용되면 해지 전까지 영구 유지됩니다.' },
+            { q: '얼리버드 혜택은 뭔가요?', a: '선착순 300명에게만 제공되는 특별 멤버십 혜택입니다. 런칭 시 상세 안내드립니다.' },
             { q: '언제 런칭하나요?', a: 'VIP 300명 모집 완료 후 2주 내 런칭 예정입니다. 등록 순서대로 우선 초대됩니다.' },
           ].map((faq) => (
             <div key={faq.q} className="rounded-xl border border-neon-border bg-neon-surface p-4">
@@ -186,7 +182,7 @@ export default function WaitlistPage() {
       {!submitted && (
         <section className="rounded-2xl bg-gradient-to-r from-neon-primary to-purple-700 p-8 text-center text-white">
           <h2 className="mb-2 text-2xl font-bold">지금 VIP 자리를 확보하세요</h2>
-          <p className="mb-4 opacity-90">300명 마감 후에는 정가(월 9,900원)가 적용됩니다.</p>
+          <p className="mb-4 opacity-90">300명 마감 후에는 얼리버드 혜택이 종료됩니다.</p>
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="rounded-lg bg-white px-8 py-3 font-bold text-neon-primary transition hover:opacity-90"
