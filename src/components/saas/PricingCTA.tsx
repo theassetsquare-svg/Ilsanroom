@@ -29,18 +29,12 @@ export default function PricingCTA({ planId, label, highlighted }: { planId: str
   return (
     <div className="mt-auto space-y-2">
       <a
-        href={KAKAO_CHAT_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#FEE500] px-6 py-3 text-sm font-semibold text-[#191919] transition-colors hover:bg-[#FDD835]"
-        style={{ minHeight: 48 }}
+        href="/onboarding"
+        className="flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white transition-colors"
+        style={{ backgroundColor: '#8B5CF6', minHeight: 48 }}
       >
-        <KakaoIcon className="h-5 w-5" />
-        카카오톡 상담
+        시작하기
       </a>
-      <p className="text-center text-xs text-neon-text-subtle">
-        카드결제는 곧 오픈 예정입니다
-      </p>
     </div>
   );
 }

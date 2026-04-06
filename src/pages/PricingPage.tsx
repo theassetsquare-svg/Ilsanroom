@@ -203,21 +203,20 @@ export default function PricingPage() {
           ))}
         </div>
 
-        {/* KakaoTalk CTA Banner */}
-        <div className="mt-16 rounded-2xl border border-[#FEE500]/50 bg-gradient-to-r from-yellow-50 via-white to-yellow-50 p-10 text-center">
+        {/* 문의 배너 */}
+        <div className="mt-16 rounded-2xl border border-neon-primary/30 bg-gradient-to-r from-violet-50 via-white to-violet-50 p-10 text-center">
           <h3 className="mb-3 text-3xl font-bold text-neon-text">
             광고 <span className="text-neon-primary">문의</span>
           </h3>
           <p className="mx-auto mb-6 max-w-md text-base text-neon-text-muted leading-relaxed">
-            요금제 선택이 어려우시다면 카카오톡으로 편하게 상담받으세요. 맞춤 플랜을 추천해 드립니다.
+            요금제 선택이 어려우시다면 편하게 문의해주세요. 맞춤 플랜을 추천해 드립니다.
           </p>
-          <a href="https://pf.kakao.com/besta12/chat" target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-xl bg-[#FEE500] px-8 py-3.5 text-sm font-semibold text-[#191919] transition-colors hover:bg-[#FDD835]"
+          <a href="/help"
+            className="inline-flex items-center gap-2 rounded-xl px-8 py-3.5 text-sm font-semibold text-white transition-colors"
+            style={{ backgroundColor: '#8B5CF6' }}
           >
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.477 3 2 6.463 2 10.691c0 2.724 1.8 5.113 4.508 6.459-.2.744-.723 2.694-.828 3.112-.13.52.19.513.4.373.164-.109 2.612-1.78 3.67-2.502.725.104 1.476.158 2.25.158 5.523 0 10-3.463 10-7.6S17.523 3 12 3Z" /></svg>
-            카카오톡 상담
+            문의하기
           </a>
-          <p className="mt-3 text-xs text-neon-text-subtle">카드결제는 곧 오픈 예정입니다</p>
         </div>
 
         {/* FAQ Section */}
