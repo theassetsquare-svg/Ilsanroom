@@ -342,15 +342,9 @@ export default function HomePage() {
             onChange={e => setSearchQuery(e.target.value)}
             onFocus={() => { if (searchQuery.trim()) setShowSearchResults(true); }}
             placeholder="어디서 놀까? 가게이름, 지역 검색"
-            className="w-full rounded-3xl border-2 border-[#8B5CF6] bg-white py-3 pl-11 pr-12 text-base text-[#111] placeholder-[#888] outline-none"
+            className="w-full rounded-3xl border-2 border-[#8B5CF6] bg-white py-3 pl-11 pr-4 text-base text-[#111] placeholder-[#888] outline-none"
             style={{ height: 48 }}
           />
-          <button className="absolute right-3 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-[#8B5CF6]" aria-label="AI 음성 검색">
-            <svg className="h-4 w-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
-              <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
-            </svg>
-          </button>
 
           {/* Search Results Dropdown */}
           {showSearchResults && searchResults.length > 0 && (
