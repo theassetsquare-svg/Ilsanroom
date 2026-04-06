@@ -227,6 +227,7 @@ export default function GalleryPage() {
       <div className="divide-y divide-neon-border">
         {posts.map(post => {
           const isExpanded = expandedComments.has(post.id);
+          const isMine = post.id.startsWith('user-');
           return (
             <article key={post.id} className="pb-4" style={{ backgroundColor: '#FFFFFF' }}>
               {/* 헤더 */}
@@ -236,41 +237,43 @@ export default function GalleryPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-bold" style={{ color: '#111' }}>{post.userName}</p>
-                  <p className="text-xs" style={{ color: '#555' }}>{post.venueName} · {post.region}</p>
                 </div>
                 <span className="text-xs" style={{ color: '#999' }}>{post.timeAgo}</span>
+                {/* 내 게시물 삭제 */}
+                {isMine && (
+                  <button
+                    onClick={() => setPosts(prev => prev.filter(p => p.id !== post.id))}
+                    className="text-xs font-medium"
+                    style={{ color: '#EF4444', minHeight: 44 }}
+                  >
+                    삭제
+                  </button>
+                )}
               </div>
 
               {/* 이미지 */}
-              <div className="w-full bg-neon-surface-2" style={{ minHeight: 300 }}>
+              <div className="w-full bg-neon-surface-2" style={{ minHeight: 200 }}>
                 <img
                   src={post.imageUrl}
-                  alt={post.venueName}
+                  alt=""
                   className="w-full object-cover"
                   style={{ maxHeight: 500 }}
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = 'none';
-                    (e.target as HTMLImageElement).parentElement!.innerHTML = `<div class="flex items-center justify-center h-64 text-center"><p style="color:#999;font-size:14px">📷 ${post.venueName} 현장 사진</p></div>`;
+                    (e.target as HTMLImageElement).parentElement!.innerHTML = `<div class="flex items-center justify-center h-48 text-center"><p style="color:#999;font-size:14px">📷 사진</p></div>`;
                   }}
                 />
               </div>
 
               {/* 액션 버튼 */}
               <div className="flex items-center gap-4 px-4 pt-3 pb-1">
-                <button onClick={() => toggleLike(post.id)} className="flex items-center gap-1" style={{ minHeight: 44 }}>
+                <button onClick={() => toggleLike(post.id)} style={{ minHeight: 44 }}>
                   <svg className="w-6 h-6" fill={post.liked ? '#EF4444' : 'none'} stroke={post.liked ? '#EF4444' : '#111'} viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
                 </button>
                 <button onClick={() => {
-                  setExpandedComments(prev => { const s = new Set(prev); s.has(post.id) ? s.delete(post.id) : s.add(post.id); return s; });
-                }} style={{ minHeight: 44 }}>
-                  <svg className="w-6 h-6" fill="none" stroke="#111" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                  </svg>
-                </button>
-                <button onClick={() => {
-                  if (navigator.share) navigator.share({ title: post.venueName, text: post.caption });
+                  if (navigator.share) navigator.share({ text: post.caption });
                 }} style={{ minHeight: 44 }}>
                   <svg className="w-6 h-6" fill="none" stroke="#111" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -286,30 +289,37 @@ export default function GalleryPage() {
                 <span className="font-bold">{post.userName}</span>{' '}{post.caption}
               </p>
 
-              {/* 카테고리 태그 */}
-              <div className="px-4 mt-1">
-                <span className="text-xs font-medium" style={{ color: '#8B5CF6' }}>#{CAT_LABELS[post.category] || post.category} #{post.region}</span>
-              </div>
-
-              {/* 댓글 */}
-              {post.comments.length > 0 && (
-                <div className="px-4 mt-2">
-                  {!isExpanded && post.comments.length > 1 && (
-                    <button onClick={() => setExpandedComments(prev => new Set(prev).add(post.id))}
-                      className="text-xs mb-1" style={{ color: '#999' }}>
-                      댓글 {post.comments.length}개 모두 보기
-                    </button>
-                  )}
-                  {(isExpanded ? post.comments : post.comments.slice(-1)).map((c, i) => (
-                    <p key={i} className="text-sm" style={{ color: '#111' }}>
+              {/* 댓글 — 항상 보이기 */}
+              <div className="px-4 mt-2">
+                {post.comments.length > 2 && !isExpanded && (
+                  <button onClick={() => setExpandedComments(prev => new Set(prev).add(post.id))}
+                    className="text-xs mb-1" style={{ color: '#999' }}>
+                    댓글 {post.comments.length}개 모두 보기
+                  </button>
+                )}
+                {(isExpanded ? post.comments : post.comments.slice(-2)).map((c, i) => (
+                  <div key={i} className="flex items-center gap-1 mb-0.5">
+                    <p className="text-sm flex-1" style={{ color: '#111' }}>
                       <span className="font-bold">{c.name}</span>{' '}{c.text}
                     </p>
-                  ))}
-                </div>
-              )}
+                    {/* 내 댓글 삭제 */}
+                    {user && c.name === ((user.user_metadata?.name as string) || '나') && (
+                      <button
+                        onClick={() => setPosts(prev => prev.map(p =>
+                          p.id === post.id ? { ...p, comments: p.comments.filter((_, ci) => ci !== i) } : p
+                        ))}
+                        className="text-xs shrink-0"
+                        style={{ color: '#EF4444', minHeight: 28 }}
+                      >
+                        삭제
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
 
-              {/* 댓글 입력 */}
-              {user && (
+              {/* 댓글 입력 — 항상 보이기 */}
+              {user ? (
                 <div className="flex items-center gap-2 px-4 mt-2">
                   <input
                     type="text"
@@ -324,8 +334,7 @@ export default function GalleryPage() {
                     게시
                   </button>
                 </div>
-              )}
-              {!user && (
+              ) : (
                 <Link to="/login" className="block px-4 mt-2 text-xs" style={{ color: '#8B5CF6' }}>
                   로그인하고 댓글 달기
                 </Link>
