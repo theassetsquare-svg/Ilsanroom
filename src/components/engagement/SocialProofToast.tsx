@@ -124,14 +124,15 @@ export default function SocialProofToast() {
         {toast && (
           <motion.div
             key={toast.id}
-            className={`pointer-events-auto flex items-center gap-2.5 rounded-xl border ${toast.accent} bg-black/80 backdrop-blur-md px-4 py-3 shadow-lg max-w-[320px]`}
+            className={`pointer-events-auto flex items-center gap-2.5 rounded-xl border ${toast.accent} backdrop-blur-md px-4 py-3 shadow-lg max-w-[320px]`}
+            style={{ backgroundColor: 'rgba(0,0,0,0.85)', color: '#FFFFFF' }}
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -100, opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           >
             <span className="shrink-0">{toast.icon}</span>
-            <p className="text-xs font-medium text-white leading-relaxed" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
+            <p className="text-xs font-medium leading-relaxed" style={{ color: '#FFFFFF', textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
               {toast.message}
             </p>
           </motion.div>
