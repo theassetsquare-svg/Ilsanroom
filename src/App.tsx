@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 
@@ -158,7 +158,7 @@ export default function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/auth/callback" element={<AuthCallbackPage />} />
           {/* Admin */}
-          <Route path="/dashboard" element={<HomePage />} />
+          <Route path="/dashboard" element={<Navigate to="/" replace />} />
           <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/billing" element={<BillingPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
