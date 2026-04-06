@@ -19,6 +19,8 @@ const MILESTONES = [
 ];
 
 export default function ScrollDepthReward() {
+  // 비활성화 — 사용자 요청
+  return null;
   const store = useEngagementStore();
   const { pathname } = useLocation();
   const [toast, setToast] = useState<{ emoji: string; label: string; points: number } | null>(null);

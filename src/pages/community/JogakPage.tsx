@@ -104,7 +104,7 @@ export default function JogakPage() {
 
   // 글쓰기 버튼
   const handleWriteClick = () => {
-    if (!user) { setPointAlert(true); if (timerRef.current) clearTimeout(timerRef.current); timerRef.current = setTimeout(() => setPointAlert(false), 3000); return; }
+    if (!user) { window.location.href = '/login'; return; }
     setShowWrite(true);
   };
 
