@@ -59,7 +59,7 @@ export default function WritePostModal({ open, onClose, defaultCategory = 'free'
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 px-4" onClick={onClose}>
-      <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+      <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl" style={{ color: '#111' }} onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-lg font-bold text-neon-text">글쓰기</h2>
           <button onClick={onClose} className="rounded-lg p-1 text-neon-text-muted hover:bg-neon-surface-2">

@@ -111,6 +111,7 @@ export default function SlotMachinePopup() {
           >
             <motion.div
               className="relative w-full max-w-sm rounded-3xl bg-white shadow-2xl overflow-hidden"
+              style={{ color: '#111' }}
               initial={{ scale: 0.7, y: 40 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.7, y: 40 }}

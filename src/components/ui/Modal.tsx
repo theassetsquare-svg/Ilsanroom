@@ -40,7 +40,7 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
       />
 
       {/* Panel */}
-      <div className="relative w-full max-w-lg rounded-2xl border border-neon-border bg-white p-6 shadow-xl">
+      <div className="relative w-full max-w-lg rounded-2xl border border-neon-border bg-white p-6 shadow-xl" style={{ color: '#111' }}>
         {/* Header */}
         <div className="mb-4 flex items-center justify-between">
           {title && (

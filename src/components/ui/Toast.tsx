@@ -79,7 +79,7 @@ function ToastItem({ item, onDismiss }: { item: ToastItem; onDismiss: () => void
           d={typeIcons[item.type]}
         />
       </svg>
-      <span className="text-sm text-neon-text">{item.message}</span>
+      <span className="text-sm" style={{ color: '#111' }}>{item.message}</span>
       <button
         onClick={onDismiss}
         className="ml-2 shrink-0 rounded-lg p-1 text-neon-text-muted transition-colors hover:bg-neon-surface-2 hover:text-neon-text"

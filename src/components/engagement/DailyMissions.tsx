@@ -187,7 +187,7 @@ export default function DailyMissions() {
           <>
             {/* Backdrop */}
             <motion.div
-              className="fixed inset-0 z-[60] bg-black/40"
+              className="fixed inset-0 z-[59] bg-black/40"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -196,7 +196,8 @@ export default function DailyMissions() {
 
             {/* Panel */}
             <motion.div
-              className="fixed bottom-[56px] left-0 right-0 z-[40] max-h-[50vh] overflow-y-auto rounded-t-3xl bg-white shadow-2xl"
+              className="fixed bottom-[56px] left-0 right-0 z-[60] max-h-[50vh] overflow-y-auto rounded-t-3xl bg-white shadow-2xl"
+              style={{ color: '#111' }}
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}

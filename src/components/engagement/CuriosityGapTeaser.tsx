@@ -120,7 +120,7 @@ export default function CuriosityGapTeaser() {
           exit={{ x: 300, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 200 }}
         >
-          <div className="rounded-2xl border border-purple-100 bg-white shadow-xl overflow-hidden">
+          <div className="rounded-2xl border border-purple-100 bg-white shadow-xl overflow-hidden" style={{ color: '#111' }}>
             <div className="relative px-4 pt-4 pb-3">
               <button
                 onClick={handleClose}

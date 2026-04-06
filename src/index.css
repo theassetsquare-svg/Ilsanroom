@@ -329,6 +329,16 @@ html {
   height: 100%;
 }
 
+/* ★ 팝업/모달 글씨 가독성 — 흰 배경 위 검정 텍스트 보장 */
+.fixed .bg-white,
+.fixed > .bg-white,
+[class*="z-["] .bg-white,
+.rounded-2xl.bg-white,
+.rounded-3xl.bg-white,
+.rounded-xl.bg-white {
+  color: #111111;
+}
+
 /* Focus visible for a11y */
 *:focus-visible {
   outline: 2px solid #8B5CF6;
