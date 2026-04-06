@@ -17,7 +17,7 @@ interface Post {
   likes: number;
   liked: boolean;
   comments: { name: string; text: string }[];
-  timeAgo: string;
+  timestamp: number;
 }
 
 // 초기 피드 데이터 (실제 업소 기반)
@@ -40,7 +40,14 @@ const COMMENTS_POOL = [
   { name: '강남출몰', text: '다음에 같이 가자!' },
   { name: '클럽마니아', text: '사진 더 찍어줘' },
 ];
-const TIMES = ['방금', '3분 전', '12분 전', '1시간 전', '3시간 전', '5시간 전', '어제', '2일 전'];
+function getTimeAgo(timestamp: number): string {
+  const diff = Math.floor((Date.now() - timestamp) / 1000);
+  if (diff < 60) return '방금';
+  if (diff < 3600) return `${Math.floor(diff / 60)}분 전`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}시간 전`;
+  if (diff < 604800) return `${Math.floor(diff / 86400)}일 전`;
+  return new Date(timestamp).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' });
+}
 
 const initialPosts: Post[] = openVenues.slice(0, 12).map((v, i) => ({
   id: `post-${v.slug}`,
@@ -53,7 +60,7 @@ const initialPosts: Post[] = openVenues.slice(0, 12).map((v, i) => ({
   likes: Math.floor(Math.random() * 200) + 20,
   liked: false,
   comments: [COMMENTS_POOL[i % COMMENTS_POOL.length], COMMENTS_POOL[(i + 2) % COMMENTS_POOL.length]],
-  timeAgo: TIMES[i % TIMES.length],
+  timestamp: Date.now() - (i * 3600 + Math.floor(Math.random() * 7200)) * 1000,
 }));
 
 export default function GalleryPage() {
@@ -89,7 +96,7 @@ export default function GalleryPage() {
       likes: 0,
       liked: false,
       comments: [],
-      timeAgo: '방금',
+      timestamp: Date.now(),
     };
     setPosts([newPost, ...posts]);
     setShowUpload(false);
@@ -243,7 +250,7 @@ export default function GalleryPage() {
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-bold" style={{ color: '#111' }}>{post.userName}</p>
                 </div>
-                <span className="text-xs" style={{ color: '#999' }}>{post.timeAgo}</span>
+                <span className="text-xs" style={{ color: '#999' }}>{getTimeAgo(post.timestamp)}</span>
                 {/* 내 게시물 삭제 */}
                 {isMine && (
                   <button
