@@ -16,6 +16,8 @@ export function createClient() {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
+        storageKey: 'nolcool-auth',
+        storage: window.localStorage,
       },
     });
   }
