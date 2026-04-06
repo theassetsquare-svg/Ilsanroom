@@ -17,10 +17,10 @@ const sections = [
     count: 478,
   },
   {
-    title: "파티모임",
-    description: "함께 갈 파티 멤버를 찾아보세요",
-    href: "/community/party",
-    icon: "🎉",
+    title: "조각모집",
+    description: "같이 놀러갈 사람 구하는 곳",
+    href: "/community/jogak",
+    icon: "🧩",
     count: 346,
   },
   {
