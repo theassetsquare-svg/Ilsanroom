@@ -354,7 +354,7 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
             <h2 className="text-base font-bold" style={{ color: '#111' }}>리뷰 쓰기</h2>
             <div style={{ width: 44 }} />
           </div>
-          <div className="flex-1 overflow-y-auto px-4 py-4 pb-24">
+          <div className="flex-1 overflow-y-auto px-4 py-4 pb-24 max-w-2xl mx-auto w-full">
             {/* 별점 — 크게 */}
             <p className="text-sm font-bold mb-2" style={{ color: '#111' }}>별점을 선택하세요</p>
             <div className="flex gap-2 mb-4 justify-center">

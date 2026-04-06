@@ -271,7 +271,7 @@ export default function FreeBoardPage() {
               <h2 className="text-base font-bold" style={{ color: '#111' }}>글쓰기</h2>
               <div style={{ width: 44 }} />
             </div>
-            <div className="flex-1 overflow-y-auto px-4 py-4 pb-24">
+            <div className="flex-1 overflow-y-auto px-4 py-4 pb-24 max-w-2xl mx-auto w-full">
               <input value={writeTitle} onChange={(e) => setWriteTitle(e.target.value)} placeholder="제목을 입력하세요"
                 className="w-full rounded-lg border px-4 py-3 text-sm outline-none mb-3"
                 style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
@@ -279,7 +279,7 @@ export default function FreeBoardPage() {
                 className="w-full rounded-lg border px-4 py-3 text-sm outline-none resize-none"
                 style={{ borderColor: '#E5E7EB', color: '#111', minHeight: '50vh', lineHeight: '1.8' }} />
             </div>
-            <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
+            <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t"  style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
               <button onClick={handleSubmit} disabled={submitting || !writeTitle.trim() || !writeContent.trim()}
                 className="w-full rounded-xl py-4 text-base font-bold transition active:scale-[0.98] disabled:opacity-30"
                 style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 56 }}>

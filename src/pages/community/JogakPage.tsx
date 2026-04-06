@@ -251,7 +251,7 @@ export default function JogakPage() {
             <h2 className="text-base font-bold" style={{ color: '#111' }}>글쓰기</h2>
             <div style={{ width: 44 }} />
           </div>
-          <div className="flex-1 overflow-y-auto px-4 py-4 pb-24">
+          <div className="flex-1 overflow-y-auto px-4 py-4 pb-24 max-w-2xl mx-auto w-full">
             <input
               value={writeTitle}
               onChange={(e) => setWriteTitle(e.target.value)}
@@ -268,7 +268,7 @@ export default function JogakPage() {
               style={{ borderColor: '#E5E7EB', color: '#111', lineHeight: '1.7' }}
             />
           </div>
-          <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
+          <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t"  style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
             <button
               onClick={handleSubmit}
               disabled={submitting || !writeTitle.trim() || !writeContent.trim()}
