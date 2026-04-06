@@ -76,12 +76,15 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* ★★★ 광고문의 — 푸터 최상단, 모든 페이지 ★★★ */}
+        {/* ★★★ 광고문의 + 요금제 — 푸터 최상단, 모든 페이지 ★★★ */}
         <div className="mb-10 rounded-2xl border-2 border-neon-primary/30 bg-gradient-to-r from-violet-50 to-white px-6 py-6 text-center">
           <p className="text-xl font-extrabold text-neon-text sm:text-2xl">
             광고문의 카톡{' '}
             <span className="inline-block rounded-xl bg-neon-primary px-5 py-1.5 text-white">besta12</span>
           </p>
+          <Link to="/pricing" className="mt-4 inline-block rounded-xl px-8 py-3 text-base font-bold text-white transition active:scale-[0.98]" style={{ backgroundColor: '#8B5CF6', minHeight: 48 }}>
+            업주 요금제 보기 →
+          </Link>
         </div>
 
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-2 lg:grid-cols-4">
