@@ -14,8 +14,8 @@ const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: '놀쿨',
-  url: 'https://ilsanroom.pages.dev',
-  logo: 'https://ilsanroom.pages.dev/favicon.ico',
+  url: 'https://nolcool.com',
+  logo: 'https://nolcool.com/favicon.ico',
   description: '전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보',
   sameAs: [],
 };
@@ -24,10 +24,10 @@ const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: '놀쿨',
-  url: 'https://ilsanroom.pages.dev',
+  url: 'https://nolcool.com',
   potentialAction: {
     '@type': 'SearchAction',
-    target: { '@type': 'EntryPoint', urlTemplate: 'https://ilsanroom.pages.dev/search?q={search_term_string}' },
+    target: { '@type': 'EntryPoint', urlTemplate: 'https://nolcool.com/search?q={search_term_string}' },
     'query-input': 'required name=search_term_string',
   },
 };

@@ -84,7 +84,7 @@ function generateSvg(title: string, subtitle: string, bg: string, staff?: string
   <text x="600" y="${titleY}" text-anchor="middle" font-family="sans-serif" font-size="${titleSize}" font-weight="bold" fill="white">${escapeXml(title)}</text>
   ${staffLine}
   <text x="600" y="${subtitleY}" text-anchor="middle" font-family="sans-serif" font-size="26" fill="rgba(255,255,255,0.7)">${escapeXml(subtitle)}</text>
-  <text x="600" y="540" text-anchor="middle" font-family="sans-serif" font-size="20" fill="rgba(255,255,255,0.4)">놀쿨 — ilsanroom.pages.dev</text>
+  <text x="600" y="540" text-anchor="middle" font-family="sans-serif" font-size="20" fill="rgba(255,255,255,0.4)">놀쿨 — nolcool.com</text>
 </svg>`;
 }
 

@@ -12,7 +12,7 @@ interface KakaoShareButtonProps {
 }
 
 export default function KakaoShareButton({ venueName, venueHref, description, compact }: KakaoShareButtonProps) {
-  const shareUrl = `https://ilsanroom.pages.dev${venueHref}`;
+  const shareUrl = `https://nolcool.com${venueHref}`;
   const shareText = `[놀쿨] ${venueName}\n${description || '오늘 밤 여기 어때?'}\n확인해보기 👇`;
 
   const handleKakaoShare = (e: React.MouseEvent) => {

@@ -245,8 +245,8 @@ export default function HomePage() {
       {/* JSON-LD */}
       <JsonLd data={{
         '@context': 'https://schema.org', '@type': 'WebSite', name: '놀쿨',
-        url: 'https://ilsanroom.pages.dev',
-        potentialAction: { '@type': 'SearchAction', target: { '@type': 'EntryPoint', urlTemplate: 'https://ilsanroom.pages.dev/map?q={search_term_string}' }, 'query-input': 'required name=search_term_string' },
+        url: 'https://nolcool.com',
+        potentialAction: { '@type': 'SearchAction', target: { '@type': 'EntryPoint', urlTemplate: 'https://nolcool.com/map?q={search_term_string}' }, 'query-input': 'required name=search_term_string' },
       }} />
       <JsonLd data={{
         '@context': 'https://schema.org', '@type': 'ItemList', name: '인기 매장',
@@ -606,9 +606,9 @@ export default function HomePage() {
                       </p>
                       <button
                         onClick={() => {
-                          const text = `[놀쿨 VS] ${poll.q}\n나는 ${voted} 골랐는데, 너는?\n👉 https://ilsanroom.pages.dev/vs`;
-                          if (navigator.share) { navigator.share({ title: '놀쿨 VS 투표', text, url: 'https://ilsanroom.pages.dev/vs' }).catch(() => {}); }
-                          else { window.open(`https://sharer.kakao.com/talk/friends/picker/link?url=${encodeURIComponent('https://ilsanroom.pages.dev/vs')}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer'); }
+                          const text = `[놀쿨 VS] ${poll.q}\n나는 ${voted} 골랐는데, 너는?\n👉 https://nolcool.com/vs`;
+                          if (navigator.share) { navigator.share({ title: '놀쿨 VS 투표', text, url: 'https://nolcool.com/vs' }).catch(() => {}); }
+                          else { window.open(`https://sharer.kakao.com/talk/friends/picker/link?url=${encodeURIComponent('https://nolcool.com/vs')}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer'); }
                         }}
                         className="inline-flex items-center gap-1 rounded-full bg-[#FEE500] px-2.5 py-1 text-[10px] font-bold text-[#3C1E1E]"
                         style={{ minHeight: 28 }}

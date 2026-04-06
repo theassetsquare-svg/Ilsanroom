@@ -170,8 +170,8 @@ export default function Footer() {
             직접 확인하고 전문가가 분석합니다
           </p>
           <p className="mt-2 text-center">
-            <a href="https://ilsanroom.pages.dev/" target="_blank" rel="noopener noreferrer" className="text-xs text-neon-primary hover:underline">
-              ilsanroom.pages.dev
+            <a href="https://nolcool.com/" target="_blank" rel="noopener noreferrer" className="text-xs text-neon-primary hover:underline">
+              nolcool.com
             </a>
           </p>
         </div>

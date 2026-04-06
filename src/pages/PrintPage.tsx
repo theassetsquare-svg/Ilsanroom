@@ -47,7 +47,7 @@ export default function PrintPage() {
             </div>
             <div className="text-right">
               <p className="text-xs text-neon-text-muted">놀쿨</p>
-              <p className="text-xs text-neon-text-muted">ilsanroom.pages.dev</p>
+              <p className="text-xs text-neon-text-muted">nolcool.com</p>
             </div>
           </div>
         </div>

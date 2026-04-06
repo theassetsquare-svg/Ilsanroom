@@ -43,4 +43,4 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-Sitemap: https://ilsanroom.pages.dev/sitemap.xml
+Sitemap: https://nolcool.com/sitemap.xml

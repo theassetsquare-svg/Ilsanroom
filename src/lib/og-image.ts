@@ -3,7 +3,7 @@
  * 닉네임이 있는 가게는 실제 사진 + 닉네임 오버레이 JPG를 사용.
  */
 
-const SITE_URL = 'https://ilsanroom.pages.dev';
+const SITE_URL = 'https://nolcool.com';
 
 /** 닉네임 오버레이 OG 이미지가 있는 가게 목록 */
 const NICKNAME_OG_SLUGS = new Set([

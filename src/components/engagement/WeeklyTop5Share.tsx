@@ -26,11 +26,11 @@ export default function WeeklyTop5Share() {
   const top5 = useMemo(() => getPopularVenues(5), []);
 
   const handleShare = () => {
-    const text = `[놀쿨] 이번 주 TOP5\n${top5.map((v, i) => `${i + 1}. ${v.nameKo}`).join('\n')}\n\n확인하기 👉 https://ilsanroom.pages.dev/ranking`;
+    const text = `[놀쿨] 이번 주 TOP5\n${top5.map((v, i) => `${i + 1}. ${v.nameKo}`).join('\n')}\n\n확인하기 👉 https://nolcool.com/ranking`;
     if (navigator.share) {
-      navigator.share({ title: '이번 주 TOP5', text, url: 'https://ilsanroom.pages.dev/ranking' }).catch(() => {});
+      navigator.share({ title: '이번 주 TOP5', text, url: 'https://nolcool.com/ranking' }).catch(() => {});
     } else {
-      const kakaoUrl = `https://sharer.kakao.com/talk/friends/picker/link?url=${encodeURIComponent('https://ilsanroom.pages.dev/ranking')}&text=${encodeURIComponent(text)}`;
+      const kakaoUrl = `https://sharer.kakao.com/talk/friends/picker/link?url=${encodeURIComponent('https://nolcool.com/ranking')}&text=${encodeURIComponent(text)}`;
       window.open(kakaoUrl, '_blank', 'noopener,noreferrer');
     }
   };

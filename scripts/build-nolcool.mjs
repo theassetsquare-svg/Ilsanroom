@@ -13,7 +13,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, 'nolcool-dist');
-const MAIN_SITE = 'https://ilsanroom.pages.dev';
+const MAIN_SITE = 'https://nolcool.com';
 
 // ── 카테고리 매핑 ──
 const CATEGORIES = [

@@ -8,7 +8,7 @@ import fs from 'fs';
 import path from 'path';
 
 const DIST = path.resolve('dist');
-const BASE_URL = 'https://ilsanroom.pages.dev';
+const BASE_URL = 'https://nolcool.com';
 const OG_IMAGE = `${BASE_URL}/og/main.svg`;
 
 // ── 기본 index.html 읽기 ──

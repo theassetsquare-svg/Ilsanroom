@@ -26,7 +26,7 @@ interface VenueJsonLdProps {
   siteUrl?: string;
 }
 
-export default function VenueJsonLd({ venue, breadcrumbItems, faqItems, reviews, detailPath, siteUrl = 'https://ilsanroom.pages.dev' }: VenueJsonLdProps) {
+export default function VenueJsonLd({ venue, breadcrumbItems, faqItems, reviews, detailPath, siteUrl = 'https://nolcool.com' }: VenueJsonLdProps) {
   const categoryTypeMap: Record<string, string> = {
     club: 'NightClub',
     night: 'NightClub',

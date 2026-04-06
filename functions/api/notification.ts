@@ -40,7 +40,7 @@ async function sendEmail(env: Env, to: string, subject: string, html: string) {
       'Authorization': `Bearer ${env.RESEND_API_KEY}`,
     },
     body: JSON.stringify({
-      from: '놀쿨 <noreply@ilsanroom.pages.dev>',
+      from: '놀쿨 <noreply@nolcool.com>',
       to: [to],
       subject,
       html,
@@ -105,7 +105,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             <p>${name}님, 문의해 주셔서 감사합니다.</p>
             <p>보내주신 내용을 확인 후 영업일 기준 1-2일 내에 답변 드리겠습니다.</p>
             <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
-            <p style="color:#888;font-size:12px">놀쿨 | ilsanroom.pages.dev</p>
+            <p style="color:#888;font-size:12px">놀쿨 | nolcool.com</p>
           </div>`
         );
 
@@ -135,7 +135,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             <p>${name}님, 해당 업소에 대한 문의가 접수되었습니다.</p>
             <p>확인 후 안내 드리겠습니다.</p>
             <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
-            <p style="color:#888;font-size:12px">놀쿨 | ilsanroom.pages.dev</p>
+            <p style="color:#888;font-size:12px">놀쿨 | nolcool.com</p>
           </div>`
         );
 
@@ -178,9 +178,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
               <li>🧠 MBTI 퀴즈로 성향 분석</li>
               <li>⚔️ VS 투표로 비교하기</li>
             </ul>
-            <a href="https://ilsanroom.pages.dev" style="display:inline-block;padding:12px 24px;background:#8B5CF6;color:#fff;text-decoration:none;border-radius:8px;margin-top:16px">둘러보기</a>
+            <a href="https://nolcool.com" style="display:inline-block;padding:12px 24px;background:#8B5CF6;color:#fff;text-decoration:none;border-radius:8px;margin-top:16px">둘러보기</a>
             <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
-            <p style="color:#888;font-size:12px">놀쿨 | ilsanroom.pages.dev</p>
+            <p style="color:#888;font-size:12px">놀쿨 | nolcool.com</p>
           </div>`
         );
 

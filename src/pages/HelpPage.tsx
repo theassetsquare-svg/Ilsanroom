@@ -49,7 +49,7 @@ const faqCategories: FaqCategory[] = [
       {
         question: "연락 방법이 궁금해요",
         answer:
-          "이메일(support@ilsanroom.pages.dev) 또는 카카오톡 besta12로 연락하면 돼. 운영시간은 평일 10:00~18:00이고, 급한 건 24시간 접수해.",
+          "이메일(support@nolcool.com) 또는 카카오톡 besta12로 연락하면 돼. 운영시간은 평일 10:00~18:00이고, 급한 건 24시간 접수해.",
       },
     ],
   },

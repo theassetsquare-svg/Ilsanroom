@@ -162,7 +162,7 @@ export function HangoverFood() {
 /* ═══ [AK] 친구 초대 바이럴 ═══ */
 export function InviteFriend() {
   const [copied, setCopied] = useState(false);
-  const link = typeof window !== 'undefined' ? window.location.origin + '?ref=friend' : 'https://ilsanroom.pages.dev?ref=friend';
+  const link = typeof window !== 'undefined' ? window.location.origin + '?ref=friend' : 'https://nolcool.com?ref=friend';
 
   const copy = async () => {
     try { await navigator.clipboard.writeText(`놀쿨 — 전국 나이트/클럽/호빠 정보 ${link}`); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch {}

@@ -33,7 +33,7 @@ export default function RetargetingPixels() {
               window.wcs_add["wa"] = "${naverAccountId}";
               if (!window._nasa) window._nasa = {};
               if (window.wcs) {
-                wcs.inflow("ilsanroom.pages.dev");
+                wcs.inflow("nolcool.com");
                 wcs_do(window._nasa);
               }
             `,
