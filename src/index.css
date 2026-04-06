@@ -319,6 +319,40 @@ html {
 .text-neon-text-subtle { color: #333333 !important; }
 .text-neon-muted { color: #222222 !important; }
 
+/* ★ 검정 글자 배경 — 글자 뒤에 흰색 배경으로 가독성 보장 */
+.text-neon-text,
+.text-neon-text-muted,
+.text-neon-text-subtle,
+[style*="color: #111"],
+[style*="color:#111"] {
+  background-color: rgba(255,255,255,0.85);
+  border-radius: 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+/* 밝은 배경(bg-white, bg-neon-surface 등) 안에서는 흰 배경 불필요 */
+.bg-white .text-neon-text,
+.bg-white .text-neon-text-muted,
+.bg-white .text-neon-text-subtle,
+.bg-white [style*="color: #111"],
+.bg-white [style*="color:#111"],
+.bg-neon-surface .text-neon-text,
+.bg-neon-surface .text-neon-text-muted,
+.bg-neon-bg .text-neon-text,
+.bg-neon-bg .text-neon-text-muted,
+[style*="backgroundColor: #FFFFFF"] .text-neon-text,
+[style*="backgroundColor: #FFFFFF"] .text-neon-text-muted,
+[style*="background-color: #FFFFFF"] .text-neon-text,
+main > .px-4 .text-neon-text,
+main > .px-4 .text-neon-text-muted,
+article .text-neon-text,
+article .text-neon-text-muted,
+header .text-neon-text,
+footer .text-neon-text,
+nav .text-neon-text {
+  background-color: transparent;
+}
+
 /* ★ 본문 글씨 색상 보장 — 밝은 배경에서 검정 글 보이게 */
 main, footer, header, nav {
   color: #111111;
