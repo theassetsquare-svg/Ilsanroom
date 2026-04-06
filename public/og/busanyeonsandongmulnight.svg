@@ -7,8 +7,8 @@
   </defs>
   <rect width="1200" height="630" fill="url(#bg)"/>
   <rect x="40" y="40" width="1120" height="550" rx="32" fill="rgba(255,255,255,0.08)"/>
-  <text x="600" y="260" text-anchor="middle" font-family="sans-serif" font-size="100" font-weight="900" fill="white" letter-spacing="-0.02em">부산연산동물나이트</text>
-  <text x="600" y="350" text-anchor="middle" font-family="sans-serif" font-size="64" font-weight="800" fill="#FCD34D" letter-spacing="0.02em">담당: 따봉</text>
+  <text x="600" y="220" text-anchor="middle" font-family="sans-serif" font-size="72" font-weight="900" fill="white" letter-spacing="-0.02em">부산연산동물나이트</text>
+  <text x="600" y="350" text-anchor="middle" font-family="sans-serif" font-size="130" font-weight="900" fill="#FCD34D" letter-spacing="0.02em">따봉</text>
   <text x="600" y="420" text-anchor="middle" font-family="sans-serif" font-size="44" font-weight="600" fill="rgba(255,255,255,0.85)">나이트 | 놀쿨</text>
   <text x="600" y="570" text-anchor="middle" font-family="sans-serif" font-size="32" font-weight="500" fill="rgba(255,255,255,0.5)">놀쿨 — nolcool.com</text>
 </svg>

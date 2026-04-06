@@ -69,12 +69,16 @@ function escapeXml(s: string): string {
 
 function generateSvg(title: string, subtitle: string, bg: string, staff?: string): string {
   const titleLen = title.length;
-  const titleSize = titleLen > 15 ? 72 : titleLen > 10 ? 88 : titleLen > 6 ? 100 : 120;
-  const titleY = staff ? 260 : 300;
+  const titleSize = staff
+    ? (titleLen > 15 ? 52 : titleLen > 10 ? 60 : titleLen > 6 ? 72 : 80)
+    : (titleLen > 15 ? 72 : titleLen > 10 ? 88 : titleLen > 6 ? 100 : 120);
+  const titleY = staff ? 220 : 300;
+  const staffName = staff?.replace('담당: ', '') || '';
+  const staffSize = staffName.length > 4 ? 110 : 130;
   const staffLine = staff
-    ? `<text x="600" y="${titleY + 90}" text-anchor="middle" font-family="sans-serif" font-size="64" font-weight="800" fill="#FCD34D" letter-spacing="0.02em">${escapeXml(staff)}</text>`
+    ? `<text x="600" y="${titleY + 130}" text-anchor="middle" font-family="sans-serif" font-size="${staffSize}" font-weight="900" fill="#FCD34D" letter-spacing="0.02em">${escapeXml(staffName)}</text>`
     : '';
-  const subtitleY = staff ? titleY + 160 : titleY + 100;
+  const subtitleY = staff ? titleY + 200 : titleY + 100;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
