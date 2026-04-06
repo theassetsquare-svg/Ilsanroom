@@ -113,16 +113,15 @@ export default function HeroSearch() {
         </svg>
         <input
           ref={inputRef}
-          type="search"
+          type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => { if (query.trim() || activeFilter !== 'all') setShowResults(true); }}
           placeholder="업소명, 지역으로 검색"
-          className="w-full rounded-2xl border border-neon-border bg-neon-surface/80 py-4 pl-12 pr-16 text-neon-text placeholder-[#666] outline-none backdrop-blur-sm transition-all focus:border-neon-primary/50 focus:shadow-lg focus:shadow-neon-primary/10"
-          style={{ WebkitAppearance: 'none' }}
+          className="w-full rounded-2xl border border-neon-border bg-neon-surface/80 py-4 pl-12 pr-4 text-neon-text placeholder-[#666] outline-none backdrop-blur-sm transition-all focus:border-neon-primary/50 focus:shadow-lg focus:shadow-neon-primary/10"
         />
         {loading && (
-          <div className="absolute right-14 top-1/2 -translate-y-1/2">
+          <div className="absolute right-4 top-1/2 -translate-y-1/2">
             <div className="h-4 w-4 animate-spin rounded-full border-2 border-neon-primary border-t-transparent" />
           </div>
         )}
