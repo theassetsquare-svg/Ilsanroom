@@ -2,10 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
-import { useEngagementStore } from '@/lib/engagement-store';
 import { fetchPosts, createPost, fetchComments, createComment, type Post, type Comment } from '@/lib/community-api';
 
-const MIN_POINTS = 100;
+// 로그인만 필요, 포인트 제한 없음
 
 const samplePosts = [
   { id: 's1', title: '토요일 강남 클럽 같이 가실 분!', author: '파티킹', date: '03-30', comments: 5 },
@@ -43,8 +42,7 @@ export default function JogakPage() {
   useDocumentMeta('급하게 한 명 구한다, 조각 모집', '자리 하나 남았을 때, 바로 올리고 바로 구한다. 100P 이상 작성 가능.');
 
   const { user } = useAuth();
-  const points = useEngagementStore((s) => s.points);
-  const canPost = !!user && points >= MIN_POINTS;
+  const canPost = !!user;
 
   // 글 목록
   const [posts, setPosts] = useState<{ id: string; title: string; author: string; date: string; comments: number }[]>(samplePosts);
@@ -106,13 +104,7 @@ export default function JogakPage() {
 
   // 글쓰기 버튼
   const handleWriteClick = () => {
-    if (!user) { alert('로그인이 필요합니다'); return; }
-    if (points < MIN_POINTS) {
-      setPointAlert(true);
-      if (timerRef.current) clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(() => setPointAlert(false), 4000);
-      return;
-    }
+    if (!user) { setPointAlert(true); if (timerRef.current) clearTimeout(timerRef.current); timerRef.current = setTimeout(() => setPointAlert(false), 3000); return; }
     setShowWrite(true);
   };
 
@@ -158,19 +150,10 @@ export default function JogakPage() {
         </button>
       </div>
 
-      {/* 포인트 안내 */}
-      <div className="mb-4 flex items-center gap-3 text-sm">
-        <span style={{ color: '#555' }}>내 포인트</span>
-        <span className="font-bold" style={{ color: '#8B5CF6' }}>{points}P</span>
-        {points < MIN_POINTS && (
-          <span className="text-xs" style={{ color: '#EF4444' }}>{MIN_POINTS - points}P 더 모으면 글쓰기 가능</span>
-        )}
-      </div>
-
-      {/* 포인트 부족 알림 */}
+      {/* 로그인 안내 */}
       {pointAlert && (
         <div className="mb-4 rounded-xl px-4 py-3 text-sm" style={{ backgroundColor: '#FEF2F2', border: '1px solid #FCA5A5', color: '#DC2626' }}>
-          포인트 부족! ({points}P / {MIN_POINTS}P) — 사이트 둘러보면 포인트가 쌓여요
+          로그인이 필요합니다
         </div>
       )}
 

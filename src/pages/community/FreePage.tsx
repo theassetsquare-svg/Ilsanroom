@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
-import { fetchPosts, createPost, type Post } from '@/lib/community-api';
+import { fetchPosts, createPost, fetchComments, createComment, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
 
 const sampleHotPosts = [
@@ -80,6 +80,33 @@ export default function FreeBoardPage() {
 
 
   const [viewingPost, setViewingPost] = useState<SimplePost | null>(null);
+  const [postComments, setPostComments] = useState<{ author: string; text: string; date: string }[]>([]);
+  const [commentText, setCommentText] = useState('');
+
+  const sampleCommentPool = [
+    { author: '밤탐험가', text: '공감합니다 ㅋㅋ', date: '03-30' },
+    { author: '클럽매니아', text: '좋은 정보 감사해요', date: '03-29' },
+  ];
+
+  const openPost = (post: SimplePost) => {
+    setViewingPost(post);
+    setCommentText('');
+    setPostComments(sampleCommentPool);
+    fetchComments(post.id).then(data => {
+      if (data.length > 0) {
+        setPostComments(data.map(c => ({ author: c.users?.nickname || '익명', text: c.content, date: c.created_at.slice(5, 10) })));
+      }
+    });
+  };
+
+  const submitComment = async () => {
+    if (!commentText.trim() || !user || !viewingPost) return;
+    const { data, error } = await createComment(viewingPost.id, commentText.trim());
+    if (data) {
+      setPostComments(prev => [...prev, { author: user.user_metadata?.name || '나', text: commentText.trim(), date: new Date().toISOString().slice(5, 10) }]);
+      setCommentText('');
+    }
+  };
 
   const handleWriteClick = () => {
     if (!user) {
@@ -150,7 +177,7 @@ export default function FreeBoardPage() {
             {hotPosts.map((post, i) => (
               <button
                 key={post.id}
-                onClick={() => setViewingPost(post)}
+                onClick={() => openPost(post)}
                 className={`flex w-full items-center justify-between px-5 py-4 text-left transition hover:bg-neon-surface-2 ${
                   i !== hotPosts.length - 1 ? "border-b border-neon-border/50" : ""
                 }`}
@@ -181,7 +208,7 @@ export default function FreeBoardPage() {
               {recentPosts.map((post, i) => (
                 <button
                   key={post.id}
-                  onClick={() => setViewingPost(post)}
+                  onClick={() => openPost(post)}
                   className={`flex w-full items-center justify-between px-5 py-4 text-left transition hover:bg-neon-surface-2 ${
                     i !== recentPosts.length - 1 ? "border-b border-neon-border/50" : ""
                   }`}
@@ -279,11 +306,46 @@ export default function FreeBoardPage() {
               <div className="rounded-xl p-4 mb-4" style={{ backgroundColor: '#F9FAFB', color: '#333', minHeight: 120 }}>
                 <p className="text-sm leading-relaxed">이 게시글의 상세 내용입니다. 커뮤니티 기능이 정식 오픈되면 실제 내용이 표시됩니다.</p>
               </div>
-              <div className="flex items-center gap-4 text-sm" style={{ color: '#999' }}>
-                <span>💬 댓글 {viewingPost.comments}개</span>
-              </div>
+
+              {/* 댓글 목록 */}
               <div className="mt-4 pt-4" style={{ borderTop: '1px solid #E5E7EB' }}>
-                <p className="text-xs text-center" style={{ color: '#999' }}>댓글 기능은 정식 오픈 시 이용 가능합니다</p>
+                <p className="text-sm font-bold mb-3" style={{ color: '#111' }}>💬 댓글 {postComments.length}개</p>
+                {postComments.length > 0 ? (
+                  <div className="space-y-2 mb-4">
+                    {postComments.map((c, i) => (
+                      <div key={i} className="rounded-lg px-3 py-2" style={{ backgroundColor: '#F3F4F6' }}>
+                        <p className="text-sm" style={{ color: '#111' }}>{c.text}</p>
+                        <span className="text-xs" style={{ color: '#999' }}>{c.author} · {c.date}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-xs mb-4" style={{ color: '#999' }}>아직 댓글이 없어요</p>
+                )}
+
+                {/* 댓글 입력 */}
+                {user ? (
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={commentText}
+                      onChange={e => setCommentText(e.target.value)}
+                      onKeyDown={e => { if (e.key === 'Enter') submitComment(); }}
+                      placeholder="댓글을 입력하세요..."
+                      className="flex-1 rounded-lg border px-3 py-2 text-sm outline-none"
+                      style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 44 }}
+                    />
+                    <button onClick={submitComment} disabled={!commentText.trim()}
+                      className="rounded-lg px-4 py-2 text-sm font-bold text-white disabled:opacity-40"
+                      style={{ backgroundColor: '#8B5CF6', minHeight: 44 }}>
+                      등록
+                    </button>
+                  </div>
+                ) : (
+                  <Link to="/login" className="block text-center text-sm font-medium py-2" style={{ color: '#8B5CF6' }}>
+                    로그인하고 댓글 달기
+                  </Link>
+                )}
               </div>
             </div>
           </div>
