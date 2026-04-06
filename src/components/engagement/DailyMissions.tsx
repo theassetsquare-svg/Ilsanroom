@@ -158,25 +158,32 @@ export default function DailyMissions() {
   const today = new Date();
   const dateLabel = `${today.getMonth() + 1}월 ${today.getDate()}일`;
 
+  const [seen, setSeen] = useState(() => {
+    try { return sessionStorage.getItem('missions_seen') === 'true'; } catch { return false; }
+  });
+
+  const handleOpen = () => {
+    setOpen(!open);
+    if (!open) {
+      setSeen(true);
+      try { sessionStorage.setItem('missions_seen', 'true'); } catch {}
+    }
+  };
+
   return (
     <>
       {/* Floating button */}
       <motion.button
-        onClick={() => setOpen(!open)}
+        onClick={handleOpen}
         className="fixed bottom-[72px] left-4 z-[30] flex h-14 w-14 md:hidden items-center justify-center rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#6D28D9] shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 transition-shadow"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         aria-label="오늘의 미션 열기"
       >
         <Target className="w-6 h-6 text-white" />
-        {incompleteCount > 0 && (
+        {!seen && incompleteCount > 0 && (
           <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#EF4444] text-xs font-bold text-white">
             {incompleteCount}
-          </span>
-        )}
-        {allClear && (
-          <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#F59E0B] text-xs">
-            <Check className="w-3 h-3 text-white" />
           </span>
         )}
       </motion.button>
