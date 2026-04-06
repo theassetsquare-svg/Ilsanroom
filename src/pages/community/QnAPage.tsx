@@ -296,8 +296,8 @@ export default function QnAPage() {
             <div className="flex-1 overflow-y-auto px-4 py-4 pb-24">
               <input value={writeTitle} onChange={(e) => setWriteTitle(e.target.value)} placeholder="제목을 입력하세요"
                 className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none" style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
-              <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="궁금한 내용을 작성해주세요" rows={8}
-                className="w-full rounded-lg border px-4 py-3 text-sm mb-4 outline-none resize-none" style={{ borderColor: '#E5E7EB', color: '#111' }} />
+              <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="궁금한 내용을 작성해주세요" 
+                className="w-full rounded-lg border px-4 py-3 text-sm mb-4 outline-none resize-none" style={{ borderColor: '#E5E7EB', color: '#111', minHeight: '50vh', lineHeight: '1.8' }} />
             </div>
             <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
               <button onClick={handleSubmit} disabled={submitting || !writeTitle.trim() || !writeContent.trim()}

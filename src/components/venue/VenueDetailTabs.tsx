@@ -370,10 +370,9 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
             <textarea
               value={text}
               onChange={e => setText(e.target.value)}
-              placeholder="솔직한 방문 후기를 남겨주세요..."
-              rows={8}
-              className="w-full rounded-lg border px-4 py-3 text-sm outline-none resize-none"
-              style={{ borderColor: '#E5E7EB', color: '#111', lineHeight: '1.7' }}
+              placeholder="솔직한 방문 후기를 남겨주세요. 분위기, 서비스, 가격, 추천 포인트 등 자유롭게 작성해주세요."
+              className="w-full border-0 text-base outline-none resize-none"
+              style={{ color: '#111', lineHeight: '1.8', minHeight: '50vh' }}
               autoFocus
             />
           </div>

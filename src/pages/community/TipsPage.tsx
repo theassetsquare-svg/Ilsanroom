@@ -293,8 +293,8 @@ export default function TipsPage() {
               </div>
               <div className="mb-4">
                 <label className="mb-1 block text-xs" style={{ color: '#555' }}>내용</label>
-                <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="꿀팁 내용을 작성해주세요" rows={8}
-                  className="w-full rounded-lg border px-4 py-3 text-sm outline-none resize-none" style={{ borderColor: '#E5E7EB', color: '#111' }} />
+                <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="꿀팁 내용을 작성해주세요" 
+                  className="w-full rounded-lg border px-4 py-3 text-sm outline-none resize-none" style={{ borderColor: '#E5E7EB', color: '#111', minHeight: '50vh', lineHeight: '1.8' }} />
               </div>
             </div>
             <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>

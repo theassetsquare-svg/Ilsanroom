@@ -261,7 +261,7 @@ export default function JogakPage() {
               value={writeContent}
               onChange={(e) => setWriteContent(e.target.value)}
               placeholder="어디, 언제, 몇 명, 조건 등 자유롭게 적어주세요"
-              rows={8}
+              
               className="w-full rounded-lg border px-4 py-3 text-sm mb-4 outline-none resize-none"
               style={{ borderColor: '#E5E7EB', color: '#111', lineHeight: '1.7' }}
             />
