@@ -70,10 +70,26 @@ export default function Header() {
             </svg>
           </button>
 
-          {/* Center: Logo */}
-          <Link to="/" className="flex items-center gap-1.5">
-            <span className="text-xl tracking-wide text-[#8B5CF6]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span>
-          </Link>
+          {/* Center: Logo + PC Nav */}
+          <div className="flex items-center gap-6">
+            <Link to="/" className="flex items-center gap-1.5">
+              <span className="text-xl tracking-wide text-[#8B5CF6]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span>
+            </Link>
+            <nav className="hidden md:flex items-center gap-4">
+              {[
+                { href: '/clubs', label: '클럽' },
+                { href: '/nights', label: '나이트' },
+                { href: '/rooms', label: '룸' },
+                { href: '/community', label: '커뮤니티' },
+                { href: '/gallery', label: '클립' },
+                { href: '/ranking', label: '랭킹' },
+              ].map(item => (
+                <Link key={item.href} to={item.href} className="text-sm font-medium transition hover:text-[#8B5CF6]" style={{ color: pathname === item.href ? '#8B5CF6' : '#555', minHeight: 44, display: 'flex', alignItems: 'center' }}>
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
 
           {/* Right: Notification + Profile */}
           <div className="flex items-center gap-1">
