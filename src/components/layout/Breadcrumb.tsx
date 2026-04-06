@@ -11,7 +11,7 @@ interface BreadcrumbProps {
 
 export default function Breadcrumb({ items }: BreadcrumbProps) {
   return (
-    <nav aria-label="breadcrumb" className="py-3">
+    <nav aria-label="breadcrumb" className="py-2" style={{ minHeight: '40px', display: 'flex', alignItems: 'center' }}>
       <ol className="flex flex-wrap items-center gap-1 text-sm text-neon-text-muted">
         <li>
           <Link target="_blank" rel="noopener noreferrer"

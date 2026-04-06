@@ -22,8 +22,8 @@ export default function BackToTop() {
   return (
     <button
       onClick={scrollToTop}
-      className="animate-fade-in fixed left-4 z-40 rounded-full bg-neon-primary p-3 text-white shadow-lg transition-transform hover:scale-110"
-      style={{ bottom: 'calc(80px + 16px)' }}
+      className="animate-fade-in fixed left-4 z-40 rounded-full bg-neon-primary p-3 text-white shadow-lg transition-transform hover:scale-110 md:left-6"
+      style={{ bottom: '204px' }}
       aria-label="맨 위로"
     >
       <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

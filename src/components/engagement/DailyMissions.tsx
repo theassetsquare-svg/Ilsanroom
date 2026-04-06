@@ -312,7 +312,7 @@ export default function DailyMissions() {
                     // Wrap in Link if navigable and not complete
                     if (!done && mission.href) {
                       return (
-                        <Link target="_blank" rel="noopener noreferrer" key={mission.id} to={mission.href} onClick={() => setOpen(false)} className="block">
+                        <Link target="_blank" rel="noopener noreferrer" key={mission.id} to={mission.href} onClick={() => setOpen(false)} className="block" style={{ color: 'inherit' }}>
                           {card}
                         </Link>
                       );
