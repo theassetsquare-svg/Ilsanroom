@@ -79,15 +79,37 @@ export default function Header() {
           <div className="flex items-center gap-1">
             <Link
               to="/community"
-              onClick={() => { try { sessionStorage.setItem('bell_seen', 'true'); } catch {} }}
+              onClick={() => { try { localStorage.setItem('bell_seen_at', String(Date.now())); } catch {} }}
               className="relative flex h-11 w-11 items-center justify-center rounded-lg text-gray-700 active:bg-gray-100"
               aria-label="알림"
             >
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
               </svg>
-              {(() => { try { return sessionStorage.getItem('bell_seen') !== 'true'; } catch { return true; } })() && (
-                <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">3</span>
+              {(() => {
+                try {
+                  const seenAt = Number(localStorage.getItem('bell_seen_at') || '0');
+                  // 마지막 확인 후 6시간 지나면 새 알림 1개 표시
+                  const hoursSince = (Date.now() - seenAt) / (1000 * 60 * 60);
+                  if (seenAt === 0) return 3; // 첫 방문
+                  if (hoursSince < 1) return 0;
+                  if (hoursSince < 6) return 1;
+                  if (hoursSince < 24) return 2;
+                  return 3;
+                } catch { return 0; }
+              })() > 0 && (
+                <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
+                  {(() => {
+                    try {
+                      const seenAt = Number(localStorage.getItem('bell_seen_at') || '0');
+                      const hoursSince = (Date.now() - seenAt) / (1000 * 60 * 60);
+                      if (seenAt === 0) return 3;
+                      if (hoursSince < 6) return 1;
+                      if (hoursSince < 24) return 2;
+                      return 3;
+                    } catch { return 0; }
+                  })()}
+                </span>
               )}
             </Link>
             <Link

@@ -159,14 +159,17 @@ export default function DailyMissions() {
   const dateLabel = `${today.getMonth() + 1}월 ${today.getDate()}일`;
 
   const [seen, setSeen] = useState(() => {
-    try { return sessionStorage.getItem('missions_seen') === 'true'; } catch { return false; }
+    try {
+      const savedDate = localStorage.getItem('missions_seen_date');
+      return savedDate === getTodayStr();
+    } catch { return false; }
   });
 
   const handleOpen = () => {
     setOpen(!open);
     if (!open) {
       setSeen(true);
-      try { sessionStorage.setItem('missions_seen', 'true'); } catch {}
+      try { localStorage.setItem('missions_seen_date', getTodayStr()); } catch {}
     }
   };
 
