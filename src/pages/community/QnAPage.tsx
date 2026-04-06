@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
+import { useNavigate } from 'react-router-dom';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
-import { useEngagementStore } from '@/lib/engagement-store';
 
 const faqItems = [
   {
@@ -109,7 +109,7 @@ function postToQuestion(post: Post) {
 export default function QnAPage() {
   useDocumentMeta('오늘 밤 어디 가냐고? 여기서 추천받아', '갈 곳 못 정한 사람들이 모여서 서로 추천해주는 게시판.');
   const { user } = useAuth();
-  const points = useEngagementStore((s) => s.points);
+  const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("전체");
   const [questions, setQuestions] = useState(sampleUserQuestions);
@@ -132,12 +132,7 @@ export default function QnAPage() {
   }, []);
 
   const handleWriteClick = () => {
-    if (!user) {
-      setAuthError(true);
-      setTimeout(() => setAuthError(false), 3000);
-      return;
-    }
-    if (points < 300) { alert("🔒 글쓰기는 🔥매니아(300P) 등급부터 가능합니다. 현재 " + points + "P"); return; }
+    if (!user) { navigate('/login'); return; }
     setShowWriteModal(true);
   };
 
@@ -179,12 +174,6 @@ export default function QnAPage() {
           </p>
         </div>
 
-        {/* Auth Error Toast */}
-        {authError && (
-          <div className="mb-4 rounded-xl border border-neon-red/30 bg-neon-red/10 px-5 py-3 text-sm text-neon-red">
-            로그인이 필요합니다
-          </div>
-        )}
 
         {/* FAQ Accordion */}
         <section className="mb-12">
@@ -220,7 +209,8 @@ export default function QnAPage() {
             <h2 className="text-xl font-bold">오늘어디갈까 게시글</h2>
             <button
               onClick={handleWriteClick}
-              className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light"
+              className="rounded-xl px-5 py-2.5 text-sm font-bold transition"
+              style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}
             >
               글쓰기
             </button>
@@ -296,25 +286,22 @@ export default function QnAPage() {
           )}
         </section>
 
-        {/* Write Modal */}
         {showWriteModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-            <div className="w-full max-w-lg rounded-2xl border border-neon-border bg-neon-surface p-6">
-              <h2 className="mb-4 text-lg font-bold">글쓰기</h2>
-              <div className="mb-3">
-                <label className="mb-1 block text-xs text-neon-text-muted">제목</label>
-                <input value={writeTitle} onChange={(e) => setWriteTitle(e.target.value)} placeholder="제목을 입력하세요"
-                  className="w-full rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-primary" />
+          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" onClick={() => setShowWriteModal(false)}>
+            <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} />
+            <div className="relative w-full max-w-lg rounded-t-3xl sm:rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', color: '#111' }} onClick={e => e.stopPropagation()}>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-bold" style={{ color: '#111' }}>글쓰기</h2>
+                <button onClick={() => setShowWriteModal(false)} style={{ minWidth: 44, minHeight: 44, color: '#555' }}>✕</button>
               </div>
-              <div className="mb-4">
-                <label className="mb-1 block text-xs text-neon-text-muted">내용</label>
-                <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="궁금한 내용을 작성해주세요" rows={5}
-                  className="w-full rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-primary" />
-              </div>
-              <div className="flex justify-end gap-2">
-                <button onClick={() => setShowWriteModal(false)} className="rounded-lg px-4 py-2 text-sm text-neon-text-muted hover:bg-neon-surface-2">취소</button>
+              <input value={writeTitle} onChange={(e) => setWriteTitle(e.target.value)} placeholder="제목을 입력하세요"
+                className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none" style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
+              <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="궁금한 내용을 작성해주세요" rows={8}
+                className="w-full rounded-lg border px-4 py-3 text-sm mb-4 outline-none resize-none" style={{ borderColor: '#E5E7EB', color: '#111' }} />
+              <div className="flex gap-2">
+                <button onClick={() => setShowWriteModal(false)} className="flex-1 rounded-xl py-3 text-sm font-medium" style={{ backgroundColor: '#F3F4F6', color: '#555', minHeight: 48 }}>취소</button>
                 <button onClick={handleSubmit} disabled={submitting || !writeTitle.trim() || !writeContent.trim()}
-                  className="rounded-lg bg-neon-primary px-5 py-2 text-sm font-medium transition hover:bg-neon-primary-light disabled:opacity-50">
+                  className="flex-1 rounded-xl py-3 text-sm font-bold disabled:opacity-40" style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 48 }}>
                   {submitting ? "등록 중..." : "등록"}
                 </button>
               </div>

@@ -110,9 +110,7 @@ export default function FreeBoardPage() {
 
   const handleWriteClick = () => {
     if (!user) {
-      setAuthError(true);
-      setTimeout(() => setAuthError(false), 3000);
-      return;
+      window.location.href = '/login'; return;
     }
     setShowWriteModal(true);
   };

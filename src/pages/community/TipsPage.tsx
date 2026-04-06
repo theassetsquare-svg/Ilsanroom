@@ -148,9 +148,7 @@ export default function TipsPage() {
 
   const handleWriteClick = () => {
     if (!user) {
-      setAuthError(true);
-      setTimeout(() => setAuthError(false), 3000);
-      return;
+      window.location.href = '/login'; return;
     }
     if (points < 300) { alert("🔒 글쓰기는 🔥매니아(300P) 등급부터 가능합니다. 현재 " + points + "P"); return; }
     setShowWriteModal(true);
