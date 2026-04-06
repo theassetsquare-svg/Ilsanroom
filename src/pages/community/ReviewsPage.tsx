@@ -411,12 +411,17 @@ export default function ReviewsPage() {
 
         {/* Review Detail + Comments Modal */}
         {viewingReview && (
-          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" onClick={() => setViewingReview(null)}>
-            <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} />
-            <div className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-t-3xl sm:rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', color: '#111' }} onClick={e => e.stopPropagation()}>
+          <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
+            {/* 상단 바 */}
+            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
+              <button onClick={() => setViewingReview(null)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>← 뒤로</button>
+              <h2 className="text-base font-bold" style={{ color: '#111' }}>후기 상세</h2>
+              <div style={{ width: 44 }} />
+            </div>
+            {/* 본문 스크롤 */}
+            <div className="flex-1 overflow-y-auto px-4 py-4 max-w-2xl mx-auto w-full">
               <div className="flex items-center justify-between mb-3">
                 <StarDisplay rating={viewingReview.rating} size="lg" />
-                <button onClick={() => setViewingReview(null)} style={{ minWidth: 44, minHeight: 44, color: '#555' }}>✕</button>
               </div>
               <h2 className="text-xl font-bold mb-2" style={{ color: '#111' }}>{viewingReview.title}</h2>
               <div className="flex items-center justify-between mb-4">
