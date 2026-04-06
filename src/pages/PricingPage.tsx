@@ -78,7 +78,7 @@ export default function PricingPage() {
           업소 상황에 맞는 최적 요금제를 안내드리겠습니다.<br />
           부담 없이 문의해주세요.
         </p>
-        <p className="text-xs text-white/60">평일 10:00~18:00 · 주말/공휴일 가능</p>
+        <p className="text-xs text-white/60">24시간 365일 상담 가능</p>
       </div>
 
       <p className="text-xs text-center" style={{ color: '#999' }}>
