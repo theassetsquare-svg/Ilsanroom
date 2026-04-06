@@ -4,7 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
 import { Link } from 'react-router-dom';
 
-const ADMIN_EMAILS = ['qotjsdnr123@naver.com', 'baesunwook513@gmail.com'];
+const ADMIN_EMAILS = ['qotjsdnr123@naver.com', 'baesunwook513@gmail.com', 'theassetsquare@gmail.com'];
 
 export default function AdminPage() {
   useDocumentMeta('관리자 페이지', '놀쿨 사이트 관리');
