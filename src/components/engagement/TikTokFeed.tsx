@@ -337,8 +337,6 @@ export default function TikTokFeed({ isOpen, onClose }: TikTokFeedProps) {
   return (
     <div
       className="fixed inset-0 z-50 bg-black overflow-hidden select-none"
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
       onWheel={onWheel}
     >
       {/* Top bar */}
@@ -348,9 +346,10 @@ export default function TikTokFeed({ isOpen, onClose }: TikTokFeedProps) {
         </span>
         <button
           onClick={handleClose}
-          className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
+          className="w-12 h-12 flex items-center justify-center rounded-full bg-white/15 backdrop-blur-sm active:bg-white/30 transition-colors"
+          style={{ minWidth: 48, minHeight: 48 }}
         >
-          <X className="w-5 h-5 text-white" />
+          <X className="w-7 h-7 text-white" />
         </button>
       </div>
 
@@ -389,6 +388,8 @@ export default function TikTokFeed({ isOpen, onClose }: TikTokFeedProps) {
           exit="exit"
           transition={{ duration: 0.35, ease: 'easeInOut' }}
           className="absolute inset-0 flex items-center justify-center"
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
         >
           {item.type === 'venue' && (
             <VenueSlide
@@ -464,45 +465,45 @@ function VenueSlide({
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full bg-[var(--neon-primary,#7c3aed)]/10 blur-[100px]" />
 
       {/* Right-side action buttons (TikTok style) */}
-      <div className="absolute right-4 bottom-48 flex flex-col items-center gap-6 z-10">
-        <button onClick={onLike} className="flex flex-col items-center gap-1 group">
+      <div className="absolute right-4 bottom-48 flex flex-col items-center gap-5 z-30">
+        <button onClick={onLike} className="flex flex-col items-center gap-1" style={{ minWidth: 48, minHeight: 48 }}>
           <div
-            className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
+            className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
               liked
                 ? 'bg-red-500 scale-110'
-                : 'bg-white/10 backdrop-blur-sm group-hover:bg-white/20'
+                : 'bg-white/15 backdrop-blur-sm active:bg-white/30'
             }`}
           >
-            <Heart className={`w-5 h-5 ${liked ? 'text-white fill-white' : 'text-white'}`} />
+            <Heart className={`w-6 h-6 ${liked ? 'text-white fill-white' : 'text-white'}`} />
           </div>
-          <span className="text-white/70 text-xs">{liked ? fakeLikes + 1 : fakeLikes}</span>
+          <span className="text-xs" style={{ color: '#FFFFFF' }}>{liked ? fakeLikes + 1 : fakeLikes}</span>
         </button>
 
-        <button className="flex flex-col items-center gap-1 group">
-          <div className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/20 transition-colors">
-            <MessageCircle className="w-5 h-5 text-white" />
+        <button onClick={onShare} className="flex flex-col items-center gap-1" style={{ minWidth: 48, minHeight: 48 }}>
+          <div className="w-12 h-12 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center active:bg-white/30 transition-colors">
+            <MessageCircle className="w-6 h-6 text-white" />
           </div>
-          <span className="text-white/70 text-xs">{fakeReviews}</span>
+          <span className="text-xs" style={{ color: '#FFFFFF' }}>{fakeReviews}</span>
         </button>
 
-        <button onClick={onShare} className="flex flex-col items-center gap-1 group">
-          <div className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/20 transition-colors">
-            <Share2 className="w-5 h-5 text-white" />
+        <button onClick={onShare} className="flex flex-col items-center gap-1" style={{ minWidth: 48, minHeight: 48 }}>
+          <div className="w-12 h-12 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center active:bg-white/30 transition-colors">
+            <Share2 className="w-6 h-6 text-white" />
           </div>
-          <span className="text-white/70 text-xs">공유</span>
+          <span className="text-xs" style={{ color: '#FFFFFF' }}>공유</span>
         </button>
 
-        <button onClick={onBookmark} className="flex flex-col items-center gap-1 group">
+        <button onClick={onBookmark} className="flex flex-col items-center gap-1" style={{ minWidth: 48, minHeight: 48 }}>
           <div
-            className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
+            className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
               bookmarked
                 ? 'bg-[var(--neon-accent,#f59e0b)] scale-110'
-                : 'bg-white/10 backdrop-blur-sm group-hover:bg-white/20'
+                : 'bg-white/15 backdrop-blur-sm active:bg-white/30'
             }`}
           >
-            <Star className={`w-5 h-5 ${bookmarked ? 'text-white fill-white' : 'text-white'}`} />
+            <Star className={`w-6 h-6 ${bookmarked ? 'text-white fill-white' : 'text-white'}`} />
           </div>
-          <span className="text-white/70 text-xs">저장</span>
+          <span className="text-xs" style={{ color: '#FFFFFF' }}>저장</span>
         </button>
       </div>
 
@@ -563,7 +564,9 @@ function VenueSlide({
         {/* Detail link */}
         <Link target="_blank" rel="noopener noreferrer"
           to={getCategoryHref(venue)}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--neon-primary,#7c3aed)] hover:bg-[var(--neon-primary,#7c3aed)]/80 text-white text-sm font-semibold transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--neon-primary,#7c3aed)] active:bg-[var(--neon-primary,#7c3aed)]/80 text-white text-sm font-semibold transition-colors z-30 relative"
+          style={{ minHeight: 48 }}
+          onClick={(e) => e.stopPropagation()}
         >
           자세히 보기
           <span className="text-lg">→</span>
