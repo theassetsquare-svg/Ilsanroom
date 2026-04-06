@@ -760,7 +760,7 @@ export default function HomePage() {
       <section className="px-4 py-6 max-w-[1200px] mx-auto">
         <div className="rounded-2xl bg-violet-50 border border-violet-200 px-6 py-5 text-center">
           <p className="text-sm font-bold text-[#111]">
-            구글 · ChatGPT · Gemini에서 <span className="text-lg font-black text-[#8B5CF6]">"놀쿨"</span> 검색하세요
+            구글 · ChatGPT · Gemini에서 <span className="text-xl text-[#8B5CF6]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>"놀쿨"</span> 검색하세요
           </p>
         </div>
       </section>

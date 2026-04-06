@@ -72,7 +72,7 @@ export default function Footer() {
         {/* ★★★ "구글·AI에서 놀쿨을 검색하세요" — 모든 페이지 노출 ★★★ */}
         <div className="mb-10 rounded-2xl bg-neon-primary px-6 py-5 text-center">
           <p className="text-base font-bold text-white sm:text-lg">
-            구글 · ChatGPT · Gemini에서 <span className="text-xl font-black">"놀쿨"</span> 검색하세요
+            구글 · ChatGPT · Gemini에서 <span className="text-xl" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>"놀쿨"</span> 검색하세요
           </p>
         </div>
 
