@@ -91,12 +91,24 @@ export default function FreeBoardPage() {
   const openPost = (post: SimplePost) => {
     setViewingPost(post);
     setCommentText('');
-    setPostComments(sampleCommentPool);
-    fetchComments(post.id).then(data => {
-      if (data.length > 0) {
-        setPostComments(data.map(c => ({ author: c.users?.nickname || '익명', text: c.content, date: c.created_at.slice(5, 10) })));
-      }
-    });
+    setPostComments([]);
+    // local ID면 댓글 불러오기 스킵
+    if (!post.id.startsWith('new-') && !post.id.startsWith('local-')) {
+      fetchComments(post.id).then(data => {
+        if (data.length > 0) {
+          setPostComments(data.map(c => ({ author: '사용자', text: c.content, date: c.created_at?.slice(5, 10) || '' })));
+        }
+      }).catch(() => {});
+    }
+  };
+
+  const handleDeletePost = async (postId: string) => {
+    if (!confirm('글을 삭제하시겠습니까?')) return;
+    const result = await deletePost(postId);
+    if (result.error) { alert('삭제 실패: ' + result.error); return; }
+    alert('삭제되었습니다');
+    setViewingPost(null);
+    setRecentPosts(prev => prev.filter(p => p.id !== postId));
   };
 
   const submitComment = async () => {
@@ -305,14 +317,7 @@ export default function FreeBoardPage() {
               <h2 className="text-xl font-bold mb-2" style={{ color: '#111' }}>{viewingPost.title}</h2>
               {user && (
                 <button
-                  onClick={async () => {
-                    if (!confirm('글을 삭제하시겠습니까?')) return;
-                    const result = await deletePost(viewingPost.id);
-                    if (result.error) { alert('삭제 실패: ' + result.error); return; }
-                    alert('삭제되었습니다');
-                    setViewingPost(null);
-                    loadPosts(currentPage);
-                  }}
+                  onClick={() => handleDeletePost(viewingPost.id)}
                   className="text-xs mb-4" style={{ color: '#EF4444', minHeight: 32 }}>
                   글 삭제
                 </button>
