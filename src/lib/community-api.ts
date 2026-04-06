@@ -115,6 +115,34 @@ export async function createComment(postId: string, content: string, parentId?: 
   return { data: data as unknown as Comment };
 }
 
+// Delete post — 본인 글만 삭제
+export async function deletePost(postId: string) {
+  const supabase = createClient();
+  if (!supabase) return { error: 'Supabase 연결 실패' };
+
+  const { error } = await supabase
+    .from('posts')
+    .delete()
+    .eq('id', postId);
+
+  if (error) return { error: error.message };
+  return { success: true };
+}
+
+// Delete comment — 본인 댓글만 삭제
+export async function deleteComment(commentId: string) {
+  const supabase = createClient();
+  if (!supabase) return { error: 'Supabase 연결 실패' };
+
+  const { error } = await supabase
+    .from('comments')
+    .delete()
+    .eq('id', commentId);
+
+  if (error) return { error: error.message };
+  return { success: true };
+}
+
 // Toggle favorite
 export async function toggleFavorite(venueSlug: string) {
   const supabase = createClient();

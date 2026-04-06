@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
-import { fetchPosts, createPost, fetchComments, createComment, type Post } from '@/lib/community-api';
+import { fetchPosts, createPost, fetchComments, createComment, deletePost, deleteComment, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
 
 const sampleHotPosts = [
@@ -295,9 +295,23 @@ export default function FreeBoardPage() {
                 </div>
                 <button onClick={() => setViewingPost(null)} style={{ minWidth: 44, minHeight: 44, color: '#555' }}>✕</button>
               </div>
-              <h2 className="text-xl font-bold mb-4" style={{ color: '#111' }}>{viewingPost.title}</h2>
+              <h2 className="text-xl font-bold mb-2" style={{ color: '#111' }}>{viewingPost.title}</h2>
+              {user && (
+                <button
+                  onClick={async () => {
+                    if (!confirm('글을 삭제하시겠습니까?')) return;
+                    const result = await deletePost(viewingPost.id);
+                    if (result.error) { alert('삭제 실패: ' + result.error); return; }
+                    alert('삭제되었습니다');
+                    setViewingPost(null);
+                    loadPosts(currentPage);
+                  }}
+                  className="text-xs mb-4" style={{ color: '#EF4444', minHeight: 32 }}>
+                  글 삭제
+                </button>
+              )}
               <div className="rounded-xl p-4 mb-4" style={{ backgroundColor: '#F9FAFB', color: '#333', minHeight: 120 }}>
-                <p className="text-sm leading-relaxed">이 게시글의 상세 내용입니다. 커뮤니티 기능이 정식 오픈되면 실제 내용이 표시됩니다.</p>
+                <p className="text-sm leading-relaxed">이 게시글의 상세 내용입니다.</p>
               </div>
 
               {/* 댓글 목록 */}
@@ -306,9 +320,22 @@ export default function FreeBoardPage() {
                 {postComments.length > 0 ? (
                   <div className="space-y-2 mb-4">
                     {postComments.map((c, i) => (
-                      <div key={i} className="rounded-lg px-3 py-2" style={{ backgroundColor: '#F3F4F6' }}>
-                        <p className="text-sm" style={{ color: '#111' }}>{c.text}</p>
-                        <span className="text-xs" style={{ color: '#999' }}>{c.author} · {c.date}</span>
+                      <div key={i} className="flex items-start justify-between rounded-lg px-3 py-2" style={{ backgroundColor: '#F3F4F6' }}>
+                        <div className="flex-1">
+                          <p className="text-sm" style={{ color: '#111' }}>{c.text}</p>
+                          <span className="text-xs" style={{ color: '#999' }}>{c.author} · {c.date}</span>
+                        </div>
+                        {user && (
+                          <button
+                            onClick={async () => {
+                              if (!confirm('댓글을 삭제하시겠습니까?')) return;
+                              await deleteComment((c as any).id || '');
+                              setPostComments(prev => prev.filter((_, ci) => ci !== i));
+                            }}
+                            className="text-xs shrink-0 ml-2" style={{ color: '#EF4444', minHeight: 28 }}>
+                            삭제
+                          </button>
+                        )}
                       </div>
                     ))}
                   </div>

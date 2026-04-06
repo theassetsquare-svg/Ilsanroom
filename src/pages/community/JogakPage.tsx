@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
-import { fetchPosts, createPost, fetchComments, createComment, type Post, type Comment } from '@/lib/community-api';
+import { fetchPosts, createPost, fetchComments, createComment, deletePost, deleteComment, type Post, type Comment } from '@/lib/community-api';
 
 // 로그인만 필요, 포인트 제한 없음
 
