@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useEngagementStore } from '@/lib/engagement-store';
+import { useAuth } from '@/hooks/useAuth';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Target, Check, Gift, ChevronDown, Flame, Star, Zap } from 'lucide-react';
@@ -158,6 +159,9 @@ export default function DailyMissions() {
   const today = new Date();
   const dateLabel = `${today.getMonth() + 1}월 ${today.getDate()}일`;
 
+  const { user: authUser } = useAuth();
+  const isLoggedIn = !!authUser;
+
   const [seen, setSeen] = useState(() => {
     try {
       const savedDate = localStorage.getItem('missions_seen_date');
@@ -184,7 +188,7 @@ export default function DailyMissions() {
         aria-label="오늘의 미션 열기"
       >
         <Target className="w-6 h-6 text-white" />
-        {!seen && incompleteCount > 0 && (
+        {isLoggedIn && !seen && incompleteCount > 0 && (
           <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#EF4444] text-xs font-bold text-white">
             {incompleteCount}
           </span>

@@ -86,31 +86,20 @@ export default function Header() {
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
               </svg>
-              {(() => {
+              {user && (() => {
                 try {
                   const seenAt = Number(localStorage.getItem('bell_seen_at') || '0');
-                  // 마지막 확인 후 6시간 지나면 새 알림 1개 표시
+                  if (seenAt === 0) return null;
                   const hoursSince = (Date.now() - seenAt) / (1000 * 60 * 60);
-                  if (seenAt === 0) return 3; // 첫 방문
-                  if (hoursSince < 1) return 0;
-                  if (hoursSince < 6) return 1;
-                  if (hoursSince < 24) return 2;
-                  return 3;
-                } catch { return 0; }
-              })() > 0 && (
-                <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
-                  {(() => {
-                    try {
-                      const seenAt = Number(localStorage.getItem('bell_seen_at') || '0');
-                      const hoursSince = (Date.now() - seenAt) / (1000 * 60 * 60);
-                      if (seenAt === 0) return 3;
-                      if (hoursSince < 6) return 1;
-                      if (hoursSince < 24) return 2;
-                      return 3;
-                    } catch { return 0; }
-                  })()}
-                </span>
-              )}
+                  if (hoursSince < 1) return null;
+                  const count = hoursSince < 6 ? 1 : hoursSince < 24 ? 2 : 3;
+                  return (
+                    <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
+                      {count}
+                    </span>
+                  );
+                } catch { return null; }
+              })()}
             </Link>
             <Link
               to={user ? '/profile' : '/login'}
