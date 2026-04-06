@@ -21,18 +21,21 @@ export default class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, info: React.ErrorInfo) {
     console.error('[ErrorBoundary]', error, info.componentStack);
-    // 자동 새로고침 (무한루프 방지: 3초 내 재발생 시 중단)
-    const lastReload = sessionStorage.getItem('error_reload');
-    const now = Date.now();
-    if (!lastReload || now - Number(lastReload) > 3000) {
-      sessionStorage.setItem('error_reload', String(now));
-      window.location.reload();
-    }
   }
 
   render() {
     if (this.state.hasError) {
-      return this.props.fallback ?? null;
+      return this.props.fallback ?? (
+        <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
+          <button
+            onClick={() => window.location.reload()}
+            className="rounded-xl px-6 py-3 text-sm font-bold transition active:scale-[0.98]"
+            style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 48 }}
+          >
+            새로고침
+          </button>
+        </div>
+      );
     }
     return this.props.children;
   }
