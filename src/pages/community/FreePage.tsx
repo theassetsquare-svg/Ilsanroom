@@ -301,28 +301,25 @@ export default function FreeBoardPage() {
           </div>
         )}
 
-        {/* Post Detail Modal */}
+        {/* Post Detail — 전체화면 */}
         {viewingPost && (
-          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" onClick={() => setViewingPost(null)}>
-            <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} />
-            <div className="relative w-full max-w-lg max-h-[80vh] overflow-y-auto rounded-t-3xl sm:rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', color: '#111' }} onClick={e => e.stopPropagation()}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2 text-xs" style={{ color: '#999' }}>
-                  <span className="font-medium" style={{ color: '#555' }}>{viewingPost.author}</span>
-                  <span>·</span>
-                  <span>{viewingPost.date}</span>
-                </div>
-                <button onClick={() => setViewingPost(null)} style={{ minWidth: 44, minHeight: 44, color: '#555' }}>✕</button>
-              </div>
-              <h2 className="text-xl font-bold mb-2" style={{ color: '#111' }}>{viewingPost.title}</h2>
+          <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
+            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
+              <button onClick={() => setViewingPost(null)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>← 뒤로</button>
+              <h2 className="text-base font-bold" style={{ color: '#111' }}>글 상세</h2>
               {user && (
-                <button
-                  onClick={() => handleDeletePost(viewingPost.id)}
-                  className="text-xs mb-4" style={{ color: '#EF4444', minHeight: 32 }}>
-                  글 삭제
-                </button>
+                <button onClick={() => handleDeletePost(viewingPost.id)} className="text-sm font-medium" style={{ color: '#EF4444', minHeight: 44 }}>삭제</button>
               )}
-              <div className="rounded-xl p-4 mb-4" style={{ backgroundColor: '#F9FAFB', color: '#333', minHeight: 120 }}>
+              {!user && <div style={{ width: 44 }} />}
+            </div>
+            <div className="flex-1 overflow-y-auto px-4 py-4 max-w-2xl mx-auto w-full">
+              <div className="flex items-center gap-2 text-xs mb-3" style={{ color: '#999' }}>
+                <span className="font-medium" style={{ color: '#555' }}>{viewingPost.author}</span>
+                <span>·</span>
+                <span>{viewingPost.date}</span>
+              </div>
+              <h2 className="text-xl font-bold mb-4" style={{ color: '#111' }}>{viewingPost.title}</h2>
+              <div className="rounded-xl p-4 mb-6" style={{ backgroundColor: '#F9FAFB', color: '#333', minHeight: 120 }}>
                 <p className="text-sm leading-relaxed">이 게시글의 상세 내용입니다.</p>
               </div>
 
