@@ -311,7 +311,11 @@ export default function HelpPage() {
             직접 <span className="text-neon-primary-light">연락하기</span>
           </h2>
           <div className="grid gap-4 sm:grid-cols-3 mb-8">
-            <a href="mailto:qotjsdnr123@naver.com?subject=[놀쿨] 문의드립니다" className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/40" style={{ minHeight: 44 }}>
+            <button
+              onClick={() => { window.location.href = 'mailto:qotjsdnr123@naver.com?subject=[놀쿨] 문의드립니다'; }}
+              className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/40 text-left w-full"
+              style={{ minHeight: 48 }}
+            >
               <Mail className="mt-0.5 h-6 w-6 shrink-0 text-neon-primary-light" />
               <div>
                 <h3 className="text-sm font-semibold" style={{ color: '#111' }}>메일 보내기</h3>
@@ -322,7 +326,7 @@ export default function HelpPage() {
                   확인하는대로 답장드립니다
                 </p>
               </div>
-            </a>
+            </button>
             <div className="flex items-start gap-4 rounded-2xl border border-neon-border bg-neon-surface p-6">
               <MessageCircle className="mt-0.5 h-6 w-6 shrink-0 text-neon-primary-light" />
               <div>
