@@ -65,6 +65,11 @@ const BillingPage = lazy(() => import('./pages/admin/BillingPage'));
 const OnboardingPage = lazy(() => import('./pages/admin/OnboardingPage'));
 const LaunchPage = lazy(() => import('./pages/admin/LaunchPage'));
 const VenueManagePage = lazy(() => import('./pages/admin/VenueManagePage'));
+const NightlifeGuidePage = lazy(() => import('./pages/lead/NightlifeGuidePage'));
+const LeadQuizPage = lazy(() => import('./pages/lead/LeadQuizPage'));
+const WeeklyHotPage = lazy(() => import('./pages/lead/WeeklyHotPage'));
+const WaitlistPage = lazy(() => import('./pages/WaitlistPage'));
+const MyReferralsPage = lazy(() => import('./pages/my/MyReferralsPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 function PageLoading() {
@@ -135,6 +140,13 @@ export default function App() {
           {/* Misc */}
           <Route path="/status" element={<StatusPage />} />
           <Route path="/referral" element={<ReferralPage />} />
+          {/* Lead magnets */}
+          <Route path="/lead/nightlife-guide" element={<NightlifeGuidePage />} />
+          <Route path="/lead/quiz" element={<LeadQuizPage />} />
+          <Route path="/lead/weekly-hot" element={<WeeklyHotPage />} />
+          {/* Growth */}
+          <Route path="/waitlist" element={<WaitlistPage />} />
+          <Route path="/my/referrals" element={<MyReferralsPage />} />
           <Route path="/hidden" element={<HiddenPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/events" element={<EventsPage />} />
