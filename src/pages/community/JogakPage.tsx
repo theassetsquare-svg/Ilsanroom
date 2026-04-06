@@ -45,7 +45,9 @@ export default function JogakPage() {
   const canPost = !!user;
 
   // 글 목록
-  const [posts, setPosts] = useState<{ id: string; title: string; author: string; date: string; comments: number }[]>(samplePosts);
+  const [posts, setPosts] = useState<{ id: string; title: string; content: string; author: string; date: string; comments: number }[]>(
+    samplePosts.map(p => ({ ...p, content: sampleContents[p.id] || '' }))
+  );
   const [loading, setLoading] = useState(true);
 
   // 글 상세
@@ -71,7 +73,8 @@ export default function JogakPage() {
         setPosts(data.map(p => ({
           id: p.id,
           title: p.title,
-          author: p.users?.nickname || '익명',
+          content: p.content || '',
+          author: '사용자',
           date: p.created_at.slice(5, 10),
           comments: p.comment_count || 0,
         })));
@@ -117,7 +120,7 @@ export default function JogakPage() {
       alert('저장 실패: ' + result.error);
     } else if (result.data) {
       alert('글이 저장되었습니다!');
-      setPosts(prev => [{ id: result.data.id, title: writeTitle.trim(), author: user?.user_metadata?.name || '나', date: new Date().toISOString().slice(5, 10), comments: 0 }, ...prev]);
+      setPosts(prev => [{ id: result.data.id, title: writeTitle.trim(), content: writeContent.trim(), author: user?.user_metadata?.name || '나', date: new Date().toISOString().slice(5, 10), comments: 0 }, ...prev]);
       setWriteTitle(''); setWriteContent(''); setShowWrite(false);
     }
     setSubmitting(false);
@@ -191,7 +194,7 @@ export default function JogakPage() {
                 <div className="px-5 pb-5 pt-2" style={{ backgroundColor: '#FAFAFA', borderBottom: '1px solid #E5E7EB' }}>
                   {/* 본문 */}
                   <p className="text-sm leading-relaxed mb-4" style={{ color: '#333', whiteSpace: 'pre-wrap' }}>
-                    {sampleContents[post.id] || '(내용을 불러오는 중...)'}
+                    {post.content || sampleContents[post.id] || '내용이 없습니다.'}
                   </p>
 
                   {/* 댓글 목록 */}

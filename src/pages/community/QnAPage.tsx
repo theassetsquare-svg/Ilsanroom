@@ -340,7 +340,7 @@ export default function QnAPage() {
               </div>
               <h2 className="text-xl font-bold mb-4" style={{ color: '#111' }}>{viewingPost.title}</h2>
               <div className="rounded-xl p-4" style={{ backgroundColor: '#F9FAFB', color: '#333', minHeight: 120 }}>
-                <p className="text-sm leading-relaxed">이 게시글의 상세 내용입니다.</p>
+                <p className="text-sm leading-relaxed" style={{ whiteSpace: 'pre-wrap' }}>{viewingPost.title}</p>
               </div>
             </div>
           </div>

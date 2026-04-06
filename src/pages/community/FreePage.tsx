@@ -5,27 +5,28 @@ import { fetchPosts, createPost, fetchComments, createComment, deletePost, delet
 import { useAuth } from '@/hooks/useAuth';
 
 const sampleHotPosts = [
-  { id: "hot-1", title: "일산 밤문화 입문기 — 3개월 차 솔직 소감", author: "야행성루키", date: "2026-03-19", comments: 74 },
-  { id: "hot-2", title: "라운지 vs 나이트, 결국 취향 차이더라", author: "취향존중", date: "2026-03-18", comments: 61 },
-  { id: "hot-3", title: "혼자 다니는 분들 의외로 많더라고요", author: "솔로탐험가", date: "2026-03-17", comments: 53 },
+  { id: "hot-1", title: "일산 밤문화 입문기 — 3개월 차 솔직 소감", author: "야행성루키", date: "2026-03-19", content: "", comments: 74 },
+  { id: "hot-2", title: "라운지 vs 나이트, 결국 취향 차이더라", author: "취향존중", date: "2026-03-18", content: "", comments: 61 },
+  { id: "hot-3", title: "혼자 다니는 분들 의외로 많더라고요", author: "솔로탐험가", date: "2026-03-17", content: "", comments: 53 },
 ];
 
 const sampleRecentPosts = [
-  { id: "sample-1", title: "주엽역 근처 분위기 좋은 곳 알려주세요", author: "주엽사람", date: "2026-03-20", comments: 8 },
-  { id: "sample-2", title: "금요일 vs 토요일, 언제가 더 나을까요?", author: "요일고민", date: "2026-03-20", comments: 23 },
-  { id: "sample-3", title: "라페스타 쪽 새로 생긴 바 가보신 분?", author: "신상궁금", date: "2026-03-19", comments: 15 },
-  { id: "sample-4", title: "회식 장소로 괜찮은 곳 추천 부탁드립니다", author: "직장인모임", date: "2026-03-19", comments: 31 },
-  { id: "sample-5", title: "여름 되면 루프탑 바 오픈하는 곳 있나요", author: "루프탑기대", date: "2026-03-18", comments: 12 },
-  { id: "sample-6", title: "대리운전 앱 뭐가 제일 빠른지 공유해요", author: "귀가전문", date: "2026-03-18", comments: 27 },
-  { id: "sample-7", title: "일산에서 칵테일 잘하는 곳 정보 공유", author: "칵테일러버", date: "2026-03-17", comments: 19 },
-  { id: "sample-8", title: "백석동 쪽 늦은 밤 갈 만한 곳?", author: "백석주민", date: "2026-03-17", comments: 6 },
-  { id: "sample-9", title: "주말 나이트 예약 필수인가요?", author: "예약궁금", date: "2026-03-16", comments: 14 },
-  { id: "sample-10", title: "비 오는 날 실내 놀거리 추천", author: "우중산책", date: "2026-03-16", comments: 9 },
+  { id: "sample-1", title: "주엽역 근처 분위기 좋은 곳 알려주세요", author: "주엽사람", date: "2026-03-20", content: "", comments: 8 },
+  { id: "sample-2", title: "금요일 vs 토요일, 언제가 더 나을까요?", author: "요일고민", date: "2026-03-20", content: "", comments: 23 },
+  { id: "sample-3", title: "라페스타 쪽 새로 생긴 바 가보신 분?", author: "신상궁금", date: "2026-03-19", content: "", comments: 15 },
+  { id: "sample-4", title: "회식 장소로 괜찮은 곳 추천 부탁드립니다", author: "직장인모임", date: "2026-03-19", content: "", comments: 31 },
+  { id: "sample-5", title: "여름 되면 루프탑 바 오픈하는 곳 있나요", author: "루프탑기대", date: "2026-03-18", content: "", comments: 12 },
+  { id: "sample-6", title: "대리운전 앱 뭐가 제일 빠른지 공유해요", author: "귀가전문", date: "2026-03-18", content: "", comments: 27 },
+  { id: "sample-7", title: "일산에서 칵테일 잘하는 곳 정보 공유", author: "칵테일러버", date: "2026-03-17", content: "", comments: 19 },
+  { id: "sample-8", title: "백석동 쪽 늦은 밤 갈 만한 곳?", author: "백석주민", date: "2026-03-17", content: "", comments: 6 },
+  { id: "sample-9", title: "주말 나이트 예약 필수인가요?", author: "예약궁금", date: "2026-03-16", content: "", comments: 14 },
+  { id: "sample-10", title: "비 오는 날 실내 놀거리 추천", author: "우중산책", date: "2026-03-16", content: "", comments: 9 },
 ];
 
 interface SimplePost {
   id: string;
   title: string;
+  content: string;
   author: string;
   date: string;
   comments: number;
@@ -35,7 +36,8 @@ function postToSimple(post: Post): SimplePost {
   return {
     id: post.id,
     title: post.title,
-    author: post.users?.nickname || "익명",
+    content: post.content || '',
+    author: '사용자',
     date: post.created_at.slice(0, 10),
     comments: post.comment_count || 0,
   };
@@ -143,6 +145,7 @@ export default function FreeBoardPage() {
       const newPost: SimplePost = {
         id: result.data?.id || `new-${Date.now()}`,
         title: writeTitle.trim(),
+        content: writeContent.trim(),
         author: user?.user_metadata?.name || '나',
         date: new Date().toISOString().slice(0, 10),
         comments: 0,
@@ -320,7 +323,7 @@ export default function FreeBoardPage() {
               </div>
               <h2 className="text-xl font-bold mb-4" style={{ color: '#111' }}>{viewingPost.title}</h2>
               <div className="rounded-xl p-4 mb-6" style={{ backgroundColor: '#F9FAFB', color: '#333', minHeight: 120 }}>
-                <p className="text-sm leading-relaxed">이 게시글의 상세 내용입니다.</p>
+                <p className="text-sm leading-relaxed" style={{ whiteSpace: 'pre-wrap' }}>{viewingPost.content || '내용이 없습니다.'}</p>
               </div>
 
               {/* 댓글 목록 */}
