@@ -127,11 +127,18 @@ export default function FreeBoardPage() {
       alert('저장 실패: ' + result.error);
     } else {
       alert('글이 저장되었습니다!');
+      // 새 글을 목록 맨 위에 바로 추가
+      const newPost: SimplePost = {
+        id: result.data?.id || `new-${Date.now()}`,
+        title: writeTitle.trim(),
+        author: user?.user_metadata?.name || '나',
+        date: new Date().toISOString().slice(0, 10),
+        comments: 0,
+      };
+      setRecentPosts(prev => [newPost, ...prev]);
       setShowWriteModal(false);
       setWriteTitle("");
       setWriteContent("");
-      setCurrentPage(1);
-      await loadPosts(1);
     }
     setSubmitting(false);
   };

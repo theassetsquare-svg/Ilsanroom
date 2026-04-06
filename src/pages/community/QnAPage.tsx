@@ -144,14 +144,14 @@ export default function QnAPage() {
       title: writeTitle,
       content: writeContent,
     });
-    if (result.error) { alert("저장 실패: " + result.error); } else { alert("글이 저장되었습니다!");
+    if (result.error) {
+      alert("저장 실패: " + result.error);
+    } else {
+      alert("글이 저장되었습니다!");
+      setQuestions(prev => [{ id: result.data?.id || `new-${Date.now()}`, title: writeTitle.trim(), author: '나', date: new Date().toISOString().slice(0, 10), answers: 0, likes: 0, solved: false, category: '전체' as const }, ...prev]);
       setShowWriteModal(false);
       setWriteTitle("");
       setWriteContent("");
-      const { data } = await fetchPosts('discussion');
-      if (data.length > 0) {
-        setQuestions(data.map(postToQuestion));
-      }
     }
     setSubmitting(false);
   };
