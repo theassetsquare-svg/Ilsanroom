@@ -22,7 +22,7 @@ function signInWith(provider: 'kakao' | 'google') {
   supabase.auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: `${window.location.origin}${import.meta.env.BASE_URL}auth/callback`,
+      redirectTo: 'https://nolcool.com/auth/callback',
     },
   });
 }
@@ -71,7 +71,7 @@ export default function LoginPage() {
         email: email.trim(),
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}${import.meta.env.BASE_URL}auth/callback`,
+          emailRedirectTo: 'https://nolcool.com/auth/callback',
         },
       });
       setLoading(null);
