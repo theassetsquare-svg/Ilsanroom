@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
-import { useNavigate } from 'react-router-dom';
+
 import { fetchPosts, createPost, deletePost, deleteComment, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -245,7 +245,7 @@ export default function QnAPage() {
               {filtered.map((q) => (
                 <button
                   key={q.id}
-                  onClick={() => setViewingPost(q)}
+                  onClick={() => navigate('/community/post/' + q.id)}
                   className="w-full text-left flex items-center gap-4 rounded-2xl border border-neon-border bg-neon-surface p-5 transition hover:border-neon-primary/30"
                   style={{ minHeight: 48 }}
                 >
@@ -312,39 +312,6 @@ export default function QnAPage() {
           </div>
         )}
 
-        {/* 글 상세 — 전체화면 */}
-        {viewingPost && (
-          <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
-            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
-              <button onClick={() => setViewingPost(null)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>← 뒤로</button>
-              <h2 className="text-base font-bold" style={{ color: '#111' }}>글 상세</h2>
-              {user && (
-                <button
-                  onClick={async () => {
-                    if (!confirm('글을 삭제하시겠습니까?')) return;
-                    const result = await deletePost(viewingPost.id);
-                    if (result.error) { alert('삭제 실패: ' + result.error); return; }
-                    alert('삭제되었습니다');
-                    setViewingPost(null);
-                    setQuestions(prev => prev.filter(q => q.id !== viewingPost.id));
-                  }}
-                  className="text-sm font-medium" style={{ color: '#EF4444', minHeight: 44 }}>삭제</button>
-              )}
-              {!user && <div style={{ width: 44 }} />}
-            </div>
-            <div className="flex-1 overflow-y-auto px-4 py-4 max-w-2xl mx-auto w-full">
-              <div className="flex items-center gap-2 text-xs mb-3" style={{ color: '#999' }}>
-                <span style={{ color: '#555' }}>{viewingPost.author}</span>
-                <span>·</span>
-                <span>{viewingPost.date}</span>
-              </div>
-              <h2 className="text-xl font-bold mb-4" style={{ color: '#111' }}>{viewingPost.title}</h2>
-              <div className="rounded-xl p-4" style={{ backgroundColor: '#F9FAFB', color: '#333', minHeight: 120 }}>
-                <p className="text-sm leading-relaxed" style={{ whiteSpace: 'pre-wrap' }}>{viewingPost.title}</p>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

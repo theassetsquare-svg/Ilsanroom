@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, fetchComments, createComment, deletePost, deleteComment, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
@@ -46,6 +46,7 @@ function postToSimple(post: Post): SimplePost {
 export default function FreeBoardPage() {
   useDocumentMeta('자유게시판 — 아무 말 대잔치', '잡담, 궁금한 거, 웃긴 얘기 다 OK. 규칙만 지키면 뭐든 써.');
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [recentPosts, setRecentPosts] = useState<SimplePost[]>(sampleRecentPosts);
   const [hotPosts, setHotPosts] = useState<SimplePost[]>(sampleHotPosts);
   const [loading, setLoading] = useState(true);
@@ -150,10 +151,10 @@ export default function FreeBoardPage() {
         date: new Date().toISOString().slice(0, 10),
         comments: 0,
       };
-      setRecentPosts(prev => [newPost, ...prev]);
       setShowWriteModal(false);
       setWriteTitle("");
       setWriteContent("");
+      navigate('/community/post/' + (result.data?.id || ''));
     }
     setSubmitting(false);
   };
@@ -200,7 +201,7 @@ export default function FreeBoardPage() {
             {hotPosts.map((post, i) => (
               <button
                 key={post.id}
-                onClick={() => openPost(post)}
+                onClick={() => navigate('/community/post/' + post.id)}
                 className={`flex w-full items-center justify-between px-5 py-4 text-left transition hover:bg-neon-surface-2 ${
                   i !== hotPosts.length - 1 ? "border-b border-neon-border/50" : ""
                 }`}
@@ -231,7 +232,7 @@ export default function FreeBoardPage() {
               {recentPosts.map((post, i) => (
                 <button
                   key={post.id}
-                  onClick={() => openPost(post)}
+                  onClick={() => navigate('/community/post/' + post.id)}
                   className={`flex w-full items-center justify-between px-5 py-4 text-left transition hover:bg-neon-surface-2 ${
                     i !== recentPosts.length - 1 ? "border-b border-neon-border/50" : ""
                   }`}
@@ -300,85 +301,6 @@ export default function FreeBoardPage() {
                 style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 56 }}>
                 {submitting ? "등록 중..." : "글 저장"}
               </button>
-            </div>
-          </div>
-        )}
-
-        {/* Post Detail — 전체화면 */}
-        {viewingPost && (
-          <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
-            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
-              <button onClick={() => setViewingPost(null)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>← 뒤로</button>
-              <h2 className="text-base font-bold" style={{ color: '#111' }}>글 상세</h2>
-              {user && (
-                <button onClick={() => handleDeletePost(viewingPost.id)} className="text-sm font-medium" style={{ color: '#EF4444', minHeight: 44 }}>삭제</button>
-              )}
-              {!user && <div style={{ width: 44 }} />}
-            </div>
-            <div className="flex-1 overflow-y-auto px-4 py-4 max-w-2xl mx-auto w-full">
-              <div className="flex items-center gap-2 text-xs mb-3" style={{ color: '#999' }}>
-                <span className="font-medium" style={{ color: '#555' }}>{viewingPost.author}</span>
-                <span>·</span>
-                <span>{viewingPost.date}</span>
-              </div>
-              <h2 className="text-xl font-bold mb-4" style={{ color: '#111' }}>{viewingPost.title}</h2>
-              <div className="rounded-xl p-4 mb-6" style={{ backgroundColor: '#F9FAFB', color: '#333', minHeight: 120 }}>
-                <p className="text-sm leading-relaxed" style={{ whiteSpace: 'pre-wrap' }}>{viewingPost.content || '내용이 없습니다.'}</p>
-              </div>
-
-              {/* 댓글 목록 */}
-              <div className="mt-4 pt-4" style={{ borderTop: '1px solid #E5E7EB' }}>
-                <p className="text-sm font-bold mb-3" style={{ color: '#111' }}>💬 댓글 {postComments.length}개</p>
-                {postComments.length > 0 ? (
-                  <div className="space-y-2 mb-4">
-                    {postComments.map((c, i) => (
-                      <div key={i} className="flex items-start justify-between rounded-lg px-3 py-2" style={{ backgroundColor: '#F3F4F6' }}>
-                        <div className="flex-1">
-                          <p className="text-sm" style={{ color: '#111' }}>{c.text}</p>
-                          <span className="text-xs" style={{ color: '#999' }}>{c.author} · {c.date}</span>
-                        </div>
-                        {user && (
-                          <button
-                            onClick={async () => {
-                              if (!confirm('댓글을 삭제하시겠습니까?')) return;
-                              await deleteComment((c as any).id || '');
-                              setPostComments(prev => prev.filter((_, ci) => ci !== i));
-                            }}
-                            className="text-xs shrink-0 ml-2" style={{ color: '#EF4444', minHeight: 28 }}>
-                            삭제
-                          </button>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-xs mb-4" style={{ color: '#999' }}>아직 댓글이 없어요</p>
-                )}
-
-                {/* 댓글 입력 */}
-                {user ? (
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={commentText}
-                      onChange={e => setCommentText(e.target.value)}
-                      onKeyDown={e => { if (e.key === 'Enter') submitComment(); }}
-                      placeholder="댓글을 입력하세요..."
-                      className="flex-1 rounded-lg border px-3 py-2 text-sm outline-none"
-                      style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 44 }}
-                    />
-                    <button onClick={submitComment} disabled={!commentText.trim()}
-                      className="rounded-lg px-4 py-2 text-sm font-bold text-white disabled:opacity-40"
-                      style={{ backgroundColor: '#8B5CF6', minHeight: 44 }}>
-                      등록
-                    </button>
-                  </div>
-                ) : (
-                  <Link to="/login" className="block text-center text-sm font-medium py-2" style={{ color: '#8B5CF6' }}>
-                    로그인하고 댓글 달기
-                  </Link>
-                )}
-              </div>
             </div>
           </div>
         )}

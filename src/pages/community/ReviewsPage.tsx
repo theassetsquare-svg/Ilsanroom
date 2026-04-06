@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, fetchComments, createComment, deletePost, deleteComment, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
@@ -102,6 +102,7 @@ function StarDisplay({ rating, size = "md" }: { rating: number; size?: "sm" | "m
 export default function ReviewsPage() {
   useDocumentMeta('가본 사람만 쓸 수 있다, 실제 방문 후기', '별점과 한 줄 평으로 보는 업소 리얼 리뷰. 광고 아닌 진짜 목소리.');
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [starFilter, setStarFilter] = useState<number | null>(null);
   const [photoOnly, setPhotoOnly] = useState(false);
   const [sortByHelpful, setSortByHelpful] = useState(false);
@@ -127,41 +128,6 @@ export default function ReviewsPage() {
       setLoading(false);
     })();
   }, []);
-
-  const [viewingReview, setViewingReview] = useState<typeof sampleReviews[0] | null>(null);
-  const [reviewComments, setReviewComments] = useState<{ id: string; author: string; text: string; date: string; isMine: boolean }[]>([]);
-  const [commentText, setCommentText] = useState('');
-
-  const openReview = (review: typeof sampleReviews[0]) => {
-    setViewingReview(review);
-    setCommentText('');
-    setReviewComments([]);
-    if (!review.id.startsWith('sample')) {
-      fetchComments(review.id).then(data => {
-        if (data.length > 0) {
-          setReviewComments(data.map(c => ({
-            id: c.id,
-            author: '사용자',
-            text: c.content,
-            date: c.created_at?.slice(5, 10) || '',
-            isMine: c.user_id === user?.id,
-        })));
-      }
-    });
-  };
-
-  const submitReviewComment = async () => {
-    if (!commentText.trim() || !user || !viewingReview) return;
-    const { data } = await createComment(viewingReview.id, commentText.trim());
-    if (data) {
-      setReviewComments(prev => [...prev, { id: data.id || `local-${Date.now()}`, author: user.user_metadata?.name || '나', text: commentText.trim(), date: new Date().toISOString().slice(5, 10), isMine: true }]);
-      setCommentText('');
-    }
-  };
-
-  const deleteComment = (commentId: string) => {
-    setReviewComments(prev => prev.filter(c => c.id !== commentId));
-  };
 
   const handleWriteClick = () => {
     if (!user) {
@@ -320,7 +286,7 @@ export default function ReviewsPage() {
             {displayed.map((review) => (
               <button
                 key={review.id}
-                onClick={() => openReview(review)}
+                onClick={() => navigate('/community/post/' + review.id)}
                 className="w-full text-left rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/30"
                 style={{ minHeight: 48 }}
               >
@@ -409,83 +375,8 @@ export default function ReviewsPage() {
           </div>
         )}
 
-        {/* Review Detail + Comments Modal */}
-        {viewingReview && (
-          <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
-            {/* 상단 바 */}
-            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
-              <button onClick={() => setViewingReview(null)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>← 뒤로</button>
-              <h2 className="text-base font-bold" style={{ color: '#111' }}>후기 상세</h2>
-              <div style={{ width: 44 }} />
-            </div>
-            {/* 본문 스크롤 */}
-            <div className="flex-1 overflow-y-auto px-4 py-4 max-w-2xl mx-auto w-full">
-              <div className="flex items-center justify-between mb-3">
-                <StarDisplay rating={viewingReview.rating} size="lg" />
-              </div>
-              <h2 className="text-xl font-bold mb-2" style={{ color: '#111' }}>{viewingReview.title}</h2>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2 text-xs" style={{ color: '#999' }}>
-                  <span style={{ color: '#555' }}>{viewingReview.author}</span>
-                  <span>·</span>
-                  <span>{viewingReview.date}</span>
-                  {viewingReview.venue && <><span>·</span><span style={{ color: '#8B5CF6' }}>{viewingReview.venue}</span></>}
-                </div>
-                {user && (
-                  <button
-                    onClick={async () => {
-                      if (!confirm('글을 삭제하시겠습니까?')) return;
-                      const result = await deletePost(viewingReview.id);
-                      if (result.error) { alert('삭제 실패: ' + result.error); return; }
-                      alert('삭제되었습니다');
-                      setViewingReview(null);
-                      setReviews(prev => prev.filter(r => r.id !== viewingReview.id));
-                    }}
-                    className="text-xs shrink-0" style={{ color: '#EF4444', minHeight: 32 }}>
-                    글 삭제
-                  </button>
-                )}
-              </div>
-              <div className="rounded-xl p-4 mb-4" style={{ backgroundColor: '#F9FAFB' }}>
-                <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{viewingReview.excerpt}</p>
-              </div>
-
-              {/* 댓글 */}
-              <div className="pt-4" style={{ borderTop: '1px solid #E5E7EB' }}>
-                <p className="text-sm font-bold mb-3" style={{ color: '#111' }}>💬 댓글 {reviewComments.length}개</p>
-                <div className="space-y-2 mb-4">
-                  {reviewComments.map((c) => (
-                    <div key={c.id} className="rounded-lg px-3 py-2 flex items-start justify-between" style={{ backgroundColor: c.isMine ? '#F3F0FF' : '#F3F4F6' }}>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm" style={{ color: '#111' }}>{c.text}</p>
-                        <span className="text-xs" style={{ color: '#999' }}>{c.author} · {c.date}</span>
-                      </div>
-                      {c.isMine && (
-                        <button onClick={() => deleteComment(c.id)} className="shrink-0 ml-2 text-xs" style={{ color: '#EF4444', minHeight: 32 }}>삭제</button>
-                      )}
-                    </div>
-                  ))}
-                  {reviewComments.length === 0 && <p className="text-xs" style={{ color: '#999' }}>아직 댓글이 없어요</p>}
-                </div>
-
-                {user ? (
-                  <div className="flex gap-2">
-                    <input type="text" value={commentText} onChange={e => setCommentText(e.target.value)}
-                      onKeyDown={e => { if (e.key === 'Enter') submitReviewComment(); }}
-                      placeholder="댓글을 입력하세요..." className="flex-1 rounded-lg border px-3 py-2 text-sm outline-none"
-                      style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 44 }} />
-                    <button onClick={submitReviewComment} disabled={!commentText.trim()}
-                      className="rounded-lg px-4 py-2 text-sm font-bold text-white disabled:opacity-40"
-                      style={{ backgroundColor: '#8B5CF6', minHeight: 44 }}>등록</button>
-                  </div>
-                ) : (
-                  <Link to="/login" className="block text-center text-sm font-medium py-2" style={{ color: '#8B5CF6' }}>로그인하고 댓글 달기</Link>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
 }
+

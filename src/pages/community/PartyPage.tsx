@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, deletePost, deleteComment, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
@@ -158,6 +158,7 @@ function NbbangCalc() {
 export default function PartyRecruitPage() {
   useDocumentMeta('같이 갈 사람 손! 파티 멤버 모집', '날짜 맞추고, 인원 채우고, N빵. 혼자 가기 아까울 때 여기서 구해.');
   const { user } = useAuth();
+  const navigate = useNavigate();
   const points = useEngagementStore((s) => s.points);
   const [statusFilter, setStatusFilter] = useState<PartyStatus | "전체">("전체");
   const [parties, setParties] = useState<PartyItem[]>(sampleParties);

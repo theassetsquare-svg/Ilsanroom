@@ -65,6 +65,7 @@ const BillingPage = lazy(() => import('./pages/admin/BillingPage'));
 const OnboardingPage = lazy(() => import('./pages/admin/OnboardingPage'));
 const LaunchPage = lazy(() => import('./pages/admin/LaunchPage'));
 const VenueManagePage = lazy(() => import('./pages/admin/VenueManagePage'));
+const PostDetailPage = lazy(() => import('./pages/community/PostDetailPage'));
 const NightlifeGuidePage = lazy(() => import('./pages/lead/NightlifeGuidePage'));
 const LeadQuizPage = lazy(() => import('./pages/lead/LeadQuizPage'));
 const WeeklyHotPage = lazy(() => import('./pages/lead/WeeklyHotPage'));
@@ -124,6 +125,7 @@ export default function App() {
           <Route path="/community/fashion" element={<FashionPage />} />
           <Route path="/community/jogak" element={<JogakPage />} />
           <Route path="/community/guidelines" element={<GuidelinesPage />} />
+          <Route path="/community/post/:id" element={<PostDetailPage />} />
           {/* Legal & Info */}
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />

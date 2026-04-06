@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, deletePost, deleteComment, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
@@ -125,6 +125,7 @@ const catLabel: Record<string, string> = { "전체": "통합" };
 export default function TipsPage() {
   useDocumentMeta('고수들이 풀어놓은 밤놀이 실전 꿀팁', '입장 타이밍, 자리 잡는 법, 안 당하는 법. 경험자만 아는 노하우.');
   const { user } = useAuth();
+  const navigate = useNavigate();
   const points = useEngagementStore((s) => s.points);
   const [activeCat, setActiveCat] = useState<Category | "전체">(ALL);
   const [tips, setTips] = useState<TipCard[]>(sampleTipCards);
@@ -146,11 +147,10 @@ export default function TipsPage() {
     })();
   }, []);
 
+  const [viewingTip, setViewingTip] = useState<TipCard | null>(null);
+
   const handleWriteClick = () => {
-    if (!user) {
-      window.location.href = '/login'; return;
-    }
-    if (points < 300) { alert("🔒 글쓰기는 🔥매니아(300P) 등급부터 가능합니다. 현재 " + points + "P"); return; }
+    if (!user) { window.location.href = '/login'; return; }
     setShowWriteModal(true);
   };
 
@@ -236,9 +236,11 @@ export default function TipsPage() {
         {!loading && (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((tip) => (
-              <div
+              <button
                 key={tip.id}
-                className="flex flex-col rounded-2xl border border-neon-border bg-neon-surface p-5 transition hover:border-neon-primary/40 hover:shadow-lg hover:shadow-neon-primary/5"
+                onClick={() => navigate('/community/post/' + tip.id)}
+                className="flex flex-col text-left rounded-2xl border border-neon-border bg-neon-surface p-5 transition hover:border-neon-primary/40 hover:shadow-lg hover:shadow-neon-primary/5"
+                style={{ minHeight: 48 }}
               >
                 {/* Icon + Category */}
                 <div className="mb-3 flex items-center justify-between">
@@ -266,7 +268,7 @@ export default function TipsPage() {
                   <span>{tip.author}</span>
                   <span>🔖 {tip.bookmarks}</span>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         )}
