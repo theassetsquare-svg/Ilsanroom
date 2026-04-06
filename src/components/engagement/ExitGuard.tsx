@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Gift, Flame, Trophy } from 'lucide-react';
 
 export default function ExitGuard() {
+  // 비활성화 — "사이트 나가시겠습니까?" 팝업 제거
+  return null;
   const store = useEngagementStore();
   const [showModal, setShowModal] = useState(false);
   const triggeredRef = useRef(false);
