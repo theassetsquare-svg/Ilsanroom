@@ -113,11 +113,13 @@ export default function JogakPage() {
     if (!writeTitle.trim() || !writeContent.trim()) return;
     setSubmitting(true);
     const result = await createPost({ category: 'party', title: writeTitle.trim(), content: writeContent.trim() });
-    if (!result.error && result.data) {
+    if (result.error) {
+      alert('저장 실패: ' + result.error);
+    } else if (result.data) {
+      alert('글이 저장되었습니다!');
       setPosts(prev => [{ id: result.data.id, title: writeTitle.trim(), author: user?.user_metadata?.name || '나', date: new Date().toISOString().slice(5, 10), comments: 0 }, ...prev]);
       setWriteTitle(''); setWriteContent(''); setShowWrite(false);
     }
-    if (result.error) alert(result.error);
     setSubmitting(false);
   };
 

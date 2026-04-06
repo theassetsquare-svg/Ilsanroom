@@ -144,7 +144,7 @@ export default function QnAPage() {
       title: writeTitle,
       content: writeContent,
     });
-    if (!result.error) {
+    if (result.error) { alert("저장 실패: " + result.error); } else { alert("글이 저장되었습니다!");
       setShowWriteModal(false);
       setWriteTitle("");
       setWriteContent("");

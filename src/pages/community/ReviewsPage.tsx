@@ -182,13 +182,15 @@ export default function ReviewsPage() {
       venue_slug: writeVenue || undefined,
       rating: writeRating,
     });
-    if (!result.error) {
+    if (result.error) {
+      alert('저장 실패: ' + result.error);
+    } else {
+      alert('후기가 저장되었습니다!');
       setShowWriteModal(false);
       setWriteTitle("");
       setWriteContent("");
       setWriteVenue("");
       setWriteRating(0);
-      // Refresh posts
       const { data } = await fetchPosts('reviews');
       if (data.length > 0) {
         setReviews(data.map(postToReview));
