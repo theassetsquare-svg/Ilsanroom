@@ -63,8 +63,8 @@ export default function CuriosityGapTeaser() {
   const showCountRef = useRef(0);
 
   const scheduleNext = () => {
-    if (showCountRef.current >= 8) return; // Max per session
-    const delay = (Math.floor(Math.random() * 3) + 3) * 60 * 1000; // 3-6 minutes
+    if (showCountRef.current >= 3) return; // Max 3 per session
+    const delay = (Math.floor(Math.random() * 7) + 8) * 60 * 1000; // 8-15 minutes
     timerRef.current = setTimeout(() => {
       const d = getRandomTeaser(lastIndexRef.current);
       lastIndexRef.current = d.index;
@@ -74,12 +74,12 @@ export default function CuriosityGapTeaser() {
 
       // Auto-dismiss after 15 seconds
       if (dismissRef.current) clearTimeout(dismissRef.current);
-      dismissRef.current = setTimeout(() => setVisible(false), 15000);
+      dismissRef.current = setTimeout(() => setVisible(false), 8000);
     }, delay);
   };
 
   useEffect(() => {
-    // First teaser after 90s
+    // First teaser after 5 minutes
     timerRef.current = setTimeout(() => {
       const d = getRandomTeaser(-1);
       lastIndexRef.current = d.index;
@@ -88,9 +88,9 @@ export default function CuriosityGapTeaser() {
       showCountRef.current++;
 
       if (dismissRef.current) clearTimeout(dismissRef.current);
-      dismissRef.current = setTimeout(() => setVisible(false), 15000);
+      dismissRef.current = setTimeout(() => setVisible(false), 8000);
       scheduleNext();
-    }, 90000);
+    }, 300000);
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);

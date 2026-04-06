@@ -49,7 +49,7 @@ export default function ScrollDepthReward() {
           store.addPoints(m.points, `스크롤 ${m.pct}%`);
           setToast({ emoji: m.emoji, label: m.label, points: m.points });
           if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
-          toastTimerRef.current = setTimeout(() => setToast(null), 2000);
+          toastTimerRef.current = setTimeout(() => setToast(null), 4000);
           break; // One at a time
         }
       }

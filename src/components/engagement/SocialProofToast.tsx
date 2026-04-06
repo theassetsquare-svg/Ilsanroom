@@ -85,8 +85,8 @@ export default function SocialProofToast() {
   const dismissRef = useRef<ReturnType<typeof setTimeout>>();
 
   const showNextToast = useCallback(() => {
-    // Don't show if page loaded less than 10 seconds ago
-    if (Date.now() - mountTimeRef.current < 10000) return;
+    // Don't show if page loaded less than 30 seconds ago
+    if (Date.now() - mountTimeRef.current < 30000) return;
 
     idRef.current += 1;
     const newToast = generateToast(idRef.current);
@@ -96,14 +96,14 @@ export default function SocialProofToast() {
     if (dismissRef.current) clearTimeout(dismissRef.current);
     dismissRef.current = setTimeout(() => {
       setToast(prev => (prev?.id === newToast.id ? null : prev));
-    }, 4000);
+    }, 6000);
   }, []);
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
 
     const scheduleNext = () => {
-      const delay = Math.floor(Math.random() * 7000) + 8000; // 8-15 seconds
+      const delay = Math.floor(Math.random() * 45000) + 45000; // 45-90 seconds
       timeout = setTimeout(() => {
         showNextToast();
         scheduleNext();

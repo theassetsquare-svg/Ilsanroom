@@ -43,11 +43,11 @@ export default function DailyLoginReward() {
     const lastShown = localStorage.getItem(STORAGE_KEY);
     if (lastShown === today) return;
 
-    // Show after 1.5s delay for dramatic effect
+    // Show after 3s delay
     const timer = setTimeout(() => {
       setShow(true);
       localStorage.setItem(STORAGE_KEY, today);
-    }, 1500);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);

@@ -14,7 +14,7 @@ import { X } from 'lucide-react';
 const SYMBOLS = ['7️⃣', '💎', '🍒', '⭐', '🔔', '🍀', '👑', '🎯'];
 
 function getRandomInterval(): number {
-  return (Math.floor(Math.random() * 6) + 2) * 60 * 1000; // 2-8 minutes
+  return (Math.floor(Math.random() * 10) + 15) * 60 * 1000; // 15-25 minutes
 }
 
 function spinResult(): { symbols: string[]; points: number; label: string } {
@@ -42,7 +42,7 @@ export default function SlotMachinePopup() {
   const spinCountRef = useRef(0);
 
   const scheduleNext = useCallback(() => {
-    if (spinCountRef.current >= 10) return; // Max 10 per session
+    if (spinCountRef.current >= 2) return; // Max 2 per session
     timeoutRef.current = setTimeout(() => {
       setShow(true);
       setResult(null);
@@ -52,10 +52,10 @@ export default function SlotMachinePopup() {
   }, []);
 
   useEffect(() => {
-    // First popup after 2-4 minutes
+    // First popup after 10-15 minutes
     timeoutRef.current = setTimeout(() => {
       setShow(true);
-    }, (Math.floor(Math.random() * 2) + 2) * 60 * 1000);
+    }, (Math.floor(Math.random() * 5) + 10) * 60 * 1000);
     return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); if (spinIntervalRef.current) clearInterval(spinIntervalRef.current); };
   }, []);
 
