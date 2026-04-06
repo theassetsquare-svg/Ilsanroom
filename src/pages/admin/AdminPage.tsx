@@ -4,35 +4,86 @@ import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
 import { Link } from 'react-router-dom';
 
-// ★ 관리자 이메일 — 이 이메일로 로그인한 사람만 접근 가능
 const ADMIN_EMAILS = ['qotjsdnr123@naver.com', 'baesunwook513@gmail.com'];
 
 export default function AdminPage() {
   useDocumentMeta('관리자 페이지', '놀쿨 사이트 관리');
   const { user } = useAuth();
   const supabase = createClient();
-
-  const [posts, setPosts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'posts' | 'events' | 'advertisers'>('posts');
-
-  // 관리자 체크
   const isAdmin = user && ADMIN_EMAILS.includes(user.email || '');
 
-  // 글 목록 불러오기
+  const [activeTab, setActiveTab] = useState('posts');
+  const [posts, setPosts] = useState<any[]>([]);
+  const [comments, setComments] = useState<any[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
+  const [bannedEmails, setBannedEmails] = useState<string[]>(() => {
+    try { return JSON.parse(localStorage.getItem('nolcool_banned') || '[]'); } catch { return []; }
+  });
+  const [banInput, setBanInput] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // 데이터 로드
   useEffect(() => {
     if (!supabase || !isAdmin) return;
-    supabase.from('posts').select('*').order('created_at', { ascending: false }).limit(50)
-      .then(({ data }) => { setPosts(data || []); setLoading(false); });
+    Promise.all([
+      supabase.from('posts').select('*').order('created_at', { ascending: false }).limit(100),
+      supabase.from('comments').select('*').order('created_at', { ascending: false }).limit(100),
+    ]).then(([postsRes, commentsRes]) => {
+      setPosts(postsRes.data || []);
+      setComments(commentsRes.data || []);
+      setLoading(false);
+    });
   }, [isAdmin]);
 
   // 글 삭제
-  const deletePost = async (id: string) => {
+  const handleDeletePost = async (id: string) => {
     if (!confirm('이 글을 삭제하시겠습니까?')) return;
     if (!supabase) return;
+    await supabase.from('comments').delete().eq('post_id', id);
     await supabase.from('posts').delete().eq('id', id);
     setPosts(prev => prev.filter(p => p.id !== id));
-    alert('삭제되었습니다');
+    alert('글 + 댓글 삭제 완료');
+  };
+
+  // 댓글 삭제
+  const handleDeleteComment = async (id: string) => {
+    if (!confirm('이 댓글을 삭제하시겠습니까?')) return;
+    if (!supabase) return;
+    await supabase.from('comments').delete().eq('id', id);
+    setComments(prev => prev.filter(c => c.id !== id));
+    alert('댓글 삭제 완료');
+  };
+
+  // 사용자 차단
+  const handleBan = (email: string) => {
+    if (!email.trim()) return;
+    if (!confirm(`${email}을 차단하시겠습니까? 이 사용자는 더 이상 글/댓글을 작성할 수 없습니다.`)) return;
+    const updated = [...bannedEmails, email.trim()];
+    setBannedEmails(updated);
+    localStorage.setItem('nolcool_banned', JSON.stringify(updated));
+    setBanInput('');
+    alert(`${email} 차단 완료`);
+  };
+
+  // 차단 해제
+  const handleUnban = (email: string) => {
+    if (!confirm(`${email} 차단을 해제하시겠습니까?`)) return;
+    const updated = bannedEmails.filter(e => e !== email);
+    setBannedEmails(updated);
+    localStorage.setItem('nolcool_banned', JSON.stringify(updated));
+    alert(`${email} 차단 해제`);
+  };
+
+  // 특정 사용자의 모든 글 삭제
+  const handleDeleteAllByUser = async (userId: string) => {
+    if (!confirm('이 사용자의 모든 글과 댓글을 삭제하시겠습니까?')) return;
+    if (!supabase) return;
+    await supabase.from('comments').delete().eq('user_id', userId);
+    await supabase.from('posts').delete().eq('user_id', userId);
+    setPosts(prev => prev.filter(p => p.user_id !== userId));
+    setComments(prev => prev.filter(c => c.user_id !== userId));
+    alert('해당 사용자의 모든 글/댓글 삭제 완료');
   };
 
   if (!user) {
@@ -48,101 +99,199 @@ export default function AdminPage() {
     return (
       <div className="mx-auto max-w-lg px-4 py-16 text-center">
         <p className="text-lg font-bold mb-2" style={{ color: '#111' }}>접근 권한이 없습니다</p>
-        <p className="text-sm mb-4" style={{ color: '#555' }}>관리자만 접근할 수 있는 페이지입니다.</p>
         <Link to="/" className="inline-block rounded-xl px-6 py-3 text-sm font-bold text-white" style={{ backgroundColor: '#8B5CF6', minHeight: 48 }}>홈으로</Link>
       </div>
     );
   }
 
+  const filteredPosts = searchQuery
+    ? posts.filter(p => p.title?.includes(searchQuery) || p.content?.includes(searchQuery) || p.user_id?.includes(searchQuery))
+    : posts;
+
+  const filteredComments = searchQuery
+    ? comments.filter(c => c.content?.includes(searchQuery) || c.user_id?.includes(searchQuery))
+    : comments;
+
+  const tabs = [
+    { key: 'posts', label: '📝 글 관리', count: posts.length },
+    { key: 'comments', label: '💬 댓글 관리', count: comments.length },
+    { key: 'ban', label: '🚫 사용자 차단', count: bannedEmails.length },
+    { key: 'stats', label: '📊 현황' },
+  ];
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="text-2xl font-bold mb-2" style={{ color: '#111' }}>🔧 관리자 페이지</h1>
-      <p className="text-sm mb-6" style={{ color: '#555' }}>로그인: {user.email}</p>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold" style={{ color: '#111' }}>🔧 관리자 페이지</h1>
+          <p className="text-xs" style={{ color: '#999' }}>{user.email}</p>
+        </div>
+        <Link to="/" className="text-sm" style={{ color: '#8B5CF6' }}>홈으로 →</Link>
+      </div>
+
+      {/* 검색 */}
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={e => setSearchQuery(e.target.value)}
+        placeholder="글/댓글/사용자 검색..."
+        className="w-full rounded-xl border px-4 py-3 text-sm mb-4 outline-none"
+        style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }}
+      />
 
       {/* 탭 */}
-      <div className="flex gap-2 mb-6 border-b" style={{ borderColor: '#E5E7EB' }}>
-        {[
-          { key: 'posts' as const, label: '📝 글 관리' },
-          { key: 'events' as const, label: '🎉 이벤트 관리' },
-          { key: 'advertisers' as const, label: '📢 광고주 관리' },
-        ].map(tab => (
+      <div className="flex gap-1 mb-6 overflow-x-auto">
+        {tabs.map(tab => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className="px-4 py-3 text-sm font-medium border-b-2 transition"
+            className="shrink-0 px-4 py-3 text-sm font-medium rounded-xl transition"
             style={{
-              borderColor: activeTab === tab.key ? '#8B5CF6' : 'transparent',
-              color: activeTab === tab.key ? '#8B5CF6' : '#555',
+              backgroundColor: activeTab === tab.key ? '#8B5CF6' : '#F3F4F6',
+              color: activeTab === tab.key ? '#FFF' : '#555',
               minHeight: 44,
             }}
           >
-            {tab.label}
+            {tab.label} {tab.count !== undefined && `(${tab.count})`}
           </button>
         ))}
       </div>
 
-      {/* 글 관리 */}
-      {activeTab === 'posts' && (
-        <div>
-          <h2 className="text-lg font-bold mb-4" style={{ color: '#111' }}>전체 글 목록 ({posts.length}개)</h2>
-          {loading ? (
-            <p style={{ color: '#999' }}>불러오는 중...</p>
-          ) : posts.length === 0 ? (
-            <p style={{ color: '#999' }}>글이 없습니다.</p>
-          ) : (
-            <div className="space-y-2">
-              {posts.map(post => (
-                <div key={post.id} className="flex items-center justify-between rounded-xl border p-4" style={{ borderColor: '#E5E7EB' }}>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold truncate" style={{ color: '#111' }}>{post.title}</p>
-                    <p className="text-xs" style={{ color: '#999' }}>{post.category} · {post.created_at?.slice(0, 10)} · {post.user_id?.slice(0, 8)}</p>
-                  </div>
-                  <button onClick={() => deletePost(post.id)} className="shrink-0 ml-3 text-xs font-medium" style={{ color: '#EF4444', minHeight: 32 }}>삭제</button>
+      {loading && <p style={{ color: '#999' }}>불러오는 중...</p>}
+
+      {/* ═══ 글 관리 ═══ */}
+      {activeTab === 'posts' && !loading && (
+        <div className="space-y-2">
+          {filteredPosts.length === 0 && <p style={{ color: '#999' }}>글이 없습니다.</p>}
+          {filteredPosts.map(post => (
+            <div key={post.id} className="rounded-xl border p-4" style={{ borderColor: '#E5E7EB' }}>
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-bold truncate" style={{ color: '#111' }}>{post.title}</p>
+                  <p className="text-xs mt-1 line-clamp-2" style={{ color: '#555' }}>{post.content?.slice(0, 100)}</p>
+                  <p className="text-xs mt-1" style={{ color: '#999' }}>
+                    {post.category} · {post.created_at?.slice(0, 10)} · {post.user_id?.slice(0, 8)}
+                  </p>
                 </div>
-              ))}
+                <div className="flex flex-col gap-1 shrink-0">
+                  <button onClick={() => handleDeletePost(post.id)} className="rounded-lg px-3 py-1 text-xs font-bold text-white" style={{ backgroundColor: '#EF4444', minHeight: 28 }}>삭제</button>
+                  <button onClick={() => handleDeleteAllByUser(post.user_id)} className="rounded-lg px-3 py-1 text-xs font-medium" style={{ backgroundColor: '#FEE2E2', color: '#DC2626', minHeight: 28 }}>이 사용자 전체삭제</button>
+                  <button onClick={() => handleBan(post.user_id || '')} className="rounded-lg px-3 py-1 text-xs font-medium" style={{ backgroundColor: '#111', color: '#FFF', minHeight: 28 }}>차단</button>
+                </div>
+              </div>
             </div>
-          )}
+          ))}
         </div>
       )}
 
-      {/* 이벤트 관리 */}
-      {activeTab === 'events' && (
-        <div>
-          <h2 className="text-lg font-bold mb-4" style={{ color: '#111' }}>이벤트 관리</h2>
-          <div className="rounded-2xl border p-6 mb-4" style={{ borderColor: '#E5E7EB', backgroundColor: '#F9FAFB' }}>
-            <p className="text-sm leading-relaxed" style={{ color: '#555' }}>
-              이벤트는 <strong>관리자가 승인한 광고주만</strong> 등록할 수 있습니다.<br /><br />
-              광고주가 이벤트를 등록하려면:<br />
-              1. 카카오톡 <strong>besta12</strong>로 이벤트 내용 전달<br />
-              2. 관리자 검토 후 승인<br />
-              3. 이벤트 페이지에 게시<br /><br />
-              현재 이벤트는 관리자가 직접 코드에서 관리합니다.<br />
-              추후 광고주 전용 이벤트 등록 페이지를 오픈 예정입니다.
-            </p>
-          </div>
-          <Link to="/events" className="inline-block rounded-xl px-5 py-3 text-sm font-bold text-white" style={{ backgroundColor: '#8B5CF6', minHeight: 44 }}>
-            이벤트 페이지 보기 →
-          </Link>
+      {/* ═══ 댓글 관리 ═══ */}
+      {activeTab === 'comments' && !loading && (
+        <div className="space-y-2">
+          {filteredComments.length === 0 && <p style={{ color: '#999' }}>댓글이 없습니다.</p>}
+          {filteredComments.map(comment => (
+            <div key={comment.id} className="rounded-xl border p-4" style={{ borderColor: '#E5E7EB' }}>
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm" style={{ color: '#111' }}>{comment.content}</p>
+                  <p className="text-xs mt-1" style={{ color: '#999' }}>
+                    {comment.created_at?.slice(0, 10)} · {comment.user_id?.slice(0, 8)} · 글ID: {comment.post_id?.slice(0, 8)}
+                  </p>
+                </div>
+                <div className="flex flex-col gap-1 shrink-0">
+                  <button onClick={() => handleDeleteComment(comment.id)} className="rounded-lg px-3 py-1 text-xs font-bold text-white" style={{ backgroundColor: '#EF4444', minHeight: 28 }}>삭제</button>
+                  <button onClick={() => handleBan(comment.user_id || '')} className="rounded-lg px-3 py-1 text-xs font-medium" style={{ backgroundColor: '#111', color: '#FFF', minHeight: 28 }}>차단</button>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
-      {/* 광고주 관리 */}
-      {activeTab === 'advertisers' && (
+      {/* ═══ 사용자 차단 ═══ */}
+      {activeTab === 'ban' && (
         <div>
-          <h2 className="text-lg font-bold mb-4" style={{ color: '#111' }}>광고주 관리</h2>
-          <div className="rounded-2xl border p-6 mb-4" style={{ borderColor: '#E5E7EB', backgroundColor: '#F9FAFB' }}>
-            <p className="text-sm leading-relaxed" style={{ color: '#555' }}>
-              광고주별 권한을 설정할 수 있습니다.<br /><br />
-              <strong>광고주 권한 종류:</strong><br />
-              • 업소 정보 수정 — 자기 업소 사진/설명/연락처 변경<br />
-              • 이벤트 등록 — 승인 후 이벤트 페이지에 게시<br />
-              • 프로모션 배너 — 홈 배너에 업소 홍보<br /><br />
-              광고주 등록/관리는 카카오톡 <strong>besta12</strong>로 문의해주세요.
-            </p>
+          <h2 className="text-lg font-bold mb-4" style={{ color: '#111' }}>사용자 차단 관리</h2>
+
+          {/* 차단 추가 */}
+          <div className="flex gap-2 mb-6">
+            <input
+              type="text"
+              value={banInput}
+              onChange={e => setBanInput(e.target.value)}
+              placeholder="차단할 사용자 ID 또는 이메일"
+              className="flex-1 rounded-xl border px-4 py-3 text-sm outline-none"
+              style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }}
+            />
+            <button
+              onClick={() => handleBan(banInput)}
+              disabled={!banInput.trim()}
+              className="rounded-xl px-5 py-3 text-sm font-bold text-white disabled:opacity-40"
+              style={{ backgroundColor: '#EF4444', minHeight: 48 }}
+            >
+              차단
+            </button>
           </div>
+
+          {/* 차단 목록 */}
           <div className="rounded-xl border p-4" style={{ borderColor: '#E5E7EB' }}>
-            <p className="text-sm font-bold mb-2" style={{ color: '#111' }}>등록된 광고주</p>
-            <p className="text-xs" style={{ color: '#999' }}>아직 등록된 광고주가 없습니다. 카톡 besta12로 문의해주세요.</p>
+            <p className="text-sm font-bold mb-3" style={{ color: '#111' }}>차단된 사용자 ({bannedEmails.length}명)</p>
+            {bannedEmails.length === 0 ? (
+              <p className="text-xs" style={{ color: '#999' }}>차단된 사용자가 없습니다.</p>
+            ) : (
+              <div className="space-y-2">
+                {bannedEmails.map(email => (
+                  <div key={email} className="flex items-center justify-between rounded-lg p-3" style={{ backgroundColor: '#FEF2F2' }}>
+                    <span className="text-sm" style={{ color: '#111' }}>{email}</span>
+                    <button onClick={() => handleUnban(email)} className="text-xs font-medium" style={{ color: '#22C55E', minHeight: 28 }}>해제</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="mt-4 rounded-xl p-4" style={{ backgroundColor: '#F9FAFB' }}>
+            <p className="text-xs" style={{ color: '#555' }}>
+              차단된 사용자는 글쓰기, 댓글 작성, 이벤트 등록이 불가능합니다.<br />
+              차단은 즉시 적용되며, 해제하면 다시 이용 가능합니다.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* ═══ 현황 ═══ */}
+      {activeTab === 'stats' && (
+        <div>
+          <h2 className="text-lg font-bold mb-4" style={{ color: '#111' }}>사이트 현황</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+            <div className="rounded-xl border p-4 text-center" style={{ borderColor: '#E5E7EB' }}>
+              <p className="text-2xl font-black" style={{ color: '#8B5CF6' }}>{posts.length}</p>
+              <p className="text-xs" style={{ color: '#888' }}>전체 글</p>
+            </div>
+            <div className="rounded-xl border p-4 text-center" style={{ borderColor: '#E5E7EB' }}>
+              <p className="text-2xl font-black" style={{ color: '#8B5CF6' }}>{comments.length}</p>
+              <p className="text-xs" style={{ color: '#888' }}>전체 댓글</p>
+            </div>
+            <div className="rounded-xl border p-4 text-center" style={{ borderColor: '#E5E7EB' }}>
+              <p className="text-2xl font-black" style={{ color: '#EF4444' }}>{bannedEmails.length}</p>
+              <p className="text-xs" style={{ color: '#888' }}>차단 사용자</p>
+            </div>
+            <div className="rounded-xl border p-4 text-center" style={{ borderColor: '#E5E7EB' }}>
+              <p className="text-2xl font-black" style={{ color: '#22C55E' }}>116</p>
+              <p className="text-xs" style={{ color: '#888' }}>등록 업소</p>
+            </div>
+          </div>
+
+          <div className="rounded-xl border p-4" style={{ borderColor: '#E5E7EB' }}>
+            <p className="text-sm font-bold mb-2" style={{ color: '#111' }}>카테고리별 글</p>
+            {['free', 'discussion', 'reviews', 'tips', 'party'].map(cat => {
+              const count = posts.filter(p => p.category === cat).length;
+              return (
+                <div key={cat} className="flex items-center justify-between py-1 text-sm">
+                  <span style={{ color: '#555' }}>{cat}</span>
+                  <span className="font-bold" style={{ color: '#111' }}>{count}개</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
