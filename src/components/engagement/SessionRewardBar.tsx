@@ -93,7 +93,8 @@ export default function SessionRewardBar() {
       <AnimatePresence>
         {expanded && (
           <motion.div
-            className="relative bg-white border-t border-gray-100 shadow-2xl rounded-2xl max-h-[60vh] overflow-y-auto mx-4 mt-2"
+            className="relative shadow-2xl rounded-2xl max-h-[60vh] overflow-y-auto mx-4 mt-2"
+            style={{ backgroundColor: '#1a1a2e', color: '#FFFFFF' }}
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
@@ -101,11 +102,11 @@ export default function SessionRewardBar() {
           >
             <div className="p-5">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-base font-bold text-[#111]">세션 보상 타임라인</h3>
-                <span className="text-xs text-[#333]">접속 {sessionMinutes}분</span>
+                <h3 className="text-base font-bold" style={{ color: '#FFFFFF' }}>세션 보상 타임라인</h3>
+                <span className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>접속 {sessionMinutes}분</span>
               </div>
               <div className="relative pl-8">
-                <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-gray-200" />
+                <div className="absolute left-3 top-0 bottom-0 w-0.5" style={{ backgroundColor: 'rgba(255,255,255,0.15)' }} />
                 {MILESTONES.map((m, i) => {
                   const reached = claimedMilestones.has(m.minutes);
                   const isNext = !reached && (i === 0 || claimedMilestones.has(MILESTONES[i - 1].minutes));
@@ -116,20 +117,20 @@ export default function SessionRewardBar() {
                           ${reached
                             ? 'bg-gradient-to-br from-[#8B5CF6] to-[#06B6D4] text-white shadow-md shadow-purple-200'
                             : isNext
-                              ? 'bg-white border-2 border-[#8B5CF6] text-[#8B5CF6] animate-pulse'
-                              : 'bg-gray-100 border border-gray-200 text-gray-400'
+                              ? 'border-2 border-[#8B5CF6] text-[#8B5CF6] animate-pulse'
+                              : 'border text-gray-400'
                           }`}
                       >
                         {reached ? '✓' : m.emoji}
                       </div>
                       <div className={`${reached ? 'opacity-100' : 'opacity-60'}`}>
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-[#111]">{m.emoji} {m.label}</span>
+                          <span className="text-sm font-semibold" style={{ color: '#FFFFFF' }}>{m.emoji} {m.label}</span>
                           <span className={`text-xs font-bold ${reached ? 'text-green-500' : 'text-[#8B5CF6]'}`}>
                             {reached ? '획득!' : `+${m.points}P`}
                           </span>
                         </div>
-                        <p className="text-xs text-[#333] mt-0.5">
+                        <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>
                           {m.minutes}분 체류
                           {m.extra && <span className="text-[#EC4899] ml-1">+ {m.extra}</span>}
                         </p>
@@ -143,20 +144,20 @@ export default function SessionRewardBar() {
         )}
       </AnimatePresence>
 
-      <div className="relative h-12 bg-white/95 backdrop-blur-md border-t border-gray-100 shadow-md rounded-xl mt-4 mx-4">
+      <div className="relative h-12 backdrop-blur-md shadow-md rounded-xl mt-4 mx-4" style={{ backgroundColor: 'rgba(26,26,46,0.95)', color: '#FFFFFF' }}>
         <div className="flex h-full items-center justify-between px-4 max-w-screen-xl mx-auto">
           <div className="flex items-center gap-2">
             <span className="text-base">{levelInfo.name.split(' ')[0]}</span>
             <div className="flex items-center gap-1.5">
-              <Flame size={14} className="text-orange-500" />
-              <span className="text-xs font-bold text-[#111]">{store.streak}</span>
+              <Flame size={14} className="text-orange-400" />
+              <span className="text-xs font-bold" style={{ color: '#FFFFFF' }}>{store.streak}</span>
             </div>
-            <span className="text-xs font-medium text-[#8B5CF6] bg-purple-50 px-1.5 py-0.5 rounded-full">
+            <span className="text-xs font-medium px-1.5 py-0.5 rounded-full" style={{ color: '#A78BFA', backgroundColor: 'rgba(139,92,246,0.2)' }}>
               Lv.{levelInfo.level} {levelInfo.name.split(' ')[1] || ''}
             </span>
           </div>
           <div className="flex-1 mx-4 max-w-[200px]">
-            <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
+            <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.15)' }}>
               <motion.div
                 className="h-full rounded-full bg-gradient-to-r from-[#8B5CF6] to-[#06B6D4]"
                 initial={{ width: 0 }}
@@ -164,11 +165,11 @@ export default function SessionRewardBar() {
                 transition={{ duration: 1, ease: 'easeOut' }}
               />
             </div>
-            <p className="text-xs text-[#333] text-center mt-0.5">{Math.round(levelInfo.progress * 100)}%</p>
+            <p className="text-xs text-center mt-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>{Math.round(levelInfo.progress * 100)}%</p>
           </div>
           <div className="flex items-center gap-2">
             <div className="relative">
-              <span className="text-xs font-bold text-[#111]">{store.points}P</span>
+              <span className="text-xs font-bold" style={{ color: '#FFFFFF' }}>{store.points}P</span>
               <AnimatePresence>
                 {pointDelta && (
                   <motion.span
@@ -185,11 +186,11 @@ export default function SessionRewardBar() {
             </div>
             <button
               onClick={() => setExpanded(!expanded)}
-              className="p-1 rounded-full hover:bg-gray-100 transition"
+              className="p-1 rounded-full hover:bg-white/20 transition"
               aria-label={expanded ? '닫기' : '보상 보기'}
             >
               <motion.div animate={{ rotate: expanded ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                <ChevronUp size={16} className="text-[#333]" />
+                <ChevronUp size={16} style={{ color: 'rgba(255,255,255,0.7)' }} />
               </motion.div>
             </button>
           </div>

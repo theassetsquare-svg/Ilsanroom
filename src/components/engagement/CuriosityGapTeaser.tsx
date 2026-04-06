@@ -114,7 +114,7 @@ export default function CuriosityGapTeaser() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="fixed bottom-20 right-4 z-[73] w-72 md:hidden"
+          className="fixed bottom-[210px] right-4 z-[73] w-72 md:hidden"
           initial={{ x: 300, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 300, opacity: 0 }}

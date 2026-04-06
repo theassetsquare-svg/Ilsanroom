@@ -119,7 +119,7 @@ export default function SocialProofToast() {
   }, [showNextToast]);
 
   return (
-    <div className="fixed bottom-20 left-4 z-[70] pointer-events-none md:hidden">
+    <div className="fixed bottom-[144px] left-4 z-[70] pointer-events-none md:hidden">
       <AnimatePresence mode="wait">
         {toast && (
           <motion.div

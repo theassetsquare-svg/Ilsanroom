@@ -21,7 +21,7 @@ export default function TikTokLauncher() {
         {!open && (
           <motion.button
             onClick={handleClick}
-            className="fixed right-4 bottom-16 z-[60] flex h-14 w-14 md:hidden items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-pink-500 text-white shadow-lg shadow-violet-500/30 md:bottom-14"
+            className="fixed right-4 bottom-[144px] z-[60] flex h-14 w-14 md:hidden items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-pink-500 text-white shadow-lg shadow-violet-500/30 md:bottom-14"
             initial={{ scale: 0, opacity: 0 }}
             animate={{
               scale: pulse ? [1, 1.15, 1] : 1,
@@ -42,7 +42,7 @@ export default function TikTokLauncher() {
       <AnimatePresence>
         {!open && (
           <motion.div
-            className="fixed right-20 bottom-[72px] z-[60] rounded-lg bg-gray-900 px-3 py-1.5 text-xs font-medium text-white shadow-lg md:bottom-[62px]"
+            className="fixed right-20 bottom-[152px] z-[60] rounded-lg bg-gray-900 px-3 py-1.5 text-xs font-medium text-white shadow-lg md:bottom-[62px]"
             initial={{ opacity: 0, x: 10 }}
             animate={{ opacity: [0, 1, 1, 0], x: 0 }}
             transition={{ duration: 4, times: [0, 0.1, 0.8, 1], delay: 3 }}

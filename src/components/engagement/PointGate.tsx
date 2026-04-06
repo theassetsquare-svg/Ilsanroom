@@ -67,38 +67,38 @@ export default function PointGate({ minPoints, children, lockedFallback }: Point
       {/* 팝업 */}
       {showPopup && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4" onClick={() => setShowPopup(false)}>
-          <div className="w-full max-w-sm rounded-2xl bg-white p-6" style={{ border: '1px solid #E5E7EB' }} onClick={(e) => e.stopPropagation()}>
+          <div className="w-full max-w-sm rounded-2xl p-6" style={{ backgroundColor: '#1a1a2e', border: '1px solid rgba(255,255,255,0.1)', color: '#FFFFFF' }} onClick={(e) => e.stopPropagation()}>
             {/* 잠금 아이콘 */}
             <div className="text-center mb-4">
               <span className="text-5xl">🔒</span>
             </div>
 
             {/* 등급 안내 */}
-            <h3 className="text-center text-lg font-bold mb-1" style={{ color: '#111' }}>
+            <h3 className="text-center text-lg font-bold mb-1" style={{ color: '#FFFFFF' }}>
               {required.icon} {required.name} 등급부터 사용 가능
             </h3>
-            <p className="text-center text-sm mb-5" style={{ color: '#555' }}>
+            <p className="text-center text-sm mb-5" style={{ color: 'rgba(255,255,255,0.7)' }}>
               포인트를 모아서 등급을 올리면 이 기능이 열립니다
             </p>
 
             {/* 진행률 */}
-            <div className="rounded-xl p-4 mb-4" style={{ backgroundColor: '#F8F7FF' }}>
+            <div className="rounded-xl p-4 mb-4" style={{ backgroundColor: 'rgba(139,92,246,0.15)' }}>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm" style={{ color: '#555' }}>현재 포인트</span>
-                <span className="text-sm font-bold" style={{ color: '#8B5CF6' }}>{points}P / {minPoints}P</span>
+                <span className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>현재 포인트</span>
+                <span className="text-sm font-bold" style={{ color: '#A78BFA' }}>{points}P / {minPoints}P</span>
               </div>
-              <div className="h-3 rounded-full" style={{ backgroundColor: '#E5E7EB' }}>
+              <div className="h-3 rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
                 <div className="h-full rounded-full transition-all" style={{ width: `${progress}%`, backgroundColor: '#8B5CF6' }} />
               </div>
-              <p className="mt-2 text-center text-sm font-bold" style={{ color: '#8B5CF6' }}>
+              <p className="mt-2 text-center text-sm font-bold" style={{ color: '#A78BFA' }}>
                 {remaining}P만 더 모으면 해금!
               </p>
             </div>
 
             {/* 포인트 모으는 방법 */}
-            <div className="rounded-xl p-4 mb-5" style={{ backgroundColor: '#F9FAFB' }}>
-              <p className="text-xs font-bold mb-2" style={{ color: '#111' }}>포인트 모으는 방법</p>
-              <div className="space-y-1.5 text-xs" style={{ color: '#555' }}>
+            <div className="rounded-xl p-4 mb-5" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+              <p className="text-xs font-bold mb-2" style={{ color: '#FFFFFF' }}>포인트 모으는 방법</p>
+              <div className="space-y-1.5 text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>
                 <p>📖 페이지 스크롤 → 3~12P</p>
                 <p>⏰ 사이트 체류 → 10~500P</p>
                 <p>🗳️ VS 투표·퀴즈 → 20~30P</p>
@@ -111,7 +111,7 @@ export default function PointGate({ minPoints, children, lockedFallback }: Point
               <button
                 onClick={() => setShowPopup(false)}
                 className="flex-1 rounded-xl py-3 text-sm font-medium min-h-[44px]"
-                style={{ backgroundColor: '#F3F4F6', color: '#555' }}
+                style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)' }}
               >
                 닫기
               </button>
@@ -154,20 +154,20 @@ export function PointGateInline({ minPoints, children }: { minPoints: number; ch
 
       {showPopup && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4" onClick={() => setShowPopup(false)}>
-          <div className="w-full max-w-sm rounded-2xl bg-white p-6" style={{ border: '1px solid #E5E7EB' }} onClick={(e) => e.stopPropagation()}>
+          <div className="w-full max-w-sm rounded-2xl p-6" style={{ backgroundColor: '#1a1a2e', border: '1px solid rgba(255,255,255,0.1)', color: '#FFFFFF' }} onClick={(e) => e.stopPropagation()}>
             <div className="text-center mb-4"><span className="text-5xl">🔒</span></div>
-            <h3 className="text-center text-lg font-bold mb-1" style={{ color: '#111' }}>{required.icon} {required.name} 등급부터 사용 가능</h3>
-            <div className="mt-4 rounded-xl p-4 mb-4" style={{ backgroundColor: '#F8F7FF' }}>
+            <h3 className="text-center text-lg font-bold mb-1" style={{ color: '#FFFFFF' }}>{required.icon} {required.name} 등급부터 사용 가능</h3>
+            <div className="mt-4 rounded-xl p-4 mb-4" style={{ backgroundColor: 'rgba(139,92,246,0.15)' }}>
               <div className="flex justify-between mb-2 text-sm">
-                <span style={{ color: '#555' }}>현재</span>
-                <span className="font-bold" style={{ color: '#8B5CF6' }}>{points}P / {minPoints}P</span>
+                <span style={{ color: 'rgba(255,255,255,0.7)' }}>현재</span>
+                <span className="font-bold" style={{ color: '#A78BFA' }}>{points}P / {minPoints}P</span>
               </div>
-              <div className="h-3 rounded-full" style={{ backgroundColor: '#E5E7EB' }}>
+              <div className="h-3 rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
                 <div className="h-full rounded-full" style={{ width: `${progress}%`, backgroundColor: '#8B5CF6' }} />
               </div>
-              <p className="mt-2 text-center text-sm font-bold" style={{ color: '#8B5CF6' }}>{remaining}P 더!</p>
+              <p className="mt-2 text-center text-sm font-bold" style={{ color: '#A78BFA' }}>{remaining}P 더!</p>
             </div>
-            <button onClick={() => setShowPopup(false)} className="w-full rounded-xl py-3 text-sm font-medium min-h-[44px]" style={{ backgroundColor: '#F3F4F6', color: '#555' }}>닫기</button>
+            <button onClick={() => setShowPopup(false)} className="w-full rounded-xl py-3 text-sm font-medium min-h-[44px]" style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)' }}>닫기</button>
           </div>
         </div>
       )}
