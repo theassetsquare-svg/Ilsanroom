@@ -159,7 +159,7 @@ export default function Header() {
             {/* User info */}
             <div className="px-4 py-4 border-b border-gray-100">
               {user ? (
-                <div className="flex items-center gap-3">
+                <Link to="/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-3" style={{ minHeight: 44 }}>
                   {user.user_metadata?.avatar_url ? (
                     <img src={user.user_metadata.avatar_url} alt="" loading="lazy" className="h-10 w-10 rounded-full" />
                   ) : (
@@ -169,9 +169,9 @@ export default function Header() {
                   )}
                   <div>
                     <p className="text-sm font-bold text-[#111]">{user.user_metadata?.name || '회원'}</p>
-                    <p className="text-xs text-[#555]">마이페이지 &rarr;</p>
+                    <p className="text-xs text-[#555]">마이페이지 →</p>
                   </div>
-                </div>
+                </Link>
               ) : (
                 <Link to="/login" onClick={() => setMenuOpen(false)} className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200">
