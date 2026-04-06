@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
-import { fetchPosts, createPost, type Post } from '@/lib/community-api';
+import { fetchPosts, createPost, fetchComments, createComment, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
-import { useEngagementStore } from '@/lib/engagement-store';
 
 const sampleReviews = [
   {
@@ -103,7 +102,6 @@ function StarDisplay({ rating, size = "md" }: { rating: number; size?: "sm" | "m
 export default function ReviewsPage() {
   useDocumentMeta('가본 사람만 쓸 수 있다, 실제 방문 후기', '별점과 한 줄 평으로 보는 업소 리얼 리뷰. 광고 아닌 진짜 목소리.');
   const { user } = useAuth();
-  const points = useEngagementStore((s) => s.points);
   const [starFilter, setStarFilter] = useState<number | null>(null);
   const [photoOnly, setPhotoOnly] = useState(false);
   const [sortByHelpful, setSortByHelpful] = useState(false);
@@ -129,13 +127,50 @@ export default function ReviewsPage() {
     })();
   }, []);
 
+  const [viewingReview, setViewingReview] = useState<typeof sampleReviews[0] | null>(null);
+  const [reviewComments, setReviewComments] = useState<{ id: string; author: string; text: string; date: string; isMine: boolean }[]>([]);
+  const [commentText, setCommentText] = useState('');
+
+  const openReview = (review: typeof sampleReviews[0]) => {
+    setViewingReview(review);
+    setCommentText('');
+    const dummyComments = [
+      { id: 'dc1', author: '단골손님', text: '동의합니다 분위기 좋았어요', date: '03-20', isMine: false },
+      { id: 'dc2', author: '첫방문', text: '참고할게요 감사합니다!', date: '03-19', isMine: false },
+    ];
+    setReviewComments(dummyComments);
+    fetchComments(review.id).then(data => {
+      if (data.length > 0) {
+        setReviewComments(data.map(c => ({
+          id: c.id,
+          author: c.users?.nickname || '익명',
+          text: c.content,
+          date: c.created_at.slice(5, 10),
+          isMine: c.user_id === user?.id,
+        })));
+      }
+    });
+  };
+
+  const submitReviewComment = async () => {
+    if (!commentText.trim() || !user || !viewingReview) return;
+    const { data } = await createComment(viewingReview.id, commentText.trim());
+    if (data) {
+      setReviewComments(prev => [...prev, { id: data.id || `local-${Date.now()}`, author: user.user_metadata?.name || '나', text: commentText.trim(), date: new Date().toISOString().slice(5, 10), isMine: true }]);
+      setCommentText('');
+    }
+  };
+
+  const deleteComment = (commentId: string) => {
+    setReviewComments(prev => prev.filter(c => c.id !== commentId));
+  };
+
   const handleWriteClick = () => {
     if (!user) {
       setAuthError(true);
       setTimeout(() => setAuthError(false), 3000);
       return;
     }
-    if (points < 300) { alert("🔒 글쓰기는 🔥매니아(300P) 등급부터 가능합니다. 현재 " + points + "P"); return; }
     setShowWriteModal(true);
   };
 
@@ -266,7 +301,8 @@ export default function ReviewsPage() {
           <div className="ml-auto">
             <button
               onClick={handleWriteClick}
-              className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light"
+              className="rounded-xl px-5 py-2.5 text-sm font-bold transition"
+              style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}
             >
               후기 남기기
             </button>
@@ -284,9 +320,11 @@ export default function ReviewsPage() {
         {!loading && (
           <div className="space-y-4">
             {displayed.map((review) => (
-              <div
+              <button
                 key={review.id}
-                className="rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/30"
+                onClick={() => openReview(review)}
+                className="w-full text-left rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/30"
+                style={{ minHeight: 48 }}
               >
                 <div className="mb-3 flex items-start justify-between gap-4">
                   <div className="flex-1">
@@ -319,7 +357,7 @@ export default function ReviewsPage() {
                     <span className="text-xs text-neon-text-muted">💬 {review.comments}</span>
                   </div>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         )}
@@ -332,38 +370,98 @@ export default function ReviewsPage() {
 
         {/* Write Modal */}
         {showWriteModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-            <div className="w-full max-w-lg rounded-2xl border border-neon-border bg-neon-surface p-6">
-              <h2 className="mb-4 text-lg font-bold">후기 남기기</h2>
+          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" onClick={() => setShowWriteModal(false)}>
+            <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} />
+            <div className="relative w-full max-w-lg rounded-t-3xl sm:rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', color: '#111' }} onClick={e => e.stopPropagation()}>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-bold" style={{ color: '#111' }}>후기 남기기</h2>
+                <button onClick={() => setShowWriteModal(false)} style={{ minWidth: 44, minHeight: 44, color: '#555' }}>✕</button>
+              </div>
               <div className="mb-3">
-                <label className="mb-1 block text-xs text-neon-text-muted">별점</label>
+                <label className="mb-1 block text-xs" style={{ color: '#555' }}>별점</label>
                 <div className="flex gap-1">
                   {[1, 2, 3, 4, 5].map((s) => (
-                    <button key={s} onClick={() => setWriteRating(s)} className={`text-2xl ${s <= writeRating ? "text-neon-gold" : "text-neutral-700"}`}>★</button>
+                    <button key={s} onClick={() => setWriteRating(s)} className="text-3xl" style={{ color: s <= writeRating ? '#B45309' : '#D1D5DB', minHeight: 44 }}>★</button>
                   ))}
                 </div>
               </div>
               <div className="mb-3">
-                <label className="mb-1 block text-xs text-neon-text-muted">업소명 (선택)</label>
+                <label className="mb-1 block text-xs" style={{ color: '#555' }}>업소명 (선택)</label>
                 <input value={writeVenue} onChange={(e) => setWriteVenue(e.target.value)} placeholder="업소명"
-                  className="w-full rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-primary" />
+                  className="w-full rounded-lg border px-4 py-3 text-sm outline-none" style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
               </div>
               <div className="mb-3">
-                <label className="mb-1 block text-xs text-neon-text-muted">제목</label>
+                <label className="mb-1 block text-xs" style={{ color: '#555' }}>제목</label>
                 <input value={writeTitle} onChange={(e) => setWriteTitle(e.target.value)} placeholder="제목을 입력하세요"
-                  className="w-full rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-primary" />
+                  className="w-full rounded-lg border px-4 py-3 text-sm outline-none" style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
               </div>
               <div className="mb-4">
-                <label className="mb-1 block text-xs text-neon-text-muted">내용</label>
-                <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="후기를 작성해주세요" rows={5}
-                  className="w-full rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-primary" />
+                <label className="mb-1 block text-xs" style={{ color: '#555' }}>내용</label>
+                <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="솔직한 후기를 작성해주세요" rows={6}
+                  className="w-full rounded-lg border px-4 py-3 text-sm outline-none resize-none" style={{ borderColor: '#E5E7EB', color: '#111' }} />
               </div>
-              <div className="flex justify-end gap-2">
-                <button onClick={() => setShowWriteModal(false)} className="rounded-lg px-4 py-2 text-sm text-neon-text-muted hover:bg-neon-surface-2">취소</button>
+              <div className="flex gap-2">
+                <button onClick={() => setShowWriteModal(false)} className="flex-1 rounded-xl py-3 text-sm font-medium" style={{ backgroundColor: '#F3F4F6', color: '#555', minHeight: 48 }}>취소</button>
                 <button onClick={handleSubmit} disabled={submitting || !writeTitle.trim() || !writeContent.trim()}
-                  className="rounded-lg bg-neon-primary px-5 py-2 text-sm font-medium transition hover:bg-neon-primary-light disabled:opacity-50">
+                  className="flex-1 rounded-xl py-3 text-sm font-bold disabled:opacity-40" style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 48 }}>
                   {submitting ? "등록 중..." : "등록"}
                 </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Review Detail + Comments Modal */}
+        {viewingReview && (
+          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" onClick={() => setViewingReview(null)}>
+            <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} />
+            <div className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-t-3xl sm:rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', color: '#111' }} onClick={e => e.stopPropagation()}>
+              <div className="flex items-center justify-between mb-3">
+                <StarDisplay rating={viewingReview.rating} size="lg" />
+                <button onClick={() => setViewingReview(null)} style={{ minWidth: 44, minHeight: 44, color: '#555' }}>✕</button>
+              </div>
+              <h2 className="text-xl font-bold mb-2" style={{ color: '#111' }}>{viewingReview.title}</h2>
+              <div className="flex items-center gap-2 text-xs mb-4" style={{ color: '#999' }}>
+                <span style={{ color: '#555' }}>{viewingReview.author}</span>
+                <span>·</span>
+                <span>{viewingReview.date}</span>
+                {viewingReview.venue && <><span>·</span><span style={{ color: '#8B5CF6' }}>{viewingReview.venue}</span></>}
+              </div>
+              <div className="rounded-xl p-4 mb-4" style={{ backgroundColor: '#F9FAFB' }}>
+                <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{viewingReview.excerpt}</p>
+              </div>
+
+              {/* 댓글 */}
+              <div className="pt-4" style={{ borderTop: '1px solid #E5E7EB' }}>
+                <p className="text-sm font-bold mb-3" style={{ color: '#111' }}>💬 댓글 {reviewComments.length}개</p>
+                <div className="space-y-2 mb-4">
+                  {reviewComments.map((c) => (
+                    <div key={c.id} className="rounded-lg px-3 py-2 flex items-start justify-between" style={{ backgroundColor: c.isMine ? '#F3F0FF' : '#F3F4F6' }}>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm" style={{ color: '#111' }}>{c.text}</p>
+                        <span className="text-xs" style={{ color: '#999' }}>{c.author} · {c.date}</span>
+                      </div>
+                      {c.isMine && (
+                        <button onClick={() => deleteComment(c.id)} className="shrink-0 ml-2 text-xs" style={{ color: '#EF4444', minHeight: 32 }}>삭제</button>
+                      )}
+                    </div>
+                  ))}
+                  {reviewComments.length === 0 && <p className="text-xs" style={{ color: '#999' }}>아직 댓글이 없어요</p>}
+                </div>
+
+                {user ? (
+                  <div className="flex gap-2">
+                    <input type="text" value={commentText} onChange={e => setCommentText(e.target.value)}
+                      onKeyDown={e => { if (e.key === 'Enter') submitReviewComment(); }}
+                      placeholder="댓글을 입력하세요..." className="flex-1 rounded-lg border px-3 py-2 text-sm outline-none"
+                      style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 44 }} />
+                    <button onClick={submitReviewComment} disabled={!commentText.trim()}
+                      className="rounded-lg px-4 py-2 text-sm font-bold text-white disabled:opacity-40"
+                      style={{ backgroundColor: '#8B5CF6', minHeight: 44 }}>등록</button>
+                  </div>
+                ) : (
+                  <Link to="/login" className="block text-center text-sm font-medium py-2" style={{ color: '#8B5CF6' }}>로그인하고 댓글 달기</Link>
+                )}
               </div>
             </div>
           </div>
