@@ -1,8 +1,5 @@
-
 /**
- * VIRAL LOOP — KakaoTalk share on every venue card
- * "[놀쿨] 매장명 — hook + 확인해보기" link
- * Format optimized for KakaoTalk preview
+ * Share button — 네이티브 공유 or 클립보드 복사
  */
 interface KakaoShareButtonProps {
   venueName: string;
@@ -13,53 +10,42 @@ interface KakaoShareButtonProps {
 
 export default function KakaoShareButton({ venueName, venueHref, description, compact }: KakaoShareButtonProps) {
   const shareUrl = `https://nolcool.com${venueHref}`;
-  const shareText = `[놀쿨] ${venueName}\n${description || '오늘 밤 여기 어때?'}\n확인해보기 👇`;
 
-  const handleKakaoShare = (e: React.MouseEvent) => {
+  const handleShare = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
-    // Try native share first (better on mobile)
     if (navigator.share) {
-      navigator.share({
-        title: venueName,
-        text: shareText,
-        url: shareUrl,
-      }).catch(() => {});
+      navigator.share({ title: venueName, text: description || venueName, url: shareUrl }).catch(() => {});
       return;
     }
 
-    // Fallback: 클립보드 복사
-    navigator.clipboard.writeText(`${shareText}\n${shareUrl}`).then(() => {
-      alert('링크가 복사되었습니다! 카카오톡에 붙여넣기 해주세요.');
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      alert('링크가 복사되었습니다!');
     }).catch(() => {});
   };
 
   if (compact) {
     return (
       <button
-        onClick={handleKakaoShare}
-        className="flex h-7 w-7 items-center justify-center rounded-full bg-[#FEE500] shadow-sm transition-all hover:scale-110 active:scale-95"
-        aria-label="카카오톡 공유"
-        style={{ minHeight: 28 }}
+        onClick={handleShare}
+        className="flex h-7 w-7 items-center justify-center rounded-full shadow-sm transition-all hover:scale-110 active:scale-95"
+        style={{ backgroundColor: '#8B5CF6', minHeight: 28 }}
+        aria-label="공유"
       >
-        <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="#3C1E1E">
-          <path d="M12 3C6.48 3 2 6.58 2 10.94c0 2.8 1.86 5.27 4.66 6.67l-.96 3.56c-.08.3.26.54.52.37l4.24-2.82c.5.06 1.01.1 1.54.1 5.52 0 10-3.58 10-7.94S17.52 3 12 3z" />
-        </svg>
+        <svg className="h-3.5 w-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
       </button>
     );
   }
 
   return (
     <button
-      onClick={handleKakaoShare}
-      className="inline-flex items-center gap-1.5 rounded-full bg-[#FEE500] px-3 py-1.5 text-xs font-bold text-[#3C1E1E] transition-all hover:bg-[#FDD700] active:scale-[0.97]"
-      style={{ minHeight: 36 }}
+      onClick={handleShare}
+      className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold text-white transition-all active:scale-[0.97]"
+      style={{ backgroundColor: '#8B5CF6', minHeight: 36 }}
     >
-      <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="#3C1E1E">
-        <path d="M12 3C6.48 3 2 6.58 2 10.94c0 2.8 1.86 5.27 4.66 6.67l-.96 3.56c-.08.3.26.54.52.37l4.24-2.82c.5.06 1.01.1 1.54.1 5.52 0 10-3.58 10-7.94S17.52 3 12 3z" />
-      </svg>
-      여기 어때?
+      <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
+      공유
     </button>
   );
 }

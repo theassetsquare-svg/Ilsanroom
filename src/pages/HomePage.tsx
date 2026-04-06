@@ -594,17 +594,6 @@ export default function HomePage() {
                       <p className="text-xs text-[#8B5CF6]">
                         {Math.floor(Math.random() * 30 + 35)}% vs {Math.floor(Math.random() * 30 + 35)}% — 참여 완료!
                       </p>
-                      <button
-                        onClick={() => {
-                          const text = `[놀쿨 VS] ${poll.q}\n나는 ${voted} 골랐는데, 너는?\n👉 https://nolcool.com/vs`;
-                          if (navigator.share) { navigator.share({ title: '놀쿨 VS 투표', text, url: 'https://nolcool.com/vs' }).catch(() => {}); }
-                          else { navigator.clipboard.writeText(text).then(() => alert('링크가 복사되었습니다!')).catch(() => {}); }
-                        }}
-                        className="inline-flex items-center gap-1 rounded-full bg-[#FEE500] px-2.5 py-1 text-[10px] font-bold text-[#3C1E1E]"
-                        style={{ minHeight: 28 }}
-                      >
-                        친구한테 물어보기
-                      </button>
                     </div>
                   )}
                 </div>

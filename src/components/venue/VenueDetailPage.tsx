@@ -96,7 +96,7 @@ export default function VenueDetailPage({
         <div className="rounded-2xl bg-gradient-to-r from-[#F3F0FF] to-white border border-[#E9E5FF] p-4">
           <p className="text-center text-xs font-bold text-[#8B5CF6] mb-2">친구한테 보내기</p>
           <ShareButtons
-            title={`${venue.nameKo} — 오늘 밤 여기 어때?`}
+            title={venue.nameKo}
             description={venue.shortDescription || venue.description.slice(0, 80)}
           />
         </div>
