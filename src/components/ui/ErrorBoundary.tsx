@@ -21,15 +21,18 @@ export default class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, info: React.ErrorInfo) {
     console.error('[ErrorBoundary]', error, info.componentStack);
+    // 자동 새로고침 (무한루프 방지: 3초 내 재발생 시 중단)
+    const lastReload = sessionStorage.getItem('error_reload');
+    const now = Date.now();
+    if (!lastReload || now - Number(lastReload) > 3000) {
+      sessionStorage.setItem('error_reload', String(now));
+      window.location.reload();
+    }
   }
 
   render() {
     if (this.state.hasError) {
-      return this.props.fallback ?? (
-        <div className="rounded-2xl border border-neon-border bg-white p-8 text-center">
-          <p className="text-sm text-neon-text-muted">일시적인 오류가 발생했습니다. 새로고침해 주세요.</p>
-        </div>
-      );
+      return this.props.fallback ?? null;
     }
     return this.props.children;
   }
