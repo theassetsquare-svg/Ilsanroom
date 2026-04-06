@@ -91,8 +91,8 @@ export default function DailyLoginReward() {
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="relative w-full max-w-sm rounded-3xl bg-white shadow-2xl overflow-hidden"
-              style={{ color: '#111' }}
+              className="relative w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden"
+              style={{ backgroundColor: '#1a1a2e', color: '#FFFFFF' }}
               initial={{ scale: 0.6, y: 60 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.6, y: 60, opacity: 0 }}
@@ -101,7 +101,7 @@ export default function DailyLoginReward() {
             >
               <button
                 onClick={handleClose}
-                className="absolute top-3 right-3 z-10 p-1.5 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition"
+                className="absolute top-3 right-3 z-10 p-1.5 rounded-full text-white/70 hover:text-white hover:bg-white/20 transition"
               >
                 <X size={18} />
               </button>
@@ -182,10 +182,11 @@ export default function DailyLoginReward() {
                     <motion.div
                       initial={{ scale: 0.8 }}
                       animate={{ scale: 1 }}
-                      className="flex items-center justify-center gap-2 rounded-2xl bg-[#D1FAE5] py-4"
+                      className="flex items-center justify-center gap-2 rounded-2xl py-4"
+                      style={{ backgroundColor: 'rgba(52,211,153,0.2)' }}
                     >
-                      <Star size={18} className="text-[#059669]" />
-                      <span className="text-base font-bold text-[#059669]">+{streakReward.points}P 획득!</span>
+                      <Star size={18} style={{ color: '#34D399' }} />
+                      <span className="text-base font-bold" style={{ color: '#34D399' }}>+{streakReward.points}P 획득!</span>
                     </motion.div>
                   )}
                 </motion.div>
@@ -195,9 +196,10 @@ export default function DailyLoginReward() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.8 }}
-                  className="rounded-xl bg-[#F3F0FF] px-4 py-3 text-center"
+                  className="rounded-xl px-4 py-3 text-center"
+                  style={{ backgroundColor: 'rgba(139,92,246,0.15)' }}
                 >
-                  <p className="text-xs text-[#8B5CF6] font-medium">{teaser}</p>
+                  <p className="text-xs font-medium" style={{ color: '#A78BFA' }}>{teaser}</p>
                 </motion.div>
 
                 {/* Streak calendar preview */}
@@ -218,13 +220,13 @@ export default function DailyLoginReward() {
                             ? isToday
                               ? 'bg-gradient-to-r from-[#8B5CF6] to-[#EC4899]'
                               : 'bg-[#8B5CF6]'
-                            : 'bg-gray-200'
+                            : 'bg-white/20'
                         }`}
                       />
                     );
                   })}
                 </motion.div>
-                <p className="mt-1.5 text-center text-xs text-[#333]">
+                <p className="mt-1.5 text-center text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>
                   7일 연속 방문하면 특별 보너스!
                 </p>
               </div>

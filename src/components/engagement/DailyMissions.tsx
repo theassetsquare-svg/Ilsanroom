@@ -196,42 +196,43 @@ export default function DailyMissions() {
 
             {/* Panel */}
             <motion.div
-              className="fixed bottom-[56px] left-0 right-0 z-[60] max-h-[50vh] overflow-y-auto rounded-t-3xl bg-white shadow-2xl"
-              style={{ color: '#111' }}
+              className="fixed bottom-[56px] left-0 right-0 z-[60] max-h-[50vh] overflow-y-auto rounded-t-3xl shadow-2xl"
+              style={{ backgroundColor: '#1a1a2e', color: '#FFFFFF' }}
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 300 }}
             >
               {/* Handle */}
-              <div className="sticky top-0 z-10 flex justify-center bg-white pt-3 pb-1 rounded-t-3xl">
-                <div className="h-1 w-10 rounded-full bg-[#D1D5DB]" />
+              <div className="sticky top-0 z-10 flex justify-center pt-3 pb-1 rounded-t-3xl" style={{ backgroundColor: '#1a1a2e' }}>
+                <div className="h-1 w-10 rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.3)' }} />
               </div>
 
               <div className="px-5 pb-6">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <h2 className="text-lg font-bold text-[#111] flex items-center gap-2">
-                      <Target className="w-5 h-5 text-[#8B5CF6]" />
+                    <h2 className="text-lg font-bold flex items-center gap-2" style={{ color: '#FFFFFF' }}>
+                      <Target className="w-5 h-5" style={{ color: '#A78BFA' }} />
                       오늘의 미션
                     </h2>
-                    <p className="text-xs text-[#333] mt-0.5">
+                    <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>
                       {dateLabel} &middot; 완료: {completedCount}/{DAILY_MISSION_COUNT}
                     </p>
                   </div>
                   <button
                     onClick={() => setOpen(false)}
-                    className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F3F4F6] hover:bg-[#E5E7EB] transition"
+                    className="flex h-8 w-8 items-center justify-center rounded-full transition"
+                    style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}
                     aria-label="닫기"
                   >
-                    <ChevronDown className="w-4 h-4 text-[#555]" />
+                    <ChevronDown className="w-4 h-4" style={{ color: 'rgba(255,255,255,0.7)' }} />
                   </button>
                 </div>
 
                 {/* Overall progress bar */}
                 <div className="mb-5">
-                  <div className="h-2 rounded-full bg-[#F3F0FF] overflow-hidden">
+                  <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
                     <motion.div
                       className="h-full rounded-full bg-gradient-to-r from-[#8B5CF6] to-[#06B6D4]"
                       initial={{ width: 0 }}
@@ -254,37 +255,37 @@ export default function DailyMissions() {
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.05 }}
-                        className={`relative rounded-xl border p-4 transition ${
-                          done
-                            ? 'border-[#D1FAE5] bg-[#F0FDF4]'
-                            : 'border-[#E5E7EB] bg-white hover:border-[#C4B5FD] hover:shadow-sm'
-                        }`}
+                        className="relative rounded-xl border p-4 transition"
+                        style={done
+                          ? { borderColor: 'rgba(52,211,153,0.3)', backgroundColor: 'rgba(52,211,153,0.1)' }
+                          : { borderColor: 'rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.05)' }
+                        }
                       >
                         <div className="flex items-start gap-3">
                           {/* Icon */}
-                          <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
-                            done
-                              ? 'bg-[#D1FAE5] text-[#059669]'
-                              : 'bg-[#F3F0FF] text-[#8B5CF6]'
-                          }`}>
+                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
+                            style={done
+                              ? { backgroundColor: 'rgba(52,211,153,0.2)', color: '#34D399' }
+                              : { backgroundColor: 'rgba(139,92,246,0.2)', color: '#A78BFA' }
+                            }>
                             {done ? <Check className="w-4 h-4" /> : mission.icon}
                           </div>
 
                           {/* Content */}
                           <div className="flex-1 min-w-0">
-                            <p className={`text-sm font-semibold ${done ? 'text-[#059669] line-through' : 'text-[#111]'}`}>
+                            <p className="text-sm font-semibold" style={done ? { color: '#34D399', textDecoration: 'line-through' } : { color: '#FFFFFF' }}>
                               {mission.title}
                             </p>
-                            <p className="text-xs text-[#333] mt-0.5">{mission.description}</p>
+                            <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>{mission.description}</p>
 
                             {/* Progress bar */}
                             {!done && (
                               <div className="mt-2">
-                                <div className="flex justify-between text-xs text-[#333] mb-0.5">
+                                <div className="flex justify-between text-xs mb-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>
                                   <span>{prog}/{mission.goal}</span>
                                   <span>{progressPct}%</span>
                                 </div>
-                                <div className="h-1.5 rounded-full bg-[#F3F0FF] overflow-hidden">
+                                <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
                                   <div
                                     className="h-full rounded-full bg-[#8B5CF6] transition-all duration-500"
                                     style={{ width: `${progressPct}%` }}
@@ -301,7 +302,7 @@ export default function DailyMissions() {
                                 완료!
                               </span>
                             ) : (
-                              <span className="text-xs font-bold text-[#8B5CF6]">+{mission.reward}P</span>
+                              <span className="text-xs font-bold" style={{ color: '#A78BFA' }}>+{mission.reward}P</span>
                             )}
                           </div>
                         </div>
@@ -337,7 +338,7 @@ export default function DailyMissions() {
                 </AnimatePresence>
 
                 {/* Reset countdown */}
-                <div className="mt-5 flex items-center justify-center gap-1.5 text-xs text-[#333]">
+                <div className="mt-5 flex items-center justify-center gap-1.5 text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
                   <Flame className="w-3.5 h-3.5 text-[#EF4444]" />
                   <span>리셋까지 {countdown.hours}시간 {countdown.minutes}분</span>
                 </div>

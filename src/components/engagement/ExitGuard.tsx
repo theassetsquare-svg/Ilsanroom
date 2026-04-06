@@ -57,8 +57,8 @@ export default function ExitGuard() {
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl overflow-hidden"
-              style={{ color: '#111' }}
+              className="relative w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
+              style={{ backgroundColor: '#1a1a2e', color: '#FFFFFF' }}
               initial={{ scale: 0.8, y: 40 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.8, y: 40 }}
@@ -67,41 +67,41 @@ export default function ExitGuard() {
             >
               <button
                 onClick={() => setShowModal(false)}
-                className="absolute top-3 right-3 p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition"
+                className="absolute top-3 right-3 p-1 rounded-full text-white/70 hover:text-white hover:bg-white/20 transition"
               >
                 <X size={20} />
               </button>
               <div className="h-2 bg-gradient-to-r from-[#8B5CF6] via-[#EC4899] to-[#06B6D4]" />
               <div className="p-6">
-                <h2 className="text-xl font-bold text-[#111] mb-1">잠깐! 지금 떠나면...</h2>
-                <p className="text-sm text-[#666] mb-5">이렇게 아까운 것들을 놓쳐요</p>
+                <h2 className="text-xl font-bold mb-1" style={{ color: '#FFFFFF' }}>잠깐! 지금 떠나면...</h2>
+                <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.7)' }}>이렇게 아까운 것들을 놓쳐요</p>
                 <div className="space-y-3 mb-5">
                   {store.streak > 0 && (
-                    <div className="flex items-center gap-3 rounded-xl bg-orange-50 px-4 py-3">
-                      <Flame size={20} className="text-orange-500 shrink-0" />
+                    <div className="flex items-center gap-3 rounded-xl px-4 py-3" style={{ backgroundColor: 'rgba(249,115,22,0.15)' }}>
+                      <Flame size={20} className="text-orange-400 shrink-0" />
                       <div className="flex-1">
-                        <p className="text-sm font-semibold text-[#111]">{store.streak}일 연속 방문 기록</p>
+                        <p className="text-sm font-semibold" style={{ color: '#FFFFFF' }}>{store.streak}일 연속 방문 기록</p>
                         {store.streak > 3 && (
-                          <p className="text-xs text-orange-600 mt-0.5">내일도 오면 보너스 2배!</p>
+                          <p className="text-xs mt-0.5" style={{ color: '#FB923C' }}>내일도 오면 보너스 2배!</p>
                         )}
                       </div>
                     </div>
                   )}
                   {incompleteMissions.length > 0 && (
-                    <div className="flex items-center gap-3 rounded-xl bg-purple-50 px-4 py-3">
-                      <Trophy size={20} className="text-purple-500 shrink-0" />
+                    <div className="flex items-center gap-3 rounded-xl px-4 py-3" style={{ backgroundColor: 'rgba(139,92,246,0.15)' }}>
+                      <Trophy size={20} className="text-purple-400 shrink-0" />
                       <div className="flex-1">
-                        <p className="text-sm font-semibold text-[#111]">미완료 미션 {incompleteMissions.length}개</p>
-                        <p className="text-xs text-purple-600 mt-0.5">{incompleteMissions[0]?.label}</p>
+                        <p className="text-sm font-semibold" style={{ color: '#FFFFFF' }}>미완료 미션 {incompleteMissions.length}개</p>
+                        <p className="text-xs mt-0.5" style={{ color: '#A78BFA' }}>{incompleteMissions[0]?.label}</p>
                       </div>
                     </div>
                   )}
                   {store.points > 0 && (
-                    <div className="flex items-center gap-3 rounded-xl bg-cyan-50 px-4 py-3">
-                      <Gift size={20} className="text-cyan-500 shrink-0" />
+                    <div className="flex items-center gap-3 rounded-xl px-4 py-3" style={{ backgroundColor: 'rgba(6,182,212,0.15)' }}>
+                      <Gift size={20} className="text-cyan-400 shrink-0" />
                       <div className="flex-1">
-                        <p className="text-sm font-semibold text-[#111]">{store.points}P 보유 중</p>
-                        <p className="text-xs text-cyan-600 mt-0.5">3분만 더 머물면 보너스 포인트!</p>
+                        <p className="text-sm font-semibold" style={{ color: '#FFFFFF' }}>{store.points}P 보유 중</p>
+                        <p className="text-xs mt-0.5" style={{ color: '#22D3EE' }}>3분만 더 머물면 보너스 포인트!</p>
                       </div>
                     </div>
                   )}
@@ -118,7 +118,8 @@ export default function ExitGuard() {
                   </button>
                   <button
                     onClick={() => setShowModal(false)}
-                    className="w-full rounded-xl border border-gray-200 px-6 py-3 text-sm font-medium text-[#333] transition hover:bg-gray-50 active:scale-[0.98]"
+                    className="w-full rounded-xl border px-6 py-3 text-sm font-medium transition active:scale-[0.98]"
+                    style={{ borderColor: 'rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.7)' }}
                   >
                     나중에 올게요
                   </button>

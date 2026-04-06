@@ -120,29 +120,29 @@ export default function CuriosityGapTeaser() {
           exit={{ x: 300, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 200 }}
         >
-          <div className="rounded-2xl border border-purple-100 bg-white shadow-xl overflow-hidden" style={{ color: '#111' }}>
+          <div className="rounded-2xl border shadow-xl overflow-hidden" style={{ backgroundColor: '#1a1a2e', borderColor: 'rgba(139,92,246,0.3)', color: '#FFFFFF' }}>
             <div className="relative px-4 pt-4 pb-3">
               <button
                 onClick={handleClose}
-                className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-100 transition"
+                className="absolute top-2 right-2 p-1 rounded-full hover:bg-white/20 transition"
               >
-                <X size={14} className="text-gray-400" />
+                <X size={14} style={{ color: 'rgba(255,255,255,0.6)' }} />
               </button>
 
               {/* Hook */}
               <div className="flex items-center gap-2 mb-2">
-                <Eye size={14} className="text-[#8B5CF6]" />
-                <p className="text-xs font-bold text-[#8B5CF6]">발견</p>
+                <Eye size={14} style={{ color: '#A78BFA' }} />
+                <p className="text-xs font-bold" style={{ color: '#A78BFA' }}>발견</p>
               </div>
-              <p className="text-sm font-bold text-[#111] mb-1">{data.teaser.hook}</p>
+              <p className="text-sm font-bold mb-1" style={{ color: '#FFFFFF' }}>{data.teaser.hook}</p>
 
               {/* Blurred preview (curiosity gap) */}
               <div className="relative mb-3">
-                <p className="text-xs text-[#555] blur-[3px] select-none">
+                <p className="text-xs blur-[3px] select-none" style={{ color: 'rgba(255,255,255,0.5)' }}>
                   {data.teaser.preview} {data.venue.nameKo}는 평점 {data.venue.rating}점으로...
                 </p>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="flex items-center gap-1 rounded-full bg-[#F3F0FF] px-3 py-1 text-xs font-medium text-[#8B5CF6]">
+                  <span className="flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium" style={{ backgroundColor: 'rgba(139,92,246,0.2)', color: '#A78BFA' }}>
                     <Lock size={10} />
                     클릭해서 확인
                   </span>
@@ -154,7 +154,8 @@ export default function CuriosityGapTeaser() {
             <Link
               target="_blank" rel="noopener noreferrer" to={data.teaser.href}
               onClick={handleClose}
-              className="flex items-center justify-between bg-gradient-to-r from-[#F3F0FF] to-[#EDE9FE] px-4 py-3 text-sm font-semibold text-[#8B5CF6] hover:from-[#EDE9FE] hover:to-[#DDD6FE] transition"
+              className="flex items-center justify-between px-4 py-3 text-sm font-semibold transition"
+              style={{ backgroundColor: 'rgba(139,92,246,0.15)', color: '#A78BFA' }}
             >
               <span>{data.teaser.cta}</span>
               <ArrowRight size={14} />

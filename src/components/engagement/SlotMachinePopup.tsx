@@ -110,8 +110,8 @@ export default function SlotMachinePopup() {
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="relative w-full max-w-sm rounded-3xl bg-white shadow-2xl overflow-hidden"
-              style={{ color: '#111' }}
+              className="relative w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden"
+              style={{ backgroundColor: '#1a1a2e', color: '#FFFFFF' }}
               initial={{ scale: 0.7, y: 40 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.7, y: 40 }}
@@ -138,7 +138,8 @@ export default function SlotMachinePopup() {
                   {displaySymbols.map((s, i) => (
                     <motion.div
                       key={i}
-                      className="flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-gray-200 bg-gray-50 text-3xl"
+                      className="flex h-20 w-20 items-center justify-center rounded-2xl border-2 text-3xl"
+                      style={{ borderColor: 'rgba(255,255,255,0.2)', backgroundColor: 'rgba(255,255,255,0.1)' }}
                       animate={spinning ? { y: [0, -8, 0] } : {}}
                       transition={spinning ? { duration: 0.15, repeat: Infinity, delay: i * 0.05 } : {}}
                     >
@@ -155,10 +156,10 @@ export default function SlotMachinePopup() {
                       animate={{ opacity: 1, y: 0 }}
                       className="text-center mb-4"
                     >
-                      <p className={`text-lg font-bold ${result.points >= 100 ? 'text-[#F59E0B]' : result.points >= 30 ? 'text-[#8B5CF6]' : 'text-[#059669]'}`}>
+                      <p className="text-lg font-bold" style={{ color: result.points >= 100 ? '#FCD34D' : result.points >= 30 ? '#A78BFA' : '#34D399' }}>
                         {result.label}
                       </p>
-                      <p className="text-2xl font-black text-[#111]">+{result.points}P</p>
+                      <p className="text-2xl font-black" style={{ color: '#FFFFFF' }}>+{result.points}P</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
