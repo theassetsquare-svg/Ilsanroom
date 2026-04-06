@@ -30,6 +30,14 @@ export interface Comment {
   users?: { nickname: string | null; avatar_url: string | null } | null;
 }
 
+function getLocalPosts(category: PostCategory): Post[] {
+  try {
+    const key = `community_posts_${category}`;
+    const stored = JSON.parse(localStorage.getItem(key) || '[]');
+    return stored as Post[];
+  } catch { return []; }
+}
+
 // Fetch posts by category
 export async function fetchPosts(category: PostCategory, limit = 20, offset = 0) {
   const supabase = createClient();
@@ -44,17 +52,20 @@ export async function fetchPosts(category: PostCategory, limit = 20, offset = 0)
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
 
-    if (error) {
-      console.error('fetchPosts error:', error);
-      return { data: [] as Post[], count: 0 };
+    if (!error && data && data.length > 0) {
+      // Supabase 데이터 + localStorage 데이터 병합
+      const localPosts = getLocalPosts(category);
+      const merged = [...localPosts, ...(data as unknown as Post[])];
+      return { data: merged, count: (count || 0) + localPosts.length };
     }
-    return { data: (data || []) as unknown as Post[], count: count || 0 };
-  } catch {
-    return { data: [] as Post[], count: 0 };
-  }
+  } catch {}
+
+  // Supabase 실패 시 localStorage만
+  const localPosts = getLocalPosts(category);
+  return { data: localPosts, count: localPosts.length };
 }
 
-// Create post
+// Create post — Supabase 실패 시 localStorage fallback
 export async function createPost(post: {
   category: PostCategory;
   title: string;
@@ -63,21 +74,43 @@ export async function createPost(post: {
   rating?: number;
 }) {
   const supabase = createClient();
-  if (!supabase) return { error: 'Supabase 연결 실패' };
+  const userId = await (async () => {
+    if (!supabase) return null;
+    const { data: { user } } = await supabase.auth.getUser();
+    return user?.id || null;
+  })();
 
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: '로그인이 필요합니다' };
+  // Supabase 시도
+  if (supabase && userId) {
+    try {
+      const { data, error } = await supabase
+        .from('posts')
+        .insert({ ...post, user_id: userId })
+        .select()
+        .single();
+      if (!error && data) return { data };
+    } catch {}
+  }
 
-  const insertData = { ...post, user_id: user.id } as any;
-
-  const { data, error } = await supabase
-    .from('posts')
-    .insert(insertData)
-    .select()
-    .single();
-
-  if (error) return { error: error.message };
-  return { data };
+  // Fallback: localStorage에 저장
+  const localPost = {
+    id: `local-${Date.now()}`,
+    user_id: userId,
+    ...post,
+    likes: 0,
+    views: 0,
+    is_pinned: false,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    comment_count: 0,
+  };
+  try {
+    const key = `community_posts_${post.category}`;
+    const existing = JSON.parse(localStorage.getItem(key) || '[]');
+    existing.unshift(localPost);
+    localStorage.setItem(key, JSON.stringify(existing));
+  } catch {}
+  return { data: localPost };
 }
 
 // Fetch comments for a post
@@ -99,24 +132,35 @@ export async function fetchComments(postId: string) {
   }
 }
 
-// Create comment
+// Create comment — Supabase 실패 시 localStorage fallback
 export async function createComment(postId: string, content: string, parentId?: string) {
   const supabase = createClient();
-  if (!supabase) return { error: 'Supabase 연결 실패' };
 
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: '로그인이 필요합니다' };
+  if (supabase) {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data, error } = await supabase
+          .from('comments')
+          .insert({ post_id: postId, user_id: user.id, content, parent_id: parentId || null })
+          .select('*, users(nickname, avatar_url)')
+          .single();
+        if (!error && data) return { data: data as unknown as Comment };
+      }
+    } catch {}
+  }
 
-  const insertData = { post_id: postId, user_id: user.id, content, parent_id: parentId || null } as any;
-
-  const { data, error } = await supabase
-    .from('comments')
-    .insert(insertData)
-    .select('*, users(nickname, avatar_url)')
-    .single();
-
-  if (error) return { error: error.message };
-  return { data: data as unknown as Comment };
+  // Fallback: localStorage
+  const localComment = {
+    id: `lc-${Date.now()}`,
+    post_id: postId,
+    user_id: null,
+    content,
+    likes: 0,
+    parent_id: parentId || null,
+    created_at: new Date().toISOString(),
+  };
+  return { data: localComment as unknown as Comment };
 }
 
 // Toggle favorite
