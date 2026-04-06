@@ -297,6 +297,7 @@ interface EngagementState {
   getLevel: () => LevelInfo;
   setExitModal: (show: boolean) => void;
   tick: () => void;
+  reset: () => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -705,6 +706,38 @@ export const useEngagementStore = create<EngagementState>()(
         const state = get();
         if (state.sessionStartTime === 0) return;
         set({ totalSessionSeconds: state.totalSessionSeconds + 1 });
+      },
+
+      // -------------------------------------------------------------------
+      // reset -- 첫 로그인 시 포인트/경험치 0으로 초기화
+      // -------------------------------------------------------------------
+      reset: () => {
+        set({
+          points: 0,
+          level: 0,
+          xp: 0,
+          streak: 0,
+          venuesViewed: [],
+          totalVenuesViewed: [],
+          completedMissions: [],
+          votedBattles: [],
+          likedVenues: [],
+          bookmarkedVenues: [],
+          unlockedRewards: [],
+          comboCount: 0,
+          maxCombo: 0,
+          spinCount: 0,
+          searchCount: 0,
+          shareCount: 0,
+          feedIndex: 0,
+          quizCompleted: false,
+          rouletteUsed: false,
+          chatbotUsed: false,
+          dressCodeUsed: false,
+          dailyLoginRewardClaimed: false,
+          weeklyBonusClaimed: false,
+          notifications: [],
+        });
       },
     }),
     {

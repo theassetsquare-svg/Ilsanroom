@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createClient } from '@/lib/supabase';
+import { useEngagementStore } from '@/lib/engagement-store';
 
 export default function AuthCallbackPage() {
   const navigate = useNavigate();
+  const resetStore = useEngagementStore((s) => s.reset);
 
   useEffect(() => {
     const supabase = createClient();
@@ -12,22 +14,34 @@ export default function AuthCallbackPage() {
       return;
     }
 
+    const handleSession = (session: any) => {
+      if (!session) return;
+      const userId = session.user?.id;
+      const savedUserId = localStorage.getItem('nolcool_user_id');
+
+      // 처음 로그인하는 유저 → 포인트 0으로 초기화
+      if (!savedUserId || savedUserId !== userId) {
+        localStorage.setItem('nolcool_user_id', userId);
+        if (resetStore) resetStore();
+      }
+      navigate('/');
+    };
+
     let timer: ReturnType<typeof setTimeout>;
-    // Supabase handles the token exchange from the URL hash automatically
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate('/');
+        handleSession(session);
       } else {
-        // Wait a moment for the hash to be processed
         timer = setTimeout(() => {
           supabase.auth.getSession().then(({ data: { session: s } }) => {
-            navigate(s ? '/' : '/login');
+            if (s) handleSession(s);
+            else navigate('/login');
           });
         }, 1000);
       }
     });
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, [navigate, resetStore]);
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center">
