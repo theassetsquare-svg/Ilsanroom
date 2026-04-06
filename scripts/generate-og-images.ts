@@ -5,6 +5,10 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Import venues data
 const venuesPath = path.resolve(__dirname, '../src/data/venues.ts');
@@ -65,12 +69,12 @@ function escapeXml(s: string): string {
 
 function generateSvg(title: string, subtitle: string, bg: string, staff?: string): string {
   const titleLen = title.length;
-  const titleSize = titleLen > 15 ? 44 : titleLen > 10 ? 52 : 60;
-  const titleY = staff ? 255 : 280;
+  const titleSize = titleLen > 15 ? 72 : titleLen > 10 ? 88 : titleLen > 6 ? 100 : 120;
+  const titleY = staff ? 260 : 300;
   const staffLine = staff
-    ? `<text x="600" y="${titleY + 65}" text-anchor="middle" font-family="sans-serif" font-size="34" font-weight="600" fill="#FCD34D">${escapeXml(staff)}</text>`
+    ? `<text x="600" y="${titleY + 90}" text-anchor="middle" font-family="sans-serif" font-size="64" font-weight="800" fill="#FCD34D" letter-spacing="0.02em">${escapeXml(staff)}</text>`
     : '';
-  const subtitleY = staff ? titleY + 115 : titleY + 75;
+  const subtitleY = staff ? titleY + 160 : titleY + 100;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
@@ -80,11 +84,11 @@ function generateSvg(title: string, subtitle: string, bg: string, staff?: string
     </linearGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#bg)"/>
-  <rect x="60" y="60" width="1080" height="510" rx="24" fill="rgba(255,255,255,0.08)"/>
-  <text x="600" y="${titleY}" text-anchor="middle" font-family="sans-serif" font-size="${titleSize}" font-weight="bold" fill="white">${escapeXml(title)}</text>
+  <rect x="40" y="40" width="1120" height="550" rx="32" fill="rgba(255,255,255,0.08)"/>
+  <text x="600" y="${titleY}" text-anchor="middle" font-family="sans-serif" font-size="${titleSize}" font-weight="900" fill="white" letter-spacing="-0.02em">${escapeXml(title)}</text>
   ${staffLine}
-  <text x="600" y="${subtitleY}" text-anchor="middle" font-family="sans-serif" font-size="26" fill="rgba(255,255,255,0.7)">${escapeXml(subtitle)}</text>
-  <text x="600" y="540" text-anchor="middle" font-family="sans-serif" font-size="20" fill="rgba(255,255,255,0.4)">놀쿨 — nolcool.com</text>
+  <text x="600" y="${subtitleY}" text-anchor="middle" font-family="sans-serif" font-size="44" font-weight="600" fill="rgba(255,255,255,0.85)">${escapeXml(subtitle)}</text>
+  <text x="600" y="570" text-anchor="middle" font-family="sans-serif" font-size="32" font-weight="500" fill="rgba(255,255,255,0.5)">놀쿨 — nolcool.com</text>
 </svg>`;
 }
 
