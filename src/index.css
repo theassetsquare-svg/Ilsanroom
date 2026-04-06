@@ -319,19 +319,22 @@ html {
 .text-neon-text-subtle { color: #333333 !important; }
 .text-neon-muted { color: #222222 !important; }
 
-/* ★ 흰 배경 카드/섹션 글씨 강제 보장 */
-.bg-white, .bg-neon-surface, .bg-neon-bg {
+/* ★ 본문 글씨 색상 보장 — 밝은 배경에서 검정 글 보이게 */
+main, footer, header, nav {
   color: #111111;
 }
-.bg-white h1, .bg-white h2, .bg-white h3, .bg-white h4,
-.bg-neon-surface h1, .bg-neon-surface h2, .bg-neon-surface h3, .bg-neon-surface h4,
-.bg-neon-bg h1, .bg-neon-bg h2, .bg-neon-bg h3, .bg-neon-bg h4 {
-  color: #111111 !important;
+main h1, main h2, main h3, main h4 {
+  color: #111111;
 }
-.bg-white p, .bg-white span, .bg-white li, .bg-white dd, .bg-white dt,
-.bg-neon-surface p, .bg-neon-surface span, .bg-neon-surface li, .bg-neon-surface dd, .bg-neon-surface dt {
+main p, main li, main dd, main dt {
   color: inherit;
 }
+/* ★ 다크 배경(fixed 팝업/오버레이) 안에서는 흰 글씨 유지 */
+.fixed[style*="background"] {
+  /* inline style backgroundColor가 있는 fixed 요소는 건드리지 않음 */
+}
+/* ★ text-white 강제 보장 — 다크 배경 위 흰 글씨가 검정으로 변하지 않도록 */
+.text-white { color: #FFFFFF !important; }
 
 /* ★ rgba 반투명 텍스트 금지 */
 .text-pink-900\/70 { color: #831843 !important; }
@@ -345,15 +348,7 @@ html {
   height: 100%;
 }
 
-/* ★ 팝업/모달 글씨 가독성 — 흰 배경 위 검정 텍스트 보장 */
-.fixed .bg-white,
-.fixed > .bg-white,
-[class*="z-["] .bg-white,
-.rounded-2xl.bg-white,
-.rounded-3xl.bg-white,
-.rounded-xl.bg-white {
-  color: #111111;
-}
+/* ★ 팝업은 다크테마(inline style)로 전환됨 — 추가 규칙 불필요 */
 
 /* Focus visible for a11y */
 *:focus-visible {
