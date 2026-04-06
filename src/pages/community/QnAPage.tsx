@@ -117,6 +117,7 @@ export default function QnAPage() {
   const [showWriteModal, setShowWriteModal] = useState(false);
   const [writeTitle, setWriteTitle] = useState("");
   const [writeContent, setWriteContent] = useState("");
+  const [viewingPost, setViewingPost] = useState<typeof sampleUserQuestions[0] | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [authError, setAuthError] = useState(false);
 
@@ -242,9 +243,11 @@ export default function QnAPage() {
           {!loading && (
             <div className="space-y-3">
               {filtered.map((q) => (
-                <div
+                <button
                   key={q.id}
-                  className="flex items-center gap-4 rounded-2xl border border-neon-border bg-neon-surface p-5 transition hover:border-neon-primary/30"
+                  onClick={() => setViewingPost(q)}
+                  className="w-full text-left flex items-center gap-4 rounded-2xl border border-neon-border bg-neon-surface p-5 transition hover:border-neon-primary/30"
+                  style={{ minHeight: 48 }}
                 >
                   <div
                     className={`flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl text-xs ${
@@ -257,7 +260,7 @@ export default function QnAPage() {
                     <span>답변</span>
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="truncate text-sm font-semibold hover:text-neon-primary-light">
+                    <h3 className="truncate text-sm font-semibold">
                       {q.solved && (
                         <span className="mr-2 text-xs text-neon-green">[해결]</span>
                       )}
@@ -274,7 +277,7 @@ export default function QnAPage() {
                   <div className="text-right text-xs text-neon-text-muted">
                     <div>♥ {q.likes}</div>
                   </div>
-                </div>
+                </button>
               ))}
 
               {filtered.length === 0 && (
@@ -305,6 +308,37 @@ export default function QnAPage() {
                 style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 56 }}>
                 {submitting ? "등록 중..." : "글 저장"}
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* 글 상세 + 삭제 모달 */}
+        {viewingPost && (
+          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" onClick={() => setViewingPost(null)}>
+            <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} />
+            <div className="relative w-full max-w-lg max-h-[80vh] overflow-y-auto rounded-t-3xl sm:rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', color: '#111' }} onClick={e => e.stopPropagation()}>
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs" style={{ color: '#999' }}>{viewingPost.author} · {viewingPost.date}</span>
+                <button onClick={() => setViewingPost(null)} style={{ minWidth: 44, minHeight: 44, color: '#555' }}>✕</button>
+              </div>
+              <h2 className="text-xl font-bold mb-2" style={{ color: '#111' }}>{viewingPost.title}</h2>
+              {user && (
+                <button
+                  onClick={async () => {
+                    if (!confirm('글을 삭제하시겠습니까?')) return;
+                    const result = await deletePost(viewingPost.id);
+                    if (result.error) { alert('삭제 실패: ' + result.error); return; }
+                    alert('삭제되었습니다');
+                    setViewingPost(null);
+                    setQuestions(prev => prev.filter(q => q.id !== viewingPost.id));
+                  }}
+                  className="text-xs mb-4" style={{ color: '#EF4444', minHeight: 32 }}>
+                  글 삭제
+                </button>
+              )}
+              <div className="rounded-xl p-4" style={{ backgroundColor: '#F9FAFB', color: '#333', minHeight: 100 }}>
+                <p className="text-sm leading-relaxed">이 게시글의 상세 내용입니다.</p>
+              </div>
             </div>
           </div>
         )}
