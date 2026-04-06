@@ -455,9 +455,18 @@ function VenueSlide({
   onBookmark: () => void;
   onShare: () => void;
 }) {
+  const [showComment, setShowComment] = useState(false);
+  const [comment, setComment] = useState('');
+  const [comments, setComments] = useState<{ text: string; time: string }[]>([]);
   const gradient = CAT_GRADIENT[venue.category] || 'from-gray-900 to-gray-950';
   const fakeLikes = Math.floor(venue.nameKo.length * 17 + 42);
   const fakeReviews = venue.reviewCount || Math.floor(venue.nameKo.length * 3 + 5);
+
+  const handleCommentSubmit = () => {
+    if (!comment.trim()) return;
+    setComments((prev) => [...prev, { text: comment.trim(), time: '방금' }]);
+    setComment('');
+  };
 
   return (
     <div className={`w-full h-full bg-gradient-to-b ${gradient} flex flex-col justify-end relative`}>
@@ -479,11 +488,11 @@ function VenueSlide({
           <span className="text-xs" style={{ color: '#FFFFFF' }}>{liked ? fakeLikes + 1 : fakeLikes}</span>
         </button>
 
-        <button onClick={onShare} className="flex flex-col items-center gap-1" style={{ minWidth: 48, minHeight: 48 }}>
+        <button onClick={() => setShowComment(true)} className="flex flex-col items-center gap-1" style={{ minWidth: 48, minHeight: 48 }}>
           <div className="w-12 h-12 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center active:bg-white/30 transition-colors">
             <MessageCircle className="w-6 h-6 text-white" />
           </div>
-          <span className="text-xs" style={{ color: '#FFFFFF' }}>{fakeReviews}</span>
+          <span className="text-xs" style={{ color: '#FFFFFF' }}>{fakeReviews + comments.length}</span>
         </button>
 
         <button onClick={onShare} className="flex flex-col items-center gap-1" style={{ minWidth: 48, minHeight: 48 }}>
@@ -572,6 +581,76 @@ function VenueSlide({
           <span className="text-lg">→</span>
         </Link>
       </div>
+
+      {/* 댓글 패널 */}
+      {showComment && (
+        <div className="absolute inset-0 z-40 flex flex-col justify-end" onClick={() => setShowComment(false)}>
+          <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} />
+          <div
+            className="relative rounded-t-3xl p-5 max-h-[60vh] flex flex-col"
+            style={{ backgroundColor: '#1a1a2e', color: '#FFFFFF' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-base font-bold" style={{ color: '#FFFFFF' }}>댓글 {fakeReviews + comments.length}개</h3>
+              <button
+                onClick={() => setShowComment(false)}
+                style={{ minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                <X className="w-6 h-6" style={{ color: '#FFFFFF' }} />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto space-y-3 mb-4" style={{ maxHeight: '30vh' }}>
+              {/* 기존 댓글(더미) */}
+              <div className="rounded-xl p-3" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }}>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-bold" style={{ color: '#A78BFA' }}>김** </span>
+                  <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>2시간 전</span>
+                </div>
+                <p className="text-sm" style={{ color: 'rgba(255,255,255,0.85)' }}>여기 분위기 진짜 좋아요 추천!</p>
+              </div>
+              <div className="rounded-xl p-3" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }}>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-bold" style={{ color: '#A78BFA' }}>이** </span>
+                  <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>5시간 전</span>
+                </div>
+                <p className="text-sm" style={{ color: 'rgba(255,255,255,0.85)' }}>주말에 가봤는데 대기가 좀 있어요</p>
+              </div>
+              {/* 사용자 작성 댓글 */}
+              {comments.map((c, i) => (
+                <div key={i} className="rounded-xl p-3" style={{ backgroundColor: 'rgba(139,92,246,0.15)' }}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-bold" style={{ color: '#A78BFA' }}>나</span>
+                    <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{c.time}</span>
+                  </div>
+                  <p className="text-sm" style={{ color: '#FFFFFF' }}>{c.text}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* 댓글 입력 */}
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleCommentSubmit(); }}
+                placeholder="댓글을 입력하세요..."
+                className="flex-1 rounded-xl px-4 py-3 text-sm outline-none"
+                style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: '#FFFFFF', minHeight: 48 }}
+              />
+              <button
+                onClick={handleCommentSubmit}
+                className="rounded-xl px-4 py-3 text-sm font-bold"
+                style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 48 }}
+              >
+                등록
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
