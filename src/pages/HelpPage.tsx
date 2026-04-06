@@ -353,14 +353,39 @@ export default function HelpPage() {
             </div>
           </div>
 
-          {/* 메일 보내기 버튼 — 크게, 확실하게 */}
+          {/* 메일 보내기 */}
           <div className="space-y-4">
             <button
-              onClick={() => { window.location.href = 'mailto:qotjsdnr123@naver.com?subject=[놀쿨] 문의드립니다'; }}
+              onClick={() => {
+                const email = 'qotjsdnr123@naver.com';
+                // 네이버 메일 웹으로 바로 열기
+                window.open(`https://mail.naver.com/write?to=${email}&subject=${encodeURIComponent('[놀쿨] 문의드립니다')}`, '_blank', 'noopener,noreferrer');
+              }}
               className="w-full rounded-2xl py-5 text-lg font-bold transition active:scale-[0.98]"
-              style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 60 }}
+              style={{ backgroundColor: '#03C75A', color: '#FFFFFF', minHeight: 60 }}
             >
-              ✉️ 메일 보내기
+              📧 네이버 메일로 보내기
+            </button>
+            <button
+              onClick={() => {
+                const email = 'qotjsdnr123@naver.com';
+                window.open(`https://mail.google.com/mail/?view=cm&to=${email}&su=${encodeURIComponent('[놀쿨] 문의드립니다')}`, '_blank', 'noopener,noreferrer');
+              }}
+              className="w-full rounded-2xl py-4 text-base font-bold transition active:scale-[0.98]"
+              style={{ backgroundColor: '#EA4335', color: '#FFFFFF', minHeight: 52 }}
+            >
+              ✉️ Gmail로 보내기
+            </button>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText('qotjsdnr123@naver.com').then(() => {
+                  alert('이메일 주소가 복사되었습니다!\nqotjsdnr123@naver.com');
+                });
+              }}
+              className="w-full rounded-2xl py-4 text-base font-bold transition active:scale-[0.98]"
+              style={{ backgroundColor: '#F3F4F6', color: '#111', minHeight: 52 }}
+            >
+              📋 이메일 주소 복사하기
             </button>
             <p className="text-sm text-center" style={{ color: '#555' }}>
               qotjsdnr123@naver.com · 확인하는대로 답장드립니다
