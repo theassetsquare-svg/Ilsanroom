@@ -338,12 +338,16 @@ export default function HomePage() {
           <input
             ref={searchInputRef}
             type="text"
+            inputMode="search"
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             onFocus={() => { if (searchQuery.trim()) setShowSearchResults(true); }}
             placeholder="어디서 놀까? 가게이름, 지역 검색"
             className="w-full rounded-3xl border-2 border-[#8B5CF6] bg-white py-3 pl-11 pr-4 text-base text-[#111] placeholder-[#888] outline-none"
-            style={{ height: 48 }}
+            style={{ height: 48, WebkitAppearance: 'none' }}
           />
 
           {/* Search Results Dropdown */}

@@ -101,10 +101,15 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
           <input
             ref={inputRef}
             type="text"
+            inputMode="search"
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="업소명, 지역, 카테고리 검색..."
             className="w-full rounded-xl border border-neon-border bg-neon-surface py-4 pr-4 pl-12 text-lg text-neon-text placeholder-[#666] outline-none transition-colors focus:border-neon-primary"
+            style={{ WebkitAppearance: 'none' }}
           />
         </div>
 
