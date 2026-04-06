@@ -29,7 +29,7 @@ export default function PricingPage() {
         <div className="space-y-3 text-sm" style={{ color: '#333' }}>
           <div className="flex items-center gap-3">
             <span style={{ color: '#22C55E' }}>✓</span>
-            <span>전국 나이트라이프 플랫폼 노출 (월 10만+ 방문자)</span>
+            <span>전국 나이트라이프 플랫폼 노출</span>
           </div>
           <div className="flex items-center gap-3">
             <span style={{ color: '#22C55E' }}>✓</span>
