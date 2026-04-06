@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
-import { useEngagementStore } from '@/lib/engagement-store';
 
 const sampleHotPosts = [
   { id: "hot-1", title: "일산 밤문화 입문기 — 3개월 차 솔직 소감", author: "야행성루키", date: "2026-03-19", comments: 74 },
@@ -79,18 +78,13 @@ export default function FreeBoardPage() {
     loadPosts(currentPage);
   }, [currentPage]);
 
-  const points = useEngagementStore((s) => s.points);
-  const [pointAlert, setPointAlert] = useState(false);
+
+  const [viewingPost, setViewingPost] = useState<SimplePost | null>(null);
 
   const handleWriteClick = () => {
     if (!user) {
       setAuthError(true);
       setTimeout(() => setAuthError(false), 3000);
-      return;
-    }
-    if (points < 300) {
-      setPointAlert(true);
-      setTimeout(() => setPointAlert(false), 4000);
       return;
     }
     setShowWriteModal(true);
@@ -133,7 +127,8 @@ export default function FreeBoardPage() {
           </div>
           <button
             onClick={handleWriteClick}
-            className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light"
+            className="rounded-xl px-5 py-2.5 text-sm font-bold transition"
+            style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}
           >
             글쓰기
           </button>
@@ -145,31 +140,28 @@ export default function FreeBoardPage() {
             로그인이 필요합니다
           </div>
         )}
-        {pointAlert && (
-          <div className="mb-4 rounded-xl px-5 py-3 text-sm" style={{ backgroundColor: '#F8F7FF', border: '1px solid #C4B5FD', color: '#6B21A8' }}>
-            🔒 글쓰기는 🔥매니아(300P) 등급부터 가능합니다. 현재 {points}P — {300 - points}P 더 모으면 해금!
-          </div>
-        )}
 
         {/* Hot Posts */}
         <section className="mb-10">
           <h2 className="mb-4 flex items-center gap-2 text-lg font-bold">
             <span className="text-xl">🔥</span> 인기글
           </h2>
-          <div className="space-y-1 rounded-xl border border-neon-gold/30 bg-neon-surface overflow-hidden">
+          <div className="rounded-xl border border-neon-gold/30 bg-neon-surface overflow-hidden">
             {hotPosts.map((post, i) => (
-              <div
+              <button
                 key={post.id}
-                className={`flex items-center justify-between px-5 py-3 ${
+                onClick={() => setViewingPost(post)}
+                className={`flex w-full items-center justify-between px-5 py-4 text-left transition hover:bg-neon-surface-2 ${
                   i !== hotPosts.length - 1 ? "border-b border-neon-border/50" : ""
                 }`}
+                style={{ minHeight: 48 }}
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <span className="text-sm">🔥</span>
-                  <span className="truncate text-sm font-semibold">{post.title}</span>
+                  <span className="truncate text-sm font-semibold" style={{ color: '#111' }}>{post.title}</span>
                 </div>
                 <span className="shrink-0 ml-3 text-xs text-neon-gold">[{post.comments}]</span>
-              </div>
+              </button>
             ))}
           </div>
         </section>
@@ -187,25 +179,27 @@ export default function FreeBoardPage() {
             <h2 className="mb-4 text-lg font-bold">최근 글</h2>
             <div className="overflow-hidden rounded-xl border border-neon-border">
               {recentPosts.map((post, i) => (
-                <div
+                <button
                   key={post.id}
-                  className={`flex items-center justify-between px-5 py-3.5 transition hover:bg-neon-surface ${
+                  onClick={() => setViewingPost(post)}
+                  className={`flex w-full items-center justify-between px-5 py-4 text-left transition hover:bg-neon-surface-2 ${
                     i !== recentPosts.length - 1 ? "border-b border-neon-border/50" : ""
                   }`}
+                  style={{ minHeight: 52 }}
                 >
                   <div className="min-w-0 flex-1">
-                    <span className="truncate text-sm">
+                    <p className="truncate text-sm font-medium" style={{ color: '#111' }}>
                       {post.title}
                       {post.comments > 0 && (
-                        <span className="ml-2 text-xs text-neon-primary-light">[{post.comments}]</span>
+                        <span className="ml-2 text-xs" style={{ color: '#8B5CF6' }}>[{post.comments}]</span>
                       )}
-                    </span>
+                    </p>
                   </div>
-                  <div className="flex shrink-0 gap-4 ml-4 text-xs text-neon-text-muted">
+                  <div className="flex shrink-0 gap-3 ml-4 text-xs" style={{ color: '#999' }}>
                     <span>{post.author}</span>
                     <span>{post.date.slice(5)}</span>
                   </div>
-                </div>
+                </button>
               ))}
 
               {recentPosts.length === 0 && (
@@ -236,25 +230,60 @@ export default function FreeBoardPage() {
 
         {/* Write Modal */}
         {showWriteModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-            <div className="w-full max-w-lg rounded-2xl border border-neon-border bg-neon-surface p-6">
-              <h2 className="mb-4 text-lg font-bold">글쓰기</h2>
+          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" onClick={() => setShowWriteModal(false)}>
+            <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} />
+            <div className="relative w-full max-w-lg rounded-t-3xl sm:rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', color: '#111' }} onClick={e => e.stopPropagation()}>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-bold" style={{ color: '#111' }}>글쓰기</h2>
+                <button onClick={() => setShowWriteModal(false)} style={{ minWidth: 44, minHeight: 44, color: '#555' }}>✕</button>
+              </div>
               <div className="mb-3">
-                <label className="mb-1 block text-xs text-neon-text-muted">제목</label>
+                <label className="mb-1 block text-xs" style={{ color: '#555' }}>제목</label>
                 <input value={writeTitle} onChange={(e) => setWriteTitle(e.target.value)} placeholder="제목을 입력하세요"
-                  className="w-full rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-primary" />
+                  className="w-full rounded-lg border px-4 py-3 text-sm outline-none"
+                  style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
               </div>
               <div className="mb-4">
-                <label className="mb-1 block text-xs text-neon-text-muted">내용</label>
-                <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="자유롭게 작성해주세요" rows={5}
-                  className="w-full rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-primary" />
+                <label className="mb-1 block text-xs" style={{ color: '#555' }}>내용</label>
+                <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="자유롭게 작성해주세요" rows={8}
+                  className="w-full rounded-lg border px-4 py-3 text-sm outline-none resize-none"
+                  style={{ borderColor: '#E5E7EB', color: '#111' }} />
               </div>
-              <div className="flex justify-end gap-2">
-                <button onClick={() => setShowWriteModal(false)} className="rounded-lg px-4 py-2 text-sm text-neon-text-muted hover:bg-neon-surface-2">취소</button>
+              <div className="flex gap-2">
+                <button onClick={() => setShowWriteModal(false)} className="flex-1 rounded-xl py-3 text-sm font-medium"
+                  style={{ backgroundColor: '#F3F4F6', color: '#555', minHeight: 48 }}>취소</button>
                 <button onClick={handleSubmit} disabled={submitting || !writeTitle.trim() || !writeContent.trim()}
-                  className="rounded-lg bg-neon-primary px-5 py-2 text-sm font-medium transition hover:bg-neon-primary-light disabled:opacity-50">
+                  className="flex-1 rounded-xl py-3 text-sm font-bold disabled:opacity-40"
+                  style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 48 }}>
                   {submitting ? "등록 중..." : "등록"}
                 </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Post Detail Modal */}
+        {viewingPost && (
+          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" onClick={() => setViewingPost(null)}>
+            <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} />
+            <div className="relative w-full max-w-lg max-h-[80vh] overflow-y-auto rounded-t-3xl sm:rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', color: '#111' }} onClick={e => e.stopPropagation()}>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2 text-xs" style={{ color: '#999' }}>
+                  <span className="font-medium" style={{ color: '#555' }}>{viewingPost.author}</span>
+                  <span>·</span>
+                  <span>{viewingPost.date}</span>
+                </div>
+                <button onClick={() => setViewingPost(null)} style={{ minWidth: 44, minHeight: 44, color: '#555' }}>✕</button>
+              </div>
+              <h2 className="text-xl font-bold mb-4" style={{ color: '#111' }}>{viewingPost.title}</h2>
+              <div className="rounded-xl p-4 mb-4" style={{ backgroundColor: '#F9FAFB', color: '#333', minHeight: 120 }}>
+                <p className="text-sm leading-relaxed">이 게시글의 상세 내용입니다. 커뮤니티 기능이 정식 오픈되면 실제 내용이 표시됩니다.</p>
+              </div>
+              <div className="flex items-center gap-4 text-sm" style={{ color: '#999' }}>
+                <span>💬 댓글 {viewingPost.comments}개</span>
+              </div>
+              <div className="mt-4 pt-4" style={{ borderTop: '1px solid #E5E7EB' }}>
+                <p className="text-xs text-center" style={{ color: '#999' }}>댓글 기능은 정식 오픈 시 이용 가능합니다</p>
               </div>
             </div>
           </div>

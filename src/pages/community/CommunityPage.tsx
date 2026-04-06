@@ -77,27 +77,30 @@ export default function CommunityPage() {
           <h2 className="mb-6 text-2xl font-bold">최근 인기글</h2>
           <div className="space-y-4">
             {[
-              { title: "강남 클럽 첫 방문 후기 (초보자 시점)", category: "후기", likes: 234, comments: 45 },
-              { title: "홍대 vs 강남 클럽 비교 정리해봤습니다", category: "자유", likes: 189, comments: 67 },
-              { title: "이번 주말 이태원 파티 같이 가실 분?", category: "파티모집", likes: 156, comments: 32 },
-              { title: "나이트 드레스코드 완벽 가이드 2026", category: "패션", likes: 312, comments: 28 },
-              { title: "해운대 여름 클럽 시즌 정보 공유", category: "팁", likes: 198, comments: 41 },
+              { title: "강남 클럽 첫 방문 후기 (초보자 시점)", category: "후기", likes: 234, comments: 45, href: "/community/reviews" },
+              { title: "홍대 vs 강남 클럽 비교 정리해봤습니다", category: "자유", likes: 189, comments: 67, href: "/community/free" },
+              { title: "이번 주말 이태원 파티 같이 가실 분?", category: "파티모집", likes: 156, comments: 32, href: "/community/party" },
+              { title: "나이트 드레스코드 완벽 가이드 2026", category: "꿀팁", likes: 312, comments: 28, href: "/community/tips" },
+              { title: "해운대 여름 클럽 시즌 정보 공유", category: "자유", likes: 198, comments: 41, href: "/community/free" },
             ].map((post, i) => (
-              <div
+              <Link
                 key={i}
-                className="flex items-center justify-between rounded-xl border border-neon-border bg-neon-bg px-5 py-4 transition hover:border-neon-border"
+                to={post.href}
+                target="_blank" rel="noopener noreferrer"
+                className="flex items-center justify-between rounded-xl border border-neon-border bg-neon-bg px-5 py-4 transition hover:border-neon-primary/40 hover:bg-neon-surface"
+                style={{ minHeight: 56 }}
               >
-                <div className="flex items-center gap-4">
-                  <span className="rounded-full bg-neon-primary-light/10 px-3 py-1 text-xs text-neon-primary-light">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="shrink-0 rounded-full px-3 py-1 text-xs font-medium" style={{ backgroundColor: 'rgba(139,92,246,0.1)', color: '#8B5CF6' }}>
                     {post.category}
                   </span>
-                  <span className="text-sm font-medium">{post.title}</span>
+                  <span className="text-sm font-medium truncate" style={{ color: '#111' }}>{post.title}</span>
                 </div>
-                <div className="flex gap-4 text-xs text-neon-text-muted">
+                <div className="flex shrink-0 gap-3 ml-3 text-xs" style={{ color: '#999' }}>
                   <span>♥ {post.likes}</span>
                   <span>💬 {post.comments}</span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
