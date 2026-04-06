@@ -353,43 +353,18 @@ export default function HelpPage() {
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div className="rounded-2xl border border-neon-border bg-neon-surface p-6">
-            <h3 className="mb-4 text-sm font-bold">연락 양식</h3>
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              const form = e.target as HTMLFormElement;
-              const name = (form.elements.namedItem('name') as HTMLInputElement).value;
-              const email = (form.elements.namedItem('email') as HTMLInputElement).value;
-              const content = (form.elements.namedItem('content') as HTMLTextAreaElement).value;
-              const subject = encodeURIComponent(`[놀쿨 문의] ${name}`);
-              const body = encodeURIComponent(`보낸 사람: ${name}\n이메일: ${email}\n\n${content}`);
-              window.location.href = `mailto:qotjsdnr123@naver.com?subject=${subject}&body=${body}`;
-            }} className="space-y-4">
-              <div>
-                <label className="mb-1.5 block text-xs font-medium text-neon-text-muted">이름</label>
-                <input type="text" name="name" required placeholder="이름을 입력하세요"
-                  className="w-full rounded-xl border border-neon-border bg-neon-bg px-4 py-3 text-sm text-neon-text placeholder-neutral-500 outline-none focus:border-violet-500" />
-              </div>
-              <div>
-                <label className="mb-1.5 block text-xs font-medium text-neon-text-muted">이메일</label>
-                <input type="email" name="email" required placeholder="답변 받으실 이메일"
-                  className="w-full rounded-xl border border-neon-border bg-neon-bg px-4 py-3 text-sm text-neon-text placeholder-neutral-500 outline-none focus:border-violet-500" />
-              </div>
-              <div>
-                <label className="mb-1.5 block text-xs font-medium text-neon-text-muted">내용</label>
-                <textarea name="content" required rows={4} placeholder="내용을 작성해 주세요"
-                  className="w-full rounded-xl border border-neon-border bg-neon-bg px-4 py-3 text-sm text-neon-text placeholder-neutral-500 outline-none focus:border-violet-500 resize-none" />
-              </div>
-              <button type="submit"
-                className="w-full rounded-xl py-3 text-sm font-bold transition"
-                style={{ minHeight: 48, backgroundColor: '#8B5CF6', color: '#FFFFFF' }}>
-                메일 보내기
-              </button>
-              <p className="text-xs text-neon-text-subtle text-center">
-                qotjsdnr123@naver.com으로 메일이 발송됩니다. 확인하는대로 답장드립니다.
-              </p>
-            </form>
+          {/* 메일 보내기 버튼 — 크게, 확실하게 */}
+          <div className="space-y-4">
+            <button
+              onClick={() => { window.location.href = 'mailto:qotjsdnr123@naver.com?subject=[놀쿨] 문의드립니다'; }}
+              className="w-full rounded-2xl py-5 text-lg font-bold transition active:scale-[0.98]"
+              style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 60 }}
+            >
+              ✉️ 메일 보내기
+            </button>
+            <p className="text-sm text-center" style={{ color: '#555' }}>
+              qotjsdnr123@naver.com · 확인하는대로 답장드립니다
+            </p>
           </div>
         </div>
       </div>
