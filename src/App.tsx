@@ -158,7 +158,7 @@ export default function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/auth/callback" element={<AuthCallbackPage />} />
           {/* Admin */}
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/dashboard" element={<HomePage />} />
           <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/billing" element={<BillingPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
