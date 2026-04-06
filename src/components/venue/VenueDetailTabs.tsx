@@ -346,26 +346,43 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
         </div>
       )}
 
-      {/* 리뷰 작성 */}
+      {/* 리뷰 작성 — 전체화면 */}
       {showWrite && (
-        <div className="mb-4 rounded-xl border p-4" style={{ borderColor: '#E5E7EB', backgroundColor: '#FFFFFF' }}>
-          <p className="text-sm font-bold mb-2" style={{ color: '#111' }}>별점</p>
-          <div className="flex gap-1 mb-3">
-            {[1,2,3,4,5].map(s => (
-              <button key={s} onClick={() => setRating(s)} className="text-2xl" style={{ color: s <= rating ? '#B45309' : '#D1D5DB', minHeight: 44 }}>★</button>
-            ))}
+        <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
+          <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
+            <button onClick={() => setShowWrite(false)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>취소</button>
+            <h2 className="text-base font-bold" style={{ color: '#111' }}>리뷰 쓰기</h2>
+            <div style={{ width: 44 }} />
           </div>
-          <textarea
-            value={text}
-            onChange={e => setText(e.target.value)}
-            placeholder="솔직한 방문 후기를 남겨주세요..."
-            rows={4}
-            className="w-full rounded-lg border px-4 py-3 text-sm outline-none resize-none mb-3"
-            style={{ borderColor: '#E5E7EB', color: '#111' }}
-          />
-          <div className="flex gap-2">
-            <button onClick={() => setShowWrite(false)} className="flex-1 rounded-xl py-3 text-sm font-medium" style={{ backgroundColor: '#F3F4F6', color: '#555', minHeight: 48 }}>취소</button>
-            <button onClick={handleSubmit} disabled={!text.trim()} className="flex-1 rounded-xl py-3 text-sm font-bold text-white disabled:opacity-40" style={{ backgroundColor: '#8B5CF6', minHeight: 48 }}>등록</button>
+          <div className="flex-1 overflow-y-auto px-4 py-4 pb-24">
+            {/* 별점 — 크게 */}
+            <p className="text-sm font-bold mb-2" style={{ color: '#111' }}>별점을 선택하세요</p>
+            <div className="flex gap-2 mb-4 justify-center">
+              {[1,2,3,4,5].map(s => (
+                <button key={s} onClick={() => setRating(s)} className="text-4xl transition active:scale-110" style={{ color: s <= rating ? '#B45309' : '#D1D5DB', minHeight: 48, minWidth: 48 }}>★</button>
+              ))}
+            </div>
+            <p className="text-center text-sm mb-4" style={{ color: '#B45309' }}>
+              {rating === 1 ? '별로예요' : rating === 2 ? '그저 그래요' : rating === 3 ? '보통이에요' : rating === 4 ? '좋아요' : '최고예요!'}
+            </p>
+
+            {/* 리뷰 내용 */}
+            <textarea
+              value={text}
+              onChange={e => setText(e.target.value)}
+              placeholder="솔직한 방문 후기를 남겨주세요..."
+              rows={8}
+              className="w-full rounded-lg border px-4 py-3 text-sm outline-none resize-none"
+              style={{ borderColor: '#E5E7EB', color: '#111', lineHeight: '1.7' }}
+              autoFocus
+            />
+          </div>
+          <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
+            <button onClick={handleSubmit} disabled={!text.trim()}
+              className="w-full rounded-xl py-4 text-base font-bold transition active:scale-[0.98] disabled:opacity-30"
+              style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 56 }}>
+              리뷰 저장
+            </button>
           </div>
         </div>
       )}
