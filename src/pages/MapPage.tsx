@@ -1,6 +1,6 @@
 
 
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues } from '@/data/venues';
@@ -27,9 +27,6 @@ export default function MapPage() {
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [gpsStatus, setGpsStatus] = useState<'idle' | 'loading' | 'granted' | 'denied'>('idle');
-  const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<any>(null);
-  const markersRef = useRef<any[]>([]);
 
   const openVenues = useMemo(() => {
     let list = venues.filter((v) => v.status !== 'closed_or_unclear');
@@ -56,86 +53,11 @@ export default function MapPage() {
     if (!navigator.geolocation) { setGpsStatus('denied'); return; }
     setGpsStatus('loading');
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setGpsStatus('granted');
-        if (mapInstanceRef.current && (window as any).kakao) {
-          const kakao = (window as any).kakao;
-          mapInstanceRef.current.setCenter(new kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-          mapInstanceRef.current.setLevel(5);
-        }
-      },
+      () => setGpsStatus('granted'),
       () => setGpsStatus('denied'),
       { enableHighAccuracy: true, timeout: 8000 }
     );
   };
-
-  // Kakao Map init
-  useEffect(() => {
-    const kakaoKey = import.meta.env.VITE_KAKAO_JS_KEY;
-    if (!kakaoKey || !mapRef.current) return;
-
-    const initMap = () => {
-      const kakao = (window as any).kakao;
-      if (!kakao?.maps) return;
-
-      kakao.maps.load(() => {
-        const container = mapRef.current;
-        if (!container) return;
-        const map = new kakao.maps.Map(container, {
-          center: new kakao.maps.LatLng(37.6585, 126.8320),
-          level: 8,
-        });
-        mapInstanceRef.current = map;
-        const zoomControl = new kakao.maps.ZoomControl();
-        map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-
-        // Add markers
-        markersRef.current.forEach((m) => m.setMap(null));
-        markersRef.current = [];
-
-        openVenues.forEach((v) => {
-          if (!v.lat || !v.lng) return;
-          const ms = MARKER_STYLES[v.category] || MARKER_STYLES.club;
-          const markerImage = new kakao.maps.MarkerImage(
-            `https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|${ms.color.replace('#', '')}`,
-            new kakao.maps.Size(21, 34)
-          );
-          const marker = new kakao.maps.Marker({
-            position: new kakao.maps.LatLng(v.lat, v.lng),
-            map,
-            image: markerImage,
-            title: v.nameKo,
-          });
-          const infoContent = `<div style="padding:8px 12px;font-size:13px;font-family:Pretendard,sans-serif;white-space:nowrap;"><strong>${v.nameKo}</strong><br/><span style="color:#333">${ms.label} · ${v.regionKo}</span></div>`;
-          const infowindow = new kakao.maps.InfoWindow({ content: infoContent });
-          kakao.maps.event.addListener(marker, 'mouseover', () => infowindow.open(map, marker));
-          kakao.maps.event.addListener(marker, 'mouseout', () => infowindow.close());
-          markersRef.current.push(marker);
-        });
-
-        // Clustering
-        if (kakao.maps.MarkerClusterer) {
-          new kakao.maps.MarkerClusterer({
-            map,
-            markers: markersRef.current,
-            gridSize: 60,
-            averageCenter: true,
-            minLevel: 6,
-          });
-        }
-      });
-    };
-
-    if ((window as any).kakao?.maps) {
-      initMap();
-    } else {
-      const script = document.createElement('script');
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoKey}&autoload=false&libraries=clusterer`;
-      script.async = true;
-      script.onload = initMap;
-      document.head.appendChild(script);
-    }
-  }, [openVenues]);
 
   return (
     <div className="min-h-screen bg-neon-bg">
@@ -186,22 +108,24 @@ export default function MapPage() {
       </div>
 
       <div className="mx-auto max-w-[1200px] px-4 py-4 sm:px-6">
-        {/* 카카오맵 */}
-        <div className="mb-6 rounded-2xl border border-neon-border overflow-hidden" style={{ height: 'min(60vh, 500px)' }}>
-          <div ref={mapRef} className="w-full h-full" id="kakao-map">
-            {!import.meta.env.VITE_KAKAO_JS_KEY && (
-              <div className="flex h-full items-center justify-center flex-col gap-3 bg-neon-surface-2">
-                <p className="text-neon-text-muted text-sm">카카오맵 연동 대기</p>
-                <a target="_blank" rel="noopener noreferrer" href={`https://map.kakao.com/?q=${encodeURIComponent('일산 밤문화')}`}
-                  target="_blank" rel="noopener noreferrer"
-                  className="rounded-lg bg-[#FEE500] px-4 py-2 text-sm font-medium text-neutral-900 transition hover:bg-[#FDD700]"
-                  style={{ minHeight: 40 }}>
-                  카카오맵에서 열기
-                </a>
-                <p className="text-xs text-neon-text-subtle">VITE_KAKAO_JS_KEY 설정 후 자동 연동</p>
-              </div>
-            )}
-          </div>
+        {/* 지도 검색 버튼 */}
+        <div className="mb-6 grid gap-3 sm:grid-cols-2">
+          <a
+            href={`https://map.kakao.com/?q=${encodeURIComponent(search || '클럽 나이트 라운지')}`}
+            target="_blank" rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 rounded-2xl py-4 text-base font-bold transition active:scale-[0.98]"
+            style={{ backgroundColor: '#FEE500', color: '#3C1E1E', minHeight: 56 }}
+          >
+            🗺️ 카카오맵에서 찾기
+          </a>
+          <a
+            href={`https://map.naver.com/p/search/${encodeURIComponent(search || '클럽 나이트 라운지')}`}
+            target="_blank" rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 rounded-2xl py-4 text-base font-bold transition active:scale-[0.98]"
+            style={{ backgroundColor: '#03C75A', color: '#FFFFFF', minHeight: 56 }}
+          >
+            🗺️ 네이버지도에서 찾기
+          </a>
         </div>
 
         {/* 마커 범례 */}
