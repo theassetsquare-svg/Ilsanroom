@@ -2,12 +2,33 @@ import { useState, useRef, useEffect } from 'react';
 import { createClient } from '@/lib/supabase';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
+function isWebView(): boolean {
+  const ua = navigator.userAgent || '';
+  // 삼성 인터넷 인앱, 카톡, 네이버, 인스타, 페이스북 등 WebView 감지
+  return /KAKAOTALK|NAVER|Instagram|FBAN|FBAV|Line|DaumApps|SamsungBrowser\/.*CrossApp|wv|WebView/i.test(ua);
+}
+
+function openInExternalBrowser(url: string) {
+  // intent:// 스킴으로 크롬에서 열기 (안드로이드)
+  const intentUrl = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`;
+  window.location.href = intentUrl;
+  // 0.5초 후에도 안 열리면 일반 열기 시도
+  setTimeout(() => { window.open(url, '_blank'); }, 500);
+}
+
 function signInWith(provider: 'kakao' | 'google') {
   const supabase = createClient();
   if (!supabase) {
     alert('Supabase 연결이 설정되지 않았습니다. 관리자에게 문의해주세요.');
     return;
   }
+
+  // 구글은 WebView에서 차단됨 — 외부 브라우저로 이동
+  if (provider === 'google' && isWebView()) {
+    openInExternalBrowser('https://nolcool.com/login');
+    return;
+  }
+
   supabase.auth.signInWithOAuth({
     provider,
     options: {
