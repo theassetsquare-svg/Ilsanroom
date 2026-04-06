@@ -279,26 +279,30 @@ export default function TipsPage() {
 
         {/* Write Modal */}
         {showWriteModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-            <div className="w-full max-w-lg rounded-2xl border border-neon-border bg-neon-surface p-6">
-              <h2 className="mb-4 text-lg font-bold">꿀팁 작성하기</h2>
+          <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
+            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
+              <button onClick={() => setShowWriteModal(false)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>취소</button>
+              <h2 className="text-base font-bold" style={{ color: '#111' }}>글쓰기</h2>
+              <div style={{ width: 44 }} />
+            </div>
+            <div className="flex-1 overflow-y-auto px-4 py-4 pb-24">
               <div className="mb-3">
-                <label className="mb-1 block text-xs text-neon-text-muted">제목</label>
+                <label className="mb-1 block text-xs" style={{ color: '#555' }}>제목</label>
                 <input value={writeTitle} onChange={(e) => setWriteTitle(e.target.value)} placeholder="팁 제목을 입력하세요"
-                  className="w-full rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-primary" />
+                  className="w-full rounded-lg border px-4 py-3 text-sm outline-none" style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
               </div>
               <div className="mb-4">
-                <label className="mb-1 block text-xs text-neon-text-muted">내용</label>
-                <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="꿀팁 내용을 작성해주세요" rows={5}
-                  className="w-full rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-primary" />
+                <label className="mb-1 block text-xs" style={{ color: '#555' }}>내용</label>
+                <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="꿀팁 내용을 작성해주세요" rows={8}
+                  className="w-full rounded-lg border px-4 py-3 text-sm outline-none resize-none" style={{ borderColor: '#E5E7EB', color: '#111' }} />
               </div>
-              <div className="flex justify-end gap-2">
-                <button onClick={() => setShowWriteModal(false)} className="rounded-lg px-4 py-2 text-sm text-neon-text-muted hover:bg-neon-surface-2">취소</button>
-                <button onClick={handleSubmit} disabled={submitting || !writeTitle.trim() || !writeContent.trim()}
-                  className="rounded-lg bg-neon-primary px-5 py-2 text-sm font-medium transition hover:bg-neon-primary-light disabled:opacity-50">
-                  {submitting ? "등록 중..." : "등록"}
-                </button>
-              </div>
+            </div>
+            <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
+              <button onClick={handleSubmit} disabled={submitting || !writeTitle.trim() || !writeContent.trim()}
+                className="w-full rounded-xl py-4 text-base font-bold transition active:scale-[0.98] disabled:opacity-30"
+                style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 56 }}>
+                {submitting ? "등록 중..." : "글 저장"}
+              </button>
             </div>
           </div>
         )}

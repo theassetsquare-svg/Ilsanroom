@@ -243,35 +243,37 @@ export default function JogakPage() {
 
       {/* 글쓰기 모달 */}
       {showWrite && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="w-full max-w-lg rounded-2xl bg-white p-6" style={{ border: '1px solid #E5E7EB' }}>
-            <h2 className="mb-4 text-lg font-bold" style={{ color: '#111' }}>조각 모집 글쓰기</h2>
+        <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
+          <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
+            <button onClick={() => setShowWrite(false)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>취소</button>
+            <h2 className="text-base font-bold" style={{ color: '#111' }}>글쓰기</h2>
+            <div style={{ width: 44 }} />
+          </div>
+          <div className="flex-1 overflow-y-auto px-4 py-4 pb-24">
             <input
               value={writeTitle}
               onChange={(e) => setWriteTitle(e.target.value)}
               placeholder="제목 (예: 토요일 강남 클럽 같이 가실 분)"
-              className="w-full rounded-lg border px-3 py-2.5 text-sm mb-3 min-h-[44px]"
-              style={{ borderColor: '#D1D5DB', color: '#111' }}
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
+              style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }}
             />
             <textarea
               value={writeContent}
               onChange={(e) => setWriteContent(e.target.value)}
               placeholder="어디, 언제, 몇 명, 조건 등 자유롭게 적어주세요"
-              rows={6}
-              className="w-full rounded-lg border px-3 py-2.5 text-sm mb-4 resize-none"
-              style={{ borderColor: '#D1D5DB', color: '#111', lineHeight: '1.7' }}
+              rows={8}
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-4 outline-none resize-none"
+              style={{ borderColor: '#E5E7EB', color: '#111', lineHeight: '1.7' }}
             />
-            <div className="flex justify-end gap-2">
-              <button onClick={() => setShowWrite(false)} className="rounded-lg px-4 py-2 text-sm min-h-[44px]" style={{ color: '#555' }}>취소</button>
-              <button
-                onClick={handleSubmit}
-                disabled={submitting || !writeTitle.trim() || !writeContent.trim()}
-                className="rounded-lg px-5 py-2 text-sm font-bold text-white min-h-[44px]"
-                style={{ backgroundColor: submitting ? '#9CA3AF' : '#8B5CF6' }}
-              >
-                {submitting ? '등록 중...' : '등록'}
-              </button>
-            </div>
+          </div>
+          <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
+            <button
+              onClick={handleSubmit}
+              disabled={submitting || !writeTitle.trim() || !writeContent.trim()}
+              className="w-full rounded-xl py-4 text-base font-bold transition active:scale-[0.98] disabled:opacity-30"
+              style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 56 }}>
+              {submitting ? '등록 중...' : '글 저장'}
+            </button>
           </div>
         </div>
       )}

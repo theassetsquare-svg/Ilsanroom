@@ -368,13 +368,13 @@ export default function ReviewsPage() {
 
         {/* Write Modal */}
         {showWriteModal && (
-          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" onClick={() => setShowWriteModal(false)}>
-            <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} />
-            <div className="relative w-full max-w-lg rounded-t-3xl sm:rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', color: '#111' }} onClick={e => e.stopPropagation()}>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold" style={{ color: '#111' }}>후기 남기기</h2>
-                <button onClick={() => setShowWriteModal(false)} style={{ minWidth: 44, minHeight: 44, color: '#555' }}>✕</button>
-              </div>
+          <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
+            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
+              <button onClick={() => setShowWriteModal(false)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>취소</button>
+              <h2 className="text-base font-bold" style={{ color: '#111' }}>글쓰기</h2>
+              <div style={{ width: 44 }} />
+            </div>
+            <div className="flex-1 overflow-y-auto px-4 py-4 pb-24">
               <div className="mb-3">
                 <label className="mb-1 block text-xs" style={{ color: '#555' }}>별점</label>
                 <div className="flex gap-1">
@@ -398,13 +398,13 @@ export default function ReviewsPage() {
                 <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="솔직한 후기를 작성해주세요" rows={6}
                   className="w-full rounded-lg border px-4 py-3 text-sm outline-none resize-none" style={{ borderColor: '#E5E7EB', color: '#111' }} />
               </div>
-              <div className="flex gap-2">
-                <button onClick={() => setShowWriteModal(false)} className="flex-1 rounded-xl py-3 text-sm font-medium" style={{ backgroundColor: '#F3F4F6', color: '#555', minHeight: 48 }}>취소</button>
-                <button onClick={handleSubmit} disabled={submitting || !writeTitle.trim() || !writeContent.trim()}
-                  className="flex-1 rounded-xl py-3 text-sm font-bold disabled:opacity-40" style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 48 }}>
-                  {submitting ? "등록 중..." : "등록"}
-                </button>
-              </div>
+            </div>
+            <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
+              <button onClick={handleSubmit} disabled={submitting || !writeTitle.trim() || !writeContent.trim()}
+                className="w-full rounded-xl py-4 text-base font-bold transition active:scale-[0.98] disabled:opacity-30"
+                style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 56 }}>
+                {submitting ? "등록 중..." : "글 저장"}
+              </button>
             </div>
           </div>
         )}
