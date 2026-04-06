@@ -103,7 +103,7 @@ export default function DailyLoginReward() {
                 onClick={handleClose}
                 className="absolute top-3 right-3 z-10 p-1.5 rounded-full text-white/70 hover:text-white hover:bg-white/20 transition"
               >
-                <X size={18} />
+                <X size={24} style={{ color: '#FFFFFF' }} />
               </button>
 
               {/* Confetti header */}

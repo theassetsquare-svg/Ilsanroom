@@ -585,7 +585,7 @@ function TipSlide({ text }: { text: string }) {
         <div className="w-16 h-16 rounded-2xl bg-amber-500/20 flex items-center justify-center mx-auto mb-6 border border-amber-500/30">
           <Sparkles className="w-8 h-8 text-amber-400" />
         </div>
-        <span className="text-amber-400/80 text-sm font-semibold tracking-wider uppercase mb-3 block">
+        <span className="text-sm font-bold tracking-wider uppercase mb-3 inline-block rounded-full px-4 py-1" style={{ backgroundColor: '#FFFFFF', color: '#92400E' }}>
           꿀팁
         </span>
         <p className="text-white text-xl font-bold leading-relaxed max-w-sm">{text}</p>
@@ -621,7 +621,7 @@ function PollSlide({
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-48 h-48 rounded-full bg-cyan-500/10 blur-[80px]" />
       <div className="relative z-10 text-center w-full max-w-sm">
         <Clock className="w-10 h-10 text-cyan-400 mx-auto mb-4" />
-        <span className="text-cyan-400/80 text-sm font-semibold tracking-wider uppercase mb-2 block">
+        <span className="text-sm font-bold tracking-wider uppercase mb-2 inline-block rounded-full px-4 py-1" style={{ backgroundColor: '#FFFFFF', color: '#155E75' }}>
           투표
         </span>
         <h3 className="text-white text-xl font-bold mb-8">{question}</h3>
@@ -686,7 +686,7 @@ function FactSlide({ text }: { text: string }) {
         <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 flex items-center justify-center mx-auto mb-6 border border-emerald-500/30">
           <MapPin className="w-8 h-8 text-emerald-400" />
         </div>
-        <span className="text-emerald-400/80 text-sm font-semibold tracking-wider uppercase mb-3 block">
+        <span className="text-sm font-bold tracking-wider uppercase mb-3 inline-block rounded-full px-4 py-1" style={{ backgroundColor: '#FFFFFF', color: '#065F46' }}>
           알고 계셨나요?
         </span>
         <p className="text-white text-xl font-bold leading-relaxed max-w-sm">{text}</p>

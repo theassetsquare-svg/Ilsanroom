@@ -22,7 +22,7 @@ export default function BackToTop() {
   return (
     <button
       onClick={scrollToTop}
-      className="animate-fade-in fixed left-4 z-40 rounded-full bg-neon-primary p-3 text-white shadow-lg transition-transform hover:scale-110 md:left-6"
+      className="animate-fade-in fixed left-4 z-40 rounded-full bg-neon-primary p-3 text-white shadow-lg transition-transform hover:scale-110 md:left-6 hidden md:flex"
       style={{ bottom: '204px' }}
       aria-label="맨 위로"
     >

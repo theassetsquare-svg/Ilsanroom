@@ -123,7 +123,7 @@ export default function AutoNextSuggestion() {
             <div className="flex items-center justify-between mb-2">
               <p className="text-xs font-medium text-[#333]">다음 추천</p>
               <button onClick={handleDismiss} className="p-1 rounded-full hover:bg-gray-100 transition">
-                <X size={14} className="text-gray-400" />
+                <X size={20} style={{ color: '#555555' }} />
               </button>
             </div>
 

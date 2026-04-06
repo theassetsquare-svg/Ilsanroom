@@ -132,7 +132,7 @@ export default function CuriosityGapTeaser() {
                 className="absolute top-2 right-2 p-1 rounded-full hover:bg-white/20 transition z-10"
                 style={{ minHeight: '44px', minWidth: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
-                <X size={14} style={{ color: 'rgba(255,255,255,0.6)' }} />
+                <X size={24} style={{ color: '#FFFFFF' }} />
               </button>
 
               {/* Hook */}

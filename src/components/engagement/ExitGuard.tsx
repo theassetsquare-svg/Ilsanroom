@@ -69,7 +69,7 @@ export default function ExitGuard() {
                 onClick={() => setShowModal(false)}
                 className="absolute top-3 right-3 p-1 rounded-full text-white/70 hover:text-white hover:bg-white/20 transition"
               >
-                <X size={20} />
+                <X size={24} style={{ color: '#FFFFFF' }} />
               </button>
               <div className="h-2 bg-gradient-to-r from-[#8B5CF6] via-[#EC4899] to-[#06B6D4]" />
               <div className="p-6">
