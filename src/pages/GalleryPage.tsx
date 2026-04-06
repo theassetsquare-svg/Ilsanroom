@@ -62,7 +62,6 @@ export default function GalleryPage() {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [showUpload, setShowUpload] = useState(false);
   const [caption, setCaption] = useState('');
-  const [selectedVenue, setSelectedVenue] = useState('');
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
   const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
@@ -78,13 +77,13 @@ export default function GalleryPage() {
 
   const handleUpload = () => {
     if (!previewUrl || !caption.trim()) return;
-    const venue = openVenues.find(v => v.nameKo === selectedVenue) || openVenues[0];
+    const userName = (user?.user_metadata?.name as string) || '나';
     const newPost: Post = {
       id: `user-${Date.now()}`,
-      userName: (user?.user_metadata?.name as string) || '나',
-      venueName: venue.nameKo,
-      category: venue.category,
-      region: venue.regionKo,
+      userName,
+      venueName: userName,
+      category: 'club',
+      region: '',
       caption: caption.trim(),
       imageUrl: previewUrl,
       likes: 0,
@@ -96,7 +95,6 @@ export default function GalleryPage() {
     setShowUpload(false);
     setCaption('');
     setPreviewUrl(null);
-    setSelectedVenue('');
   };
 
   const [loginPrompt, setLoginPrompt] = useState(false);
@@ -149,70 +147,78 @@ export default function GalleryPage() {
         )}
       </div>
 
-      {/* 업로드 모달 */}
+      {/* 업로드 — 전체 화면 */}
       {showUpload && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" onClick={() => setShowUpload(false)}>
-          <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} />
-          <div
-            className="relative w-full max-w-lg rounded-t-3xl sm:rounded-2xl p-6"
-            style={{ backgroundColor: '#1a1a2e', color: '#FFFFFF' }}
-            onClick={e => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold" style={{ color: '#FFFFFF' }}>사진 올리기</h2>
-              <button onClick={() => setShowUpload(false)} style={{ minWidth: 44, minHeight: 44, color: '#FFFFFF' }}>✕</button>
-            </div>
+        <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
+          {/* 상단 바 */}
+          <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
+            <button onClick={() => setShowUpload(false)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>취소</button>
+            <h2 className="text-base font-bold" style={{ color: '#111' }}>새 게시물</h2>
+            <button
+              onClick={handleUpload}
+              disabled={!previewUrl || !caption.trim()}
+              className="text-sm font-bold disabled:opacity-30"
+              style={{ color: '#8B5CF6', minHeight: 44 }}
+            >
+              공유
+            </button>
+          </div>
 
-            {/* 사진 선택 */}
+          {/* 본문 — 스크롤 가능 */}
+          <div className="flex-1 overflow-y-auto">
+            {/* 사진 */}
             <input ref={fileRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
             {previewUrl ? (
-              <div className="mb-4 rounded-xl overflow-hidden">
-                <img src={previewUrl} alt="미리보기" className="w-full max-h-64 object-cover" />
-                <button onClick={() => { setPreviewUrl(null); if (fileRef.current) fileRef.current.value = ''; }}
-                  className="mt-2 text-sm" style={{ color: '#A78BFA' }}>다시 선택</button>
+              <div className="relative">
+                <img src={previewUrl} alt="미리보기" className="w-full object-cover" style={{ maxHeight: '40vh' }} />
+                <button
+                  onClick={() => { setPreviewUrl(null); if (fileRef.current) fileRef.current.value = ''; }}
+                  className="absolute top-3 right-3 rounded-full px-3 py-1 text-xs font-bold"
+                  style={{ backgroundColor: 'rgba(0,0,0,0.6)', color: '#FFF', minHeight: 32 }}
+                >
+                  변경
+                </button>
               </div>
             ) : (
               <button
                 onClick={() => fileRef.current?.click()}
-                className="w-full rounded-xl border-2 border-dashed p-8 text-center mb-4"
-                style={{ borderColor: 'rgba(255,255,255,0.2)', minHeight: 44 }}
+                className="w-full p-12 text-center"
+                style={{ backgroundColor: '#F9FAFB', minHeight: 200 }}
               >
-                <p className="text-3xl mb-2">📷</p>
-                <p className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>탭해서 사진 선택</p>
+                <p className="text-5xl mb-3">📷</p>
+                <p className="text-sm font-medium" style={{ color: '#555' }}>탭해서 사진 선택</p>
               </button>
             )}
 
-            {/* 업소 선택 */}
-            <select
-              value={selectedVenue}
-              onChange={e => setSelectedVenue(e.target.value)}
-              className="w-full rounded-xl px-4 py-3 text-sm mb-3 outline-none"
-              style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: '#FFFFFF', minHeight: 48 }}
-            >
-              <option value="" style={{ color: '#111' }}>어디서 찍었나요?</option>
-              {openVenues.slice(0, 30).map(v => (
-                <option key={v.slug} value={v.nameKo} style={{ color: '#111' }}>{v.nameKo} ({v.regionKo})</option>
-              ))}
-            </select>
+            {/* 글쓰기 */}
+            <div className="px-4 py-4">
+              <textarea
+                value={caption}
+                onChange={e => setCaption(e.target.value)}
+                placeholder="문구 입력..."
+                rows={6}
+                className="w-full text-base outline-none resize-none"
+                style={{ color: '#111', lineHeight: '1.7' }}
+                autoFocus={!!previewUrl}
+              />
+            </div>
 
-            {/* 캡션 */}
-            <textarea
-              value={caption}
-              onChange={e => setCaption(e.target.value)}
-              placeholder="한마디 남기기..."
-              rows={2}
-              className="w-full rounded-xl px-4 py-3 text-sm mb-4 outline-none resize-none"
-              style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: '#FFFFFF' }}
-            />
-
-            <button
-              onClick={handleUpload}
-              disabled={!previewUrl || !caption.trim()}
-              className="w-full rounded-xl py-3 text-sm font-bold disabled:opacity-40"
-              style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 48 }}
-            >
-              게시하기
-            </button>
+            {/* 해시태그 추천 */}
+            <div className="px-4 pb-4">
+              <p className="text-xs mb-2" style={{ color: '#999' }}>추천 태그</p>
+              <div className="flex flex-wrap gap-2">
+                {['#나이트라이프', '#클럽', '#라운지', '#오늘밤', '#놀쿨'].map(tag => (
+                  <button
+                    key={tag}
+                    onClick={() => setCaption(prev => prev + ' ' + tag)}
+                    className="rounded-full px-3 py-1 text-xs"
+                    style={{ backgroundColor: '#F3F0FF', color: '#8B5CF6', minHeight: 32 }}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       )}
