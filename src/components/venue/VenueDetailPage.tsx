@@ -126,6 +126,41 @@ export default function VenueDetailPage({
         </section>
       )}
 
+      {/* 주소 + 지도 + 내비게이션 */}
+      <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
+        <h2 className="text-xl font-bold mb-4" style={{ color: '#111' }}>📍 위치 안내</h2>
+        <div className="rounded-2xl border overflow-hidden mb-4" style={{ borderColor: '#E5E7EB' }}>
+          <div className="p-4" style={{ backgroundColor: '#F9FAFB' }}>
+            <p className="text-sm font-bold" style={{ color: '#111' }}>{venue.nameKo}</p>
+            <p className="text-sm" style={{ color: '#555' }}>{venue.address || `${venue.regionKo} 소재`}</p>
+            {venue.nearbyStation && <p className="text-xs mt-1" style={{ color: '#8B5CF6' }}>🚇 {venue.nearbyStation}</p>}
+          </div>
+          <iframe
+            src={`https://map.kakao.com/?q=${encodeURIComponent(venue.address || venue.nameKo)}&output=embed`}
+            width="100%"
+            height="250"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            title={`${venue.nameKo} 지도`}
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <a href={`https://map.kakao.com/?q=${encodeURIComponent(venue.address || venue.nameKo)}`}
+            target="_blank" rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold transition active:scale-[0.98]"
+            style={{ backgroundColor: '#FEE500', color: '#3C1E1E', minHeight: 48 }}>
+            🗺️ 카카오맵
+          </a>
+          <a href={`https://map.naver.com/p/search/${encodeURIComponent(venue.address || venue.nameKo)}`}
+            target="_blank" rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold text-white transition active:scale-[0.98]"
+            style={{ backgroundColor: '#03C75A', minHeight: 48 }}>
+            🗺️ 네이버지도
+          </a>
+        </div>
+      </section>
+
       {/* [D] 첫 방문 가이드 */}
       <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
         <Link target="_blank" rel="noopener noreferrer" to="/guide" className="block rounded-2xl border border-neon-gold/30 bg-neon-gold/5 p-5 transition hover:border-neon-gold/50 card-hover">

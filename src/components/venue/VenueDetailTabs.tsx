@@ -183,23 +183,64 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
         {activeTab === '지도' && (
           <div>
             <h2 className="mb-4 text-xl font-bold text-neon-text">위치 안내</h2>
-            {venue.address ? (
-              <div>
-                <div className="mb-4 rounded-xl border border-neon-border bg-neon-surface-2 p-8 text-center" style={{ minHeight: '300px' }}>
-                  <p className="text-neon-text-muted mb-4">{venue.address}</p>
-                  <a
-                    href={`https://map.kakao.com/?q=${encodeURIComponent(venue.address)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-lg bg-[#FEE500] px-4 py-2 text-sm font-medium text-neutral-900 transition hover:bg-[#FDD700]"
-                  >
-                    카카오맵에서 보기
-                  </a>
-                </div>
-              </div>
-            ) : (
-              <p className="text-neon-text-muted">주소 정보가 등록되지 않았습니다.</p>
-            )}
+            {/* 주소 */}
+            <div className="mb-4 rounded-xl border p-4" style={{ borderColor: '#E5E7EB', backgroundColor: '#F9FAFB' }}>
+              <p className="text-sm font-bold mb-1" style={{ color: '#111' }}>📍 {venue.nameKo}</p>
+              <p className="text-sm" style={{ color: '#555' }}>{venue.address || `${venue.regionKo} 소재`}</p>
+            </div>
+
+            {/* 카카오맵 임베드 */}
+            <div className="mb-4 rounded-xl overflow-hidden border" style={{ borderColor: '#E5E7EB', height: 300 }}>
+              <iframe
+                src={`https://map.kakao.com/?q=${encodeURIComponent(venue.address || venue.nameKo)}&output=embed`}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                title={`${venue.nameKo} 지도`}
+              />
+            </div>
+
+            {/* 내비게이션 버튼 */}
+            <div className="grid grid-cols-2 gap-3">
+              <a
+                href={`https://map.kakao.com/?q=${encodeURIComponent(venue.address || venue.nameKo)}`}
+                target="_blank" rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold transition active:scale-[0.98]"
+                style={{ backgroundColor: '#FEE500', color: '#3C1E1E', minHeight: 48 }}
+              >
+                🗺️ 카카오맵
+              </a>
+              <a
+                href={`https://map.naver.com/p/search/${encodeURIComponent(venue.address || venue.nameKo)}`}
+                target="_blank" rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold text-white transition active:scale-[0.98]"
+                style={{ backgroundColor: '#03C75A', minHeight: 48 }}
+              >
+                🗺️ 네이버지도
+              </a>
+            </div>
+
+            {/* 내비게이션 길찾기 */}
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              <a
+                href={`https://map.kakao.com/?eName=${encodeURIComponent(venue.address || venue.nameKo)}&eX=0&eY=0`}
+                target="_blank" rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 rounded-xl border py-3 text-sm font-medium transition active:scale-[0.98]"
+                style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }}
+              >
+                🚗 카카오내비
+              </a>
+              <a
+                href={`https://map.naver.com/p/directions/-/-/${encodeURIComponent(venue.address || venue.nameKo)}`}
+                target="_blank" rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 rounded-xl border py-3 text-sm font-medium transition active:scale-[0.98]"
+                style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }}
+              >
+                🚗 네이버내비
+              </a>
+            </div>
           </div>
         )}
         {/* ── VS투표 ── */}
