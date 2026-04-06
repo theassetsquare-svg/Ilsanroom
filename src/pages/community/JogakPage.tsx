@@ -192,6 +192,22 @@ export default function JogakPage() {
               {/* 글 상세 + 댓글 (펼침) */}
               {selectedPost === post.id && (
                 <div className="px-5 pb-5 pt-2" style={{ backgroundColor: '#FAFAFA', borderBottom: '1px solid #E5E7EB' }}>
+                  {/* 삭제 버튼 */}
+                  {user && (
+                    <button
+                      onClick={async () => {
+                        if (!confirm('글을 삭제하시겠습니까?')) return;
+                        const result = await deletePost(post.id);
+                        if (result.error) { alert('삭제 실패: ' + result.error); return; }
+                        alert('삭제되었습니다');
+                        setSelectedPost(null);
+                        setPosts(prev => prev.filter(p => p.id !== post.id));
+                      }}
+                      className="text-xs mb-3" style={{ color: '#EF4444', minHeight: 32 }}>
+                      글 삭제
+                    </button>
+                  )}
+
                   {/* 본문 */}
                   <p className="text-sm leading-relaxed mb-4" style={{ color: '#333', whiteSpace: 'pre-wrap' }}>
                     {post.content || sampleContents[post.id] || '내용이 없습니다.'}
