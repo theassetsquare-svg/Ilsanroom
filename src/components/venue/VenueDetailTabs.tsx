@@ -1,7 +1,9 @@
 
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import type { Venue } from '@/types';
+import { useAuth } from '@/hooks/useAuth';
 
 interface FAQ {
   question: string;
@@ -139,13 +141,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
 
         {/* ── 리뷰 ── */}
         {activeTab === '리뷰' && (
-          <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} 방문 리뷰</h2>
-            <div className="rounded-xl border border-neon-border bg-neon-surface p-6 text-center">
-              <p className="mb-2 text-neon-text-muted">아직 등록된 리뷰가 없습니다.</p>
-              <p className="text-sm text-neon-text-subtle">리뷰 작성 기능은 곧 오픈 예정입니다.</p>
-            </div>
-          </div>
+          <VenueReviewSection venue={venue} />
         )}
 
         {/* ── 사진갤러리 ── */}
@@ -247,6 +243,163 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+/* ── 리뷰 섹션 ── */
+
+interface Review {
+  id: string;
+  userName: string;
+  rating: number;
+  text: string;
+  date: string;
+  isMine: boolean;
+}
+
+const DUMMY_REVIEWS: Record<string, Review[]> = {};
+
+function getStoredReviews(venueSlug: string): Review[] {
+  try {
+    const stored = localStorage.getItem(`reviews_${venueSlug}`);
+    return stored ? JSON.parse(stored) : [];
+  } catch { return []; }
+}
+
+function saveReviews(venueSlug: string, reviews: Review[]) {
+  try { localStorage.setItem(`reviews_${venueSlug}`, JSON.stringify(reviews)); } catch {}
+}
+
+function VenueReviewSection({ venue }: { venue: Venue }) {
+  const { user } = useAuth();
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [showWrite, setShowWrite] = useState(false);
+  const [rating, setRating] = useState(5);
+  const [text, setText] = useState('');
+
+  useEffect(() => {
+    setReviews(getStoredReviews(venue.slug));
+  }, [venue.slug]);
+
+  const handleSubmit = () => {
+    if (!text.trim() || !user) return;
+    const newReview: Review = {
+      id: `r-${Date.now()}`,
+      userName: (user.user_metadata?.name as string) || '사용자',
+      rating,
+      text: text.trim(),
+      date: new Date().toISOString().slice(0, 10),
+      isMine: true,
+    };
+    const updated = [newReview, ...reviews];
+    setReviews(updated);
+    saveReviews(venue.slug, updated);
+    setText('');
+    setRating(5);
+    setShowWrite(false);
+  };
+
+  const handleDelete = (id: string) => {
+    const updated = reviews.filter(r => r.id !== id);
+    setReviews(updated);
+    saveReviews(venue.slug, updated);
+  };
+
+  const avg = reviews.length > 0 ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : '0.0';
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-bold" style={{ color: '#111' }}>{venue.nameKo} 리뷰</h2>
+        {user ? (
+          <button
+            onClick={() => setShowWrite(!showWrite)}
+            className="rounded-xl px-4 py-2 text-sm font-bold text-white"
+            style={{ backgroundColor: '#8B5CF6', minHeight: 44 }}
+          >
+            리뷰 쓰기
+          </button>
+        ) : (
+          <Link
+            to="/login"
+            className="rounded-xl px-4 py-2 text-sm font-bold text-white"
+            style={{ backgroundColor: '#8B5CF6', minHeight: 44 }}
+          >
+            로그인하고 리뷰 쓰기
+          </Link>
+        )}
+      </div>
+
+      {/* 평균 별점 */}
+      {reviews.length > 0 && (
+        <div className="flex items-center gap-3 mb-4 rounded-xl p-4" style={{ backgroundColor: '#F9FAFB' }}>
+          <span className="text-3xl font-black" style={{ color: '#B45309' }}>{avg}</span>
+          <div>
+            <div className="text-lg tracking-wider">
+              {[1,2,3,4,5].map(s => (
+                <span key={s} style={{ color: s <= Math.round(Number(avg)) ? '#B45309' : '#D1D5DB' }}>★</span>
+              ))}
+            </div>
+            <p className="text-xs" style={{ color: '#999' }}>{reviews.length}개 리뷰</p>
+          </div>
+        </div>
+      )}
+
+      {/* 리뷰 작성 */}
+      {showWrite && (
+        <div className="mb-4 rounded-xl border p-4" style={{ borderColor: '#E5E7EB', backgroundColor: '#FFFFFF' }}>
+          <p className="text-sm font-bold mb-2" style={{ color: '#111' }}>별점</p>
+          <div className="flex gap-1 mb-3">
+            {[1,2,3,4,5].map(s => (
+              <button key={s} onClick={() => setRating(s)} className="text-2xl" style={{ color: s <= rating ? '#B45309' : '#D1D5DB', minHeight: 44 }}>★</button>
+            ))}
+          </div>
+          <textarea
+            value={text}
+            onChange={e => setText(e.target.value)}
+            placeholder="솔직한 방문 후기를 남겨주세요..."
+            rows={4}
+            className="w-full rounded-lg border px-4 py-3 text-sm outline-none resize-none mb-3"
+            style={{ borderColor: '#E5E7EB', color: '#111' }}
+          />
+          <div className="flex gap-2">
+            <button onClick={() => setShowWrite(false)} className="flex-1 rounded-xl py-3 text-sm font-medium" style={{ backgroundColor: '#F3F4F6', color: '#555', minHeight: 48 }}>취소</button>
+            <button onClick={handleSubmit} disabled={!text.trim()} className="flex-1 rounded-xl py-3 text-sm font-bold text-white disabled:opacity-40" style={{ backgroundColor: '#8B5CF6', minHeight: 48 }}>등록</button>
+          </div>
+        </div>
+      )}
+
+      {/* 리뷰 목록 */}
+      {reviews.length > 0 ? (
+        <div className="space-y-3">
+          {reviews.map(r => (
+            <div key={r.id} className="rounded-xl border p-4" style={{ borderColor: '#E5E7EB' }}>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold" style={{ color: '#111' }}>{r.userName}</span>
+                  <span className="text-sm tracking-wider">
+                    {[1,2,3,4,5].map(s => (
+                      <span key={s} style={{ color: s <= r.rating ? '#B45309' : '#D1D5DB', fontSize: 12 }}>★</span>
+                    ))}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs" style={{ color: '#999' }}>{r.date}</span>
+                  {r.isMine && (
+                    <button onClick={() => handleDelete(r.id)} className="text-xs" style={{ color: '#EF4444', minHeight: 28 }}>삭제</button>
+                  )}
+                </div>
+              </div>
+              <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{r.text}</p>
+            </div>
+          ))}
+        </div>
+      ) : !showWrite && (
+        <div className="rounded-xl border p-8 text-center" style={{ borderColor: '#E5E7EB' }}>
+          <p className="text-sm" style={{ color: '#999' }}>아직 리뷰가 없습니다. 첫 번째 리뷰를 남겨보세요!</p>
+        </div>
+      )}
     </div>
   );
 }
