@@ -314,8 +314,24 @@ html {
 }
 
 /* ★ 가독성 — 모든 텍스트 선명하게 (대비 4.5:1 이상) */
+.text-neon-text { color: #111111 !important; }
 .text-neon-text-muted { color: #222222 !important; }
 .text-neon-text-subtle { color: #333333 !important; }
+.text-neon-muted { color: #222222 !important; }
+
+/* ★ 흰 배경 카드/섹션 글씨 강제 보장 */
+.bg-white, .bg-neon-surface, .bg-neon-bg {
+  color: #111111;
+}
+.bg-white h1, .bg-white h2, .bg-white h3, .bg-white h4,
+.bg-neon-surface h1, .bg-neon-surface h2, .bg-neon-surface h3, .bg-neon-surface h4,
+.bg-neon-bg h1, .bg-neon-bg h2, .bg-neon-bg h3, .bg-neon-bg h4 {
+  color: #111111 !important;
+}
+.bg-white p, .bg-white span, .bg-white li, .bg-white dd, .bg-white dt,
+.bg-neon-surface p, .bg-neon-surface span, .bg-neon-surface li, .bg-neon-surface dd, .bg-neon-surface dt {
+  color: inherit;
+}
 
 /* ★ rgba 반투명 텍스트 금지 */
 .text-pink-900\/70 { color: #831843 !important; }
