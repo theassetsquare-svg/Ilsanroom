@@ -166,14 +166,6 @@ export default function HomePage() {
     return () => observer.disconnect();
   }, []);
 
-  // === SHOW TOP BUTTON ===
-  const [showTop, setShowTop] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setShowTop(window.scrollY > 500);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
   // === FEED DATA ===
   const filteredVenues = useMemo(() => {
     let list = openVenues;
@@ -803,19 +795,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* ═══════ FLOATING ELEMENTS ═══════ */}
-      {/* TOP button */}
-      {showTop && (
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed z-40 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 text-xs font-bold text-[#555]"
-          style={{ bottom: 72, left: 16 }}
-          aria-label="맨 위로"
-        >
-          ↑
-        </button>
-      )}
 
       {/* ═══════ [6] MATCH QUIZ — floating button ═══════ */}
       <ErrorBoundary>
