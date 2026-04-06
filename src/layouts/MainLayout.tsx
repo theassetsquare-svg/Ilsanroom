@@ -73,7 +73,7 @@ export default function MainLayout() {
       <Toast />
       {/* 업소 상세페이지에서는 전화바와 겹치므로 engagement 숨김 */}
       {!isVenueDetail && (
-        <ErrorBoundary>
+        <ErrorBoundary fallback={null}>
           <Suspense fallback={null}>
             <GlobalEngagement />
           </Suspense>
