@@ -120,11 +120,17 @@ export default function CuriosityGapTeaser() {
           exit={{ x: 300, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 200 }}
         >
-          <div className="rounded-2xl border shadow-xl overflow-hidden" style={{ backgroundColor: '#1a1a2e', borderColor: 'rgba(139,92,246,0.3)', color: '#FFFFFF' }}>
+          <Link
+            target="_blank" rel="noopener noreferrer" to={data.teaser.href}
+            onClick={handleClose}
+            className="block rounded-2xl border shadow-xl overflow-hidden"
+            style={{ backgroundColor: '#1a1a2e', borderColor: 'rgba(139,92,246,0.3)', color: '#FFFFFF', minHeight: '44px' }}
+          >
             <div className="relative px-4 pt-4 pb-3">
               <button
-                onClick={handleClose}
-                className="absolute top-2 right-2 p-1 rounded-full hover:bg-white/20 transition"
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleClose(); }}
+                className="absolute top-2 right-2 p-1 rounded-full hover:bg-white/20 transition z-10"
+                style={{ minHeight: '44px', minWidth: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <X size={14} style={{ color: 'rgba(255,255,255,0.6)' }} />
               </button>
@@ -144,23 +150,21 @@ export default function CuriosityGapTeaser() {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium" style={{ backgroundColor: 'rgba(139,92,246,0.2)', color: '#A78BFA' }}>
                     <Lock size={10} />
-                    클릭해서 확인
+                    탭해서 확인
                   </span>
                 </div>
               </div>
             </div>
 
             {/* CTA */}
-            <Link
-              target="_blank" rel="noopener noreferrer" to={data.teaser.href}
-              onClick={handleClose}
-              className="flex items-center justify-between px-4 py-3 text-sm font-semibold transition"
-              style={{ backgroundColor: 'rgba(139,92,246,0.15)', color: '#A78BFA' }}
+            <div
+              className="flex items-center justify-between px-4 py-3 text-sm font-semibold"
+              style={{ backgroundColor: 'rgba(139,92,246,0.15)', color: '#A78BFA', minHeight: '44px' }}
             >
               <span>{data.teaser.cta}</span>
               <ArrowRight size={14} />
-            </Link>
-          </div>
+            </div>
+          </Link>
         </motion.div>
       )}
     </AnimatePresence>
