@@ -99,13 +99,23 @@ export default function GalleryPage() {
     setSelectedVenue('');
   };
 
+  const [loginPrompt, setLoginPrompt] = useState(false);
+
+  const requireLogin = (): boolean => {
+    if (user) return true;
+    setLoginPrompt(true);
+    return false;
+  };
+
   const toggleLike = (id: string) => {
+    if (!requireLogin()) return;
     setPosts(prev => prev.map(p =>
       p.id === id ? { ...p, liked: !p.liked, likes: p.liked ? p.likes - 1 : p.likes + 1 } : p
     ));
   };
 
   const addComment = (postId: string) => {
+    if (!requireLogin()) return;
     const text = commentInputs[postId]?.trim();
     if (!text) return;
     const name = (user?.user_metadata?.name as string) || '나';
@@ -318,6 +328,26 @@ export default function GalleryPage() {
           );
         })}
       </div>
+
+      {/* 로그인 안내 팝업 */}
+      {loginPrompt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" onClick={() => setLoginPrompt(false)}>
+          <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} />
+          <div className="relative rounded-2xl p-6 mx-4 max-w-sm w-full text-center" style={{ backgroundColor: '#1a1a2e', color: '#FFFFFF' }} onClick={e => e.stopPropagation()}>
+            <p className="text-3xl mb-3">🔒</p>
+            <h3 className="text-lg font-bold mb-2" style={{ color: '#FFFFFF' }}>로그인이 필요합니다</h3>
+            <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.7)' }}>좋아요, 댓글, 사진 올리기는 로그인 후 이용 가능합니다</p>
+            <div className="flex gap-2">
+              <button onClick={() => setLoginPrompt(false)} className="flex-1 rounded-xl py-3 text-sm font-medium" style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)', minHeight: 48 }}>
+                닫기
+              </button>
+              <Link to="/login" className="flex-1 rounded-xl py-3 text-sm font-bold text-center text-white" style={{ backgroundColor: '#8B5CF6', minHeight: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                로그인하기
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
