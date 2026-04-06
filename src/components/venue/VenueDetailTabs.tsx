@@ -275,7 +275,7 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
   const { user } = useAuth();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [showWrite, setShowWrite] = useState(false);
-  const [rating, setRating] = useState(5);
+  const [rating, setRating] = useState(0);
   const [text, setText] = useState('');
 
   useEffect(() => {
@@ -283,7 +283,7 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
   }, [venue.slug]);
 
   const handleSubmit = () => {
-    if (!text.trim() || !user) return;
+    if (!text.trim() || !user || rating === 0) return;
     const newReview: Review = {
       id: `r-${Date.now()}`,
       userName: (user.user_metadata?.name as string) || '사용자',
@@ -296,7 +296,7 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
     setReviews(updated);
     saveReviews(venue.slug, updated);
     setText('');
-    setRating(5);
+    setRating(0);
     setShowWrite(false);
   };
 
@@ -362,8 +362,8 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
                 <button key={s} onClick={() => setRating(s)} className="text-4xl transition active:scale-110" style={{ color: s <= rating ? '#B45309' : '#D1D5DB', minHeight: 48, minWidth: 48 }}>★</button>
               ))}
             </div>
-            <p className="text-center text-sm mb-4" style={{ color: '#B45309' }}>
-              {rating === 1 ? '별로예요' : rating === 2 ? '그저 그래요' : rating === 3 ? '보통이에요' : rating === 4 ? '좋아요' : '최고예요!'}
+            <p className="text-center text-sm mb-4" style={{ color: rating === 0 ? '#999' : '#B45309' }}>
+              {rating === 0 ? '별을 탭해서 별점을 선택하세요' : rating === 1 ? '별로예요' : rating === 2 ? '그저 그래요' : rating === 3 ? '보통이에요' : rating === 4 ? '좋아요' : '최고예요!'}
             </p>
 
             {/* 리뷰 내용 */}
@@ -377,7 +377,7 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
             />
           </div>
           <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
-            <button onClick={handleSubmit} disabled={!text.trim()}
+            <button onClick={handleSubmit} disabled={!text.trim() || rating === 0}
               className="w-full rounded-xl py-4 text-base font-bold transition active:scale-[0.98] disabled:opacity-30"
               style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 56 }}>
               리뷰 저장

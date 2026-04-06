@@ -111,7 +111,7 @@ export default function ReviewsPage() {
   const [writeTitle, setWriteTitle] = useState("");
   const [writeContent, setWriteContent] = useState("");
   const [writeVenue, setWriteVenue] = useState("");
-  const [writeRating, setWriteRating] = useState(5);
+  const [writeRating, setWriteRating] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [authError, setAuthError] = useState(false);
 
@@ -187,7 +187,7 @@ export default function ReviewsPage() {
       setWriteTitle("");
       setWriteContent("");
       setWriteVenue("");
-      setWriteRating(5);
+      setWriteRating(0);
       // Refresh posts
       const { data } = await fetchPosts('reviews');
       if (data.length > 0) {
