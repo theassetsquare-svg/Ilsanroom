@@ -69,7 +69,7 @@ export default function NightDetailPage() {
       faqs={defaultFaqs(venue.nameKo)}
       related={related}
       relatedHrefFn={(v) => `/nights/${v.slug}`}
-      extraContent={isDapsimnri ? <DapsimnriCheonSaSection /> : undefined}
+      topContent={isDapsimnri ? <DapsimnriCheonSaSection /> : undefined}
     />
   );
 }

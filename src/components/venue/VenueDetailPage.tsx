@@ -30,6 +30,7 @@ interface VenueDetailPageProps {
   related: Venue[];
   relatedHrefFn: (v: Venue) => string;
   extraContent?: React.ReactNode;
+  topContent?: React.ReactNode;
 }
 
 export default function VenueDetailPage({
@@ -43,6 +44,7 @@ export default function VenueDetailPage({
   related,
   relatedHrefFn,
   extraContent,
+  topContent,
 }: VenueDetailPageProps) {
   const trackView = useEngagementStore((s) => s.trackView);
   useEffect(() => { trackView(venue.slug); }, [venue.slug, trackView]);
@@ -90,6 +92,13 @@ export default function VenueDetailPage({
         regionKo={venue.regionKo}
         slug={venue.slug}
       />
+
+      {/* Top Content — 히어로 바로 아래 */}
+      {topContent && (
+        <section className="mx-auto max-w-[1200px] px-4 pt-8 sm:px-6">
+          {topContent}
+        </section>
+      )}
 
       {/* ═══ Share — 바이럴 루프 ═══ */}
       <section className="mx-auto max-w-[1200px] px-4 pt-6 sm:px-6">
