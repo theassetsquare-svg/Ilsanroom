@@ -256,6 +256,20 @@ console.log(`✅ 지역별 페이지 ${regionalCount}개 생성`);
 // ══════════════════════════════════════════
 // 4. 업소 상세 페이지 (116개)
 // ══════════════════════════════════════════
+/** SVG 검색 썸네일이 있는 업소 */
+const SVG_OG_SLUGS = new Set(['dapsimnidontellmamanight']);
+/** JPG 닉네임 OG가 있는 업소 */
+const NICKNAME_OG_SLUGS = new Set([
+  'ilsanmyeongwolgwanyojeong','ilsanroom','busanyeonsandongmulnight','busanmulnight',
+  'seongnamshampoonight','suwonchancenight','sinlimgrandprixnight','cheongdamh2onight',
+  'pajuyadangskydomenight','ulsanchampionnight','gangnamjuliananight','dapsimnidontellmamanight',
+]);
+function getVenueOgImage(slug) {
+  if (SVG_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}.svg`;
+  if (NICKNAME_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}.jpg`;
+  return `${BASE_URL}/venues/${slug}-1.jpg`;
+}
+
 let venueCount = 0;
 for (const v of venues) {
   const cm = catMap[v.cat];
@@ -273,7 +287,7 @@ for (const v of venues) {
     routePath = `/${cm.path}/${v.slug}`;
   }
 
-  writePage(routePath, { title: hookTitle, description: desc });
+  writePage(routePath, { title: hookTitle, description: desc, ogImage: getVenueOgImage(v.slug) });
   venueCount++;
 }
 console.log(`✅ 업소 상세 페이지 ${venueCount}개 생성`);

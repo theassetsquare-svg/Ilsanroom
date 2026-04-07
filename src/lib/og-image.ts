@@ -21,8 +21,17 @@ const NICKNAME_OG_SLUGS = new Set([
   'dapsimnidontellmamanight',
 ]);
 
+/** SVG OG 이미지를 사용하는 가게 (검색 썸네일용 1:1) */
+const SVG_OG_SLUGS = new Set([
+  'dapsimnidontellmamanight',
+]);
+
 /** 업소 상세 OG image (slug 기반) */
 export function getVenueOgImageBySlug(slug: string): string {
+  // SVG 검색 썸네일이 있으면 그것을 사용
+  if (SVG_OG_SLUGS.has(slug)) {
+    return `${SITE_URL}/og/${slug}.svg`;
+  }
   // 닉네임 오버레이 OG가 있으면 그것을 사용
   if (NICKNAME_OG_SLUGS.has(slug)) {
     return `${SITE_URL}/og/${slug}.jpg`;
