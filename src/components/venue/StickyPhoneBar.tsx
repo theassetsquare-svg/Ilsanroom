@@ -13,10 +13,15 @@ const ALLOWED_PHONES = [
   '010-5655-4866', // 펩시맨 (청담H2O나이트)
   '010-8255-3509', // 막내 (파주야당스카이돔나이트)
   '010-5653-0069', // 춘자 (울산챔피언나이트)
-  '010-3763-7882', // 천사 (답십리돈텔마마나이트)
 ];
 
+/** 하단 고정 전화바를 사용하지 않는 업소 (본문에 전화 버튼이 이미 있음) */
+const HIDE_STICKY_VENUES = new Set([
+  '답십리돈텔마마나이트',
+]);
+
 export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPhoneBarProps) {
+  if (HIDE_STICKY_VENUES.has(venueName)) return null;
   if (phone && ALLOWED_PHONES.includes(phone)) {
     return (
       <div className="fixed bottom-[72px] right-4 z-40 md:bottom-6 md:right-6">
