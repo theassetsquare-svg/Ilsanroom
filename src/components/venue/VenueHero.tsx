@@ -39,10 +39,7 @@ export default function VenueHero({
   const gradient = categoryGradients[category] || categoryGradients.club;
   const bgPattern = categoryBgPatterns[category] || categoryBgPatterns.club;
   const [hasImage, setHasImage] = useState(true);
-  const heroOverride: Record<string, string> = {
-    dapsimnidontellmamanight: '/og/dapsimnidontellmamanight.svg',
-  };
-  const [imgSrc, setImgSrc] = useState(slug ? (heroOverride[slug] || `/venues/${slug}-1.jpg`) : '');
+  const [imgSrc, setImgSrc] = useState(slug ? `/venues/${slug}-1.jpg` : '');
 
   const handleImageError = () => {
     if (imgSrc.endsWith('.jpg')) {

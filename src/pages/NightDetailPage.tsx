@@ -16,10 +16,23 @@ const defaultFaqs = (name: string) => [
   { question: `막차 이후 귀가 방법은 어떻게 되나요?`, answer: `영업 종료가 새벽 1~2시인 곳이 많아 대중교통 이용이 어려울 수 있습니다. 카카오T 택시·대리운전을 미리 호출하거나, 업소 앞 택시 승강장을 이용하는 것이 일반적입니다.` },
 ];
 
-/* 답십리돈텔마마나이트 천사 전화 섹션 */
+/* 답십리돈텔마마나이트 천사 이미지 + 전화 섹션 */
 function DapsimnriCheonSaSection() {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center gap-6">
+      {/* 1:1 천사 이미지 썸네일 */}
+      <div className="w-full max-w-[480px] aspect-square rounded-2xl overflow-hidden shadow-xl border-2 border-[#FFD700]/30">
+        <img
+          src="/og/dapsimnidontellmamanight.svg"
+          alt="답십리돈텔마마 천사"
+          width={480}
+          height={480}
+          className="w-full h-full object-cover"
+          loading="eager"
+        />
+      </div>
+
+      {/* 천사 전화번호 — 가운데 정렬, 클릭 시 전화 연결 */}
       <div className="w-full max-w-[480px] text-center">
         <a
           href="tel:01037637882"
