@@ -1,7 +1,39 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { createClient } from '@/lib/supabase';
+
+/** 벨 클릭 이후 새로 올라온 커뮤니티 글 수 조회 */
+function useNewPostCount(user: any) {
+  const [count, setCount] = useState(0);
+
+  const refresh = useCallback(async () => {
+    if (!user) { setCount(0); return; }
+    const supabase = createClient();
+    if (!supabase) return;
+    try {
+      const seenAt = localStorage.getItem('bell_seen_at') || '0';
+      const since = seenAt === '0'
+        ? new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+        : new Date(Number(seenAt)).toISOString();
+      const { count: c } = await supabase
+        .from('posts')
+        .select('id', { count: 'exact', head: true })
+        .gt('created_at', since);
+      setCount(c ?? 0);
+    } catch { /* noop */ }
+  }, [user]);
+
+  useEffect(() => { refresh(); }, [refresh]);
+  // 60초마다 갱신
+  useEffect(() => {
+    if (!user) return;
+    const t = setInterval(refresh, 60_000);
+    return () => clearInterval(t);
+  }, [user, refresh]);
+
+  return count;
+}
 
 const menuItems = [
   { icon: '🎵', label: '나이트', href: '/nights' },
@@ -28,6 +60,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const { pathname } = useLocation();
+  const newPostCount = useNewPostCount(user);
 
   useEffect(() => {
     const supabase = createClient();
@@ -93,30 +126,23 @@ export default function Header() {
 
           {/* Right: Notification + Profile */}
           <div className="flex items-center gap-1">
-            <Link
-              to="/community"
-              onClick={() => { try { localStorage.setItem('bell_seen_at', String(Date.now())); } catch {} }}
-              className="relative flex h-11 w-11 items-center justify-center rounded-lg text-gray-700 active:bg-gray-100"
-              aria-label="알림"
-            >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-              </svg>
-              {user && (() => {
-                try {
-                  const seenAt = Number(localStorage.getItem('bell_seen_at') || '0');
-                  if (seenAt === 0) return null;
-                  const hoursSince = (Date.now() - seenAt) / (1000 * 60 * 60);
-                  if (hoursSince < 1) return null;
-                  const count = hoursSince < 6 ? 1 : hoursSince < 24 ? 2 : 3;
-                  return (
-                    <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
-                      {count}
-                    </span>
-                  );
-                } catch { return null; }
-              })()}
-            </Link>
+            {user && (
+              <Link
+                to="/community"
+                onClick={() => { try { localStorage.setItem('bell_seen_at', String(Date.now())); } catch {} }}
+                className="relative flex h-11 w-11 items-center justify-center rounded-lg text-gray-700 active:bg-gray-100"
+                aria-label="알림"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                {newPostCount > 0 && (
+                  <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
+                    {newPostCount > 9 ? '9+' : newPostCount}
+                  </span>
+                )}
+              </Link>
+            )}
             <Link
               to={user ? '/profile' : '/login'}
               className="flex h-11 w-11 items-center justify-center rounded-lg active:bg-gray-100"

@@ -177,9 +177,11 @@ export default function DailyMissions() {
     }
   };
 
+  if (!isLoggedIn) return null;
+
   return (
     <>
-      {/* Floating button */}
+      {/* Floating button — 로그인 시에만 표시 */}
       <motion.button
         onClick={handleOpen}
         className="fixed bottom-[72px] left-4 z-[30] flex h-14 w-14 md:hidden items-center justify-center rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#6D28D9] shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 transition-shadow"
@@ -188,7 +190,7 @@ export default function DailyMissions() {
         aria-label="오늘의 미션 열기"
       >
         <Target className="w-6 h-6 text-white" />
-        {isLoggedIn && !seen && incompleteCount > 0 && (
+        {isLoggedIn && incompleteCount > 0 && (
           <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#EF4444] text-xs font-bold text-white">
             {incompleteCount}
           </span>
