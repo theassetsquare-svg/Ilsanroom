@@ -13,6 +13,7 @@ const ALLOWED_PHONES = [
   '010-5655-4866', // 펩시맨 (청담H2O나이트)
   '010-8255-3509', // 막내 (파주야당스카이돔나이트)
   '010-5653-0069', // 춘자 (울산챔피언나이트)
+  '010-3763-7882', // 천사 (답십리돈텔마마나이트)
 ];
 
 export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPhoneBarProps) {

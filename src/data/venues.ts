@@ -321,6 +321,8 @@ export const venues: Venue[] = [
     openHours: '',
     tags: ['답십리나이트'],
     district: '답십리',
+    staffNickname: '천사',
+    staffPhone: '010-3763-7882',
   },
   {
     id: 'v-011',

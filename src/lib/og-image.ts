@@ -18,6 +18,7 @@ const NICKNAME_OG_SLUGS = new Set([
   'pajuyadangskydomenight',
   'ulsanchampionnight',
   'gangnamjuliananight',
+  'dapsimnidontellmamanight',
 ]);
 
 /** 업소 상세 OG image (slug 기반) */
