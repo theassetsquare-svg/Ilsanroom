@@ -426,8 +426,8 @@ export default function HomePage() {
       </section>
 
       {/* ═══════ CATEGORY ICONS — Horizontal scroll ═══════ */}
-      <section className="py-3 overflow-x-auto scrollbar-hide">
-        <div className="flex gap-3 px-4" style={{ minWidth: 'max-content' }}>
+      <section className="py-3 overflow-x-auto scrollbar-hide max-w-2xl mx-auto">
+        <div className="flex gap-3 px-4 justify-center flex-wrap">
           {categoryIcons.map(cat => (
             <Link target="_blank" rel="noopener noreferrer" key={cat.label} to={cat.href} className="flex flex-col items-center gap-1.5 min-w-[56px]">
               <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${cat.gradient} text-2xl shadow-sm`}>
@@ -440,8 +440,8 @@ export default function HomePage() {
       </section>
 
       {/* ═══════ REGION BUBBLES — Horizontal scroll ═══════ */}
-      <section className="py-2 overflow-x-auto scrollbar-hide">
-        <div className="flex gap-2 px-4" style={{ minWidth: 'max-content' }}>
+      <section className="py-2 overflow-x-auto scrollbar-hide max-w-2xl mx-auto">
+        <div className="flex gap-2 px-4 justify-center flex-wrap">
           {regionBubbles.map(r => (
             <button
               key={r.value}
@@ -460,7 +460,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════ TAB SECTION ═══════ */}
-      <section className="border-b border-gray-100 mt-1">
+      <section className="border-b border-gray-100 mt-1 max-w-2xl mx-auto">
         <div className="flex">
           {feedTabs.map((tab, i) => (
             <button
