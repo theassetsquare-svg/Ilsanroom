@@ -178,9 +178,8 @@ export default function HeroSearch() {
 
             <input
               ref={inputRef}
-              type="search"
+              type="text"
               enterKeyHint="search"
-              inputMode="search"
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
@@ -193,6 +192,9 @@ export default function HeroSearch() {
               placeholder="업소, 지역, 키워드 검색"
               className="h-14 w-full bg-transparent px-4 text-base text-neon-text placeholder-[#666] outline-none"
               autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck={false}
             />
 
             {/* Clear Button / Loading */}

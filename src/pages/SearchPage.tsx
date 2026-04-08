@@ -116,12 +116,16 @@ export default function SearchPage() {
               <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
               <input
                 ref={inputRef}
-                type="search"
+                type="text"
                 enterKeyHint="search"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="업소명, 지역, 키워드 검색"
                 className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 pl-11 pr-4 text-[16px] outline-none transition-all focus:border-[#8B5CF6] focus:bg-white focus:ring-4 focus:ring-[#8B5CF6]/10"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck={false}
               />
               {inputValue && (
                 <button
