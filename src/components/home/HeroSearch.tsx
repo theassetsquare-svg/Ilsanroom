@@ -39,58 +39,103 @@ export default function HeroSearch() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [results, setResults] = useState<Venue[]>([]);
   const [showResults, setShowResults] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  
   const inputRef = useRef<HTMLInputElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const engSearch = useEngagementStore((s) => s.search);
 
-  // Search: try Supabase first, fallback to local data
-  const search = useCallback(async (q: string, cat: string) => {
+  // Load recent searches from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('recentSearches');
+    if (saved) {
+      try {
+        setRecentSearches(JSON.parse(saved).slice(0, 5));
+      } catch (e) {
+        setRecentSearches([]);
+      }
+    }
+  }, []);
+
+  const saveRecentSearch = (q: string) => {
+    if (!q.trim()) return;
+    const updated = [q, ...recentSearches.filter(s => s !== q)].slice(0, 5);
+    setRecentSearches(updated);
+    localStorage.setItem('recentSearches', JSON.stringify(updated));
+  };
+
+  const removeRecentSearch = (e: React.MouseEvent, q: string) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const updated = recentSearches.filter(s => s !== q);
+    setRecentSearches(updated);
+    localStorage.setItem('recentSearches', JSON.stringify(updated));
+  };
+
+  // Search logic using API
+  const performSearch = useCallback(async (q: string, cat: string) => {
     if (!q.trim() && cat === 'all') {
       setResults([]);
-      setShowResults(false);
       return;
     }
 
     setLoading(true);
-    engSearch();
+    try {
+      // Use the POST API for hybrid search
+      const response = await fetch('/api/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          q,
+          category: cat === 'all' ? undefined : cat,
+          venues: localVenues, // Pass local venues for hybrid search
+          limit: 8
+        })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setResults(data.results || []);
+      } else {
+        // Fallback to local search if API fails
+        const lowerQ = q.toLowerCase();
+        const fallback = localVenues.filter(v => {
+          if (v.status === 'closed_or_unclear') return false;
+          const matchesQuery = !q.trim() || 
+            v.nameKo.toLowerCase().includes(lowerQ) || 
+            v.regionKo.toLowerCase().includes(lowerQ);
+          const matchesCat = cat === 'all' || v.category === cat;
+          return matchesQuery && matchesCat;
+        });
+        setResults(fallback.slice(0, 8));
+      }
+    } catch (err) {
+      console.error('Search error:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [engSearch]);
 
-    // ★ 항상 로컬 데이터에서 검색 (즉시, 확실)
-    const lowerQ = q.toLowerCase();
-    let searchResults = localVenues.filter((v) => {
-      if (v.status === 'closed_or_unclear') return false;
-      const matchesQuery = !q.trim() ||
-        v.nameKo.toLowerCase().includes(lowerQ) ||
-        v.regionKo.toLowerCase().includes(lowerQ) ||
-        v.tags.some((t) => t.toLowerCase().includes(lowerQ)) ||
-        v.description.toLowerCase().includes(lowerQ);
-      const matchesCat = cat === 'all' || v.category === cat;
-      return matchesQuery && matchesCat;
-    });
-
-    setResults(searchResults.slice(0, 8));
-    setShowResults(true);
-    setLoading(false);
-  }, []);
-
-  // Debounced search
+  // Debounce search
   useEffect(() => {
     const timer = setTimeout(() => {
       if (query.trim() || activeFilter !== 'all') {
-        search(query, activeFilter);
+        performSearch(query, activeFilter);
       } else {
         setResults([]);
-        setShowResults(false);
       }
-    }, 300);
+    }, 200);
     return () => clearTimeout(timer);
-  }, [query, activeFilter, search]);
+  }, [query, activeFilter, performSearch]);
 
-  // Click outside to close
+  // Handle outside click
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setIsFocused(false);
         setShowResults(false);
       }
     };
@@ -98,105 +143,210 @@ export default function HeroSearch() {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
-  const handleResultClick = (venue: Venue) => {
-    setShowResults(false);
-    setQuery('');
-    navigate(getCategoryHref(venue.category, venue.slug, venue.region));
+  const handleSearchSubmit = (e?: React.FormEvent) => {
+    e?.preventDefault();
+    if (query.trim()) {
+      saveRecentSearch(query);
+      // Navigate to search page or perform action
+      navigate(`/search?q=${encodeURIComponent(query)}`);
+      setIsFocused(false);
+      setShowResults(false);
+    }
   };
 
   return (
-    <div ref={wrapperRef} className="relative mx-auto w-full max-w-2xl">
-      {/* Search Input */}
-      <div className="relative">
-        <svg className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-neon-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-        <input
-          ref={inputRef}
-          type="text"
-          inputMode="search"
-          autoComplete="off"
-          autoCorrect="off"
-          spellCheck={false}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onFocus={() => { if (query.trim() || activeFilter !== 'all') setShowResults(true); }}
-          placeholder="업소명, 지역으로 검색"
-          className="w-full rounded-2xl border border-neon-border bg-neon-surface/80 py-4 pl-12 pr-4 text-neon-text placeholder-[#666] outline-none backdrop-blur-sm transition-all focus:border-neon-primary/50 focus:shadow-lg focus:shadow-neon-primary/10"
-          style={{ WebkitAppearance: 'none' }}
-        />
-        {loading && (
-          <div className="absolute right-4 top-1/2 -translate-y-1/2">
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-neon-primary border-t-transparent" />
+    <>
+      {/* Naver-style Background Overlay — z-[60] > MobileNav z-50 */}
+      {isFocused && (
+        <div className="fixed inset-0 z-[60] bg-black/40 backdrop-blur-[2px] transition-opacity animate-fade-in" />
+      )}
+
+      <div ref={wrapperRef} className={`relative mx-auto w-full max-w-2xl z-[70] transition-all duration-300 ${isFocused ? 'scale-[1.02]' : ''}`}>
+        {/* Search Bar Container */}
+        <form onSubmit={handleSearchSubmit} className="relative group">
+          <div className={`relative flex items-center overflow-hidden rounded-2xl border transition-all duration-300 ${
+            isFocused 
+              ? 'border-neon-primary bg-neon-surface shadow-[0_0_25px_rgba(0,243,255,0.15)]' 
+              : 'border-neon-border bg-neon-surface/80 backdrop-blur-md'
+          }`}>
+            {/* Search Icon */}
+            <div className="flex h-14 items-center justify-center pl-5">
+              <svg className={`h-5 w-5 transition-colors ${isFocused ? 'text-neon-primary' : 'text-neon-text-muted'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+
+            <input
+              ref={inputRef}
+              type="search"
+              enterKeyHint="search"
+              inputMode="search"
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setShowResults(true);
+              }}
+              onFocus={() => {
+                setIsFocused(true);
+                setShowResults(true);
+              }}
+              placeholder="업소, 지역, 키워드 검색"
+              className="h-14 w-full bg-transparent px-4 text-base text-neon-text placeholder-[#666] outline-none"
+              autoComplete="off"
+            />
+
+            {/* Clear Button / Loading */}
+            <div className="flex h-14 items-center gap-3 pr-4">
+              {loading ? (
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-neon-primary border-t-transparent" />
+              ) : query && (
+                <button 
+                  type="button"
+                  onClick={() => { setQuery(''); inputRef.current?.focus(); }}
+                  className="rounded-full p-1 text-neon-text-muted hover:bg-neon-surface-2 hover:text-neon-text"
+                >
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+              <button
+                type="submit"
+                className={`rounded-xl px-4 py-2 text-sm font-bold transition-all ${
+                  isFocused ? 'bg-neon-primary text-black shadow-lg shadow-neon-primary/20' : 'bg-neon-surface-2 text-neon-text-muted'
+                }`}
+              >
+                검색
+              </button>
+            </div>
+          </div>
+
+          {/* Naver-style Dropdown Layer — z-[70] > MobileNav z-50 */}
+          {showResults && (isFocused || query) && (
+            <div className="absolute left-0 right-0 top-full z-[70] mt-3 overflow-hidden rounded-2xl border border-neon-border bg-neon-surface shadow-2xl animate-in slide-in-from-top-2 duration-200" style={{ maxHeight: 'calc(100dvh - 220px)', overflowY: 'auto' }}>
+              
+              {/* Case 1: Search results available */}
+              {query.trim() && results.length > 0 ? (
+                <div className="py-2">
+                  <div className="px-4 py-2 text-[11px] font-bold tracking-wider text-neon-text-muted uppercase">업소 검색 결과</div>
+                  {results.map((v) => (
+                    <Link
+                      key={v.id || v.slug}
+                      to={getCategoryHref(v.category, v.slug, v.region)}
+                      onClick={() => {
+                        saveRecentSearch(v.nameKo);
+                        setIsFocused(false);
+                        setShowResults(false);
+                      }}
+                      className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-neon-surface-2"
+                    >
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-neon-primary/10 text-sm font-bold text-neon-primary">
+                        {v.nameKo.charAt(0)}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <p className="truncate text-[15px] font-medium text-neon-text">{v.nameKo}</p>
+                          {v.isPremium && <span className="rounded bg-neon-gold/10 px-1.5 py-0.5 text-[10px] font-bold text-neon-gold">PREMIUM</span>}
+                        </div>
+                        <p className="truncate text-[13px] text-neon-text-muted">
+                          {v.regionKo} · {CATEGORY_FILTERS.find(f => f.key === v.category)?.label}
+                        </p>
+                      </div>
+                      <svg className="h-4 w-4 text-neon-text-muted opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  ))}
+                  <button 
+                    onClick={handleSearchSubmit}
+                    className="w-full border-t border-neon-border/50 py-3 text-center text-sm font-medium text-neon-primary hover:bg-neon-primary/5 transition-colors"
+                  >
+                    "{query}" 통합검색 결과 보기
+                  </button>
+                </div>
+              ) : query.trim() && !loading ? (
+                <div className="p-8 text-center">
+                  <p className="text-neon-text-muted">"{query}"에 대한 검색 결과가 없습니다.</p>
+                  <p className="mt-1 text-sm text-neon-text-muted/60">다른 키워드나 지역으로 검색해 보세요.</p>
+                </div>
+              ) : !query.trim() && (
+                /* Case 2: No query, show Recent & Popular (Naver Style) */
+                <div className="divide-y divide-neon-border/50">
+                  {/* Recent Searches */}
+                  <div className="p-4">
+                    <div className="mb-3 flex items-center justify-between">
+                      <h3 className="text-xs font-bold text-neon-text-muted uppercase tracking-wider">최근 검색어</h3>
+                      {recentSearches.length > 0 && (
+                        <button 
+                          onClick={() => { setRecentSearches([]); localStorage.removeItem('recentSearches'); }}
+                          className="text-[11px] text-neon-text-muted hover:text-neon-text"
+                        >
+                          전체삭제
+                        </button>
+                      )}
+                    </div>
+                    {recentSearches.length > 0 ? (
+                      <div className="flex flex-wrap gap-2">
+                        {recentSearches.map((s, i) => (
+                          <div key={i} className="group flex items-center gap-1 rounded-full border border-neon-border bg-neon-surface-2 px-3 py-1.5 text-xs text-neon-text transition-all hover:border-neon-primary/40">
+                            <button onClick={() => { setQuery(s); inputRef.current?.focus(); }}>{s}</button>
+                            <button 
+                              onClick={(e) => removeRecentSearch(e, s)}
+                              className="ml-1 text-neon-text-muted hover:text-red-400"
+                            >
+                              <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="py-2 text-sm text-neon-text-muted/60">최근 검색 내역이 없습니다.</p>
+                    )}
+                  </div>
+
+                  {/* Popular Keywords */}
+                  <div className="p-4">
+                    <h3 className="mb-3 text-xs font-bold text-neon-text-muted uppercase tracking-wider">인기 추천 키워드</h3>
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                      {POPULAR_TAGS.map((tag, i) => (
+                        <button
+                          key={i}
+                          onClick={() => { setQuery(tag); inputRef.current?.focus(); }}
+                          className="flex items-center gap-2 rounded-xl border border-neon-border bg-neon-surface/50 p-2 text-left text-xs text-neon-text-muted transition-all hover:border-neon-primary/40 hover:text-neon-text"
+                        >
+                          <span className={`font-bold ${i < 3 ? 'text-neon-primary' : 'text-neon-text-muted/40'}`}>{i + 1}</span>
+                          <span className="truncate">{tag}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </form>
+
+        {/* Quick Filters (Shown below search when not focused) */}
+        {!isFocused && !query && (
+          <div className="mt-6 flex flex-wrap justify-center gap-2 animate-fade-in">
+            {CATEGORY_FILTERS.map((f) => (
+              <button
+                key={f.key}
+                onClick={() => { setActiveFilter(f.key); setIsFocused(true); inputRef.current?.focus(); }}
+                className={`rounded-full px-4 py-2 text-xs font-bold transition-all ${
+                  activeFilter === f.key
+                    ? 'bg-neon-primary text-black shadow-lg shadow-neon-primary/30'
+                    : 'border border-neon-border bg-neon-surface/50 text-neon-text-muted hover:border-neon-primary/50 hover:text-neon-text'
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
           </div>
         )}
       </div>
-
-      {/* Quick Filter Chips */}
-      <div className="mt-3 flex flex-wrap justify-center gap-2">
-        {CATEGORY_FILTERS.map((f) => (
-          <button
-            key={f.key}
-            onClick={() => setActiveFilter(f.key)}
-            className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
-              activeFilter === f.key
-                ? 'bg-neon-primary text-white shadow-md shadow-neon-primary/20'
-                : 'border border-neon-border bg-neon-surface/50 text-neon-text-muted hover:border-neon-primary/40 hover:text-neon-text'
-            }`}
-          >
-            {f.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Popular Tags */}
-      {!showResults && (
-        <div className="mt-4 flex flex-wrap justify-center gap-2">
-          {POPULAR_TAGS.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => { setQuery(tag); }}
-              className="rounded-full border border-neon-border bg-neon-surface/50 px-3 py-1.5 text-xs text-neon-text-muted transition-all hover:border-neon-primary/40 hover:text-neon-text"
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Results Dropdown */}
-      {showResults && results.length > 0 && (
-        <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-96 overflow-y-auto rounded-2xl border border-neon-border bg-neon-surface/95 shadow-2xl backdrop-blur-lg animate-fade-in">
-          {results.map((v) => (
-            <Link target="_blank" rel="noopener noreferrer" key={v.id || v.slug}
-              to={getCategoryHref(v.category, v.slug, v.region)}
-              onClick={() => { setShowResults(false); setQuery(''); }}
-              className="flex w-full items-center gap-3 border-b border-neon-border/50 px-4 py-3 text-left transition-colors hover:bg-neon-surface-2 last:border-b-0"
-            >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-neon-primary/10 text-sm font-bold text-neon-primary">
-                {v.nameKo.charAt(0)}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-neon-text">{v.nameKo}</p>
-                <p className="truncate text-xs text-neon-text-muted">
-                  {v.regionKo} · {v.category === 'club' ? '클럽' : v.category === 'night' ? '나이트' : v.category === 'lounge' ? '라운지' : v.category === 'room' ? '룸' : v.category === 'yojeong' ? '요정' : v.category === 'hoppa' ? '호빠' : v.category}
-                  {v.staffNickname ? ` · ${v.staffNickname}` : ''}
-                </p>
-              </div>
-              {v.isPremium && (
-                <span className="shrink-0 rounded-full bg-neon-gold/10 px-2 py-0.5 text-xs font-bold text-neon-gold">PREMIUM</span>
-              )}
-            </Link>
-          ))}
-        </div>
-      )}
-
-      {showResults && query.trim() && results.length === 0 && !loading && (
-        <div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-2xl border border-neon-border bg-neon-surface/95 p-6 text-center shadow-2xl backdrop-blur-lg animate-fade-in">
-          <p className="text-sm text-neon-text-muted">검색 결과가 없습니다</p>
-          <p className="mt-1 text-xs text-neon-text-muted">다른 키워드로 검색해 보세요</p>
-        </div>
-      )}
-    </div>
+    </>
   );
 }
