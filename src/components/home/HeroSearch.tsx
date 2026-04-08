@@ -163,7 +163,7 @@ export default function HeroSearch() {
 
       <div ref={wrapperRef} className={`relative mx-auto w-full max-w-2xl z-[70] transition-all duration-300 ${isFocused ? 'scale-[1.02]' : ''}`}>
         {/* Search Bar Container */}
-        <form onSubmit={handleSearchSubmit} className="relative group">
+        <form onSubmit={handleSearchSubmit} action="/search" method="get" role="search" className="relative group">
           <div className={`relative flex items-center overflow-hidden rounded-2xl border transition-all duration-300 ${
             isFocused 
               ? 'border-neon-primary bg-neon-surface shadow-[0_0_25px_rgba(0,243,255,0.15)]' 
@@ -178,7 +178,8 @@ export default function HeroSearch() {
 
             <input
               ref={inputRef}
-              type="text"
+              type="search"
+              name="q"
               enterKeyHint="search"
               value={query}
               onChange={(e) => {
@@ -190,7 +191,7 @@ export default function HeroSearch() {
                 setShowResults(true);
               }}
               placeholder="업소, 지역, 키워드 검색"
-              className="h-14 w-full bg-transparent px-4 text-base text-neon-text placeholder-[#666] outline-none"
+              className="h-14 w-full bg-transparent px-4 text-base text-neon-text placeholder-[#666] outline-none [&::-webkit-search-cancel-button]:hidden"
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"

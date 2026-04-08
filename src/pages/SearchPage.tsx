@@ -110,18 +110,19 @@ export default function SearchPage() {
     <div className="min-h-screen bg-gray-50 pb-20 pt-16 md:pt-20">
       {/* Search Header Section */}
       <div className="sticky top-14 z-40 bg-white shadow-sm md:top-16">
-        <form onSubmit={handleSearchSubmit} className="mx-auto max-w-4xl px-4 py-3">
+        <form onSubmit={handleSearchSubmit} action="/search" method="get" role="search" className="mx-auto max-w-4xl px-4 py-3">
           <div className="relative flex items-center gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
               <input
                 ref={inputRef}
-                type="text"
+                type="search"
+                name="q"
                 enterKeyHint="search"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="업소명, 지역, 키워드 검색"
-                className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 pl-11 pr-4 text-[16px] outline-none transition-all focus:border-[#8B5CF6] focus:bg-white focus:ring-4 focus:ring-[#8B5CF6]/10"
+                className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 pl-11 pr-4 text-[16px] outline-none transition-all focus:border-[#8B5CF6] focus:bg-white focus:ring-4 focus:ring-[#8B5CF6]/10 [&::-webkit-search-cancel-button]:hidden"
                 autoComplete="off"
                 autoCorrect="off"
                 autoCapitalize="off"
