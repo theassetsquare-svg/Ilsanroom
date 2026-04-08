@@ -10,37 +10,50 @@ export default function AuthCallbackPage() {
   useEffect(() => {
     const supabase = createClient();
     if (!supabase) {
-      navigate('/');
+      navigate('/login');
       return;
     }
 
     const handleSession = (session: any) => {
-      if (!session) return;
-      const userId = session.user?.id;
-      const savedUserId = localStorage.getItem('nolcool_user_id');
-
-      // 처음 로그인하는 유저 → 포인트 0으로 초기화
-      if (!savedUserId || savedUserId !== userId) {
-        localStorage.setItem('nolcool_user_id', userId);
-        if (resetStore) resetStore();
+      clearTimeout(fallbackTimer);
+      clearTimeout(retryTimer);
+      if (!session) {
+        navigate('/login');
+        return;
       }
+      const userId = session.user?.id;
+      try {
+        const savedUserId = localStorage.getItem('nolcool_user_id');
+        if (!savedUserId || savedUserId !== userId) {
+          localStorage.setItem('nolcool_user_id', userId);
+          if (resetStore) resetStore();
+        }
+      } catch (_) {}
       navigate('/');
     };
 
-    let timer: ReturnType<typeof setTimeout>;
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        handleSession(session);
-      } else {
-        timer = setTimeout(() => {
-          supabase.auth.getSession().then(({ data: { session: s } }) => {
-            if (s) handleSession(s);
-            else navigate('/login');
-          });
-        }, 1000);
-      }
-    });
-    return () => clearTimeout(timer);
+    // 절대 타임아웃: 5초 안에 세션 없으면 무조건 로그인 페이지로
+    const fallbackTimer = setTimeout(() => navigate('/login'), 5000);
+    let retryTimer: ReturnType<typeof setTimeout>;
+
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => {
+        if (session) {
+          handleSession(session);
+        } else {
+          retryTimer = setTimeout(() => {
+            supabase.auth.getSession()
+              .then(({ data: { session: s } }) => handleSession(s))
+              .catch(() => navigate('/login'));
+          }, 1500);
+        }
+      })
+      .catch(() => navigate('/login'));
+
+    return () => {
+      clearTimeout(fallbackTimer);
+      clearTimeout(retryTimer);
+    };
   }, [navigate, resetStore]);
 
   return (
