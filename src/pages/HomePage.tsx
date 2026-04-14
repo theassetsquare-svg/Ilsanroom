@@ -339,7 +339,7 @@ export default function HomePage() {
               </div>
               {/* 카드 아래 텍스트 — 이미지 밖 */}
               <p className="mt-1.5 text-xs font-bold text-[#111] truncate px-0.5">{v.nameKo}</p>
-              <p className="text-[10px] text-[#999] truncate px-0.5">{v.region}</p>
+              <p className="text-[10px] text-[#999] truncate px-0.5">{v.regionKo}</p>
             </Link>
           ))}
         </div>
@@ -600,8 +600,8 @@ export default function HomePage() {
               );
             }
 
-            // Every 12th — TOP5
-            if ((idx + 1) % 12 === 0) {
+            // TOP5 — 1번만
+            if (idx + 1 === 12) {
               cards.push(
                 <div key={`top5-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-violet-50 to-white p-4">
                   <p className="text-xs font-bold text-[#8B5CF6] mb-2">🏆 이번주 TOP 5</p>
