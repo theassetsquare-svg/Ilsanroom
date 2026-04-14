@@ -1,8 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
+
+interface CommentData {
+  id: string;
+  post_id: string;
+  user_id: string | null;
+  content: string;
+  parent_id: string | null;
+  created_at: string;
+  users?: { nickname: string | null; avatar_url: string | null } | null;
+}
 
 export default function PostDetailPage() {
   useDocumentMeta('글 상세', '커뮤니티 게시글 상세 페이지');
@@ -11,8 +21,10 @@ export default function PostDetailPage() {
   const { user } = useAuth();
 
   const [post, setPost] = useState<any>(null);
-  const [comments, setComments] = useState<any[]>([]);
+  const [comments, setComments] = useState<CommentData[]>([]);
   const [commentText, setCommentText] = useState('');
+  const [replyTo, setReplyTo] = useState<{ id: string; nickname: string } | null>(null);
+  const [replyText, setReplyText] = useState('');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -40,7 +52,7 @@ export default function PostDetailPage() {
   }, [id]);
 
   // 댓글 불러오기
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     if (!supabase || !id) return;
     let { data, error } = await supabase
       .from('comments')
@@ -51,10 +63,10 @@ export default function PostDetailPage() {
       const fallback = await supabase.from('comments').select('*').eq('post_id', id).order('created_at', { ascending: true });
       data = fallback.data;
     }
-    setComments(data || []);
-  };
+    setComments((data || []) as CommentData[]);
+  }, [id]);
 
-  useEffect(() => { fetchComments(); }, [id]);
+  useEffect(() => { fetchComments(); }, [fetchComments]);
 
   // 글 삭제
   const handleDelete = async () => {
@@ -73,7 +85,7 @@ export default function PostDetailPage() {
     await supabase.from('posts').update({ likes: newCount }).eq('id', id);
   };
 
-  // 댓글 작성
+  // 댓글 작성 (최상위)
   const handleComment = async () => {
     if (!commentText.trim() || !user || !supabase) return;
     setSubmitting(true);
@@ -81,8 +93,23 @@ export default function PostDetailPage() {
       post_id: id,
       user_id: user.id,
       content: commentText.trim(),
+      parent_id: null,
     });
     if (!error) { setCommentText(''); await fetchComments(); }
+    setSubmitting(false);
+  };
+
+  // 대댓글 작성
+  const handleReply = async () => {
+    if (!replyText.trim() || !user || !supabase || !replyTo) return;
+    setSubmitting(true);
+    const { error } = await supabase.from('comments').insert({
+      post_id: id,
+      user_id: user.id,
+      content: replyText.trim(),
+      parent_id: replyTo.id,
+    });
+    if (!error) { setReplyText(''); setReplyTo(null); await fetchComments(); }
     setSubmitting(false);
   };
 
@@ -95,13 +122,12 @@ export default function PostDetailPage() {
 
   // 조각모임 content JSON 파싱
   const parseJogakContent = (content: string) => {
-    try {
-      const parsed = JSON.parse(content);
-      return parsed;
-    } catch {
-      return null;
-    }
+    try { return JSON.parse(content); } catch { return null; }
   };
+
+  // 댓글을 트리 구조로 정리
+  const rootComments = comments.filter(c => !c.parent_id);
+  const childComments = (parentId: string) => comments.filter(c => c.parent_id === parentId);
 
   if (loading) {
     return (
@@ -121,6 +147,82 @@ export default function PostDetailPage() {
   }
 
   const jogakData = post.category === 'party' ? parseJogakContent(post.content) : null;
+
+  const CommentItem = ({ comment, depth = 0 }: { comment: CommentData; depth?: number }) => {
+    const nickname = (comment.users as any)?.nickname || '사용자';
+    const children = childComments(comment.id);
+    const isReplyTarget = replyTo?.id === comment.id;
+
+    return (
+      <>
+        <div
+          className="rounded-xl p-4"
+          style={{
+            backgroundColor: depth > 0 ? '#F9FAFB' : '#F3F4F6',
+            marginLeft: depth > 0 ? Math.min(depth * 24, 48) : 0,
+            borderLeft: depth > 0 ? '3px solid #8B5CF6' : 'none',
+          }}
+        >
+          <div className="flex items-start justify-between">
+            <div className="flex-1 min-w-0">
+              {depth > 0 && comment.parent_id && (
+                <span className="text-xs font-medium mr-1" style={{ color: '#8B5CF6' }}>↳</span>
+              )}
+              <p className="text-sm leading-relaxed inline" style={{ color: '#111' }}>{comment.content}</p>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-xs font-medium" style={{ color: '#555' }}>{nickname}</span>
+                <span className="text-xs" style={{ color: '#999' }}>{comment.created_at?.slice(0, 10)}</span>
+                {user && (
+                  <button
+                    onClick={() => {
+                      if (isReplyTarget) { setReplyTo(null); setReplyText(''); }
+                      else { setReplyTo({ id: comment.id, nickname }); setReplyText(''); }
+                    }}
+                    className="text-xs font-medium"
+                    style={{ color: '#8B5CF6', minHeight: 24 }}
+                  >
+                    {isReplyTarget ? '취소' : '답글'}
+                  </button>
+                )}
+              </div>
+            </div>
+            {user?.id === comment.user_id && (
+              <button onClick={() => handleDeleteComment(comment.id)} className="text-xs shrink-0 ml-2" style={{ color: '#EF4444', minHeight: 28 }}>삭제</button>
+            )}
+          </div>
+
+          {/* 답글 입력창 — 해당 댓글 바로 아래 */}
+          {isReplyTarget && (
+            <div className="flex gap-2 mt-3">
+              <input
+                type="text"
+                value={replyText}
+                onChange={e => setReplyText(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') handleReply(); }}
+                placeholder={`${nickname}에게 답글...`}
+                className="flex-1 rounded-lg border px-3 py-2 text-sm outline-none"
+                style={{ borderColor: '#D1D5DB', color: '#111', minHeight: 40 }}
+                autoFocus
+              />
+              <button
+                onClick={handleReply}
+                disabled={!replyText.trim() || submitting}
+                className="rounded-lg px-4 py-2 text-sm font-bold text-white disabled:opacity-40"
+                style={{ backgroundColor: '#8B5CF6', minHeight: 40 }}
+              >
+                {submitting ? '...' : '등록'}
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* 자식 댓글 (대댓글) */}
+        {children.map(child => (
+          <CommentItem key={child.id} comment={child} depth={depth + 1} />
+        ))}
+      </>
+    );
+  };
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
@@ -191,16 +293,8 @@ export default function PostDetailPage() {
 
       {comments.length > 0 ? (
         <div className="space-y-3 mb-6">
-          {comments.map((c: any) => (
-            <div key={c.id} className="flex items-start justify-between rounded-xl p-4" style={{ backgroundColor: '#F3F4F6' }}>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm leading-relaxed" style={{ color: '#111' }}>{c.content}</p>
-                <span className="text-xs" style={{ color: '#999' }}>{c.users?.nickname || '사용자'} · {c.created_at?.slice(0, 10)}</span>
-              </div>
-              {user?.id === c.user_id && (
-                <button onClick={() => handleDeleteComment(c.id)} className="text-xs shrink-0 ml-2" style={{ color: '#EF4444', minHeight: 28 }}>삭제</button>
-              )}
-            </div>
+          {rootComments.map((c) => (
+            <CommentItem key={c.id} comment={c} depth={0} />
           ))}
         </div>
       ) : (

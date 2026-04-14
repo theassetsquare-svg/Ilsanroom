@@ -48,7 +48,7 @@ function parseJogakPost(post: Post): JogakPost {
     content: parsed.desc || post.content,
     author: u?.nickname || '사용자',
     date: post.created_at.slice(0, 10),
-    comments: post.comment_count || 0,
+    comments: (post as any).comment_count || 0,
     region: parsed.region,
     venue: parsed.venue,
     meetDate: parsed.meetDate,
@@ -72,8 +72,10 @@ export default function JogakPage() {
 
   // 글 상세
   const [selectedPost, setSelectedPost] = useState<string | null>(null);
-  const [comments, setComments] = useState<{ author: string; text: string; date: string }[]>([]);
+  const [comments, setComments] = useState<any[]>([]);
   const [commentText, setCommentText] = useState('');
+  const [replyTo, setReplyTo] = useState<{ id: string; nickname: string } | null>(null);
+  const [replyText, setReplyText] = useState('');
 
   // 글쓰기 모달
   const [showWrite, setShowWrite] = useState(false);
@@ -100,21 +102,21 @@ export default function JogakPage() {
     })();
   }, []);
 
+  // 댓글 불러오기 (raw data 유지 — 대댓글 지원)
+  const loadComments = async (postId: string) => {
+    const data = await fetchComments(postId);
+    setComments(data);
+  };
+
   // 글 클릭
   const handlePostClick = (postId: string) => {
     if (selectedPost === postId) { setSelectedPost(null); return; }
     setSelectedPost(postId);
     setCommentText('');
+    setReplyTo(null);
+    setReplyText('');
     setComments([]);
-    fetchComments(postId).then(data => {
-      if (data.length > 0) {
-        setComments(data.map(c => ({
-          author: c.users?.nickname || '익명',
-          text: c.content,
-          date: c.created_at.slice(5, 10),
-        })));
-      }
-    });
+    loadComments(postId);
   };
 
   // 글쓰기
@@ -124,7 +126,7 @@ export default function JogakPage() {
   };
 
   const handleSubmit = async () => {
-    if (!formTitle.trim() || !formRegion) return;
+    if (!formTitle.trim() || !formRegion || !formDate || !formTime || !formMaxPeople || !formGender || !formCost) return;
     setSubmitting(true);
 
     // content를 JSON으로 저장 (구조화 데이터)
@@ -165,12 +167,22 @@ export default function JogakPage() {
   // 댓글 등록
   const handleCommentSubmit = async () => {
     if (!commentText.trim() || !user || !selectedPost) return;
-    const { data, error } = await createComment(selectedPost, commentText.trim());
-    if (data) {
-      setComments(prev => [...prev, { author: user.user_metadata?.nickname || user.user_metadata?.name || '나', text: commentText.trim(), date: new Date().toISOString().slice(5, 10) }]);
+    const { error } = await createComment(selectedPost, commentText.trim());
+    if (!error) {
       setCommentText('');
+      await loadComments(selectedPost);
     }
-    if (error) return;
+  };
+
+  // 대댓글 등록
+  const handleReplySubmit = async () => {
+    if (!replyText.trim() || !user || !selectedPost || !replyTo) return;
+    const { error } = await createComment(selectedPost, replyText.trim(), replyTo.id);
+    if (!error) {
+      setReplyText('');
+      setReplyTo(null);
+      await loadComments(selectedPost);
+    }
   };
 
   return (
@@ -267,12 +279,50 @@ export default function JogakPage() {
                     <p className="text-xs font-bold mb-2" style={{ color: '#555' }}>댓글 {comments.length}개</p>
                     {comments.length > 0 ? (
                       <div className="space-y-2">
-                        {comments.map((c, ci) => (
-                          <div key={ci} className="rounded-lg px-3 py-2" style={{ backgroundColor: '#F3F4F6' }}>
-                            <p className="text-sm" style={{ color: '#111' }}>{c.text}</p>
-                            <span className="text-xs" style={{ color: '#9CA3AF' }}>{c.author} · {c.date}</span>
-                          </div>
-                        ))}
+                        {/* 최상위 댓글 */}
+                        {comments.filter(c => !c.parent_id).map((c: any) => {
+                          const nickname = c.users?.nickname || '익명';
+                          const children = comments.filter((ch: any) => ch.parent_id === c.id);
+                          return (
+                            <div key={c.id}>
+                              <div className="rounded-lg px-3 py-2" style={{ backgroundColor: '#F3F4F6' }}>
+                                <p className="text-sm" style={{ color: '#111' }}>{c.content}</p>
+                                <div className="flex items-center gap-2 mt-1">
+                                  <span className="text-xs" style={{ color: '#9CA3AF' }}>{nickname} · {c.created_at?.slice(5, 10)}</span>
+                                  {user && (
+                                    <button onClick={() => { setReplyTo(replyTo?.id === c.id ? null : { id: c.id, nickname }); setReplyText(''); }}
+                                      className="text-xs font-medium" style={{ color: '#8B5CF6' }}>
+                                      {replyTo?.id === c.id ? '취소' : '답글'}
+                                    </button>
+                                  )}
+                                </div>
+                                {/* 답글 입력 */}
+                                {replyTo?.id === c.id && (
+                                  <div className="flex gap-2 mt-2">
+                                    <input type="text" value={replyText} onChange={e => setReplyText(e.target.value)}
+                                      onKeyDown={e => { if (e.key === 'Enter') handleReplySubmit(); }}
+                                      placeholder={`${nickname}에게 답글...`}
+                                      className="flex-1 rounded-lg border px-3 py-2 text-sm min-h-[40px] outline-none"
+                                      style={{ borderColor: '#D1D5DB', color: '#111' }} autoFocus />
+                                    <button onClick={handleReplySubmit} disabled={!replyText.trim()}
+                                      className="rounded-lg px-3 py-2 text-sm font-bold text-white disabled:opacity-40 min-h-[40px]"
+                                      style={{ backgroundColor: '#8B5CF6' }}>등록</button>
+                                  </div>
+                                )}
+                              </div>
+                              {/* 대댓글 */}
+                              {children.map((ch: any) => (
+                                <div key={ch.id} className="rounded-lg px-3 py-2 ml-6" style={{ backgroundColor: '#F9FAFB', borderLeft: '3px solid #8B5CF6' }}>
+                                  <span className="text-xs font-medium mr-1" style={{ color: '#8B5CF6' }}>↳</span>
+                                  <p className="text-sm inline" style={{ color: '#111' }}>{ch.content}</p>
+                                  <div className="mt-1">
+                                    <span className="text-xs" style={{ color: '#9CA3AF' }}>{ch.users?.nickname || '익명'} · {ch.created_at?.slice(5, 10)}</span>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          );
+                        })}
                       </div>
                     ) : (
                       <p className="text-xs" style={{ color: '#9CA3AF' }}>아직 댓글이 없어요. 참여 의사를 댓글로 남겨보세요!</p>
@@ -338,13 +388,13 @@ export default function JogakPage() {
             {/* 날짜 + 시간 */}
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div>
-                <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>날짜</label>
+                <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>날짜 <span style={{ color: '#EF4444' }}>*</span></label>
                 <input type="date" value={formDate} onChange={(e) => setFormDate(e.target.value)}
                   className="w-full rounded-lg border px-3 py-3 text-sm outline-none"
                   style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
               </div>
               <div>
-                <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>시간</label>
+                <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>시간 <span style={{ color: '#EF4444' }}>*</span></label>
                 <input type="time" value={formTime} onChange={(e) => setFormTime(e.target.value)}
                   className="w-full rounded-lg border px-3 py-3 text-sm outline-none"
                   style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
@@ -352,7 +402,7 @@ export default function JogakPage() {
             </div>
 
             {/* 모집 인원 */}
-            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>모집 인원 (본인 포함)</label>
+            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>모집 인원 (본인 포함) <span style={{ color: '#EF4444' }}>*</span></label>
             <div className="flex items-center gap-3 mb-4">
               {['2', '3', '4', '6', '8', '10'].map(n => (
                 <button key={n} onClick={() => setFormMaxPeople(n)}
@@ -365,7 +415,7 @@ export default function JogakPage() {
             </div>
 
             {/* 성별 */}
-            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>성별 조건</label>
+            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>성별 조건 <span style={{ color: '#EF4444' }}>*</span></label>
             <div className="flex gap-2 mb-4">
               {GENDER_OPTIONS.map(g => (
                 <button key={g} onClick={() => setFormGender(g)}
@@ -386,7 +436,7 @@ export default function JogakPage() {
               style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
 
             {/* 비용 분담 */}
-            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>비용 분담</label>
+            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>비용 분담 <span style={{ color: '#EF4444' }}>*</span></label>
             <div className="flex gap-2 mb-4">
               {COST_OPTIONS.map(c => (
                 <button key={c} onClick={() => setFormCost(c)}
@@ -409,7 +459,7 @@ export default function JogakPage() {
 
           <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
             <button onClick={handleSubmit}
-              disabled={submitting || !formTitle.trim() || !formRegion}
+              disabled={submitting || !formTitle.trim() || !formRegion || !formDate || !formTime}
               className="w-full rounded-xl py-4 text-base font-bold transition active:scale-[0.98] disabled:opacity-30"
               style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 56 }}>
               {submitting ? '등록 중...' : '모집글 올리기'}

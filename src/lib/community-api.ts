@@ -86,7 +86,7 @@ export async function createPost(post: {
   return { data };
 }
 
-// Fetch comments for a post
+// Fetch comments for a post (with user info)
 export async function fetchComments(postId: string) {
   const supabase = createClient();
   if (!supabase) return [];
@@ -94,11 +94,19 @@ export async function fetchComments(postId: string) {
   try {
     const { data, error } = await supabase
       .from('comments')
-      .select('*')
+      .select('*, users!comments_user_id_fkey(nickname, avatar_url)')
       .eq('post_id', postId)
       .order('created_at', { ascending: true });
 
-    if (error) return [];
+    if (error) {
+      // Fallback without join
+      const { data: fallback } = await supabase
+        .from('comments')
+        .select('*')
+        .eq('post_id', postId)
+        .order('created_at', { ascending: true });
+      return (fallback || []) as unknown as Comment[];
+    }
     return (data || []) as unknown as Comment[];
   } catch {
     return [];
