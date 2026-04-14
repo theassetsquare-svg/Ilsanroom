@@ -210,7 +210,7 @@ export default function HomePage() {
       }} />
 
       {/* ═══ TIME GREETING ═══ */}
-      <section className="px-4 pt-5 pb-1 text-center">
+      <section className="px-4 pt-5 pb-1 text-center max-w-3xl mx-auto">
         <p className="text-sm text-[#555]">
           {(() => {
             const h = new Date().getHours();
@@ -223,7 +223,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ HERO ═══ */}
-      <section className="px-4 pt-2 pb-2 text-center">
+      <section className="px-4 pt-2 pb-2 text-center max-w-3xl mx-auto">
         <h1 className="text-[26px] font-black text-[#111] leading-[1.3] tracking-tight">
           오늘 밤, 여기서 정한다
         </h1>
@@ -235,11 +235,13 @@ export default function HomePage() {
       {/* ═══ SEARCH BAR (sticky) ═══ */}
       <div ref={searchSentinelRef} />
       <div className={`px-4 py-2 z-[60] transition-all ${searchSticky ? 'fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100' : ''}`}>
-        <HeroSearch />
+        <div className={searchSticky ? 'max-w-3xl mx-auto' : ''}>
+          <HeroSearch />
+        </div>
       </div>
 
       {/* ═══ CATEGORY ICONS ═══ */}
-      <section className="py-3 overflow-x-auto scrollbar-hide">
+      <section className="py-3 overflow-x-auto scrollbar-hide max-w-3xl mx-auto">
         <div className="flex gap-3 px-4 justify-center flex-wrap">
           {categoryIcons.map(cat => (
             <Link key={cat.label} to={cat.href} className="flex flex-col items-center gap-1.5 min-w-[52px]">
@@ -253,7 +255,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ BANNER SLIDER ═══ */}
-      <section className="px-4 py-2">
+      <section className="px-4 py-2 max-w-3xl mx-auto">
         <Link
           to={bannerSlides[bannerIdx].href}
           className={`block rounded-2xl bg-gradient-to-r ${bannerSlides[bannerIdx].color} px-5 py-3.5 transition-all`}
@@ -268,7 +270,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ LIVE HOT TOP 5 — horizontal scroll ═══ */}
-      <section className="py-3">
+      <section className="py-3 max-w-3xl mx-auto">
         <div className="flex items-center justify-between px-4 mb-2">
           <h2 className="text-base font-bold text-[#111]">🔥 실시간 HOT</h2>
           <Link to="/ranking" className="text-xs text-[#8B5CF6] font-medium">전체보기 →</Link>
@@ -313,7 +315,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ COMMUNITY HOT POSTS ═══ */}
-      <section className="px-4 py-3">
+      <section className="px-4 py-3 max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-base font-bold text-[#111]">💬 커뮤니티 핫글</h2>
           <Link to="/community" className="text-xs text-[#8B5CF6] font-medium">더보기 →</Link>
@@ -336,7 +338,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 조각모임 — KILLER FEATURE ═══ */}
-      <section className="px-4 py-3">
+      <section className="px-4 py-3 max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-base font-bold text-[#111]">🙋 오늘 밤 조각모임</h2>
           <Link to="/community/jogak" className="text-xs text-[#8B5CF6] font-medium">전체보기 →</Link>
@@ -380,7 +382,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ VS 투표 — 1탭 참여 ═══ */}
-      <section className="px-4 py-3">
+      <section className="px-4 py-3 max-w-3xl mx-auto">
         <div className="rounded-2xl bg-gradient-to-r from-[#EEF2FF] to-[#F3F0FF] p-4">
           <p className="text-xs font-bold text-[#8B5CF6] mb-1">🆚 오늘의 VS 투표</p>
           <p className="text-sm font-bold text-[#111] mb-3">{currentPoll.q}</p>
@@ -410,7 +412,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ TONIGHT FORTUNE ═══ */}
-      <section className="px-4 py-3">
+      <section className="px-4 py-3 max-w-3xl mx-auto">
         <div className="rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 p-4">
           <p className="text-xs font-bold text-amber-700 mb-1">🔮 오늘 밤 운세</p>
           <p className="text-lg mb-1">{fortune.emoji}</p>
@@ -420,7 +422,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ REGION BUBBLES ═══ */}
-      <section className="py-2 overflow-x-auto scrollbar-hide">
+      <section className="py-2 overflow-x-auto scrollbar-hide max-w-3xl mx-auto">
         <div className="flex gap-2 px-4 justify-center flex-wrap">
           {regionBubbles.map(r => (
             <button
@@ -440,8 +442,8 @@ export default function HomePage() {
       </section>
 
       {/* ═══ FEED TABS ═══ */}
-      <section className="border-b border-gray-100 mt-1">
-        <div className="flex max-w-2xl mx-auto">
+      <section className="border-b border-gray-100 mt-1 max-w-3xl mx-auto">
+        <div className="flex">
           {feedTabs.map((tab, i) => (
             <button
               key={tab}
@@ -459,7 +461,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ VENUE FEED — 2 Column Cards ═══ */}
-      <section className="px-4 py-4 max-w-[1200px] mx-auto">
+      <section className="px-4 py-4 max-w-3xl mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {feedVenues.map((venue, idx) => {
             const cards = [];
@@ -567,7 +569,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ LUCKY ROULETTE ═══ */}
-      <section className="px-4 py-4">
+      <section className="px-4 py-4 max-w-3xl mx-auto">
         <div className="rounded-2xl bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 p-5 text-center">
           <p className="text-2xl mb-1">🎰</p>
           <h2 className="text-lg font-bold text-[#111] mb-1">오늘 밤 여기 어때?</h2>
@@ -607,7 +609,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ QUICK LINKS ═══ */}
-      <section className="px-4 py-3">
+      <section className="px-4 py-3 max-w-3xl mx-auto">
         <div className="grid grid-cols-3 gap-2">
           {[
             { icon: '🔍', title: '비교', desc: '시세 한눈에', href: '/compare' },
@@ -630,7 +632,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ GOOGLE/AI CTA ═══ */}
-      <section className="px-4 py-4">
+      <section className="px-4 py-4 max-w-3xl mx-auto">
         <div className="rounded-2xl bg-violet-50 border border-violet-200 px-6 py-4 text-center">
           <p className="text-sm font-bold text-[#111]">
             구글 · ChatGPT · Gemini에서 <span className="text-xl text-[#8B5CF6]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>"놀쿨"</span> 검색하세요
@@ -639,7 +641,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ SEO TEXT ═══ */}
-      <section className="px-4 pb-8">
+      <section className="px-4 pb-8 max-w-3xl mx-auto">
         <div className="rounded-2xl border border-gray-100 bg-[#F5F5F5] p-5">
           <h2 className="mb-2 text-base font-bold text-[#111]">전국 클럽·나이트·라운지 실시간 정보</h2>
           <div className="space-y-2 text-sm leading-relaxed text-[#555]">
