@@ -62,7 +62,7 @@ export default function MapPage() {
   return (
     <div className="min-h-screen bg-neon-bg">
       {/* 상단 필터 */}
-      <div className="border-b border-neon-border bg-neon-surface/80 backdrop-blur-lg sticky top-16 z-30">
+      <div className="border-b border-neon-border bg-neon-surface/80 backdrop-blur-lg sticky top-[88px] z-30">
         <div className="mx-auto max-w-[1200px] px-4 py-3 sm:px-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <h1 className="text-lg font-bold text-neon-text shrink-0">위치 탐색</h1>

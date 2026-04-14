@@ -133,7 +133,7 @@ export default function GalleryPage() {
   return (
     <div className="mx-auto max-w-lg px-0 sm:px-4 py-0 sm:py-6">
       {/* 헤더 */}
-      <div className="sticky top-14 z-[90] flex items-center justify-between px-4 py-3 border-b border-neon-border" style={{ backgroundColor: '#F5F5F5' }}>
+      <div className="sticky top-[88px] z-[90] flex items-center justify-between px-4 py-3 border-b border-neon-border" style={{ backgroundColor: '#F5F5F5' }}>
         <h1 className="text-lg font-bold" style={{ color: '#111' }}>클립</h1>
         {user ? (
           <button

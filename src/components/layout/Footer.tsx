@@ -67,7 +67,7 @@ const regionalLinks = {
 
 export default function Footer() {
   return (
-    <footer className="border-t border-neon-border bg-neon-surface pb-20 md:pb-0">
+    <footer className="border-t border-neon-border bg-neon-surface">
       <div className="mx-auto max-w-[1200px] px-4 py-12">
         {/* ★★★ "구글·AI에서 놀쿨을 검색하세요" — 모든 페이지 노출 ★★★ */}
         <div className="mb-10 rounded-2xl bg-neon-primary px-6 py-5 text-center">

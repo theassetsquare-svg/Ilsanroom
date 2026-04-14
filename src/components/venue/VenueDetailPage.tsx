@@ -64,7 +64,7 @@ export default function VenueDetailPage({
   ];
 
   return (
-    <div className="bg-neon-bg pb-20">
+    <div className="bg-neon-bg">
       <PageViewTracker venueId={venue.id} venueName={venue.nameKo} category={venue.category} region={venue.region} />
       <VenueJsonLd
         venue={venue}

@@ -2,7 +2,6 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useEffect, lazy, Suspense } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import MobileNav from '@/components/layout/MobileNav';
 import BackToTop from '@/components/layout/BackToTop';
 import Toast from '@/components/ui/Toast';
 import ErrorBoundary from '@/components/ui/ErrorBoundary';
@@ -53,7 +52,7 @@ export default function MainLayout() {
       <JsonLd data={organizationJsonLd} />
       <JsonLd data={websiteJsonLd} />
       <Header />
-      <main id="main-content" className="flex-1 pt-14 pb-20 md:pb-14">
+      <main id="main-content" className="flex-1 pt-[88px] pb-6">
         <Outlet />
       </main>
       {/* 모든 페이지 공통 CTA */}
@@ -63,7 +62,6 @@ export default function MainLayout() {
         </p>
       </div>
       <Footer />
-      <MobileNav />
       <BackToTop />
       <Toast />
       {/* 업소 상세페이지에서는 전화바와 겹치므로 engagement 숨김 */}

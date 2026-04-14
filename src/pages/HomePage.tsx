@@ -26,19 +26,6 @@ function getCategoryHref(category: string, slug: string, region: string) {
 const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
 const catEmoji: Record<string, string> = { club: '🎵', night: '🌙', lounge: '🍸', room: '🚪', yojeong: '🏮', hoppa: '🥂' };
 
-/* ── Category icons ── */
-const categoryIcons = [
-  { icon: '🌙', label: '나이트', href: '/nights', gradient: 'from-blue-400 to-blue-600' },
-  { icon: '🎵', label: '클럽', href: '/clubs', gradient: 'from-violet-400 to-violet-600' },
-  { icon: '🍸', label: '라운지', href: '/lounges', gradient: 'from-amber-400 to-amber-600' },
-  { icon: '🚪', label: '룸', href: '/rooms', gradient: 'from-rose-400 to-rose-600' },
-  { icon: '🏮', label: '요정', href: '/yojeong', gradient: 'from-emerald-400 to-emerald-600' },
-  { icon: '🥂', label: '호빠', href: '/hoppa', gradient: 'from-pink-400 to-pink-600' },
-  { icon: '🔥', label: '실시간', href: '/ranking', gradient: 'from-orange-400 to-orange-600' },
-  { icon: '🆚', label: 'VS', href: '/vs', gradient: 'from-indigo-400 to-indigo-600' },
-  { icon: '💬', label: '커뮤니티', href: '/community', gradient: 'from-teal-400 to-teal-600' },
-];
-
 /* ── Region labels for filter ── */
 const regionLabels = ['전체', '강남', '홍대', '이태원', '부산', '수원', '일산', '대전', '인천', '대구'];
 
@@ -278,25 +265,11 @@ export default function HomePage() {
 
       {/* ═══ SEARCH BAR (sticky) ═══ */}
       <div ref={searchSentinelRef} />
-      <div className={`px-4 py-2 z-[60] transition-all ${searchSticky ? 'fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100' : ''}`}>
+      <div className={`px-4 py-2 z-[60] transition-all ${searchSticky ? 'fixed top-[88px] left-0 right-0 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100' : ''}`}>
         <div className={searchSticky ? 'max-w-3xl mx-auto' : ''}>
           <HeroSearch />
         </div>
       </div>
-
-      {/* ═══ CATEGORY ICONS ═══ */}
-      <section className="py-3 overflow-x-auto scrollbar-hide max-w-3xl mx-auto">
-        <div className="flex gap-3 px-4 justify-center flex-wrap">
-          {categoryIcons.map(cat => (
-            <Link key={cat.label} to={cat.href} className="flex flex-col items-center gap-1.5 min-w-[52px]">
-              <div className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${cat.gradient} text-xl shadow-sm`}>
-                {cat.icon}
-              </div>
-              <span className="text-xs font-semibold text-[#333]">{cat.label}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
 
       {/* ═══ BANNER SLIDER ═══ */}
       <section className="px-4 py-2 max-w-3xl mx-auto">
