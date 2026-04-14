@@ -13,8 +13,11 @@ export function useAuth() {
       return;
     }
 
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user);
+    // getSession()은 로컬 저장소에서 세션을 가져오고,
+    // 만료된 경우 refresh token으로 자동 갱신한다.
+    // getUser()와 달리 매번 서버 요청하지 않아서 빠르고 안정적.
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
       setLoading(false);
     });
 
