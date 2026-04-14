@@ -1,10 +1,21 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { Search, MapPin, Filter, ArrowRight, Star, Award, TrendingUp } from 'lucide-react';
+import { Search, Filter } from 'lucide-react';
 import { venues as localVenues } from '@/data/venues';
 import type { Venue } from '@/types';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
+
+const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
+const catEmoji: Record<string, string> = { club: '🎵', night: '🌙', lounge: '🍸', room: '🚪', yojeong: '🏮', hoppa: '🥂' };
+const fallbackGradient: Record<string, string> = {
+  club: 'from-violet-500 to-indigo-700',
+  night: 'from-blue-500 to-purple-700',
+  lounge: 'from-amber-500 to-orange-700',
+  room: 'from-rose-500 to-pink-700',
+  yojeong: 'from-emerald-500 to-teal-700',
+  hoppa: 'from-pink-500 to-rose-700',
+};
 
 const CATEGORIES = [
   { key: 'all', label: '전체' },
@@ -170,85 +181,48 @@ export default function SearchPage() {
           </button>
         </div>
 
-        {/* Results List */}
+        {/* Results Grid — 1:1 카드, 모든 페이지 동일 */}
         {loading ? (
-          <div className="space-y-4">
-            {[...Array(5)].map((_, i) => (
-              <div key={i} className="h-32 w-full animate-pulse rounded-2xl bg-white shadow-sm" />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="w-full animate-pulse rounded-xl bg-white shadow-sm" style={{ aspectRatio: '1/1' }} />
             ))}
           </div>
         ) : results.length > 0 ? (
-          <div className="space-y-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {results.map((venue) => (
-              <Link 
-                key={venue.id || venue.slug} 
+              <Link
+                key={venue.id || venue.slug}
                 to={getCategoryPath(venue)}
                 target="_blank" rel="noopener noreferrer"
-                className="group relative flex overflow-hidden rounded-2xl border border-transparent bg-white shadow-sm transition-all hover:border-[#8B5CF6] hover:shadow-md"
+                className="block"
               >
-                <div className="relative h-32 w-32 shrink-0 sm:h-40 sm:w-40 overflow-hidden">
-                  <img
-                    src={`/venues/${venue.slug}-1.jpg`}
-                    alt={venue.nameKo}
-                    loading="lazy"
-                    className="absolute inset-0 w-full h-full object-cover z-[1] transition-transform duration-500 group-hover:scale-105"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  />
-                  {/* Fallback */}
-                  <div className={`absolute inset-0 flex flex-col items-center justify-center ${
-                    venue.category === 'club' ? 'bg-gradient-to-br from-violet-500 to-indigo-700' :
-                    venue.category === 'night' ? 'bg-gradient-to-br from-blue-500 to-purple-700' :
-                    venue.category === 'lounge' ? 'bg-gradient-to-br from-amber-500 to-orange-700' :
-                    venue.category === 'room' ? 'bg-gradient-to-br from-rose-500 to-pink-700' :
-                    venue.category === 'yojeong' ? 'bg-gradient-to-br from-emerald-500 to-teal-700' :
-                    'bg-gradient-to-br from-pink-500 to-rose-700'
-                  }`}>
-                    <span className="text-2xl">{venue.category === 'club' ? '🎵' : venue.category === 'night' ? '🌙' : venue.category === 'lounge' ? '🍸' : venue.category === 'room' ? '🚪' : venue.category === 'yojeong' ? '🏮' : '🥂'}</span>
-                    <span className="mt-1 text-xs font-bold text-white/80">{venue.nameKo.slice(0, 4)}</span>
-                  </div>
-                  {venue.isPremium && (
-                    <div className="absolute left-2 top-2 flex items-center gap-1 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-white backdrop-blur-sm">
-                      <Award className="h-3 w-3 text-amber-400" />
-                      PREMIUM
+                <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
+                  <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
+                    <img
+                      src={`/venues/${venue.slug}-1.jpg`}
+                      alt={venue.nameKo}
+                      loading="lazy"
+                      className="absolute inset-0 w-full h-full object-cover z-[1]"
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
+                    {/* Fallback */}
+                    <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${fallbackGradient[venue.category] || 'from-gray-500 to-gray-700'}`}>
+                      <span className="text-3xl">{catEmoji[venue.category] || '🎵'}</span>
+                      <span className="mt-1 text-xs font-bold text-white/80">{venue.nameKo.slice(0, 4)}</span>
                     </div>
-                  )}
-                </div>
-
-                <div className="flex flex-1 flex-col p-4">
-                  <div className="mb-1 flex items-center gap-2">
-                    <span className="text-[11px] font-bold text-[#8B5CF6] uppercase tracking-wider">
-                      {CATEGORIES.find(c => c.key === venue.category)?.label}
-                    </span>
-                    <span className="h-3 w-[1px] bg-gray-200" />
-                    <span className="flex items-center gap-0.5 text-[11px] text-gray-500">
-                      <MapPin className="h-3 w-3" />
-                      {venue.regionKo}
-                    </span>
-                  </div>
-                  
-                  <h3 className="mb-1 text-base font-bold text-gray-900 group-hover:text-[#8B5CF6]">
-                    {venue.nameKo}
-                  </h3>
-                  
-                  <p className="mb-3 line-clamp-2 text-xs leading-relaxed text-gray-500">
-                    {venue.shortDescription}
-                  </p>
-
-                  <div className="mt-auto flex items-center gap-4">
-                    <div className="flex items-center gap-1">
-                      <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                      <span className="text-xs font-bold text-gray-900">{venue.rating.toFixed(1)}</span>
-                      <span className="text-[11px] text-gray-400">({venue.reviewCount})</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <TrendingUp className="h-3.5 w-3.5 text-blue-500" />
-                      <span className="text-[11px] font-medium text-blue-500">실시간 {Math.floor(Math.random() * 20) + 5}명 접속</span>
+                    {/* PREMIUM 뱃지 */}
+                    {venue.isPremium && (
+                      <span className="absolute top-2 left-2 z-[2] rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-amber-400 backdrop-blur-sm">
+                        PREMIUM
+                      </span>
+                    )}
+                    {/* 하단 업소명 — 솔리드 검정 배경 */}
+                    <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2.5 py-2">
+                      <h3 className="text-sm font-bold text-white leading-tight truncate">{venue.nameKo}</h3>
+                      <p className="text-[11px] text-white/90 truncate">{catLabel[venue.category] || venue.category} · {venue.regionKo}</p>
                     </div>
                   </div>
-                </div>
-
-                <div className="hidden items-center justify-center bg-gray-50 px-4 text-gray-300 transition-colors group-hover:bg-[#8B5CF6]/5 group-hover:text-[#8B5CF6] sm:flex">
-                  <ArrowRight className="h-5 w-5" />
                 </div>
               </Link>
             ))}

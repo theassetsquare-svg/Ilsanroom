@@ -1,8 +1,7 @@
 
 
 import { useState, useMemo } from 'react';
-import Card from '@/components/ui/Card';
-import Badge from '@/components/ui/Badge';
+import { Link } from 'react-router-dom';
 import type { Venue } from '@/types';
 
 interface VenueListClientProps {
@@ -20,32 +19,18 @@ function getCategoryLabel(cat: string) {
   return map[cat] || cat;
 }
 
+const catEmoji: Record<string, string> = { club: '🎵', night: '🌙', lounge: '🍸', room: '🚪', yojeong: '🏮', hoppa: '🥂' };
+
+const fallbackGradient: Record<string, string> = {
+  club: 'from-violet-500 to-indigo-700',
+  night: 'from-blue-500 to-purple-700',
+  lounge: 'from-amber-500 to-orange-700',
+  room: 'from-rose-500 to-pink-700',
+  yojeong: 'from-emerald-500 to-teal-700',
+  hoppa: 'from-pink-500 to-rose-700',
+};
+
 type SortKey = 'name' | 'premium';
-
-function VenueCard({ venue, href }: { venue: Venue; href: string }) {
-  const nameIncludesRegion = venue.nameKo.includes(venue.regionKo);
-  const nameIncludesCategory = venue.nameKo.includes(getCategoryLabel(venue.category));
-
-  return (
-    <Card href={href}>
-      <div className="flex flex-wrap gap-2 mb-3">
-        {venue.isPremium && <Badge variant="premium">PREMIUM</Badge>}
-      </div>
-      <h3 className="text-lg font-bold text-neon-text mb-1">{venue.nameKo}</h3>
-      {venue.staffNickname && (
-        <p className="mb-1 text-sm font-medium text-neon-gold">{venue.staffNickname}</p>
-      )}
-      <div className="mb-2 flex items-center gap-2 text-sm text-neon-text-muted">
-        {!nameIncludesRegion && <span>{venue.regionKo}</span>}
-        {!nameIncludesRegion && !nameIncludesCategory && <span>·</span>}
-        {!nameIncludesCategory && <span>{getCategoryLabel(venue.category)}</span>}
-      </div>
-      {venue.shortDescription && (
-        <p className="text-xs text-neon-text-muted line-clamp-2">{venue.shortDescription}</p>
-      )}
-    </Card>
-  );
-}
 
 export default function VenueListClient({ venues, hrefPattern, regions }: VenueListClientProps) {
   const [regionFilter, setRegionFilter] = useState('all');
@@ -67,11 +52,11 @@ export default function VenueListClient({ venues, hrefPattern, regions }: VenueL
   return (
     <div>
       {/* Filters */}
-      <div className="mb-8 flex flex-wrap items-center gap-3">
+      <div className="mb-6 flex flex-wrap items-center gap-3">
         <select
           value={regionFilter}
           onChange={(e) => setRegionFilter(e.target.value)}
-          className="rounded-lg border border-neon-border bg-white px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-primary"
+          className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-[#111] outline-none focus:border-[#8B5CF6]"
         >
           <option value="all">전체 지역</option>
           {regions.map((r) => (
@@ -82,26 +67,61 @@ export default function VenueListClient({ venues, hrefPattern, regions }: VenueL
         <select
           value={sortKey}
           onChange={(e) => setSortKey(e.target.value as SortKey)}
-          className="rounded-lg border border-neon-border bg-white px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-primary"
+          className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-[#111] outline-none focus:border-[#8B5CF6]"
         >
           <option value="premium">추천순</option>
           <option value="name">이름순</option>
         </select>
 
-        <span className="text-xs text-neon-text-muted">{filtered.length}개 업소</span>
+        <span className="text-xs text-[#555]">{filtered.length}개 업소</span>
       </div>
 
-      {/* Grid */}
+      {/* Grid — 1:1 이미지 카드, 모든 페이지 동일 */}
       {filtered.length > 0 ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {filtered.map((venue) => (
-            <VenueCard key={venue.id} venue={venue} href={buildHref(hrefPattern, venue)} />
+            <Link
+              key={venue.id}
+              to={buildHref(hrefPattern, venue)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block"
+            >
+              <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
+                {/* 이미지 — 1:1 정사각형 */}
+                <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
+                  <img
+                    src={`/venues/${venue.slug}-1.jpg`}
+                    alt={venue.nameKo}
+                    loading="lazy"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    className="absolute inset-0 w-full h-full object-cover z-[1]"
+                  />
+                  {/* Fallback */}
+                  <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${fallbackGradient[venue.category] || 'from-gray-500 to-gray-700'}`}>
+                    <span className="text-3xl">{catEmoji[venue.category] || '🎵'}</span>
+                    <span className="mt-1 text-xs font-bold text-white/80">{venue.nameKo.slice(0, 4)}</span>
+                  </div>
+                  {/* PREMIUM 뱃지 */}
+                  {venue.isPremium && (
+                    <span className="absolute top-2 left-2 z-[2] rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-amber-400 backdrop-blur-sm">
+                      PREMIUM
+                    </span>
+                  )}
+                  {/* 하단 업소명 — 솔리드 검정 배경 */}
+                  <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2.5 py-2">
+                    <h3 className="text-sm font-bold text-white leading-tight truncate">{venue.nameKo}</h3>
+                    <p className="text-[11px] text-white/90 truncate">{getCategoryLabel(venue.category)} · {venue.regionKo}</p>
+                  </div>
+                </div>
+              </div>
+            </Link>
           ))}
         </div>
       ) : (
         <div className="py-20 text-center">
-          <p className="text-neon-text-muted">조건에 맞는 업소가 없습니다.</p>
-          <button onClick={() => setRegionFilter('all')} className="mt-3 text-sm text-neon-primary hover:underline">
+          <p className="text-[#555]">조건에 맞는 업소가 없습니다.</p>
+          <button onClick={() => setRegionFilter('all')} className="mt-3 text-sm text-[#8B5CF6] hover:underline">
             필터 초기화
           </button>
         </div>

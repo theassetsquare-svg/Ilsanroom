@@ -174,17 +174,6 @@ export default function HomePage() {
   const [vsVotes, setVsVotes] = useState<Record<number, string>>({});
   const currentPoll = vsPolls[new Date().getDate() % vsPolls.length];
 
-  // === Vibe Score (실시간 분위기 지수) ===
-  const vibeScores = useRef<Record<string, number>>({});
-  const getVibeScore = (id: string) => {
-    if (!vibeScores.current[id]) {
-      const h = new Date().getHours();
-      const base = (h >= 21 || h < 4) ? 60 : (h >= 18 ? 40 : 20);
-      vibeScores.current[id] = base + Math.floor(Math.random() * 30);
-    }
-    return Math.min(vibeScores.current[id], 100);
-  };
-
   // === Favorites ===
   const [favorites, setFavorites] = useState<Set<string>>(() => {
     try {
@@ -309,10 +298,10 @@ export default function HomePage() {
                 <span className={`absolute top-2 left-2 z-[2] flex h-6 w-6 items-center justify-center rounded-full text-xs font-black text-white ${i < 3 ? 'bg-[#8B5CF6]' : 'bg-black/50'}`}>
                   {i + 1}
                 </span>
-                {/* 하단 그라데이션 + 업소명 */}
-                <div className="absolute bottom-0 left-0 right-0 z-[2] bg-gradient-to-t from-black/80 to-transparent px-2.5 pb-2 pt-6">
+                {/* 하단 업소명 — 솔리드 검정 배경 */}
+                <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2.5 py-2">
                   <p className="text-xs font-bold text-white truncate">{v.nameKo}</p>
-                  <p className="text-[10px] text-white/70 truncate">{v.regionKo}</p>
+                  <p className="text-[10px] text-white/90 truncate">{v.regionKo}</p>
                 </div>
               </div>
             </Link>
@@ -414,7 +403,7 @@ export default function HomePage() {
           </div>
           {vsVotes[0] && (
             <p className="mt-2 text-xs text-[#8B5CF6] text-center">
-              {Math.floor(Math.random() * 20 + 40)}% vs {Math.floor(Math.random() * 20 + 40)}% — 참여 완료!
+              투표 완료! 결과는 곧 공개됩니다.
             </p>
           )}
         </div>
@@ -500,10 +489,10 @@ export default function HomePage() {
                         <span className="text-3xl">{catEmoji[venue.category] || '🎵'}</span>
                         <span className="mt-1 text-xs font-bold text-white/80">{venue.nameKo.slice(0, 4)}</span>
                       </div>
-                      {/* 하단 그라데이션 오버레이 — 업소명+지역 */}
-                      <div className="absolute bottom-0 left-0 right-0 z-[2] bg-gradient-to-t from-black/80 to-transparent px-2.5 pb-2.5 pt-8">
+                      {/* 하단 업소명 — 솔리드 검정 배경 */}
+                      <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2.5 py-2">
                         <h3 className="text-sm font-bold text-white leading-tight truncate">{venue.nameKo}</h3>
-                        <p className="text-[11px] text-white/70 truncate">{catLabel[venue.category]} · {venue.regionKo}</p>
+                        <p className="text-[11px] text-white/90 truncate">{catLabel[venue.category]} · {venue.regionKo}</p>
                       </div>
                     </div>
                   </div>
