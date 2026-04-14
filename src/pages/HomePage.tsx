@@ -7,7 +7,6 @@ import type { Venue } from '@/types';
 import { createClient } from '@/lib/supabase';
 import JsonLd from '@/components/seo/JsonLd';
 import ErrorBoundary from '@/components/ui/ErrorBoundary';
-import HeroSearch from '@/components/home/HeroSearch';
 import KakaoShareButton from '@/components/engagement/KakaoShareButton';
 
 /* ── Helpers ── */
@@ -156,14 +155,6 @@ export default function HomePage() {
   // === TAB STATE ===
   const [activeTab, setActiveTab] = useState(0);
 
-  // === STICKY SEARCH ===
-  const [searchSticky, setSearchSticky] = useState(false);
-  const searchSentinelRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => setSearchSticky(!entry.isIntersecting), { threshold: 0 });
-    if (searchSentinelRef.current) observer.observe(searchSentinelRef.current);
-    return () => observer.disconnect();
-  }, []);
 
   // === FEED DATA ===
   const filteredVenues = useMemo(() => {
@@ -262,14 +253,6 @@ export default function HomePage() {
           전국 {openVenues.length}곳 실시간 비교 · 솔직 후기 · 조각모임
         </p>
       </section>
-
-      {/* ═══ SEARCH BAR (sticky) ═══ */}
-      <div ref={searchSentinelRef} />
-      <div className={`px-4 py-2 z-[60] transition-all ${searchSticky ? 'fixed top-[88px] left-0 right-0 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100' : ''}`}>
-        <div className={searchSticky ? 'max-w-3xl mx-auto' : ''}>
-          <HeroSearch />
-        </div>
-      </div>
 
       {/* ═══ BANNER SLIDER ═══ */}
       <section className="px-4 py-2 max-w-3xl mx-auto">
