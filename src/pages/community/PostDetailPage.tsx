@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
+import { getAllPosts } from '@/lib/community-data';
 
 export default function PostDetailPage() {
   useDocumentMeta('글 상세', '커뮤니티 게시글 상세 페이지');
@@ -18,12 +19,63 @@ export default function PostDetailPage() {
 
   const supabase = createClient();
 
+  const [isSeedPost, setIsSeedPost] = useState(false);
+
   // 글 불러오기
   useEffect(() => {
-    if (!supabase || !id) return;
+    if (!id) return;
+
+    // seed-xxx 형태의 ID는 시드 데이터에서 찾기
+    if (id.startsWith('seed-')) {
+      const seedId = id.replace('seed-', '');
+      const seedPost = getAllPosts().find(p => p.id === seedId);
+      if (seedPost) {
+        setPost({
+          id: `seed-${seedPost.id}`,
+          title: seedPost.title,
+          content: seedPost.content,
+          category: seedPost.board,
+          created_at: seedPost.createdAt,
+          likes: seedPost.likes,
+          views: seedPost.views,
+          user_id: seedPost.author.id,
+          users: { nickname: seedPost.author.nickname },
+          _seedComments: seedPost.comments,
+        });
+        // 시드 댓글 세팅
+        const flatComments = seedPost.comments.flatMap(c => {
+          const result: any[] = [{
+            id: c.id,
+            content: c.content,
+            created_at: c.createdAt,
+            likes: c.likes,
+            user_id: c.author.id,
+            users: { nickname: c.author.nickname },
+          }];
+          if (c.replies) {
+            c.replies.forEach(r => {
+              result.push({
+                id: r.id,
+                content: r.content,
+                created_at: r.createdAt,
+                likes: r.likes,
+                user_id: r.author.id,
+                users: { nickname: r.author.nickname },
+              });
+            });
+          }
+          return result;
+        });
+        setComments(flatComments);
+        setIsSeedPost(true);
+      }
+      setLoading(false);
+      return;
+    }
+
+    if (!supabase) { setLoading(false); return; }
     supabase.from('posts').select('*, users!posts_user_id_fkey(nickname, avatar_url)').eq('id', id).single().then(({ data, error }) => {
       if (error) {
-        // Fallback without join
         supabase.from('posts').select('*').eq('id', id).single().then(({ data: d }) => {
           setPost(d);
           setLoading(false);
@@ -50,7 +102,7 @@ export default function PostDetailPage() {
     setComments(data || []);
   };
 
-  useEffect(() => { fetchComments(); }, [id]);
+  useEffect(() => { if (!isSeedPost) fetchComments(); }, [id, isSeedPost]);
 
   // 글 삭제
   const handleDelete = async () => {

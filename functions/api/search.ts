@@ -49,46 +49,45 @@ async function getVenues(): Promise<Venue[]> {
 }
 
 function normalize(text: string): string {
-  return text.toLowerCase().replace(/\s+/g, '');
+  return text.toLowerCase().replace(/\s+/g, '').replace(/[^\wㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
 }
 
 function scoreVenue(venue: Venue, query: string, category?: string, region?: string): number {
   const q = normalize(query);
+  const nameKo = normalize(venue.nameKo || '');
+  const nameEn = normalize(venue.name || '');
+  const regionKo = normalize(venue.regionKo || '');
   let score = 0;
 
-  // Exact name match
-  if (normalize(venue.nameKo).includes(q)) score += 100;
-  if (normalize(venue.name).includes(q)) score += 80;
+  // 1. Exact or Prefix Match (Highest Priority)
+  if (nameKo === q) score += 1000;
+  if (nameKo.startsWith(q)) score += 500;
+  if (nameEn === q) score += 800;
 
-  // Region match
-  if (normalize(venue.regionKo).includes(q)) score += 60;
-  if (region && venue.region === region) score += 40;
-  if (region && normalize(venue.regionKo) === normalize(region)) score += 40;
+  // 2. Contains Match
+  if (nameKo.includes(q)) score += 200;
+  if (nameEn.includes(q)) score += 150;
 
-  // Category match
+  // 3. Region Match
+  if (regionKo === q) score += 400;
+  if (regionKo.includes(q)) score += 100;
+  if (region && (venue.region === region || normalize(venue.regionKo) === normalize(region))) score += 50;
+
+  // 4. Category Match
   if (category && venue.category === category) score += 30;
 
-  // Tag match
-  if (venue.tags?.some((t) => normalize(t).includes(q))) score += 50;
+  // 5. Tags & Features
+  if (venue.tags?.some((t) => normalize(t).includes(q))) score += 80;
+  if (venue.features?.some((f) => normalize(f).includes(q))) score += 40;
+  if (venue.atmosphere?.some((a) => normalize(a).includes(q))) score += 30;
 
-  // Feature match
-  if (venue.features?.some((f) => normalize(f).includes(q))) score += 30;
+  // 6. Metadata & Quality
+  if (venue.isPremium) score += 50;
+  score += (venue.rating || 0) * 5;
+  score += (venue.reviewCount || 0) * 0.1;
 
-  // Atmosphere match
-  if (venue.atmosphere?.some((a) => normalize(a).includes(q))) score += 25;
-
-  // Description match
-  if (normalize(venue.shortDescription).includes(q)) score += 20;
-
-  // Age group / station match
-  if (normalize(venue.ageGroup).includes(q)) score += 15;
-  if (normalize(venue.nearbyStation).includes(q)) score += 35;
-
-  // Premium bonus
-  if (venue.isPremium) score += 5;
-
-  // Rating weight
-  score += venue.rating * 2;
+  // 7. Proximity to station
+  if (venue.nearbyStation && normalize(venue.nearbyStation).includes(q)) score += 60;
 
   return score;
 }
@@ -103,51 +102,36 @@ export const onRequestGet: PagesFunction = async (context) => {
   const limit = Math.min(parseInt(url.searchParams.get('limit') || '10', 10), 50);
   const offset = parseInt(url.searchParams.get('offset') || '0', 10);
 
-  if (!q && !category && !region) {
-    return Response.json(
-      { error: '검색어(q), 카테고리(category), 또는 지역(region) 중 하나를 입력해주세요.' },
-      { status: 400 }
-    );
-  }
-
   const venues = await getVenues();
 
-  // If no server-side data, return instructions for client-side fallback
+  // If no server-side data, return error or empty
   if (venues.length === 0) {
     return Response.json({
       results: [],
       total: 0,
       query: q,
-      filters: { category, region },
       took: Date.now() - start,
-      fallback: true,
-      message: '서버 데이터베이스가 연결되지 않았습니다. 클라이언트 검색을 사용합니다.',
-    }, {
-      headers: { 'Cache-Control': 'public, max-age=60' },
+      message: 'No data available on server.',
     });
   }
 
   let filtered = venues.filter((v) => v.status !== 'closed_or_unclear');
 
-  // Category filter
-  if (category) {
+  if (category && category !== 'all') {
     filtered = filtered.filter((v) => v.category === category);
   }
 
-  // Region filter
-  if (region) {
+  if (region && region !== 'all') {
     filtered = filtered.filter(
       (v) => v.region === region || normalize(v.regionKo) === normalize(region)
     );
   }
 
-  // Score and sort by relevance
   let scored = filtered.map((v) => ({
     venue: v,
-    score: q ? scoreVenue(v, q, category, region) : v.rating * 10 + (v.isPremium ? 50 : 0),
+    score: q ? scoreVenue(v, q, category, region) : (v.rating * 10 + (v.isPremium ? 50 : 0)),
   }));
 
-  // Filter out zero-score results when there's a query
   if (q) {
     scored = scored.filter((s) => s.score > 0);
   }
@@ -164,7 +148,6 @@ export const onRequestGet: PagesFunction = async (context) => {
     results,
     total,
     query: q,
-    filters: { category, region },
     took: Date.now() - start,
   }, {
     headers: {

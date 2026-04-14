@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues as localVenues, getPopularVenues } from '@/data/venues';
 import type { Venue } from '@/types';
+import { getPopularPosts, getAllPosts } from '@/lib/community-data';
 import JsonLd from '@/components/seo/JsonLd';
 import ErrorBoundary from '@/components/ui/ErrorBoundary';
 import HeroSearch from '@/components/home/HeroSearch';
@@ -67,13 +68,25 @@ const vsPolls = [
   { q: '혼자 가도 괜찮은 곳은?', a: '라운지', b: '나이트' },
 ];
 
-/* ── Fake community hot posts ── */
-const hotPosts = [
-  { id: 1, board: '자유', author: '강남불주먹', title: '어제 레이스 갔는데 ㄹㅇ 미쳤음', likes: 47, comments: 23, time: '2시간 전' },
-  { id: 2, board: '후기', author: '홍대댄서', title: '신림 그랑프리 솔직 후기 (사진있음)', likes: 35, comments: 18, time: '3시간 전' },
-  { id: 3, board: '질문', author: '처음이라', title: '나이트 처음인데 드레스코드 어떻게 해야돼?', likes: 28, comments: 31, time: '4시간 전' },
-  { id: 4, board: '후기', author: '수원사는형', title: '수원찬스돔 vs 코리아 비교 후기', likes: 52, comments: 27, time: '5시간 전' },
-];
+/* ── Community hot posts from seed data ── */
+const boardLabels: Record<string, string> = { free: '자유', reviews: '후기', party: '모집', tips: '팁', fashion: '패션', qna: 'Q&A' };
+function getTimeLabel(dateStr: string) {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const h = Math.floor(diff / 3600000);
+  if (h < 1) return '방금';
+  if (h < 24) return `${h}시간 전`;
+  const d = Math.floor(h / 24);
+  return `${d}일 전`;
+}
+const seedHotPosts = getPopularPosts(6).map(p => ({
+  id: `seed-${p.id}`,
+  board: boardLabels[p.board] || p.board,
+  author: p.author.nickname,
+  title: p.title,
+  likes: p.likes,
+  comments: p.commentCount,
+  time: getTimeLabel(p.createdAt),
+}));
 
 /* ── Fake 조각모임 data ── */
 const jogakList = [
@@ -325,8 +338,8 @@ export default function HomePage() {
           <Link to="/community" className="text-xs text-[#8B5CF6] font-medium">더보기 →</Link>
         </div>
         <div className="space-y-2">
-          {hotPosts.map(post => (
-            <Link key={post.id} to="/community" className="flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-3 active:bg-gray-50 transition">
+          {seedHotPosts.map(post => (
+            <Link key={post.id} to={`/community/post/${post.id}`} className="flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-3 active:bg-gray-50 transition">
               <span className="flex-shrink-0 rounded-lg bg-[#F3F0FF] px-2 py-1 text-xs font-bold text-[#8B5CF6]">{post.board}</span>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-[#111] truncate">{post.title}</p>

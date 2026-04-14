@@ -3,25 +3,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, fetchComments, createComment, deletePost, deleteComment, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { freePosts as seedFreePosts } from '@/lib/community-data';
 
-const sampleHotPosts = [
-  { id: "hot-1", title: "일산 밤문화 입문기 — 3개월 차 솔직 소감", author: "야행성루키", date: "2026-03-19", content: "", comments: 74 },
-  { id: "hot-2", title: "라운지 vs 나이트, 결국 취향 차이더라", author: "취향존중", date: "2026-03-18", content: "", comments: 61 },
-  { id: "hot-3", title: "혼자 다니는 분들 의외로 많더라고요", author: "솔로탐험가", date: "2026-03-17", content: "", comments: 53 },
-];
+const sampleHotPosts = seedFreePosts
+  .filter(p => p.isPopular)
+  .sort((a, b) => b.likes - a.likes)
+  .slice(0, 3)
+  .map(p => ({ id: `seed-${p.id}`, title: p.title, author: p.author.nickname, date: p.createdAt.slice(0, 10), content: p.content, comments: p.commentCount }));
 
-const sampleRecentPosts = [
-  { id: "sample-1", title: "주엽역 근처 분위기 좋은 곳 알려주세요", author: "주엽사람", date: "2026-03-20", content: "", comments: 8 },
-  { id: "sample-2", title: "금요일 vs 토요일, 언제가 더 나을까요?", author: "요일고민", date: "2026-03-20", content: "", comments: 23 },
-  { id: "sample-3", title: "라페스타 쪽 새로 생긴 바 가보신 분?", author: "신상궁금", date: "2026-03-19", content: "", comments: 15 },
-  { id: "sample-4", title: "회식 장소로 괜찮은 곳 추천 부탁드립니다", author: "직장인모임", date: "2026-03-19", content: "", comments: 31 },
-  { id: "sample-5", title: "여름 되면 루프탑 바 오픈하는 곳 있나요", author: "루프탑기대", date: "2026-03-18", content: "", comments: 12 },
-  { id: "sample-6", title: "대리운전 앱 뭐가 제일 빠른지 공유해요", author: "귀가전문", date: "2026-03-18", content: "", comments: 27 },
-  { id: "sample-7", title: "일산에서 칵테일 잘하는 곳 정보 공유", author: "칵테일러버", date: "2026-03-17", content: "", comments: 19 },
-  { id: "sample-8", title: "백석동 쪽 늦은 밤 갈 만한 곳?", author: "백석주민", date: "2026-03-17", content: "", comments: 6 },
-  { id: "sample-9", title: "주말 나이트 예약 필수인가요?", author: "예약궁금", date: "2026-03-16", content: "", comments: 14 },
-  { id: "sample-10", title: "비 오는 날 실내 놀거리 추천", author: "우중산책", date: "2026-03-16", content: "", comments: 9 },
-];
+const sampleRecentPosts = seedFreePosts
+  .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+  .map(p => ({ id: `seed-${p.id}`, title: p.title, author: p.author.nickname, date: p.createdAt.slice(0, 10), content: p.content, comments: p.commentCount }));
 
 interface SimplePost {
   id: string;
