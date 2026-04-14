@@ -58,11 +58,9 @@ export default function PostDetailPage() {
 
   // 글 삭제
   const handleDelete = async () => {
-    if (!confirm('정말 삭제하시겠습니까?')) return;
     if (!supabase) return;
     const { error } = await supabase.from('posts').delete().eq('id', id);
-    if (error) { alert('삭제 실패: ' + error.message); return; }
-    alert('삭제되었습니다');
+    if (error) return;
     navigate('/community');
   };
 
@@ -84,14 +82,12 @@ export default function PostDetailPage() {
       user_id: user.id,
       content: commentText.trim(),
     });
-    if (error) { alert('댓글 실패: ' + error.message); }
-    else { setCommentText(''); await fetchComments(); }
+    if (!error) { setCommentText(''); await fetchComments(); }
     setSubmitting(false);
   };
 
   // 댓글 삭제
   const handleDeleteComment = async (commentId: string) => {
-    if (!confirm('댓글을 삭제하시겠습니까?')) return;
     if (!supabase) return;
     await supabase.from('comments').delete().eq('id', commentId);
     await fetchComments();

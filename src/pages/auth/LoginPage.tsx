@@ -19,7 +19,6 @@ function openInExternalBrowser(url: string) {
 function signInWith(provider: 'kakao' | 'google') {
   const supabase = createClient();
   if (!supabase) {
-    alert('Supabase 연결이 설정되지 않았습니다. 관리자에게 문의해주세요.');
     return;
   }
 

@@ -20,9 +20,7 @@ export default function KakaoShareButton({ venueName, venueHref, description, co
       return;
     }
 
-    navigator.clipboard.writeText(shareUrl).then(() => {
-      alert('링크가 복사되었습니다!');
-    }).catch(() => {});
+    navigator.clipboard.writeText(shareUrl).catch(() => {});
   };
 
   if (compact) {

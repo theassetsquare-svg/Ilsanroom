@@ -86,9 +86,9 @@ export default function ReviewsPage() {
       rating: writeRating,
     });
     if (result.error) {
-      alert('저장 실패: ' + result.error);
+      setSubmitting(false);
+      return;
     } else {
-      alert('후기가 저장되었습니다!');
       setShowWriteModal(false);
       setWriteTitle(""); setWriteContent(""); setWriteVenue(""); setWriteRating(0);
       const { data } = await fetchPosts('reviews');

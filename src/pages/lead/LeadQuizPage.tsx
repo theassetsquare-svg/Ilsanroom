@@ -197,7 +197,6 @@ export default function LeadQuizPage() {
                 navigator.share({ title: '나만의 밤 유형 퀴즈', text, url });
               } else {
                 navigator.clipboard.writeText(`${text} ${url}`);
-                alert('링크가 복사되었습니다!');
               }
             }}
             className="rounded-lg border border-neon-primary px-6 py-3 font-bold text-neon-primary transition hover:bg-neon-primary/5"

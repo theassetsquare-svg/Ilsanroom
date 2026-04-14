@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
@@ -44,13 +44,14 @@ function timeAgo(dateStr: string): string {
 export default function GalleryPage() {
   useDocumentMeta('클립 — 실시간 나이트라이프 포토 피드', '손님들이 직접 올리는 현장 사진. 지금 가장 핫한 곳을 사진으로 먼저 확인.');
   const { user } = useAuth();
+  const navigate = useNavigate();
   const supabase = createClient();
+  const requireLogin = () => { if (!user) { navigate('/login'); return false; } return true; };
 
   /* ── State ── */
   const [clips, setClips] = useState<Clip[]>([]);
   const [loading, setLoading] = useState(true);
   const [showUpload, setShowUpload] = useState(false);
-  const [loginPrompt, setLoginPrompt] = useState(false);
 
   /* ── 피드 불러오기 ── */
   const fetchClips = useCallback(async () => {
@@ -129,7 +130,7 @@ export default function GalleryPage() {
 
   /* ── 좋아요 ── */
   const toggleLike = async (clipId: string) => {
-    if (!user) { setLoginPrompt(true); return; }
+    if (!requireLogin()) return;
     if (!supabase) return;
     setClips(prev => prev.map(c =>
       c.id === clipId ? { ...c, liked: !c.liked, likes: c.liked ? c.likes - 1 : c.likes + 1 } : c
@@ -144,7 +145,7 @@ export default function GalleryPage() {
   /* ── 댓글 달기 ── */
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
   const addComment = async (clipId: string) => {
-    if (!user) { setLoginPrompt(true); return; }
+    if (!requireLogin()) return;
     if (!supabase) return;
     const text = commentInputs[clipId]?.trim();
     if (!text) return;
@@ -181,8 +182,7 @@ export default function GalleryPage() {
 
   /* ── 게시물 삭제 ── */
   const deleteClip = async (clipId: string) => {
-    if (!confirm('삭제하시겠습니까?')) return;
-    if (!supabase) return;
+        if (!supabase) return;
     await supabase.from('posts').delete().eq('id', clipId);
     setClips(prev => prev.filter(c => c.id !== clipId));
   };
@@ -197,7 +197,7 @@ export default function GalleryPage() {
       <div className="flex items-center gap-4 px-4 py-3 border-b border-gray-100 overflow-x-auto scrollbar-hide">
         {/* 내 스토리 (업로드 버튼) */}
         <button
-          onClick={() => user ? setShowUpload(true) : setLoginPrompt(true)}
+          onClick={() => requireLogin() && setShowUpload(true)}
           className="flex flex-col items-center gap-1 shrink-0"
         >
           <div className="relative">
@@ -239,7 +239,7 @@ export default function GalleryPage() {
           <h3 className="text-lg font-bold text-[#111] mb-1">아직 클립이 없습니다</h3>
           <p className="text-sm text-[#555] mb-6">첫 번째 클립을 올려보세요!</p>
           <button
-            onClick={() => user ? setShowUpload(true) : setLoginPrompt(true)}
+            onClick={() => requireLogin() && setShowUpload(true)}
             className="rounded-xl px-6 py-3 text-sm font-bold text-white"
             style={{ backgroundColor: '#8B5CF6', minHeight: 48 }}
           >
@@ -356,7 +356,7 @@ export default function GalleryPage() {
                     value={commentInputs[clip.id] || ''}
                     onChange={e => setCommentInputs(prev => ({ ...prev, [clip.id]: e.target.value }))}
                     onKeyDown={e => { if (e.key === 'Enter') addComment(clip.id); }}
-                    onFocus={() => { if (!user) { setLoginPrompt(true); } }}
+                    onFocus={() => { if (!user) navigate('/login'); }}
                     placeholder="댓글 달기..."
                     className="flex-1 text-sm py-2 outline-none bg-transparent text-[#111]"
                     style={{ minHeight: 40 }}
@@ -376,7 +376,7 @@ export default function GalleryPage() {
       {/* ═══ 하단 업로드 FAB ═══ */}
       {!showUpload && (
         <button
-          onClick={() => user ? setShowUpload(true) : setLoginPrompt(true)}
+          onClick={() => requireLogin() && setShowUpload(true)}
           className="fixed bottom-6 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#8B5CF6] text-white shadow-xl shadow-purple-300 active:scale-90 transition"
           aria-label="클립 올리기"
         >
@@ -387,21 +387,6 @@ export default function GalleryPage() {
         </button>
       )}
 
-      {/* ═══ 로그인 안내 ═══ */}
-      {loginPrompt && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center" onClick={() => setLoginPrompt(false)}>
-          <div className="absolute inset-0 bg-black/60" />
-          <div className="relative rounded-2xl bg-white p-6 mx-4 max-w-sm w-full text-center" onClick={e => e.stopPropagation()}>
-            <p className="text-4xl mb-3">📸</p>
-            <h3 className="text-lg font-bold text-[#111] mb-1">로그인이 필요합니다</h3>
-            <p className="text-sm text-[#555] mb-5">사진 올리기, 좋아요, 댓글은 로그인 후 이용 가능합니다</p>
-            <div className="flex gap-2">
-              <button onClick={() => setLoginPrompt(false)} className="flex-1 rounded-xl py-3 text-sm font-medium bg-gray-100 text-[#555]" style={{ minHeight: 48 }}>닫기</button>
-              <Link to="/login" className="flex-1 rounded-xl py-3 text-sm font-bold text-white flex items-center justify-center" style={{ backgroundColor: '#8B5CF6', minHeight: 48 }}>로그인하기</Link>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

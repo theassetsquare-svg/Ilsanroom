@@ -54,8 +54,7 @@ export default function FashionPage() {
     if (!writeTitle.trim() || !writeContent.trim()) return;
     setSubmitting(true);
     const result = await createPost({ category: 'tips', title: writeTitle, content: writeContent });
-    if (result.error) { alert("저장 실패: " + result.error); } else {
-      alert("글이 저장되었습니다!");
+    if (result.error) { setSubmitting(false); return; } else {
       setShowWriteModal(false); setWriteTitle(""); setWriteContent("");
       const { data } = await fetchPosts('tips');
       setPosts(data.map(postToStyle));

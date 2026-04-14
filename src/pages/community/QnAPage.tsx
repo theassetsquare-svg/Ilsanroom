@@ -70,9 +70,9 @@ export default function QnAPage() {
     setSubmitting(true);
     const result = await createPost({ category: 'discussion', title: writeTitle, content: writeContent });
     if (result.error) {
-      alert("저장 실패: " + result.error);
+      setSubmitting(false);
+      return;
     } else {
-      alert("글이 저장되었습니다!");
       setShowWriteModal(false); setWriteTitle(""); setWriteContent("");
       const { data } = await fetchPosts('discussion');
       setQuestions(data.map(postToQuestion));

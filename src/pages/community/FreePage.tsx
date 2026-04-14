@@ -62,9 +62,9 @@ export default function FreeBoardPage() {
     setSubmitting(true);
     const result = await createPost({ category: 'free', title: writeTitle, content: writeContent });
     if (result.error) {
-      alert('저장 실패: ' + result.error);
+      setSubmitting(false);
+      return;
     } else {
-      alert('글이 저장되었습니다!');
       setShowWriteModal(false); setWriteTitle(""); setWriteContent("");
       navigate('/community/post/' + (result.data?.id || ''));
     }

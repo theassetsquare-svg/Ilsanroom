@@ -148,9 +148,9 @@ export default function JogakPage() {
     });
 
     if (result.error) {
-      alert('저장 실패: ' + result.error);
+      setSubmitting(false);
+      return;
     } else {
-      alert('조각 모집글이 올라갔습니다!');
       setShowWrite(false);
       // 폼 초기화
       setFormTitle(''); setFormRegion(''); setFormVenue(''); setFormDate(''); setFormTime('');
@@ -170,7 +170,7 @@ export default function JogakPage() {
       setComments(prev => [...prev, { author: user.user_metadata?.nickname || user.user_metadata?.name || '나', text: commentText.trim(), date: new Date().toISOString().slice(5, 10) }]);
       setCommentText('');
     }
-    if (error) alert(error);
+    if (error) return;
   };
 
   return (
@@ -253,10 +253,8 @@ export default function JogakPage() {
                   {/* 삭제 버튼 */}
                   {user && (
                     <button onClick={async () => {
-                      if (!confirm('글을 삭제하시겠습니까?')) return;
                       const result = await deletePost(post.id);
-                      if (result.error) { alert('삭제 실패: ' + result.error); return; }
-                      alert('삭제되었습니다');
+                      if (result.error) { return; }
                       setSelectedPost(null);
                       setPosts(prev => prev.filter(p => p.id !== post.id));
                     }} className="text-xs mb-3" style={{ color: '#EF4444', minHeight: 32 }}>

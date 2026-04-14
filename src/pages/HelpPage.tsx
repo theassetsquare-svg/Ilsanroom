@@ -378,9 +378,7 @@ export default function HelpPage() {
             </button>
             <button
               onClick={() => {
-                navigator.clipboard.writeText('qotjsdnr123@naver.com').then(() => {
-                  alert('이메일 주소가 복사되었습니다!\nqotjsdnr123@naver.com');
-                });
+                navigator.clipboard.writeText('qotjsdnr123@naver.com');
               }}
               className="w-full rounded-2xl py-4 text-base font-bold transition active:scale-[0.98]"
               style={{ backgroundColor: '#F3F4F6', color: '#111', minHeight: 52 }}

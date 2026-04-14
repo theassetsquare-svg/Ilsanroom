@@ -184,7 +184,7 @@ export default function PartyRecruitPage() {
     if (!user) {
       window.location.href = '/login'; return;
     }
-    if (points < 300) { alert("🔒 글쓰기는 🔥매니아(300P) 등급부터 가능합니다. 현재 " + points + "P"); return; }
+    if (points < 300) { return; }
     setShowWriteModal(true);
   };
 
@@ -196,7 +196,7 @@ export default function PartyRecruitPage() {
       title: writeTitle,
       content: writeContent,
     });
-    if (result.error) { alert("저장 실패: " + result.error); } else { alert("글이 저장되었습니다!");
+    if (result.error) { setSubmitting(false); return; } else {
       setShowWriteModal(false);
       setWriteTitle("");
       setWriteContent("");

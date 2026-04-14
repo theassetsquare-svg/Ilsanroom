@@ -30,9 +30,7 @@ export default function WeeklyTop5Share() {
     if (navigator.share) {
       navigator.share({ title: '이번 주 TOP5', text, url: 'https://nolcool.com/ranking' }).catch(() => {});
     } else {
-      navigator.clipboard.writeText(text).then(() => {
-        alert('링크가 복사되었습니다! 카카오톡에 붙여넣기 해주세요.');
-      }).catch(() => {});
+      navigator.clipboard.writeText(text).catch(() => {});
     }
   };
 
