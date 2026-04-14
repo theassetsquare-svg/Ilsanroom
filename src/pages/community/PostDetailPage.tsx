@@ -3,7 +3,6 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
-import { getAllPosts } from '@/lib/community-data';
 
 export default function PostDetailPage() {
   useDocumentMeta('글 상세', '커뮤니티 게시글 상세 페이지');
@@ -16,72 +15,25 @@ export default function PostDetailPage() {
   const [commentText, setCommentText] = useState('');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
 
   const supabase = createClient();
 
-  const [isSeedPost, setIsSeedPost] = useState(false);
-
   // 글 불러오기
   useEffect(() => {
-    if (!id) return;
+    if (!id || !supabase) { setLoading(false); return; }
 
-    // seed-xxx 형태의 ID는 시드 데이터에서 찾기
-    if (id.startsWith('seed-')) {
-      const seedId = id.replace('seed-', '');
-      const seedPost = getAllPosts().find(p => p.id === seedId);
-      if (seedPost) {
-        setPost({
-          id: `seed-${seedPost.id}`,
-          title: seedPost.title,
-          content: seedPost.content,
-          category: seedPost.board,
-          created_at: seedPost.createdAt,
-          likes: seedPost.likes,
-          views: seedPost.views,
-          user_id: seedPost.author.id,
-          users: { nickname: seedPost.author.nickname },
-          _seedComments: seedPost.comments,
-        });
-        // 시드 댓글 세팅
-        const flatComments = seedPost.comments.flatMap(c => {
-          const result: any[] = [{
-            id: c.id,
-            content: c.content,
-            created_at: c.createdAt,
-            likes: c.likes,
-            user_id: c.author.id,
-            users: { nickname: c.author.nickname },
-          }];
-          if (c.replies) {
-            c.replies.forEach(r => {
-              result.push({
-                id: r.id,
-                content: r.content,
-                created_at: r.createdAt,
-                likes: r.likes,
-                user_id: r.author.id,
-                users: { nickname: r.author.nickname },
-              });
-            });
-          }
-          return result;
-        });
-        setComments(flatComments);
-        setIsSeedPost(true);
-      }
-      setLoading(false);
-      return;
-    }
-
-    if (!supabase) { setLoading(false); return; }
     supabase.from('posts').select('*, users!posts_user_id_fkey(nickname, avatar_url)').eq('id', id).single().then(({ data, error }) => {
       if (error) {
         supabase.from('posts').select('*').eq('id', id).single().then(({ data: d }) => {
           setPost(d);
+          setLikeCount(d?.likes || 0);
           setLoading(false);
         });
       } else {
         setPost(data);
+        setLikeCount(data?.likes || 0);
         setLoading(false);
       }
     });
@@ -102,7 +54,7 @@ export default function PostDetailPage() {
     setComments(data || []);
   };
 
-  useEffect(() => { if (!isSeedPost) fetchComments(); }, [id, isSeedPost]);
+  useEffect(() => { fetchComments(); }, [id]);
 
   // 글 삭제
   const handleDelete = async () => {
@@ -112,6 +64,15 @@ export default function PostDetailPage() {
     if (error) { alert('삭제 실패: ' + error.message); return; }
     alert('삭제되었습니다');
     navigate('/community');
+  };
+
+  // 좋아요
+  const handleLike = async () => {
+    if (!supabase || !id) return;
+    const newCount = liked ? likeCount - 1 : likeCount + 1;
+    setLiked(!liked);
+    setLikeCount(newCount);
+    await supabase.from('posts').update({ likes: newCount }).eq('id', id);
   };
 
   // 댓글 작성
@@ -136,6 +97,16 @@ export default function PostDetailPage() {
     await fetchComments();
   };
 
+  // 조각모임 content JSON 파싱
+  const parseJogakContent = (content: string) => {
+    try {
+      const parsed = JSON.parse(content);
+      return parsed;
+    } catch {
+      return null;
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -152,6 +123,8 @@ export default function PostDetailPage() {
       </div>
     );
   }
+
+  const jogakData = post.category === 'party' ? parseJogakContent(post.content) : null;
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
@@ -174,11 +147,44 @@ export default function PostDetailPage() {
         )}
       </div>
 
-      {/* 글 내용 */}
-      <div className="rounded-xl p-5 mb-6" style={{ backgroundColor: '#F9FAFB', minHeight: 150 }}>
-        <p className="text-base leading-relaxed" style={{ color: '#333', whiteSpace: 'pre-wrap', lineHeight: '1.8' }}>
-          {post.content}
-        </p>
+      {/* 조각모임 구조화 정보 */}
+      {jogakData && (
+        <div className="rounded-xl border p-4 mb-4" style={{ borderColor: '#E5E7EB', backgroundColor: '#FAFAFA' }}>
+          <div className="flex flex-wrap gap-2 mb-3">
+            {jogakData.region && <span className="rounded-full px-2.5 py-0.5 text-xs" style={{ backgroundColor: '#F3F0FF', color: '#8B5CF6' }}>📍 {jogakData.region}</span>}
+            {jogakData.venue && <span className="rounded-full px-2.5 py-0.5 text-xs" style={{ backgroundColor: '#FEF3C7', color: '#92400E' }}>🏢 {jogakData.venue}</span>}
+            {jogakData.meetDate && <span className="rounded-full px-2.5 py-0.5 text-xs" style={{ backgroundColor: '#DBEAFE', color: '#1E40AF' }}>📅 {jogakData.meetDate} {jogakData.meetTime || ''}</span>}
+            {jogakData.maxPeople && <span className="rounded-full px-2.5 py-0.5 text-xs" style={{ backgroundColor: '#D1FAE5', color: '#065F46' }}>👥 {jogakData.currentPeople || 1}/{jogakData.maxPeople}명</span>}
+            {jogakData.genderPref && <span className="rounded-full px-2.5 py-0.5 text-xs" style={{ backgroundColor: '#FCE7F3', color: '#9D174D' }}>{jogakData.genderPref}</span>}
+            {jogakData.costSplit && <span className="rounded-full px-2.5 py-0.5 text-xs" style={{ backgroundColor: '#F3F4F6', color: '#374151' }}>💰 {jogakData.costSplit}</span>}
+            {jogakData.ageRange && <span className="rounded-full px-2.5 py-0.5 text-xs" style={{ backgroundColor: '#F3F4F6', color: '#374151' }}>🎂 {jogakData.ageRange}</span>}
+          </div>
+          {jogakData.desc && (
+            <p className="text-sm leading-relaxed" style={{ color: '#333', whiteSpace: 'pre-wrap', lineHeight: '1.8' }}>{jogakData.desc}</p>
+          )}
+        </div>
+      )}
+
+      {/* 글 내용 (일반 글) */}
+      {!jogakData && (
+        <div className="rounded-xl p-5 mb-4" style={{ backgroundColor: '#F9FAFB', minHeight: 150 }}>
+          <p className="text-base leading-relaxed" style={{ color: '#333', whiteSpace: 'pre-wrap', lineHeight: '1.8' }}>
+            {post.content}
+          </p>
+        </div>
+      )}
+
+      {/* 좋아요 버튼 */}
+      <div className="flex items-center gap-3 mb-4">
+        <button onClick={handleLike}
+          className="flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition"
+          style={{
+            backgroundColor: liked ? '#FEE2E2' : '#F3F4F6',
+            color: liked ? '#DC2626' : '#555',
+            minHeight: 40,
+          }}>
+          {liked ? '❤️' : '🤍'} 좋아요 {likeCount > 0 && likeCount}
+        </button>
       </div>
 
       {/* 구분선 */}
@@ -208,21 +214,14 @@ export default function PostDetailPage() {
       {/* 댓글 입력 */}
       {user ? (
         <div className="flex gap-2">
-          <input
-            type="text"
-            value={commentText}
-            onChange={e => setCommentText(e.target.value)}
+          <input type="text" value={commentText} onChange={e => setCommentText(e.target.value)}
             onKeyDown={e => { if (e.key === 'Enter') handleComment(); }}
             placeholder="댓글을 입력하세요..."
             className="flex-1 rounded-xl border px-4 py-3 text-sm outline-none"
-            style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }}
-          />
-          <button
-            onClick={handleComment}
-            disabled={!commentText.trim() || submitting}
+            style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
+          <button onClick={handleComment} disabled={!commentText.trim() || submitting}
             className="rounded-xl px-5 py-3 text-sm font-bold text-white disabled:opacity-40"
-            style={{ backgroundColor: '#8B5CF6', minHeight: 48 }}
-          >
+            style={{ backgroundColor: '#8B5CF6', minHeight: 48 }}>
             {submitting ? '...' : '등록'}
           </button>
         </div>

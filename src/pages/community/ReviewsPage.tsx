@@ -1,85 +1,29 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
-import { fetchPosts, createPost, fetchComments, createComment, deletePost, deleteComment, type Post } from '@/lib/community-api';
+import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
 
-const sampleReviews = [
-  {
-    id: "sample-1",
-    title: "라페스타 라운지 — 분위기 최고였어요",
-    author: "해당 지역 단골",
-    date: "2026-03-18",
-    venue: "라페스타 라운지",
-    region: "일산",
-    rating: 5,
-    helpful: 47,
-    comments: 14,
-    hasPhoto: true,
-    excerpt: "인테리어가 최근 리뉴얼 되었더라고요. 조명 세팅이 은은하면서도 세련됐고, 칵테일 퀄리티도 기대 이상이었습니다.",
-  },
-  {
-    id: "sample-2",
-    title: "킨텍스 근처 나이트 솔직 체험담",
-    author: "야행성직장인",
-    date: "2026-03-17",
-    venue: "킨텍스 나이트",
-    region: "해당 업소",
-    rating: 3,
-    helpful: 31,
-    comments: 22,
-    hasPhoto: false,
-    excerpt: "사운드 장비는 괜찮은데, 환기 시스템이 아쉬웠어요. 여름에는 좀 더울 수 있을 것 같습니다.",
-  },
-  {
-    id: "sample-3",
-    title: "백석동 신규 오픈한 바 — 기대보다 훨씬 나았습니다",
-    author: "맛집헌터",
-    date: "2026-03-16",
-    venue: "백석 프라이빗바",
-    region: "해당 지역",
-    rating: 4,
-    helpful: 63,
-    comments: 9,
-    hasPhoto: true,
-    excerpt: "프라이빗 룸이 있어서 소규모 모임에 딱이에요. 안주 메뉴가 다양하고 가성비도 나쁘지 않았습니다.",
-  },
-  {
-    id: "sample-4",
-    title: "주엽역 와인바 재방문 — 여전히 좋네요",
-    author: "와인매니아",
-    date: "2026-03-14",
-    venue: "주엽 와인라운지",
-    region: "일산",
-    rating: 4,
-    helpful: 28,
-    comments: 7,
-    hasPhoto: true,
-    excerpt: "셀렉션이 넓어졌고 소믈리에 추천도 적극적이라 와인 입문자도 편하게 즐길 수 있는 공간입니다.",
-  },
-  {
-    id: "sample-5",
-    title: "탄현 쪽 요정 방문 — 전통 있는 곳",
-    author: "전통탐방",
-    date: "2026-03-12",
-    venue: "탄현 요정",
-    region: "일산",
-    rating: 4,
-    helpful: 55,
-    comments: 18,
-    hasPhoto: false,
-    excerpt: "접대 매너와 한정식 퀄리티 모두 수준급이었습니다. 비용이 좀 있지만 중요한 자리에 딱 맞는 장소예요.",
-  },
-];
+interface ReviewItem {
+  id: string;
+  title: string;
+  author: string;
+  date: string;
+  venue: string;
+  rating: number;
+  helpful: number;
+  comments: number;
+  hasPhoto: boolean;
+  excerpt: string;
+}
 
-function postToReview(post: Post) {
+function postToReview(post: Post): ReviewItem {
   return {
     id: post.id,
     title: post.title,
     author: post.users?.nickname || "익명",
     date: post.created_at.slice(0, 10),
     venue: post.venue_slug || "",
-    region: "",
     rating: post.rating || 0,
     helpful: post.likes,
     comments: post.comment_count || 0,
@@ -106,7 +50,7 @@ export default function ReviewsPage() {
   const [starFilter, setStarFilter] = useState<number | null>(null);
   const [photoOnly, setPhotoOnly] = useState(false);
   const [sortByHelpful, setSortByHelpful] = useState(false);
-  const [reviews, setReviews] = useState(sampleReviews);
+  const [reviews, setReviews] = useState<ReviewItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [showWriteModal, setShowWriteModal] = useState(false);
   const [writeTitle, setWriteTitle] = useState("");
@@ -114,25 +58,20 @@ export default function ReviewsPage() {
   const [writeVenue, setWriteVenue] = useState("");
   const [writeRating, setWriteRating] = useState(0);
   const [submitting, setSubmitting] = useState(false);
-  const [authError, setAuthError] = useState(false);
 
   useEffect(() => {
     (async () => {
       setLoading(true);
       const { data } = await fetchPosts('reviews');
       if (data.length > 0) {
-        // Supabase 글 + 샘플 글 합치기
-        const dbReviews = data.map(postToReview);
-        setReviews([...dbReviews, ...sampleReviews]);
+        setReviews(data.map(postToReview));
       }
       setLoading(false);
     })();
   }, []);
 
   const handleWriteClick = () => {
-    if (!user) {
-      window.location.href = '/login'; return;
-    }
+    if (!user) { window.location.href = '/login'; return; }
     setShowWriteModal(true);
   };
 
@@ -151,14 +90,9 @@ export default function ReviewsPage() {
     } else {
       alert('후기가 저장되었습니다!');
       setShowWriteModal(false);
-      setWriteTitle("");
-      setWriteContent("");
-      setWriteVenue("");
-      setWriteRating(0);
+      setWriteTitle(""); setWriteContent(""); setWriteVenue(""); setWriteRating(0);
       const { data } = await fetchPosts('reviews');
-      if (data.length > 0) {
-        setReviews(data.map(postToReview));
-      }
+      if (data.length > 0) setReviews(data.map(postToReview));
     }
     setSubmitting(false);
   };
@@ -175,139 +109,84 @@ export default function ReviewsPage() {
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">
-        {/* Header */}
         <div className="mb-8">
-          <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
-            ← 커뮤니티
-          </Link>
+          <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
           <h1 className="text-3xl font-bold">업소후기</h1>
-          <p className="mt-2 text-neon-text-muted">
-            직접 다녀온 사람들의 생생한 경험담 모아봤다
-          </p>
+          <p className="mt-2 text-neon-text-muted">직접 다녀온 사람들의 생생한 경험담 모아봤다</p>
         </div>
 
-        {/* Auth Error Toast */}
-        {authError && (
-          <div className="mb-4 rounded-xl border border-neon-red/30 bg-neon-red/10 px-5 py-3 text-sm text-neon-red">
-            로그인이 필요합니다
+        {/* Rating Summary */}
+        {reviews.length > 0 && (
+          <div className="mb-8 flex items-center gap-6 rounded-2xl border border-neon-border bg-neon-surface p-6">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-neon-gold">{avgRating}</div>
+              <StarDisplay rating={Math.round(Number(avgRating))} size="sm" />
+              <div className="mt-1 text-xs text-neon-text-muted">{reviews.length}건</div>
+            </div>
+            <div className="flex-1 space-y-1">
+              {[5, 4, 3, 2, 1].map((star) => {
+                const count = reviews.filter((r) => r.rating === star).length;
+                const pct = reviews.length > 0 ? Math.round((count / reviews.length) * 100) : 0;
+                return (
+                  <div key={star} className="flex items-center gap-2 text-xs">
+                    <span className="w-8 text-neon-text-muted">{star}점</span>
+                    <div className="h-2 flex-1 rounded-full bg-neon-surface-2">
+                      <div className="h-2 rounded-full bg-neon-gold" style={{ width: `${pct}%` }} />
+                    </div>
+                    <span className="w-8 text-right text-neon-text-muted">{count}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
 
-        {/* Rating Summary */}
-        <div className="mb-8 flex items-center gap-6 rounded-2xl border border-neon-border bg-neon-surface p-6">
-          <div className="text-center">
-            <div className="text-4xl font-bold text-neon-gold">{avgRating}</div>
-            <StarDisplay rating={Math.round(Number(avgRating))} size="sm" />
-            <div className="mt-1 text-xs text-neon-text-muted">{reviews.length}건</div>
-          </div>
-          <div className="flex-1 space-y-1">
-            {[5, 4, 3, 2, 1].map((star) => {
-              const count = reviews.filter((r) => r.rating === star).length;
-              const pct = reviews.length > 0 ? Math.round((count / reviews.length) * 100) : 0;
-              return (
-                <div key={star} className="flex items-center gap-2 text-xs">
-                  <span className="w-8 text-neon-text-muted">{star}점</span>
-                  <div className="h-2 flex-1 rounded-full bg-neon-surface-2">
-                    <div className="h-2 rounded-full bg-neon-gold" style={{ width: `${pct}%` }} />
-                  </div>
-                  <span className="w-8 text-right text-neon-text-muted">{count}</span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
         {/* Filters */}
         <div className="mb-6 flex flex-wrap items-center gap-3">
-          {/* Star filter */}
           <div className="flex gap-1">
             {[1, 2, 3, 4, 5].map((s) => (
-              <button
-                key={s}
-                onClick={() => setStarFilter(starFilter === s ? null : s)}
-                className={`rounded-lg px-3 py-1.5 text-sm transition ${
-                  starFilter === s
-                    ? "bg-neon-gold/20 text-neon-gold"
-                    : "bg-neon-surface text-neon-text-muted hover:bg-neon-surface-2"
-                }`}
-              >
+              <button key={s} onClick={() => setStarFilter(starFilter === s ? null : s)}
+                className={`rounded-lg px-3 py-1.5 text-sm transition ${starFilter === s ? "bg-neon-gold/20 text-neon-gold" : "bg-neon-surface text-neon-text-muted hover:bg-neon-surface-2"}`}>
                 {s}★
               </button>
             ))}
           </div>
-
           <div className="h-5 w-px bg-neon-border" />
-
-          {/* Photo toggle */}
-          <button
-            onClick={() => setPhotoOnly(!photoOnly)}
-            className={`rounded-lg px-3 py-1.5 text-sm transition ${
-              photoOnly
-                ? "bg-neon-primary/20 text-neon-primary-light"
-                : "bg-neon-surface text-neon-text-muted hover:bg-neon-surface-2"
-            }`}
-          >
+          <button onClick={() => setPhotoOnly(!photoOnly)}
+            className={`rounded-lg px-3 py-1.5 text-sm transition ${photoOnly ? "bg-neon-primary/20 text-neon-primary-light" : "bg-neon-surface text-neon-text-muted hover:bg-neon-surface-2"}`}>
             사진 후기만
           </button>
-
-          {/* Helpful sort */}
-          <button
-            onClick={() => setSortByHelpful(!sortByHelpful)}
-            className={`rounded-lg px-3 py-1.5 text-sm transition ${
-              sortByHelpful
-                ? "bg-neon-green/20 text-neon-green"
-                : "bg-neon-surface text-neon-text-muted hover:bg-neon-surface-2"
-            }`}
-          >
+          <button onClick={() => setSortByHelpful(!sortByHelpful)}
+            className={`rounded-lg px-3 py-1.5 text-sm transition ${sortByHelpful ? "bg-neon-green/20 text-neon-green" : "bg-neon-surface text-neon-text-muted hover:bg-neon-surface-2"}`}>
             도움이 됐어요 순
           </button>
-
           <div className="ml-auto">
-            <button
-              onClick={handleWriteClick}
-              className="rounded-xl px-5 py-2.5 text-sm font-bold transition"
-              style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}
-            >
+            <button onClick={handleWriteClick} className="rounded-xl px-5 py-2.5 text-sm font-bold transition"
+              style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>
               후기 남기기
             </button>
           </div>
         </div>
 
-        {/* Loading */}
         {loading && (
-          <div className="rounded-2xl border border-neon-border bg-neon-surface p-12 text-center text-neon-text-muted">
-            불러오는 중...
-          </div>
+          <div className="rounded-2xl border border-neon-border bg-neon-surface p-12 text-center text-neon-text-muted">불러오는 중...</div>
         )}
 
-        {/* Review Cards */}
-        {!loading && (
+        {!loading && displayed.length > 0 && (
           <div className="space-y-4">
             {displayed.map((review) => (
-              <button
-                key={review.id}
-                onClick={() => navigate('/community/post/' + review.id)}
-                className="w-full text-left rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/30"
-                style={{ minHeight: 48 }}
-              >
+              <button key={review.id} onClick={() => navigate('/community/post/' + review.id)}
+                className="w-full text-left rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/30" style={{ minHeight: 48 }}>
                 <div className="mb-3 flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <StarDisplay rating={review.rating} size="lg" />
-                    <h3 className="mt-2 text-lg font-semibold hover:text-neon-primary-light">
-                      {review.title}
-                    </h3>
+                    <h3 className="mt-2 text-lg font-semibold hover:text-neon-primary-light">{review.title}</h3>
                   </div>
                   {review.hasPhoto && (
-                    <span className="shrink-0 rounded-lg bg-neon-primary-light/10 px-2.5 py-1 text-xs text-neon-primary-light">
-                      사진 포함
-                    </span>
+                    <span className="shrink-0 rounded-lg bg-neon-primary-light/10 px-2.5 py-1 text-xs text-neon-primary-light">사진 포함</span>
                   )}
                 </div>
-
-                <p className="mb-4 text-sm leading-relaxed text-neon-text-muted">
-                  {review.excerpt}
-                </p>
-
+                <p className="mb-4 text-sm leading-relaxed text-neon-text-muted">{review.excerpt}</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3 text-xs text-neon-text-muted">
                     {review.venue && <span className="rounded-lg bg-neon-surface-2 px-3 py-1">{review.venue}</span>}
@@ -315,9 +194,7 @@ export default function ReviewsPage() {
                     <span>{review.date}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-1 rounded-lg bg-neon-green/10 px-3 py-1.5 text-xs text-neon-green transition hover:bg-neon-green/20">
-                      <span>👍</span> 도움이 됐어요 {review.helpful}
-                    </button>
+                    <span className="text-xs text-neon-green">👍 {review.helpful}</span>
                     <span className="text-xs text-neon-text-muted">💬 {review.comments}</span>
                   </div>
                 </div>
@@ -328,16 +205,15 @@ export default function ReviewsPage() {
 
         {!loading && displayed.length === 0 && (
           <div className="rounded-2xl border border-neon-border bg-neon-surface p-12 text-center text-neon-text-muted">
-            해당 조건에 맞는 후기가 없습니다
+            아직 후기가 없습니다. 첫 번째 후기를 남겨보세요!
           </div>
         )}
 
-        {/* Write Modal */}
         {showWriteModal && (
           <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
             <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
               <button onClick={() => setShowWriteModal(false)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>취소</button>
-              <h2 className="text-base font-bold" style={{ color: '#111' }}>글쓰기</h2>
+              <h2 className="text-base font-bold" style={{ color: '#111' }}>후기 작성</h2>
               <div style={{ width: 44 }} />
             </div>
             <div className="flex-1 overflow-y-auto px-4 py-4 pb-24 max-w-2xl mx-auto w-full">
@@ -361,22 +237,20 @@ export default function ReviewsPage() {
               </div>
               <div className="mb-4">
                 <label className="mb-1 block text-xs" style={{ color: '#555' }}>내용</label>
-                <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="솔직한 후기를 작성해주세요" 
+                <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="솔직한 후기를 작성해주세요"
                   className="w-full rounded-lg border px-4 py-3 text-sm outline-none resize-none" style={{ borderColor: '#E5E7EB', color: '#111', minHeight: '50vh', lineHeight: '1.8' }} />
               </div>
             </div>
-            <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t"  style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
+            <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
               <button onClick={handleSubmit} disabled={submitting || !writeTitle.trim() || !writeContent.trim()}
                 className="w-full rounded-xl py-4 text-base font-bold transition active:scale-[0.98] disabled:opacity-30"
                 style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 56 }}>
-                {submitting ? "등록 중..." : "글 저장"}
+                {submitting ? "등록 중..." : "후기 저장"}
               </button>
             </div>
           </div>
         )}
-
       </div>
     </div>
   );
 }
-

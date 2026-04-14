@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues as localVenues, getPopularVenues } from '@/data/venues';
 import type { Venue } from '@/types';
-import { getPopularPosts, getAllPosts } from '@/lib/community-data';
+import { createClient } from '@/lib/supabase';
 import JsonLd from '@/components/seo/JsonLd';
 import ErrorBoundary from '@/components/ui/ErrorBoundary';
 import HeroSearch from '@/components/home/HeroSearch';
@@ -68,8 +68,8 @@ const vsPolls = [
   { q: '혼자 가도 괜찮은 곳은?', a: '라운지', b: '나이트' },
 ];
 
-/* ── Community hot posts from seed data ── */
-const boardLabels: Record<string, string> = { free: '자유', reviews: '후기', party: '모집', tips: '팁', fashion: '패션', qna: 'Q&A' };
+/* ── Community hot posts — DB에서 가져옴 ── */
+const boardLabels: Record<string, string> = { free: '자유', reviews: '후기', party: '모집', tips: '팁', discussion: 'Q&A' };
 function getTimeLabel(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime();
   const h = Math.floor(diff / 3600000);
@@ -78,37 +78,9 @@ function getTimeLabel(dateStr: string) {
   const d = Math.floor(h / 24);
   return `${d}일 전`;
 }
-const seedHotPosts = getPopularPosts(8).map(p => ({
-  id: `seed-${p.id}`,
-  board: boardLabels[p.board] || p.board,
-  author: p.author.nickname,
-  title: p.title,
-  likes: p.likes,
-  comments: p.commentCount,
-  time: getTimeLabel(p.createdAt),
-}));
 
-// 피드 사이에 끼울 커뮤니티 글 (최신 글 다양하게)
-const feedCommunityPosts = getAllPosts()
-  .sort((a, b) => b.views - a.views)
-  .slice(0, 12)
-  .map(p => ({
-    id: `seed-${p.id}`,
-    board: boardLabels[p.board] || p.board,
-    author: p.author.nickname,
-    title: p.title,
-    likes: p.likes,
-    comments: p.commentCount,
-    excerpt: p.excerpt,
-  }));
-
-/* ── Fake 조각모임 data ── */
-const jogakList = [
-  { id: 1, title: '토요일 강남 레이스 같이 갈 여성분', region: '강남', gender: '여성', current: 3, max: 6, time: '4/19(토) 22:00', hot: true },
-  { id: 2, title: '오늘 밤 홍대 버뮤다 남자 2명 구함', region: '홍대', gender: '남성', current: 2, max: 4, time: '오늘 23:00', hot: true },
-  { id: 3, title: '일산 샴푸 정기모임 멤버 모집', region: '일산', gender: '혼성', current: 8, max: 12, time: '매주 토요일', hot: false },
-  { id: 4, title: '부산 아시아드 원정 같이 갈 사람', region: '부산', gender: '혼성', current: 4, max: 8, time: '4/26(토) 21:00', hot: false },
-];
+interface HotPost { id: string; board: string; author: string; title: string; likes: number; comments: number; time: string; }
+interface JogakItem { id: string; title: string; region: string; gender: string; current: number; max: number; time: string; }
 
 /* ── Night fortune ── */
 function getTodayFortune() {
@@ -137,6 +109,62 @@ export default function HomePage() {
 
   const openVenues = useMemo(() => localVenues.filter(v => v.status !== 'closed_or_unclear'), []);
   const popularVenues = getPopularVenues(20);
+
+  // === COMMUNITY DATA FROM SUPABASE ===
+  const [hotPosts, setHotPosts] = useState<HotPost[]>([]);
+  const [jogakList, setJogakList] = useState<JogakItem[]>([]);
+
+  useEffect(() => {
+    const supabase = createClient();
+    if (!supabase) return;
+
+    // 인기글 8개
+    (async () => {
+      try {
+        const { data } = await supabase.from('posts')
+          .select('id, title, category, likes, comment_count, created_at, users!posts_user_id_fkey(nickname)')
+          .order('likes', { ascending: false })
+          .limit(8);
+        if (data && data.length > 0) {
+          setHotPosts(data.map((p: any) => ({
+            id: p.id,
+            board: boardLabels[p.category] || p.category,
+            author: p.users?.nickname || '사용자',
+            title: p.title,
+            likes: p.likes || 0,
+            comments: p.comment_count || 0,
+            time: getTimeLabel(p.created_at),
+          })));
+        }
+      } catch {}
+    })();
+
+    // 조각모임 최신 4개
+    (async () => {
+      try {
+        const { data } = await supabase.from('posts')
+          .select('id, title, content, created_at, users!posts_user_id_fkey(nickname)')
+          .eq('category', 'party')
+          .order('created_at', { ascending: false })
+          .limit(4);
+        if (data && data.length > 0) {
+          setJogakList(data.map((p: any) => {
+            let parsed: any = {};
+            try { parsed = JSON.parse(p.content); } catch {}
+            return {
+              id: p.id,
+              title: p.title,
+              region: parsed.region || '',
+              gender: parsed.genderPref || '혼성',
+              current: parsed.currentPeople || 1,
+              max: parsed.maxPeople || 4,
+              time: parsed.meetDate ? `${parsed.meetDate} ${parsed.meetTime || ''}` : '',
+            };
+          }));
+        }
+      } catch {}
+    })();
+  }, []);
 
   // === BANNER STATE ===
   const [bannerIdx, setBannerIdx] = useState(0);
@@ -346,27 +374,29 @@ export default function HomePage() {
       </section>
 
       {/* ═══ COMMUNITY HOT POSTS ═══ */}
-      <section className="px-4 py-3 max-w-3xl mx-auto">
-        <div className="flex items-center justify-between mb-2">
-          <h2 className="text-base font-bold text-[#111]">💬 커뮤니티 핫글</h2>
-          <Link to="/community" className="text-xs text-[#8B5CF6] font-medium">더보기 →</Link>
-        </div>
-        <div className="space-y-2">
-          {seedHotPosts.map(post => (
-            <Link key={post.id} to={`/community/post/${post.id}`} className="flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-3 active:bg-gray-50 transition">
-              <span className="flex-shrink-0 rounded-lg bg-[#F3F0FF] px-2 py-1 text-xs font-bold text-[#8B5CF6]">{post.board}</span>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-[#111] truncate">{post.title}</p>
-                <p className="text-xs text-[#999] mt-0.5">{post.author} · {post.time}</p>
-              </div>
-              <div className="flex-shrink-0 flex items-center gap-2 text-xs text-[#999]">
-                <span>❤️ {post.likes}</span>
-                <span>💬 {post.comments}</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {hotPosts.length > 0 && (
+        <section className="px-4 py-3 max-w-3xl mx-auto">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-base font-bold text-[#111]">💬 커뮤니티 핫글</h2>
+            <Link to="/community" className="text-xs text-[#8B5CF6] font-medium">더보기 →</Link>
+          </div>
+          <div className="space-y-2">
+            {hotPosts.map(post => (
+              <Link key={post.id} to={`/community/post/${post.id}`} className="flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-3 active:bg-gray-50 transition">
+                <span className="flex-shrink-0 rounded-lg bg-[#F3F0FF] px-2 py-1 text-xs font-bold text-[#8B5CF6]">{post.board}</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-[#111] truncate">{post.title}</p>
+                  <p className="text-xs text-[#999] mt-0.5">{post.author} · {post.time}</p>
+                </div>
+                <div className="flex-shrink-0 flex items-center gap-2 text-xs text-[#999]">
+                  <span>❤️ {post.likes}</span>
+                  <span>💬 {post.comments}</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ═══ 조각모임 — KILLER FEATURE ═══ */}
       <section className="px-4 py-3 max-w-3xl mx-auto">
@@ -374,42 +404,43 @@ export default function HomePage() {
           <h2 className="text-base font-bold text-[#111]">🙋 오늘 밤 조각모임</h2>
           <Link to="/community/jogak" className="text-xs text-[#8B5CF6] font-medium">전체보기 →</Link>
         </div>
-        <div className="space-y-2">
-          {jogakList.map(j => (
-            <div key={j.id} className="rounded-xl border border-gray-100 bg-white p-3">
-              <div className="flex items-start gap-2">
-                {j.hot && <span className="flex-shrink-0 rounded bg-red-100 px-1.5 py-0.5 text-[10px] font-bold text-red-600">HOT</span>}
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[#111]">{j.title}</p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs text-[#555]">📍{j.region}</span>
-                    <span className="text-xs text-[#555]">👤{j.gender}</span>
-                    <span className="text-xs text-[#555]">🕐{j.time}</span>
+        {jogakList.length > 0 ? (
+          <div className="space-y-2">
+            {jogakList.map(j => (
+              <Link key={j.id} to={`/community/jogak`} className="block rounded-xl border border-gray-100 bg-white p-3 active:bg-gray-50 transition">
+                <div className="flex items-start gap-2">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-[#111]">{j.title}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      {j.region && <span className="text-xs text-[#555]">📍{j.region}</span>}
+                      <span className="text-xs text-[#555]">👤{j.gender}</span>
+                      {j.time && <span className="text-xs text-[#555]">🕐{j.time}</span>}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex items-center justify-between mt-2">
-                {/* Progress bar */}
-                <div className="flex items-center gap-2 flex-1">
-                  <div className="flex-1 h-2 rounded-full bg-gray-100 overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all ${j.current / j.max >= 0.8 ? 'bg-red-500' : 'bg-[#8B5CF6]'}`}
-                      style={{ width: `${(j.current / j.max) * 100}%` }}
-                    />
+                <div className="flex items-center justify-between mt-2">
+                  <div className="flex items-center gap-2 flex-1">
+                    <div className="flex-1 h-2 rounded-full bg-gray-100 overflow-hidden">
+                      <div className={`h-full rounded-full transition-all ${j.current / j.max >= 0.8 ? 'bg-red-500' : 'bg-[#8B5CF6]'}`}
+                        style={{ width: `${(j.current / j.max) * 100}%` }} />
+                    </div>
+                    <span className="text-xs font-bold text-[#111]">{j.current}/{j.max}명</span>
                   </div>
-                  <span className="text-xs font-bold text-[#111]">{j.current}/{j.max}명</span>
+                  <span className="ml-3 flex-shrink-0 rounded-full bg-[#8B5CF6] px-4 py-1.5 text-xs font-bold text-white" style={{ minHeight: 32 }}>
+                    참여하기
+                  </span>
                 </div>
-                <Link
-                  to="/login"
-                  className="ml-3 flex-shrink-0 rounded-full bg-[#8B5CF6] px-4 py-1.5 text-xs font-bold text-white active:bg-[#7C3AED]"
-                  style={{ minHeight: 32 }}
-                >
-                  참여하기
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <Link to="/community/jogak" className="block rounded-xl border border-gray-100 bg-white p-4 text-center active:bg-gray-50 transition">
+            <p className="text-sm text-[#555]">같이 놀러갈 사람을 구해보세요!</p>
+            <span className="mt-2 inline-block rounded-full bg-[#8B5CF6] px-5 py-2 text-sm font-bold text-white" style={{ minHeight: 36 }}>
+              조각모임 둘러보기
+            </span>
+          </Link>
+        )}
       </section>
 
       {/* ═══ VS 투표 — 1탭 참여 ═══ */}
@@ -566,27 +597,13 @@ export default function HomePage() {
               </div>
             );
 
-            // Every 4th — 커뮤니티 인기글 카드
-            if ((idx + 1) % 4 === 0) {
-              const cp = feedCommunityPosts[Math.floor(idx / 4) % feedCommunityPosts.length];
-              if (cp) {
-                cards.push(
-                  <Link key={`cp-${idx}`} to={`/community/post/${cp.id}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#FAFAFA] to-white border border-gray-100 p-4 active:bg-gray-50 transition">
-                    <div className="flex items-start gap-3">
-                      <span className="flex-shrink-0 rounded-lg bg-[#F3F0FF] px-2 py-1 text-xs font-bold text-[#8B5CF6]">{cp.board}</span>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-[#111] truncate">{cp.title}</p>
-                        <p className="text-xs text-[#777] mt-0.5 line-clamp-1">{cp.excerpt}</p>
-                        <div className="flex items-center gap-3 mt-1 text-xs text-[#999]">
-                          <span>{cp.author}</span>
-                          <span>❤️ {cp.likes}</span>
-                          <span>💬 {cp.comments}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              }
+            // Every 8th — 커뮤니티 CTA
+            if ((idx + 1) % 4 === 0 && idx < 16) {
+              cards.push(
+                <Link key={`cta-${idx}`} to="/community" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#F3F0FF] to-white border border-purple-100 p-4 active:bg-gray-50 transition text-center">
+                  <p className="text-sm font-bold text-[#8B5CF6]">💬 커뮤니티에서 후기·꿀팁·조각모임 확인하기 →</p>
+                </Link>
+              );
             }
 
             // Every 8th — VS vote reminder

@@ -223,6 +223,41 @@ export function getViewedVenues(userId?: string): string[] {
   return JSON.parse(localStorage.getItem(key) || '[]');
 }
 
+// Upload image to Supabase Storage
+export async function uploadPostImage(file: File): Promise<{ url?: string; error?: string }> {
+  const supabase = createClient();
+  if (!supabase) return { error: 'Supabase 연결 실패' };
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: '로그인이 필요합니다' };
+
+  const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg';
+  const fileName = `${user.id}/${Date.now()}.${ext}`;
+
+  const { data, error } = await supabase.storage
+    .from('post-media')
+    .upload(fileName, file, { cacheControl: '3600', upsert: false });
+
+  if (error) return { error: error.message };
+
+  const { data: urlData } = supabase.storage.from('post-media').getPublicUrl(data.path);
+  return { url: urlData.publicUrl };
+}
+
+// Toggle post like
+export async function togglePostLike(postId: string) {
+  const supabase = createClient();
+  if (!supabase) return { error: 'Supabase 연결 실패' };
+
+  const { data: post } = await supabase.from('posts').select('likes').eq('id', postId).single();
+  if (!post) return { error: '글을 찾을 수 없습니다' };
+
+  const newLikes = (post.likes || 0) + 1;
+  const { error } = await supabase.from('posts').update({ likes: newLikes }).eq('id', postId);
+  if (error) return { error: error.message };
+  return { likes: newLikes };
+}
+
 // Create review
 export async function createReview(review: {
   venue_slug: string;

@@ -1,209 +1,131 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
+import { fetchPosts, createPost, type Post } from '@/lib/community-api';
+import { useAuth } from '@/hooks/useAuth';
 
-type VenueType = "lounge" | "night" | "bar" | "yojeong";
-type FilterType = VenueType | "all";
-
-const venueLabel: Record<VenueType, string> = {
-  lounge: "칵테일 바",
-  night: "댄스 공간",
-  bar: "바",
-  yojeong: "한식 접대",
-};
-
-const venueFilters: Array<FilterType> = ["all", "lounge", "night", "bar", "yojeong"];
-
-interface OutfitCard {
-  id: number;
+interface StylePost {
+  id: string;
   title: string;
   author: string;
-  tags: string[];
-  suitability: Record<VenueType, number>; // 1-5 score
-  saves: number;
-  season: string;
+  excerpt: string;
+  likes: number;
+  date: string;
 }
 
-const outfitCards: OutfitCard[] = [
-  {
-    id: 1,
-    title: "셋업 수트로 완성하는 단정한 스타일",
-    author: "수트마스터",
-    tags: ["셋업", "포멀", "남성"],
-    suitability: { lounge: 5, night: 5, bar: 4, yojeong: 5 },
-    saves: 284,
-    season: "사계절",
-  },
-  {
-    id: 2,
-    title: "여름 린넨 코디 — 시원하면서 격식 유지",
-    author: "린넨매니아",
-    tags: ["린넨", "여름", "캐주얼"],
-    suitability: { lounge: 4, night: 3, bar: 5, yojeong: 3 },
-    saves: 197,
-    season: "여름",
-  },
-  {
-    id: 3,
-    title: "미니멀 원피스 + 힐 조합",
-    author: "원피스퀸",
-    tags: ["원피스", "여성", "미니멀"],
-    suitability: { lounge: 5, night: 4, bar: 5, yojeong: 3 },
-    saves: 341,
-    season: "봄·가을",
-  },
-  {
-    id: 4,
-    title: "가죽 재킷으로 포인트 주기",
-    author: "레더팬",
-    tags: ["재킷", "스트릿", "유니섹스"],
-    suitability: { lounge: 3, night: 5, bar: 4, yojeong: 2 },
-    saves: 156,
-    season: "가을·겨울",
-  },
-  {
-    id: 5,
-    title: "한복 퓨전 — 전통 접대 공간 방문 차림",
-    author: "퓨전한복",
-    tags: ["한복", "퓨전", "특별"],
-    suitability: { lounge: 2, night: 1, bar: 2, yojeong: 5 },
-    saves: 223,
-    season: "사계절",
-  },
-  {
-    id: 6,
-    title: "올블랙 스타일링의 정석",
-    author: "블랙무드",
-    tags: ["올블랙", "시크", "유니섹스"],
-    suitability: { lounge: 5, night: 5, bar: 5, yojeong: 3 },
-    saves: 412,
-    season: "사계절",
-  },
-  {
-    id: 7,
-    title: "니트 + 슬랙스 — 겨울 데이트 복장",
-    author: "겨울감성",
-    tags: ["니트", "겨울", "데이트"],
-    suitability: { lounge: 4, night: 3, bar: 4, yojeong: 3 },
-    saves: 178,
-    season: "겨울",
-  },
-  {
-    id: 8,
-    title: "액세서리 하나로 분위기 전환",
-    author: "포인트장인",
-    tags: ["액세서리", "시계", "목걸이"],
-    suitability: { lounge: 4, night: 4, bar: 3, yojeong: 3 },
-    saves: 265,
-    season: "사계절",
-  },
-];
-
-function SuitabilityDots({ score }: { score: number }) {
-  return (
-    <span className="flex gap-0.5">
-      {[1, 2, 3, 4, 5].map((i) => (
-        <span
-          key={i}
-          className={`inline-block h-1.5 w-1.5 rounded-full ${i <= score ? "bg-neon-primary-light" : "bg-neon-surface-2"}`}
-        />
-      ))}
-    </span>
-  );
+function postToStyle(post: Post): StylePost {
+  return {
+    id: post.id,
+    title: post.title,
+    author: post.users?.nickname || "익명",
+    excerpt: post.content.length > 80 ? post.content.slice(0, 80) + "…" : post.content,
+    likes: post.likes,
+    date: post.created_at.slice(0, 10),
+  };
 }
 
 export default function FashionPage() {
   useDocumentMeta('운동화 신고 가도 돼? 업종별 복장 가이드', '클럽·나이트·요정·라운지, 어디냐에 따라 옷이 다르다. 한눈에 정리.');
-  const [venueFilter, setVenueFilter] = useState<FilterType>("all");
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [posts, setPosts] = useState<StylePost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showWriteModal, setShowWriteModal] = useState(false);
+  const [writeTitle, setWriteTitle] = useState("");
+  const [writeContent, setWriteContent] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const sorted = [...outfitCards].sort((a, b) => {
-    if (venueFilter !== "all") {
-      return b.suitability[venueFilter] - a.suitability[venueFilter];
+  // 'tips' 카테고리에서 패션 관련 글을 가져옴 (별도 카테고리가 없으므로)
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const { data } = await fetchPosts('tips');
+      setPosts(data.map(postToStyle));
+      setLoading(false);
+    })();
+  }, []);
+
+  const handleWriteClick = () => {
+    if (!user) { window.location.href = '/login'; return; }
+    setShowWriteModal(true);
+  };
+
+  const handleSubmit = async () => {
+    if (!writeTitle.trim() || !writeContent.trim()) return;
+    setSubmitting(true);
+    const result = await createPost({ category: 'tips', title: writeTitle, content: writeContent });
+    if (result.error) { alert("저장 실패: " + result.error); } else {
+      alert("글이 저장되었습니다!");
+      setShowWriteModal(false); setWriteTitle(""); setWriteContent("");
+      const { data } = await fetchPosts('tips');
+      setPosts(data.map(postToStyle));
     }
-    return b.saves - a.saves;
-  });
+    setSubmitting(false);
+  };
 
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-5xl px-4 py-16">
-        {/* Header */}
         <div className="mb-10">
-          <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
-            ← 커뮤니티
-          </Link>
-          <h1 className="text-3xl font-bold">스타일 갤러리</h1>
-          <p className="mt-2 text-neon-text-muted">
-            장소 유형에 맞는 착장 영감을 얻고, 나만의 스타일을 공유하세요
-          </p>
-        </div>
-
-        {/* Venue Type Filter */}
-        <div className="mb-8 flex flex-wrap gap-2">
-          {venueFilters.map((v) => (
-            <button
-              key={v}
-              onClick={() => setVenueFilter(v)}
-              className={`rounded-full px-4 py-1.5 text-sm transition ${
-                venueFilter === v
-                  ? "bg-neon-primary text-neon-text"
-                  : "border border-neon-border text-neon-text-muted hover:border-neon-primary/50"
-              }`}
-            >
-              {v === "all" ? "모든 유형" : `${venueLabel[v]} 적합도 순`}
-            </button>
-          ))}
-        </div>
-
-        {/* Pinterest-style Grid */}
-        <div className="columns-1 gap-5 sm:columns-2 lg:columns-3">
-          {sorted.map((card) => (
-            <div
-              key={card.id}
-              className="mb-5 break-inside-avoid rounded-2xl border border-neon-border bg-neon-surface overflow-hidden transition hover:border-neon-primary/40"
-            >
-              {/* Image Placeholder */}
-              <div className="flex aspect-[3/4] items-center justify-center bg-gradient-to-br from-neon-surface-2 to-neon-bg">
-                <div className="text-center text-neon-text-muted">
-                  <div className="text-4xl mb-2">👔</div>
-                  <div className="text-xs">착장 이미지</div>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-4">
-                <h3 className="mb-2 text-sm font-bold leading-snug">{card.title}</h3>
-
-                {/* Tags */}
-                <div className="mb-3 flex flex-wrap gap-1.5">
-                  {card.tags.map((tag) => (
-                    <span key={tag} className="rounded-full bg-neon-surface-2 px-2 py-0.5 text-xs text-neon-text-muted">
-                      #{tag}
-                    </span>
-                  ))}
-                  <span className="rounded-full bg-neon-primary-light/10 px-2 py-0.5 text-xs text-neon-primary-light">
-                    {card.season}
-                  </span>
-                </div>
-
-                {/* Venue Suitability Scores */}
-                <div className="mb-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs">
-                  {(Object.entries(card.suitability) as [VenueType, number][]).map(([venue, score]) => (
-                    <div key={venue} className="flex items-center justify-between">
-                      <span className="text-neon-text-muted">{venueLabel[venue]}</span>
-                      <SuitabilityDots score={score} />
-                    </div>
-                  ))}
-                </div>
-
-                {/* Footer */}
-                <div className="flex items-center justify-between border-t border-neon-border pt-3 text-xs text-neon-text-muted">
-                  <span>{card.author}</span>
-                  <span>🔖 {card.saves}</span>
-                </div>
-              </div>
+          <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold">스타일 갤러리</h1>
+              <p className="mt-2 text-neon-text-muted">장소 유형에 맞는 착장 영감을 얻고, 나만의 스타일을 공유하세요</p>
             </div>
-          ))}
+            <button onClick={handleWriteClick} className="rounded-xl px-5 py-2.5 text-sm font-bold transition"
+              style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>글쓰기</button>
+          </div>
         </div>
+
+        {loading && (
+          <div className="rounded-2xl border border-neon-border bg-neon-surface p-12 text-center text-neon-text-muted">불러오는 중...</div>
+        )}
+
+        {!loading && posts.length > 0 && (
+          <div className="columns-1 gap-5 sm:columns-2 lg:columns-3">
+            {posts.map((post) => (
+              <button key={post.id} onClick={() => navigate('/community/post/' + post.id)}
+                className="mb-5 break-inside-avoid w-full text-left rounded-2xl border border-neon-border bg-neon-surface p-5 transition hover:border-neon-primary/40">
+                <h3 className="mb-2 text-sm font-bold leading-snug">{post.title}</h3>
+                <p className="mb-3 text-sm leading-relaxed text-neon-text-muted">{post.excerpt}</p>
+                <div className="flex items-center justify-between border-t border-neon-border pt-3 text-xs text-neon-text-muted">
+                  <span>{post.author} · {post.date}</span>
+                  <span>♥ {post.likes}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {!loading && posts.length === 0 && (
+          <div className="rounded-2xl border border-neon-border bg-neon-surface p-12 text-center text-neon-text-muted">
+            아직 스타일 글이 없습니다. 나만의 코디를 공유해보세요!
+          </div>
+        )}
+
+        {showWriteModal && (
+          <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
+            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
+              <button onClick={() => setShowWriteModal(false)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>취소</button>
+              <h2 className="text-base font-bold" style={{ color: '#111' }}>스타일 공유</h2>
+              <div style={{ width: 44 }} />
+            </div>
+            <div className="flex-1 overflow-y-auto px-4 py-4 pb-24 max-w-2xl mx-auto w-full">
+              <input value={writeTitle} onChange={(e) => setWriteTitle(e.target.value)} placeholder="제목 (예: 클럽 갈 때 추천 코디)"
+                className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none" style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
+              <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="스타일 팁을 공유해주세요"
+                className="w-full rounded-lg border px-4 py-3 text-sm outline-none resize-none" style={{ borderColor: '#E5E7EB', color: '#111', minHeight: '50vh', lineHeight: '1.8' }} />
+            </div>
+            <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
+              <button onClick={handleSubmit} disabled={submitting || !writeTitle.trim() || !writeContent.trim()}
+                className="w-full rounded-xl py-4 text-base font-bold transition active:scale-[0.98] disabled:opacity-30"
+                style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 56 }}>
+                {submitting ? "등록 중..." : "글 저장"}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,46 +1,43 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
+import { createClient } from '@/lib/supabase';
 
-const sections = [
-  {
-    title: "업소후기",
-    description: "직접 가본 솔직한 방문 후기",
-    href: "/community/reviews",
-    icon: "⭐",
-    count: 892,
-  },
-  {
-    title: "오늘어디갈까",
-    description: "오늘 밤 어디 갈지 같이 고민하는 곳",
-    href: "/community/qna",
-    icon: "🗺️",
-    count: 478,
-  },
-  {
-    title: "조각모집",
-    description: "같이 놀러갈 사람 구하는 곳",
-    href: "/community/jogak",
-    icon: "🧩",
-    count: 346,
-  },
-  {
-    title: "꿀팁",
-    description: "밤놀이 고수들의 실전 노하우",
-    href: "/community/tips",
-    icon: "💡",
-    count: 567,
-  },
-  {
-    title: "자유게시판",
-    description: "자유롭게 이야기 나누는 공간",
-    href: "/community/free",
-    icon: "💬",
-    count: 1284,
-  },
+const sectionDefs = [
+  { title: "업소후기", description: "직접 가본 솔직한 방문 후기", href: "/community/reviews", icon: "⭐", category: "reviews" },
+  { title: "오늘어디갈까", description: "오늘 밤 어디 갈지 같이 고민하는 곳", href: "/community/qna", icon: "🗺️", category: "discussion" },
+  { title: "조각모집", description: "같이 놀러갈 사람 구하는 곳", href: "/community/jogak", icon: "🧩", category: "party" },
+  { title: "꿀팁", description: "밤놀이 고수들의 실전 노하우", href: "/community/tips", icon: "💡", category: "tips" },
+  { title: "자유게시판", description: "자유롭게 이야기 나누는 공간", href: "/community/free", icon: "💬", category: "free" },
 ];
 
 export default function CommunityPage() {
   useDocumentMeta('밤 사람들이 모이는 커뮤니티', '후기, 꿀팁, 파티 모집, 오늘 밤 추천까지. 같이 노는 사람들의 광장.');
+  const [counts, setCounts] = useState<Record<string, number>>({});
+  const [recentPosts, setRecentPosts] = useState<{ id: string; title: string; category: string; likes: number; comment_count: number }[]>([]);
+
+  useEffect(() => {
+    const supabase = createClient();
+    if (!supabase) return;
+
+    // 각 카테고리별 글 수 가져오기
+    sectionDefs.forEach(async (sec) => {
+      const { count } = await supabase.from('posts').select('*', { count: 'exact', head: true }).eq('category', sec.category);
+      setCounts(prev => ({ ...prev, [sec.category]: count || 0 }));
+    });
+
+    // 최근 인기글 5개
+    supabase.from('posts')
+      .select('id, title, category, likes, comment_count')
+      .order('likes', { ascending: false })
+      .limit(5)
+      .then(({ data }) => {
+        if (data && data.length > 0) setRecentPosts(data as any);
+      });
+  }, []);
+
+  const catLabel: Record<string, string> = { reviews: '후기', discussion: 'Q&A', party: '모집', tips: '꿀팁', free: '자유' };
+
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-5xl px-4 py-16">
@@ -54,7 +51,7 @@ export default function CommunityPage() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {sections.map((section) => (
+          {sectionDefs.map((section) => (
             <Link target="_blank" rel="noopener noreferrer" key={section.href}
               to={section.href}
               className="group rounded-2xl border border-neon-border bg-neon-surface p-6 transition-all hover:border-neon-primary/50 hover:bg-neon-surface/80"
@@ -67,43 +64,47 @@ export default function CommunityPage() {
                 {section.description}
               </p>
               <div className="text-xs text-neon-text-muted">
-                게시글 <span className="text-neon-primary-light font-medium">{section.count.toLocaleString()}</span>개
+                게시글 <span className="text-neon-primary-light font-medium">{(counts[section.category] || 0).toLocaleString()}</span>개
               </div>
             </Link>
           ))}
         </div>
 
-        <div className="mt-16 rounded-2xl border border-neon-border bg-neon-surface p-8">
-          <h2 className="mb-6 text-2xl font-bold">최근 인기글</h2>
-          <div className="space-y-4">
-            {[
-              { title: "강남 클럽 첫 방문 후기 (초보자 시점)", category: "후기", likes: 234, comments: 45, href: "/community/reviews" },
-              { title: "홍대 vs 강남 클럽 비교 정리해봤습니다", category: "자유", likes: 189, comments: 67, href: "/community/free" },
-              { title: "이번 주말 이태원 파티 같이 가실 분?", category: "파티모집", likes: 156, comments: 32, href: "/community/party" },
-              { title: "나이트 드레스코드 완벽 가이드 2026", category: "꿀팁", likes: 312, comments: 28, href: "/community/tips" },
-              { title: "해운대 여름 클럽 시즌 정보 공유", category: "자유", likes: 198, comments: 41, href: "/community/free" },
-            ].map((post, i) => (
-              <Link
-                key={i}
-                to={post.href}
-                target="_blank" rel="noopener noreferrer"
-                className="flex items-center justify-between rounded-xl border border-neon-border bg-neon-bg px-5 py-4 transition hover:border-neon-primary/40 hover:bg-neon-surface"
-                style={{ minHeight: 56 }}
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className="shrink-0 rounded-full px-3 py-1 text-xs font-medium" style={{ backgroundColor: 'rgba(139,92,246,0.1)', color: '#8B5CF6' }}>
-                    {post.category}
-                  </span>
-                  <span className="text-sm font-medium truncate" style={{ color: '#111' }}>{post.title}</span>
-                </div>
-                <div className="flex shrink-0 gap-3 ml-3 text-xs" style={{ color: '#999' }}>
-                  <span>♥ {post.likes}</span>
-                  <span>💬 {post.comments}</span>
-                </div>
-              </Link>
-            ))}
+        {/* 최근 인기글 — DB에서 가져온 실제 데이터 */}
+        {recentPosts.length > 0 && (
+          <div className="mt-16 rounded-2xl border border-neon-border bg-neon-surface p-8">
+            <h2 className="mb-6 text-2xl font-bold">최근 인기글</h2>
+            <div className="space-y-4">
+              {recentPosts.map((post) => (
+                <Link
+                  key={post.id}
+                  to={`/community/post/${post.id}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="flex items-center justify-between rounded-xl border border-neon-border bg-neon-bg px-5 py-4 transition hover:border-neon-primary/40 hover:bg-neon-surface"
+                  style={{ minHeight: 56 }}
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="shrink-0 rounded-full px-3 py-1 text-xs font-medium" style={{ backgroundColor: 'rgba(139,92,246,0.1)', color: '#8B5CF6' }}>
+                      {catLabel[post.category] || post.category}
+                    </span>
+                    <span className="text-sm font-medium truncate" style={{ color: '#111' }}>{post.title}</span>
+                  </div>
+                  <div className="flex shrink-0 gap-3 ml-3 text-xs" style={{ color: '#999' }}>
+                    <span>♥ {post.likes}</span>
+                    <span>💬 {post.comment_count || 0}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
+
+        {recentPosts.length === 0 && (
+          <div className="mt-16 rounded-2xl border border-neon-border bg-neon-surface p-8 text-center">
+            <h2 className="mb-4 text-2xl font-bold">최근 인기글</h2>
+            <p className="text-neon-text-muted">아직 게시글이 없습니다. 첫 번째 글을 작성해보세요!</p>
+          </div>
+        )}
       </div>
     </div>
   );
