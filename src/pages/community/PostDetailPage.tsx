@@ -21,20 +21,32 @@ export default function PostDetailPage() {
   // 글 불러오기
   useEffect(() => {
     if (!supabase || !id) return;
-    supabase.from('posts').select('*').eq('id', id).single().then(({ data }) => {
-      setPost(data);
-      setLoading(false);
+    supabase.from('posts').select('*, users!posts_user_id_fkey(nickname, avatar_url)').eq('id', id).single().then(({ data, error }) => {
+      if (error) {
+        // Fallback without join
+        supabase.from('posts').select('*').eq('id', id).single().then(({ data: d }) => {
+          setPost(d);
+          setLoading(false);
+        });
+      } else {
+        setPost(data);
+        setLoading(false);
+      }
     });
   }, [id]);
 
   // 댓글 불러오기
   const fetchComments = async () => {
     if (!supabase || !id) return;
-    const { data } = await supabase
+    let { data, error } = await supabase
       .from('comments')
-      .select('*')
+      .select('*, users!comments_user_id_fkey(nickname, avatar_url)')
       .eq('post_id', id)
       .order('created_at', { ascending: true });
+    if (error) {
+      const fallback = await supabase.from('comments').select('*').eq('post_id', id).order('created_at', { ascending: true });
+      data = fallback.data;
+    }
     setComments(data || []);
   };
 
@@ -100,7 +112,7 @@ export default function PostDetailPage() {
       {/* 작성자 + 날짜 + 삭제 */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2 text-xs" style={{ color: '#999' }}>
-          <span style={{ color: '#555' }}>{post.user_id?.slice(0, 8) || '사용자'}</span>
+          <span style={{ color: '#555' }}>{(post.users as any)?.nickname || '사용자'}</span>
           <span>·</span>
           <span>{post.created_at?.slice(0, 10)}</span>
           <span className="rounded-full px-2 py-0.5" style={{ backgroundColor: '#F3F0FF', color: '#8B5CF6' }}>{post.category}</span>
@@ -129,7 +141,7 @@ export default function PostDetailPage() {
             <div key={c.id} className="flex items-start justify-between rounded-xl p-4" style={{ backgroundColor: '#F3F4F6' }}>
               <div className="flex-1 min-w-0">
                 <p className="text-sm leading-relaxed" style={{ color: '#111' }}>{c.content}</p>
-                <span className="text-xs" style={{ color: '#999' }}>{c.user_id?.slice(0, 8) || '사용자'} · {c.created_at?.slice(0, 10)}</span>
+                <span className="text-xs" style={{ color: '#999' }}>{c.users?.nickname || '사용자'} · {c.created_at?.slice(0, 10)}</span>
               </div>
               {user?.id === c.user_id && (
                 <button onClick={() => handleDeleteComment(c.id)} className="text-xs shrink-0 ml-2" style={{ color: '#EF4444', minHeight: 28 }}>삭제</button>

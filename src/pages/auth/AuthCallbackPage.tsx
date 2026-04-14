@@ -14,7 +14,7 @@ export default function AuthCallbackPage() {
       return;
     }
 
-    const handleSession = (session: any) => {
+    const handleSession = async (session: any) => {
       clearTimeout(fallbackTimer);
       clearTimeout(retryTimer);
       if (!session) {
@@ -29,6 +29,35 @@ export default function AuthCallbackPage() {
           if (resetStore) resetStore();
         }
       } catch (_) {}
+
+      // Check if user has nickname set
+      const meta = session.user?.user_metadata;
+      const hasNickname = meta?.nickname && meta.nickname.trim().length > 0;
+
+      // Also check users table
+      if (!hasNickname) {
+        try {
+          const { data: profile } = await supabase
+            .from('users')
+            .select('nickname')
+            .eq('id', userId)
+            .single();
+          if (profile?.nickname && profile.nickname.trim().length > 0) {
+            navigate('/');
+            return;
+          }
+        } catch {}
+        navigate('/setup-nickname');
+        return;
+      }
+
+      // Sync nickname to users table
+      try {
+        await supabase
+          .from('users')
+          .upsert({ id: userId, nickname: meta.nickname }, { onConflict: 'id' });
+      } catch {}
+
       navigate('/');
     };
 

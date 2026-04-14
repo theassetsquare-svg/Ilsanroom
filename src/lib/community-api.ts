@@ -38,15 +38,23 @@ export async function fetchPosts(category: PostCategory, limit = 20, offset = 0)
   try {
     const { data, count, error } = await supabase
       .from('posts')
-      .select('*', { count: 'exact' })
+      .select('*, users!posts_user_id_fkey(nickname, avatar_url)', { count: 'exact' })
       .eq('category', category)
       .order('is_pinned', { ascending: false })
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
 
     if (error) {
-      console.error('fetchPosts error:', error);
-      return { data: [] as Post[], count: 0 };
+      // Fallback without join if FK doesn't exist
+      const { data: fallback, count: c2, error: e2 } = await supabase
+        .from('posts')
+        .select('*', { count: 'exact' })
+        .eq('category', category)
+        .order('is_pinned', { ascending: false })
+        .order('created_at', { ascending: false })
+        .range(offset, offset + limit - 1);
+      if (e2) return { data: [] as Post[], count: 0 };
+      return { data: (fallback || []) as unknown as Post[], count: c2 || 0 };
     }
     return { data: (data || []) as unknown as Post[], count: count || 0 };
   } catch {

@@ -43,6 +43,7 @@ export default function LoginPage() {
   const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [nickname, setNickname] = useState('');
   const [emailError, setEmailError] = useState('');
   const [emailSuccess, setEmailSuccess] = useState('');
 
@@ -77,11 +78,22 @@ export default function LoginPage() {
     setEmailSuccess('');
 
     if (mode === 'signup') {
+      if (!nickname.trim()) {
+        setEmailError('닉네임을 입력해주세요');
+        setLoading(null);
+        return;
+      }
+      if (nickname.trim().length < 2 || nickname.trim().length > 12) {
+        setEmailError('닉네임은 2~12자로 입력해주세요');
+        setLoading(null);
+        return;
+      }
       const { error } = await supabase.auth.signUp({
         email: email.trim(),
         password,
         options: {
           emailRedirectTo: 'https://nolcool.com/auth/callback',
+          data: { nickname: nickname.trim() },
         },
       });
       setLoading(null);
@@ -153,6 +165,16 @@ export default function LoginPage() {
 
       {/* Email auth */}
       <div className="space-y-3">
+        {mode === 'signup' && (
+          <input
+            type="text"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+            placeholder="닉네임 (2~12자)"
+            maxLength={12}
+            className="w-full rounded-xl border border-neon-border bg-neon-bg px-4 py-3 text-sm text-neon-text outline-none focus:border-neon-primary transition"
+          />
+        )}
         <input
           type="email"
           value={email}

@@ -33,11 +33,12 @@ interface SimplePost {
 }
 
 function postToSimple(post: Post): SimplePost {
+  const u = post.users as any;
   return {
     id: post.id,
     title: post.title,
     content: post.content || '',
-    author: '사용자',
+    author: u?.nickname || '사용자',
     date: post.created_at.slice(0, 10),
     comments: post.comment_count || 0,
   };
@@ -118,7 +119,7 @@ export default function FreeBoardPage() {
     if (!commentText.trim() || !user || !viewingPost) return;
     const { data, error } = await createComment(viewingPost.id, commentText.trim());
     if (data) {
-      setPostComments(prev => [...prev, { author: user.user_metadata?.name || '나', text: commentText.trim(), date: new Date().toISOString().slice(5, 10) }]);
+      setPostComments(prev => [...prev, { author: user.user_metadata?.nickname || user.user_metadata?.name || '나', text: commentText.trim(), date: new Date().toISOString().slice(5, 10) }]);
       setCommentText('');
     }
   };
@@ -147,7 +148,7 @@ export default function FreeBoardPage() {
         id: result.data?.id || `new-${Date.now()}`,
         title: writeTitle.trim(),
         content: writeContent.trim(),
-        author: user?.user_metadata?.name || '나',
+        author: user?.user_metadata?.nickname || user?.user_metadata?.name || '나',
         date: new Date().toISOString().slice(0, 10),
         comments: 0,
       };
