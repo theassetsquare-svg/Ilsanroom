@@ -283,25 +283,26 @@ export default function HomePage() {
               target="_blank" rel="noopener noreferrer"
               className="flex-shrink-0 w-[140px]"
             >
-              <div className="relative rounded-xl overflow-hidden bg-gray-200" style={{ aspectRatio: '3/4' }}>
+              {/* 이미지 카드 — 고정 비율 */}
+              <div className="relative rounded-xl overflow-hidden bg-gray-100" style={{ width: 140, height: 187 }}>
                 <img
                   src={`/venues/${v.slug}-1.jpg`}
                   alt={v.nameKo}
                   loading="lazy"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover z-[1]"
                 />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-3xl font-bold text-gray-300">{v.nameKo.charAt(0)}</span>
+                {/* Fallback: 이미지 없을 때만 보임 */}
+                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#8B5CF6] to-[#EC4899]">
+                  <span className="text-3xl font-bold text-white/60">{v.nameKo.charAt(0)}</span>
                 </div>
                 {/* Rank badge */}
-                <span className={`absolute top-2 left-2 z-10 flex h-6 w-6 items-center justify-center rounded-full text-xs font-black text-white ${i < 3 ? 'bg-[#8B5CF6]' : 'bg-black/50'}`}>
+                <span className={`absolute top-2 left-2 z-[2] flex h-6 w-6 items-center justify-center rounded-full text-xs font-black text-white ${i < 3 ? 'bg-[#8B5CF6]' : 'bg-black/50'}`}>
                   {i + 1}
                 </span>
-                {/* Vibe score */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-                  <p className="text-xs font-bold text-white truncate">{v.nameKo}</p>
-                  <div className="flex items-center gap-1 mt-0.5">
+                {/* Vibe score overlay */}
+                <div className="absolute bottom-0 left-0 right-0 z-[2] bg-gradient-to-t from-black/70 to-transparent p-2">
+                  <div className="flex items-center gap-1">
                     <div className="flex-1 h-1 rounded-full bg-white/30 overflow-hidden">
                       <div className="h-full rounded-full bg-orange-400" style={{ width: `${getVibeScore(v.id)}%` }} />
                     </div>
@@ -309,6 +310,9 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
+              {/* 카드 아래 텍스트 — 이미지 밖 */}
+              <p className="mt-1.5 text-xs font-bold text-[#111] truncate px-0.5">{v.nameKo}</p>
+              <p className="text-[10px] text-[#999] truncate px-0.5">{v.region}</p>
             </Link>
           ))}
         </div>
