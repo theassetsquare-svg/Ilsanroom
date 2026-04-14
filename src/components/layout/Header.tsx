@@ -34,24 +34,24 @@ function useNewPostCount(user: any) {
   return count;
 }
 
-/* ── 6종류 업소 카테고리 (헤더 상단 노출) ── */
+/* ── 6종류 업소 카테고리 — 인기순 (헤더 상단 노출) ── */
 const categoryTabs = [
   { href: '/clubs', label: '클럽' },
   { href: '/nights', label: '나이트' },
+  { href: '/hoppa', label: '호빠' },
   { href: '/lounges', label: '라운지' },
   { href: '/rooms', label: '룸' },
   { href: '/yojeong', label: '요정' },
-  { href: '/hoppa', label: '호빠' },
 ];
 
 /* ── 햄버거 메뉴: 카테고리 + 기능 + 기타 ── */
 const menuCategories = [
   { icon: '🎵', label: '클럽', href: '/clubs' },
   { icon: '🌙', label: '나이트', href: '/nights' },
+  { icon: '🥂', label: '호빠', href: '/hoppa' },
   { icon: '🍸', label: '라운지', href: '/lounges' },
   { icon: '🚪', label: '룸', href: '/rooms' },
   { icon: '🏮', label: '요정', href: '/yojeong' },
-  { icon: '🥂', label: '호빠', href: '/hoppa' },
 ];
 
 const menuFeatures = [
