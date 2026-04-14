@@ -78,7 +78,7 @@ function getTimeLabel(dateStr: string) {
   const d = Math.floor(h / 24);
   return `${d}일 전`;
 }
-const seedHotPosts = getPopularPosts(6).map(p => ({
+const seedHotPosts = getPopularPosts(8).map(p => ({
   id: `seed-${p.id}`,
   board: boardLabels[p.board] || p.board,
   author: p.author.nickname,
@@ -87,6 +87,20 @@ const seedHotPosts = getPopularPosts(6).map(p => ({
   comments: p.commentCount,
   time: getTimeLabel(p.createdAt),
 }));
+
+// 피드 사이에 끼울 커뮤니티 글 (최신 글 다양하게)
+const feedCommunityPosts = getAllPosts()
+  .sort((a, b) => b.views - a.views)
+  .slice(0, 12)
+  .map(p => ({
+    id: `seed-${p.id}`,
+    board: boardLabels[p.board] || p.board,
+    author: p.author.nickname,
+    title: p.title,
+    likes: p.likes,
+    comments: p.commentCount,
+    excerpt: p.excerpt,
+  }));
 
 /* ── Fake 조각모임 data ── */
 const jogakList = [
@@ -488,20 +502,28 @@ export default function HomePage() {
               <div key={venue.id} className="relative">
                 <Link target="_blank" rel="noopener noreferrer" to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
                   <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
-                    {/* Photo */}
-                    <div className="relative w-full bg-gray-200" style={{ aspectRatio: '4/3' }}>
+                    {/* Photo — 고정 크기 */}
+                    <div className="relative w-full overflow-hidden" style={{ height: 140 }}>
                       <img
                         src={`/venues/${venue.slug}-1.jpg`}
                         alt={venue.nameKo}
                         loading="lazy"
                         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                        className="absolute inset-0 w-full h-full object-cover"
+                        className="absolute inset-0 w-full h-full object-cover z-[1]"
                       />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-2xl font-bold text-gray-400">{venue.nameKo.charAt(0)}</span>
+                      {/* Fallback — 그라데이션 배경 */}
+                      <div className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br ${
+                        venue.category === 'club' ? 'from-violet-500 to-indigo-600' :
+                        venue.category === 'night' ? 'from-blue-500 to-purple-600' :
+                        venue.category === 'lounge' ? 'from-amber-500 to-orange-600' :
+                        venue.category === 'room' ? 'from-rose-500 to-pink-600' :
+                        venue.category === 'yojeong' ? 'from-emerald-500 to-teal-600' :
+                        'from-pink-500 to-rose-600'
+                      }`}>
+                        <span className="text-3xl font-bold text-white/50">{venue.nameKo.charAt(0)}</span>
                       </div>
                       {/* Category + Region badge */}
-                      <span className="absolute top-2 left-2 z-10 rounded-full bg-white/90 backdrop-blur-sm px-2 py-0.5 text-xs font-bold text-[#111] shadow-sm">
+                      <span className="absolute top-2 left-2 z-[2] rounded-full bg-white/90 backdrop-blur-sm px-2 py-0.5 text-xs font-bold text-[#111] shadow-sm">
                         {catEmoji[venue.category]} {venue.regionKo}
                       </span>
                     </div>
@@ -544,9 +566,31 @@ export default function HomePage() {
               </div>
             );
 
-            // Every 6th — VS vote reminder
-            if ((idx + 1) % 6 === 0 && idx < 18) {
-              const poll = vsPolls[Math.floor(idx / 6) % vsPolls.length];
+            // Every 4th — 커뮤니티 인기글 카드
+            if ((idx + 1) % 4 === 0) {
+              const cp = feedCommunityPosts[Math.floor(idx / 4) % feedCommunityPosts.length];
+              if (cp) {
+                cards.push(
+                  <Link key={`cp-${idx}`} to={`/community/post/${cp.id}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#FAFAFA] to-white border border-gray-100 p-4 active:bg-gray-50 transition">
+                    <div className="flex items-start gap-3">
+                      <span className="flex-shrink-0 rounded-lg bg-[#F3F0FF] px-2 py-1 text-xs font-bold text-[#8B5CF6]">{cp.board}</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-[#111] truncate">{cp.title}</p>
+                        <p className="text-xs text-[#777] mt-0.5 line-clamp-1">{cp.excerpt}</p>
+                        <div className="flex items-center gap-3 mt-1 text-xs text-[#999]">
+                          <span>{cp.author}</span>
+                          <span>❤️ {cp.likes}</span>
+                          <span>💬 {cp.comments}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              }
+            }
+
+            // Every 8th — VS vote reminder
+            if ((idx + 1) % 8 === 0 && idx < 24) {
               cards.push(
                 <div key={`vs-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#EEF2FF] to-[#F3F0FF] p-4">
                   <Link to="/vs" className="text-sm font-bold text-[#8B5CF6]">
@@ -556,8 +600,8 @@ export default function HomePage() {
               );
             }
 
-            // Every 10th — TOP5
-            if ((idx + 1) % 10 === 0) {
+            // Every 12th — TOP5
+            if ((idx + 1) % 12 === 0) {
               cards.push(
                 <div key={`top5-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-violet-50 to-white p-4">
                   <p className="text-xs font-bold text-[#8B5CF6] mb-2">🏆 이번주 TOP 5</p>
