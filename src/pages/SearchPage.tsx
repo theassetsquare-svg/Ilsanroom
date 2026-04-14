@@ -202,14 +202,26 @@ export default function SearchPage() {
                 target="_blank" rel="noopener noreferrer"
                 className="group relative flex overflow-hidden rounded-2xl border border-transparent bg-white shadow-sm transition-all hover:border-[#8B5CF6] hover:shadow-md"
               >
-                <div className="relative h-32 w-32 shrink-0 bg-gray-100 sm:h-40 sm:w-40">
-                  <img 
-                    src={`/venues/${venue.slug}-1.jpg`} 
+                <div className="relative h-32 w-32 shrink-0 sm:h-40 sm:w-40 overflow-hidden">
+                  <img
+                    src={`/venues/${venue.slug}-1.jpg`}
                     alt={venue.nameKo}
                     loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    onError={(e) => { (e.target as HTMLImageElement).src = '/logo.svg'; (e.target as HTMLImageElement).className = 'h-full w-full p-8 opacity-20'; }}
+                    className="absolute inset-0 w-full h-full object-cover z-[1] transition-transform duration-500 group-hover:scale-105"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   />
+                  {/* Fallback */}
+                  <div className={`absolute inset-0 flex flex-col items-center justify-center ${
+                    venue.category === 'club' ? 'bg-gradient-to-br from-violet-500 to-indigo-700' :
+                    venue.category === 'night' ? 'bg-gradient-to-br from-blue-500 to-purple-700' :
+                    venue.category === 'lounge' ? 'bg-gradient-to-br from-amber-500 to-orange-700' :
+                    venue.category === 'room' ? 'bg-gradient-to-br from-rose-500 to-pink-700' :
+                    venue.category === 'yojeong' ? 'bg-gradient-to-br from-emerald-500 to-teal-700' :
+                    'bg-gradient-to-br from-pink-500 to-rose-700'
+                  }`}>
+                    <span className="text-2xl">{venue.category === 'club' ? '🎵' : venue.category === 'night' ? '🌙' : venue.category === 'lounge' ? '🍸' : venue.category === 'room' ? '🚪' : venue.category === 'yojeong' ? '🏮' : '🥂'}</span>
+                    <span className="mt-1 text-xs font-bold text-white/80">{venue.nameKo.slice(0, 4)}</span>
+                  </div>
                   {venue.isPremium && (
                     <div className="absolute left-2 top-2 flex items-center gap-1 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-white backdrop-blur-sm">
                       <Award className="h-3 w-3 text-amber-400" />

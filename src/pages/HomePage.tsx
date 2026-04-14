@@ -39,19 +39,8 @@ const categoryIcons = [
   { icon: '💬', label: '커뮤니티', href: '/community', gradient: 'from-teal-400 to-teal-600' },
 ];
 
-/* ── Region bubbles ── */
-const regionBubbles = [
-  { label: '전체', value: 'all' },
-  { label: '강남', value: '강남' },
-  { label: '홍대', value: '홍대' },
-  { label: '이태원', value: '이태원' },
-  { label: '부산', value: '부산' },
-  { label: '수원', value: '수원' },
-  { label: '일산', value: '일산' },
-  { label: '대전', value: '대전' },
-  { label: '인천', value: '인천' },
-  { label: '대구', value: '대구' },
-];
+/* ── Region labels for filter ── */
+const regionLabels = ['전체', '강남', '홍대', '이태원', '부산', '수원', '일산', '대전', '인천', '대구'];
 
 /* ── Banner slides ── */
 const bannerSlides = [
@@ -336,10 +325,11 @@ export default function HomePage() {
               key={v.id}
               to={getCategoryHref(v.category, v.slug, v.region)}
               target="_blank" rel="noopener noreferrer"
-              className="flex-shrink-0 w-[140px]"
+              className="flex-shrink-0"
+              style={{ width: 130 }}
             >
-              {/* 이미지 카드 — 고정 비율 */}
-              <div className="relative rounded-xl overflow-hidden bg-gray-100" style={{ width: 140, height: 187 }}>
+              {/* 이미지 카드 — 3:4 비율 통일 */}
+              <div className="relative rounded-xl overflow-hidden" style={{ width: 130, height: 173 }}>
                 <img
                   src={`/venues/${v.slug}-1.jpg`}
                   alt={v.nameKo}
@@ -347,9 +337,17 @@ export default function HomePage() {
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   className="absolute inset-0 w-full h-full object-cover z-[1]"
                 />
-                {/* Fallback: 이미지 없을 때만 보임 */}
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#8B5CF6] to-[#EC4899]">
-                  <span className="text-3xl font-bold text-white/60">{v.nameKo.charAt(0)}</span>
+                {/* Fallback — 카테고리별 그라데이션 */}
+                <div className={`absolute inset-0 flex flex-col items-center justify-center ${
+                  v.category === 'club' ? 'bg-gradient-to-br from-violet-500 to-indigo-700' :
+                  v.category === 'night' ? 'bg-gradient-to-br from-blue-500 to-purple-700' :
+                  v.category === 'lounge' ? 'bg-gradient-to-br from-amber-500 to-orange-700' :
+                  v.category === 'room' ? 'bg-gradient-to-br from-rose-500 to-pink-700' :
+                  v.category === 'yojeong' ? 'bg-gradient-to-br from-emerald-500 to-teal-700' :
+                  'bg-gradient-to-br from-pink-500 to-rose-700'
+                }`}>
+                  <span className="text-3xl">{catEmoji[v.category] || '🎵'}</span>
+                  <span className="mt-1 text-xs font-bold text-white/80">{v.nameKo.slice(0, 4)}</span>
                 </div>
                 {/* Rank badge */}
                 <span className={`absolute top-2 left-2 z-[2] flex h-6 w-6 items-center justify-center rounded-full text-xs font-black text-white ${i < 3 ? 'bg-[#8B5CF6]' : 'bg-black/50'}`}>
@@ -483,40 +481,40 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ REGION BUBBLES ═══ */}
-      <section className="py-2 overflow-x-auto scrollbar-hide max-w-3xl mx-auto">
-        <div className="flex gap-2 px-4 justify-center flex-wrap">
-          {regionBubbles.map(r => (
-            <button
-              key={r.value}
-              onClick={() => setActiveRegion(r.value)}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition-all whitespace-nowrap ${
-                activeRegion === r.value
-                  ? 'bg-[#8B5CF6] text-white shadow-md shadow-purple-200'
-                  : 'border border-gray-300 bg-white text-[#555]'
-              }`}
-              style={{ minHeight: 36 }}
-            >
-              {r.label}
-            </button>
-          ))}
+      {/* ═══ FEED — 지역 필터 + 정렬 탭 통합 ═══ */}
+      <section className="mt-2 max-w-3xl mx-auto">
+        {/* 지역 필터 */}
+        <div className="overflow-x-auto scrollbar-hide px-4 py-2">
+          <div className="flex gap-2">
+            {regionLabels.map(r => (
+              <button
+                key={r}
+                onClick={() => setActiveRegion(r === '전체' ? 'all' : r)}
+                className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-all whitespace-nowrap ${
+                  (r === '전체' && activeRegion === 'all') || (r !== '전체' && activeRegion === r)
+                    ? 'bg-[#8B5CF6] text-white shadow-sm'
+                    : 'bg-gray-100 text-[#555]'
+                }`}
+                style={{ minHeight: 32 }}
+              >
+                {r}
+              </button>
+            ))}
+          </div>
         </div>
-      </section>
-
-      {/* ═══ FEED TABS ═══ */}
-      <section className="border-b border-gray-100 mt-1 max-w-3xl mx-auto">
-        <div className="flex">
+        {/* 정렬 탭 */}
+        <div className="flex border-b border-gray-100">
           {feedTabs.map((tab, i) => (
             <button
               key={tab}
               onClick={() => setActiveTab(i)}
-              className={`flex-1 py-3 text-center text-sm font-medium transition-all relative ${
+              className={`flex-1 py-2.5 text-center text-sm font-medium transition-all relative ${
                 activeTab === i ? 'text-[#8B5CF6] font-bold' : 'text-[#555]'
               }`}
-              style={{ minHeight: 44 }}
+              style={{ minHeight: 40 }}
             >
               {tab}
-              {activeTab === i && <span className="absolute bottom-0 left-1/4 right-1/4 h-[3px] rounded-full bg-[#8B5CF6]" />}
+              {activeTab === i && <span className="absolute bottom-0 left-1/4 right-1/4 h-[2px] rounded-full bg-[#8B5CF6]" />}
             </button>
           ))}
         </div>
@@ -533,8 +531,8 @@ export default function HomePage() {
               <div key={venue.id} className="relative">
                 <Link target="_blank" rel="noopener noreferrer" to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
                   <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
-                    {/* Photo — 고정 크기 */}
-                    <div className="relative w-full overflow-hidden" style={{ height: 140 }}>
+                    {/* Photo — 3:4 비율 통일 */}
+                    <div className="relative w-full overflow-hidden" style={{ aspectRatio: '3/4' }}>
                       <img
                         src={`/venues/${venue.slug}-1.jpg`}
                         alt={venue.nameKo}
@@ -542,16 +540,17 @@ export default function HomePage() {
                         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                         className="absolute inset-0 w-full h-full object-cover z-[1]"
                       />
-                      {/* Fallback — 그라데이션 배경 */}
-                      <div className={`absolute inset-0 flex items-center justify-center bg-gradient-to-br ${
-                        venue.category === 'club' ? 'from-violet-500 to-indigo-600' :
-                        venue.category === 'night' ? 'from-blue-500 to-purple-600' :
-                        venue.category === 'lounge' ? 'from-amber-500 to-orange-600' :
-                        venue.category === 'room' ? 'from-rose-500 to-pink-600' :
-                        venue.category === 'yojeong' ? 'from-emerald-500 to-teal-600' :
-                        'from-pink-500 to-rose-600'
+                      {/* Fallback — 카테고리별 그라데이션 + 이모지 */}
+                      <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${
+                        venue.category === 'club' ? 'from-violet-500 to-indigo-700' :
+                        venue.category === 'night' ? 'from-blue-500 to-purple-700' :
+                        venue.category === 'lounge' ? 'from-amber-500 to-orange-700' :
+                        venue.category === 'room' ? 'from-rose-500 to-pink-700' :
+                        venue.category === 'yojeong' ? 'from-emerald-500 to-teal-700' :
+                        'from-pink-500 to-rose-700'
                       }`}>
-                        <span className="text-3xl font-bold text-white/50">{venue.nameKo.charAt(0)}</span>
+                        <span className="text-3xl">{catEmoji[venue.category] || '🎵'}</span>
+                        <span className="mt-1 text-xs font-bold text-white/80">{venue.nameKo.slice(0, 4)}</span>
                       </div>
                       {/* Category + Region badge */}
                       <span className="absolute top-2 left-2 z-[2] rounded-full bg-white/90 backdrop-blur-sm px-2 py-0.5 text-xs font-bold text-[#111] shadow-sm">
@@ -597,23 +596,12 @@ export default function HomePage() {
               </div>
             );
 
-            // Every 8th — 커뮤니티 CTA
-            if ((idx + 1) % 4 === 0 && idx < 16) {
+            // 8번째 — 커뮤니티 CTA 1번만
+            if (idx + 1 === 8) {
               cards.push(
-                <Link key={`cta-${idx}`} to="/community" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#F3F0FF] to-white border border-purple-100 p-4 active:bg-gray-50 transition text-center">
+                <Link key={`cta-${idx}`} to="/community" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#F3F0FF] to-white border border-purple-100 p-3 active:bg-gray-50 transition text-center">
                   <p className="text-sm font-bold text-[#8B5CF6]">💬 커뮤니티에서 후기·꿀팁·조각모임 확인하기 →</p>
                 </Link>
-              );
-            }
-
-            // Every 8th — VS vote reminder
-            if ((idx + 1) % 8 === 0 && idx < 24) {
-              cards.push(
-                <div key={`vs-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#EEF2FF] to-[#F3F0FF] p-4">
-                  <Link to="/vs" className="text-sm font-bold text-[#8B5CF6]">
-                    🆚 더 많은 VS 투표 참여하기 →
-                  </Link>
-                </div>
               );
             }
 
