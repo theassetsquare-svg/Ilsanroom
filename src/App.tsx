@@ -29,6 +29,7 @@ const PricePage = lazy(() => import('./pages/PricePage'));
 const ComparePage = lazy(() => import('./pages/ComparePage'));
 const SearchPage = lazy(() => import('./pages/SearchPage'));
 const MagazinePage = lazy(() => import('./pages/MagazinePage'));
+const MagazineDetailPage = lazy(() => import('./pages/MagazineDetailPage'));
 const CommunityPage = lazy(() => import('./pages/community/CommunityPage'));
 const QnAPage = lazy(() => import('./pages/community/QnAPage'));
 const ReviewsPage = lazy(() => import('./pages/community/ReviewsPage'));
@@ -115,6 +116,7 @@ export default function App() {
           <Route path="/compare" element={<ComparePage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/magazine" element={<MagazinePage />} />
+          <Route path="/magazine/:id" element={<MagazineDetailPage />} />
           {/* Community */}
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/community/qna" element={<QnAPage />} />
