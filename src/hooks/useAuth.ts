@@ -13,19 +13,40 @@ export function useAuth() {
       return;
     }
 
-    // getSession()은 로컬 저장소에서 세션을 가져오고,
-    // 만료된 경우 refresh token으로 자동 갱신한다.
-    // getUser()와 달리 매번 서버 요청하지 않아서 빠르고 안정적.
+    // 1) 로컬 저장소에서 세션 로드 (빠름, 서버 요청 없음)
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setLoading(false);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    // 2) 세션 변경 감지 — TOKEN_REFRESHED 포함하여 영구 로그인 유지
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
+
+      // 토큰 갱신 실패 시 자동 재시도 (네트워크 일시 오류 등)
+      if (event === 'TOKEN_REFRESHED' && !session) {
+        setTimeout(() => {
+          supabase.auth.getSession().then(({ data: { session: retrySession } }) => {
+            setUser(retrySession?.user ?? null);
+          });
+        }, 2000);
+      }
     });
 
-    return () => subscription.unsubscribe();
+    // 3) 앱 포그라운드 복귀 시 세션 자동 갱신 (모바일 백그라운드 복귀 대응)
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        supabase.auth.getSession().then(({ data: { session } }) => {
+          setUser(session?.user ?? null);
+        });
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      subscription.unsubscribe();
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
   }, []);
 
   const signOut = async () => {
