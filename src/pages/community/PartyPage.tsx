@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, deletePost, deleteComment, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
-import { useEngagementStore } from '@/lib/engagement-store';
 
 type PartyStatus = "모집중" | "곧 마감" | "끝" | "신청 가능" | "자리 있음" | "완료" | "열린 모임" | "거의 찬 번개" | "종결";
 
@@ -159,7 +158,6 @@ export default function PartyRecruitPage() {
   useDocumentMeta('같이 갈 사람 손! 파티 멤버 모집', '날짜 맞추고, 인원 채우고, N빵. 혼자 가기 아까울 때 여기서 구해.');
   const { user } = useAuth();
   const navigate = useNavigate();
-  const points = useEngagementStore((s) => s.points);
   const [statusFilter, setStatusFilter] = useState<PartyStatus | "전체">("전체");
   const [parties, setParties] = useState<PartyItem[]>(sampleParties);
   const [loading, setLoading] = useState(true);
@@ -184,7 +182,6 @@ export default function PartyRecruitPage() {
     if (!user) {
       window.location.href = '/login'; return;
     }
-    if (points < 300) { return; }
     setShowWriteModal(true);
   };
 

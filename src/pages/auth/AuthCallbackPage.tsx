@@ -1,11 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createClient } from '@/lib/supabase';
-import { useEngagementStore } from '@/lib/engagement-store';
-
 export default function AuthCallbackPage() {
   const navigate = useNavigate();
-  const resetStore = useEngagementStore((s) => s.reset);
 
   useEffect(() => {
     const supabase = createClient();
@@ -26,7 +23,7 @@ export default function AuthCallbackPage() {
         const savedUserId = localStorage.getItem('nolcool_user_id');
         if (!savedUserId || savedUserId !== userId) {
           localStorage.setItem('nolcool_user_id', userId);
-          if (resetStore) resetStore();
+          // User ID changed, clear local state
         }
       } catch (_) {}
 
@@ -83,7 +80,7 @@ export default function AuthCallbackPage() {
       clearTimeout(fallbackTimer);
       clearTimeout(retryTimer);
     };
-  }, [navigate, resetStore]);
+  }, [navigate]);
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center">

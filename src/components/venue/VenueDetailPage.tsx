@@ -9,7 +9,6 @@ import VenueDetailTabs from '@/components/venue/VenueDetailTabs';
 import VenueGallery from '@/components/venue/VenueGallery';
 import Card from '@/components/ui/Card';
 import ShareButtons from '@/components/interactive/ShareButtons';
-import { useEngagementStore } from '@/lib/engagement-store';
 import type { Venue } from '@/types';
 
 const VenueSeoContent = lazy(() => import('@/components/venue/VenueSeoContent'));
@@ -46,9 +45,6 @@ export default function VenueDetailPage({
   extraContent,
   topContent,
 }: VenueDetailPageProps) {
-  const trackView = useEngagementStore((s) => s.trackView);
-  useEffect(() => { trackView(venue.slug); }, [venue.slug, trackView]);
-
   // 업소 상세페이지: 전화바와 겹치는 하단 engagement 요소 숨기기
   useEffect(() => {
     document.body.classList.add('venue-detail-page');

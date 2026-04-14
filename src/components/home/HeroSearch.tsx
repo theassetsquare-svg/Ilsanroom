@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import type { Venue } from '@/types';
 import { venues as localVenues } from '@/data/venues';
-import { useEngagementStore } from '@/lib/engagement-store';
 
 const CATEGORY_FILTERS = [
   { key: 'all', label: '전체' },
@@ -46,7 +45,7 @@ export default function HeroSearch() {
   const inputRef = useRef<HTMLInputElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const engSearch = useEngagementStore((s) => s.search);
+
 
   // Load recent searches from localStorage
   useEffect(() => {
@@ -117,7 +116,7 @@ export default function HeroSearch() {
     } finally {
       setLoading(false);
     }
-  }, [engSearch]);
+  }, []);
 
   // Debounce search
   useEffect(() => {
