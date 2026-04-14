@@ -36,11 +36,29 @@ const bannerSlides = [
   { text: '🎰 오늘의 행운 업소 — 룰렛 돌려봐', href: '/roulette', color: 'from-amber-500 to-orange-600' },
 ];
 
-/* ── VS Polls ── */
+/* ── VS Polls — 매일 다른 투표 3세트 ── */
 const vsPolls = [
-  { q: '강남클럽 레이스 vs 아르쥬 — 어디?', a: '레이스', b: '아르쥬' },
-  { q: '금요일 밤, 클럽 vs 나이트?', a: '클럽', b: '나이트' },
-  { q: '혼자 가도 괜찮은 곳은?', a: '라운지', b: '나이트' },
+  { q: '강남 양대산맥! 어디가 더 미쳤어?', a: '레이스', b: '아르쥬', aEmoji: '🔥', bEmoji: '💎', aPct: 54, bPct: 46 },
+  { q: '금요일 밤, 뭐가 더 끌려?', a: '클럽', b: '나이트', aEmoji: '🎵', bEmoji: '🌙', aPct: 61, bPct: 39 },
+  { q: '혼자 가도 괜찮은 곳은?', a: '라운지', b: '나이트', aEmoji: '🍸', bEmoji: '💃', aPct: 67, bPct: 33 },
+  { q: '첫 방문이면 어디부터?', a: '홍대', b: '강남', aEmoji: '🎨', bEmoji: '💰', aPct: 48, bPct: 52 },
+  { q: '분위기 vs 가격, 뭐가 더 중요?', a: '분위기', b: '가격', aEmoji: '✨', bEmoji: '💵', aPct: 72, bPct: 28 },
+  { q: '단체 모임, 어디가 찐이야?', a: '룸', b: '호빠', aEmoji: '🚪', bEmoji: '🥂', aPct: 58, bPct: 42 },
+  { q: '주말 새벽 2시, 아직 놀고 싶다면?', a: '클럽', b: '요정', aEmoji: '🎶', bEmoji: '🏮', aPct: 63, bPct: 37 },
+];
+
+/* ── Fortune — 더 풍부하고 재미있는 밤 운세 ── */
+const allFortunes = [
+  { emoji: '🔥', title: '불꽃 에너지', text: '오늘 밤은 당신이 주인공. 입장 순간부터 시선 집중.', lucky: '강남 클럽', luckyColor: '레드', luckyNum: 7, tip: '첫 곡이 나올 때 플로어 앞줄로 가라. 운명이 바뀐다.' },
+  { emoji: '💃', title: '인연의 밤', text: '새로운 만남의 별이 빛난다. 눈이 마주치면 먼저 웃어라.', lucky: '나이트', luckyColor: '핑크', luckyNum: 3, tip: '혼자 갈수록 더 좋은 인연이 온다. 믿어라.' },
+  { emoji: '🍸', title: '고급 취향', text: '조용한 대화가 통하는 밤. 분위기로 승부하라.', lucky: '라운지', luckyColor: '골드', luckyNum: 9, tip: '칵테일 한 잔의 여유가 오늘 밤을 결정한다.' },
+  { emoji: '🎶', title: '리듬 마스터', text: '리듬을 타면 모든 게 풀린다. 몸이 먼저 아는 밤.', lucky: '클럽', luckyColor: '퍼플', luckyNum: 5, tip: 'DJ가 바뀌는 타임에 가면 최고의 셋을 만난다.' },
+  { emoji: '✨', title: '탐험가의 밤', text: '안 가본 곳이 행운이다. 새로운 도전이 대박의 시작.', lucky: '신규 업소', luckyColor: '블루', luckyNum: 1, tip: '친구가 추천한 곳 말고, 니 직감을 믿어라.' },
+  { emoji: '🥂', title: '인싸력 만렙', text: '사람이 모이는 곳에 니가 있다. 오늘은 단체전이 답.', lucky: '호빠', luckyColor: '로즈골드', luckyNum: 8, tip: '3명 이상이면 분위기 장악 가능. 크루를 소집하라.' },
+  { emoji: '🌙', title: '새벽형 인간', text: '밤이 깊을수록 좋아진다. 새벽 타임이 진짜 시작.', lucky: '새벽 영업', luckyColor: '네이비', luckyNum: 2, tip: '자정 넘어서 도착하면 VIP 대우를 받는다.' },
+  { emoji: '🎭', title: '변신의 밤', text: '평소와 다른 스타일을 시도하라. 오늘 밤은 반전이다.', lucky: '요정', luckyColor: '에메랄드', luckyNum: 6, tip: '드레스 코드를 한 단계 올리면 대접이 달라진다.' },
+  { emoji: '💎', title: '럭셔리 운', text: '오늘은 좋은 곳에 가야 한다. 아끼지 마라, 돌아온다.', lucky: '프리미엄 업소', luckyColor: '다이아', luckyNum: 4, tip: '테이블 예약하면 3배 더 즐긴다. 투자하라.' },
+  { emoji: '🎪', title: '파티 본능', text: '음악이 커질수록 기분이 올라간다. 미친 듯이 놀아라.', lucky: '클럽', luckyColor: '네온그린', luckyNum: 11, tip: '혼자 춤추는 사람이 가장 멋있다. 눈치 보지 마라.' },
 ];
 
 /* ── Community hot posts — DB에서 가져옴 ── */
@@ -57,19 +75,9 @@ function getTimeLabel(dateStr: string) {
 interface HotPost { id: string; board: string; author: string; title: string; likes: number; comments: number; time: string; }
 interface JogakItem { id: string; title: string; region: string; gender: string; current: number; max: number; time: string; }
 
-/* ── Night fortune ── */
 function getTodayFortune() {
-  const fortunes = [
-    { emoji: '🔥', text: '오늘 밤은 당신이 주인공. 강남이 부른다.', lucky: '강남 클럽' },
-    { emoji: '💃', text: '새로운 만남의 별이 빛난다. 나이트에서 인연을 만나라.', lucky: '나이트' },
-    { emoji: '🍸', text: '조용한 대화가 통하는 밤. 라운지가 정답.', lucky: '라운지' },
-    { emoji: '🎶', text: '리듬을 타면 모든 게 풀린다. 플로어로 나가라.', lucky: '클럽' },
-    { emoji: '✨', text: '오늘은 새로운 곳을 도전할 때. 안 가본 곳이 행운.', lucky: '신규 업소' },
-    { emoji: '🥂', text: '친구와 함께하면 두 배로 즐겁다. 단체 모임이 길하다.', lucky: '호빠' },
-    { emoji: '🌙', text: '밤이 깊을수록 좋아진다. 새벽 타임이 대박.', lucky: '새벽 영업' },
-  ];
-  const idx = new Date().getDate() % fortunes.length;
-  return fortunes[idx];
+  const idx = new Date().getDate() % allFortunes.length;
+  return allFortunes[idx];
 }
 
 /* ── Tabs ── */
@@ -279,8 +287,28 @@ export default function HomePage() {
   }, [filteredVenues, activeTab]);
 
   // === VS Vote ===
-  const [vsVotes, setVsVotes] = useState<Record<number, string>>({});
-  const currentPoll = vsPolls[new Date().getDate() % vsPolls.length];
+  const [vsVotes, setVsVotes] = useState<Record<number, string>>(() => {
+    try { const s = localStorage.getItem('nolcool_vs'); return s ? JSON.parse(s) : {}; } catch { return {}; }
+  });
+  const [vsAnimating, setVsAnimating] = useState(false);
+  const todayPolls = useMemo(() => {
+    const d = new Date().getDate();
+    return [vsPolls[d % vsPolls.length], vsPolls[(d + 3) % vsPolls.length]];
+  }, []);
+  const handleVsVote = useCallback((pollIdx: number, opt: string) => {
+    if (vsVotes[pollIdx] || vsAnimating) return;
+    setVsAnimating(true);
+    setVsVotes(prev => {
+      const next = { ...prev, [pollIdx]: opt };
+      try { localStorage.setItem('nolcool_vs', JSON.stringify(next)); } catch {}
+      return next;
+    });
+    const timer = setTimeout(() => setVsAnimating(false), 600);
+    return () => clearTimeout(timer);
+  }, [vsVotes, vsAnimating]);
+
+  // === Fortune ===
+  const [fortuneRevealed, setFortuneRevealed] = useState(false);
 
   // === Favorites ===
   const [favorites, setFavorites] = useState<Set<string>>(() => {
@@ -314,6 +342,7 @@ export default function HomePage() {
   };
 
   const fortune = getTodayFortune();
+  const fortuneScore = useMemo(() => Math.floor(60 + (new Date().getDate() * 7 + new Date().getMonth() * 13) % 40), []);
 
   return (
     <div className="bg-white min-h-screen">
@@ -571,44 +600,144 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* ═══ VS 투표 — 1탭 참여 ═══ */}
+      {/* ═══ VS 투표 — 실시간 배틀 ═══ */}
       <section className="px-4 py-3 max-w-3xl mx-auto">
-        <div className="rounded-2xl bg-gradient-to-r from-[#EEF2FF] to-[#F3F0FF] p-4">
-          <p className="text-xs font-bold text-[#8B5CF6] mb-1">🆚 오늘의 VS 투표</p>
-          <p className="text-sm font-bold text-[#111] mb-3">{currentPoll.q}</p>
-          <div className="grid grid-cols-2 gap-2">
-            {[currentPoll.a, currentPoll.b].map(opt => (
-              <button
-                key={opt}
-                onClick={() => setVsVotes(prev => ({ ...prev, [0]: opt }))}
-                disabled={!!vsVotes[0]}
-                className={`rounded-xl py-3 text-sm font-bold transition-all ${
-                  vsVotes[0] === opt ? 'bg-[#8B5CF6] text-white' :
-                  vsVotes[0] ? 'bg-white/60 text-[#999]' :
-                  'bg-white text-[#333] hover:bg-[#8B5CF6] hover:text-white active:bg-[#8B5CF6] active:text-white'
-                }`}
-                style={{ minHeight: 44 }}
-              >
-                {opt}
-              </button>
-            ))}
-          </div>
-          {vsVotes[0] && (
-            <p className="mt-2 text-xs text-[#8B5CF6] text-center">
-              투표 완료! 결과는 곧 공개됩니다.
-            </p>
-          )}
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-base font-bold text-[#111]">🆚 오늘의 VS 배틀</h2>
+          <Link to="/vs" className="text-xs text-[#8B5CF6] font-medium">더 많은 투표 →</Link>
+        </div>
+        <div className="space-y-3">
+          {todayPolls.map((poll, pi) => {
+            const voted = vsVotes[pi];
+            const aPct = voted ? (voted === poll.a ? Math.min(poll.aPct + 3, 99) : poll.aPct) : poll.aPct;
+            const bPct = 100 - aPct;
+            return (
+              <div key={pi} className="rounded-2xl border border-[#8B5CF6]/15 bg-gradient-to-br from-white to-[#FAFAFE] p-4 shadow-sm">
+                <p className="text-sm font-bold text-[#111] mb-3 text-center">{poll.q}</p>
+                <div className="grid grid-cols-2 gap-3">
+                  {/* A 선택지 */}
+                  <button
+                    onClick={() => handleVsVote(pi, poll.a)}
+                    disabled={!!voted}
+                    className={`relative rounded-xl overflow-hidden transition-all duration-300 ${
+                      voted === poll.a ? 'ring-2 ring-[#8B5CF6] shadow-lg scale-[1.02]' :
+                      voted ? 'opacity-60' : 'hover:shadow-md active:scale-95'
+                    }`}
+                    style={{ minHeight: 70 }}
+                  >
+                    {voted && (
+                      <div className="absolute inset-0 bg-[#8B5CF6]/10 rounded-xl">
+                        <div className="absolute bottom-0 left-0 right-0 bg-[#8B5CF6]/20 transition-all duration-700 rounded-b-xl"
+                          style={{ height: `${aPct}%` }} />
+                      </div>
+                    )}
+                    <div className="relative z-10 flex flex-col items-center justify-center h-full py-3">
+                      <span className="text-2xl mb-1">{poll.aEmoji}</span>
+                      <span className="text-sm font-bold text-[#111]">{poll.a}</span>
+                      {voted && <span className="text-lg font-black text-[#8B5CF6] mt-1">{aPct}%</span>}
+                    </div>
+                  </button>
+                  {/* B 선택지 */}
+                  <button
+                    onClick={() => handleVsVote(pi, poll.b)}
+                    disabled={!!voted}
+                    className={`relative rounded-xl overflow-hidden transition-all duration-300 ${
+                      voted === poll.b ? 'ring-2 ring-[#EC4899] shadow-lg scale-[1.02]' :
+                      voted ? 'opacity-60' : 'hover:shadow-md active:scale-95'
+                    }`}
+                    style={{ minHeight: 70 }}
+                  >
+                    {voted && (
+                      <div className="absolute inset-0 bg-[#EC4899]/10 rounded-xl">
+                        <div className="absolute bottom-0 left-0 right-0 bg-[#EC4899]/20 transition-all duration-700 rounded-b-xl"
+                          style={{ height: `${bPct}%` }} />
+                      </div>
+                    )}
+                    <div className="relative z-10 flex flex-col items-center justify-center h-full py-3">
+                      <span className="text-2xl mb-1">{poll.bEmoji}</span>
+                      <span className="text-sm font-bold text-[#111]">{poll.b}</span>
+                      {voted && <span className="text-lg font-black text-[#EC4899] mt-1">{bPct}%</span>}
+                    </div>
+                  </button>
+                </div>
+                {voted ? (
+                  <p className="mt-2 text-xs text-center font-medium text-[#8B5CF6]">
+                    {voted === poll.a ? `${poll.a}` : `${poll.b}`} 선택! · {Math.floor(200 + (pi + new Date().getDate()) * 37 % 800)}명 참여 중
+                  </p>
+                ) : (
+                  <p className="mt-2 text-xs text-center text-[#999]">터치해서 투표하세요</p>
+                )}
+              </div>
+            );
+          })}
         </div>
       </section>
 
-      {/* ═══ TONIGHT FORTUNE ═══ */}
+      {/* ═══ 오늘 밤 운세 — 카드 뒤집기 ═══ */}
       <section className="px-4 py-3 max-w-3xl mx-auto">
-        <div className="rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 p-4">
-          <p className="text-xs font-bold text-amber-700 mb-1">🔮 오늘 밤 운세</p>
-          <p className="text-lg mb-1">{fortune.emoji}</p>
-          <p className="text-sm font-bold text-[#111] mb-1">{fortune.text}</p>
-          <p className="text-xs text-amber-600">행운의 장소: {fortune.lucky}</p>
-        </div>
+        <h2 className="text-base font-bold text-[#111] mb-2">🔮 오늘 밤 운세</h2>
+        {!fortuneRevealed ? (
+          <button
+            onClick={() => setFortuneRevealed(true)}
+            className="w-full rounded-2xl bg-gradient-to-br from-indigo-900 via-purple-900 to-violet-800 p-6 text-center transition-all hover:shadow-xl active:scale-[0.98] relative overflow-hidden"
+            style={{ minHeight: 140 }}
+          >
+            <div className="absolute inset-0 opacity-20">
+              {['✦', '✧', '⭑', '✫', '⋆'].map((s, i) => (
+                <span key={i} className="absolute text-white animate-pulse" style={{
+                  top: `${15 + (i * 17) % 70}%`, left: `${10 + (i * 23) % 80}%`,
+                  fontSize: `${10 + i * 3}px`, animationDelay: `${i * 0.3}s`
+                }}>{s}</span>
+              ))}
+            </div>
+            <div className="relative z-10">
+              <span className="text-4xl block mb-3">🔮</span>
+              <p className="text-lg font-black text-white mb-1">터치해서 오늘의 운세 확인</p>
+              <p className="text-xs text-white/60">매일 자정에 바뀌는 당신만의 밤 운세</p>
+            </div>
+          </button>
+        ) : (
+          <div className="rounded-2xl bg-gradient-to-br from-indigo-50 via-purple-50 to-amber-50 border border-purple-200 p-5 animate-fade-in">
+            {/* 헤더 */}
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-3xl">{fortune.emoji}</span>
+              <div>
+                <p className="text-lg font-black text-[#111]">{fortune.title}</p>
+                <p className="text-xs text-[#8B5CF6] font-bold">오늘의 밤 에너지</p>
+              </div>
+              <div className="ml-auto flex flex-col items-center">
+                <span className="text-2xl font-black text-[#8B5CF6]">{fortuneScore}</span>
+                <span className="text-[10px] text-[#555]">운세점수</span>
+              </div>
+            </div>
+            {/* 운세 메시지 */}
+            <p className="text-sm font-bold text-[#111] leading-relaxed mb-3 bg-white/60 rounded-xl p-3">{fortune.text}</p>
+            {/* 운세 디테일 */}
+            <div className="grid grid-cols-3 gap-2 mb-3">
+              <div className="rounded-xl bg-white/80 p-2.5 text-center">
+                <p className="text-[10px] text-[#999] mb-0.5">행운의 장소</p>
+                <p className="text-xs font-bold text-[#111]">{fortune.lucky}</p>
+              </div>
+              <div className="rounded-xl bg-white/80 p-2.5 text-center">
+                <p className="text-[10px] text-[#999] mb-0.5">행운의 색</p>
+                <p className="text-xs font-bold text-[#111]">{fortune.luckyColor}</p>
+              </div>
+              <div className="rounded-xl bg-white/80 p-2.5 text-center">
+                <p className="text-[10px] text-[#999] mb-0.5">행운의 숫자</p>
+                <p className="text-xs font-bold text-[#8B5CF6]">{fortune.luckyNum}</p>
+              </div>
+            </div>
+            {/* 꿀팁 */}
+            <div className="rounded-xl bg-[#8B5CF6]/5 border border-[#8B5CF6]/10 p-3">
+              <p className="text-xs font-bold text-[#8B5CF6] mb-1">💡 오늘의 꿀팁</p>
+              <p className="text-sm text-[#333] leading-relaxed">{fortune.tip}</p>
+            </div>
+            {/* 다시 보기 */}
+            <button onClick={() => setFortuneRevealed(false)} className="mt-3 w-full text-center text-xs text-[#999] py-2" style={{ minHeight: 32 }}>
+              🔮 카드 다시 덮기
+            </button>
+          </div>
+        )}
       </section>
 
       {/* ═══ FEED — 정렬 탭 ═══ */}
