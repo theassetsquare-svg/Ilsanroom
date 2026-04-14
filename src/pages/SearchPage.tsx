@@ -120,7 +120,7 @@ export default function SearchPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Search Header Section */}
-      <div className="sticky top-[88px] z-40 bg-white shadow-sm">
+      <div className="sticky top-[92px] md:top-[56px] z-40 bg-white shadow-sm">
         <form onSubmit={handleSearchSubmit} action="/search" method="get" role="search" className="mx-auto max-w-4xl px-4 py-3">
           <div className="relative flex items-center gap-2">
             <div className="relative flex-1">

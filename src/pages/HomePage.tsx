@@ -233,14 +233,25 @@ export default function HomePage() {
         </p>
       </section>
 
-      {/* ═══ HERO ═══ */}
-      <section className="px-4 pt-2 pb-2 text-center max-w-3xl mx-auto">
+      {/* ═══ HERO + 검색바 ═══ */}
+      <section className="px-4 pt-2 pb-4 text-center max-w-3xl mx-auto">
         <h1 className="text-[26px] font-black text-[#111] leading-[1.3] tracking-tight">
           오늘 밤, 여기서 정한다
         </h1>
         <p className="mt-1.5 text-sm text-[#555]" style={{ lineHeight: 1.7 }}>
           전국 {openVenues.length}곳 실시간 비교 · 솔직 후기 · 조각모임
         </p>
+        {/* 검색바 — 홈페이지 히어로 영역 */}
+        <Link
+          to="/search"
+          className="mt-4 mx-auto flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-5 py-3.5 text-left shadow-sm hover:border-[#8B5CF6]/40 hover:shadow-md transition-all"
+          style={{ maxWidth: 520 }}
+        >
+          <svg className="h-5 w-5 text-[#8B5CF6] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <span className="text-[15px] text-gray-400">업소명, 지역 검색</span>
+        </Link>
       </section>
 
       {/* ═══ BANNER SLIDER ═══ */}

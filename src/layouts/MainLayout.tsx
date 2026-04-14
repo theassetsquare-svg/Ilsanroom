@@ -44,7 +44,7 @@ export default function MainLayout() {
       <JsonLd data={organizationJsonLd} />
       <JsonLd data={websiteJsonLd} />
       <Header />
-      <main id="main-content" className="flex-1 pt-[88px] pb-6">
+      <main id="main-content" className="flex-1 pt-[92px] md:pt-[56px] pb-6">
         <Outlet />
       </main>
       <div className="border-t border-neon-border bg-neon-surface">
