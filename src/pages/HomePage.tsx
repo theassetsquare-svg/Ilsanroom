@@ -75,6 +75,52 @@ function getTodayFortune() {
 /* ── Tabs ── */
 const feedTabs = ['🔥인기', '🆕신규', '⭐추천', '📍지역별'] as const;
 
+/* ── VenueCard — 재사용 카드 컴포넌트 ── */
+function VenueCard({ venue, favorites, toggleFavorite, rank }: { venue: Venue; favorites: Set<string>; toggleFavorite: (id: string) => void; rank?: number }) {
+  return (
+    <div className="relative">
+      <Link target="_blank" rel="noopener noreferrer" to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
+        <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
+          <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
+            <img src={`/venues/${venue.slug}-1.jpg`} alt={venue.nameKo} loading="lazy"
+              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              className="absolute inset-0 w-full h-full object-cover z-[1]" />
+            <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${
+              venue.category === 'club' ? 'from-violet-500 to-indigo-700' :
+              venue.category === 'night' ? 'from-blue-500 to-purple-700' :
+              venue.category === 'lounge' ? 'from-amber-500 to-orange-700' :
+              venue.category === 'room' ? 'from-rose-500 to-pink-700' :
+              venue.category === 'yojeong' ? 'from-emerald-500 to-teal-700' :
+              'from-pink-500 to-rose-700'
+            }`}>
+              <span className="text-3xl">{catEmoji[venue.category] || '🎵'}</span>
+              <span className="mt-1 text-xs font-bold text-white/80">{venue.nameKo.slice(0, 4)}</span>
+            </div>
+            {rank && (
+              <span className={`absolute top-2 left-2 z-[2] flex h-6 w-6 items-center justify-center rounded-full text-xs font-black text-white ${rank <= 3 ? 'bg-[#8B5CF6]' : 'bg-black/50'}`}>
+                {rank}
+              </span>
+            )}
+            <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2.5 py-2">
+              <h3 className="text-sm font-bold text-white leading-tight truncate">{venue.nameKo}</h3>
+              <div className="flex items-center justify-between">
+                <p className="text-[11px] text-white/90 truncate">{catLabel[venue.category]} · {venue.regionKo}</p>
+                {venue.rating > 0 && <span className="text-[11px] text-yellow-300 font-bold">★ {venue.rating.toFixed(1)}</span>}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Link>
+      <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(venue.id); }}
+        className="absolute top-2 right-2 z-[3] flex h-8 w-8 items-center justify-center rounded-full bg-black/30 backdrop-blur-sm" aria-label="찜하기">
+        <svg className={`h-4 w-4 ${favorites.has(venue.id) ? 'text-red-500 fill-red-500' : 'text-white'}`} fill={favorites.has(venue.id) ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+      </button>
+    </div>
+  );
+}
+
 /* ══════════════════════════════════════════════════════ */
 /*                    HOMEPAGE                            */
 /* ══════════════════════════════════════════════════════ */
@@ -206,10 +252,29 @@ export default function HomePage() {
   }, [openVenues, activeRegion]);
 
   const feedVenues = useMemo(() => {
-    if (activeTab === 0) return filteredVenues.slice(0, 30);
+    // 인기: rating + reviewCount 기반 실제 인기순
+    if (activeTab === 0) return [...filteredVenues].sort((a, b) => (b.rating * 10 + b.reviewCount) - (a.rating * 10 + a.reviewCount)).slice(0, 30);
+    // 신규: 최근 등록순 (배열 뒤쪽 = 최신)
     if (activeTab === 1) return [...filteredVenues].reverse().slice(0, 30);
-    if (activeTab === 2) return filteredVenues.filter(v => v.isPremium).concat(filteredVenues.filter(v => !v.isPremium)).slice(0, 30);
+    // 추천: 프리미엄 + 평점 높은 순
+    if (activeTab === 2) return [...filteredVenues].sort((a, b) => {
+      if (a.isPremium && !b.isPremium) return -1;
+      if (!a.isPremium && b.isPremium) return 1;
+      return b.rating - a.rating;
+    }).slice(0, 30);
+    // 지역별: 지역 그룹으로 정렬
     return filteredVenues.slice(0, 30);
+  }, [filteredVenues, activeTab]);
+
+  // 지역별 탭용 그룹핑 데이터
+  const regionGroupedVenues = useMemo(() => {
+    if (activeTab !== 3) return null;
+    const groups: Record<string, Venue[]> = {};
+    filteredVenues.forEach(v => {
+      if (!groups[v.regionKo]) groups[v.regionKo] = [];
+      if (groups[v.regionKo].length < 6) groups[v.regionKo].push(v);
+    });
+    return Object.entries(groups).filter(([, list]) => list.length > 0);
   }, [filteredVenues, activeTab]);
 
   // === VS Vote ===
@@ -586,86 +651,68 @@ export default function HomePage() {
 
       {/* ═══ VENUE FEED — 2 Column Cards ═══ */}
       <section className="px-4 py-4 max-w-3xl mx-auto">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          {feedVenues.map((venue, idx) => {
-            const cards = [];
+        {/* 탭 라벨 */}
+        {activeTab === 0 && <p className="text-xs font-medium text-[#8B5CF6] mb-3">평점 + 리뷰 수 기반 실시간 인기순</p>}
+        {activeTab === 1 && <p className="text-xs font-medium text-[#8B5CF6] mb-3">최근 등록된 업소 순</p>}
+        {activeTab === 2 && <p className="text-xs font-medium text-[#8B5CF6] mb-3">프리미엄 + 평점 높은 순 추천</p>}
+        {activeTab === 3 && <p className="text-xs font-medium text-[#8B5CF6] mb-3">지역별로 한눈에 보기</p>}
 
-            cards.push(
-              <div key={venue.id} className="relative">
-                <Link target="_blank" rel="noopener noreferrer" to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
-                  <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
-                    {/* Photo — 1:1 정사각형 통일 */}
-                    <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
-                      <img
-                        src={`/venues/${venue.slug}-1.jpg`}
-                        alt={venue.nameKo}
-                        loading="lazy"
-                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                        className="absolute inset-0 w-full h-full object-cover z-[1]"
-                      />
-                      {/* Fallback */}
-                      <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${
-                        venue.category === 'club' ? 'from-violet-500 to-indigo-700' :
-                        venue.category === 'night' ? 'from-blue-500 to-purple-700' :
-                        venue.category === 'lounge' ? 'from-amber-500 to-orange-700' :
-                        venue.category === 'room' ? 'from-rose-500 to-pink-700' :
-                        venue.category === 'yojeong' ? 'from-emerald-500 to-teal-700' :
-                        'from-pink-500 to-rose-700'
-                      }`}>
-                        <span className="text-3xl">{catEmoji[venue.category] || '🎵'}</span>
-                        <span className="mt-1 text-xs font-bold text-white/80">{venue.nameKo.slice(0, 4)}</span>
-                      </div>
-                      {/* 하단 업소명 — 솔리드 검정 배경 */}
-                      <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2.5 py-2">
-                        <h3 className="text-sm font-bold text-white leading-tight truncate">{venue.nameKo}</h3>
-                        <p className="text-[11px] text-white/90 truncate">{catLabel[venue.category]} · {venue.regionKo}</p>
-                      </div>
+        {/* 지역별 탭 — 지역 그룹 레이아웃 */}
+        {activeTab === 3 && regionGroupedVenues ? (
+          <div className="space-y-6">
+            {regionGroupedVenues.map(([region, list]) => (
+              <div key={region}>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-base font-bold text-[#111]">📍 {region}</h3>
+                  <span className="text-xs text-[#999]">{list.length}곳</span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {list.map(venue => (
+                    <VenueCard key={venue.id} venue={venue} favorites={favorites} toggleFavorite={toggleFavorite} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          /* 인기/신규/추천 — 일반 그리드 */
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            {feedVenues.map((venue, idx) => {
+              const cards = [];
+
+              cards.push(<VenueCard key={venue.id} venue={venue} favorites={favorites} toggleFavorite={toggleFavorite} rank={activeTab === 0 ? idx + 1 : undefined} />);
+
+              // 8번째 — 커뮤니티 CTA 1번만
+              if (idx + 1 === 8) {
+                cards.push(
+                  <Link key={`cta-${idx}`} to="/community" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#F3F0FF] to-white border border-purple-100 p-3 active:bg-gray-50 transition text-center">
+                    <p className="text-sm font-bold text-[#8B5CF6]">💬 커뮤니티에서 후기·꿀팁·조각모임 확인하기 →</p>
+                  </Link>
+                );
+              }
+
+              // TOP5 — 1번만
+              if (idx + 1 === 12) {
+                cards.push(
+                  <div key={`top5-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-violet-50 to-white p-4">
+                    <p className="text-xs font-bold text-[#8B5CF6] mb-2">🏆 이번주 TOP 5</p>
+                    <div className="space-y-1">
+                      {popularVenues.slice(0, 5).map((v, i) => (
+                        <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 py-1">
+                          <span className={`flex h-5 w-5 items-center justify-center rounded text-xs font-bold ${i < 3 ? 'bg-[#8B5CF6] text-white' : 'bg-gray-200 text-gray-600'}`}>{i + 1}</span>
+                          <span className="text-sm text-[#111] truncate">{v.nameKo}</span>
+                          <span className="ml-auto text-xs text-[#555]">{v.regionKo}</span>
+                        </Link>
+                      ))}
                     </div>
                   </div>
-                </Link>
-                {/* Heart */}
-                <button
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(venue.id); }}
-                  className="absolute top-2 right-2 z-[3] flex h-8 w-8 items-center justify-center rounded-full bg-black/30 backdrop-blur-sm"
-                  aria-label="찜하기"
-                >
-                  <svg className={`h-4 w-4 ${favorites.has(venue.id) ? 'text-red-500 fill-red-500' : 'text-white'}`} fill={favorites.has(venue.id) ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                  </svg>
-                </button>
-              </div>
-            );
+                );
+              }
 
-            // 8번째 — 커뮤니티 CTA 1번만
-            if (idx + 1 === 8) {
-              cards.push(
-                <Link key={`cta-${idx}`} to="/community" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#F3F0FF] to-white border border-purple-100 p-3 active:bg-gray-50 transition text-center">
-                  <p className="text-sm font-bold text-[#8B5CF6]">💬 커뮤니티에서 후기·꿀팁·조각모임 확인하기 →</p>
-                </Link>
-              );
-            }
-
-            // TOP5 — 1번만
-            if (idx + 1 === 12) {
-              cards.push(
-                <div key={`top5-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-violet-50 to-white p-4">
-                  <p className="text-xs font-bold text-[#8B5CF6] mb-2">🏆 이번주 TOP 5</p>
-                  <div className="space-y-1">
-                    {popularVenues.slice(0, 5).map((v, i) => (
-                      <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 py-1">
-                        <span className={`flex h-5 w-5 items-center justify-center rounded text-xs font-bold ${i < 3 ? 'bg-[#8B5CF6] text-white' : 'bg-gray-200 text-gray-600'}`}>{i + 1}</span>
-                        <span className="text-sm text-[#111] truncate">{v.nameKo}</span>
-                        <span className="ml-auto text-xs text-[#555]">{v.regionKo}</span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              );
-            }
-
-            return cards;
-          })}
-        </div>
+              return cards;
+            })}
+          </div>
+        )}
 
         {feedVenues.length === 0 && (
           <div className="text-center py-12 text-[#999]">
