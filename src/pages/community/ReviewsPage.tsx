@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+
+const RichTextEditor = lazy(() => import('@/components/community/RichTextEditor'));
 
 interface ReviewItem {
   id: string;
@@ -237,8 +239,9 @@ export default function ReviewsPage() {
               </div>
               <div className="mb-4">
                 <label className="mb-1 block text-xs" style={{ color: '#555' }}>내용</label>
-                <textarea value={writeContent} onChange={(e) => setWriteContent(e.target.value)} placeholder="솔직한 후기를 작성해주세요"
-                  className="w-full rounded-lg border px-4 py-3 text-sm outline-none resize-none" style={{ borderColor: '#E5E7EB', color: '#111', minHeight: '50vh', lineHeight: '1.8' }} />
+                <Suspense fallback={<div className="py-8 text-center text-sm" style={{ color: '#999' }}>에디터 로딩 중...</div>}>
+                  <RichTextEditor value={writeContent} onChange={setWriteContent} placeholder="솔직한 후기를 작성해주세요. 사진/동영상 첨부 가능!" minHeight={300} />
+                </Suspense>
               </div>
             </div>
             <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>

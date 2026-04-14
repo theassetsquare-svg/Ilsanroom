@@ -106,10 +106,21 @@ export default function Header() {
 
           {/* ── PC 헤더: 1줄 ── */}
           <div className="hidden md:flex h-14 items-center justify-between px-4">
-            {/* 로고 */}
-            <Link to="/" className="flex items-center shrink-0">
-              <span className="text-xl tracking-wide text-[#8B5CF6]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span>
-            </Link>
+            {/* 햄버거 + 로고 */}
+            <div className="flex items-center gap-1 shrink-0">
+              <button
+                onClick={() => setMenuOpen(true)}
+                className="flex h-10 w-10 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-50 transition"
+                aria-label="메뉴 열기"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+              <Link to="/" className="flex items-center">
+                <span className="text-xl tracking-wide text-[#8B5CF6]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span>
+              </Link>
+            </div>
 
             {/* 6카테고리 — 중앙 */}
             <nav className="flex items-center gap-1">
@@ -125,14 +136,22 @@ export default function Header() {
                     style={{ minHeight: 40 }}
                   >
                     {tab.label}
-                    {/* 커뮤니티 새글 알림 점 */}
                   </Link>
                 );
               })}
             </nav>
 
-            {/* 알림 + 프로필 */}
+            {/* 검색 + 알림 + 프로필 */}
             <div className="flex items-center gap-1 shrink-0">
+              <Link
+                to="/search"
+                className="flex h-10 w-10 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-50 transition"
+                aria-label="검색"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </Link>
               {user && (
                 <Link
                   to="/community"
@@ -240,7 +259,7 @@ export default function Header() {
         </div>
       </header>
 
-      {/* ═══ HAMBURGER SLIDE-IN MENU (모바일) ═══ */}
+      {/* ═══ HAMBURGER SLIDE-IN MENU (PC + 모바일 공용) ═══ */}
       {menuOpen && (
         <div className="fixed inset-0 z-[200]" onClick={() => setMenuOpen(false)}>
           <div className="absolute inset-0 bg-black/50 animate-fade-in" />

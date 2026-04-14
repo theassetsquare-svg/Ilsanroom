@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
+import ShareButton from '@/components/ui/ShareButton';
 
 interface CommentData {
   id: string;
@@ -266,13 +267,18 @@ export default function PostDetailPage() {
       {/* 글 내용 (일반 글) */}
       {!jogakData && (
         <div className="rounded-xl p-5 mb-4" style={{ backgroundColor: '#F9FAFB', minHeight: 150 }}>
-          <p className="text-base leading-relaxed" style={{ color: '#333', whiteSpace: 'pre-wrap', lineHeight: '1.8' }}>
-            {post.content}
-          </p>
+          {post.content?.startsWith('<') ? (
+            <div className="rich-content text-base leading-relaxed" style={{ color: '#333', lineHeight: '1.8' }}
+              dangerouslySetInnerHTML={{ __html: post.content }} />
+          ) : (
+            <p className="text-base leading-relaxed" style={{ color: '#333', whiteSpace: 'pre-wrap', lineHeight: '1.8' }}>
+              {post.content}
+            </p>
+          )}
         </div>
       )}
 
-      {/* 좋아요 버튼 */}
+      {/* 좋아요 + 공유 */}
       <div className="flex items-center gap-3 mb-4">
         <button onClick={handleLike}
           className="flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition"
@@ -283,6 +289,7 @@ export default function PostDetailPage() {
           }}>
           {liked ? '❤️' : '🤍'} 좋아요 {likeCount > 0 && likeCount}
         </button>
+        <ShareButton title={post.title} text={post.title} />
       </div>
 
       {/* 구분선 */}
