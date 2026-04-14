@@ -25,8 +25,8 @@ function getCategoryHref(category: string, slug: string, region: string) {
 const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
 const catEmoji: Record<string, string> = { club: '🎵', night: '🌙', lounge: '🍸', room: '🚪', yojeong: '🏮', hoppa: '🥂' };
 
-/* ── Region labels for filter ── */
-const regionLabels = ['전체', '강남', '홍대', '이태원', '부산', '수원', '일산', '대전', '인천', '대구'];
+/* ── Region labels for 지역별 tab filter ── */
+const regionLabels = ['전체', '강남', '압구정', '홍대', '이태원', '부산', '대구', '광주', '대전', '수원', '일산', '인천', '성남', '천안', '울산'];
 
 /* ── Banner slides ── */
 const bannerSlides = [
@@ -237,19 +237,20 @@ export default function HomePage() {
     return () => { if (bannerTimerRef.current) clearInterval(bannerTimerRef.current); };
   }, []);
 
-  // === REGION FILTER ===
-  const [activeRegion, setActiveRegion] = useState('all');
-
   // === TAB STATE ===
   const [activeTab, setActiveTab] = useState(0);
+
+  // === REGION FILTER (지역별 탭 전용) ===
+  const [activeRegion, setActiveRegion] = useState('all');
 
 
   // === FEED DATA ===
   const filteredVenues = useMemo(() => {
     let list = openVenues;
-    if (activeRegion !== 'all') list = list.filter(v => v.regionKo.includes(activeRegion));
+    // 지역 필터는 지역별 탭(탭3)에서만 적용
+    if (activeTab === 3 && activeRegion !== 'all') list = list.filter(v => v.regionKo.includes(activeRegion));
     return list;
-  }, [openVenues, activeRegion]);
+  }, [openVenues, activeRegion, activeTab]);
 
   const feedVenues = useMemo(() => {
     // 인기: rating + reviewCount 기반 실제 인기순
@@ -610,33 +611,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ FEED — 지역 필터 + 정렬 탭 통합 ═══ */}
+      {/* ═══ FEED — 정렬 탭 ═══ */}
       <section className="mt-2 max-w-3xl mx-auto">
-        {/* 지역 필터 */}
-        <div className="overflow-x-auto scrollbar-hide px-4 py-2">
-          <div className="flex gap-2">
-            {regionLabels.map(r => (
-              <button
-                key={r}
-                onClick={() => setActiveRegion(r === '전체' ? 'all' : r)}
-                className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-all whitespace-nowrap ${
-                  (r === '전체' && activeRegion === 'all') || (r !== '전체' && activeRegion === r)
-                    ? 'bg-[#8B5CF6] text-white shadow-sm'
-                    : 'bg-gray-100 text-[#555]'
-                }`}
-                style={{ minHeight: 32 }}
-              >
-                {r}
-              </button>
-            ))}
-          </div>
-        </div>
         {/* 정렬 탭 */}
         <div className="flex border-b border-gray-100">
           {feedTabs.map((tab, i) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(i)}
+              onClick={() => { setActiveTab(i); if (i !== 3) setActiveRegion('all'); }}
               className={`flex-1 py-2.5 text-center text-sm font-medium transition-all relative ${
                 activeTab === i ? 'text-[#8B5CF6] font-bold' : 'text-[#555]'
               }`}
@@ -647,6 +629,27 @@ export default function HomePage() {
             </button>
           ))}
         </div>
+        {/* 지역별 탭 선택 시에만 지역 필터 표시 */}
+        {activeTab === 3 && (
+          <div className="overflow-x-auto scrollbar-hide px-4 py-2 bg-gray-50/80">
+            <div className="flex gap-2">
+              {regionLabels.map(r => (
+                <button
+                  key={r}
+                  onClick={() => setActiveRegion(r === '전체' ? 'all' : r)}
+                  className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-all whitespace-nowrap ${
+                    (r === '전체' && activeRegion === 'all') || (r !== '전체' && activeRegion === r)
+                      ? 'bg-[#8B5CF6] text-white shadow-sm'
+                      : 'bg-white text-[#555] border border-gray-200'
+                  }`}
+                  style={{ minHeight: 32 }}
+                >
+                  {r}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* ═══ VENUE FEED — 2 Column Cards ═══ */}

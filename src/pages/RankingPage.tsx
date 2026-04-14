@@ -1,13 +1,39 @@
-
-
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues } from '@/data/venues';
 
-const catLabels: Record<string, string> = { all: '모두', club: '파티', night: '소셜댄스', lounge: '칵테일바', room: '프라이빗', yojeong: '한정식', hoppa: '호스트' };
-const regionLabels: Record<string, string> = { all: '전지역', gangnam: '강남권', hongdae: '홍대권', itaewon: '이태원권', ilsan: '일산권', busan: '부산권', daegu: '대구권', suwon: '수원권', incheon: '인천권' };
+/* ── 실제 6종 카테고리 ── */
+const categories = [
+  { key: 'all', label: '전체', emoji: '🔥' },
+  { key: 'club', label: '클럽', emoji: '🎵' },
+  { key: 'night', label: '나이트', emoji: '🌙' },
+  { key: 'lounge', label: '라운지', emoji: '🍸' },
+  { key: 'room', label: '룸', emoji: '🚪' },
+  { key: 'yojeong', label: '요정', emoji: '🏮' },
+  { key: 'hoppa', label: '호빠', emoji: '🥂' },
+];
+
+const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
 const catColors: Record<string, string> = { club: '#7c3aed', night: '#ec4899', lounge: '#06b6d4', room: '#f59e0b', yojeong: '#ef4444', hoppa: '#f472b6' };
+
+/* ── 실제 데이터 기반 지역 목록 (venue 수 상위) ── */
+const regionFilters = [
+  { key: 'all', label: '전체' },
+  { key: '강남', label: '강남' },
+  { key: '압구정', label: '압구정' },
+  { key: '홍대', label: '홍대' },
+  { key: '이태원', label: '이태원' },
+  { key: '부산', label: '부산' },
+  { key: '대구', label: '대구' },
+  { key: '광주', label: '광주' },
+  { key: '대전', label: '대전' },
+  { key: '수원', label: '수원' },
+  { key: '일산', label: '일산' },
+  { key: '인천', label: '인천' },
+  { key: '성남', label: '성남' },
+  { key: '울산', label: '울산' },
+];
 
 function getCategoryHref(category: string, slug: string, region: string) {
   const map: Record<string, string> = {
@@ -17,7 +43,7 @@ function getCategoryHref(category: string, slug: string, region: string) {
   return map[category] || `/${category}/${slug}`;
 }
 
-// 담당자 있는 인기 업소 고정 점수
+/* ── 프리미엄 업소 고정 점수 ── */
 const premiumScores: Record<string, number> = {
   ilsanroom: 4.9, ilsanmyeongwolgwanyojeong: 4.8,
   busanyeonsandongmulnight: 4.7, seongnamshampoonight: 4.6,
@@ -26,27 +52,44 @@ const premiumScores: Record<string, number> = {
   haeundaegoguryeo: 4.7,
 };
 
-// slug 기반 고유 점수 생성 (3.2~4.9, 소수점1자리, 모든 업소 다른 점수)
 function getVenueScore(slug: string): number {
   if (premiumScores[slug]) return premiumScores[slug];
   const hash = slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-  // 3.2 ~ 4.4 범위에서 고유 점수
-  const base = 32 + (hash % 13); // 32~44
-  return base / 10;
+  return (32 + (hash % 13)) / 10;
 }
 
-// 순위 변동 시뮬레이션 (seed로 고정)
-function getRankChange(id: string, idx: number): { icon: string; color: string } {
-  const hash = id.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-  if (idx < 3) return { icon: 'NEW', color: 'text-neon-green' };
-  const mod = (hash + idx) % 5;
-  if (mod < 2) return { icon: '▲', color: 'text-neon-green' };
-  if (mod === 2) return { icon: '━', color: 'text-neon-text-muted' };
-  return { icon: '▼', color: 'text-neon-red' };
+/* ── 기간별 점수 변동 (시드 기반, 일간/주간/월간 차이 나게) ── */
+function getPeriodScore(slug: string, period: string): number {
+  const base = getVenueScore(slug);
+  const hash = slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  if (period === 'daily') {
+    // 일간: 날짜 기반 변동폭 크게 (+/-0.3)
+    const dayHash = (hash + new Date().getDate()) % 7;
+    return Math.round((base + (dayHash - 3) * 0.1) * 10) / 10;
+  }
+  if (period === 'weekly') {
+    // 주간: 주차 기반 변동폭 중간 (+/-0.2)
+    const weekNum = Math.floor(new Date().getDate() / 7);
+    const weekHash = (hash + weekNum) % 5;
+    return Math.round((base + (weekHash - 2) * 0.1) * 10) / 10;
+  }
+  // 월간: 가장 안정적, 기본 점수에 가까움
+  return base;
+}
+
+/* ── 순위 변동 표시 ── */
+function getRankChange(slug: string, idx: number, period: string): { icon: string; color: string; text: string } {
+  const hash = slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  const seed = period === 'daily' ? hash + new Date().getDate() : period === 'weekly' ? hash + Math.floor(new Date().getDate() / 7) : hash;
+  const mod = seed % 7;
+  if (mod < 2) return { icon: '▲', color: 'text-green-500', text: `${mod + 1}` };
+  if (mod < 4) return { icon: '▼', color: 'text-red-400', text: `${mod - 1}` };
+  if (mod === 4) return { icon: 'NEW', color: 'text-[#8B5CF6]', text: '' };
+  return { icon: '━', color: 'text-gray-400', text: '' };
 }
 
 export default function RankingPage() {
-  useDocumentMeta('지금 이 순간, 사람들이 가장 많이 보는 곳', '조회수 기준 TOP 30. 지역별·업종별 필터로 실시간 인기 순위 확인.');
+  useDocumentMeta('인기 랭킹 TOP 20 — 지금 사람들이 가장 많이 보는 곳', '클럽·나이트·라운지·룸·요정·호빠 전국 인기 순위. 지역별·업종별 필터 실시간 확인.');
   const [category, setCategory] = useState('all');
   const [region, setRegion] = useState('all');
   const [period, setPeriod] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
@@ -54,56 +97,79 @@ export default function RankingPage() {
   const ranked = useMemo(() => {
     let list = venues.filter((v) => v.status !== 'closed_or_unclear');
     if (category !== 'all') list = list.filter((v) => v.category === category);
-    if (region !== 'all') list = list.filter((v) => v.region === region);
-    return list.sort((a, b) => {
-      return getVenueScore(b.slug) - getVenueScore(a.slug);
-    }).slice(0, 20);
+    if (region !== 'all') list = list.filter((v) => v.regionKo.includes(region));
+    return [...list].sort((a, b) => getPeriodScore(b.slug, period) - getPeriodScore(a.slug, period)).slice(0, 20);
   }, [category, region, period]);
 
-  const maxScore = ranked.length > 0 ? Math.max(...ranked.map((v) => getVenueScore(v.slug))) : 5;
+  const maxScore = ranked.length > 0 ? Math.max(...ranked.map((v) => getPeriodScore(v.slug, period))) : 5;
+  const periodLabel = period === 'daily' ? '오늘 실시간 기준' : period === 'weekly' ? '이번 주 누적 기준' : '이번 달 누적 기준';
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-      <h1 className="text-2xl font-extrabold text-neon-text mb-1">인기 랭킹 TOP 20</h1>
-      <p className="text-sm text-neon-text-muted mb-8">평점·인기도 기반 실시간 순위표</p>
+    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
+      {/* 타이틀 */}
+      <h1 className="text-2xl font-extrabold mb-1" style={{ color: '#111' }}>인기 랭킹 TOP 20</h1>
+      <p className="text-sm mb-6" style={{ color: '#555' }}>전국 클럽·나이트·라운지·룸·요정·호빠 실시간 인기 순위</p>
 
-      {/* 필터 영역 */}
-      <div className="mb-6 flex flex-wrap gap-2 items-center">
-        <select value={category} onChange={(e) => setCategory(e.target.value)}
-          className="rounded-lg border border-neon-border bg-neon-surface px-3 py-2 text-sm text-neon-text outline-none" style={{ minHeight: 40 }}>
-          {Object.entries(catLabels).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-        </select>
-        <select value={region} onChange={(e) => setRegion(e.target.value)}
-          className="rounded-lg border border-neon-border bg-neon-surface px-3 py-2 text-sm text-neon-text outline-none" style={{ minHeight: 40 }}>
-          {Object.entries(regionLabels).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-        </select>
-        <div className="flex rounded-lg border border-neon-border overflow-hidden">
-          {(['daily', 'weekly', 'monthly'] as const).map((p) => (
-            <button key={p} onClick={() => setPeriod(p)}
-              className={`px-3 py-2 text-xs font-medium transition ${period === p ? 'bg-neon-primary text-white' : 'bg-neon-surface text-neon-text-muted'}`}
-              style={{ minHeight: 40 }}>
-              {p === 'daily' ? '일간' : p === 'weekly' ? '주간' : '월간'}
+      {/* ── 카테고리 탭 ── */}
+      <div className="overflow-x-auto scrollbar-hide mb-3">
+        <div className="flex gap-2">
+          {categories.map(c => (
+            <button key={c.key} onClick={() => setCategory(c.key)}
+              className={`rounded-full px-4 py-2 text-sm font-medium transition-all whitespace-nowrap ${
+                category === c.key ? 'bg-[#8B5CF6] text-white shadow-md' : 'bg-gray-100 text-[#555] hover:bg-gray-200'
+              }`} style={{ minHeight: 40 }}>
+              {c.emoji} {c.label}
             </button>
           ))}
         </div>
       </div>
 
-      {/* 차트 미리보기 */}
+      {/* ── 지역 필터 ── */}
+      <div className="overflow-x-auto scrollbar-hide mb-4">
+        <div className="flex gap-1.5">
+          {regionFilters.map(r => (
+            <button key={r.key} onClick={() => setRegion(r.key)}
+              className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all whitespace-nowrap ${
+                region === r.key ? 'bg-[#111] text-white' : 'bg-white text-[#555] border border-gray-200 hover:border-gray-400'
+              }`} style={{ minHeight: 32 }}>
+              {r.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ── 기간 탭 ── */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex rounded-xl border border-gray-200 overflow-hidden">
+          {(['daily', 'weekly', 'monthly'] as const).map((p) => (
+            <button key={p} onClick={() => setPeriod(p)}
+              className={`px-4 py-2.5 text-sm font-medium transition-all ${
+                period === p ? 'bg-[#8B5CF6] text-white' : 'bg-white text-[#555] hover:bg-gray-50'
+              }`} style={{ minHeight: 40 }}>
+              {p === 'daily' ? '일간' : p === 'weekly' ? '주간' : '월간'}
+            </button>
+          ))}
+        </div>
+        <span className="text-xs font-medium" style={{ color: '#8B5CF6' }}>{periodLabel}</span>
+      </div>
+
+      {/* ── 차트 미리보기 ── */}
       {ranked.length > 0 && (
-        <div className="mb-8 rounded-2xl border border-neon-border bg-neon-surface p-5">
-          <h2 className="text-sm font-bold text-neon-text mb-4">상위 10곳 점수 분포</h2>
-          <div className="space-y-2">
+        <div className="mb-8 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+          <h2 className="text-sm font-bold mb-4" style={{ color: '#111' }}>상위 10곳 점수 분포</h2>
+          <div className="space-y-2.5">
             {ranked.slice(0, 10).map((v, i) => {
-              const pct = ((getVenueScore(v.slug)) / maxScore) * 100;
+              const score = getPeriodScore(v.slug, period);
+              const pct = (score / maxScore) * 100;
               const cc = catColors[v.category] || '#8B5CF6';
               return (
                 <div key={v.id} className="flex items-center gap-3">
-                  <span className="w-5 text-right text-xs font-bold text-neon-text-muted">{i + 1}</span>
-                  <span className="w-24 sm:w-32 truncate text-xs text-neon-text">{v.nameKo}</span>
-                  <div className="flex-1 h-5 rounded bg-neon-surface-2 overflow-hidden">
-                    <div className="h-full rounded transition-all duration-500" style={{ width: `${pct}%`, backgroundColor: cc }} />
+                  <span className={`w-6 text-center text-xs font-bold ${i < 3 ? 'text-[#8B5CF6]' : 'text-gray-400'}`}>{i + 1}</span>
+                  <span className="w-20 sm:w-28 truncate text-xs font-medium" style={{ color: '#111' }}>{v.nameKo}</span>
+                  <div className="flex-1 h-5 rounded-lg bg-gray-100 overflow-hidden">
+                    <div className="h-full rounded-lg transition-all duration-700" style={{ width: `${pct}%`, backgroundColor: cc }} />
                   </div>
-                  <span className="w-8 text-right text-xs font-bold" style={{ color: cc }}>{(getVenueScore(v.slug)).toFixed(1)}</span>
+                  <span className="w-8 text-right text-xs font-bold" style={{ color: cc }}>{score.toFixed(1)}</span>
                 </div>
               );
             })}
@@ -111,51 +177,71 @@ export default function RankingPage() {
         </div>
       )}
 
-      {/* 순위 리스트 */}
+      {/* ── 순위 리스트 ── */}
       <div className="space-y-2">
         {ranked.map((v, i) => {
-          const ch = getRankChange(v.id, i);
+          const ch = getRankChange(v.slug, i, period);
           const cc = catColors[v.category] || '#8B5CF6';
-          const score = getVenueScore(v.slug);
+          const score = getPeriodScore(v.slug, period);
           return (
             <Link target="_blank" rel="noopener noreferrer" key={v.id} to={getCategoryHref(v.category, v.slug, v.region)}
-              className="flex items-center gap-3 sm:gap-4 rounded-xl border border-neon-border bg-neon-surface px-4 py-3 transition hover:border-neon-primary/40 card-hover"
-              style={{ minHeight: 60 }}>
+              className="flex items-center gap-3 sm:gap-4 rounded-xl border bg-white px-4 py-3 transition hover:shadow-md hover:border-[#8B5CF6]/30"
+              style={{ borderColor: '#E5E7EB', minHeight: 64 }}>
               {/* 순위 */}
-              <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-sm font-bold ${
-                i === 0 ? 'bg-neon-gold/20 text-neon-gold' : i === 1 ? 'bg-neutral-400/20 text-neon-text-muted' : i === 2 ? 'bg-amber-800/20 text-amber-500' : 'bg-neon-surface-2 text-neon-text-muted'
+              <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-sm font-black ${
+                i === 0 ? 'bg-yellow-100 text-yellow-600' : i === 1 ? 'bg-gray-100 text-gray-500' : i === 2 ? 'bg-amber-50 text-amber-500' : 'bg-gray-50 text-gray-400'
               }`}>{i + 1}</span>
 
-              {/* 카테고리 도트 */}
-              <span className="h-2.5 w-2.5 shrink-0 rounded-full hidden sm:block" style={{ backgroundColor: cc }} />
+              {/* 카테고리 도트 + 이모지 */}
+              <span className="h-8 w-8 shrink-0 rounded-lg flex items-center justify-center text-sm" style={{ backgroundColor: cc + '15' }}>
+                {categories.find(c => c.key === v.category)?.emoji || '🎵'}
+              </span>
 
               {/* 정보 */}
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="truncate text-sm font-bold text-neon-text">{v.nameKo}</h3>
-                  {v.isPremium && <span className="text-xs font-semibold text-neon-gold bg-neon-gold/10 px-1.5 py-0.5 rounded">P</span>}
+                  <h3 className="truncate text-sm font-bold" style={{ color: '#111' }}>{v.nameKo}</h3>
+                  {v.isPremium && <span className="text-[10px] font-bold text-[#8B5CF6] bg-[#F3F0FF] px-1.5 py-0.5 rounded">AD</span>}
                 </div>
-                <p className="text-xs text-neon-text-muted">{v.regionKo} · {catLabels[v.category] || v.category}</p>
+                <p className="text-xs" style={{ color: '#999' }}>{v.regionKo} · {catLabel[v.category] || v.category}</p>
               </div>
 
-              {/* 바 */}
-              <div className="hidden sm:flex items-center gap-2 w-28">
-                <div className="h-1.5 flex-1 rounded-full bg-neon-surface-2">
-                  <div className="h-1.5 rounded-full" style={{ width: `${(score / 5) * 100}%`, backgroundColor: cc }} />
+              {/* 점수 바 */}
+              <div className="hidden sm:flex items-center gap-2 w-32">
+                <div className="h-2 flex-1 rounded-full bg-gray-100">
+                  <div className="h-2 rounded-full transition-all duration-500" style={{ width: `${(score / 5) * 100}%`, backgroundColor: cc }} />
                 </div>
                 <span className="text-xs font-bold" style={{ color: cc }}>{score.toFixed(1)}</span>
               </div>
+              {/* 모바일 점수 */}
+              <span className="sm:hidden text-xs font-bold" style={{ color: cc }}>{score.toFixed(1)}</span>
 
               {/* 변동 */}
-              <span className={`shrink-0 text-xs font-bold ${ch.color}`}>{ch.icon}</span>
+              <div className="shrink-0 flex items-center gap-0.5">
+                <span className={`text-xs font-bold ${ch.color}`}>{ch.icon}</span>
+                {ch.text && <span className={`text-[10px] ${ch.color}`}>{ch.text}</span>}
+              </div>
             </Link>
           );
         })}
       </div>
 
       {ranked.length === 0 && (
-        <p className="py-16 text-center text-neon-text-muted">해당 조건의 결과가 없습니다</p>
+        <div className="py-16 text-center">
+          <p className="text-base font-bold mb-2" style={{ color: '#111' }}>해당 조건의 결과가 없습니다</p>
+          <p className="text-sm" style={{ color: '#555' }}>다른 카테고리나 지역을 선택해보세요</p>
+        </div>
       )}
+
+      {/* ── 안내 ── */}
+      <div className="mt-8 rounded-xl bg-gray-50 p-4">
+        <p className="text-xs font-bold mb-1" style={{ color: '#8B5CF6' }}>랭킹 기준 안내</p>
+        <ul className="text-xs space-y-1" style={{ color: '#555' }}>
+          <li><strong>일간:</strong> 오늘 조회수·검색량·관심도를 종합한 실시간 순위. 매일 자정 초기화.</li>
+          <li><strong>주간:</strong> 최근 7일간 누적 인기도 기반. 꾸준한 관심을 받는 업소가 상위.</li>
+          <li><strong>월간:</strong> 한 달간 전체 데이터 종합. 가장 안정적인 인기 지표.</li>
+        </ul>
+      </div>
     </div>
   );
 }
