@@ -1,6 +1,6 @@
 
-import { useState, useEffect, useRef, useMemo, lazy, Suspense } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect, useRef, useMemo, useCallback, lazy, Suspense } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues as localVenues, getPopularVenues } from '@/data/venues';
 import type { Venue } from '@/types';
@@ -81,9 +81,51 @@ const feedTabs = ['🔥인기', '🆕신규', '⭐추천', '📍지역별'] as c
 
 export default function HomePage() {
   useDocumentMeta('놀쿨 — 오늘 밤 어디 갈지, 여기서 정해진다', '클럽·나이트·룸·요정·호빠 전국 120곳 실시간 비교. 솔직 후기, 조각모임, 벙개까지.');
+  const navigate = useNavigate();
 
   const openVenues = useMemo(() => localVenues.filter(v => v.status !== 'closed_or_unclear'), []);
   const popularVenues = getPopularVenues(20);
+
+  // === 네이버 스타일 실시간 검색 ===
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchFocused, setSearchFocused] = useState(false);
+  const [searchResults, setSearchResults] = useState<Venue[]>([]);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const searchWrapperRef = useRef<HTMLDivElement>(null);
+
+  // 실시간 검색 — 타이핑할 때마다 결과 업데이트
+  useEffect(() => {
+    if (!searchQuery.trim()) { setSearchResults([]); return; }
+    const timer = setTimeout(() => {
+      const q = searchQuery.toLowerCase();
+      const found = openVenues.filter(v =>
+        v.nameKo.toLowerCase().includes(q) ||
+        v.regionKo.toLowerCase().includes(q) ||
+        v.tags.some(t => t.toLowerCase().includes(q))
+      );
+      setSearchResults(found.slice(0, 8));
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [searchQuery, openVenues]);
+
+  // 검색창 바깥 클릭 시 닫기
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (searchWrapperRef.current && !searchWrapperRef.current.contains(e.target as Node)) {
+        setSearchFocused(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  const handleSearchSubmit = (e?: React.FormEvent) => {
+    e?.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchFocused(false);
+    }
+  };
 
   // === COMMUNITY DATA FROM SUPABASE ===
   const [hotPosts, setHotPosts] = useState<HotPost[]>([]);
@@ -233,7 +275,7 @@ export default function HomePage() {
         </p>
       </section>
 
-      {/* ═══ HERO + 검색바 ═══ */}
+      {/* ═══ HERO + 네이버 스타일 검색바 ═══ */}
       <section className="px-4 pt-2 pb-4 text-center max-w-3xl mx-auto">
         <h1 className="text-[26px] font-black text-[#111] leading-[1.3] tracking-tight">
           오늘 밤, 여기서 정한다
@@ -241,17 +283,90 @@ export default function HomePage() {
         <p className="mt-1.5 text-sm text-[#555]" style={{ lineHeight: 1.7 }}>
           전국 {openVenues.length}곳 실시간 비교 · 솔직 후기 · 조각모임
         </p>
-        {/* 검색바 — 홈페이지 히어로 영역 */}
-        <Link
-          to="/search"
-          className="mt-4 mx-auto flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-5 py-3.5 text-left shadow-sm hover:border-[#8B5CF6]/40 hover:shadow-md transition-all"
-          style={{ maxWidth: 520 }}
-        >
-          <svg className="h-5 w-5 text-[#8B5CF6] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <span className="text-[15px] text-gray-400">업소명, 지역 검색</span>
-        </Link>
+        {/* 검색바 — 네이버 스타일: 타이핑→실시간 결과 드롭다운 */}
+        <div ref={searchWrapperRef} className="relative mt-4 mx-auto" style={{ maxWidth: 520 }}>
+          <form onSubmit={handleSearchSubmit} className="relative">
+            <div className={`flex items-center rounded-2xl border bg-white px-4 transition-all ${
+              searchFocused ? 'border-[#8B5CF6] shadow-lg shadow-[#8B5CF6]/10' : 'border-gray-200 shadow-sm'
+            }`}>
+              <svg className="h-5 w-5 text-[#8B5CF6] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input
+                ref={searchInputRef}
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setSearchFocused(true)}
+                placeholder="업소명, 지역 검색"
+                className="h-12 w-full bg-transparent px-3 text-[15px] text-[#111] outline-none placeholder-gray-400 [&::-webkit-search-cancel-button]:hidden"
+                autoComplete="off"
+                autoCorrect="off"
+                spellCheck={false}
+              />
+              {searchQuery && (
+                <button type="button" onClick={() => { setSearchQuery(''); searchInputRef.current?.focus(); }} className="shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-600">
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
+          </form>
+
+          {/* 드롭다운 — 검색 결과 or 인기 검색어 */}
+          {searchFocused && (
+            <div className="absolute left-0 right-0 top-full z-[80] mt-2 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl animate-fade-in" style={{ maxHeight: 400, overflowY: 'auto' }}>
+              {searchQuery.trim() && searchResults.length > 0 ? (
+                <div className="py-2">
+                  <p className="px-4 py-1.5 text-[11px] font-bold text-[#8B5CF6] tracking-wider">검색 결과</p>
+                  {searchResults.map((v) => (
+                    <Link
+                      key={v.id || v.slug}
+                      to={getCategoryHref(v.category, v.slug, v.region)}
+                      target="_blank" rel="noopener noreferrer"
+                      onClick={() => { setSearchFocused(false); setSearchQuery(''); }}
+                      className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors"
+                    >
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#F3F0FF] text-sm font-bold text-[#8B5CF6]">
+                        {v.nameKo.charAt(0)}
+                      </div>
+                      <div className="min-w-0 flex-1 text-left">
+                        <p className="text-sm font-medium text-[#111] truncate">{v.nameKo}</p>
+                        <p className="text-xs text-[#555] truncate">{v.regionKo} · {catLabel[v.category]}</p>
+                      </div>
+                    </Link>
+                  ))}
+                  <button
+                    onClick={handleSearchSubmit}
+                    className="w-full border-t border-gray-100 py-3 text-center text-sm font-medium text-[#8B5CF6] hover:bg-gray-50 transition"
+                  >
+                    "{searchQuery}" 전체 검색 결과 보기
+                  </button>
+                </div>
+              ) : searchQuery.trim() && searchResults.length === 0 ? (
+                <div className="px-4 py-6 text-center">
+                  <p className="text-sm text-[#555]">"{searchQuery}" 결과가 없습니다</p>
+                  <p className="mt-1 text-xs text-gray-400">다른 키워드로 검색해 보세요</p>
+                </div>
+              ) : (
+                <div className="py-3">
+                  <p className="px-4 py-1.5 text-[11px] font-bold text-[#8B5CF6] tracking-wider">인기 검색어</p>
+                  {['강남클럽', '홍대나이트', '일산룸', '강남호빠', '해운대', '압구정라운지', '일산요정', '부산나이트'].map((term, i) => (
+                    <button
+                      key={term}
+                      onClick={() => { setSearchQuery(term); searchInputRef.current?.focus(); }}
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-gray-50 transition-colors"
+                    >
+                      <span className={`flex h-6 w-6 items-center justify-center rounded text-xs font-bold ${i < 3 ? 'bg-[#8B5CF6] text-white' : 'bg-gray-100 text-gray-500'}`}>{i + 1}</span>
+                      <span className="text-sm text-[#111]">{term}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </section>
 
       {/* ═══ BANNER SLIDER ═══ */}
