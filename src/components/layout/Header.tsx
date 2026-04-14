@@ -34,17 +34,18 @@ function useNewPostCount(user: any) {
   return count;
 }
 
-/* ── 6카테고리 탭 (놀쿨 제거, 홈은 로고 클릭) ── */
+/* ── 6종류 업소 카테고리 (헤더 상단 노출) ── */
 const categoryTabs = [
   { href: '/clubs', label: '클럽' },
   { href: '/nights', label: '나이트' },
+  { href: '/lounges', label: '라운지' },
   { href: '/rooms', label: '룸' },
-  { href: '/community', label: '커뮤니티', matchPrefixes: ['/community'] },
-  { href: '/gallery', label: '클립' },
-  { href: '/ranking', label: '랭킹' },
+  { href: '/yojeong', label: '요정' },
+  { href: '/hoppa', label: '호빠' },
 ];
 
-const menuItems = [
+/* ── 햄버거 메뉴: 카테고리 + 기능 + 기타 ── */
+const menuCategories = [
   { icon: '🎵', label: '클럽', href: '/clubs' },
   { icon: '🌙', label: '나이트', href: '/nights' },
   { icon: '🍸', label: '라운지', href: '/lounges' },
@@ -54,14 +55,14 @@ const menuItems = [
 ];
 
 const menuFeatures = [
-  { icon: '🔥', label: '실시간 인기', href: '/ranking' },
+  { icon: '💬', label: '커뮤니티', href: '/community' },
+  { icon: '📸', label: '클립', href: '/gallery' },
+  { icon: '🔥', label: '랭킹', href: '/ranking' },
   { icon: '🆚', label: 'VS 투표', href: '/vs' },
-  { icon: '🏆', label: '랭킹', href: '/ranking' },
 ];
 
 const menuExtra = [
-  { icon: '💬', label: '커뮤니티', href: '/community' },
-  { icon: '📸', label: '클립', href: '/gallery' },
+  { icon: '🔍', label: '검색', href: '/search' },
   { icon: '💰', label: '요금제', href: '/pricing' },
   { icon: '⚙️', label: '설정', href: '/help' },
 ];
@@ -94,9 +95,6 @@ export default function Header() {
   }, [menuOpen]);
 
   const isTabActive = (tab: typeof categoryTabs[number]) => {
-    if ('matchPrefixes' in tab && (tab as any).matchPrefixes) {
-      return (tab as any).matchPrefixes.some((p: string) => pathname.startsWith(p));
-    }
     return pathname.startsWith(tab.href);
   };
 
@@ -128,9 +126,6 @@ export default function Header() {
                   >
                     {tab.label}
                     {/* 커뮤니티 새글 알림 점 */}
-                    {tab.label === '커뮤니티' && newPostCount > 0 && (
-                      <span className="absolute top-1 right-1 h-1.5 w-1.5 rounded-full bg-red-500" />
-                    )}
                   </Link>
                 );
               })}
@@ -301,7 +296,7 @@ export default function Header() {
             {/* Category links */}
             <div className="px-2 py-3">
               <p className="px-3 pb-2 text-xs font-bold text-[#8B5CF6] uppercase tracking-wider">카테고리</p>
-              {menuItems.map((item) => (
+              {menuCategories.map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
