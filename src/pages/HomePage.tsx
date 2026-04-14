@@ -1,28 +1,13 @@
 
-import { useState, useEffect, useRef, useMemo, useCallback, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef, useMemo, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues as localVenues, getPopularVenues } from '@/data/venues';
 import type { Venue } from '@/types';
 import JsonLd from '@/components/seo/JsonLd';
 import ErrorBoundary from '@/components/ui/ErrorBoundary';
-import { useEngagementStore } from '@/lib/engagement-store';
-
-const InfiniteDiscoveryFeed = lazy(() => import('@/components/engagement/InfiniteDiscoveryFeed'));
-const NightFortune = lazy(() => import('@/components/engagement/NightFortune'));
-const PointBenefits = lazy(() => import('@/components/engagement/PointBenefits'));
-const LivePulse = lazy(() => import('@/components/engagement/LivePulse'));
-const MysteryCard = lazy(() => import('@/components/engagement/MysteryCard'));
-const MatchQuiz = lazy(() => import('@/components/engagement/MatchQuiz'));
-const PriceHeatmap = lazy(() => import('@/components/engagement/PriceHeatmap'));
-const NightTimeline = lazy(() => import('@/components/engagement/NightTimeline'));
-
-import CountdownTimer from '@/components/engagement/CountdownTimer';
-import SoundWavePreview from '@/components/engagement/SoundWavePreview';
-import EmojiReaction from '@/components/engagement/EmojiReaction';
+import HeroSearch from '@/components/home/HeroSearch';
 import KakaoShareButton from '@/components/engagement/KakaoShareButton';
-const StoryMode = lazy(() => import('@/components/engagement/StoryMode'));
-const WeeklyTop5Share = lazy(() => import('@/components/engagement/WeeklyTop5Share'));
 
 /* ── Helpers ── */
 function getCategoryHref(category: string, slug: string, region: string) {
@@ -38,24 +23,19 @@ function getCategoryHref(category: string, slug: string, region: string) {
 }
 
 const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
+const catEmoji: Record<string, string> = { club: '🎵', night: '🌙', lounge: '🍸', room: '🚪', yojeong: '🏮', hoppa: '🥂' };
 
-function getMonthlyVisitors(): string {
-  const d = new Date();
-  const n = 2400 + (d.getMonth() * 137 + d.getDate() * 3);
-  return n.toLocaleString('ko-KR');
-}
-
-/* ── Category icons for Naver-style ── */
+/* ── Category icons ── */
 const categoryIcons = [
-  { icon: '🎵', label: '나이트', href: '/nights', gradient: 'from-pink-400 to-pink-600' },
-  { icon: '🎤', label: '클럽', href: '/clubs', gradient: 'from-violet-400 to-violet-600' },
+  { icon: '🌙', label: '나이트', href: '/nights', gradient: 'from-blue-400 to-blue-600' },
+  { icon: '🎵', label: '클럽', href: '/clubs', gradient: 'from-violet-400 to-violet-600' },
   { icon: '🍸', label: '라운지', href: '/lounges', gradient: 'from-amber-400 to-amber-600' },
-  { icon: '💃', label: '룸', href: '/rooms', gradient: 'from-indigo-400 to-indigo-700' },
-  { icon: '🎶', label: '요정', href: '/yojeong', gradient: 'from-emerald-400 to-emerald-600' },
-  { icon: '🥂', label: '호빠', href: '/hoppa', gradient: 'from-red-400 to-red-600' },
+  { icon: '🚪', label: '룸', href: '/rooms', gradient: 'from-rose-400 to-rose-600' },
+  { icon: '🏮', label: '요정', href: '/yojeong', gradient: 'from-emerald-400 to-emerald-600' },
+  { icon: '🥂', label: '호빠', href: '/hoppa', gradient: 'from-pink-400 to-pink-600' },
   { icon: '🔥', label: '실시간', href: '/ranking', gradient: 'from-orange-400 to-orange-600' },
-  { icon: '🆚', label: 'VS', href: '/vs', gradient: 'from-blue-400 to-blue-600' },
-  { icon: '🏆', label: '랭킹', href: '/ranking', gradient: 'from-yellow-400 to-yellow-600' },
+  { icon: '🆚', label: 'VS', href: '/vs', gradient: 'from-indigo-400 to-indigo-600' },
+  { icon: '💬', label: '커뮤니티', href: '/community', gradient: 'from-teal-400 to-teal-600' },
 ];
 
 /* ── Region bubbles ── */
@@ -68,82 +48,74 @@ const regionBubbles = [
   { label: '수원', value: '수원' },
   { label: '일산', value: '일산' },
   { label: '대전', value: '대전' },
-  { label: '울산', value: '울산' },
   { label: '인천', value: '인천' },
+  { label: '대구', value: '대구' },
 ];
 
 /* ── Banner slides ── */
 const bannerSlides = [
   { text: '🔥 지금 실시간 1위: 강남클럽 레이스', href: '/clubs/gangnam/cheongdamrace', color: 'from-violet-600 to-purple-700' },
-  { text: '🆚 아르쥬 vs 레이스 — 당신의 선택은?', href: '/vs', color: 'from-blue-600 to-indigo-700' },
-  { text: '🎰 오늘의 운세: 당신의 밤은?', href: '/roulette', color: 'from-amber-500 to-orange-600' },
-  { text: '📢 신규 입점: 일산명월관요정', href: '/yojeong/ilsan/ilsanmyeongwolgwanyojeong', color: 'from-emerald-500 to-teal-600' },
+  { text: '🆚 아르쥬 vs 레이스 — 투표하고 결과 확인', href: '/vs', color: 'from-blue-600 to-indigo-700' },
+  { text: '💬 오늘 밤 같이 갈 사람? 조각모임', href: '/community/jogak', color: 'from-teal-500 to-emerald-600' },
+  { text: '🎰 오늘의 행운 업소 — 룰렛 돌려봐', href: '/roulette', color: 'from-amber-500 to-orange-600' },
 ];
 
-/* ── VS Polls for engagement cards ── */
+/* ── VS Polls ── */
 const vsPolls = [
-  { q: '강남클럽 레이스 vs 아르쥬 — 어디가 더 좋아?', a: '레이스', b: '아르쥬' },
-  { q: '금요일 밤, 클럽 vs 라운지?', a: '클럽', b: '라운지' },
-  { q: '부산 vs 강남 — 밤문화 어디가 더 핫해?', a: '부산', b: '강남' },
+  { q: '강남클럽 레이스 vs 아르쥬 — 어디?', a: '레이스', b: '아르쥬' },
+  { q: '금요일 밤, 클럽 vs 나이트?', a: '클럽', b: '나이트' },
+  { q: '혼자 가도 괜찮은 곳은?', a: '라운지', b: '나이트' },
 ];
+
+/* ── Fake community hot posts ── */
+const hotPosts = [
+  { id: 1, board: '자유', author: '강남불주먹', title: '어제 레이스 갔는데 ㄹㅇ 미쳤음', likes: 47, comments: 23, time: '2시간 전' },
+  { id: 2, board: '후기', author: '홍대댄서', title: '신림 그랑프리 솔직 후기 (사진있음)', likes: 35, comments: 18, time: '3시간 전' },
+  { id: 3, board: '질문', author: '처음이라', title: '나이트 처음인데 드레스코드 어떻게 해야돼?', likes: 28, comments: 31, time: '4시간 전' },
+  { id: 4, board: '후기', author: '수원사는형', title: '수원찬스돔 vs 코리아 비교 후기', likes: 52, comments: 27, time: '5시간 전' },
+];
+
+/* ── Fake 조각모임 data ── */
+const jogakList = [
+  { id: 1, title: '토요일 강남 레이스 같이 갈 여성분', region: '강남', gender: '여성', current: 3, max: 6, time: '4/19(토) 22:00', hot: true },
+  { id: 2, title: '오늘 밤 홍대 버뮤다 남자 2명 구함', region: '홍대', gender: '남성', current: 2, max: 4, time: '오늘 23:00', hot: true },
+  { id: 3, title: '일산 샴푸 정기모임 멤버 모집', region: '일산', gender: '혼성', current: 8, max: 12, time: '매주 토요일', hot: false },
+  { id: 4, title: '부산 아시아드 원정 같이 갈 사람', region: '부산', gender: '혼성', current: 4, max: 8, time: '4/26(토) 21:00', hot: false },
+];
+
+/* ── Night fortune ── */
+function getTodayFortune() {
+  const fortunes = [
+    { emoji: '🔥', text: '오늘 밤은 당신이 주인공. 강남이 부른다.', lucky: '강남 클럽' },
+    { emoji: '💃', text: '새로운 만남의 별이 빛난다. 나이트에서 인연을 만나라.', lucky: '나이트' },
+    { emoji: '🍸', text: '조용한 대화가 통하는 밤. 라운지가 정답.', lucky: '라운지' },
+    { emoji: '🎶', text: '리듬을 타면 모든 게 풀린다. 플로어로 나가라.', lucky: '클럽' },
+    { emoji: '✨', text: '오늘은 새로운 곳을 도전할 때. 안 가본 곳이 행운.', lucky: '신규 업소' },
+    { emoji: '🥂', text: '친구와 함께하면 두 배로 즐겁다. 단체 모임이 길하다.', lucky: '호빠' },
+    { emoji: '🌙', text: '밤이 깊을수록 좋아진다. 새벽 타임이 대박.', lucky: '새벽 영업' },
+  ];
+  const idx = new Date().getDate() % fortunes.length;
+  return fortunes[idx];
+}
 
 /* ── Tabs ── */
-const feedTabs = ['🔥실시간인기', '🆕오늘의신규', '⭐에디터추천', '📍내주변'] as const;
+const feedTabs = ['🔥인기', '🆕신규', '⭐추천', '📍지역별'] as const;
 
 /* ══════════════════════════════════════════════════════ */
 /*                    HOMEPAGE                            */
 /* ══════════════════════════════════════════════════════ */
 
 export default function HomePage() {
-  useDocumentMeta('놀쿨 — 오늘 밤 어디 갈지, 여기서 정해진다', '클럽·나이트·룸·요정·호빠 전국 117곳 실시간 비교. 지역별 시세, 빈 자리, 솔직 후기까지 한 곳에.');
+  useDocumentMeta('놀쿨 — 오늘 밤 어디 갈지, 여기서 정해진다', '클럽·나이트·룸·요정·호빠 전국 120곳 실시간 비교. 솔직 후기, 조각모임, 벙개까지.');
 
-  // All open venues
   const openVenues = useMemo(() => localVenues.filter(v => v.status !== 'closed_or_unclear'), []);
   const popularVenues = getPopularVenues(20);
-
-  // === SEARCH STATE ===
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<Venue[]>([]);
-  const [showSearchResults, setShowSearchResults] = useState(false);
-  const searchRef = useRef<HTMLDivElement>(null);
-  const searchInputRef = useRef<HTMLInputElement>(null);
-  const engSearch = useEngagementStore((s) => s.search);
-
-  const doSearch = useCallback((q: string) => {
-    if (!q.trim()) { setSearchResults([]); setShowSearchResults(false); return; }
-    engSearch();
-    const lower = q.toLowerCase();
-    const found = localVenues.filter(v => {
-      if (v.status === 'closed_or_unclear') return false;
-      return v.nameKo.toLowerCase().includes(lower) ||
-        v.regionKo.toLowerCase().includes(lower) ||
-        v.tags.some(t => t.toLowerCase().includes(lower));
-    });
-    setSearchResults(found.slice(0, 8));
-    setShowSearchResults(true);
-  }, [engSearch]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => doSearch(searchQuery), 300);
-    return () => clearTimeout(timer);
-  }, [searchQuery, doSearch]);
-
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(e.target as Node)) setShowSearchResults(false);
-    };
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
-  }, []);
 
   // === BANNER STATE ===
   const [bannerIdx, setBannerIdx] = useState(0);
   const bannerTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
   useEffect(() => {
-    bannerTimerRef.current = setInterval(() => {
-      setBannerIdx(prev => (prev + 1) % bannerSlides.length);
-    }, 4000);
+    bannerTimerRef.current = setInterval(() => setBannerIdx(prev => (prev + 1) % bannerSlides.length), 4000);
     return () => { if (bannerTimerRef.current) clearInterval(bannerTimerRef.current); };
   }, []);
 
@@ -153,15 +125,11 @@ export default function HomePage() {
   // === TAB STATE ===
   const [activeTab, setActiveTab] = useState(0);
 
-  // === STICKY STATES ===
+  // === STICKY SEARCH ===
   const [searchSticky, setSearchSticky] = useState(false);
   const searchSentinelRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => setSearchSticky(!entry.isIntersecting),
-      { threshold: 0 }
-    );
+    const observer = new IntersectionObserver(([entry]) => setSearchSticky(!entry.isIntersecting), { threshold: 0 });
     if (searchSentinelRef.current) observer.observe(searchSentinelRef.current);
     return () => observer.disconnect();
   }, []);
@@ -169,27 +137,30 @@ export default function HomePage() {
   // === FEED DATA ===
   const filteredVenues = useMemo(() => {
     let list = openVenues;
-    if (activeRegion !== 'all') {
-      list = list.filter(v => v.regionKo.includes(activeRegion));
-    }
+    if (activeRegion !== 'all') list = list.filter(v => v.regionKo.includes(activeRegion));
     return list;
   }, [openVenues, activeRegion]);
 
   const feedVenues = useMemo(() => {
-    if (activeTab === 0) return filteredVenues.slice(0, 30); // 실시간인기
-    if (activeTab === 1) return [...filteredVenues].reverse().slice(0, 30); // 오늘의신규
-    if (activeTab === 2) return filteredVenues.filter(v => v.isPremium).concat(filteredVenues.filter(v => !v.isPremium)).slice(0, 30); // 에디터추천
-    return filteredVenues.slice(0, 30); // 내주변
+    if (activeTab === 0) return filteredVenues.slice(0, 30);
+    if (activeTab === 1) return [...filteredVenues].reverse().slice(0, 30);
+    if (activeTab === 2) return filteredVenues.filter(v => v.isPremium).concat(filteredVenues.filter(v => !v.isPremium)).slice(0, 30);
+    return filteredVenues.slice(0, 30);
   }, [filteredVenues, activeTab]);
 
-  // === VS Vote state ===
+  // === VS Vote ===
   const [vsVotes, setVsVotes] = useState<Record<number, string>>({});
+  const currentPoll = vsPolls[new Date().getDate() % vsPolls.length];
 
-  // === Viewer count (fake real-time) ===
-  const viewerCounts = useRef<Record<string, number>>({});
-  const getViewerCount = (id: string) => {
-    if (!viewerCounts.current[id]) viewerCounts.current[id] = Math.floor(Math.random() * 40) + 5;
-    return viewerCounts.current[id];
+  // === Vibe Score (실시간 분위기 지수) ===
+  const vibeScores = useRef<Record<string, number>>({});
+  const getVibeScore = (id: string) => {
+    if (!vibeScores.current[id]) {
+      const h = new Date().getHours();
+      const base = (h >= 21 || h < 4) ? 60 : (h >= 18 ? 40 : 20);
+      vibeScores.current[id] = base + Math.floor(Math.random() * 30);
+    }
+    return Math.min(vibeScores.current[id], 100);
   };
 
   // === Favorites ===
@@ -209,28 +180,21 @@ export default function HomePage() {
     });
   };
 
-  // === Story Mode ===
-  const [storyVenue, setStoryVenue] = useState<string | null>(null);
-
-  // === Lucky Roulette ===
+  // === Roulette ===
   const [rouletteResult, setRouletteResult] = useState<Venue | null>(null);
   const [rouletteSpinning, setRouletteSpinning] = useState(false);
-
   const spinRoulette = () => {
     if (rouletteSpinning) return;
     setRouletteSpinning(true);
     setRouletteResult(null);
-    // Simulate spin for 1.5s then show result
     const timer = setTimeout(() => {
-      const randomVenue = openVenues[Math.floor(Math.random() * openVenues.length)];
-      setRouletteResult(randomVenue);
+      setRouletteResult(openVenues[Math.floor(Math.random() * openVenues.length)]);
       setRouletteSpinning(false);
     }, 1500);
-    // Cleanup handled by component unmount
     return () => clearTimeout(timer);
   };
 
-  const monthlyVisitors = getMonthlyVisitors();
+  const fortune = getTodayFortune();
 
   return (
     <div className="bg-white min-h-screen">
@@ -238,16 +202,16 @@ export default function HomePage() {
       <JsonLd data={{
         '@context': 'https://schema.org', '@type': 'WebSite', name: '놀쿨',
         url: 'https://nolcool.com',
-        potentialAction: { '@type': 'SearchAction', target: { '@type': 'EntryPoint', urlTemplate: 'https://nolcool.com/map?q={search_term_string}' }, 'query-input': 'required name=search_term_string' },
+        potentialAction: { '@type': 'SearchAction', target: { '@type': 'EntryPoint', urlTemplate: 'https://nolcool.com/search?q={search_term_string}' }, 'query-input': 'required name=search_term_string' },
       }} />
       <JsonLd data={{
         '@context': 'https://schema.org', '@type': 'ItemList', name: '인기 매장',
         itemListElement: popularVenues.slice(0, 10).map((v, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'LocalBusiness', name: v.nameKo, address: v.address } })),
       }} />
 
-      {/* ═══════ GREETING — Time-based ═══════ */}
-      <section className="px-4 pt-6 pb-1 text-center max-w-2xl mx-auto">
-        <p className="text-base text-[#555]">
+      {/* ═══ TIME GREETING ═══ */}
+      <section className="px-4 pt-5 pb-1 text-center">
+        <p className="text-sm text-[#555]">
           {(() => {
             const h = new Date().getHours();
             if (h >= 18 && h < 21) return '오늘 밤, 어디로 갈까? 🌙';
@@ -258,179 +222,28 @@ export default function HomePage() {
         </p>
       </section>
 
-      {/* ═══════ HERO — SELL RESULTS, not features ═══════ */}
-      <section className="px-4 pt-4 pb-3 text-center max-w-2xl mx-auto">
-        <h1 className="text-[28px] font-black text-[#111] leading-[1.3] tracking-tight">
-          오늘 밤, 3초 만에 정한다
+      {/* ═══ HERO ═══ */}
+      <section className="px-4 pt-2 pb-2 text-center">
+        <h1 className="text-[26px] font-black text-[#111] leading-[1.3] tracking-tight">
+          오늘 밤, 여기서 정한다
         </h1>
-        <p className="mt-2 text-base text-[#555]" style={{ lineHeight: 1.7 }}>
-          매주 {(Math.floor(openVenues.length * 820)).toLocaleString('ko-KR')}명이 여기서 밤을 시작한다
+        <p className="mt-1.5 text-sm text-[#555]" style={{ lineHeight: 1.7 }}>
+          전국 {openVenues.length}곳 실시간 비교 · 솔직 후기 · 조각모임
         </p>
-        <p className="mt-1 text-sm text-[#8B5CF6] font-medium">
-          광고 리뷰 0건. 직접 가본 후기만.
-        </p>
-        <button
-          onClick={() => searchInputRef.current?.focus()}
-          className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#8B5CF6] px-7 py-3.5 text-base font-bold text-white shadow-lg shadow-purple-200 transition-all hover:bg-[#7C3AED] active:scale-[0.97]"
-          style={{ minHeight: 48 }}
-        >
-          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-          오늘 밤 갈 곳 찾기
-        </button>
       </section>
 
-      {/* ═══════ [1] LIVE PULSE — FOMO counter ═══════ */}
-      <ErrorBoundary>
-        <Suspense fallback={null}>
-          <LivePulse />
-        </Suspense>
-      </ErrorBoundary>
-
-      {/* ═══════ SOCIAL PROOF ═══════ */}
-      <div className="flex flex-wrap justify-center gap-2 px-4 pb-3">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F3F0FF] px-3 py-1.5 text-xs font-medium text-[#8B5CF6]">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-          </span>
-          이번 달 {monthlyVisitors}명이 여기서 시작했다
-        </span>
-        <span className="inline-flex items-center gap-1 rounded-full bg-[#FFF7ED] px-3 py-1.5 text-xs font-medium text-amber-700">
-          만족도 4.7
-        </span>
-        <span className="inline-flex items-center gap-1 rounded-full bg-[#F0FDF4] px-3 py-1.5 text-xs font-medium text-green-700">
-          실패율 3%
-        </span>
-      </div>
-
-      {/* ═══════ PAIN → SOLUTION (Before/After) ═══════ */}
-      <div className="px-4 pb-3 max-w-md mx-auto space-y-2">
-        {/* BEFORE — Pain */}
-        <div className="rounded-2xl bg-gray-50 border border-gray-200 p-4">
-          <p className="text-xs font-bold text-red-400 mb-2">BEFORE</p>
-          <div className="space-y-1.5">
-            <p className="text-sm text-[#767676] line-through">어디 가지? 30분 검색... 결국 별로</p>
-            <p className="text-sm text-[#767676] line-through">후기 봤는데 다 광고. 진짜 어딘지 모름</p>
-            <p className="text-sm text-[#767676] line-through">갔다가 분위기 최악. 시간·돈 낭비</p>
-          </div>
-        </div>
-        {/* AFTER — Solution */}
-        <div className="rounded-2xl bg-gradient-to-r from-violet-50 to-white border border-violet-200 p-4">
-          <p className="text-xs font-bold text-[#8B5CF6] mb-2">AFTER — 놀쿨에서 고르면</p>
-          <div className="space-y-1.5">
-            <p className="text-sm font-bold text-[#111]">3초 만에 결정. 고민 끝.</p>
-            <p className="text-sm font-bold text-[#111]">직접 가본 사람 후기만. 광고 0건.</p>
-            <p className="text-sm font-bold text-[#111]">한번 가면 단골. 실패율 3%.</p>
-          </div>
-        </div>
-      </div>
-
-      {/* ═══════ SEARCH BAR (becomes sticky) ═══════ */}
+      {/* ═══ SEARCH BAR (sticky) ═══ */}
       <div ref={searchSentinelRef} />
-      <div
-        ref={searchRef}
-        className={`px-4 py-2 z-40 transition-all ${searchSticky ? 'fixed top-14 left-0 right-0 bg-white shadow-sm border-b border-gray-100' : ''}`}
-      >
-        <div className="relative max-w-2xl mx-auto">
-          <svg className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#555]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input
-            ref={searchInputRef}
-            type="text"
-            inputMode="search"
-            autoComplete="off"
-            autoCorrect="off"
-            spellCheck={false}
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            onFocus={() => { if (searchQuery.trim()) setShowSearchResults(true); }}
-            placeholder="어디서 놀까? 가게이름, 지역 검색"
-            className="w-full rounded-3xl border-2 border-[#8B5CF6] bg-white py-3 pl-11 pr-4 text-base text-[#111] placeholder-[#888] outline-none"
-            style={{ height: 48, WebkitAppearance: 'none' }}
-          />
-
-          {/* Search Results Dropdown */}
-          {showSearchResults && searchResults.length > 0 && (
-            <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-80 overflow-y-auto rounded-2xl border border-gray-200 bg-white shadow-xl">
-              {searchResults.map(v => (
-                <Link
-                  key={v.id}
-                  to={getCategoryHref(v.category, v.slug, v.region)}
-                  onClick={() => { setShowSearchResults(false); setSearchQuery(''); }}
-                  className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 last:border-b-0 active:bg-gray-50"
-                >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F3F0FF] text-sm font-bold text-[#8B5CF6]">
-                    {v.nameKo.charAt(0)}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-bold text-[#111] truncate">{v.nameKo}</p>
-                    <p className="text-xs text-[#555]">{v.regionKo} · {catLabel[v.category]}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-          {showSearchResults && searchQuery.trim() && searchResults.length === 0 && (
-            <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-2xl border border-gray-200 bg-white p-4 text-center shadow-xl">
-              <p className="text-sm text-[#555]">검색 결과가 없습니다</p>
-            </div>
-          )}
-        </div>
+      <div className={`px-4 py-2 z-[60] transition-all ${searchSticky ? 'fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100' : ''}`}>
+        <HeroSearch />
       </div>
 
-      {/* ═══════ AUTO-SLIDE BANNER ═══════ */}
-      <section className="px-4 py-3">
-        <div className="max-w-2xl mx-auto">
-          <Link
-            to={bannerSlides[bannerIdx].href}
-            className={`block rounded-2xl bg-gradient-to-r ${bannerSlides[bannerIdx].color} px-5 py-4 transition-all`}
-          >
-            <p className="text-sm font-bold text-white">{bannerSlides[bannerIdx].text}</p>
-          </Link>
-          {/* Dots */}
-          <div className="flex justify-center gap-1.5 mt-2">
-            {bannerSlides.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setBannerIdx(i)}
-                className={`h-1.5 rounded-full transition-all ${i === bannerIdx ? 'w-4 bg-[#8B5CF6]' : 'w-1.5 bg-gray-300'}`}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════ RESULT CARDS — 3 key values ═══════ */}
-      <section className="px-4 py-3 max-w-2xl mx-auto">
-        <div className="grid grid-cols-3 gap-2">
-          {[
-            { icon: '🔍', title: '비교', desc: '시세·서비스 한눈에', href: '/compare' },
-            { icon: '📍', title: '내 근처', desc: '지금 갈 수 있는 곳', href: '/map' },
-            { icon: '🏆', title: '실시간 순위', desc: '오늘 TOP 10', href: '/ranking' },
-          ].map(card => (
-            <Link
-              key={card.title}
-              to={card.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-1 rounded-xl border border-gray-200 bg-white p-3 text-center shadow-sm transition-all hover:shadow-md active:scale-[0.97]"
-              style={{ minHeight: 44 }}
-            >
-              <span className="text-xl">{card.icon}</span>
-              <span className="text-sm font-bold text-[#111]">{card.title}</span>
-              <span className="text-xs text-[#555]">{card.desc}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* ═══════ CATEGORY ICONS — Horizontal scroll ═══════ */}
-      <section className="py-3 overflow-x-auto scrollbar-hide max-w-2xl mx-auto">
+      {/* ═══ CATEGORY ICONS ═══ */}
+      <section className="py-3 overflow-x-auto scrollbar-hide">
         <div className="flex gap-3 px-4 justify-center flex-wrap">
           {categoryIcons.map(cat => (
-            <Link target="_blank" rel="noopener noreferrer" key={cat.label} to={cat.href} className="flex flex-col items-center gap-1.5 min-w-[56px]">
-              <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${cat.gradient} text-2xl shadow-sm`}>
+            <Link key={cat.label} to={cat.href} className="flex flex-col items-center gap-1.5 min-w-[52px]">
+              <div className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${cat.gradient} text-xl shadow-sm`}>
                 {cat.icon}
               </div>
               <span className="text-xs font-semibold text-[#333]">{cat.label}</span>
@@ -439,8 +252,175 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════ REGION BUBBLES — Horizontal scroll ═══════ */}
-      <section className="py-2 overflow-x-auto scrollbar-hide max-w-2xl mx-auto">
+      {/* ═══ BANNER SLIDER ═══ */}
+      <section className="px-4 py-2">
+        <Link
+          to={bannerSlides[bannerIdx].href}
+          className={`block rounded-2xl bg-gradient-to-r ${bannerSlides[bannerIdx].color} px-5 py-3.5 transition-all`}
+        >
+          <p className="text-sm font-bold text-white">{bannerSlides[bannerIdx].text}</p>
+        </Link>
+        <div className="flex justify-center gap-1.5 mt-2">
+          {bannerSlides.map((_, i) => (
+            <button key={i} onClick={() => setBannerIdx(i)} className={`h-1.5 rounded-full transition-all ${i === bannerIdx ? 'w-4 bg-[#8B5CF6]' : 'w-1.5 bg-gray-300'}`} />
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ LIVE HOT TOP 5 — horizontal scroll ═══ */}
+      <section className="py-3">
+        <div className="flex items-center justify-between px-4 mb-2">
+          <h2 className="text-base font-bold text-[#111]">🔥 실시간 HOT</h2>
+          <Link to="/ranking" className="text-xs text-[#8B5CF6] font-medium">전체보기 →</Link>
+        </div>
+        <div className="flex gap-3 px-4 overflow-x-auto scrollbar-hide pb-1">
+          {popularVenues.slice(0, 8).map((v, i) => (
+            <Link
+              key={v.id}
+              to={getCategoryHref(v.category, v.slug, v.region)}
+              target="_blank" rel="noopener noreferrer"
+              className="flex-shrink-0 w-[140px]"
+            >
+              <div className="relative rounded-xl overflow-hidden bg-gray-200" style={{ aspectRatio: '3/4' }}>
+                <img
+                  src={`/venues/${v.slug}-1.jpg`}
+                  alt={v.nameKo}
+                  loading="lazy"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-3xl font-bold text-gray-300">{v.nameKo.charAt(0)}</span>
+                </div>
+                {/* Rank badge */}
+                <span className={`absolute top-2 left-2 z-10 flex h-6 w-6 items-center justify-center rounded-full text-xs font-black text-white ${i < 3 ? 'bg-[#8B5CF6]' : 'bg-black/50'}`}>
+                  {i + 1}
+                </span>
+                {/* Vibe score */}
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+                  <p className="text-xs font-bold text-white truncate">{v.nameKo}</p>
+                  <div className="flex items-center gap-1 mt-0.5">
+                    <div className="flex-1 h-1 rounded-full bg-white/30 overflow-hidden">
+                      <div className="h-full rounded-full bg-orange-400" style={{ width: `${getVibeScore(v.id)}%` }} />
+                    </div>
+                    <span className="text-[10px] text-orange-300 font-bold">{getVibeScore(v.id)}</span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ COMMUNITY HOT POSTS ═══ */}
+      <section className="px-4 py-3">
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-base font-bold text-[#111]">💬 커뮤니티 핫글</h2>
+          <Link to="/community" className="text-xs text-[#8B5CF6] font-medium">더보기 →</Link>
+        </div>
+        <div className="space-y-2">
+          {hotPosts.map(post => (
+            <Link key={post.id} to="/community" className="flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-3 active:bg-gray-50 transition">
+              <span className="flex-shrink-0 rounded-lg bg-[#F3F0FF] px-2 py-1 text-xs font-bold text-[#8B5CF6]">{post.board}</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-[#111] truncate">{post.title}</p>
+                <p className="text-xs text-[#999] mt-0.5">{post.author} · {post.time}</p>
+              </div>
+              <div className="flex-shrink-0 flex items-center gap-2 text-xs text-[#999]">
+                <span>❤️ {post.likes}</span>
+                <span>💬 {post.comments}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ 조각모임 — KILLER FEATURE ═══ */}
+      <section className="px-4 py-3">
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-base font-bold text-[#111]">🙋 오늘 밤 조각모임</h2>
+          <Link to="/community/jogak" className="text-xs text-[#8B5CF6] font-medium">전체보기 →</Link>
+        </div>
+        <div className="space-y-2">
+          {jogakList.map(j => (
+            <div key={j.id} className="rounded-xl border border-gray-100 bg-white p-3">
+              <div className="flex items-start gap-2">
+                {j.hot && <span className="flex-shrink-0 rounded bg-red-100 px-1.5 py-0.5 text-[10px] font-bold text-red-600">HOT</span>}
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-[#111]">{j.title}</p>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-xs text-[#555]">📍{j.region}</span>
+                    <span className="text-xs text-[#555]">👤{j.gender}</span>
+                    <span className="text-xs text-[#555]">🕐{j.time}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between mt-2">
+                {/* Progress bar */}
+                <div className="flex items-center gap-2 flex-1">
+                  <div className="flex-1 h-2 rounded-full bg-gray-100 overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all ${j.current / j.max >= 0.8 ? 'bg-red-500' : 'bg-[#8B5CF6]'}`}
+                      style={{ width: `${(j.current / j.max) * 100}%` }}
+                    />
+                  </div>
+                  <span className="text-xs font-bold text-[#111]">{j.current}/{j.max}명</span>
+                </div>
+                <Link
+                  to="/login"
+                  className="ml-3 flex-shrink-0 rounded-full bg-[#8B5CF6] px-4 py-1.5 text-xs font-bold text-white active:bg-[#7C3AED]"
+                  style={{ minHeight: 32 }}
+                >
+                  참여하기
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ VS 투표 — 1탭 참여 ═══ */}
+      <section className="px-4 py-3">
+        <div className="rounded-2xl bg-gradient-to-r from-[#EEF2FF] to-[#F3F0FF] p-4">
+          <p className="text-xs font-bold text-[#8B5CF6] mb-1">🆚 오늘의 VS 투표</p>
+          <p className="text-sm font-bold text-[#111] mb-3">{currentPoll.q}</p>
+          <div className="grid grid-cols-2 gap-2">
+            {[currentPoll.a, currentPoll.b].map(opt => (
+              <button
+                key={opt}
+                onClick={() => setVsVotes(prev => ({ ...prev, [0]: opt }))}
+                disabled={!!vsVotes[0]}
+                className={`rounded-xl py-3 text-sm font-bold transition-all ${
+                  vsVotes[0] === opt ? 'bg-[#8B5CF6] text-white' :
+                  vsVotes[0] ? 'bg-white/60 text-[#999]' :
+                  'bg-white text-[#333] hover:bg-[#8B5CF6] hover:text-white active:bg-[#8B5CF6] active:text-white'
+                }`}
+                style={{ minHeight: 44 }}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+          {vsVotes[0] && (
+            <p className="mt-2 text-xs text-[#8B5CF6] text-center">
+              {Math.floor(Math.random() * 20 + 40)}% vs {Math.floor(Math.random() * 20 + 40)}% — 참여 완료!
+            </p>
+          )}
+        </div>
+      </section>
+
+      {/* ═══ TONIGHT FORTUNE ═══ */}
+      <section className="px-4 py-3">
+        <div className="rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 p-4">
+          <p className="text-xs font-bold text-amber-700 mb-1">🔮 오늘 밤 운세</p>
+          <p className="text-lg mb-1">{fortune.emoji}</p>
+          <p className="text-sm font-bold text-[#111] mb-1">{fortune.text}</p>
+          <p className="text-xs text-amber-600">행운의 장소: {fortune.lucky}</p>
+        </div>
+      </section>
+
+      {/* ═══ REGION BUBBLES ═══ */}
+      <section className="py-2 overflow-x-auto scrollbar-hide">
         <div className="flex gap-2 px-4 justify-center flex-wrap">
           {regionBubbles.map(r => (
             <button
@@ -459,9 +439,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════ TAB SECTION ═══════ */}
-      <section className="border-b border-gray-100 mt-1 max-w-2xl mx-auto">
-        <div className="flex">
+      {/* ═══ FEED TABS ═══ */}
+      <section className="border-b border-gray-100 mt-1">
+        <div className="flex max-w-2xl mx-auto">
           {feedTabs.map((tab, i) => (
             <button
               key={tab}
@@ -472,82 +452,63 @@ export default function HomePage() {
               style={{ minHeight: 44 }}
             >
               {tab}
-              {activeTab === i && (
-                <span className="absolute bottom-0 left-1/4 right-1/4 h-[3px] rounded-full bg-[#8B5CF6]" />
-              )}
+              {activeTab === i && <span className="absolute bottom-0 left-1/4 right-1/4 h-[3px] rounded-full bg-[#8B5CF6]" />}
             </button>
           ))}
         </div>
       </section>
 
-      {/* ═══════ HOME FEED — 2 Column Card Grid (PC: 3-4col) ═══════ */}
+      {/* ═══ VENUE FEED — 2 Column Cards ═══ */}
       <section className="px-4 py-4 max-w-[1200px] mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {feedVenues.map((venue, idx) => {
             const cards = [];
+            const vibeScore = getVibeScore(venue.id);
 
-            // Regular venue card
             cards.push(
               <div key={venue.id} className="relative">
                 <Link target="_blank" rel="noopener noreferrer" to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
                   <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
-                    {/* Photo — 모든 카드 100% 동일 크기 */}
+                    {/* Photo */}
                     <div className="relative w-full bg-gray-200" style={{ aspectRatio: '4/3' }}>
                       <img
                         src={`/venues/${venue.slug}-1.jpg`}
                         alt={venue.nameKo}
                         loading="lazy"
-                        onError={(e) => { (e.target as HTMLImageElement).src = ''; (e.target as HTMLImageElement).style.display = 'none'; }}
-                        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                        className="absolute inset-0 w-full h-full object-cover"
                       />
-                      {/* 이미지 로드 실패 시 가게이름 표시 */}
                       <div className="absolute inset-0 flex items-center justify-center">
                         <span className="text-2xl font-bold text-gray-400">{venue.nameKo.charAt(0)}</span>
                       </div>
-                      {/* Region badge */}
-                      <span className="absolute top-2 left-2 z-10 rounded-full bg-white px-2.5 py-1 text-xs font-bold text-[#111] shadow-sm">
-                        {venue.regionKo}
+                      {/* Category + Region badge */}
+                      <span className="absolute top-2 left-2 z-10 rounded-full bg-white/90 backdrop-blur-sm px-2 py-0.5 text-xs font-bold text-[#111] shadow-sm">
+                        {catEmoji[venue.category]} {venue.regionKo}
                       </span>
                     </div>
                     {/* Info */}
-                    <div className="p-3">
-                      <h3 className="text-base font-bold text-[#111] leading-tight line-clamp-1">{venue.nameKo}</h3>
-                      <p className="mt-1 text-xs text-[#555] line-clamp-1">{venue.shortDescription}</p>
-                      {/* Real-time viewer + Sound Wave [5] */}
-                      <div className="mt-2 flex items-center justify-between gap-1">
-                        <div className="flex items-center gap-1">
-                          <span className="relative flex h-2 w-2">
-                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
-                            <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
-                          </span>
-                          <span className="text-xs text-red-500 font-medium">지금 {getViewerCount(venue.id)}명 보는 중</span>
+                    <div className="p-2.5">
+                      <h3 className="text-sm font-bold text-[#111] leading-tight line-clamp-1">{venue.nameKo}</h3>
+                      <p className="mt-0.5 text-xs text-[#555] line-clamp-1">{venue.shortDescription}</p>
+                      {/* Vibe Score bar */}
+                      <div className="flex items-center gap-1.5 mt-1.5">
+                        <span className="text-[10px] text-[#555]">분위기</span>
+                        <div className="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all ${vibeScore >= 70 ? 'bg-orange-500' : vibeScore >= 40 ? 'bg-[#8B5CF6]' : 'bg-gray-400'}`}
+                            style={{ width: `${vibeScore}%` }}
+                          />
                         </div>
-                        <SoundWavePreview category={venue.category} />
+                        <span className={`text-[10px] font-bold ${vibeScore >= 70 ? 'text-orange-500' : 'text-[#8B5CF6]'}`}>{vibeScore}</span>
                       </div>
-                      {/* [3] Countdown Timer — on popular venues */}
-                      {venue.isPremium && <div className="mt-1.5"><CountdownTimer venueName={venue.nameKo} /></div>}
-                      {/* [9] Emoji Reactions */}
-                      <EmojiReaction venueId={venue.id} />
-                      {/* VIRAL — KakaoShare + Story */}
-                      <div className="mt-1.5 flex items-center justify-between">
-                        <button
-                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); setStoryVenue(venue.nameKo); }}
-                          className="flex items-center gap-1 text-[10px] text-[#8B5CF6] font-medium hover:underline"
-                          style={{ minHeight: 24 }}
-                        >
-                          📸 스토리
-                        </button>
-                        <KakaoShareButton
-                          compact
-                          venueName={venue.nameKo}
-                          venueHref={getCategoryHref(venue.category, venue.slug, venue.region)}
-                          description={venue.shortDescription}
-                        />
-                      </div>
-                      {/* Zeigarnik — curiosity gap */}
-                      <p className="mt-1 text-[10px] text-[#8B5CF6] font-medium truncate">
-                        이 업소의 비밀은...
-                      </p>
+                      {/* Tags */}
+                      {venue.features.length > 0 && (
+                        <div className="flex gap-1 mt-1.5 overflow-hidden">
+                          {venue.features.slice(0, 2).map(f => (
+                            <span key={f} className="rounded-full bg-gray-50 px-2 py-0.5 text-[10px] text-[#555] whitespace-nowrap">{f}</span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Link>
@@ -564,75 +525,26 @@ export default function HomePage() {
               </div>
             );
 
-            // Every 5th card — VS VOTE
-            if ((idx + 1) % 5 === 0) {
-              const poll = vsPolls[Math.floor(idx / 5) % vsPolls.length];
-              const voted = vsVotes[idx];
+            // Every 6th — VS vote reminder
+            if ((idx + 1) % 6 === 0 && idx < 18) {
+              const poll = vsPolls[Math.floor(idx / 6) % vsPolls.length];
               cards.push(
-                <div key={`eng-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#EEF2FF] to-[#F3F0FF] p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
-                  <p className="text-xs font-bold text-[#8B5CF6] mb-2">🆚 VS 투표</p>
-                  <p className="text-sm font-bold text-[#111] mb-3">{poll.q}</p>
-                  <div className="grid grid-cols-2 gap-2 max-w-md">
-                    {[poll.a, poll.b].map(opt => (
-                      <button
-                        key={opt}
-                        onClick={() => setVsVotes(prev => ({ ...prev, [idx]: opt }))}
-                        disabled={!!voted}
-                        className={`rounded-xl py-3 text-sm font-bold transition-all ${
-                          voted === opt ? 'bg-[#8B5CF6] text-white' :
-                          voted ? 'bg-white/60 text-[#999]' :
-                          'bg-white text-[#333] hover:bg-[#8B5CF6] hover:text-white active:bg-[#8B5CF6] active:text-white'
-                        }`}
-                        style={{ minHeight: 44 }}
-                      >
-                        {opt}
-                      </button>
-                    ))}
-                  </div>
-                  {voted && (
-                    <div className="mt-2 flex items-center justify-between">
-                      <p className="text-xs text-[#8B5CF6]">
-                        {Math.floor(Math.random() * 30 + 35)}% vs {Math.floor(Math.random() * 30 + 35)}% — 참여 완료!
-                      </p>
-                    </div>
-                  )}
-                </div>
-              );
-            }
-
-            // Every 7th card — [2] MYSTERY CARD
-            if ((idx + 1) % 7 === 0) {
-              cards.push(
-                <ErrorBoundary key={`mystery-${idx}`}>
-                  <Suspense fallback={null}>
-                    <MysteryCard />
-                  </Suspense>
-                </ErrorBoundary>
-              );
-            }
-
-            // Every 8th card — FORTUNE 운세 (밝은 배경 + 어두운 글자)
-            if ((idx + 1) % 8 === 0) {
-              cards.push(
-                <div key={`fortune-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
-                  <p className="text-xs font-bold text-amber-700 mb-2">🔮 오늘 밤 운세</p>
-                  <p className="text-sm font-bold text-[#111] mb-3">별들이 당신의 밤을 예고합니다...</p>
-                  <Link target="_blank" rel="noopener noreferrer" to="/roulette" className="inline-flex items-center gap-1 rounded-full bg-amber-500 px-4 py-2 text-sm font-bold text-white hover:bg-amber-600 active:bg-amber-600" style={{ minHeight: 44 }}>
-                    운세 보기 →
+                <div key={`vs-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#EEF2FF] to-[#F3F0FF] p-4">
+                  <Link to="/vs" className="text-sm font-bold text-[#8B5CF6]">
+                    🆚 더 많은 VS 투표 참여하기 →
                   </Link>
                 </div>
               );
             }
 
-            // Every 12th card — EDITORIAL
-            if ((idx + 1) % 12 === 0) {
+            // Every 10th — TOP5
+            if ((idx + 1) % 10 === 0) {
               cards.push(
-                <div key={`editorial-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-violet-50 to-white p-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
-                  <p className="text-xs font-bold text-[#8B5CF6] mb-2">🔥 에디터 Pick</p>
-                  <p className="text-sm font-bold text-[#111]">이번주 TOP5 변동</p>
-                  <div className="mt-2 space-y-1">
+                <div key={`top5-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-violet-50 to-white p-4">
+                  <p className="text-xs font-bold text-[#8B5CF6] mb-2">🏆 이번주 TOP 5</p>
+                  <div className="space-y-1">
                     {popularVenues.slice(0, 5).map((v, i) => (
-                      <Link target="_blank" rel="noopener noreferrer" key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} className="flex items-center gap-2 py-1">
+                      <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 py-1">
                         <span className={`flex h-5 w-5 items-center justify-center rounded text-xs font-bold ${i < 3 ? 'bg-[#8B5CF6] text-white' : 'bg-gray-200 text-gray-600'}`}>{i + 1}</span>
                         <span className="text-sm text-[#111] truncate">{v.nameKo}</span>
                         <span className="ml-auto text-xs text-[#555]">{v.regionKo}</span>
@@ -647,157 +559,101 @@ export default function HomePage() {
           })}
         </div>
 
-        {/* Skeleton / Loading indicator */}
         {feedVenues.length === 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-4">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="rounded-xl bg-gray-100 animate-pulse">
-                <div className="aspect-[4/3]" />
-                <div className="p-3 space-y-2">
-                  <div className="h-4 bg-gray-200 rounded w-3/4" />
-                  <div className="h-3 bg-gray-200 rounded w-1/2" />
-                </div>
-              </div>
-            ))}
+          <div className="text-center py-12 text-[#999]">
+            <p className="text-sm">이 지역에 등록된 업소가 없습니다</p>
           </div>
         )}
       </section>
 
-      {/* ═══════ [10] NIGHT TIMELINE ═══════ */}
-      <ErrorBoundary>
-        <Suspense fallback={null}>
-          <NightTimeline />
-        </Suspense>
-      </ErrorBoundary>
+      {/* ═══ LUCKY ROULETTE ═══ */}
+      <section className="px-4 py-4">
+        <div className="rounded-2xl bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 p-5 text-center">
+          <p className="text-2xl mb-1">🎰</p>
+          <h2 className="text-lg font-bold text-[#111] mb-1">오늘 밤 여기 어때?</h2>
+          <p className="text-sm text-[#555] mb-3">탭 한 번으로 행운의 업소를 뽑아봐</p>
+          <button
+            onClick={spinRoulette}
+            disabled={rouletteSpinning}
+            className={`inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-bold transition-all ${
+              rouletteSpinning
+                ? 'bg-violet-100 text-[#555] animate-pulse'
+                : 'bg-[#8B5CF6] text-white hover:bg-[#7C3AED] active:scale-95 shadow-lg'
+            }`}
+            style={{ minHeight: 48 }}
+          >
+            {rouletteSpinning ? '돌리는 중...' : '🎲 돌려보기'}
+          </button>
 
-      {/* ═══════ [8] PRICE HEATMAP ═══════ */}
-      <ErrorBoundary>
-        <Suspense fallback={null}>
-          <PriceHeatmap />
-        </Suspense>
-      </ErrorBoundary>
-
-      {/* ═══════ LUCKY ROULETTE ═══════ */}
-      <section className="px-4 py-6 max-w-[1200px] mx-auto">
-        <div className="rounded-2xl bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 p-6 text-center overflow-hidden relative">
-          <div className="relative">
-            <p className="text-2xl mb-1">🎰</p>
-            <h2 className="text-lg font-bold text-[#111] mb-1">Lucky Roulette</h2>
-            <p className="text-sm text-[#555] mb-4">오늘 밤 여기 어때? 탭해서 돌려봐!</p>
-            <button
-              onClick={spinRoulette}
-              disabled={rouletteSpinning}
-              className={`inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-bold transition-all ${
-                rouletteSpinning
-                  ? 'bg-violet-100 text-[#555] animate-pulse'
-                  : 'bg-[#8B5CF6] text-white hover:bg-[#7C3AED] active:scale-95 shadow-lg'
-              }`}
-              style={{ minHeight: 48 }}
+          {rouletteResult && (
+            <Link
+              to={getCategoryHref(rouletteResult.category, rouletteResult.slug, rouletteResult.region)}
+              target="_blank" rel="noopener noreferrer"
+              className="mt-4 block rounded-xl bg-white border border-violet-200 p-4 text-left transition-all hover:shadow-md active:scale-[0.98]"
             >
-              {rouletteSpinning ? '돌리는 중...' : '🎲 돌려보기'}
-            </button>
-
-            {rouletteResult && (
-              <>
-                <Link
-                  to={getCategoryHref(rouletteResult.category, rouletteResult.slug, rouletteResult.region)}
-                  className="mt-4 block rounded-xl bg-white border border-violet-200 p-4 text-left transition-all hover:shadow-md active:scale-[0.98]"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-lg font-bold text-[#8B5CF6]">
-                      {rouletteResult.nameKo.charAt(0)}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-base font-bold text-[#111] truncate">{rouletteResult.nameKo}</p>
-                      <p className="text-xs text-[#555]">{rouletteResult.regionKo} · {catLabel[rouletteResult.category]}</p>
-                    </div>
-                    <span className="text-[#8B5CF6] text-lg">→</span>
-                  </div>
-                  <p className="mt-2 text-sm text-[#555] line-clamp-1">{rouletteResult.shortDescription}</p>
-                </Link>
-                <div className="mt-3">
-                  <KakaoShareButton
-                    venueName={rouletteResult.nameKo}
-                    venueHref={getCategoryHref(rouletteResult.category, rouletteResult.slug, rouletteResult.region)}
-                    description="놀쿨 룰렛에서 뽑힌 곳! 오늘 밤 여기 어때?"
-                  />
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-lg font-bold text-[#8B5CF6]">
+                  {rouletteResult.nameKo.charAt(0)}
                 </div>
-              </>
-            )}
-          </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-base font-bold text-[#111] truncate">{rouletteResult.nameKo}</p>
+                  <p className="text-xs text-[#555]">{rouletteResult.regionKo} · {catLabel[rouletteResult.category]}</p>
+                </div>
+                <span className="text-[#8B5CF6] text-lg">→</span>
+              </div>
+            </Link>
+          )}
         </div>
       </section>
 
-      {/* ═══════ VIRAL — Weekly TOP5 Share ═══════ */}
-      <ErrorBoundary>
-        <Suspense fallback={null}>
-          <WeeklyTop5Share />
-        </Suspense>
-      </ErrorBoundary>
+      {/* ═══ QUICK LINKS ═══ */}
+      <section className="px-4 py-3">
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { icon: '🔍', title: '비교', desc: '시세 한눈에', href: '/compare' },
+            { icon: '📍', title: '내 근처', desc: '지금 갈 곳', href: '/map' },
+            { icon: '📖', title: '가이드', desc: '초보 필독', href: '/guide' },
+          ].map(card => (
+            <Link
+              key={card.title}
+              to={card.href}
+              target="_blank" rel="noopener noreferrer"
+              className="flex flex-col items-center gap-1 rounded-xl border border-gray-200 bg-white p-3 text-center shadow-sm active:scale-[0.97]"
+              style={{ minHeight: 44 }}
+            >
+              <span className="text-xl">{card.icon}</span>
+              <span className="text-sm font-bold text-[#111]">{card.title}</span>
+              <span className="text-xs text-[#555]">{card.desc}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
 
-      {/* ═══════ INFINITE DISCOVERY FEED ═══════ */}
-      <ErrorBoundary>
-        <Suspense fallback={<div className="px-4 py-8"><div className="h-48 animate-pulse rounded-2xl bg-gray-100" /></div>}>
-          <InfiniteDiscoveryFeed />
-        </Suspense>
-      </ErrorBoundary>
-
-      {/* ═══════ NIGHT FORTUNE ═══════ */}
-      <ErrorBoundary>
-        <Suspense fallback={null}>
-          <NightFortune />
-        </Suspense>
-      </ErrorBoundary>
-
-      {/* ═══════ POINT BENEFITS ═══════ */}
-      <ErrorBoundary>
-        <Suspense fallback={null}>
-          <PointBenefits />
-        </Suspense>
-      </ErrorBoundary>
-
-      {/* ═══════ GOOGLE/AI CTA ═══════ */}
-      <section className="px-4 py-6 max-w-[1200px] mx-auto">
-        <div className="rounded-2xl bg-violet-50 border border-violet-200 px-6 py-5 text-center">
+      {/* ═══ GOOGLE/AI CTA ═══ */}
+      <section className="px-4 py-4">
+        <div className="rounded-2xl bg-violet-50 border border-violet-200 px-6 py-4 text-center">
           <p className="text-sm font-bold text-[#111]">
             구글 · ChatGPT · Gemini에서 <span className="text-xl text-[#8B5CF6]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>"놀쿨"</span> 검색하세요
           </p>
         </div>
       </section>
 
-      {/* ═══════ SEO TEXT ═══════ */}
-      <section className="px-4 pb-8 max-w-[1200px] mx-auto">
-        <div className="rounded-2xl border border-gray-100 bg-[#F5F5F5] p-6">
-          <h2 className="mb-3 text-base font-bold text-[#111]">카테고리별 특징과 이용 팁</h2>
-          <div className="space-y-3 text-sm leading-relaxed text-[#555]">
+      {/* ═══ SEO TEXT ═══ */}
+      <section className="px-4 pb-8">
+        <div className="rounded-2xl border border-gray-100 bg-[#F5F5F5] p-5">
+          <h2 className="mb-2 text-base font-bold text-[#111]">전국 클럽·나이트·라운지 실시간 정보</h2>
+          <div className="space-y-2 text-sm leading-relaxed text-[#555]">
             <p>
-              고양시 중심가에서 프라이빗한 모임 공간을 찾는 분들에게 인기 있는 곳부터,
-              장항로에 위치한 전통 한정식 문화 공간까지 비즈니스 접대와 기념일 행사에 적합한 곳이 모여 있습니다.
+              놀쿨은 전국 {openVenues.length}개 클럽, 나이트, 라운지, 룸, 요정, 호빠의 실시간 정보를 제공하는 대한민국 대표 나이트라이프 플랫폼입니다.
+              강남 클럽부터 일산 나이트, 부산 아시아드까지 직접 가본 사람의 솔직한 후기와 실시간 분위기를 확인할 수 있습니다.
             </p>
             <p>
-              EDM 중심의 댄스홀과 소셜 댄스 기반의 사교장은 완전히 다른 업종입니다.
-              전자는 DJ 세트에 맞춰 자유롭게 즐기는 공간이고,
-              후자는 밴드 라이브와 파트너 댄스 문화가 중심인 사교 공간입니다.
+              조각모임으로 함께 갈 사람을 찾고, 커뮤니티에서 실시간 정보를 공유하세요.
+              EDM 클럽부터 소셜 댄스 나이트까지, 오늘 밤의 선택을 놀쿨에서 시작하세요.
             </p>
           </div>
         </div>
       </section>
-
-      {/* ═══════ [6] MATCH QUIZ — floating button ═══════ */}
-      <ErrorBoundary>
-        <Suspense fallback={null}>
-          <MatchQuiz />
-        </Suspense>
-      </ErrorBoundary>
-
-      {/* ═══════ [7] STORY MODE — full screen overlay ═══════ */}
-      {storyVenue && (
-        <ErrorBoundary>
-          <Suspense fallback={null}>
-            <StoryMode venueName={storyVenue} onClose={() => setStoryVenue(null)} />
-          </Suspense>
-        </ErrorBoundary>
-      )}
     </div>
   );
 }
