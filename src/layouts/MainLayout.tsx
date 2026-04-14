@@ -2,6 +2,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import MobileBottomNav from '@/components/layout/MobileBottomNav';
 import BackToTop from '@/components/layout/BackToTop';
 import Toast from '@/components/ui/Toast';
 import JsonLd from '@/components/seo/JsonLd';
@@ -44,7 +45,7 @@ export default function MainLayout() {
       <JsonLd data={organizationJsonLd} />
       <JsonLd data={websiteJsonLd} />
       <Header />
-      <main id="main-content" className="flex-1 pt-[92px] md:pt-[56px] pb-6">
+      <main id="main-content" className="flex-1 pt-[92px] md:pt-[56px] pb-[72px] md:pb-6">
         <Outlet />
       </main>
       <div className="border-t border-neon-border bg-neon-surface">
@@ -53,6 +54,7 @@ export default function MainLayout() {
         </p>
       </div>
       <Footer />
+      <MobileBottomNav />
       <BackToTop />
       <Toast />
     </div>
