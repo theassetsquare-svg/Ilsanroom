@@ -188,7 +188,10 @@ export default function LoginPage() {
         </button>
       </div>
 
-      <p className="mt-8 text-center text-xs text-neon-text-muted">
+      <p className="mt-6 text-center text-xs text-neon-text-muted/60">
+        만 19세 이상만 이용할 수 있습니다
+      </p>
+      <p className="mt-2 text-center text-xs text-neon-text-muted">
         로그인하면 놀쿨의{' '}
         <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-neon-primary hover:underline">이용약관</a> 및{' '}
         <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-neon-primary hover:underline">개인정보처리방침</a>에 동의하는 것으로 간주됩니다.
