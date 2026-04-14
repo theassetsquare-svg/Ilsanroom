@@ -197,7 +197,8 @@ export default function ProfileClient() {
 
   const nickname = user.user_metadata?.nickname || user.user_metadata?.full_name || user.user_metadata?.name || '사용자';
   const avatar = user.user_metadata?.avatar_url || '';
-  const xp = 0; // TODO: fetch from users table
+  // XP = 글 20점 + 댓글 5점 + 찜 10점 (활동 기반 자동 계산)
+  const xp = (stats.posts * 20) + (stats.comments * 5) + (stats.favorites * 10);
   const level = getLevelBadge(xp);
   const joinDate = user.created_at ? new Date(user.created_at).toLocaleDateString('ko-KR') : '';
 
@@ -246,8 +247,30 @@ export default function ProfileClient() {
               <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold" style={{ backgroundColor: `${level.color}15`, color: level.color }}>
                 {level.icon} {level.name}
               </span>
-              {joinDate && <span className="text-xs" style={{ color: '#BBB' }}>가입 {joinDate}</span>}
+              <span className="text-xs font-bold" style={{ color: level.color }}>{xp} XP</span>
+              {joinDate && <span className="text-xs" style={{ color: '#BBB' }}>· 가입 {joinDate}</span>}
             </div>
+            {/* XP 진행 바 */}
+            {(() => {
+              const thresholds = [0, 100, 500, 2000, 5000];
+              const names = ['클러버', '파티피플', 'VIP', '레전드'];
+              let nextIdx = thresholds.findIndex(t => t > xp);
+              if (nextIdx === -1) return null;
+              const prevT = thresholds[nextIdx - 1] || 0;
+              const nextT = thresholds[nextIdx];
+              const pct = Math.min(100, ((xp - prevT) / (nextT - prevT)) * 100);
+              return (
+                <div className="mt-2">
+                  <div className="flex items-center justify-between text-[10px] mb-0.5" style={{ color: '#999' }}>
+                    <span>다음 등급: {names[nextIdx - 1]}</span>
+                    <span>{xp}/{nextT} XP</span>
+                  </div>
+                  <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: '#F3F4F6' }}>
+                    <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, backgroundColor: level.color }} />
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </div>
       </div>
