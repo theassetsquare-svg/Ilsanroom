@@ -21,7 +21,6 @@ const YojeongDetailPage = lazy(() => import('./pages/YojeongDetailPage'));
 const HoppaPage = lazy(() => import('./pages/HoppaPage'));
 const HoppaDetailPage = lazy(() => import('./pages/HoppaDetailPage'));
 const GuidePage = lazy(() => import('./pages/GuidePage'));
-const MapPage = lazy(() => import('./pages/MapPage'));
 const QuizPage = lazy(() => import('./pages/QuizPage'));
 const RoulettePage = lazy(() => import('./pages/RoulettePage'));
 const VSPage = lazy(() => import('./pages/VSPage'));
@@ -108,7 +107,6 @@ export default function App() {
           <Route path="/hoppa/:slug" element={<HoppaDetailPage />} />
           {/* Interactive */}
           <Route path="/guide" element={<GuidePage />} />
-          <Route path="/map" element={<MapPage />} />
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/roulette" element={<RoulettePage />} />
           <Route path="/vs" element={<VSPage />} />

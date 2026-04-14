@@ -47,10 +47,10 @@ export default function NotFound() {
           홈으로 돌아가기
         </Link>
         <Link target="_blank" rel="noopener noreferrer"
-          to="/map"
+          to="/search"
           className="rounded-xl border border-neon-border px-6 py-3 font-medium text-neon-text-muted transition hover:bg-neon-surface-2"
         >
-          지도 탐색
+          검색하기
         </Link>
       </div>
 

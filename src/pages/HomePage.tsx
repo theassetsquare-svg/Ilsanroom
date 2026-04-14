@@ -299,10 +299,10 @@ export default function HomePage() {
               to={getCategoryHref(v.category, v.slug, v.region)}
               target="_blank" rel="noopener noreferrer"
               className="flex-shrink-0"
-              style={{ width: 130 }}
+              style={{ width: 140 }}
             >
-              {/* 이미지 카드 — 3:4 비율 통일 */}
-              <div className="relative rounded-xl overflow-hidden" style={{ width: 130, height: 173 }}>
+              {/* 이미지 카드 — 1:1 정사각형 통일 */}
+              <div className="relative rounded-xl overflow-hidden" style={{ width: 140, height: 140 }}>
                 <img
                   src={`/venues/${v.slug}-1.jpg`}
                   alt={v.nameKo}
@@ -310,7 +310,7 @@ export default function HomePage() {
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   className="absolute inset-0 w-full h-full object-cover z-[1]"
                 />
-                {/* Fallback — 카테고리별 그라데이션 */}
+                {/* Fallback */}
                 <div className={`absolute inset-0 flex flex-col items-center justify-center ${
                   v.category === 'club' ? 'bg-gradient-to-br from-violet-500 to-indigo-700' :
                   v.category === 'night' ? 'bg-gradient-to-br from-blue-500 to-purple-700' :
@@ -326,19 +326,12 @@ export default function HomePage() {
                 <span className={`absolute top-2 left-2 z-[2] flex h-6 w-6 items-center justify-center rounded-full text-xs font-black text-white ${i < 3 ? 'bg-[#8B5CF6]' : 'bg-black/50'}`}>
                   {i + 1}
                 </span>
-                {/* Vibe score overlay */}
-                <div className="absolute bottom-0 left-0 right-0 z-[2] bg-gradient-to-t from-black/70 to-transparent p-2">
-                  <div className="flex items-center gap-1">
-                    <div className="flex-1 h-1 rounded-full bg-white/30 overflow-hidden">
-                      <div className="h-full rounded-full bg-orange-400" style={{ width: `${getVibeScore(v.id)}%` }} />
-                    </div>
-                    <span className="text-[10px] text-orange-300 font-bold">{getVibeScore(v.id)}</span>
-                  </div>
+                {/* 하단 그라데이션 + 업소명 */}
+                <div className="absolute bottom-0 left-0 right-0 z-[2] bg-gradient-to-t from-black/80 to-transparent px-2.5 pb-2 pt-6">
+                  <p className="text-xs font-bold text-white truncate">{v.nameKo}</p>
+                  <p className="text-[10px] text-white/70 truncate">{v.regionKo}</p>
                 </div>
               </div>
-              {/* 카드 아래 텍스트 — 이미지 밖 */}
-              <p className="mt-1.5 text-xs font-bold text-[#111] truncate px-0.5">{v.nameKo}</p>
-              <p className="text-[10px] text-[#999] truncate px-0.5">{v.regionKo}</p>
             </Link>
           ))}
         </div>
@@ -498,14 +491,13 @@ export default function HomePage() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {feedVenues.map((venue, idx) => {
             const cards = [];
-            const vibeScore = getVibeScore(venue.id);
 
             cards.push(
               <div key={venue.id} className="relative">
                 <Link target="_blank" rel="noopener noreferrer" to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
                   <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
-                    {/* Photo — 3:4 비율 통일 */}
-                    <div className="relative w-full overflow-hidden" style={{ aspectRatio: '3/4' }}>
+                    {/* Photo — 1:1 정사각형 통일 */}
+                    <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
                       <img
                         src={`/venues/${venue.slug}-1.jpg`}
                         alt={venue.nameKo}
@@ -513,7 +505,7 @@ export default function HomePage() {
                         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                         className="absolute inset-0 w-full h-full object-cover z-[1]"
                       />
-                      {/* Fallback — 카테고리별 그라데이션 + 이모지 */}
+                      {/* Fallback */}
                       <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${
                         venue.category === 'club' ? 'from-violet-500 to-indigo-700' :
                         venue.category === 'night' ? 'from-blue-500 to-purple-700' :
@@ -525,41 +517,18 @@ export default function HomePage() {
                         <span className="text-3xl">{catEmoji[venue.category] || '🎵'}</span>
                         <span className="mt-1 text-xs font-bold text-white/80">{venue.nameKo.slice(0, 4)}</span>
                       </div>
-                      {/* Category + Region badge */}
-                      <span className="absolute top-2 left-2 z-[2] rounded-full bg-white/90 backdrop-blur-sm px-2 py-0.5 text-xs font-bold text-[#111] shadow-sm">
-                        {catEmoji[venue.category]} {venue.regionKo}
-                      </span>
-                    </div>
-                    {/* Info */}
-                    <div className="p-2.5">
-                      <h3 className="text-sm font-bold text-[#111] leading-tight line-clamp-1">{venue.nameKo}</h3>
-                      <p className="mt-0.5 text-xs text-[#555] line-clamp-1">{venue.shortDescription}</p>
-                      {/* Vibe Score bar */}
-                      <div className="flex items-center gap-1.5 mt-1.5">
-                        <span className="text-[10px] text-[#555]">분위기</span>
-                        <div className="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden">
-                          <div
-                            className={`h-full rounded-full transition-all ${vibeScore >= 70 ? 'bg-orange-500' : vibeScore >= 40 ? 'bg-[#8B5CF6]' : 'bg-gray-400'}`}
-                            style={{ width: `${vibeScore}%` }}
-                          />
-                        </div>
-                        <span className={`text-[10px] font-bold ${vibeScore >= 70 ? 'text-orange-500' : 'text-[#8B5CF6]'}`}>{vibeScore}</span>
+                      {/* 하단 그라데이션 오버레이 — 업소명+지역 */}
+                      <div className="absolute bottom-0 left-0 right-0 z-[2] bg-gradient-to-t from-black/80 to-transparent px-2.5 pb-2.5 pt-8">
+                        <h3 className="text-sm font-bold text-white leading-tight truncate">{venue.nameKo}</h3>
+                        <p className="text-[11px] text-white/70 truncate">{catLabel[venue.category]} · {venue.regionKo}</p>
                       </div>
-                      {/* Tags */}
-                      {venue.features.length > 0 && (
-                        <div className="flex gap-1 mt-1.5 overflow-hidden">
-                          {venue.features.slice(0, 2).map(f => (
-                            <span key={f} className="rounded-full bg-gray-50 px-2 py-0.5 text-[10px] text-[#555] whitespace-nowrap">{f}</span>
-                          ))}
-                        </div>
-                      )}
                     </div>
                   </div>
                 </Link>
                 {/* Heart */}
                 <button
                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(venue.id); }}
-                  className="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/30 backdrop-blur-sm"
+                  className="absolute top-2 right-2 z-[3] flex h-8 w-8 items-center justify-center rounded-full bg-black/30 backdrop-blur-sm"
                   aria-label="찜하기"
                 >
                   <svg className={`h-4 w-4 ${favorites.has(venue.id) ? 'text-red-500 fill-red-500' : 'text-white'}`} fill={favorites.has(venue.id) ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
@@ -652,8 +621,8 @@ export default function HomePage() {
         <div className="grid grid-cols-3 gap-2">
           {[
             { icon: '🔍', title: '비교', desc: '시세 한눈에', href: '/compare' },
-            { icon: '📍', title: '내 근처', desc: '지금 갈 곳', href: '/map' },
             { icon: '📖', title: '가이드', desc: '초보 필독', href: '/guide' },
+            { icon: '🎰', title: '룰렛', desc: '행운 업소', href: '/roulette' },
           ].map(card => (
             <Link
               key={card.title}

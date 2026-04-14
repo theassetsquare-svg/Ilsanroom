@@ -148,22 +148,6 @@ export default function SearchPage() {
             </button>
           </div>
 
-          {/* Category Quick Filters */}
-          <div className="mt-3 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat.key}
-                onClick={() => handleCategoryChange(cat.key)}
-                className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold transition-all ${
-                  categoryParam === cat.key
-                    ? 'bg-[#8B5CF6] text-white shadow-md shadow-purple-100'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
         </form>
       </div>
 

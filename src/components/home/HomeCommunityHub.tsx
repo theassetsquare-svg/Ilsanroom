@@ -9,7 +9,7 @@ const boards = [
   { key: 'discussion' as const, label: '오늘 어디 갈까', icon: '🗣️', href: '/community/qna', desc: '실시간 추천 토론' },
   { key: 'party' as const, label: '파티/모임', icon: '🎉', href: '/community/party', desc: '같이 갈 사람 모집' },
   { key: 'tips' as const, label: '꿀팁', icon: '💡', href: '/community/tips', desc: '드레스코드/예산/시간대' },
-  { key: 'free' as const, label: '자유 게시판', icon: '💬', href: '/community/free', desc: '잡담' },
+  { key: 'free' as const, label: '자유 게시판', icon: '💬', href: '/community/free', desc: '자유' },
 ];
 
 export default function HomeCommunityHub() {

@@ -26,7 +26,7 @@ function postToSimple(post: Post): SimplePost {
 }
 
 export default function FreeBoardPage() {
-  useDocumentMeta('자유게시판 — 아무 말 대잔치', '잡담, 궁금한 거, 웃긴 얘기 다 OK. 규칙만 지키면 뭐든 써.');
+  useDocumentMeta('자유게시판 — 자유롭게 이야기하는 공간', '주제 제한 없이 자유롭게 소통하는 게시판. 궁금한 거, 꿀팁, 후기 뭐든 OK.');
   const { user } = useAuth();
   const navigate = useNavigate();
   const [recentPosts, setRecentPosts] = useState<SimplePost[]>([]);
@@ -80,8 +80,8 @@ export default function FreeBoardPage() {
         <div className="mb-8 flex items-center justify-between">
           <div>
             <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
-            <h1 className="text-3xl font-bold">잡담 광장</h1>
-            <p className="mt-2 text-neon-text-muted">주제 제한 없이 편하게 수다 떠는 곳</p>
+            <h1 className="text-3xl font-bold">자유게시판</h1>
+            <p className="mt-2 text-neon-text-muted">주제 제한 없이 자유롭게 소통하는 공간</p>
           </div>
           <button onClick={handleWriteClick} className="rounded-xl px-5 py-2.5 text-sm font-bold transition"
             style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>글쓰기</button>

@@ -459,8 +459,8 @@ function VenueSlide({
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState<{ text: string; time: string }[]>([]);
   const gradient = CAT_GRADIENT[venue.category] || 'from-gray-900 to-gray-950';
-  const fakeLikes = Math.floor(venue.nameKo.length * 17 + 42);
-  const fakeReviews = venue.reviewCount || Math.floor(venue.nameKo.length * 3 + 5);
+  const fakeLikes = venue.reviewCount || 0;
+  const fakeReviews = venue.reviewCount || 0;
 
   const handleCommentSubmit = () => {
     if (!comment.trim()) return;
@@ -695,8 +695,8 @@ function PollSlide({
   voted?: string;
   onVote: (choice: string) => void;
 }) {
-  const fakeA = 47 + (idx % 13);
-  const fakeB = 100 - fakeA;
+  const fakeA = 50;
+  const fakeB = 50;
 
   return (
     <div className="w-full h-full bg-gradient-to-b from-cyan-950 via-blue-950 to-indigo-950 flex flex-col items-center justify-center px-8">

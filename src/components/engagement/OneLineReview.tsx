@@ -1,16 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
-const sampleReviews = [
-  { id: 1, text: '강남 금요일 밤, 여기 아니면 어디 가겠어요', author: '파티매니아', venue: '강남청담클럽 레이스', time: '2시간 전' },
-  { id: 2, text: '밴드 라이브 듣고 소름 돋았다', author: '댄스왕', venue: '수원찬스돔나이트', time: '3시간 전' },
-  { id: 3, text: '신실장님 서비스 진짜 최고', author: '일산단골', venue: '일산룸', time: '5시간 전' },
-  { id: 4, text: '첫 방문인데 혼자 가도 전혀 어색하지 않았어요', author: '솔로탐험가', venue: '강남호빠 로얄', time: '6시간 전' },
-  { id: 5, text: '한정식 코스가 이 가격에? 감동이다', author: '미식가', venue: '일산명월관요정', time: '어제' },
-  { id: 6, text: '사운드 시스템 미쳤다 귀가 행복해', author: '음악인', venue: '강남청담클럽 사운드', time: '어제' },
-];
-
 export default function OneLineReview() {
-  const [reviews, setReviews] = useState(sampleReviews);
+  const [reviews, setReviews] = useState<{ id: number; text: string; author: string; venue: string; time: string }[]>([]);
   const [input, setInput] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
