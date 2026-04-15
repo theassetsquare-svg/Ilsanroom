@@ -66,23 +66,14 @@ export default function PostDetailPage() {
 
     if (!error && data) { setComments(data as CommentData[]); return; }
 
-    // 2차: parent_id 없이 기본 필드 + user join
-    const { data: d2, error: e2 } = await supabase
-      .from('comments')
-      .select('id, post_id, user_id, content, likes, created_at, users!comments_user_id_fkey(nickname, avatar_url)')
-      .eq('post_id', id)
-      .order('created_at', { ascending: true });
-
-    if (!e2 && d2) { setComments((d2 || []).map((c: any) => ({ ...c, parent_id: null })) as CommentData[]); return; }
-
-    // 3차: join 없이 기본만
+    // 2차: join 없이 기본 필드만
     const { data: d3 } = await supabase
       .from('comments')
-      .select('id, post_id, user_id, content, likes, created_at')
+      .select('id, post_id, user_id, content, created_at, parent_id')
       .eq('post_id', id)
       .order('created_at', { ascending: true });
 
-    setComments((d3 || []).map((c: any) => ({ ...c, parent_id: null, users: null })) as CommentData[]);
+    setComments((d3 || []).map((c: any) => ({ ...c, users: null })) as CommentData[]);
   }, [id]);
 
   useEffect(() => { fetchComments(); }, [fetchComments]);

@@ -102,23 +102,14 @@ export async function fetchComments(postId: string) {
 
     if (!error && data) return data as unknown as Comment[];
 
-    // 2차: user join만 (parent_id 없는 경우 대비)
-    const { data: d2, error: e2 } = await supabase
-      .from('comments')
-      .select('id, post_id, user_id, content, likes, created_at, users!comments_user_id_fkey(nickname, avatar_url)')
-      .eq('post_id', postId)
-      .order('created_at', { ascending: true });
-
-    if (!e2 && d2) return (d2 || []).map((c: any) => ({ ...c, parent_id: null })) as unknown as Comment[];
-
-    // 3차: join 없이 기본 필드만
+    // 2차: join 없이 기본 필드만
     const { data: d3 } = await supabase
       .from('comments')
-      .select('id, post_id, user_id, content, likes, created_at')
+      .select('id, post_id, user_id, content, created_at, parent_id')
       .eq('post_id', postId)
       .order('created_at', { ascending: true });
 
-    return (d3 || []).map((c: any) => ({ ...c, parent_id: null, users: null })) as unknown as Comment[];
+    return (d3 || []).map((c: any) => ({ ...c, users: null })) as unknown as Comment[];
   } catch {
     return [];
   }
