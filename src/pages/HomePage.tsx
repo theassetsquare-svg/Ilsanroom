@@ -760,13 +760,16 @@ export default function HomePage() {
         </div>
         {/* 지역별 탭 선택 시에만 지역 필터 표시 */}
         {activeTab === 3 && (
-          <div className="overflow-x-auto scrollbar-hide px-4 py-2 bg-gray-50/80">
-            <div className="flex gap-2">
+          <div
+            className="scrollbar-hide px-4 py-2 bg-gray-50/80"
+            style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', msOverflowStyle: 'none', scrollbarWidth: 'none' }}
+          >
+            <div className="flex gap-2" style={{ minWidth: 'max-content' }}>
               {regionLabels.map(r => (
                 <button
                   key={r}
                   onClick={() => setActiveRegion(r === '전체' ? 'all' : r)}
-                  className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-all whitespace-nowrap ${
+                  className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-all whitespace-nowrap flex-shrink-0 ${
                     (r === '전체' && activeRegion === 'all') || (r !== '전체' && activeRegion === r)
                       ? 'bg-[#8B5CF6] text-white shadow-sm'
                       : 'bg-white text-[#555] border border-gray-200'
