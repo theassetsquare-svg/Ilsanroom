@@ -52,19 +52,36 @@ export default function PostDetailPage() {
     });
   }, [id]);
 
-  // 댓글 불러오기
+  // 댓글 불러오기 — parent_id 컬럼 없을 수 있으므로 단계적 fallback
   const fetchComments = useCallback(async () => {
     if (!supabase || !id) return;
+
+    // 1차: 전체 select + user join
     let { data, error } = await supabase
       .from('comments')
       .select('*, users!comments_user_id_fkey(nickname, avatar_url)')
       .eq('post_id', id)
       .order('created_at', { ascending: true });
-    if (error) {
-      const fallback = await supabase.from('comments').select('*').eq('post_id', id).order('created_at', { ascending: true });
-      data = fallback.data;
-    }
-    setComments((data || []) as CommentData[]);
+
+    if (!error && data) { setComments(data as CommentData[]); return; }
+
+    // 2차: parent_id 없이 기본 필드 + user join
+    const { data: d2, error: e2 } = await supabase
+      .from('comments')
+      .select('id, post_id, user_id, content, likes, created_at, users!comments_user_id_fkey(nickname, avatar_url)')
+      .eq('post_id', id)
+      .order('created_at', { ascending: true });
+
+    if (!e2 && d2) { setComments((d2 || []).map((c: any) => ({ ...c, parent_id: null })) as CommentData[]); return; }
+
+    // 3차: join 없이 기본만
+    const { data: d3 } = await supabase
+      .from('comments')
+      .select('id, post_id, user_id, content, likes, created_at')
+      .eq('post_id', id)
+      .order('created_at', { ascending: true });
+
+    setComments((d3 || []).map((c: any) => ({ ...c, parent_id: null, users: null })) as CommentData[]);
   }, [id]);
 
   useEffect(() => { fetchComments(); }, [fetchComments]);
@@ -86,16 +103,28 @@ export default function PostDetailPage() {
     await supabase.from('posts').update({ likes: newCount }).eq('id', id);
   };
 
+  // 댓글 작성 헬퍼 — parent_id 컬럼 없을 경우 자동 fallback
+  const insertComment = async (content: string, parentId?: string | null) => {
+    if (!supabase) return { error: 'no client' };
+    const insertData: any = { post_id: id, user_id: user!.id, content };
+    if (parentId) insertData.parent_id = parentId;
+
+    const { error } = await supabase.from('comments').insert(insertData);
+    if (!error) return { error: null };
+
+    // parent_id 컬럼 없으면 재시도
+    if (error.message?.includes('parent_id') || error.code === '42703') {
+      const { error: e2 } = await supabase.from('comments').insert({ post_id: id, user_id: user!.id, content });
+      return { error: e2?.message || null };
+    }
+    return { error: error.message };
+  };
+
   // 댓글 작성 (최상위)
   const handleComment = async () => {
     if (!commentText.trim() || !user || !supabase) return;
     setSubmitting(true);
-    const { error } = await supabase.from('comments').insert({
-      post_id: id,
-      user_id: user.id,
-      content: commentText.trim(),
-      parent_id: null,
-    });
+    const { error } = await insertComment(commentText.trim());
     if (!error) { setCommentText(''); await fetchComments(); }
     setSubmitting(false);
   };
@@ -104,12 +133,7 @@ export default function PostDetailPage() {
   const handleReply = async () => {
     if (!replyText.trim() || !user || !supabase || !replyTo) return;
     setSubmitting(true);
-    const { error } = await supabase.from('comments').insert({
-      post_id: id,
-      user_id: user.id,
-      content: replyText.trim(),
-      parent_id: replyTo.id,
-    });
+    const { error } = await insertComment(replyText.trim(), replyTo.id);
     if (!error) { setReplyText(''); setReplyTo(null); await fetchComments(); }
     setSubmitting(false);
   };

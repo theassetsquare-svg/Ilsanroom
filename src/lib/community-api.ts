@@ -87,33 +87,45 @@ export async function createPost(post: {
 }
 
 // Fetch comments for a post (with user info)
+// parent_id 컬럼이 없을 수 있으므로 단계적 fallback
 export async function fetchComments(postId: string) {
   const supabase = createClient();
   if (!supabase) return [];
 
   try {
+    // 1차: user join + parent_id 포함
     const { data, error } = await supabase
       .from('comments')
       .select('*, users!comments_user_id_fkey(nickname, avatar_url)')
       .eq('post_id', postId)
       .order('created_at', { ascending: true });
 
-    if (error) {
-      // Fallback without join
-      const { data: fallback } = await supabase
-        .from('comments')
-        .select('*')
-        .eq('post_id', postId)
-        .order('created_at', { ascending: true });
-      return (fallback || []) as unknown as Comment[];
-    }
-    return (data || []) as unknown as Comment[];
+    if (!error && data) return data as unknown as Comment[];
+
+    // 2차: user join만 (parent_id 없는 경우 대비)
+    const { data: d2, error: e2 } = await supabase
+      .from('comments')
+      .select('id, post_id, user_id, content, likes, created_at, users!comments_user_id_fkey(nickname, avatar_url)')
+      .eq('post_id', postId)
+      .order('created_at', { ascending: true });
+
+    if (!e2 && d2) return (d2 || []).map((c: any) => ({ ...c, parent_id: null })) as unknown as Comment[];
+
+    // 3차: join 없이 기본 필드만
+    const { data: d3 } = await supabase
+      .from('comments')
+      .select('id, post_id, user_id, content, likes, created_at')
+      .eq('post_id', postId)
+      .order('created_at', { ascending: true });
+
+    return (d3 || []).map((c: any) => ({ ...c, parent_id: null, users: null })) as unknown as Comment[];
   } catch {
     return [];
   }
 }
 
 // Create comment — Supabase에 저장
+// parent_id 컬럼 없을 수 있으므로 fallback 포함
 export async function createComment(postId: string, content: string, parentId?: string) {
   const supabase = createClient();
   if (!supabase) return { error: 'Supabase 연결 실패' };
@@ -121,14 +133,31 @@ export async function createComment(postId: string, content: string, parentId?: 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: '로그인이 필요합니다' };
 
+  // 1차: parent_id 포함 시도
+  const insertData: any = { post_id: postId, user_id: user.id, content };
+  if (parentId) insertData.parent_id = parentId;
+
   const { data, error } = await supabase
     .from('comments')
-    .insert({ post_id: postId, user_id: user.id, content, parent_id: parentId || null })
+    .insert(insertData)
     .select('*')
     .single();
 
-  if (error) return { error: error.message };
-  return { data: data as unknown as Comment };
+  if (!error) return { data: data as unknown as Comment };
+
+  // parent_id 컬럼이 없는 경우 — parent_id 없이 재시도
+  if (error.message?.includes('parent_id') || error.code === '42703') {
+    const { data: d2, error: e2 } = await supabase
+      .from('comments')
+      .insert({ post_id: postId, user_id: user.id, content })
+      .select('*')
+      .single();
+
+    if (e2) return { error: e2.message };
+    return { data: { ...d2, parent_id: null } as unknown as Comment };
+  }
+
+  return { error: error.message };
 }
 
 // Delete post — 본인 글만 삭제

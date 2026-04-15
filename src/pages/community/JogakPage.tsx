@@ -385,20 +385,63 @@ export default function JogakPage() {
               className="w-full rounded-lg border px-4 py-3 text-sm mb-4 outline-none"
               style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
 
-            {/* 날짜 + 시간 */}
+            {/* 날짜 + 시간 — 직접 입력 + picker 모두 지원 */}
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div>
                 <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>날짜 <span style={{ color: '#EF4444' }}>*</span></label>
                 <input type="date" value={formDate} onChange={(e) => setFormDate(e.target.value)}
-                  className="w-full rounded-lg border px-3 py-3 text-sm outline-none"
-                  style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
+                  min={new Date().toISOString().split('T')[0]}
+                  className="w-full rounded-lg border px-3 py-3 text-sm outline-none appearance-none"
+                  style={{ borderColor: formDate ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48, WebkitAppearance: 'none' }}
+                  onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
+                />
+                {!formDate && <p className="mt-1 text-xs" style={{ color: '#999' }}>터치해서 날짜 선택</p>}
               </div>
               <div>
                 <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>시간 <span style={{ color: '#EF4444' }}>*</span></label>
                 <input type="time" value={formTime} onChange={(e) => setFormTime(e.target.value)}
-                  className="w-full rounded-lg border px-3 py-3 text-sm outline-none"
-                  style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
+                  className="w-full rounded-lg border px-3 py-3 text-sm outline-none appearance-none"
+                  style={{ borderColor: formTime ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48, WebkitAppearance: 'none' }}
+                  onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
+                />
+                {!formTime && <p className="mt-1 text-xs" style={{ color: '#999' }}>터치해서 시간 선택</p>}
               </div>
+            </div>
+            {/* 빠른 날짜 선택 */}
+            <div className="flex gap-2 mb-4 flex-wrap">
+              {(() => {
+                const today = new Date();
+                const options: { label: string; value: string }[] = [];
+                for (let i = 0; i < 7; i++) {
+                  const d = new Date(today);
+                  d.setDate(today.getDate() + i);
+                  const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+                  const label = i === 0 ? '오늘' : i === 1 ? '내일' : `${d.getMonth() + 1}/${d.getDate()}(${dayNames[d.getDay()]})`;
+                  const value = d.toISOString().split('T')[0];
+                  options.push({ label, value });
+                }
+                return options.map(o => (
+                  <button key={o.value} type="button" onClick={() => setFormDate(o.value)}
+                    className="rounded-full px-3 py-1.5 text-xs font-medium transition"
+                    style={{
+                      backgroundColor: formDate === o.value ? '#8B5CF6' : '#F3F4F6',
+                      color: formDate === o.value ? '#FFF' : '#555',
+                      minHeight: 32,
+                    }}>{o.label}</button>
+                ));
+              })()}
+            </div>
+            {/* 빠른 시간 선택 */}
+            <div className="flex gap-2 mb-4 flex-wrap">
+              {['18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '00:00', '01:00'].map(t => (
+                <button key={t} type="button" onClick={() => setFormTime(t)}
+                  className="rounded-full px-3 py-1.5 text-xs font-medium transition"
+                  style={{
+                    backgroundColor: formTime === t ? '#8B5CF6' : '#F3F4F6',
+                    color: formTime === t ? '#FFF' : '#555',
+                    minHeight: 32,
+                  }}>{t}</button>
+              ))}
             </div>
 
             {/* 모집 인원 */}
