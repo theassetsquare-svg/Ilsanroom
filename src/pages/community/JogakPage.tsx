@@ -1,32 +1,37 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { fetchPosts, createPost, fetchComments, createComment, deletePost, type Post } from '@/lib/community-api';
 
-/* ── 조각모임 규칙 ── */
+/* ── 조각모임 규칙 (놀쿨 버전) ── */
 const JOGAK_RULES = [
-  '실제로 함께 갈 의향이 있는 경우에만 글을 작성하세요.',
-  '만남 장소는 공개된 업소 앞 또는 지하철역 출구 등 안전한 곳으로 정해주세요.',
-  '노쇼(약속 불이행) 시 활동 제한이 될 수 있습니다.',
-  '개인 연락처 교환은 댓글이 아닌 쪽지(DM)로 해주세요.',
-  '불쾌한 언행, 강요, 차별적 발언은 즉시 삭제 및 제재됩니다.',
-  '미성년자는 참여할 수 없습니다 (만 19세 이상).',
+  { icon: '📝', title: '양식 필수 작성', desc: '장소·날짜·시간·인원·비용 미기재 시 무통보 삭제됩니다.' },
+  { icon: '🏷️', title: '지역 & 성향 말머리', desc: '지역과 조각 성향(테이블/헌팅) 반드시 선택하세요.' },
+  { icon: '🪑', title: '테이블 미예약 = 헌팅조각', desc: '테이블을 잡지 않는 클럽/라운지 조각은 헌팅조각으로 분류됩니다.' },
+  { icon: '👤', title: '담당자 정보', desc: '제휴 업장은 반드시 담당 MD/웨이터 이름을 기재하세요. 미기재 시 삭제.' },
+  { icon: '🚫', title: '오픈카톡 모집 금지', desc: '사기 방지를 위해 오픈카카오톡방 모집은 금지합니다. 놀쿨 쪽지/댓글만 허용.' },
+  { icon: '💰', title: '방장 수고비 안내', desc: '홍대: 평균 1만 / 최대 2만원, 그 외: 평균 3만 / 최대 5만원. 가성비 조각(엔빵 8만원 이하)은 수고비 없음.' },
+  { icon: '🔞', title: '만 19세 이상만 참여', desc: '미성년자는 참여할 수 없습니다.' },
+  { icon: '⚠️', title: '노쇼 = 활동 정지', desc: '약속 불이행 시 경고 없이 활동이 정지됩니다.' },
 ];
 
-const REGIONS = ['강남', '홍대', '이태원', '일산', '부산', '수원', '대전', '인천', '대구', '기타'];
-const GENDER_OPTIONS = ['누구나', '남성만', '여성만'];
-const COST_OPTIONS = ['각자 부담', 'N분의1', '글쓴이 초대'];
+const REGIONS = ['강남', '홍대', '이태원', '압구정', '일산', '부산', '수원', '대전', '인천', '대구', '성남', '기타'];
+const JOGAK_TYPES = ['테이블', '헌팅', '혼합'];
+const GENDER_OPTIONS = ['누구나', '남성만', '여성만', '남녀 혼성'];
+const COST_OPTIONS = ['모든비용 엔빵', '주대만 엔빵', '각자 부담', '방장 초대'];
+const CONTACT_OPTIONS = ['놀쿨 쪽지', '놀쿨 댓글', '전화'];
+const PHOTO_OPTIONS = ['사진교환 필수', '사진교환 선택', '사진교환 안 함'];
 
 interface JogakPost {
   id: string;
   title: string;
-  content: string;
   author: string;
   date: string;
   comments: number;
-  // 구조화 필드 (content JSON에서 파싱)
+  // 구조화 필드
   region?: string;
+  jogakType?: string;
   venue?: string;
   meetDate?: string;
   meetTime?: string;
@@ -35,40 +40,57 @@ interface JogakPost {
   genderPref?: string;
   ageRange?: string;
   costSplit?: string;
+  tableCost?: string;
+  perPerson?: string;
+  mdName?: string;
+  contactMethod?: string;
+  photoExchange?: string;
+  message?: string;
 }
 
 function parseJogakPost(post: Post): JogakPost {
   const u = post.users as any;
-  let parsed: any = {};
-  try { parsed = JSON.parse(post.content); } catch { parsed = { desc: post.content }; }
+  let p: any = {};
+  try { p = JSON.parse(post.content); } catch { p = { message: post.content }; }
 
   return {
     id: post.id,
     title: post.title,
-    content: parsed.desc || post.content,
     author: u?.nickname || '사용자',
     date: post.created_at.slice(0, 10),
     comments: (post as any).comment_count || 0,
-    region: parsed.region,
-    venue: parsed.venue,
-    meetDate: parsed.meetDate,
-    meetTime: parsed.meetTime,
-    maxPeople: parsed.maxPeople,
-    currentPeople: parsed.currentPeople || 1,
-    genderPref: parsed.genderPref,
-    ageRange: parsed.ageRange,
-    costSplit: parsed.costSplit,
+    region: p.region,
+    jogakType: p.jogakType,
+    venue: p.venue,
+    meetDate: p.meetDate,
+    meetTime: p.meetTime,
+    maxPeople: p.maxPeople,
+    currentPeople: p.currentPeople || 1,
+    genderPref: p.genderPref,
+    ageRange: p.ageRange,
+    costSplit: p.costSplit,
+    tableCost: p.tableCost,
+    perPerson: p.perPerson,
+    mdName: p.mdName,
+    contactMethod: p.contactMethod,
+    photoExchange: p.photoExchange,
+    message: p.message || p.desc,
   };
 }
 
+/* ── 섹션 헤더 ── */
+function SectionHeader({ title }: { title: string }) {
+  return <div className="flex items-center gap-2 mb-2 mt-5 first:mt-0"><div className="h-px flex-1 bg-gray-200" /><span className="text-xs font-bold px-2" style={{ color: '#8B5CF6' }}>{title}</span><div className="h-px flex-1 bg-gray-200" /></div>;
+}
+
 export default function JogakPage() {
-  useDocumentMeta('같이 놀러갈 사람 구하는 조각 모집', '혼자 가기 심심할 때, 같이 갈 사람을 구해보세요. 조각모임 게시판.');
+  useDocumentMeta('조각모임 — 같이 갈 사람 바로 구하기', '클럽·나이트·라운지 같이 갈 사람을 모집하세요. 테이블조각, 헌팅조각, 지역별 실시간 모집.');
 
   const { user } = useAuth();
-  const navigate = useNavigate();
   const [posts, setPosts] = useState<JogakPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [showRules, setShowRules] = useState(false);
+  const [filterRegion, setFilterRegion] = useState('전체');
 
   // 글 상세
   const [selectedPost, setSelectedPost] = useState<string | null>(null);
@@ -77,201 +99,208 @@ export default function JogakPage() {
   const [replyTo, setReplyTo] = useState<{ id: string; nickname: string } | null>(null);
   const [replyText, setReplyText] = useState('');
 
-  // 글쓰기 모달
+  // 글쓰기
   const [showWrite, setShowWrite] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // 구조화 폼 필드
-  const [formTitle, setFormTitle] = useState('');
-  const [formRegion, setFormRegion] = useState('');
-  const [formVenue, setFormVenue] = useState('');
-  const [formDate, setFormDate] = useState('');
-  const [formTime, setFormTime] = useState('');
-  const [formMaxPeople, setFormMaxPeople] = useState('4');
-  const [formGender, setFormGender] = useState('누구나');
-  const [formAgeRange, setFormAgeRange] = useState('');
-  const [formCost, setFormCost] = useState('각자 부담');
-  const [formDesc, setFormDesc] = useState('');
+  // 폼 필드
+  const [f, setF] = useState({
+    title: '', region: '', jogakType: '테이블', venue: '', date: '', time: '',
+    maxPeople: '4', gender: '누구나', ageRange: '', cost: '모든비용 엔빵',
+    tableCost: '', perPerson: '', mdName: '', contact: '놀쿨 댓글',
+    photo: '사진교환 선택', message: '',
+  });
+  const setField = (key: string, value: string) => setF(prev => ({ ...prev, [key]: value }));
 
-  // DB에서 글 불러오기
+  // DB 로드
   useEffect(() => {
     (async () => {
-      const { data } = await fetchPosts('party', 30);
+      const { data } = await fetchPosts('party', 50);
       setPosts(data.map(parseJogakPost));
       setLoading(false);
     })();
   }, []);
 
-  // 댓글 불러오기 (raw data 유지 — 대댓글 지원)
   const loadComments = async (postId: string) => {
     const data = await fetchComments(postId);
     setComments(data);
   };
 
-  // 글 클릭
   const handlePostClick = (postId: string) => {
     if (selectedPost === postId) { setSelectedPost(null); return; }
     setSelectedPost(postId);
-    setCommentText('');
-    setReplyTo(null);
-    setReplyText('');
+    setCommentText(''); setReplyTo(null); setReplyText('');
     setComments([]);
     loadComments(postId);
   };
 
-  // 글쓰기
   const handleWriteClick = () => {
     if (!user) { window.location.href = '/login'; return; }
     setShowWrite(true);
   };
 
   const handleSubmit = async () => {
-    if (!formTitle.trim() || !formRegion || !formDate || !formTime || !formMaxPeople || !formGender || !formCost) return;
+    if (!f.title.trim() || !f.region || !f.date || !f.time || !f.maxPeople || !f.cost) return;
     setSubmitting(true);
 
-    // content를 JSON으로 저장 (구조화 데이터)
     const contentJson = JSON.stringify({
-      region: formRegion,
-      venue: formVenue.trim(),
-      meetDate: formDate,
-      meetTime: formTime,
-      maxPeople: Number(formMaxPeople) || 4,
-      currentPeople: 1,
-      genderPref: formGender,
-      ageRange: formAgeRange.trim(),
-      costSplit: formCost,
-      desc: formDesc.trim(),
+      region: f.region, jogakType: f.jogakType, venue: f.venue.trim(),
+      meetDate: f.date, meetTime: f.time, maxPeople: Number(f.maxPeople) || 4,
+      currentPeople: 1, genderPref: f.gender, ageRange: f.ageRange.trim(),
+      costSplit: f.cost, tableCost: f.tableCost.trim(), perPerson: f.perPerson.trim(),
+      mdName: f.mdName.trim(), contactMethod: f.contact, photoExchange: f.photo,
+      message: f.message.trim(),
     });
 
-    const result = await createPost({
-      category: 'party',
-      title: formTitle.trim(),
-      content: contentJson,
-    });
-
-    if (result.error) {
-      setSubmitting(false);
-      return;
-    } else {
+    const result = await createPost({ category: 'party', title: f.title.trim(), content: contentJson });
+    if (!result.error) {
       setShowWrite(false);
-      // 폼 초기화
-      setFormTitle(''); setFormRegion(''); setFormVenue(''); setFormDate(''); setFormTime('');
-      setFormMaxPeople('4'); setFormGender('누구나'); setFormAgeRange(''); setFormCost('각자 부담'); setFormDesc('');
-      // 새로고침
-      const { data } = await fetchPosts('party', 30);
+      setF({ title: '', region: '', jogakType: '테이블', venue: '', date: '', time: '', maxPeople: '4', gender: '누구나', ageRange: '', cost: '모든비용 엔빵', tableCost: '', perPerson: '', mdName: '', contact: '놀쿨 댓글', photo: '사진교환 선택', message: '' });
+      const { data } = await fetchPosts('party', 50);
       setPosts(data.map(parseJogakPost));
     }
     setSubmitting(false);
   };
 
-  // 댓글 등록
   const handleCommentSubmit = async () => {
     if (!commentText.trim() || !user || !selectedPost) return;
     const { error } = await createComment(selectedPost, commentText.trim());
-    if (!error) {
-      setCommentText('');
-      await loadComments(selectedPost);
-    }
+    if (!error) { setCommentText(''); await loadComments(selectedPost); }
   };
 
-  // 대댓글 등록
   const handleReplySubmit = async () => {
     if (!replyText.trim() || !user || !selectedPost || !replyTo) return;
     const { error } = await createComment(selectedPost, replyText.trim(), replyTo.id);
-    if (!error) {
-      setReplyText('');
-      setReplyTo(null);
-      await loadComments(selectedPost);
-    }
+    if (!error) { setReplyText(''); setReplyTo(null); await loadComments(selectedPost); }
   };
 
+  const filtered = filterRegion === '전체' ? posts : posts.filter(p => p.region === filterRegion);
+
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:py-16">
+    <div className="mx-auto max-w-3xl px-4 py-6 sm:py-10">
       {/* 헤더 */}
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between">
         <div>
-          <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm" style={{ color: '#999' }}>← 커뮤니티</Link>
-          <h1 className="text-3xl font-bold" style={{ color: '#111' }}>🧩 조각 모집</h1>
-          <p className="mt-2 text-sm" style={{ color: '#555' }}>같이 놀러갈 사람을 구하는 게시판</p>
+          <Link to="/community" className="mb-1 inline-block text-xs" style={{ color: '#999' }}>← 커뮤니티</Link>
+          <h1 className="text-2xl font-black" style={{ color: '#111' }}>조각 모집</h1>
+          <p className="mt-1 text-sm" style={{ color: '#555' }}>같이 놀러갈 사람, 바로 구하기</p>
         </div>
-        <button onClick={handleWriteClick} className="rounded-xl px-5 py-2.5 text-sm font-medium text-white min-h-[44px]"
-          style={{ backgroundColor: '#8B5CF6' }}>
-          모집 글쓰기
+        <button onClick={handleWriteClick} className="rounded-xl px-5 py-2.5 text-sm font-bold text-white"
+          style={{ backgroundColor: '#8B5CF6', minHeight: 44 }}>
+          + 조각 올리기
         </button>
       </div>
 
-      {/* 규칙 토글 */}
-      <div className="mb-6 rounded-xl border overflow-hidden" style={{ borderColor: '#E5E7EB' }}>
+      {/* 규칙 */}
+      <div className="mb-4 rounded-xl border overflow-hidden" style={{ borderColor: '#E5E7EB' }}>
         <button onClick={() => setShowRules(!showRules)}
-          className="flex w-full items-center justify-between px-4 py-3 text-left" style={{ backgroundColor: '#F3F0FF' }}>
-          <span className="text-sm font-bold" style={{ color: '#8B5CF6' }}>📋 조각모임 규칙</span>
-          <span className="text-xs" style={{ color: '#8B5CF6' }}>{showRules ? '접기' : '펼치기'}</span>
+          className="flex w-full items-center justify-between px-4 py-3" style={{ backgroundColor: '#FEF3C7' }}>
+          <span className="text-sm font-bold" style={{ color: '#92400E' }}>⚠️ 조각모임 필독 규칙</span>
+          <span className="text-xs" style={{ color: '#92400E' }}>{showRules ? '접기 ▲' : '펼치기 ▼'}</span>
         </button>
         {showRules && (
-          <div className="px-4 py-3 space-y-2" style={{ backgroundColor: '#FAFAFA' }}>
+          <div className="px-4 py-3 space-y-3" style={{ backgroundColor: '#FFFBEB' }}>
             {JOGAK_RULES.map((rule, i) => (
-              <p key={i} className="text-sm leading-relaxed" style={{ color: '#555' }}>
-                {i + 1}. {rule}
-              </p>
+              <div key={i} className="flex gap-2">
+                <span className="text-sm shrink-0">{rule.icon}</span>
+                <div>
+                  <p className="text-sm font-bold" style={{ color: '#111' }}>{rule.title}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: '#555' }}>{rule.desc}</p>
+                </div>
+              </div>
             ))}
           </div>
         )}
       </div>
 
+      {/* 지역 필터 */}
+      <div className="overflow-x-auto scrollbar-hide mb-4">
+        <div className="flex gap-1.5">
+          {['전체', ...REGIONS].map(r => (
+            <button key={r} onClick={() => setFilterRegion(r)}
+              className={`rounded-full px-3 py-1.5 text-xs font-medium whitespace-nowrap transition ${filterRegion === r ? 'bg-[#8B5CF6] text-white' : 'bg-gray-100 text-[#555]'}`}
+              style={{ minHeight: 32 }}>{r}</button>
+          ))}
+        </div>
+      </div>
+
       {/* 글 목록 */}
       {loading ? (
         <div className="py-20 text-center text-sm" style={{ color: '#9CA3AF' }}>불러오는 중...</div>
-      ) : posts.length === 0 ? (
-        <div className="rounded-xl border p-12 text-center" style={{ borderColor: '#E5E7EB' }}>
-          <p className="text-lg mb-2" style={{ color: '#111' }}>아직 모집글이 없습니다</p>
-          <p className="text-sm" style={{ color: '#999' }}>첫 번째 조각 모집을 시작해보세요!</p>
+      ) : filtered.length === 0 ? (
+        <div className="rounded-xl border p-10 text-center" style={{ borderColor: '#E5E7EB' }}>
+          <p className="text-3xl mb-3">🧩</p>
+          <p className="text-base font-bold mb-1" style={{ color: '#111' }}>아직 모집글이 없습니다</p>
+          <p className="text-sm mb-4" style={{ color: '#999' }}>첫 번째 조각을 올려보세요!</p>
+          <button onClick={handleWriteClick} className="rounded-xl px-6 py-3 text-sm font-bold text-white" style={{ backgroundColor: '#8B5CF6', minHeight: 44 }}>조각 올리기</button>
         </div>
       ) : (
         <div className="space-y-3">
-          {posts.map((post) => (
-            <div key={post.id} className="rounded-xl border overflow-hidden" style={{ borderColor: '#E5E7EB' }}>
-              {/* 글 카드 */}
-              <div onClick={() => handlePostClick(post.id)}
-                className="cursor-pointer px-5 py-4 transition hover:bg-gray-50">
-                <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-sm font-bold" style={{ color: '#111' }}>{post.title}</h3>
-                  {post.comments > 0 && <span className="text-xs ml-2 shrink-0" style={{ color: '#8B5CF6' }}>[{post.comments}]</span>}
+          {filtered.map((post) => (
+            <div key={post.id} className="rounded-xl border overflow-hidden bg-white" style={{ borderColor: '#E5E7EB' }}>
+              {/* 카드 헤더 — 말머리 */}
+              <div className="flex items-center gap-2 px-4 pt-3 pb-1">
+                {post.region && <span className="rounded px-2 py-0.5 text-[11px] font-bold" style={{ backgroundColor: '#8B5CF6', color: '#FFF' }}>{post.region}</span>}
+                {post.jogakType && <span className="rounded px-2 py-0.5 text-[11px] font-bold" style={{ backgroundColor: post.jogakType === '헌팅' ? '#F59E0B' : '#10B981', color: '#FFF' }}>{post.jogakType}</span>}
+                {post.meetDate && <span className="text-[11px]" style={{ color: '#999' }}>{post.meetDate} {post.meetTime}</span>}
+              </div>
+
+              {/* 카드 본문 */}
+              <div onClick={() => handlePostClick(post.id)} className="cursor-pointer px-4 py-2 transition hover:bg-gray-50">
+                <h3 className="text-sm font-bold mb-2" style={{ color: '#111' }}>{post.title}</h3>
+
+                {/* 핵심 정보 그리드 */}
+                <div className="grid grid-cols-2 gap-x-4 gap-y-1 mb-2">
+                  {post.venue && <div className="flex items-center gap-1"><span className="text-xs" style={{ color: '#999' }}>장소</span><span className="text-xs font-bold" style={{ color: '#111' }}>{post.venue}</span></div>}
+                  {post.maxPeople && <div className="flex items-center gap-1"><span className="text-xs" style={{ color: '#999' }}>인원</span><span className="text-xs font-bold" style={{ color: '#111' }}>{post.currentPeople || 1}/{post.maxPeople}명</span></div>}
+                  {post.costSplit && <div className="flex items-center gap-1"><span className="text-xs" style={{ color: '#999' }}>비용</span><span className="text-xs font-bold" style={{ color: '#111' }}>{post.costSplit}</span></div>}
+                  {post.genderPref && <div className="flex items-center gap-1"><span className="text-xs" style={{ color: '#999' }}>성별</span><span className="text-xs font-bold" style={{ color: '#111' }}>{post.genderPref}</span></div>}
+                  {post.ageRange && <div className="flex items-center gap-1"><span className="text-xs" style={{ color: '#999' }}>연령</span><span className="text-xs font-bold" style={{ color: '#111' }}>{post.ageRange}</span></div>}
+                  {post.mdName && <div className="flex items-center gap-1"><span className="text-xs" style={{ color: '#999' }}>담당</span><span className="text-xs font-bold" style={{ color: '#111' }}>{post.mdName}</span></div>}
                 </div>
 
-                {/* 구조화 정보 태그 */}
-                <div className="flex flex-wrap gap-1.5 mb-2">
-                  {post.region && <span className="rounded-full px-2.5 py-0.5 text-xs" style={{ backgroundColor: '#F3F0FF', color: '#8B5CF6' }}>📍 {post.region}</span>}
-                  {post.venue && <span className="rounded-full px-2.5 py-0.5 text-xs" style={{ backgroundColor: '#FEF3C7', color: '#92400E' }}>🏢 {post.venue}</span>}
-                  {post.meetDate && <span className="rounded-full px-2.5 py-0.5 text-xs" style={{ backgroundColor: '#DBEAFE', color: '#1E40AF' }}>📅 {post.meetDate} {post.meetTime}</span>}
-                  {post.maxPeople && <span className="rounded-full px-2.5 py-0.5 text-xs" style={{ backgroundColor: '#D1FAE5', color: '#065F46' }}>👥 {post.currentPeople}/{post.maxPeople}명</span>}
-                  {post.genderPref && post.genderPref !== '누구나' && <span className="rounded-full px-2.5 py-0.5 text-xs" style={{ backgroundColor: '#FCE7F3', color: '#9D174D' }}>{post.genderPref}</span>}
-                  {post.costSplit && <span className="rounded-full px-2.5 py-0.5 text-xs" style={{ backgroundColor: '#F3F4F6', color: '#374151' }}>💰 {post.costSplit}</span>}
-                </div>
-
-                <div className="flex items-center gap-3 text-xs" style={{ color: '#9CA3AF' }}>
-                  <span>{post.author}</span>
-                  <span>{post.date}</span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3 text-xs" style={{ color: '#9CA3AF' }}>
+                    <span>{post.author}</span>
+                    <span>{post.date}</span>
+                  </div>
+                  {post.comments > 0 && <span className="text-xs font-bold" style={{ color: '#8B5CF6' }}>댓글 {post.comments}</span>}
                 </div>
               </div>
 
-              {/* 글 상세 + 댓글 */}
+              {/* 상세 + 댓글 */}
               {selectedPost === post.id && (
-                <div className="px-5 pb-5 pt-2" style={{ backgroundColor: '#FAFAFA', borderTop: '1px solid #E5E7EB' }}>
-                  {/* 본문 설명 */}
-                  {post.content && (
-                    <p className="text-sm leading-relaxed mb-4" style={{ color: '#333', whiteSpace: 'pre-wrap' }}>{post.content}</p>
+                <div className="px-4 pb-4 pt-2" style={{ backgroundColor: '#FAFAFA', borderTop: '1px solid #E5E7EB' }}>
+                  {/* 상세 정보 카드 */}
+                  <div className="rounded-lg border p-3 mb-3 bg-white" style={{ borderColor: '#E5E7EB' }}>
+                    <div className="space-y-1.5 text-sm">
+                      {post.venue && <div className="flex"><span className="w-20 shrink-0 font-bold" style={{ color: '#555' }}>조각장소</span><span style={{ color: '#111' }}>{post.region} {post.venue}</span></div>}
+                      {post.meetDate && <div className="flex"><span className="w-20 shrink-0 font-bold" style={{ color: '#555' }}>날짜/시간</span><span style={{ color: '#111' }}>{post.meetDate} {post.meetTime}</span></div>}
+                      {post.ageRange && <div className="flex"><span className="w-20 shrink-0 font-bold" style={{ color: '#555' }}>모집연령</span><span style={{ color: '#111' }}>{post.ageRange}</span></div>}
+                      {post.photoExchange && <div className="flex"><span className="w-20 shrink-0 font-bold" style={{ color: '#555' }}>사진교환</span><span style={{ color: '#111' }}>{post.photoExchange}</span></div>}
+                      {post.tableCost && <div className="flex"><span className="w-20 shrink-0 font-bold" style={{ color: '#555' }}>주대내역</span><span style={{ color: '#111' }}>{post.tableCost}</span></div>}
+                      {post.maxPeople && <div className="flex"><span className="w-20 shrink-0 font-bold" style={{ color: '#555' }}>인원</span><span style={{ color: '#111' }}>{post.currentPeople || 1}/{post.maxPeople}명</span></div>}
+                      {post.perPerson && <div className="flex"><span className="w-20 shrink-0 font-bold" style={{ color: '#555' }}>1인당</span><span style={{ color: '#111' }}>{post.perPerson}</span></div>}
+                      {post.costSplit && <div className="flex"><span className="w-20 shrink-0 font-bold" style={{ color: '#555' }}>비용분담</span><span style={{ color: '#111' }}>{post.costSplit}</span></div>}
+                      {post.mdName && <div className="flex"><span className="w-20 shrink-0 font-bold" style={{ color: '#555' }}>담당MD</span><span style={{ color: '#111' }}>{post.mdName}</span></div>}
+                      {post.contactMethod && <div className="flex"><span className="w-20 shrink-0 font-bold" style={{ color: '#555' }}>연락방법</span><span style={{ color: '#111' }}>{post.contactMethod}</span></div>}
+                    </div>
+                  </div>
+
+                  {/* 한마디 */}
+                  {post.message && (
+                    <div className="rounded-lg p-3 mb-3" style={{ backgroundColor: '#F3F0FF' }}>
+                      <p className="text-xs font-bold mb-1" style={{ color: '#8B5CF6' }}>조각에게 한마디</p>
+                      <p className="text-sm leading-relaxed" style={{ color: '#333', whiteSpace: 'pre-wrap' }}>{post.message}</p>
+                    </div>
                   )}
 
-                  {/* 삭제 버튼 */}
+                  {/* 삭제 */}
                   {user && (
                     <button onClick={async () => {
                       const result = await deletePost(post.id);
-                      if (result.error) { return; }
-                      setSelectedPost(null);
-                      setPosts(prev => prev.filter(p => p.id !== post.id));
-                    }} className="text-xs mb-3" style={{ color: '#EF4444', minHeight: 32 }}>
-                      글 삭제
-                    </button>
+                      if (!result.error) { setSelectedPost(null); setPosts(prev => prev.filter(p => p.id !== post.id)); }
+                    }} className="text-xs mb-3" style={{ color: '#EF4444', minHeight: 32 }}>글 삭제</button>
                   )}
 
                   {/* 댓글 */}
@@ -279,7 +308,6 @@ export default function JogakPage() {
                     <p className="text-xs font-bold mb-2" style={{ color: '#555' }}>댓글 {comments.length}개</p>
                     {comments.length > 0 ? (
                       <div className="space-y-2">
-                        {/* 최상위 댓글 */}
                         {comments.filter(c => !c.parent_id).map((c: any) => {
                           const nickname = c.users?.nickname || '익명';
                           const children = comments.filter((ch: any) => ch.parent_id === c.id);
@@ -296,28 +324,23 @@ export default function JogakPage() {
                                     </button>
                                   )}
                                 </div>
-                                {/* 답글 입력 */}
                                 {replyTo?.id === c.id && (
                                   <div className="flex gap-2 mt-2">
                                     <input type="text" value={replyText} onChange={e => setReplyText(e.target.value)}
                                       onKeyDown={e => { if (e.key === 'Enter') handleReplySubmit(); }}
                                       placeholder={`${nickname}에게 답글...`}
-                                      className="flex-1 rounded-lg border px-3 py-2 text-sm min-h-[40px] outline-none"
-                                      style={{ borderColor: '#D1D5DB', color: '#111' }} autoFocus />
+                                      className="flex-1 rounded-lg border px-3 py-2 text-sm outline-none"
+                                      style={{ borderColor: '#D1D5DB', color: '#111', minHeight: 40 }} autoFocus />
                                     <button onClick={handleReplySubmit} disabled={!replyText.trim()}
-                                      className="rounded-lg px-3 py-2 text-sm font-bold text-white disabled:opacity-40 min-h-[40px]"
-                                      style={{ backgroundColor: '#8B5CF6' }}>등록</button>
+                                      className="rounded-lg px-3 py-2 text-sm font-bold text-white disabled:opacity-40"
+                                      style={{ backgroundColor: '#8B5CF6', minHeight: 40 }}>등록</button>
                                   </div>
                                 )}
                               </div>
-                              {/* 대댓글 */}
                               {children.map((ch: any) => (
-                                <div key={ch.id} className="rounded-lg px-3 py-2 ml-6" style={{ backgroundColor: '#F9FAFB', borderLeft: '3px solid #8B5CF6' }}>
-                                  <span className="text-xs font-medium mr-1" style={{ color: '#8B5CF6' }}>↳</span>
-                                  <p className="text-sm inline" style={{ color: '#111' }}>{ch.content}</p>
-                                  <div className="mt-1">
-                                    <span className="text-xs" style={{ color: '#9CA3AF' }}>{ch.users?.nickname || '익명'} · {ch.created_at?.slice(5, 10)}</span>
-                                  </div>
+                                <div key={ch.id} className="rounded-lg px-3 py-2 ml-6 mt-1" style={{ backgroundColor: '#F9FAFB', borderLeft: '3px solid #8B5CF6' }}>
+                                  <p className="text-sm" style={{ color: '#111' }}><span className="text-xs font-medium mr-1" style={{ color: '#8B5CF6' }}>↳</span>{ch.content}</p>
+                                  <span className="text-xs" style={{ color: '#9CA3AF' }}>{ch.users?.nickname || '익명'} · {ch.created_at?.slice(5, 10)}</span>
                                 </div>
                               ))}
                             </div>
@@ -325,7 +348,7 @@ export default function JogakPage() {
                         })}
                       </div>
                     ) : (
-                      <p className="text-xs" style={{ color: '#9CA3AF' }}>아직 댓글이 없어요. 참여 의사를 댓글로 남겨보세요!</p>
+                      <p className="text-xs" style={{ color: '#9CA3AF' }}>참여 의사를 댓글로 남겨보세요!</p>
                     )}
                   </div>
 
@@ -334,11 +357,11 @@ export default function JogakPage() {
                     <input type="text" placeholder={user ? '참여 의사나 질문을 남겨보세요' : '로그인 후 댓글 작성'}
                       value={commentText} onChange={(e) => setCommentText(e.target.value)}
                       onKeyDown={(e) => { if (e.key === 'Enter') handleCommentSubmit(); }}
-                      className="flex-1 rounded-lg border px-3 py-2 text-sm min-h-[44px]"
-                      style={{ borderColor: '#D1D5DB', color: '#111' }} disabled={!user} />
+                      className="flex-1 rounded-lg border px-3 py-2 text-sm"
+                      style={{ borderColor: '#D1D5DB', color: '#111', minHeight: 44 }} disabled={!user} />
                     <button onClick={handleCommentSubmit} disabled={!user || !commentText.trim()}
-                      className="rounded-lg px-4 py-2 text-sm font-bold text-white min-h-[44px]"
-                      style={{ backgroundColor: user ? '#8B5CF6' : '#9CA3AF' }}>등록</button>
+                      className="rounded-lg px-4 py-2 text-sm font-bold text-white"
+                      style={{ backgroundColor: user ? '#8B5CF6' : '#9CA3AF', minHeight: 44 }}>등록</button>
                   </div>
                 </div>
               )}
@@ -347,165 +370,189 @@ export default function JogakPage() {
         </div>
       )}
 
-      {/* 글쓰기 모달 — 구조화 폼 */}
+      {/* ═══ 글쓰기 모달 — 역밤 스타일 구조화 폼 ═══ */}
       {showWrite && (
-        <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
+        <div className="fixed inset-0 z-[100] flex flex-col bg-white">
+          {/* 상단 바 */}
           <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
             <button onClick={() => setShowWrite(false)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>취소</button>
-            <h2 className="text-base font-bold" style={{ color: '#111' }}>🧩 조각 모집 글쓰기</h2>
+            <h2 className="text-base font-bold" style={{ color: '#111' }}>조각 모집 글쓰기</h2>
             <div style={{ width: 44 }} />
           </div>
 
           <div className="flex-1 overflow-y-auto px-4 py-4 pb-28 max-w-2xl mx-auto w-full">
-            {/* 제목 */}
-            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>제목 *</label>
-            <input value={formTitle} onChange={(e) => setFormTitle(e.target.value)}
-              placeholder="예: 토요일 강남 클럽 같이 가실 분"
-              className="w-full rounded-lg border px-4 py-3 text-sm mb-4 outline-none"
-              style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
 
-            {/* 지역 */}
-            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>어디? (지역) *</label>
-            <div className="flex flex-wrap gap-2 mb-4">
+            {/* ── 기본 정보 ── */}
+            <SectionHeader title="기본 정보" />
+
+            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>제목 <span style={{ color: '#EF4444' }}>*</span></label>
+            <input value={f.title} onChange={(e) => setField('title', e.target.value)}
+              placeholder="예: 토요일 강남 클럽 같이 가실 분"
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
+              style={{ borderColor: f.title ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
+
+            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>지역 <span style={{ color: '#EF4444' }}>*</span></label>
+            <div className="flex flex-wrap gap-2 mb-3">
               {REGIONS.map(r => (
-                <button key={r} onClick={() => setFormRegion(r)}
+                <button key={r} type="button" onClick={() => setField('region', r)}
                   className="rounded-full px-3.5 py-1.5 text-sm transition"
-                  style={{
-                    backgroundColor: formRegion === r ? '#8B5CF6' : '#F3F4F6',
-                    color: formRegion === r ? '#FFFFFF' : '#374151',
-                    minHeight: 36,
-                  }}>{r}</button>
+                  style={{ backgroundColor: f.region === r ? '#8B5CF6' : '#F3F4F6', color: f.region === r ? '#FFF' : '#374151', minHeight: 36 }}>{r}</button>
               ))}
             </div>
 
-            {/* 업소명 */}
-            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>업소명 (선택)</label>
-            <input value={formVenue} onChange={(e) => setFormVenue(e.target.value)}
-              placeholder="예: 레이스, 아르쥬, 버뮤다..."
-              className="w-full rounded-lg border px-4 py-3 text-sm mb-4 outline-none"
-              style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
-
-            {/* 날짜 + 시간 — 직접 입력 + picker 모두 지원 */}
-            <div className="grid grid-cols-2 gap-3 mb-4">
-              <div>
-                <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>날짜 <span style={{ color: '#EF4444' }}>*</span></label>
-                <input type="date" value={formDate} onChange={(e) => setFormDate(e.target.value)}
-                  min={new Date().toISOString().split('T')[0]}
-                  className="w-full rounded-lg border px-3 py-3 text-sm outline-none appearance-none"
-                  style={{ borderColor: formDate ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48, WebkitAppearance: 'none' }}
-                  onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
-                />
-                {!formDate && <p className="mt-1 text-xs" style={{ color: '#999' }}>터치해서 날짜 선택</p>}
-              </div>
-              <div>
-                <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>시간 <span style={{ color: '#EF4444' }}>*</span></label>
-                <input type="time" value={formTime} onChange={(e) => setFormTime(e.target.value)}
-                  className="w-full rounded-lg border px-3 py-3 text-sm outline-none appearance-none"
-                  style={{ borderColor: formTime ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48, WebkitAppearance: 'none' }}
-                  onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
-                />
-                {!formTime && <p className="mt-1 text-xs" style={{ color: '#999' }}>터치해서 시간 선택</p>}
-              </div>
+            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>조각 성향 <span style={{ color: '#EF4444' }}>*</span></label>
+            <div className="flex gap-2 mb-3">
+              {JOGAK_TYPES.map(t => (
+                <button key={t} type="button" onClick={() => setField('jogakType', t)}
+                  className="rounded-full px-4 py-1.5 text-sm transition"
+                  style={{ backgroundColor: f.jogakType === t ? (t === '헌팅' ? '#F59E0B' : '#10B981') : '#F3F4F6', color: f.jogakType === t ? '#FFF' : '#374151', minHeight: 36 }}>{t}</button>
+              ))}
             </div>
-            {/* 빠른 날짜 선택 */}
-            <div className="flex gap-2 mb-4 flex-wrap">
+
+            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>업소명 <span style={{ color: '#EF4444' }}>*</span></label>
+            <input value={f.venue} onChange={(e) => setField('venue', e.target.value)}
+              placeholder="예: 레이스, 아르쥬, 찬스돔..."
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
+              style={{ borderColor: f.venue ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
+
+            {/* ── 날짜 & 시간 ── */}
+            <SectionHeader title="날짜 & 시간" />
+
+            <div className="flex gap-2 mb-2 flex-wrap">
               {(() => {
                 const today = new Date();
-                const options: { label: string; value: string }[] = [];
+                const opts: { label: string; value: string }[] = [];
                 for (let i = 0; i < 7; i++) {
-                  const d = new Date(today);
-                  d.setDate(today.getDate() + i);
-                  const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
-                  const label = i === 0 ? '오늘' : i === 1 ? '내일' : `${d.getMonth() + 1}/${d.getDate()}(${dayNames[d.getDay()]})`;
-                  const value = d.toISOString().split('T')[0];
-                  options.push({ label, value });
+                  const d = new Date(today); d.setDate(today.getDate() + i);
+                  const dn = ['일', '월', '화', '수', '목', '금', '토'];
+                  const label = i === 0 ? '오늘' : i === 1 ? '내일' : `${d.getMonth()+1}/${d.getDate()}(${dn[d.getDay()]})`;
+                  opts.push({ label, value: d.toISOString().split('T')[0] });
                 }
-                return options.map(o => (
-                  <button key={o.value} type="button" onClick={() => setFormDate(o.value)}
+                return opts.map(o => (
+                  <button key={o.value} type="button" onClick={() => setField('date', o.value)}
                     className="rounded-full px-3 py-1.5 text-xs font-medium transition"
-                    style={{
-                      backgroundColor: formDate === o.value ? '#8B5CF6' : '#F3F4F6',
-                      color: formDate === o.value ? '#FFF' : '#555',
-                      minHeight: 32,
-                    }}>{o.label}</button>
+                    style={{ backgroundColor: f.date === o.value ? '#8B5CF6' : '#F3F4F6', color: f.date === o.value ? '#FFF' : '#555', minHeight: 32 }}>{o.label}</button>
                 ));
               })()}
             </div>
-            {/* 빠른 시간 선택 */}
-            <div className="flex gap-2 mb-4 flex-wrap">
-              {['18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '00:00', '01:00'].map(t => (
-                <button key={t} type="button" onClick={() => setFormTime(t)}
+            <div className="grid grid-cols-2 gap-3 mb-2">
+              <input type="date" value={f.date} onChange={(e) => setField('date', e.target.value)}
+                min={new Date().toISOString().split('T')[0]}
+                className="w-full rounded-lg border px-3 py-3 text-sm outline-none"
+                style={{ borderColor: f.date ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }}
+                onClick={(e) => (e.target as HTMLInputElement).showPicker?.()} />
+              <input type="time" value={f.time} onChange={(e) => setField('time', e.target.value)}
+                className="w-full rounded-lg border px-3 py-3 text-sm outline-none"
+                style={{ borderColor: f.time ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }}
+                onClick={(e) => (e.target as HTMLInputElement).showPicker?.()} />
+            </div>
+            <div className="flex gap-2 mb-3 flex-wrap">
+              {['18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '00:00', '지금 바로'].map(t => (
+                <button key={t} type="button" onClick={() => setField('time', t === '지금 바로' ? t : t)}
                   className="rounded-full px-3 py-1.5 text-xs font-medium transition"
-                  style={{
-                    backgroundColor: formTime === t ? '#8B5CF6' : '#F3F4F6',
-                    color: formTime === t ? '#FFF' : '#555',
-                    minHeight: 32,
-                  }}>{t}</button>
+                  style={{ backgroundColor: f.time === t ? '#8B5CF6' : '#F3F4F6', color: f.time === t ? '#FFF' : '#555', minHeight: 32 }}>{t}</button>
               ))}
             </div>
 
-            {/* 모집 인원 */}
+            {/* ── 모집 조건 ── */}
+            <SectionHeader title="모집 조건" />
+
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>모집 인원 (본인 포함) <span style={{ color: '#EF4444' }}>*</span></label>
-            <div className="flex items-center gap-3 mb-4">
-              {['2', '3', '4', '6', '8', '10'].map(n => (
-                <button key={n} onClick={() => setFormMaxPeople(n)}
+            <div className="flex gap-2 mb-3 flex-wrap">
+              {['1', '2', '3', '4', '5', '6', '8', '10+'].map(n => (
+                <button key={n} type="button" onClick={() => setField('maxPeople', n === '10+' ? '10' : n)}
                   className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-medium transition"
-                  style={{
-                    backgroundColor: formMaxPeople === n ? '#8B5CF6' : '#F3F4F6',
-                    color: formMaxPeople === n ? '#FFFFFF' : '#374151',
-                  }}>{n}</button>
+                  style={{ backgroundColor: f.maxPeople === (n === '10+' ? '10' : n) ? '#8B5CF6' : '#F3F4F6', color: f.maxPeople === (n === '10+' ? '10' : n) ? '#FFF' : '#374151' }}>{n}</button>
               ))}
             </div>
 
-            {/* 성별 */}
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>성별 조건 <span style={{ color: '#EF4444' }}>*</span></label>
-            <div className="flex gap-2 mb-4">
+            <div className="flex flex-wrap gap-2 mb-3">
               {GENDER_OPTIONS.map(g => (
-                <button key={g} onClick={() => setFormGender(g)}
+                <button key={g} type="button" onClick={() => setField('gender', g)}
                   className="rounded-full px-4 py-1.5 text-sm transition"
-                  style={{
-                    backgroundColor: formGender === g ? '#8B5CF6' : '#F3F4F6',
-                    color: formGender === g ? '#FFFFFF' : '#374151',
-                    minHeight: 36,
-                  }}>{g}</button>
+                  style={{ backgroundColor: f.gender === g ? '#8B5CF6' : '#F3F4F6', color: f.gender === g ? '#FFF' : '#374151', minHeight: 36 }}>{g}</button>
               ))}
             </div>
 
-            {/* 나이 범위 */}
-            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>나이 범위 (선택)</label>
-            <input value={formAgeRange} onChange={(e) => setFormAgeRange(e.target.value)}
-              placeholder="예: 25~35세"
-              className="w-full rounded-lg border px-4 py-3 text-sm mb-4 outline-none"
+            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>모집 연령대</label>
+            <input value={f.ageRange} onChange={(e) => setField('ageRange', e.target.value)}
+              placeholder="예: 20대후반~30대초반"
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
               style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
 
-            {/* 비용 분담 */}
-            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>비용 분담 <span style={{ color: '#EF4444' }}>*</span></label>
-            <div className="flex gap-2 mb-4">
-              {COST_OPTIONS.map(c => (
-                <button key={c} onClick={() => setFormCost(c)}
-                  className="rounded-full px-4 py-1.5 text-sm transition"
-                  style={{
-                    backgroundColor: formCost === c ? '#8B5CF6' : '#F3F4F6',
-                    color: formCost === c ? '#FFFFFF' : '#374151',
-                    minHeight: 36,
-                  }}>{c}</button>
+            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>사진 교환</label>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {PHOTO_OPTIONS.map(p => (
+                <button key={p} type="button" onClick={() => setField('photo', p)}
+                  className="rounded-full px-3.5 py-1.5 text-xs transition"
+                  style={{ backgroundColor: f.photo === p ? '#8B5CF6' : '#F3F4F6', color: f.photo === p ? '#FFF' : '#374151', minHeight: 32 }}>{p}</button>
               ))}
             </div>
 
-            {/* 추가 설명 */}
-            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>추가 설명</label>
-            <textarea value={formDesc} onChange={(e) => setFormDesc(e.target.value)}
-              placeholder="함께 가고 싶은 이유, 분위기, 원하는 조건 등 자유롭게 적어주세요"
+            {/* ── 비용 정보 ── */}
+            <SectionHeader title="비용 정보" />
+
+            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>비용 분담 방식 <span style={{ color: '#EF4444' }}>*</span></label>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {COST_OPTIONS.map(c => (
+                <button key={c} type="button" onClick={() => setField('cost', c)}
+                  className="rounded-full px-3.5 py-1.5 text-sm transition"
+                  style={{ backgroundColor: f.cost === c ? '#8B5CF6' : '#F3F4F6', color: f.cost === c ? '#FFF' : '#374151', minHeight: 36 }}>{c}</button>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 mb-3">
+              <div>
+                <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>주대 내역</label>
+                <input value={f.tableCost} onChange={(e) => setField('tableCost', e.target.value)}
+                  placeholder="예: 테이블비 50만원"
+                  className="w-full rounded-lg border px-3 py-3 text-sm outline-none"
+                  style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
+              </div>
+              <div>
+                <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>1인당 예상</label>
+                <input value={f.perPerson} onChange={(e) => setField('perPerson', e.target.value)}
+                  placeholder="예: 약 8만원"
+                  className="w-full rounded-lg border px-3 py-3 text-sm outline-none"
+                  style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
+              </div>
+            </div>
+
+            {/* ── 담당 & 연락 ── */}
+            <SectionHeader title="담당 & 연락" />
+
+            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>담당 MD / 웨이터 <span className="text-[10px] font-normal" style={{ color: '#EF4444' }}>(제휴업장 필수)</span></label>
+            <input value={f.mdName} onChange={(e) => setField('mdName', e.target.value)}
+              placeholder="예: 장미, 비제휴..."
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
+              style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
+
+            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>연락 방법 <span style={{ color: '#EF4444' }}>*</span></label>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {CONTACT_OPTIONS.map(c => (
+                <button key={c} type="button" onClick={() => setField('contact', c)}
+                  className="rounded-full px-3.5 py-1.5 text-sm transition"
+                  style={{ backgroundColor: f.contact === c ? '#8B5CF6' : '#F3F4F6', color: f.contact === c ? '#FFF' : '#374151', minHeight: 36 }}>{c}</button>
+              ))}
+            </div>
+
+            {/* ── 한마디 ── */}
+            <SectionHeader title="한마디" />
+
+            <textarea value={f.message} onChange={(e) => setField('message', e.target.value)}
+              placeholder="조각에게 하고 싶은 말을 자유롭게 적어주세요"
               className="w-full rounded-lg border px-4 py-3 text-sm outline-none resize-none"
-              style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 120, lineHeight: '1.7' }} />
+              style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 100, lineHeight: '1.7' }} />
           </div>
 
-          <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
+          {/* 하단 버튼 */}
+          <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t bg-white" style={{ borderColor: '#E5E7EB' }}>
             <button onClick={handleSubmit}
-              disabled={submitting || !formTitle.trim() || !formRegion || !formDate || !formTime}
+              disabled={submitting || !f.title.trim() || !f.region || !f.date || !f.time || !f.venue.trim()}
               className="w-full rounded-xl py-4 text-base font-bold transition active:scale-[0.98] disabled:opacity-30"
-              style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 56 }}>
-              {submitting ? '등록 중...' : '모집글 올리기'}
+              style={{ backgroundColor: '#8B5CF6', color: '#FFF', minHeight: 56 }}>
+              {submitting ? '등록 중...' : '조각 모집글 올리기'}
             </button>
           </div>
         </div>
