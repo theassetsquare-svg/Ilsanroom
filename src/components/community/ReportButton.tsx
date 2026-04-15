@@ -1,6 +1,6 @@
 
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Modal from '@/components/ui/Modal';
 
 interface ReportButtonProps {
@@ -24,13 +24,15 @@ export default function ReportButton({ targetId, targetType, className = '' }: R
   const [reason, setReason] = useState('');
   const [detail, setDetail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
   const handleSubmit = () => {
     if (!reason) return;
     // In production: POST to /api/v1/reports
     console.log('[Report]', { targetId, targetType, reason, detail });
     setSubmitted(true);
-    setTimeout(() => {
+    timerRef.current = setTimeout(() => {
       setOpen(false);
       setSubmitted(false);
       setReason('');

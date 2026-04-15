@@ -1,6 +1,7 @@
 
 
 import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { venues } from '@/data/venues';
 import ShareButtons from '@/components/interactive/ShareButtons';
 
@@ -60,11 +61,10 @@ export default function HomeRoulette() {
             {spinning ? '돌리는 중...' : '룰렛 돌리기'}
           </button>
           {result && !spinning && (
-            <a target="_blank" rel="noopener noreferrer" href={getCategoryHref(result.category, result.slug, result.region)}
-              target="_blank" rel="noopener noreferrer"
+            <Link to={getCategoryHref(result.category, result.slug, result.region)}
               className="rounded-xl border border-neon-primary/40 px-6 py-3 text-sm font-semibold text-neon-primary-light transition hover:bg-neon-primary/10">
               상세 보기 →
-            </a>
+            </Link>
           )}
         </div>
         {result && !spinning && <div className="mt-4"><ShareButtons title={`오늘의 행운 업소: ${result.nameKo}`} /></div>}

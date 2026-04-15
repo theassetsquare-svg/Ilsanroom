@@ -1,6 +1,6 @@
 
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import ShareButtons from './ShareButtons';
 import { venues } from '@/data/venues';
 
@@ -10,16 +10,23 @@ export default function Roulette() {
 
   const openVenues = venues.filter((v) => v.status !== 'closed_or_unclear');
 
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
+  }, []);
+
   const spin = () => {
     setSpinning(true);
     setResult(null);
     let count = 0;
-    const interval = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       const random = openVenues[Math.floor(Math.random() * openVenues.length)];
       setResult(random.nameKo);
       count++;
       if (count > 15) {
-        clearInterval(interval);
+        clearInterval(intervalRef.current!);
+        intervalRef.current = null;
         setSpinning(false);
       }
     }, 100);

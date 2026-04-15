@@ -48,7 +48,7 @@ export default function PostDetailPage() {
         setPost(data);
         setLikeCount(data?.likes || 0);
         setLoading(false);
-        if (data?.title) document.title = `${data.title} — 놀쿨 커뮤니티`;
+        if (data?.title) document.title = `${data.title} — 커뮤니티 실시간 토론`;
       }
     });
   }, [id]);

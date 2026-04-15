@@ -83,8 +83,6 @@ export default function VenueListClient({ venues, hrefPattern, regions }: VenueL
             <Link
               key={venue.id}
               to={buildHref(hrefPattern, venue)}
-              target="_blank"
-              rel="noopener noreferrer"
               className="block"
             >
               <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">

@@ -17,7 +17,7 @@ const defaultFaqs = (name: string) => [
 ];
 
 /* 답십리돈텔마마나이트 천사 이미지 + 전화 섹션 */
-function DapsimnriCheonSaSection() {
+function DapsimnriCheonSaSection({ venue }: { venue: { staffPhone?: string } }) {
   return (
     <div className="flex flex-col items-center gap-6">
       {/* 1:1 천사 이미지 썸네일 */}
@@ -32,19 +32,21 @@ function DapsimnriCheonSaSection() {
         />
       </div>
 
-      {/* 천사 전화번호 — 가운데 정렬, 클릭 시 전화 연결 */}
-      <div className="w-full max-w-[480px] text-center">
-        <a
-          href="tel:01037637882"
-          className="flex flex-col items-center gap-3 rounded-2xl bg-gradient-to-r from-[#15803D] to-[#166534] px-8 py-6 shadow-lg transition hover:shadow-xl active:scale-[0.98]"
-        >
-          <span className="text-lg font-bold text-white/80">천사</span>
-          <span className="text-3xl font-black text-white tracking-wide">
-            📞 010-3763-7882
-          </span>
-          <span className="text-sm text-white/70">터치하면 바로 전화 연결</span>
-        </a>
-      </div>
+      {/* 천사 전화번호 — venue.staffPhone에서 가져옴 */}
+      {venue?.staffPhone && (
+        <div className="w-full max-w-[480px] text-center">
+          <a
+            href={`tel:${venue.staffPhone.replace(/-/g, '')}`}
+            className="flex flex-col items-center gap-3 rounded-2xl bg-gradient-to-r from-[#15803D] to-[#166534] px-8 py-6 shadow-lg transition hover:shadow-xl active:scale-[0.98]"
+          >
+            <span className="text-lg font-bold text-white/80">천사</span>
+            <span className="text-3xl font-black text-white tracking-wide">
+              📞 {venue.staffPhone}
+            </span>
+            <span className="text-sm text-white/70">터치하면 바로 전화 연결</span>
+          </a>
+        </div>
+      )}
     </div>
   );
 }
@@ -69,7 +71,7 @@ export default function NightDetailPage() {
       faqs={defaultFaqs(venue.nameKo)}
       related={related}
       relatedHrefFn={(v) => `/nights/${v.slug}`}
-      topContent={isDapsimnri ? <DapsimnriCheonSaSection /> : undefined}
+      topContent={isDapsimnri ? <DapsimnriCheonSaSection venue={venue} /> : undefined}
     />
   );
 }

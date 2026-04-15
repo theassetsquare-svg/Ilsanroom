@@ -141,8 +141,6 @@ export default function LeadQuizPage() {
             <a
               key={v.slug}
               href={`/${v.category === 'club' ? 'clubs' : v.category === 'night' ? 'nights' : v.category === 'lounge' ? 'lounges' : v.category === 'room' ? 'rooms' : v.category}/${v.region ? v.region + '/' : ''}${v.slug}`}
-              target="_blank"
-              rel="noopener noreferrer"
               className="block rounded-xl border border-neon-border bg-neon-surface p-4 transition hover:border-neon-primary/40"
             >
               <div className="flex items-center justify-between">

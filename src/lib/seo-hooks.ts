@@ -134,7 +134,6 @@ export function getHookingTitle(venue: Venue): string {
   // Fallback: 지역 중복 절대 방지
   // regionKo가 "부산 해운대" 같이 2단어인 경우도 각 단어별로 체크
   const regionParts = venue.regionKo.split(/\s+/).filter((p: string) => p.length >= 2);
-  const nameHasAnyRegion = regionParts.some((p: string) => venue.nameKo.includes(p));
   const trait = venue.staffNickname
     ? `${venue.staffNickname}이(가) 이끄는 명소`
     : venue.isPremium

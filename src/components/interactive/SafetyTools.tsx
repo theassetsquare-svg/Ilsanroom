@@ -64,8 +64,6 @@ export function EmergencyContacts() {
           <a
             key={c.number + c.name}
             href={`tel:${c.number}`}
-            target="_blank"
-            rel="noopener noreferrer"
             className={`flex items-center gap-3 rounded-xl ${c.color}/10 border border-neon-border px-4 py-3 transition hover:bg-neon-surface-2`}
             style={{ minHeight: '44px' }}
           >

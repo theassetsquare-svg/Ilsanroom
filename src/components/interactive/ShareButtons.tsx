@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 interface ShareButtonsProps {
   title: string;
@@ -8,6 +8,8 @@ interface ShareButtonsProps {
 
 export default function ShareButtons({ title, url, description }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
   const shareUrl = typeof window !== 'undefined' ? (url || window.location.href) : '';
 
   const handleShare = async () => {
@@ -19,7 +21,7 @@ export default function ShareButtons({ title, url, description }: ShareButtonsPr
       try {
         await navigator.clipboard.writeText(shareUrl);
         setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        timerRef.current = setTimeout(() => setCopied(false), 2000);
       } catch {}
     }
   };

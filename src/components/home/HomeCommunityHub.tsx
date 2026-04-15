@@ -51,7 +51,7 @@ export default function HomeCommunityHub() {
               글쓰기
             </button>
           )}
-          <Link target="_blank" rel="noopener noreferrer" to="/community" className="rounded-xl border border-neon-border px-4 py-2.5 text-sm font-medium text-neon-text-muted transition hover:bg-neon-surface-2">
+          <Link to="/community" className="rounded-xl border border-neon-border px-4 py-2.5 text-sm font-medium text-neon-text-muted transition hover:bg-neon-surface-2">
             전체보기
           </Link>
         </div>
@@ -63,7 +63,6 @@ export default function HomeCommunityHub() {
           <Link
             key={b.key}
             to={b.href}
-            target="_blank" rel="noopener noreferrer"
             className="group flex flex-col items-center gap-2 rounded-2xl border border-neon-border bg-white p-4 text-center transition hover:border-neon-primary/40 hover:shadow-md card-hover"
           >
             <span className="text-2xl">{b.icon}</span>
@@ -105,7 +104,7 @@ export default function HomeCommunityHub() {
       {!user && (
         <div className="mt-4 rounded-xl bg-violet-50 p-4 text-center">
           <p className="text-sm text-neon-text-muted">
-            <Link target="_blank" rel="noopener noreferrer" to="/login" className="font-semibold text-neon-primary hover:underline">로그인</Link>하고 커뮤니티에 참여하세요
+            <Link to="/login" className="font-semibold text-neon-primary hover:underline">로그인</Link>하고 커뮤니티에 참여하세요
           </p>
         </div>
       )}

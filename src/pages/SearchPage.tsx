@@ -54,7 +54,7 @@ export default function SearchPage() {
   const [totalCount, setTotalCount] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useDocumentMeta(`"${queryParam || '통합'}" 검색 결과 — 놀쿨`, '지역·업종·이름 아무거나 입력. 실시간 랭킹과 정확한 정보를 한눈에.');
+  useDocumentMeta(`"${queryParam || '통합'}" 검색 결과 — 지금 뜨는 곳 총정리`, '지역·업종·이름 아무거나 입력. 실시간 랭킹과 정확한 정보를 한눈에.');
 
   const performSearch = useCallback(async (q: string, cat: string) => {
     setLoading(true);

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useHelmet } from 'react-helmet-async';
+// react-helmet-async는 HelmetProvider에서 사용됨
 
 /**
  * react-helmet-async + DOM 직접 조작 병행
@@ -40,7 +40,7 @@ export function useDocumentMeta(title: string, description: string, ogImage?: st
     if (ogImage) {
       setMeta('property', 'og:image', ogImage);
       setMeta('property', 'og:image:width', '1200');
-      setMeta('property', 'og:image:height', '630');
+      setMeta('property', 'og:image:height', '1200');
     }
 
     // Twitter Card

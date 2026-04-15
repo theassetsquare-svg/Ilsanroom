@@ -29,7 +29,7 @@ function postToSimple(post: Post): SimplePost {
 }
 
 export default function FreeBoardPage() {
-  useDocumentMeta('자유게시판 — 자유롭게 이야기하는 공간', '주제 제한 없이 자유롭게 소통하는 게시판. 궁금한 거, 꿀팁, 후기 뭐든 OK.');
+  useDocumentMeta('자유게시판 — 주제 제한 없이 솔직하게 떠드는 곳', '뭐든 써도 되는 게시판. 궁금한 거, 꿀팁, 후기 뭐든 OK.');
   const { user } = useAuth();
   const navigate = useNavigate();
   const [recentPosts, setRecentPosts] = useState<SimplePost[]>([]);

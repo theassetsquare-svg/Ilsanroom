@@ -10,7 +10,7 @@ export default function MagazineDetailPage() {
 
   useDocumentMeta(
     article?.title || '매거진 글',
-    article?.excerpt || '놀쿨 매거진 콘텐츠'
+    article?.excerpt || '밤문화 현장 리포트와 깊이 있는 분석 매거진'
   );
 
   if (!article) {
