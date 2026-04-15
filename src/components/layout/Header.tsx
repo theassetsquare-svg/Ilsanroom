@@ -56,6 +56,7 @@ const menuCategories = [
 
 const menuFeatures = [
   { icon: '💬', label: '커뮤니티', href: '/community' },
+  { icon: '✉️', label: '쪽지함', href: '/messages' },
   { icon: '📸', label: '클립', href: '/gallery' },
   { icon: '🔥', label: '랭킹', href: '/ranking' },
   { icon: '🆚', label: 'VS 투표', href: '/vs' },
@@ -154,6 +155,17 @@ export default function Header() {
               </Link>
               {user && (
                 <Link
+                  to="/messages"
+                  className="relative flex h-10 w-10 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-50 transition"
+                  aria-label="쪽지함"
+                >
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </Link>
+              )}
+              {user && (
+                <Link
                   to="/community"
                   onClick={() => { try { localStorage.setItem('community_seen_at', String(Date.now())); } catch {} }}
                   className="relative flex h-10 w-10 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-50 transition"
@@ -214,6 +226,17 @@ export default function Header() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </Link>
+              {user && (
+                <Link
+                  to="/messages"
+                  className="flex h-10 w-10 items-center justify-center rounded-lg text-gray-600 active:bg-gray-100"
+                  aria-label="쪽지함"
+                >
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </Link>
+              )}
               <Link
                 to={user ? '/profile' : '/login'}
                 className="flex h-10 w-10 items-center justify-center rounded-lg active:bg-gray-100"

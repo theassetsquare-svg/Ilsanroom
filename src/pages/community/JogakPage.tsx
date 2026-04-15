@@ -21,7 +21,7 @@ const CATEGORIES = [
 const JOGAK_TYPES = ['테이블', '헌팅', '혼합', '룸', '부스'];
 const GENDER_OPTIONS = ['누구나', '남성만', '여성만', '남녀 혼성'];
 const COST_OPTIONS = ['모든비용 엔빵', '주대만 엔빵', '각자 부담', '방장 초대'];
-const CONTACT_OPTIONS = ['놀쿨 댓글', '전화'];
+const CONTACT_OPTIONS = ['놀쿨 쪽지', '놀쿨 댓글', '전화'];
 const PHOTO_OPTIONS = ['사진교환 필수', '사진교환 선택', '사진교환 안 함'];
 
 /* ══════════════════════════════════════════════
@@ -44,6 +44,7 @@ const JOGAK_RULES = [
 
 interface JogakPost {
   id: string;
+  authorId: string | null;
   title: string;
   author: string;
   date: string;
@@ -76,6 +77,7 @@ function parseJogakPost(post: Post): JogakPost {
 
   return {
     id: post.id,
+    authorId: post.user_id,
     title: post.title,
     author: u?.nickname || '사용자',
     date: post.created_at.slice(0, 10),
@@ -560,13 +562,24 @@ export default function JogakPage() {
                       </div>
                     )}
 
-                    {/* 참여 버튼 */}
+                    {/* 참여 + 쪽지 버튼 */}
                     {!isClosed && user && (
-                      <button className="w-full rounded-lg py-2.5 text-sm font-bold text-white mb-3 transition active:scale-[0.98]"
-                        style={{ backgroundColor: '#8B5CF6' }}
-                        onClick={() => { setCommentText('참여 신청합니다!'); }}>
-                        참여 신청하기
-                      </button>
+                      <div className="flex gap-2 mb-3">
+                        <button className="flex-1 rounded-lg py-2.5 text-sm font-bold text-white transition active:scale-[0.98]"
+                          style={{ backgroundColor: '#8B5CF6' }}
+                          onClick={() => { setCommentText('참여 신청합니다!'); }}>
+                          참여 신청하기
+                        </button>
+                        {post.authorId && post.authorId !== user.id && (
+                          <Link
+                            to={`/messages?to=${post.authorId}&name=${encodeURIComponent(post.author)}`}
+                            className="flex items-center justify-center rounded-lg py-2.5 px-4 text-sm font-bold border-2 transition active:scale-[0.98]"
+                            style={{ borderColor: '#8B5CF6', color: '#8B5CF6' }}
+                          >
+                            쪽지
+                          </Link>
+                        )}
+                      </div>
                     )}
 
                     {/* 삭제 */}

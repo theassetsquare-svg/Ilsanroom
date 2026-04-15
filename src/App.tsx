@@ -73,6 +73,7 @@ const LeadQuizPage = lazy(() => import('./pages/lead/LeadQuizPage'));
 const WeeklyHotPage = lazy(() => import('./pages/lead/WeeklyHotPage'));
 const WaitlistPage = lazy(() => import('./pages/WaitlistPage'));
 const MyReferralsPage = lazy(() => import('./pages/my/MyReferralsPage'));
+const MessagesPage = lazy(() => import('./pages/MessagesPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 function PageLoading() {
@@ -128,6 +129,7 @@ export default function App() {
           <Route path="/community/jogak" element={<JogakPage />} />
           <Route path="/community/guidelines" element={<GuidelinesPage />} />
           <Route path="/community/post/:id" element={<PostDetailPage />} />
+          <Route path="/messages" element={<MessagesPage />} />
           {/* Legal & Info */}
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
