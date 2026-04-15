@@ -1,80 +1,93 @@
 import { lazy, Suspense } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 
-/* ── Pages (lazy-loaded) ── */
-const HomePage = lazy(() => import('./pages/HomePage'));
-const ClubsPage = lazy(() => import('./pages/ClubsPage'));
-const RegionalClubsPage = lazy(() => import('./pages/RegionalClubsPage'));
-const ClubDetailPage = lazy(() => import('./pages/ClubDetailPage'));
-const NightsPage = lazy(() => import('./pages/NightsPage'));
-const NightDetailPage = lazy(() => import('./pages/NightDetailPage'));
-const LoungesPage = lazy(() => import('./pages/LoungesPage'));
-const LoungeDetailPage = lazy(() => import('./pages/LoungeDetailPage'));
-const RoomsPage = lazy(() => import('./pages/RoomsPage'));
-const RegionalRoomsPage = lazy(() => import('./pages/RegionalRoomsPage'));
-const RoomDetailPage = lazy(() => import('./pages/RoomDetailPage'));
-const YojeongPage = lazy(() => import('./pages/YojeongPage'));
-const RegionalYojeongPage = lazy(() => import('./pages/RegionalYojeongPage'));
-const YojeongDetailPage = lazy(() => import('./pages/YojeongDetailPage'));
-const HoppaPage = lazy(() => import('./pages/HoppaPage'));
-const HoppaDetailPage = lazy(() => import('./pages/HoppaDetailPage'));
-const GuidePage = lazy(() => import('./pages/GuidePage'));
-const QuizPage = lazy(() => import('./pages/QuizPage'));
-const RoulettePage = lazy(() => import('./pages/RoulettePage'));
-const VSPage = lazy(() => import('./pages/VSPage'));
-const RankingPage = lazy(() => import('./pages/RankingPage'));
-const PricePage = lazy(() => import('./pages/PricePage'));
-const ComparePage = lazy(() => import('./pages/ComparePage'));
-const SearchPage = lazy(() => import('./pages/SearchPage'));
-const MagazinePage = lazy(() => import('./pages/MagazinePage'));
-const MagazineDetailPage = lazy(() => import('./pages/MagazineDetailPage'));
-const CommunityPage = lazy(() => import('./pages/community/CommunityPage'));
-const QnAPage = lazy(() => import('./pages/community/QnAPage'));
-const ReviewsPage = lazy(() => import('./pages/community/ReviewsPage'));
-const TipsPage = lazy(() => import('./pages/community/TipsPage'));
-const PartyPage = lazy(() => import('./pages/community/PartyPage'));
-const FreePage = lazy(() => import('./pages/community/FreePage'));
-const FashionPage = lazy(() => import('./pages/community/FashionPage'));
-const GuidelinesPage = lazy(() => import('./pages/community/GuidelinesPage'));
-const JogakPage = lazy(() => import('./pages/community/JogakPage'));
-const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
-const TermsPage = lazy(() => import('./pages/TermsPage'));
-const DisclaimerPage = lazy(() => import('./pages/DisclaimerPage'));
-const VenueTermsPage = lazy(() => import('./pages/VenueTermsPage'));
-const SafetyPage = lazy(() => import('./pages/SafetyPage'));
-const HelpPage = lazy(() => import('./pages/HelpPage'));
-const ForBusinessPage = lazy(() => import('./pages/ForBusinessPage'));
-const TestimonialsPage = lazy(() => import('./pages/TestimonialsPage'));
-const StatusPage = lazy(() => import('./pages/StatusPage'));
-const ReferralPage = lazy(() => import('./pages/ReferralPage'));
-const HiddenPage = lazy(() => import('./pages/HiddenPage'));
-const DemoPage = lazy(() => import('./pages/DemoPage'));
-const GalleryPage = lazy(() => import('./pages/GalleryPage'));
-const CaseStudiesPage = lazy(() => import('./pages/CaseStudiesPage'));
-const PricingPage = lazy(() => import('./pages/PricingPage'));
-const EventsPage = lazy(() => import('./pages/EventsPage'));
-const PrintPage = lazy(() => import('./pages/PrintPage'));
-const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
-const ProfilePage = lazy(() => import('./pages/auth/ProfilePage'));
-const AuthCallbackPage = lazy(() => import('./pages/auth/AuthCallbackPage'));
-const SetupNicknamePage = lazy(() => import('./pages/auth/SetupNicknamePage'));
-const DashboardPage = lazy(() => import('./pages/admin/DashboardPage'));
-const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
-const AnalyticsPage = lazy(() => import('./pages/admin/AnalyticsPage'));
-const BillingPage = lazy(() => import('./pages/admin/BillingPage'));
-const OnboardingPage = lazy(() => import('./pages/admin/OnboardingPage'));
-const LaunchPage = lazy(() => import('./pages/admin/LaunchPage'));
-const VenueManagePage = lazy(() => import('./pages/admin/VenueManagePage'));
-const PostDetailPage = lazy(() => import('./pages/community/PostDetailPage'));
-const NightlifeGuidePage = lazy(() => import('./pages/lead/NightlifeGuidePage'));
-const LeadQuizPage = lazy(() => import('./pages/lead/LeadQuizPage'));
-const WeeklyHotPage = lazy(() => import('./pages/lead/WeeklyHotPage'));
-const WaitlistPage = lazy(() => import('./pages/WaitlistPage'));
-const MyReferralsPage = lazy(() => import('./pages/my/MyReferralsPage'));
-const MessagesPage = lazy(() => import('./pages/MessagesPage'));
-const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+/* chunk load 실패 시 자동 재시도 (배포 후 구 chunk 404 대응) */
+function lazyRetry(factory: () => Promise<any>) {
+  return lazy(() =>
+    factory().catch(() => {
+      // 1회 재시도 후에도 실패하면 새로고침
+      return factory().catch(() => {
+        window.location.reload();
+        return { default: () => null };
+      });
+    })
+  );
+}
+
+/* ── Pages (lazy-loaded with retry) ── */
+const HomePage = lazyRetry(() => import('./pages/HomePage'));
+const ClubsPage = lazyRetry(() => import('./pages/ClubsPage'));
+const RegionalClubsPage = lazyRetry(() => import('./pages/RegionalClubsPage'));
+const ClubDetailPage = lazyRetry(() => import('./pages/ClubDetailPage'));
+const NightsPage = lazyRetry(() => import('./pages/NightsPage'));
+const NightDetailPage = lazyRetry(() => import('./pages/NightDetailPage'));
+const LoungesPage = lazyRetry(() => import('./pages/LoungesPage'));
+const LoungeDetailPage = lazyRetry(() => import('./pages/LoungeDetailPage'));
+const RoomsPage = lazyRetry(() => import('./pages/RoomsPage'));
+const RegionalRoomsPage = lazyRetry(() => import('./pages/RegionalRoomsPage'));
+const RoomDetailPage = lazyRetry(() => import('./pages/RoomDetailPage'));
+const YojeongPage = lazyRetry(() => import('./pages/YojeongPage'));
+const RegionalYojeongPage = lazyRetry(() => import('./pages/RegionalYojeongPage'));
+const YojeongDetailPage = lazyRetry(() => import('./pages/YojeongDetailPage'));
+const HoppaPage = lazyRetry(() => import('./pages/HoppaPage'));
+const HoppaDetailPage = lazyRetry(() => import('./pages/HoppaDetailPage'));
+const GuidePage = lazyRetry(() => import('./pages/GuidePage'));
+const QuizPage = lazyRetry(() => import('./pages/QuizPage'));
+const RoulettePage = lazyRetry(() => import('./pages/RoulettePage'));
+const VSPage = lazyRetry(() => import('./pages/VSPage'));
+const RankingPage = lazyRetry(() => import('./pages/RankingPage'));
+const PricePage = lazyRetry(() => import('./pages/PricePage'));
+const ComparePage = lazyRetry(() => import('./pages/ComparePage'));
+const SearchPage = lazyRetry(() => import('./pages/SearchPage'));
+const MagazinePage = lazyRetry(() => import('./pages/MagazinePage'));
+const MagazineDetailPage = lazyRetry(() => import('./pages/MagazineDetailPage'));
+const CommunityPage = lazyRetry(() => import('./pages/community/CommunityPage'));
+const QnAPage = lazyRetry(() => import('./pages/community/QnAPage'));
+const ReviewsPage = lazyRetry(() => import('./pages/community/ReviewsPage'));
+const TipsPage = lazyRetry(() => import('./pages/community/TipsPage'));
+const PartyPage = lazyRetry(() => import('./pages/community/PartyPage'));
+const FreePage = lazyRetry(() => import('./pages/community/FreePage'));
+const FashionPage = lazyRetry(() => import('./pages/community/FashionPage'));
+const GuidelinesPage = lazyRetry(() => import('./pages/community/GuidelinesPage'));
+const JogakPage = lazyRetry(() => import('./pages/community/JogakPage'));
+const PrivacyPage = lazyRetry(() => import('./pages/PrivacyPage'));
+const TermsPage = lazyRetry(() => import('./pages/TermsPage'));
+const DisclaimerPage = lazyRetry(() => import('./pages/DisclaimerPage'));
+const VenueTermsPage = lazyRetry(() => import('./pages/VenueTermsPage'));
+const SafetyPage = lazyRetry(() => import('./pages/SafetyPage'));
+const HelpPage = lazyRetry(() => import('./pages/HelpPage'));
+const ForBusinessPage = lazyRetry(() => import('./pages/ForBusinessPage'));
+const TestimonialsPage = lazyRetry(() => import('./pages/TestimonialsPage'));
+const StatusPage = lazyRetry(() => import('./pages/StatusPage'));
+const ReferralPage = lazyRetry(() => import('./pages/ReferralPage'));
+const HiddenPage = lazyRetry(() => import('./pages/HiddenPage'));
+const DemoPage = lazyRetry(() => import('./pages/DemoPage'));
+const GalleryPage = lazyRetry(() => import('./pages/GalleryPage'));
+const CaseStudiesPage = lazyRetry(() => import('./pages/CaseStudiesPage'));
+const PricingPage = lazyRetry(() => import('./pages/PricingPage'));
+const EventsPage = lazyRetry(() => import('./pages/EventsPage'));
+const PrintPage = lazyRetry(() => import('./pages/PrintPage'));
+const LoginPage = lazyRetry(() => import('./pages/auth/LoginPage'));
+const ProfilePage = lazyRetry(() => import('./pages/auth/ProfilePage'));
+const AuthCallbackPage = lazyRetry(() => import('./pages/auth/AuthCallbackPage'));
+const SetupNicknamePage = lazyRetry(() => import('./pages/auth/SetupNicknamePage'));
+const DashboardPage = lazyRetry(() => import('./pages/admin/DashboardPage'));
+const AdminPage = lazyRetry(() => import('./pages/admin/AdminPage'));
+const AnalyticsPage = lazyRetry(() => import('./pages/admin/AnalyticsPage'));
+const BillingPage = lazyRetry(() => import('./pages/admin/BillingPage'));
+const OnboardingPage = lazyRetry(() => import('./pages/admin/OnboardingPage'));
+const LaunchPage = lazyRetry(() => import('./pages/admin/LaunchPage'));
+const VenueManagePage = lazyRetry(() => import('./pages/admin/VenueManagePage'));
+const PostDetailPage = lazyRetry(() => import('./pages/community/PostDetailPage'));
+const NightlifeGuidePage = lazyRetry(() => import('./pages/lead/NightlifeGuidePage'));
+const LeadQuizPage = lazyRetry(() => import('./pages/lead/LeadQuizPage'));
+const WeeklyHotPage = lazyRetry(() => import('./pages/lead/WeeklyHotPage'));
+const WaitlistPage = lazyRetry(() => import('./pages/WaitlistPage'));
+const MyReferralsPage = lazyRetry(() => import('./pages/my/MyReferralsPage'));
+const MessagesPage = lazyRetry(() => import('./pages/MessagesPage'));
+const NotFoundPage = lazyRetry(() => import('./pages/NotFoundPage'));
 
 function PageLoading() {
   return (
@@ -85,8 +98,9 @@ function PageLoading() {
 }
 
 export default function App() {
+  const location = useLocation();
   return (
-    <ErrorBoundary>
+    <ErrorBoundary resetKey={location.pathname}>
     <Suspense fallback={<PageLoading />}>
       <Routes>
         <Route element={<MainLayout />}>

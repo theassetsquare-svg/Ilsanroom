@@ -3,6 +3,7 @@ import { Component, type ReactNode } from 'react';
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
+  resetKey?: string;
 }
 
 interface State {
@@ -44,9 +45,27 @@ export default class ErrorBoundary extends Component<Props, State> {
     return { hasError: true };
   }
 
+  componentDidUpdate(prevProps: Props) {
+    // 라우트 변경 시 에러 상태 자동 리셋
+    if (this.state.hasError && prevProps.resetKey !== this.props.resetKey) {
+      this.setState({ hasError: false, retryCount: 0 });
+    }
+  }
+
   componentDidCatch(error: Error) {
     console.error('[ErrorBoundary]', error.message);
-    // 자동 복구 시도 — 2회까지
+
+    // chunk load 에러 시 페이지 새로고침으로 최신 chunk 로드
+    const msg = error.message || '';
+    if (msg.includes('Failed to fetch dynamically imported module') ||
+        msg.includes('Loading chunk') ||
+        msg.includes('Loading CSS chunk') ||
+        msg.includes('error loading dynamically imported module')) {
+      window.location.reload();
+      return;
+    }
+
+    // 기타 에러: 2회까지 자동 복구 시도
     if (this.state.retryCount < 2) {
       setTimeout(() => {
         this.setState(prev => ({ hasError: false, retryCount: prev.retryCount + 1 }));
