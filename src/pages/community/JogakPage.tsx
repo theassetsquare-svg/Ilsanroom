@@ -366,12 +366,6 @@ export default function JogakPage() {
                 놀쿨 광고주는 자사 업소에서 조각모임을 직접 모집할 수 있습니다.
                 MD/웨이터가 직접 운영하여 안전하고 믿을 수 있는 조각입니다.
               </p>
-              {!isOwner && (
-                <Link to="/for-business" className="mt-2 inline-block rounded-lg px-3 py-1.5 text-xs font-bold text-white transition hover:opacity-90"
-                  style={{ backgroundColor: '#F59E0B' }}>
-                  광고주 등록 알아보기 →
-                </Link>
-              )}
             </div>
           </div>
         </div>

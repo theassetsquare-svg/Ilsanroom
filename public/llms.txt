@@ -38,7 +38,6 @@
 - [조각 모집](https://nolcool.com/community/jogak)
 
 ## 업주용
-- [업소 등록](https://nolcool.com/for-business)
 - [요금제](https://nolcool.com/pricing)
 - [데모](https://nolcool.com/demo)
 - [입점 사례](https://nolcool.com/case-studies)

@@ -58,7 +58,6 @@ const DisclaimerPage = lazyRetry(() => import('./pages/DisclaimerPage'));
 const VenueTermsPage = lazyRetry(() => import('./pages/VenueTermsPage'));
 const SafetyPage = lazyRetry(() => import('./pages/SafetyPage'));
 const HelpPage = lazyRetry(() => import('./pages/HelpPage'));
-const ForBusinessPage = lazyRetry(() => import('./pages/ForBusinessPage'));
 const TestimonialsPage = lazyRetry(() => import('./pages/TestimonialsPage'));
 const StatusPage = lazyRetry(() => import('./pages/StatusPage'));
 const ReferralPage = lazyRetry(() => import('./pages/ReferralPage'));
@@ -152,7 +151,6 @@ export default function App() {
           <Route path="/safety" element={<SafetyPage />} />
           <Route path="/help" element={<HelpPage />} />
           {/* Business */}
-          <Route path="/for-business" element={<ForBusinessPage />} />
           <Route path="/testimonials" element={<TestimonialsPage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/demo" element={<DemoPage />} />

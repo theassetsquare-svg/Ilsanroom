@@ -91,13 +91,6 @@ export default function Footer() {
           <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
             카카오톡으로 편하게 문의하세요
           </p>
-          <Link
-            to="/for-business"
-            className="mt-4 inline-block rounded-full px-6 py-2.5 text-sm font-bold transition active:scale-[0.97]"
-            style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: '#FFF', border: '1px solid rgba(255,255,255,0.25)', minHeight: 44 }}
-          >
-            광고주 전용 안내
-          </Link>
         </div>
 
         {/* 링크 그리드 */}

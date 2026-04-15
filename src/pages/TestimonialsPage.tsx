@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-import { ArrowUpRight } from "lucide-react";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const testimonials = [
@@ -127,22 +125,6 @@ export default function TestimonialsPage() {
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="mt-16 rounded-2xl border border-neon-primary/20 bg-neon-primary/5 p-8 text-center">
-          <h3 className="mb-2 text-xl font-bold text-neon-text">
-            지금 무료로 시작하기
-          </h3>
-          <p className="mb-6 text-sm text-neon-text-muted">
-            놀쿨에 업소를 등록하고 성장을 경험하세요.
-          </p>
-          <Link target="_blank" rel="noopener noreferrer"
-            to="/for-business"
-            className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-neon-primary-light"
-          >
-            광고주 전용 페이지
-            <ArrowUpRight className="h-4 w-4" />
-          </Link>
-        </div>
       </div>
     </div>
   );
