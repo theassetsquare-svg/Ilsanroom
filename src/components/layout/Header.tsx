@@ -12,7 +12,7 @@ function useNewPostCount(user: any) {
     const supabase = createClient();
     if (!supabase) return;
     try {
-      const seenAt = localStorage.getItem('bell_seen_at') || '0';
+      const seenAt = localStorage.getItem('community_seen_at') || '0';
       const since = seenAt === '0'
         ? new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
         : new Date(Number(seenAt)).toISOString();
@@ -155,7 +155,7 @@ export default function Header() {
               {user && (
                 <Link
                   to="/community"
-                  onClick={() => { try { localStorage.setItem('bell_seen_at', String(Date.now())); } catch {} }}
+                  onClick={() => { try { localStorage.setItem('community_seen_at', String(Date.now())); } catch {} }}
                   className="relative flex h-10 w-10 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-50 transition"
                   aria-label="알림"
                 >

@@ -2,13 +2,14 @@ import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/supabase';
 
-function useNewPostCount() {
+function useNewPostCount(user: any) {
   const [count, setCount] = useState(0);
   const refresh = useCallback(async () => {
+    if (!user) { setCount(0); return; }
     const supabase = createClient();
     if (!supabase) return;
     try {
-      const seenAt = localStorage.getItem('bell_seen_at') || '0';
+      const seenAt = localStorage.getItem('community_seen_at') || '0';
       const since = seenAt === '0'
         ? new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
         : new Date(Number(seenAt)).toISOString();
@@ -18,8 +19,14 @@ function useNewPostCount() {
         .gt('created_at', since);
       setCount(c ?? 0);
     } catch { /* noop */ }
-  }, []);
+  }, [user]);
   useEffect(() => { refresh(); }, [refresh]);
+  // 60초마다 새글 확인
+  useEffect(() => {
+    if (!user) return;
+    const t = setInterval(refresh, 60_000);
+    return () => clearInterval(t);
+  }, [user, refresh]);
   return count;
 }
 
@@ -77,7 +84,6 @@ const tabs = [
 
 export default function MobileBottomNav() {
   const { pathname } = useLocation();
-  const newPostCount = useNewPostCount();
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
@@ -89,6 +95,15 @@ export default function MobileBottomNav() {
     });
     return () => subscription.unsubscribe();
   }, []);
+
+  const newPostCount = useNewPostCount(user);
+
+  // 커뮤니티 페이지 방문 시 알림 카운트 리셋
+  useEffect(() => {
+    if (pathname.startsWith('/community')) {
+      try { localStorage.setItem('community_seen_at', String(Date.now())); } catch {}
+    }
+  }, [pathname]);
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t border-gray-200 bg-white/95 backdrop-blur-md">

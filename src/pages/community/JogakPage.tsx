@@ -15,29 +15,14 @@ const CATEGORIES = [
   { id: 'male', label: '남성조각', icon: '👨', color: '#3B82F6' },
   { id: 'partner', label: '제휴조각', icon: '🏷️', color: '#F59E0B' },
   { id: 'club_lounge', label: '클럽&라운지', icon: '🎵', color: '#10B981' },
-  { id: 'room_booth', label: '룸&부스', icon: '🚪', color: '#6366F1' },
   { id: 'bungae', label: '벙개', icon: '⚡', color: '#EF4444' },
 ] as const;
 
-const REGION_GROUPS = [
-  { id: 'all', label: '전국' },
-  { id: 'seoul', label: '서울', areas: ['강남', '홍대', '이태원', '압구정', '신촌', '건대', '잠실', '신사', '청담'] },
-  { id: 'gyeonggi', label: '인천경기', areas: ['일산', '수원', '인천', '성남', '부천', '안양', '의정부'] },
-  { id: 'chungcheong', label: '충청강원', areas: ['대전', '천안', '청주', '춘천', '원주', '세종'] },
-  { id: 'gyeongsang', label: '경북경남', areas: ['부산', '대구', '울산', '창원', '포항', '김해'] },
-  { id: 'jeolla', label: '전라제주', areas: ['광주', '전주', '여수', '목포', '제주'] },
-] as const;
-
-const JOGAK_TYPES = ['테이블', '헌팅', '혼합'];
+const JOGAK_TYPES = ['테이블', '헌팅', '혼합', '룸', '부스'];
 const GENDER_OPTIONS = ['누구나', '남성만', '여성만', '남녀 혼성'];
 const COST_OPTIONS = ['모든비용 엔빵', '주대만 엔빵', '각자 부담', '방장 초대'];
-const CONTACT_OPTIONS = ['놀쿨 쪽지', '놀쿨 댓글', '전화'];
+const CONTACT_OPTIONS = ['놀쿨 댓글', '전화'];
 const PHOTO_OPTIONS = ['사진교환 필수', '사진교환 선택', '사진교환 안 함'];
-
-const VENUE_TYPES_FOR_CATEGORY: Record<string, string[]> = {
-  club_lounge: ['클럽', '라운지', '나이트'],
-  room_booth: ['룸', '부스', '노래방', '가라오케'],
-};
 
 /* ══════════════════════════════════════════════
    조각모임 규칙
@@ -117,14 +102,7 @@ function parseJogakPost(post: Post): JogakPost {
   };
 }
 
-function getRegionGroup(region: string | undefined): string {
-  if (!region) return 'all';
-  for (const g of REGION_GROUPS) {
-    if (g.id === 'all') continue;
-    if ('areas' in g && g.areas.includes(region)) return g.id;
-  }
-  return 'all';
-}
+/* getRegionGroup removed — 지역은 조각글 카드 안에서만 표시 */
 
 function getTimeUntil(meetDate?: string, meetTime?: string): string | null {
   if (!meetDate) return null;
@@ -180,7 +158,6 @@ export default function JogakPage() {
 
   // 필터 상태
   const [activeCategory, setActiveCategory] = useState(searchParams.get('cat') || 'all');
-  const [activeRegion, setActiveRegion] = useState(searchParams.get('region') || 'all');
   const [sortBy, setSortBy] = useState<'latest' | 'soon'>('latest');
 
   // 데이터
@@ -223,13 +200,6 @@ export default function JogakPage() {
     setActiveCategory(cat);
     const newParams = new URLSearchParams(searchParams);
     if (cat === 'all') newParams.delete('cat'); else newParams.set('cat', cat);
-    setSearchParams(newParams, { replace: true });
-  }, [searchParams, setSearchParams]);
-
-  const handleRegionChange = useCallback((region: string) => {
-    setActiveRegion(region);
-    const newParams = new URLSearchParams(searchParams);
-    if (region === 'all') newParams.delete('region'); else newParams.set('region', region);
     setSearchParams(newParams, { replace: true });
   }, [searchParams, setSearchParams]);
 
@@ -302,17 +272,9 @@ export default function JogakPage() {
       if (activeCategory === 'female') return p.jogakCategory === 'female' || p.genderPref === '여성만';
       if (activeCategory === 'male') return p.jogakCategory === 'male' || p.genderPref === '남성만';
       if (activeCategory === 'bungae') return p.jogakCategory === 'bungae';
-      if (activeCategory === 'club_lounge' || activeCategory === 'room_booth') {
-        return p.jogakCategory === activeCategory;
-      }
+      if (activeCategory === 'club_lounge') return p.jogakCategory === 'club_lounge';
       return true;
     });
-  }
-  if (activeRegion !== 'all') {
-    const group = REGION_GROUPS.find(g => g.id === activeRegion);
-    if (group && 'areas' in group) {
-      filtered = filtered.filter(p => group.areas.includes(p.region || ''));
-    }
   }
   if (sortBy === 'soon') {
     filtered = [...filtered].sort((a, b) => {
@@ -334,9 +296,6 @@ export default function JogakPage() {
       return p.jogakCategory === cat.id;
     }).length;
   });
-
-  // 모든 지역 리스트 (글쓰기 폼용)
-  const allAreas = REGION_GROUPS.flatMap(g => ('areas' in g ? [...g.areas] : []));
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-6 sm:py-10">
@@ -432,16 +391,7 @@ export default function JogakPage() {
         </div>
       )}
 
-      {/* ═══ 지역 필터 ═══ */}
-      <div className="overflow-x-auto scrollbar-hide mb-3 -mx-4 px-4">
-        <div className="flex gap-1.5">
-          {REGION_GROUPS.map(r => (
-            <button key={r.id} onClick={() => handleRegionChange(r.id)}
-              className={`rounded-full px-3 py-1.5 text-xs font-medium whitespace-nowrap transition ${activeRegion === r.id ? 'bg-[#111] text-white' : 'bg-gray-100 text-[#555]'}`}
-              style={{ minHeight: 32 }}>{r.label}</button>
-          ))}
-        </div>
-      </div>
+      {/* 지역 필터 제거 — 조각글 카드 안에 지역 태그로 표시 */}
 
       {/* ═══ 정렬 & 규칙 ═══ */}
       <div className="flex items-center justify-between mb-3">
@@ -706,7 +656,6 @@ export default function JogakPage() {
             <SectionHeader title="조각 유형" />
             <div className="flex flex-wrap gap-2 mb-3">
               {CATEGORIES.filter(c => c.id !== 'all').map(cat => {
-                // 제휴조각은 광고주만
                 if (cat.id === 'partner' && !isOwner) return null;
                 return (
                   <button key={cat.id} type="button" onClick={() => setField('jogakCategory', cat.id)}
@@ -722,7 +671,7 @@ export default function JogakPage() {
               })}
             </div>
 
-            {/* ── 기본 정보 ── */}
+            {/* ── 기본 정보 — 모두 직접 입력 ── */}
             <SectionHeader title="기본 정보" />
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>제목 <span style={{ color: '#EF4444' }}>*</span></label>
@@ -732,22 +681,16 @@ export default function JogakPage() {
               style={{ borderColor: f.title ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>지역 <span style={{ color: '#EF4444' }}>*</span></label>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {allAreas.map(r => (
-                <button key={r} type="button" onClick={() => setField('region', r)}
-                  className="rounded-full px-3.5 py-1.5 text-sm transition"
-                  style={{ backgroundColor: f.region === r ? '#8B5CF6' : '#F3F4F6', color: f.region === r ? '#FFF' : '#374151', minHeight: 36 }}>{r}</button>
-              ))}
-            </div>
+            <input value={f.region} onChange={(e) => setField('region', e.target.value)}
+              placeholder="예: 강남, 홍대, 일산, 부산..."
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
+              style={{ borderColor: f.region ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>조각 성향 <span style={{ color: '#EF4444' }}>*</span></label>
-            <div className="flex gap-2 mb-3">
-              {JOGAK_TYPES.map(t => (
-                <button key={t} type="button" onClick={() => setField('jogakType', t)}
-                  className="rounded-full px-4 py-1.5 text-sm transition"
-                  style={{ backgroundColor: f.jogakType === t ? (t === '헌팅' ? '#F59E0B' : '#10B981') : '#F3F4F6', color: f.jogakType === t ? '#FFF' : '#374151', minHeight: 36 }}>{t}</button>
-              ))}
-            </div>
+            <input value={f.jogakType} onChange={(e) => setField('jogakType', e.target.value)}
+              placeholder="예: 테이블, 헌팅, 혼합, 룸, 부스..."
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
+              style={{ borderColor: f.jogakType ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>업소명 <span style={{ color: '#EF4444' }}>*</span></label>
             <input value={f.venue} onChange={(e) => setField('venue', e.target.value)}
@@ -755,82 +698,35 @@ export default function JogakPage() {
               className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
               style={{ borderColor: f.venue ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
 
-            {/* 룸&부스 전용: 업소 유형 */}
-            {f.jogakCategory === 'room_booth' && (
-              <>
-                <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>업소 유형</label>
-                <div className="flex gap-2 mb-3">
-                  {['룸', '부스', '노래방', '가라오케'].map(t => (
-                    <button key={t} type="button" onClick={() => setField('venueType', t)}
-                      className="rounded-full px-3.5 py-1.5 text-xs transition"
-                      style={{ backgroundColor: f.venueType === t ? '#6366F1' : '#F3F4F6', color: f.venueType === t ? '#FFF' : '#555', minHeight: 32 }}>{t}</button>
-                  ))}
-                </div>
-              </>
-            )}
-
-            {/* ── 날짜 & 시간 ── */}
+            {/* ── 날짜 & 시간 — 직접 입력 ── */}
             <SectionHeader title="날짜 & 시간" />
 
-            <div className="flex gap-2 mb-2 flex-wrap">
-              {(() => {
-                const today = new Date();
-                const opts: { label: string; value: string }[] = [];
-                for (let i = 0; i < 7; i++) {
-                  const d = new Date(today); d.setDate(today.getDate() + i);
-                  const dn = ['일', '월', '화', '수', '목', '금', '토'];
-                  const label = i === 0 ? '오늘' : i === 1 ? '내일' : `${d.getMonth()+1}/${d.getDate()}(${dn[d.getDay()]})`;
-                  opts.push({ label, value: d.toISOString().split('T')[0] });
-                }
-                return opts.map(o => (
-                  <button key={o.value} type="button" onClick={() => setField('date', o.value)}
-                    className="rounded-full px-3 py-1.5 text-xs font-medium transition"
-                    style={{ backgroundColor: f.date === o.value ? '#8B5CF6' : '#F3F4F6', color: f.date === o.value ? '#FFF' : '#555', minHeight: 32 }}>{o.label}</button>
-                ));
-              })()}
-            </div>
-            <div className="grid grid-cols-2 gap-3 mb-2">
-              <input type="date" value={f.date} onChange={(e) => setField('date', e.target.value)}
-                min={new Date().toISOString().split('T')[0]}
-                className="w-full rounded-lg border px-3 py-3 text-sm outline-none"
-                style={{ borderColor: f.date ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }}
-                onClick={(e) => (e.target as HTMLInputElement).showPicker?.()} />
-              <input type="time" value={f.time} onChange={(e) => setField('time', e.target.value)}
-                className="w-full rounded-lg border px-3 py-3 text-sm outline-none"
-                style={{ borderColor: f.time ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }}
-                onClick={(e) => (e.target as HTMLInputElement).showPicker?.()} />
-            </div>
-            <div className="flex gap-2 mb-3 flex-wrap">
-              {(f.jogakCategory === 'bungae'
-                ? ['지금 바로', '30분 후', '1시간 후', '2시간 후']
-                : ['18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '00:00', '지금 바로']
-              ).map(t => (
-                <button key={t} type="button" onClick={() => setField('time', t)}
-                  className="rounded-full px-3 py-1.5 text-xs font-medium transition"
-                  style={{ backgroundColor: f.time === t ? '#8B5CF6' : '#F3F4F6', color: f.time === t ? '#FFF' : '#555', minHeight: 32 }}>{t}</button>
-              ))}
-            </div>
+            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>날짜 <span style={{ color: '#EF4444' }}>*</span></label>
+            <input value={f.date} onChange={(e) => setField('date', e.target.value)}
+              placeholder="예: 4/19(토), 오늘, 내일, 2026-04-20..."
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
+              style={{ borderColor: f.date ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
 
-            {/* ── 모집 조건 ── */}
+            <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>시간 <span style={{ color: '#EF4444' }}>*</span></label>
+            <input value={f.time} onChange={(e) => setField('time', e.target.value)}
+              placeholder="예: 밤 10시, 22:00, 자정, 지금 바로..."
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
+              style={{ borderColor: f.time ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
+
+            {/* ── 모집 조건 — 직접 입력 ── */}
             <SectionHeader title="모집 조건" />
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>모집 인원 (본인 포함) <span style={{ color: '#EF4444' }}>*</span></label>
-            <div className="flex gap-2 mb-3 flex-wrap">
-              {['1', '2', '3', '4', '5', '6', '8', '10+'].map(n => (
-                <button key={n} type="button" onClick={() => setField('maxPeople', n === '10+' ? '10' : n)}
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-medium transition"
-                  style={{ backgroundColor: f.maxPeople === (n === '10+' ? '10' : n) ? '#8B5CF6' : '#F3F4F6', color: f.maxPeople === (n === '10+' ? '10' : n) ? '#FFF' : '#374151' }}>{n}</button>
-              ))}
-            </div>
+            <input value={f.maxPeople} onChange={(e) => setField('maxPeople', e.target.value)}
+              placeholder="예: 4"
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
+              style={{ borderColor: f.maxPeople ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>성별 조건 <span style={{ color: '#EF4444' }}>*</span></label>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {GENDER_OPTIONS.map(g => (
-                <button key={g} type="button" onClick={() => setField('gender', g)}
-                  className="rounded-full px-4 py-1.5 text-sm transition"
-                  style={{ backgroundColor: f.gender === g ? '#8B5CF6' : '#F3F4F6', color: f.gender === g ? '#FFF' : '#374151', minHeight: 36 }}>{g}</button>
-              ))}
-            </div>
+            <input value={f.gender} onChange={(e) => setField('gender', e.target.value)}
+              placeholder="예: 누구나, 남성만, 여성만, 남녀 혼성..."
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
+              style={{ borderColor: f.gender ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>모집 연령대</label>
             <input value={f.ageRange} onChange={(e) => setField('ageRange', e.target.value)}
@@ -839,25 +735,19 @@ export default function JogakPage() {
               style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>사진 교환</label>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {PHOTO_OPTIONS.map(p => (
-                <button key={p} type="button" onClick={() => setField('photo', p)}
-                  className="rounded-full px-3.5 py-1.5 text-xs transition"
-                  style={{ backgroundColor: f.photo === p ? '#8B5CF6' : '#F3F4F6', color: f.photo === p ? '#FFF' : '#374151', minHeight: 32 }}>{p}</button>
-              ))}
-            </div>
+            <input value={f.photo} onChange={(e) => setField('photo', e.target.value)}
+              placeholder="예: 사진교환 필수, 선택, 안 함..."
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
+              style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
 
-            {/* ── 비용 정보 ── */}
+            {/* ── 비용 정보 — 직접 입력 ── */}
             <SectionHeader title="비용 정보" />
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>비용 분담 방식 <span style={{ color: '#EF4444' }}>*</span></label>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {COST_OPTIONS.map(c => (
-                <button key={c} type="button" onClick={() => setField('cost', c)}
-                  className="rounded-full px-3.5 py-1.5 text-sm transition"
-                  style={{ backgroundColor: f.cost === c ? '#8B5CF6' : '#F3F4F6', color: f.cost === c ? '#FFF' : '#374151', minHeight: 36 }}>{c}</button>
-              ))}
-            </div>
+            <input value={f.cost} onChange={(e) => setField('cost', e.target.value)}
+              placeholder="예: 모든비용 엔빵, 주대만 엔빵, 각자 부담..."
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
+              style={{ borderColor: f.cost ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
 
             <div className="grid grid-cols-2 gap-3 mb-3">
               <div>
@@ -876,7 +766,7 @@ export default function JogakPage() {
               </div>
             </div>
 
-            {/* ── 담당 & 연락 ── */}
+            {/* ── 담당 & 연락 — 직접 입력 ── */}
             <SectionHeader title="담당 & 연락" />
 
             {f.jogakCategory === 'partner' && (
@@ -891,18 +781,15 @@ export default function JogakPage() {
               {f.jogakCategory !== 'partner' && <span className="text-[10px] font-normal" style={{ color: '#999' }}> (제휴업장 필수)</span>}
             </label>
             <input value={f.mdName} onChange={(e) => setField('mdName', e.target.value)}
-              placeholder="예: 장미, 비제휴..."
+              placeholder="예: 장미 실장"
               className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
               style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>연락 방법 <span style={{ color: '#EF4444' }}>*</span></label>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {CONTACT_OPTIONS.map(c => (
-                <button key={c} type="button" onClick={() => setField('contact', c)}
-                  className="rounded-full px-3.5 py-1.5 text-sm transition"
-                  style={{ backgroundColor: f.contact === c ? '#8B5CF6' : '#F3F4F6', color: f.contact === c ? '#FFF' : '#374151', minHeight: 36 }}>{c}</button>
-              ))}
-            </div>
+            <input value={f.contact} onChange={(e) => setField('contact', e.target.value)}
+              placeholder="예: 놀쿨 댓글, 전화..."
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
+              style={{ borderColor: f.contact ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
 
             {/* ── 한마디 ── */}
             <SectionHeader title="한마디" />
