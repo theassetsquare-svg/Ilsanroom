@@ -180,7 +180,7 @@ export default function ForBusinessPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
         <div className="relative mx-auto max-w-5xl px-4 py-28 text-center md:py-36">
           <span className="mb-4 inline-block rounded-full bg-neon-primary/20 px-4 py-1.5 text-xs font-medium text-neon-primary-light">
-            업주 전용
+            광고주 전용
           </span>
           <h1 className="mb-6 text-4xl font-extrabold leading-tight md:text-5xl lg:text-6xl">
             내 업소를 놀쿨에 등록하고

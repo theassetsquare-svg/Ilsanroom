@@ -139,7 +139,7 @@ export default function TestimonialsPage() {
             to="/for-business"
             className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-neon-primary-light"
           >
-            업주 전용 페이지
+            광고주 전용 페이지
             <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>

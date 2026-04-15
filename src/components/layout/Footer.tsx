@@ -96,7 +96,7 @@ export default function Footer() {
             className="mt-4 inline-block rounded-full px-6 py-2.5 text-sm font-bold transition active:scale-[0.97]"
             style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: '#FFF', border: '1px solid rgba(255,255,255,0.25)', minHeight: 44 }}
           >
-            업주 전용 안내 보기
+            광고주 전용 안내
           </Link>
         </div>
 
