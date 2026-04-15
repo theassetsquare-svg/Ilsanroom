@@ -147,20 +147,49 @@ export default function HomePage() {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchWrapperRef = useRef<HTMLDivElement>(null);
 
-  // 실시간 검색 — 타이핑할 때마다 결과 업데이트
+  // 실시간 검색 — 토큰 분리 + 카테고리/지역 인식
+  const catKw: Record<string, string> = useMemo(() => ({
+    '클럽': 'club', '나이트': 'night', '나이트클럽': 'night', '라운지': 'lounge',
+    '바': 'lounge', '룸': 'room', '룸싸롱': 'room', '룸살롱': 'room',
+    '요정': 'yojeong', '호빠': 'hoppa', '호스트바': 'hoppa', '고구려': 'night',
+  }), []);
+  const norm = useCallback((s: string) => s.toLowerCase().replace(/\s+/g, '').replace(/[^\wㄱ-ㅎㅏ-ㅣ가-힣]/g, ''), []);
+
   useEffect(() => {
     if (!searchQuery.trim()) { setSearchResults([]); return; }
     const timer = setTimeout(() => {
-      const q = searchQuery.toLowerCase();
-      const found = openVenues.filter(v =>
-        v.nameKo.toLowerCase().includes(q) ||
-        v.regionKo.toLowerCase().includes(q) ||
-        v.tags.some(t => t.toLowerCase().includes(q))
-      );
-      setSearchResults(found.slice(0, 8));
+      const qn = norm(searchQuery);
+      let detectedCat = '';
+      let residual = qn;
+      for (const [kw, code] of Object.entries(catKw).sort((a, b) => b[0].length - a[0].length)) {
+        if (residual.includes(norm(kw))) { if (!detectedCat) detectedCat = code; residual = residual.replace(norm(kw), ''); }
+      }
+      const scored = openVenues.map(v => {
+        let score = 0;
+        const nk = norm(v.nameKo); const rk = norm(v.regionKo);
+        if (nk === qn) score += 1000;
+        else if (nk.startsWith(qn)) score += 600;
+        else if (nk.includes(qn)) score += 300;
+        if (v.tags?.some(t => norm(t) === qn)) score += 500;
+        if (v.tags?.some(t => norm(t).includes(qn))) score += 150;
+        if (detectedCat && v.category === detectedCat) score += 200;
+        if (residual && (rk.includes(residual) || residual.includes(rk))) score += 200;
+        if (residual && nk.includes(residual)) score += 150;
+        if (qn.length >= 2 && score === 0) {
+          for (let len = Math.min(qn.length, nk.length); len >= 2; len--) {
+            let found = false;
+            for (let i = 0; i <= qn.length - len; i++) { if (nk.includes(qn.substring(i, i + len))) { score += len * 15; found = true; break; } }
+            if (found) break;
+          }
+        }
+        if (v.isPremium) score += 20;
+        return { venue: v, score };
+      });
+      const filtered = scored.filter(s => s.score > 0).sort((a, b) => b.score - a.score);
+      setSearchResults(filtered.slice(0, 8).map(s => s.venue));
     }, 150);
     return () => clearTimeout(timer);
-  }, [searchQuery, openVenues]);
+  }, [searchQuery, openVenues, catKw, norm]);
 
   // 검색창 바깥 클릭 시 닫기
   useEffect(() => {
@@ -397,7 +426,7 @@ export default function HomePage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setSearchFocused(true)}
-                placeholder="업소명, 지역 검색"
+                placeholder="업소, 지역, 키워드 검색"
                 className="h-12 w-full bg-transparent px-3 text-[15px] text-[#111] outline-none placeholder-gray-400 [&::-webkit-search-cancel-button]:hidden"
                 autoComplete="off"
                 autoCorrect="off"
