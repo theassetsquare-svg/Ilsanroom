@@ -92,7 +92,7 @@ function NotificationDropdown({ posts, onClose, onMarkRead }: { posts: NewPost[]
   const handleClick = (post: NewPost) => {
     onMarkRead();
     onClose();
-    navigate(`/community/${post.category}/${post.id}`);
+    navigate(`/community/post/${post.id}`);
   };
 
   return (

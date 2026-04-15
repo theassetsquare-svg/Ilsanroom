@@ -137,7 +137,7 @@ export default function MobileBottomNav() {
   const handlePostClick = (post: NewPost) => {
     markAllRead();
     setNotifOpen(false);
-    navigate(`/community/${post.category}/${post.id}`);
+    navigate(`/community/post/${post.id}`);
   };
 
   return (
