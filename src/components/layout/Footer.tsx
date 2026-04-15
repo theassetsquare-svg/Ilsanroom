@@ -24,7 +24,6 @@ const infoLinks = [
   { href: '/pricing', label: '광고/요금제' },
 ];
 
-/* ★ SEO 내부링크: 전국 지역별 */
 const regionalLinks = {
   '서울': [
     { href: '/clubs/gangnam', label: '강남' },
@@ -63,21 +62,46 @@ const regionalLinks = {
 
 export default function Footer() {
   return (
-    <footer className="border-t border-neon-border bg-neon-surface">
+    <footer style={{ backgroundColor: '#FAFAFA', borderTop: '1px solid #E5E7EB' }}>
       <div className="mx-auto max-w-[1200px] px-4 py-10">
-        {/* 광고문의 */}
-        <div className="mb-8 rounded-2xl border-2 border-neon-primary/30 bg-gradient-to-r from-violet-50 to-white px-6 py-5 text-center">
-          <p className="text-lg font-bold" style={{ color: '#111' }}>
-            광고문의 카톡{' '}
-            <span className="inline-block rounded-xl bg-neon-primary px-4 py-1 text-white">besta12</span>
+
+        {/* ★ 광고문의 배너 — 깔끔하고 세련되게 ★ */}
+        <div
+          className="mb-10 rounded-2xl px-6 py-7 text-center"
+          style={{
+            background: 'linear-gradient(135deg, #7C3AED 0%, #8B5CF6 40%, #A78BFA 100%)',
+            boxShadow: '0 4px 24px rgba(139, 92, 246, 0.2)',
+          }}
+        >
+          <p className="text-xs font-medium tracking-wider uppercase mb-2" style={{ color: 'rgba(255,255,255,0.7)' }}>
+            BUSINESS INQUIRY
           </p>
-          <Link to="/pricing" className="mt-3 inline-block rounded-xl px-6 py-2.5 text-sm font-bold text-white transition active:scale-[0.98]" style={{ backgroundColor: '#8B5CF6', minHeight: 44 }}>
-            업주 요금제 보기 →
+          <p className="text-lg font-bold text-white mb-1">
+            광고문의
+          </p>
+          <div className="flex items-center justify-center gap-2 mt-3 mb-4">
+            <span
+              className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-base font-bold"
+              style={{ backgroundColor: '#FEE500', color: '#191600', letterSpacing: '0.02em' }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3C6.48 3 2 6.58 2 10.9c0 2.78 1.86 5.22 4.66 6.6l-.96 3.56c-.08.3.26.54.52.37l4.26-2.82c.49.06.99.09 1.52.09 5.52 0 10-3.58 10-7.9S17.52 3 12 3z" fill="#191600"/></svg>
+              besta12
+            </span>
+          </div>
+          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
+            카카오톡으로 편하게 문의하세요
+          </p>
+          <Link
+            to="/for-business"
+            className="mt-4 inline-block rounded-full px-6 py-2.5 text-sm font-bold transition active:scale-[0.97]"
+            style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: '#FFF', border: '1px solid rgba(255,255,255,0.25)', minHeight: 44 }}
+          >
+            업주 전용 안내 보기
           </Link>
         </div>
 
+        {/* 링크 그리드 */}
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
-          {/* 카테고리 */}
           <div>
             <h3 className="mb-3 text-sm font-bold" style={{ color: '#111' }}>업소 카테고리</h3>
             <ul className="space-y-2">
@@ -91,7 +115,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* 커뮤니티 */}
           <div>
             <h3 className="mb-3 text-sm font-bold" style={{ color: '#111' }}>즐길거리</h3>
             <ul className="space-y-2">
@@ -105,7 +128,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* 정보 */}
           <div>
             <h3 className="mb-3 text-sm font-bold" style={{ color: '#111' }}>안내</h3>
             <ul className="space-y-2">
@@ -119,9 +141,8 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* 사이트 정보 */}
           <div>
-            <Link to="/" className="text-xl tracking-wider text-[#8B5CF6]">
+            <Link to="/" className="text-xl text-[#8B5CF6]">
               <span style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span>
             </Link>
             <p className="mt-2 text-sm leading-relaxed" style={{ color: '#555' }}>
@@ -134,7 +155,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* ★ Regional SEO Links ★ */}
+        {/* 지역 바로가기 */}
         <div className="mt-8 border-t pt-6" style={{ borderColor: '#E5E7EB' }}>
           <h3 className="mb-4 text-sm font-bold" style={{ color: '#111' }}>지역 바로가기</h3>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -153,7 +174,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom */}
+        {/* 하단 카피라이트 */}
         <div className="mt-8 border-t pt-4" style={{ borderColor: '#E5E7EB' }}>
           <p className="text-center text-xs" style={{ color: '#999' }}>
             &copy; {new Date().getFullYear()} <span style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span> NOLCOOL. All rights reserved.
