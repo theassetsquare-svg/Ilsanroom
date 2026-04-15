@@ -1,14 +1,17 @@
 
-import { useState, useEffect, useCallback } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { createClient } from '@/lib/supabase';
 
-/** 벨 클릭 이후 새로 올라온 커뮤니티 글 수 조회 */
-function useNewPostCount(user: any) {
+interface NewPost { id: string; title: string; category: string; created_at: string; }
+
+/** 새로 올라온 커뮤니티 글 수 + 목록 조회 */
+function useNewPosts(user: any) {
   const [count, setCount] = useState(0);
+  const [posts, setPosts] = useState<NewPost[]>([]);
 
   const refresh = useCallback(async () => {
-    if (!user) { setCount(0); return; }
+    if (!user) { setCount(0); setPosts([]); return; }
     const supabase = createClient();
     if (!supabase) return;
     try {
@@ -16,11 +19,14 @@ function useNewPostCount(user: any) {
       const since = seenAt === '0'
         ? new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
         : new Date(Number(seenAt)).toISOString();
-      const { count: c } = await supabase
+      const { data, count: c } = await supabase
         .from('posts')
-        .select('id', { count: 'exact', head: true })
-        .gt('created_at', since);
+        .select('id, title, category, created_at', { count: 'exact' })
+        .gt('created_at', since)
+        .order('created_at', { ascending: false })
+        .limit(10);
       setCount(c ?? 0);
+      setPosts((data || []) as NewPost[]);
     } catch { /* noop */ }
   }, [user]);
 
@@ -31,7 +37,7 @@ function useNewPostCount(user: any) {
     return () => clearInterval(t);
   }, [user, refresh]);
 
-  return count;
+  return { count, posts, refresh };
 }
 
 /* ── 6종류 업소 카테고리 — 인기순 (헤더 상단 노출) ── */
@@ -68,11 +74,68 @@ const menuExtra = [
   { icon: '⚙️', label: '설정', href: '/help' },
 ];
 
+const CATEGORY_LABELS: Record<string, string> = {
+  reviews: '리뷰', discussion: '수다', party: '파티', tips: '꿀팁',
+  free: '자유', fashion: '패션', jogak: '조각', qna: 'Q&A',
+};
+
+function NotificationDropdown({ posts, onClose, onMarkRead }: { posts: NewPost[]; onClose: () => void; onMarkRead: () => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) onClose(); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [onClose]);
+
+  const handleClick = (post: NewPost) => {
+    onMarkRead();
+    onClose();
+    navigate(`/community/${post.category}/${post.id}`);
+  };
+
+  return (
+    <div ref={ref} className="absolute right-0 top-full mt-1 w-80 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-[100]">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+        <span className="text-sm font-bold text-[#111]">새 글 알림</span>
+        <button onClick={() => { onMarkRead(); onClose(); }} className="text-xs text-[#8B5CF6] font-medium">모두 읽음</button>
+      </div>
+      {posts.length === 0 ? (
+        <div className="px-4 py-8 text-center text-sm text-gray-400">새로운 글이 없습니다</div>
+      ) : (
+        <div className="max-h-[360px] overflow-y-auto">
+          {posts.map((p) => (
+            <button key={p.id} onClick={() => handleClick(p)} className="w-full text-left flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition border-b border-gray-50 last:border-0">
+              <span className="shrink-0 mt-0.5 inline-flex items-center rounded-md bg-[#F3F0FF] px-1.5 py-0.5 text-[10px] font-bold text-[#8B5CF6]">
+                {CATEGORY_LABELS[p.category] || p.category}
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium text-[#111] truncate">{p.title}</p>
+                <p className="text-[11px] text-gray-400 mt-0.5">{new Date(p.created_at).toLocaleString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+      <Link to="/community" onClick={() => { onMarkRead(); onClose(); }} className="block text-center text-sm font-medium text-[#8B5CF6] py-3 border-t border-gray-100 hover:bg-gray-50 transition">
+        커뮤니티 전체보기
+      </Link>
+    </div>
+  );
+}
+
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const { pathname } = useLocation();
-  const newPostCount = useNewPostCount(user);
+  const { count: newPostCount, posts: newPosts, refresh: refreshPosts } = useNewPosts(user);
+
+  const markAllRead = useCallback(() => {
+    try { localStorage.setItem('community_seen_at', String(Date.now())); } catch {}
+    refreshPosts();
+  }, [refreshPosts]);
 
   useEffect(() => {
     const supabase = createClient();
@@ -84,7 +147,7 @@ export default function Header() {
     return () => subscription.unsubscribe();
   }, []);
 
-  useEffect(() => { setMenuOpen(false); }, [pathname]);
+  useEffect(() => { setMenuOpen(false); setNotifOpen(false); }, [pathname]);
 
   useEffect(() => {
     if (menuOpen) {
@@ -165,21 +228,25 @@ export default function Header() {
                 </Link>
               )}
               {user && (
-                <Link
-                  to="/community"
-                  onClick={() => { try { localStorage.setItem('community_seen_at', String(Date.now())); } catch {} }}
-                  className="relative flex h-10 w-10 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-50 transition"
-                  aria-label="알림"
-                >
-                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                  </svg>
-                  {newPostCount > 0 && (
-                    <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
-                      {newPostCount > 9 ? '9+' : newPostCount}
-                    </span>
+                <div className="relative">
+                  <button
+                    onClick={() => setNotifOpen((v) => !v)}
+                    className="relative flex h-10 w-10 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-50 transition"
+                    aria-label="알림"
+                  >
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                    </svg>
+                    {newPostCount > 0 && (
+                      <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
+                        {newPostCount > 9 ? '9+' : newPostCount}
+                      </span>
+                    )}
+                  </button>
+                  {notifOpen && (
+                    <NotificationDropdown posts={newPosts} onClose={() => setNotifOpen(false)} onMarkRead={markAllRead} />
                   )}
-                </Link>
+                </div>
               )}
               <Link
                 to={user ? '/profile' : '/login'}

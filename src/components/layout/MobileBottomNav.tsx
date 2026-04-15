@@ -1,11 +1,14 @@
-import { Link, useLocation } from 'react-router-dom';
-import { useState, useEffect, useCallback } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { createClient } from '@/lib/supabase';
 
-function useNewPostCount(user: any) {
+interface NewPost { id: string; title: string; category: string; created_at: string; }
+
+function useNewPosts(user: any) {
   const [count, setCount] = useState(0);
+  const [posts, setPosts] = useState<NewPost[]>([]);
   const refresh = useCallback(async () => {
-    if (!user) { setCount(0); return; }
+    if (!user) { setCount(0); setPosts([]); return; }
     const supabase = createClient();
     if (!supabase) return;
     try {
@@ -13,22 +16,29 @@ function useNewPostCount(user: any) {
       const since = seenAt === '0'
         ? new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
         : new Date(Number(seenAt)).toISOString();
-      const { count: c } = await supabase
+      const { data, count: c } = await supabase
         .from('posts')
-        .select('id', { count: 'exact', head: true })
-        .gt('created_at', since);
+        .select('id, title, category, created_at', { count: 'exact' })
+        .gt('created_at', since)
+        .order('created_at', { ascending: false })
+        .limit(10);
       setCount(c ?? 0);
+      setPosts((data || []) as NewPost[]);
     } catch { /* noop */ }
   }, [user]);
   useEffect(() => { refresh(); }, [refresh]);
-  // 60초마다 새글 확인
   useEffect(() => {
     if (!user) return;
     const t = setInterval(refresh, 60_000);
     return () => clearInterval(t);
   }, [user, refresh]);
-  return count;
+  return { count, posts, refresh };
 }
+
+const CATEGORY_LABELS: Record<string, string> = {
+  reviews: '리뷰', discussion: '수다', party: '파티', tips: '꿀팁',
+  free: '자유', fashion: '패션', jogak: '조각', qna: 'Q&A',
+};
 
 const tabs = [
   {
@@ -84,7 +94,10 @@ const tabs = [
 
 export default function MobileBottomNav() {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const notifRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const supabase = createClient();
@@ -96,7 +109,12 @@ export default function MobileBottomNav() {
     return () => subscription.unsubscribe();
   }, []);
 
-  const newPostCount = useNewPostCount(user);
+  const { count: newPostCount, posts: newPosts, refresh: refreshPosts } = useNewPosts(user);
+
+  const markAllRead = useCallback(() => {
+    try { localStorage.setItem('community_seen_at', String(Date.now())); } catch {}
+    refreshPosts();
+  }, [refreshPosts]);
 
   // 커뮤니티 페이지 방문 시 알림 카운트 리셋
   useEffect(() => {
@@ -105,12 +123,79 @@ export default function MobileBottomNav() {
     }
   }, [pathname]);
 
+  // 라우트 변경 시 드롭다운 닫기
+  useEffect(() => { setNotifOpen(false); }, [pathname]);
+
+  // 바깥 클릭 시 닫기
+  useEffect(() => {
+    if (!notifOpen) return;
+    const handler = (e: MouseEvent) => { if (notifRef.current && !notifRef.current.contains(e.target as Node)) setNotifOpen(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [notifOpen]);
+
+  const handlePostClick = (post: NewPost) => {
+    markAllRead();
+    setNotifOpen(false);
+    navigate(`/community/${post.category}/${post.id}`);
+  };
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t border-gray-200 bg-white/95 backdrop-blur-md">
+      {/* 알림 드롭다운 (위로 팝업) */}
+      {notifOpen && (
+        <div ref={notifRef} className="absolute bottom-full left-2 right-2 mb-1 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-[100]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+            <span className="text-sm font-bold text-[#111]">새 글 알림</span>
+            <button onClick={() => { markAllRead(); setNotifOpen(false); }} className="text-xs text-[#8B5CF6] font-medium">모두 읽음</button>
+          </div>
+          {newPosts.length === 0 ? (
+            <div className="px-4 py-8 text-center text-sm text-gray-400">새로운 글이 없습니다</div>
+          ) : (
+            <div className="max-h-[300px] overflow-y-auto">
+              {newPosts.map((p) => (
+                <button key={p.id} onClick={() => handlePostClick(p)} className="w-full text-left flex items-start gap-3 px-4 py-3 active:bg-gray-50 transition border-b border-gray-50 last:border-0">
+                  <span className="shrink-0 mt-0.5 inline-flex items-center rounded-md bg-[#F3F0FF] px-1.5 py-0.5 text-[10px] font-bold text-[#8B5CF6]">
+                    {CATEGORY_LABELS[p.category] || p.category}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-[#111] truncate">{p.title}</p>
+                    <p className="text-[11px] text-gray-400 mt-0.5">{new Date(p.created_at).toLocaleString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+          <Link to="/community" onClick={() => { markAllRead(); setNotifOpen(false); }} className="block text-center text-sm font-medium text-[#8B5CF6] py-3 border-t border-gray-100 active:bg-gray-50 transition">
+            커뮤니티 전체보기
+          </Link>
+        </div>
+      )}
+
       <div className="flex items-center justify-around px-1" style={{ height: 56, paddingBottom: 'env(safe-area-inset-bottom)' }}>
         {tabs.map((tab) => {
           const isActive = tab.exact ? pathname === tab.href : pathname.startsWith(tab.href);
           const href = tab.loginFallback && !user ? tab.loginFallback : tab.href;
+
+          // 커뮤니티 탭: 뱃지 클릭 시 드롭다운 토글
+          if (tab.hasBadge && newPostCount > 0) {
+            return (
+              <button
+                key={tab.href}
+                onClick={() => setNotifOpen((v) => !v)}
+                className={`relative flex flex-col items-center justify-center gap-0.5 px-3 py-1 transition-colors ${
+                  isActive ? 'text-[#8B5CF6]' : 'text-gray-500'
+                }`}
+                style={{ minWidth: 48, minHeight: 44 }}
+              >
+                {tab.icon(isActive)}
+                <span className={`text-[10px] leading-tight ${isActive ? 'font-bold' : 'font-medium'}`}>{tab.label}</span>
+                <span className="absolute top-0 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
+                  {newPostCount > 9 ? '9+' : newPostCount}
+                </span>
+              </button>
+            );
+          }
 
           return (
             <Link
@@ -123,12 +208,6 @@ export default function MobileBottomNav() {
             >
               {tab.icon(isActive)}
               <span className={`text-[10px] leading-tight ${isActive ? 'font-bold' : 'font-medium'}`}>{tab.label}</span>
-              {/* 커뮤니티 새글 알림 */}
-              {tab.hasBadge && newPostCount > 0 && (
-                <span className="absolute top-0 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
-                  {newPostCount > 9 ? '9+' : newPostCount}
-                </span>
-              )}
             </Link>
           );
         })}
