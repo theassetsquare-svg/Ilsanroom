@@ -5,6 +5,7 @@ import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
 
 const RichTextEditor = lazy(() => import('@/components/community/RichTextEditor'));
+import WriteHeader from '@/components/community/WriteHeader';
 
 interface ReviewItem {
   id: string;
@@ -213,11 +214,7 @@ export default function ReviewsPage() {
 
         {showWriteModal && (
           <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
-            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
-              <button onClick={() => setShowWriteModal(false)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>취소</button>
-              <h2 className="text-base font-bold" style={{ color: '#111' }}>후기 작성</h2>
-              <div style={{ width: 44 }} />
-            </div>
+            <WriteHeader onCancel={() => setShowWriteModal(false)} title="후기 작성" />
             <div className="flex-1 overflow-y-auto px-4 py-4 pb-24 max-w-2xl mx-auto w-full">
               <div className="mb-3">
                 <label className="mb-1 block text-xs" style={{ color: '#555' }}>별점</label>

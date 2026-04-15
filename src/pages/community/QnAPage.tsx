@@ -5,6 +5,7 @@ import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
 
 const RichTextEditor = lazy(() => import('@/components/community/RichTextEditor'));
+import WriteHeader from '@/components/community/WriteHeader';
 
 const faqItems = [
   { question: "입장 시 신분증이 반드시 필요한가요?", answer: "무조건 필요해. 주민등록증, 운전면허증 같은 공식 신분증 없으면 입장 자체가 안 돼. 여권이나 모바일 신분증도 통하긴 해." },
@@ -171,11 +172,7 @@ export default function QnAPage() {
 
         {showWriteModal && (
           <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
-            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
-              <button onClick={() => setShowWriteModal(false)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>취소</button>
-              <h2 className="text-base font-bold" style={{ color: '#111' }}>글쓰기</h2>
-              <div style={{ width: 44 }} />
-            </div>
+            <WriteHeader onCancel={() => setShowWriteModal(false)} title="Q&A 질문하기" />
             <div className="flex-1 overflow-y-auto px-4 py-4 pb-24 max-w-2xl mx-auto w-full">
               <input value={writeTitle} onChange={(e) => setWriteTitle(e.target.value)} placeholder="제목을 입력하세요"
                 className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none" style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />

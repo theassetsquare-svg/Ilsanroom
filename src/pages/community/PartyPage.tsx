@@ -5,6 +5,7 @@ import { fetchPosts, createPost, deletePost, deleteComment, type Post } from '@/
 import { useAuth } from '@/hooks/useAuth';
 
 const RichTextEditor = lazy(() => import('@/components/community/RichTextEditor'));
+import WriteHeader from '@/components/community/WriteHeader';
 
 type PartyStatus = "모집중" | "곧 마감" | "끝" | "신청 가능" | "자리 있음" | "완료" | "열린 모임" | "거의 찬 번개" | "종결";
 
@@ -276,11 +277,7 @@ export default function PartyRecruitPage() {
         {/* Write Modal */}
         {showWriteModal && (
           <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
-            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
-              <button onClick={() => setShowWriteModal(false)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>취소</button>
-              <h2 className="text-base font-bold" style={{ color: '#111' }}>글쓰기</h2>
-              <div style={{ width: 44 }} />
-            </div>
+            <WriteHeader onCancel={() => setShowWriteModal(false)} title="파티 모집글 쓰기" />
             <div className="flex-1 overflow-y-auto px-4 py-4 pb-24 max-w-2xl mx-auto w-full">
               <div className="mb-3">
                 <label className="mb-1 block text-xs" style={{ color: '#555' }}>제목</label>

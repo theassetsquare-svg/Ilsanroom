@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import WriteHeader from '@/components/community/WriteHeader';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { fetchPosts, createPost, fetchComments, createComment, deletePost, type Post } from '@/lib/community-api';
@@ -373,12 +374,7 @@ export default function JogakPage() {
       {/* ═══ 글쓰기 모달 — 역밤 스타일 구조화 폼 ═══ */}
       {showWrite && (
         <div className="fixed inset-0 z-[100] flex flex-col bg-white">
-          {/* 상단 바 */}
-          <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
-            <button onClick={() => setShowWrite(false)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>취소</button>
-            <h2 className="text-base font-bold" style={{ color: '#111' }}>조각 모집 글쓰기</h2>
-            <div style={{ width: 44 }} />
-          </div>
+          <WriteHeader onCancel={() => setShowWrite(false)} title="조각 모집 글쓰기" />
 
           <div className="flex-1 overflow-y-auto px-4 py-4 pb-28 max-w-2xl mx-auto w-full">
 

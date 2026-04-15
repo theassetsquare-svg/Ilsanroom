@@ -5,6 +5,7 @@ import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
 
 const RichTextEditor = lazy(() => import('@/components/community/RichTextEditor'));
+import WriteHeader from '@/components/community/WriteHeader';
 
 interface SimplePost {
   id: string;
@@ -134,11 +135,7 @@ export default function FreeBoardPage() {
 
         {showWriteModal && (
           <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
-            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E5E7EB' }}>
-              <button onClick={() => setShowWriteModal(false)} className="text-sm font-medium" style={{ color: '#555', minHeight: 44 }}>취소</button>
-              <h2 className="text-base font-bold" style={{ color: '#111' }}>글쓰기</h2>
-              <div style={{ width: 44 }} />
-            </div>
+            <WriteHeader onCancel={() => setShowWriteModal(false)} title="자유게시판 글쓰기" />
             <div className="flex-1 overflow-y-auto px-4 py-4 pb-24 max-w-2xl mx-auto w-full">
               <input value={writeTitle} onChange={(e) => setWriteTitle(e.target.value)} placeholder="제목을 입력하세요"
                 className="w-full rounded-lg border px-4 py-3 text-sm outline-none mb-3"
