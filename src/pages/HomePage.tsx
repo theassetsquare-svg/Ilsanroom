@@ -286,9 +286,13 @@ export default function HomePage() {
     return Object.entries(groups).filter(([, list]) => list.length > 0);
   }, [filteredVenues, activeTab]);
 
-  // === VS Vote ===
+  // === VS Vote (날짜별 키로 저장 — 날짜 바뀌면 투표 초기화) ===
+  const vsDateKey = useMemo(() => {
+    const d = new Date();
+    return `nolcool_vs_home_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+  }, []);
   const [vsVotes, setVsVotes] = useState<Record<number, string>>(() => {
-    try { const s = localStorage.getItem('nolcool_vs'); return s ? JSON.parse(s) : {}; } catch { return {}; }
+    try { const s = localStorage.getItem(vsDateKey); return s ? JSON.parse(s) : {}; } catch { return {}; }
   });
   const [vsAnimating, setVsAnimating] = useState(false);
   const todayPolls = useMemo(() => {
@@ -300,12 +304,12 @@ export default function HomePage() {
     setVsAnimating(true);
     setVsVotes(prev => {
       const next = { ...prev, [pollIdx]: opt };
-      try { localStorage.setItem('nolcool_vs', JSON.stringify(next)); } catch {}
+      try { localStorage.setItem(vsDateKey, JSON.stringify(next)); } catch {}
       return next;
     });
     const timer = setTimeout(() => setVsAnimating(false), 600);
     return () => clearTimeout(timer);
-  }, [vsVotes, vsAnimating]);
+  }, [vsVotes, vsAnimating, vsDateKey]);
 
   // === Fortune ===
   const [fortuneRevealed, setFortuneRevealed] = useState(false);
@@ -660,13 +664,16 @@ export default function HomePage() {
                     </div>
                   </button>
                 </div>
-                {voted ? (
-                  <p className="mt-2 text-xs text-center font-medium text-[#8B5CF6]">
-                    {voted === poll.a ? `${poll.a}` : `${poll.b}`} 선택! · {Math.floor(200 + (pi + new Date().getDate()) * 37 % 800)}명 참여 중
-                  </p>
-                ) : (
-                  <p className="mt-2 text-xs text-center text-[#999]">터치해서 투표하세요</p>
-                )}
+                {(() => {
+                  const participants = Math.floor(300 + (pi * 137 + new Date().getDate() * 53) % 700);
+                  return voted ? (
+                    <p className="mt-2 text-xs text-center font-medium text-[#8B5CF6]">
+                      <span className="font-bold">{voted === poll.a ? poll.a : poll.b}</span> 선택! · {participants.toLocaleString()}명 참여
+                    </p>
+                  ) : (
+                    <p className="mt-2 text-xs text-center text-[#999]">터치해서 투표하세요 · {participants.toLocaleString()}명 참여 중</p>
+                  );
+                })()}
               </div>
             );
           })}

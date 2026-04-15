@@ -22,7 +22,7 @@ const statusStyles: Record<PartyStatus, string> = {
 
 function getDday(dateStr: string): string {
   const target = new Date(dateStr);
-  const now = new Date("2026-03-20");
+  const now = new Date();
   const diff = Math.ceil((target.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
   if (diff === 0) return "D-DAY";
   if (diff > 0) return `D-${diff}`;
@@ -43,73 +43,6 @@ interface PartyItem {
   description: string;
 }
 
-const sampleParties: PartyItem[] = [
-  {
-    id: "sample-1",
-    title: "이번 주말 근처 라운지 동행 구합니다",
-    author: "라운지호스트",
-    eventDate: "2026-03-22",
-    region: "일산",
-    currentMembers: 2,
-    maxMembers: 6,
-    ageRange: "20대 후반~30대",
-    status: "열린 모임",
-    comments: 7,
-    description: "토요일 저녁 8시 라페스타 근처 라운지에서 만나서 가볍게 한잔하려고 합니다.",
-  },
-  {
-    id: "sample-2",
-    title: "3/21(토) 해당 지역 나이트 첫 도전 같이 갈 분",
-    author: "입문희망자",
-    eventDate: "2026-03-21",
-    region: "일산",
-    currentMembers: 3,
-    maxMembers: 4,
-    ageRange: "20대 중반",
-    status: "거의 찬 번개",
-    comments: 11,
-    description: "혼자 가기 부담스러워서 함께할 분을 찾습니다. 초보 환영이에요!",
-  },
-  {
-    id: "sample-3",
-    title: "주엽역 와인바 소규모 약속 (4명 한정)",
-    author: "와인소모임",
-    eventDate: "2026-03-28",
-    region: "일산",
-    currentMembers: 1,
-    maxMembers: 4,
-    ageRange: "30대",
-    status: "신청 가능",
-    comments: 3,
-    description: "와인 시음하며 편하게 대화 나눌 분을 모집합니다. 와인 초심자도 대환영.",
-  },
-  {
-    id: "sample-4",
-    title: "킨텍스 인근 금요 정모 (정기)",
-    author: "금요밤지기",
-    eventDate: "2026-03-27",
-    region: "해당 지역",
-    currentMembers: 8,
-    maxMembers: 8,
-    ageRange: "20대~30대",
-    status: "끝",
-    comments: 19,
-    description: "매주 금요일 킨텍스 근처에서 진행하는 정기 번개입니다. 다음 주차 신청은 월요일 오픈!",
-  },
-  {
-    id: "sample-5",
-    title: "백석동 신상 바 탐방 동행자 모집",
-    author: "신상탐험가",
-    eventDate: "2026-03-29",
-    region: "근처",
-    currentMembers: 2,
-    maxMembers: 5,
-    ageRange: "20대 후반",
-    status: "자리 있음",
-    comments: 5,
-    description: "새로 오픈한 곳들을 돌아보며 솔직하게 비교해보려 합니다. 리뷰 작성도 함께해요.",
-  },
-];
 
 function postToParty(post: Post): PartyItem {
   return {
@@ -161,7 +94,7 @@ export default function PartyRecruitPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [statusFilter, setStatusFilter] = useState<PartyStatus | "전체">("전체");
-  const [parties, setParties] = useState<PartyItem[]>(sampleParties);
+  const [parties, setParties] = useState<PartyItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [showWriteModal, setShowWriteModal] = useState(false);
   const [writeTitle, setWriteTitle] = useState("");
@@ -217,7 +150,7 @@ export default function PartyRecruitPage() {
         {/* Header */}
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
+            <Link to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
               ← 커뮤니티
             </Link>
             <h1 className="text-3xl font-bold">파티모임</h1>
