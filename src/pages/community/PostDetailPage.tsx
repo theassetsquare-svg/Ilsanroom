@@ -16,7 +16,7 @@ interface CommentData {
 }
 
 export default function PostDetailPage() {
-  useDocumentMeta('글 상세', '커뮤니티 게시글 상세 페이지');
+  useDocumentMeta('커뮤니티 글 상세 — 솔직한 후기와 실시간 토론', '클럽·나이트·룸·호빠 실제 이용자 후기와 댓글. 가기 전에 꼭 확인하세요.');
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -48,6 +48,7 @@ export default function PostDetailPage() {
         setPost(data);
         setLikeCount(data?.likes || 0);
         setLoading(false);
+        if (data?.title) document.title = `${data.title} — 놀쿨 커뮤니티`;
       }
     });
   }, [id]);
