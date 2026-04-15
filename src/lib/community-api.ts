@@ -200,14 +200,14 @@ export async function toggleFavorite(venueSlug: string) {
     .from('favorites')
     .select('id')
     .eq('user_id', user.id)
-    .eq('venue_slug', venueSlug)
+    .eq('venue_id', venueSlug)
     .single();
 
   if (existing) {
     await supabase.from('favorites').delete().eq('id', (existing as any).id);
     return { favorited: false };
   } else {
-    await supabase.from('favorites').insert({ user_id: user.id, venue_slug: venueSlug } as any);
+    await supabase.from('favorites').insert({ user_id: user.id, venue_id: venueSlug } as any);
     return { favorited: true };
   }
 }
@@ -222,11 +222,11 @@ export async function fetchFavorites() {
 
   const { data } = await supabase
     .from('favorites')
-    .select('venue_slug, created_at')
+    .select('venue_id, created_at')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false });
 
-  return (data || []) as unknown as { venue_slug: string; created_at: string }[];
+  return (data || []) as unknown as { venue_id: string; created_at: string }[];
 }
 
 // Save viewed venue (for AI taste analysis)
