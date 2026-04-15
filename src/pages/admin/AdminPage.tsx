@@ -18,11 +18,34 @@ const CATEGORY_LABELS: Record<string, string> = {
   clip: '갤러리 클립',
 };
 
+const ADMIN_PIN = 'nolcool2026';
+
 export default function AdminPage() {
   useDocumentMeta('관리자 페이지', '놀쿨 사이트 관리');
   const { user, loading: authLoading } = useAuth();
   const supabase = createClient();
   const isAdmin = user && ADMIN_EMAILS.includes(user.email || '');
+
+  // 관리자 인증 게이트
+  const [adminAuthed, setAdminAuthed] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem('nolcool_admin_auth');
+      return saved === 'true';
+    } catch { return false; }
+  });
+  const [pinInput, setPinInput] = useState('');
+  const [pinError, setPinError] = useState('');
+
+  const handlePinSubmit = () => {
+    if (pinInput === ADMIN_PIN) {
+      setAdminAuthed(true);
+      sessionStorage.setItem('nolcool_admin_auth', 'true');
+      setPinError('');
+    } else {
+      setPinError('비밀번호가 틀립니다');
+      setPinInput('');
+    }
+  };
 
   const [activeTab, setActiveTab] = useState('posts');
   const [posts, setPosts] = useState<any[]>([]);
@@ -174,6 +197,47 @@ export default function AdminPage() {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#8B5CF6] border-t-transparent" />
+      </div>
+    );
+  }
+
+  // 관리자 비밀번호 입력 게이트
+  if (!adminAuthed) {
+    return (
+      <div className="flex min-h-[70vh] items-center justify-center px-4">
+        <div className="w-full max-w-sm">
+          <div className="rounded-2xl border p-8 text-center" style={{ borderColor: '#E5E7EB', backgroundColor: '#FFF' }}>
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full" style={{ backgroundColor: '#F3F4F6' }}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+            </div>
+            <h1 className="text-lg font-bold mb-1" style={{ color: '#111' }}>관리자 인증</h1>
+            <p className="text-sm mb-6" style={{ color: '#999' }}>관리자 비밀번호를 입력하세요</p>
+            <form onSubmit={e => { e.preventDefault(); handlePinSubmit(); }}>
+              <input
+                type="password"
+                value={pinInput}
+                onChange={e => { setPinInput(e.target.value); setPinError(''); }}
+                placeholder="비밀번호"
+                autoFocus
+                className="w-full rounded-xl border px-4 py-3 text-center text-sm outline-none mb-3"
+                style={{ borderColor: pinError ? '#EF4444' : '#E5E7EB', color: '#111', minHeight: 48 }}
+              />
+              {pinError && <p className="text-xs mb-3" style={{ color: '#EF4444' }}>{pinError}</p>}
+              <button
+                type="submit"
+                disabled={!pinInput.trim()}
+                className="w-full rounded-xl px-6 py-3 text-sm font-bold text-white disabled:opacity-40"
+                style={{ backgroundColor: '#8B5CF6', minHeight: 48 }}
+              >
+                확인
+              </button>
+            </form>
+            <Link to="/" className="mt-4 inline-block text-xs" style={{ color: '#999' }}>홈으로 돌아가기</Link>
+          </div>
+        </div>
       </div>
     );
   }
