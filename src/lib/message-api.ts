@@ -37,12 +37,23 @@ export async function fetchReceivedMessages(limit = 50) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
 
-  const { data } = await supabase
+  // FK 조인 시도, 실패 시 fallback
+  const { data, error } = await supabase
     .from('messages')
     .select('*, sender:users!messages_sender_id_fkey(nickname, avatar_url)')
     .eq('receiver_id', user.id)
     .order('created_at', { ascending: false })
     .limit(limit);
+
+  if (error) {
+    const { data: fallback } = await supabase
+      .from('messages')
+      .select('*')
+      .eq('receiver_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(limit);
+    return (fallback || []) as Message[];
+  }
 
   return (data || []) as Message[];
 }
@@ -55,12 +66,22 @@ export async function fetchSentMessages(limit = 50) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('messages')
     .select('*, receiver:users!messages_receiver_id_fkey(nickname, avatar_url)')
     .eq('sender_id', user.id)
     .order('created_at', { ascending: false })
     .limit(limit);
+
+  if (error) {
+    const { data: fallback } = await supabase
+      .from('messages')
+      .select('*')
+      .eq('sender_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(limit);
+    return (fallback || []) as Message[];
+  }
 
   return (data || []) as Message[];
 }
@@ -102,12 +123,22 @@ export async function fetchConversation(otherUserId: string, limit = 50) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('messages')
     .select('*, sender:users!messages_sender_id_fkey(nickname, avatar_url), receiver:users!messages_receiver_id_fkey(nickname, avatar_url)')
     .or(`and(sender_id.eq.${user.id},receiver_id.eq.${otherUserId}),and(sender_id.eq.${otherUserId},receiver_id.eq.${user.id})`)
     .order('created_at', { ascending: true })
     .limit(limit);
+
+  if (error) {
+    const { data: fallback } = await supabase
+      .from('messages')
+      .select('*')
+      .or(`and(sender_id.eq.${user.id},receiver_id.eq.${otherUserId}),and(sender_id.eq.${otherUserId},receiver_id.eq.${user.id})`)
+      .order('created_at', { ascending: true })
+      .limit(limit);
+    return (fallback || []) as Message[];
+  }
 
   return (data || []) as Message[];
 }
