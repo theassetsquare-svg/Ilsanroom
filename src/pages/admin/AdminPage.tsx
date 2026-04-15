@@ -1,10 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
 import { Link } from 'react-router-dom';
 
 const ADMIN_EMAILS = ['qotjsdnr123@naver.com', 'baesunwook513@gmail.com', 'theassetsquare@gmail.com'];
+
+const CATEGORY_LABELS: Record<string, string> = {
+  free: '자유',
+  reviews: '후기',
+  tips: '꿀팁',
+  qna: 'Q&A',
+  party: '벙개/파티',
+  fashion: '패션',
+  jogak: '조각모임',
+  discussion: '토론',
+  clip: '갤러리 클립',
+};
 
 export default function AdminPage() {
   useDocumentMeta('관리자 페이지', '놀쿨 사이트 관리');
@@ -14,56 +26,108 @@ export default function AdminPage() {
 
   const [activeTab, setActiveTab] = useState('posts');
   const [posts, setPosts] = useState<any[]>([]);
+  const [clips, setClips] = useState<any[]>([]);
   const [comments, setComments] = useState<any[]>([]);
-  const [users, setUsers] = useState<any[]>([]);
   const [bannedEmails, setBannedEmails] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem('nolcool_banned') || '[]'); } catch { return []; }
   });
   const [banInput, setBanInput] = useState('');
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   // 데이터 로드
-  useEffect(() => {
+  const loadData = useCallback(async () => {
     if (!supabase || !isAdmin) return;
-    Promise.all([
-      supabase.from('posts').select('*').order('created_at', { ascending: false }).limit(100),
-      supabase.from('comments').select('*').order('created_at', { ascending: false }).limit(100),
-    ]).then(([postsRes, commentsRes]) => {
-      setPosts(postsRes.data || []);
-      setComments(commentsRes.data || []);
-      setLoading(false);
-    });
+    setLoading(true);
+    const [postsRes, commentsRes] = await Promise.all([
+      supabase.from('posts').select('*').order('created_at', { ascending: false }).limit(500),
+      supabase.from('comments').select('*').order('created_at', { ascending: false }).limit(500),
+    ]);
+    const allPosts = postsRes.data || [];
+    setPosts(allPosts.filter(p => p.category !== 'clip'));
+    setClips(allPosts.filter(p => p.category === 'clip'));
+    setComments(commentsRes.data || []);
+    setLoading(false);
   }, [isAdmin]);
+
+  useEffect(() => { loadData(); }, [loadData]);
+
+  // 클립 이미지 URL 추출
+  const getClipImage = (clip: any): string | null => {
+    try {
+      const parsed = JSON.parse(clip.content);
+      return parsed.imageUrl || null;
+    } catch { return null; }
+  };
+
+  // 클립 캡션 추출
+  const getClipCaption = (clip: any): string => {
+    try {
+      const parsed = JSON.parse(clip.content);
+      return parsed.caption || '';
+    } catch { return clip.title || ''; }
+  };
+
+  // Storage에서 이미지 경로 추출
+  const getStoragePath = (imageUrl: string): string | null => {
+    // URL: .../storage/v1/object/public/post-media/clips/userId/timestamp.ext
+    const match = imageUrl.match(/post-media\/(.+)$/);
+    return match ? match[1] : null;
+  };
 
   // 글 삭제
   const handleDeletePost = async (id: string) => {
     if (!confirm('이 글을 삭제하시겠습니까?')) return;
     if (!supabase) return;
+    setDeleting(id);
     await supabase.from('comments').delete().eq('post_id', id);
     await supabase.from('posts').delete().eq('id', id);
     setPosts(prev => prev.filter(p => p.id !== id));
-    alert('글 + 댓글 삭제 완료');
+    setDeleting(null);
+  };
+
+  // 클립 삭제 (이미지도 Storage에서 삭제)
+  const handleDeleteClip = async (clip: any) => {
+    if (!confirm('이 클립과 이미지를 삭제하시겠습니까?')) return;
+    if (!supabase) return;
+    setDeleting(clip.id);
+
+    // Storage 이미지 삭제
+    const imageUrl = getClipImage(clip);
+    if (imageUrl) {
+      const path = getStoragePath(imageUrl);
+      if (path) {
+        await supabase.storage.from('post-media').remove([path]);
+      }
+    }
+
+    // DB 삭제
+    await supabase.from('comments').delete().eq('post_id', clip.id);
+    await supabase.from('posts').delete().eq('id', clip.id);
+    setClips(prev => prev.filter(c => c.id !== clip.id));
+    setDeleting(null);
   };
 
   // 댓글 삭제
   const handleDeleteComment = async (id: string) => {
     if (!confirm('이 댓글을 삭제하시겠습니까?')) return;
     if (!supabase) return;
+    setDeleting(id);
     await supabase.from('comments').delete().eq('id', id);
     setComments(prev => prev.filter(c => c.id !== id));
-    alert('댓글 삭제 완료');
+    setDeleting(null);
   };
 
   // 사용자 차단
-  const handleBan = (email: string) => {
-    if (!email.trim()) return;
-    if (!confirm(`${email}을 차단하시겠습니까? 이 사용자는 더 이상 글/댓글을 작성할 수 없습니다.`)) return;
-    const updated = [...bannedEmails, email.trim()];
+  const handleBan = (identifier: string) => {
+    if (!identifier.trim()) return;
+    if (!confirm(`${identifier}을(를) 차단하시겠습니까?`)) return;
+    const updated = [...new Set([...bannedEmails, identifier.trim()])];
     setBannedEmails(updated);
     localStorage.setItem('nolcool_banned', JSON.stringify(updated));
     setBanInput('');
-    alert(`${email} 차단 완료`);
   };
 
   // 차단 해제
@@ -72,18 +136,38 @@ export default function AdminPage() {
     const updated = bannedEmails.filter(e => e !== email);
     setBannedEmails(updated);
     localStorage.setItem('nolcool_banned', JSON.stringify(updated));
-    alert(`${email} 차단 해제`);
   };
 
   // 특정 사용자의 모든 글 삭제
   const handleDeleteAllByUser = async (userId: string) => {
-    if (!confirm('이 사용자의 모든 글과 댓글을 삭제하시겠습니까?')) return;
+    if (!confirm('이 사용자의 모든 글/댓글/클립을 삭제하시겠습니까?\n(Storage 이미지도 함께 삭제됩니다)')) return;
     if (!supabase) return;
+    setDeleting(userId);
+
+    // 해당 유저의 클립 이미지 Storage 삭제
+    const userClips = clips.filter(c => c.user_id === userId);
+    for (const clip of userClips) {
+      const imageUrl = getClipImage(clip);
+      if (imageUrl) {
+        const path = getStoragePath(imageUrl);
+        if (path) await supabase.storage.from('post-media').remove([path]);
+      }
+    }
+
     await supabase.from('comments').delete().eq('user_id', userId);
     await supabase.from('posts').delete().eq('user_id', userId);
     setPosts(prev => prev.filter(p => p.user_id !== userId));
+    setClips(prev => prev.filter(c => c.user_id !== userId));
     setComments(prev => prev.filter(c => c.user_id !== userId));
-    alert('해당 사용자의 모든 글/댓글 삭제 완료');
+    setDeleting(null);
+  };
+
+  // 글 고정/해제
+  const handleTogglePin = async (post: any) => {
+    if (!supabase) return;
+    const newVal = !post.is_pinned;
+    await supabase.from('posts').update({ is_pinned: newVal }).eq('id', post.id);
+    setPosts(prev => prev.map(p => p.id === post.id ? { ...p, is_pinned: newVal } : p));
   };
 
   if (!user) {
@@ -104,29 +188,54 @@ export default function AdminPage() {
     );
   }
 
-  const filteredPosts = searchQuery
-    ? posts.filter(p => p.title?.includes(searchQuery) || p.content?.includes(searchQuery) || p.user_id?.includes(searchQuery))
-    : posts;
+  const q = searchQuery.toLowerCase();
+  const filteredPosts = posts.filter(p => {
+    if (categoryFilter !== 'all' && p.category !== categoryFilter) return false;
+    if (!q) return true;
+    return p.title?.toLowerCase().includes(q) || p.content?.toLowerCase().includes(q) || p.user_id?.includes(q);
+  });
 
-  const filteredComments = searchQuery
-    ? comments.filter(c => c.content?.includes(searchQuery) || c.user_id?.includes(searchQuery))
-    : comments;
+  const filteredClips = clips.filter(c => {
+    if (!q) return true;
+    const caption = getClipCaption(c);
+    return caption.toLowerCase().includes(q) || c.user_id?.includes(q);
+  });
+
+  const filteredComments = comments.filter(c => {
+    if (!q) return true;
+    return c.content?.toLowerCase().includes(q) || c.user_id?.includes(q);
+  });
 
   const tabs = [
-    { key: 'posts', label: '📝 글 관리', count: posts.length },
-    { key: 'comments', label: '💬 댓글 관리', count: comments.length },
-    { key: 'ban', label: '🚫 사용자 차단', count: bannedEmails.length },
-    { key: 'stats', label: '📊 현황' },
+    { key: 'posts', label: '글 관리', count: posts.length },
+    { key: 'clips', label: '클립/이미지', count: clips.length },
+    { key: 'comments', label: '댓글 관리', count: comments.length },
+    { key: 'ban', label: '차단 관리', count: bannedEmails.length },
+    { key: 'stats', label: '현황' },
   ];
 
+  const allCategories = [...new Set(posts.map(p => p.category).filter(Boolean))];
+
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
+    <div className="mx-auto max-w-4xl px-4 py-8 pb-24">
+      {/* 헤더 */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: '#111' }}>🔧 관리자 페이지</h1>
+          <h1 className="text-xl font-bold" style={{ color: '#111' }}>관리자 페이지</h1>
           <p className="text-xs" style={{ color: '#999' }}>{user.email}</p>
         </div>
-        <Link to="/" className="text-sm" style={{ color: '#8B5CF6' }}>홈으로 →</Link>
+        <div className="flex gap-2">
+          <button
+            onClick={loadData}
+            className="rounded-xl px-4 py-2 text-sm font-bold"
+            style={{ backgroundColor: '#F3F4F6', color: '#555', minHeight: 40 }}
+          >
+            새로고침
+          </button>
+          <Link to="/" className="rounded-xl px-4 py-2 text-sm font-bold flex items-center" style={{ backgroundColor: '#8B5CF6', color: '#FFF', minHeight: 40 }}>
+            홈
+          </Link>
+        </div>
       </div>
 
       {/* 검색 */}
@@ -134,13 +243,13 @@ export default function AdminPage() {
         type="text"
         value={searchQuery}
         onChange={e => setSearchQuery(e.target.value)}
-        placeholder="글/댓글/사용자 검색..."
+        placeholder="글/댓글/사용자ID 검색..."
         className="w-full rounded-xl border px-4 py-3 text-sm mb-4 outline-none"
         style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }}
       />
 
       {/* 탭 */}
-      <div className="flex gap-1 mb-6 overflow-x-auto">
+      <div className="flex gap-1 mb-4 overflow-x-auto">
         {tabs.map(tab => (
           <button
             key={tab.key}
@@ -157,53 +266,214 @@ export default function AdminPage() {
         ))}
       </div>
 
-      {loading && <p style={{ color: '#999' }}>불러오는 중...</p>}
+      {loading && <p className="py-8 text-center" style={{ color: '#999' }}>불러오는 중...</p>}
 
       {/* ═══ 글 관리 ═══ */}
       {activeTab === 'posts' && !loading && (
-        <div className="space-y-2">
-          {filteredPosts.length === 0 && <p style={{ color: '#999' }}>글이 없습니다.</p>}
-          {filteredPosts.map(post => (
-            <div key={post.id} className="rounded-xl border p-4" style={{ borderColor: '#E5E7EB' }}>
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold truncate" style={{ color: '#111' }}>{post.title}</p>
-                  <p className="text-xs mt-1 line-clamp-2" style={{ color: '#555' }}>{post.content?.slice(0, 100)}</p>
-                  <p className="text-xs mt-1" style={{ color: '#999' }}>
-                    {post.category} · {post.created_at?.slice(0, 10)} · {post.user_id?.slice(0, 8)}
-                  </p>
-                </div>
-                <div className="flex flex-col gap-1 shrink-0">
-                  <button onClick={() => handleDeletePost(post.id)} className="rounded-lg px-3 py-1 text-xs font-bold text-white" style={{ backgroundColor: '#EF4444', minHeight: 28 }}>삭제</button>
-                  <button onClick={() => handleDeleteAllByUser(post.user_id)} className="rounded-lg px-3 py-1 text-xs font-medium" style={{ backgroundColor: '#FEE2E2', color: '#DC2626', minHeight: 28 }}>이 사용자 전체삭제</button>
-                  <button onClick={() => handleBan(post.user_id || '')} className="rounded-lg px-3 py-1 text-xs font-medium" style={{ backgroundColor: '#111', color: '#FFF', minHeight: 28 }}>차단</button>
+        <div>
+          {/* 카테고리 필터 */}
+          <div className="flex gap-1 mb-4 overflow-x-auto">
+            <button
+              onClick={() => setCategoryFilter('all')}
+              className="shrink-0 px-3 py-2 text-xs font-medium rounded-lg"
+              style={{
+                backgroundColor: categoryFilter === 'all' ? '#111' : '#F3F4F6',
+                color: categoryFilter === 'all' ? '#FFF' : '#555',
+                minHeight: 32,
+              }}
+            >
+              전체
+            </button>
+            {allCategories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setCategoryFilter(cat)}
+                className="shrink-0 px-3 py-2 text-xs font-medium rounded-lg"
+                style={{
+                  backgroundColor: categoryFilter === cat ? '#111' : '#F3F4F6',
+                  color: categoryFilter === cat ? '#FFF' : '#555',
+                  minHeight: 32,
+                }}
+              >
+                {CATEGORY_LABELS[cat] || cat} ({posts.filter(p => p.category === cat).length})
+              </button>
+            ))}
+          </div>
+
+          <p className="text-xs mb-2" style={{ color: '#999' }}>
+            {filteredPosts.length}개 표시 중
+          </p>
+
+          <div className="space-y-2">
+            {filteredPosts.length === 0 && <p style={{ color: '#999' }}>글이 없습니다.</p>}
+            {filteredPosts.map(post => (
+              <div key={post.id} className="rounded-xl border p-4" style={{ borderColor: post.is_pinned ? '#8B5CF6' : '#E5E7EB', backgroundColor: post.is_pinned ? '#F5F3FF' : '#FFF' }}>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      {post.is_pinned && <span className="text-xs px-2 py-0.5 rounded-full font-bold" style={{ backgroundColor: '#8B5CF6', color: '#FFF' }}>고정</span>}
+                      <p className="text-sm font-bold truncate" style={{ color: '#111' }}>{post.title}</p>
+                    </div>
+                    <p className="text-xs mt-1 line-clamp-2" style={{ color: '#555' }}>{post.content?.slice(0, 120)}</p>
+                    <p className="text-xs mt-1" style={{ color: '#999' }}>
+                      {CATEGORY_LABELS[post.category] || post.category} · {post.created_at?.slice(0, 10)} · 좋아요 {post.likes || 0} · 조회 {post.views || 0}
+                    </p>
+                    <p className="text-xs" style={{ color: '#BBB' }}>ID: {post.user_id?.slice(0, 12)}...</p>
+                  </div>
+                  <div className="flex flex-col gap-1 shrink-0">
+                    <button
+                      onClick={() => handleDeletePost(post.id)}
+                      disabled={deleting === post.id}
+                      className="rounded-lg px-3 py-1 text-xs font-bold text-white disabled:opacity-50"
+                      style={{ backgroundColor: '#EF4444', minHeight: 28 }}
+                    >
+                      {deleting === post.id ? '...' : '삭제'}
+                    </button>
+                    <button
+                      onClick={() => handleTogglePin(post)}
+                      className="rounded-lg px-3 py-1 text-xs font-medium"
+                      style={{ backgroundColor: post.is_pinned ? '#E5E7EB' : '#EDE9FE', color: post.is_pinned ? '#555' : '#7C3AED', minHeight: 28 }}
+                    >
+                      {post.is_pinned ? '고정해제' : '고정'}
+                    </button>
+                    <button
+                      onClick={() => handleDeleteAllByUser(post.user_id)}
+                      className="rounded-lg px-3 py-1 text-xs font-medium"
+                      style={{ backgroundColor: '#FEE2E2', color: '#DC2626', minHeight: 28 }}
+                    >
+                      유저 전체삭제
+                    </button>
+                    <button
+                      onClick={() => handleBan(post.user_id || '')}
+                      className="rounded-lg px-3 py-1 text-xs font-medium"
+                      style={{ backgroundColor: '#111', color: '#FFF', minHeight: 28 }}
+                    >
+                      차단
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ═══ 클립/이미지 관리 ═══ */}
+      {activeTab === 'clips' && !loading && (
+        <div>
+          <p className="text-xs mb-3" style={{ color: '#999' }}>
+            갤러리 클립 {filteredClips.length}개 · 이미지를 삭제하면 Storage에서도 함께 삭제됩니다
+          </p>
+
+          {filteredClips.length === 0 && <p style={{ color: '#999' }}>클립이 없습니다.</p>}
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {filteredClips.map(clip => {
+              const imageUrl = getClipImage(clip);
+              const caption = getClipCaption(clip);
+              return (
+                <div key={clip.id} className="rounded-xl border overflow-hidden" style={{ borderColor: '#E5E7EB' }}>
+                  {/* 이미지 미리보기 */}
+                  {imageUrl ? (
+                    <div className="relative" style={{ paddingTop: '100%' }}>
+                      <img
+                        src={imageUrl}
+                        alt={caption}
+                        className="absolute inset-0 w-full h-full object-cover"
+                        loading="lazy"
+                        onError={e => { (e.target as HTMLImageElement).src = ''; (e.target as HTMLImageElement).alt = '이미지 로드 실패'; }}
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center" style={{ paddingTop: '100%', position: 'relative' }}>
+                      <span className="absolute inset-0 flex items-center justify-center text-xs" style={{ color: '#999', backgroundColor: '#F3F4F6' }}>이미지 없음</span>
+                    </div>
+                  )}
+
+                  {/* 정보 */}
+                  <div className="p-3">
+                    {caption && <p className="text-xs font-medium truncate mb-1" style={{ color: '#111' }}>{caption}</p>}
+                    <p className="text-xs" style={{ color: '#999' }}>
+                      {clip.created_at?.slice(0, 10)}
+                    </p>
+                    <p className="text-xs truncate" style={{ color: '#BBB' }}>
+                      {clip.user_id?.slice(0, 10)}...
+                    </p>
+
+                    {/* 버튼들 */}
+                    <div className="flex gap-1 mt-2">
+                      <button
+                        onClick={() => handleDeleteClip(clip)}
+                        disabled={deleting === clip.id}
+                        className="flex-1 rounded-lg px-2 py-1.5 text-xs font-bold text-white disabled:opacity-50"
+                        style={{ backgroundColor: '#EF4444', minHeight: 28 }}
+                      >
+                        {deleting === clip.id ? '삭제중...' : '삭제'}
+                      </button>
+                      <button
+                        onClick={() => handleBan(clip.user_id || '')}
+                        className="rounded-lg px-2 py-1.5 text-xs font-medium"
+                        style={{ backgroundColor: '#111', color: '#FFF', minHeight: 28 }}
+                      >
+                        차단
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 
       {/* ═══ 댓글 관리 ═══ */}
       {activeTab === 'comments' && !loading && (
-        <div className="space-y-2">
-          {filteredComments.length === 0 && <p style={{ color: '#999' }}>댓글이 없습니다.</p>}
-          {filteredComments.map(comment => (
-            <div key={comment.id} className="rounded-xl border p-4" style={{ borderColor: '#E5E7EB' }}>
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm" style={{ color: '#111' }}>{comment.content}</p>
-                  <p className="text-xs mt-1" style={{ color: '#999' }}>
-                    {comment.created_at?.slice(0, 10)} · {comment.user_id?.slice(0, 8)} · 글ID: {comment.post_id?.slice(0, 8)}
-                  </p>
-                </div>
-                <div className="flex flex-col gap-1 shrink-0">
-                  <button onClick={() => handleDeleteComment(comment.id)} className="rounded-lg px-3 py-1 text-xs font-bold text-white" style={{ backgroundColor: '#EF4444', minHeight: 28 }}>삭제</button>
-                  <button onClick={() => handleBan(comment.user_id || '')} className="rounded-lg px-3 py-1 text-xs font-medium" style={{ backgroundColor: '#111', color: '#FFF', minHeight: 28 }}>차단</button>
+        <div>
+          <p className="text-xs mb-2" style={{ color: '#999' }}>
+            {filteredComments.length}개 표시 중
+          </p>
+          <div className="space-y-2">
+            {filteredComments.length === 0 && <p style={{ color: '#999' }}>댓글이 없습니다.</p>}
+            {filteredComments.map(comment => (
+              <div key={comment.id} className="rounded-xl border p-4" style={{ borderColor: '#E5E7EB' }}>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm" style={{ color: '#111' }}>{comment.content}</p>
+                    <p className="text-xs mt-1" style={{ color: '#999' }}>
+                      {comment.created_at?.slice(0, 10)} · 좋아요 {comment.likes || 0}
+                    </p>
+                    <p className="text-xs" style={{ color: '#BBB' }}>
+                      유저: {comment.user_id?.slice(0, 12)}... · 글: {comment.post_id?.slice(0, 8)}...
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-1 shrink-0">
+                    <button
+                      onClick={() => handleDeleteComment(comment.id)}
+                      disabled={deleting === comment.id}
+                      className="rounded-lg px-3 py-1 text-xs font-bold text-white disabled:opacity-50"
+                      style={{ backgroundColor: '#EF4444', minHeight: 28 }}
+                    >
+                      {deleting === comment.id ? '...' : '삭제'}
+                    </button>
+                    <button
+                      onClick={() => handleDeleteAllByUser(comment.user_id)}
+                      className="rounded-lg px-3 py-1 text-xs font-medium"
+                      style={{ backgroundColor: '#FEE2E2', color: '#DC2626', minHeight: 28 }}
+                    >
+                      유저 전체삭제
+                    </button>
+                    <button
+                      onClick={() => handleBan(comment.user_id || '')}
+                      className="rounded-lg px-3 py-1 text-xs font-medium"
+                      style={{ backgroundColor: '#111', color: '#FFF', minHeight: 28 }}
+                    >
+                      차단
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
 
@@ -212,7 +482,6 @@ export default function AdminPage() {
         <div>
           <h2 className="text-lg font-bold mb-4" style={{ color: '#111' }}>사용자 차단 관리</h2>
 
-          {/* 차단 추가 */}
           <div className="flex gap-2 mb-6">
             <input
               type="text"
@@ -232,7 +501,6 @@ export default function AdminPage() {
             </button>
           </div>
 
-          {/* 차단 목록 */}
           <div className="rounded-xl border p-4" style={{ borderColor: '#E5E7EB' }}>
             <p className="text-sm font-bold mb-3" style={{ color: '#111' }}>차단된 사용자 ({bannedEmails.length}명)</p>
             {bannedEmails.length === 0 ? (
@@ -241,8 +509,8 @@ export default function AdminPage() {
               <div className="space-y-2">
                 {bannedEmails.map(email => (
                   <div key={email} className="flex items-center justify-between rounded-lg p-3" style={{ backgroundColor: '#FEF2F2' }}>
-                    <span className="text-sm" style={{ color: '#111' }}>{email}</span>
-                    <button onClick={() => handleUnban(email)} className="text-xs font-medium" style={{ color: '#22C55E', minHeight: 28 }}>해제</button>
+                    <span className="text-sm truncate" style={{ color: '#111' }}>{email}</span>
+                    <button onClick={() => handleUnban(email)} className="shrink-0 text-xs font-bold px-3 py-1 rounded-lg" style={{ color: '#22C55E', backgroundColor: '#F0FDF4', minHeight: 28 }}>해제</button>
                   </div>
                 ))}
               </div>
@@ -251,7 +519,7 @@ export default function AdminPage() {
 
           <div className="mt-4 rounded-xl p-4" style={{ backgroundColor: '#F9FAFB' }}>
             <p className="text-xs" style={{ color: '#555' }}>
-              차단된 사용자는 글쓰기, 댓글 작성, 이벤트 등록이 불가능합니다.<br />
+              차단된 사용자는 글쓰기, 댓글 작성이 불가능합니다.<br />
               차단은 즉시 적용되며, 해제하면 다시 이용 가능합니다.
             </p>
           </div>
@@ -259,39 +527,61 @@ export default function AdminPage() {
       )}
 
       {/* ═══ 현황 ═══ */}
-      {activeTab === 'stats' && (
+      {activeTab === 'stats' && !loading && (
         <div>
           <h2 className="text-lg font-bold mb-4" style={{ color: '#111' }}>사이트 현황</h2>
+
+          {/* 주요 지표 */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-            <div className="rounded-xl border p-4 text-center" style={{ borderColor: '#E5E7EB' }}>
-              <p className="text-2xl font-black" style={{ color: '#8B5CF6' }}>{posts.length}</p>
-              <p className="text-xs" style={{ color: '#888' }}>전체 글</p>
-            </div>
-            <div className="rounded-xl border p-4 text-center" style={{ borderColor: '#E5E7EB' }}>
-              <p className="text-2xl font-black" style={{ color: '#8B5CF6' }}>{comments.length}</p>
-              <p className="text-xs" style={{ color: '#888' }}>전체 댓글</p>
-            </div>
-            <div className="rounded-xl border p-4 text-center" style={{ borderColor: '#E5E7EB' }}>
-              <p className="text-2xl font-black" style={{ color: '#EF4444' }}>{bannedEmails.length}</p>
-              <p className="text-xs" style={{ color: '#888' }}>차단 사용자</p>
-            </div>
-            <div className="rounded-xl border p-4 text-center" style={{ borderColor: '#E5E7EB' }}>
-              <p className="text-2xl font-black" style={{ color: '#22C55E' }}>116</p>
-              <p className="text-xs" style={{ color: '#888' }}>등록 업소</p>
-            </div>
+            {[
+              { label: '전체 글', count: posts.length, color: '#8B5CF6' },
+              { label: '갤러리 클립', count: clips.length, color: '#F59E0B' },
+              { label: '전체 댓글', count: comments.length, color: '#3B82F6' },
+              { label: '차단 사용자', count: bannedEmails.length, color: '#EF4444' },
+            ].map(stat => (
+              <div key={stat.label} className="rounded-xl border p-4 text-center" style={{ borderColor: '#E5E7EB' }}>
+                <p className="text-2xl font-black" style={{ color: stat.color }}>{stat.count}</p>
+                <p className="text-xs" style={{ color: '#888' }}>{stat.label}</p>
+              </div>
+            ))}
           </div>
 
-          <div className="rounded-xl border p-4" style={{ borderColor: '#E5E7EB' }}>
-            <p className="text-sm font-bold mb-2" style={{ color: '#111' }}>카테고리별 글</p>
-            {['free', 'discussion', 'reviews', 'tips', 'party'].map(cat => {
-              const count = posts.filter(p => p.category === cat).length;
+          {/* 카테고리별 */}
+          <div className="rounded-xl border p-4 mb-4" style={{ borderColor: '#E5E7EB' }}>
+            <p className="text-sm font-bold mb-3" style={{ color: '#111' }}>카테고리별 글 수</p>
+            {Object.entries(CATEGORY_LABELS).map(([cat, label]) => {
+              const count = cat === 'clip' ? clips.length : posts.filter(p => p.category === cat).length;
+              if (count === 0) return null;
               return (
-                <div key={cat} className="flex items-center justify-between py-1 text-sm">
-                  <span style={{ color: '#555' }}>{cat}</span>
-                  <span className="font-bold" style={{ color: '#111' }}>{count}개</span>
+                <div key={cat} className="flex items-center justify-between py-1.5 text-sm">
+                  <span style={{ color: '#555' }}>{label}</span>
+                  <div className="flex items-center gap-2">
+                    <div className="h-2 rounded-full" style={{ width: Math.max(20, count * 3), backgroundColor: '#8B5CF6', opacity: 0.3 }} />
+                    <span className="font-bold text-xs" style={{ color: '#111', minWidth: 30, textAlign: 'right' }}>{count}개</span>
+                  </div>
                 </div>
               );
             })}
+          </div>
+
+          {/* 최근 활동 유저 */}
+          <div className="rounded-xl border p-4" style={{ borderColor: '#E5E7EB' }}>
+            <p className="text-sm font-bold mb-3" style={{ color: '#111' }}>최근 활동 사용자 (글 기준)</p>
+            {(() => {
+              const userCounts: Record<string, number> = {};
+              [...posts, ...clips].forEach(p => {
+                if (p.user_id) userCounts[p.user_id] = (userCounts[p.user_id] || 0) + 1;
+              });
+              return Object.entries(userCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10)
+                .map(([uid, count]) => (
+                  <div key={uid} className="flex items-center justify-between py-1 text-xs">
+                    <span style={{ color: '#555' }}>{uid.slice(0, 16)}...</span>
+                    <span className="font-bold" style={{ color: '#111' }}>{count}개</span>
+                  </div>
+                ));
+            })()}
           </div>
         </div>
       )}
