@@ -20,7 +20,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 export default function AdminPage() {
   useDocumentMeta('관리자 페이지', '놀쿨 사이트 관리');
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const supabase = createClient();
   const isAdmin = user && ADMIN_EMAILS.includes(user.email || '');
 
@@ -169,6 +169,14 @@ export default function AdminPage() {
     await supabase.from('posts').update({ is_pinned: newVal }).eq('id', post.id);
     setPosts(prev => prev.map(p => p.id === post.id ? { ...p, is_pinned: newVal } : p));
   };
+
+  if (authLoading) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#8B5CF6] border-t-transparent" />
+      </div>
+    );
+  }
 
   if (!user) {
     return (
