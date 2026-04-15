@@ -42,19 +42,44 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Venue[]>([]);
 
+  const CAT_KW: Record<string, string> = {
+    '클럽': 'club', '나이트': 'night', '나이트클럽': 'night', '라운지': 'lounge',
+    '룸': 'room', '룸싸롱': 'room', '요정': 'yojeong', '호빠': 'hoppa', '호스트바': 'hoppa', '고구려': 'night',
+  };
+  const norm = (s: string) => s.toLowerCase().replace(/\s+/g, '').replace(/[^\wㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+
   const search = useCallback((q: string) => {
     if (!q.trim()) { setResults([]); return; }
-    const lower = q.toLowerCase();
-    const found = localVenues.filter((v) => {
-      if (v.status === 'closed_or_unclear') return false;
-      return (
-        v.nameKo.toLowerCase().includes(lower) ||
-        v.regionKo.toLowerCase().includes(lower) ||
-        v.tags.some((t) => t.toLowerCase().includes(lower)) ||
-        v.description.toLowerCase().includes(lower)
-      );
+    const qn = norm(q);
+    let detectedCat = '';
+    let residual = qn;
+    for (const [kw, code] of Object.entries(CAT_KW).sort((a, b) => b[0].length - a[0].length)) {
+      if (residual.includes(norm(kw))) { if (!detectedCat) detectedCat = code; residual = residual.replace(norm(kw), ''); }
+    }
+    const scored = localVenues.filter(v => v.status !== 'closed_or_unclear').map(v => {
+      let score = 0;
+      const nk = norm(v.nameKo); const rk = norm(v.regionKo);
+      if (nk === qn) score += 1000;
+      else if (nk.startsWith(qn)) score += 600;
+      else if (nk.includes(qn)) score += 300;
+      if (v.tags?.some(t => norm(t) === qn)) score += 500;
+      if (v.tags?.some(t => norm(t).includes(qn))) score += 150;
+      if (detectedCat && v.category === detectedCat) score += 200;
+      if (residual && (rk.includes(residual) || residual.includes(rk))) score += 200;
+      if (residual && nk.includes(residual)) score += 150;
+      if (v.description?.toLowerCase().includes(q.toLowerCase())) score += 30;
+      if (qn.length >= 2 && score === 0) {
+        for (let len = Math.min(qn.length, nk.length); len >= 2; len--) {
+          let found = false;
+          for (let i = 0; i <= qn.length - len; i++) { if (nk.includes(qn.substring(i, i + len))) { score += len * 15; found = true; break; } }
+          if (found) break;
+        }
+      }
+      if (v.isPremium) score += 20;
+      return { venue: v, score };
     });
-    setResults(found.slice(0, 10));
+    const filtered = scored.filter(s => s.score > 0).sort((a, b) => b.score - a.score);
+    setResults(filtered.slice(0, 10).map(s => s.venue));
   }, []);
 
   useEffect(() => {

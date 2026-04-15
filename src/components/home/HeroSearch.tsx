@@ -74,48 +74,60 @@ export default function HeroSearch() {
     localStorage.setItem('recentSearches', JSON.stringify(updated));
   };
 
-  // Search logic using API
-  const performSearch = useCallback(async (q: string, cat: string) => {
-    if (!q.trim() && cat === 'all') {
-      setResults([]);
-      return;
+  // 카테고리 키워드 매핑
+  const CAT_KW: Record<string, string> = {
+    '클럽': 'club', '나이트': 'night', '나이트클럽': 'night', '라운지': 'lounge',
+    '바': 'lounge', '룸': 'room', '룸싸롱': 'room', '룸살롱': 'room',
+    '요정': 'yojeong', '호빠': 'hoppa', '호스트바': 'hoppa', '고구려': 'night',
+  };
+  const norm = (s: string) => s.toLowerCase().replace(/\s+/g, '').replace(/[^\wㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+
+  // Client-side smart search
+  const performSearch = useCallback((q: string, cat: string) => {
+    if (!q.trim() && cat === 'all') { setResults([]); setLoading(false); return; }
+    setLoading(true);
+
+    const qn = norm(q);
+    // 쿼리에서 카테고리 키워드 추출
+    let detectedCat = cat !== 'all' ? cat : '';
+    let residual = qn;
+    for (const [kw, code] of Object.entries(CAT_KW).sort((a, b) => b[0].length - a[0].length)) {
+      if (residual.includes(norm(kw))) { if (!detectedCat) detectedCat = code; residual = residual.replace(norm(kw), ''); }
     }
 
-    setLoading(true);
-    try {
-      // Use the POST API for hybrid search
-      const response = await fetch('/api/search', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          q,
-          category: cat === 'all' ? undefined : cat,
-          venues: localVenues, // Pass local venues for hybrid search
-          limit: 8
-        })
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setResults(data.results || []);
-      } else {
-        // Fallback to local search if API fails
-        const lowerQ = q.toLowerCase();
-        const fallback = localVenues.filter(v => {
-          if (v.status === 'closed_or_unclear') return false;
-          const matchesQuery = !q.trim() || 
-            v.nameKo.toLowerCase().includes(lowerQ) || 
-            v.regionKo.toLowerCase().includes(lowerQ);
-          const matchesCat = cat === 'all' || v.category === cat;
-          return matchesQuery && matchesCat;
-        });
-        setResults(fallback.slice(0, 8));
+    const scored = localVenues.filter(v => v.status !== 'closed_or_unclear').map(v => {
+      let score = 0;
+      const nk = norm(v.nameKo); const rk = norm(v.regionKo);
+      // 이름 매칭
+      if (nk === qn) score += 1000;
+      else if (nk.startsWith(qn)) score += 600;
+      else if (nk.includes(qn)) score += 300;
+      // 태그 매칭
+      if (v.tags?.some(t => norm(t) === qn)) score += 500;
+      if (v.tags?.some(t => norm(t).includes(qn))) score += 150;
+      // 카테고리 매칭
+      if (detectedCat && v.category === detectedCat) score += 200;
+      // 지역 매칭
+      if (residual && (rk.includes(residual) || residual.includes(rk))) score += 200;
+      // 부분 매칭
+      if (residual && nk.includes(residual)) score += 150;
+      // 역매칭: 쿼리 안의 긴 부분문자열이 이름에 포함
+      if (qn.length >= 2 && score === 0) {
+        for (let len = Math.min(qn.length, nk.length); len >= 2; len--) {
+          let found = false;
+          for (let i = 0; i <= qn.length - len; i++) { if (nk.includes(qn.substring(i, i + len))) { score += len * 15; found = true; break; } }
+          if (found) break;
+        }
       }
-    } catch (err) {
-      console.error('Search error:', err);
-    } finally {
-      setLoading(false);
-    }
+      if (v.isPremium) score += 20;
+      return { venue: v, score };
+    });
+
+    let filtered = scored.filter(s => s.score > 0);
+    if (cat !== 'all') filtered = filtered.filter(s => s.venue.category === cat);
+    filtered.sort((a, b) => b.score - a.score);
+    setResults(filtered.slice(0, 8).map(s => s.venue));
+    setLoading(false);
   }, []);
 
   // Debounce search
