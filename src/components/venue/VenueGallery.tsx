@@ -12,7 +12,19 @@ const SQUARE_SLOTS: Record<string, number[]> = {
   'haeundaehoppa-kkantappiya': [4],
 };
 
+/**
+ * 슬러그별 특정 슬롯에서 기본 파일명 대신 사용할 이미지 경로.
+ * 브라우저/CDN 캐시 완전 무효화를 위해 파일명 자체를 교체할 때 사용.
+ */
+const IMAGE_OVERRIDES: Record<string, Record<number, string>> = {
+  'haeundaehoppa-kkantappiya': {
+    4: '/venues/haeundaehoppa-kkantappiya-subin-ad.jpg',
+  },
+};
+
 function getSrc(slug: string, n: number): string {
+  const override = IMAGE_OVERRIDES[slug]?.[n];
+  if (override) return override;
   return `/venues/${slug}-${n}.jpg`;
 }
 
