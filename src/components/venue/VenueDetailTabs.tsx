@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import type { Venue } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
+import { getVenueEvent } from '@/data/venue-events';
 
 interface FAQ {
   question: string;
@@ -157,12 +158,92 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
         )}
 
         {/* ── 이벤트 ── */}
-        {activeTab === '이벤트' && (
-          <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">이벤트</h2>
-            <p className="text-neon-text-muted">현재 진행 중인 이벤트가 없습니다.</p>
-          </div>
-        )}
+        {activeTab === '이벤트' && (() => {
+          const ev = getVenueEvent(venue.slug);
+          if (!ev) {
+            return (
+              <div>
+                <h2 className="mb-4 text-xl font-bold text-neon-text">이벤트</h2>
+                <p className="text-neon-text-muted">현재 진행 중인 이벤트가 없습니다.</p>
+              </div>
+            );
+          }
+          const accentMap = {
+            pink: {
+              frame: 'border-pink-300/60 from-pink-50 via-rose-50 to-white',
+              label: 'text-pink-700',
+              headline: 'text-pink-900',
+              chip: 'bg-pink-600 text-white',
+              perkFrame: 'border-pink-200 bg-white/80',
+              perkTitle: 'text-pink-800',
+              footFrame: 'border-pink-300 bg-pink-50',
+              footText: 'text-pink-900',
+            },
+            gold: {
+              frame: 'border-amber-300/60 from-amber-50 via-yellow-50 to-white',
+              label: 'text-amber-700',
+              headline: 'text-amber-900',
+              chip: 'bg-amber-600 text-white',
+              perkFrame: 'border-amber-200 bg-white/80',
+              perkTitle: 'text-amber-800',
+              footFrame: 'border-amber-300 bg-amber-50',
+              footText: 'text-amber-900',
+            },
+            cyan: {
+              frame: 'border-cyan-300/60 from-cyan-50 via-sky-50 to-white',
+              label: 'text-cyan-700',
+              headline: 'text-cyan-900',
+              chip: 'bg-cyan-600 text-white',
+              perkFrame: 'border-cyan-200 bg-white/80',
+              perkTitle: 'text-cyan-800',
+              footFrame: 'border-cyan-300 bg-cyan-50',
+              footText: 'text-cyan-900',
+            },
+          } as const;
+          const c = accentMap[ev.accent ?? 'pink'];
+          return (
+            <div>
+              <div className="mb-6 flex items-center gap-3">
+                <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-bold ${c.chip}`}>
+                  LIVE · 진행중
+                </span>
+                <h2 className="text-xl font-bold text-neon-text">이벤트</h2>
+              </div>
+
+              <div className={`rounded-3xl border bg-gradient-to-br p-6 sm:p-8 shadow-[0_2px_16px_rgba(0,0,0,0.04)] ${c.frame}`}>
+                <p className={`mb-3 text-xs font-bold tracking-[0.25em] ${c.label}`}>SPECIAL OFFER</p>
+                <h3 className={`text-2xl sm:text-3xl font-extrabold leading-snug ${c.headline}`}>
+                  {ev.headline}
+                </h3>
+                {ev.subline && (
+                  <p className="mt-3 text-sm sm:text-base leading-relaxed text-neutral-700">
+                    {ev.subline}
+                  </p>
+                )}
+
+                <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                  {ev.perks.map((perk, i) => (
+                    <div key={i} className={`rounded-2xl border p-5 backdrop-blur-sm ${c.perkFrame}`}>
+                      <div className="flex items-start gap-3">
+                        <span className="text-2xl leading-none">{perk.icon}</span>
+                        <div className="flex-1">
+                          <p className={`text-sm font-bold ${c.perkTitle}`}>{perk.title}</p>
+                          <p className="mt-1 text-xs sm:text-sm leading-relaxed text-neutral-700">{perk.detail}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {ev.footnote && (
+                  <div className={`mt-6 rounded-xl border p-4 text-center text-sm font-semibold ${c.footFrame} ${c.footText}`}>
+                    {ev.footnote}
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })()}
 
         {/* ── FAQ ── */}
         {activeTab === 'FAQ' && (

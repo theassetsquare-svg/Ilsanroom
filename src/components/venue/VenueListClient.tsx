@@ -39,7 +39,13 @@ export default function VenueListClient({ venues, hrefPattern, regions }: VenueL
   const filtered = useMemo(() => {
     let list = venues.filter((v) => v.status !== 'closed_or_unclear');
     if (regionFilter !== 'all') {
-      list = list.filter((v) => v.region === regionFilter || v.regionKo === regionFilter);
+      list = list.filter((v) => {
+        // 정확 매칭
+        if (v.region === regionFilter || v.regionKo === regionFilter) return true;
+        // 상위 지역 prefix 매칭: 'busan' 선택 시 'busan-haeundae' 등 모두 포함
+        if (v.region.startsWith(regionFilter + '-')) return true;
+        return false;
+      });
     }
     list.sort((a, b) => {
       if (sortKey === 'name') return a.nameKo.localeCompare(b.nameKo);
