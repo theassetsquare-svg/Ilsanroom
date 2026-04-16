@@ -6,24 +6,19 @@ interface VenueGalleryProps {
 }
 
 /**
- * 슬러그별 특정 슬롯(1~4)을 .svg로 로드해야 하는 케이스.
- * 광고주 맞춤 전화번호 카드를 갤러리 슬롯에 넣을 때 사용.
+ * 슬러그별 1:1 정사각형 비율로 렌더해야 하는 슬롯 (광고 카드 등).
  */
-const SVG_SLOTS: Record<string, number[]> = {
+const SQUARE_SLOTS: Record<string, number[]> = {
   'haeundaehoppa-kkantappiya': [4],
 };
 
 function getSrc(slug: string, n: number): string {
-  const svgSlots = SVG_SLOTS[slug];
-  if (svgSlots && svgSlots.includes(n)) {
-    return `/venues/${slug}-${n}.svg`;
-  }
   return `/venues/${slug}-${n}.jpg`;
 }
 
 function isSquareSlot(slug: string, n: number): boolean {
-  const svgSlots = SVG_SLOTS[slug];
-  return !!(svgSlots && svgSlots.includes(n));
+  const slots = SQUARE_SLOTS[slug];
+  return !!(slots && slots.includes(n));
 }
 
 export default function VenueGallery({ slug, name }: VenueGalleryProps) {

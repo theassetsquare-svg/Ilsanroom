@@ -263,6 +263,8 @@ console.log(`✅ 지역별 페이지 ${regionalCount}개 생성`);
 // ══════════════════════════════════════════
 /** SVG 검색 썸네일이 있는 업소 */
 const SVG_OG_SLUGS = new Set(['dapsimnidontellmamanight']);
+/** JPG 1:1 커스텀 OG (카톡/밴드 호환) */
+const JPG_OG_SLUGS = new Set(['haeundaehoppa-kkantappiya']);
 /** JPG 닉네임 OG가 있는 업소 */
 const NICKNAME_OG_SLUGS = new Set([
   'ilsanmyeongwolgwanyojeong','ilsanroom','busanyeonsandongmulnight','busanmulnight',
@@ -270,6 +272,7 @@ const NICKNAME_OG_SLUGS = new Set([
   'pajuyadangskydomenight','ulsanchampionnight','gangnamjuliananight','dapsimnidontellmamanight',
 ]);
 function getVenueOgImage(slug) {
+  if (JPG_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}.jpg`;
   if (SVG_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}.svg`;
   if (NICKNAME_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}.jpg`;
   return `${BASE_URL}/venues/${slug}-1.jpg`;

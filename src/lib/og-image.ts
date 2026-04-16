@@ -24,11 +24,22 @@ const NICKNAME_OG_SLUGS = new Set([
 /** SVG OG 이미지를 사용하는 가게 (검색 썸네일용 1:1) */
 const SVG_OG_SLUGS = new Set([
   'dapsimnidontellmamanight',
+]);
+
+/**
+ * JPG OG 이미지를 사용하는 가게 (카카오톡/밴드/인스타/페북 호환 — SVG 미지원).
+ * 1:1 1200x1200 JPG 정적 파일.
+ */
+const JPG_OG_SLUGS = new Set([
   'haeundaehoppa-kkantappiya',
 ]);
 
 /** 업소 상세 OG image (slug 기반) */
 export function getVenueOgImageBySlug(slug: string): string {
+  // JPG 1:1 썸네일 (카톡/밴드/인스타 호환) — 최우선
+  if (JPG_OG_SLUGS.has(slug)) {
+    return `${SITE_URL}/og/${slug}.jpg`;
+  }
   // SVG 검색 썸네일이 있으면 그것을 사용
   if (SVG_OG_SLUGS.has(slug)) {
     return `${SITE_URL}/og/${slug}.svg`;
