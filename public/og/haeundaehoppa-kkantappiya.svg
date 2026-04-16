@@ -1,14 +1,73 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#DC2626;stop-opacity:1"/>
-      <stop offset="100%" style="stop-color:#1a1a2e;stop-opacity:1"/>
+    <linearGradient id="oceanBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0b2447;stop-opacity:1"/>
+      <stop offset="45%" style="stop-color:#19376d;stop-opacity:1"/>
+      <stop offset="75%" style="stop-color:#a5322a;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#f26a3e;stop-opacity:1"/>
     </linearGradient>
+    <linearGradient id="sunset" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd36b;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#ff9140;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#ff5e62;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="goldLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#FFA500;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#FFD700;stop-opacity:1"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="textShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.55"/>
+    </filter>
   </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
-  <rect x="40" y="40" width="1120" height="550" rx="32" fill="rgba(255,255,255,0.08)"/>
-  <text x="600" y="300" text-anchor="middle" font-family="sans-serif" font-size="100" font-weight="900" fill="white" letter-spacing="-0.02em">해운대호빠 깐따삐야</text>
-  
-  <text x="600" y="400" text-anchor="middle" font-family="sans-serif" font-size="44" font-weight="600" fill="rgba(255,255,255,0.85)">호빠 | 놀쿨</text>
-  <text x="600" y="570" text-anchor="middle" font-family="sans-serif" font-size="32" font-weight="500" fill="rgba(255,255,255,0.5)">놀쿨 — nolcool.com</text>
+
+  <rect width="1200" height="1200" fill="url(#oceanBg)"/>
+
+  <circle cx="600" cy="860" r="130" fill="url(#sunset)" opacity="0.85"/>
+  <circle cx="600" cy="860" r="200" fill="url(#sunset)" opacity="0.15"/>
+
+  <rect x="0" y="870" width="1200" height="6" fill="#ffd36b" opacity="0.55"/>
+  <rect x="0" y="905" width="1200" height="4" fill="#ff9140" opacity="0.45"/>
+  <rect x="0" y="945" width="1200" height="5" fill="#ff5e62" opacity="0.4"/>
+  <rect x="0" y="990" width="1200" height="3" fill="#ffd36b" opacity="0.35"/>
+  <rect x="0" y="1030" width="1200" height="4" fill="#ff9140" opacity="0.3"/>
+  <rect x="0" y="1075" width="1200" height="3" fill="#ffd36b" opacity="0.25"/>
+  <rect x="0" y="1120" width="1200" height="3" fill="#ff5e62" opacity="0.2"/>
+
+  <g opacity="0.35">
+    <line x1="0" y1="820" x2="1200" y2="820" stroke="#0b2447" stroke-width="6"/>
+    <line x1="200" y1="820" x2="200" y2="780" stroke="#0b2447" stroke-width="4"/>
+    <line x1="400" y1="820" x2="400" y2="740" stroke="#0b2447" stroke-width="4"/>
+    <line x1="600" y1="820" x2="600" y2="720" stroke="#0b2447" stroke-width="4"/>
+    <line x1="800" y1="820" x2="800" y2="740" stroke="#0b2447" stroke-width="4"/>
+    <line x1="1000" y1="820" x2="1000" y2="780" stroke="#0b2447" stroke-width="4"/>
+    <path d="M 0 820 Q 300 750 600 720 Q 900 750 1200 820" fill="none" stroke="#0b2447" stroke-width="5"/>
+  </g>
+
+  <rect x="40" y="40" width="1120" height="1120" rx="32" fill="none" stroke="rgba(255,215,0,0.4)" stroke-width="3"/>
+  <rect x="60" y="60" width="1080" height="1080" rx="24" fill="none" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+
+  <text x="600" y="170" text-anchor="middle" font-family="sans-serif" font-size="40" font-weight="600" fill="rgba(255,215,0,0.85)" letter-spacing="0.25em">HAEUNDAE · BUSAN</text>
+  <line x1="420" y1="200" x2="780" y2="200" stroke="url(#goldLine)" stroke-width="2"/>
+  <text x="600" y="260" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="500" fill="rgba(255,255,255,0.75)" letter-spacing="0.18em">부산 해운대 호스트바</text>
+
+  <text x="600" y="390" text-anchor="middle" font-family="sans-serif" font-size="96" font-weight="900" fill="white" filter="url(#textShadow)" letter-spacing="-0.02em">해운대호빠</text>
+  <text x="600" y="510" text-anchor="middle" font-family="sans-serif" font-size="118" font-weight="900" fill="url(#sunset)" filter="url(#glow)" letter-spacing="-0.01em">깐따삐야</text>
+
+  <rect x="380" y="560" width="440" height="100" rx="50" fill="rgba(255,215,0,0.18)" stroke="url(#goldLine)" stroke-width="3"/>
+  <text x="600" y="625" text-anchor="middle" font-family="sans-serif" font-size="48" font-weight="800" fill="#FFD700" letter-spacing="0.05em">★ 실장 수빈 ★</text>
+
+  <rect x="200" y="700" width="800" height="130" rx="24" fill="rgba(255,255,255,0.95)"/>
+  <text x="600" y="755" text-anchor="middle" font-family="sans-serif" font-size="32" font-weight="700" fill="#a5322a" letter-spacing="0.2em">📞 24시간 예약 / 픽업</text>
+  <text x="600" y="810" text-anchor="middle" font-family="sans-serif" font-size="60" font-weight="900" fill="#0b2447" letter-spacing="0.05em">010-6773-6222</text>
+
+  <text x="600" y="1075" text-anchor="middle" font-family="sans-serif" font-size="30" font-weight="700" fill="rgba(255,255,255,0.9)" letter-spacing="0.08em">광안대교 오션뷰 · 해운대역 픽업 10분</text>
+  <text x="600" y="1135" text-anchor="middle" font-family="sans-serif" font-size="26" font-weight="500" fill="rgba(255,255,255,0.55)" letter-spacing="0.15em">nolcool.com</text>
 </svg>

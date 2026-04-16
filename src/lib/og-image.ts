@@ -24,6 +24,7 @@ const NICKNAME_OG_SLUGS = new Set([
 /** SVG OG 이미지를 사용하는 가게 (검색 썸네일용 1:1) */
 const SVG_OG_SLUGS = new Set([
   'dapsimnidontellmamanight',
+  'haeundaehoppa-kkantappiya',
 ]);
 
 /** 업소 상세 OG image (slug 기반) */
