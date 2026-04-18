@@ -4,11 +4,18 @@ import { createClient } from '@/lib/supabase';
 
 interface NewPost { id: string; title: string; category: string; created_at: string; }
 
-function useNewPosts(user: any) {
+function useNewPosts(user: any, pathname: string) {
   const [count, setCount] = useState(0);
   const [posts, setPosts] = useState<NewPost[]>([]);
   const refresh = useCallback(async () => {
     if (!user) { setCount(0); setPosts([]); return; }
+    // 커뮤니티 페이지에 있을 때는 seen_at 갱신 후 카운트 0
+    if (pathname.startsWith('/community')) {
+      try { localStorage.setItem('community_seen_at', String(Date.now())); } catch {}
+      setCount(0);
+      setPosts([]);
+      return;
+    }
     const supabase = createClient();
     if (!supabase) return;
     try {
@@ -25,7 +32,7 @@ function useNewPosts(user: any) {
       setCount(c ?? 0);
       setPosts((data || []) as NewPost[]);
     } catch { /* noop */ }
-  }, [user]);
+  }, [user, pathname]);
   useEffect(() => { refresh(); }, [refresh]);
   useEffect(() => {
     if (!user) return;
@@ -109,19 +116,12 @@ export default function MobileBottomNav() {
     return () => subscription.unsubscribe();
   }, []);
 
-  const { count: newPostCount, posts: newPosts, refresh: refreshPosts } = useNewPosts(user);
+  const { count: newPostCount, posts: newPosts, refresh: refreshPosts } = useNewPosts(user, pathname);
 
   const markAllRead = useCallback(() => {
     try { localStorage.setItem('community_seen_at', String(Date.now())); } catch {}
     refreshPosts();
   }, [refreshPosts]);
-
-  // 커뮤니티 페이지 방문 시 알림 카운트 리셋
-  useEffect(() => {
-    if (pathname.startsWith('/community')) {
-      try { localStorage.setItem('community_seen_at', String(Date.now())); } catch {}
-    }
-  }, [pathname]);
 
   // 라우트 변경 시 드롭다운 닫기
   useEffect(() => { setNotifOpen(false); }, [pathname]);
