@@ -247,9 +247,24 @@ export default function VenueDetailPage({
         </Link>
       </section>
 
-      {/* ═══ 13. 실시간 활동 피드 ═══ */}
-      <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
-        <LiveActivityFeed maxItems={4} compact />
+      {/* ═══ 13. 다른 업종 보기 + 활동 피드 ═══ */}
+      <section className="mx-auto max-w-[1200px] px-4 py-6 sm:px-6 space-y-4">
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-1">
+          <span className="shrink-0 text-xs text-neon-text-muted">다른 업종</span>
+          {[
+            { emoji: '🎵', label: '클럽', href: '/clubs' },
+            { emoji: '🌙', label: '나이트', href: '/nights' },
+            { emoji: '🍸', label: '라운지', href: '/lounges' },
+            { emoji: '🚪', label: '룸', href: '/rooms' },
+            { emoji: '🏮', label: '요정', href: '/yojeong' },
+            { emoji: '🥂', label: '호빠', href: '/hoppa' },
+          ].filter(c => c.href !== categoryPath).map(c => (
+            <Link key={c.label} to={c.href} className="shrink-0 inline-flex items-center gap-1 rounded-full bg-neon-surface border border-neon-border px-3 py-1.5 text-xs font-medium text-neon-text hover:border-neon-primary/40 transition whitespace-nowrap">
+              {c.emoji} {c.label}
+            </Link>
+          ))}
+        </div>
+        <LiveActivityFeed maxItems={3} compact category={venue.category} />
       </section>
 
       {/* ═══ 14. Sticky Phone Bar ═══ */}
