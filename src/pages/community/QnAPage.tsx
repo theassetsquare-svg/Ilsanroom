@@ -211,6 +211,24 @@ export default function QnAPage() {
           )}
         </section>
 
+        {/* 다른 게시판 순환 */}
+        <div className="mt-6 flex items-center gap-2 overflow-x-auto scrollbar-hide pb-1">
+          <span className="shrink-0 text-xs" style={{ color: '#999' }}>다른 게시판</span>
+          {[
+            { label: '💬 자유', href: '/community/free' },
+            { label: '⭐ 후기', href: '/community/reviews' },
+            { label: '🧩 조각모임', href: '/community/jogak' },
+            { label: '💡 꿀팁', href: '/community/tips' },
+            { label: '👗 패션', href: '/community/fashion' },
+            { label: '🎉 파티', href: '/community/party' },
+          ].map(b => (
+            <Link key={b.label} to={b.href} className="shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium transition hover:border-[#8B5CF6]/40 whitespace-nowrap"
+              style={{ borderColor: '#E5E7EB', color: '#555' }}>
+              {b.label}
+            </Link>
+          ))}
+        </div>
+
         {showWriteModal && (
           <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
             <WriteHeader onCancel={() => setShowWriteModal(false)} title="Q&A 질문하기" />
