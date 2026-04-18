@@ -123,19 +123,74 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
 
         {/* ── 메뉴·서비스 ── */}
         {activeTab === '메뉴·서비스' && (
-          <div>
+          <div className="space-y-6">
             <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} 서비스 안내</h2>
-            {venue.features.length > 0 ? (
-              <div className="grid gap-3 sm:grid-cols-2">
-                {venue.features.map((f) => (
-                  <div key={f} className="flex items-center gap-3 rounded-xl border border-neon-border bg-neon-surface p-4">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-neon-primary/10 text-neon-primary text-sm">✓</span>
-                    <span className="text-sm text-neon-text">{f}</span>
-                  </div>
-                ))}
+
+            {/* 업종별 핵심 정보 카드 */}
+            <div className={`grid gap-4 ${venue.category === 'night' ? 'sm:grid-cols-3' : 'sm:grid-cols-2'}`}>
+              {/* 양주 — 모든 업종 */}
+              <div className="rounded-2xl border border-neon-border bg-neon-surface p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xl">🥃</span>
+                  <h3 className="font-bold text-neon-text">{venue.category === 'lounge' ? '양주·칵테일' : '양주'}</h3>
+                </div>
+                <p className="text-sm text-neon-text-muted leading-relaxed">
+                  {venue.liquorInfo || '매장에 직접 문의해주세요'}
+                </p>
               </div>
-            ) : (
-              <p className="text-neon-text-muted">서비스 정보가 등록되지 않았습니다.</p>
+
+              {/* 부스 — 나이트만 */}
+              {venue.category === 'night' && (
+                <div className="rounded-2xl border border-neon-border bg-neon-surface p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-xl">🛋️</span>
+                    <h3 className="font-bold text-neon-text">부스</h3>
+                  </div>
+                  <p className="text-sm text-neon-text-muted leading-relaxed">
+                    {venue.boothInfo || '매장에 직접 문의해주세요'}
+                  </p>
+                </div>
+              )}
+
+              {/* 룸 — 나이트, 룸, 요정, 호빠 */}
+              {['night', 'room', 'yojeong', 'hoppa'].includes(venue.category) && (
+                <div className="rounded-2xl border border-neon-border bg-neon-surface p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-xl">🚪</span>
+                    <h3 className="font-bold text-neon-text">룸</h3>
+                  </div>
+                  <p className="text-sm text-neon-text-muted leading-relaxed">
+                    {venue.roomInfo || '매장에 직접 문의해주세요'}
+                  </p>
+                </div>
+              )}
+
+              {/* 테이블·좌석 — 클럽, 라운지 */}
+              {['club', 'lounge'].includes(venue.category) && (
+                <div className="rounded-2xl border border-neon-border bg-neon-surface p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-xl">{venue.category === 'club' ? '🎧' : '🍸'}</span>
+                    <h3 className="font-bold text-neon-text">{venue.category === 'club' ? '테이블·스탠딩' : '좌석'}</h3>
+                  </div>
+                  <p className="text-sm text-neon-text-muted leading-relaxed">
+                    {venue.roomInfo || '매장에 직접 문의해주세요'}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {venue.features.length > 0 && (
+              <div>
+                <h3 className="mb-3 text-lg font-bold text-neon-text">추가 서비스</h3>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {venue.features.map((f) => (
+                    <div key={f} className="flex items-center gap-3 rounded-xl border border-neon-border bg-neon-surface p-4">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-neon-primary/10 text-neon-primary text-sm">✓</span>
+                      <span className="text-sm text-neon-text">{f}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
         )}

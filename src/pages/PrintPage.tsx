@@ -92,14 +92,14 @@ export default function PrintPage() {
           </ul>
         </div>
 
-        {/* Price Info */}
-        {(venue.priceEntry || venue.priceTable || venue.priceDrink) && (
+        {/* Liquor / Booth / Room Info */}
+        {(venue.liquorInfo || venue.boothInfo || venue.roomInfo) && (
           <div className="mb-6">
-            <h2 className="mb-2 text-lg font-bold">요금표</h2>
+            <h2 className="mb-2 text-lg font-bold">양주·부스·룸</h2>
             <div className="rounded-lg border border-neutral-200 p-4 text-sm">
-              {venue.priceEntry && <p>입장: {venue.priceEntry}</p>}
-              {venue.priceTable && <p>좌석: {venue.priceTable}</p>}
-              {venue.priceDrink && <p>드링크: {venue.priceDrink}</p>}
+              {venue.liquorInfo && <p>양주: {venue.liquorInfo}</p>}
+              {venue.boothInfo && <p>부스: {venue.boothInfo}</p>}
+              {venue.roomInfo && <p>룸: {venue.roomInfo}</p>}
             </div>
           </div>
         )}

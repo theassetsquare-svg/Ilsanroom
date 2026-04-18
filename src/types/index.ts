@@ -29,6 +29,9 @@ export interface Venue {
   priceEntry?: string;
   priceTable?: string;
   priceDrink?: string;
+  liquorInfo?: string;
+  boothInfo?: string;
+  roomInfo?: string;
   staffNickname?: string;
   staffPhone?: string;
   district?: string;

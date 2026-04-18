@@ -21,14 +21,13 @@ function getCategoryHref(category: string, slug: string, region: string) {
 }
 
 export default function PricePage() {
-  useDocumentMeta('얼마 들어? 업종별 평균 시세표', '입장료, 양주값, 테이블 비용까지. 가기 전에 지갑 사정 맞춰봐.');
+  useDocumentMeta('양주·부스·룸 한눈에 보기', '업종별 양주 라인업, 부스 구성, 룸 타입까지. 가기 전에 미리 확인해봐.');
   const [category, setCategory] = useState<CategoryFilter>('all');
   const [showAll, setShowAll] = useState(false);
 
   const filtered = useMemo(() => {
     return venues
       .filter((v) => v.status !== 'closed_or_unclear')
-      .filter((v) => (v.priceEntry || v.priceTable || v.priceDrink))
       .filter((v) => category === 'all' || v.category === category)
       .sort((a, b) => {
         if (a.isPremium !== b.isPremium) return a.isPremium ? -1 : 1;
@@ -40,8 +39,8 @@ export default function PricePage() {
 
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
-      <h1 className="text-3xl font-extrabold text-neon-text mb-2">요금 한눈에 보기</h1>
-      <p className="text-neon-text-muted mb-8">확인된 요금 정보만 표시됩니다. 정확한 금액은 매장에 직접 물어봐.</p>
+      <h1 className="text-3xl font-extrabold text-neon-text mb-2">양주·부스·룸 한눈에 보기</h1>
+      <p className="text-neon-text-muted mb-8">각 매장의 양주 라인업, 부스 구성, 룸 타입을 확인하세요.</p>
 
       {/* Category Filter */}
       <div className="mb-6 flex flex-wrap gap-2">
@@ -60,7 +59,7 @@ export default function PricePage() {
         ))}
       </div>
 
-      {/* Price Table */}
+      {/* Venue Info Table */}
       {filtered.length > 0 ? (
         <div className="overflow-x-auto rounded-2xl border border-neon-border">
           <table className="w-full text-sm">
@@ -68,9 +67,10 @@ export default function PricePage() {
               <tr className="border-b border-neon-border bg-neon-surface-2">
                 <th className="px-4 py-3 text-left font-semibold text-neon-text">매장명</th>
                 <th className="px-4 py-3 text-left font-semibold text-neon-text">권역</th>
-                <th className="px-4 py-3 text-left font-semibold text-neon-text">입장</th>
-                <th className="px-4 py-3 text-left font-semibold text-neon-text">주대/룸</th>
-                <th className="px-4 py-3 text-left font-semibold text-neon-text">드링크</th>
+                <th className="px-4 py-3 text-left font-semibold text-neon-text">양주</th>
+                {(category === 'all' || category === 'night') && <th className="px-4 py-3 text-left font-semibold text-neon-text">부스</th>}
+                {(category === 'all' || ['night', 'room', 'yojeong', 'hoppa'].includes(category)) && <th className="px-4 py-3 text-left font-semibold text-neon-text">룸</th>}
+                {['club', 'lounge'].includes(category) && <th className="px-4 py-3 text-left font-semibold text-neon-text">{category === 'club' ? '테이블' : '좌석'}</th>}
                 <th className="px-4 py-3 text-left font-semibold text-neon-text">별점</th>
               </tr>
             </thead>
@@ -86,9 +86,10 @@ export default function PricePage() {
                     {v.isPremium && <span className="ml-2 text-xs text-neon-gold">PREMIUM</span>}
                   </td>
                   <td className="px-4 py-3 text-neon-text-muted">{v.regionKo}</td>
-                  <td className="px-4 py-3 text-neon-text">{v.priceEntry || '-'}</td>
-                  <td className="px-4 py-3 text-neon-text">{v.priceTable || '-'}</td>
-                  <td className="px-4 py-3 text-neon-text">{v.priceDrink || '-'}</td>
+                  <td className="px-4 py-3 text-neon-text">{v.liquorInfo || '매장 문의'}</td>
+                  {(category === 'all' || category === 'night') && <td className="px-4 py-3 text-neon-text">{v.category === 'night' ? (v.boothInfo || '매장 문의') : '-'}</td>}
+                  {(category === 'all' || ['night', 'room', 'yojeong', 'hoppa'].includes(category)) && <td className="px-4 py-3 text-neon-text">{['night', 'room', 'yojeong', 'hoppa'].includes(v.category) ? (v.roomInfo || '매장 문의') : '-'}</td>}
+                  {['club', 'lounge'].includes(category) && <td className="px-4 py-3 text-neon-text">{v.roomInfo || '매장 문의'}</td>}
                   <td className="px-4 py-3 text-neon-gold">★ {v.rating.toFixed(1)}</td>
                 </tr>
               ))}
@@ -96,7 +97,7 @@ export default function PricePage() {
           </table>
         </div>
       ) : (
-        <p className="py-20 text-center text-neon-text-muted">요금 정보가 등록된 매장이 없습니다.</p>
+        <p className="py-20 text-center text-neon-text-muted">등록된 매장이 없습니다.</p>
       )}
 
       {!showAll && filtered.length > 8 && (
@@ -105,7 +106,7 @@ export default function PricePage() {
         </button>
       )}
       <p className="mt-6 text-xs text-neon-text-subtle">
-        ※ 요금은 매장 사정에 따라 변동될 수 있습니다. 방문 전 반드시 해당 매장에 직접 확인하시기 바랍니다.
+        ※ 상세 정보는 매장 사정에 따라 변동될 수 있습니다. 방문 전 해당 매장에 직접 확인하세요.
       </p>
     </div>
   );

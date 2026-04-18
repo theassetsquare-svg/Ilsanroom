@@ -88,9 +88,9 @@ export default function ComparePage() {
                   <div><dt className="text-neon-text-subtle">지역</dt><dd className="text-neon-text">{v.regionKo}</dd></div>
                   <div><dt className="text-neon-text-subtle">평점</dt><dd className="text-neon-gold">★ {v.rating.toFixed(1)}</dd></div>
                   {v.staffNickname && <div><dt className="text-neon-text-subtle">담당</dt><dd className="text-neon-gold">{v.staffNickname}</dd></div>}
-                  <div><dt className="text-neon-text-subtle">입장료</dt><dd className="text-neon-text">{v.priceEntry || '-'}</dd></div>
-                  <div><dt className="text-neon-text-subtle">주대/룸</dt><dd className="text-neon-text">{v.priceTable || '-'}</dd></div>
-                  <div><dt className="text-neon-text-subtle">음료</dt><dd className="text-neon-text">{v.priceDrink || '-'}</dd></div>
+                  <div><dt className="text-neon-text-subtle">양주</dt><dd className="text-neon-text">{v.liquorInfo || '매장 문의'}</dd></div>
+                  <div><dt className="text-neon-text-subtle">부스</dt><dd className="text-neon-text">{v.boothInfo || '매장 문의'}</dd></div>
+                  <div><dt className="text-neon-text-subtle">룸</dt><dd className="text-neon-text">{v.roomInfo || '매장 문의'}</dd></div>
                   {v.openHours && <div><dt className="text-neon-text-subtle">영업시간</dt><dd className="text-neon-text">{v.openHours}</dd></div>}
                   {v.dressCode && <div><dt className="text-neon-text-subtle">드레스코드</dt><dd className="text-neon-text">{v.dressCode}</dd></div>}
                 </dl>

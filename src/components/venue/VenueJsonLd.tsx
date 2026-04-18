@@ -69,9 +69,7 @@ export default function VenueJsonLd({ venue, breadcrumbItems, faqItems, reviews,
     };
   }
 
-  if (venue.priceEntry || venue.priceTable) {
-    localBusiness.priceRange = venue.priceTable || venue.priceEntry || '';
-  }
+  // 가격 정보 비노출 — 광고주 정책
 
   // Add reviews if available
   if (reviews && reviews.length > 0) {
