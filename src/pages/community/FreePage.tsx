@@ -1,5 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
@@ -32,9 +32,18 @@ export default function FreeBoardPage() {
   useDocumentMeta('자유게시판 — 주제 제한 없이 솔직하게 떠드는 곳', '뭐든 써도 되는 게시판. 궁금한 거, 꿀팁, 후기 뭐든 OK.');
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [recentPosts, setRecentPosts] = useState<SimplePost[]>([]);
   const [loading, setLoading] = useState(true);
   const [showWriteModal, setShowWriteModal] = useState(false);
+
+  // 홈에서 ?write=true로 오면 글쓰기 모달 자동 오픈
+  useEffect(() => {
+    if (searchParams.get('write') === 'true') {
+      if (!user) { window.location.href = '/login'; return; }
+      setShowWriteModal(true);
+    }
+  }, [searchParams, user]);
   const [writeTitle, setWriteTitle] = useState("");
   const [writeContent, setWriteContent] = useState("");
   const [submitting, setSubmitting] = useState(false);

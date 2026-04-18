@@ -176,6 +176,14 @@ export default function JogakPage() {
 
   // 글쓰기
   const [showWrite, setShowWrite] = useState(false);
+
+  // 홈에서 ?write=true로 오면 글쓰기 자동 오픈
+  useEffect(() => {
+    if (searchParams.get('write') === 'true') {
+      if (!user) { window.location.href = '/login'; return; }
+      setShowWrite(true);
+    }
+  }, [searchParams, user]);
   const [submitting, setSubmitting] = useState(false);
 
   // 폼 필드

@@ -555,7 +555,10 @@ export default function HomePage() {
         <section className="px-4 py-3 max-w-3xl mx-auto">
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-base font-bold text-[#111]">💬 커뮤니티 핫글</h2>
-            <Link to="/community" className="text-xs text-[#8B5CF6] font-medium">더보기 →</Link>
+            <div className="flex items-center gap-2">
+              <Link to="/community/free?write=true" className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white" style={{ minHeight: 28 }}>✏️ 글쓰기</Link>
+              <Link to="/community" className="text-xs text-[#8B5CF6] font-medium">더보기 →</Link>
+            </div>
           </div>
           <div className="space-y-2">
             {hotPosts.map(post => (
@@ -579,7 +582,10 @@ export default function HomePage() {
       <section className="px-4 py-3 max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-base font-bold text-[#111]">🙋 오늘 밤 조각모임</h2>
-          <Link to="/community/jogak" className="text-xs text-[#8B5CF6] font-medium">전체보기 →</Link>
+          <div className="flex items-center gap-2">
+            <Link to="/community/jogak?write=true" className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white" style={{ minHeight: 28 }}>✏️ 모임만들기</Link>
+            <Link to="/community/jogak" className="text-xs text-[#8B5CF6] font-medium">전체보기 →</Link>
+          </div>
         </div>
         {jogakList.length > 0 ? (
           <div className="space-y-2">
