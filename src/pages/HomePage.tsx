@@ -411,73 +411,160 @@ export default function HomePage() {
         itemListElement: popularVenues.slice(0, 10).map((v, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'LocalBusiness', name: v.nameKo, address: v.address } })),
       }} />
 
-      {/* ═══ HERO — 1초 안에 "유흥 정보 사이트" 인식 ═══ */}
+      {/* ═══ 1. HERO (압축) + 6개 카테고리 — 모바일 첫 화면에 다 보이게 ═══ */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#1a0533] via-[#2d1b69] to-[#0f172a]">
-        {/* 배경 파티클 효과 */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(12)].map((_, i) => (
+          {[...Array(8)].map((_, i) => (
             <div key={i} className="absolute rounded-full animate-pulse" style={{
               width: `${4 + (i % 3) * 3}px`, height: `${4 + (i % 3) * 3}px`,
-              top: `${10 + (i * 7) % 80}%`, left: `${5 + (i * 11) % 90}%`,
+              top: `${10 + (i * 9) % 80}%`, left: `${5 + (i * 13) % 90}%`,
               background: i % 2 === 0 ? '#8B5CF6' : '#EC4899',
-              opacity: 0.3, animationDelay: `${i * 0.2}s`, animationDuration: `${2 + i % 3}s`,
+              opacity: 0.3, animationDelay: `${i * 0.3}s`, animationDuration: `${2 + i % 3}s`,
             }} />
           ))}
         </div>
 
-        <div className="relative z-10 px-4 pt-6 pb-5 max-w-3xl mx-auto text-center">
-          {/* 실시간 접속자 — 맨 위에서 활기 보여줌 */}
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-white/10 backdrop-blur-sm px-3 py-1 mb-3">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-            </span>
-            <span className="text-xs font-medium text-white/90">지금 {liveCount.toLocaleString()}명 접속 중</span>
+        <div className="relative z-10 px-4 pt-4 pb-3 max-w-3xl mx-auto">
+          {/* 실시간 접속자 + 타이틀 — 한 줄 */}
+          <div className="flex items-center justify-between mb-2">
+            <h1 className="text-[22px] sm:text-[28px] font-black text-white leading-tight">
+              {(() => {
+                const h = new Date().getHours();
+                if (h >= 18 && h < 21) return '오늘 밤, 어디 갈래?';
+                if (h >= 21 || h < 4) return '지금 나가면 딱이다';
+                if (h >= 4 && h < 12) return '오늘 밤을 미리 정해놔';
+                return '저녁 되면 바로 출발';
+              })()}
+            </h1>
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-white/10 backdrop-blur-sm px-2.5 py-1 shrink-0">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+              </span>
+              <span className="text-[11px] font-medium text-white/90">{liveCount.toLocaleString()}명</span>
+            </div>
           </div>
 
-          <h1 className="text-[28px] sm:text-[34px] font-black text-white leading-[1.2] tracking-tight">
-            {(() => {
-              const h = new Date().getHours();
-              if (h >= 18 && h < 21) return '오늘 밤, 어디 갈래?';
-              if (h >= 21 || h < 4) return '지금 나가면 딱이다';
-              if (h >= 4 && h < 12) return '오늘 밤을 미리 정해놔';
-              return '저녁 되면 바로 출발';
-            })()}
-          </h1>
-          <p className="mt-2 text-sm text-white/60">
-            전국 {openVenues.length}곳 클럽·나이트·룸·요정·호빠·라운지 실시간 비교
-          </p>
-        </div>
-
-        {/* ═══ 6개 업종 카테고리 — 첫 화면 핵심 ═══ */}
-        <div className="relative z-10 px-4 pb-6 max-w-3xl mx-auto">
-          <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-6">
+          {/* 6개 카테고리 — 큰 터치 영역 */}
+          <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
             {([
-              { key: 'club', emoji: '🎵', label: '클럽', desc: '음악에 미치는 밤', href: '/clubs', gradient: 'from-violet-500/90 to-indigo-600/90' },
-              { key: 'night', emoji: '🌙', label: '나이트', desc: '만남의 시작', href: '/nights', gradient: 'from-blue-500/90 to-purple-600/90' },
-              { key: 'lounge', emoji: '🍸', label: '라운지', desc: '분위기로 승부', href: '/lounges', gradient: 'from-amber-500/90 to-orange-600/90' },
-              { key: 'room', emoji: '🚪', label: '룸', desc: '우리끼리 프라이빗', href: '/rooms', gradient: 'from-rose-500/90 to-pink-600/90' },
-              { key: 'yojeong', emoji: '🏮', label: '요정', desc: '전통의 격', href: '/yojeong', gradient: 'from-emerald-500/90 to-teal-600/90' },
+              { key: 'club', emoji: '🎵', label: '클럽', desc: 'EDM·힙합', href: '/clubs', gradient: 'from-violet-500/90 to-indigo-600/90' },
+              { key: 'night', emoji: '🌙', label: '나이트', desc: '소셜댄스', href: '/nights', gradient: 'from-blue-500/90 to-purple-600/90' },
+              { key: 'lounge', emoji: '🍸', label: '라운지', desc: '분위기 좋은 바', href: '/lounges', gradient: 'from-amber-500/90 to-orange-600/90' },
+              { key: 'room', emoji: '🚪', label: '룸', desc: '프라이빗', href: '/rooms', gradient: 'from-rose-500/90 to-pink-600/90' },
+              { key: 'yojeong', emoji: '🏮', label: '요정', desc: '전통 한정식', href: '/yojeong', gradient: 'from-emerald-500/90 to-teal-600/90' },
               { key: 'hoppa', emoji: '🥂', label: '호빠', desc: '여성 전용', href: '/hoppa', gradient: 'from-pink-500/90 to-rose-600/90' },
             ] as const).map(cat => (
               <Link
                 key={cat.key}
                 to={cat.href}
-                className={`relative flex flex-col items-center justify-center rounded-2xl bg-gradient-to-br ${cat.gradient} backdrop-blur-sm p-3 sm:p-4 transition-all hover:scale-105 active:scale-95`}
-                style={{ minHeight: 88, aspectRatio: 'auto' }}
+                className={`relative flex flex-col items-center justify-center rounded-2xl bg-gradient-to-br ${cat.gradient} backdrop-blur-sm p-2.5 sm:p-3 transition-all hover:scale-105 active:scale-95`}
+                style={{ minHeight: 76 }}
               >
-                <span className="text-2xl sm:text-3xl mb-1">{cat.emoji}</span>
-                <span className="text-sm font-black text-white">{cat.label}</span>
-                <span className="text-[10px] text-white/70 mt-0.5 hidden sm:block">{cat.desc}</span>
-                <span className="absolute top-1.5 right-2 text-[10px] font-bold text-white/50">{catCounts[cat.key] || 0}</span>
+                <span className="text-xl sm:text-2xl mb-0.5">{cat.emoji}</span>
+                <span className="text-[13px] font-black text-white">{cat.label}</span>
+                <span className="text-[10px] text-white/60 mt-0.5 leading-tight">{cat.desc}</span>
+                <span className="absolute top-1 right-1.5 text-[9px] font-bold text-white/40">{catCounts[cat.key] || 0}</span>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ═══ 검색바 — 카테고리 아래로 이동 ═══ */}
-      <section className="px-4 pt-4 pb-2 max-w-3xl mx-auto">
+      {/* ═══ 2. 실시간 한줄 피드 — "사람이 있다" 즉각 인식 ═══ */}
+      <section className="px-4 py-2 max-w-3xl mx-auto">
+        <LiveActivityFeed maxItems={1} compact />
+      </section>
+
+      {/* ═══ 3. VS 투표 — 첫 화면에서 즉시 터치 인터랙션 (1개만) ═══ */}
+      <section className="px-4 py-2 max-w-3xl mx-auto">
+        {(() => {
+          const poll = todayPolls[0];
+          const voted = vsVotes[0];
+          const hourShift = new Date().getHours() % 5 - 2;
+          const baseA = Math.max(20, Math.min(80, poll.aPct + hourShift));
+          const aPct = voted ? (voted === poll.a ? Math.min(baseA + 3, 85) : baseA) : baseA;
+          const bPct = 100 - aPct;
+          const participants = Math.floor(300 + (137 + new Date().getDate() * 53) % 700);
+          return (
+            <div className="rounded-2xl border border-[#8B5CF6]/20 bg-gradient-to-br from-[#FAFAFE] to-[#F5F3FF] p-4 shadow-sm">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm font-bold text-[#111]">{poll.q}</p>
+                <Link to="/vs" className="text-[11px] text-[#8B5CF6] font-medium shrink-0 ml-2">더보기</Link>
+              </div>
+              <div className="grid grid-cols-2 gap-2.5">
+                <button onClick={() => handleVsVote(0, poll.a)} disabled={!!voted}
+                  className={`relative rounded-xl overflow-hidden transition-all duration-300 ${voted === poll.a ? 'ring-2 ring-[#8B5CF6] scale-[1.02]' : voted ? 'opacity-60' : 'hover:shadow-md active:scale-95'}`}
+                  style={{ minHeight: 60 }}>
+                  {voted && <div className="absolute inset-0 bg-[#8B5CF6]/10 rounded-xl"><div className="absolute bottom-0 left-0 right-0 bg-[#8B5CF6]/20 transition-all duration-700 rounded-b-xl" style={{ height: `${aPct}%` }} /></div>}
+                  <div className="relative z-10 flex flex-col items-center justify-center h-full py-2">
+                    <span className="text-xl">{poll.aEmoji}</span>
+                    <span className="text-sm font-bold text-[#111]">{poll.a}</span>
+                    {voted && <span className="text-base font-black text-[#8B5CF6]">{aPct}%</span>}
+                  </div>
+                </button>
+                <button onClick={() => handleVsVote(0, poll.b)} disabled={!!voted}
+                  className={`relative rounded-xl overflow-hidden transition-all duration-300 ${voted === poll.b ? 'ring-2 ring-[#EC4899] scale-[1.02]' : voted ? 'opacity-60' : 'hover:shadow-md active:scale-95'}`}
+                  style={{ minHeight: 60 }}>
+                  {voted && <div className="absolute inset-0 bg-[#EC4899]/10 rounded-xl"><div className="absolute bottom-0 left-0 right-0 bg-[#EC4899]/20 transition-all duration-700 rounded-b-xl" style={{ height: `${bPct}%` }} /></div>}
+                  <div className="relative z-10 flex flex-col items-center justify-center h-full py-2">
+                    <span className="text-xl">{poll.bEmoji}</span>
+                    <span className="text-sm font-bold text-[#111]">{poll.b}</span>
+                    {voted && <span className="text-base font-black text-[#EC4899]">{bPct}%</span>}
+                  </div>
+                </button>
+              </div>
+              <p className="mt-1.5 text-[11px] text-center text-[#999]">{voted ? `${voted === poll.a ? poll.a : poll.b} 선택!` : '터치해서 투표'} · {participants.toLocaleString()}명 참여</p>
+            </div>
+          );
+        })()}
+      </section>
+
+      {/* ═══ 4. 실시간 TOP 4 — 핵심 업소 즉시 노출 ═══ */}
+      <section className="px-4 py-2 max-w-3xl mx-auto">
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-base font-bold text-[#111]">지금 핫한 곳</h2>
+          <Link to="/ranking" className="text-xs text-[#8B5CF6] font-medium">전체 순위 →</Link>
+        </div>
+        <div className="grid grid-cols-2 gap-2.5">
+          {popularVenues.slice(0, 4).map((v, i) => (
+            <VenueCard key={v.id} venue={v} favorites={favorites} toggleFavorite={toggleFavorite} rank={i + 1} />
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ 5. 커뮤니티 인기글 — "사람들이 놀고 있다" ═══ */}
+      <section className="px-4 py-3 max-w-3xl mx-auto">
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-base font-bold text-[#111]">커뮤니티</h2>
+          <div className="flex items-center gap-2">
+            <Link to="/community/free?write=true" className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white" style={{ minHeight: 28 }}>글쓰기</Link>
+            <Link to="/community" className="text-xs text-[#8B5CF6] font-medium">더보기 →</Link>
+          </div>
+        </div>
+        {hotPosts.length > 0 ? (
+          <div className="space-y-1.5">
+            {hotPosts.slice(0, 5).map(post => (
+              <Link key={post.id} to={`/community/post/${post.id}`} className="flex items-center gap-2.5 rounded-xl border border-gray-100 bg-white px-3 py-2.5 active:bg-gray-50 transition">
+                <span className="flex-shrink-0 rounded bg-[#F3F0FF] px-1.5 py-0.5 text-[11px] font-bold text-[#8B5CF6]">{post.board}</span>
+                <p className="text-[13px] font-medium text-[#111] truncate flex-1">{post.title}</p>
+                <div className="flex-shrink-0 flex items-center gap-1.5 text-[11px] text-[#999]">
+                  {post.likes > 0 && <span>♥{post.likes}</span>}
+                  {post.comments > 0 && <span>💬{post.comments}</span>}
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-xl border border-gray-100 bg-white p-4 text-center">
+            <p className="text-sm text-[#555] mb-2">첫 번째 글을 작성해보세요</p>
+            <Link to="/community/free?write=true" className="inline-block rounded-full bg-[#8B5CF6] px-4 py-2 text-xs font-bold text-white">글쓰기</Link>
+          </div>
+        )}
+      </section>
+
+      {/* ═══ 6. 검색바 — 정보 섹션 시작 전 자연스런 위치 ═══ */}
+      <section className="px-4 py-1 max-w-3xl mx-auto">
         <div ref={searchWrapperRef} className="relative mx-auto" style={{ maxWidth: 520 }}>
           <form onSubmit={handleSearchSubmit} className="relative">
             <div className={`flex items-center rounded-2xl border bg-white px-4 transition-all ${
@@ -486,55 +573,34 @@ export default function HomePage() {
               <svg className="h-5 w-5 text-[#8B5CF6] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-              <input
-                ref={searchInputRef}
-                type="search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onFocus={() => setSearchFocused(true)}
-                placeholder="강남클럽, 홍대나이트, 일산룸..."
-                className="h-12 w-full bg-transparent px-3 text-[15px] text-[#111] outline-none placeholder-gray-400 [&::-webkit-search-cancel-button]:hidden"
-                autoComplete="off"
-                autoCorrect="off"
-                spellCheck={false}
-              />
+              <input ref={searchInputRef} type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setSearchFocused(true)} placeholder="업소명, 지역, 업종으로 검색..."
+                className="h-11 w-full bg-transparent px-3 text-[14px] text-[#111] outline-none placeholder-gray-400 [&::-webkit-search-cancel-button]:hidden"
+                autoComplete="off" autoCorrect="off" spellCheck={false} />
               {searchQuery && (
                 <button type="button" onClick={() => { setSearchQuery(''); searchInputRef.current?.focus(); }} className="shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-600">
-                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               )}
             </div>
           </form>
-
-          {/* 드롭다운 — 검색 결과 or 인기 검색어 */}
           {searchFocused && (
             <div className="absolute left-0 right-0 top-full z-[80] mt-2 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl animate-fade-in" style={{ maxHeight: 400, overflowY: 'auto' }}>
               {searchQuery.trim() && searchResults.length > 0 ? (
                 <div className="py-2">
                   <p className="px-4 py-1.5 text-[11px] font-bold text-[#8B5CF6] tracking-wider">검색 결과</p>
                   {searchResults.map((v) => (
-                    <Link
-                      key={v.id || v.slug}
-                      to={getCategoryHref(v.category, v.slug, v.region)}
-                      target="_blank" rel="noopener noreferrer"
+                    <Link key={v.id || v.slug} to={getCategoryHref(v.category, v.slug, v.region)} target="_blank" rel="noopener noreferrer"
                       onClick={() => { setSearchFocused(false); setSearchQuery(''); }}
-                      className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors"
-                    >
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#F3F0FF] text-sm font-bold text-[#8B5CF6]">
-                        {v.nameKo.charAt(0)}
-                      </div>
+                      className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#F3F0FF] text-sm font-bold text-[#8B5CF6]">{v.nameKo.charAt(0)}</div>
                       <div className="min-w-0 flex-1 text-left">
                         <p className="text-sm font-medium text-[#111] truncate">{v.nameKo}</p>
                         <p className="text-xs text-[#555] truncate">{v.regionKo} · {catLabel[v.category]}</p>
                       </div>
                     </Link>
                   ))}
-                  <button
-                    onClick={handleSearchSubmit}
-                    className="w-full border-t border-gray-100 py-3 text-center text-sm font-medium text-[#8B5CF6] hover:bg-gray-50 transition"
-                  >
+                  <button onClick={handleSearchSubmit} className="w-full border-t border-gray-100 py-3 text-center text-sm font-medium text-[#8B5CF6] hover:bg-gray-50 transition">
                     "{searchQuery}" 전체 검색 결과 보기
                   </button>
                 </div>
@@ -547,11 +613,8 @@ export default function HomePage() {
                 <div className="py-3">
                   <p className="px-4 py-1.5 text-[11px] font-bold text-[#8B5CF6] tracking-wider">인기 검색어</p>
                   {['강남클럽', '홍대나이트', '일산룸', '강남호빠', '해운대', '압구정라운지', '일산요정', '부산나이트'].map((term, i) => (
-                    <button
-                      key={term}
-                      onClick={() => { setSearchQuery(term); searchInputRef.current?.focus(); }}
-                      className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-gray-50 transition-colors"
-                    >
+                    <button key={term} onClick={() => { setSearchQuery(term); searchInputRef.current?.focus(); }}
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-gray-50 transition-colors">
                       <span className={`flex h-6 w-6 items-center justify-center rounded text-xs font-bold ${i < 3 ? 'bg-[#8B5CF6] text-white' : 'bg-gray-100 text-gray-500'}`}>{i + 1}</span>
                       <span className="text-sm text-[#111]">{term}</span>
                     </button>
@@ -563,42 +626,98 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ 실시간 활동 한줄 티커 + 오늘 통계 ═══ */}
-      <section className="px-4 py-2 max-w-3xl mx-auto">
-        <div className="flex items-center justify-center gap-3 flex-wrap">
-          <TodayStats />
-          <span className="text-gray-300 hidden sm:inline">|</span>
-          <RecentJoinTicker />
-        </div>
-      </section>
-
-      {/* ═══ BANNER SLIDER ═══ */}
-      <section className="px-4 py-2 max-w-3xl mx-auto">
-        <Link
-          to={bannerSlides[bannerIdx].href}
-          className={`block rounded-2xl bg-gradient-to-r ${bannerSlides[bannerIdx].color} px-5 py-3.5 transition-all`}
-        >
-          <p className="text-sm font-bold text-white">{bannerSlides[bannerIdx].text}</p>
-        </Link>
-        <div className="flex justify-center gap-1.5 mt-2">
-          {bannerSlides.map((_, i) => (
-            <button key={i} onClick={() => setBannerIdx(i)} className={`h-1.5 rounded-full transition-all ${i === bannerIdx ? 'w-4 bg-[#8B5CF6]' : 'w-1.5 bg-gray-300'}`} />
-          ))}
-        </div>
-      </section>
-
-      {/* ═══ 지금 제일 핫한 곳 — 대형 피처드 카드 ═══ */}
-      {featuredVenue && (
-        <section className="px-4 py-3 max-w-3xl mx-auto">
-          <div className="flex items-center justify-between mb-2">
-            <h2 className="text-base font-bold text-[#111]">지금 제일 핫한 곳</h2>
-            <Link to="/ranking" className="text-xs text-[#8B5CF6] font-medium">전체 순위 →</Link>
+      {/* ═══ 7. 조각모임 — 같이 놀 사람 찾기 ═══ */}
+      <section className="px-4 py-3 max-w-3xl mx-auto">
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-base font-bold text-[#111]">오늘 밤 조각모임</h2>
+          <div className="flex items-center gap-2">
+            <Link to="/community/jogak?write=true" className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white" style={{ minHeight: 28 }}>모임만들기</Link>
+            <Link to="/community/jogak" className="text-xs text-[#8B5CF6] font-medium">전체 →</Link>
           </div>
-          <Link
-            to={getCategoryHref(featuredVenue.category, featuredVenue.slug, featuredVenue.region)}
-            target="_blank" rel="noopener noreferrer"
-            className="block"
-          >
+        </div>
+        {jogakList.length > 0 ? (
+          <div className="space-y-2">
+            {jogakList.slice(0, 3).map(j => (
+              <Link key={j.id} to="/community/jogak" className="block rounded-xl border border-gray-100 bg-white p-3 active:bg-gray-50 transition">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-medium text-[#111] truncate flex-1">{j.title}</p>
+                  <span className="ml-2 flex-shrink-0 rounded-full bg-[#8B5CF6] px-3 py-1 text-[11px] font-bold text-white">참여</span>
+                </div>
+                <div className="flex items-center gap-3 mt-1.5">
+                  {j.region && <span className="text-[11px] text-[#555]">📍{j.region}</span>}
+                  <span className="text-[11px] text-[#555]">👤{j.gender}</span>
+                  <div className="flex-1 flex items-center gap-1.5">
+                    <div className="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden">
+                      <div className={`h-full rounded-full ${j.current / j.max >= 0.8 ? 'bg-red-500' : 'bg-[#8B5CF6]'}`} style={{ width: `${(j.current / j.max) * 100}%` }} />
+                    </div>
+                    <span className="text-[11px] font-bold text-[#111]">{j.current}/{j.max}</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <Link to="/community/jogak" className="block rounded-xl border border-gray-100 bg-white p-4 text-center active:bg-gray-50 transition">
+            <p className="text-sm text-[#555]">같이 놀러갈 사람을 구해보세요!</p>
+            <span className="mt-2 inline-block rounded-full bg-[#8B5CF6] px-5 py-2 text-sm font-bold text-white">조각모임 둘러보기</span>
+          </Link>
+        )}
+      </section>
+
+      {/* ═══ 8. 오늘 밤 운세 — 터치 인터랙션 (스크롤 보상) ═══ */}
+      <section className="px-4 py-2 max-w-3xl mx-auto">
+        {!fortuneRevealed ? (
+          <button onClick={() => setFortuneRevealed(true)}
+            className="w-full rounded-2xl bg-gradient-to-br from-indigo-900 via-purple-900 to-violet-800 p-5 text-center transition-all hover:shadow-xl active:scale-[0.98] relative overflow-hidden"
+            style={{ minHeight: 100 }}>
+            <div className="absolute inset-0 opacity-20">
+              {['✦', '✧', '⭑'].map((s, i) => (
+                <span key={i} className="absolute text-white animate-pulse" style={{ top: `${20 + i * 25}%`, left: `${15 + i * 30}%`, fontSize: `${12 + i * 3}px`, animationDelay: `${i * 0.3}s` }}>{s}</span>
+              ))}
+            </div>
+            <div className="relative z-10">
+              <span className="text-3xl block mb-2">🔮</span>
+              <p className="text-base font-black text-white">터치해서 오늘의 밤 운세 확인</p>
+              <p className="text-[11px] text-white/50 mt-1">매일 자정에 바뀌는 당신만의 운세</p>
+            </div>
+          </button>
+        ) : (
+          <div className="rounded-2xl bg-gradient-to-br from-indigo-50 via-purple-50 to-amber-50 border border-purple-200 p-4 animate-fade-in">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-2xl">{fortune.emoji}</span>
+              <div className="flex-1">
+                <p className="text-base font-black text-[#111]">{fortune.title}</p>
+                <p className="text-[11px] text-[#8B5CF6] font-bold">밤 에너지 {fortuneScore}점</p>
+              </div>
+            </div>
+            <p className="text-sm font-bold text-[#111] leading-relaxed mb-3 bg-white/60 rounded-xl p-3">{fortune.text}</p>
+            <div className="grid grid-cols-3 gap-2 mb-2">
+              <div className="rounded-lg bg-white/80 p-2 text-center">
+                <p className="text-[9px] text-[#999]">행운 장소</p>
+                <p className="text-xs font-bold text-[#111]">{fortune.lucky}</p>
+              </div>
+              <div className="rounded-lg bg-white/80 p-2 text-center">
+                <p className="text-[9px] text-[#999]">행운 색</p>
+                <p className="text-xs font-bold text-[#111]">{fortune.luckyColor}</p>
+              </div>
+              <div className="rounded-lg bg-white/80 p-2 text-center">
+                <p className="text-[9px] text-[#999]">행운 숫자</p>
+                <p className="text-xs font-bold text-[#8B5CF6]">{fortune.luckyNum}</p>
+              </div>
+            </div>
+            <div className="rounded-lg bg-[#8B5CF6]/5 border border-[#8B5CF6]/10 p-2.5">
+              <p className="text-[11px] font-bold text-[#8B5CF6] mb-0.5">꿀팁</p>
+              <p className="text-[13px] text-[#333] leading-relaxed">{fortune.tip}</p>
+            </div>
+            <button onClick={() => setFortuneRevealed(false)} className="mt-2 w-full text-center text-[11px] text-[#999] py-1.5">카드 다시 덮기</button>
+          </div>
+        )}
+      </section>
+
+      {/* ═══ 9. 피처드 카드 + 가로 스크롤 TOP 8 ═══ */}
+      {featuredVenue && (
+        <section className="px-4 py-2 max-w-3xl mx-auto">
+          <Link to={getCategoryHref(featuredVenue.category, featuredVenue.slug, featuredVenue.region)} target="_blank" rel="noopener noreferrer" className="block">
             <div className={`relative rounded-2xl overflow-hidden bg-gradient-to-br ${
               featuredVenue.category === 'club' ? 'from-violet-600 to-indigo-800' :
               featuredVenue.category === 'night' ? 'from-blue-600 to-purple-800' :
@@ -606,57 +725,36 @@ export default function HomePage() {
               featuredVenue.category === 'room' ? 'from-rose-600 to-pink-800' :
               featuredVenue.category === 'yojeong' ? 'from-emerald-600 to-teal-800' :
               'from-pink-600 to-rose-800'
-            }`} style={{ minHeight: 160 }}>
-              <img
-                src={`/venues/${featuredVenue.slug}-1.jpg`}
-                alt={featuredVenue.nameKo}
-                loading="eager"
+            }`} style={{ minHeight: 130 }}>
+              <img src={`/venues/${featuredVenue.slug}-1.jpg`} alt={featuredVenue.nameKo} loading="lazy"
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                className="absolute inset-0 w-full h-full object-cover z-[1] opacity-60"
-              />
+                className="absolute inset-0 w-full h-full object-cover z-[1] opacity-60" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-[2]" />
-              <div className="relative z-[3] flex flex-col justify-end h-full p-5" style={{ minHeight: 160 }}>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="rounded-full bg-[#8B5CF6] px-2.5 py-0.5 text-[11px] font-bold text-white">1위</span>
-                  <span className="rounded-full bg-white/20 backdrop-blur-sm px-2.5 py-0.5 text-[11px] font-medium text-white">{catLabel[featuredVenue.category]}</span>
-                  <span className="rounded-full bg-white/20 backdrop-blur-sm px-2.5 py-0.5 text-[11px] font-medium text-white">{featuredVenue.regionKo}</span>
+              <div className="relative z-[3] flex flex-col justify-end h-full p-4" style={{ minHeight: 130 }}>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="rounded-full bg-[#8B5CF6] px-2 py-0.5 text-[10px] font-bold text-white">1위</span>
+                  <span className="text-[11px] text-white/80">{catLabel[featuredVenue.category]} · {featuredVenue.regionKo}</span>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-black text-white leading-tight">{featuredVenue.nameKo}</h3>
-                <div className="flex items-center gap-3 mt-1.5">
-                  {featuredVenue.rating > 0 && <span className="text-sm font-bold text-yellow-300">★ {featuredVenue.rating.toFixed(1)}</span>}
-                  <span className="text-xs text-white/70">리뷰 {featuredVenue.reviewCount}개</span>
-                  <span className="text-xs text-white/70">·</span>
-                  <span className="text-xs text-green-300 font-medium">지금 {Math.floor(8 + Math.random() * 15)}명 보는 중</span>
-                </div>
+                <h3 className="text-lg font-black text-white leading-tight">{featuredVenue.nameKo}</h3>
+                {featuredVenue.rating > 0 && <span className="text-[13px] font-bold text-yellow-300 mt-0.5">★ {featuredVenue.rating.toFixed(1)} · 리뷰 {featuredVenue.reviewCount}개</span>}
               </div>
             </div>
           </Link>
         </section>
       )}
 
-      {/* ═══ LIVE HOT — horizontal scroll ═══ */}
-      <section className="py-3 max-w-3xl mx-auto">
+      <section className="py-2 max-w-3xl mx-auto">
         <div className="flex items-center justify-between px-4 mb-2">
-          <h2 className="text-base font-bold text-[#111]">실시간 TOP 8</h2>
+          <h2 className="text-base font-bold text-[#111]">TOP 8</h2>
           <Link to="/ranking" className="text-xs text-[#8B5CF6] font-medium">전체보기 →</Link>
         </div>
-        <div className="flex gap-3 px-4 overflow-x-auto scrollbar-hide pb-1">
+        <div className="flex gap-2.5 px-4 overflow-x-auto scrollbar-hide pb-1">
           {popularVenues.slice(0, 8).map((v, i) => (
-            <Link
-              key={v.id}
-              to={getCategoryHref(v.category, v.slug, v.region)}
-              target="_blank" rel="noopener noreferrer"
-              className="flex-shrink-0"
-              style={{ width: 140 }}
-            >
-              <div className="relative rounded-xl overflow-hidden" style={{ width: 140, height: 140 }}>
-                <img
-                  src={`/venues/${v.slug}-1.jpg`}
-                  alt={v.nameKo}
-                  loading="lazy"
+            <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} target="_blank" rel="noopener noreferrer" className="flex-shrink-0" style={{ width: 120 }}>
+              <div className="relative rounded-xl overflow-hidden" style={{ width: 120, height: 120 }}>
+                <img src={`/venues/${v.slug}-1.jpg`} alt={v.nameKo} loading="lazy"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  className="absolute inset-0 w-full h-full object-cover z-[1]"
-                />
+                  className="absolute inset-0 w-full h-full object-cover z-[1]" />
                 <div className={`absolute inset-0 flex flex-col items-center justify-center ${
                   v.category === 'club' ? 'bg-gradient-to-br from-violet-500 to-indigo-700' :
                   v.category === 'night' ? 'bg-gradient-to-br from-blue-500 to-purple-700' :
@@ -665,15 +763,13 @@ export default function HomePage() {
                   v.category === 'yojeong' ? 'bg-gradient-to-br from-emerald-500 to-teal-700' :
                   'bg-gradient-to-br from-pink-500 to-rose-700'
                 }`}>
-                  <span className="text-3xl">{catEmoji[v.category] || '🎵'}</span>
-                  <span className="mt-1 text-xs font-bold text-white/80">{v.nameKo.slice(0, 4)}</span>
+                  <span className="text-2xl">{catEmoji[v.category] || '🎵'}</span>
+                  <span className="mt-0.5 text-[11px] font-bold text-white/80">{v.nameKo.slice(0, 4)}</span>
                 </div>
-                <span className={`absolute top-2 left-2 z-[2] flex h-6 w-6 items-center justify-center rounded-full text-xs font-black text-white ${i < 3 ? 'bg-[#8B5CF6]' : 'bg-black/50'}`}>
-                  {i + 1}
-                </span>
-                <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2.5 py-2">
-                  <p className="text-xs font-bold text-white truncate">{v.nameKo}</p>
-                  <p className="text-[10px] text-white/90 truncate">{catLabel[v.category]} · {v.regionKo}</p>
+                <span className={`absolute top-1.5 left-1.5 z-[2] flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black text-white ${i < 3 ? 'bg-[#8B5CF6]' : 'bg-black/50'}`}>{i + 1}</span>
+                <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2 py-1.5">
+                  <p className="text-[11px] font-bold text-white truncate">{v.nameKo}</p>
+                  <p className="text-[9px] text-white/80 truncate">{catLabel[v.category]} · {v.regionKo}</p>
                 </div>
               </div>
             </Link>
@@ -681,226 +777,45 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ COMMUNITY HOT POSTS ═══ */}
-      {hotPosts.length > 0 && (
-        <section className="px-4 py-3 max-w-3xl mx-auto">
-          <div className="flex items-center justify-between mb-2">
-            <h2 className="text-base font-bold text-[#111]">💬 커뮤니티</h2>
-            <div className="flex items-center gap-2">
-              <Link to="/community/free?write=true" className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white" style={{ minHeight: 28 }}>✏️ 글쓰기</Link>
-              <Link to="/community" className="text-xs text-[#8B5CF6] font-medium">더보기 →</Link>
-            </div>
-          </div>
-          <div className="space-y-2">
-            {hotPosts.map(post => (
-              <Link key={post.id} to={`/community/post/${post.id}`} className="flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-3 active:bg-gray-50 transition">
-                <span className="flex-shrink-0 rounded-lg bg-[#F3F0FF] px-2 py-1 text-xs font-bold text-[#8B5CF6]">{post.board}</span>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[#111] truncate">{post.title}</p>
-                  <p className="text-xs text-[#999] mt-0.5">{post.author} · {post.time}</p>
-                </div>
-                <div className="flex-shrink-0 flex items-center gap-2 text-xs text-[#999]">
-                  <span>❤️ {post.likes}</span>
-                  <span>💬 {post.comments}</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* ═══ 조각모임 — KILLER FEATURE ═══ */}
-      <section className="px-4 py-3 max-w-3xl mx-auto">
-        <div className="flex items-center justify-between mb-2">
-          <h2 className="text-base font-bold text-[#111]">🙋 오늘 밤 조각모임</h2>
-          <div className="flex items-center gap-2">
-            <Link to="/community/jogak?write=true" className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white" style={{ minHeight: 28 }}>✏️ 모임만들기</Link>
-            <Link to="/community/jogak" className="text-xs text-[#8B5CF6] font-medium">전체보기 →</Link>
-          </div>
-        </div>
-        {jogakList.length > 0 ? (
-          <div className="space-y-2">
-            {jogakList.map(j => (
-              <Link key={j.id} to={`/community/jogak`} className="block rounded-xl border border-gray-100 bg-white p-3 active:bg-gray-50 transition">
-                <div className="flex items-start gap-2">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-[#111]">{j.title}</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      {j.region && <span className="text-xs text-[#555]">📍{j.region}</span>}
-                      <span className="text-xs text-[#555]">👤{j.gender}</span>
-                      {j.time && <span className="text-xs text-[#555]">🕐{j.time}</span>}
-                    </div>
+      {/* ═══ 10. VS 배틀 2번째 — 스크롤 중간 인터랙션 ═══ */}
+      <section className="px-4 py-2 max-w-3xl mx-auto">
+        {(() => {
+          const poll = todayPolls[1];
+          const voted = vsVotes[1];
+          const hourShift = new Date().getHours() % 5 - 2;
+          const baseA = Math.max(20, Math.min(80, poll.aPct + hourShift));
+          const aPct = voted ? (voted === poll.a ? Math.min(baseA + 3, 85) : baseA) : baseA;
+          const bPct = 100 - aPct;
+          const participants = Math.floor(300 + (1 * 137 + new Date().getDate() * 53) % 700);
+          return (
+            <div className="rounded-2xl border border-[#EC4899]/15 bg-gradient-to-br from-[#FFFAFE] to-[#FFF5F7] p-4 shadow-sm">
+              <p className="text-sm font-bold text-[#111] mb-2 text-center">{poll.q}</p>
+              <div className="grid grid-cols-2 gap-2.5">
+                <button onClick={() => handleVsVote(1, poll.a)} disabled={!!voted}
+                  className={`relative rounded-xl overflow-hidden transition-all duration-300 ${voted === poll.a ? 'ring-2 ring-[#8B5CF6] scale-[1.02]' : voted ? 'opacity-60' : 'active:scale-95'}`}
+                  style={{ minHeight: 60 }}>
+                  {voted && <div className="absolute inset-0 bg-[#8B5CF6]/10 rounded-xl"><div className="absolute bottom-0 left-0 right-0 bg-[#8B5CF6]/20 transition-all duration-700 rounded-b-xl" style={{ height: `${aPct}%` }} /></div>}
+                  <div className="relative z-10 flex flex-col items-center justify-center h-full py-2">
+                    <span className="text-xl">{poll.aEmoji}</span>
+                    <span className="text-sm font-bold text-[#111]">{poll.a}</span>
+                    {voted && <span className="text-base font-black text-[#8B5CF6]">{aPct}%</span>}
                   </div>
-                </div>
-                <div className="flex items-center justify-between mt-2">
-                  <div className="flex items-center gap-2 flex-1">
-                    <div className="flex-1 h-2 rounded-full bg-gray-100 overflow-hidden">
-                      <div className={`h-full rounded-full transition-all ${j.current / j.max >= 0.8 ? 'bg-red-500' : 'bg-[#8B5CF6]'}`}
-                        style={{ width: `${(j.current / j.max) * 100}%` }} />
-                    </div>
-                    <span className="text-xs font-bold text-[#111]">{j.current}/{j.max}명</span>
+                </button>
+                <button onClick={() => handleVsVote(1, poll.b)} disabled={!!voted}
+                  className={`relative rounded-xl overflow-hidden transition-all duration-300 ${voted === poll.b ? 'ring-2 ring-[#EC4899] scale-[1.02]' : voted ? 'opacity-60' : 'active:scale-95'}`}
+                  style={{ minHeight: 60 }}>
+                  {voted && <div className="absolute inset-0 bg-[#EC4899]/10 rounded-xl"><div className="absolute bottom-0 left-0 right-0 bg-[#EC4899]/20 transition-all duration-700 rounded-b-xl" style={{ height: `${bPct}%` }} /></div>}
+                  <div className="relative z-10 flex flex-col items-center justify-center h-full py-2">
+                    <span className="text-xl">{poll.bEmoji}</span>
+                    <span className="text-sm font-bold text-[#111]">{poll.b}</span>
+                    {voted && <span className="text-base font-black text-[#EC4899]">{bPct}%</span>}
                   </div>
-                  <span className="ml-3 flex-shrink-0 rounded-full bg-[#8B5CF6] px-4 py-1.5 text-xs font-bold text-white" style={{ minHeight: 32 }}>
-                    참여하기
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <Link to="/community/jogak" className="block rounded-xl border border-gray-100 bg-white p-4 text-center active:bg-gray-50 transition">
-            <p className="text-sm text-[#555]">같이 놀러갈 사람을 구해보세요!</p>
-            <span className="mt-2 inline-block rounded-full bg-[#8B5CF6] px-5 py-2 text-sm font-bold text-white" style={{ minHeight: 36 }}>
-              조각모임 둘러보기
-            </span>
-          </Link>
-        )}
-      </section>
-
-      {/* ═══ VS 투표 — 실시간 배틀 ═══ */}
-      <section className="px-4 py-3 max-w-3xl mx-auto">
-        <div className="flex items-center justify-between mb-2">
-          <h2 className="text-base font-bold text-[#111]">🆚 오늘의 VS 배틀</h2>
-          <Link to="/vs" className="text-xs text-[#8B5CF6] font-medium">더 많은 투표 →</Link>
-        </div>
-        <div className="space-y-3">
-          {todayPolls.map((poll, pi) => {
-            const voted = vsVotes[pi];
-            // 시간대별 미세 변동 — 매시간 1~3% 변동으로 살아있는 느낌
-            const hourShift = new Date().getHours() % 5 - 2; // -2 ~ +2
-            const baseA = Math.max(20, Math.min(80, poll.aPct + hourShift));
-            const aPct = voted ? (voted === poll.a ? Math.min(baseA + 3, 85) : baseA) : baseA;
-            const bPct = 100 - aPct;
-            return (
-              <div key={pi} className="rounded-2xl border border-[#8B5CF6]/15 bg-gradient-to-br from-white to-[#FAFAFE] p-4 shadow-sm">
-                <p className="text-sm font-bold text-[#111] mb-3 text-center">{poll.q}</p>
-                <div className="grid grid-cols-2 gap-3">
-                  {/* A 선택지 */}
-                  <button
-                    onClick={() => handleVsVote(pi, poll.a)}
-                    disabled={!!voted}
-                    className={`relative rounded-xl overflow-hidden transition-all duration-300 ${
-                      voted === poll.a ? 'ring-2 ring-[#8B5CF6] shadow-lg scale-[1.02]' :
-                      voted ? 'opacity-60' : 'hover:shadow-md active:scale-95'
-                    }`}
-                    style={{ minHeight: 70 }}
-                  >
-                    {voted && (
-                      <div className="absolute inset-0 bg-[#8B5CF6]/10 rounded-xl">
-                        <div className="absolute bottom-0 left-0 right-0 bg-[#8B5CF6]/20 transition-all duration-700 rounded-b-xl"
-                          style={{ height: `${aPct}%` }} />
-                      </div>
-                    )}
-                    <div className="relative z-10 flex flex-col items-center justify-center h-full py-3">
-                      <span className="text-2xl mb-1">{poll.aEmoji}</span>
-                      <span className="text-sm font-bold text-[#111]">{poll.a}</span>
-                      {voted && <span className="text-lg font-black text-[#8B5CF6] mt-1">{aPct}%</span>}
-                    </div>
-                  </button>
-                  {/* B 선택지 */}
-                  <button
-                    onClick={() => handleVsVote(pi, poll.b)}
-                    disabled={!!voted}
-                    className={`relative rounded-xl overflow-hidden transition-all duration-300 ${
-                      voted === poll.b ? 'ring-2 ring-[#EC4899] shadow-lg scale-[1.02]' :
-                      voted ? 'opacity-60' : 'hover:shadow-md active:scale-95'
-                    }`}
-                    style={{ minHeight: 70 }}
-                  >
-                    {voted && (
-                      <div className="absolute inset-0 bg-[#EC4899]/10 rounded-xl">
-                        <div className="absolute bottom-0 left-0 right-0 bg-[#EC4899]/20 transition-all duration-700 rounded-b-xl"
-                          style={{ height: `${bPct}%` }} />
-                      </div>
-                    )}
-                    <div className="relative z-10 flex flex-col items-center justify-center h-full py-3">
-                      <span className="text-2xl mb-1">{poll.bEmoji}</span>
-                      <span className="text-sm font-bold text-[#111]">{poll.b}</span>
-                      {voted && <span className="text-lg font-black text-[#EC4899] mt-1">{bPct}%</span>}
-                    </div>
-                  </button>
-                </div>
-                {(() => {
-                  const participants = Math.floor(300 + (pi * 137 + new Date().getDate() * 53) % 700);
-                  return voted ? (
-                    <p className="mt-2 text-xs text-center font-medium text-[#8B5CF6]">
-                      <span className="font-bold">{voted === poll.a ? poll.a : poll.b}</span> 선택! · {participants.toLocaleString()}명 참여
-                    </p>
-                  ) : (
-                    <p className="mt-2 text-xs text-center text-[#999]">터치해서 투표하세요 · {participants.toLocaleString()}명 참여 중</p>
-                  );
-                })()}
+                </button>
               </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ═══ 오늘 밤 운세 — 카드 뒤집기 ═══ */}
-      <section className="px-4 py-3 max-w-3xl mx-auto">
-        <h2 className="text-base font-bold text-[#111] mb-2">🔮 오늘 밤 운세</h2>
-        {!fortuneRevealed ? (
-          <button
-            onClick={() => setFortuneRevealed(true)}
-            className="w-full rounded-2xl bg-gradient-to-br from-indigo-900 via-purple-900 to-violet-800 p-6 text-center transition-all hover:shadow-xl active:scale-[0.98] relative overflow-hidden"
-            style={{ minHeight: 140 }}
-          >
-            <div className="absolute inset-0 opacity-20">
-              {['✦', '✧', '⭑', '✫', '⋆'].map((s, i) => (
-                <span key={i} className="absolute text-white animate-pulse" style={{
-                  top: `${15 + (i * 17) % 70}%`, left: `${10 + (i * 23) % 80}%`,
-                  fontSize: `${10 + i * 3}px`, animationDelay: `${i * 0.3}s`
-                }}>{s}</span>
-              ))}
+              <p className="mt-1.5 text-[11px] text-center text-[#999]">{voted ? `${voted === poll.a ? poll.a : poll.b} 선택!` : '터치해서 투표'} · {participants.toLocaleString()}명 참여</p>
             </div>
-            <div className="relative z-10">
-              <span className="text-4xl block mb-3">🔮</span>
-              <p className="text-lg font-black text-white mb-1">터치해서 오늘의 운세 확인</p>
-              <p className="text-xs text-white/60">매일 자정에 바뀌는 당신만의 밤 운세</p>
-            </div>
-          </button>
-        ) : (
-          <div className="rounded-2xl bg-gradient-to-br from-indigo-50 via-purple-50 to-amber-50 border border-purple-200 p-5 animate-fade-in">
-            {/* 헤더 */}
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-3xl">{fortune.emoji}</span>
-              <div>
-                <p className="text-lg font-black text-[#111]">{fortune.title}</p>
-                <p className="text-xs text-[#8B5CF6] font-bold">오늘의 밤 에너지</p>
-              </div>
-              <div className="ml-auto flex flex-col items-center">
-                <span className="text-2xl font-black text-[#8B5CF6]">{fortuneScore}</span>
-                <span className="text-[10px] text-[#555]">운세점수</span>
-              </div>
-            </div>
-            {/* 운세 메시지 */}
-            <p className="text-sm font-bold text-[#111] leading-relaxed mb-3 bg-white/60 rounded-xl p-3">{fortune.text}</p>
-            {/* 운세 디테일 */}
-            <div className="grid grid-cols-3 gap-2 mb-3">
-              <div className="rounded-xl bg-white/80 p-2.5 text-center">
-                <p className="text-[10px] text-[#999] mb-0.5">행운의 장소</p>
-                <p className="text-xs font-bold text-[#111]">{fortune.lucky}</p>
-              </div>
-              <div className="rounded-xl bg-white/80 p-2.5 text-center">
-                <p className="text-[10px] text-[#999] mb-0.5">행운의 색</p>
-                <p className="text-xs font-bold text-[#111]">{fortune.luckyColor}</p>
-              </div>
-              <div className="rounded-xl bg-white/80 p-2.5 text-center">
-                <p className="text-[10px] text-[#999] mb-0.5">행운의 숫자</p>
-                <p className="text-xs font-bold text-[#8B5CF6]">{fortune.luckyNum}</p>
-              </div>
-            </div>
-            {/* 꿀팁 */}
-            <div className="rounded-xl bg-[#8B5CF6]/5 border border-[#8B5CF6]/10 p-3">
-              <p className="text-xs font-bold text-[#8B5CF6] mb-1">💡 오늘의 꿀팁</p>
-              <p className="text-sm text-[#333] leading-relaxed">{fortune.tip}</p>
-            </div>
-            {/* 다시 보기 */}
-            <button onClick={() => setFortuneRevealed(false)} className="mt-3 w-full text-center text-xs text-[#999] py-2" style={{ minHeight: 32 }}>
-              🔮 카드 다시 덮기
-            </button>
-          </div>
-        )}
+          );
+        })()}
       </section>
 
       {/* ═══ FEED — 정렬 탭 ═══ */}
@@ -1059,34 +974,34 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ QUICK LINKS ═══ */}
+      {/* ═══ QUICK LINKS — 더 탐색하기 ═══ */}
       <section className="px-4 py-3 max-w-3xl mx-auto">
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-4 gap-2">
           {[
-            { icon: '🔍', title: '비교', desc: '시세 한눈에', href: '/compare' },
-            { icon: '📖', title: '가이드', desc: '초보 필독', href: '/guide' },
-            { icon: '🎰', title: '룰렛', desc: '행운 업소', href: '/roulette' },
+            { icon: '🔍', title: '비교', href: '/compare' },
+            { icon: '📖', title: '가이드', href: '/guide' },
+            { icon: '🎰', title: '룰렛', href: '/roulette' },
+            { icon: '📰', title: '매거진', href: '/magazine' },
           ].map(card => (
-            <Link
-              key={card.title}
-              to={card.href}
-              target="_blank" rel="noopener noreferrer"
-              className="flex flex-col items-center gap-1 rounded-xl border border-gray-200 bg-white p-3 text-center shadow-sm active:scale-[0.97]"
-              style={{ minHeight: 44 }}
-            >
-              <span className="text-xl">{card.icon}</span>
-              <span className="text-sm font-bold text-[#111]">{card.title}</span>
-              <span className="text-xs text-[#555]">{card.desc}</span>
+            <Link key={card.title} to={card.href} target="_blank" rel="noopener noreferrer"
+              className="flex flex-col items-center gap-0.5 rounded-xl border border-gray-200 bg-white p-2.5 text-center shadow-sm active:scale-[0.97]" style={{ minHeight: 44 }}>
+              <span className="text-lg">{card.icon}</span>
+              <span className="text-[13px] font-bold text-[#111]">{card.title}</span>
             </Link>
           ))}
         </div>
       </section>
 
+      {/* ═══ 실시간 활동 피드 — 사이트 활기 ═══ */}
+      <section className="px-4 py-2 max-w-3xl mx-auto">
+        <LiveActivityFeed maxItems={4} />
+      </section>
+
       {/* ═══ GOOGLE/AI CTA ═══ */}
-      <section className="px-4 py-4 max-w-3xl mx-auto">
-        <div className="rounded-2xl bg-violet-50 border border-violet-200 px-6 py-4 text-center">
+      <section className="px-4 py-3 max-w-3xl mx-auto">
+        <div className="rounded-2xl bg-violet-50 border border-violet-200 px-5 py-3 text-center">
           <p className="text-sm font-bold text-[#111]">
-            구글 · ChatGPT · Gemini에서 <span className="text-xl text-[#8B5CF6]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>"놀쿨"</span> 검색하세요
+            구글 · ChatGPT · Gemini에서 <span className="text-lg text-[#8B5CF6]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>"놀쿨"</span> 검색하세요
           </p>
         </div>
       </section>
@@ -1106,11 +1021,6 @@ export default function HomePage() {
             </p>
           </div>
         </div>
-      </section>
-
-      {/* ═══ 실시간 활동 피드 ═══ */}
-      <section className="mx-auto max-w-5xl px-4 pb-12 sm:px-6">
-        <LiveActivityFeed maxItems={5} />
       </section>
     </div>
   );
