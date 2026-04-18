@@ -82,6 +82,24 @@ export default function RegionalYojeongPage() {
         </section>
       )}
 
+      <section className="mx-auto max-w-[1200px] px-4 pb-8 sm:px-6">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {yojeongs.map((venue, idx) => {
+            const elements = [];
+            if (idx > 0 && idx % 12 === 0) {
+              elements.push(<TopPicksMini key={`top-${idx}`} venues={yojeongs} hrefPattern={`/yojeong/${region}/{slug}`} accentColor="emerald" />);
+            } else if (idx > 0 && idx % 6 === 0) {
+              elements.push(<ListMidHook key={`hook-${idx}`} index={Math.floor(idx / 6) - 1} />);
+            }
+            elements.push(<YojeongCard key={venue.id} venue={venue} region={region} />);
+            return elements;
+          })}
+        </div>
+        {yojeongs.length === 0 && (
+          <p className="py-20 text-center text-neon-text-muted">{regionKo} 일대에 등록된 매장이 없습니다.</p>
+        )}
+      </section>
+
       {/* 문화적 맥락 안내 */}
       <section className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
         <div className="rounded-xl border border-amber-200 bg-amber-50 p-5">
@@ -114,24 +132,6 @@ export default function RegionalYojeongPage() {
             </div>
           </div>
         </div>
-      </section>
-
-      <section className="mx-auto max-w-[1200px] px-4 pb-8 sm:px-6">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {yojeongs.map((venue, idx) => {
-            const elements = [];
-            if (idx > 0 && idx % 12 === 0) {
-              elements.push(<TopPicksMini key={`top-${idx}`} venues={yojeongs} hrefPattern={`/yojeong/${region}/{slug}`} accentColor="emerald" />);
-            } else if (idx > 0 && idx % 6 === 0) {
-              elements.push(<ListMidHook key={`hook-${idx}`} index={Math.floor(idx / 6) - 1} />);
-            }
-            elements.push(<YojeongCard key={venue.id} venue={venue} region={region} />);
-            return elements;
-          })}
-        </div>
-        {yojeongs.length === 0 && (
-          <p className="py-20 text-center text-neon-text-muted">{regionKo} 일대에 등록된 매장이 없습니다.</p>
-        )}
       </section>
 
       <section className="mx-auto max-w-[1200px] px-4 pb-20 sm:px-6 space-y-8">
