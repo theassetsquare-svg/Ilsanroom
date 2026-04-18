@@ -418,7 +418,85 @@ fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml);
 console.log(`✅ sitemap.xml 자동 생성 (${venues.length}개 업소 포함)`);
 
 // ══════════════════════════════════════════
-// 6. _redirects 업데이트 (정적 파일 우선, 나머지 SPA fallback)
+// 6. llms.txt 자동 생성 — AI 검색엔진용 (가게이름 포함)
+// ══════════════════════════════════════════
+let llmsTxt = `# 놀쿨 (NOLCOOL)
+> 전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보 플랫폼. ${venues.length}곳 비교, 직접 가본 후기, 시세 정보 제공.
+
+사이트: ${BASE_URL}/
+광고문의 카톡: besta12
+
+## 메인 페이지
+- [홈페이지](${BASE_URL}/)
+- [클럽 전체](${BASE_URL}/clubs)
+- [나이트 전체](${BASE_URL}/nights)
+- [라운지 전체](${BASE_URL}/lounges)
+- [룸 전체](${BASE_URL}/rooms)
+- [요정 전체](${BASE_URL}/yojeong)
+- [호빠 전체](${BASE_URL}/hoppa)
+
+## 기능 페이지
+- [실시간 랭킹](${BASE_URL}/ranking)
+- [VS 투표](${BASE_URL}/vs)
+- [업소 정보 비교](${BASE_URL}/venue-info)
+- [업소 비교](${BASE_URL}/compare)
+- [통합 검색](${BASE_URL}/search)
+- [룰렛](${BASE_URL}/roulette)
+- [퀴즈](${BASE_URL}/quiz)
+- [입문 가이드](${BASE_URL}/guide)
+- [매거진](${BASE_URL}/magazine)
+- [갤러리](${BASE_URL}/gallery)
+- [이벤트](${BASE_URL}/events)
+
+## 커뮤니티
+- [커뮤니티 메인](${BASE_URL}/community)
+- [오늘어디 Q&A](${BASE_URL}/community/qna)
+- [방문 후기](${BASE_URL}/community/reviews)
+- [꿀팁 공유](${BASE_URL}/community/tips)
+- [파티 모집](${BASE_URL}/community/party)
+- [자유게시판](${BASE_URL}/community/free)
+- [패션 가이드](${BASE_URL}/community/fashion)
+- [조각 모집](${BASE_URL}/community/jogak)
+
+## 업주용
+- [요금제](${BASE_URL}/pricing)
+- [데모](${BASE_URL}/demo)
+- [입점 사례](${BASE_URL}/case-studies)
+- [후기](${BASE_URL}/testimonials)
+
+## 전체 매장 목록 (${venues.length}곳)\n`;
+
+// Group by category
+for (const [catKey, catInfo] of Object.entries(catMap)) {
+  const catVenues = venues.filter(vv => vv.cat === catKey);
+  if (catVenues.length === 0) continue;
+  llmsTxt += `\n### ${catInfo.labelKo} (${catVenues.length}곳)\n`;
+  for (const vv of catVenues) {
+    let routePath;
+    if (['club', 'room', 'yojeong'].includes(vv.cat)) {
+      routePath = `/${catInfo.path}/${vv.region}/${vv.slug}`;
+    } else {
+      routePath = `/${catInfo.path}/${vv.slug}`;
+    }
+    const hookTitle = getHookingTitle(vv.nameKo);
+    llmsTxt += `- [${hookTitle}](${BASE_URL}${routePath})\n`;
+  }
+}
+
+llmsTxt += `\n## 주요 지역\n`;
+llmsTxt += `서울: 강남, 홍대, 이태원, 압구정, 청담, 신림, 노원, 용산\n`;
+llmsTxt += `경기: 일산, 수원, 인천, 부천, 안산, 성남, 김포, 파주, 의정부, 구리, 오산, 평택, 분당, 용인\n`;
+llmsTxt += `부산: 해운대, 연산동, 사상\n`;
+llmsTxt += `충청: 대전, 천안, 청주, 서산\n`;
+llmsTxt += `경상: 대구, 울산, 구미\n`;
+llmsTxt += `전라: 광주, 전주\n`;
+llmsTxt += `제주: 제주\n`;
+
+fs.writeFileSync(path.join(DIST, 'llms.txt'), llmsTxt);
+console.log(`✅ llms.txt 자동 생성 (${venues.length}개 업소, 가게이름 포함)`);
+
+// ══════════════════════════════════════════
+// 7. _redirects 업데이트 (정적 파일 우선, 나머지 SPA fallback)
 // ══════════════════════════════════════════
 const redirects = `/api/* /api/:splat 200
 /* /index.html 200
