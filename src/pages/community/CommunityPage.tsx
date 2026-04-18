@@ -227,10 +227,13 @@ export default function CommunityPage() {
             <div className="space-y-3">
               {[
                 { id: 's1', cat: '후기', title: '레이스 금요일 다녀옴 — 역시 사운드 미쳤다', likes: 24, comments: 8 },
-                { id: 's2', cat: '자유', title: '혼자 나이트 가봤는데 생각보다 괜찮았음', likes: 18, comments: 12 },
+                { id: 's2', cat: '자유', title: '택시비가 술값보다 나온 사람 나만?? ㅋㅋ', likes: 41, comments: 19 },
                 { id: 's3', cat: '팁', title: '입장료 아끼는 법 3가지 (진짜 됨)', likes: 31, comments: 6 },
-                { id: 's4', cat: 'Q&A', title: '나이트 드레스코드 뭐 입고 가야돼?', likes: 9, comments: 15 },
+                { id: 's4', cat: '후기', title: '찬스돔 부킹 솔직후기 — 강호동 실장 대박', likes: 28, comments: 14 },
                 { id: 's5', cat: '모집', title: '토요일 강남 같이 갈 사람 2명 구함', likes: 14, comments: 7 },
+                { id: 's6', cat: '자유', title: '어젯밤 일 아직도 술깸ㅋㅋ', likes: 22, comments: 11 },
+                { id: 's7', cat: 'Q&A', title: '호빠 혼자 가면 진짜 괜찮음??', likes: 17, comments: 23 },
+                { id: 's8', cat: '후기', title: '일산명월관 접대로 갔는데 거래처가 감동함', likes: 35, comments: 9 },
               ].map((post, idx) => (
                 <Link key={post.id} to="/community/free" className="flex items-center gap-4 rounded-xl border border-neon-border bg-neon-bg px-4 sm:px-5 py-4 transition hover:border-neon-primary/40 hover:bg-neon-surface" style={{ minHeight: 56 }}>
                   <span className="text-lg font-black shrink-0" style={{ color: idx < 3 ? '#8B5CF6' : '#999', width: 24, textAlign: 'center' }}>{idx + 1}</span>
@@ -259,8 +262,10 @@ export default function CommunityPage() {
             <div className="space-y-2">
               {[
                 { id: 'sc1', cat: 'Q&A', title: '클럽 혼자 가도 되나요? 진짜 궁금', comments: 23 },
-                { id: 'sc2', cat: '자유', title: '어젯밤 홍대 만취 썰 풀어봄', comments: 19 },
+                { id: 'sc2', cat: '자유', title: '어젯밤 홍대 만취 썰 풀어봄 ㅋㅋ', comments: 19 },
                 { id: 'sc3', cat: '후기', title: '아르쥬 vs 레이스 내 결론', comments: 16 },
+                { id: 'sc4', cat: '자유', title: '나이트 갔다가 옛날 동창 만남 ㄷㄷ', comments: 27 },
+                { id: 'sc5', cat: 'Q&A', title: '부킹 안 당하면 어떻게 함?? 꿀팁좀', comments: 21 },
               ].map((post) => (
                 <Link key={post.id} to="/community/free" className="flex items-center justify-between rounded-xl border border-neon-border bg-neon-bg px-4 sm:px-5 py-3 transition hover:border-neon-primary/40 hover:bg-neon-surface" style={{ minHeight: 48 }}>
                   <div className="flex items-center gap-2 min-w-0">

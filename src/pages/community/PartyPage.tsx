@@ -9,7 +9,7 @@ import { PostListSkeleton } from '@/components/ui/Skeleton';
 const RichTextEditor = lazy(() => import('@/components/community/RichTextEditor'));
 import WriteHeader from '@/components/community/WriteHeader';
 
-type PartyStatus = "모집중" | "곧 마감" | "끝" | "신청 가능" | "자리 있음" | "완료" | "열린 모임" | "거의 찬 번개" | "종결";
+type PartyStatus = "모집중" | "곧 마감" | "끝" | "신청 가능" | "자리 있음" | "완료" | "열린 모임" | "거의 찬 번개" | "종결" | "마감";
 
 const statusStyles: Record<PartyStatus, string> = {
   "모집중": "bg-neon-green/15 text-neon-green",
@@ -21,6 +21,7 @@ const statusStyles: Record<PartyStatus, string> = {
   "끝": "bg-neon-surface-2 text-neon-text-muted",
   "완료": "bg-neon-surface-2 text-neon-text-muted",
   "종결": "bg-neon-surface-2 text-neon-text-muted",
+  "마감": "bg-neon-surface-2 text-neon-text-muted",
 };
 
 function getDday(dateStr: string): string {
@@ -147,11 +148,21 @@ export default function PartyRecruitPage() {
 
   // 시드 글 (DB 비어있을 때 사이트가 살아보이게)
   const seedPosts: PartyItem[] = [
-    { id: 'seed-1', title: '금요일 강남 클럽 같이 갈 사람', author: '강남파티보이', eventDate: '2026-04-18', region: '강남', currentMembers: 3, maxMembers: 6, ageRange: '20대후반~30대초반', status: '모집중', comments: 8, description: '레이스 테이블 잡아놨는데 자리 여유 있어서 모집합니다. 엔빵이고 분위기 좋게 놀아요.' },
-    { id: 'seed-2', title: '토요일 홍대 나이트 벙개 모집', author: '홍대놀자', eventDate: '2026-04-19', region: '홍대', currentMembers: 2, maxMembers: 4, ageRange: '20대', status: '모집중', comments: 12, description: '홍대 나이트 처음인 분도 환영. 분위기 좋게 부킹하면서 놀아봐요.' },
-    { id: 'seed-3', title: '부산 해운대 주말 라운지 모임', author: '해운대서퍼', eventDate: '2026-04-19', region: '부산', currentMembers: 4, maxMembers: 8, ageRange: '25~35세', status: '신청 가능', comments: 5, description: '해운대 라운지에서 가볍게 한잔하면서 대화할 분들 모집. 남녀 비율 맞추고 싶어요.' },
-    { id: 'seed-4', title: '일산 주말 벙개 2명 더', author: '일산밤문화', eventDate: '2026-04-19', region: '일산', currentMembers: 4, maxMembers: 6, ageRange: '30대', status: '곧 마감', comments: 6, description: '일산 나이트 갈 건데 2명 더 있으면 딱 좋을 것 같아서 모집합니다.' },
-    { id: 'seed-5', title: '대구 동성로 금요일 파티', author: '대구밤왕', eventDate: '2026-04-18', region: '대구', currentMembers: 2, maxMembers: 5, ageRange: '20대~30대', status: '모집중', comments: 3, description: '동성로 클럽 가실 분. 분위기 좋고 음악 좋은 데로 갑시다.' },
+    { id: 'seed-1', title: '금요일 강남 레이스 테이블 같이 갈 사람', author: '강남파티보이', eventDate: '2026-04-18', region: '강남', currentMembers: 3, maxMembers: 6, ageRange: '20대후반~30대초반', status: '모집중', comments: 8, description: '레이스 테이블 잡아놨는데 자리 여유 있어서 모집합니다. 엔빵이고 분위기 좋게 놀아요.' },
+    { id: 'seed-2', title: '토요일 홍대 나이트 벙개 모집', author: '홍대클럽러', eventDate: '2026-04-19', region: '홍대', currentMembers: 2, maxMembers: 4, ageRange: '20대', status: '모집중', comments: 12, description: '홍대 나이트 오랜만에 가는데 같이 갈 사람 구해요. 부킹 자신 있는 분 환영ㅋㅋ' },
+    { id: 'seed-3', title: '해운대 라운지 주말 같이 놀 분', author: '부산큰형', eventDate: '2026-04-19', region: '부산', currentMembers: 4, maxMembers: 8, ageRange: '25~35세', status: '신청 가능', comments: 5, description: '해운대 라운지 가볍게 한잔하면서 놀아요. 남녀 비율 맞추고 싶어서 여성분 우대합니다.' },
+    { id: 'seed-4', title: '일산 나이트 2명만 더 모집', author: '일산토박이', eventDate: '2026-04-19', region: '일산', currentMembers: 4, maxMembers: 6, ageRange: '30대', status: '곧 마감', comments: 6, description: '찬스돔 갈 건데 2명만 더 있으면 딱인데.. 빨리 연락주세요!' },
+    { id: 'seed-5', title: '대구 동성로 금요 클럽 가실 분', author: '대구밤왕', eventDate: '2026-04-18', region: '대구', currentMembers: 2, maxMembers: 5, ageRange: '20대~30대', status: '모집중', comments: 3, description: '동성로 클럽 갈 건데 혼자 가기 좀 그래서ㅋㅋ 같이 갑시다.' },
+    { id: 'seed-6', title: '이태원 토요일 밤 테이블 엔빵', author: '이태원밤새', eventDate: '2026-04-19', region: '이태원', currentMembers: 2, maxMembers: 5, ageRange: '20대중반~30대초반', status: '모집중', comments: 9, description: '이태원 라운지 테이블 잡아놨어요. 분위기 좋은 데니까 편하게 와요.' },
+    { id: 'seed-7', title: '수원 금요일 저녁 나이트 같이', author: '수원형아', eventDate: '2026-04-18', region: '수원', currentMembers: 3, maxMembers: 6, ageRange: '20대후반~30대', status: '신청 가능', comments: 4, description: '수원 나이트 자주 가는데 이번에 새로 온 친구 데리고 가려고요. 같이 놀아요~' },
+    { id: 'seed-8', title: '강남 버뮤다 토요 합류 구해요', author: '클럽매니아92', eventDate: '2026-04-19', region: '강남', currentMembers: 5, maxMembers: 8, ageRange: '20대~30대초반', status: '곧 마감', comments: 15, description: '버뮤다 테이블 잡아놨고 벌써 5명 모였어요. 3자리 남았으니까 서두르세요!' },
+    { id: 'seed-9', title: '인천 주말 클럽 처음인데 같이 갈 분', author: '인천새내기', eventDate: '2026-04-19', region: '인천', currentMembers: 1, maxMembers: 4, ageRange: '20대', status: '모집중', comments: 7, description: '클럽 첫 도전인데 혼자 가기 무서워서요ㅋㅋ 경험자분 같이 가주실 분 구합니다.' },
+    { id: 'seed-10', title: '대전 토요 라운지 모임 하실 분', author: '대전밤도깨비', eventDate: '2026-04-19', region: '대전', currentMembers: 3, maxMembers: 6, ageRange: '25~35세', status: '모집중', comments: 2, description: '대전 라운지 분위기 좋은 데 알아요. 가볍게 한잔하면서 얘기할 분들 모셔요.' },
+    { id: 'seed-11', title: '강남 고구려 금요일 갈 사람?', author: '나이트장인', eventDate: '2026-04-18', region: '강남', currentMembers: 4, maxMembers: 6, ageRange: '30대', status: '곧 마감', comments: 11, description: '고구려 오랜만에 가는데 부킹 잘 되는 날이라 기대 중ㅎㅎ 2명만 더!' },
+    { id: 'seed-12', title: '홍대 일요일 낮술 벙개 가볍게', author: '일요일도놀아', eventDate: '2026-04-20', region: '홍대', currentMembers: 2, maxMembers: 4, ageRange: '20대~30대', status: '모집중', comments: 3, description: '일요일 낮에 홍대에서 가볍게 한잔하면서 놀 분. 밤까지 이어갈 수도 있어요ㅋ' },
+    { id: 'seed-13', title: '부산 서면 다음주 금요 파티', author: '서면불주먹', eventDate: '2026-04-25', region: '부산', currentMembers: 2, maxMembers: 8, ageRange: '20대~30대', status: '신청 가능', comments: 4, description: '서면 클럽 대규모 파티 모집합니다. 남녀 4:4 맞출 거예요.' },
+    { id: 'seed-14', title: '일산 라운지 다음주 토요일 모임', author: '킨텍스근처', eventDate: '2026-04-26', region: '일산', currentMembers: 1, maxMembers: 6, ageRange: '25~35세', status: '모집중', comments: 2, description: '일산 라운지에서 편하게 술 한잔 하면서 대화 나눌 분들 구합니다.' },
+    { id: 'seed-15', title: '이태원 금요 클럽 6명 마감임박', author: '해밀턴단골', eventDate: '2026-04-18', region: '이태원', currentMembers: 5, maxMembers: 6, ageRange: '20대중반~30대', status: '마감', comments: 13, description: '이태원 클럽 마감됐습니다! 다음에 또 올릴게요~' },
   ];
   const displayParties = parties.length > 0 ? parties : seedPosts;
 

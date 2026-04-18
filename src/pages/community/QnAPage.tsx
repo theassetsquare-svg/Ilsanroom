@@ -87,11 +87,22 @@ export default function QnAPage() {
 
   // 시드 글 (DB 비어있을 때 사이트가 살아보이게)
   const seedPosts: QuestionItem[] = [
-    { id: 'seed-1', title: '처음 가는데 혼자 가도 되나요?', author: '클럽초보생', date: '2026-04-18', answers: 7, likes: 14, solved: false, category: '입장' },
-    { id: 'seed-2', title: '나이트 부킹 시스템 어떻게 돌아가요?', author: '궁금한밤', date: '2026-04-18', answers: 11, likes: 22, solved: true, category: '전체' },
-    { id: 'seed-3', title: '클럽 입장 나이제한 있어?', author: '스물한살', date: '2026-04-17', answers: 5, likes: 9, solved: false, category: '입장' },
-    { id: 'seed-4', title: '호빠 예산 얼마나 잡아야 해?', author: '첫호빠녀', date: '2026-04-17', answers: 8, likes: 17, solved: false, category: '가격' },
-    { id: 'seed-5', title: '라운지 vs 클럽 차이가 뭐야?', author: '밤문화입문', date: '2026-04-16', answers: 13, likes: 28, solved: true, category: '전체' },
+    { id: 'seed-1', title: '나이트 처음인데 뭐부터 해야됨?', author: '밤문화뉴비', date: '2026-04-18', answers: 12, likes: 27, solved: true, category: '입장' },
+    { id: 'seed-2', title: '호빠 가본 여자분들 솔직후기 좀', author: '호기심냥이', date: '2026-04-18', answers: 15, likes: 30, solved: false, category: '전체' },
+    { id: 'seed-3', title: '클럽 나이 확인 안 하는 데 있어?', author: '스물한살임', date: '2026-04-18', answers: 8, likes: 19, solved: false, category: '입장' },
+    { id: 'seed-4', title: '요정 코스요리 몇 시간 걸려요?', author: '접대초보', date: '2026-04-18', answers: 6, likes: 14, solved: true, category: '전체' },
+    { id: 'seed-5', title: '강남 라운지 테이블 예약 안 하면 못 들어감?', author: '라운지궁금', date: '2026-04-17', answers: 9, likes: 22, solved: true, category: '입장' },
+    { id: 'seed-6', title: '나이트에서 부킹 거절해도 됨?', author: '소심한놈', date: '2026-04-17', answers: 11, likes: 25, solved: true, category: '예절' },
+    { id: 'seed-7', title: '클럽 혼자 가면 진짜 어색함?', author: '솔로전사', date: '2026-04-17', answers: 14, likes: 28, solved: false, category: '입장' },
+    { id: 'seed-8', title: '금요일이랑 토요일 분위기 차이 큼?', author: '주말고민러', date: '2026-04-17', answers: 7, likes: 16, solved: false, category: '전체' },
+    { id: 'seed-9', title: '룸싸롱 초이스 할 때 팁 좀', author: '첫룸방문', date: '2026-04-16', answers: 10, likes: 23, solved: true, category: '예절' },
+    { id: 'seed-10', title: '나이트 테이블 vs 스탠딩 뭐가 나음?', author: '가성비탐구', date: '2026-04-16', answers: 8, likes: 18, solved: false, category: '가격' },
+    { id: 'seed-11', title: '호빠 선수한테 연락처 물어봐도 됨?', author: '직진녀', date: '2026-04-16', answers: 13, likes: 26, solved: true, category: '예절' },
+    { id: 'seed-12', title: '요정 처음 가는데 양주 뭐 시켜야함', author: '양주모름', date: '2026-04-15', answers: 9, likes: 20, solved: true, category: '가격' },
+    { id: 'seed-13', title: '클럽 재입장 가능한 데 있음?', author: '바람쐬러', date: '2026-04-15', answers: 5, likes: 11, solved: false, category: '입장' },
+    { id: 'seed-14', title: '나이트 웨이터한테 팁 줘야되나?', author: '팁문화궁금', date: '2026-04-14', answers: 7, likes: 15, solved: true, category: '예절' },
+    { id: 'seed-15', title: '라운지 2차 가자고 하면 실례임?', author: '분위기파악중', date: '2026-04-13', answers: 11, likes: 24, solved: false, category: '예절' },
+    { id: 'seed-16', title: '입장료 카드결제 되는 클럽 있어?', author: '현금없는남', date: '2026-04-12', answers: 4, likes: 8, solved: true, category: '가격' },
   ];
   const displayQuestions = questions.length > 0 ? questions : seedPosts;
 

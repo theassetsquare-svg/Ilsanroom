@@ -87,11 +87,21 @@ export default function TipsPage() {
 
   // 시드 글 (DB 비어있을 때 사이트가 살아보이게)
   const seedPosts: TipCard[] = [
-    { id: 'seed-1', title: '입장료 할인 받는 확실한 방법', category: '절약', difficulty: '쉬움', author: '절약의신', bookmarks: 42, summary: '게스트 등록 미리 해두면 만원 이상 아끼는 곳 많아. 인스타 팔로우만 해도 할인되는 데도 있음.' },
-    { id: 'seed-2', title: '첫 방문 시 웨이터한테 이거 꼭 말해라', category: '입문', difficulty: '쉬움', author: '나이트경력5년', bookmarks: 38, summary: '처음 왔다고 솔직하게 말하면 웨이터가 알아서 자리 잡아주고 시스템도 설명해줌. 아는 척 하면 오히려 손해.' },
-    { id: 'seed-3', title: '금토 피크시간 피하는 꿀팁', category: '입문', difficulty: '보통', author: '타이밍장인', bookmarks: 31, summary: '12시~1시가 제일 붐빔. 10시 반에 가면 줄 안 서고 바로 입장됨. 새벽 2시 이후도 한산해서 좋음.' },
-    { id: 'seed-4', title: '드레스코드 무난하게 맞추는 법', category: '예절', difficulty: '쉬움', author: '패션센스제로', bookmarks: 25, summary: '검정 슬랙스에 깔끔한 셔츠면 어디든 통과. 운동화는 깨끗한 거면 대부분 OK. 슬리퍼만 아니면 됨.' },
-    { id: 'seed-5', title: '테이블 vs 일반입장 뭐가 나은지', category: '절약', difficulty: '고급', author: '테이블마스터', bookmarks: 29, summary: '4명 이상이면 테이블이 오히려 싸게 먹힘. 2~3명이면 일반입장 후 바에서 마시는 게 경제적.' },
+    { id: 'seed-1', title: '게스트 등록으로 입장료 반값 만드는 법', category: '절약', difficulty: '쉬움', author: '절약의신', bookmarks: 52, summary: '인스타 팔로우하고 DM으로 게스트 신청하면 만원 이상 깎이는 곳 수두룩함. 모르면 호구됨 진짜.' },
+    { id: 'seed-2', title: '웨이터한테 처음 왔다고 말하면 생기는 일', category: '입문', difficulty: '쉬움', author: '나이트5년차', bookmarks: 47, summary: '솔직히 처음이라고 하면 웨이터가 좋은 자리 잡아줌. 아는 척하면 구석으로 보내버림 ㅋㅋ' },
+    { id: 'seed-3', title: '금토 줄 안 서고 바로 입장하는 시간대', category: '입문', difficulty: '보통', author: '타이밍장인', bookmarks: 41, summary: '10시 반~11시 사이가 골든타임. 12시 넘으면 30분은 기본으로 서야 됨. 새벽 2시 이후는 한산.' },
+    { id: 'seed-4', title: '테이블 잡을 때 인원수별 최적 전략', category: '절약', difficulty: '고급', author: '테이블마스터', bookmarks: 39, summary: '4명 이상이면 테이블이 n빵하면 오히려 쌈. 2명이면 바 스탠딩이 답. 3명이 제일 애매함.' },
+    { id: 'seed-5', title: '나이트 처음 가면 무조건 하는 실수 5가지', category: '입문', difficulty: '쉬움', author: '선배형', bookmarks: 55, summary: '입구에서 쭈뼛거리기, 핸드폰만 보기, 술 너무 빨리 마시기, 부킹 거절 못하기, 새벽에 택시 못잡기.' },
+    { id: 'seed-6', title: '양주 브랜드별 가성비 랭킹 정리함', category: '절약', difficulty: '고급', author: '양주박사', bookmarks: 44, summary: '발렌타인17년 가성비 최고. 조니워커블랙도 괜찮음. 로얄살루트는 접대용. 혼자 먹을 거면 잭다니엘.' },
+    { id: 'seed-7', title: '부킹 성공률 높이는 현실적인 방법', category: '입문', difficulty: '보통', author: '부킹달인', bookmarks: 36, summary: '웨이터한테 미리 말해두는 게 핵심. 테이블 분위기 좋게 유지하고 있으면 웨이터가 알아서 연결해줌.' },
+    { id: 'seed-8', title: '호빠 처음 가는 여자들 필독 가이드', category: '입문', difficulty: '쉬움', author: '호빠선배언니', bookmarks: 48, summary: '선수 맘에 안 들면 바로 체인지 가능함. 눈치 볼 필요 없음. 시간 잘 체크하고 연장은 신중하게.' },
+    { id: 'seed-9', title: '요정에서 초이스할 때 에티켓 정리', category: '예절', difficulty: '고급', author: '접대고수', bookmarks: 33, summary: '손가락으로 가리키면 안 됨. 눈짓이나 번호로 말하기. 아가씨한테 직접 물어보는 건 실례임.' },
+    { id: 'seed-10', title: '취했을 때 택시 안전하게 잡는 꿀팁', category: '안전', difficulty: '쉬움', author: '안전귀가', bookmarks: 31, summary: '카카오택시 미리 예약 걸어놓기. 대리운전 번호 저장해두기. 친구한테 위치 공유 필수.' },
+    { id: 'seed-11', title: '라운지에서 자연스럽게 대화 거는 법', category: '입문', difficulty: '보통', author: '라운지단골', bookmarks: 28, summary: '옆 테이블 건배 제안이 제일 자연스러움. 갑자기 말 걸면 경계함. 분위기 읽는 게 먼저.' },
+    { id: 'seed-12', title: '클럽에서 소지품 안 잃어버리는 방법', category: '안전', difficulty: '쉬움', author: '폰분실3회', bookmarks: 25, summary: '주머니 지퍼 달린 바지 입기. 가방은 락커에. 핸드폰 분실방지 줄 강추. 경험에서 나온 팁임 ㅠ' },
+    { id: 'seed-13', title: '웨이터 팁 문화 어디까지가 적당한지', category: '예절', difficulty: '보통', author: '팁줄까말까', bookmarks: 22, summary: '잘 해주면 만원 정도 주면 다음에 VIP 대우 받음. 안 줘도 상관없긴 한데 단골 되려면 좀 챙겨.' },
+    { id: 'seed-14', title: '혼술족 클럽 가는 현실적 후기', category: '입문', difficulty: '보통', author: '혼놀러', bookmarks: 19, summary: '바 카운터 앉으면 바텐더가 말 걸어줌. 의외로 혼자 온 사람 많음. 어색한 건 처음 10분만.' },
+    { id: 'seed-15', title: '나이트 2차 갈 때 주의사항', category: '안전', difficulty: '보통', author: '안전제일', bookmarks: 15, summary: '처음 본 사람이랑 2차는 위험. 친구한테 위치 공유하고 가기. 현금 많이 들고 다니지 말 것.' },
   ];
   const displayTips = tips.length > 0 ? tips : seedPosts;
 

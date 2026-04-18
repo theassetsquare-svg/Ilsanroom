@@ -104,11 +104,24 @@ export default function ReviewsPage() {
 
   // 시드 글 (DB 비어있을 때 사이트가 살아보이게)
   const seedPosts: ReviewItem[] = [
-    { id: 'seed-1', title: '강남클럽 레이스 솔직 후기', author: '강남올빼미', date: '2026-04-18', venue: '레이스', rating: 5, helpful: 27, comments: 9, hasPhoto: false, excerpt: '금요일 밤에 갔는데 사운드 진짜 미쳤음. DJ 라인업도 좋고 테이블 위치도 괜찮았다. 재방문 의사 100%.' },
-    { id: 'seed-2', title: '수원나이트 찬스돔 처음 가봄', author: '수원첫방문', date: '2026-04-18', venue: '찬스돔', rating: 4, helpful: 18, comments: 6, hasPhoto: false, excerpt: '부킹 시스템이 생각보다 체계적이라 놀랐음. 웨이터가 친절해서 분위기 좋았다.' },
-    { id: 'seed-3', title: '해운대고구려 뷔페 레벨이...', author: '부산밤손님', date: '2026-04-17', venue: '고구려', rating: 5, helpful: 34, comments: 12, hasPhoto: true, excerpt: '여기 뷔페 수준이 호텔급임 진심. 룸도 넓고 초이스도 괜찮고. 부산 가면 무조건 여기.' },
-    { id: 'seed-4', title: '라운지 디엠 분위기 좋은데 가격이', author: '디엠단골', date: '2026-04-17', venue: '디엠', rating: 3, helpful: 15, comments: 8, hasPhoto: false, excerpt: '인테리어 분위기는 서울 탑급인데 주대가 좀 쎈 편. 특별한 날에 가기엔 좋다.' },
-    { id: 'seed-5', title: '일산룸 단체 회식으로 갔는데', author: '일산직장인', date: '2026-04-16', venue: '', rating: 4, helpful: 11, comments: 5, hasPhoto: false, excerpt: '8명이서 갔는데 룸 사이즈 딱 좋았음. 음향도 괜찮고 직원분들 서비스 좋았다.' },
+    { id: 'seed-1', title: '레이스 금요일 다녀옴 사운드 ㄹㅇ 미침', author: '베이스중독', date: '2026-04-18', venue: '레이스', rating: 5, helpful: 38, comments: 12, hasPhoto: true, excerpt: '스피커 앞자리 잡았는데 온몸이 울리더라ㅋㅋ DJ 셋도 좋았고 분위기 역대급이었음. 재방 확정.' },
+    { id: 'seed-2', title: '찬스돔 부킹 시스템 체계적이라 놀람', author: '수원놀이꾼', date: '2026-04-18', venue: '찬스돔', rating: 4, helpful: 22, comments: 8, hasPhoto: false, excerpt: '웨이터가 알아서 잘 연결해줌. 테이블 위치도 나쁘지 않았고 음악도 괜찮았다 솔직히.' },
+    { id: 'seed-3', title: '고구려 뷔페 호텔급인거 실화냐', author: '먹보리뷰어', date: '2026-04-18', venue: '고구려', rating: 5, helpful: 45, comments: 15, hasPhoto: true, excerpt: '초이스 전에 뷔페부터 감동받음ㅋㅋ 랍스타 나오는 유흥업소가 어딨어. 룸도 넓고 완벽.' },
+    { id: 'seed-4', title: '디엠 분위기는 좋은데 주대가 좀..', author: '가성비탐구', date: '2026-04-17', venue: '디엠', rating: 3, helpful: 19, comments: 9, hasPhoto: false, excerpt: '인테리어는 진짜 서울 어디 내놔도 탑급. 근데 가격이 쎄서 특별한 날 아니면 좀 부담됨.' },
+    { id: 'seed-5', title: '일산룸 8명 회식 다녀온 후기', author: '일산회사원', date: '2026-04-17', venue: '일산룸', rating: 4, helpful: 15, comments: 5, hasPhoto: false, excerpt: '룸 사이즈 넉넉하고 노래방 음향 좋음. 직원분들 응대 친절해서 분위기 좋았다.' },
+    { id: 'seed-6', title: '아르쥬 처음인데 여기 왜 유명한지 알겠음', author: '라운지초보', date: '2026-04-17', venue: '아르쥬', rating: 5, helpful: 31, comments: 11, hasPhoto: true, excerpt: '칵테일 퀄리티가 바 수준이고 조명이 예술임. 데이트로 가기 딱이야 진짜.' },
+    { id: 'seed-7', title: '하입 토요일 갔는데 사람 미침ㅋㅋ', author: '주말전사', date: '2026-04-16', venue: '하입', rating: 4, helpful: 24, comments: 7, hasPhoto: false, excerpt: '입장 줄이 겁나 길었는데 들어가니까 에너지 ㄹㅇ 대박. 근데 너무 붐벼서 움직이기 힘듦.' },
+    { id: 'seed-8', title: '명월관 양주 퀄리티 인정합니다', author: '양주감별사', date: '2026-04-16', venue: '일산명월관', rating: 5, helpful: 28, comments: 10, hasPhoto: false, excerpt: '가짜 양주 걱정했는데 여긴 확실함. 초이스도 좋고 실장님이 잘 챙겨줌. 단골 될듯.' },
+    { id: 'seed-9', title: '버뮤다 혼자 갔는데 의외로 괜찮았음', author: '솔로여행자', date: '2026-04-16', venue: '버뮤다', rating: 4, helpful: 17, comments: 6, hasPhoto: false, excerpt: '혼자라 좀 쫄았는데 분위기가 편해서 금방 적응함. 옆테이블 형들이 같이 놀자고 해줌ㅋ' },
+    { id: 'seed-10', title: '돈텔마마 가격 생각보다 합리적임', author: '가격비교왕', date: '2026-04-15', venue: '돈텔마마', rating: 4, helpful: 21, comments: 8, hasPhoto: false, excerpt: '이름값 할까봐 걱정했는데 주대가 생각보다 착함. 분위기도 좋고 음악 취향 딱 맞았다.' },
+    { id: 'seed-11', title: '샴푸나이트 부킹률 역대급 아니냐', author: '부킹장인', date: '2026-04-15', venue: '샴푸나이트', rating: 5, helpful: 33, comments: 13, hasPhoto: true, excerpt: '3번 갔는데 3번 다 부킹됨ㅋㅋ 여기 진짜 시스템이 잘 돼있음. 웨이터 센스 좋다.' },
+    { id: 'seed-12', title: '호박나이트 수요일에 가봄 한적해서 오히려 굿', author: '평일파', date: '2026-04-15', venue: '호박나이트', rating: 4, helpful: 12, comments: 4, hasPhoto: false, excerpt: '사람 적어서 부킹 잘 되고 웨이터도 더 신경써줌. 주말 피하고 평일 추천.' },
+    { id: 'seed-13', title: '로얄 룸 넓기가 ㅎㄷㄷ 우리끼리 파티함', author: '파티플래너', date: '2026-04-14', venue: '로얄', rating: 5, helpful: 26, comments: 9, hasPhoto: true, excerpt: '10명 들어가도 넉넉한 룸ㅋㅋ 음향 장비도 좋고 서비스 퀄리티가 높음. 생일파티 여기서 하삼.' },
+    { id: 'seed-14', title: '레이스 테이블 예약 팁 알려드림', author: '예약고수', date: '2026-04-14', venue: '레이스', rating: 5, helpful: 40, comments: 14, hasPhoto: false, excerpt: '미리 전화해서 테이블 잡아야 됨. 현장가면 자리없어서 서서 놀아야함 진짜로. 예약 필수!' },
+    { id: 'seed-15', title: '찬스돔 vs 샴푸 비교 후기 (둘다 감)', author: '비교분석맨', date: '2026-04-13', venue: '찬스돔', rating: 4, helpful: 35, comments: 11, hasPhoto: false, excerpt: '찬스돔은 시스템 체계적이고 샴푸는 분위기가 더 자유로움. 취향차이인듯. 난 찬스돔 한표.' },
+    { id: 'seed-16', title: '고구려 초이스 퀄리티 솔직하게 말함', author: '솔직담백', date: '2026-04-13', venue: '고구려', rating: 4, helpful: 29, comments: 10, hasPhoto: false, excerpt: '요일마다 다른데 금토가 확실히 좋음. 평일은 좀 아쉬울수 있는데 뷔페로 커버됨.' },
+    { id: 'seed-17', title: '하입 사운드 업그레이드 했나? 전보다 좋아짐', author: '음향매니아', date: '2026-04-12', venue: '하입', rating: 4, helpful: 16, comments: 5, hasPhoto: false, excerpt: '저번달에 갔을때보다 확실히 소리가 좋아짐. 저음이 깨끗하게 빠지는 느낌. 인정.' },
+    { id: 'seed-18', title: '일산명월관 처음 갔는데 실장님 덕에 편했음', author: '파주에서옴', date: '2026-04-12', venue: '일산명월관', rating: 5, helpful: 23, comments: 7, hasPhoto: false, excerpt: '요정 처음이라 긴장했는데 실장님이 하나하나 설명해주셔서 편하게 즐김. 초보한테 추천.' },
   ];
   const displayReviews = reviews.length > 0 ? reviews : seedPosts;
 
