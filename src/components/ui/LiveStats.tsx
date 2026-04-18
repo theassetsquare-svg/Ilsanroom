@@ -1,23 +1,42 @@
 import { useState, useEffect } from 'react';
 
-/* ── 시간대별 수치 배율 ──
-   365일 24시간 언제 들어가도 "사람 많다" 느낌이어야 한다.
-   밤문화 사이트라 밤이 피크지만, 낮에도 검색/정보탐색 유저가 충분히 있어야 자연스럽다.
-   최저 배율을 0.45로 잡아 어느 시간대든 절반 이상 활동이 보이게 한다. */
-function getHourMultiplier(): number {
-  const h = new Date().getHours();
-  if (h >= 22 || h < 2) return 1.0;    // 피크: 밤 10시~새벽 2시
-  if (h >= 20 && h < 22) return 0.9;   // 프리피크: 저녁 8~10시
-  if (h >= 18 && h < 20) return 0.75;  // 퇴근 후: 6~8시
-  if (h >= 15 && h < 18) return 0.55;  // 오후: 검색/계획 시간대
-  if (h >= 12 && h < 15) return 0.5;   // 점심: 모바일 브라우징
-  if (h >= 9 && h < 12) return 0.45;   // 오전: 출근길 검색
-  if (h >= 6 && h < 9) return 0.45;    // 이른 아침
-  return 0.5;                           // 새벽 2~6시: 놀고 돌아와서 후기 쓰는 시간
+/* ── 날짜 시드 ──
+   매일 다른 수치가 나오도록 날짜(년+월+일+요일)를 시드로 사용.
+   같은 날 같은 시간에 새로고침하면 기본값은 비슷하지만 random jitter가 더해져서 약간씩 다르다.
+   다른 날에는 daySeed 자체가 달라서 확실히 다른 수치가 나온다. */
+function getDaySeed(): number {
+  const now = new Date();
+  return now.getFullYear() * 400 + (now.getMonth() + 1) * 32 + now.getDate();
 }
 
-function jitter(base: number, range: number): number {
-  return base + Math.floor(Math.random() * range * 2) - range;
+/* ── 시간대별 수치 배율 ──
+   365일 24시간 언제 들어가도 "사람 많다" 느낌.
+   요일에 따라 배율이 약간 다름: 금토 피크, 일~목 평일. */
+function getHourMultiplier(): number {
+  const now = new Date();
+  const h = now.getHours();
+  const dow = now.getDay(); // 0=일, 5=금, 6=토
+  const isWeekend = dow === 5 || dow === 6; // 금토
+  const wMult = isWeekend ? 1.0 : (dow === 0 || dow === 4) ? 0.85 : 0.75; // 일/목은 중간
+
+  let base: number;
+  if (h >= 22 || h < 2) base = 1.0;
+  else if (h >= 20 && h < 22) base = 0.9;
+  else if (h >= 18 && h < 20) base = 0.75;
+  else if (h >= 15 && h < 18) base = 0.55;
+  else if (h >= 12 && h < 15) base = 0.5;
+  else if (h >= 6 && h < 12) base = 0.45;
+  else base = 0.5; // 새벽 2~6시
+
+  return Math.max(0.4, base * wMult);
+}
+
+/* 간단한 해시: 날짜 시드를 넣으면 매일 다른 정수 반환 */
+function dailyHash(seed: number, salt: number): number {
+  let x = ((seed + salt) * 2654435761) >>> 0;
+  x = ((x >> 16) ^ x) * 0x45d9f3b;
+  x = ((x >> 16) ^ x);
+  return x >>> 0;
 }
 
 /* ══════════════════════════════════════════ */
@@ -28,10 +47,12 @@ export function PageLiveCounter({ pageName, baseCount = 30, className = '' }: { 
 
   useEffect(() => {
     const m = getHourMultiplier();
-    setCount(Math.max(3, Math.floor(baseCount * m + Math.random() * 10)));
+    const ds = getDaySeed();
+    const dayVar = (dailyHash(ds, baseCount) % 20) - 10; // -10 ~ +10 매일 다른 보정
+    setCount(Math.max(5, Math.floor(baseCount * m + dayVar + Math.random() * 8)));
 
     const timer = setInterval(() => {
-      setCount(prev => Math.max(3, prev + Math.floor(Math.random() * 5) - 2));
+      setCount(prev => Math.max(4, prev + Math.floor(Math.random() * 5) - 2));
     }, 7000 + Math.floor(Math.random() * 4000));
 
     return () => clearInterval(timer);
@@ -61,10 +82,14 @@ export function TodayStats({ className = '' }: { className?: string }) {
   useEffect(() => {
     const h = new Date().getHours();
     const m = getHourMultiplier();
+    const ds = getDaySeed();
+    const dv = dailyHash(ds, 777) % 120; // 매일 0~119 다른 보정
+    const dp = dailyHash(ds, 888) % 8;
+    const dc = dailyHash(ds, 999) % 20;
     const base = {
-      visitors: Math.floor((380 + h * 47) * m + Math.random() * 50),
-      posts: Math.floor((12 + h * 2.3) * m + Math.random() * 5),
-      comments: Math.floor((34 + h * 4.8) * m + Math.random() * 10),
+      visitors: Math.floor((380 + h * 47 + dv) * m + Math.random() * 50),
+      posts: Math.floor((12 + h * 2.3 + dp) * m + Math.random() * 5),
+      comments: Math.floor((34 + h * 4.8 + dc) * m + Math.random() * 10),
     };
     setStats(base);
 
@@ -99,11 +124,13 @@ export function VenueCardStats({ slug, className = '' }: { slug: string; classNa
   useEffect(() => {
     const hash = slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
     const m = getHourMultiplier();
-    const popular = hash % 3 === 0; // 인기 업소는 수치 높게
+    const ds = getDaySeed();
+    const dh = dailyHash(ds, hash);
+    const popular = hash % 3 === 0;
     setData({
-      viewing: Math.max(2, Math.floor((popular ? 18 : 8) * m + (hash % 7))),
-      todayViews: Math.floor((popular ? 180 : 60) + (hash % 80) + Math.random() * 30),
-      weekInquiry: Math.floor((popular ? 24 : 8) + (hash % 12)),
+      viewing: Math.max(2, Math.floor((popular ? 18 : 8) * m + (dh % 7) + (hash % 5))),
+      todayViews: Math.floor((popular ? 180 : 60) + (dh % 90) + Math.random() * 30),
+      weekInquiry: Math.floor((popular ? 24 : 8) + (dh % 15)),
     });
 
     const timer = setInterval(() => {
@@ -138,11 +165,13 @@ export function CommunityPulse({ className = '' }: { className?: string }) {
   useEffect(() => {
     const h = new Date().getHours();
     const m = getHourMultiplier();
+    const ds = getDaySeed();
+    const memberGrowth = Math.floor((ds - 740000) * 0.3); // 날짜 지날수록 회원수 증가
     setData({
-      online: Math.max(8, Math.floor(85 * m + Math.random() * 25)),
-      todayPosts: Math.floor(15 + h * 2.1 + Math.random() * 6),
-      todayComments: Math.floor(42 + h * 5.3 + Math.random() * 15),
-      totalMembers: 2847 + Math.floor(Math.random() * 30),
+      online: Math.max(12, Math.floor(85 * m + (dailyHash(ds, 111) % 25))),
+      todayPosts: Math.floor(15 + h * 2.1 + (dailyHash(ds, 222) % 8)),
+      todayComments: Math.floor(42 + h * 5.3 + (dailyHash(ds, 333) % 18)),
+      totalMembers: 2847 + Math.max(0, memberGrowth) + (dailyHash(ds, 444) % 15),
     });
 
     const timer = setInterval(() => {
@@ -178,7 +207,8 @@ export function RecentJoinTicker({ className = '' }: { className?: string }) {
 
   useEffect(() => {
     const h = new Date().getHours();
-    setCount(Math.floor(3 + h * 0.7 + Math.random() * 3));
+    const ds = getDaySeed();
+    setCount(Math.floor(3 + h * 0.7 + (dailyHash(ds, 555) % 4) + Math.random() * 2));
 
     const timer = setInterval(() => {
       if (Math.random() > 0.6) {
@@ -203,7 +233,8 @@ export function RecentJoinTicker({ className = '' }: { className?: string }) {
 /* ══════════════════════════════════════════ */
 export function GuideReadCount({ category, className = '' }: { category: string; className?: string }) {
   const hash = category.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-  const base = 1200 + (hash % 800) + Math.floor(new Date().getHours() * 15);
+  const ds = getDaySeed();
+  const base = 1200 + (hash % 800) + Math.floor(new Date().getHours() * 15) + (dailyHash(ds, hash) % 200);
   const [count, setCount] = useState(base);
 
   useEffect(() => {
