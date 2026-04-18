@@ -37,19 +37,16 @@ export function useDocumentMeta(title: string, description: string, ogImage?: st
     setMeta('property', 'og:locale', 'ko_KR');
     setMeta('property', 'og:site_name', '놀쿨');
 
-    if (ogImage) {
-      setMeta('property', 'og:image', ogImage);
-      setMeta('property', 'og:image:width', '1200');
-      setMeta('property', 'og:image:height', '1200');
-    }
+    const finalOgImage = ogImage || 'https://nolcool.com/og/nolcool-og.jpg';
+    setMeta('property', 'og:image', finalOgImage);
+    setMeta('property', 'og:image:width', '1200');
+    setMeta('property', 'og:image:height', '1200');
 
     // Twitter Card
     setMeta('name', 'twitter:card', 'summary_large_image');
     setMeta('name', 'twitter:title', title);
     setMeta('name', 'twitter:description', trimmedDesc);
-    if (ogImage) {
-      setMeta('name', 'twitter:image', ogImage);
-    }
+    setMeta('name', 'twitter:image', finalOgImage);
 
     // Canonical link
     let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;

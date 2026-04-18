@@ -192,7 +192,7 @@ function MessageItem({
 
 /* ── 메인 ── */
 export default function MessagesPage() {
-  useDocumentMeta('쪽지함 — 놀쿨 메시지', '놀쿨 쪽지함에서 조각모임 멤버와 1:1 대화하세요.');
+  useDocumentMeta('쪽지함 — 1:1 메시지', '조각모임 멤버와 1:1 대화하세요. 쪽지로 편하게 소통.');
   const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const [tab, setTab] = useState<'received' | 'sent'>(

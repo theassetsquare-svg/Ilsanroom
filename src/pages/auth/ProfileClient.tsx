@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { createClient } from '@/lib/supabase';
+import { getEarnedBadges } from '@/components/interactive/KillerFeatures';
 
 type TabKey = 'posts' | 'comments' | 'favorites';
 
@@ -81,7 +82,7 @@ export default function ProfileClient() {
         setStats(s => ({ ...s, comments: count || 0 }));
       } else if (tab === 'favorites') {
         const { data, count } = await supabase
-          .from('favorites')
+          .from('user_favorites')
           .select('venue_slug, created_at', { count: 'exact' })
           .eq('user_id', userId)
           .order('created_at', { ascending: false })
@@ -103,7 +104,7 @@ export default function ProfileClient() {
     Promise.all([
       supabase.from('posts').select('id', { count: 'exact', head: true }).eq('user_id', uid),
       supabase.from('comments').select('id', { count: 'exact', head: true }).eq('user_id', uid),
-      supabase.from('favorites').select('id', { count: 'exact', head: true }).eq('user_id', uid),
+      supabase.from('user_favorites').select('id', { count: 'exact', head: true }).eq('user_id', uid),
     ]).then(([posts, comments, favs]) => {
       setStats({
         posts: posts.count || 0,
@@ -248,6 +249,9 @@ export default function ProfileClient() {
                 {level.icon} {level.name}
               </span>
               <span className="text-xs font-bold" style={{ color: level.color }}>{xp} XP</span>
+              {getEarnedBadges().map(b => (
+                <span key={b.label} className={`text-xs font-bold ${b.color}`}>{b.icon}</span>
+              ))}
               {joinDate && <span className="text-xs" style={{ color: '#BBB' }}>· 가입 {joinDate}</span>}
             </div>
             {/* XP 진행 바 */}

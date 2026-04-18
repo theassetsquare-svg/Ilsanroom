@@ -7,6 +7,7 @@ import { venues } from '@/data/venues';
 export default function Roulette() {
   const [spinning, setSpinning] = useState(false);
   const [result, setResult] = useState<string | null>(null);
+  const [reward, setReward] = useState<string | null>(null);
 
   const openVenues = venues.filter((v) => v.status !== 'closed_or_unclear');
 
@@ -28,6 +29,21 @@ export default function Roulette() {
         clearInterval(intervalRef.current!);
         intervalRef.current = null;
         setSpinning(false);
+
+        // 매일 1회 보상
+        const today = new Date().toDateString();
+        const lastSpin = localStorage.getItem('roulette_last');
+        if (lastSpin !== today) {
+          localStorage.setItem('roulette_last', today);
+          const spins = parseInt(localStorage.getItem('roulette_total') || '0') + 1;
+          localStorage.setItem('roulette_total', String(spins));
+          if (spins === 1) setReward('첫 룰렛 도전! 운명의 시작');
+          else if (spins === 5) setReward('5회 달성! 행운의 주사위 칭호 획득');
+          else if (spins === 10) setReward('10회 달성! 운명의 손 칭호 획득');
+          else if (spins % 10 === 0) setReward(`${spins}회 달성! 룰렛 마스터`);
+          else setReward('오늘의 행운 확인 완료!');
+          setTimeout(() => setReward(null), 3000);
+        }
       }
     }, 100);
   };
@@ -54,6 +70,12 @@ export default function Roulette() {
       >
         {spinning ? '돌리는 중...' : '룰렛 돌리기'}
       </button>
+
+      {reward && (
+        <div className="mb-4 animate-bounce text-sm font-bold text-neon-gold">
+          🎁 {reward}
+        </div>
+      )}
 
       {result && !spinning && <ShareButtons title={`오늘의 행운 업소: ${result}`} />}
     </div>

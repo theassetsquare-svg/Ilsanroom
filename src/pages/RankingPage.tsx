@@ -52,10 +52,19 @@ const premiumScores: Record<string, number> = {
   haeundaegoguryeo: 4.7,
 };
 
+function getFavCount(slug: string): number {
+  try {
+    const saved = localStorage.getItem('nolcool_favorites');
+    if (!saved) return 0;
+    const favs: string[] = JSON.parse(saved);
+    return favs.includes(slug) ? 1 : 0;
+  } catch { return 0; }
+}
+
 function getVenueScore(slug: string): number {
-  if (premiumScores[slug]) return premiumScores[slug];
+  if (premiumScores[slug]) return premiumScores[slug] + getFavCount(slug) * 0.1;
   const hash = slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-  return (32 + (hash % 13)) / 10;
+  return (32 + (hash % 13)) / 10 + getFavCount(slug) * 0.1;
 }
 
 /* ── 기간별 점수 변동 (시드 기반, 일간/주간/월간 차이 나게) ── */

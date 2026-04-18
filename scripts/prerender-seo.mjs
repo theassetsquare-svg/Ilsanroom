@@ -9,7 +9,7 @@ import path from 'path';
 
 const DIST = path.resolve('dist');
 const BASE_URL = 'https://nolcool.com';
-const OG_IMAGE = `${BASE_URL}/og/main.svg`;
+const OG_IMAGE = `${BASE_URL}/og/nolcool-og.jpg`;
 
 // ── 기본 index.html 읽기 ──
 const baseHtml = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8');
@@ -158,7 +158,7 @@ const staticPages = [
   { path: '/roulette', title: '고민 끝, 룰렛이 대신 골라준다', desc: '탭 한 번이면 오늘 밤 갈 곳이 정해진다. 운명에 맡겨봐.' },
   { path: '/vs', title: '어디가 더 낫냐고? 투표로 결판내자', desc: '인기 업소끼리 맞짱. 한 표 던지고 실시간 결과 확인해봐.' },
   { path: '/ranking', title: '지금 이 순간, 사람들이 가장 많이 보는 곳', desc: '조회수 기준 TOP 30. 지역별·업종별 필터로 실시간 인기 순위 확인.' },
-  { path: '/price', title: '얼마 들어? 업종별 평균 시세표', desc: '입장료, 양주값, 테이블 비용까지. 가기 전에 지갑 사정 맞춰봐.' },
+  { path: '/venue-info', title: '양주·부스·룸 한눈에 보기', desc: '업종별 양주 라인업, 부스 구성, 룸 타입까지. 가기 전에 미리 확인해봐.' },
   { path: '/compare', title: '두 곳 놓고 따져보면 후회가 없다', desc: '가격·분위기·후기 항목별 비교표. 고민 끝, 선택만 남았다.' },
   { path: '/search', title: '이름만 치면 바로 나온다, 통합 검색', desc: '지역·업종·이름 아무거나 입력. 117곳 중에서 딱 맞는 곳 골라준다.' },
   { path: '/magazine', title: '밤문화 읽을거리, 여기 다 모았다', desc: '지역 분석, 업종 비교, 현장 리포트. 가기 전에 읽으면 달라지는 글.' },
@@ -261,8 +261,6 @@ console.log(`✅ 지역별 페이지 ${regionalCount}개 생성`);
 // ══════════════════════════════════════════
 // 4. 업소 상세 페이지 (116개)
 // ══════════════════════════════════════════
-/** SVG 검색 썸네일이 있는 업소 */
-const SVG_OG_SLUGS = new Set(['dapsimnidontellmamanight']);
 /** JPG 1:1 커스텀 OG (카톡/밴드 호환) */
 const JPG_OG_SLUGS = new Set(['haeundaehoppa-kkantappiya']);
 /** JPG 닉네임 OG가 있는 업소 */
@@ -273,7 +271,6 @@ const NICKNAME_OG_SLUGS = new Set([
 ]);
 function getVenueOgImage(slug) {
   if (JPG_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}.jpg`;
-  if (SVG_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}.svg`;
   if (NICKNAME_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}.jpg`;
   return `${BASE_URL}/venues/${slug}-1.jpg`;
 }

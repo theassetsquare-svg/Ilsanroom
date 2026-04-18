@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase';
 import JsonLd from '@/components/seo/JsonLd';
 import ErrorBoundary from '@/components/ui/ErrorBoundary';
 import KakaoShareButton from '@/components/engagement/KakaoShareButton';
+import { useFavorites as useFavoritesHook } from '@/hooks/useFavorites';
 
 /* ── Helpers ── */
 function getCategoryHref(category: string, slug: string, region: string) {
@@ -343,22 +344,8 @@ export default function HomePage() {
   // === Fortune ===
   const [fortuneRevealed, setFortuneRevealed] = useState(false);
 
-  // === Favorites ===
-  const [favorites, setFavorites] = useState<Set<string>>(() => {
-    try {
-      const saved = localStorage.getItem('nolcool_favorites');
-      return saved ? new Set(JSON.parse(saved)) : new Set();
-    } catch { return new Set(); }
-  });
-
-  const toggleFavorite = (id: string) => {
-    setFavorites(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
-      localStorage.setItem('nolcool_favorites', JSON.stringify([...next]));
-      return next;
-    });
-  };
+  // === Favorites (하이브리드: localStorage + Supabase) ===
+  const { favorites, toggleFavorite } = useFavoritesHook();
 
   // === Roulette ===
   const [rouletteResult, setRouletteResult] = useState<Venue | null>(null);

@@ -17,7 +17,7 @@ interface VenueDetailTabsProps {
   categoryLabel: string;
 }
 
-const TABS = ['기본정보', '메뉴·서비스', '리뷰', '사진갤러리', '이벤트', 'FAQ', 'VS투표', '인기시간'] as const;
+const TABS = ['기본정보', '양주·룸', '리뷰', '사진', '이벤트'] as const;
 
 function GalleryImage({ slug, name, num }: { slug: string; name: string; num: number }) {
   const [failed, setFailed] = useState(false);
@@ -39,11 +39,6 @@ function GalleryImage({ slug, name, num }: { slug: string; name: string; num: nu
     </div>
   );
 }
-
-const CATEGORY_SYNONYMS: Record<string, string> = {
-  club: 'EDM 파티홀', night: '댄스홀', lounge: '감성 칵테일 바',
-  room: '프라이빗 룸', yojeong: '전통 한정식', hoppa: '호스트 엔터테인먼트',
-};
 
 export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDetailTabsProps) {
   const [activeTab, setActiveTab] = useState<string>('기본정보');
@@ -118,11 +113,45 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
                 </div>
               </div>
             )}
+
+            {/* 인기시간 위젯 — 기본정보에 통합 */}
+            <div className="rounded-2xl border border-neon-border bg-neon-surface p-6">
+              <h3 className="mb-4 font-bold text-neon-text">인기 요일·시간대</h3>
+              <div className="space-y-2">
+                {[
+                  { day: '금', level: 95 }, { day: '토', level: 100 },
+                  { day: '목', level: 60 }, { day: '수', level: 35 }, { day: '일', level: 45 },
+                ].map((s) => (
+                  <div key={s.day} className="flex items-center gap-3">
+                    <span className="w-8 text-xs font-medium text-neon-text">{s.day}</span>
+                    <div className="h-2 flex-1 rounded-full bg-neon-surface-2">
+                      <div className={`h-2 rounded-full ${s.level >= 80 ? 'bg-neon-pink' : s.level >= 50 ? 'bg-neon-gold' : 'bg-neon-green'}`} style={{ width: `${s.level}%` }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-2 text-[10px] text-neon-text-subtle">※ 참고용 데이터입니다</p>
+            </div>
+
+            {/* FAQ — 기본정보에 접이식 통합 */}
+            {faqs.length > 0 && (
+              <div>
+                <h3 className="mb-3 text-lg font-bold text-neon-text">자주 묻는 질문</h3>
+                <div className="space-y-2">
+                  {faqs.slice(0, 5).map((faq, i) => (
+                    <details key={i} className="rounded-xl border border-neon-border bg-neon-surface">
+                      <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-neon-text">Q. {faq.question}</summary>
+                      <p className="px-4 pb-4 text-sm leading-relaxed text-neon-text-muted">{faq.answer}</p>
+                    </details>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
-        {/* ── 메뉴·서비스 ── */}
-        {activeTab === '메뉴·서비스' && (
+        {/* ── 양주·룸 ── */}
+        {activeTab === '양주·룸' && (
           <div className="space-y-6">
             <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} 서비스 안내</h2>
 
@@ -200,10 +229,10 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
           <VenueReviewSection venue={venue} />
         )}
 
-        {/* ── 사진갤러리 ── */}
-        {activeTab === '사진갤러리' && (
+        {/* ── 사진 ── */}
+        {activeTab === '사진' && (
           <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} 사진 갤러리</h2>
+            <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} 사진</h2>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {[1, 2, 3, 4, 5, 6].map((n) => (
                 <GalleryImage key={n} slug={venue.slug} name={venue.nameKo} num={n} />
@@ -300,61 +329,6 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
           );
         })()}
 
-        {/* ── FAQ ── */}
-        {activeTab === 'FAQ' && (
-          <div>
-            <h2 className="mb-6 text-xl font-bold text-neon-text">자주 묻는 질문</h2>
-            <div className="space-y-4">
-              {faqs.map((faq, i) => (
-                <div key={i} className="rounded-xl border border-neon-border bg-neon-surface p-5">
-                  <h3 className="mb-2 font-semibold text-neon-text">Q. {faq.question}</h3>
-                  <p className="text-sm leading-relaxed text-neon-text-muted">{faq.answer}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ── VS투표 ── */}
-        {activeTab === 'VS투표' && (
-          <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">VS 대결</h2>
-            <p className="mb-6 text-sm text-neon-text-muted">이 {CATEGORY_SYNONYMS[venue.category] || '업소'}와 비슷한 곳, 어디가 더 좋을까?</p>
-            <div className="rounded-xl border border-neon-pink/30 bg-neon-bg p-6 text-center">
-              <p className="text-sm text-neon-text-muted mb-4">VS 투표는 메인 페이지에서 해볼 수 있어요.</p>
-              <a href="/vs" target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg bg-neon-pink/20 px-5 py-2.5 text-sm font-medium text-neon-pink transition hover:bg-neon-pink/30">
-                VS 투표 참여하기 →
-              </a>
-            </div>
-          </div>
-        )}
-
-        {/* ── 인기시간 ── */}
-        {activeTab === '인기시간' && (
-          <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">인기 요일·시간대</h2>
-            <div className="space-y-3">
-              {[
-                { day: '금요일', time: '22:00~02:00', level: 95, label: '최고 인기' },
-                { day: '토요일', time: '22:00~03:00', level: 100, label: '최고 인기' },
-                { day: '목요일', time: '21:00~01:00', level: 60, label: '보통' },
-                { day: '수요일', time: '20:00~00:00', level: 35, label: '여유' },
-                { day: '일요일', time: '20:00~00:00', level: 45, label: '보통' },
-              ].map((slot) => (
-                <div key={slot.day} className="flex items-center gap-4">
-                  <span className="w-16 text-sm font-medium text-neon-text">{slot.day}</span>
-                  <div className="h-3 flex-1 rounded-full bg-neon-surface-2">
-                    <div className={`h-3 rounded-full transition-all ${slot.level >= 80 ? 'bg-neon-pink' : slot.level >= 50 ? 'bg-neon-gold' : 'bg-neon-green'}`}
-                      style={{ width: `${slot.level}%` }} />
-                  </div>
-                  <span className="w-20 text-right text-xs text-neon-text-muted">{slot.label}</span>
-                </div>
-              ))}
-            </div>
-            <p className="mt-4 text-xs text-neon-text-subtle">※ 시간대별 인기도는 참고용이며, 실제 혼잡도와 다를 수 있습니다.</p>
-          </div>
-        )}
       </div>
     </div>
   );

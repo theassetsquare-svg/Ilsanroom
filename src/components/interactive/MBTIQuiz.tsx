@@ -71,6 +71,14 @@ export default function MBTIQuiz() {
           </div>
         </div>
         <ShareButtons title={`나의 밤문화 MBTI: ${result} - ${type.title}`} />
+        {(() => {
+          const quizCount = parseInt(localStorage.getItem('quiz_total') || '0') + 1;
+          localStorage.setItem('quiz_total', String(quizCount));
+          const badge = quizCount === 1 ? '🎓 밤문화 연구생' : quizCount >= 5 ? '🎖️ MBTI 마스터' : quizCount >= 3 ? '📊 분석가' : null;
+          return badge ? (
+            <p className="mt-3 text-sm font-bold text-neon-gold animate-pulse">{badge} 칭호 획득!</p>
+          ) : null;
+        })()}
         <button onClick={reset} className="mt-4 text-sm text-neon-text-muted hover:text-neon-text">다시 하기</button>
       </div>
     );

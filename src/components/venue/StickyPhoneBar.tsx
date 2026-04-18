@@ -25,7 +25,7 @@ export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPh
   if (HIDE_STICKY_VENUES.has(venueName)) return null;
   if (phone && ALLOWED_PHONES.includes(phone)) {
     return (
-      <div className="fixed bottom-[72px] right-4 z-40 md:bottom-6 md:right-6">
+      <div className="fixed bottom-[72px] right-4 z-40 md:hidden">
         <a
           href={`tel:${phone.replace(/-/g, '')}`}
           className="flex items-center gap-2 rounded-full bg-[#15803D] px-5 py-3.5 min-h-[44px] text-sm font-bold text-white shadow-lg transition hover:bg-[#166534] active:scale-95"

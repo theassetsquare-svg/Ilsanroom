@@ -21,11 +21,6 @@ const NICKNAME_OG_SLUGS = new Set([
   'dapsimnidontellmamanight',
 ]);
 
-/** SVG OG 이미지를 사용하는 가게 (검색 썸네일용 1:1) */
-const SVG_OG_SLUGS = new Set([
-  'dapsimnidontellmamanight',
-]);
-
 /**
  * JPG OG 이미지를 사용하는 가게 (카카오톡/밴드/인스타/페북 호환 — SVG 미지원).
  * 1:1 1200x1200 JPG 정적 파일.
@@ -34,21 +29,17 @@ const JPG_OG_SLUGS = new Set([
   'haeundaehoppa-kkantappiya',
 ]);
 
-/** 업소 상세 OG image (slug 기반) */
+/** 업소 상세 OG image (slug 기반) — JPG 우선 (카톡/밴드/인스타 호환) */
 export function getVenueOgImageBySlug(slug: string): string {
-  // JPG 1:1 썸네일 (카톡/밴드/인스타 호환) — 최우선
+  // JPG 1:1 커스텀 썸네일 (카톡/밴드/인스타 호환) — 최우선
   if (JPG_OG_SLUGS.has(slug)) {
     return `${SITE_URL}/og/${slug}.jpg`;
   }
-  // SVG 검색 썸네일이 있으면 그것을 사용
-  if (SVG_OG_SLUGS.has(slug)) {
-    return `${SITE_URL}/og/${slug}.svg`;
-  }
-  // 닉네임 오버레이 OG가 있으면 그것을 사용
+  // 닉네임 오버레이 OG JPG
   if (NICKNAME_OG_SLUGS.has(slug)) {
     return `${SITE_URL}/og/${slug}.jpg`;
   }
-  // 없으면 실제 가게 사진
+  // 기본: 실제 가게 사진 JPG (SVG 대신 JPG 사용)
   return `${SITE_URL}/venues/${slug}-1.jpg`;
 }
 
@@ -69,21 +60,17 @@ export function getVenueOgImage(venueName: string, category: string, staffNickna
   return `${SITE_URL}/api/og?${params.toString()}`;
 }
 
-/** 카테고리 페이지 OG image */
+/** 카테고리 페이지 OG image — JPG fallback */
 export function getCategoryOgImage(category: string): string {
-  const pathMap: Record<string, string> = {
-    club: 'clubs', night: 'nights', lounge: 'lounges',
-    room: 'rooms', yojeong: 'yojeong', hoppa: 'hoppa',
-  };
-  return `${SITE_URL}/og/${pathMap[category] || category}.svg`;
+  return `${SITE_URL}/og/nolcool-og.jpg`;
 }
 
-/** 메인페이지 OG image */
+/** 메인페이지 OG image — JPG (소셜미디어 호환) */
 export function getDefaultOgImage(): string {
-  return `${SITE_URL}/og/main.svg`;
+  return `${SITE_URL}/og/nolcool-og.jpg`;
 }
 
-/** 유틸 페이지 OG image */
+/** 유틸 페이지 OG image — JPG fallback */
 export function getPageOgImage(page: string): string {
-  return `${SITE_URL}/og/${page}.svg`;
+  return `${SITE_URL}/og/nolcool-og.jpg`;
 }

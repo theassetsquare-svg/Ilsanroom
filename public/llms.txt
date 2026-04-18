@@ -16,7 +16,7 @@
 ## 기능 페이지
 - [실시간 랭킹](https://nolcool.com/ranking)
 - [VS 투표](https://nolcool.com/vs)
-- [가격 비교](https://nolcool.com/price)
+- [업소 정보 비교](https://nolcool.com/venue-info)
 - [업소 비교](https://nolcool.com/compare)
 - [지도 검색](https://nolcool.com/map)
 - [통합 검색](https://nolcool.com/search)

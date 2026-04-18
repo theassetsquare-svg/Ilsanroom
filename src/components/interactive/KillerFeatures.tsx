@@ -38,16 +38,41 @@ export function HotRightNow() {
   );
 }
 
-/* ═══ [O] 출석 도장 ═══ */
+/* ═══ [O] 출석 도장 + 뱃지 보상 ═══ */
+const BADGES = [
+  { days: 3, label: '루키', icon: '🌱', color: 'text-green-400' },
+  { days: 7, label: 'VIP', icon: '👑', color: 'text-neon-gold' },
+  { days: 14, label: '단골', icon: '🔥', color: 'text-orange-400' },
+  { days: 30, label: '전설', icon: '💎', color: 'text-purple-400' },
+];
+
+export function getEarnedBadges(): { label: string; icon: string; color: string }[] {
+  const streak = parseInt(localStorage.getItem('attendance_streak') || '0');
+  return BADGES.filter(b => streak >= b.days);
+}
+
 export function AttendanceCheck() {
   const [streak, setStreak] = useState(0);
   const [checked, setChecked] = useState(false);
+  const [justEarned, setJustEarned] = useState<string | null>(null);
 
   useEffect(() => {
     const today = new Date().toDateString();
     const lastCheck = localStorage.getItem('attendance_last');
     const s = parseInt(localStorage.getItem('attendance_streak') || '0');
-    setStreak(s);
+    // 어제가 아니면 streak 리셋 (연속 출석 체크)
+    if (lastCheck) {
+      const lastDate = new Date(lastCheck);
+      const diff = Math.floor((new Date(today).getTime() - lastDate.getTime()) / 86400000);
+      if (diff > 1) {
+        localStorage.setItem('attendance_streak', '0');
+        setStreak(0);
+      } else {
+        setStreak(s);
+      }
+    } else {
+      setStreak(s);
+    }
     if (lastCheck === today) setChecked(true);
   }, []);
 
@@ -59,12 +84,32 @@ export function AttendanceCheck() {
     localStorage.setItem('attendance_streak', String(newStreak));
     setStreak(newStreak);
     setChecked(true);
+
+    // 뱃지 획득 체크
+    const newBadge = BADGES.find(b => b.days === newStreak);
+    if (newBadge) {
+      setJustEarned(newBadge.label);
+      localStorage.setItem('nolcool_badges', JSON.stringify(BADGES.filter(b => newStreak >= b.days).map(b => b.label)));
+      setTimeout(() => setJustEarned(null), 3000);
+    }
   };
+
+  const earned = BADGES.filter(b => streak >= b.days);
+  const nextBadge = BADGES.find(b => streak < b.days);
 
   return (
     <div className="rounded-2xl border border-neon-gold/30 bg-neon-surface p-6 text-center">
       <h3 className="text-lg font-bold text-neon-text mb-2">출석 도장</h3>
-      <p className="text-sm text-neon-text-muted mb-4">매일 접속하면 보상! 7일 연속=쿠폰, 30일=VIP뱃지</p>
+      {earned.length > 0 && (
+        <div className="flex justify-center gap-2 mb-3">
+          {earned.map(b => (
+            <span key={b.label} className={`text-sm font-bold ${b.color}`}>{b.icon} {b.label}</span>
+          ))}
+        </div>
+      )}
+      {nextBadge && (
+        <p className="text-xs text-neon-text-muted mb-3">{nextBadge.icon} {nextBadge.days}일 연속 출석 시 <span className={`font-bold ${nextBadge.color}`}>{nextBadge.label}</span> 뱃지 획득!</p>
+      )}
       <div className="flex justify-center gap-1 mb-4">
         {[1,2,3,4,5,6,7].map((d) => (
           <div key={d} className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold ${streak >= d ? 'bg-neon-gold text-white' : 'bg-neon-surface-2 text-neon-text-muted'}`}>
@@ -73,6 +118,11 @@ export function AttendanceCheck() {
         ))}
       </div>
       <p className="text-2xl font-bold text-neon-gold mb-3">{streak}일 연속</p>
+      {justEarned && (
+        <div className="mb-3 animate-bounce text-lg font-bold text-neon-gold">
+          🎉 {justEarned} 뱃지 획득!
+        </div>
+      )}
       <button onClick={handleCheck} disabled={checked}
         className={`rounded-xl px-8 py-3 font-bold transition ${checked ? 'bg-neon-surface-2 text-neon-text-muted' : 'bg-neon-gold text-white hover:bg-neon-gold/90 btn-glow'}`}>
         {checked ? '오늘 출석 완료!' : '출석 체크'}

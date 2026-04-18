@@ -48,6 +48,8 @@ const categoryTabs = [
   { href: '/lounges', label: '라운지' },
   { href: '/rooms', label: '룸' },
   { href: '/yojeong', label: '요정' },
+  { href: '/community', label: '커뮤니티' },
+  { href: '/ranking', label: '랭킹' },
 ];
 
 /* ── 햄버거 메뉴: 카테고리 + 기능 + 기타 ── */

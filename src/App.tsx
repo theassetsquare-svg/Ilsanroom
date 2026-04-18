@@ -126,7 +126,8 @@ export default function App() {
           <Route path="/roulette" element={<RoulettePage />} />
           <Route path="/vs" element={<VSPage />} />
           <Route path="/ranking" element={<RankingPage />} />
-          <Route path="/price" element={<PricePage />} />
+          <Route path="/venue-info" element={<PricePage />} />
+          <Route path="/price" element={<Navigate to="/venue-info" replace />} />
           <Route path="/compare" element={<ComparePage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/magazine" element={<MagazinePage />} />

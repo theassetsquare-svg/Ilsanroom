@@ -153,6 +153,18 @@ export default function LoginPage() {
           </svg>
           {loading === 'google' ? '연결 중...' : 'Google로 시작하기'}
         </button>
+
+        {/* Naver — 준비 중 */}
+        <button
+          onClick={() => alert('네이버 로그인은 곧 오픈 예정입니다!')}
+          className="flex w-full items-center justify-center gap-3 rounded-xl py-3.5 text-sm font-bold text-white transition hover:opacity-90"
+          style={{ backgroundColor: '#03C75A', minHeight: '48px' }}
+        >
+          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="white">
+            <path d="M16.273 12.845L7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z"/>
+          </svg>
+          네이버로 시작하기 (준비 중)
+        </button>
       </div>
 
       {/* Divider */}
