@@ -81,13 +81,15 @@ Deno.serve(async (req) => {
         email,
       })
 
-    if (linkError || !linkData?.properties?.hashed_token) {
+    if (linkError || !linkData?.properties?.action_link) {
       console.error('Link error:', linkError?.message)
       return Response.redirect(`${SITE_URL}/login?error=naver_session_failed`, 302)
     }
 
-    // 6. 토큰과 이메일을 프론트로 전달 → 프론트에서 verifyOtp로 세션 생성
-    const token = linkData.properties.hashed_token
+    // 6. action_link에서 raw token 추출 → 프론트로 전달
+    const actionUrl = new URL(linkData.properties.action_link)
+    const token = actionUrl.searchParams.get('token') || ''
+    console.log('Token extracted:', token ? 'OK' : 'EMPTY')
     const params = new URLSearchParams({ token, email, type: 'naver' })
     return Response.redirect(`${SITE_URL}/auth/naver-callback?${params}`, 302)
   } catch (e) {
