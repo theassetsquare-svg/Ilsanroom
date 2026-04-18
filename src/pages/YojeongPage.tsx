@@ -42,7 +42,7 @@ export default function YojeongPage() {
         </div>
 
         {featured && (
-          <div className="mb-6">
+          <div className="mb-4">
             <FeaturedVenueCard
               venue={featured}
               href={`/yojeong/${featured.region}/${featured.slug}`}
@@ -51,8 +51,11 @@ export default function YojeongPage() {
             />
           </div>
         )}
+      </div>
 
-        <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
+      <VenueListClient venues={venues} hrefPattern="/yojeong/{region}/{slug}" regions={regions} showEngagementHooks accentColor="emerald" />
+
+      <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             요정에 들어서면 가야금 선율이 흐르고, 15가지 한정식이 하나씩 차려진다.
           </p>
@@ -71,9 +74,6 @@ export default function YojeongPage() {
           </p>
           <ReadFinishCount pageName="요정 가이드" baseCount={120} />
         </div>
-      </div>
-
-      <VenueListClient venues={venues} hrefPattern="/yojeong/{region}/{slug}" regions={regions} showEngagementHooks accentColor="emerald" />
 
       <FirstVisitGuide category="격식 있는 한식 접대"
         dress="세미 포멀 이상 필수. 옛 멋이 살아있는 곳의 격조에 맞는 차림 권장. 한복도 환영."

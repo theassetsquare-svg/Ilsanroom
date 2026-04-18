@@ -50,7 +50,7 @@ export default function HoppaPage() {
         </div>
 
         {featured && (
-          <div className="mb-6">
+          <div className="mb-4">
             <FeaturedVenueCard
               venue={featured}
               href={`/hoppa/${featured.slug}`}
@@ -59,9 +59,12 @@ export default function HoppaPage() {
             />
           </div>
         )}
+      </div>
 
-        {/* 여성 친화 안내 배너 — 로즈골드/핑크 */}
-        <div className="rounded-2xl border border-pink-200 bg-gradient-to-r from-pink-50 via-white to-rose-50 p-6 mb-6">
+      <VenueListClient venues={venues} hrefPattern="/hoppa/{slug}" regions={regions} showEngagementHooks accentColor="pink" />
+
+      {/* 여성 친화 안내 배너 — 로즈골드/핑크 */}
+      <div className="rounded-2xl border border-pink-200 bg-gradient-to-r from-pink-50 via-white to-rose-50 p-6">
           <div className="flex items-center gap-3 mb-3">
             <span className="text-2xl">💎</span>
             <h2 className="text-lg font-bold text-pink-700">여성을 위한 격이 다른 공간</h2>
@@ -87,8 +90,8 @@ export default function HoppaPage() {
           </div>
         </div>
 
-        {/* 안전·가격·1인 안내 카드 */}
-        <div className="grid gap-4 sm:grid-cols-3 mb-6">
+      {/* 안전·가격·1인 안내 카드 */}
+      <div className="grid gap-4 sm:grid-cols-3">
           <div className="rounded-xl border border-pink-200 bg-pink-50 p-4">
             <h3 className="text-sm font-bold text-pink-700 mb-2">가격 투명</h3>
             <p className="text-sm text-pink-900">TC(타임차지)·주대 가격을 사전 전화로 확인 가능. 바가지 걱정 없다.</p>
@@ -102,9 +105,6 @@ export default function HoppaPage() {
             <p className="text-sm text-pink-900">단독 방문해도 직원이 친절하게 안내. 오히려 1인 손님이 더 많다.</p>
           </div>
         </div>
-      </div>
-
-      <VenueListClient venues={venues} hrefPattern="/hoppa/{slug}" regions={regions} showEngagementHooks accentColor="pink" />
 
       <FirstVisitGuide category="호빠"
         dress="깔끔한 옷차림이면 충분. 편안하면서 예쁜 옷이면 더 좋다. 운동복만 아니면 된다."

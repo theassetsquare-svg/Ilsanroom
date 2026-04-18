@@ -44,7 +44,7 @@ export default function NightsPage() {
         </div>
 
         {featured && (
-          <div className="mb-6">
+          <div className="mb-4">
             <FeaturedVenueCard
               venue={featured}
               href={`/nights/${featured.slug}`}
@@ -53,8 +53,11 @@ export default function NightsPage() {
             />
           </div>
         )}
+      </div>
 
-        <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
+      <VenueListClient venues={venues} hrefPattern="/nights/{slug}" regions={regions} showEngagementHooks accentColor="blue" />
+
+      <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             토요일 밤 9시. 밴드가 첫 곡을 시작하면 홀 전체가 움직인다.
           </p>
@@ -79,9 +82,6 @@ export default function NightsPage() {
           </p>
           <ReadFinishCount pageName="나이트 가이드" baseCount={185} />
         </div>
-      </div>
-
-      <VenueListClient venues={venues} hrefPattern="/nights/{slug}" regions={regions} showEngagementHooks accentColor="blue" />
 
       <FirstVisitGuide category="나이트"
         dress="세미 포멀~포멀 권장. 정장 또는 셋업이 기본. 너무 캐주얼하면 무드에 안 맞을 수 있음."

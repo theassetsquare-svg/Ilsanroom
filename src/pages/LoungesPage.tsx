@@ -42,7 +42,7 @@ export default function LoungesPage() {
         </div>
 
         {featured && (
-          <div className="mb-6">
+          <div className="mb-4">
             <FeaturedVenueCard
               venue={featured}
               href={`/lounges/${featured.slug}`}
@@ -51,8 +51,11 @@ export default function LoungesPage() {
             />
           </div>
         )}
+      </div>
 
-        <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
+      <VenueListClient venues={venues} hrefPattern="/lounges/{slug}" regions={regions} showEngagementHooks accentColor="amber" />
+
+      <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             조명이 어둡다. 소파가 깊다. 바텐더가 흔드는 셰이커 소리만 들린다.
           </p>
@@ -71,9 +74,6 @@ export default function LoungesPage() {
           </p>
           <ReadFinishCount pageName="라운지 가이드" baseCount={140} />
         </div>
-      </div>
-
-      <VenueListClient venues={venues} hrefPattern="/lounges/{slug}" regions={regions} showEngagementHooks accentColor="amber" />
 
       <FirstVisitGuide category="칵테일 바"
         dress="세미포멀 편한 차림 이상. 깔끔하게 차려입으면 OK. 트레이닝·샌들 비추."

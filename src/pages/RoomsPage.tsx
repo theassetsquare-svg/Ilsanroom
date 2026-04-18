@@ -43,7 +43,7 @@ export default function RoomsPage() {
         </div>
 
         {featured && (
-          <div className="mb-6">
+          <div className="mb-4">
             <FeaturedVenueCard
               venue={featured}
               href={`/rooms/${featured.region}/${featured.slug}`}
@@ -52,8 +52,11 @@ export default function RoomsPage() {
             />
           </div>
         )}
+      </div>
 
-        <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
+      <VenueListClient venues={venues} hrefPattern="/rooms/{region}/{slug}" regions={regions} showEngagementHooks accentColor="rose" />
+
+      <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             문 닫으면 바깥 소리가 안 들린다. 우리만의 시간이 시작된다.
           </p>
@@ -72,9 +75,6 @@ export default function RoomsPage() {
           </p>
           <ReadFinishCount pageName="룸 가이드" baseCount={165} />
         </div>
-      </div>
-
-      <VenueListClient venues={venues} hrefPattern="/rooms/{region}/{slug}" regions={regions} showEngagementHooks accentColor="rose" />
 
       <FirstVisitGuide category="프라이빗 룸"
         dress="캐주얼~비즈니스 캐주얼. 모임 목적에 맞게 조절."
