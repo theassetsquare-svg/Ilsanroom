@@ -55,6 +55,8 @@ export default function LoungesPage() {
 
       <VenueListClient venues={venues} hrefPattern="/lounges/{slug}" regions={regions} showEngagementHooks accentColor="amber" />
 
+      <BrowseOtherCategories currentPath="/lounges" />
+
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             조명이 어둡다. 소파가 깊다. 바텐더가 흔드는 셰이커 소리만 들린다.
@@ -97,9 +99,8 @@ export default function LoungesPage() {
         { title: '1인 가기 좋은 프라이빗 장소 TOP5', tag: '혼술' },
       ]} />
 
-      <LiveActivityFeed maxItems={5} />
+      <LiveActivityFeed maxItems={5} category="lounge" />
 
-      <BrowseOtherCategories currentPath="/lounges" />
       <BottomFinishCounter baseCount={128} />
     </div>
   );

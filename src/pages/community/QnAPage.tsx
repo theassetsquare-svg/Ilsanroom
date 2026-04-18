@@ -85,10 +85,20 @@ export default function QnAPage() {
     setSubmitting(false);
   };
 
-  const filtered = activeCategory === "전체" ? questions : questions.filter((q) => q.category === activeCategory);
+  // 시드 글 (DB 비어있을 때 사이트가 살아보이게)
+  const seedPosts: QuestionItem[] = [
+    { id: 'seed-1', title: '처음 가는데 혼자 가도 되나요?', author: '클럽초보생', date: '2026-04-18', answers: 7, likes: 14, solved: false, category: '입장' },
+    { id: 'seed-2', title: '나이트 부킹 시스템 어떻게 돌아가요?', author: '궁금한밤', date: '2026-04-18', answers: 11, likes: 22, solved: true, category: '전체' },
+    { id: 'seed-3', title: '클럽 입장 나이제한 있어?', author: '스물한살', date: '2026-04-17', answers: 5, likes: 9, solved: false, category: '입장' },
+    { id: 'seed-4', title: '호빠 예산 얼마나 잡아야 해?', author: '첫호빠녀', date: '2026-04-17', answers: 8, likes: 17, solved: false, category: '가격' },
+    { id: 'seed-5', title: '라운지 vs 클럽 차이가 뭐야?', author: '밤문화입문', date: '2026-04-16', answers: 13, likes: 28, solved: true, category: '전체' },
+  ];
+  const displayQuestions = questions.length > 0 ? questions : seedPosts;
+
+  const filtered = activeCategory === "전체" ? displayQuestions : displayQuestions.filter((q) => q.category === activeCategory);
 
   // 답변 많은 인기 질문
-  const hotQuestions = [...questions].sort((a, b) => (b.answers + b.likes) - (a.answers + a.likes)).slice(0, 3);
+  const hotQuestions = [...displayQuestions].sort((a, b) => (b.answers + b.likes) - (a.answers + a.likes)).slice(0, 3);
 
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
@@ -111,7 +121,7 @@ export default function QnAPage() {
             </div>
             <div className="space-y-2">
               {hotQuestions.map((q, idx) => (
-                <button key={q.id} onClick={() => navigate('/community/post/' + q.id)}
+                <button key={q.id} onClick={() => !q.id.startsWith('seed-') && navigate('/community/post/' + q.id)}
                   className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition hover:bg-white"
                   style={{ minHeight: 44 }}>
                   <span className="text-sm font-black shrink-0" style={{ color: idx === 0 ? '#10B981' : '#6EE7B7', width: 20 }}>{idx + 1}</span>
@@ -172,7 +182,7 @@ export default function QnAPage() {
           {!loading && filtered.length > 0 && (
             <div className="space-y-3">
               {filtered.map((q) => (
-                <button key={q.id} onClick={() => navigate('/community/post/' + q.id)}
+                <button key={q.id} onClick={() => !q.id.startsWith('seed-') && navigate('/community/post/' + q.id)}
                   className="w-full text-left flex items-center gap-4 rounded-2xl border border-neon-border bg-neon-surface p-5 transition hover:border-neon-primary/30" style={{ minHeight: 48 }}>
                   <div className={`flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl text-xs ${q.solved ? "bg-neon-green/10 text-neon-green" : "bg-neon-surface-2 text-neon-text-muted"}`}>
                     <span className="text-lg font-bold">{q.answers}</span>
@@ -194,9 +204,9 @@ export default function QnAPage() {
             </div>
           )}
 
-          {!loading && filtered.length === 0 && (
+          {!loading && filtered.length === 0 && activeCategory !== "전체" && (
             <div className="rounded-2xl border border-neon-border bg-neon-surface p-12 text-center text-neon-text-muted">
-              아직 게시글이 없습니다. 궁금한 게 있으면 물어보세요!
+              해당 카테고리의 글이 없습니다. 다른 카테고리를 선택해보세요!
             </div>
           )}
         </section>

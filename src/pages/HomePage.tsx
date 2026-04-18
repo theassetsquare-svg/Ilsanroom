@@ -32,12 +32,18 @@ const catEmoji: Record<string, string> = { club: '🎵', night: '🌙', lounge: 
 /* ── Region labels for 지역별 tab filter ── */
 const regionLabels = ['전체', '강남', '압구정', '홍대', '이태원', '부산', '대구', '광주', '대전', '수원', '일산', '인천', '성남', '천안', '울산'];
 
-/* ── Banner slides ── */
-const bannerSlides = [
-  { text: '🔥 지금 실시간 1위: 강남클럽 레이스', href: '/clubs/gangnam/gangnamclub-race', color: 'from-violet-600 to-purple-700' },
-  { text: '🆚 아르쥬 vs 레이스 — 투표하고 결과 확인', href: '/vs', color: 'from-blue-600 to-indigo-700' },
-  { text: '💬 오늘 밤 같이 갈 사람? 조각모임', href: '/community/jogak', color: 'from-teal-500 to-emerald-600' },
-  { text: '🎰 오늘의 행운 업소 — 룰렛 돌려봐', href: '/roulette', color: 'from-amber-500 to-orange-600' },
+/* ── Seed community posts (DB 비어있을 때 사이트가 살아보이게) ── */
+const seedHotPosts: HotPost[] = [
+  { id: 'seed-1', board: '후기', author: '강남불주먹', title: '레이스 금요일 다녀옴 — 역시 사운드 미쳤다', likes: 24, comments: 8, time: '3시간 전' },
+  { id: 'seed-2', board: '자유', author: '홍대댄싱퀸', title: '혼자 나이트 가봤는데 생각보다 괜찮았음', likes: 18, comments: 12, time: '5시간 전' },
+  { id: 'seed-3', board: '팁', author: '부산바다남', title: '입장료 아끼는 법 3가지 (진짜 됨)', likes: 31, comments: 6, time: '2시간 전' },
+  { id: 'seed-4', board: 'Q&A', author: '첫방문러', title: '나이트 드레스코드 뭐 입고 가야돼?', likes: 9, comments: 15, time: '1시간 전' },
+  { id: 'seed-5', board: '모집', author: '강남프린스', title: '토요일 강남 같이 갈 사람 2명 구함', likes: 14, comments: 7, time: '30분 전' },
+];
+const seedJogakList: JogakItem[] = [
+  { id: 'sj-1', title: '금요일 홍대 클럽 같이 갈 사람', region: '홍대', gender: '혼성', current: 2, max: 4, time: '이번 금요일 23:00' },
+  { id: 'sj-2', title: '강남 나이트 주말 벙개', region: '강남', gender: '남녀무관', current: 3, max: 6, time: '토요일 21:00' },
+  { id: 'sj-3', title: '부산 해운대 라운지 모임', region: '해운대', gender: '혼성', current: 1, max: 3, time: '금요일 20:00' },
 ];
 
 /* ── VS Polls — 매일 다른 투표 3세트 ── */
@@ -105,8 +111,10 @@ function VenueCard({ venue, favorites, toggleFavorite, rank }: { venue: Venue; f
               venue.category === 'yojeong' ? 'from-emerald-500 to-teal-700' :
               'from-pink-500 to-rose-700'
             }`}>
-              <span className="text-3xl">{catEmoji[venue.category] || '🎵'}</span>
-              <span className="mt-1 text-xs font-bold text-white/80">{venue.nameKo.slice(0, 4)}</span>
+              <span className="text-3xl mb-1">{catEmoji[venue.category] || '🎵'}</span>
+              <span className="text-[13px] font-black text-white">{venue.nameKo.length > 6 ? venue.nameKo.slice(0, 6) : venue.nameKo}</span>
+              <span className="text-[10px] text-white/70 mt-0.5">{venue.regionKo} · {catLabel[venue.category]}</span>
+              {venue.rating > 0 && <span className="text-[10px] text-yellow-300 mt-0.5">★ {venue.rating.toFixed(1)}</span>}
             </div>
             {rank && (
               <span className={`absolute top-2 left-2 z-[2] flex h-6 w-6 items-center justify-center rounded-full text-xs font-black text-white ${rank <= 3 ? 'bg-[#8B5CF6]' : 'bg-black/50'}`}>
@@ -270,13 +278,9 @@ export default function HomePage() {
     })();
   }, []);
 
-  // === BANNER STATE ===
-  const [bannerIdx, setBannerIdx] = useState(0);
-  const bannerTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  useEffect(() => {
-    bannerTimerRef.current = setInterval(() => setBannerIdx(prev => (prev + 1) % bannerSlides.length), 6000);
-    return () => { if (bannerTimerRef.current) clearInterval(bannerTimerRef.current); };
-  }, []);
+  // === Display posts (DB 있으면 DB, 없으면 시드) ===
+  const displayPosts = hotPosts.length > 0 ? hotPosts : seedHotPosts;
+  const displayJogak = jogakList.length > 0 ? jogakList : seedJogakList;
 
   // === TAB STATE ===
   const [activeTab, setActiveTab] = useState(0);
@@ -445,6 +449,11 @@ export default function HomePage() {
             </div>
           </div>
 
+          {/* 전국 도시 배지 — "서울만 아니다" */}
+          <p className="text-[11px] text-white/50 mb-2 text-center tracking-wide">
+            서울 · 부산 · 대구 · 대전 · 광주 · 울산 · 인천 · 수원 · 일산 · 제주 — 전국 {openVenues.length}곳
+          </p>
+
           {/* 6개 카테고리 — 큰 터치 영역 */}
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
             {([
@@ -542,25 +551,18 @@ export default function HomePage() {
             <Link to="/community" className="text-xs text-[#8B5CF6] font-medium">더보기 →</Link>
           </div>
         </div>
-        {hotPosts.length > 0 ? (
-          <div className="space-y-1.5">
-            {hotPosts.slice(0, 5).map(post => (
-              <Link key={post.id} to={`/community/post/${post.id}`} className="flex items-center gap-2.5 rounded-xl border border-gray-100 bg-white px-3 py-2.5 active:bg-gray-50 transition">
-                <span className="flex-shrink-0 rounded bg-[#F3F0FF] px-1.5 py-0.5 text-[11px] font-bold text-[#8B5CF6]">{post.board}</span>
-                <p className="text-[13px] font-medium text-[#111] truncate flex-1">{post.title}</p>
-                <div className="flex-shrink-0 flex items-center gap-1.5 text-[11px] text-[#999]">
-                  {post.likes > 0 && <span>♥{post.likes}</span>}
-                  {post.comments > 0 && <span>💬{post.comments}</span>}
-                </div>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <div className="rounded-xl border border-gray-100 bg-white p-4 text-center">
-            <p className="text-sm text-[#555] mb-2">첫 번째 글을 작성해보세요</p>
-            <Link to="/community/free?write=true" className="inline-block rounded-full bg-[#8B5CF6] px-4 py-2 text-xs font-bold text-white">글쓰기</Link>
-          </div>
-        )}
+        <div className="space-y-1.5">
+          {displayPosts.slice(0, 5).map(post => (
+            <Link key={post.id} to={post.id.startsWith('seed-') ? '/community' : `/community/post/${post.id}`} className="flex items-center gap-2.5 rounded-xl border border-gray-100 bg-white px-3 py-2.5 active:bg-gray-50 transition">
+              <span className="flex-shrink-0 rounded bg-[#F3F0FF] px-1.5 py-0.5 text-[11px] font-bold text-[#8B5CF6]">{post.board}</span>
+              <p className="text-[13px] font-medium text-[#111] truncate flex-1">{post.title}</p>
+              <div className="flex-shrink-0 flex items-center gap-1.5 text-[11px] text-[#999]">
+                {post.likes > 0 && <span>♥{post.likes}</span>}
+                {post.comments > 0 && <span>💬{post.comments}</span>}
+              </div>
+            </Link>
+          ))}
+        </div>
       </section>
 
       {/* ═══ 6. 검색바 — 정보 섹션 시작 전 자연스런 위치 ═══ */}
@@ -635,33 +637,26 @@ export default function HomePage() {
             <Link to="/community/jogak" className="text-xs text-[#8B5CF6] font-medium">전체 →</Link>
           </div>
         </div>
-        {jogakList.length > 0 ? (
-          <div className="space-y-2">
-            {jogakList.slice(0, 3).map(j => (
-              <Link key={j.id} to="/community/jogak" className="block rounded-xl border border-gray-100 bg-white p-3 active:bg-gray-50 transition">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium text-[#111] truncate flex-1">{j.title}</p>
-                  <span className="ml-2 flex-shrink-0 rounded-full bg-[#8B5CF6] px-3 py-1 text-[11px] font-bold text-white">참여</span>
-                </div>
-                <div className="flex items-center gap-3 mt-1.5">
-                  {j.region && <span className="text-[11px] text-[#555]">📍{j.region}</span>}
-                  <span className="text-[11px] text-[#555]">👤{j.gender}</span>
-                  <div className="flex-1 flex items-center gap-1.5">
-                    <div className="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden">
-                      <div className={`h-full rounded-full ${j.current / j.max >= 0.8 ? 'bg-red-500' : 'bg-[#8B5CF6]'}`} style={{ width: `${(j.current / j.max) * 100}%` }} />
-                    </div>
-                    <span className="text-[11px] font-bold text-[#111]">{j.current}/{j.max}</span>
+        <div className="space-y-2">
+          {displayJogak.slice(0, 3).map(j => (
+            <Link key={j.id} to="/community/jogak" className="block rounded-xl border border-gray-100 bg-white p-3 active:bg-gray-50 transition">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium text-[#111] truncate flex-1">{j.title}</p>
+                <span className="ml-2 flex-shrink-0 rounded-full bg-[#8B5CF6] px-3 py-1 text-[11px] font-bold text-white">참여</span>
+              </div>
+              <div className="flex items-center gap-3 mt-1.5">
+                {j.region && <span className="text-[11px] text-[#555]">📍{j.region}</span>}
+                <span className="text-[11px] text-[#555]">👤{j.gender}</span>
+                <div className="flex-1 flex items-center gap-1.5">
+                  <div className="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden">
+                    <div className={`h-full rounded-full ${j.current / j.max >= 0.8 ? 'bg-red-500' : 'bg-[#8B5CF6]'}`} style={{ width: `${(j.current / j.max) * 100}%` }} />
                   </div>
+                  <span className="text-[11px] font-bold text-[#111]">{j.current}/{j.max}</span>
                 </div>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <Link to="/community/jogak" className="block rounded-xl border border-gray-100 bg-white p-4 text-center active:bg-gray-50 transition">
-            <p className="text-sm text-[#555]">같이 놀러갈 사람을 구해보세요!</p>
-            <span className="mt-2 inline-block rounded-full bg-[#8B5CF6] px-5 py-2 text-sm font-bold text-white">조각모임 둘러보기</span>
-          </Link>
-        )}
+              </div>
+            </Link>
+          ))}
+        </div>
       </section>
 
       {/* ═══ 8. 오늘 밤 운세 — 터치 인터랙션 (스크롤 보상) ═══ */}

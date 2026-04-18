@@ -102,17 +102,27 @@ export default function ReviewsPage() {
     setSubmitting(false);
   };
 
-  let displayed = [...reviews];
+  // 시드 글 (DB 비어있을 때 사이트가 살아보이게)
+  const seedPosts: ReviewItem[] = [
+    { id: 'seed-1', title: '강남클럽 레이스 솔직 후기', author: '강남올빼미', date: '2026-04-18', venue: '레이스', rating: 5, helpful: 27, comments: 9, hasPhoto: false, excerpt: '금요일 밤에 갔는데 사운드 진짜 미쳤음. DJ 라인업도 좋고 테이블 위치도 괜찮았다. 재방문 의사 100%.' },
+    { id: 'seed-2', title: '수원나이트 찬스돔 처음 가봄', author: '수원첫방문', date: '2026-04-18', venue: '찬스돔', rating: 4, helpful: 18, comments: 6, hasPhoto: false, excerpt: '부킹 시스템이 생각보다 체계적이라 놀랐음. 웨이터가 친절해서 분위기 좋았다.' },
+    { id: 'seed-3', title: '해운대고구려 뷔페 레벨이...', author: '부산밤손님', date: '2026-04-17', venue: '고구려', rating: 5, helpful: 34, comments: 12, hasPhoto: true, excerpt: '여기 뷔페 수준이 호텔급임 진심. 룸도 넓고 초이스도 괜찮고. 부산 가면 무조건 여기.' },
+    { id: 'seed-4', title: '라운지 디엠 분위기 좋은데 가격이', author: '디엠단골', date: '2026-04-17', venue: '디엠', rating: 3, helpful: 15, comments: 8, hasPhoto: false, excerpt: '인테리어 분위기는 서울 탑급인데 주대가 좀 쎈 편. 특별한 날에 가기엔 좋다.' },
+    { id: 'seed-5', title: '일산룸 단체 회식으로 갔는데', author: '일산직장인', date: '2026-04-16', venue: '', rating: 4, helpful: 11, comments: 5, hasPhoto: false, excerpt: '8명이서 갔는데 룸 사이즈 딱 좋았음. 음향도 괜찮고 직원분들 서비스 좋았다.' },
+  ];
+  const displayReviews = reviews.length > 0 ? reviews : seedPosts;
+
+  let displayed = [...displayReviews];
   if (starFilter) displayed = displayed.filter((r) => r.rating === starFilter);
   if (photoOnly) displayed = displayed.filter((r) => r.hasPhoto);
   if (sortByHelpful) displayed.sort((a, b) => b.helpful - a.helpful);
 
-  const avgRating = reviews.length > 0
-    ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+  const avgRating = displayReviews.length > 0
+    ? (displayReviews.reduce((sum, r) => sum + r.rating, 0) / displayReviews.length).toFixed(1)
     : "0.0";
 
   // 인기 후기 TOP 3
-  const hotReviews = [...reviews].sort((a, b) => (b.helpful + b.comments * 2) - (a.helpful + a.comments * 2)).slice(0, 3);
+  const hotReviews = [...displayReviews].sort((a, b) => (b.helpful + b.comments * 2) - (a.helpful + a.comments * 2)).slice(0, 3);
 
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
@@ -135,7 +145,7 @@ export default function ReviewsPage() {
             </div>
             <div className="space-y-2">
               {hotReviews.map((r, idx) => (
-                <button key={r.id} onClick={() => navigate('/community/post/' + r.id)}
+                <button key={r.id} onClick={() => !r.id.startsWith('seed-') && navigate('/community/post/' + r.id)}
                   className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition hover:bg-white"
                   style={{ minHeight: 44 }}>
                   <span className="text-sm font-black shrink-0" style={{ color: idx === 0 ? '#EF4444' : '#F59E0B', width: 20 }}>{idx + 1}</span>
@@ -149,17 +159,17 @@ export default function ReviewsPage() {
         )}
 
         {/* Rating Summary */}
-        {reviews.length > 0 && (
+        {displayReviews.length > 0 && (
           <div className="mb-8 flex items-center gap-6 rounded-2xl border border-neon-border bg-neon-surface p-6">
             <div className="text-center">
               <div className="text-4xl font-bold text-neon-gold">{avgRating}</div>
               <StarDisplay rating={Math.round(Number(avgRating))} size="sm" />
-              <div className="mt-1 text-xs text-neon-text-muted">{reviews.length}건</div>
+              <div className="mt-1 text-xs text-neon-text-muted">{displayReviews.length}건</div>
             </div>
             <div className="flex-1 space-y-1">
               {[5, 4, 3, 2, 1].map((star) => {
-                const count = reviews.filter((r) => r.rating === star).length;
-                const pct = reviews.length > 0 ? Math.round((count / reviews.length) * 100) : 0;
+                const count = displayReviews.filter((r) => r.rating === star).length;
+                const pct = displayReviews.length > 0 ? Math.round((count / displayReviews.length) * 100) : 0;
                 return (
                   <div key={star} className="flex items-center gap-2 text-xs">
                     <span className="w-8 text-neon-text-muted">{star}점</span>
@@ -211,7 +221,7 @@ export default function ReviewsPage() {
         {!loading && displayed.length > 0 && (
           <div className="space-y-4">
             {displayed.map((review) => (
-              <button key={review.id} onClick={() => navigate('/community/post/' + review.id)}
+              <button key={review.id} onClick={() => !review.id.startsWith('seed-') && navigate('/community/post/' + review.id)}
                 className="w-full text-left rounded-2xl border border-neon-border bg-neon-surface p-6 transition hover:border-neon-primary/30" style={{ minHeight: 48 }}>
                 <div className="mb-3 flex items-start justify-between gap-4">
                   <div className="flex-1">
@@ -239,9 +249,9 @@ export default function ReviewsPage() {
           </div>
         )}
 
-        {!loading && displayed.length === 0 && (
+        {!loading && displayed.length === 0 && starFilter && (
           <div className="rounded-2xl border border-neon-border bg-neon-surface p-12 text-center text-neon-text-muted">
-            아직 후기가 없습니다. 첫 번째 후기를 남겨보세요!
+            해당 별점의 후기가 없습니다. 다른 별점을 선택해보세요!
           </div>
         )}
 

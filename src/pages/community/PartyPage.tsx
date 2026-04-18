@@ -145,12 +145,22 @@ export default function PartyRecruitPage() {
     setSubmitting(false);
   };
 
+  // 시드 글 (DB 비어있을 때 사이트가 살아보이게)
+  const seedPosts: PartyItem[] = [
+    { id: 'seed-1', title: '금요일 강남 클럽 같이 갈 사람', author: '강남파티보이', eventDate: '2026-04-18', region: '강남', currentMembers: 3, maxMembers: 6, ageRange: '20대후반~30대초반', status: '모집중', comments: 8, description: '레이스 테이블 잡아놨는데 자리 여유 있어서 모집합니다. 엔빵이고 분위기 좋게 놀아요.' },
+    { id: 'seed-2', title: '토요일 홍대 나이트 벙개 모집', author: '홍대놀자', eventDate: '2026-04-19', region: '홍대', currentMembers: 2, maxMembers: 4, ageRange: '20대', status: '모집중', comments: 12, description: '홍대 나이트 처음인 분도 환영. 분위기 좋게 부킹하면서 놀아봐요.' },
+    { id: 'seed-3', title: '부산 해운대 주말 라운지 모임', author: '해운대서퍼', eventDate: '2026-04-19', region: '부산', currentMembers: 4, maxMembers: 8, ageRange: '25~35세', status: '신청 가능', comments: 5, description: '해운대 라운지에서 가볍게 한잔하면서 대화할 분들 모집. 남녀 비율 맞추고 싶어요.' },
+    { id: 'seed-4', title: '일산 주말 벙개 2명 더', author: '일산밤문화', eventDate: '2026-04-19', region: '일산', currentMembers: 4, maxMembers: 6, ageRange: '30대', status: '곧 마감', comments: 6, description: '일산 나이트 갈 건데 2명 더 있으면 딱 좋을 것 같아서 모집합니다.' },
+    { id: 'seed-5', title: '대구 동성로 금요일 파티', author: '대구밤왕', eventDate: '2026-04-18', region: '대구', currentMembers: 2, maxMembers: 5, ageRange: '20대~30대', status: '모집중', comments: 3, description: '동성로 클럽 가실 분. 분위기 좋고 음악 좋은 데로 갑시다.' },
+  ];
+  const displayParties = parties.length > 0 ? parties : seedPosts;
+
   const filtered = statusFilter === "전체"
-    ? parties
-    : parties.filter((p) => p.status === statusFilter);
+    ? displayParties
+    : displayParties.filter((p) => p.status === statusFilter);
 
   // 활발한 모임 (댓글 많은 순)
-  const hotParties = [...parties].filter(p => p.status !== '끝' && p.status !== '종결' && p.status !== '완료')
+  const hotParties = [...displayParties].filter(p => p.status !== '끝' && p.status !== '종결' && p.status !== '완료')
     .sort((a, b) => b.comments - a.comments).slice(0, 3);
 
   return (
@@ -188,7 +198,7 @@ export default function PartyRecruitPage() {
             </div>
             <div className="space-y-2">
               {hotParties.map((p) => (
-                <button key={p.id} onClick={() => navigate('/community/post/' + p.id)}
+                <button key={p.id} onClick={() => !p.id.startsWith('seed-') && navigate('/community/post/' + p.id)}
                   className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition hover:bg-white"
                   style={{ minHeight: 44 }}>
                   <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold ${statusStyles[p.status]}`}>{p.status}</span>
@@ -299,9 +309,9 @@ export default function PartyRecruitPage() {
               );
             })}
 
-            {filtered.length === 0 && (
+            {filtered.length === 0 && statusFilter !== "전체" && (
               <div className="rounded-2xl border border-neon-border bg-neon-surface p-12 text-center text-neon-text-muted">
-                아직 게시글이 없습니다
+                해당 상태의 모임이 없습니다. 다른 필터를 선택해보세요!
               </div>
             )}
           </div>

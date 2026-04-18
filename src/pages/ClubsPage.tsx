@@ -59,6 +59,9 @@ export default function ClubsPage() {
       {/* ═══ 업소 목록 — 핵심 콘텐츠 즉시 노출 ═══ */}
       <VenueListClient venues={venues} hrefPattern="/clubs/{region}/{slug}" regions={regions} showEngagementHooks accentColor="violet" />
 
+      {/* ═══ 다른 업종 바로 보기 — 업소 목록 바로 아래 (순환 동선) ═══ */}
+      <BrowseOtherCategories currentPath="/clubs" />
+
       {/* ═══ SEO 텍스트 — 업소 목록 아래로 이동 (구글은 읽되 유저 눈에 먼저 안 걸리게) ═══ */}
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
         <p className="text-lg font-bold text-neon-text">
@@ -108,9 +111,8 @@ export default function ClubsPage() {
         { title: '홍대 vs 이태원 — 어디가 나에게 맞을까?', tag: '비교' },
       ]} />
 
-      <LiveActivityFeed maxItems={5} />
+      <LiveActivityFeed maxItems={5} category="club" />
 
-      <BrowseOtherCategories currentPath="/clubs" />
       <BottomFinishCounter baseCount={195} />
     </div>
   );

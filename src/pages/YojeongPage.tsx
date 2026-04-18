@@ -55,6 +55,8 @@ export default function YojeongPage() {
 
       <VenueListClient venues={venues} hrefPattern="/yojeong/{region}/{slug}" regions={regions} showEngagementHooks accentColor="emerald" />
 
+      <BrowseOtherCategories currentPath="/yojeong" />
+
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             요정에 들어서면 가야금 선율이 흐르고, 15가지 한정식이 하나씩 차려진다.
@@ -97,9 +99,8 @@ export default function YojeongPage() {
         { title: '한국 고유의 코스 요리 문화의 역사와 현재', tag: '문화' },
       ]} />
 
-      <LiveActivityFeed maxItems={5} />
+      <LiveActivityFeed maxItems={5} category="yojeong" />
 
-      <BrowseOtherCategories currentPath="/yojeong" />
       <BottomFinishCounter baseCount={108} />
     </div>
   );

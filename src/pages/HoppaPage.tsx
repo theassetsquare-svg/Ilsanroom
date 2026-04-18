@@ -63,6 +63,8 @@ export default function HoppaPage() {
 
       <VenueListClient venues={venues} hrefPattern="/hoppa/{slug}" regions={regions} showEngagementHooks accentColor="pink" />
 
+      <BrowseOtherCategories currentPath="/hoppa" />
+
       {/* 여성 친화 안내 배너 — 로즈골드/핑크 */}
       <div className="rounded-2xl border border-pink-200 bg-gradient-to-r from-pink-50 via-white to-rose-50 p-6">
           <div className="flex items-center gap-3 mb-3">
@@ -128,9 +130,8 @@ export default function HoppaPage() {
         { title: '수도권 vs 해운대 — 권역별 느낌과 가격 비교', tag: '비교' },
       ]} />
 
-      <LiveActivityFeed maxItems={5} />
+      <LiveActivityFeed maxItems={5} category="hoppa" />
 
-      <BrowseOtherCategories currentPath="/hoppa" />
       <BottomFinishCounter baseCount={162} />
     </div>
   );

@@ -221,6 +221,7 @@ export default function JogakPage() {
   };
 
   const handlePostClick = (postId: string) => {
+    if (postId.startsWith('seed-')) return;
     if (selectedPost === postId) { setSelectedPost(null); return; }
     setSelectedPost(postId);
     setCommentText(''); setReplyTo(null); setReplyText('');
@@ -276,8 +277,18 @@ export default function JogakPage() {
     if (!error) { setReplyText(''); setReplyTo(null); await loadComments(selectedPost); }
   };
 
+  // 시드 글 (DB 비어있을 때 사이트가 살아보이게)
+  const seedPosts: JogakPost[] = [
+    { id: 'seed-1', authorId: null, title: '토요일 강남 레이스 테이블 같이 갈 분', author: '강남조각왕', date: '2026-04-18', comments: 7, region: '강남', jogakType: '테이블', venue: '레이스', meetDate: '2026-04-19', meetTime: '22:00', maxPeople: 6, currentPeople: 3, genderPref: '남녀 혼성', ageRange: '20대후반~30대초반', costSplit: '모든비용 엔빵', tableCost: '테이블비 50만', perPerson: '약 8만원', contactMethod: '놀쿨 댓글', photoExchange: '사진교환 필수', message: '분위기 좋게 놀아요. 노쇼 없는 분만 신청해주세요.', jogakCategory: 'female' },
+    { id: 'seed-2', authorId: null, title: '홍대 헌팅 같이 돌 사람 구함', author: '홍대프리맨', date: '2026-04-18', comments: 11, region: '홍대', jogakType: '헌팅', venue: '', meetDate: '2026-04-18', meetTime: '23:00', maxPeople: 4, currentPeople: 2, genderPref: '남성만', ageRange: '20대', costSplit: '각자 부담', contactMethod: '놀쿨 댓글', photoExchange: '사진교환 안 함', message: '입장료 각자 내고 자유롭게 헌팅합시다.', jogakCategory: 'male' },
+    { id: 'seed-3', authorId: null, title: '일산 라운지 여성조각 모집', author: '일산언니', date: '2026-04-17', comments: 5, region: '일산', jogakType: '테이블', venue: '아르쥬', meetDate: '2026-04-19', meetTime: '21:30', maxPeople: 4, currentPeople: 2, genderPref: '여성만', ageRange: '25~32세', costSplit: '주대만 엔빵', tableCost: '주대 30만', perPerson: '약 7만원', contactMethod: '놀쿨 쪽지', photoExchange: '사진교환 필수', message: '분위기 좋은 라운지에서 와인 한잔 해요.', jogakCategory: 'female' },
+    { id: 'seed-4', authorId: null, title: '지금 바로 강남 벙개 갈 사람!!', author: '즉석벙개', date: '2026-04-18', comments: 9, region: '강남', jogakType: '헌팅', venue: '', meetDate: '2026-04-18', meetTime: '23:30', maxPeople: 3, currentPeople: 1, genderPref: '누구나', ageRange: '', costSplit: '각자 부담', contactMethod: '놀쿨 댓글', photoExchange: '사진교환 안 함', message: '지금 출발 가능한 분만요. 빨리 댓글 주세요!', jogakCategory: 'bungae' },
+    { id: 'seed-5', authorId: null, title: '부산 해운대 클럽 주말 조각', author: '해운대조각', date: '2026-04-17', comments: 4, region: '부산', jogakType: '테이블', venue: '고구려', meetDate: '2026-04-19', meetTime: '22:30', maxPeople: 8, currentPeople: 4, genderPref: '남녀 혼성', ageRange: '20대~30대', costSplit: '모든비용 엔빵', tableCost: '테이블비 80만', perPerson: '약 10만원', contactMethod: '놀쿨 댓글', photoExchange: '사진교환 선택', message: '남녀 비율 맞춰서 모집 중. 부산 분들 많이 와주세요.', jogakCategory: 'club_lounge' },
+  ];
+  const displayPosts = posts.length > 0 ? posts : seedPosts;
+
   // 필터링
-  let filtered = posts;
+  let filtered = displayPosts;
   if (activeCategory !== 'all') {
     filtered = filtered.filter(p => {
       if (activeCategory === 'partner') return p.isPartner || p.jogakCategory === 'partner';
@@ -299,8 +310,8 @@ export default function JogakPage() {
   // 현재 카테고리별 모집 글 카운트
   const categoryCounts: Record<string, number> = {};
   CATEGORIES.forEach(cat => {
-    if (cat.id === 'all') { categoryCounts.all = posts.length; return; }
-    categoryCounts[cat.id] = posts.filter(p => {
+    if (cat.id === 'all') { categoryCounts.all = displayPosts.length; return; }
+    categoryCounts[cat.id] = displayPosts.filter(p => {
       if (cat.id === 'partner') return p.isPartner || p.jogakCategory === 'partner';
       if (cat.id === 'female') return p.jogakCategory === 'female' || p.genderPref === '여성만';
       if (cat.id === 'male') return p.jogakCategory === 'male' || p.genderPref === '남성만';
@@ -504,18 +515,18 @@ export default function JogakPage() {
       {/* ═══ 글 목록 ═══ */}
       {loading ? (
         <PostListSkeleton />
-      ) : filtered.length === 0 ? (
+      ) : filtered.length === 0 && activeCategory !== 'all' ? (
         <div className="rounded-2xl border-2 border-dashed p-10 text-center" style={{ borderColor: '#D1D5DB' }}>
           <p className="text-4xl mb-3">
             {activeCategory === 'bungae' ? '⚡' : activeCategory === 'partner' ? '🏷️' : '🧩'}
           </p>
           <p className="text-base font-bold mb-1" style={{ color: '#111' }}>
-            {activeCategory === 'partner' ? '아직 제휴조각이 없습니다' : '아직 모집글이 없습니다'}
+            {activeCategory === 'partner' ? '아직 제휴조각이 없습니다' : '해당 카테고리의 조각이 없습니다'}
           </p>
           <p className="text-sm mb-4" style={{ color: '#999' }}>
             {activeCategory === 'partner' && !isOwner
               ? '광고주가 조각을 올리면 여기에 표시됩니다'
-              : '첫 번째 조각을 올려보세요!'}
+              : '다른 카테고리를 확인하거나 조각을 올려보세요!'}
           </p>
           {(activeCategory !== 'partner' || isOwner) && (
             <button onClick={handleWriteClick} className="rounded-xl px-6 py-3 text-sm font-bold text-white transition active:scale-[0.97]"

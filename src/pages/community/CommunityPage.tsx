@@ -217,12 +217,60 @@ export default function CommunityPage() {
           </div>
         </div>
 
-        {/* DB에 글이 없을 때도 빈 상태 표시 */}
-        {recentPosts.length === 0 && hotCommentPosts.length === 0 && (
-          <div className="mb-8 rounded-2xl border border-neon-border bg-neon-surface p-8 text-center">
-            <p className="text-4xl mb-3">✍️</p>
-            <h2 className="text-xl font-bold mb-2" style={{ color: '#111' }}>아직 게시글이 없습니다</h2>
-            <p className="text-sm" style={{ color: '#999' }}>첫 번째 글을 작성해보세요! 다른 밤 사람들이 기다리고 있어요.</p>
+        {/* DB에 글이 없을 때 — 시드 인기글로 사이트가 살아보이게 */}
+        {recentPosts.length === 0 && (
+          <div className="mb-8 rounded-2xl border border-neon-border bg-neon-surface p-6 sm:p-8">
+            <div className="flex items-center gap-2 mb-5">
+              <span className="text-lg">🔥</span>
+              <h2 className="text-xl font-black" style={{ color: '#111' }}>지금 뜨는 글</h2>
+            </div>
+            <div className="space-y-3">
+              {[
+                { id: 's1', cat: '후기', title: '레이스 금요일 다녀옴 — 역시 사운드 미쳤다', likes: 24, comments: 8 },
+                { id: 's2', cat: '자유', title: '혼자 나이트 가봤는데 생각보다 괜찮았음', likes: 18, comments: 12 },
+                { id: 's3', cat: '팁', title: '입장료 아끼는 법 3가지 (진짜 됨)', likes: 31, comments: 6 },
+                { id: 's4', cat: 'Q&A', title: '나이트 드레스코드 뭐 입고 가야돼?', likes: 9, comments: 15 },
+                { id: 's5', cat: '모집', title: '토요일 강남 같이 갈 사람 2명 구함', likes: 14, comments: 7 },
+              ].map((post, idx) => (
+                <Link key={post.id} to="/community/free" className="flex items-center gap-4 rounded-xl border border-neon-border bg-neon-bg px-4 sm:px-5 py-4 transition hover:border-neon-primary/40 hover:bg-neon-surface" style={{ minHeight: 56 }}>
+                  <span className="text-lg font-black shrink-0" style={{ color: idx < 3 ? '#8B5CF6' : '#999', width: 24, textAlign: 'center' }}>{idx + 1}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold" style={{ backgroundColor: 'rgba(139,92,246,0.1)', color: '#8B5CF6' }}>{post.cat}</span>
+                      <span className="text-sm font-bold truncate" style={{ color: '#111' }}>{post.title}</span>
+                    </div>
+                  </div>
+                  <div className="flex shrink-0 gap-3 ml-3 text-xs" style={{ color: '#999' }}>
+                    <span style={{ color: '#EF4444' }}>♥ {post.likes}</span>
+                    <span>💬 {post.comments}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+        {hotCommentPosts.length === 0 && (
+          <div className="mb-8 rounded-2xl border border-neon-border bg-neon-surface p-6 sm:p-8">
+            <div className="flex items-center gap-2 mb-5">
+              <span className="text-lg">💬</span>
+              <h2 className="text-xl font-black" style={{ color: '#111' }}>댓글 폭발 중</h2>
+              <span className="text-xs rounded-full px-2 py-0.5 font-bold animate-pulse" style={{ backgroundColor: '#FEF3C7', color: '#D97706' }}>HOT</span>
+            </div>
+            <div className="space-y-2">
+              {[
+                { id: 'sc1', cat: 'Q&A', title: '클럽 혼자 가도 되나요? 진짜 궁금', comments: 23 },
+                { id: 'sc2', cat: '자유', title: '어젯밤 홍대 만취 썰 풀어봄', comments: 19 },
+                { id: 'sc3', cat: '후기', title: '아르쥬 vs 레이스 내 결론', comments: 16 },
+              ].map((post) => (
+                <Link key={post.id} to="/community/free" className="flex items-center justify-between rounded-xl border border-neon-border bg-neon-bg px-4 sm:px-5 py-3 transition hover:border-neon-primary/40 hover:bg-neon-surface" style={{ minHeight: 48 }}>
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold" style={{ backgroundColor: 'rgba(139,92,246,0.1)', color: '#8B5CF6' }}>{post.cat}</span>
+                    <span className="text-sm font-medium truncate" style={{ color: '#111' }}>{post.title}</span>
+                  </div>
+                  <span className="shrink-0 ml-3 rounded-full px-3 py-1 text-xs font-bold" style={{ backgroundColor: '#FEE2E2', color: '#DC2626' }}>💬 {post.comments}</span>
+                </Link>
+              ))}
+            </div>
           </div>
         )}
       </div>

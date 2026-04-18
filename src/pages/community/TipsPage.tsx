@@ -85,10 +85,20 @@ export default function TipsPage() {
     setSubmitting(false);
   };
 
-  const filtered = activeCat === ALL ? tips : tips.filter((t) => t.category === activeCat);
+  // 시드 글 (DB 비어있을 때 사이트가 살아보이게)
+  const seedPosts: TipCard[] = [
+    { id: 'seed-1', title: '입장료 할인 받는 확실한 방법', category: '절약', difficulty: '쉬움', author: '절약의신', bookmarks: 42, summary: '게스트 등록 미리 해두면 만원 이상 아끼는 곳 많아. 인스타 팔로우만 해도 할인되는 데도 있음.' },
+    { id: 'seed-2', title: '첫 방문 시 웨이터한테 이거 꼭 말해라', category: '입문', difficulty: '쉬움', author: '나이트경력5년', bookmarks: 38, summary: '처음 왔다고 솔직하게 말하면 웨이터가 알아서 자리 잡아주고 시스템도 설명해줌. 아는 척 하면 오히려 손해.' },
+    { id: 'seed-3', title: '금토 피크시간 피하는 꿀팁', category: '입문', difficulty: '보통', author: '타이밍장인', bookmarks: 31, summary: '12시~1시가 제일 붐빔. 10시 반에 가면 줄 안 서고 바로 입장됨. 새벽 2시 이후도 한산해서 좋음.' },
+    { id: 'seed-4', title: '드레스코드 무난하게 맞추는 법', category: '예절', difficulty: '쉬움', author: '패션센스제로', bookmarks: 25, summary: '검정 슬랙스에 깔끔한 셔츠면 어디든 통과. 운동화는 깨끗한 거면 대부분 OK. 슬리퍼만 아니면 됨.' },
+    { id: 'seed-5', title: '테이블 vs 일반입장 뭐가 나은지', category: '절약', difficulty: '고급', author: '테이블마스터', bookmarks: 29, summary: '4명 이상이면 테이블이 오히려 싸게 먹힘. 2~3명이면 일반입장 후 바에서 마시는 게 경제적.' },
+  ];
+  const displayTips = tips.length > 0 ? tips : seedPosts;
+
+  const filtered = activeCat === ALL ? displayTips : displayTips.filter((t) => t.category === activeCat);
 
   // 인기 팁 TOP 3
-  const hotTips = [...tips].sort((a, b) => b.bookmarks - a.bookmarks).slice(0, 3);
+  const hotTips = [...displayTips].sort((a, b) => b.bookmarks - a.bookmarks).slice(0, 3);
 
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
@@ -117,7 +127,7 @@ export default function TipsPage() {
             </div>
             <div className="space-y-2">
               {hotTips.map((tip, idx) => (
-                <button key={tip.id} onClick={() => navigate('/community/post/' + tip.id)}
+                <button key={tip.id} onClick={() => !tip.id.startsWith('seed-') && navigate('/community/post/' + tip.id)}
                   className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition hover:bg-white"
                   style={{ minHeight: 44 }}>
                   <span className="text-sm font-black shrink-0" style={{ color: idx === 0 ? '#EF4444' : '#F59E0B', width: 20 }}>{idx + 1}</span>
@@ -147,7 +157,7 @@ export default function TipsPage() {
         {!loading && filtered.length > 0 && (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((tip) => (
-              <button key={tip.id} onClick={() => navigate('/community/post/' + tip.id)}
+              <button key={tip.id} onClick={() => !tip.id.startsWith('seed-') && navigate('/community/post/' + tip.id)}
                 className="flex flex-col text-left rounded-2xl border border-neon-border bg-neon-surface p-5 transition hover:border-neon-primary/40 hover:shadow-lg hover:shadow-neon-primary/5" style={{ minHeight: 48 }}>
                 <div className="mb-3 flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -167,9 +177,9 @@ export default function TipsPage() {
           </div>
         )}
 
-        {!loading && filtered.length === 0 && (
+        {!loading && filtered.length === 0 && activeCat !== ALL && (
           <div className="rounded-2xl border border-neon-border bg-neon-surface p-12 text-center text-neon-text-muted">
-            아직 꿀팁이 없습니다. 첫 번째 꿀팁을 공유해보세요!
+            해당 카테고리의 팁이 없습니다. 다른 카테고리를 선택해보세요!
           </div>
         )}
 

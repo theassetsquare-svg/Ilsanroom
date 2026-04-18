@@ -74,8 +74,18 @@ export default function FashionPage() {
     setSubmitting(false);
   };
 
+  // 시드 글 (DB 비어있을 때 사이트가 살아보이게)
+  const seedPosts: StylePost[] = [
+    { id: 'seed-1', title: '클럽 갈 때 남자 코디 정리', author: '패션고수형', excerpt: '검정 슬랙스 + 흰 셔츠 + 로퍼. 이거면 어디든 통과. 오버핏 말고 슬림핏으로.', likes: 33, date: '2026-04-18' },
+    { id: 'seed-2', title: '나이트 여자 드레스코드 뭐 입지', author: '코디요정', excerpt: '미니원피스가 무난하고, 힐은 낮은 거 추천. 너무 캐주얼하면 분위기 안 맞음.', likes: 28, date: '2026-04-18' },
+    { id: 'seed-3', title: '여름 클럽 코디 꿀조합', author: '여름밤패션', excerpt: '린넨 셔츠 + 면바지 + 깨끗한 운동화. 더워도 반바지는 절대 안 됨.', likes: 21, date: '2026-04-17' },
+    { id: 'seed-4', title: '라운지 갈 때 이건 입지마', author: '라운지단골녀', excerpt: '후드티, 캡모자, 찢어진 청바지 이 세 가지만 피하면 됨. 깔끔하게만 입으면 OK.', likes: 19, date: '2026-04-17' },
+    { id: 'seed-5', title: '겨울 나이트 아우터 뭐 입어?', author: '겨울밤스타일', excerpt: '코트 맡기면 되니까 안에만 신경 쓰면 됨. 패딩은 좀 그렇고 울 코트가 무난.', likes: 16, date: '2026-04-16' },
+  ];
+  const displayPosts = posts.length > 0 ? posts : seedPosts;
+
   // 인기 스타일 글
-  const hotPosts = [...posts].sort((a, b) => b.likes - a.likes).slice(0, 3);
+  const hotPosts = [...displayPosts].sort((a, b) => b.likes - a.likes).slice(0, 3);
 
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
@@ -121,7 +131,7 @@ export default function FashionPage() {
             </div>
             <div className="space-y-2">
               {hotPosts.map((p, idx) => (
-                <button key={p.id} onClick={() => navigate('/community/post/' + p.id)}
+                <button key={p.id} onClick={() => !p.id.startsWith('seed-') && navigate('/community/post/' + p.id)}
                   className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition hover:bg-white"
                   style={{ minHeight: 44 }}>
                   <span className="text-sm font-black shrink-0" style={{ color: idx === 0 ? '#EF4444' : '#F59E0B', width: 20 }}>{idx + 1}</span>
@@ -137,10 +147,10 @@ export default function FashionPage() {
           <PostListSkeleton />
         )}
 
-        {!loading && posts.length > 0 && (
+        {!loading && displayPosts.length > 0 && (
           <div className="columns-1 gap-5 sm:columns-2 lg:columns-3">
-            {posts.map((post) => (
-              <button key={post.id} onClick={() => navigate('/community/post/' + post.id)}
+            {displayPosts.map((post) => (
+              <button key={post.id} onClick={() => !post.id.startsWith('seed-') && navigate('/community/post/' + post.id)}
                 className="mb-5 break-inside-avoid w-full text-left rounded-2xl border border-neon-border bg-neon-surface p-5 transition hover:border-neon-primary/40"
                 style={{ minHeight: 48 }}>
                 <h3 className="mb-2 text-sm font-bold leading-snug">{post.title}</h3>
@@ -154,11 +164,6 @@ export default function FashionPage() {
           </div>
         )}
 
-        {!loading && posts.length === 0 && (
-          <div className="rounded-2xl border border-neon-border bg-neon-surface p-12 text-center text-neon-text-muted">
-            아직 스타일 글이 없습니다. 나만의 코디를 공유해보세요!
-          </div>
-        )}
 
         {showWriteModal && (
           <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>

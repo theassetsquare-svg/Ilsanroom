@@ -90,8 +90,19 @@ export default function FreeBoardPage() {
   const totalPages = Math.max(1, Math.ceil(totalCount / postsPerPage));
   const pageNumbers = Array.from({ length: Math.min(5, totalPages) }, (_, i) => i + 1);
 
+  // 시드 글 (DB 비어있을 때 사이트가 살아보이게)
+  const seedPosts: SimplePost[] = [
+    { id: 'seed-1', title: '어젯밤 강남 다녀온 후기 (사진은 못 찍음)', content: '', author: '강남불주먹', date: '2026-04-18', comments: 8, likes: 24 },
+    { id: 'seed-2', title: '혼자 나이트 처음 가봤는데 의외로 괜찮았다', content: '', author: '첫방문러', date: '2026-04-18', comments: 15, likes: 18 },
+    { id: 'seed-3', title: '입장료 아끼는 꿀팁 3가지', content: '', author: '부산바다남', date: '2026-04-17', comments: 6, likes: 31 },
+    { id: 'seed-4', title: '드레스코드 진짜 중요함 — 슬리퍼로 갔다가', content: '', author: '수원밤도깨비', date: '2026-04-17', comments: 12, likes: 14 },
+    { id: 'seed-5', title: '금요일 vs 토요일 어느 날이 더 좋아?', content: '', author: '홍대댄싱퀸', date: '2026-04-16', comments: 19, likes: 22 },
+    { id: 'seed-6', title: '라운지 혼술 추천 — 진짜 분위기 좋은 곳', content: '', author: '칵테일요리사', date: '2026-04-16', comments: 7, likes: 16 },
+  ];
+  const displayPosts = recentPosts.length > 0 ? recentPosts : seedPosts;
+
   // 인기글 (좋아요 또는 댓글 많은 순)
-  const hotPosts = [...recentPosts].sort((a, b) => (b.likes + b.comments * 2) - (a.likes + a.comments * 2)).slice(0, 3);
+  const hotPosts = [...displayPosts].sort((a, b) => (b.likes + b.comments * 2) - (a.likes + a.comments * 2)).slice(0, 3);
 
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
@@ -137,9 +148,9 @@ export default function FreeBoardPage() {
           <section>
             <h2 className="mb-4 text-lg font-bold">최근 글</h2>
             <div className="overflow-hidden rounded-xl border border-neon-border">
-              {recentPosts.map((post, i) => (
-                <button key={post.id} onClick={() => navigate('/community/post/' + post.id)}
-                  className={`flex w-full items-center justify-between px-5 py-4 text-left transition hover:bg-neon-surface-2 ${i !== recentPosts.length - 1 ? "border-b border-neon-border/50" : ""}`}
+              {displayPosts.map((post, i) => (
+                <button key={post.id} onClick={() => !post.id.startsWith('seed-') && navigate('/community/post/' + post.id)}
+                  className={`flex w-full items-center justify-between px-5 py-4 text-left transition hover:bg-neon-surface-2 ${i !== displayPosts.length - 1 ? "border-b border-neon-border/50" : ""}`}
                   style={{ minHeight: 52 }}>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium" style={{ color: '#111' }}>
@@ -153,10 +164,6 @@ export default function FreeBoardPage() {
                   </div>
                 </button>
               ))}
-
-              {recentPosts.length === 0 && (
-                <div className="px-5 py-12 text-center text-neon-text-muted">아직 게시글이 없습니다. 첫 번째 글을 작성해보세요!</div>
-              )}
             </div>
 
             {totalPages > 1 && (

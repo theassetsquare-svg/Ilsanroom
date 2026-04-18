@@ -57,6 +57,8 @@ export default function NightsPage() {
 
       <VenueListClient venues={venues} hrefPattern="/nights/{slug}" regions={regions} showEngagementHooks accentColor="blue" />
 
+      <BrowseOtherCategories currentPath="/nights" />
+
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             토요일 밤 9시. 밴드가 첫 곡을 시작하면 홀 전체가 움직인다.
@@ -105,9 +107,8 @@ export default function NightsPage() {
         { title: '전국 소셜댄스 명소 동네별 특징 총정리', tag: '정보' },
       ]} />
 
-      <LiveActivityFeed maxItems={5} />
+      <LiveActivityFeed maxItems={5} category="night" />
 
-      <BrowseOtherCategories currentPath="/nights" />
       <BottomFinishCounter baseCount={172} />
     </div>
   );

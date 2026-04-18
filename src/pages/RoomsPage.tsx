@@ -56,6 +56,8 @@ export default function RoomsPage() {
 
       <VenueListClient venues={venues} hrefPattern="/rooms/{region}/{slug}" regions={regions} showEngagementHooks accentColor="rose" />
 
+      <BrowseOtherCategories currentPath="/rooms" />
+
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             문 닫으면 바깥 소리가 안 들린다. 우리만의 시간이 시작된다.
@@ -98,9 +100,8 @@ export default function RoomsPage() {
         { title: '해운대고구려 — 마린시티 60개 개별 룸의 비밀', tag: '부산' },
       ]} />
 
-      <LiveActivityFeed maxItems={5} />
+      <LiveActivityFeed maxItems={5} category="room" />
 
-      <BrowseOtherCategories currentPath="/rooms" />
       <BottomFinishCounter baseCount={155} />
     </div>
   );
