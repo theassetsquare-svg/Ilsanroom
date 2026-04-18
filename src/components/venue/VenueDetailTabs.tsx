@@ -17,28 +17,8 @@ interface VenueDetailTabsProps {
   categoryLabel: string;
 }
 
-const ALL_TABS = ['기본정보', '양주·룸', '리뷰', '사진', '이벤트'] as const;
+const ALL_TABS = ['기본정보', '양주·룸', '리뷰', '이벤트'] as const;
 
-function GalleryImage({ slug, name, num }: { slug: string; name: string; num: number }) {
-  const [failed, setFailed] = useState(false);
-
-  if (failed) return null;
-
-  return (
-    <div className="overflow-hidden rounded-xl">
-      <img
-        src={`/venues/${slug}-g${num}.jpg`}
-        alt={name}
-        width={600}
-        height={400}
-        loading="lazy"
-        onError={() => setFailed(true)}
-        className="w-full object-cover"
-        style={{ aspectRatio: '3/2' }}
-      />
-    </div>
-  );
-}
 
 export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDetailTabsProps) {
   const [activeTab, setActiveTab] = useState<string>('기본정보');
@@ -80,18 +60,6 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
                   : `${venue.nameKo} — ${venue.description}`}
               </p>
             </div>
-            {venue.features.length > 0 && (
-              <div>
-                <h3 className="mb-3 text-lg font-bold text-neon-text">주요 특징</h3>
-                <ul className="grid grid-cols-2 gap-2">
-                  {venue.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-neon-text-muted">
-                      <span className="text-neon-primary">●</span> {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
             <div className="rounded-2xl border border-neon-border bg-neon-surface p-6">
               <h3 className="mb-4 font-bold text-neon-text">기본 정보</h3>
               <dl className="space-y-3 text-sm">
@@ -105,35 +73,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
                 <div><dt className="text-neon-text-subtle">지역</dt><dd className="text-neon-text">{venue.regionKo}</dd></div>
               </dl>
             </div>
-            {venue.atmosphere.length > 0 && (
-              <div>
-                <h3 className="mb-3 text-lg font-bold text-neon-text">분위기</h3>
-                <div className="flex flex-wrap gap-2">
-                  {venue.atmosphere.map((a) => (
-                    <span key={a} className="rounded-full border border-neon-border bg-neon-surface-2 px-3 py-1 text-sm text-neon-text-muted">{a}</span>
-                  ))}
-                </div>
-              </div>
-            )}
 
-            {/* 인기시간 위젯 — 기본정보에 통합 */}
-            <div className="rounded-2xl border border-neon-border bg-neon-surface p-6">
-              <h3 className="mb-4 font-bold text-neon-text">인기 요일·시간대</h3>
-              <div className="space-y-2">
-                {[
-                  { day: '금', level: 95 }, { day: '토', level: 100 },
-                  { day: '목', level: 60 }, { day: '수', level: 35 }, { day: '일', level: 45 },
-                ].map((s) => (
-                  <div key={s.day} className="flex items-center gap-3">
-                    <span className="w-8 text-xs font-medium text-neon-text">{s.day}</span>
-                    <div className="h-2 flex-1 rounded-full bg-neon-surface-2">
-                      <div className={`h-2 rounded-full ${s.level >= 80 ? 'bg-neon-pink' : s.level >= 50 ? 'bg-neon-gold' : 'bg-neon-green'}`} style={{ width: `${s.level}%` }} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <p className="mt-2 text-[10px] text-neon-text-subtle">※ 참고용 데이터입니다</p>
-            </div>
 
             {/* FAQ — 기본정보에 접이식 통합 */}
             {faqs.length > 0 && (
@@ -231,17 +171,6 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
           <VenueReviewSection venue={venue} />
         )}
 
-        {/* ── 사진 ── */}
-        {activeTab === '사진' && (
-          <div>
-            <h2 className="mb-4 text-xl font-bold text-neon-text">{venue.nameKo} 사진</h2>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {[1, 2, 3, 4, 5, 6].map((n) => (
-                <GalleryImage key={n} slug={venue.slug} name={venue.nameKo} num={n} />
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* ── 이벤트 ── */}
         {activeTab === '이벤트' && (() => {

@@ -9,7 +9,6 @@ import VenueDetailTabs from '@/components/venue/VenueDetailTabs';
 import VenueGallery from '@/components/venue/VenueGallery';
 import Card from '@/components/ui/Card';
 import ShareButtons from '@/components/interactive/ShareButtons';
-import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import { MidContentHook } from '@/components/engagement/ReadingEngagement';
 import type { Venue } from '@/types';
 
@@ -34,15 +33,6 @@ interface VenueDetailPageProps {
   topContent?: React.ReactNode;
 }
 
-// ── 컨텐츠 미리보기 필 ──
-const contentPills = [
-  { emoji: '\uD83D\uDCF8', label: '\uC0AC\uC9C4', id: 'gallery' },
-  { emoji: '\uD83C\uDF78', label: '\uC591\uC8FC\uC815\uBCF4', id: 'tabs' },
-  { emoji: '\u2B50', label: '\uB9AC\uBDF0', id: 'tabs' },
-  { emoji: '\uD83D\uDCA1', label: '\uAFB8\uD301', id: 'seo' },
-  { emoji: '\uD83D\uDCCD', label: '\uC704\uCE58\u00B7\uAD50\uD1B5', id: 'tabs' },
-  { emoji: '\uD83D\uDC8E', label: '\uC228\uC740\uC815\uBCF4', id: 'seo' },
-];
 
 export default function VenueDetailPage({
   venue,
@@ -140,20 +130,6 @@ export default function VenueDetailPage({
         <p className="text-xs text-[#8B5CF6] font-medium">{'\uD83D\uDC40'} 지금 {viewingNow}명이 이 페이지를 보고 있습니다</p>
       </div>
 
-      {/* ═══ 4. 컨텐츠 미리보기 필 ═══ */}
-      <section className="mx-auto max-w-[1200px] px-4 pt-4 sm:px-6">
-        <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide pb-1">
-          <span className="shrink-0 text-xs text-neon-text-muted mr-1">{'\u2B07'} 아래에</span>
-          {contentPills.map((pill) => (
-            <span
-              key={pill.label}
-              className="shrink-0 inline-flex items-center gap-1 rounded-full bg-[#8B5CF6]/5 border border-[#8B5CF6]/10 px-3 py-1 text-xs font-medium text-[#8B5CF6] whitespace-nowrap"
-            >
-              {pill.emoji} {pill.label}
-            </span>
-          ))}
-        </div>
-      </section>
 
       {/* Top Content — 히어로 바로 아래 */}
       {topContent && (
@@ -247,25 +223,6 @@ export default function VenueDetailPage({
         </Link>
       </section>
 
-      {/* ═══ 13. 다른 업종 보기 + 활동 피드 ═══ */}
-      <section className="mx-auto max-w-[1200px] px-4 py-6 sm:px-6 space-y-4">
-        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-1">
-          <span className="shrink-0 text-xs text-neon-text-muted">다른 업종</span>
-          {[
-            { emoji: '🎵', label: '클럽', href: '/clubs' },
-            { emoji: '🌙', label: '나이트', href: '/nights' },
-            { emoji: '🍸', label: '라운지', href: '/lounges' },
-            { emoji: '🚪', label: '룸', href: '/rooms' },
-            { emoji: '🏮', label: '요정', href: '/yojeong' },
-            { emoji: '🥂', label: '호빠', href: '/hoppa' },
-          ].filter(c => c.href !== categoryPath).map(c => (
-            <Link key={c.label} to={c.href} className="shrink-0 inline-flex items-center gap-1 rounded-full bg-neon-surface border border-neon-border px-3 py-1.5 text-xs font-medium text-neon-text hover:border-neon-primary/40 transition whitespace-nowrap">
-              {c.emoji} {c.label}
-            </Link>
-          ))}
-        </div>
-        <LiveActivityFeed maxItems={3} compact category={venue.category} />
-      </section>
 
       {/* ═══ 14. Sticky Phone Bar ═══ */}
       <StickyPhoneBar
