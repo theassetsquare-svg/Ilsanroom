@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
 
-/* ── 시간대별 현실적 수치 생성기 ── */
+/* ── 시간대별 수치 배율 ──
+   365일 24시간 언제 들어가도 "사람 많다" 느낌이어야 한다.
+   밤문화 사이트라 밤이 피크지만, 낮에도 검색/정보탐색 유저가 충분히 있어야 자연스럽다.
+   최저 배율을 0.45로 잡아 어느 시간대든 절반 이상 활동이 보이게 한다. */
 function getHourMultiplier(): number {
   const h = new Date().getHours();
-  if (h >= 22 || h < 2) return 1.0;    // 피크
-  if (h >= 20 && h < 22) return 0.85;
-  if (h >= 18 && h < 20) return 0.65;
-  if (h >= 15 && h < 18) return 0.35;
-  if (h >= 12 && h < 15) return 0.25;
-  if (h >= 9 && h < 12) return 0.2;
-  if (h >= 6 && h < 9) return 0.1;
-  return 0.15; // 새벽 2~6시
+  if (h >= 22 || h < 2) return 1.0;    // 피크: 밤 10시~새벽 2시
+  if (h >= 20 && h < 22) return 0.9;   // 프리피크: 저녁 8~10시
+  if (h >= 18 && h < 20) return 0.75;  // 퇴근 후: 6~8시
+  if (h >= 15 && h < 18) return 0.55;  // 오후: 검색/계획 시간대
+  if (h >= 12 && h < 15) return 0.5;   // 점심: 모바일 브라우징
+  if (h >= 9 && h < 12) return 0.45;   // 오전: 출근길 검색
+  if (h >= 6 && h < 9) return 0.45;    // 이른 아침
+  return 0.5;                           // 새벽 2~6시: 놀고 돌아와서 후기 쓰는 시간
 }
 
 function jitter(base: number, range: number): number {

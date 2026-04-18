@@ -52,21 +52,20 @@ export default function VenueDetailPage({
     return () => { document.body.classList.remove('venue-detail-page'); };
   }, []);
 
-  // "지금 N명 보는 중" — slug 기반 시드 + 시간대별 현실적 변동
+  // "지금 N명 보는 중" — 24시간 언제든 활발하게 보여야 함
   const [viewingNow] = useState(() => {
     const hour = new Date().getHours();
     const hash = venue.slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-    // 시간대별 기본 배수: 새벽~오후는 거의 없고 저녁~밤에 몰림
     let timeMult: number;
-    if (hour >= 22 || hour < 2) timeMult = 1.0;       // 피크: 22시~2시
-    else if (hour >= 20) timeMult = 0.7;               // 프리피크: 20~22시
-    else if (hour >= 17) timeMult = 0.3;               // 저녁: 17~20시
-    else if (hour >= 14) timeMult = 0.1;               // 오후: 14~17시
-    else if (hour >= 5) timeMult = 0.05;               // 낮: 5~14시 (거의 0)
-    else timeMult = 0.4;                                // 새벽: 2~5시
-    const base = venue.isPremium ? 6 : 2;
-    const raw = base + (hash % 5);
-    return Math.max(1, Math.round(raw * timeMult) + Math.floor(Math.random() * 2));
+    if (hour >= 22 || hour < 2) timeMult = 1.0;
+    else if (hour >= 20) timeMult = 0.9;
+    else if (hour >= 17) timeMult = 0.7;
+    else if (hour >= 12) timeMult = 0.5;
+    else if (hour >= 6) timeMult = 0.45;
+    else timeMult = 0.5;                               // 새벽: 후기 작성 시간대
+    const base = venue.isPremium ? 8 : 4;
+    const raw = base + (hash % 6);
+    return Math.max(2, Math.round(raw * timeMult) + Math.floor(Math.random() * 3));
   });
 
   const nameHasRegion = venue.nameKo.includes(regionKo);
