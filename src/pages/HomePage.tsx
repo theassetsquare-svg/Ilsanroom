@@ -367,6 +367,37 @@ export default function HomePage() {
   const fortune = getTodayFortune();
   const fortuneScore = useMemo(() => Math.floor(60 + (new Date().getDate() * 7 + new Date().getMonth() * 13) % 40), []);
 
+  // === Category counts ===
+  const catCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    openVenues.forEach(v => { counts[v.category] = (counts[v.category] || 0) + 1; });
+    return counts;
+  }, [openVenues]);
+
+  // === 오늘의 추천 업소 (큰 카드) ===
+  const featuredVenue = useMemo(() => {
+    const d = new Date().getDate();
+    const top = popularVenues.slice(0, 5);
+    return top[d % top.length];
+  }, [popularVenues]);
+
+  // === 실시간 접속자 (시뮬레이션) ===
+  const [liveCount, setLiveCount] = useState(() => {
+    const now = new Date();
+    const h = now.getHours();
+    const dow = now.getDay();
+    const base = (dow === 5 || dow === 6) ? 340 : (dow === 0 || dow === 4) ? 260 : 180;
+    const timeMult = (h >= 20 || h < 2) ? 1.3 : (h >= 17) ? 1.0 : (h >= 12) ? 0.6 : 0.4;
+    const daySeed = now.getFullYear() * 400 + (now.getMonth() + 1) * 32 + now.getDate();
+    return Math.round(base * timeMult + (daySeed % 50));
+  });
+  useEffect(() => {
+    const iv = setInterval(() => {
+      setLiveCount(prev => prev + Math.floor(Math.random() * 7) - 3);
+    }, 8000);
+    return () => clearInterval(iv);
+  }, []);
+
   return (
     <div className="bg-white min-h-screen">
       {/* JSON-LD */}
@@ -380,35 +411,74 @@ export default function HomePage() {
         itemListElement: popularVenues.slice(0, 10).map((v, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'LocalBusiness', name: v.nameKo, address: v.address } })),
       }} />
 
-      {/* ═══ TIME GREETING ═══ */}
-      <section className="px-4 pt-5 pb-1 text-center max-w-3xl mx-auto">
-        <p className="text-sm text-[#555]">
-          {(() => {
-            const h = new Date().getHours();
-            if (h >= 18 && h < 21) return '오늘 밤, 어디로 갈까? 🌙';
-            if (h >= 21 || h < 4) return '지금이 딱 좋은 시간 🔥';
-            if (h >= 4 && h < 12) return '오늘 밤을 미리 준비하자 ☀️';
-            return '저녁이 기다려지는 시간 🌆';
-          })()}
-        </p>
+      {/* ═══ HERO — 1초 안에 "유흥 정보 사이트" 인식 ═══ */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#1a0533] via-[#2d1b69] to-[#0f172a]">
+        {/* 배경 파티클 효과 */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(12)].map((_, i) => (
+            <div key={i} className="absolute rounded-full animate-pulse" style={{
+              width: `${4 + (i % 3) * 3}px`, height: `${4 + (i % 3) * 3}px`,
+              top: `${10 + (i * 7) % 80}%`, left: `${5 + (i * 11) % 90}%`,
+              background: i % 2 === 0 ? '#8B5CF6' : '#EC4899',
+              opacity: 0.3, animationDelay: `${i * 0.2}s`, animationDuration: `${2 + i % 3}s`,
+            }} />
+          ))}
+        </div>
+
+        <div className="relative z-10 px-4 pt-6 pb-5 max-w-3xl mx-auto text-center">
+          {/* 실시간 접속자 — 맨 위에서 활기 보여줌 */}
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-white/10 backdrop-blur-sm px-3 py-1 mb-3">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+            </span>
+            <span className="text-xs font-medium text-white/90">지금 {liveCount.toLocaleString()}명 접속 중</span>
+          </div>
+
+          <h1 className="text-[28px] sm:text-[34px] font-black text-white leading-[1.2] tracking-tight">
+            {(() => {
+              const h = new Date().getHours();
+              if (h >= 18 && h < 21) return '오늘 밤, 어디 갈래?';
+              if (h >= 21 || h < 4) return '지금 나가면 딱이다';
+              if (h >= 4 && h < 12) return '오늘 밤을 미리 정해놔';
+              return '저녁 되면 바로 출발';
+            })()}
+          </h1>
+          <p className="mt-2 text-sm text-white/60">
+            전국 {openVenues.length}곳 클럽·나이트·룸·요정·호빠·라운지 실시간 비교
+          </p>
+        </div>
+
+        {/* ═══ 6개 업종 카테고리 — 첫 화면 핵심 ═══ */}
+        <div className="relative z-10 px-4 pb-6 max-w-3xl mx-auto">
+          <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-6">
+            {([
+              { key: 'club', emoji: '🎵', label: '클럽', desc: '음악에 미치는 밤', href: '/clubs', gradient: 'from-violet-500/90 to-indigo-600/90' },
+              { key: 'night', emoji: '🌙', label: '나이트', desc: '만남의 시작', href: '/nights', gradient: 'from-blue-500/90 to-purple-600/90' },
+              { key: 'lounge', emoji: '🍸', label: '라운지', desc: '분위기로 승부', href: '/lounges', gradient: 'from-amber-500/90 to-orange-600/90' },
+              { key: 'room', emoji: '🚪', label: '룸', desc: '우리끼리 프라이빗', href: '/rooms', gradient: 'from-rose-500/90 to-pink-600/90' },
+              { key: 'yojeong', emoji: '🏮', label: '요정', desc: '전통의 격', href: '/yojeong', gradient: 'from-emerald-500/90 to-teal-600/90' },
+              { key: 'hoppa', emoji: '🥂', label: '호빠', desc: '여성 전용', href: '/hoppa', gradient: 'from-pink-500/90 to-rose-600/90' },
+            ] as const).map(cat => (
+              <Link
+                key={cat.key}
+                to={cat.href}
+                className={`relative flex flex-col items-center justify-center rounded-2xl bg-gradient-to-br ${cat.gradient} backdrop-blur-sm p-3 sm:p-4 transition-all hover:scale-105 active:scale-95`}
+                style={{ minHeight: 88, aspectRatio: 'auto' }}
+              >
+                <span className="text-2xl sm:text-3xl mb-1">{cat.emoji}</span>
+                <span className="text-sm font-black text-white">{cat.label}</span>
+                <span className="text-[10px] text-white/70 mt-0.5 hidden sm:block">{cat.desc}</span>
+                <span className="absolute top-1.5 right-2 text-[10px] font-bold text-white/50">{catCounts[cat.key] || 0}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* ═══ HERO + 네이버 스타일 검색바 ═══ */}
-      <section className="px-4 pt-2 pb-4 text-center max-w-3xl mx-auto">
-        <h1 className="text-[26px] font-black text-[#111] leading-[1.3] tracking-tight">
-          오늘 밤, 여기서 정한다
-        </h1>
-        <p className="mt-1.5 text-sm text-[#555]" style={{ lineHeight: 1.7 }}>
-          전국 {openVenues.length}곳 실시간 비교 · 솔직 후기 · 조각모임
-        </p>
-        <div className="mt-2 flex items-center justify-center">
-          <TodayStats />
-        </div>
-        <div className="mt-1.5 flex items-center justify-center">
-          <RecentJoinTicker />
-        </div>
-        {/* 검색바 — 네이버 스타일: 타이핑→실시간 결과 드롭다운 */}
-        <div ref={searchWrapperRef} className="relative mt-4 mx-auto" style={{ maxWidth: 520 }}>
+      {/* ═══ 검색바 — 카테고리 아래로 이동 ═══ */}
+      <section className="px-4 pt-4 pb-2 max-w-3xl mx-auto">
+        <div ref={searchWrapperRef} className="relative mx-auto" style={{ maxWidth: 520 }}>
           <form onSubmit={handleSearchSubmit} className="relative">
             <div className={`flex items-center rounded-2xl border bg-white px-4 transition-all ${
               searchFocused ? 'border-[#8B5CF6] shadow-lg shadow-[#8B5CF6]/10' : 'border-gray-200 shadow-sm'
@@ -422,7 +492,7 @@ export default function HomePage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setSearchFocused(true)}
-                placeholder="업소, 지역, 키워드 검색"
+                placeholder="강남클럽, 홍대나이트, 일산룸..."
                 className="h-12 w-full bg-transparent px-3 text-[15px] text-[#111] outline-none placeholder-gray-400 [&::-webkit-search-cancel-button]:hidden"
                 autoComplete="off"
                 autoCorrect="off"
@@ -493,6 +563,15 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ═══ 실시간 활동 한줄 티커 + 오늘 통계 ═══ */}
+      <section className="px-4 py-2 max-w-3xl mx-auto">
+        <div className="flex items-center justify-center gap-3 flex-wrap">
+          <TodayStats />
+          <span className="text-gray-300 hidden sm:inline">|</span>
+          <RecentJoinTicker />
+        </div>
+      </section>
+
       {/* ═══ BANNER SLIDER ═══ */}
       <section className="px-4 py-2 max-w-3xl mx-auto">
         <Link
@@ -508,10 +587,57 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ LIVE HOT TOP 5 — horizontal scroll ═══ */}
+      {/* ═══ 지금 제일 핫한 곳 — 대형 피처드 카드 ═══ */}
+      {featuredVenue && (
+        <section className="px-4 py-3 max-w-3xl mx-auto">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-base font-bold text-[#111]">지금 제일 핫한 곳</h2>
+            <Link to="/ranking" className="text-xs text-[#8B5CF6] font-medium">전체 순위 →</Link>
+          </div>
+          <Link
+            to={getCategoryHref(featuredVenue.category, featuredVenue.slug, featuredVenue.region)}
+            target="_blank" rel="noopener noreferrer"
+            className="block"
+          >
+            <div className={`relative rounded-2xl overflow-hidden bg-gradient-to-br ${
+              featuredVenue.category === 'club' ? 'from-violet-600 to-indigo-800' :
+              featuredVenue.category === 'night' ? 'from-blue-600 to-purple-800' :
+              featuredVenue.category === 'lounge' ? 'from-amber-600 to-orange-800' :
+              featuredVenue.category === 'room' ? 'from-rose-600 to-pink-800' :
+              featuredVenue.category === 'yojeong' ? 'from-emerald-600 to-teal-800' :
+              'from-pink-600 to-rose-800'
+            }`} style={{ minHeight: 160 }}>
+              <img
+                src={`/venues/${featuredVenue.slug}-1.jpg`}
+                alt={featuredVenue.nameKo}
+                loading="eager"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                className="absolute inset-0 w-full h-full object-cover z-[1] opacity-60"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-[2]" />
+              <div className="relative z-[3] flex flex-col justify-end h-full p-5" style={{ minHeight: 160 }}>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="rounded-full bg-[#8B5CF6] px-2.5 py-0.5 text-[11px] font-bold text-white">1위</span>
+                  <span className="rounded-full bg-white/20 backdrop-blur-sm px-2.5 py-0.5 text-[11px] font-medium text-white">{catLabel[featuredVenue.category]}</span>
+                  <span className="rounded-full bg-white/20 backdrop-blur-sm px-2.5 py-0.5 text-[11px] font-medium text-white">{featuredVenue.regionKo}</span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black text-white leading-tight">{featuredVenue.nameKo}</h3>
+                <div className="flex items-center gap-3 mt-1.5">
+                  {featuredVenue.rating > 0 && <span className="text-sm font-bold text-yellow-300">★ {featuredVenue.rating.toFixed(1)}</span>}
+                  <span className="text-xs text-white/70">리뷰 {featuredVenue.reviewCount}개</span>
+                  <span className="text-xs text-white/70">·</span>
+                  <span className="text-xs text-green-300 font-medium">지금 {Math.floor(8 + Math.random() * 15)}명 보는 중</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </section>
+      )}
+
+      {/* ═══ LIVE HOT — horizontal scroll ═══ */}
       <section className="py-3 max-w-3xl mx-auto">
         <div className="flex items-center justify-between px-4 mb-2">
-          <h2 className="text-base font-bold text-[#111]">🔥 실시간 HOT</h2>
+          <h2 className="text-base font-bold text-[#111]">실시간 TOP 8</h2>
           <Link to="/ranking" className="text-xs text-[#8B5CF6] font-medium">전체보기 →</Link>
         </div>
         <div className="flex gap-3 px-4 overflow-x-auto scrollbar-hide pb-1">
@@ -523,7 +649,6 @@ export default function HomePage() {
               className="flex-shrink-0"
               style={{ width: 140 }}
             >
-              {/* 이미지 카드 — 1:1 정사각형 통일 */}
               <div className="relative rounded-xl overflow-hidden" style={{ width: 140, height: 140 }}>
                 <img
                   src={`/venues/${v.slug}-1.jpg`}
@@ -532,7 +657,6 @@ export default function HomePage() {
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   className="absolute inset-0 w-full h-full object-cover z-[1]"
                 />
-                {/* Fallback */}
                 <div className={`absolute inset-0 flex flex-col items-center justify-center ${
                   v.category === 'club' ? 'bg-gradient-to-br from-violet-500 to-indigo-700' :
                   v.category === 'night' ? 'bg-gradient-to-br from-blue-500 to-purple-700' :
@@ -544,14 +668,12 @@ export default function HomePage() {
                   <span className="text-3xl">{catEmoji[v.category] || '🎵'}</span>
                   <span className="mt-1 text-xs font-bold text-white/80">{v.nameKo.slice(0, 4)}</span>
                 </div>
-                {/* Rank badge */}
                 <span className={`absolute top-2 left-2 z-[2] flex h-6 w-6 items-center justify-center rounded-full text-xs font-black text-white ${i < 3 ? 'bg-[#8B5CF6]' : 'bg-black/50'}`}>
                   {i + 1}
                 </span>
-                {/* 하단 업소명 — 솔리드 검정 배경 */}
                 <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2.5 py-2">
                   <p className="text-xs font-bold text-white truncate">{v.nameKo}</p>
-                  <p className="text-[10px] text-white/90 truncate">{v.regionKo}</p>
+                  <p className="text-[10px] text-white/90 truncate">{catLabel[v.category]} · {v.regionKo}</p>
                 </div>
               </div>
             </Link>
