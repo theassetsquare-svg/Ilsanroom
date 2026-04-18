@@ -554,7 +554,7 @@ export default function HomePage() {
       {hotPosts.length > 0 && (
         <section className="px-4 py-3 max-w-3xl mx-auto">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-base font-bold text-[#111]">💬 커뮤니티 핫글</h2>
+            <h2 className="text-base font-bold text-[#111]">💬 커뮤니티</h2>
             <div className="flex items-center gap-2">
               <Link to="/community/free?write=true" className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white" style={{ minHeight: 28 }}>✏️ 글쓰기</Link>
               <Link to="/community" className="text-xs text-[#8B5CF6] font-medium">더보기 →</Link>
