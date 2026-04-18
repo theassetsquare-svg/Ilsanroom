@@ -4,6 +4,8 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
+import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
+import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 
 const regions = [
   { key: 'gangnam', label: '강남' }, { key: 'hongdae', label: '홍대' }, { key: 'itaewon', label: '이태원' },
@@ -19,7 +21,11 @@ export default function ClubsPage() {
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '클럽' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">전국 EDM · 힙합 파티 공간</h1>
+        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-2">전국 EDM · 힙합 파티 공간</h1>
+        <div className="flex flex-wrap items-center gap-3 mb-4">
+          <PageLiveCounter pageName="" baseCount={72} />
+          <TodayStats />
+        </div>
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             금요일 밤 11시. 강남 한복판 지하로 내려가는 계단에 줄이 50m다.
@@ -68,6 +74,8 @@ export default function ClubsPage() {
         { title: '논현 EDM TOP5 — 올해 꼭 가봐야 할 곳', tag: '추천' },
         { title: '홍대 vs 이태원 — 어디가 나에게 맞을까?', tag: '비교' },
       ]} />
+
+      <LiveActivityFeed maxItems={5} />
     </div>
   );
 }

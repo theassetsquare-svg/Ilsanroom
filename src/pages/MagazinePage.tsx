@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { articles } from '@/data/magazine-articles';
+import { PageLiveCounter } from '@/components/ui/LiveStats';
 
 export default function MagazinePage() {
   useDocumentMeta('밤문화 읽을거리, 여기 다 모았다', '지역 분석, 업종 비교, 현장 리포트. 가기 전에 읽으면 달라지는 글.');
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <h1 className="text-2xl font-extrabold mb-1" style={{ color: '#111' }}>매거진</h1>
-      <p className="text-sm mb-8" style={{ color: '#555' }}>밤문화 트렌드, 가이드, 분석 콘텐츠</p>
+      <p className="text-sm mb-2" style={{ color: '#555' }}>밤문화 트렌드, 가이드, 분석 콘텐츠</p>
+      <div className="mb-8"><PageLiveCounter pageName="매거진 읽는 중" baseCount={37} /></div>
 
       {/* 피처드 — 첫 번째 글 */}
       <Link to={`/magazine/${articles[0].id}`} className="block mb-8">

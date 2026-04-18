@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { createClient } from '@/lib/supabase';
+import { CommunityPulse } from '@/components/ui/LiveStats';
+import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 
 const sectionDefs = [
   { title: "업소후기", description: "직접 가본 솔직한 방문 후기", href: "/community/reviews", icon: "⭐", category: "reviews" },
@@ -45,9 +47,10 @@ export default function CommunityPage() {
           <h1 className="mb-4 text-4xl font-bold">
             밤 사람들이 모이는 커뮤니티
           </h1>
-          <p className="text-lg text-neon-text-muted">
+          <p className="text-lg text-neon-text-muted mb-4">
             같은 밤을 보내는 사람들끼리 떠드는 곳
           </p>
+          <CommunityPulse className="justify-center" />
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -105,6 +108,12 @@ export default function CommunityPage() {
             <p className="text-neon-text-muted">아직 게시글이 없습니다. 첫 번째 글을 작성해보세요!</p>
           </div>
         )}
+
+        {/* 실시간 활동 피드 */}
+        <div className="mt-10 rounded-2xl border border-neon-border bg-neon-surface p-6">
+          <p className="text-sm font-bold text-neon-text mb-3">지금 일어나고 있는 일</p>
+          <LiveActivityFeed maxItems={6} interval={5000} />
+        </div>
       </div>
     </div>
   );

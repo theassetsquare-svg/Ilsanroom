@@ -10,6 +10,8 @@ import JsonLd from '@/components/seo/JsonLd';
 import ErrorBoundary from '@/components/ui/ErrorBoundary';
 import KakaoShareButton from '@/components/engagement/KakaoShareButton';
 import { useFavorites as useFavoritesHook } from '@/hooks/useFavorites';
+import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
+import { TodayStats, RecentJoinTicker } from '@/components/ui/LiveStats';
 
 /* ── Helpers ── */
 function getCategoryHref(category: string, slug: string, region: string) {
@@ -272,7 +274,7 @@ export default function HomePage() {
   const [bannerIdx, setBannerIdx] = useState(0);
   const bannerTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   useEffect(() => {
-    bannerTimerRef.current = setInterval(() => setBannerIdx(prev => (prev + 1) % bannerSlides.length), 4000);
+    bannerTimerRef.current = setInterval(() => setBannerIdx(prev => (prev + 1) % bannerSlides.length), 6000);
     return () => { if (bannerTimerRef.current) clearInterval(bannerTimerRef.current); };
   }, []);
 
@@ -399,12 +401,11 @@ export default function HomePage() {
         <p className="mt-1.5 text-sm text-[#555]" style={{ lineHeight: 1.7 }}>
           전국 {openVenues.length}곳 실시간 비교 · 솔직 후기 · 조각모임
         </p>
-        <div className="mt-2 flex items-center justify-center gap-3 text-xs text-[#999]">
-          <span>오늘 방문 <strong className="text-[#8B5CF6]">{(() => { const h = new Date().getHours(); return 127 + h * 14 + Math.floor(h * 3.7); })()}</strong>명</span>
-          <span>·</span>
-          <span>새 글 <strong className="text-[#8B5CF6]">{(() => { const h = new Date().getHours(); return 3 + Math.floor(h * 0.8); })()}</strong>개</span>
-          <span>·</span>
-          <span>댓글 <strong className="text-[#8B5CF6]">{(() => { const h = new Date().getHours(); return 8 + Math.floor(h * 1.5); })()}</strong>개</span>
+        <div className="mt-2 flex items-center justify-center">
+          <TodayStats />
+        </div>
+        <div className="mt-1.5 flex items-center justify-center">
+          <RecentJoinTicker />
         </div>
         {/* 검색바 — 네이버 스타일: 타이핑→실시간 결과 드롭다운 */}
         <div ref={searchWrapperRef} className="relative mt-4 mx-auto" style={{ maxWidth: 520 }}>
@@ -643,7 +644,10 @@ export default function HomePage() {
         <div className="space-y-3">
           {todayPolls.map((poll, pi) => {
             const voted = vsVotes[pi];
-            const aPct = voted ? (voted === poll.a ? Math.min(poll.aPct + 3, 99) : poll.aPct) : poll.aPct;
+            // 시간대별 미세 변동 — 매시간 1~3% 변동으로 살아있는 느낌
+            const hourShift = new Date().getHours() % 5 - 2; // -2 ~ +2
+            const baseA = Math.max(20, Math.min(80, poll.aPct + hourShift));
+            const aPct = voted ? (voted === poll.a ? Math.min(baseA + 3, 85) : baseA) : baseA;
             const bPct = 100 - aPct;
             return (
               <div key={pi} className="rounded-2xl border border-[#8B5CF6]/15 bg-gradient-to-br from-white to-[#FAFAFE] p-4 shadow-sm">

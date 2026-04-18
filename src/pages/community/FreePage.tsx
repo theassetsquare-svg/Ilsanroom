@@ -4,6 +4,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
 import { getSeedNickname } from '@/lib/fake-users';
+import { PageLiveCounter, CommunityPulse } from '@/components/ui/LiveStats';
 
 const RichTextEditor = lazy(() => import('@/components/community/RichTextEditor'));
 import WriteHeader from '@/components/community/WriteHeader';
@@ -95,6 +96,7 @@ export default function FreeBoardPage() {
             <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
             <h1 className="text-3xl font-bold">자유게시판</h1>
             <p className="mt-2 text-neon-text-muted">주제 제한 없이 자유롭게 소통하는 공간</p>
+            <div className="mt-2"><PageLiveCounter pageName="이 게시판" baseCount={35} /></div>
           </div>
           <button onClick={handleWriteClick} className="rounded-xl px-5 py-2.5 text-sm font-bold transition"
             style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>글쓰기</button>

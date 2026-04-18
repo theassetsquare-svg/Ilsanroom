@@ -1,5 +1,6 @@
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import JsonLd from '@/components/seo/JsonLd';
+import { PageLiveCounter } from '@/components/ui/LiveStats';
 
 const events = [
   { id: 'e1', title: '강남청담클럽 레이스 EDM 위크엔드', venue: '강남청담클럽 레이스', date: '2026-03-21', time: '23:00', region: '강남', category: '클럽', desc: '강남 대표 EDM 파티. 해외 게스트 DJ 라인업과 함께하는 주말 페스티벌 분위기.' },
@@ -37,7 +38,8 @@ export default function EventsPage() {
       ))}
 
       <h1 className="text-2xl font-extrabold text-neon-text mb-1">행사·파티 캘린더</h1>
-      <p className="text-sm text-neon-text-muted mb-8">업소별 특집 일정</p>
+      <p className="text-sm text-neon-text-muted mb-2">업소별 특집 일정</p>
+      <div className="mb-8"><PageLiveCounter pageName="일정 확인 중" baseCount={25} /></div>
 
       {/* 캘린더 */}
       {months.map((m) => {

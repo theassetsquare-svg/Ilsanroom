@@ -4,6 +4,8 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
+import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
+import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 
 const regions = [
   { key: 'ilsan', label: '일산' }, { key: 'gangnam', label: '강남' }, { key: 'hongdae', label: '홍대' },
@@ -19,7 +21,11 @@ export default function RoomsPage() {
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '룸' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">프라이빗 모임 장소</h1>
+        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-2">프라이빗 모임 장소</h1>
+        <div className="flex flex-wrap items-center gap-3 mb-4">
+          <PageLiveCounter pageName="" baseCount={48} />
+          <TodayStats />
+        </div>
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             문 닫으면 바깥 소리가 안 들린다. 우리만의 시간이 시작된다.
@@ -62,6 +68,8 @@ export default function RoomsPage() {
         { title: '비즈니스 접대에 최적인 독립 룸 안내', tag: '비즈니스' },
         { title: '해운대고구려 — 마린시티 60개 개별 룸의 비밀', tag: '부산' },
       ]} />
+
+      <LiveActivityFeed maxItems={5} />
     </div>
   );
 }

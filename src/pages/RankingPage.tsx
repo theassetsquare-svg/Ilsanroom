@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues } from '@/data/venues';
+import { PageLiveCounter } from '@/components/ui/LiveStats';
 
 /* ── 실제 6종 카테고리 ── */
 const categories = [
@@ -119,7 +120,8 @@ export default function RankingPage() {
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
       {/* 타이틀 */}
       <h1 className="text-2xl font-extrabold mb-1" style={{ color: '#111' }}>인기 랭킹 TOP 20</h1>
-      <p className="text-sm mb-6" style={{ color: '#555' }}>전국 클럽·나이트·라운지·룸·요정·호빠 실시간 인기 순위</p>
+      <p className="text-sm mb-2" style={{ color: '#555' }}>전국 클럽·나이트·라운지·룸·요정·호빠 실시간 인기 순위</p>
+      <div className="mb-6"><PageLiveCounter pageName="랭킹 보는 중" baseCount={63} /></div>
 
       {/* ── 카테고리 탭 ── */}
       <div className="overflow-x-auto scrollbar-hide mb-3">

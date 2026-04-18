@@ -5,6 +5,7 @@ import { Search } from 'lucide-react';
 import { venues as allVenues } from '@/data/venues';
 import type { Venue } from '@/types';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
+import { PageLiveCounter } from '@/components/ui/LiveStats';
 
 /* ── 카테고리 설정 ── */
 const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
@@ -382,7 +383,10 @@ export default function SearchPage() {
             <h2 className="text-lg font-bold text-gray-900">
               <span className="text-[#8B5CF6]">"{queryParam}"</span> 검색 결과
             </h2>
-            <p className="mt-0.5 text-xs text-gray-500">총 {total}개</p>
+            <div className="mt-1 flex items-center gap-3">
+              <span className="text-xs text-gray-500">총 {total}개</span>
+              <PageLiveCounter pageName="검색 중" baseCount={52} />
+            </div>
           </div>
         )}
 

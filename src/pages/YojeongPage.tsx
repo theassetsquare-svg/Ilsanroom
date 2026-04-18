@@ -4,6 +4,8 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
+import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
+import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 
 const regions = [
   { key: 'ilsan', label: '일산' }, { key: 'jongno', label: '종로' }, { key: 'gangnam', label: '강남' },
@@ -18,7 +20,11 @@ export default function YojeongPage() {
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '요정' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">전통 한정식 · 국악 회식</h1>
+        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-2">전통 한정식 · 국악 회식</h1>
+        <div className="flex flex-wrap items-center gap-3 mb-4">
+          <PageLiveCounter pageName="" baseCount={29} />
+          <TodayStats />
+        </div>
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             요정에 들어서면 가야금 선율이 흐르고, 15가지 한정식이 하나씩 차려진다.
@@ -61,6 +67,8 @@ export default function YojeongPage() {
         { title: '일산명월관 완벽 가이드: 회식부터 기념행사까지', tag: '격식' },
         { title: '한국 고유의 코스 요리 문화의 역사와 현재', tag: '문화' },
       ]} />
+
+      <LiveActivityFeed maxItems={5} />
     </div>
   );
 }

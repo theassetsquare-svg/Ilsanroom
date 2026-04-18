@@ -5,6 +5,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
 import { getSeedNickname } from '@/lib/fake-users';
+import { PageLiveCounter } from '@/components/ui/LiveStats';
 
 /* ── Types ── */
 interface Clip {
@@ -28,6 +29,16 @@ interface ClipComment {
   author: string;
   created_at: string;
 }
+
+/* ── 시드 클립 (DB 비어있을 때 표시) ── */
+const SEED_CLIPS: Clip[] = [
+  { id: 's1', user_id: '', image_url: '/venues/gangnam-race-1.jpg', caption: '금요일 레이스 분위기 미쳤다 ㅋㅋ 역시 강남은 다르네', likes: 47, liked: false, created_at: new Date(Date.now() - 3600000 * 5).toISOString(), author: '강남유흥러', avatar_url: null, comments: [{ id: 'sc1', user_id: '', content: '여기 요즘 웨이팅 있던데 ㄷㄷ', author: '클럽마스터', created_at: new Date(Date.now() - 3600000 * 3).toISOString() }, { id: 'sc2', user_id: '', content: '부스 예약하고 가야 됨 진짜', author: '파티피플', created_at: new Date(Date.now() - 3600000 * 2).toISOString() }], comment_count: 2 },
+  { id: 's2', user_id: '', image_url: '/venues/hongdae-mike-1.jpg', caption: '홍대 토요일 밤 현장. 이 에너지 실화냐', likes: 38, liked: false, created_at: new Date(Date.now() - 3600000 * 18).toISOString(), author: '홍대불주먹', avatar_url: null, comments: [{ id: 'sc3', user_id: '', content: '홍대는 역시 주말이지 ㅎㅎ', author: '주말전사', created_at: new Date(Date.now() - 3600000 * 15).toISOString() }], comment_count: 1 },
+  { id: 's3', user_id: '', image_url: '/venues/gangnam-arju-1.jpg', caption: '아르쥬 양주 세팅 클래스.. 이게 프리미엄이지', likes: 62, liked: false, created_at: new Date(Date.now() - 86400000 * 1).toISOString(), author: '분위기장인', avatar_url: null, comments: [{ id: 'sc4', user_id: '', content: '아르쥬 서비스 진짜 좋음 인정', author: '단골손님', created_at: new Date(Date.now() - 86400000 * 0.8).toISOString() }, { id: 'sc5', user_id: '', content: '여기 실장님 추천받고 갔는데 대만족', author: '첫방문후기', created_at: new Date(Date.now() - 86400000 * 0.5).toISOString() }], comment_count: 2 },
+  { id: 's4', user_id: '', image_url: '/venues/gangnam-chancedom-1.jpg', caption: '찬스돔 부스에서 본 뷰 ㄹㅇ 예술이다', likes: 29, liked: false, created_at: new Date(Date.now() - 86400000 * 2).toISOString(), author: '새벽감성', avatar_url: null, comments: [], comment_count: 0 },
+  { id: 's5', user_id: '', image_url: '/venues/ilsan-myeongwolgwan-1.jpg', caption: '일산 명월관 처음 가봤는데 한실 분위기 진짜 다르다', likes: 34, liked: false, created_at: new Date(Date.now() - 86400000 * 3).toISOString(), author: '룸매니아', avatar_url: null, comments: [{ id: 'sc6', user_id: '', content: '여기 접대 자리로 최고임 강추', author: '금요일밤', created_at: new Date(Date.now() - 86400000 * 2.5).toISOString() }], comment_count: 1 },
+  { id: 's6', user_id: '', image_url: '/venues/gangnam-octagon-1.jpg', caption: '금토 밤 옥타곤 앞 줄 ㅋㅋ 이래서 예약하고 가야됨', likes: 55, liked: false, created_at: new Date(Date.now() - 86400000 * 4).toISOString(), author: '나이트초보', avatar_url: null, comments: [{ id: 'sc7', user_id: '', content: '여기 사운드 시스템 국내 탑인듯', author: '클럽마스터', created_at: new Date(Date.now() - 86400000 * 3.5).toISOString() }, { id: 'sc8', user_id: '', content: '외국인도 엄청 많더라', author: '파티피플', created_at: new Date(Date.now() - 86400000 * 3).toISOString() }], comment_count: 2 },
+];
 
 /* ── Helpers ── */
 function timeAgo(dateStr: string): string {
@@ -99,7 +110,11 @@ export default function GalleryPage() {
         }
         setClips(data.map((p: any) => ({ ...mapClip(p), comments: commentsMap[p.id] || [] })));
       }
-    } catch {} finally { setLoading(false); }
+    } catch {} finally {
+      // DB에 클립이 없으면 시드 클립 표시
+      setClips(prev => prev.length === 0 ? SEED_CLIPS : prev);
+      setLoading(false);
+    }
   }, []);
 
   function mapClip(p: any): Clip {
@@ -193,6 +208,11 @@ export default function GalleryPage() {
 
   return (
     <div className="mx-auto max-w-lg bg-white min-h-screen">
+
+      {/* ═══ 라이브 카운터 ═══ */}
+      <div className="px-4 pt-3 pb-1">
+        <PageLiveCounter pageName="클립 보는 중" baseCount={38} />
+      </div>
 
       {/* ═══ 스토리 바 (인스타 스타일) ═══ */}
       <div className="flex items-center gap-4 px-4 py-3 border-b border-gray-100 overflow-x-auto scrollbar-hide">

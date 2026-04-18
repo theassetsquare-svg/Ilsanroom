@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { PageLiveCounter } from '@/components/ui/LiveStats';
 
 const RichTextEditor = lazy(() => import('@/components/community/RichTextEditor'));
 import WriteHeader from '@/components/community/WriteHeader';
@@ -74,6 +75,7 @@ export default function FashionPage() {
             <div>
               <h1 className="text-3xl font-bold">스타일 갤러리</h1>
               <p className="mt-2 text-neon-text-muted">장소 유형에 맞는 착장 영감을 얻고, 나만의 스타일을 공유하세요</p>
+              <div className="mt-2"><PageLiveCounter pageName="스타일 보는 중" baseCount={19} /></div>
             </div>
             <button onClick={handleWriteClick} className="rounded-xl px-5 py-2.5 text-sm font-bold transition"
               style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>글쓰기</button>

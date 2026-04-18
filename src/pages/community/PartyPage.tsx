@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, deletePost, deleteComment, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { PageLiveCounter } from '@/components/ui/LiveStats';
 
 const RichTextEditor = lazy(() => import('@/components/community/RichTextEditor'));
 import WriteHeader from '@/components/community/WriteHeader';
@@ -158,6 +159,7 @@ export default function PartyRecruitPage() {
             <p className="mt-2 text-neon-text-muted">
               같이 갈 사람 찾거나, 열린 약속에 끼어들어 봐
             </p>
+            <div className="mt-2"><PageLiveCounter pageName="모임 보는 중" baseCount={46} /></div>
           </div>
           <button
             onClick={handleWriteClick}

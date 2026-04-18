@@ -1,6 +1,9 @@
 
+import { useState, useEffect } from 'react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { Link } from 'react-router-dom';
+import { PageLiveCounter, GuideReadCount } from '@/components/ui/LiveStats';
+import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 
 const guides = [
   {
@@ -64,14 +67,24 @@ export default function GuidePage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
       <h1 className="text-3xl font-extrabold text-neon-text mb-2">첫 방문 완벽 가이드</h1>
-      <p className="text-neon-text-muted mb-10">처음 가는 곳이 걱정된다면? 업종별 안내서 여기 있어.</p>
+      <p className="text-neon-text-muted mb-3">처음 가는 곳이 걱정된다면? 업종별 안내서 여기 있어.</p>
+
+      {/* 살아있는 수치 */}
+      <div className="flex flex-wrap items-center gap-3 mb-8">
+        <PageLiveCounter pageName="이 가이드" baseCount={45} />
+        <span className="text-gray-300">|</span>
+        <span className="text-xs text-gray-400">총 <strong className="text-[#8B5CF6]">8,420</strong>명이 이 가이드로 첫 방문 성공</span>
+      </div>
 
       <div className="space-y-8">
         {guides.map((g) => (
           <div key={g.category} className="rounded-2xl border border-neon-border bg-neon-surface p-6">
-            <h2 className="text-xl font-bold text-neon-text mb-4 flex items-center gap-2">
-              <span className="text-2xl">{g.icon}</span> {g.category} 첫 방문 가이드
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-neon-text flex items-center gap-2">
+                <span className="text-2xl">{g.icon}</span> {g.category} 첫 방문 가이드
+              </h2>
+              <GuideReadCount category={g.category} />
+            </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <div className="rounded-xl bg-neon-bg p-4">
                 <h3 className="text-xs font-bold text-neon-gold mb-2">복장 규정</h3>
@@ -98,9 +111,15 @@ export default function GuidePage() {
         ))}
       </div>
 
-      <div className="mt-12 text-center">
-        <Link target="_blank" rel="noopener noreferrer" to="/quiz" className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-8 py-4 text-lg font-bold text-white btn-glow transition hover:bg-neon-primary-light">
-          나에게 맞는 곳 찾기 퀴즈 →
+      {/* 실시간 활동 피드 */}
+      <div className="mt-10 rounded-2xl border border-gray-100 bg-gray-50 p-4">
+        <p className="text-xs font-bold text-gray-500 mb-3">실시간 커뮤니티 활동</p>
+        <LiveActivityFeed maxItems={4} interval={8000} />
+      </div>
+
+      <div className="mt-8 text-center">
+        <Link to="/community" className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-8 py-4 text-lg font-bold text-white btn-glow transition hover:bg-neon-primary-light">
+          커뮤니티에서 추천받기 →
         </Link>
       </div>
     </div>

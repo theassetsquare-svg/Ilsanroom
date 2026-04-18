@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import type { Venue } from '@/types';
+import { VenueCardStats } from '@/components/ui/LiveStats';
 
 interface VenueListClientProps {
   venues: Venue[];
@@ -113,9 +114,10 @@ export default function VenueListClient({ venues, hrefPattern, regions }: VenueL
                     </span>
                   )}
                   {/* 하단 업소명 — 솔리드 검정 배경 */}
-                  <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2.5 py-2">
+                  <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2.5 py-1.5">
                     <h3 className="text-sm font-bold text-white leading-tight truncate">{venue.nameKo}</h3>
                     <p className="text-[11px] text-white/90 truncate">{getCategoryLabel(venue.category)} · {venue.regionKo}</p>
+                    <VenueCardStats slug={venue.slug} className="mt-0.5 text-white/60 [&_strong]:text-white/80 [&_.rounded-full]:bg-red-400" />
                   </div>
                 </div>
               </div>

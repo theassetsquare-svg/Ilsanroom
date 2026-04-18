@@ -4,6 +4,8 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
+import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
+import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 
 const regions = [
   { key: 'gangnam', label: '강남' }, { key: 'hongdae', label: '홍대' }, { key: 'itaewon', label: '이태원' },
@@ -18,7 +20,11 @@ export default function LoungesPage() {
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '라운지' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">감각적인 칵테일 바 · 라운지</h1>
+        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-2">감각적인 칵테일 바 · 라운지</h1>
+        <div className="flex flex-wrap items-center gap-3 mb-4">
+          <PageLiveCounter pageName="" baseCount={35} />
+          <TodayStats />
+        </div>
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             조명이 어둡다. 소파가 깊다. 바텐더가 흔드는 셰이커 소리만 들린다.
@@ -61,6 +67,8 @@ export default function LoungesPage() {
         { title: '논현·청담 무드 좋은 바 — 취향별 고르는 가이드', tag: '픽' },
         { title: '1인 가기 좋은 프라이빗 장소 TOP5', tag: '혼술' },
       ]} />
+
+      <LiveActivityFeed maxItems={5} />
     </div>
   );
 }

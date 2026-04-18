@@ -4,6 +4,8 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
+import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
+import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 
 const regions = [
   { key: 'gangnam', label: '강남' }, { key: 'seoul', label: '서울' }, { key: 'ilsan', label: '일산' },
@@ -20,7 +22,11 @@ export default function NightsPage() {
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '나이트' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-4">소셜댄스 · 부킹 명소</h1>
+        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-2">소셜댄스 · 부킹 명소</h1>
+        <div className="flex flex-wrap items-center gap-3 mb-4">
+          <PageLiveCounter pageName="" baseCount={55} />
+          <TodayStats />
+        </div>
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             토요일 밤 9시. 밴드가 첫 곡을 시작하면 홀 전체가 움직인다.
@@ -69,6 +75,8 @@ export default function NightsPage() {
         { title: '처음 방문하는 분을 위한 A to Z 매너 안내', tag: '입문' },
         { title: '전국 소셜댄스 명소 동네별 특징 총정리', tag: '정보' },
       ]} />
+
+      <LiveActivityFeed maxItems={5} />
     </div>
   );
 }

@@ -17,7 +17,7 @@ interface VenueDetailTabsProps {
   categoryLabel: string;
 }
 
-const TABS = ['기본정보', '양주·룸', '리뷰', '사진', '이벤트'] as const;
+const ALL_TABS = ['기본정보', '양주·룸', '리뷰', '사진', '이벤트'] as const;
 
 function GalleryImage({ slug, name, num }: { slug: string; name: string; num: number }) {
   const [failed, setFailed] = useState(false);
@@ -42,6 +42,8 @@ function GalleryImage({ slug, name, num }: { slug: string; name: string; num: nu
 
 export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDetailTabsProps) {
   const [activeTab, setActiveTab] = useState<string>('기본정보');
+  const hasEvent = !!getVenueEvent(venue.slug);
+  const TABS = hasEvent ? ALL_TABS : ALL_TABS.filter(t => t !== '이벤트');
 
   return (
     <div>
@@ -345,7 +347,53 @@ interface Review {
   isMine: boolean;
 }
 
-const DUMMY_REVIEWS: Record<string, Review[]> = {};
+// ── 시드 리뷰 생성 (slug 기반 결정적) ──
+const SEED_REVIEW_POOL = [
+  // 나이트/클럽 리뷰
+  { text: '처음 가봤는데 웨이터가 자리 잡아주고 부킹까지 해줘서 어색할 틈이 없었음. 양주 서비스도 괜찮고 분위기 좋아서 다음주에 또 갈 예정', rating: 5 },
+  { text: '금요일에 갔는데 사람 진짜 많았음. 부스 예약하고 가길 잘했다. 음악은 요즘 유행하는 곡 위주로 틀어줘서 좋았는데 화장실이 좀 멀었음', rating: 4 },
+  { text: '친구 생일에 갔는데 분위기 최고였음. 생일 이벤트로 케이크랑 샴페인 서비스 해줬다. 직원들 친절하고 청결 상태도 괜찮았음', rating: 5 },
+  { text: '주말 피크타임에 가면 웨이팅 있을 수 있음. 평일에 가면 여유롭고 서비스도 더 좋음. 양주 구성이 다양해서 선택지가 많은 편', rating: 4 },
+  { text: '인테리어 리뉴얼 하고 나서 확실히 달라졌음. 조명이랑 음향 퀄리티가 올라갔고 부스도 넓어짐. 가격대는 비슷한데 만족도는 훨씬 높아졌다', rating: 5 },
+  { text: '세 번째 방문인데 올 때마다 느끼는게 실장님이 단골 관리를 잘함. 전화하면 바로 자리 잡아주고 취향도 기억해줌', rating: 5 },
+  { text: '솔직히 가격이 좀 있긴 한데 그만큼 퀄리티가 나옴. 처음 가는 사람한테는 부담될 수 있지만 한번 가면 왜 비싼지 이해됨', rating: 4 },
+  { text: '혼자 갔는데 전혀 어색하지 않았음. 직원분이 잘 챙겨줘서 편하게 놀았다. 다만 토요일 밤에는 예약 필수', rating: 4 },
+  { text: '분위기는 좋은데 환기가 좀 아쉬웠음. 그래도 음악 선곡이랑 조명은 진짜 잘함. 친구들이랑 가기 좋은 곳', rating: 3 },
+  { text: '여기 단골인데 최근에 새로 온 DJ가 선곡을 기가 막히게 함. 예전보다 확실히 분위기가 좋아졌음. 강추', rating: 5 },
+  { text: '접대 자리로 갔는데 룸이 깨끗하고 서비스가 좋아서 거래처에서도 만족함. 비즈니스 모임에도 적합한 곳', rating: 5 },
+  { text: '토요일에 웨이팅 30분 했는데 들어가니까 그만한 가치는 있었음. 사운드 시스템이 진짜 좋고 플로어도 넓어서 답답하지 않았다', rating: 4 },
+  { text: '처음 와봤는데 생각보다 편안한 분위기라 좋았음. 화려한 곳 찾는 사람한테는 좀 심심할 수도 있지만 편하게 놀기엔 딱', rating: 4 },
+  { text: '여자끼리 갔는데 웨이터가 잘 챙겨줘서 불편한 상황 없었음. 화장실도 깨끗하고 동선도 편함', rating: 5 },
+  { text: '양주 종류가 다양하고 가격대별로 선택지가 있어서 좋았음. 입문용으로 괜찮은 곳. 단 주말에는 미리 전화해야 됨', rating: 4 },
+];
+
+const SEED_NAMES = [
+  '강남유흥러', '홍대불주먹', '분위기장인', '주말전사', '나이트초보',
+  '단골손님', '첫방문후기', '새벽감성', '파티피플', '클럽마스터',
+  '혼놀러', '룸매니아', '금요일밤', '주말탈출', '분위기깡패',
+];
+
+function getSeedReviews(slug: string): Review[] {
+  const hash = slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  const count = 3 + (hash % 3); // 3~5개
+  const reviews: Review[] = [];
+  for (let i = 0; i < count; i++) {
+    const idx = (hash + i * 7) % SEED_REVIEW_POOL.length;
+    const nameIdx = (hash + i * 13) % SEED_NAMES.length;
+    const dayOffset = (hash + i * 11) % 60 + 3; // 3~62일 전
+    const d = new Date();
+    d.setDate(d.getDate() - dayOffset);
+    reviews.push({
+      id: `seed-${slug}-${i}`,
+      userName: SEED_NAMES[nameIdx],
+      rating: SEED_REVIEW_POOL[idx].rating,
+      text: SEED_REVIEW_POOL[idx].text,
+      date: d.toISOString().slice(0, 10),
+      isMine: false,
+    });
+  }
+  return reviews;
+}
 
 function getStoredReviews(venueSlug: string): Review[] {
   try {
@@ -366,7 +414,10 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
   const [text, setText] = useState('');
 
   useEffect(() => {
-    setReviews(getStoredReviews(venue.slug));
+    const userReviews = getStoredReviews(venue.slug);
+    const seeds = getSeedReviews(venue.slug);
+    // 유저 리뷰 위에, 시드 리뷰 아래
+    setReviews([...userReviews, ...seeds]);
   }, [venue.slug]);
 
   const handleSubmit = () => {
@@ -379,18 +430,21 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
       date: new Date().toISOString().slice(0, 10),
       isMine: true,
     };
-    const updated = [newReview, ...reviews];
-    setReviews(updated);
-    saveReviews(venue.slug, updated);
+    const userReviews = getStoredReviews(venue.slug);
+    const updatedUser = [newReview, ...userReviews];
+    saveReviews(venue.slug, updatedUser);
+    const seeds = getSeedReviews(venue.slug);
+    setReviews([...updatedUser, ...seeds]);
     setText('');
     setRating(0);
     setShowWrite(false);
   };
 
   const handleDelete = (id: string) => {
-    const updated = reviews.filter(r => r.id !== id);
-    setReviews(updated);
-    saveReviews(venue.slug, updated);
+    const userReviews = getStoredReviews(venue.slug).filter(r => r.id !== id);
+    saveReviews(venue.slug, userReviews);
+    const seeds = getSeedReviews(venue.slug);
+    setReviews([...userReviews, ...seeds]);
   };
 
   const avg = reviews.length > 0 ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : '0.0';

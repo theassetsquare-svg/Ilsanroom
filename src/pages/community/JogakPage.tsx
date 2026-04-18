@@ -703,10 +703,11 @@ export default function JogakPage() {
               style={{ borderColor: f.region ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>조각 성향 <span style={{ color: '#EF4444' }}>*</span></label>
-            <input value={f.jogakType} onChange={(e) => setField('jogakType', e.target.value)}
-              placeholder="예: 테이블, 헌팅, 혼합, 룸, 부스..."
-              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
-              style={{ borderColor: f.jogakType ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
+            <select value={f.jogakType} onChange={(e) => setField('jogakType', e.target.value)}
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none appearance-none bg-white"
+              style={{ borderColor: f.jogakType ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }}>
+              {JOGAK_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+            </select>
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>업소명 <span style={{ color: '#EF4444' }}>*</span></label>
             <input value={f.venue} onChange={(e) => setField('venue', e.target.value)}
@@ -739,10 +740,11 @@ export default function JogakPage() {
               style={{ borderColor: f.maxPeople ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>성별 조건 <span style={{ color: '#EF4444' }}>*</span></label>
-            <input value={f.gender} onChange={(e) => setField('gender', e.target.value)}
-              placeholder="예: 누구나, 남성만, 여성만, 남녀 혼성..."
-              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
-              style={{ borderColor: f.gender ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
+            <select value={f.gender} onChange={(e) => setField('gender', e.target.value)}
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none appearance-none bg-white"
+              style={{ borderColor: f.gender ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }}>
+              {GENDER_OPTIONS.map(g => <option key={g} value={g}>{g}</option>)}
+            </select>
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>모집 연령대</label>
             <input value={f.ageRange} onChange={(e) => setField('ageRange', e.target.value)}
@@ -751,19 +753,21 @@ export default function JogakPage() {
               style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>사진 교환</label>
-            <input value={f.photo} onChange={(e) => setField('photo', e.target.value)}
-              placeholder="예: 사진교환 필수, 선택, 안 함..."
-              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
-              style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
+            <select value={f.photo} onChange={(e) => setField('photo', e.target.value)}
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none appearance-none bg-white"
+              style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }}>
+              {PHOTO_OPTIONS.map(p => <option key={p} value={p}>{p}</option>)}
+            </select>
 
             {/* ── 비용 정보 — 직접 입력 ── */}
             <SectionHeader title="비용 정보" />
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>비용 분담 방식 <span style={{ color: '#EF4444' }}>*</span></label>
-            <input value={f.cost} onChange={(e) => setField('cost', e.target.value)}
-              placeholder="예: 모든비용 엔빵, 주대만 엔빵, 각자 부담..."
-              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
-              style={{ borderColor: f.cost ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
+            <select value={f.cost} onChange={(e) => setField('cost', e.target.value)}
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none appearance-none bg-white"
+              style={{ borderColor: f.cost ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }}>
+              {COST_OPTIONS.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
 
             <div className="grid grid-cols-2 gap-3 mb-3">
               <div>
@@ -802,10 +806,11 @@ export default function JogakPage() {
               style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />
 
             <label className="mb-1 block text-xs font-bold" style={{ color: '#555' }}>연락 방법 <span style={{ color: '#EF4444' }}>*</span></label>
-            <input value={f.contact} onChange={(e) => setField('contact', e.target.value)}
-              placeholder="예: 놀쿨 댓글, 전화..."
-              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none"
-              style={{ borderColor: f.contact ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }} />
+            <select value={f.contact} onChange={(e) => setField('contact', e.target.value)}
+              className="w-full rounded-lg border px-4 py-3 text-sm mb-3 outline-none appearance-none bg-white"
+              style={{ borderColor: f.contact ? '#8B5CF6' : '#E5E7EB', color: '#111', minHeight: 48 }}>
+              {CONTACT_OPTIONS.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
 
             {/* ── 한마디 ── */}
             <SectionHeader title="한마디" />

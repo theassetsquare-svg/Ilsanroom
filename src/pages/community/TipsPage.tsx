@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { PageLiveCounter } from '@/components/ui/LiveStats';
 
 const RichTextEditor = lazy(() => import('@/components/community/RichTextEditor'));
 import WriteHeader from '@/components/community/WriteHeader';
@@ -94,6 +95,7 @@ export default function TipsPage() {
             <div>
               <h1 className="text-3xl font-bold">꿀팁</h1>
               <p className="mt-2 text-neon-text-muted">상황별로 정리된 핵심 요령을 카드 형태로 빠르게 훑어보세요</p>
+              <div className="mt-2"><PageLiveCounter pageName="꿀팁 읽는 중" baseCount={22} /></div>
             </div>
             <button onClick={handleWriteClick} className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light">글쓰기</button>
           </div>

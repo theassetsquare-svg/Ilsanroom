@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { PageLiveCounter } from '@/components/ui/LiveStats';
 
 const RichTextEditor = lazy(() => import('@/components/community/RichTextEditor'));
 import WriteHeader from '@/components/community/WriteHeader';
@@ -116,6 +117,7 @@ export default function ReviewsPage() {
           <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
           <h1 className="text-3xl font-bold">업소후기</h1>
           <p className="mt-2 text-neon-text-muted">직접 다녀온 사람들의 생생한 경험담 모아봤다</p>
+          <div className="mt-2"><PageLiveCounter pageName="후기 읽는 중" baseCount={28} /></div>
         </div>
 
         {/* Rating Summary */}

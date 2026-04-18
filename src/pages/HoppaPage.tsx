@@ -4,6 +4,8 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
+import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
+import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 
 const regions = [
   { key: 'gangnam', label: '강남' },
@@ -26,9 +28,13 @@ export default function HoppaPage() {
     <div className="hoppa-theme mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '호빠' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-pink-700 mb-4">
+        <h1 className="mt-6 text-3xl font-extrabold text-pink-700 mb-2">
           호빠 <span className="text-lg font-normal text-pink-400">· 호스트클럽</span>
         </h1>
+        <div className="flex flex-wrap items-center gap-3 mb-4">
+          <PageLiveCounter pageName="" baseCount={41} />
+          <TodayStats />
+        </div>
 
         {/* 여성 친화 안내 배너 — 로즈골드/핑크 */}
         <div className="rounded-2xl border border-pink-200 bg-gradient-to-r from-pink-50 via-white to-rose-50 p-6 mb-6">
@@ -95,6 +101,8 @@ export default function HoppaPage() {
         { title: '호스트 공간 처음 가는 분을 위한 완벽 가이드', tag: '입문' },
         { title: '수도권 vs 해운대 — 권역별 느낌과 가격 비교', tag: '비교' },
       ]} />
+
+      <LiveActivityFeed maxItems={5} />
     </div>
   );
 }
