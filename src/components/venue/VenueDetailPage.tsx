@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState, useMemo } from 'react';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import PageViewTracker from '@/components/venue/PageViewTracker';
 import VenueHero from '@/components/venue/VenueHero';
@@ -10,6 +10,7 @@ import VenueGallery from '@/components/venue/VenueGallery';
 import Card from '@/components/ui/Card';
 import ShareButtons from '@/components/interactive/ShareButtons';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
+import { MidContentHook } from '@/components/engagement/ReadingEngagement';
 import type { Venue } from '@/types';
 
 const VenueSeoContent = lazy(() => import('@/components/venue/VenueSeoContent'));
@@ -32,6 +33,16 @@ interface VenueDetailPageProps {
   extraContent?: React.ReactNode;
   topContent?: React.ReactNode;
 }
+
+// ── 컨텐츠 미리보기 필 ──
+const contentPills = [
+  { emoji: '\uD83D\uDCF8', label: '\uC0AC\uC9C4', id: 'gallery' },
+  { emoji: '\uD83C\uDF78', label: '\uC591\uC8FC\uC815\uBCF4', id: 'tabs' },
+  { emoji: '\u2B50', label: '\uB9AC\uBDF0', id: 'tabs' },
+  { emoji: '\uD83D\uDCA1', label: '\uAFB8\uD301', id: 'seo' },
+  { emoji: '\uD83D\uDCCD', label: '\uC704\uCE58\u00B7\uAD50\uD1B5', id: 'tabs' },
+  { emoji: '\uD83D\uDC8E', label: '\uC228\uC740\uC815\uBCF4', id: 'seo' },
+];
 
 export default function VenueDetailPage({
   venue,
@@ -75,6 +86,17 @@ export default function VenueDetailPage({
     return Math.max(2, Math.round(raw * timeMult * dowMult) + Math.floor(Math.random() * 3));
   });
 
+  // 비슷한 업소 — 동적 hook text
+  const relatedHookText = useMemo(() => {
+    const hooks = [
+      '여기 다녀온 사람들이 같이 가본 곳',
+      '이 업소 좋아하면 여기도 갈만하다',
+      '단골들이 번갈아 가는 곳',
+    ];
+    const hash = venue.slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+    return hooks[hash % hooks.length];
+  }, [venue.slug]);
+
   const nameHasRegion = venue.nameKo.includes(regionKo);
   const breadcrumbItems = [
     { name: '놀쿨', url: '/' },
@@ -94,7 +116,7 @@ export default function VenueDetailPage({
         detailPath={detailPath}
       />
 
-      {/* Breadcrumb — 이름에 지역 포함 시 지역 단계 생략 (중복 방지) */}
+      {/* ═══ 1. Breadcrumb ═══ */}
       <section className="mx-auto max-w-[1200px] px-4 py-6 sm:px-6">
         <Breadcrumb items={[
           { label: categoryLabel, href: categoryPath },
@@ -103,7 +125,7 @@ export default function VenueDetailPage({
         ]} />
       </section>
 
-      {/* Hero */}
+      {/* ═══ 2. Hero ═══ */}
       <VenueHero
         name={venue.nameKo}
         staffNickname={venue.staffNickname}
@@ -113,10 +135,25 @@ export default function VenueDetailPage({
         slug={venue.slug}
       />
 
-      {/* 지금 보는 중 */}
+      {/* ═══ 3. 지금 보는 중 ═══ */}
       <div className="mx-auto max-w-[1200px] px-4 pt-3 sm:px-6">
-        <p className="text-xs text-[#8B5CF6] font-medium">👀 지금 {viewingNow}명이 이 페이지를 보고 있습니다</p>
+        <p className="text-xs text-[#8B5CF6] font-medium">{'\uD83D\uDC40'} 지금 {viewingNow}명이 이 페이지를 보고 있습니다</p>
       </div>
+
+      {/* ═══ 4. 컨텐츠 미리보기 필 ═══ */}
+      <section className="mx-auto max-w-[1200px] px-4 pt-4 sm:px-6">
+        <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide pb-1">
+          <span className="shrink-0 text-xs text-neon-text-muted mr-1">{'\u2B07'} 아래에</span>
+          {contentPills.map((pill) => (
+            <span
+              key={pill.label}
+              className="shrink-0 inline-flex items-center gap-1 rounded-full bg-[#8B5CF6]/5 border border-[#8B5CF6]/10 px-3 py-1 text-xs font-medium text-[#8B5CF6] whitespace-nowrap"
+            >
+              {pill.emoji} {pill.label}
+            </span>
+          ))}
+        </div>
+      </section>
 
       {/* Top Content — 히어로 바로 아래 */}
       {topContent && (
@@ -125,28 +162,22 @@ export default function VenueDetailPage({
         </section>
       )}
 
-      {/* ═══ Share — 바이럴 루프 ═══ */}
-      <section className="mx-auto max-w-[1200px] px-4 pt-6 sm:px-6">
-        <div className="rounded-2xl bg-gradient-to-r from-[#F3F0FF] to-white border border-[#E9E5FF] p-4">
-          <p className="text-center text-xs font-bold text-[#8B5CF6] mb-2">친구한테 보내기</p>
-          <ShareButtons
-            title={venue.nameKo}
-            description={venue.shortDescription || venue.description.slice(0, 80)}
-          />
-        </div>
-      </section>
-
-      {/* Venue Photo Gallery */}
+      {/* ═══ 5. Venue Photo Gallery (moved up before tabs) ═══ */}
       <section className="mx-auto max-w-[1200px] px-4 pt-8 sm:px-6">
         <VenueGallery slug={venue.slug} name={venue.nameKo} />
       </section>
 
-      {/* 8-Tab Content */}
+      {/* ═══ 6. 8-Tab Content ═══ */}
       <section className="mx-auto max-w-[1200px] px-4 pt-8 sm:px-6">
         <VenueDetailTabs venue={venue} faqs={faqs} categoryLabel={categoryLabel} />
       </section>
 
-      {/* SEO Content — 모든 업소에 자동 1000자+ 고유 콘텐츠 */}
+      {/* ═══ 7. Mid-content hook divider ═══ */}
+      <section className="mx-auto max-w-[1200px] px-4 sm:px-6">
+        <MidContentHook seed={venue.slug} variant={3} />
+      </section>
+
+      {/* ═══ 8. SEO Content — 모든 업소에 자동 1000자+ 고유 콘텐츠 ═══ */}
       <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
         <Suspense fallback={null}>
           <VenueSeoContent venue={venue} />
@@ -160,12 +191,22 @@ export default function VenueDetailPage({
         </section>
       )}
 
+      {/* ═══ 9. Share — 바이럴 루프 (읽은 뒤에 공유) ═══ */}
+      <section className="mx-auto max-w-[1200px] px-4 pt-2 pb-4 sm:px-6">
+        <div className="rounded-2xl bg-gradient-to-r from-[#F3F0FF] to-white border border-[#E9E5FF] p-4">
+          <p className="text-center text-xs font-bold text-[#8B5CF6] mb-2">이 정보 괜찮았다면 — 친구한테 보내기</p>
+          <ShareButtons
+            title={venue.nameKo}
+            description={venue.shortDescription || venue.description.slice(0, 80)}
+          />
+        </div>
+      </section>
 
-      {/* [D] 첫 방문 가이드 */}
+      {/* ═══ 10. 첫 방문 가이드 ═══ */}
       <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
         <Link to="/guide" className="block rounded-2xl border border-neon-gold/30 bg-neon-gold/5 p-5 transition hover:border-neon-gold/50 card-hover">
           <div className="flex items-center gap-3">
-            <span className="text-2xl">📖</span>
+            <span className="text-2xl">{'\uD83D\uDCD6'}</span>
             <div>
               <p className="text-sm font-bold text-neon-text">처음 방문이세요?</p>
               <p className="text-xs text-neon-text-muted">복장, 예산, 매너 — 첫 방문 완벽 가이드 보기</p>
@@ -174,10 +215,13 @@ export default function VenueDetailPage({
         </Link>
       </section>
 
-      {/* Bottom Recommendations */}
+      {/* ═══ 11. 비슷한 업소 (hook text 추가) ═══ */}
       {related.length > 0 && (
         <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
-          <h2 className="mb-6 text-xl font-bold text-neon-text">비슷한 업소</h2>
+          <div className="mb-6">
+            <h2 className="text-xl font-bold text-neon-text">비슷한 업소</h2>
+            <p className="text-xs text-neon-text-muted mt-1">{relatedHookText}</p>
+          </div>
           <div className="grid gap-4 sm:grid-cols-3">
             {related.slice(0, 3).map((v) => (
               <Card key={v.id} href={relatedHrefFn(v)}>
@@ -190,11 +234,11 @@ export default function VenueDetailPage({
         </section>
       )}
 
-      {/* [C] 숨은 명소 */}
+      {/* ═══ 12. 숨은 명소 ═══ */}
       <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
         <Link to="/hidden" className="block rounded-2xl border border-neon-accent/30 bg-neon-accent/5 p-5 transition hover:border-neon-accent/50 card-hover">
           <div className="flex items-center gap-3">
-            <span className="text-2xl">💎</span>
+            <span className="text-2xl">{'\uD83D\uDC8E'}</span>
             <div>
               <p className="text-sm font-bold text-neon-text">이 업소 몰랐지? — 매주 숨은 명소 발굴</p>
               <p className="text-xs text-neon-text-muted">다른 데서 안 나오는 숨은 곳들, 여기서만 파냄</p>
@@ -203,12 +247,12 @@ export default function VenueDetailPage({
         </Link>
       </section>
 
-      {/* 실시간 활동 피드 */}
+      {/* ═══ 13. 실시간 활동 피드 ═══ */}
       <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
         <LiveActivityFeed maxItems={4} compact />
       </section>
 
-      {/* Sticky Phone Bar */}
+      {/* ═══ 14. Sticky Phone Bar ═══ */}
       <StickyPhoneBar
         phone={venue.staffPhone}
         staffName={venue.staffNickname}

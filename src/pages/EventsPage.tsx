@@ -1,6 +1,9 @@
+import { useRef } from 'react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import JsonLd from '@/components/seo/JsonLd';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
+import { MidContentHook, ReadFinishCount, ReadCompletionReward, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
+import { Link } from 'react-router-dom';
 
 const events = [
   { id: 'e1', title: '강남청담클럽 레이스 EDM 위크엔드', venue: '강남청담클럽 레이스', date: '2026-03-21', time: '23:00', region: '강남', category: '클럽', desc: '강남 대표 EDM 파티. 해외 게스트 DJ 라인업과 함께하는 주말 페스티벌 분위기.' },
@@ -18,10 +21,20 @@ const months = [
 
 const DOW = ['일', '월', '화', '수', '목', '금', '토'];
 
+const catColors: Record<string, string> = {
+  '클럽': '#7c3aed', '소셜댄스': '#ec4899', '요정': '#ef4444', 'VIP': '#f59e0b', '기념행사': '#06b6d4',
+};
+
 export default function EventsPage() {
   useDocumentMeta('놓치면 후회할 이번 달 파티·행사 일정', 'DJ 게스트, 기념행사, 시즌 이벤트. 달력에 표시해두고 가라.');
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // 곧 다가오는 이벤트
+  const now = new Date().toISOString().slice(0, 10);
+  const upcomingEvents = events.filter(e => e.date >= now).slice(0, 2);
+
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+    <div ref={containerRef}>
       {/* Event JSON-LD */}
       {events.map((e) => (
         <JsonLd key={e.id} data={{
@@ -37,61 +50,125 @@ export default function EventsPage() {
         }} />
       ))}
 
-      <h1 className="text-2xl font-extrabold text-neon-text mb-1">행사·파티 캘린더</h1>
-      <p className="text-sm text-neon-text-muted mb-2">업소별 특집 일정</p>
-      <div className="mb-8"><PageLiveCounter pageName="일정 확인 중" baseCount={25} /></div>
-
-      {/* 캘린더 */}
-      {months.map((m) => {
-        const monthEvents = events.filter((e) => e.date.startsWith(m.prefix));
-        const eventDays = new Set(monthEvents.map((e) => parseInt(e.date.split('-')[2])));
-        const cells = Array.from({ length: m.startDay }, (_, i) => ({ day: 0, key: `empty-${i}` }))
-          .concat(Array.from({ length: m.days }, (_, i) => ({ day: i + 1, key: `d-${i + 1}` })));
-
-        return (
-          <section key={m.prefix} className="mb-10">
-            <h2 className="mb-4 text-lg font-bold text-neon-primary-light">{m.label}</h2>
-
-            {/* 미니 캘린더 */}
-            <div className="mb-4 rounded-xl border border-neon-border bg-neon-surface p-4 overflow-x-auto">
-              <div className="grid grid-cols-7 gap-1 min-w-[280px]">
-                {DOW.map((d) => (
-                  <div key={d} className="text-center text-xs font-medium text-neon-text-muted py-1">{d}</div>
-                ))}
-                {cells.map((c) => (
-                  <div key={c.key} className={`text-center text-xs py-1.5 rounded-lg ${
-                    c.day === 0 ? '' : eventDays.has(c.day) ? 'bg-neon-primary/20 text-neon-primary-light font-bold' : 'text-neon-text-muted'
-                  }`}>
-                    {c.day || ''}
-                  </div>
-                ))}
-              </div>
+      {/* ═══ HERO ═══ */}
+      <div className="relative overflow-hidden bg-gradient-to-b from-[#0A0118] via-[#1a0a2e] to-[#0f0720]">
+        <div className="absolute inset-0 opacity-15" style={{ backgroundImage: 'radial-gradient(circle at 40% 40%, #EC4899 0%, transparent 40%), radial-gradient(circle at 60% 60%, #8B5CF6 0%, transparent 40%)' }} />
+        <div className="relative mx-auto max-w-5xl px-4 py-14 sm:px-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 border border-white/10">
+              <PageLiveCounter pageName="일정 확인 중" baseCount={25} className="text-white/80 [&_strong]:text-white" />
             </div>
+          </div>
 
-            {/* 이벤트 리스트 */}
-            <div className="space-y-2.5">
-              {monthEvents.map((e) => (
-                <div key={e.id} className="flex items-start gap-4 rounded-xl border border-neon-border bg-neon-surface px-4 py-4 sm:px-5 card-hover" style={{ minHeight: 72 }}>
-                  <div className="shrink-0 w-12 text-center">
-                    <p className="text-xl font-bold text-neon-text leading-tight">{e.date.split('-')[2]}</p>
-                    <p className="text-xs text-neon-text-muted">{m.label.slice(6)}</p>
+          <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
+            📅 놓치면 후회할<br />
+            <span className="bg-gradient-to-r from-[#EC4899] to-[#8B5CF6] bg-clip-text text-transparent">이번 달 파티·행사</span>
+          </h1>
+          <p className="text-base text-white/60 mb-6" style={{ lineHeight: '1.7' }}>
+            DJ 게스트, 기념행사, 시즌 이벤트. 달력에 표시해두고 가라.
+          </p>
+
+          {/* 다가오는 이벤트 하이라이트 */}
+          {upcomingEvents.length > 0 && (
+            <div className="flex flex-wrap gap-3">
+              {upcomingEvents.map(e => (
+                <div key={e.id} className="rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 px-5 py-3 flex items-center gap-3">
+                  <div className="text-center">
+                    <p className="text-2xl font-black text-white leading-none">{e.date.split('-')[2]}</p>
+                    <p className="text-[10px] text-white/50">{e.date.split('-')[1]}월</p>
                   </div>
-                  <div className="h-10 w-px bg-neon-border shrink-0 self-center" />
-                  <div className="min-w-0 flex-1">
-                    <h3 className="text-sm font-bold text-neon-text mb-1">{e.title}</h3>
-                    <p className="text-xs text-neon-text-muted line-clamp-2 mb-1">{e.desc}</p>
-                    <p className="text-xs text-neon-text-subtle">{e.venue} · {e.region} · {e.time}</p>
+                  <div className="h-8 w-px bg-white/20" />
+                  <div>
+                    <p className="text-sm font-bold text-white">{e.title}</p>
+                    <p className="text-xs text-white/50">{e.venue} · {e.time}</p>
                   </div>
-                  <span className="shrink-0 rounded-full bg-neon-primary/10 px-2.5 py-1 text-xs text-neon-primary-light self-start">{e.category}</span>
                 </div>
               ))}
-              {monthEvents.length === 0 && (
-                <p className="text-center text-sm text-neon-text-muted py-8">등록된 행사가 없습니다</p>
-              )}
             </div>
-          </section>
-        );
-      })}
+          )}
+        </div>
+      </div>
+
+      {/* ═══ CALENDAR + EVENTS ═══ */}
+      <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+        {months.map((m, mIdx) => {
+          const monthEvents = events.filter((e) => e.date.startsWith(m.prefix));
+          const eventDays = new Set(monthEvents.map((e) => parseInt(e.date.split('-')[2])));
+          const cells = Array.from({ length: m.startDay }, (_, i) => ({ day: 0, key: `empty-${i}` }))
+            .concat(Array.from({ length: m.days }, (_, i) => ({ day: i + 1, key: `d-${i + 1}` })));
+
+          return (
+            <section key={m.prefix} className="mb-10">
+              <h2 className="mb-4 text-lg font-bold text-[#111] flex items-center gap-2">
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#8B5CF6]/10 text-sm">📅</span>
+                {m.label}
+              </h2>
+
+              {/* 미니 캘린더 */}
+              <div className="mb-4 rounded-xl border border-gray-200 bg-white p-4 overflow-x-auto shadow-sm">
+                <div className="grid grid-cols-7 gap-1 min-w-[280px]">
+                  {DOW.map((d) => (
+                    <div key={d} className="text-center text-xs font-medium text-[#999] py-1">{d}</div>
+                  ))}
+                  {cells.map((c) => (
+                    <div key={c.key} className={`text-center text-xs py-2 rounded-lg transition-colors ${
+                      c.day === 0 ? '' : eventDays.has(c.day) ? 'bg-[#8B5CF6]/15 text-[#8B5CF6] font-bold ring-1 ring-[#8B5CF6]/20' : 'text-[#555]'
+                    }`}>
+                      {c.day || ''}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 이벤트 리스트 */}
+              <div className="space-y-2.5">
+                {monthEvents.map((e) => {
+                  const cc = catColors[e.category] || '#8B5CF6';
+                  return (
+                    <div key={e.id} className="flex items-start gap-4 rounded-xl border border-gray-200 bg-white px-4 py-4 sm:px-5 shadow-sm transition-all hover:shadow-md hover:border-[#8B5CF6]/20" style={{ minHeight: 72 }}>
+                      <div className="shrink-0 w-12 text-center">
+                        <p className="text-xl font-bold text-[#111] leading-tight">{e.date.split('-')[2]}</p>
+                        <p className="text-xs text-[#999]">{m.label.slice(6)}</p>
+                      </div>
+                      <div className="h-10 w-0.5 rounded-full shrink-0 self-center" style={{ backgroundColor: cc }} />
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-sm font-bold text-[#111] mb-1">{e.title}</h3>
+                        <p className="text-xs text-[#555] line-clamp-2 mb-1" style={{ lineHeight: '1.6' }}>{e.desc}</p>
+                        <p className="text-xs text-[#999]">{e.venue} · {e.region} · {e.time}</p>
+                      </div>
+                      <span className="shrink-0 rounded-full px-2.5 py-1 text-xs font-bold self-start" style={{ backgroundColor: cc + '15', color: cc }}>{e.category}</span>
+                    </div>
+                  );
+                })}
+                {monthEvents.length === 0 && (
+                  <p className="text-center text-sm text-[#999] py-8">등록된 행사가 없습니다</p>
+                )}
+              </div>
+
+              {mIdx === 0 && <MidContentHook seed="events-mid" variant={4} />}
+            </section>
+          );
+        })}
+
+        {/* ═══ BOTTOM ═══ */}
+        <ReadCompletionReward teaser="행사 정보를 가장 빨리 받는 방법">
+          <div className="space-y-2">
+            <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>
+              커뮤니티에서 행사 정보가 가장 먼저 올라온다.
+              실장들이 직접 올리는 이벤트 글을 놓치지 마.
+            </p>
+            <Link to="/community" className="inline-flex items-center gap-1 text-sm font-bold text-[#8B5CF6] hover:text-[#7C3AED] mt-2">
+              커뮤니티 가기 →
+            </Link>
+          </div>
+        </ReadCompletionReward>
+
+        <div className="text-center mt-6">
+          <ReadFinishCount pageName="행사 캘린더" baseCount={100} />
+        </div>
+      </div>
+
+      <ReadingMilestone containerRef={containerRef} />
     </div>
   );
 }

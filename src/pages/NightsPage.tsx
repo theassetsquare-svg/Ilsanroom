@@ -6,6 +6,8 @@ import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from
 import { getVenuesByCategory } from '@/data/venues';
 import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
+import { MidContentHook, ReadFinishCount } from '@/components/engagement/ReadingEngagement';
+import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter } from '@/components/venue/CategoryListingEngagement';
 
 const regions = [
   { key: 'gangnam', label: '강남' }, { key: 'seoul', label: '서울' }, { key: 'ilsan', label: '일산' },
@@ -18,15 +20,40 @@ const regions = [
 export default function NightsPage() {
   useDocumentMeta('라이브 밴드가 울리면, 모르는 사람도 파트너가 된다', '소셜댄스 58곳 총집합. 부킹 문화부터 드레스코드까지, 첫 발 딛기 전에 읽어라.');
   const venues = getVenuesByCategory('night');
+  const featured = venues.find(v => v.isPremium) || venues[0];
+
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '나이트' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-2">소셜댄스 · 부킹 명소</h1>
-        <div className="flex flex-wrap items-center gap-3 mb-4">
+
+        <div className="mt-6">
+          <CategoryHero
+            emoji="🌙"
+            title="소셜댄스 · 부킹 명소"
+            hook="밴드가 첫 곡을 시작하면 홀 전체가 움직인다. 처음 만난 사람과 지루박 한 곡, 어색함은 사라진다."
+            venueCount={venues.length}
+            gradient="from-blue-600 via-indigo-700 to-purple-800"
+            accentColor="blue"
+          />
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3 mt-4 mb-4">
           <PageLiveCounter pageName="" baseCount={55} />
           <TodayStats />
         </div>
+
+        {featured && (
+          <div className="mb-6">
+            <FeaturedVenueCard
+              venue={featured}
+              href={`/nights/${featured.slug}`}
+              accentColor="blue"
+              categoryLabel="나이트"
+            />
+          </div>
+        )}
+
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             토요일 밤 9시. 밴드가 첫 곡을 시작하면 홀 전체가 움직인다.
@@ -37,6 +64,7 @@ export default function NightsPage() {
           <p className="text-base leading-relaxed text-neon-text-muted">
             라이브 밴드가 트로트·팝·발라드를 번갈아 연주한다. 무대 바로 앞 댄스홀에서 춤추는 사람들, 자리에 앉아 양주 마시며 구경하는 사람들, 웨이터가 분주하게 오가는 모습이 한 공간에 섞인다. 30대 후반부터 50대까지 연령대가 넓다. 20대가 가면 오히려 귀여워해주셔서 대접받는다는 후기도 있다.
           </p>
+          <MidContentHook seed="nights-intro" />
           <p className="text-base leading-relaxed text-neon-text-muted">
             시스템은 간단하다. 들어가면 웨이터가 좌석을 안내한다. 양주 한 병 시키고 과일 안주 받으면 준비 끝. 춤추고 싶으면 댄스홀로 나가면 되고, 앉아서 무드만 즐겨도 된다. 부킹은 거절해도 전혀 문제 없다. 강제 아니다.
           </p>
@@ -49,10 +77,11 @@ export default function NightsPage() {
           <p className="text-base leading-relaxed text-neon-text-muted">
             경기권은 일산샴푸나이트, 파주야당스카이돔나이트, 화정한국관나이트, 김포호박나이트, 수원찬스돔나이트, 수원코리아나이트, 성남국빈관나이트, 분당퐁퐁나이트 등이 있다. 충청권은 대전세븐나이트, 대전봉명나이트, 천안스타돔나이트가, 경상권은 부산연산동물나이트, 부산아시아드나이트, 울산뉴월드나이트, 울산챔피언나이트, 대구한국관나이트가 핵심이다. 전라권은 광주상무나이트, 광주MGM나이트, 광주올나이트가 대표한다.
           </p>
+          <ReadFinishCount pageName="나이트 가이드" baseCount={185} />
         </div>
       </div>
 
-      <VenueListClient venues={venues} hrefPattern="/nights/{slug}" regions={regions} />
+      <VenueListClient venues={venues} hrefPattern="/nights/{slug}" regions={regions} showEngagementHooks accentColor="blue" />
 
       <FirstVisitGuide category="나이트"
         dress="세미 포멀~포멀 권장. 정장 또는 셋업이 기본. 너무 캐주얼하면 무드에 안 맞을 수 있음."
@@ -77,6 +106,9 @@ export default function NightsPage() {
       ]} />
 
       <LiveActivityFeed maxItems={5} />
+
+      <BrowseOtherCategories currentPath="/nights" />
+      <BottomFinishCounter baseCount={172} />
     </div>
   );
 }

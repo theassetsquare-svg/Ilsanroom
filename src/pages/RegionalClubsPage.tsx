@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 import Card from '@/components/ui/Card';
@@ -7,6 +7,7 @@ import Badge from '@/components/ui/Badge';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import { getVenuesByCategoryAndRegion } from '@/data/venues';
 import type { Venue } from '@/types';
+import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter, ListMidHook, TopPicksMini } from '@/components/venue/CategoryListingEngagement';
 
 
 const regionNames: Record<string, string> = {
@@ -44,11 +45,12 @@ function ClubCard({ venue, href }: { venue: Venue; href: string }) {
 }
 
 export default function RegionalClubsPage() {
-  const { region } = useParams<{ region: string }>();
+  const { region = '' } = useParams<{ region: string }>();
   const regionKo = regionNames[region] || region;
   useDocumentMeta(`${regionKo} 클럽 리스트`, `${regionKo} EDM·힙합 클럽 모아보기. 입장료, 분위기, 영업시간 비교.`);
   const clubs = getVenuesByCategoryAndRegion('club', region);
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
+  const featured = clubs.find(v => v.isPremium) || clubs[0];
 
   const avgRating = useMemo(() => {
     if (clubs.length === 0) return 0;
@@ -69,12 +71,29 @@ export default function RegionalClubsPage() {
         <Breadcrumb items={[{ label: '클럽', href: '/clubs' }, { label: regionKo }]} />
       </section>
 
+      {/* Category Hero */}
       <section className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
-        <h1 className="text-3xl font-extrabold text-neon-text">{regionKo} 클럽</h1>
-        <p className="mt-3 text-neon-text-muted">
-          {regionKo} 지역의 댄스홀과 파티 공간 총정리. 음악 장르, 분위기, 연령대별로 비교해봐.
-        </p>
+        <CategoryHero
+          emoji="🎵"
+          title={`${regionKo} 클럽`}
+          hook={`${regionKo} 지역의 댄스홀과 파티 공간 총정리. 음악 장르, 분위기, 연령대별로 비교해봐.`}
+          venueCount={clubs.length}
+          gradient="from-violet-600 via-purple-700 to-indigo-800"
+          accentColor="violet"
+        />
       </section>
+
+      {/* Featured #1 */}
+      {featured && (
+        <section className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
+          <FeaturedVenueCard
+            venue={featured}
+            href={`/clubs/${region}/${featured.slug}`}
+            accentColor="violet"
+            categoryLabel={`${regionKo} 클럽`}
+          />
+        </section>
+      )}
 
       {/* 통계 바 */}
       <section className="mx-auto max-w-[1200px] px-4 pb-4 sm:px-6">
@@ -98,6 +117,7 @@ export default function RegionalClubsPage() {
                   ? 'border-purple-500 bg-purple-500 text-white'
                   : 'border-neon-border bg-white text-neon-text-muted hover:border-purple-300'
               }`}
+              style={{ minHeight: 44 }}
             >
               {genre}
             </button>
@@ -124,16 +144,23 @@ export default function RegionalClubsPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1200px] px-4 pb-20 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 pb-8 sm:px-6">
         {selectedGenre && (
           <p className="mb-4 text-sm text-neon-text-muted">
             &quot;{selectedGenre}&quot; 관련 결과 {filteredClubs.length}건
           </p>
         )}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredClubs.map((venue) => (
-            <ClubCard key={venue.id} venue={venue} href={`/clubs/${region}/${venue.slug}`} />
-          ))}
+          {filteredClubs.map((venue, idx) => {
+            const elements = [];
+            if (idx > 0 && idx % 12 === 0) {
+              elements.push(<TopPicksMini key={`top-${idx}`} venues={clubs} hrefPattern={`/clubs/${region}/{slug}`} accentColor="violet" />);
+            } else if (idx > 0 && idx % 6 === 0) {
+              elements.push(<ListMidHook key={`hook-${idx}`} index={Math.floor(idx / 6) - 1} />);
+            }
+            elements.push(<ClubCard key={venue.id} venue={venue} href={`/clubs/${region}/${venue.slug}`} />);
+            return elements;
+          })}
         </div>
         {filteredClubs.length === 0 && (
           <p className="py-20 text-center text-neon-text-muted">
@@ -142,6 +169,11 @@ export default function RegionalClubsPage() {
               : `${regionKo} 지역에 등록된 댄스홀이 없습니다.`}
           </p>
         )}
+      </section>
+
+      <section className="mx-auto max-w-[1200px] px-4 pb-20 sm:px-6 space-y-8">
+        <BrowseOtherCategories currentPath="/clubs" />
+        <BottomFinishCounter baseCount={88} />
       </section>
     </div>
   );

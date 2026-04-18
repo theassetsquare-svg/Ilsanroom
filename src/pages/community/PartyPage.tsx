@@ -74,12 +74,14 @@ function NbbangCalc() {
         <div>
           <label className="block text-xs text-neon-text-muted mb-1">총 금액 (원)</label>
           <input type="number" value={total} onChange={(e) => setTotal(e.target.value)} placeholder="500000"
-            className="w-32 rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-accent" />
+            className="w-32 rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-accent"
+            style={{ minHeight: 44 }} />
         </div>
         <div>
           <label className="block text-xs text-neon-text-muted mb-1">인원</label>
           <input type="number" value={people} onChange={(e) => setPeople(e.target.value)} placeholder="4"
-            className="w-20 rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-accent" />
+            className="w-20 rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-accent"
+            style={{ minHeight: 44 }} />
         </div>
         <div className="text-sm">
           {perPerson > 0 && (
@@ -146,28 +148,56 @@ export default function PartyRecruitPage() {
     ? parties
     : parties.filter((p) => p.status === statusFilter);
 
+  // 활발한 모임 (댓글 많은 순)
+  const hotParties = [...parties].filter(p => p.status !== '끝' && p.status !== '종결' && p.status !== '완료')
+    .sort((a, b) => b.comments - a.comments).slice(0, 3);
+
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
-      <div className="mx-auto max-w-4xl px-4 py-16">
+      <div className="mx-auto max-w-4xl px-4 py-10 sm:py-16">
         {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-6 flex items-center justify-between">
           <div>
             <Link to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
               ← 커뮤니티
             </Link>
             <h1 className="text-3xl font-bold">파티모임</h1>
-            <p className="mt-2 text-neon-text-muted">
-              같이 갈 사람 찾거나, 열린 약속에 끼어들어 봐
+            <p className="mt-2 text-sm font-bold" style={{ color: '#8B5CF6' }}>
+              "혼자 가기 심심할 때, 여기서 동행 구하면 끝"
             </p>
             <div className="mt-2"><PageLiveCounter pageName="모임 보는 중" baseCount={46} /></div>
           </div>
           <button
             onClick={handleWriteClick}
             className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light"
+            style={{ minHeight: 44 }}
           >
             모집글 올리기
           </button>
         </div>
+
+        {/* 지금 뜨는 모임 */}
+        {!loading && hotParties.length > 0 && (
+          <div className="mb-6 rounded-2xl border p-4 sm:p-5" style={{ borderColor: '#10B981', backgroundColor: 'rgba(16,185,129,0.04)' }}>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-sm">🎉</span>
+              <h2 className="text-sm font-black" style={{ color: '#111' }}>지금 반응 뜨거운 모임</h2>
+              <span className="text-[10px] rounded-full px-2 py-0.5 font-bold animate-pulse"
+                style={{ backgroundColor: '#D1FAE5', color: '#059669' }}>LIVE</span>
+            </div>
+            <div className="space-y-2">
+              {hotParties.map((p) => (
+                <button key={p.id} onClick={() => navigate('/community/post/' + p.id)}
+                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition hover:bg-white"
+                  style={{ minHeight: 44 }}>
+                  <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold ${statusStyles[p.status]}`}>{p.status}</span>
+                  <span className="text-sm font-medium truncate flex-1" style={{ color: '#111' }}>{p.title}</span>
+                  <span className="text-xs shrink-0" style={{ color: '#999' }}>💬{p.comments}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Auth Error Toast */}
         {authError && (
@@ -177,16 +207,17 @@ export default function PartyRecruitPage() {
         )}
 
         {/* Status Filter */}
-        <div className="mb-6 flex gap-2">
+        <div className="mb-6 flex gap-2 overflow-x-auto scrollbar-hide -mx-4 px-4">
           {(["전체", "모집중", "신청 가능", "자리 있음", "열린 모임", "곧 마감", "끝", "완료", "종결"] as const).map((s) => (
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`rounded-full px-4 py-1.5 text-sm transition ${
+              className={`rounded-full px-4 py-1.5 text-sm whitespace-nowrap transition ${
                 statusFilter === s
                   ? "bg-neon-primary text-neon-text"
                   : "border border-neon-border text-neon-text-muted hover:border-neon-primary/50"
               }`}
+              style={{ minHeight: 36 }}
             >
               {s}
             </button>
@@ -259,7 +290,8 @@ export default function PartyRecruitPage() {
                       <span>💬 {party.comments}</span>
                     </div>
                     {party.status !== "끝" && party.status !== "종결" && (
-                      <button className="rounded-lg bg-neon-primary/20 px-4 py-1.5 text-xs font-medium text-neon-primary-light transition hover:bg-neon-primary/30">
+                      <button className="rounded-lg bg-neon-primary/20 px-4 py-1.5 text-xs font-medium text-neon-primary-light transition hover:bg-neon-primary/30"
+                        style={{ minHeight: 36 }}>
                         합류 신청
                       </button>
                     )}

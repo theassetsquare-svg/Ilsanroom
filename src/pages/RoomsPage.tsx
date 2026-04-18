@@ -6,6 +6,8 @@ import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from
 import { getVenuesByCategory } from '@/data/venues';
 import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
+import { MidContentHook, ReadFinishCount } from '@/components/engagement/ReadingEngagement';
+import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter } from '@/components/venue/CategoryListingEngagement';
 
 const regions = [
   { key: 'ilsan', label: '일산' }, { key: 'gangnam', label: '강남' }, { key: 'hongdae', label: '홍대' },
@@ -17,15 +19,40 @@ const regions = [
 export default function RoomsPage() {
   useDocumentMeta('바깥 소리 하나 안 들리는 방, 그게 룸이다', '4인 밀담부터 30인 단체석까지. 인원수 말하면 딱 맞는 크기로 세팅해준다.');
   const venues = getVenuesByCategory('room');
+  const featured = venues.find(v => v.isPremium) || venues[0];
+
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '룸' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-2">프라이빗 모임 장소</h1>
-        <div className="flex flex-wrap items-center gap-3 mb-4">
+
+        <div className="mt-6">
+          <CategoryHero
+            emoji="🚪"
+            title="프라이빗 모임 장소"
+            hook="문 닫으면 바깥 소리가 안 들린다. 비즈니스부터 생일파티까지, 우리만의 시간이 시작된다."
+            venueCount={venues.length}
+            gradient="from-rose-600 via-pink-700 to-fuchsia-800"
+            accentColor="rose"
+          />
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3 mt-4 mb-4">
           <PageLiveCounter pageName="" baseCount={48} />
           <TodayStats />
         </div>
+
+        {featured && (
+          <div className="mb-6">
+            <FeaturedVenueCard
+              venue={featured}
+              href={`/rooms/${featured.region}/${featured.slug}`}
+              accentColor="rose"
+              categoryLabel="룸"
+            />
+          </div>
+        )}
+
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             문 닫으면 바깥 소리가 안 들린다. 우리만의 시간이 시작된다.
@@ -33,6 +60,7 @@ export default function RoomsPage() {
           <p className="text-base leading-relaxed text-neon-text-muted">
             벽으로 완전히 분리된 독립 룸이다. 룸은 옆에서 아무리 시끄럽게 해도 이쪽은 조용하다. 룸 안에서 방음이 되니까 비즈니스 얘기를 해도 되고, 마음껏 노래를 불러도 된다. 룸마다 독립 음향, 개별 조명, 노래방 기기까지 갖춰진 곳이 대부분이다.
           </p>
+          <MidContentHook seed="rooms-intro" />
           <p className="text-base leading-relaxed text-neon-text-muted">
             룸 크기는 4인 소형부터 30인 넘는 대형까지 선택 폭이 넓다. 룸에서 생일파티, 회식, 동창회, 기업 워크숍 뒤풀이까지 인원에 맞게 고르면 된다. 일산은 신실장이 전화 한 통이면 인원수에 맞는 자리를 바로 잡아준다. 해운대 마린시티에는 개별 공간이 60개 넘는 대형 시설도 있다.
           </p>
@@ -42,10 +70,11 @@ export default function RoomsPage() {
           <p className="text-base leading-relaxed text-neon-text-muted">
             일산룸은 신실장(010-3695-4929)이 직접 예약부터 당일 세팅까지 챙긴다. 마두역 1번출구 도보 3분 거리에 있고, 방음이 확실해서 비즈니스 미팅부터 생일파티까지 다 된다. VIP룸은 별도 분리되어 있어서 중요한 손님 모실 때 제격이다. 해운대고구려는 부산 마린시티에 위치한 대형 시설로, 룸이 60개가 넘는다. 2인용부터 20인 넘는 대형방까지 골라서 쓸 수 있고, 정찰제라서 바가지 걱정이 없다. 픽업 서비스도 제공한다.
           </p>
+          <ReadFinishCount pageName="룸 가이드" baseCount={165} />
         </div>
       </div>
 
-      <VenueListClient venues={venues} hrefPattern="/rooms/{region}/{slug}" regions={regions} />
+      <VenueListClient venues={venues} hrefPattern="/rooms/{region}/{slug}" regions={regions} showEngagementHooks accentColor="rose" />
 
       <FirstVisitGuide category="프라이빗 룸"
         dress="캐주얼~비즈니스 캐주얼. 모임 목적에 맞게 조절."
@@ -70,6 +99,9 @@ export default function RoomsPage() {
       ]} />
 
       <LiveActivityFeed maxItems={5} />
+
+      <BrowseOtherCategories currentPath="/rooms" />
+      <BottomFinishCounter baseCount={155} />
     </div>
   );
 }

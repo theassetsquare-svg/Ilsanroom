@@ -6,6 +6,8 @@ import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from
 import { getVenuesByCategory } from '@/data/venues';
 import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
+import { MidContentHook, ReadFinishCount } from '@/components/engagement/ReadingEngagement';
+import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter } from '@/components/venue/CategoryListingEngagement';
 
 const regions = [
   { key: 'ilsan', label: '일산' }, { key: 'jongno', label: '종로' }, { key: 'gangnam', label: '강남' },
@@ -16,15 +18,40 @@ const regions = [
 export default function YojeongPage() {
   useDocumentMeta('대금 소리에 정찬 15첩, 한 번 오면 단골 된다', '전통 요정의 격식과 맛을 한 자리에. 비즈니스 만찬, 외국 손님 접대까지 검증된 곳.');
   const venues = getVenuesByCategory('yojeong');
+  const featured = venues.find(v => v.isPremium) || venues[0];
+
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '요정' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-2">전통 한정식 · 국악 회식</h1>
-        <div className="flex flex-wrap items-center gap-3 mb-4">
+
+        <div className="mt-6">
+          <CategoryHero
+            emoji="🏮"
+            title="전통 한정식 · 국악 회식"
+            hook="가야금 선율이 흐르고, 15가지 한정식이 하나씩 차려진다. 격이 다른 만찬의 시작."
+            venueCount={venues.length}
+            gradient="from-emerald-600 via-teal-700 to-cyan-800"
+            accentColor="emerald"
+          />
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3 mt-4 mb-4">
           <PageLiveCounter pageName="" baseCount={29} />
           <TodayStats />
         </div>
+
+        {featured && (
+          <div className="mb-6">
+            <FeaturedVenueCard
+              venue={featured}
+              href={`/yojeong/${featured.region}/${featured.slug}`}
+              accentColor="emerald"
+              categoryLabel="요정"
+            />
+          </div>
+        )}
+
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             요정에 들어서면 가야금 선율이 흐르고, 15가지 한정식이 하나씩 차려진다.
@@ -32,6 +59,7 @@ export default function YojeongPage() {
           <p className="text-base leading-relaxed text-neon-text-muted">
             요정에서 한복 차림의 도우미가 요리를 올리고, 해금 연주가 배경에 깔린다. 요정 문화는 조선시대 기방에서 유래했고 지금도 거래처 만찬, VIP 접대 자리에서 "격이 다르다"는 평가를 받는다. 외국인 대접 자리에서는 반응이 더 뜨겁다. 국악 라이브를 처음 보는 외국인 거래처 임원이 감동해서 계약이 성사됐다는 실제 후기도 있다.
           </p>
+          <MidContentHook seed="yojeong-intro" />
           <p className="text-base leading-relaxed text-neon-text-muted">
             요정의 코스는 12첩 반상부터 산해진미 풀코스까지 계절 식재료로 구성한다. 봄에는 두릅과 냉이, 가을에는 송이와 전복이 올라온다. 음식 하나하나에 정성이 들어가니까 먹는 속도가 자연스럽게 느려지고, 대화가 길어진다. 이게 대접의 핵심이다.
           </p>
@@ -41,10 +69,11 @@ export default function YojeongPage() {
           <p className="text-base leading-relaxed text-neon-text-muted">
             요정은 거래처 접대, VIP 만찬, 외국인 대접까지 폭넓게 쓰인다. 외국인 거래처 임원에게 국악 라이브를 보여줬더니 감동해서 계약이 성사됐다는 실제 후기도 있다. 좌식 테이블에 병풍이 둘러진 전통 공간인데, 요즘 이런 곳이 전국에 몇 안 남았다. 최소 하루 전 예약 문의는 필수이고, 인기 있는 주말 날짜는 2주 전에 잡아야 한다. 세미 포멀 이상 착장을 준비하자.
           </p>
+          <ReadFinishCount pageName="요정 가이드" baseCount={120} />
         </div>
       </div>
 
-      <VenueListClient venues={venues} hrefPattern="/yojeong/{region}/{slug}" regions={regions} />
+      <VenueListClient venues={venues} hrefPattern="/yojeong/{region}/{slug}" regions={regions} showEngagementHooks accentColor="emerald" />
 
       <FirstVisitGuide category="격식 있는 한식 접대"
         dress="세미 포멀 이상 필수. 옛 멋이 살아있는 곳의 격조에 맞는 차림 권장. 한복도 환영."
@@ -69,6 +98,9 @@ export default function YojeongPage() {
       ]} />
 
       <LiveActivityFeed maxItems={5} />
+
+      <BrowseOtherCategories currentPath="/yojeong" />
+      <BottomFinishCounter baseCount={108} />
     </div>
   );
 }

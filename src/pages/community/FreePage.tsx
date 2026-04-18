@@ -16,6 +16,7 @@ interface SimplePost {
   author: string;
   date: string;
   comments: number;
+  likes: number;
 }
 
 function postToSimple(post: Post): SimplePost {
@@ -27,6 +28,7 @@ function postToSimple(post: Post): SimplePost {
     author: u?.nickname || getSeedNickname(post.id),
     date: post.created_at.slice(0, 10),
     comments: post.comment_count || 0,
+    likes: post.likes || 0,
   };
 }
 
@@ -39,7 +41,6 @@ export default function FreeBoardPage() {
   const [loading, setLoading] = useState(true);
   const [showWriteModal, setShowWriteModal] = useState(false);
 
-  // 홈에서 ?write=true로 오면 글쓰기 모달 자동 오픈
   useEffect(() => {
     if (searchParams.get('write') === 'true') {
       if (!user) { window.location.href = '/login'; return; }
@@ -88,19 +89,46 @@ export default function FreeBoardPage() {
   const totalPages = Math.max(1, Math.ceil(totalCount / postsPerPage));
   const pageNumbers = Array.from({ length: Math.min(5, totalPages) }, (_, i) => i + 1);
 
+  // 인기글 (좋아요 또는 댓글 많은 순)
+  const hotPosts = [...recentPosts].sort((a, b) => (b.likes + b.comments * 2) - (a.likes + a.comments * 2)).slice(0, 3);
+
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
-      <div className="mx-auto max-w-3xl px-4 py-16">
-        <div className="mb-8 flex items-center justify-between">
+      <div className="mx-auto max-w-3xl px-4 py-10 sm:py-16">
+        {/* 헤더 */}
+        <div className="mb-6 flex items-start justify-between">
           <div>
             <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
             <h1 className="text-3xl font-bold">자유게시판</h1>
-            <p className="mt-2 text-neon-text-muted">주제 제한 없이 자유롭게 소통하는 공간</p>
+            <p className="mt-2 text-sm font-bold" style={{ color: '#8B5CF6' }}>
+              "어젯밤 얘기 여기서 풀어. 읽다 보면 시간 녹는다."
+            </p>
             <div className="mt-2"><PageLiveCounter pageName="이 게시판" baseCount={35} /></div>
           </div>
           <button onClick={handleWriteClick} className="rounded-xl px-5 py-2.5 text-sm font-bold transition"
             style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>글쓰기</button>
         </div>
+
+        {/* 이 게시판에서 지금 뜨는 글 */}
+        {!loading && hotPosts.length > 0 && (
+          <div className="mb-6 rounded-2xl border p-4 sm:p-5" style={{ borderColor: '#F59E0B', backgroundColor: 'rgba(245,158,11,0.04)' }}>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-sm">🔥</span>
+              <h2 className="text-sm font-black" style={{ color: '#111' }}>이 게시판에서 지금 뜨는 글</h2>
+            </div>
+            <div className="space-y-2">
+              {hotPosts.map((post, idx) => (
+                <button key={post.id} onClick={() => navigate('/community/post/' + post.id)}
+                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition hover:bg-white"
+                  style={{ minHeight: 44 }}>
+                  <span className="text-sm font-black shrink-0" style={{ color: idx === 0 ? '#EF4444' : '#F59E0B', width: 20 }}>{idx + 1}</span>
+                  <span className="text-sm font-medium truncate flex-1" style={{ color: '#111' }}>{post.title}</span>
+                  <span className="text-xs shrink-0" style={{ color: '#999' }}>♥{post.likes} 💬{post.comments}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {loading && (
           <div className="rounded-2xl border border-neon-border bg-neon-surface p-12 text-center text-neon-text-muted">불러오는 중...</div>

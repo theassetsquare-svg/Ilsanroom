@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 import Card from '@/components/ui/Card';
@@ -7,6 +7,8 @@ import Badge from '@/components/ui/Badge';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import { getVenuesByCategoryAndRegion } from '@/data/venues';
 import type { Venue } from '@/types';
+import { MidContentHook, ReadFinishCount } from '@/components/engagement/ReadingEngagement';
+import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter, ListMidHook, TopPicksMini } from '@/components/venue/CategoryListingEngagement';
 
 
 const regionNames: Record<string, string> = {
@@ -54,11 +56,12 @@ function RoomCard({ venue, region }: { venue: Venue; region: string }) {
 }
 
 export default function RegionalRoomsPage() {
-  const { region } = useParams<{ region: string }>();
+  const { region = '' } = useParams<{ region: string }>();
   const regionKo = regionNames[region] || region;
   useDocumentMeta(`${regionKo} 룸 모아보기`, `${regionKo} 프라이빗 룸 전체 리스트. 인원별·용도별로 골라봐.`);
   const rooms = getVenuesByCategoryAndRegion('room', region);
   const [activePurpose, setActivePurpose] = useState<string | null>(null);
+  const featured = rooms.find(v => v.isPremium) || rooms[0];
 
   const filtered = useMemo(() => {
     if (!activePurpose) return rooms;
@@ -80,12 +83,29 @@ export default function RegionalRoomsPage() {
         <Breadcrumb items={[{ label: '룸', href: '/rooms' }, { label: regionKo }]} />
       </section>
 
+      {/* Category Hero */}
       <section className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
-        <h1 className="text-3xl font-extrabold text-neon-text">{regionKo} 룸</h1>
-        <p className="mt-3 text-neon-text-muted">
-          {regionKo}에서 프라이빗한 자리를 위한 공간입니다. 인원과 목적에 맞는 곳을 찾아보세요.
-        </p>
+        <CategoryHero
+          emoji="🚪"
+          title={`${regionKo} 룸`}
+          hook={`${regionKo}에서 프라이빗한 자리를 찾는다면. 인원과 목적에 맞는 곳을 골라봐.`}
+          venueCount={rooms.length}
+          gradient="from-rose-600 via-pink-700 to-fuchsia-800"
+          accentColor="rose"
+        />
       </section>
+
+      {/* Featured #1 */}
+      {featured && (
+        <section className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
+          <FeaturedVenueCard
+            venue={featured}
+            href={`/rooms/${region}/${featured.slug}`}
+            accentColor="rose"
+            categoryLabel={`${regionKo} 룸`}
+          />
+        </section>
+      )}
 
       {/* 인원별 안내 */}
       <section className="mx-auto max-w-[1200px] px-4 pb-4 sm:px-6">
@@ -119,6 +139,7 @@ export default function RegionalRoomsPage() {
                   ? 'border-teal-500 bg-teal-500 text-white'
                   : 'border-neon-border bg-white text-neon-text-muted hover:border-teal-300'
               }`}
+              style={{ minHeight: 44 }}
             >
               {purpose}
             </button>
@@ -126,14 +147,23 @@ export default function RegionalRoomsPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1200px] px-4 pb-20 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 pb-8 sm:px-6">
         {activePurpose && (
           <p className="mb-4 text-sm text-neon-text-muted">
             &quot;{activePurpose}&quot; 필터 적용 - {filtered.length}곳
           </p>
         )}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((venue) => <RoomCard key={venue.id} venue={venue} region={region} />)}
+          {filtered.map((venue, idx) => {
+            const elements = [];
+            if (idx > 0 && idx % 12 === 0) {
+              elements.push(<TopPicksMini key={`top-${idx}`} venues={rooms} hrefPattern={`/rooms/${region}/{slug}`} accentColor="rose" />);
+            } else if (idx > 0 && idx % 6 === 0) {
+              elements.push(<ListMidHook key={`hook-${idx}`} index={Math.floor(idx / 6) - 1} />);
+            }
+            elements.push(<RoomCard key={venue.id} venue={venue} region={region} />);
+            return elements;
+          })}
         </div>
         {filtered.length === 0 && (
           <p className="py-20 text-center text-neon-text-muted">
@@ -142,6 +172,11 @@ export default function RegionalRoomsPage() {
               : `${regionKo} 동네에 등록된 프라이빗 공간이 없습니다.`}
           </p>
         )}
+      </section>
+
+      <section className="mx-auto max-w-[1200px] px-4 pb-20 sm:px-6 space-y-8">
+        <BrowseOtherCategories currentPath="/rooms" />
+        <BottomFinishCounter baseCount={72} />
       </section>
     </div>
   );

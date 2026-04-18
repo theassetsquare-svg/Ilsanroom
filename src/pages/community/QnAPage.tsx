@@ -86,24 +86,51 @@ export default function QnAPage() {
 
   const filtered = activeCategory === "전체" ? questions : questions.filter((q) => q.category === activeCategory);
 
+  // 답변 많은 인기 질문
+  const hotQuestions = [...questions].sort((a, b) => (b.answers + b.likes) - (a.answers + a.likes)).slice(0, 3);
+
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
-      <div className="mx-auto max-w-4xl px-4 py-16">
-        <div className="mb-10">
+      <div className="mx-auto max-w-4xl px-4 py-10 sm:py-16">
+        <div className="mb-8">
           <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
           <h1 className="text-3xl font-bold">오늘어디갈까</h1>
-          <p className="mt-2 text-neon-text-muted">오늘 밤 어디 갈지 추천받고, 같이 고민하는 곳</p>
+          <p className="mt-2 text-sm font-bold" style={{ color: '#8B5CF6' }}>
+            "금요일 밤 강남 vs 홍대, 정답 알려줄 사람 손?"
+          </p>
           <div className="mt-2"><PageLiveCounter pageName="질문 보는 중" baseCount={31} /></div>
         </div>
 
+        {/* 인기 질문 하이라이트 */}
+        {!loading && hotQuestions.length > 0 && (
+          <div className="mb-6 rounded-2xl border p-4 sm:p-5" style={{ borderColor: '#10B981', backgroundColor: 'rgba(16,185,129,0.04)' }}>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-sm">🗺️</span>
+              <h2 className="text-sm font-black" style={{ color: '#111' }}>지금 답변 폭주 중인 질문</h2>
+            </div>
+            <div className="space-y-2">
+              {hotQuestions.map((q, idx) => (
+                <button key={q.id} onClick={() => navigate('/community/post/' + q.id)}
+                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition hover:bg-white"
+                  style={{ minHeight: 44 }}>
+                  <span className="text-sm font-black shrink-0" style={{ color: idx === 0 ? '#10B981' : '#6EE7B7', width: 20 }}>{idx + 1}</span>
+                  <span className="text-sm font-medium truncate flex-1" style={{ color: '#111' }}>{q.title}</span>
+                  <span className="text-xs shrink-0 font-bold" style={{ color: '#10B981' }}>답변 {q.answers}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* FAQ */}
-        <section className="mb-12">
+        <section className="mb-10">
           <h2 className="mb-5 text-xl font-bold text-neon-primary-light">자주 묻는 질문 FAQ</h2>
           <div className="space-y-2">
             {faqItems.map((faq, i) => (
               <div key={i} className="rounded-xl border border-neon-border bg-neon-surface overflow-hidden">
                 <button onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="flex w-full items-center justify-between px-5 py-4 text-left transition hover:bg-neon-surface-2">
+                  className="flex w-full items-center justify-between px-5 py-4 text-left transition hover:bg-neon-surface-2"
+                  style={{ minHeight: 48 }}>
                   <span className="text-sm font-semibold">{faq.question}</span>
                   <svg className={`h-5 w-5 shrink-0 text-neon-text-muted transition-transform ${openFaq === i ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -130,7 +157,8 @@ export default function QnAPage() {
           <div className="mb-6 flex flex-wrap gap-2">
             {categoryFilters.map((cat) => (
               <button key={cat} onClick={() => setActiveCategory(cat)}
-                className={`rounded-full px-4 py-1.5 text-sm transition ${activeCategory === cat ? "bg-neon-primary text-neon-text" : "border border-neon-border bg-transparent text-neon-text-muted hover:border-neon-primary/50"}`}>
+                className={`rounded-full px-4 py-1.5 text-sm transition ${activeCategory === cat ? "bg-neon-primary text-neon-text" : "border border-neon-border bg-transparent text-neon-text-muted hover:border-neon-primary/50"}`}
+                style={{ minHeight: 36 }}>
                 {cat}
               </button>
             ))}

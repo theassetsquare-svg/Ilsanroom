@@ -110,15 +110,42 @@ export default function ReviewsPage() {
     ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
     : "0.0";
 
+  // 인기 후기 TOP 3
+  const hotReviews = [...reviews].sort((a, b) => (b.helpful + b.comments * 2) - (a.helpful + a.comments * 2)).slice(0, 3);
+
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
-      <div className="mx-auto max-w-4xl px-4 py-16">
-        <div className="mb-8">
+      <div className="mx-auto max-w-4xl px-4 py-10 sm:py-16">
+        <div className="mb-6">
           <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
           <h1 className="text-3xl font-bold">업소후기</h1>
-          <p className="mt-2 text-neon-text-muted">직접 다녀온 사람들의 생생한 경험담 모아봤다</p>
+          <p className="mt-2 text-sm font-bold" style={{ color: '#8B5CF6' }}>
+            "광고글 아님. 직접 가본 사람들이 쓴 리얼 후기만 모았다."
+          </p>
           <div className="mt-2"><PageLiveCounter pageName="후기 읽는 중" baseCount={28} /></div>
         </div>
+
+        {/* 인기 후기 하이라이트 */}
+        {!loading && hotReviews.length > 0 && (
+          <div className="mb-6 rounded-2xl border p-4 sm:p-5" style={{ borderColor: '#F59E0B', backgroundColor: 'rgba(245,158,11,0.04)' }}>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-sm">🔥</span>
+              <h2 className="text-sm font-black" style={{ color: '#111' }}>지금 뜨는 후기</h2>
+            </div>
+            <div className="space-y-2">
+              {hotReviews.map((r, idx) => (
+                <button key={r.id} onClick={() => navigate('/community/post/' + r.id)}
+                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition hover:bg-white"
+                  style={{ minHeight: 44 }}>
+                  <span className="text-sm font-black shrink-0" style={{ color: idx === 0 ? '#EF4444' : '#F59E0B', width: 20 }}>{idx + 1}</span>
+                  <StarDisplay rating={r.rating} size="sm" />
+                  <span className="text-sm font-medium truncate flex-1" style={{ color: '#111' }}>{r.title}</span>
+                  <span className="text-xs shrink-0" style={{ color: '#999' }}>👍{r.helpful}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Rating Summary */}
         {reviews.length > 0 && (
@@ -151,18 +178,21 @@ export default function ReviewsPage() {
           <div className="flex gap-1">
             {[1, 2, 3, 4, 5].map((s) => (
               <button key={s} onClick={() => setStarFilter(starFilter === s ? null : s)}
-                className={`rounded-lg px-3 py-1.5 text-sm transition ${starFilter === s ? "bg-neon-gold/20 text-neon-gold" : "bg-neon-surface text-neon-text-muted hover:bg-neon-surface-2"}`}>
+                className={`rounded-lg px-3 py-1.5 text-sm transition ${starFilter === s ? "bg-neon-gold/20 text-neon-gold" : "bg-neon-surface text-neon-text-muted hover:bg-neon-surface-2"}`}
+                style={{ minHeight: 36 }}>
                 {s}★
               </button>
             ))}
           </div>
           <div className="h-5 w-px bg-neon-border" />
           <button onClick={() => setPhotoOnly(!photoOnly)}
-            className={`rounded-lg px-3 py-1.5 text-sm transition ${photoOnly ? "bg-neon-primary/20 text-neon-primary-light" : "bg-neon-surface text-neon-text-muted hover:bg-neon-surface-2"}`}>
+            className={`rounded-lg px-3 py-1.5 text-sm transition ${photoOnly ? "bg-neon-primary/20 text-neon-primary-light" : "bg-neon-surface text-neon-text-muted hover:bg-neon-surface-2"}`}
+            style={{ minHeight: 36 }}>
             사진 후기만
           </button>
           <button onClick={() => setSortByHelpful(!sortByHelpful)}
-            className={`rounded-lg px-3 py-1.5 text-sm transition ${sortByHelpful ? "bg-neon-green/20 text-neon-green" : "bg-neon-surface text-neon-text-muted hover:bg-neon-surface-2"}`}>
+            className={`rounded-lg px-3 py-1.5 text-sm transition ${sortByHelpful ? "bg-neon-green/20 text-neon-green" : "bg-neon-surface text-neon-text-muted hover:bg-neon-surface-2"}`}
+            style={{ minHeight: 36 }}>
             도움이 됐어요 순
           </button>
           <div className="ml-auto">

@@ -1,12 +1,16 @@
+import { useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { getArticleById, articles } from '@/data/magazine-articles';
 import ShareButton from '@/components/ui/ShareButton';
+import { PageLiveCounter } from '@/components/ui/LiveStats';
+import { ReadTimeEstimate, MidContentHook, ReadFinishCount, ReadCompletionReward, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
 
 export default function MagazineDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const article = id ? getArticleById(id) : undefined;
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useDocumentMeta(
     article?.title || '매거진 글',
@@ -22,66 +26,99 @@ export default function MagazineDetailPage() {
     );
   }
 
-  // 관련 글 (현재 글 제외, 최대 3개)
   const relatedArticles = articles.filter(a => a.id !== article.id).slice(0, 3);
+  const contentLength = (article.content || '').length + (article.excerpt || '').length;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
-      {/* 뒤로가기 */}
-      <button onClick={() => navigate(-1)} className="text-sm mb-6" style={{ color: '#555', minHeight: 44 }}>← 매거진</button>
+    <div ref={containerRef}>
+      {/* ═══ HERO ═══ */}
+      <div className="bg-gradient-to-b from-[#F8F6FF] via-white to-white border-b border-gray-100">
+        <div className="mx-auto max-w-3xl px-4 py-8">
+          {/* 뒤로가기 */}
+          <button onClick={() => navigate(-1)} className="text-sm mb-6 flex items-center gap-1 text-[#8B5CF6] hover:text-[#7C3AED] transition" style={{ minHeight: 44 }}>
+            ← 매거진
+          </button>
 
-      {/* 태그 + 날짜 */}
-      <div className="flex items-center gap-3 mb-3">
-        <span className="rounded-full px-3 py-1 text-xs font-bold" style={{ backgroundColor: '#F3F0FF', color: '#8B5CF6' }}>{article.tag}</span>
-        <span className="text-xs" style={{ color: '#999' }}>{article.date}</span>
-      </div>
-
-      {/* 제목 */}
-      <h1 className="text-2xl sm:text-3xl font-black leading-tight mb-4" style={{ color: '#111' }}>{article.title}</h1>
-
-      {/* 요약 */}
-      <p className="text-base leading-relaxed mb-6" style={{ color: '#555', lineHeight: '1.8' }}>{article.excerpt}</p>
-
-      {/* 구분선 */}
-      <div className="border-t mb-6" style={{ borderColor: '#E5E7EB' }} />
-
-      {/* 본문 */}
-      <div
-        className="rich-content text-base leading-relaxed mb-8"
-        style={{ color: '#333', lineHeight: '1.9' }}
-        dangerouslySetInnerHTML={{ __html: article.content }}
-      />
-
-      {/* 공유 */}
-      <div className="flex items-center gap-3 mb-8 pt-4 border-t" style={{ borderColor: '#E5E7EB' }}>
-        <ShareButton title={article.title} text={article.excerpt} />
-        <span className="text-xs" style={{ color: '#999' }}>이 글이 유용했다면 공유해주세요</span>
-      </div>
-
-      {/* 관련 글 */}
-      {relatedArticles.length > 0 && (
-        <div className="pt-6 border-t" style={{ borderColor: '#E5E7EB' }}>
-          <h2 className="text-lg font-bold mb-4" style={{ color: '#111' }}>다른 매거진 글</h2>
-          <div className="space-y-3">
-            {relatedArticles.map(a => (
-              <Link
-                key={a.id}
-                to={`/magazine/${a.id}`}
-                className="block rounded-xl border p-4 transition hover:border-[#8B5CF6]/30 hover:shadow-sm"
-                style={{ borderColor: '#E5E7EB' }}
-              >
-                <div className="flex items-start gap-3">
-                  <span className="shrink-0 rounded-full px-2.5 py-0.5 text-xs font-bold" style={{ backgroundColor: '#F3F0FF', color: '#8B5CF6' }}>{a.tag}</span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-bold truncate" style={{ color: '#111' }}>{a.title}</p>
-                    <p className="text-xs mt-1 line-clamp-2" style={{ color: '#555' }}>{a.excerpt}</p>
-                  </div>
-                </div>
-              </Link>
-            ))}
+          {/* 메타 */}
+          <div className="flex flex-wrap items-center gap-3 mb-4">
+            <span className="rounded-full px-3 py-1 text-xs font-bold" style={{ backgroundColor: '#8B5CF6', color: 'white' }}>{article.tag}</span>
+            <span className="text-xs" style={{ color: '#999' }}>{article.date}</span>
+            <ReadTimeEstimate charCount={contentLength} />
+            <PageLiveCounter pageName="이 글 읽는 중" baseCount={18} />
           </div>
+
+          {/* 제목 */}
+          <h1 className="text-2xl sm:text-3xl font-black leading-tight mb-4" style={{ color: '#111' }}>{article.title}</h1>
+
+          {/* 요약 */}
+          <p className="text-base leading-relaxed" style={{ color: '#555', lineHeight: '1.8' }}>{article.excerpt}</p>
         </div>
-      )}
+      </div>
+
+      {/* ═══ BODY ═══ */}
+      <div className="mx-auto max-w-3xl px-4 py-8">
+        {/* 본문 */}
+        <div
+          className="rich-content text-base leading-relaxed mb-8"
+          style={{ color: '#333', lineHeight: '1.9' }}
+          dangerouslySetInnerHTML={{ __html: article.content }}
+        />
+
+        {/* 중간 훅 */}
+        <MidContentHook seed={article.id} />
+
+        {/* 공유 */}
+        <div className="flex items-center gap-3 mb-8 pt-4 border-t" style={{ borderColor: '#E5E7EB' }}>
+          <ShareButton title={article.title} text={article.excerpt} />
+          <span className="text-xs" style={{ color: '#999' }}>이 글이 유용했다면 공유해주세요</span>
+        </div>
+
+        {/* ═══ BOTTOM REWARD ═══ */}
+        <ReadCompletionReward teaser="끝까지 읽은 사람만 보는 추가 정보">
+          <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>
+            이 글에서 다루지 못한 현장 이야기가 커뮤니티에 더 있습니다.
+            직접 다녀온 사람들의 생생한 후기를 확인해보세요.
+          </p>
+          <Link
+            to="/community"
+            className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-[#8B5CF6] hover:text-[#7C3AED]"
+          >
+            커뮤니티 후기 보기 →
+          </Link>
+        </ReadCompletionReward>
+
+        {/* 완독자 수 */}
+        <div className="text-center mt-6 mb-8">
+          <ReadFinishCount pageName="이 글" baseCount={90} />
+        </div>
+
+        {/* 관련 글 */}
+        {relatedArticles.length > 0 && (
+          <div className="pt-6 border-t" style={{ borderColor: '#E5E7EB' }}>
+            <h2 className="text-lg font-bold mb-4" style={{ color: '#111' }}>이것도 읽어보면 좋다</h2>
+            <div className="space-y-3">
+              {relatedArticles.map(a => (
+                <Link
+                  key={a.id}
+                  to={`/magazine/${a.id}`}
+                  className="block rounded-xl border p-4 transition hover:border-[#8B5CF6]/30 hover:shadow-sm"
+                  style={{ borderColor: '#E5E7EB' }}
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="shrink-0 rounded-full px-2.5 py-0.5 text-xs font-bold" style={{ backgroundColor: '#F3F0FF', color: '#8B5CF6' }}>{a.tag}</span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-bold truncate" style={{ color: '#111' }}>{a.title}</p>
+                      <p className="text-xs mt-1 line-clamp-2" style={{ color: '#555' }}>{a.excerpt}</p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <ReadingMilestone containerRef={containerRef} />
     </div>
   );
 }

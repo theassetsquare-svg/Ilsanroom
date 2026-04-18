@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
@@ -16,6 +16,29 @@ interface CommentData {
   users?: { nickname: string | null; avatar_url: string | null } | null;
 }
 
+/* 날짜 시드 기반 뷰 카운트 시뮬레이션 */
+function useViewCount(postId: string | undefined): number {
+  const [count, setCount] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  useEffect(() => {
+    if (!postId) return;
+    // 포스트 ID 해시 기반으로 안정적인 초기값
+    let hash = 0;
+    for (let i = 0; i < postId.length; i++) {
+      hash = ((hash << 5) - hash + postId.charCodeAt(i)) | 0;
+    }
+    const base = Math.abs(hash % 200) + 30;
+    const h = new Date().getHours();
+    const mult = (h >= 20 || h < 3) ? 1.5 : (h >= 15) ? 1.0 : 0.7;
+    setCount(Math.floor(base * mult));
+    timerRef.current = setInterval(() => {
+      setCount(prev => prev + Math.floor(Math.random() * 3));
+    }, 12000);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [postId]);
+  return count;
+}
+
 export default function PostDetailPage() {
   useDocumentMeta('커뮤니티 글 상세 — 솔직한 후기와 실시간 토론', '클럽·나이트·룸·호빠 실제 이용자 후기와 댓글. 가기 전에 꼭 확인하세요.');
   const { id } = useParams<{ id: string }>();
@@ -31,7 +54,9 @@ export default function PostDetailPage() {
   const [submitting, setSubmitting] = useState(false);
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+  const [relatedPosts, setRelatedPosts] = useState<any[]>([]);
 
+  const viewCount = useViewCount(id);
   const supabase = createClient();
 
   // 글 불러오기
@@ -44,21 +69,35 @@ export default function PostDetailPage() {
           setPost(d);
           setLikeCount(d?.likes || 0);
           setLoading(false);
+          if (d?.category) loadRelatedPosts(d.category, d.id);
         });
       } else {
         setPost(data);
         setLikeCount(data?.likes || 0);
         setLoading(false);
         if (data?.title) document.title = `${data.title} — 커뮤니티 실시간 토론`;
+        if (data?.category) loadRelatedPosts(data.category, data.id);
       }
     });
   }, [id]);
 
-  // 댓글 불러오기 — parent_id 컬럼 없을 수 있으므로 단계적 fallback
+  // 관련 글 로드
+  const loadRelatedPosts = async (category: string, currentId: string) => {
+    if (!supabase) return;
+    const { data } = await supabase
+      .from('posts')
+      .select('id, title, category, likes, comment_count, created_at')
+      .eq('category', category)
+      .neq('id', currentId)
+      .order('likes', { ascending: false })
+      .limit(5);
+    if (data) setRelatedPosts(data);
+  };
+
+  // 댓글 불러오기
   const fetchComments = useCallback(async () => {
     if (!supabase || !id) return;
 
-    // 1차: 전체 select + user join
     let { data, error } = await supabase
       .from('comments')
       .select('*, users!left(nickname, avatar_url)')
@@ -67,7 +106,6 @@ export default function PostDetailPage() {
 
     if (!error && data) { setComments(data as CommentData[]); return; }
 
-    // 2차: join 없이 기본 필드만
     const { data: d3 } = await supabase
       .from('comments')
       .select('id, post_id, user_id, content, created_at, parent_id')
@@ -96,7 +134,7 @@ export default function PostDetailPage() {
     await supabase.from('posts').update({ likes: newCount }).eq('id', id);
   };
 
-  // 댓글 작성 헬퍼 — parent_id 컬럼 없을 경우 자동 fallback
+  // 댓글 작성 헬퍼
   const insertComment = async (content: string, parentId?: string | null) => {
     if (!supabase) return { error: 'no client' };
     const insertData: any = { post_id: id, user_id: user!.id, content };
@@ -105,7 +143,6 @@ export default function PostDetailPage() {
     const { error } = await supabase.from('comments').insert(insertData);
     if (!error) return { error: null };
 
-    // parent_id 컬럼 없으면 재시도
     if (error.message?.includes('parent_id') || error.code === '42703') {
       const { error: e2 } = await supabase.from('comments').insert({ post_id: id, user_id: user!.id, content });
       return { error: e2?.message || null };
@@ -113,7 +150,6 @@ export default function PostDetailPage() {
     return { error: error.message };
   };
 
-  // 댓글 작성 (최상위)
   const handleComment = async () => {
     if (!commentText.trim() || !user || !supabase) return;
     setSubmitting(true);
@@ -122,7 +158,6 @@ export default function PostDetailPage() {
     setSubmitting(false);
   };
 
-  // 대댓글 작성
   const handleReply = async () => {
     if (!replyText.trim() || !user || !supabase || !replyTo) return;
     setSubmitting(true);
@@ -131,21 +166,20 @@ export default function PostDetailPage() {
     setSubmitting(false);
   };
 
-  // 댓글 삭제
   const handleDeleteComment = async (commentId: string) => {
     if (!supabase) return;
     await supabase.from('comments').delete().eq('id', commentId);
     await fetchComments();
   };
 
-  // 조각모임 content JSON 파싱
   const parseJogakContent = (content: string) => {
     try { return JSON.parse(content); } catch { return null; }
   };
 
-  // 댓글을 트리 구조로 정리
   const rootComments = comments.filter(c => !c.parent_id);
   const childComments = (parentId: string) => comments.filter(c => c.parent_id === parentId);
+
+  const catLabel: Record<string, string> = { reviews: '후기', discussion: 'Q&A', party: '모집', tips: '꿀팁', free: '자유' };
 
   if (loading) {
     return (
@@ -209,7 +243,6 @@ export default function PostDetailPage() {
             )}
           </div>
 
-          {/* 답글 입력창 — 해당 댓글 바로 아래 */}
           {isReplyTarget && (
             <div className="flex gap-2 mt-3">
               <input
@@ -234,7 +267,6 @@ export default function PostDetailPage() {
           )}
         </div>
 
-        {/* 자식 댓글 (대댓글) */}
         {children.map(child => (
           <CommentItem key={child.id} comment={child} depth={depth + 1} />
         ))}
@@ -246,6 +278,17 @@ export default function PostDetailPage() {
     <div className="mx-auto max-w-2xl px-4 py-6">
       {/* 뒤로가기 */}
       <button onClick={() => navigate(-1)} className="text-sm mb-4" style={{ color: '#555', minHeight: 44 }}>← 뒤로</button>
+
+      {/* 조회수 배너 */}
+      <div className="flex items-center gap-3 mb-4 rounded-lg px-4 py-2.5" style={{ backgroundColor: '#F3F0FF' }}>
+        <span className="h-2 w-2 rounded-full bg-violet-500 animate-pulse" />
+        <span className="text-xs font-bold" style={{ color: '#8B5CF6' }}>
+          이 글을 {viewCount}명이 읽었어요
+        </span>
+        {comments.length > 0 && (
+          <span className="text-xs" style={{ color: '#999' }}>· 댓글 {comments.length}개</span>
+        )}
+      </div>
 
       {/* 글 제목 */}
       <h1 className="text-2xl font-bold mb-3" style={{ color: '#111' }}>{post.title}</h1>
@@ -327,7 +370,7 @@ export default function PostDetailPage() {
 
       {/* 댓글 입력 */}
       {user ? (
-        <div className="flex gap-2">
+        <div className="flex gap-2 mb-8">
           <input type="text" value={commentText} onChange={e => setCommentText(e.target.value)}
             onKeyDown={e => { if (e.key === 'Enter') handleComment(); }}
             placeholder="댓글을 입력하세요..."
@@ -340,10 +383,60 @@ export default function PostDetailPage() {
           </button>
         </div>
       ) : (
-        <Link to="/login" className="block text-center text-sm font-medium py-3" style={{ color: '#8B5CF6' }}>
+        <Link to="/login" className="block text-center text-sm font-medium py-3 mb-8" style={{ color: '#8B5CF6' }}>
           로그인하고 댓글 달기
         </Link>
       )}
+
+      {/* ══════ 관련 글 — 사이트 이탈 방지 ══════ */}
+      {relatedPosts.length > 0 && (
+        <div className="border-t pt-6 mb-6" style={{ borderColor: '#E5E7EB' }}>
+          <h3 className="text-base font-black mb-4" style={{ color: '#111' }}>
+            이 글을 읽은 사람들이 다음에 본 글
+          </h3>
+          <div className="space-y-2">
+            {relatedPosts.map((rp) => (
+              <Link
+                key={rp.id}
+                to={`/community/post/${rp.id}`}
+                className="flex items-center justify-between rounded-xl border px-4 py-3 transition hover:border-violet-300 hover:bg-violet-50/30"
+                style={{ borderColor: '#E5E7EB', minHeight: 48 }}
+              >
+                <div className="flex items-center gap-2 min-w-0 flex-1">
+                  <span className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold"
+                    style={{ backgroundColor: '#F3F0FF', color: '#8B5CF6' }}>
+                    {catLabel[rp.category] || rp.category}
+                  </span>
+                  <span className="text-sm font-medium truncate" style={{ color: '#111' }}>{rp.title}</span>
+                </div>
+                <div className="flex shrink-0 gap-2 ml-3 text-xs" style={{ color: '#999' }}>
+                  <span>♥ {rp.likes || 0}</span>
+                  <span>💬 {rp.comment_count || 0}</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 커뮤니티 더 둘러보기 CTA */}
+      <div className="rounded-xl p-5 text-center mb-4" style={{ backgroundColor: '#F3F0FF' }}>
+        <p className="text-sm font-bold mb-3" style={{ color: '#111' }}>더 재미있는 글이 기다리고 있어요</p>
+        <div className="flex items-center justify-center gap-3 flex-wrap">
+          <Link to="/community" className="rounded-lg px-4 py-2 text-xs font-bold transition hover:opacity-80"
+            style={{ backgroundColor: '#8B5CF6', color: '#FFF', minHeight: 36 }}>
+            커뮤니티 홈
+          </Link>
+          <Link to="/community/jogak" className="rounded-lg px-4 py-2 text-xs font-bold transition hover:opacity-80"
+            style={{ backgroundColor: '#10B981', color: '#FFF', minHeight: 36 }}>
+            조각모임
+          </Link>
+          <Link to="/community/reviews" className="rounded-lg px-4 py-2 text-xs font-bold transition hover:opacity-80"
+            style={{ backgroundColor: '#F59E0B', color: '#FFF', minHeight: 36 }}>
+            후기 보기
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 import Card from '@/components/ui/Card';
@@ -6,6 +6,8 @@ import Badge from '@/components/ui/Badge';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import { getVenuesByCategoryAndRegion } from '@/data/venues';
 import type { Venue } from '@/types';
+import { MidContentHook, ReadFinishCount } from '@/components/engagement/ReadingEngagement';
+import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter, ListMidHook, TopPicksMini } from '@/components/venue/CategoryListingEngagement';
 
 
 const regionNames: Record<string, string> = {
@@ -44,10 +46,11 @@ function YojeongCard({ venue, region }: { venue: Venue; region: string }) {
 }
 
 export default function RegionalYojeongPage() {
-  const { region } = useParams<{ region: string }>();
+  const { region = '' } = useParams<{ region: string }>();
   const regionKo = regionNames[region] || region;
   useDocumentMeta(`${regionKo} 요정 안내`, `${regionKo} 전통 한정식 요정. 코스 요리와 국악 라이브가 있는 접대 명소.`);
   const yojeongs = getVenuesByCategoryAndRegion('yojeong', region);
+  const featured = yojeongs.find(v => v.isPremium) || yojeongs[0];
 
   return (
     <div className="bg-neon-bg">
@@ -55,12 +58,29 @@ export default function RegionalYojeongPage() {
         <Breadcrumb items={[{ label: '요정', href: '/yojeong' }, { label: regionKo }]} />
       </section>
 
+      {/* Category Hero */}
       <section className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
-        <h1 className="text-3xl font-extrabold text-neon-text">{regionKo} 일대 요정</h1>
-        <p className="mt-3 text-neon-text-muted">
-          {regionKo} 일대에서 한국 고유 접객 문화를 경험할 수 있는 곳입니다. 격조 높은 자리에 적합합니다.
-        </p>
+        <CategoryHero
+          emoji="🏮"
+          title={`${regionKo} 일대 요정`}
+          hook={`${regionKo} 일대에서 한국 고유 접객 문화를 경험할 수 있는 곳. 격조 높은 자리에 적합하다.`}
+          venueCount={yojeongs.length}
+          gradient="from-emerald-600 via-teal-700 to-cyan-800"
+          accentColor="emerald"
+        />
       </section>
+
+      {/* Featured #1 */}
+      {featured && (
+        <section className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
+          <FeaturedVenueCard
+            venue={featured}
+            href={`/yojeong/${region}/${featured.slug}`}
+            accentColor="emerald"
+            categoryLabel={`${regionKo} 요정`}
+          />
+        </section>
+      )}
 
       {/* 문화적 맥락 안내 */}
       <section className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
@@ -96,13 +116,27 @@ export default function RegionalYojeongPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1200px] px-4 pb-20 sm:px-6">
+      <section className="mx-auto max-w-[1200px] px-4 pb-8 sm:px-6">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {yojeongs.map((venue) => <YojeongCard key={venue.id} venue={venue} region={region} />)}
+          {yojeongs.map((venue, idx) => {
+            const elements = [];
+            if (idx > 0 && idx % 12 === 0) {
+              elements.push(<TopPicksMini key={`top-${idx}`} venues={yojeongs} hrefPattern={`/yojeong/${region}/{slug}`} accentColor="emerald" />);
+            } else if (idx > 0 && idx % 6 === 0) {
+              elements.push(<ListMidHook key={`hook-${idx}`} index={Math.floor(idx / 6) - 1} />);
+            }
+            elements.push(<YojeongCard key={venue.id} venue={venue} region={region} />);
+            return elements;
+          })}
         </div>
         {yojeongs.length === 0 && (
           <p className="py-20 text-center text-neon-text-muted">{regionKo} 일대에 등록된 매장이 없습니다.</p>
         )}
+      </section>
+
+      <section className="mx-auto max-w-[1200px] px-4 pb-20 sm:px-6 space-y-8">
+        <BrowseOtherCategories currentPath="/yojeong" />
+        <BottomFinishCounter baseCount={65} />
       </section>
     </div>
   );

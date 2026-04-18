@@ -86,25 +86,53 @@ export default function TipsPage() {
 
   const filtered = activeCat === ALL ? tips : tips.filter((t) => t.category === activeCat);
 
+  // 인기 팁 TOP 3
+  const hotTips = [...tips].sort((a, b) => b.bookmarks - a.bookmarks).slice(0, 3);
+
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
-      <div className="mx-auto max-w-5xl px-4 py-16">
-        <div className="mb-10">
+      <div className="mx-auto max-w-5xl px-4 py-10 sm:py-16">
+        <div className="mb-8">
           <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold">꿀팁</h1>
-              <p className="mt-2 text-neon-text-muted">상황별로 정리된 핵심 요령을 카드 형태로 빠르게 훑어보세요</p>
+              <p className="mt-2 text-sm font-bold" style={{ color: '#8B5CF6' }}>
+                "이거 모르고 갔다가 후회한 사람 한둘이 아님"
+              </p>
               <div className="mt-2"><PageLiveCounter pageName="꿀팁 읽는 중" baseCount={22} /></div>
             </div>
-            <button onClick={handleWriteClick} className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light">글쓰기</button>
+            <button onClick={handleWriteClick} className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light"
+              style={{ minHeight: 44 }}>글쓰기</button>
           </div>
         </div>
+
+        {/* 인기 팁 하이라이트 */}
+        {!loading && hotTips.length > 0 && (
+          <div className="mb-6 rounded-2xl border p-4 sm:p-5" style={{ borderColor: '#F59E0B', backgroundColor: 'rgba(245,158,11,0.04)' }}>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-sm">💡</span>
+              <h2 className="text-sm font-black" style={{ color: '#111' }}>이 게시판에서 가장 많이 저장된 팁</h2>
+            </div>
+            <div className="space-y-2">
+              {hotTips.map((tip, idx) => (
+                <button key={tip.id} onClick={() => navigate('/community/post/' + tip.id)}
+                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition hover:bg-white"
+                  style={{ minHeight: 44 }}>
+                  <span className="text-sm font-black shrink-0" style={{ color: idx === 0 ? '#EF4444' : '#F59E0B', width: 20 }}>{idx + 1}</span>
+                  <span className="text-sm font-medium truncate flex-1" style={{ color: '#111' }}>{tip.title}</span>
+                  <span className="text-xs shrink-0" style={{ color: '#999' }}>🔖{tip.bookmarks}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="mb-8 flex flex-wrap gap-2">
           {categories.map((cat) => (
             <button key={cat} onClick={() => setActiveCat(cat)}
-              className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm transition ${activeCat === cat ? "bg-neon-primary text-neon-text" : "border border-neon-border text-neon-text-muted hover:border-neon-primary/50"}`}>
+              className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm transition ${activeCat === cat ? "bg-neon-primary text-neon-text" : "border border-neon-border text-neon-text-muted hover:border-neon-primary/50"}`}
+              style={{ minHeight: 36 }}>
               {cat !== ALL && <span>{categoryIcons[cat]}</span>}
               {cat}
             </button>

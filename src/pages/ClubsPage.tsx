@@ -6,6 +6,8 @@ import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from
 import { getVenuesByCategory } from '@/data/venues';
 import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
+import { MidContentHook, ReadFinishCount } from '@/components/engagement/ReadingEngagement';
+import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter } from '@/components/venue/CategoryListingEngagement';
 
 const regions = [
   { key: 'gangnam', label: '강남' }, { key: 'hongdae', label: '홍대' }, { key: 'itaewon', label: '이태원' },
@@ -17,15 +19,42 @@ const regions = [
 export default function ClubsPage() {
   useDocumentMeta('새벽 2시에도 줄이 안 줄어드는 클럽만 골랐다', 'EDM·힙합·테크노 35곳, 입장료부터 분위기까지 한눈에. 오늘 밤 갈 곳 여기서 픽.');
   const venues = getVenuesByCategory('club');
+  const featured = venues.find(v => v.isPremium) || venues[0];
+
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '클럽' }]} />
-        <h1 className="mt-6 text-3xl font-extrabold text-neon-text mb-2">전국 EDM · 힙합 파티 공간</h1>
-        <div className="flex flex-wrap items-center gap-3 mb-4">
+
+        {/* Category Hero */}
+        <div className="mt-6">
+          <CategoryHero
+            emoji="🎵"
+            title="전국 EDM · 힙합 파티 공간"
+            hook="금요일 밤, 베이스가 가슴을 때리는 순간 — 일상이 사라진다. 전국 클럽을 한눈에."
+            venueCount={venues.length}
+            gradient="from-violet-600 via-purple-700 to-indigo-800"
+            accentColor="violet"
+          />
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3 mt-4 mb-4">
           <PageLiveCounter pageName="" baseCount={72} />
           <TodayStats />
         </div>
+
+        {/* Featured #1 venue */}
+        {featured && (
+          <div className="mb-6">
+            <FeaturedVenueCard
+              venue={featured}
+              href={`/clubs/${featured.region}/${featured.slug}`}
+              accentColor="violet"
+              categoryLabel="클럽"
+            />
+          </div>
+        )}
+
         <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             금요일 밤 11시. 강남 한복판 지하로 내려가는 계단에 줄이 50m다.
@@ -36,6 +65,7 @@ export default function ClubsPage() {
           <p className="text-base leading-relaxed text-neon-text-muted">
             강남·청담 쪽 대형 베뉴는 1,000명 넘게 들어가는 메가 플로어를 운영한다. 해외 게스트 DJ가 정기적으로 오고, 사운드 시스템은 일본·유럽에서 직수입한 장비를 쓴다. 테이블을 잡으면 전담 스태프가 붙고, 일반 입장은 바 카운터에서 음료 하나 들고 플로어로 합류하면 된다.
           </p>
+          <MidContentHook seed="clubs-intro" />
           <p className="text-base leading-relaxed text-neon-text-muted">
             홍대 쪽은 분위기가 다르다. 200~300명 규모 중소형 공간에서 인디·얼터너티브 장르가 섞인다. 입장료가 강남 절반 수준이고, 분위기가 자유로워서 처음 가는 사람도 어색하지 않다. 이태원은 외국인 비율이 높아서 영어가 섞인 다국적 파티 느낌이다.
           </p>
@@ -48,10 +78,11 @@ export default function ClubsPage() {
           <p className="text-base leading-relaxed text-neon-text-muted">
             이태원클럽 유토피아, 이태원클럽 메이드, 이태원클럽 프리즘은 외국인 비율이 절반 이상이라 글로벌 파티 분위기를 원하는 사람에게 제격이다. 부산·대전·청주·인천에도 각 지역 대표 클럽이 있다. 인천파라다이스씨티는 리조트 안에서 하이엔드 파티를, 청주클럽 슈퍼문은 충북 유일의 대형 EDM 베뉴를 운영한다. 전국 어디든 주말 밤은 뜨겁다.
           </p>
+          <ReadFinishCount pageName="클럽 가이드" baseCount={210} />
         </div>
       </div>
 
-      <VenueListClient venues={venues} hrefPattern="/clubs/{region}/{slug}" regions={regions} />
+      <VenueListClient venues={venues} hrefPattern="/clubs/{region}/{slug}" regions={regions} showEngagementHooks accentColor="violet" />
 
       <FirstVisitGuide category="EDM 파티 공간"
         dress="스마트 캐주얼 (셔츠+슬랙스 or 깔끔한 청바지). 슬리퍼·운동복 입장 제한. 여성은 드레스나 블라우스+스커트."
@@ -76,6 +107,9 @@ export default function ClubsPage() {
       ]} />
 
       <LiveActivityFeed maxItems={5} />
+
+      <BrowseOtherCategories currentPath="/clubs" />
+      <BottomFinishCounter baseCount={195} />
     </div>
   );
 }

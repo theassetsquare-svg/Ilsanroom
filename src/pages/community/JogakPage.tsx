@@ -308,6 +308,28 @@ export default function JogakPage() {
     }).length;
   });
 
+  // 마감 임박 조각 (24시간 이내)
+  const urgentPosts = filtered.filter(p => {
+    const tu = getTimeUntil(p.meetDate, p.meetTime);
+    return tu && tu !== '마감' && !tu.includes('일');
+  }).slice(0, 5);
+
+  // 방금 참여 알림용 (최근 글)
+  const recentJoinTexts = [
+    '방금 1명이 참여 신청했어요',
+    '2분 전 새 조각이 올라왔어요',
+    '지금 3명이 조각을 찾고 있어요',
+    '5분 전 참여 확정됐어요',
+  ];
+  const [joinNotifIdx, setJoinNotifIdx] = useState(0);
+  const joinTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  useEffect(() => {
+    joinTimerRef.current = setInterval(() => {
+      setJoinNotifIdx(prev => (prev + 1) % recentJoinTexts.length);
+    }, 5000);
+    return () => { if (joinTimerRef.current) clearInterval(joinTimerRef.current); };
+  }, []);
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-6 sm:py-10">
       {/* ═══ 헤더 ═══ */}
@@ -317,7 +339,9 @@ export default function JogakPage() {
           <div>
             <h1 className="text-2xl font-black" style={{ color: '#111' }}>조각 모임</h1>
             <div className="mt-1 flex items-center gap-3">
-              <p className="text-sm" style={{ color: '#555' }}>같이 놀러갈 사람, 바로 구하기</p>
+              <p className="text-sm font-bold" style={{ color: '#8B5CF6' }}>
+                "오늘 밤 같이 갈 사람, 지금 바로 구해"
+              </p>
               <LiveCounter />
             </div>
           </div>
@@ -397,6 +421,45 @@ export default function JogakPage() {
       )}
 
       {/* 지역 필터 제거 — 조각글 카드 안에 지역 태그로 표시 */}
+
+      {/* ═══ 실시간 참여 알림 ═══ */}
+      <div className="mb-3 flex items-center gap-2 rounded-lg px-3 py-2" style={{ backgroundColor: '#F0FDF4' }}>
+        <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+        <span className="text-xs font-medium" style={{ color: '#059669' }}>{recentJoinTexts[joinNotifIdx]}</span>
+      </div>
+
+      {/* ═══ 마감 임박 조각 ═══ */}
+      {!loading && urgentPosts.length > 0 && (
+        <div className="mb-4 rounded-xl border-2 p-4" style={{ borderColor: '#EF4444', backgroundColor: 'rgba(239,68,68,0.04)' }}>
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-sm animate-pulse">🚨</span>
+            <h2 className="text-sm font-black" style={{ color: '#DC2626' }}>마감 임박! 서두르세요</h2>
+          </div>
+          <div className="space-y-2">
+            {urgentPosts.map((p) => {
+              const tu = getTimeUntil(p.meetDate, p.meetTime);
+              return (
+                <div key={p.id} onClick={() => handlePostClick(p.id)}
+                  className="flex items-center gap-3 rounded-lg px-3 py-2.5 cursor-pointer transition hover:bg-white"
+                  style={{ minHeight: 44 }}>
+                  <span className="shrink-0 rounded px-2 py-0.5 text-[10px] font-black animate-pulse"
+                    style={{ backgroundColor: '#FEE2E2', color: '#DC2626' }}>
+                    {tu}
+                  </span>
+                  {p.region && <span className="shrink-0 rounded px-1.5 py-0.5 text-[10px] font-bold text-white"
+                    style={{ backgroundColor: '#8B5CF6' }}>{p.region}</span>}
+                  <span className="text-sm font-bold truncate flex-1" style={{ color: '#111' }}>{p.title}</span>
+                  {p.maxPeople && (
+                    <span className="shrink-0 text-xs font-bold" style={{ color: '#D97706' }}>
+                      {p.currentPeople || 1}/{p.maxPeople}명
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* ═══ 정렬 & 규칙 ═══ */}
       <div className="flex items-center justify-between mb-3">

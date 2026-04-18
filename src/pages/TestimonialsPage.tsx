@@ -1,4 +1,8 @@
+import { useRef } from 'react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
+import { PageLiveCounter } from '@/components/ui/LiveStats';
+import { MidContentHook, ReadFinishCount, ReadCompletionReward, MidContentQuiz, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
+import { Link } from 'react-router-dom';
 
 const testimonials = [
   {
@@ -10,6 +14,7 @@ const testimonials = [
     text: "전통 한정식 공간이라 디지털 마케팅이 어려울 줄 알았는데, 놀쿨에 등록한 뒤 40~60대 비즈니스 고객 예약이 늘었습니다. 사장님 답변 기능으로 리뷰 관리도 수월해졌고요.",
     plan: "프리미엄",
     since: "2025년 7월",
+    highlight: "비즈니스 고객 예약 증가",
   },
   {
     name: "김** 대표",
@@ -20,6 +25,7 @@ const testimonials = [
     text: "놀쿨 대시보드로 방문자 패턴을 분석하고 비수기 프로모션을 설계했더니 매출이 안정되었습니다. QR코드 기능도 명함에 활용 중입니다.",
     plan: "프로",
     since: "2025년 9월",
+    highlight: "비수기 매출 안정화",
   },
   {
     name: "박** 대표",
@@ -30,6 +36,7 @@ const testimonials = [
     text: "수원 지역에서 온라인 홍보가 어려운 업종인데, 놀쿨 덕분에 신규 고객이 많이 유입되었습니다. 이벤트 등록 기능이 특히 유용합니다.",
     plan: "프로",
     since: "2025년 11월",
+    highlight: "신규 고객 유입 증가",
   },
   {
     name: "최** 매니저",
@@ -40,6 +47,7 @@ const testimonials = [
     text: "API 연동으로 DJ 스케줄과 이벤트가 자동 동기화됩니다. 예약 전환율이 기존 채널 대비 높아졌어요.",
     plan: "프로",
     since: "2025년 3월",
+    highlight: "예약 전환율 상승",
   },
   {
     name: "한** 사장",
@@ -50,6 +58,7 @@ const testimonials = [
     text: "인증 배지 달고 나니까 라운지 격이 달라 보이더라고요. VIP 손님이 먼저 찾아옵니다.",
     plan: "프리미엄",
     since: "2025년 5월",
+    highlight: "VIP 고객 자연 유입",
   },
   {
     name: "정** 대표",
@@ -60,72 +69,142 @@ const testimonials = [
     text: "처음에는 반신반의했는데, 등록 첫 달부터 문의가 2배로 늘었습니다. 무료 플랜으로 시작해서 부담도 없었어요.",
     plan: "베이직",
     since: "2025년 12월",
+    highlight: "문의 2배 증가",
   },
 ];
 
 function getPlanColor(plan: string): string {
   const colors: Record<string, string> = {
-    "프리미엄": "bg-violet-500/10 text-violet-400 border-violet-500/20",
-    "프로": "bg-blue-500/10 text-blue-400 border-blue-500/20",
-    "엔터프라이즈": "bg-amber-500/10 text-amber-400 border-amber-500/20",
-    "베이직": "bg-neutral-500/10 text-neon-text-muted border-neutral-500/20",
+    "프리미엄": "bg-violet-100 text-violet-700 border-violet-200",
+    "프로": "bg-blue-100 text-blue-700 border-blue-200",
+    "엔터프라이즈": "bg-amber-100 text-amber-700 border-amber-200",
+    "베이직": "bg-gray-100 text-gray-600 border-gray-200",
   };
-  return colors[plan] || "bg-neutral-500/10 text-neon-text-muted border-neutral-500/20";
+  return colors[plan] || "bg-gray-100 text-gray-600 border-gray-200";
 }
 
 export default function TestimonialsPage() {
   useDocumentMeta('현직 사장님 5명이 직접 말한다', '"반신반의했는데 전화가 쏟아졌다." 입점 업주 생생 인터뷰.');
-  return (
-    <div className="min-h-screen bg-neon-bg text-neon-text">
-      <div className="mx-auto max-w-5xl px-4 py-16">
-        {/* Header */}
-        <div className="mb-16 text-center">
-          <h1 className="mb-4 text-4xl font-bold">
-            업주 <span className="text-neon-primary-light">후기</span>
-          </h1>
-          <p className="mx-auto max-w-lg text-lg text-neon-text-muted">
-            놀쿨를 사용하는 업주들의 실제 후기와 추천사를 직접 봐.
-          </p>
-        </div>
+  const containerRef = useRef<HTMLDivElement>(null);
 
-        {/* Testimonial Grid */}
+  // 하이라이트 수치
+  const totalTestimonials = testimonials.length;
+  const avgRating = (testimonials.reduce((a, t) => a + t.rating, 0) / totalTestimonials).toFixed(1);
+
+  return (
+    <div ref={containerRef}>
+      {/* ═══ HERO ═══ */}
+      <div className="relative overflow-hidden bg-gradient-to-b from-[#0A0118] via-[#1a0a2e] to-[#0f0720]">
+        <div className="absolute inset-0 opacity-15" style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, #F59E0B 0%, transparent 50%)' }} />
+        <div className="relative mx-auto max-w-5xl px-4 py-16 sm:px-6 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 mb-6 border border-white/10">
+            <PageLiveCounter pageName="후기 보는 중" baseCount={19} className="text-white/80 [&_strong]:text-white" />
+          </div>
+
+          <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
+            현직 사장님들이<br />
+            <span className="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">직접 말한다</span>
+          </h1>
+          <p className="text-base text-white/60 mb-6" style={{ lineHeight: '1.7' }}>
+            "반신반의했는데 전화가 쏟아졌다."<br />
+            입점 업주 생생 인터뷰.
+          </p>
+
+          {/* 핵심 수치 */}
+          <div className="flex justify-center gap-6">
+            <div className="text-center">
+              <p className="text-3xl font-black text-white">{totalTestimonials}</p>
+              <p className="text-xs text-white/40">업주 후기</p>
+            </div>
+            <div className="h-12 w-px bg-white/20" />
+            <div className="text-center">
+              <p className="text-3xl font-black text-amber-400">★ {avgRating}</p>
+              <p className="text-xs text-white/40">평균 만족도</p>
+            </div>
+            <div className="h-12 w-px bg-white/20" />
+            <div className="text-center">
+              <p className="text-3xl font-black text-emerald-400">100%</p>
+              <p className="text-xs text-white/40">재등록률</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ TESTIMONIALS ═══ */}
+      <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
         <div className="grid gap-6 md:grid-cols-2">
           {testimonials.map((t, idx) => (
-            <div
-              key={idx}
-              className="rounded-2xl border border-neon-border bg-neon-surface p-6 transition-all hover:border-neon-primary/30"
-            >
-              <div className="mb-4 flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-neon-primary to-neon-primary-light text-sm font-bold text-white">
-                  {t.name.charAt(0)}
+            <div key={idx}>
+              <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-[#8B5CF6]/20">
+                {/* 하이라이트 배지 */}
+                <div className="mb-4 rounded-lg bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100 px-3 py-2">
+                  <p className="text-xs font-bold text-amber-700">핵심: {t.highlight}</p>
                 </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-neon-text">{t.name}</span>
-                    <span
-                      className={`rounded-full border px-2 py-0.5 text-xs font-medium ${getPlanColor(t.plan)}`}
-                    >
-                      {t.plan}
-                    </span>
+
+                <div className="mb-4 flex items-start gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#EC4899] text-sm font-bold text-white">
+                    {t.name.charAt(0)}
                   </div>
-                  <p className="text-sm text-neon-text-muted">
-                    {t.venue} · {t.region}
-                  </p>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-[#111]">{t.name}</span>
+                      <span className={`rounded-full border px-2 py-0.5 text-xs font-medium ${getPlanColor(t.plan)}`}>
+                        {t.plan}
+                      </span>
+                    </div>
+                    <p className="text-sm text-[#555]">
+                      {t.venue} · {t.region}
+                    </p>
+                  </div>
                 </div>
+
+                {/* 별점 */}
+                <div className="mb-3 flex items-center gap-1">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <span key={i} className={`text-sm ${i < t.rating ? 'text-amber-400' : 'text-gray-200'}`}>★</span>
+                  ))}
+                </div>
+
+                <p className="mb-4 text-sm leading-relaxed text-[#555]" style={{ lineHeight: '1.7' }}>
+                  &ldquo;{t.text}&rdquo;
+                </p>
+
+                <p className="text-xs text-[#999]">
+                  이용 시작: {t.since}
+                </p>
               </div>
 
-              <p className="mb-4 text-sm leading-relaxed text-neon-text-muted">
-                &ldquo;{t.text}&rdquo;
-              </p>
-
-              <p className="text-xs text-neon-text-subtle">
-                이용 시작: {t.since}
-              </p>
+              {idx === 2 && <MidContentHook seed="testimonials-mid" variant={6} />}
             </div>
           ))}
         </div>
 
+        {/* 퀴즈 */}
+        <MidContentQuiz
+          question="업소 홍보할 때 뭐가 제일 중요할까?"
+          options={['검색 상위노출이 전부다', '사진이 잘 나와야 한다', '후기 관리가 핵심이다', '가격 경쟁력이 우선이다']}
+          seed="testimonials-quiz"
+        />
+
+        {/* ═══ BOTTOM ═══ */}
+        <ReadCompletionReward teaser="입점하면 어떤 게 달라지는지">
+          <div className="space-y-2">
+            <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>
+              프리미엄 입점 시 <strong>상위 노출, 인증 배지, 대시보드 분석, QR 명함</strong>이 제공된다.
+              무료 베이직부터 시작할 수 있으니 부담 없이 시작해봐.
+            </p>
+            <Link to="/business" className="inline-flex items-center gap-1 text-sm font-bold text-[#8B5CF6] hover:text-[#7C3AED] mt-2">
+              입점 안내 보기 →
+            </Link>
+          </div>
+        </ReadCompletionReward>
+
+        <div className="text-center mt-6">
+          <ReadFinishCount pageName="업주 후기" baseCount={80} />
+        </div>
       </div>
+
+      <ReadingMilestone containerRef={containerRef} />
     </div>
   );
 }
