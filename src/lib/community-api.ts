@@ -38,7 +38,7 @@ export async function fetchPosts(category: PostCategory, limit = 20, offset = 0)
   try {
     const { data, count, error } = await supabase
       .from('posts')
-      .select('*, users!posts_user_id_fkey(nickname, avatar_url)', { count: 'exact' })
+      .select('*, users!left(nickname, avatar_url)', { count: 'exact' })
       .eq('category', category)
       .order('is_pinned', { ascending: false })
       .order('created_at', { ascending: false })
@@ -96,7 +96,7 @@ export async function fetchComments(postId: string) {
     // 1차: user join + parent_id 포함
     const { data, error } = await supabase
       .from('comments')
-      .select('*, users!comments_user_id_fkey(nickname, avatar_url)')
+      .select('*, users!left(nickname, avatar_url)')
       .eq('post_id', postId)
       .order('created_at', { ascending: true });
 
