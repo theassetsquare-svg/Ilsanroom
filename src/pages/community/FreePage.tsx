@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { getSeedNickname } from '@/lib/fake-users';
 
 const RichTextEditor = lazy(() => import('@/components/community/RichTextEditor'));
 import WriteHeader from '@/components/community/WriteHeader';
@@ -22,7 +23,7 @@ function postToSimple(post: Post): SimplePost {
     id: post.id,
     title: post.title,
     content: post.content || '',
-    author: u?.nickname || '사용자',
+    author: u?.nickname || getSeedNickname(post.id),
     date: post.created_at.slice(0, 10),
     comments: post.comment_count || 0,
   };

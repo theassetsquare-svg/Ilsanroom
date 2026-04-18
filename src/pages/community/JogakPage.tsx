@@ -4,6 +4,7 @@ import WriteHeader from '@/components/community/WriteHeader';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { fetchPosts, createPost, fetchComments, createComment, deletePost, type Post } from '@/lib/community-api';
+import { getSeedNickname } from '@/lib/fake-users';
 
 /* ══════════════════════════════════════════════
    카테고리 & 지역 설정
@@ -79,7 +80,7 @@ function parseJogakPost(post: Post): JogakPost {
     id: post.id,
     authorId: post.user_id,
     title: post.title,
-    author: u?.nickname || '사용자',
+    author: u?.nickname || getSeedNickname(post.id),
     date: post.created_at.slice(0, 10),
     comments: (post as any).comment_count || 0,
     region: p.region,

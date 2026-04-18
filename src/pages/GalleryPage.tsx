@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
+import { getSeedNickname } from '@/lib/fake-users';
 
 /* ── Types ── */
 interface Clip {
@@ -90,7 +91,7 @@ export default function GalleryPage() {
                 id: c.id,
                 user_id: c.user_id || '',
                 content: c.content,
-                author: c.users?.nickname || '사용자',
+                author: c.users?.nickname || getSeedNickname(c.id),
                 created_at: c.created_at,
               });
             }
@@ -119,7 +120,7 @@ export default function GalleryPage() {
       likes: p.likes || 0,
       liked: false,
       created_at: p.created_at,
-      author: (p.users as any)?.nickname || '사용자',
+      author: (p.users as any)?.nickname || getSeedNickname(p.id),
       avatar_url: (p.users as any)?.avatar_url || null,
       comments: [],
       comment_count: p.comment_count || 0,

@@ -5,6 +5,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues as localVenues, getPopularVenues } from '@/data/venues';
 import type { Venue } from '@/types';
 import { createClient } from '@/lib/supabase';
+import { getSeedNickname } from '@/lib/fake-users';
 import JsonLd from '@/components/seo/JsonLd';
 import ErrorBoundary from '@/components/ui/ErrorBoundary';
 import KakaoShareButton from '@/components/engagement/KakaoShareButton';
@@ -230,7 +231,7 @@ export default function HomePage() {
           setHotPosts(data.map((p: any) => ({
             id: p.id,
             board: boardLabels[p.category] || p.category,
-            author: p.users?.nickname || '사용자',
+            author: p.users?.nickname || getSeedNickname(p.id),
             title: p.title,
             likes: p.likes || 0,
             comments: p.comment_count || 0,

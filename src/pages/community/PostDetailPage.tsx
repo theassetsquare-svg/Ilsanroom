@@ -4,6 +4,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
 import ShareButton from '@/components/ui/ShareButton';
+import { getSeedNickname } from '@/lib/fake-users';
 
 interface CommentData {
   id: string;
@@ -37,7 +38,7 @@ export default function PostDetailPage() {
   useEffect(() => {
     if (!id || !supabase) { setLoading(false); return; }
 
-    supabase.from('posts').select('*, users!posts_user_id_fkey(nickname, avatar_url)').eq('id', id).single().then(({ data, error }) => {
+    supabase.from('posts').select('*, users!left(nickname, avatar_url)').eq('id', id).single().then(({ data, error }) => {
       if (error) {
         supabase.from('posts').select('*').eq('id', id).single().then(({ data: d }) => {
           setPost(d);
@@ -60,7 +61,7 @@ export default function PostDetailPage() {
     // 1차: 전체 select + user join
     let { data, error } = await supabase
       .from('comments')
-      .select('*, users!comments_user_id_fkey(nickname, avatar_url)')
+      .select('*, users!left(nickname, avatar_url)')
       .eq('post_id', id)
       .order('created_at', { ascending: true });
 
@@ -166,7 +167,7 @@ export default function PostDetailPage() {
   const jogakData = post.category === 'party' ? parseJogakContent(post.content) : null;
 
   const CommentItem = ({ comment, depth = 0 }: { comment: CommentData; depth?: number }) => {
-    const nickname = (comment.users as any)?.nickname || '사용자';
+    const nickname = (comment.users as any)?.nickname || getSeedNickname(comment.id);
     const children = childComments(comment.id);
     const isReplyTarget = replyTo?.id === comment.id;
 
@@ -252,7 +253,7 @@ export default function PostDetailPage() {
       {/* 작성자 + 날짜 + 삭제 */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2 text-xs" style={{ color: '#999' }}>
-          <span style={{ color: '#555' }}>{(post.users as any)?.nickname || '사용자'}</span>
+          <span style={{ color: '#555' }}>{(post.users as any)?.nickname || getSeedNickname(post.id)}</span>
           <span>·</span>
           <span>{post.created_at?.slice(0, 10)}</span>
           <span className="rounded-full px-2 py-0.5" style={{ backgroundColor: '#F3F0FF', color: '#8B5CF6' }}>{post.category}</span>
