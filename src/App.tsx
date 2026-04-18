@@ -71,6 +71,7 @@ const PrintPage = lazyRetry(() => import('./pages/PrintPage'));
 const LoginPage = lazyRetry(() => import('./pages/auth/LoginPage'));
 const ProfilePage = lazyRetry(() => import('./pages/auth/ProfilePage'));
 const AuthCallbackPage = lazyRetry(() => import('./pages/auth/AuthCallbackPage'));
+const NaverCallbackPage = lazyRetry(() => import('./pages/auth/NaverCallbackPage'));
 const SetupNicknamePage = lazyRetry(() => import('./pages/auth/SetupNicknamePage'));
 const DashboardPage = lazyRetry(() => import('./pages/admin/DashboardPage'));
 const AdminPage = lazyRetry(() => import('./pages/admin/AdminPage'));
@@ -174,6 +175,7 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/auth/callback" element={<AuthCallbackPage />} />
+          <Route path="/auth/naver-callback" element={<NaverCallbackPage />} />
           <Route path="/setup-nickname" element={<SetupNicknamePage />} />
           {/* Admin */}
           <Route path="/dashboard" element={<Navigate to="/" replace />} />

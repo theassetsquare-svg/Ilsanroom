@@ -12,12 +12,10 @@ Deno.serve(async (req) => {
   const state = url.searchParams.get('state')
   const error = url.searchParams.get('error')
 
-  // 네이버에서 에러 반환 시
   if (error) {
     return Response.redirect(`${SITE_URL}/login?error=naver_denied`, 302)
   }
 
-  // code 없으면 잘못된 요청
   if (!code) {
     return Response.redirect(`${SITE_URL}/login?error=naver_no_code`, 302)
   }
@@ -35,6 +33,7 @@ Deno.serve(async (req) => {
         }),
     )
     const tokenData = await tokenRes.json()
+    console.log('Token exchange result:', tokenData.access_token ? 'OK' : 'FAILED')
 
     if (!tokenData.access_token) {
       return Response.redirect(`${SITE_URL}/login?error=naver_token_failed`, 302)
@@ -45,6 +44,7 @@ Deno.serve(async (req) => {
       headers: { Authorization: `Bearer ${tokenData.access_token}` },
     })
     const profileData = await profileRes.json()
+    console.log('Profile result:', profileData.resultcode)
 
     if (profileData.resultcode !== '00') {
       return Response.redirect(`${SITE_URL}/login?error=naver_profile_failed`, 302)
@@ -60,8 +60,8 @@ Deno.serve(async (req) => {
       auth: { autoRefreshToken: false, persistSession: false },
     })
 
-    // 4. 유저 생성 시도 (이미 존재하면 무시)
-    await supabaseAdmin.auth.admin.createUser({
+    // 4. 유저 생성 (이미 존재하면 무시)
+    const { error: createError } = await supabaseAdmin.auth.admin.createUser({
       email,
       email_confirm: true,
       user_metadata: {
@@ -72,22 +72,24 @@ Deno.serve(async (req) => {
         full_name: naverUser.name || nickname,
       },
     })
-    // createUser 실패(이미 존재)해도 OK — 다음 단계에서 처리
+    console.log('Create user:', createError ? createError.message : 'OK')
 
-    // 5. Magic Link 생성 → 세션 자동 생성
+    // 5. Magic Link 생성 → 토큰 추출
     const { data: linkData, error: linkError } =
       await supabaseAdmin.auth.admin.generateLink({
         type: 'magiclink',
         email,
-        options: { redirectTo: `${SITE_URL}/auth/callback` },
       })
 
-    if (linkError || !linkData?.properties?.action_link) {
+    if (linkError || !linkData?.properties?.hashed_token) {
+      console.error('Link error:', linkError?.message)
       return Response.redirect(`${SITE_URL}/login?error=naver_session_failed`, 302)
     }
 
-    // 6. Magic Link로 리다이렉트 → Supabase가 세션 생성 → /auth/callback으로 이동
-    return Response.redirect(linkData.properties.action_link, 302)
+    // 6. 토큰과 이메일을 프론트로 전달 → 프론트에서 verifyOtp로 세션 생성
+    const token = linkData.properties.hashed_token
+    const params = new URLSearchParams({ token, email, type: 'naver' })
+    return Response.redirect(`${SITE_URL}/auth/naver-callback?${params}`, 302)
   } catch (e) {
     console.error('Naver auth error:', e)
     return Response.redirect(`${SITE_URL}/login?error=naver_server_error`, 302)
