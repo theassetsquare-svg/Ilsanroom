@@ -25,12 +25,13 @@ function slugHash(slug: string): number {
   return slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
 }
 
-// 섹션 헤더
-function SectionHeader({ emoji, label }: { emoji: string; label: string }) {
+// 섹션 헤더 — H2 with store name for SEO
+function SectionHeader({ emoji, label, venueName }: { emoji: string; label: string; venueName?: string }) {
+  const heading = venueName ? `${venueName} ${label}` : label;
   return (
     <div className="flex items-center gap-2 mt-8 mb-3">
       <span className="text-base">{emoji}</span>
-      <h3 className="text-sm font-bold text-[#222] tracking-tight">{label}</h3>
+      <h2 className="text-sm font-bold text-[#222] tracking-tight">{heading}</h2>
       <div className="h-px flex-1 bg-gradient-to-r from-[#ddd] to-transparent" />
     </div>
   );
@@ -71,8 +72,8 @@ export default function VenueSeoContent({ venue }: { venue: Venue }) {
   if (venue.features.length > 0) {
     const featureIntros = [
       `${v}에서 인상적인 부분을 꼽자면`,
-      `가보면 몇 가지 눈에 띄는 점이 있다`,
-      `다른 곳과 뭐가 다르냐고 물으면`,
+      `${v}에 가보면 몇 가지 눈에 띄는 점이 있다`,
+      `${v}이(가) 다른 곳과 뭐가 다르냐고 물으면`,
     ];
     const intro = pickBySlug(slug + 'f', featureIntros);
     featureText = venue.features.map((f, i) => {
@@ -86,9 +87,9 @@ export default function VenueSeoContent({ venue }: { venue: Venue }) {
   let staffText = '';
   if (venue.staffNickname) {
     const staffTexts = [
-      `여기는 ${venue.staffNickname}이(가) 직접 챙기는 곳이다. 전화 한 통이면 세팅부터 퇴실까지 알아서 다 해준다. 처음이라 뭘 어떻게 해야할지 모르겠으면 그냥 "${venue.staffNickname}한테 전화하세요"가 답이다.`,
-      `${venue.staffNickname}이(가) 자리를 잡아주는데 한번 가면 이 분이 왜 단골 관리의 핵심인지 알게 된다. 취향 파악이 빠르고 세팅이 세심하다.`,
-      `담당은 ${venue.staffNickname}. 예약부터 퇴실까지 밀착으로 케어해주는 스타일이라 처음 가는 사람도 어색하지 않게 놀 수 있다.`,
+      `${v}은(는) ${venue.staffNickname}이(가) 직접 챙기는 곳이다. 전화 한 통이면 세팅부터 퇴실까지 알아서 다 해준다. ${v} 처음이라 뭘 어떻게 해야할지 모르겠으면 그냥 "${venue.staffNickname}한테 전화하세요"가 답이다.`,
+      `${v}에서 ${venue.staffNickname}이(가) 자리를 잡아주는데 한번 가면 이 분이 왜 단골 관리의 핵심인지 알게 된다. 취향 파악이 빠르고 세팅이 세심하다.`,
+      `${v} 담당은 ${venue.staffNickname}. 예약부터 퇴실까지 밀착으로 케어해주는 스타일이라 ${v} 처음 가는 사람도 어색하지 않게 놀 수 있다.`,
     ];
     staffText = pickBySlug(slug + 's', staffTexts);
   }
@@ -117,10 +118,10 @@ export default function VenueSeoContent({ venue }: { venue: Venue }) {
 
   // ── 8. 클로징 ──
   const closings = [
-    `${region}에서 ${cat}을(를) 찾고 있다면 한번 가보는걸 추천한다. 첫 방문이 좀 긴장되면 미리 전화해서 예약하고 가는게 편하다.`,
-    `결론: 기대 이상이었다. ${region} ${cat} 중에서 가성비와 분위기 둘 다 잡은 곳.`,
-    `다시 갈 의향이 있냐고 물으면 "이미 다음 예약 잡았다"가 답이다.`,
-    `처음이라 걱정되면 전화 한 통 먼저 하고 가라. 그게 제일 편하다.`,
+    `${region}에서 ${cat}을(를) 찾고 있다면 ${v} 한번 가보는걸 추천한다. 첫 방문이 좀 긴장되면 ${v}에 미리 전화해서 예약하고 가는게 편하다.`,
+    `결론: ${v}은(는) 기대 이상이었다. ${region} ${cat} 중에서 가성비와 분위기 둘 다 잡은 곳이 ${v}이다.`,
+    `${v} 다시 갈 의향이 있냐고 물으면 "이미 다음 예약 잡았다"가 답이다.`,
+    `${v} 처음이라 걱정되면 전화 한 통 먼저 하고 가라. 그게 제일 편하다.`,
   ];
   const closing = pickBySlug(slug + 'c', closings);
 
@@ -161,7 +162,7 @@ export default function VenueSeoContent({ venue }: { venue: Venue }) {
       {/* ── 분위기/특징 섹션 ── */}
       {featureText && (
         <>
-          <SectionHeader emoji="💬" label="분위기·특징" />
+          <SectionHeader emoji="💬" label="분위기·특징" venueName={v} />
           <p className="text-sm leading-[1.85] text-[#444]">{featureText}</p>
         </>
       )}
@@ -177,7 +178,7 @@ export default function VenueSeoContent({ venue }: { venue: Venue }) {
       {/* ── 양주/룸/부스 정보 ── */}
       {(venue.liquorInfo || venue.roomInfo || venue.boothInfo) && (
         <>
-          <SectionHeader emoji="🍸" label="양주·룸 정보" />
+          <SectionHeader emoji="🍸" label="양주·룸 정보" venueName={v} />
           {venue.liquorInfo && <p className="text-sm leading-[1.85] text-[#444] mb-3">{venue.liquorInfo}</p>}
           {venue.roomInfo && <p className="text-sm leading-[1.85] text-[#444] mb-3">{venue.roomInfo}</p>}
           {venue.boothInfo && <p className="text-sm leading-[1.85] text-[#444] mb-3">{venue.boothInfo}</p>}
@@ -194,8 +195,8 @@ export default function VenueSeoContent({ venue }: { venue: Venue }) {
       {/* ── 접근성 ── */}
       {accessText && (
         <>
-          <SectionHeader emoji="📍" label="위치·접근성" />
-          <p className="text-sm leading-[1.85] text-[#444]">{accessText}</p>
+          <SectionHeader emoji="📍" label="위치·접근성" venueName={v} />
+          <p className="text-sm leading-[1.85] text-[#444]">{v}의 {accessText}</p>
         </>
       )}
 
@@ -205,18 +206,21 @@ export default function VenueSeoContent({ venue }: { venue: Venue }) {
       {/* ── 시간대/드레스코드 ── */}
       {timeText && (
         <>
-          <SectionHeader emoji="👔" label="복장·시간대" />
-          <p className="text-sm leading-[1.85] text-[#444]">{timeText}</p>
+          <SectionHeader emoji="👔" label="복장·시간대" venueName={v} />
+          <p className="text-sm leading-[1.85] text-[#444]">{v} 방문 시 {timeText}</p>
         </>
       )}
 
       {/* ── 분위기 ── */}
       {atmText && (
         <>
-          <SectionHeader emoji="🎵" label="무드·분위기" />
+          <SectionHeader emoji="🎵" label="무드·분위기" venueName={v} />
           <p className="text-sm leading-[1.85] text-[#444]">{atmText}</p>
         </>
       )}
+
+      {/* ── 총정리 H2 ── */}
+      <SectionHeader emoji="📝" label="총정리" venueName={v} />
 
       {/* ── 클로징 ── */}
       <MidContentHook seed={slug + 'close'} variant={5} />

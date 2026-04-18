@@ -21,7 +21,7 @@ function escHtml(s) {
 /**
  * HTML의 head 메타 태그를 교체
  */
-function renderPage({ title, description, canonical, ogImage }) {
+function renderPage({ title, description, canonical, ogImage, ssrBody }) {
   let html = baseHtml;
   const desc = (description || '').slice(0, 150);
   const can = `${BASE_URL}${canonical}`;
@@ -84,6 +84,11 @@ function renderPage({ title, description, canonical, ogImage }) {
     `<link rel="canonical" href="${escHtml(can)}"`
   );
 
+  // SSR body content — inject inside root div for crawlers (React replaces on hydration)
+  if (ssrBody) {
+    html = html.replace('<div id="root"></div>', `<div id="root">${ssrBody}</div>`);
+  }
+
   return html;
 }
 
@@ -110,11 +115,70 @@ function parseVenues() {
     const nameKo = block.match(/nameKo:\s*'([^']+)'/)?.[1];
     const shortDesc = block.match(/shortDescription:\s*'([^']+)'/)?.[1];
     const desc = block.match(/description:\s*'([^']+)'/)?.[1];
+    const staffNickname = block.match(/staffNickname:\s*'([^']+)'/)?.[1];
+    const address = block.match(/address:\s*'([^']+)'/)?.[1];
+    const nearbyStation = block.match(/nearbyStation:\s*'([^']+)'/)?.[1];
+    const features = [];
+    const featMatch = block.match(/features:\s*\[([^\]]*)\]/);
+    if (featMatch) {
+      const fItems = featMatch[1].match(/'([^']+)'/g);
+      if (fItems) fItems.forEach(f => features.push(f.replace(/'/g, '')));
+    }
     if (slug && cat && region) {
-      venues.push({ slug, cat, region, regionKo: regionKo || '', nameKo: nameKo || slug, shortDesc: shortDesc || (desc || '').slice(0, 120) });
+      venues.push({
+        slug, cat, region,
+        regionKo: regionKo || '',
+        nameKo: nameKo || slug,
+        shortDesc: shortDesc || (desc || '').slice(0, 120),
+        description: desc || '',
+        staffNickname: staffNickname || '',
+        address: address || '',
+        nearbyStation: nearbyStation || '',
+        features,
+      });
     }
   }
   return venues;
+}
+
+const catLabelMap = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
+
+/**
+ * Generate SSR body content for venue detail pages.
+ * Contains H1 (store name), H2s with store name, and opening paragraphs.
+ * React will replace this on hydration.
+ */
+function generateVenueSsrBody(v) {
+  const name = escHtml(v.nameKo);
+  const catKo = catLabelMap[v.cat] || v.cat;
+  const region = escHtml(v.regionKo);
+  const desc = escHtml(v.description.slice(0, 300));
+  const features = v.features.slice(0, 5).map(f => escHtml(f)).join(', ');
+  const staff = v.staffNickname ? escHtml(v.staffNickname) : '';
+
+  let html = `<article>`;
+  html += `<h1>${name}</h1>`;
+  html += `<p>${region} ${catKo} ${name}. ${desc}</p>`;
+
+  if (features) {
+    html += `<h2>${name} 분위기·특징</h2>`;
+    html += `<p>${name}의 특징: ${features}.</p>`;
+  }
+
+  if (staff) {
+    html += `<h2>${name} 담당자 안내</h2>`;
+    html += `<p>${name}은(는) ${staff}이(가) 직접 관리하는 곳이다.</p>`;
+  }
+
+  if (v.nearbyStation) {
+    html += `<h2>${name} 위치·접근성</h2>`;
+    html += `<p>${name}은(는) ${escHtml(v.nearbyStation)}에서 가깝다.${v.address ? ' 주소: ' + escHtml(v.address) : ''}</p>`;
+  }
+
+  html += `<h2>${name} 총정리</h2>`;
+  html += `<p>${region} ${catKo} ${name} — 실시간 후기, 시세, 예약 안내를 놀쿨에서 확인하세요.</p>`;
+  html += `</article>`;
+  return html;
 }
 
 function getHookingTitle(nameKo) {
@@ -213,10 +277,22 @@ const staticPages = [
 ];
 
 // ══════════════════════════════════════════
-// 2. 정적 페이지 생성
+// 2. 정적 페이지 생성 (카테고리 리스팅에는 업소 이름 SSR 포함)
 // ══════════════════════════════════════════
+const categoryPaths = new Set(['/clubs', '/nights', '/lounges', '/rooms', '/yojeong', '/hoppa']);
 for (const pg of staticPages) {
-  writePage(pg.path, { title: pg.title, description: pg.desc });
+  let ssrBody = undefined;
+  // 카테고리 리스팅 페이지: 소속 업소 이름 전부 SSR에 포함
+  if (categoryPaths.has(pg.path)) {
+    const catKey = pg.path === '/clubs' ? 'club' : pg.path === '/nights' ? 'night' : pg.path === '/lounges' ? 'lounge' : pg.path === '/rooms' ? 'room' : pg.path === '/yojeong' ? 'yojeong' : 'hoppa';
+    const catVenues = venues.filter(vv => vv.cat === catKey);
+    const catKo = catLabelMap[catKey];
+    ssrBody = `<h1>${escHtml(pg.title)}</h1><p>${escHtml(pg.desc)}</p>`;
+    ssrBody += `<h2>전국 ${catKo} ${catVenues.length}곳 리스트</h2><ul>`;
+    catVenues.forEach(vv => { ssrBody += `<li>${escHtml(vv.nameKo)} — ${escHtml(vv.regionKo)} ${catKo}</li>`; });
+    ssrBody += `</ul>`;
+  }
+  writePage(pg.path, { title: pg.title, description: pg.desc, ssrBody });
   pageCount++;
 }
 console.log(`✅ 정적 페이지 ${staticPages.length}개 생성`);
@@ -239,19 +315,26 @@ for (const [cat, regions] of Object.entries(regionsByCategory)) {
   // clubs/:region, rooms/:region, yojeong/:region
   if (['club', 'room', 'yojeong'].includes(cat)) {
     for (const [region, regionKo] of Object.entries(regions)) {
-      const venueCount = venues.filter(v => v.cat === cat && v.region === region).length;
+      const regionVenues = venues.filter(vv => vv.cat === cat && vv.region === region);
       let title, desc;
+      const topVenue = regionVenues[0];
+      const topName = topVenue ? topVenue.nameKo : '';
       if (cat === 'club') {
-        title = `${regionKo} 클럽 리스트`;
-        desc = `${regionKo} EDM·힙합 클럽 모아보기. 입장료, 분위기, 영업시간 비교.`;
+        title = `${regionKo} 클럽 ${regionVenues.length}곳 — 오늘 밤 갈 곳 여기서 고른다`;
+        desc = `${regionKo} 클럽 ${regionVenues.length}곳 비교.${topName ? ' ' + topName + ' 포함.' : ''} 입장료·분위기·영업시간 한눈에.`;
       } else if (cat === 'room') {
-        title = `${regionKo} 룸 모아보기`;
-        desc = `${regionKo} 프라이빗 룸 전체 리스트. 인원별·용도별로 골라봐.`;
+        title = `${regionKo} 룸 ${regionVenues.length}곳 — 인원수 말하면 딱 맞게 세팅`;
+        desc = `${regionKo} 프라이빗 룸 ${regionVenues.length}곳.${topName ? ' ' + topName + ' 포함.' : ''} 인원별·용도별 비교.`;
       } else {
-        title = `${regionKo} 요정 안내`;
-        desc = `${regionKo} 전통 한정식 요정. 코스 요리와 국악 라이브가 있는 접대 명소.`;
+        title = `${regionKo} 요정 ${regionVenues.length}곳 — 격이 다른 만찬의 시작`;
+        desc = `${regionKo} 전통 한정식 요정 ${regionVenues.length}곳.${topName ? ' ' + topName + ' 포함.' : ''} 코스 요리와 국악 라이브.`;
       }
-      writePage(`/${cm.path}/${region}`, { title, description: desc });
+      // SSR: 해당 지역 업소 이름 전부 포함
+      let regSsr = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
+      regSsr += `<h2>${escHtml(regionKo)} ${catLabelMap[cat]} ${regionVenues.length}곳</h2><ul>`;
+      regionVenues.forEach(vv => { regSsr += `<li>${escHtml(vv.nameKo)}</li>`; });
+      regSsr += `</ul>`;
+      writePage(`/${cm.path}/${region}`, { title, description: desc, ssrBody: regSsr });
       regionalCount++;
     }
   }
@@ -292,13 +375,50 @@ for (const v of venues) {
     routePath = `/${cm.path}/${v.slug}`;
   }
 
-  writePage(routePath, { title: hookTitle, description: desc, ogImage: getVenueOgImage(v.slug) });
+  writePage(routePath, { title: hookTitle, description: desc, ogImage: getVenueOgImage(v.slug), ssrBody: generateVenueSsrBody(v) });
   venueCount++;
 }
 console.log(`✅ 업소 상세 페이지 ${venueCount}개 생성`);
 
 // ══════════════════════════════════════════
-// 5. _redirects 업데이트 (정적 파일 우선, 나머지 SPA fallback)
+// 5. sitemap.xml 자동 생성 — 모든 페이지 포함 보장
+// ══════════════════════════════════════════
+const today = new Date().toISOString().slice(0, 10);
+let sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+// Homepage
+sitemapXml += `  <url><loc>${BASE_URL}/</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>\n`;
+// Static pages
+for (const pg of staticPages) {
+  const freq = pg.path.startsWith('/community') ? 'daily' : 'weekly';
+  const pri = categoryPaths.has(pg.path) ? '0.9' : pg.path.startsWith('/community') ? '0.7' : '0.7';
+  sitemapXml += `  <url><loc>${BASE_URL}${pg.path}</loc><lastmod>${today}</lastmod><changefreq>${freq}</changefreq><priority>${pri}</priority></url>\n`;
+}
+// Regional pages
+for (const [cat, regions] of Object.entries(regionsByCategory)) {
+  const cm = catMap[cat];
+  if (!cm || !['club', 'room', 'yojeong'].includes(cat)) continue;
+  for (const region of Object.keys(regions)) {
+    sitemapXml += `  <url><loc>${BASE_URL}/${cm.path}/${region}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
+  }
+}
+// All venue detail pages — this is the critical part
+for (const v of venues) {
+  const cm = catMap[v.cat];
+  if (!cm) continue;
+  let routePath;
+  if (['club', 'room', 'yojeong'].includes(v.cat)) {
+    routePath = `/${cm.path}/${v.region}/${v.slug}`;
+  } else {
+    routePath = `/${cm.path}/${v.slug}`;
+  }
+  sitemapXml += `  <url><loc>${BASE_URL}${routePath}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
+}
+sitemapXml += `</urlset>`;
+fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml);
+console.log(`✅ sitemap.xml 자동 생성 (${venues.length}개 업소 포함)`);
+
+// ══════════════════════════════════════════
+// 6. _redirects 업데이트 (정적 파일 우선, 나머지 SPA fallback)
 // ══════════════════════════════════════════
 const redirects = `/api/* /api/:splat 200
 /* /index.html 200
