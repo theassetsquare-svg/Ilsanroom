@@ -985,6 +985,11 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ═══ 실시간 활동 피드 ═══ */}
+      <section className="mx-auto max-w-5xl px-4 pb-12 sm:px-6">
+        <LiveActivityFeed maxItems={5} />
+      </section>
     </div>
   );
 }
