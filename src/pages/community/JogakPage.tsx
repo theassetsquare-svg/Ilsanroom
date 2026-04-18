@@ -5,6 +5,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { fetchPosts, createPost, fetchComments, createComment, deletePost, type Post } from '@/lib/community-api';
 import { getSeedNickname } from '@/lib/fake-users';
+import { PostListSkeleton } from '@/components/ui/Skeleton';
 
 /* ══════════════════════════════════════════════
    카테고리 & 지역 설정
@@ -502,10 +503,7 @@ export default function JogakPage() {
 
       {/* ═══ 글 목록 ═══ */}
       {loading ? (
-        <div className="py-20 text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-3 border-gray-200 border-t-violet-500" />
-          <p className="mt-3 text-sm" style={{ color: '#9CA3AF' }}>불러오는 중...</p>
-        </div>
+        <PostListSkeleton />
       ) : filtered.length === 0 ? (
         <div className="rounded-2xl border-2 border-dashed p-10 text-center" style={{ borderColor: '#D1D5DB' }}>
           <p className="text-4xl mb-3">

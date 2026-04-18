@@ -35,3 +35,22 @@ export function SkeletonList({ count = 3 }: { count?: number }) {
     </div>
   );
 }
+
+export function PostListSkeleton({ count = 6 }: { count?: number }) {
+  return (
+    <div className="overflow-hidden rounded-xl border border-neon-border">
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} className={`flex items-center justify-between px-5 py-4 ${i !== count - 1 ? 'border-b border-neon-border/50' : ''}`}>
+          <div className="min-w-0 flex-1 space-y-2">
+            <Skeleton className="h-4 w-3/4" variant="neon" />
+            <Skeleton className="h-3 w-1/3" variant="neon" />
+          </div>
+          <div className="flex shrink-0 gap-3 ml-4">
+            <Skeleton className="h-3 w-10" variant="neon" />
+            <Skeleton className="h-3 w-12" variant="neon" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}

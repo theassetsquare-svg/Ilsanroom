@@ -4,6 +4,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, deletePost, deleteComment, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
+import { PostListSkeleton } from '@/components/ui/Skeleton';
 
 const RichTextEditor = lazy(() => import('@/components/community/RichTextEditor'));
 import WriteHeader from '@/components/community/WriteHeader';
@@ -228,9 +229,7 @@ export default function PartyRecruitPage() {
 
         {/* Loading */}
         {loading && (
-          <div className="rounded-2xl border border-neon-border bg-neon-surface p-12 text-center text-neon-text-muted">
-            불러오는 중...
-          </div>
+          <PostListSkeleton />
         )}
 
         {/* Party Cards */}
