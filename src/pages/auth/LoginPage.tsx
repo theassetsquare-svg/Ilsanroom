@@ -49,24 +49,6 @@ export default function LoginPage() {
   const loginTimerRef = useRef<ReturnType<typeof setTimeout>>();
   useEffect(() => { return () => { if (loginTimerRef.current) clearTimeout(loginTimerRef.current); }; }, []);
 
-  const handleNaverLogin = () => {
-    const NAVER_CLIENT_ID = import.meta.env.VITE_NAVER_CLIENT_ID;
-    if (!NAVER_CLIENT_ID) {
-      alert('네이버 로그인 설정이 필요합니다');
-      return;
-    }
-    setLoading('naver');
-    const state = Math.random().toString(36).substring(2);
-    const callbackUrl = 'https://rkqnblbajhnehmxfnvri.supabase.co/functions/v1/naver-auth';
-    const params = new URLSearchParams({
-      response_type: 'code',
-      client_id: NAVER_CLIENT_ID,
-      redirect_uri: callbackUrl,
-      state,
-    });
-    window.location.href = `https://nid.naver.com/oauth2.0/authorize?${params}`;
-  };
-
   const handleLogin = (provider: 'kakao' | 'google') => {
     setLoading(provider);
     signInWith(provider);
@@ -172,18 +154,6 @@ export default function LoginPage() {
           {loading === 'google' ? '연결 중...' : 'Google로 시작하기'}
         </button>
 
-        {/* Naver */}
-        <button
-          onClick={() => handleNaverLogin()}
-          disabled={loading === 'naver'}
-          className="flex w-full items-center justify-center gap-3 rounded-xl py-3.5 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-60"
-          style={{ backgroundColor: '#03C75A', minHeight: '48px' }}
-        >
-          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="white">
-            <path d="M16.273 12.845L7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z"/>
-          </svg>
-          {loading === 'naver' ? '연결 중...' : '네이버로 시작하기'}
-        </button>
       </div>
 
       {/* Divider */}
