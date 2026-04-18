@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import PageViewTracker from '@/components/venue/PageViewTracker';
 import VenueHero from '@/components/venue/VenueHero';
@@ -51,6 +51,15 @@ export default function VenueDetailPage({
     return () => { document.body.classList.remove('venue-detail-page'); };
   }, []);
 
+  // "지금 N명 보는 중" — slug 기반 시드 + 시간대별 변동
+  const [viewingNow] = useState(() => {
+    const hour = new Date().getHours();
+    const hash = venue.slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+    const base = venue.isPremium ? 8 : 3;
+    const timeBonus = (hour >= 20 || hour < 4) ? 5 : (hour >= 17) ? 3 : 0;
+    return base + (hash % 7) + timeBonus + Math.floor(Math.random() * 3);
+  });
+
   const nameHasRegion = venue.nameKo.includes(regionKo);
   const breadcrumbItems = [
     { name: '놀쿨', url: '/' },
@@ -88,6 +97,11 @@ export default function VenueDetailPage({
         regionKo={venue.regionKo}
         slug={venue.slug}
       />
+
+      {/* 지금 보는 중 */}
+      <div className="mx-auto max-w-[1200px] px-4 pt-3 sm:px-6">
+        <p className="text-xs text-[#8B5CF6] font-medium">👀 지금 {viewingNow}명이 이 페이지를 보고 있습니다</p>
+      </div>
 
       {/* Top Content — 히어로 바로 아래 */}
       {topContent && (

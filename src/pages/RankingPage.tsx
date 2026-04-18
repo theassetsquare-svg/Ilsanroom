@@ -67,23 +67,25 @@ function getVenueScore(slug: string): number {
   return (32 + (hash % 13)) / 10 + getFavCount(slug) * 0.1;
 }
 
-/* ── 기간별 점수 변동 (시드 기반, 일간/주간/월간 차이 나게) ── */
+/* ── 기간별 점수 변동 (날짜+시간 기반, 매일 순위가 확실히 바뀜) ── */
 function getPeriodScore(slug: string, period: string): number {
   const base = getVenueScore(slug);
   const hash = slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  const now = new Date();
   if (period === 'daily') {
-    // 일간: 날짜 기반 변동폭 크게 (+/-0.3)
-    const dayHash = (hash + new Date().getDate()) % 7;
-    return Math.round((base + (dayHash - 3) * 0.1) * 10) / 10;
+    // 일간: 날짜+시간대 기반 큰 변동 (+/-0.5)
+    const daySeed = (hash * 31 + now.getDate() * 17 + now.getHours()) % 11;
+    return Math.round((base + (daySeed - 5) * 0.1) * 10) / 10;
   }
   if (period === 'weekly') {
-    // 주간: 주차 기반 변동폭 중간 (+/-0.2)
-    const weekNum = Math.floor(new Date().getDate() / 7);
-    const weekHash = (hash + weekNum) % 5;
-    return Math.round((base + (weekHash - 2) * 0.1) * 10) / 10;
+    // 주간: 주차+요일 기반 변동 (+/-0.3)
+    const weekNum = Math.floor(now.getDate() / 7);
+    const weekSeed = (hash * 13 + weekNum * 7 + now.getDay()) % 7;
+    return Math.round((base + (weekSeed - 3) * 0.1) * 10) / 10;
   }
-  // 월간: 가장 안정적, 기본 점수에 가까움
-  return base;
+  // 월간: 월 기반 소폭 변동
+  const monthSeed = (hash + now.getMonth()) % 5;
+  return Math.round((base + (monthSeed - 2) * 0.05) * 10) / 10;
 }
 
 /* ── 순위 변동 표시 ── */
