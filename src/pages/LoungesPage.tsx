@@ -57,6 +57,11 @@ export default function LoungesPage() {
 
       <BrowseOtherCategories currentPath="/lounges" />
 
+      <div className="rounded-xl bg-gradient-to-r from-amber-50 to-white border border-amber-200 p-4 text-center">
+        <p className="text-sm font-bold text-amber-700">👇 혼술 가능한 곳 · 예약 필수인 곳 · 칵테일 추천까지 아래에</p>
+        <p className="text-xs text-[#999] mt-1">라운지 처음이어도 바텐더 앞에서 안 쫄리는 법</p>
+      </div>
+
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             조명이 어둡다. 소파가 깊다. 바텐더가 흔드는 셰이커 소리만 들린다.

@@ -57,6 +57,11 @@ export default function YojeongPage() {
 
       <BrowseOtherCategories currentPath="/yojeong" />
 
+      <div className="rounded-xl bg-gradient-to-r from-emerald-50 to-white border border-emerald-200 p-4 text-center">
+        <p className="text-sm font-bold text-emerald-700">👇 코스 종류 · 접대 매너 · 예약 방법까지 아래에 전부 정리</p>
+        <p className="text-xs text-[#999] mt-1">거래처 만찬에서 실수 안 하는 법</p>
+      </div>
+
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             요정에 들어서면 가야금 선율이 흐르고, 15가지 한정식이 하나씩 차려진다.

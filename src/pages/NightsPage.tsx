@@ -59,6 +59,11 @@ export default function NightsPage() {
 
       <BrowseOtherCategories currentPath="/nights" />
 
+      <div className="rounded-xl bg-gradient-to-r from-blue-50 to-white border border-blue-200 p-4 text-center">
+        <p className="text-sm font-bold text-blue-600">👇 부킹 시스템 · 양주 시세 · 첫 방문 매너까지 아래에 전부 적었다</p>
+        <p className="text-xs text-[#999] mt-1">처음 가는 사람도 단골처럼 즐기는 방법</p>
+      </div>
+
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             토요일 밤 9시. 밴드가 첫 곡을 시작하면 홀 전체가 움직인다.

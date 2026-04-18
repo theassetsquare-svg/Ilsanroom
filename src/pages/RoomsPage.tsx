@@ -58,6 +58,11 @@ export default function RoomsPage() {
 
       <BrowseOtherCategories currentPath="/rooms" />
 
+      <div className="rounded-xl bg-gradient-to-r from-rose-50 to-white border border-rose-200 p-4 text-center">
+        <p className="text-sm font-bold text-rose-600">👇 룸 크기별 추천 · 예약 꿀팁 · 예산 가이드 아래에 전부 정리</p>
+        <p className="text-xs text-[#999] mt-1">회식·생일·모임 목적별로 딱 맞는 곳 찾는 법</p>
+      </div>
+
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
             문 닫으면 바깥 소리가 안 들린다. 우리만의 시간이 시작된다.

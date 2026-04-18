@@ -62,7 +62,12 @@ export default function ClubsPage() {
       {/* ═══ 다른 업종 바로 보기 — 업소 목록 바로 아래 (순환 동선) ═══ */}
       <BrowseOtherCategories currentPath="/clubs" />
 
-      {/* ═══ SEO 텍스트 — 업소 목록 아래로 이동 (구글은 읽되 유저 눈에 먼저 안 걸리게) ═══ */}
+      {/* ═══ 읽기 보상 티저 ═══ */}
+      <div className="rounded-xl bg-gradient-to-r from-violet-50 to-white border border-violet-200 p-4 text-center">
+        <p className="text-sm font-bold text-[#8B5CF6]">👇 아래 가이드를 끝까지 읽은 사람만 아는 꿀정보가 있다</p>
+        <p className="text-xs text-[#999] mt-1">드레스코드 · 피크타임 · 예산 · 혼자 가도 되는 곳까지 전부 정리</p>
+      </div>
+
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
         <p className="text-lg font-bold text-neon-text">
           금요일 밤 11시. 강남 한복판 지하로 내려가는 계단에 줄이 50m다.

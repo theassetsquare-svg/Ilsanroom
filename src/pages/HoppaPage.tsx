@@ -65,6 +65,11 @@ export default function HoppaPage() {
 
       <BrowseOtherCategories currentPath="/hoppa" />
 
+      <div className="rounded-xl bg-gradient-to-r from-pink-50 to-white border border-pink-200 p-4 text-center">
+        <p className="text-sm font-bold text-pink-600">👇 가격 · 안전 · 혼자 가는 법 · 호스트 매칭까지 아래에 전부 정리</p>
+        <p className="text-xs text-[#999] mt-1">처음이어도 걱정 없이 즐기는 완벽 가이드</p>
+      </div>
+
       {/* 여성 친화 안내 배너 — 로즈골드/핑크 */}
       <div className="rounded-2xl border border-pink-200 bg-gradient-to-r from-pink-50 via-white to-rose-50 p-6">
           <div className="flex items-center gap-3 mb-3">

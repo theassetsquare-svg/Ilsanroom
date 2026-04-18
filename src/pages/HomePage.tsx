@@ -385,8 +385,8 @@ export default function HomePage() {
     return top[d % top.length];
   }, [popularVenues]);
 
-  // === 실시간 접속자 (시뮬레이션) ===
-  const [liveCount, setLiveCount] = useState(() => {
+  // === 실시간 접속자 (세션 고정 — 흔들리면 가짜 티 남) ===
+  const liveCount = useMemo(() => {
     const now = new Date();
     const h = now.getHours();
     const dow = now.getDay();
@@ -394,12 +394,6 @@ export default function HomePage() {
     const timeMult = (h >= 20 || h < 2) ? 1.3 : (h >= 17) ? 1.0 : (h >= 12) ? 0.6 : 0.4;
     const daySeed = now.getFullYear() * 400 + (now.getMonth() + 1) * 32 + now.getDate();
     return Math.round(base * timeMult + (daySeed % 50));
-  });
-  useEffect(() => {
-    const iv = setInterval(() => {
-      setLiveCount(prev => prev + Math.floor(Math.random() * 7) - 3);
-    }, 8000);
-    return () => clearInterval(iv);
   }, []);
 
   return (
@@ -449,10 +443,16 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* 전국 도시 배지 — "서울만 아니다" */}
-          <p className="text-[11px] text-white/50 mb-2 text-center tracking-wide">
-            서울 · 부산 · 대구 · 대전 · 광주 · 울산 · 인천 · 수원 · 일산 · 제주 — 전국 {openVenues.length}곳
-          </p>
+          {/* 지역 퀵셀렉터 — 터치 한 번으로 "내 동네 있다" 확인 */}
+          <div className="flex items-center gap-1.5 mb-2 overflow-x-auto scrollbar-hide pb-0.5" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
+            <span className="text-[10px] text-white/40 shrink-0 mr-0.5">전국 {openVenues.length}곳</span>
+            {['강남', '홍대', '부산', '일산', '대구', '대전', '수원', '인천', '광주', '울산', '제주'].map(r => (
+              <button key={r} onClick={() => { setActiveTab(3); setActiveRegion(r); document.getElementById('feed-section')?.scrollIntoView({ behavior: 'smooth' }); }}
+                className="shrink-0 rounded-full bg-white/10 px-2.5 py-1 text-[10px] text-white/70 font-medium active:bg-white/20 transition">
+                {r}
+              </button>
+            ))}
+          </div>
 
           {/* 6개 카테고리 — 큰 터치 영역 */}
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
@@ -772,49 +772,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ 10. VS 배틀 2번째 — 스크롤 중간 인터랙션 ═══ */}
-      <section className="px-4 py-2 max-w-3xl mx-auto">
-        {(() => {
-          const poll = todayPolls[1];
-          const voted = vsVotes[1];
-          const hourShift = new Date().getHours() % 5 - 2;
-          const baseA = Math.max(20, Math.min(80, poll.aPct + hourShift));
-          const aPct = voted ? (voted === poll.a ? Math.min(baseA + 3, 85) : baseA) : baseA;
-          const bPct = 100 - aPct;
-          const participants = Math.floor(300 + (1 * 137 + new Date().getDate() * 53) % 700);
-          return (
-            <div className="rounded-2xl border border-[#EC4899]/15 bg-gradient-to-br from-[#FFFAFE] to-[#FFF5F7] p-4 shadow-sm">
-              <p className="text-sm font-bold text-[#111] mb-2 text-center">{poll.q}</p>
-              <div className="grid grid-cols-2 gap-2.5">
-                <button onClick={() => handleVsVote(1, poll.a)} disabled={!!voted}
-                  className={`relative rounded-xl overflow-hidden transition-all duration-300 ${voted === poll.a ? 'ring-2 ring-[#8B5CF6] scale-[1.02]' : voted ? 'opacity-60' : 'active:scale-95'}`}
-                  style={{ minHeight: 60 }}>
-                  {voted && <div className="absolute inset-0 bg-[#8B5CF6]/10 rounded-xl"><div className="absolute bottom-0 left-0 right-0 bg-[#8B5CF6]/20 transition-all duration-700 rounded-b-xl" style={{ height: `${aPct}%` }} /></div>}
-                  <div className="relative z-10 flex flex-col items-center justify-center h-full py-2">
-                    <span className="text-xl">{poll.aEmoji}</span>
-                    <span className="text-sm font-bold text-[#111]">{poll.a}</span>
-                    {voted && <span className="text-base font-black text-[#8B5CF6]">{aPct}%</span>}
-                  </div>
-                </button>
-                <button onClick={() => handleVsVote(1, poll.b)} disabled={!!voted}
-                  className={`relative rounded-xl overflow-hidden transition-all duration-300 ${voted === poll.b ? 'ring-2 ring-[#EC4899] scale-[1.02]' : voted ? 'opacity-60' : 'active:scale-95'}`}
-                  style={{ minHeight: 60 }}>
-                  {voted && <div className="absolute inset-0 bg-[#EC4899]/10 rounded-xl"><div className="absolute bottom-0 left-0 right-0 bg-[#EC4899]/20 transition-all duration-700 rounded-b-xl" style={{ height: `${bPct}%` }} /></div>}
-                  <div className="relative z-10 flex flex-col items-center justify-center h-full py-2">
-                    <span className="text-xl">{poll.bEmoji}</span>
-                    <span className="text-sm font-bold text-[#111]">{poll.b}</span>
-                    {voted && <span className="text-base font-black text-[#EC4899]">{bPct}%</span>}
-                  </div>
-                </button>
-              </div>
-              <p className="mt-1.5 text-[11px] text-center text-[#999]">{voted ? `${voted === poll.a ? poll.a : poll.b} 선택!` : '터치해서 투표'} · {participants.toLocaleString()}명 참여</p>
-            </div>
-          );
-        })()}
-      </section>
-
       {/* ═══ FEED — 정렬 탭 ═══ */}
-      <section className="mt-2 max-w-3xl mx-auto">
+      <section id="feed-section" className="mt-2 max-w-3xl mx-auto">
         {/* 정렬 탭 */}
         <div className="flex border-b border-gray-100">
           {feedTabs.map((tab, i) => (
@@ -969,13 +928,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ QUICK LINKS — 더 탐색하기 ═══ */}
-      <section className="px-4 py-3 max-w-3xl mx-auto">
+      {/* ═══ QUICK LINKS + CTA — 하단 마무리 ═══ */}
+      <section className="px-4 py-3 max-w-3xl mx-auto space-y-3">
         <div className="grid grid-cols-4 gap-2">
           {[
             { icon: '🔍', title: '비교', href: '/compare' },
             { icon: '📖', title: '가이드', href: '/guide' },
-            { icon: '🎰', title: '룰렛', href: '/roulette' },
+            { icon: '🆚', title: 'VS 투표', href: '/vs' },
             { icon: '📰', title: '매거진', href: '/magazine' },
           ].map(card => (
             <Link key={card.title} to={card.href} target="_blank" rel="noopener noreferrer"
@@ -985,15 +944,6 @@ export default function HomePage() {
             </Link>
           ))}
         </div>
-      </section>
-
-      {/* ═══ 실시간 활동 피드 — 사이트 활기 ═══ */}
-      <section className="px-4 py-2 max-w-3xl mx-auto">
-        <LiveActivityFeed maxItems={4} />
-      </section>
-
-      {/* ═══ GOOGLE/AI CTA ═══ */}
-      <section className="px-4 py-3 max-w-3xl mx-auto">
         <div className="rounded-2xl bg-violet-50 border border-violet-200 px-5 py-3 text-center">
           <p className="text-sm font-bold text-[#111]">
             구글 · ChatGPT · Gemini에서 <span className="text-lg text-[#8B5CF6]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>"놀쿨"</span> 검색하세요
