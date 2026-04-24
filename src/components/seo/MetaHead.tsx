@@ -43,6 +43,12 @@ const categoryDescriptions: Record<VenueCategory, { title: string; desc: string;
   },
 };
 
+interface Metadata {
+  title: string;
+  description: string;
+  openGraph?: { title: string; description: string };
+}
+
 export function generateCategoryMeta(category: VenueCategory): Metadata {
   const meta = categoryDescriptions[category];
   return {

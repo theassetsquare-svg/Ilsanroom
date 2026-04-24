@@ -198,32 +198,26 @@ export interface DbNewsletter {
   unsubscribed_at: string | null;
 }
 
-// Helper: make all fields optional except specified required ones
-type InsertType<T> = Partial<T> & Record<string, unknown>;
-
-// Supabase Database type for full type safety
-export interface Database {
-  public: {
-    Tables: {
-      users: { Row: DbUser; Insert: InsertType<DbUser>; Update: Partial<DbUser> };
-      venues: { Row: DbVenue; Insert: InsertType<DbVenue>; Update: Partial<DbVenue> };
-      reviews: { Row: DbReview; Insert: InsertType<DbReview>; Update: Partial<DbReview> };
-      events: { Row: DbEvent; Insert: InsertType<DbEvent>; Update: Partial<DbEvent> };
-      posts: { Row: DbPost; Insert: InsertType<DbPost>; Update: Partial<DbPost> };
-      comments: { Row: DbComment; Insert: InsertType<DbComment>; Update: Partial<DbComment> };
-      reservations: { Row: DbReservation; Insert: InsertType<DbReservation>; Update: Partial<DbReservation> };
-      venue_prices: { Row: DbVenuePrice; Insert: InsertType<DbVenuePrice>; Update: Partial<DbVenuePrice> };
-      subscriptions: { Row: DbSubscription; Insert: InsertType<DbSubscription>; Update: Partial<DbSubscription> };
-      invoices: { Row: DbInvoice; Insert: InsertType<DbInvoice>; Update: Partial<DbInvoice> };
-      analytics_events: { Row: DbAnalyticsEvent; Insert: InsertType<DbAnalyticsEvent>; Update: Partial<DbAnalyticsEvent> };
-      favorites: { Row: DbFavorite; Insert: InsertType<DbFavorite>; Update: Partial<DbFavorite> };
-      referrals: { Row: DbReferral; Insert: InsertType<DbReferral>; Update: Partial<DbReferral> };
-      webhook_logs: { Row: DbWebhookLog; Insert: InsertType<DbWebhookLog>; Update: Partial<DbWebhookLog> };
-      newsletter: { Row: DbNewsletter; Insert: InsertType<DbNewsletter>; Update: Partial<DbNewsletter> };
-    };
-    Functions: {
-      increment_views: { Args: { post_id: string }; Returns: void };
-      append_viewed_venue: { Args: { uid: string; slug: string }; Returns: void };
-    };
-  };
+export interface DbMessage {
+  id: string;
+  sender_id: string;
+  receiver_id: string;
+  content: string;
+  read_at: string | null;
+  created_at: string;
 }
+
+export interface DbLead {
+  id: string;
+  name: string | null;
+  email: string;
+  kakao_id: string | null;
+  source: string;
+  quiz_answers: Record<string, string> | null;
+  referral_code: string | null;
+  created_at: string;
+}
+
+// Supabase SDK v2.99 — Database generic 없이 사용
+// Row 타입은 select 결과에 as 캐스팅으로 적용
+export type Database = any;

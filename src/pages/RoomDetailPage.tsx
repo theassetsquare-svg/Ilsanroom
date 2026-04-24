@@ -28,7 +28,7 @@ export default function RoomDetailPage() {
   if (!venue || venue.category !== 'room') return <Navigate to="/404" replace />;
   useDocumentMeta(getHookingTitle(venue) + '', getHookingDescription(venue), getVenueOgImageBySlug(venue.slug));
 
-  const regionKo = regionNames[region] || region;
+  const regionKo = region ? regionNames[region] || region : '';
   const related = getRelatedVenues(venue, 6);
 
   return (

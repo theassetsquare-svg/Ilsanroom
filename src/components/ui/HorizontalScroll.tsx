@@ -126,9 +126,7 @@ export default function HorizontalScroll({
       )}
 
       {/* Hide scrollbar CSS */}
-      <style jsx>{`
-        div::-webkit-scrollbar { display: none; }
-      `}</style>
+      <style dangerouslySetInnerHTML={{ __html: `div::-webkit-scrollbar { display: none; }` }} />
     </div>
   );
 }

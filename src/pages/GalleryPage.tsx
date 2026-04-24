@@ -166,16 +166,16 @@ export default function GalleryPage() {
 
     const { data, error } = await supabase
       .from('comments')
-      .insert({ post_id: clipId, user_id: user.id, content: text } as any)
+      .insert({ post_id: clipId, user_id: user!.id, content: text } as any)
       .select('*')
       .single();
 
     if (!error && data) {
       const newComment: ClipComment = {
         id: (data as any).id,
-        user_id: user.id,
+        user_id: user!.id,
         content: text,
-        author: (user.user_metadata?.name as string) || '나',
+        author: (user!.user_metadata?.name as string) || '나',
         created_at: new Date().toISOString(),
       };
       setClips(prev => prev.map(c =>

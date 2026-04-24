@@ -9,11 +9,11 @@ import { PostListSkeleton } from '@/components/ui/Skeleton';
 const RichTextEditor = lazy(() => import('@/components/community/RichTextEditor'));
 import WriteHeader from '@/components/community/WriteHeader';
 
-type Category = "입문" | "절약" | "보호" | "예절";
+type Category = "입문" | "절약" | "보호" | "예절" | "안전";
 type Difficulty = "쉬움" | "보통" | "고급";
 
 const categoryIcons: Record<Category, string> = {
-  "입문": "🌱", "절약": "💰", "보호": "🛡️", "예절": "🤝",
+  "입문": "🌱", "절약": "💰", "보호": "🛡️", "예절": "🤝", "안전": "⚠️",
 };
 
 const difficultyColors: Record<Difficulty, string> = {
