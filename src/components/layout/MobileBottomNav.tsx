@@ -1,46 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { createClient } from '@/lib/supabase';
-
-interface NewPost { id: string; title: string; category: string; created_at: string; }
-
-function useNewPosts(user: any, pathname: string) {
-  const [count, setCount] = useState(0);
-  const [posts, setPosts] = useState<NewPost[]>([]);
-  const refresh = useCallback(async () => {
-    if (!user) { setCount(0); setPosts([]); return; }
-    // 커뮤니티 페이지에 있을 때는 seen_at 갱신 후 카운트 0
-    if (pathname.startsWith('/community')) {
-      try { localStorage.setItem('community_seen_at', String(Date.now())); } catch {}
-      setCount(0);
-      setPosts([]);
-      return;
-    }
-    const supabase = createClient();
-    if (!supabase) return;
-    try {
-      const seenAt = localStorage.getItem('community_seen_at') || '0';
-      const since = seenAt === '0'
-        ? new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
-        : new Date(Number(seenAt)).toISOString();
-      const { data, count: c } = await supabase
-        .from('posts')
-        .select('id, title, category, created_at', { count: 'exact' })
-        .gt('created_at', since)
-        .order('created_at', { ascending: false })
-        .limit(10);
-      setCount(c ?? 0);
-      setPosts((data || []) as NewPost[]);
-    } catch { /* noop */ }
-  }, [user, pathname]);
-  useEffect(() => { refresh(); }, [refresh]);
-  useEffect(() => {
-    if (!user) return;
-    const t = setInterval(refresh, 60_000);
-    return () => clearInterval(t);
-  }, [user, refresh]);
-  return { count, posts, refresh };
-}
+import { useNewPosts, type NewPost } from '@/hooks/useNewPosts';
 
 const CATEGORY_LABELS: Record<string, string> = {
   reviews: '리뷰', discussion: '수다', party: '파티', tips: '꿀팁',

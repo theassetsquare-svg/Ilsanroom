@@ -53,7 +53,7 @@ export function PageLiveCounter({ pageName, baseCount = 30, className = '' }: { 
 
     const timer = setInterval(() => {
       setCount(prev => Math.max(4, prev + Math.floor(Math.random() * 5) - 2));
-    }, 7000 + Math.floor(Math.random() * 4000));
+    }, 15000);
 
     return () => clearInterval(timer);
   }, [baseCount]);
@@ -99,7 +99,7 @@ export function TodayStats({ className = '' }: { className?: string }) {
         posts: Math.random() > 0.7 ? prev.posts + 1 : prev.posts,
         comments: Math.random() > 0.4 ? prev.comments + 1 : prev.comments,
       }));
-    }, 12000 + Math.floor(Math.random() * 8000));
+    }, 20000);
 
     return () => clearInterval(timer);
   }, []);
@@ -139,7 +139,7 @@ export function VenueCardStats({ slug, className = '' }: { slug: string; classNa
         todayViews: prev.todayViews + Math.floor(Math.random() * 3),
         weekInquiry: prev.weekInquiry,
       }));
-    }, 9000 + Math.floor(Math.random() * 5000));
+    }, 15000);
 
     return () => clearInterval(timer);
   }, [slug]);
@@ -214,7 +214,7 @@ export function RecentJoinTicker({ className = '' }: { className?: string }) {
       if (Math.random() > 0.6) {
         setCount(prev => prev + 1);
       }
-    }, 25000 + Math.floor(Math.random() * 15000));
+    }, 30000);
 
     return () => clearInterval(timer);
   }, []);
@@ -240,7 +240,7 @@ export function GuideReadCount({ category, className = '' }: { category: string;
   useEffect(() => {
     const timer = setInterval(() => {
       if (Math.random() > 0.5) setCount(prev => prev + 1);
-    }, 15000 + Math.floor(Math.random() * 10000));
+    }, 25000);
     return () => clearInterval(timer);
   }, []);
 

@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef, useMemo, useCallback, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback, memo, lazy, Suspense } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues as localVenues, getPopularVenues } from '@/data/venues';
@@ -98,14 +98,14 @@ function getTodayFortune() {
 /* ── Tabs ── */
 const feedTabs = ['🔥인기', '🆕신규', '⭐추천', '📍지역별'] as const;
 
-/* ── VenueCard — 재사용 카드 컴포넌트 ── */
-function VenueCard({ venue, favorites, toggleFavorite, rank }: { venue: Venue; favorites: Set<string>; toggleFavorite: (id: string) => void; rank?: number }) {
+/* ── VenueCard — 재사용 카드 컴포넌트 (memo로 불필요한 리렌더링 방지) ── */
+const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, rank }: { venue: Venue; isFavorite: boolean; toggleFavorite: (id: string) => void; rank?: number }) {
   return (
     <div className="relative">
       <Link target="_blank" rel="noopener noreferrer" to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
         <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
           <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
-            <img src={`/venues/${venue.slug}-1.jpg`} alt={venue.nameKo} loading="lazy"
+            <img src={`/venues/${venue.slug}-1.jpg`} alt={venue.nameKo} loading="lazy" width={300} height={300}
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
               className="absolute inset-0 w-full h-full object-cover z-[1]" />
             <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${
@@ -138,13 +138,13 @@ function VenueCard({ venue, favorites, toggleFavorite, rank }: { venue: Venue; f
       </Link>
       <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(venue.id); }}
         className="absolute top-2 right-2 z-[3] flex h-8 w-8 items-center justify-center rounded-full bg-black/30 backdrop-blur-sm" aria-label="찜하기">
-        <svg className={`h-4 w-4 ${favorites.has(venue.id) ? 'text-red-500 fill-red-500' : 'text-white'}`} fill={favorites.has(venue.id) ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+        <svg className={`h-4 w-4 ${isFavorite ? 'text-red-500 fill-red-500' : 'text-white'}`} fill={isFavorite ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
         </svg>
       </button>
     </div>
   );
-}
+});
 
 /* ══════════════════════════════════════════════════════ */
 /*                    HOMEPAGE                            */
@@ -341,6 +341,8 @@ export default function HomePage() {
     const d = new Date().getDate();
     return [vsPolls[d % vsPolls.length], vsPolls[(d + 3) % vsPolls.length]];
   }, []);
+  const vsTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (vsTimerRef.current) clearTimeout(vsTimerRef.current); }, []);
   const handleVsVote = useCallback((pollIdx: number, opt: string) => {
     if (vsVotes[pollIdx] || vsAnimating) return;
     setVsAnimating(true);
@@ -349,8 +351,7 @@ export default function HomePage() {
       try { localStorage.setItem(vsDateKey, JSON.stringify(next)); } catch {}
       return next;
     });
-    const timer = setTimeout(() => setVsAnimating(false), 600);
-    return () => clearTimeout(timer);
+    vsTimerRef.current = setTimeout(() => setVsAnimating(false), 600);
   }, [vsVotes, vsAnimating, vsDateKey]);
 
   // === Fortune ===
@@ -362,16 +363,17 @@ export default function HomePage() {
   // === Roulette ===
   const [rouletteResult, setRouletteResult] = useState<Venue | null>(null);
   const [rouletteSpinning, setRouletteSpinning] = useState(false);
-  const spinRoulette = () => {
+  const rouletteTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (rouletteTimerRef.current) clearTimeout(rouletteTimerRef.current); }, []);
+  const spinRoulette = useCallback(() => {
     if (rouletteSpinning) return;
     setRouletteSpinning(true);
     setRouletteResult(null);
-    const timer = setTimeout(() => {
+    rouletteTimerRef.current = setTimeout(() => {
       setRouletteResult(openVenues[Math.floor(Math.random() * openVenues.length)]);
       setRouletteSpinning(false);
     }, 1500);
-    return () => clearTimeout(timer);
-  };
+  }, [rouletteSpinning, openVenues]);
 
   const fortune = getTodayFortune();
   const fortuneScore = useMemo(() => Math.floor(60 + (new Date().getDate() * 7 + new Date().getMonth() * 13) % 40), []);
@@ -542,7 +544,7 @@ export default function HomePage() {
         </div>
         <div className="grid grid-cols-2 gap-2.5">
           {popularVenues.slice(0, 4).map((v, i) => (
-            <VenueCard key={v.id} venue={v} favorites={favorites} toggleFavorite={toggleFavorite} rank={i + 1} />
+            <VenueCard key={v.id} venue={v} isFavorite={favorites.has(v.id)} toggleFavorite={toggleFavorite} rank={i + 1} />
           ))}
         </div>
       </section>
@@ -726,7 +728,7 @@ export default function HomePage() {
               featuredVenue.category === 'yojeong' ? 'from-emerald-600 to-teal-800' :
               'from-pink-600 to-rose-800'
             }`} style={{ minHeight: 130 }}>
-              <img src={`/venues/${featuredVenue.slug}-1.jpg`} alt={featuredVenue.nameKo} loading="lazy"
+              <img src={`/venues/${featuredVenue.slug}-1.jpg`} alt={featuredVenue.nameKo} width={600} height={300} loading="lazy"
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                 className="absolute inset-0 w-full h-full object-cover z-[1] opacity-60" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-[2]" />
@@ -752,7 +754,7 @@ export default function HomePage() {
           {popularVenues.slice(0, 8).map((v, i) => (
             <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} target="_blank" rel="noopener noreferrer" className="flex-shrink-0" style={{ width: 120 }}>
               <div className="relative rounded-xl overflow-hidden" style={{ width: 120, height: 120 }}>
-                <img src={`/venues/${v.slug}-1.jpg`} alt={v.nameKo} loading="lazy"
+                <img src={`/venues/${v.slug}-1.jpg`} alt={v.nameKo} width={120} height={120} loading="lazy"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   className="absolute inset-0 w-full h-full object-cover z-[1]" />
                 <div className={`absolute inset-0 flex flex-col items-center justify-center ${
@@ -840,7 +842,7 @@ export default function HomePage() {
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {list.map(venue => (
-                    <VenueCard key={venue.id} venue={venue} favorites={favorites} toggleFavorite={toggleFavorite} />
+                    <VenueCard key={venue.id} venue={venue} isFavorite={favorites.has(venue.id)} toggleFavorite={toggleFavorite} />
                   ))}
                 </div>
               </div>
@@ -852,7 +854,7 @@ export default function HomePage() {
             {feedVenues.map((venue, idx) => {
               const cards = [];
 
-              cards.push(<VenueCard key={venue.id} venue={venue} favorites={favorites} toggleFavorite={toggleFavorite} rank={activeTab === 0 ? idx + 1 : undefined} />);
+              cards.push(<VenueCard key={venue.id} venue={venue} isFavorite={favorites.has(venue.id)} toggleFavorite={toggleFavorite} rank={activeTab === 0 ? idx + 1 : undefined} />);
 
               // 8번째 — 커뮤니티 CTA 1번만
               if (idx + 1 === 8) {

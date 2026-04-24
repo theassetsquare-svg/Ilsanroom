@@ -109,6 +109,8 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
                     <img
                       src={`/venues/${venue.slug}-1.jpg`}
                       alt={venue.nameKo}
+                      width={300}
+                      height={300}
                       loading="lazy"
                       onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                       className="absolute inset-0 w-full h-full object-cover z-[1]"

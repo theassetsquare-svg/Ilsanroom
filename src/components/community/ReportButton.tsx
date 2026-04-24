@@ -30,7 +30,7 @@ export default function ReportButton({ targetId, targetType, className = '' }: R
   const handleSubmit = () => {
     if (!reason) return;
     // In production: POST to /api/v1/reports
-    console.log('[Report]', { targetId, targetType, reason, detail });
+    // TODO: POST to /api/v1/reports
     setSubmitted(true);
     timerRef.current = setTimeout(() => {
       setOpen(false);

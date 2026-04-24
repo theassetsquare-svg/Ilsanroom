@@ -13,6 +13,8 @@ export function useAuth() {
       return;
     }
 
+    let retryTimer: ReturnType<typeof setTimeout> | null = null;
+
     // 1) 로컬 저장소에서 세션 로드 (빠름, 서버 요청 없음)
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -25,7 +27,7 @@ export function useAuth() {
 
       // 토큰 갱신 실패 시 자동 재시도 (네트워크 일시 오류 등)
       if (event === 'TOKEN_REFRESHED' && !session) {
-        setTimeout(() => {
+        retryTimer = setTimeout(() => {
           supabase.auth.getSession().then(({ data: { session: retrySession } }) => {
             setUser(retrySession?.user ?? null);
           });
@@ -59,6 +61,7 @@ export function useAuth() {
     return () => {
       subscription.unsubscribe();
       document.removeEventListener('visibilitychange', handleVisibility);
+      if (retryTimer) clearTimeout(retryTimer);
     };
   }, []);
 

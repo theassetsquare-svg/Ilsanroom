@@ -31,7 +31,7 @@ export function initSentry() {
     );
   });
 
-  console.log('[Sentry] Initialized');
+  if (import.meta.env.MODE === 'development') console.log('[Sentry] Initialized');
 }
 
 // Capture error
@@ -52,11 +52,12 @@ export function captureError(error: Error, extra?: Record<string, unknown>) {
 
   // In production: send to Sentry API
   if (SENTRY_DSN) {
-    console.error('[Sentry Event]', JSON.stringify(event));
+    // TODO: POST to Sentry ingest API
   }
 
-  // Always log to console in development
-  console.error('[Sentry]', event.message, extra);
+  if (import.meta.env.MODE === 'development') {
+    console.error('[Sentry]', event.message, extra);
+  }
 }
 
 // Capture message

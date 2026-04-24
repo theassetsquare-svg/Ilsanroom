@@ -1,44 +1,7 @@
-
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { createClient } from '@/lib/supabase';
-
-interface NewPost { id: string; title: string; category: string; created_at: string; }
-
-/** 새로 올라온 커뮤니티 글 수 + 목록 조회 */
-function useNewPosts(user: any) {
-  const [count, setCount] = useState(0);
-  const [posts, setPosts] = useState<NewPost[]>([]);
-
-  const refresh = useCallback(async () => {
-    if (!user) { setCount(0); setPosts([]); return; }
-    const supabase = createClient();
-    if (!supabase) return;
-    try {
-      const seenAt = localStorage.getItem('community_seen_at') || '0';
-      const since = seenAt === '0'
-        ? new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
-        : new Date(Number(seenAt)).toISOString();
-      const { data, count: c } = await supabase
-        .from('posts')
-        .select('id, title, category, created_at', { count: 'exact' })
-        .gt('created_at', since)
-        .order('created_at', { ascending: false })
-        .limit(10);
-      setCount(c ?? 0);
-      setPosts((data || []) as NewPost[]);
-    } catch { /* noop */ }
-  }, [user]);
-
-  useEffect(() => { refresh(); }, [refresh]);
-  useEffect(() => {
-    if (!user) return;
-    const t = setInterval(refresh, 60_000);
-    return () => clearInterval(t);
-  }, [user, refresh]);
-
-  return { count, posts, refresh };
-}
+import { useNewPosts, type NewPost } from '@/hooks/useNewPosts';
 
 /* ── 6종류 업소 카테고리 — 인기순 (헤더 상단 노출) ── */
 const categoryTabs = [
@@ -132,7 +95,7 @@ export default function Header() {
   const [notifOpen, setNotifOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const { pathname } = useLocation();
-  const { count: newPostCount, posts: newPosts, refresh: refreshPosts } = useNewPosts(user);
+  const { count: newPostCount, posts: newPosts, refresh: refreshPosts } = useNewPosts(user, pathname);
 
   const markAllRead = useCallback(() => {
     try { localStorage.setItem('community_seen_at', String(Date.now())); } catch {}

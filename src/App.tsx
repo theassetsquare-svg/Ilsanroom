@@ -108,19 +108,19 @@ export default function App() {
           {/* Category listing */}
           <Route path="/clubs" element={<ClubsPage />} />
           <Route path="/clubs/:region" element={<RegionalClubsPage />} />
-          <Route path="/clubs/:region/:slug" element={<ClubDetailPage />} />
+          <Route path="/clubs/:region/:slug" element={<ErrorBoundary resetKey={location.pathname}><ClubDetailPage /></ErrorBoundary>} />
           <Route path="/nights" element={<NightsPage />} />
-          <Route path="/nights/:slug" element={<NightDetailPage />} />
+          <Route path="/nights/:slug" element={<ErrorBoundary resetKey={location.pathname}><NightDetailPage /></ErrorBoundary>} />
           <Route path="/lounges" element={<LoungesPage />} />
-          <Route path="/lounges/:slug" element={<LoungeDetailPage />} />
+          <Route path="/lounges/:slug" element={<ErrorBoundary resetKey={location.pathname}><LoungeDetailPage /></ErrorBoundary>} />
           <Route path="/rooms" element={<RoomsPage />} />
           <Route path="/rooms/:region" element={<RegionalRoomsPage />} />
-          <Route path="/rooms/:region/:slug" element={<RoomDetailPage />} />
+          <Route path="/rooms/:region/:slug" element={<ErrorBoundary resetKey={location.pathname}><RoomDetailPage /></ErrorBoundary>} />
           <Route path="/yojeong" element={<YojeongPage />} />
           <Route path="/yojeong/:region" element={<RegionalYojeongPage />} />
-          <Route path="/yojeong/:region/:slug" element={<YojeongDetailPage />} />
+          <Route path="/yojeong/:region/:slug" element={<ErrorBoundary resetKey={location.pathname}><YojeongDetailPage /></ErrorBoundary>} />
           <Route path="/hoppa" element={<HoppaPage />} />
-          <Route path="/hoppa/:slug" element={<HoppaDetailPage />} />
+          <Route path="/hoppa/:slug" element={<ErrorBoundary resetKey={location.pathname}><HoppaDetailPage /></ErrorBoundary>} />
           {/* Interactive */}
           <Route path="/guide" element={<GuidePage />} />
           <Route path="/quiz" element={<QuizPage />} />
@@ -143,7 +143,7 @@ export default function App() {
           <Route path="/community/fashion" element={<FashionPage />} />
           <Route path="/community/jogak" element={<JogakPage />} />
           <Route path="/community/guidelines" element={<GuidelinesPage />} />
-          <Route path="/community/post/:id" element={<PostDetailPage />} />
+          <Route path="/community/post/:id" element={<ErrorBoundary resetKey={location.pathname}><PostDetailPage /></ErrorBoundary>} />
           <Route path="/messages" element={<MessagesPage />} />
           {/* Legal & Info */}
           <Route path="/privacy" element={<PrivacyPage />} />

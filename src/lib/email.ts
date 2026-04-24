@@ -46,14 +46,8 @@ export async function sendEmail(options: EmailOptions): Promise<EmailResult> {
     ? options.to.join(", ")
     : options.to;
 
-  console.log(`[email] sendEmail`);
-  console.log(`  from: ${options.from ?? DEFAULT_FROM}`);
-  console.log(`  to:   ${recipients}`);
-  console.log(`  subj: ${options.subject}`);
-  if (options.cc) console.log(`  cc:   ${options.cc}`);
-  if (options.bcc) console.log(`  bcc:  ${options.bcc}`);
-  if (options.attachments) {
-    console.log(`  attachments: ${options.attachments.length}`);
+  if (import.meta.env.MODE === 'development') {
+    console.log(`[email] sendEmail → to: ${recipients}, subj: ${options.subject}`);
   }
 
   // TODO: Integrate with actual email provider
