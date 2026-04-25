@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 import Card from '@/components/ui/Card';
@@ -7,7 +7,7 @@ import Badge from '@/components/ui/Badge';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import { getVenuesByCategoryAndRegion } from '@/data/venues';
 import type { Venue } from '@/types';
-import { MidContentHook, ReadFinishCount } from '@/components/engagement/ReadingEngagement';
+
 import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter, ListMidHook, TopPicksMini } from '@/components/venue/CategoryListingEngagement';
 
 

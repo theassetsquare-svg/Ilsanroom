@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
-import { getOrCreateReferralCode, getReferralStats } from '@/lib/growth-engine';
+import { getReferralStats } from '@/lib/growth-engine';
 
 const SHARE_TEMPLATES = [
   { platform: '카카오톡', icon: '💬', color: 'bg-yellow-400 text-yellow-900', message: '나만 아는 비밀 업소 리스트 — 너도 볼래? 무료 체험 →' },

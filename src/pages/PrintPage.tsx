@@ -1,6 +1,6 @@
 import { useParams , Navigate } from 'react-router-dom';
 
-import { getVenueBySlug, venues } from '@/data/venues';
+import { getVenueBySlug } from '@/data/venues';
 import PrintButton from '@/components/ui/PrintButton';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 

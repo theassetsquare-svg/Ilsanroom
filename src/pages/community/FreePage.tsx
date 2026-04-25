@@ -4,7 +4,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
 import { getSeedNickname } from '@/lib/fake-users';
-import { PageLiveCounter, CommunityPulse } from '@/components/ui/LiveStats';
+import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { PostListSkeleton } from '@/components/ui/Skeleton';
 
 const RichTextEditor = lazy(() => import('@/components/community/RichTextEditor'));

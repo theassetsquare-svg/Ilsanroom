@@ -4,7 +4,7 @@ import VenueDetailPage from '@/components/venue/VenueDetailPage';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { getHookingTitle, getHookingDescription } from '@/lib/seo-hooks';
 import { getVenueOgImageBySlug } from '@/lib/og-image';
-import { getVenueBySlug, getRelatedVenues, getVenuesByCategory } from '@/data/venues';
+import { getVenueBySlug, getRelatedVenues } from '@/data/venues';
 
 const defaultFaqs = (name: string) => [
   { question: `${name}은 예약 필수인가요, 워크인도 가능한가요?`, answer: `평일 저녁에는 워크인 입장이 비교적 수월하지만, 주말이나 공휴일 전야에는 만석인 경우가 많아 최소 하루 전 예약을 권장합니다. 카카오톡이나 전화로 간편하게 잡으면 됩니다.` },

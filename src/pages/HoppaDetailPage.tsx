@@ -4,7 +4,7 @@ import VenueDetailPage from '@/components/venue/VenueDetailPage';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { getHookingTitle, getHookingDescription } from '@/lib/seo-hooks';
 import { getVenueOgImageBySlug } from '@/lib/og-image';
-import { getVenueBySlug, getRelatedVenues, getVenuesByCategory } from '@/data/venues';
+import { getVenueBySlug, getRelatedVenues } from '@/data/venues';
 
 const defaultFaqs = (name: string) => [
   { question: `${name} 이용 절차와 시스템은 어떻게 되나요?`, answer: `입장 후 룸에 안내되면 담당 호스트가 배정됩니다. 음료를 주문하고 대화·게임·노래 등을 함께 즐기는 방식이며, 이용 시간은 보통 2시간 기본 세트로 운영됩니다. 첫 방문이라면 입구에서 시스템 안내를 받을 수 있습니다.` },

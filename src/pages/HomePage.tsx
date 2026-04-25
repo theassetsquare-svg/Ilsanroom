@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef, useMemo, useCallback, memo, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues as localVenues, getPopularVenues } from '@/data/venues';
@@ -7,11 +7,8 @@ import type { Venue } from '@/types';
 import { createClient } from '@/lib/supabase';
 import { getSeedNickname } from '@/lib/fake-users';
 import JsonLd from '@/components/seo/JsonLd';
-import ErrorBoundary from '@/components/ui/ErrorBoundary';
-import KakaoShareButton from '@/components/engagement/KakaoShareButton';
 import { useFavorites as useFavoritesHook } from '@/hooks/useFavorites';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
-import { TodayStats, RecentJoinTicker } from '@/components/ui/LiveStats';
 import { articles as magazineArticles } from '@/data/magazine-articles';
 
 /* ── Helpers ── */
@@ -29,6 +26,7 @@ function getCategoryHref(category: string, slug: string, region: string) {
 
 const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
 const catEmoji: Record<string, string> = { club: '🎵', night: '🌙', lounge: '🍸', room: '🚪', yojeong: '🏮', hoppa: '🥂' };
+const catHrefs: Record<string, string> = { club: '/clubs', night: '/nights', lounge: '/lounges', room: '/rooms', yojeong: '/yojeong', hoppa: '/hoppa' };
 
 /* ── Region labels for 지역별 tab filter ── */
 const regionLabels = ['전체', '강남', '압구정', '홍대', '이태원', '부산', '대구', '광주', '대전', '수원', '일산', '인천', '성남', '천안', '울산'];
@@ -184,7 +182,7 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   const openVenues = useMemo(() => localVenues.filter(v => v.status !== 'closed_or_unclear'), []);
-  const popularVenues = getPopularVenues(20);
+  const popularVenues = useMemo(() => getPopularVenues(20), []);
 
   // === 네이버 스타일 실시간 검색 ===
   const [searchQuery, setSearchQuery] = useState('');
@@ -313,8 +311,8 @@ export default function HomePage() {
   }, []);
 
   // === Display posts (DB 있으면 DB, 없으면 시드) ===
-  const displayPosts = hotPosts.length > 0 ? hotPosts : seedHotPosts;
-  const displayJogak = jogakList.length > 0 ? jogakList : seedJogakList;
+  const displayPosts = useMemo(() => hotPosts.length > 0 ? hotPosts : seedHotPosts, [hotPosts]);
+  const displayJogak = useMemo(() => jogakList.length > 0 ? jogakList : seedJogakList, [jogakList]);
 
   // === TAB STATE ===
   const [activeTab, setActiveTab] = useState(0);
@@ -408,7 +406,7 @@ export default function HomePage() {
     }, 1500);
   }, [rouletteSpinning, openVenues]);
 
-  const fortune = getTodayFortune();
+  const fortune = useMemo(() => getTodayFortune(), []);
   const fortuneScore = useMemo(() => Math.floor(60 + (new Date().getDate() * 7 + new Date().getMonth() * 13) % 40), []);
 
   // === Category counts ===
@@ -582,7 +580,6 @@ export default function HomePage() {
               const topCat = Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'club';
               const topVenue = categoryTop3[topCat]?.[0];
               const copy = dreamCustomerCopy[topCat];
-              const catHrefs: Record<string, string> = { club: '/clubs', night: '/nights', lounge: '/lounges', room: '/rooms', yojeong: '/yojeong', hoppa: '/hoppa' };
               return (
                 <div className="space-y-2">
                   <p className="text-lg font-black text-[#111]">{catEmoji[topCat]} {copy?.hook}</p>
@@ -923,7 +920,6 @@ export default function HomePage() {
           {(['club', 'night', 'room', 'lounge', 'yojeong', 'hoppa'] as const).map(cat => {
             const top = categoryTop3[cat];
             const copy = dreamCustomerCopy[cat];
-            const catHrefs: Record<string, string> = { club: '/clubs', night: '/nights', lounge: '/lounges', room: '/rooms', yojeong: '/yojeong', hoppa: '/hoppa' };
             if (!top || top.length === 0) return null;
             return (
               <div key={cat} className="rounded-2xl border border-gray-100 bg-white p-3">

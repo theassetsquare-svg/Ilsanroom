@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { Link } from 'react-router-dom';
 import { PageLiveCounter, GuideReadCount } from '@/components/ui/LiveStats';

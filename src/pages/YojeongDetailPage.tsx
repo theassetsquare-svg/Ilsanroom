@@ -4,7 +4,7 @@ import VenueDetailPage from '@/components/venue/VenueDetailPage';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { getHookingTitle, getHookingDescription } from '@/lib/seo-hooks';
 import { getVenueOgImageBySlug } from '@/lib/og-image';
-import { getVenueBySlug, getRelatedVenues, getVenuesByCategory } from '@/data/venues';
+import { getVenueBySlug, getRelatedVenues } from '@/data/venues';
 
 const regionNames: Record<string, string> = {
   gangnam: '강남', ilsan: '일산', cheongdam: '청담', jongno: '종로',
