@@ -12,6 +12,7 @@ import KakaoShareButton from '@/components/engagement/KakaoShareButton';
 import { useFavorites as useFavoritesHook } from '@/hooks/useFavorites';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import { TodayStats, RecentJoinTicker } from '@/components/ui/LiveStats';
+import { articles as magazineArticles } from '@/data/magazine-articles';
 
 /* ── Helpers ── */
 function getCategoryHref(category: string, slug: string, region: string) {
@@ -74,6 +75,34 @@ const allFortunes = [
   { emoji: '🎭', title: '변신의 밤', text: '평소와 다른 스타일을 시도하라. 오늘 밤은 반전이다.', lucky: '요정', luckyColor: '에메랄드', luckyNum: 6, tip: '드레스 코드를 한 단계 올리면 대접이 달라진다.' },
   { emoji: '💎', title: '럭셔리 운', text: '오늘은 좋은 곳에 가야 한다. 아끼지 마라, 돌아온다.', lucky: '프리미엄 업소', luckyColor: '다이아', luckyNum: 4, tip: '테이블 예약하면 3배 더 즐긴다. 투자하라.' },
   { emoji: '🎪', title: '파티 본능', text: '음악이 커질수록 기분이 올라간다. 미친 듯이 놀아라.', lucky: '클럽', luckyColor: '네온그린', luckyNum: 11, tip: '혼자 춤추는 사람이 가장 멋있다. 눈치 보지 마라.' },
+];
+
+/* ── 미니 성향테스트 — 3탭으로 /quiz 유도 ── */
+const miniQuizQuestions = [
+  { q: '오늘 밤 기분은?', opts: [{ emoji: '🔥', label: '미친듯이 놀고싶다', result: 'club' }, { emoji: '🍸', label: '조용히 한잔', result: 'lounge' }, { emoji: '💃', label: '새로운 만남', result: 'night' }] },
+  { q: '누구랑 갈 거야?', opts: [{ emoji: '👥', label: '친구들이랑', result: 'club' }, { emoji: '🤝', label: '거래처 접대', result: 'room' }, { emoji: '🙋', label: '혼자 가도 OK', result: 'lounge' }] },
+  { q: '분위기 취향은?', opts: [{ emoji: '🎶', label: 'EDM 쿵쿵', result: 'club' }, { emoji: '🏮', label: '격 있는 전통', result: 'yojeong' }, { emoji: '🥂', label: '화끈한 서비스', result: 'hoppa' }] },
+];
+
+/* ── 카테고리별 드림고객 카피 (클릭 유도용) ── */
+const dreamCustomerCopy: Record<string, { hook: string; painPoint: string; cta: string }> = {
+  club: { hook: '줄 안 서는 클럽 알려줄까?', painPoint: '어디가 핫한지 모를 때', cta: '인기 클럽 보기' },
+  night: { hook: '내상 0% 나이트, 후기로 증명', painPoint: '내상 입기 싫을 때', cta: '검증된 나이트 보기' },
+  lounge: { hook: '분위기 확실한 곳만 골랐다', painPoint: '소개팅·데이트 장소 고민', cta: '라운지 둘러보기' },
+  room: { hook: '접대 실패 없는 룸, 검증 완료', painPoint: '바가지 걱정될 때', cta: '프라이빗 룸 보기' },
+  yojeong: { hook: 'VIP가 인정한 요정', painPoint: '격 있는 장소 찾을 때', cta: '전통 요정 보기' },
+  hoppa: { hook: '여자들이 직접 쓴 솔직후기', painPoint: '안전하고 재미있는 곳', cta: '호빠 후기 보기' },
+};
+
+/* ── 트렌딩 키워드 (요일별 회전) ── */
+const trendingKeywords = [
+  ['강남클럽', '홍대나이트', '부산룸', '일산요정', '호빠후기', '강남라운지'],
+  ['이태원클럽', '수원나이트', '해운대룸', '대전요정', '강남호빠', '압구정라운지'],
+  ['홍대클럽', '일산나이트', '강남룸', '광주요정', '부산호빠', '잠실라운지'],
+  ['부산클럽', '대구나이트', '수원룸', '대구요정', '인천호빠', '홍대라운지'],
+  ['강남EDM', '인천나이트', '대전룸', '전주요정', '대전호빠', '강남바'],
+  ['클럽추천', '나이트추천', '룸추천', '접대장소', '호빠추천', '분위기바'],
+  ['오늘클럽', '주말나이트', '회식룸', '요정추천', '여자호빠', '데이트장소'],
 ];
 
 /* ── Community hot posts — DB에서 가져옴 ── */
@@ -354,6 +383,10 @@ export default function HomePage() {
     vsTimerRef.current = setTimeout(() => setVsAnimating(false), 600);
   }, [vsVotes, vsAnimating, vsDateKey]);
 
+  // === Mini Quiz ===
+  const [quizStep, setQuizStep] = useState(-1); // -1 = not started
+  const [quizAnswers, setQuizAnswers] = useState<string[]>([]);
+
   // === Fortune ===
   const [fortuneRevealed, setFortuneRevealed] = useState(false);
 
@@ -384,6 +417,28 @@ export default function HomePage() {
     openVenues.forEach(v => { counts[v.category] = (counts[v.category] || 0) + 1; });
     return counts;
   }, [openVenues]);
+
+  // === Category TOP 3 (각 카테고리별 상위 3개) ===
+  const categoryTop3 = useMemo(() => {
+    const cats = ['club', 'night', 'lounge', 'room', 'yojeong', 'hoppa'] as const;
+    const result: Record<string, Venue[]> = {};
+    cats.forEach(cat => {
+      result[cat] = openVenues
+        .filter(v => v.category === cat)
+        .sort((a, b) => (b.rating * 10 + b.reviewCount) - (a.rating * 10 + a.reviewCount))
+        .slice(0, 3);
+    });
+    return result;
+  }, [openVenues]);
+
+  // === Today's trending keywords ===
+  const todayTrending = useMemo(() => {
+    const dow = new Date().getDay();
+    return trendingKeywords[dow];
+  }, []);
+
+  // === Magazine teasers (최신 3개) ===
+  const magazineTeasers = useMemo(() => magazineArticles.slice(0, 3), []);
 
   // === 오늘의 추천 업소 (큰 카드) ===
   const featuredVenue = useMemo(() => {
@@ -487,7 +542,78 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ 2. 실시간 한줄 피드 — "사람이 있다" 즉각 인식 ═══ */}
+      {/* ═══ 2. 미니 성향테스트 — "3초 만에 오늘 밤 결정" (→ /quiz 유도) ═══ */}
+      <section className="px-4 py-2 max-w-3xl mx-auto">
+        {quizStep === -1 ? (
+          <button onClick={() => setQuizStep(0)}
+            className="w-full rounded-2xl bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] p-4 text-left transition-all active:scale-[0.98] relative overflow-hidden">
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-4xl opacity-30">🎯</div>
+            <p className="text-[13px] font-bold text-white/80">3초 성향테스트</p>
+            <p className="text-lg font-black text-white leading-tight mt-0.5">오늘 밤, 나한테 딱 맞는 곳은?</p>
+            <p className="text-[11px] text-white/60 mt-1">터치 한 번이면 끝 →</p>
+          </button>
+        ) : quizStep < miniQuizQuestions.length ? (
+          <div className="rounded-2xl border border-[#8B5CF6]/20 bg-gradient-to-br from-[#FAFAFE] to-[#F5F3FF] p-4 animate-fade-in">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-sm font-bold text-[#111]">{miniQuizQuestions[quizStep].q}</p>
+              <span className="text-[11px] text-[#8B5CF6] font-bold">{quizStep + 1}/{miniQuizQuestions.length}</span>
+            </div>
+            <div className="space-y-2">
+              {miniQuizQuestions[quizStep].opts.map(opt => (
+                <button key={opt.label} onClick={() => {
+                  const newAnswers = [...quizAnswers, opt.result];
+                  setQuizAnswers(newAnswers);
+                  setQuizStep(quizStep + 1);
+                }}
+                  className="w-full flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-left transition-all active:scale-[0.98] active:border-[#8B5CF6]"
+                  style={{ minHeight: 48 }}>
+                  <span className="text-xl">{opt.emoji}</span>
+                  <span className="text-sm font-medium text-[#111]">{opt.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-[#8B5CF6]/20 bg-gradient-to-br from-[#F5F3FF] to-[#FDF2F8] p-4 animate-fade-in">
+            <p className="text-sm font-bold text-[#8B5CF6] mb-1">당신의 오늘 밤 추천</p>
+            {(() => {
+              const counts: Record<string, number> = {};
+              quizAnswers.forEach(a => { counts[a] = (counts[a] || 0) + 1; });
+              const topCat = Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'club';
+              const topVenue = categoryTop3[topCat]?.[0];
+              const copy = dreamCustomerCopy[topCat];
+              const catHrefs: Record<string, string> = { club: '/clubs', night: '/nights', lounge: '/lounges', room: '/rooms', yojeong: '/yojeong', hoppa: '/hoppa' };
+              return (
+                <div className="space-y-2">
+                  <p className="text-lg font-black text-[#111]">{catEmoji[topCat]} {copy?.hook}</p>
+                  {topVenue && (
+                    <Link to={getCategoryHref(topVenue.category, topVenue.slug, topVenue.region)} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-3 rounded-xl bg-white border border-gray-200 p-3 active:bg-gray-50 transition">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#F3F0FF] text-lg">{catEmoji[topCat]}</div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-[#111] truncate">{topVenue.nameKo}</p>
+                        <p className="text-[11px] text-[#555]">{topVenue.regionKo} · {catLabel[topCat]}</p>
+                      </div>
+                      <span className="text-[#8B5CF6] font-bold text-sm">→</span>
+                    </Link>
+                  )}
+                  <div className="flex gap-2">
+                    <Link to={catHrefs[topCat] || '/clubs'} className="flex-1 rounded-xl bg-[#8B5CF6] py-2.5 text-center text-sm font-bold text-white active:scale-[0.98]" style={{ minHeight: 40 }}>
+                      {copy?.cta || '더보기'}
+                    </Link>
+                    <Link to="/quiz" className="flex-1 rounded-xl border border-[#8B5CF6] py-2.5 text-center text-sm font-bold text-[#8B5CF6] active:scale-[0.98]" style={{ minHeight: 40 }}>
+                      정밀 분석 받기
+                    </Link>
+                  </div>
+                  <button onClick={() => { setQuizStep(-1); setQuizAnswers([]); }} className="w-full text-center text-[11px] text-[#999] py-1">다시 하기</button>
+                </div>
+              );
+            })()}
+          </div>
+        )}
+      </section>
+
+      {/* ═══ 실시간 한줄 피드 ═══ */}
       <section className="px-4 py-2 max-w-3xl mx-auto">
         <LiveActivityFeed maxItems={1} compact />
       </section>
@@ -549,17 +675,40 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ 5. 커뮤니티 인기글 — "사람들이 놀고 있다" ═══ */}
+      {/* ═══ 5. 커뮤니티 인기글 — 티저형 (클릭 유도 강화) ═══ */}
       <section className="px-4 py-3 max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-base font-bold text-[#111]">커뮤니티</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-base font-bold text-[#111]">커뮤니티</h2>
+            <span className="rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-bold text-white animate-pulse">LIVE</span>
+          </div>
           <div className="flex items-center gap-2">
             <Link to="/community/free?write=true" className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white" style={{ minHeight: 28 }}>글쓰기</Link>
             <Link to="/community" className="text-xs text-[#8B5CF6] font-medium">더보기 →</Link>
           </div>
         </div>
+        {/* 첫 번째 글: 큰 카드 (클릭베이트) */}
+        {displayPosts.length > 0 && (
+          <Link to={displayPosts[0].id.startsWith('seed-') ? '/community' : `/community/post/${displayPosts[0].id}`}
+            className="block rounded-2xl border border-gray-100 bg-gradient-to-r from-white to-[#FAFAFE] p-4 mb-2 active:bg-gray-50 transition">
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="rounded bg-[#F3F0FF] px-1.5 py-0.5 text-[11px] font-bold text-[#8B5CF6]">{displayPosts[0].board}</span>
+              <span className="text-[11px] text-[#999]">{displayPosts[0].author} · {displayPosts[0].time}</span>
+            </div>
+            <p className="text-[15px] font-bold text-[#111] leading-snug mb-1">{displayPosts[0].title}</p>
+            <p className="text-[12px] text-[#777] leading-relaxed line-clamp-2">댓글 {displayPosts[0].comments}개의 반응이 쏟아지고 있습니다...</p>
+            <div className="flex items-center justify-between mt-2">
+              <div className="flex items-center gap-2 text-[11px] text-[#999]">
+                <span>♥ {displayPosts[0].likes}</span>
+                <span>💬 {displayPosts[0].comments}</span>
+              </div>
+              <span className="text-[11px] font-bold text-[#8B5CF6]">계속 읽기 →</span>
+            </div>
+          </Link>
+        )}
+        {/* 나머지 글: 리스트 */}
         <div className="space-y-1.5">
-          {displayPosts.slice(0, 5).map(post => (
+          {displayPosts.slice(1, 6).map(post => (
             <Link key={post.id} to={post.id.startsWith('seed-') ? '/community' : `/community/post/${post.id}`} className="flex items-center gap-2.5 rounded-xl border border-gray-100 bg-white px-3 py-2.5 active:bg-gray-50 transition">
               <span className="flex-shrink-0 rounded bg-[#F3F0FF] px-1.5 py-0.5 text-[11px] font-bold text-[#8B5CF6]">{post.board}</span>
               <p className="text-[13px] font-medium text-[#111] truncate flex-1">{post.title}</p>
@@ -567,6 +716,20 @@ export default function HomePage() {
                 {post.likes > 0 && <span>♥{post.likes}</span>}
                 {post.comments > 0 && <span>💬{post.comments}</span>}
               </div>
+            </Link>
+          ))}
+        </div>
+        {/* 커뮤니티 보드 퀵링크 */}
+        <div className="flex gap-2 mt-2 overflow-x-auto scrollbar-hide">
+          {[
+            { label: '후기', href: '/community/reviews', emoji: '📝' },
+            { label: 'Q&A', href: '/community/qna', emoji: '❓' },
+            { label: '꿀팁', href: '/community/tips', emoji: '💡' },
+            { label: '조각모임', href: '/community/jogak', emoji: '👥' },
+            { label: '패션', href: '/community/fashion', emoji: '👔' },
+          ].map(b => (
+            <Link key={b.label} to={b.href} className="shrink-0 flex items-center gap-1 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-[11px] font-medium text-[#555] active:bg-gray-50">
+              <span>{b.emoji}</span>{b.label}
             </Link>
           ))}
         </div>
@@ -635,35 +798,48 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ 7. 조각모임 — 같이 놀 사람 찾기 ═══ */}
+      {/* ═══ 7. 조각모임 — 마감 임박 긴급감 + 클릭 유도 ═══ */}
       <section className="px-4 py-3 max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-base font-bold text-[#111]">오늘 밤 조각모임</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-base font-bold text-[#111]">조각모임</h2>
+            <span className="rounded-full bg-orange-500 px-1.5 py-0.5 text-[9px] font-bold text-white">모집중</span>
+          </div>
           <div className="flex items-center gap-2">
             <Link to="/community/jogak?write=true" className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white" style={{ minHeight: 28 }}>모임만들기</Link>
             <Link to="/community/jogak" className="text-xs text-[#8B5CF6] font-medium">전체 →</Link>
           </div>
         </div>
         <div className="space-y-2">
-          {displayJogak.slice(0, 3).map(j => (
-            <Link key={j.id} to="/community/jogak" className="block rounded-xl border border-gray-100 bg-white p-3 active:bg-gray-50 transition">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-[#111] truncate flex-1">{j.title}</p>
-                <span className="ml-2 flex-shrink-0 rounded-full bg-[#8B5CF6] px-3 py-1 text-[11px] font-bold text-white">참여</span>
-              </div>
-              <div className="flex items-center gap-3 mt-1.5">
-                {j.region && <span className="text-[11px] text-[#555]">📍{j.region}</span>}
-                <span className="text-[11px] text-[#555]">👤{j.gender}</span>
-                <div className="flex-1 flex items-center gap-1.5">
-                  <div className="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden">
-                    <div className={`h-full rounded-full ${j.current / j.max >= 0.8 ? 'bg-red-500' : 'bg-[#8B5CF6]'}`} style={{ width: `${(j.current / j.max) * 100}%` }} />
+          {displayJogak.slice(0, 4).map((j, idx) => {
+            const fillRate = j.current / j.max;
+            const isAlmostFull = fillRate >= 0.7;
+            return (
+              <Link key={j.id} to="/community/jogak" className={`block rounded-xl border bg-white p-3 active:bg-gray-50 transition ${isAlmostFull ? 'border-red-200 bg-red-50/30' : 'border-gray-100'}`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    {isAlmostFull && <span className="shrink-0 rounded bg-red-500 px-1.5 py-0.5 text-[9px] font-bold text-white">마감임박</span>}
+                    {idx === 0 && !isAlmostFull && <span className="shrink-0 rounded bg-[#8B5CF6] px-1.5 py-0.5 text-[9px] font-bold text-white">HOT</span>}
+                    <p className="text-sm font-medium text-[#111] truncate">{j.title}</p>
                   </div>
-                  <span className="text-[11px] font-bold text-[#111]">{j.current}/{j.max}</span>
+                  <span className={`ml-2 flex-shrink-0 rounded-full px-3 py-1 text-[11px] font-bold text-white ${isAlmostFull ? 'bg-red-500' : 'bg-[#8B5CF6]'}`}>참여</span>
                 </div>
-              </div>
-            </Link>
-          ))}
+                <div className="flex items-center gap-3 mt-1.5">
+                  {j.region && <span className="text-[11px] text-[#555]">📍{j.region}</span>}
+                  <span className="text-[11px] text-[#555]">👤{j.gender}</span>
+                  {j.time && <span className="text-[11px] text-[#555]">🕐{j.time}</span>}
+                  <div className="flex-1 flex items-center gap-1.5">
+                    <div className="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden">
+                      <div className={`h-full rounded-full transition-all ${isAlmostFull ? 'bg-red-500' : 'bg-[#8B5CF6]'}`} style={{ width: `${fillRate * 100}%` }} />
+                    </div>
+                    <span className={`text-[11px] font-bold ${isAlmostFull ? 'text-red-500' : 'text-[#111]'}`}>{j.current}/{j.max}</span>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
         </div>
+        <p className="text-center text-[11px] text-[#999] mt-2">혼자 가기 심심하면 여기서 크루를 만들어봐</p>
       </section>
 
       {/* ═══ 8. 오늘 밤 운세 — 터치 인터랙션 (스크롤 보상) ═══ */}
@@ -716,7 +892,88 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* ═══ 9. 피처드 카드 + 가로 스크롤 TOP 8 ═══ */}
+      {/* ═══ 9. 매거진 스토리 — 콘텐츠 깊이 유도 (→ /magazine/*) ═══ */}
+      <section className="py-3 max-w-3xl mx-auto">
+        <div className="flex items-center justify-between px-4 mb-2">
+          <h2 className="text-base font-bold text-[#111]">놀쿨 매거진</h2>
+          <Link to="/magazine" className="text-xs text-[#8B5CF6] font-medium">전체 →</Link>
+        </div>
+        <div className="flex gap-3 px-4 overflow-x-auto scrollbar-hide pb-1" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
+          {magazineTeasers.map(article => (
+            <Link key={article.id} to={`/magazine/${article.id}`} target="_blank" rel="noopener noreferrer" className="flex-shrink-0" style={{ width: 240 }}>
+              <div className="rounded-2xl border border-gray-100 bg-white overflow-hidden shadow-sm active:scale-[0.98] transition-transform">
+                <div className="bg-gradient-to-br from-[#1a0533] to-[#2d1b69] px-4 py-3">
+                  <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold text-white">{article.tag}</span>
+                </div>
+                <div className="p-3">
+                  <p className="text-[13px] font-bold text-[#111] leading-snug line-clamp-2 mb-1">{article.title}</p>
+                  <p className="text-[11px] text-[#777] line-clamp-2 leading-relaxed">{article.excerpt.slice(0, 60)}...</p>
+                  <span className="text-[11px] font-bold text-[#8B5CF6] mt-1.5 inline-block">읽어보기 →</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ 10. 카테고리별 TOP 3 — 드림고객 카피로 클릭 유도 ═══ */}
+      <section className="px-4 py-3 max-w-3xl mx-auto">
+        <h2 className="text-base font-bold text-[#111] mb-3">카테고리별 인기 TOP 3</h2>
+        <div className="space-y-4">
+          {(['club', 'night', 'room', 'lounge', 'yojeong', 'hoppa'] as const).map(cat => {
+            const top = categoryTop3[cat];
+            const copy = dreamCustomerCopy[cat];
+            const catHrefs: Record<string, string> = { club: '/clubs', night: '/nights', lounge: '/lounges', room: '/rooms', yojeong: '/yojeong', hoppa: '/hoppa' };
+            if (!top || top.length === 0) return null;
+            return (
+              <div key={cat} className="rounded-2xl border border-gray-100 bg-white p-3">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">{catEmoji[cat]}</span>
+                    <div>
+                      <p className="text-sm font-bold text-[#111]">{catLabel[cat]}</p>
+                      <p className="text-[10px] text-[#8B5CF6] font-medium">{copy?.painPoint}</p>
+                    </div>
+                  </div>
+                  <Link to={catHrefs[cat]} className="text-[11px] text-[#8B5CF6] font-medium">{copy?.cta} →</Link>
+                </div>
+                <div className="space-y-1.5">
+                  {top.map((v, i) => (
+                    <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-2.5 py-1.5 active:bg-gray-50 rounded-lg px-1 transition">
+                      <span className={`flex h-5 w-5 items-center justify-center rounded text-[10px] font-black text-white ${i === 0 ? 'bg-[#8B5CF6]' : i === 1 ? 'bg-violet-400' : 'bg-gray-400'}`}>{i + 1}</span>
+                      <span className="text-[13px] font-medium text-[#111] truncate flex-1">{v.nameKo}</span>
+                      <span className="text-[11px] text-[#555]">{v.regionKo}</span>
+                      {v.rating > 0 && <span className="text-[11px] text-yellow-500 font-bold">★{v.rating.toFixed(1)}</span>}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ═══ 11. 트렌딩 키워드 — 검색 유도 (→ /search) ═══ */}
+      <section className="px-4 py-2 max-w-3xl mx-auto">
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-base font-bold text-[#111]">지금 뜨는 검색어</h2>
+          <Link to="/search" className="text-xs text-[#8B5CF6] font-medium">검색 →</Link>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {todayTrending.map((kw, i) => (
+            <Link key={kw} to={`/search?q=${encodeURIComponent(kw)}`}
+              className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 py-1.5 active:bg-gray-50 transition"
+              style={{ minHeight: 32 }}>
+              <span className={`text-[10px] font-black ${i < 3 ? 'text-[#8B5CF6]' : 'text-[#999]'}`}>{i + 1}</span>
+              <span className="text-[13px] font-medium text-[#111]">{kw}</span>
+              {i < 2 && <span className="text-[9px] text-red-500 font-bold">HOT</span>}
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ 12. 피처드 카드 + 가로 스크롤 TOP 8 ═══ */}
       {featuredVenue && (
         <section className="px-4 py-2 max-w-3xl mx-auto">
           <Link to={getCategoryHref(featuredVenue.category, featuredVenue.slug, featuredVenue.region)} target="_blank" rel="noopener noreferrer" className="block">
@@ -856,7 +1113,16 @@ export default function HomePage() {
 
               cards.push(<VenueCard key={venue.id} venue={venue} isFavorite={favorites.has(venue.id)} toggleFavorite={toggleFavorite} rank={activeTab === 0 ? idx + 1 : undefined} />);
 
-              // 8번째 — 커뮤니티 CTA 1번만
+              // 4번째 — 성향테스트 CTA
+              if (idx + 1 === 4) {
+                cards.push(
+                  <Link key={`quiz-cta-${idx}`} to="/quiz" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] p-3 active:scale-[0.98] transition text-center">
+                    <p className="text-sm font-bold text-white">🎯 나한테 딱 맞는 업소 찾기 — 성향테스트 GO →</p>
+                  </Link>
+                );
+              }
+
+              // 8번째 — 커뮤니티 CTA
               if (idx + 1 === 8) {
                 cards.push(
                   <Link key={`cta-${idx}`} to="/community" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#F3F0FF] to-white border border-purple-100 p-3 active:bg-gray-50 transition text-center">
@@ -865,7 +1131,7 @@ export default function HomePage() {
                 );
               }
 
-              // TOP5 — 1번만
+              // 12번째 — TOP5
               if (idx + 1 === 12) {
                 cards.push(
                   <div key={`top5-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-violet-50 to-white p-4">
@@ -880,6 +1146,24 @@ export default function HomePage() {
                       ))}
                     </div>
                   </div>
+                );
+              }
+
+              // 16번째 — 매거진 CTA
+              if (idx + 1 === 16) {
+                cards.push(
+                  <Link key={`mag-cta-${idx}`} to="/magazine" target="_blank" rel="noopener noreferrer" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100 p-3 active:bg-gray-50 transition text-center">
+                    <p className="text-sm font-bold text-[#111]">📰 놀쿨 매거진 — 업소별 심층 리뷰·비교 분석 읽기 →</p>
+                  </Link>
+                );
+              }
+
+              // 20번째 — VS 투표 CTA
+              if (idx + 1 === 20) {
+                cards.push(
+                  <Link key={`vs-cta-${idx}`} to="/vs" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-pink-50 to-violet-50 border border-pink-100 p-3 active:bg-gray-50 transition text-center">
+                    <p className="text-sm font-bold text-[#8B5CF6]">🆚 투표로 결정하자 — VS 배틀 참여하기 →</p>
+                  </Link>
                 );
               }
 
@@ -935,22 +1219,51 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ QUICK LINKS + CTA — 하단 마무리 ═══ */}
+      {/* ═══ QUICK LINKS — 확장된 "더 놀기" 그리드 ═══ */}
       <section className="px-4 py-3 max-w-3xl mx-auto space-y-3">
+        <h2 className="text-base font-bold text-[#111]">더 놀기</h2>
         <div className="grid grid-cols-4 gap-2">
           {[
-            { icon: '🔍', title: '비교', href: '/compare' },
-            { icon: '📖', title: '가이드', href: '/guide' },
-            { icon: '🆚', title: 'VS 투표', href: '/vs' },
-            { icon: '📰', title: '매거진', href: '/magazine' },
+            { icon: '🔍', title: '비교', href: '/compare', desc: '업소 맞대결' },
+            { icon: '📖', title: '가이드', href: '/guide', desc: '입문자 필독' },
+            { icon: '🆚', title: 'VS 투표', href: '/vs', desc: '투표 참여' },
+            { icon: '📰', title: '매거진', href: '/magazine', desc: '심층 분석' },
+            { icon: '🏆', title: '랭킹', href: '/ranking', desc: '전국 순위' },
+            { icon: '🎰', title: '룰렛', href: '/roulette', desc: '랜덤 추천' },
+            { icon: '🧠', title: '성향 테스트', href: '/quiz', desc: '내 취향 분석' },
+            { icon: '🎉', title: '이벤트', href: '/events', desc: '진행중' },
           ].map(card => (
             <Link key={card.title} to={card.href} target="_blank" rel="noopener noreferrer"
-              className="flex flex-col items-center gap-0.5 rounded-xl border border-gray-200 bg-white p-2.5 text-center shadow-sm active:scale-[0.97]" style={{ minHeight: 44 }}>
+              className="flex flex-col items-center gap-0.5 rounded-xl border border-gray-200 bg-white p-2 text-center shadow-sm active:scale-[0.97] transition" style={{ minHeight: 56 }}>
               <span className="text-lg">{card.icon}</span>
-              <span className="text-[13px] font-bold text-[#111]">{card.title}</span>
+              <span className="text-[12px] font-bold text-[#111]">{card.title}</span>
+              <span className="text-[9px] text-[#999]">{card.desc}</span>
             </Link>
           ))}
         </div>
+
+        {/* 카테고리 전체 바로가기 */}
+        <div className="rounded-2xl border border-gray-100 bg-[#FAFAFE] p-3">
+          <p className="text-[11px] font-bold text-[#8B5CF6] mb-2">카테고리 바로가기</p>
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              { emoji: '🎵', label: '클럽', href: '/clubs' },
+              { emoji: '🌙', label: '나이트', href: '/nights' },
+              { emoji: '🍸', label: '라운지', href: '/lounges' },
+              { emoji: '🚪', label: '룸', href: '/rooms' },
+              { emoji: '🏮', label: '요정', href: '/yojeong' },
+              { emoji: '🥂', label: '호빠', href: '/hoppa' },
+            ].map(cat => (
+              <Link key={cat.label} to={cat.href}
+                className="flex items-center gap-1.5 rounded-lg bg-white border border-gray-100 px-2.5 py-2 active:bg-gray-50 transition" style={{ minHeight: 36 }}>
+                <span>{cat.emoji}</span>
+                <span className="text-[13px] font-medium text-[#111]">{cat.label}</span>
+                <span className="ml-auto text-[11px] text-[#8B5CF6]">→</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
         <div className="rounded-2xl bg-violet-50 border border-violet-200 px-5 py-3 text-center">
           <p className="text-sm font-bold text-[#111]">
             구글 · ChatGPT · Gemini에서 <span className="text-lg text-[#8B5CF6]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>"놀쿨"</span> 검색하세요
