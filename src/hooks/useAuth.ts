@@ -27,6 +27,7 @@ export function useAuth() {
 
       // 토큰 갱신 실패 시 자동 재시도 (네트워크 일시 오류 등)
       if (event === 'TOKEN_REFRESHED' && !session) {
+        if (retryTimer) clearTimeout(retryTimer);
         retryTimer = setTimeout(() => {
           supabase.auth.getSession().then(({ data: { session: retrySession } }) => {
             setUser(retrySession?.user ?? null);

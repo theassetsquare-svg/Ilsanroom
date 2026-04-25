@@ -12,9 +12,13 @@ export default function Roulette() {
   const openVenues = venues.filter((v) => v.status !== 'closed_or_unclear');
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const rewardTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (rewardTimerRef.current) clearTimeout(rewardTimerRef.current);
+    };
   }, []);
 
   const spin = () => {
@@ -42,7 +46,7 @@ export default function Roulette() {
           else if (spins === 10) setReward('10회 달성! 운명의 손 칭호 획득');
           else if (spins % 10 === 0) setReward(`${spins}회 달성! 룰렛 마스터`);
           else setReward('오늘의 행운 확인 완료!');
-          setTimeout(() => setReward(null), 3000);
+          rewardTimerRef.current = setTimeout(() => setReward(null), 3000);
         }
       }
     }, 100);

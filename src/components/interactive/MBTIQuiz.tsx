@@ -1,6 +1,6 @@
 
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import ShareButtons from './ShareButtons';
 
 const QUESTIONS = [
@@ -54,6 +54,16 @@ export default function MBTIQuiz() {
 
   const reset = () => { setStep(0); setAnswers([]); setResult(null); };
 
+  // 결과 확정 시 1회만 localStorage 업데이트 (렌더 중 side-effect 방지)
+  const badge = useMemo(() => {
+    if (!result) return null;
+    try {
+      const quizCount = parseInt(localStorage.getItem('quiz_total') || '0') + 1;
+      localStorage.setItem('quiz_total', String(quizCount));
+      return quizCount === 1 ? '🎓 밤문화 연구생' : quizCount >= 5 ? '🎖️ MBTI 마스터' : quizCount >= 3 ? '📊 분석가' : null;
+    } catch { return null; }
+  }, [result]);
+
   if (result) {
     const type = TYPES[result] || TYPES.ENFP;
     return (
@@ -71,14 +81,7 @@ export default function MBTIQuiz() {
           </div>
         </div>
         <ShareButtons title={`나의 밤문화 MBTI: ${result} - ${type.title}`} />
-        {(() => {
-          const quizCount = parseInt(localStorage.getItem('quiz_total') || '0') + 1;
-          localStorage.setItem('quiz_total', String(quizCount));
-          const badge = quizCount === 1 ? '🎓 밤문화 연구생' : quizCount >= 5 ? '🎖️ MBTI 마스터' : quizCount >= 3 ? '📊 분석가' : null;
-          return badge ? (
-            <p className="mt-3 text-sm font-bold text-neon-gold animate-pulse">{badge} 칭호 획득!</p>
-          ) : null;
-        })()}
+        {badge && <p className="mt-3 text-sm font-bold text-neon-gold animate-pulse">{badge} 칭호 획득!</p>}
         <button onClick={reset} className="mt-4 text-sm text-neon-text-muted hover:text-neon-text">다시 하기</button>
       </div>
     );
