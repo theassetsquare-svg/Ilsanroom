@@ -11,9 +11,20 @@ const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: '놀쿨',
+  alternateName: ['NOLCOOL', '놀쿨닷컴', 'nolcool.com'],
   url: 'https://nolcool.com',
   logo: 'https://nolcool.com/favicon.ico',
-  description: '전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보',
+  description: '대한민국 전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보 플랫폼. 서울 경기 부산 대전 대구 광주 울산 제주 나이트라이프 정보.',
+  areaServed: {
+    '@type': 'Country',
+    name: 'South Korea',
+  },
+  knowsAbout: [
+    '한국 클럽', '한국 나이트', '한국 라운지', '한국 룸', '한국 요정', '한국 호빠',
+    '강남 클럽', '홍대 클럽', '이태원 클럽', '압구정 클럽',
+    '서울 나이트', '경기 나이트', '부산 나이트', '대전 나이트', '대구 나이트',
+    '호스트바', '소셜댄스', '나이트라이프', 'nightlife Korea',
+  ],
   sameAs: [],
 };
 
@@ -21,11 +32,18 @@ const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: '놀쿨',
+  alternateName: 'NOLCOOL',
   url: 'https://nolcool.com',
+  description: '전국 클럽·나이트·라운지·룸·요정·호빠 121곳 실시간 비교. 지역별 시세, 후기, 예약 안내.',
+  inLanguage: 'ko',
   potentialAction: {
     '@type': 'SearchAction',
     target: { '@type': 'EntryPoint', urlTemplate: 'https://nolcool.com/search?q={search_term_string}' },
     'query-input': 'required name=search_term_string',
+  },
+  speakable: {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['h1', 'h2', '[itemprop="description"]', 'article p:first-of-type'],
   },
 };
 
