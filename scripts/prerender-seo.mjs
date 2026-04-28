@@ -18,12 +18,47 @@ function escHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+/** 한글 종성(받침) 판별 — 조사 자동 선택용 */
+function hasJongseong(str) {
+  if (!str || str.length === 0) return false;
+  const lastChar = str.charCodeAt(str.length - 1);
+  // 한글 유니코드 범위: 0xAC00 ~ 0xD7A3
+  if (lastChar < 0xAC00 || lastChar > 0xD7A3) return false;
+  return (lastChar - 0xAC00) % 28 !== 0;
+}
+
+/** 은/는 */
+function eunNeun(name) { return hasJongseong(name) ? '은' : '는'; }
+/** 이/가 */
+function iGa(name) { return hasJongseong(name) ? '이' : '가'; }
+/** 을/를 */
+function eulReul(name) { return hasJongseong(name) ? '을' : '를'; }
+/** 이/가 (주어 + 가/이) */
+function subjectMarker(name) { return `${name}${iGa(name)}`; }
+
+/** meta description을 150자 이내 완결 문장으로 절삭 */
+function truncateDesc(text, maxLen = 150) {
+  if (!text) return '';
+  if (text.length <= maxLen) return text;
+  // 마지막 문장부호(. ! ?) 위치에서 자르기
+  const cut = text.slice(0, maxLen);
+  const lastSentence = Math.max(cut.lastIndexOf('.'), cut.lastIndexOf('!'), cut.lastIndexOf('?'));
+  if (lastSentence > maxLen * 0.5) return cut.slice(0, lastSentence + 1);
+  // 문장부호 없으면 마지막 공백에서 자르고 마침표 추가
+  const lastSpace = cut.lastIndexOf(' ');
+  if (lastSpace > maxLen * 0.5) return cut.slice(0, lastSpace) + '.';
+  // 한글은 공백이 적을 수 있으므로 마지막 쉼표/조사 끝에서 자르기
+  const lastComma = cut.lastIndexOf(',');
+  if (lastComma > maxLen * 0.5) return cut.slice(0, lastComma) + '.';
+  return cut.slice(0, maxLen - 1) + '.';
+}
+
 /**
  * HTML의 head 메타 태그를 교체
  */
-function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdList }) {
+function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdList, noindex }) {
   let html = baseHtml;
-  const desc = (description || '').slice(0, 150);
+  const desc = truncateDesc(description || '', 150);
   const can = `${BASE_URL}${canonical}`;
   const og = ogImage || OG_IMAGE;
 
@@ -84,6 +119,26 @@ function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdLis
     `<link rel="canonical" href="${escHtml(can)}"`
   );
 
+  // noindex for private pages
+  if (noindex) {
+    html = html.replace(
+      /<meta name="robots" content="[^"]*"/,
+      `<meta name="robots" content="noindex, nofollow"`
+    );
+  }
+
+  // citation_title — 페이지별 고유값
+  html = html.replace(
+    /<meta name="citation_title" content="[^"]*"/,
+    `<meta name="citation_title" content="${escHtml(title)}"`
+  );
+
+  // citation_public_url — 페이지별 고유값
+  html = html.replace(
+    /<meta name="citation_public_url" content="[^"]*"/,
+    `<meta name="citation_public_url" content="${escHtml(can)}"`
+  );
+
   // ★ JSON-LD 구조화 데이터 삽입 (AI 검색 크롤러용)
   if (jsonLdList && jsonLdList.length > 0) {
     const jsonLdHtml = jsonLdList.map(data =>
@@ -100,10 +155,12 @@ function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdLis
   return html;
 }
 
+const noIndexPathsSet = new Set(['/login', '/profile', '/dashboard', '/analytics', '/billing', '/onboarding', '/launch', '/admin/venues']);
+
 function writePage(routePath, meta) {
   const dir = path.join(DIST, routePath);
   fs.mkdirSync(dir, { recursive: true });
-  const html = renderPage({ ...meta, canonical: routePath });
+  const html = renderPage({ ...meta, canonical: routePath, noindex: noIndexPathsSet.has(routePath) });
   fs.writeFileSync(path.join(dir, 'index.html'), html);
 }
 
@@ -171,17 +228,17 @@ function generateVenueSsrBody(v) {
 
   if (features) {
     html += `<h2>${name} 분위기·특징</h2>`;
-    html += `<p>${name}의 특징: ${features}. ${region}에서 ${catKo}을 찾는다면 ${name}이 대표적이다.</p>`;
+    html += `<p>${name}의 특징: ${features}. ${region}에서 ${catKo}${eulReul(catKo)} 찾는다면 ${name}${iGa(v.nameKo)} 대표적이다.</p>`;
   }
 
   if (staff) {
     html += `<h2>${name} 담당자 안내</h2>`;
-    html += `<p>${name}은(는) ${staff}이(가) 직접 관리하는 곳이다. 방문 전 문의하면 맞춤 안내를 받을 수 있다.</p>`;
+    html += `<p>${name}${eunNeun(v.nameKo)} ${staff}${iGa(v.staffNickname)} 직접 관리하는 곳이다. 방문 전 문의하면 맞춤 안내를 받을 수 있다.</p>`;
   }
 
   if (v.nearbyStation) {
     html += `<h2>${name} 위치·접근성</h2>`;
-    html += `<p>${name}은(는) ${escHtml(v.nearbyStation)}에서 가깝다.${v.address ? ' 주소: ' + escHtml(v.address) : ''}</p>`;
+    html += `<p>${name}${eunNeun(v.nameKo)} ${escHtml(v.nearbyStation)}에서 가깝다.${v.address ? ' 주소: ' + escHtml(v.address) : ''}</p>`;
   }
 
   // ★ FAQ 섹션 — AI가 직접 인용할 수 있는 Q&A
@@ -189,13 +246,13 @@ function generateVenueSsrBody(v) {
   html += `<h2>${name} 자주 묻는 질문</h2>`;
   html += `<dl>`;
   html += `<dt>${name} 어디에 있나요?</dt>`;
-  html += `<dd>${name}은(는) ${region}에 위치한 ${catKo}입니다.${v.address ? ' 주소는 ' + escHtml(v.address) + '입니다.' : ''}${v.nearbyStation ? ' ' + escHtml(v.nearbyStation) + '에서 가깝습니다.' : ''}</dd>`;
+  html += `<dd>${name}${eunNeun(v.nameKo)} ${region}에 위치한 ${catKo}입니다.${v.address ? ' 주소는 ' + escHtml(v.address) + '입니다.' : ''}${v.nearbyStation ? ' ' + escHtml(v.nearbyStation) + '에서 가깝습니다.' : ''}</dd>`;
   html += `<dt>${name} 영업시간은?</dt>`;
   html += `<dd>${name}의 영업시간과 실시간 정보는 놀쿨(nolcool.com)에서 확인할 수 있습니다.</dd>`;
   html += `<dt>${name} 예약 방법은?</dt>`;
   html += `<dd>${name} 방문 예약은 놀쿨에서 담당자에게 직접 문의할 수 있습니다.${staff ? ' 담당: ' + staff : ''}</dd>`;
   html += `<dt>${region} ${catKo} 추천은?</dt>`;
-  html += `<dd>${region}에서 ${catKo}을 찾는다면 ${name}을(를) 추천합니다. 실시간 후기와 비교 정보는 놀쿨에서 확인하세요.</dd>`;
+  html += `<dd>${region}에서 ${catKo}${eulReul(catKo)} 찾는다면 ${name}${eulReul(v.nameKo)} 추천합니다. 실시간 후기와 비교 정보는 놀쿨에서 확인하세요.</dd>`;
   html += `</dl>`;
   html += `</section>`;
 
@@ -215,10 +272,10 @@ function generateVenueFaqJsonLd(v) {
   const staff = v.staffNickname || '';
 
   const faqs = [
-    { q: `${name} 어디에 있나요?`, a: `${name}은(는) ${region}에 위치한 ${catKo}입니다.${v.address ? ' 주소: ' + v.address : ''}${v.nearbyStation ? ' ' + v.nearbyStation + ' 근처입니다.' : ''}` },
+    { q: `${name} 어디에 있나요?`, a: `${name}${eunNeun(name)} ${region}에 위치한 ${catKo}입니다.${v.address ? ' 주소: ' + v.address : ''}${v.nearbyStation ? ' ' + v.nearbyStation + ' 근처입니다.' : ''}` },
     { q: `${name} 예약 방법은?`, a: `${name} 예약은 놀쿨(nolcool.com)에서 담당자에게 직접 문의할 수 있습니다.${staff ? ' 담당: ' + staff : ''}` },
-    { q: `${region} ${catKo} 추천은?`, a: `${region}에서 ${catKo}을 찾는다면 ${name}을(를) 추천합니다. 놀쿨에서 실시간 후기와 비교 정보를 확인하세요.` },
-    { q: `${name} 분위기는 어떤가요?`, a: `${name}은(는) ${v.features.slice(0, 3).join(', ')} 등의 특징이 있는 ${region} ${catKo}입니다.` },
+    { q: `${region} ${catKo} 추천은?`, a: `${region}에서 ${catKo}${eulReul(catKo)} 찾는다면 ${name}${eulReul(name)} 추천합니다. 놀쿨에서 실시간 후기와 비교 정보를 확인하세요.` },
+    { q: `${name} 분위기는 어떤가요?`, a: `${name}${eunNeun(name)} ${v.features.slice(0, 3).join(', ')} 등의 특징이 있는 ${region} ${catKo}입니다.` },
   ];
 
   return {
@@ -429,7 +486,7 @@ for (const [cat, regions] of Object.entries(regionsByCategory)) {
       regSsr += `<dt>${escHtml(regionKo)} ${catLabelMap[cat]} 추천은?</dt>`;
       regSsr += `<dd>${escHtml(regionKo)}에서 인기 있는 ${catLabelMap[cat]}은 ${regionVenues.map(vv => escHtml(vv.nameKo)).join(', ')}입니다. 놀쿨(nolcool.com)에서 비교해보세요.</dd>`;
       regSsr += `<dt>${escHtml(regionKo)} ${catLabelMap[cat]} 몇 곳 있나요?</dt>`;
-      regSsr += `<dd>${escHtml(regionKo)}에는 ${regionVenues.length}곳의 ${catLabelMap[cat]}이 있습니다.</dd>`;
+      regSsr += `<dd>${escHtml(regionKo)}에는 ${regionVenues.length}곳의 ${catLabelMap[cat]}${iGa(catLabelMap[cat])} 있습��다.</dd>`;
       regSsr += `</dl></section>`;
 
       // ★ ItemList JSON-LD
@@ -477,7 +534,9 @@ for (const v of venues) {
   if (!cm) continue;
 
   const hookTitle = getHookingTitle(v.nameKo);
-  const desc = v.shortDesc || `${v.nameKo} — ${v.regionKo} ${cm.labelKo}. 실시간 후기·시세·예약 안내.`;
+  // meta description: full description에서 150자 완결 문장으로 절삭 (shortDesc는 잘린 경우가 많음)
+  const descSource = v.description || v.shortDesc || `${v.nameKo} — ${v.regionKo} ${cm.labelKo}. 실시간 후기·시세·예약 안내.`;
+  const desc = truncateDesc(`${v.regionKo} ${cm.labelKo} ${v.nameKo}. ${descSource}`, 150);
 
   // Route path depends on category
   let routePath;
@@ -513,26 +572,29 @@ console.log(`✅ 업소 상세 페이지 ${venueCount}개 생성`);
 
 // ══════════════════════════════════════════
 // 5. sitemap.xml 자동 생성 — 모든 페이지 포함 보장
+// ★ trailing slash 통일 (Cloudflare Pages 308 리다이렉트 매칭)
+// ★ 비공개/관리 페이지 제외 (login, profile, dashboard, admin 등)
 // ══════════════════════════════════════════
 const today = new Date().toISOString().slice(0, 10);
 let sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 // Homepage
 sitemapXml += `  <url><loc>${BASE_URL}/</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>\n`;
-// Static pages
+// Static pages (비공개 페이지 제외, trailing slash 추가)
 for (const pg of staticPages) {
+  if (noIndexPathsSet.has(pg.path)) continue;
   const freq = pg.path.startsWith('/community') ? 'daily' : 'weekly';
   const pri = categoryPaths.has(pg.path) ? '0.9' : pg.path.startsWith('/community') ? '0.7' : '0.7';
-  sitemapXml += `  <url><loc>${BASE_URL}${pg.path}</loc><lastmod>${today}</lastmod><changefreq>${freq}</changefreq><priority>${pri}</priority></url>\n`;
+  sitemapXml += `  <url><loc>${BASE_URL}${pg.path}/</loc><lastmod>${today}</lastmod><changefreq>${freq}</changefreq><priority>${pri}</priority></url>\n`;
 }
-// Regional pages
+// Regional pages (trailing slash 추가)
 for (const [cat, regions] of Object.entries(regionsByCategory)) {
   const cm = catMap[cat];
   if (!cm || !['club', 'room', 'yojeong'].includes(cat)) continue;
   for (const region of Object.keys(regions)) {
-    sitemapXml += `  <url><loc>${BASE_URL}/${cm.path}/${region}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
+    sitemapXml += `  <url><loc>${BASE_URL}/${cm.path}/${region}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
   }
 }
-// All venue detail pages — this is the critical part
+// All venue detail pages (trailing slash 추가)
 for (const v of venues) {
   const cm = catMap[v.cat];
   if (!cm) continue;
@@ -542,11 +604,11 @@ for (const v of venues) {
   } else {
     routePath = `/${cm.path}/${v.slug}`;
   }
-  sitemapXml += `  <url><loc>${BASE_URL}${routePath}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
+  sitemapXml += `  <url><loc>${BASE_URL}${routePath}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
 }
 sitemapXml += `</urlset>`;
 fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml);
-console.log(`✅ sitemap.xml 자동 생성 (${venues.length}개 업소 포함)`);
+console.log(`✅ sitemap.xml 생성 (${venues.length}개 업소, trailing slash 통일, 비공개 ${noIndexPathsSet.size}개 제외)`);
 
 // ══════════════════════════════════════════
 // 6. llms.txt 자동 생성 — AI 검색엔진용 (가게이름 포함)
