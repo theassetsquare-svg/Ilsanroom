@@ -51,6 +51,23 @@ function DapsimnriCheonSaSection({ venue }: { venue: { staffPhone?: string } }) 
   );
 }
 
+/* 대전세븐나이트 고정 하단 전화 바 */
+function DaejeonSevenFixedBar() {
+  return (
+    <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
+      <a
+        href="tel:01032421504"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#1E3A5F] to-[#0F2744] px-6 py-4 shadow-[0_-4px_20px_rgba(0,0,0,0.3)]"
+      >
+        <span className="text-lg font-bold text-[#FFD700]">4인1조 w.t원숭이</span>
+        <span className="text-2xl font-black text-white tracking-wide">📞 010-3242-1504</span>
+      </a>
+    </div>
+  );
+}
+
 export default function NightDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const venue = getVenueBySlug(slug!);
@@ -59,19 +76,23 @@ export default function NightDetailPage() {
   const related = getRelatedVenues(venue, 6);
 
   const isDapsimnri = slug === 'dapsimnidontellmamanight';
+  const isDaejeonSeven = slug === 'daejeonsevennight';
 
   return (
-    <VenueDetailPage
-      venue={venue}
-      categoryLabel="나이트"
-      categoryPath="/nights"
-      regionKo={venue.regionKo}
-      regionPath="/nights"
-      detailPath={`/nights/${slug}`}
-      faqs={defaultFaqs(venue.nameKo)}
-      related={related}
-      relatedHrefFn={(v) => `/nights/${v.slug}`}
-      topContent={isDapsimnri ? <DapsimnriCheonSaSection venue={venue} /> : undefined}
-    />
+    <>
+      <VenueDetailPage
+        venue={venue}
+        categoryLabel="나이트"
+        categoryPath="/nights"
+        regionKo={venue.regionKo}
+        regionPath="/nights"
+        detailPath={`/nights/${slug}`}
+        faqs={defaultFaqs(venue.nameKo)}
+        related={related}
+        relatedHrefFn={(v) => `/nights/${v.slug}`}
+        topContent={isDapsimnri ? <DapsimnriCheonSaSection venue={venue} /> : undefined}
+      />
+      {isDaejeonSeven && <DaejeonSevenFixedBar />}
+    </>
   );
 }
