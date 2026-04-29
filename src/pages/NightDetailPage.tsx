@@ -54,7 +54,7 @@ function DapsimnriCheonSaSection({ venue }: { venue: { staffPhone?: string } }) 
 /* 대전세븐나이트 고정 하단 전화 바 */
 function DaejeonSevenFixedBar() {
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
+    <div className="fixed bottom-0 left-0 right-0 z-50">
       <a
         href="tel:01032421504"
         target="_blank"

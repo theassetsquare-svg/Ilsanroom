@@ -184,10 +184,10 @@ export function QuickDriverCall() {
       <h3 className="text-lg font-bold text-neon-text mb-2">대리운전 원클릭</h3>
       <p className="text-sm text-neon-text-muted mb-4">놀고 나서 안전하게 귀가하세요</p>
       <div className="grid grid-cols-2 gap-3">
-        <a href="tel:1577-4080" className="flex items-center justify-center gap-2 rounded-xl bg-neon-green/20 py-3 text-sm font-bold text-neon-green transition hover:bg-neon-green/30" style={{minHeight:'44px'}}>
+        <a href="tel:1577-4080" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-xl bg-neon-green/20 py-3 text-sm font-bold text-neon-green transition hover:bg-neon-green/30" style={{minHeight:'44px'}}>
           카카오T 대리 1577-4080
         </a>
-        <a href="tel:1588-5765" className="flex items-center justify-center gap-2 rounded-xl bg-neon-accent/20 py-3 text-sm font-bold text-neon-accent transition hover:bg-neon-accent/30" style={{minHeight:'44px'}}>
+        <a href="tel:1588-5765" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-xl bg-neon-accent/20 py-3 text-sm font-bold text-neon-accent transition hover:bg-neon-accent/30" style={{minHeight:'44px'}}>
           로지 대리 1588-5765
         </a>
       </div>
