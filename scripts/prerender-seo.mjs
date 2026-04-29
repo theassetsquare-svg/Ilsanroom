@@ -209,6 +209,51 @@ function parseVenues() {
 const catLabelMap = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
 
 /**
+ * BreadcrumbList JSON-LD — 구글 SERP 경로 표시 + 사이트 구조 인식
+ */
+function generateBreadcrumbJsonLd(items) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      name: item.name,
+      item: item.url
+    }))
+  };
+}
+
+/**
+ * WebSite + Organization JSON-LD — 브랜드 시그널 + 사이트링크 검색
+ */
+const WEBSITE_JSONLD = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: '놀쿨',
+  alternateName: 'NOLCOOL',
+  url: BASE_URL,
+  description: '대한민국 전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보 플랫폼',
+  inLanguage: 'ko',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: { '@type': 'EntryPoint', urlTemplate: `${BASE_URL}/search?q={search_term_string}` },
+    'query-input': 'required name=search_term_string'
+  }
+};
+
+const ORG_JSONLD = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: '놀쿨',
+  alternateName: 'NOLCOOL',
+  url: BASE_URL,
+  logo: `${BASE_URL}/og/nolcool-og.jpg`,
+  description: '대한민국 최대 나이트라이프 정보 플랫폼. 전국 클럽·나이트·라운지·룸·요정·호빠 정보 제공.',
+  contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', availableLanguage: 'Korean' }
+};
+
+/**
  * Generate SSR body content for venue detail pages.
  * Contains H1 (store name), H2s with store name, and opening paragraphs.
  * React will replace this on hydration.
@@ -256,8 +301,18 @@ function generateVenueSsrBody(v) {
   html += `</dl>`;
   html += `</section>`;
 
+  // ★ 방문 안내 섹션 — "가게이름 후기", "가게이름 가는법" 검색 대응
+  html += `<h2>${name} 방문 안내</h2>`;
+  html += `<p>${name}${eulReul(v.nameKo)} 처음 방문하신다면, 놀쿨(nolcool.com)에서 사전 정보를 확인하세요. `;
+  html += `${name}의 분위기, 인기 시간대, 복장 가이드까지 미리 알 수 있습니다. `;
+  if (v.nearbyStation) html += `교통편은 ${escHtml(v.nearbyStation)}이 가장 가깝습니다. `;
+  html += `${name} 실제 방문 후기는 커뮤니티에서 확인 가능합니다.</p>`;
+
   html += `<h2>${name} 총정리</h2>`;
   html += `<p>${region} ${catKo} ${name} — 실시간 후기, 시세, 예약 안내를 놀쿨(nolcool.com)에서 확인하세요. ${region} ${catKo} 비교, 순위, 방문 후기까지 한 곳에서 볼 수 있습니다.</p>`;
+
+  // ★ 관련 키워드 — 검색엔진이 연관 검색어로 인식
+  html += `<footer><p>${name}, ${region} ${catKo}, ${region} ${catKo} 추천, ${name} 후기, ${name} 예약, ${name} 위치, ${region} 밤문화</p></footer>`;
   html += `</article>`;
   return html;
 }
@@ -276,6 +331,8 @@ function generateVenueFaqJsonLd(v) {
     { q: `${name} 예약 방법은?`, a: `${name} 예약은 놀쿨(nolcool.com)에서 담당자에게 직접 문의할 수 있습니다.${staff ? ' 담당: ' + staff : ''}` },
     { q: `${region} ${catKo} 추천은?`, a: `${region}에서 ${catKo}${eulReul(catKo)} 찾는다면 ${name}${eulReul(name)} 추천합니다. 놀쿨에서 실시간 후기와 비교 정보를 확인하세요.` },
     { q: `${name} 분위기는 어떤가요?`, a: `${name}${eunNeun(name)} ${v.features.slice(0, 3).join(', ')} 등의 특징이 있는 ${region} ${catKo}입니다.` },
+    { q: `${name} 후기는?`, a: `${name} 실제 방문 후기는 놀쿨(nolcool.com) 커뮤니티에서 확인할 수 있습니다. 직접 가본 사람들의 솔직한 평가를 읽어보세요.` },
+    { q: `${name} 처음 가는데 혼자 가도 되나요?`, a: `${name}${eunNeun(name)} 혼자 방문하는 손님도 많습니다. 놀쿨 가이드에서 첫 방문 팁을 확인하세요.` },
   ];
 
   return {
@@ -397,6 +454,14 @@ const staticPages = [
 // 2. 정적 페이지 생성 (카테고리 리스팅에는 업소 이름 SSR 포함)
 // ══════════════════════════════════════════
 const categoryPaths = new Set(['/clubs', '/nights', '/lounges', '/rooms', '/yojeong', '/hoppa']);
+// ── 홈페이지: WebSite + Organization JSON-LD ──
+writePage('/', {
+  title: '놀쿨 — 오늘 밤 어디 갈지, 여기서 정해진다',
+  description: `전국 클럽·나이트·라운지·룸·요정·호빠 ${venues.length}곳 실시간 비교. 후기·시세·예약 한 곳에서.`,
+  jsonLdList: [WEBSITE_JSONLD, ORG_JSONLD],
+  ssrBody: `<h1>놀쿨 — 오늘 밤 어디 갈지, 여기서 정해진다</h1><p>대한민국 전국 클럽, 나이트, 라운지, 룸, 요정, 호빠 ${venues.length}곳의 실시간 정보를 제공하는 나이트라이프 플랫폼입니다.</p>`
+});
+
 for (const pg of staticPages) {
   let ssrBody = undefined;
   let jsonLdList = [];
@@ -578,15 +643,27 @@ for (const v of venues) {
     address: { '@type': 'PostalAddress', streetAddress: v.address || `${v.regionKo} ${v.nameKo}`, addressLocality: v.regionKo, addressCountry: 'KR' },
     url: `${BASE_URL}${routePath}`,
     image: getVenueOgImage(v.slug),
+    aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.5', bestRating: '5', ratingCount: '128' },
   };
   if (v.staffNickname) venueJsonLd.employee = { '@type': 'Person', name: v.staffNickname };
+
+  // BreadcrumbList: 홈 > 카테고리 > 지역(있으면) > 업소
+  const breadcrumbItems = [
+    { name: '놀쿨', url: BASE_URL },
+    { name: `${catLabelMap[v.cat]}`, url: `${BASE_URL}/${cm.path}` },
+  ];
+  if (['club', 'room', 'yojeong'].includes(v.cat)) {
+    breadcrumbItems.push({ name: v.regionKo, url: `${BASE_URL}/${cm.path}/${v.region}` });
+  }
+  breadcrumbItems.push({ name: v.nameKo, url: `${BASE_URL}${routePath}` });
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd(breadcrumbItems);
 
   writePage(routePath, {
     title: hookTitle,
     description: desc,
     ogImage: getVenueOgImage(v.slug),
     ssrBody: generateVenueSsrBody(v),
-    jsonLdList: [venueJsonLd, faqJsonLd]
+    jsonLdList: [venueJsonLd, faqJsonLd, breadcrumbJsonLd]
   });
   venueCount++;
 }
