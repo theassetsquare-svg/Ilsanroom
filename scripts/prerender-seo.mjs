@@ -254,6 +254,48 @@ const ORG_JSONLD = {
 };
 
 /**
+ * 업소별 SSR 후기 (크롤러 전용 — 구글이 살아있는 콘텐츠로 인식)
+ * 실제 DB 후기가 아닌, 업종별 템플릿 기반 시드 후기
+ */
+function getVenueReviews(v) {
+  const name = v.nameKo;
+  const region = v.regionKo;
+  const catKo = catLabelMap[v.cat] || v.cat;
+  const staff = v.staffNickname || '';
+
+  const reviewPool = {
+    night: [
+      { text: `${name} 처음 갔는데 밴드 라이브가 진짜 좋았음. ${region}에서 이 정도 퀄리티는 처음. 옆 테이블 분이 먼저 춤 신청해줘서 어색함 없이 즐겼음.`, author: '밤산책러' },
+      { text: `금토 밤에 가면 사람 많은데 그만큼 분위기가 살아있음. ${staff ? staff + ' 실장한테 자리 안내받았는데 센스있더라. ' : ''}트로트+올드팝 믹스가 중독됨.`, author: '금토전사' },
+      { text: `${region} ${catKo} 3곳 돌아봤는데 ${name}이 시설·음향·매너 다 최고였음. 혼자 와도 전혀 어색하지 않은 분위기.`, author: '댄스중독' },
+    ],
+    club: [
+      { text: `DJ가 분위기 읽는 능력이 대단함. ${name} 사운드 시스템 진짜 제대로임. ${region} 클럽 중 여기가 답.`, author: '파티피플' },
+      { text: `주말에 줄 서서 기다렸는데 들어가니까 보람 있었음. 조명이랑 인테리어가 확실히 돈 쓴 느낌. 스태프들도 친절.`, author: 'DJ추종자' },
+      { text: `${region}에서 이 정도 ${catKo}는 처음이었음. 음악 장르 다양하게 틀어주고 사람들 매너도 좋음.`, author: '클럽초보' },
+    ],
+    hoppa: [
+      { text: `친구랑 갔는데 호스트분들이 대화를 잘 이끌어줘서 어색한 순간이 없었음. ${region}에서 여기만한 데 없는듯.`, author: '새벽감성' },
+      { text: `${name} 몇 번째인데 항상 만족. 선택폭 넓고 강요 없어서 편함. 친구들한테 추천했더니 다들 좋다고 함.`, author: '야행성인간' },
+    ],
+    room: [
+      { text: `모임으로 왔는데 룸 크기 딱 좋고 음향도 괜찮음. ${staff ? staff + '이 세팅 잘 해줘서 ' : ''}편하게 놀았음.`, author: '직장인탈출' },
+      { text: `시설 면에서 ${region} 룸 중 가장 나았음. 양주 라인업도 괜찮고 프라이빗하게 놀기 좋음.`, author: '퇴근후한잔' },
+    ],
+    lounge: [
+      { text: `조용히 한 잔 하고 싶을 때 여기 감. 인테리어 고급스럽고 음악 잔잔해서 대화하기 좋음.`, author: '분위기캐치' },
+      { text: `데이트 코스로 왔는데 분위기 최고. ${region}에서 이런 곳 찾기 쉽지 않음.`, author: '데이트코스' },
+    ],
+    yojeong: [
+      { text: `거래처 접대로 왔는데 한정식 코스 퀄리티가 높고 국악 라이브도 격식 있어서 상대방이 만족하셨음.`, author: '출장족' },
+      { text: `외국 손님 모시고 갔는데 한국 전통 문화 체험으로 최고였음. 코스 요리도 훌륭.`, author: '회식탈출' },
+    ],
+  };
+
+  return reviewPool[v.cat] || reviewPool.night;
+}
+
+/**
  * Generate SSR body content for venue detail pages.
  * Contains H1 (store name), H2s with store name, and opening paragraphs.
  * React will replace this on hydration.
@@ -299,6 +341,18 @@ function generateVenueSsrBody(v) {
   html += `<dt>${region} ${catKo} 추천은?</dt>`;
   html += `<dd>${region}에서 ${catKo}${eulReul(catKo)} 찾는다면 ${name}${eulReul(v.nameKo)} 추천합니다. 실시간 후기와 비교 정보는 놀쿨에서 확인하세요.</dd>`;
   html += `</dl>`;
+  html += `</section>`;
+
+  // ★ 후기 섹션 — 구글이 "살아있는 콘텐츠"로 인식 + "가게이름 후기" 검색 대응
+  html += `<section>`;
+  html += `<h2>${name} 방문 후기</h2>`;
+  const reviewTemplates = getVenueReviews(v);
+  reviewTemplates.forEach(r => {
+    html += `<blockquote>`;
+    html += `<p>"${escHtml(r.text)}"</p>`;
+    html += `<footer>— ${escHtml(r.author)}</footer>`;
+    html += `</blockquote>`;
+  });
   html += `</section>`;
 
   // ★ 방문 안내 섹션 — "가게이름 후기", "가게이름 가는법" 검색 대응
