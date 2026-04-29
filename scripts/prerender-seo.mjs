@@ -224,7 +224,7 @@ function generateVenueSsrBody(v) {
 
   let html = `<article itemscope itemtype="https://schema.org/NightClub">`;
   html += `<h1 itemprop="name">${name}</h1>`;
-  html += `<p itemprop="description">${region} ${catKo} ${name}. ${desc}</p>`;
+  html += `<p itemprop="description">${region} ${catKo}. ${desc}</p>`;
 
   if (features) {
     html += `<h2>${name} 분위기·특징</h2>`;
@@ -289,11 +289,20 @@ function generateVenueFaqJsonLd(v) {
   };
 }
 
-function getHookingTitle(nameKo) {
+function getHookingTitle(nameKo, venue) {
   // Extract from seo-hooks.ts
   const regex = new RegExp(`'${nameKo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}':\\s*'([^']+)'`);
   const m = seoHooksSrc.match(regex);
-  return m ? m[1] : `${nameKo} — 실시간 후기·시세·예약 안내`;
+  if (m) return m[1];
+  // fallback: 업소별 고유 문구 생성 (동일 fallback 방지)
+  if (venue) {
+    const catKo = catLabelMap[venue.cat] || venue.cat;
+    const trait = venue.staffNickname
+      ? `${venue.staffNickname}${iGa(venue.staffNickname)} 이끄는 ${venue.regionKo} 명소`
+      : `한번 가면 단골 되는 ${venue.regionKo} ${catKo}`;
+    return `${nameKo} — ${trait}`;
+  }
+  return `${nameKo} — 실시간 후기와 비교 정보`;
 }
 
 const venues = parseVenues();
@@ -463,15 +472,16 @@ for (const [cat, regions] of Object.entries(regionsByCategory)) {
       let title, desc;
       const topVenue = regionVenues[0];
       const topName = topVenue ? topVenue.nameKo : '';
+      const allNames = regionVenues.slice(0, 3).map(vv => vv.nameKo).join(', ');
       if (cat === 'club') {
         title = `${regionKo} 클럽 ${regionVenues.length}곳 — 오늘 밤 갈 곳 여기서 고른다`;
-        desc = `${regionKo} 클럽 ${regionVenues.length}곳 비교.${topName ? ' ' + topName + ' 포함.' : ''} 입장료·분위기·영업시간 한눈에.`;
+        desc = `${regionKo} 클럽 ${regionVenues.length}곳 실시간 비교. ${allNames} 등 입장료·분위기·영업시간·후기까지 한눈에 확인하고 고르세요.`;
       } else if (cat === 'room') {
         title = `${regionKo} 룸 ${regionVenues.length}곳 — 인원수 말하면 딱 맞게 세팅`;
-        desc = `${regionKo} 프라이빗 룸 ${regionVenues.length}곳.${topName ? ' ' + topName + ' 포함.' : ''} 인원별·용도별 비교.`;
+        desc = `${regionKo} 프라이빗 룸 ${regionVenues.length}곳 비교. ${allNames} 등 인원별·용도별 룸 구성과 양주 라인업 확인. 모임 전 필수 체크.`;
       } else {
         title = `${regionKo} 요정 ${regionVenues.length}곳 — 격이 다른 만찬의 시작`;
-        desc = `${regionKo} 전통 한정식 요정 ${regionVenues.length}곳.${topName ? ' ' + topName + ' 포함.' : ''} 코스 요리와 국악 라이브.`;
+        desc = `${regionKo} 전통 한정식 요정 ${regionVenues.length}곳. ${allNames} 등 코스 요리·국악 라이브·프라이빗 룸 비교. 접대 장소 고를 때 여기서 확인.`;
       }
       // SSR: 해당 지역 업소 이름 + 상세 설명 전부 포함
       let regSsr = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
@@ -533,10 +543,19 @@ for (const v of venues) {
   const cm = catMap[v.cat];
   if (!cm) continue;
 
-  const hookTitle = getHookingTitle(v.nameKo);
-  // meta description: full description에서 150자 완결 문장으로 절삭 (shortDesc는 잘린 경우가 많음)
-  const descSource = v.description || v.shortDesc || `${v.nameKo} — ${v.regionKo} ${cm.labelKo}. 실시간 후기·시세·예약 안내.`;
-  const desc = truncateDesc(`${v.regionKo} ${cm.labelKo} ${v.nameKo}. ${descSource}`, 150);
+  const hookTitle = getHookingTitle(v.nameKo, v);
+  // meta description: shortDesc 보충 → "가게이름 — 설명" 형태 150자
+  let descBase = v.shortDesc || '';
+  if (descBase.length < 80 && v.description) {
+    const sentences = v.description.split(/[.!?]\s*/).filter(s => s.length > 10);
+    for (const s of sentences) {
+      if (descBase.length >= 120) break;
+      if (descBase.includes(s.slice(0, 15))) continue;
+      descBase = descBase ? `${descBase}. ${s}` : s;
+    }
+  }
+  if (!descBase || descBase.length < 30) descBase = v.description.slice(0, 130);
+  const desc = truncateDesc(`${v.nameKo} — ${descBase}`, 150);
 
   // Route path depends on category
   let routePath;
@@ -673,7 +692,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
     } else {
       routePath = `/${catInfo.path}/${vv.slug}`;
     }
-    const hookTitle = getHookingTitle(vv.nameKo);
+    const hookTitle = getHookingTitle(vv.nameKo, vv);
     llmsTxt += `- [${hookTitle}](${BASE_URL}${routePath})\n`;
   }
 }
@@ -735,7 +754,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
     } else {
       routePath = `/${catInfo.path}/${vv.slug}`;
     }
-    const hookTitle = getHookingTitle(vv.nameKo);
+    const hookTitle = getHookingTitle(vv.nameKo, vv);
     llmsFull += `#### ${vv.nameKo}\n`;
     llmsFull += `- 업종: ${catInfo.labelKo}\n`;
     llmsFull += `- 지역: ${vv.regionKo}\n`;

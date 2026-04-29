@@ -52,7 +52,9 @@ export function getHookingTitle(venue: Venue): string {
     '노원호박나이트': '노원호박나이트 — 역 도보 3분, 중계동 밤거리에서 한 곡',
     '노원스타나이트': '노원스타나이트 — 생음악 퀄리티로 소문난 곳',
     '길동찬스나이트': '길동찬스나이트 — 강동구민이 숨겨둔 단골 사교장',
-    // 일산물나이트 삭제됨
+    '강서호박나이트': '강서호박나이트 — 발산역 뒷골목, 퇴근길 한 곡이 습관 된다',
+    '일산화정터널나이트': '일산화정터널나이트 — 터널 지나면 별세계, 고양 밤의 관문',
+    '일산물나이트': '일산물나이트 — 워터 조명 아래 몸이 먼저 움직이는 곳',
     '화정한국관나이트': '화정한국관나이트 — 역 도보권, 고양 주민 사랑방',
     '김포호박나이트': '김포호박나이트 — 시민들이 금요일마다 모이는 핫플',
     '김포썸나이트': '김포썸나이트 — 새로운 만남이 시작되는 설레는 밤',
@@ -149,26 +151,38 @@ function getCategoryKo(cat: string): string {
 }
 
 export function getHookingDescription(venue: Venue): string {
-  let base = venue.shortDescription || venue.description.slice(0, 100);
+  let base = venue.shortDescription || '';
 
-  // 1차: regionKo에 포함된 지역어 제거
-  const regionParts = venue.regionKo.split(/\s+/).filter((p: string) => p.length >= 2);
-  for (const rp of regionParts) {
-    if (venue.nameKo.includes(rp)) {
-      base = base.replace(new RegExp(rp + '[동구시]?\\s*', 'g'), '');
+  // shortDescription이 80자 미만이면 description에서 보충
+  if (base.length < 80 && venue.description) {
+    const sentences = venue.description.split(/[.!?]\s*/).filter((s: string) => s.length > 10);
+    let combined = base;
+    for (const s of sentences) {
+      if (combined.length >= 120) break;
+      if (combined.includes(s.slice(0, 15))) continue;
+      combined = combined ? `${combined}. ${s}` : s;
     }
+    base = combined;
   }
 
-  // 2차: 이름 속 한글 2자+ 단어가 설명에도 있으면 제거 (지역 중복 방지)
+  if (!base || base.length < 30) {
+    base = venue.description.slice(0, 130);
+  }
+
+  // 이름 속 한글 단어가 설명에 있으면 첫 등장만 제거 (지역 중복 방지)
   const nameWords = venue.nameKo.match(/[가-힣]{2,}/g) || [];
   for (const nw of nameWords) {
-    if (nw.length >= 2 && base.includes(nw)) {
-      base = base.replace(new RegExp(nw + '[동구시]?\\s*', 'g'), '');
+    if (nw.length >= 2) {
+      base = base.replace(new RegExp(nw + '[동구시]?\\s*'), '');
     }
   }
 
-  // 앞뒤 공백 정리
-  base = base.replace(/^\s+/, '').replace(/\s{2,}/g, ' ');
+  base = base.replace(/^\s+/, '').replace(/\s{2,}/g, ' ').trim();
 
-  return `${venue.nameKo} — ${base}`.slice(0, 150);
+  const result = `${venue.nameKo} — ${base}`;
+  if (result.length <= 150) return result;
+  const cut = result.slice(0, 148);
+  const lastPunct = Math.max(cut.lastIndexOf('.'), cut.lastIndexOf(','), cut.lastIndexOf('다'));
+  if (lastPunct > result.indexOf('—') + 10) return cut.slice(0, lastPunct + 1);
+  return cut;
 }
