@@ -22,10 +22,12 @@ const IMAGE_OVERRIDES: Record<string, Record<number, string>> = {
   },
 };
 
+const CACHE_VER = 'v2';
+
 function getSrc(slug: string, n: number): string {
   const override = IMAGE_OVERRIDES[slug]?.[n];
-  if (override) return override;
-  return `/venues/${slug}-${n}.jpg`;
+  if (override) return `${override}?${CACHE_VER}`;
+  return `/venues/${slug}-${n}.jpg?${CACHE_VER}`;
 }
 
 function isSquareSlot(slug: string, n: number): boolean {
