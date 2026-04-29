@@ -157,7 +157,7 @@ export default function Footer() {
                 <h4 className="mb-2 text-xs font-bold" style={{ color: '#8B5CF6' }}>{region}</h4>
                 <div className="flex flex-wrap gap-x-3 gap-y-1">
                   {links.map((link) => (
-                    <Link key={link.href} to={link.href} className="text-xs transition-colors hover:text-[#8B5CF6]" style={{ color: '#777' }}>
+                    <Link key={link.href} to={link.href} className="text-xs transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
                       {link.label}
                     </Link>
                   ))}
@@ -169,7 +169,7 @@ export default function Footer() {
 
         {/* 하단 카피라이트 */}
         <div className="mt-8 border-t pt-4" style={{ borderColor: '#E5E7EB' }}>
-          <p className="text-center text-xs" style={{ color: '#999' }}>
+          <p className="text-center text-xs" style={{ color: '#666' }}>
             &copy; {new Date().getFullYear()} <span style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span> NOLCOOL. All rights reserved.
           </p>
         </div>

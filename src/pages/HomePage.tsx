@@ -132,7 +132,7 @@ const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, r
       <Link target="_blank" rel="noopener noreferrer" to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
         <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
           <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
-            <img src={`/venues/${venue.slug}-1.jpg`} alt={venue.nameKo} loading="lazy" width={300} height={300}
+            <img src={`/venues/${venue.slug}-1.webp`} alt={venue.nameKo} loading="lazy" width={300} height={300}
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
               className="absolute inset-0 w-full h-full object-cover z-[1]" />
             <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${
@@ -602,7 +602,7 @@ export default function HomePage() {
                       정밀 분석 받기
                     </Link>
                   </div>
-                  <button onClick={() => { setQuizStep(-1); setQuizAnswers([]); }} className="w-full text-center text-[11px] text-[#999] py-1">다시 하기</button>
+                  <button onClick={() => { setQuizStep(-1); setQuizAnswers([]); }} className="w-full text-center text-[11px] text-[#666] py-1">다시 하기</button>
                 </div>
               );
             })()}
@@ -653,7 +653,7 @@ export default function HomePage() {
                   </div>
                 </button>
               </div>
-              <p className="mt-1.5 text-[11px] text-center text-[#999]">{voted ? `${voted === poll.a ? poll.a : poll.b} 선택!` : '터치해서 투표'} · {participants.toLocaleString()}명 참여</p>
+              <p className="mt-1.5 text-[11px] text-center text-[#666]">{voted ? `${voted === poll.a ? poll.a : poll.b} 선택!` : '터치해서 투표'} · {participants.toLocaleString()}명 참여</p>
             </div>
           );
         })()}
@@ -690,12 +690,12 @@ export default function HomePage() {
             className="block rounded-2xl border border-gray-100 bg-gradient-to-r from-white to-[#FAFAFE] p-4 mb-2 active:bg-gray-50 transition">
             <div className="flex items-center gap-2 mb-1.5">
               <span className="rounded bg-[#F3F0FF] px-1.5 py-0.5 text-[11px] font-bold text-[#8B5CF6]">{displayPosts[0].board}</span>
-              <span className="text-[11px] text-[#999]">{displayPosts[0].author} · {displayPosts[0].time}</span>
+              <span className="text-[11px] text-[#666]">{displayPosts[0].author} · {displayPosts[0].time}</span>
             </div>
             <p className="text-[15px] font-bold text-[#111] leading-snug mb-1">{displayPosts[0].title}</p>
-            <p className="text-[12px] text-[#777] leading-relaxed line-clamp-2">댓글 {displayPosts[0].comments}개의 반응이 쏟아지고 있습니다...</p>
+            <p className="text-[12px] text-[#555] leading-relaxed line-clamp-2">댓글 {displayPosts[0].comments}개의 반응이 쏟아지고 있습니다...</p>
             <div className="flex items-center justify-between mt-2">
-              <div className="flex items-center gap-2 text-[11px] text-[#999]">
+              <div className="flex items-center gap-2 text-[11px] text-[#666]">
                 <span>♥ {displayPosts[0].likes}</span>
                 <span>💬 {displayPosts[0].comments}</span>
               </div>
@@ -709,7 +709,7 @@ export default function HomePage() {
             <Link key={post.id} to={post.id.startsWith('seed-') ? '/community' : `/community/post/${post.id}`} className="flex items-center gap-2.5 rounded-xl border border-gray-100 bg-white px-3 py-2.5 active:bg-gray-50 transition">
               <span className="flex-shrink-0 rounded bg-[#F3F0FF] px-1.5 py-0.5 text-[11px] font-bold text-[#8B5CF6]">{post.board}</span>
               <p className="text-[13px] font-medium text-[#111] truncate flex-1">{post.title}</p>
-              <div className="flex-shrink-0 flex items-center gap-1.5 text-[11px] text-[#999]">
+              <div className="flex-shrink-0 flex items-center gap-1.5 text-[11px] text-[#666]">
                 {post.likes > 0 && <span>♥{post.likes}</span>}
                 {post.comments > 0 && <span>💬{post.comments}</span>}
               </div>
@@ -800,7 +800,7 @@ export default function HomePage() {
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <h2 className="text-base font-bold text-[#111]">조각모임</h2>
-            <span className="rounded-full bg-orange-500 px-1.5 py-0.5 text-[9px] font-bold text-white">모집중</span>
+            <span className="rounded-full bg-orange-600 px-1.5 py-0.5 text-[9px] font-bold text-white">모집중</span>
           </div>
           <div className="flex items-center gap-2">
             <Link to="/community/jogak?write=true" className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white" style={{ minHeight: 28 }}>모임만들기</Link>
@@ -836,7 +836,7 @@ export default function HomePage() {
             );
           })}
         </div>
-        <p className="text-center text-[11px] text-[#999] mt-2">혼자 가기 심심하면 여기서 크루를 만들어봐</p>
+        <p className="text-center text-[11px] text-[#666] mt-2">혼자 가기 심심하면 여기서 크루를 만들어봐</p>
       </section>
 
       {/* ═══ 8. 오늘 밤 운세 — 터치 인터랙션 (스크롤 보상) ═══ */}
@@ -868,15 +868,15 @@ export default function HomePage() {
             <p className="text-sm font-bold text-[#111] leading-relaxed mb-3 bg-white/60 rounded-xl p-3">{fortune.text}</p>
             <div className="grid grid-cols-3 gap-2 mb-2">
               <div className="rounded-lg bg-white/80 p-2 text-center">
-                <p className="text-[9px] text-[#999]">행운 장소</p>
+                <p className="text-[9px] text-[#666]">행운 장소</p>
                 <p className="text-xs font-bold text-[#111]">{fortune.lucky}</p>
               </div>
               <div className="rounded-lg bg-white/80 p-2 text-center">
-                <p className="text-[9px] text-[#999]">행운 색</p>
+                <p className="text-[9px] text-[#666]">행운 색</p>
                 <p className="text-xs font-bold text-[#111]">{fortune.luckyColor}</p>
               </div>
               <div className="rounded-lg bg-white/80 p-2 text-center">
-                <p className="text-[9px] text-[#999]">행운 숫자</p>
+                <p className="text-[9px] text-[#666]">행운 숫자</p>
                 <p className="text-xs font-bold text-[#8B5CF6]">{fortune.luckyNum}</p>
               </div>
             </div>
@@ -884,7 +884,7 @@ export default function HomePage() {
               <p className="text-[11px] font-bold text-[#8B5CF6] mb-0.5">꿀팁</p>
               <p className="text-[13px] text-[#333] leading-relaxed">{fortune.tip}</p>
             </div>
-            <button onClick={() => setFortuneRevealed(false)} className="mt-2 w-full text-center text-[11px] text-[#999] py-1.5">카드 다시 덮기</button>
+            <button onClick={() => setFortuneRevealed(false)} className="mt-2 w-full text-center text-[11px] text-[#666] py-1.5">카드 다시 덮기</button>
           </div>
         )}
       </section>
@@ -904,7 +904,7 @@ export default function HomePage() {
                 </div>
                 <div className="p-3">
                   <p className="text-[13px] font-bold text-[#111] leading-snug line-clamp-2 mb-1">{article.title}</p>
-                  <p className="text-[11px] text-[#777] line-clamp-2 leading-relaxed">{article.excerpt.slice(0, 60)}...</p>
+                  <p className="text-[11px] text-[#555] line-clamp-2 leading-relaxed">{article.excerpt.slice(0, 60)}...</p>
                   <span className="text-[11px] font-bold text-[#8B5CF6] mt-1.5 inline-block">읽어보기 →</span>
                 </div>
               </div>
@@ -961,7 +961,7 @@ export default function HomePage() {
             <Link key={kw} to={`/search?q=${encodeURIComponent(kw)}`}
               className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 py-1.5 active:bg-gray-50 transition"
               style={{ minHeight: 32 }}>
-              <span className={`text-[10px] font-black ${i < 3 ? 'text-[#8B5CF6]' : 'text-[#999]'}`}>{i + 1}</span>
+              <span className={`text-[10px] font-black ${i < 3 ? 'text-[#8B5CF6]' : 'text-[#666]'}`}>{i + 1}</span>
               <span className="text-[13px] font-medium text-[#111]">{kw}</span>
               {i < 2 && <span className="text-[9px] text-red-500 font-bold">HOT</span>}
             </Link>
@@ -981,7 +981,7 @@ export default function HomePage() {
               featuredVenue.category === 'yojeong' ? 'from-emerald-600 to-teal-800' :
               'from-pink-600 to-rose-800'
             }`} style={{ minHeight: 130 }}>
-              <img src={`/venues/${featuredVenue.slug}-1.jpg`} alt={featuredVenue.nameKo} width={600} height={300} loading="lazy"
+              <img src={`/venues/${featuredVenue.slug}-1.webp`} alt={featuredVenue.nameKo} width={600} height={300} loading="lazy"
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                 className="absolute inset-0 w-full h-full object-cover z-[1] opacity-60" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-[2]" />
@@ -1007,7 +1007,7 @@ export default function HomePage() {
           {popularVenues.slice(0, 8).map((v, i) => (
             <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} target="_blank" rel="noopener noreferrer" className="flex-shrink-0" style={{ width: 120 }}>
               <div className="relative rounded-xl overflow-hidden" style={{ width: 120, height: 120 }}>
-                <img src={`/venues/${v.slug}-1.jpg`} alt={v.nameKo} width={120} height={120} loading="lazy"
+                <img src={`/venues/${v.slug}-1.webp`} alt={v.nameKo} width={120} height={120} loading="lazy"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   className="absolute inset-0 w-full h-full object-cover z-[1]" />
                 <div className={`absolute inset-0 flex flex-col items-center justify-center ${
@@ -1091,7 +1091,7 @@ export default function HomePage() {
               <div key={region}>
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-base font-bold text-[#111]">📍 {region}</h3>
-                  <span className="text-xs text-[#999]">{list.length}곳</span>
+                  <span className="text-xs text-[#666]">{list.length}곳</span>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {list.map(venue => (
@@ -1169,7 +1169,7 @@ export default function HomePage() {
         )}
 
         {feedVenues.length === 0 && (
-          <div className="text-center py-12 text-[#999]">
+          <div className="text-center py-12 text-[#666]">
             <p className="text-sm">이 지역에 등록된 업소가 없습니다</p>
           </div>
         )}
@@ -1233,7 +1233,7 @@ export default function HomePage() {
               className="flex flex-col items-center gap-0.5 rounded-xl border border-gray-200 bg-white p-2 text-center shadow-sm active:scale-[0.97] transition" style={{ minHeight: 56 }}>
               <span className="text-lg">{card.icon}</span>
               <span className="text-[12px] font-bold text-[#111]">{card.title}</span>
-              <span className="text-[9px] text-[#999]">{card.desc}</span>
+              <span className="text-[9px] text-[#666]">{card.desc}</span>
             </Link>
           ))}
         </div>

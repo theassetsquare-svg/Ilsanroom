@@ -107,7 +107,7 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
                   {/* 이미지 — 1:1 정사각형 */}
                   <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
                     <img
-                      src={`/venues/${venue.slug}-1.jpg`}
+                      src={`/venues/${venue.slug}-1.webp`}
                       alt={venue.nameKo}
                       width={300}
                       height={300}

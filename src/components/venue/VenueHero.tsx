@@ -39,11 +39,11 @@ export default function VenueHero({
   const gradient = categoryGradients[category] || categoryGradients.club;
   const bgPattern = categoryBgPatterns[category] || categoryBgPatterns.club;
   const [hasImage, setHasImage] = useState(true);
-  const [imgSrc, setImgSrc] = useState(slug ? `/venues/${slug}-1.jpg?v2` : '');
+  const [imgSrc, setImgSrc] = useState(slug ? `/venues/${slug}-1.webp` : '');
 
   const handleImageError = () => {
-    if (imgSrc.includes('.jpg')) {
-      setImgSrc(`/venues/${slug}-1.webp?v2`);
+    if (imgSrc.includes('.webp')) {
+      setImgSrc(`/venues/${slug}-1.jpg`);
     } else {
       setHasImage(false);
     }

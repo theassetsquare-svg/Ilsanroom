@@ -382,7 +382,7 @@ export default function SearchPage() {
               <Link key={venue.id || venue.slug} to={getCategoryPath(venue)} target="_blank" rel="noopener noreferrer" className="block">
                 <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
                   <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
-                    <img src={`/venues/${venue.slug}-1.jpg`} alt={venue.nameKo} loading="lazy"
+                    <img src={`/venues/${venue.slug}-1.webp`} alt={venue.nameKo} loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover z-[1]"
                       onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                     <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${fallbackGradient[venue.category] || 'from-gray-500 to-gray-700'}`}>
