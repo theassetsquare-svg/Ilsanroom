@@ -88,11 +88,14 @@ ALTER TABLE filter_words ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reports ENABLE ROW LEVEL SECURITY;
 
 -- filter_words: 누구나 읽기 가능
-CREATE POLICY IF NOT EXISTS "filter_words_read" ON filter_words FOR SELECT USING (true);
+DROP POLICY IF EXISTS "filter_words_read" ON filter_words;
+CREATE POLICY "filter_words_read" ON filter_words FOR SELECT USING (true);
 
 -- reports: 로그인 유저가 자기 신고 생성, 관리자만 전체 조회
-CREATE POLICY IF NOT EXISTS "reports_insert" ON reports FOR INSERT WITH CHECK (auth.uid() = reporter_id);
-CREATE POLICY IF NOT EXISTS "reports_read_own" ON reports FOR SELECT USING (auth.uid() = reporter_id);
+DROP POLICY IF EXISTS "reports_insert" ON reports;
+CREATE POLICY "reports_insert" ON reports FOR INSERT WITH CHECK (auth.uid() = reporter_id);
+DROP POLICY IF EXISTS "reports_read_own" ON reports;
+CREATE POLICY "reports_read_own" ON reports FOR SELECT USING (auth.uid() = reporter_id);
 
 -- 기본 욕설 키워드 시드
 INSERT INTO filter_words (word, type, severity, action) VALUES
