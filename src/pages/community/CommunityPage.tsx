@@ -186,6 +186,20 @@ export default function CommunityPage() {
           </div>
         )}
 
+        {/* ══════ 업종별 라운지 배너 ══════ */}
+        <div className="mb-8">
+          <Link to="/lounge" target="_blank" rel="noopener noreferrer"
+            className="block rounded-2xl border border-violet-200 p-5 sm:p-6 transition hover:border-violet-400 hover:shadow-lg"
+            style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.08), rgba(236,72,153,0.06))' }}>
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-2xl">🏠</span>
+              <h2 className="text-lg sm:text-xl font-black" style={{ color: '#111' }}>업종별 라운지</h2>
+              <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-bold text-violet-600">NEW</span>
+            </div>
+            <p className="text-sm" style={{ color: '#555' }}>나이트·클럽·룸·요정·호빠·라운지바 — 같은 취향끼리 모여서 이야기하는 전용 게시판</p>
+          </Link>
+        </div>
+
         {/* ══════ 게시판 카드 그리드 ══════ */}
         <div className="mb-8">
           <h2 className="text-xl font-black mb-5" style={{ color: '#111' }}>게시판 둘러보기</h2>

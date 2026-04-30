@@ -620,6 +620,15 @@ const staticPages = [
   { path: '/community/fashion', title: '운동화 신고 가도 돼? 업종별 복장 가이드', desc: '클럽·나이트·요정·라운지, 어디냐에 따라 옷이 다르다. 한눈에 정리.' },
   { path: '/community/jogak', title: '급하게 한 명 구한다, 조각 모집', desc: '자리 하나 남았을 때, 바로 올리고 바로 구한다. 100P 이상 작성 가능.' },
   { path: '/community/guidelines', title: '이것만 지키면 된다, 커뮤니티 규칙', desc: '광고·욕설·개인정보 노출 금지. 기본 매너만 지키면 자유롭게.' },
+  { path: '/lounge', title: '업종별 라운지 — 같은 취향끼리 모이는 곳', desc: '나이트·클럽·룸·요정·호빠·라운지바 업종별 전용 게시판.' },
+  { path: '/lounge/night', title: '나이트 라운지 — 나이트 경험담 공유', desc: '나이트 다녀온 사람들의 실시간 이야기. 후기, 질문, 정보 공유.' },
+  { path: '/lounge/club', title: '클럽 라운지 — 클럽 이야기', desc: '클럽 음악, 분위기, 추천 정보를 나누는 전용 게시판.' },
+  { path: '/lounge/room', title: '룸 라운지 — 룸 이야기', desc: '룸 이용 후기와 추천 정보를 나누는 전용 게시판.' },
+  { path: '/lounge/yojung', title: '요정 라운지 — 요정 이야기', desc: '요정 방문 경험과 정보를 공유하는 전용 게시판.' },
+  { path: '/lounge/hoppa', title: '호빠 라운지 — 호빠 이야기', desc: '호빠 방문 후기와 추천을 나누는 전용 게시판.' },
+  { path: '/lounge/lounge', title: '라운지바 라운지 — 라운지바 이야기', desc: '라운지바 분위기와 칵테일 추천 게시판.' },
+  { path: '/lounge/free', title: '라운지 자유게시판 — 뭐든 자유롭게', desc: '업종 상관없이 자유롭게 대화하는 공간.' },
+  { path: '/lounge/qna', title: '라운지 질문답변 — 뭐든 물어보세요', desc: '밤문화 관련 궁금한 거 다 답해주는 Q&A.' },
 
   // Legal & Info
   { path: '/privacy', title: '개인정보 수집·이용·파기 안내', desc: '수집 항목, 보유 기간, 제3자 제공 여부를 투명하게 공개.' },
@@ -1132,6 +1141,17 @@ let llmsTxt = `# 놀쿨 (NOLCOOL)
 - [자유게시판](${BASE_URL}/community/free)
 - [패션 가이드](${BASE_URL}/community/fashion)
 - [조각 모집](${BASE_URL}/community/jogak)
+
+## 업종별 라운지
+- [라운지 메인](${BASE_URL}/lounge)
+- [나이트 라운지](${BASE_URL}/lounge/night)
+- [클럽 라운지](${BASE_URL}/lounge/club)
+- [룸 라운지](${BASE_URL}/lounge/room)
+- [요정 라운지](${BASE_URL}/lounge/yojung)
+- [호빠 라운지](${BASE_URL}/lounge/hoppa)
+- [라운지바 라운지](${BASE_URL}/lounge/lounge)
+- [자유게시판](${BASE_URL}/lounge/free)
+- [질문답변](${BASE_URL}/lounge/qna)
 
 ## 업주용
 - [요금제](${BASE_URL}/pricing)

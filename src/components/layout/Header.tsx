@@ -27,6 +27,7 @@ const menuCategories = [
 
 const menuFeatures = [
   { icon: '💬', label: '커뮤니티', href: '/community' },
+  { icon: '🏠', label: '라운지', href: '/lounge' },
   { icon: '✉️', label: '쪽지함', href: '/messages' },
   { icon: '📸', label: '클립', href: '/gallery' },
   { icon: '🔥', label: '랭킹', href: '/ranking' },

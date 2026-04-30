@@ -88,6 +88,9 @@ const WaitlistPage = lazyRetry(() => import('./pages/WaitlistPage'));
 const MyReferralsPage = lazyRetry(() => import('./pages/my/MyReferralsPage'));
 const MessagesPage = lazyRetry(() => import('./pages/MessagesPage'));
 const NotFoundPage = lazyRetry(() => import('./pages/NotFoundPage'));
+/* ── Lounge Pages ── */
+const LoungeIndexPage = lazyRetry(() => import('./pages/community/LoungeIndexPage'));
+const LoungePage = lazyRetry(() => import('./pages/community/LoungePage'));
 /* ── SEO Dynamic Pages ── */
 const BestCategoryPage = lazyRetry(() => import('./pages/seo/BestCategoryPage'));
 const NewCategoryPage = lazyRetry(() => import('./pages/seo/NewCategoryPage'));
@@ -151,6 +154,9 @@ export default function App() {
           <Route path="/community/jogak" element={<JogakPage />} />
           <Route path="/community/guidelines" element={<GuidelinesPage />} />
           <Route path="/community/post/:id" element={<ErrorBoundary resetKey={location.pathname}><PostDetailPage /></ErrorBoundary>} />
+          {/* Lounge */}
+          <Route path="/lounge" element={<LoungeIndexPage />} />
+          <Route path="/lounge/:type" element={<LoungePage />} />
           <Route path="/messages" element={<MessagesPage />} />
           {/* Legal & Info */}
           <Route path="/privacy" element={<PrivacyPage />} />
