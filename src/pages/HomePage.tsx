@@ -9,6 +9,7 @@ import { getSeedNickname } from '@/lib/fake-users';
 import JsonLd from '@/components/seo/JsonLd';
 import { useFavorites as useFavoritesHook } from '@/hooks/useFavorites';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
+import LiveStats from '@/components/live/LiveStats';
 import { articles as magazineArticles } from '@/data/magazine-articles';
 
 /* ── Helpers ── */
@@ -1265,6 +1266,9 @@ export default function HomePage() {
             구글 · ChatGPT · Gemini에서 <span className="text-lg text-[#8B5CF6]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>"놀쿨"</span> 검색하세요
           </p>
         </div>
+
+        {/* 실시간 현황 위젯 */}
+        <LiveStats />
       </section>
 
       {/* ═══ SEO TEXT ═══ */}

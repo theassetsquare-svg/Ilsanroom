@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { createPost, type PostCategory } from '@/lib/community-api';
+import { checkContent, checkTitle } from '@/lib/content-filter';
 
 const categoryLabels: Record<PostCategory, string> = {
   reviews: '업소 후기',
@@ -32,13 +33,30 @@ export default function WritePostModal({ open, onClose, defaultCategory = 'free'
       setError('제목과 내용을 입력해주세요');
       return;
     }
+
+    // 콘텐츠 필터링
+    const titleCheck = checkTitle(title.trim());
+    if (titleCheck.action === 'block') {
+      setError(titleCheck.reason);
+      return;
+    }
+    const contentCheck = checkContent(content.trim());
+    if (contentCheck.action === 'block') {
+      setError(contentCheck.reason);
+      return;
+    }
+
     setSubmitting(true);
     setError('');
 
+    // 욕설은 가림 처리된 텍스트로 저장
+    const finalTitle = titleCheck.action === 'mask' ? titleCheck.filteredText : title.trim();
+    const finalContent = contentCheck.action === 'mask' ? contentCheck.filteredText : content.trim();
+
     const result = await createPost({
       category,
-      title: title.trim(),
-      content: content.trim(),
+      title: finalTitle,
+      content: finalContent,
       venue_slug: venueSlug || undefined,
       rating: category === 'reviews' && rating > 0 ? rating : undefined,
     });

@@ -4,6 +4,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
 import ShareButton from '@/components/ui/ShareButton';
+import ReportButton from '@/components/moderation/ReportButton';
 import { getSeedNickname } from '@/lib/fake-users';
 
 interface CommentData {
@@ -350,6 +351,7 @@ export default function PostDetailPage() {
           {liked ? '❤️' : '🤍'} 좋아요 {likeCount > 0 && likeCount}
         </button>
         <ShareButton title={post.title} text={post.title} />
+        <ReportButton targetType="post" targetId={post.id} />
       </div>
 
       {/* 구분선 */}

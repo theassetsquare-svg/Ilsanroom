@@ -3,6 +3,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
 import { Link } from 'react-router-dom';
+import { fetchReports, resolveReport, getReasonLabel, type Report } from '@/lib/report-api';
 
 const ADMIN_EMAILS = ['qotjsdnr123@naver.com', 'baesunwook513@gmail.com', 'theassetsquare@gmail.com'];
 
@@ -59,6 +60,9 @@ export default function AdminPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [reports, setReports] = useState<Report[]>([]);
+  const [filterWords, setFilterWords] = useState<any[]>([]);
+  const [newFilterWord, setNewFilterWord] = useState('');
 
   // 데이터 로드
   const loadData = useCallback(async () => {
@@ -72,6 +76,19 @@ export default function AdminPage() {
     setPosts(allPosts.filter(p => p.category !== 'clip'));
     setClips(allPosts.filter(p => p.category === 'clip'));
     setComments(commentsRes.data || []);
+
+    // 신고 목록 로드
+    try {
+      const reps = await fetchReports();
+      setReports(reps);
+    } catch { /* reports 테이블 없을 수 있음 */ }
+
+    // 필터 키워드 로드
+    try {
+      const { data: fw } = await supabase.from('filter_words').select('*').order('created_at', { ascending: false });
+      setFilterWords(fw || []);
+    } catch { /* filter_words 테이블 없을 수 있음 */ }
+
     setLoading(false);
   }, [isAdmin]);
 
@@ -278,10 +295,44 @@ export default function AdminPage() {
     return c.content?.toLowerCase().includes(q) || c.user_id?.includes(q);
   });
 
+  // 신고 처리
+  const handleResolveReport = async (reportId: string, action: 'resolved' | 'dismissed') => {
+    const res = await resolveReport(reportId, action);
+    if (!res.error) {
+      setReports(prev => prev.map(r => r.id === reportId ? { ...r, status: action } : r));
+    }
+  };
+
+  // 필터 키워드 추가
+  const handleAddFilterWord = async () => {
+    if (!newFilterWord.trim() || !supabase) return;
+    const { data, error } = await supabase.from('filter_words').insert({
+      word: newFilterWord.trim(),
+      type: 'profanity',
+      severity: 'high',
+      action: 'mask',
+    }).select().single();
+    if (!error && data) {
+      setFilterWords(prev => [data, ...prev]);
+      setNewFilterWord('');
+    }
+  };
+
+  // 필터 키워드 삭제
+  const handleDeleteFilterWord = async (id: string) => {
+    if (!supabase) return;
+    await supabase.from('filter_words').delete().eq('id', id);
+    setFilterWords(prev => prev.filter(w => w.id !== id));
+  };
+
+  const pendingReports = reports.filter(r => r.status === 'pending');
+
   const tabs = [
     { key: 'posts', label: '글 관리', count: posts.length },
     { key: 'clips', label: '클립/이미지', count: clips.length },
     { key: 'comments', label: '댓글 관리', count: comments.length },
+    { key: 'reports', label: '신고', count: pendingReports.length },
+    { key: 'keywords', label: '차단키워드', count: filterWords.length },
     { key: 'ban', label: '차단 관리', count: bannedEmails.length },
     { key: 'stats', label: '현황' },
   ];
@@ -545,6 +596,110 @@ export default function AdminPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* ═══ 신고 관리 ═══ */}
+      {activeTab === 'reports' && !loading && (
+        <div>
+          <p className="text-xs mb-3" style={{ color: '#999' }}>
+            대기 중 {pendingReports.length}건 / 전체 {reports.length}건
+          </p>
+          {reports.length === 0 && <p style={{ color: '#999' }}>신고가 없습니다.</p>}
+          <div className="space-y-2">
+            {reports.map(report => (
+              <div key={report.id} className="rounded-xl border p-4" style={{ borderColor: report.status === 'pending' ? '#FCD34D' : '#E5E7EB', backgroundColor: report.status === 'pending' ? '#FFFBEB' : '#FFF' }}>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs px-2 py-0.5 rounded-full font-bold" style={{
+                        backgroundColor: report.status === 'pending' ? '#FEF3C7' : report.status === 'resolved' ? '#D1FAE5' : '#F3F4F6',
+                        color: report.status === 'pending' ? '#92400E' : report.status === 'resolved' ? '#065F46' : '#555',
+                      }}>
+                        {report.status === 'pending' ? '대기' : report.status === 'resolved' ? '처리' : '기각'}
+                      </span>
+                      <span className="text-xs font-bold" style={{ color: '#111' }}>{getReasonLabel(report.reason)}</span>
+                    </div>
+                    <p className="text-xs" style={{ color: '#555' }}>
+                      {report.target_type === 'post' ? '글' : report.target_type === 'comment' ? '댓글' : '사용자'} 신고
+                    </p>
+                    {report.description && <p className="text-xs mt-1" style={{ color: '#888' }}>{report.description}</p>}
+                    <p className="text-xs mt-1" style={{ color: '#BBB' }}>
+                      {report.created_at?.slice(0, 16)} · 대상: {report.target_id?.slice(0, 12)}...
+                    </p>
+                  </div>
+                  {report.status === 'pending' && (
+                    <div className="flex flex-col gap-1 shrink-0">
+                      <button
+                        onClick={() => handleResolveReport(report.id, 'resolved')}
+                        className="rounded-lg px-3 py-1 text-xs font-bold text-white"
+                        style={{ backgroundColor: '#22C55E', minHeight: 28 }}
+                      >
+                        처리
+                      </button>
+                      <button
+                        onClick={() => handleResolveReport(report.id, 'dismissed')}
+                        className="rounded-lg px-3 py-1 text-xs font-medium"
+                        style={{ backgroundColor: '#F3F4F6', color: '#555', minHeight: 28 }}
+                      >
+                        기각
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ═══ 차단 키워드 관리 ═══ */}
+      {activeTab === 'keywords' && !loading && (
+        <div>
+          <h2 className="text-lg font-bold mb-4" style={{ color: '#111' }}>차단 키워드 관리</h2>
+
+          <div className="flex gap-2 mb-6">
+            <input
+              type="text"
+              value={newFilterWord}
+              onChange={e => setNewFilterWord(e.target.value)}
+              placeholder="새 차단 키워드 추가"
+              className="flex-1 rounded-xl border px-4 py-3 text-sm outline-none"
+              style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }}
+              onKeyDown={e => e.key === 'Enter' && handleAddFilterWord()}
+            />
+            <button
+              onClick={handleAddFilterWord}
+              disabled={!newFilterWord.trim()}
+              className="rounded-xl px-5 py-3 text-sm font-bold text-white disabled:opacity-40"
+              style={{ backgroundColor: '#8B5CF6', minHeight: 48 }}
+            >
+              추가
+            </button>
+          </div>
+
+          <div className="rounded-xl border p-4" style={{ borderColor: '#E5E7EB' }}>
+            <p className="text-sm font-bold mb-3" style={{ color: '#111' }}>등록된 키워드 ({filterWords.length}개)</p>
+            {filterWords.length === 0 ? (
+              <p className="text-xs" style={{ color: '#999' }}>등록된 키워드가 없습니다.</p>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {filterWords.map(fw => (
+                  <div key={fw.id} className="flex items-center gap-1 rounded-full px-3 py-1.5" style={{ backgroundColor: '#FEF2F2', border: '1px solid #FECACA' }}>
+                    <span className="text-xs font-medium" style={{ color: '#DC2626' }}>{fw.word}</span>
+                    <span className="text-[10px]" style={{ color: '#999' }}>({fw.type})</span>
+                    <button
+                      onClick={() => handleDeleteFilterWord(fw.id)}
+                      className="ml-1 text-xs font-bold"
+                      style={{ color: '#999' }}
+                    >
+                      x
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}

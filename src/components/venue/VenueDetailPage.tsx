@@ -10,6 +10,8 @@ import VenueGallery from '@/components/venue/VenueGallery';
 import Card from '@/components/ui/Card';
 import ShareButtons from '@/components/interactive/ShareButtons';
 import { MidContentHook } from '@/components/engagement/ReadingEngagement';
+import RelatedVenues30 from '@/components/venue/RelatedVenues30';
+import LiveStats from '@/components/live/LiveStats';
 import type { Venue } from '@/types';
 
 const VenueSeoContent = lazy(() => import('@/components/venue/VenueSeoContent'));
@@ -191,24 +193,13 @@ export default function VenueDetailPage({
         </Link>
       </section>
 
-      {/* ═══ 11. 비슷한 업소 (hook text 추가) ═══ */}
-      {related.length > 0 && (
-        <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6">
-          <div className="mb-6">
-            <h2 className="text-xl font-bold text-neon-text">비슷한 업소</h2>
-            <p className="text-xs text-neon-text-muted mt-1">{relatedHookText}</p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {related.slice(0, 3).map((v) => (
-              <Card key={v.id} href={relatedHrefFn(v)}>
-                <h3 className="text-base font-bold text-neon-text mb-1">{v.nameKo}</h3>
-                {v.staffNickname && <p className="text-xs text-neon-gold">{v.staffNickname}</p>}
-                <p className="text-sm text-neon-text-muted">추천</p>
-              </Card>
-            ))}
-          </div>
-        </section>
-      )}
+      {/* ═══ 11. 30개 추천 카드 (비교 늪) ═══ */}
+      <RelatedVenues30 venue={venue} />
+
+      {/* ═══ 11-b. 실시간 현황 ═══ */}
+      <section className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
+        <LiveStats />
+      </section>
 
       {/* ═══ 12. 숨은 명소 ═══ */}
       <section className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
