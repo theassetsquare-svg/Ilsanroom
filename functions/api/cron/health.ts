@@ -31,8 +31,9 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         }
       );
       checks.supabase = res.ok ? 'connected' : `error_${res.status}`;
-    } catch {
+    } catch (err: any) {
       checks.supabase = 'unreachable';
+      checks.supabase_error = err?.message || String(err);
       checks.status = 'degraded';
     }
   } else {
