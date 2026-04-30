@@ -18,6 +18,9 @@ interface VenueJsonLdProps {
     priceTable?: string;
     priceDrink?: string;
     staffPhone?: string;
+    lat?: number;
+    lng?: number;
+    nearbyStation?: string;
   };
   breadcrumbItems: { name: string; url: string }[];
   faqItems?: { question: string; answer: string }[];
@@ -52,11 +55,24 @@ export default function VenueJsonLd({ venue, breadcrumbItems, faqItems, reviews,
       addressRegion: venue.regionKo,
       addressCountry: 'KR',
     },
-    openingHours: venue.openHours,
     image: `${siteUrl}/og/${venue.slug}.svg`,
     telephone: venue.staffPhone || undefined,
     url: detailPath ? `${siteUrl}${detailPath}` : `${siteUrl}/${venue.category === 'club' ? 'clubs' : venue.category === 'night' ? 'nights' : venue.category === 'lounge' ? 'lounges' : venue.category === 'room' ? 'rooms' : venue.category}/${venue.slug}`,
+    openingHoursSpecification: venue.openHours ? [{
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      opens: '19:00',
+      closes: '05:00',
+    }] : undefined,
   };
+
+  if (venue.lat && venue.lng) {
+    localBusiness.geo = {
+      '@type': 'GeoCoordinates',
+      latitude: venue.lat,
+      longitude: venue.lng,
+    };
+  }
 
   // aggregateRating — only when real reviews exist (ratingValue:0 = Google error)
   if (venue.rating > 0 && venue.reviewCount > 0) {

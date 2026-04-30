@@ -88,6 +88,13 @@ const WaitlistPage = lazyRetry(() => import('./pages/WaitlistPage'));
 const MyReferralsPage = lazyRetry(() => import('./pages/my/MyReferralsPage'));
 const MessagesPage = lazyRetry(() => import('./pages/MessagesPage'));
 const NotFoundPage = lazyRetry(() => import('./pages/NotFoundPage'));
+/* ── SEO Dynamic Pages ── */
+const BestCategoryPage = lazyRetry(() => import('./pages/seo/BestCategoryPage'));
+const NewCategoryPage = lazyRetry(() => import('./pages/seo/NewCategoryPage'));
+const RegionLandingPage = lazyRetry(() => import('./pages/seo/RegionLandingPage'));
+const RegionCategoryPage = lazyRetry(() => import('./pages/seo/RegionCategoryPage'));
+const TagPage = lazyRetry(() => import('./pages/seo/TagPage'));
+const NearStationPage = lazyRetry(() => import('./pages/seo/NearStationPage'));
 
 function PageLoading() {
   return (
@@ -185,6 +192,13 @@ export default function App() {
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/launch" element={<LaunchPage />} />
           <Route path="/admin/venues" element={<VenueManagePage />} />
+          {/* SEO Dynamic Pages */}
+          <Route path="/best/:category" element={<BestCategoryPage />} />
+          <Route path="/new/:category" element={<NewCategoryPage />} />
+          <Route path="/region/:region" element={<RegionLandingPage />} />
+          <Route path="/region/:region/:category" element={<RegionCategoryPage />} />
+          <Route path="/tag/:tag" element={<TagPage />} />
+          <Route path="/near/:station" element={<NearStationPage />} />
           {/* 404 */}
           <Route path="*" element={<NotFoundPage />} />
         </Route>

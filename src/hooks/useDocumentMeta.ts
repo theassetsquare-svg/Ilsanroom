@@ -7,7 +7,7 @@ import { useEffect } from 'react';
  * - useEffect: 클라이언트 SPA 네비게이션 시 즉시 반영
  * 모든 페이지에서 기존 호출 패턴 그대로 사용
  */
-export function useDocumentMeta(title: string, description: string, ogImage?: string) {
+export function useDocumentMeta(title: string, description: string, ogImage?: string, keywords?: string) {
   useEffect(() => {
     document.title = title;
 
@@ -28,6 +28,7 @@ export function useDocumentMeta(title: string, description: string, ogImage?: st
 
     // Standard meta
     setMeta('name', 'description', trimmedDesc);
+    if (keywords) setMeta('name', 'keywords', keywords);
 
     // Open Graph
     setMeta('property', 'og:title', title);
@@ -58,5 +59,5 @@ export function useDocumentMeta(title: string, description: string, ogImage?: st
       canonical.href = currentUrl;
       document.head.appendChild(canonical);
     }
-  }, [title, description, ogImage]);
+  }, [title, description, ogImage, keywords]);
 }

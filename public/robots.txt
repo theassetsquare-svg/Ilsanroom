@@ -113,3 +113,7 @@ User-agent: YouChatBot
 Allow: /
 
 Sitemap: https://nolcool.com/sitemap.xml
+
+# AI Search
+# LLM-friendly content: https://nolcool.com/llms.txt
+# LLM-friendly full content: https://nolcool.com/llms-full.txt

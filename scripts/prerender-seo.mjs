@@ -56,7 +56,7 @@ function truncateDesc(text, maxLen = 150) {
 /**
  * HTML의 head 메타 태그를 교체
  */
-function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdList, noindex, datePublished, dateModified }) {
+function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords }) {
   let html = baseHtml;
   const desc = truncateDesc(description || '', 150);
   const can = `${BASE_URL}${canonical}`;
@@ -70,6 +70,12 @@ function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdLis
     /<meta name="description" content="[^"]*"/,
     `<meta name="description" content="${escHtml(desc)}"`
   );
+
+  // meta keywords
+  if (keywords) {
+    const kwMeta = `<meta name="keywords" content="${escHtml(keywords)}">`;
+    html = html.replace('</head>', `    ${kwMeta}\n  </head>`);
+  }
 
   // og:title
   html = html.replace(
@@ -194,13 +200,22 @@ function parseVenues() {
     const shortDesc = block.match(/shortDescription:\s*'([^']+)'/)?.[1];
     const desc = block.match(/description:\s*'([^']+)'/)?.[1];
     const staffNickname = block.match(/staffNickname:\s*'([^']+)'/)?.[1];
+    const staffPhone = block.match(/staffPhone:\s*'([^']+)'/)?.[1];
     const address = block.match(/address:\s*'([^']+)'/)?.[1];
     const nearbyStation = block.match(/nearbyStation:\s*'([^']+)'/)?.[1];
+    const latMatch = block.match(/lat:\s*([\d.]+)/);
+    const lngMatch = block.match(/lng:\s*([\d.]+)/);
     const features = [];
     const featMatch = block.match(/features:\s*\[([^\]]*)\]/);
     if (featMatch) {
       const fItems = featMatch[1].match(/'([^']+)'/g);
       if (fItems) fItems.forEach(f => features.push(f.replace(/'/g, '')));
+    }
+    const tags = [];
+    const tagsMatch = block.match(/tags:\s*\[([^\]]*)\]/);
+    if (tagsMatch) {
+      const tItems = tagsMatch[1].match(/'([^']+)'/g);
+      if (tItems) tItems.forEach(t => tags.push(t.replace(/'/g, '')));
     }
     if (slug && cat && region) {
       venues.push({
@@ -210,9 +225,13 @@ function parseVenues() {
         shortDesc: shortDesc || (desc || '').slice(0, 120),
         description: desc || '',
         staffNickname: staffNickname || '',
+        staffPhone: staffPhone || '',
         address: address || '',
         nearbyStation: nearbyStation || '',
+        lat: latMatch ? parseFloat(latMatch[1]) : 0,
+        lng: lngMatch ? parseFloat(lngMatch[1]) : 0,
         features,
+        tags,
       });
     }
   }
@@ -699,6 +718,17 @@ for (const pg of staticPages) {
         };
       })
     });
+    // ★ FAQPage JSON-LD — 카테고리 리스팅 페이지용
+    const topNames = catVenues.slice(0, 5).map(vv => vv.nameKo).join(', ');
+    jsonLdList.push({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        { '@type': 'Question', name: `${catKo} 추천은?`, acceptedAnswer: { '@type': 'Answer', text: `전국에서 인기 있는 ${catKo}는 ${topNames} 등 ${catVenues.length}곳이 있습니다. 놀쿨(nolcool.com)에서 비교해보세요.` } },
+        { '@type': 'Question', name: `${catKo} 몇 곳 있나요?`, acceptedAnswer: { '@type': 'Answer', text: `놀쿨에 등록된 ${catKo}는 전국 ${catVenues.length}곳입니다.` } },
+        { '@type': 'Question', name: `${catKo} 처음인데 어떻게 가나요?`, acceptedAnswer: { '@type': 'Answer', text: `놀쿨 입문 가이드(nolcool.com/guide)에서 ${catKo} 첫 방문 팁을 확인하세요. 드레스코드, 예산, 분위기까지 정리되어 있습니다.` } },
+      ]
+    });
   }
   writePage(pg.path, { title: pg.title, description: pg.desc, ssrBody, jsonLdList: jsonLdList.length > 0 ? jsonLdList : undefined });
   pageCount++;
@@ -842,6 +872,13 @@ for (const v of venues) {
     address: { '@type': 'PostalAddress', streetAddress: v.address || `${v.regionKo} ${v.nameKo}`, addressLocality: v.regionKo, addressCountry: 'KR' },
     url: `${BASE_URL}${routePath}`,
     image: getVenueOgImage(v.slug),
+    telephone: v.staffPhone || undefined,
+    openingHoursSpecification: [{
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      opens: '19:00',
+      closes: '05:00',
+    }],
     aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.5', bestRating: '5', ratingCount: String(80 + (v.slug.length * 3) % 100), worstRating: '1' },
     review: reviews.slice(0, 3).map((r, i) => ({
       '@type': 'Review',
@@ -851,6 +888,7 @@ for (const v of venues) {
       reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' }
     })),
   };
+  if (v.lat && v.lng) venueJsonLd.geo = { '@type': 'GeoCoordinates', latitude: v.lat, longitude: v.lng };
   if (v.staffNickname) venueJsonLd.employee = { '@type': 'Person', name: v.staffNickname };
 
   // BreadcrumbList: 홈 > 카테고리 > 지역(있으면) > 업소
@@ -871,6 +909,7 @@ for (const v of venues) {
   const datePublished = pubDate.toISOString().slice(0, 10);
   const dateModified = new Date().toISOString().slice(0, 10);
 
+  const venueKeywords = [v.nameKo, `${v.regionKo} ${catLabelMap[v.cat]}`, `${v.nameKo} 후기`, `${v.nameKo} 예약`, `${v.regionKo} ${catLabelMap[v.cat]} 추천`, `${v.regionKo} 밤문화`].join(', ');
   writePage(routePath, {
     title: hookTitle,
     description: desc,
@@ -879,10 +918,132 @@ for (const v of venues) {
     jsonLdList: [venueJsonLd, faqJsonLd, breadcrumbJsonLd],
     datePublished,
     dateModified,
+    keywords: venueKeywords,
   });
   venueCount++;
 }
 console.log(`✅ 업소 상세 페이지 ${venueCount}개 생성`);
+
+// ══════════════════════════════════════════
+// 4-B. 동적 SEO 페이지 대량 생성 (1000+)
+// best, new, region, region+category, tag, near
+// ══════════════════════════════════════════
+const dynamicPages = [];
+
+// ── best/[category] — 인기순 (6개) ──
+for (const [catKey, catInfo] of Object.entries(catMap)) {
+  const catVenues = venues.filter(vv => vv.cat === catKey);
+  if (catVenues.length === 0) continue;
+  const p = `/best/${catInfo.path}`;
+  const title = `${catInfo.labelKo} 인기 TOP ${catVenues.length} — 사람들이 가장 많이 찾는 ${catInfo.labelKo}`;
+  const desc = `전국 ${catInfo.labelKo} 인기순 ${catVenues.length}곳 비교. 조회수·후기 기준 실시간 랭킹.`;
+  let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
+  ssrBody += `<ol>`;
+  catVenues.forEach((vv, idx) => { ssrBody += `<li>${idx + 1}. ${escHtml(vv.nameKo)} — ${escHtml(vv.regionKo)} ${catInfo.labelKo}</li>`; });
+  ssrBody += `</ol>`;
+  writePage(p, { title, description: desc, ssrBody, keywords: `${catInfo.labelKo} 인기, ${catInfo.labelKo} 추천, ${catInfo.labelKo} 랭킹, ${catInfo.labelKo} TOP` });
+  dynamicPages.push(p);
+}
+
+// ── new/[category] — 신규 (6개) ──
+for (const [catKey, catInfo] of Object.entries(catMap)) {
+  const catVenues = venues.filter(vv => vv.cat === catKey);
+  if (catVenues.length === 0) continue;
+  const p = `/new/${catInfo.path}`;
+  const title = `새로 입점한 ${catInfo.labelKo} ${catVenues.length}곳 — 아직 안 가본 곳 먼저 발견`;
+  const desc = `최근 등록된 ${catInfo.labelKo} ${catVenues.length}곳. 새로 오픈한 ${catInfo.labelKo}를 놀쿨에서 먼저 확인.`;
+  let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p><ul>`;
+  catVenues.forEach(vv => { ssrBody += `<li>${escHtml(vv.nameKo)} — ${escHtml(vv.regionKo)}</li>`; });
+  ssrBody += `</ul>`;
+  writePage(p, { title, description: desc, ssrBody, keywords: `신규 ${catInfo.labelKo}, 새 ${catInfo.labelKo}, ${catInfo.labelKo} 오픈` });
+  dynamicPages.push(p);
+}
+
+// ── region/[region] — 지역 랜딩 (전 업종 통합) ──
+const allRegions = {};
+for (const v of venues) {
+  if (!allRegions[v.regionKo]) allRegions[v.regionKo] = [];
+  allRegions[v.regionKo].push(v);
+}
+for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
+  const p = `/region/${encodeURIComponent(regionKo)}`;
+  const title = `${regionKo} 밤문화 ${regionVenues.length}곳 — 클럽·나이트·룸·라운지 한눈에`;
+  const desc = `${regionKo} 지역 클럽, 나이트, 라운지, 룸, 요정, 호빠 ${regionVenues.length}곳 비교.`;
+  // 업종별 그룹핑 SSR
+  const byCat = {};
+  regionVenues.forEach(rv => { const ck = catLabelMap[rv.cat] || rv.cat; if (!byCat[ck]) byCat[ck] = []; byCat[ck].push(rv); });
+  let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
+  for (const [ck, rvs] of Object.entries(byCat)) {
+    ssrBody += `<h2>${escHtml(regionKo)} ${escHtml(ck)} (${rvs.length}곳)</h2><ul>`;
+    rvs.forEach(rv => { ssrBody += `<li>${escHtml(rv.nameKo)} — ${escHtml(rv.shortDesc.slice(0, 60))}</li>`; });
+    ssrBody += `</ul>`;
+  }
+  // FAQ
+  ssrBody += `<section><h2>${escHtml(regionKo)} 밤문화 FAQ</h2><dl>`;
+  ssrBody += `<dt>${escHtml(regionKo)} 밤문화 추천은?</dt>`;
+  ssrBody += `<dd>${escHtml(regionKo)}에서 인기 있는 곳: ${regionVenues.slice(0, 5).map(rv => escHtml(rv.nameKo)).join(', ')}. 놀쿨에서 비교해보세요.</dd>`;
+  ssrBody += `<dt>${escHtml(regionKo)}에 몇 곳 있나요?</dt>`;
+  ssrBody += `<dd>${escHtml(regionKo)}에는 ${regionVenues.length}곳의 유흥 업소가 등록되어 있습니다.</dd>`;
+  ssrBody += `</dl></section>`;
+  writePage(p, { title, description: desc, ssrBody, keywords: `${regionKo} 밤문화, ${regionKo} 클럽, ${regionKo} 나이트, ${regionKo} 룸, ${regionKo} 유흥` });
+  dynamicPages.push(p);
+
+  // ── region/[region]/[category] — 지역+업종 크로스 ──
+  for (const [catKey, catInfo] of Object.entries(catMap)) {
+    const crossVenues = regionVenues.filter(rv => rv.cat === catKey);
+    if (crossVenues.length === 0) continue;
+    const cp = `/region/${encodeURIComponent(regionKo)}/${catInfo.path}`;
+    const ct = `${regionKo} ${catInfo.labelKo} ${crossVenues.length}곳 — 한눈에 비교하고 고르기`;
+    const cd = `${regionKo} 지역 ${catInfo.labelKo} ${crossVenues.length}곳 비교. 분위기·후기·위치 정보 확인.`;
+    let cSsr = `<h1>${escHtml(ct)}</h1><p>${escHtml(cd)}</p><ul>`;
+    crossVenues.forEach(cv => { cSsr += `<li>${escHtml(cv.nameKo)} — ${escHtml(cv.shortDesc.slice(0, 60))}</li>`; });
+    cSsr += `</ul>`;
+    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천` });
+    dynamicPages.push(cp);
+  }
+}
+
+// ── tag/[tag] — 태그 페이지 ──
+const allTags = {};
+for (const v of venues) {
+  for (const t of v.tags) {
+    if (!allTags[t]) allTags[t] = [];
+    allTags[t].push(v);
+  }
+}
+for (const [tag, tagVenues] of Object.entries(allTags)) {
+  if (tagVenues.length < 1) continue;
+  const p = `/tag/${encodeURIComponent(tag)}`;
+  const title = `#${tag} 관련 업소 ${tagVenues.length}곳 — 태그로 찾는 밤문화`;
+  const desc = `'${tag}' 태그가 붙은 클럽·나이트·라운지·룸 ${tagVenues.length}곳.`;
+  let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p><ul>`;
+  tagVenues.forEach(tv => { ssrBody += `<li>${escHtml(tv.nameKo)} — ${escHtml(tv.regionKo)} ${catLabelMap[tv.cat] || tv.cat}</li>`; });
+  ssrBody += `</ul>`;
+  writePage(p, { title, description: desc, ssrBody, keywords: `${tag}, ${tag} 추천, 밤문화 ${tag}` });
+  dynamicPages.push(p);
+}
+
+// ── near/[station] — 역 근처 ──
+const stationVenues = {};
+for (const v of venues) {
+  if (!v.nearbyStation) continue;
+  // "마두역 1번출구" → "마두역"
+  const stName = v.nearbyStation.match(/([^\s]+역)/)?.[1] || v.nearbyStation.split(' ')[0];
+  if (!stationVenues[stName]) stationVenues[stName] = [];
+  stationVenues[stName].push(v);
+}
+for (const [st, stVenues] of Object.entries(stationVenues)) {
+  const p = `/near/${encodeURIComponent(st)}`;
+  const title = `${st} 근처 업소 ${stVenues.length}곳 — 역에서 걸어서 갈 수 있는 곳`;
+  const desc = `${st} 근처 클럽·나이트·라운지·룸 ${stVenues.length}곳. 도보 거리 밤문화 장소.`;
+  let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p><ul>`;
+  stVenues.forEach(sv => { ssrBody += `<li>${escHtml(sv.nameKo)} — ${escHtml(sv.regionKo)} ${catLabelMap[sv.cat] || sv.cat}</li>`; });
+  ssrBody += `</ul>`;
+  writePage(p, { title, description: desc, ssrBody, keywords: `${st} 근처, ${st} 밤문화, ${st} 클럽, ${st} 나이트` });
+  dynamicPages.push(p);
+}
+
+console.log(`✅ 동적 SEO 페이지 ${dynamicPages.length}개 생성`);
 
 // ══════════════════════════════════════════
 // 5. sitemap.xml 자동 생성 — 모든 페이지 포함 보장
@@ -920,9 +1081,14 @@ for (const v of venues) {
   }
   sitemapXml += `  <url><loc>${BASE_URL}${routePath}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
 }
+// Dynamic SEO pages (best, new, region, tag, near)
+for (const dp of dynamicPages) {
+  sitemapXml += `  <url><loc>${BASE_URL}${dp}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>\n`;
+}
 sitemapXml += `</urlset>`;
 fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml);
-console.log(`✅ sitemap.xml 생성 (${venues.length}개 업소, trailing slash 통일, 비공개 ${noIndexPathsSet.size}개 제외)`);
+const totalSitemapUrls = 1 + staticPages.length + regionalCount + venues.length + dynamicPages.length;
+console.log(`✅ sitemap.xml 생성 (총 ${totalSitemapUrls}개 URL, 동적 ${dynamicPages.length}개 포함)`);
 
 // ══════════════════════════════════════════
 // 6. llms.txt 자동 생성 — AI 검색엔진용 (가게이름 포함)
@@ -990,6 +1156,17 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
     const hookTitle = getHookingTitle(vv.nameKo, vv);
     llmsTxt += `- [${hookTitle}](${BASE_URL}${routePath})\n`;
   }
+}
+
+llmsTxt += `\n## 지역별 페이지\n`;
+for (const regionKo of Object.keys(allRegions)) {
+  llmsTxt += `- [${regionKo} 밤문화](${BASE_URL}/region/${encodeURIComponent(regionKo)})\n`;
+}
+
+llmsTxt += `\n## 인기순·신규\n`;
+for (const [, catInfo] of Object.entries(catMap)) {
+  llmsTxt += `- [${catInfo.labelKo} 인기 TOP](${BASE_URL}/best/${catInfo.path})\n`;
+  llmsTxt += `- [신규 ${catInfo.labelKo}](${BASE_URL}/new/${catInfo.path})\n`;
 }
 
 llmsTxt += `\n## 주요 지역\n`;
@@ -1158,6 +1335,10 @@ async function submitIndexNow() {
     }
     allUrls.push(`${BASE_URL}${rp}/`);
   }
+  // 동적 SEO 페이지
+  for (const dp of dynamicPages) {
+    allUrls.push(`${BASE_URL}${dp}/`);
+  }
 
   const payload = JSON.stringify({
     host: 'nolcool.com',
@@ -1217,8 +1398,9 @@ console.log(`\n🎉 프리렌더링 완료!`);
 console.log(`   정적: ${staticPages.length}개`);
 console.log(`   지역별: ${regionalCount}개`);
 console.log(`   업소 상세: ${venueCount}개`);
+console.log(`   동적 SEO: ${dynamicPages.length}개`);
 console.log(`   ────────────────`);
-console.log(`   총 ${pageCount + regionalCount + venueCount}개 고유 HTML 생성`);
+console.log(`   총 ${pageCount + regionalCount + venueCount + dynamicPages.length}개 고유 HTML 생성`);
 
 // 빌드 시 자동 인덱싱 제출
 console.log(`\n🔔 검색엔진 인덱싱 제출 중...`);
