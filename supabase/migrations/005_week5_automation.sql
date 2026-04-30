@@ -66,21 +66,36 @@ ALTER TABLE popular_cache ENABLE ROW LEVEL SECURITY;
 ALTER TABLE monitoring_log ENABLE ROW LEVEL SECURITY;
 
 -- 읽기: 모든 사용자 (통계는 공개)
-CREATE POLICY IF NOT EXISTS "daily_stats_read" ON daily_stats
-  FOR SELECT USING (true);
+DO $$ BEGIN
+  DROP POLICY IF EXISTS "daily_stats_read" ON daily_stats;
+  CREATE POLICY "daily_stats_read" ON daily_stats FOR SELECT USING (true);
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
-CREATE POLICY IF NOT EXISTS "popular_cache_read" ON popular_cache
-  FOR SELECT USING (true);
+DO $$ BEGIN
+  DROP POLICY IF EXISTS "popular_cache_read" ON popular_cache;
+  CREATE POLICY "popular_cache_read" ON popular_cache FOR SELECT USING (true);
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
 -- 쓰기: service_role만 (Cron Worker가 사용)
-CREATE POLICY IF NOT EXISTS "daily_stats_insert_service" ON daily_stats
-  FOR INSERT WITH CHECK (auth.role() = 'service_role');
+DO $$ BEGIN
+  DROP POLICY IF EXISTS "daily_stats_insert_service" ON daily_stats;
+  CREATE POLICY "daily_stats_insert_service" ON daily_stats FOR INSERT WITH CHECK (auth.role() = 'service_role');
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
-CREATE POLICY IF NOT EXISTS "popular_cache_all_service" ON popular_cache
-  FOR ALL USING (auth.role() = 'service_role');
+DO $$ BEGIN
+  DROP POLICY IF EXISTS "popular_cache_all_service" ON popular_cache;
+  CREATE POLICY "popular_cache_all_service" ON popular_cache FOR ALL USING (auth.role() = 'service_role');
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
-CREATE POLICY IF NOT EXISTS "monitoring_log_all_service" ON monitoring_log
-  FOR ALL USING (auth.role() = 'service_role');
+DO $$ BEGIN
+  DROP POLICY IF EXISTS "monitoring_log_all_service" ON monitoring_log;
+  CREATE POLICY "monitoring_log_all_service" ON monitoring_log FOR ALL USING (auth.role() = 'service_role');
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
 -- =============================================
 -- pg_cron 설정 (Supabase Dashboard > SQL Editor에서 실행)
