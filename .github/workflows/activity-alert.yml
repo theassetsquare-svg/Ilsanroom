@@ -1,0 +1,15 @@
+name: Activity Alert (15min)
+
+on:
+  schedule:
+    # 15분마다 활동 감지 → 이메일
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  alert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check and alert new activity
+        run: |
+          curl -s "https://nolcool.com/api/cron/activity-alert?key=${{ secrets.CRON_SECRET }}"

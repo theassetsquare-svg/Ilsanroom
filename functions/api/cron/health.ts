@@ -1,14 +1,34 @@
 /**
- * 헬스체크 엔드포인트 — 모니터링용
+ * 헬스체크 — 사이트 다운 시 이메일 알림
  * GET /api/cron/health
- *
- * 외부 모니터링 서비스(UptimeRobot 등)에서 호출
- * Supabase 연결 상태도 확인
  */
 
 interface Env {
   SUPABASE_URL: string;
   SUPABASE_SERVICE_KEY: string;
+  RESEND_API_KEY: string;
+  NOTIFICATION_EMAIL: string;
+}
+
+async function alertDown(env: Env, issue: string) {
+  if (!env.RESEND_API_KEY || !env.NOTIFICATION_EMAIL) return;
+  const kst = new Date(Date.now() + 9 * 3600000).toLocaleString('ko-KR');
+  await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${env.RESEND_API_KEY}` },
+    body: JSON.stringify({
+      from: '놀쿨 <onboarding@resend.dev>',
+      to: [env.NOTIFICATION_EMAIL],
+      subject: `[놀쿨] 사이트 이상 감지`,
+      html: `<div style="font-family:sans-serif">
+        <h2 style="color:#dc2626">사이트 이상 감지</h2>
+        <p><strong>문제:</strong> ${issue}</p>
+        <p><strong>시간:</strong> ${kst}</p>
+        <p>즉시 확인해주세요.</p>
+        <a href="https://nolcool.com" style="display:inline-block;padding:10px 20px;background:#dc2626;color:#fff;text-decoration:none;border-radius:8px;margin-top:12px">사이트 확인</a>
+      </div>`,
+    }),
+  }).catch(() => {});
 }
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
@@ -18,7 +38,6 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     worker: true,
   };
 
-  // Supabase 연결 확인
   if (context.env.SUPABASE_URL && context.env.SUPABASE_SERVICE_KEY) {
     try {
       const res = await fetch(
@@ -31,19 +50,21 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         }
       );
       checks.supabase = res.ok ? 'connected' : `error_${res.status}`;
+      if (!res.ok) {
+        checks.status = 'degraded';
+        await alertDown(context.env, `Supabase 응답 오류 (${res.status})`);
+      }
     } catch (err: any) {
       checks.supabase = 'unreachable';
-      checks.supabase_error = err?.message || String(err);
       checks.status = 'degraded';
+      await alertDown(context.env, `Supabase 연결 불가: ${err?.message}`);
     }
   } else {
     checks.supabase = 'not_configured';
   }
 
-  const statusCode = checks.status === 'ok' ? 200 : 503;
-
   return Response.json(checks, {
-    status: statusCode,
+    status: checks.status === 'ok' ? 200 : 503,
     headers: { 'Cache-Control': 'no-cache' },
   });
 };

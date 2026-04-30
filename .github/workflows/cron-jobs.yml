@@ -24,6 +24,7 @@ on:
           - popularity-evening
           - cleanup
           - weekly-champions
+          - activity-alert
           - health
 
 jobs:
@@ -71,6 +72,14 @@ jobs:
       - name: Select weekly champions
         run: |
           curl -s "https://nolcool.com/api/cron/weekly-champions?key=${{ secrets.CRON_SECRET }}"
+
+  activity-alert:
+    if: github.event.inputs.job_type == 'activity-alert'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check activity and send alerts
+        run: |
+          curl -s "https://nolcool.com/api/cron/activity-alert?key=${{ secrets.CRON_SECRET }}"
 
   health-check:
     if: github.event.inputs.job_type == 'health'
