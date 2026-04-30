@@ -51,8 +51,12 @@ export interface DbVenue {
   staff_nickname: string | null;
   staff_phone: string | null;
   district: string | null;
+  liquor_info: string | null;
+  booth_info: string | null;
+  room_info: string | null;
   owner_id: string | null;
   is_active: boolean;
+  view_count: number;
   created_at: string;
   updated_at: string;
 }

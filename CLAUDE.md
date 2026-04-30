@@ -40,3 +40,12 @@ Do NOT ask. Just fix. Report all titles when done.
 - Auto page transition. Next.js. Change existing URLs
 - Brand name in title. Brand path. Stuffing over 3%
 - Baby/mom/family/kids images. No family content (parents birthday/family gathering/reunion/anniversary = DELETE!). Banned adult words
+
+## CODING DISCIPLINE (Karpathy Rules)
+- THINK FIRST: State assumptions. Multiple interpretations? Present all. Uncertain? Say so.
+- MINIMUM CODE: No speculative features. No abstractions for single-use. 200 lines possible in 50? Rewrite.
+- SURGICAL CHANGES: Touch ONLY what's requested. Don't "improve" adjacent code/comments/formatting. Match existing style. YOUR orphaned imports/vars = delete. Pre-existing dead code = mention only.
+- GOAL-DRIVEN: Define success criteria BEFORE coding. Loop until verified.
+  "Fix bug" → reproduce test → make it pass
+  "Add feature" → write check → implement → verify
+  Multi-step: `Step → verify → Step → verify`
