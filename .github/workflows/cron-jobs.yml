@@ -1,0 +1,82 @@
+name: Scheduled Cron Jobs
+
+on:
+  schedule:
+    # KST 06:00 (UTC 21:00) - 일일 통계
+    - cron: '0 21 * * *'
+    # KST 12:00 (UTC 03:00) - 점심 인기 갱신
+    - cron: '0 3 * * *'
+    # KST 18:00 (UTC 09:00) - 저녁 인기 갱신
+    - cron: '0 9 * * *'
+    # KST 01:00 (UTC 16:00) - 데이터 정리
+    - cron: '0 16 * * *'
+    # 매주 일요일 KST 00:00 (UTC 15:00 토요일) - 활동왕 선정
+    - cron: '0 15 * * 6'
+  workflow_dispatch:
+    inputs:
+      job_type:
+        description: 'Job to run'
+        required: true
+        type: choice
+        options:
+          - daily-stats
+          - popularity-lunch
+          - popularity-evening
+          - cleanup
+          - weekly-champions
+          - health
+
+jobs:
+  daily-stats:
+    if: github.event.schedule == '0 21 * * *' || github.event.inputs.job_type == 'daily-stats'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run daily stats
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://nolcool.com/api/cron/daily-stats?key=${{ secrets.CRON_SECRET }}")
+          echo "Daily stats response: $response"
+          if [ "$response" != "200" ]; then
+            echo "::warning::Daily stats returned $response"
+          fi
+
+  popularity-lunch:
+    if: github.event.schedule == '0 3 * * *' || github.event.inputs.job_type == 'popularity-lunch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refresh lunch popularity
+        run: |
+          curl -s "https://nolcool.com/api/cron/popularity?key=${{ secrets.CRON_SECRET }}&type=lunch"
+
+  popularity-evening:
+    if: github.event.schedule == '0 9 * * *' || github.event.inputs.job_type == 'popularity-evening'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refresh evening popularity
+        run: |
+          curl -s "https://nolcool.com/api/cron/popularity?key=${{ secrets.CRON_SECRET }}&type=evening"
+
+  cleanup:
+    if: github.event.schedule == '0 16 * * *' || github.event.inputs.job_type == 'cleanup'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run data cleanup
+        run: |
+          curl -s "https://nolcool.com/api/cron/cleanup?key=${{ secrets.CRON_SECRET }}"
+
+  weekly-champions:
+    if: github.event.schedule == '0 15 * * 6' || github.event.inputs.job_type == 'weekly-champions'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Select weekly champions
+        run: |
+          curl -s "https://nolcool.com/api/cron/weekly-champions?key=${{ secrets.CRON_SECRET }}"
+
+  health-check:
+    if: github.event.inputs.job_type == 'health'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Health check
+        run: |
+          response=$(curl -s "https://nolcool.com/api/cron/health")
+          echo "$response"

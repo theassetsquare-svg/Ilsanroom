@@ -1,0 +1,69 @@
+name: Daily Supabase Backup
+
+on:
+  schedule:
+    # 매일 KST 03:00 (UTC 18:00)
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Backup Supabase tables
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          mkdir -p backups/$(date -u '+%Y-%m-%d')
+
+          tables=("venues" "user_profiles" "community_posts" "reviews" "reports" "notifications" "daily_stats")
+
+          for table in "${tables[@]}"; do
+            echo "Backing up $table..."
+            response=$(curl -s -w "\n%{http_code}" \
+              "${SUPABASE_URL}/rest/v1/${table}?select=*" \
+              -H "apikey: ${SUPABASE_SERVICE_KEY}" \
+              -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}")
+
+            http_code=$(echo "$response" | tail -1)
+            body=$(echo "$response" | sed '$d')
+
+            if [ "$http_code" = "200" ]; then
+              echo "$body" > "backups/$(date -u '+%Y-%m-%d')/${table}.json"
+              echo "  ${table}: OK"
+            else
+              echo "  ${table}: SKIP (${http_code})"
+            fi
+          done
+
+          echo "Backup completed at $(date -u '+%Y-%m-%d %H:%M UTC')"
+
+      - name: Commit backup
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if [ -d "backups/$(date -u '+%Y-%m-%d')" ]; then
+            git add backups/
+            git diff --cached --quiet || git commit -m "backup: $(date -u '+%Y-%m-%d') daily backup"
+            git push
+          else
+            echo "No backup files to commit"
+          fi
+
+      - name: Cleanup old backups (keep 7 days)
+        run: |
+          if [ -d "backups" ]; then
+            find backups -maxdepth 1 -type d -mtime +7 -exec rm -rf {} + 2>/dev/null || true
+            git add backups/ 2>/dev/null
+            git diff --cached --quiet || git commit -m "backup: cleanup old backups"
+            git push 2>/dev/null || true
+          fi

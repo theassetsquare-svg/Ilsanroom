@@ -1,0 +1,42 @@
+name: 24h Site Monitoring
+
+on:
+  schedule:
+    # 15분마다 헬스체크
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check site availability
+        id: check
+        run: |
+          status=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "https://nolcool.com/" || echo "000")
+          echo "status=$status" >> $GITHUB_OUTPUT
+          echo "Site status: $status"
+
+          api_status=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "https://nolcool.com/api/cron/health" || echo "000")
+          echo "api_status=$api_status" >> $GITHUB_OUTPUT
+          echo "API status: $api_status"
+
+          if [ "$status" != "200" ] || [ "$api_status" != "200" ]; then
+            echo "is_down=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_down=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Alert via Telegram
+        if: steps.check.outputs.is_down == 'true' && env.TELEGRAM_BOT_TOKEN != ''
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          message="🚨 놀쿨 사이트 이상 감지!%0A사이트: ${{ steps.check.outputs.status }}%0AAPI: ${{ steps.check.outputs.api_status }}%0A시간: $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M KST')"
+          curl -s "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${message}" || true
+
+      - name: Alert via email (fallback)
+        if: steps.check.outputs.is_down == 'true'
+        run: |
+          echo "::error::Site is DOWN! Status: ${{ steps.check.outputs.status }}, API: ${{ steps.check.outputs.api_status }}"

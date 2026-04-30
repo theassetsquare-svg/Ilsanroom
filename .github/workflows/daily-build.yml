@@ -1,23 +1,40 @@
-name: 24h Auto Build — Cloudflare Pages
+name: 24h Auto Build + SEO Notify
 
 on:
+  push:
+    branches: [main]
   schedule:
-    # 6시간 간격 자동 빌드 (UTC 기준 → KST)
-    # KST 00:00 (UTC 15:00)
-    - cron: '0 15 * * *'
-    # KST 06:00 (UTC 21:00)
+    # KST 06:00 (UTC 21:00) - 새벽 빌드
     - cron: '0 21 * * *'
-    # KST 12:00 (UTC 03:00)
-    - cron: '0 3 * * *'
-    # KST 18:00 (UTC 09:00)
+    # KST 18:00 (UTC 09:00) - 저녁 빌드
     - cron: '0 9 * * *'
-  workflow_dispatch: # 수동 실행도 가능
+  workflow_dispatch:
 
 jobs:
-  trigger-cloudflare:
+  build-and-notify:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Cloudflare Pages rebuild
         run: |
           curl -s -X POST "${{ secrets.CLOUDFLARE_BUILD_HOOK }}"
           echo "Cloudflare Pages rebuild triggered at $(date -u '+%Y-%m-%d %H:%M UTC')"
+
+      - uses: actions/checkout@v4
+        if: github.event_name == 'push'
+
+      - name: Notify search engines (sitemap ping)
+        if: github.event_name == 'push'
+        run: |
+          curl -s "https://www.google.com/ping?sitemap=https://nolcool.com/sitemap.xml" || true
+          curl -s "https://www.bing.com/ping?sitemap=https://nolcool.com/sitemap.xml" || true
+          echo "Search engines notified"
+
+      - name: Health check after deploy
+        if: github.event_name == 'push'
+        run: |
+          sleep 30
+          status=$(curl -s -o /dev/null -w "%{http_code}" "https://nolcool.com/")
+          echo "Site status: $status"
+          if [ "$status" != "200" ]; then
+            echo "::warning::Site returned $status after deploy"
+          fi
