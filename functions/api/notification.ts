@@ -40,7 +40,7 @@ async function sendEmail(env: Env, to: string, subject: string, html: string) {
       'Authorization': `Bearer ${env.RESEND_API_KEY}`,
     },
     body: JSON.stringify({
-      from: '놀쿨 <noreply@nolcool.com>',
+      from: '놀쿨 <onboarding@resend.dev>',
       to: [to],
       subject,
       html,
