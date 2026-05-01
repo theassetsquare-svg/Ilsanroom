@@ -51,48 +51,17 @@ function DapsimnriCheonSaSection({ venue }: { venue: { staffPhone?: string } }) 
   );
 }
 
-/* 대전세븐나이트 본문 이미지 + 전화 섹션 */
-function DaejeonSevenHeroSection() {
-  return (
-    <div className="flex flex-col items-center gap-6">
-      <div className="w-full max-w-[480px] aspect-square rounded-2xl overflow-hidden shadow-xl border-2 border-[#FFD700]/30">
-        <img
-          src="/og/daejeonsevennight.svg"
-          alt="대전세븐나이트 4인1조 w.t원숭이"
-          width={480}
-          height={480}
-          className="w-full h-full object-cover"
-          loading="eager"
-        />
-      </div>
-      <div className="w-full max-w-[480px] text-center">
-        <a
-          href="tel:01032421504"
-          className="flex flex-col items-center gap-3 rounded-2xl bg-gradient-to-r from-[#1E3A5F] to-[#0F2744] px-8 py-6 shadow-lg transition hover:shadow-xl active:scale-[0.98]"
-        >
-          <span className="text-lg font-bold text-[#FFD700]">4인1조 w.t원숭이</span>
-          <span className="text-3xl font-black text-white tracking-wide">
-            📞 010-3242-1504
-          </span>
-          <span className="text-sm text-white/70">터치하면 바로 전화 연결</span>
-        </a>
-      </div>
-    </div>
-  );
-}
-
-/* 대전세븐나이트 고정 하단 전화 바 */
+/* 대전세븐나이트 고정 하단 전화 바 — 모바일 최적화 */
 function DaejeonSevenFixedBar() {
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50">
+    <div className="fixed bottom-0 left-0 right-0 z-50 safe-area-bottom">
       <a
         href="tel:01032421504"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#1E3A5F] to-[#0F2744] px-6 py-4 shadow-[0_-4px_20px_rgba(0,0,0,0.3)]"
+        className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#1E3A5F] to-[#0F2744] px-6 py-5 shadow-[0_-4px_20px_rgba(0,0,0,0.4)]"
+        style={{ minHeight: '60px', paddingBottom: 'max(20px, env(safe-area-inset-bottom))' }}
       >
-        <span className="text-lg font-bold text-[#FFD700]">4인1조 w.t원숭이</span>
-        <span className="text-2xl font-black text-white tracking-wide">📞 010-3242-1504</span>
+        <span className="text-base font-bold text-[#FFD700] sm:text-lg">4인1조 w.t원숭이</span>
+        <span className="text-xl font-black text-white tracking-wide sm:text-2xl">010-3242-1504</span>
       </a>
     </div>
   );
@@ -120,7 +89,7 @@ export default function NightDetailPage() {
         faqs={defaultFaqs(venue.nameKo)}
         related={related}
         relatedHrefFn={(v) => `/nights/${v.slug}`}
-        topContent={isDapsimnri ? <DapsimnriCheonSaSection venue={venue} /> : isDaejeonSeven ? <DaejeonSevenHeroSection /> : undefined}
+        topContent={isDapsimnri ? <DapsimnriCheonSaSection venue={venue} /> : undefined}
       />
       {isDaejeonSeven && <DaejeonSevenFixedBar />}
     </>
