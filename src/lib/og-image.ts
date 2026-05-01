@@ -19,6 +19,7 @@ const NICKNAME_OG_SLUGS = new Set([
   'ulsanchampionnight',
   'gangnamjuliananight',
   'dapsimnidontellmamanight',
+  'daejeonsevennight',
 ]);
 
 /**

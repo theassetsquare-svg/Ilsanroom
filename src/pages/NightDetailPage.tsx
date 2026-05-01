@@ -51,6 +51,36 @@ function DapsimnriCheonSaSection({ venue }: { venue: { staffPhone?: string } }) 
   );
 }
 
+/* 대전세븐나이트 본문 이미지 + 전화 섹션 */
+function DaejeonSevenHeroSection() {
+  return (
+    <div className="flex flex-col items-center gap-6">
+      <div className="w-full max-w-[480px] aspect-square rounded-2xl overflow-hidden shadow-xl border-2 border-[#FFD700]/30">
+        <img
+          src="/og/daejeonsevennight.svg"
+          alt="대전세븐나이트 4인1조 w.t원숭이"
+          width={480}
+          height={480}
+          className="w-full h-full object-cover"
+          loading="eager"
+        />
+      </div>
+      <div className="w-full max-w-[480px] text-center">
+        <a
+          href="tel:01032421504"
+          className="flex flex-col items-center gap-3 rounded-2xl bg-gradient-to-r from-[#1E3A5F] to-[#0F2744] px-8 py-6 shadow-lg transition hover:shadow-xl active:scale-[0.98]"
+        >
+          <span className="text-lg font-bold text-[#FFD700]">4인1조 w.t원숭이</span>
+          <span className="text-3xl font-black text-white tracking-wide">
+            📞 010-3242-1504
+          </span>
+          <span className="text-sm text-white/70">터치하면 바로 전화 연결</span>
+        </a>
+      </div>
+    </div>
+  );
+}
+
 /* 대전세븐나이트 고정 하단 전화 바 */
 function DaejeonSevenFixedBar() {
   return (
@@ -90,7 +120,7 @@ export default function NightDetailPage() {
         faqs={defaultFaqs(venue.nameKo)}
         related={related}
         relatedHrefFn={(v) => `/nights/${v.slug}`}
-        topContent={isDapsimnri ? <DapsimnriCheonSaSection venue={venue} /> : undefined}
+        topContent={isDapsimnri ? <DapsimnriCheonSaSection venue={venue} /> : isDaejeonSeven ? <DaejeonSevenHeroSection /> : undefined}
       />
       {isDaejeonSeven && <DaejeonSevenFixedBar />}
     </>

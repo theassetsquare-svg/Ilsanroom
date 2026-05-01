@@ -1,14 +1,70 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#EC4899;stop-opacity:1"/>
-      <stop offset="100%" style="stop-color:#1a1a2e;stop-opacity:1"/>
+      <stop offset="0%" style="stop-color:#0F2744"/>
+      <stop offset="50%" style="stop-color:#1E3A5F"/>
+      <stop offset="100%" style="stop-color:#0a1628"/>
     </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FFD700"/>
+      <stop offset="50%" style="stop-color:#FFF8DC"/>
+      <stop offset="100%" style="stop-color:#FFD700"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
   </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
-  <rect x="40" y="40" width="1120" height="550" rx="32" fill="rgba(255,255,255,0.08)"/>
-  <text x="600" y="300" text-anchor="middle" font-family="sans-serif" font-size="100" font-weight="900" fill="white" letter-spacing="-0.02em">대전세븐나이트</text>
-  
-  <text x="600" y="400" text-anchor="middle" font-family="sans-serif" font-size="44" font-weight="600" fill="rgba(255,255,255,0.85)">나이트 | 놀쿨</text>
-  <text x="600" y="570" text-anchor="middle" font-family="sans-serif" font-size="32" font-weight="500" fill="rgba(255,255,255,0.5)">놀쿨 — nolcool.com</text>
+
+  <!-- Background -->
+  <rect width="1200" height="1200" fill="url(#bg)"/>
+
+  <!-- Decorative lines -->
+  <line x1="80" y1="80" x2="1120" y2="80" stroke="#FFD700" stroke-width="2" opacity="0.3"/>
+  <line x1="80" y1="1120" x2="1120" y2="1120" stroke="#FFD700" stroke-width="2" opacity="0.3"/>
+  <line x1="80" y1="80" x2="80" y2="1120" stroke="#FFD700" stroke-width="2" opacity="0.3"/>
+  <line x1="1120" y1="80" x2="1120" y2="1120" stroke="#FFD700" stroke-width="2" opacity="0.3"/>
+
+  <!-- Corner accents -->
+  <rect x="60" y="60" width="40" height="40" fill="none" stroke="#FFD700" stroke-width="3" opacity="0.6"/>
+  <rect x="1100" y="60" width="40" height="40" fill="none" stroke="#FFD700" stroke-width="3" opacity="0.6"/>
+  <rect x="60" y="1100" width="40" height="40" fill="none" stroke="#FFD700" stroke-width="3" opacity="0.6"/>
+  <rect x="1100" y="1100" width="40" height="40" fill="none" stroke="#FFD700" stroke-width="3" opacity="0.6"/>
+
+  <!-- Lucky 7 decorative -->
+  <text x="600" y="280" text-anchor="middle" font-family="sans-serif" font-size="200" font-weight="900" fill="#FFD700" opacity="0.06">SEVEN</text>
+
+  <!-- Main title -->
+  <text x="600" y="420" text-anchor="middle" font-family="sans-serif" font-size="110" font-weight="900" fill="url(#gold)" filter="url(#shadow)" letter-spacing="-0.02em">대전세븐나이트</text>
+
+  <!-- Divider -->
+  <line x1="350" y1="470" x2="850" y2="470" stroke="#FFD700" stroke-width="3" opacity="0.5"/>
+
+  <!-- 4인1조 w.t원숭이 -->
+  <rect x="340" y="520" width="520" height="80" rx="40" fill="rgba(255,215,0,0.15)" stroke="#FFD700" stroke-width="2"/>
+  <text x="600" y="573" text-anchor="middle" font-family="sans-serif" font-size="48" font-weight="800" fill="#FFD700" filter="url(#glow)">4인1조 w.t원숭이</text>
+
+  <!-- Phone number -->
+  <rect x="280" y="660" width="640" height="100" rx="50" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+  <text x="560" y="725" text-anchor="middle" font-family="sans-serif" font-size="52" font-weight="900" fill="white" letter-spacing="0.05em">010-3242-1504</text>
+  <text x="340" y="725" text-anchor="middle" font-family="sans-serif" font-size="44">&#x1F4DE;</text>
+
+  <!-- Tagline -->
+  <text x="600" y="840" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="600" fill="rgba(255,255,255,0.7)">둔산동 중심, 격이 다른 댄스홀</text>
+
+  <!-- Features -->
+  <rect x="300" y="890" width="160" height="50" rx="25" fill="rgba(255,215,0,0.12)" stroke="#FFD700" stroke-width="1" opacity="0.7"/>
+  <text x="380" y="923" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="600" fill="#FFD700" opacity="0.9">7 테마존</text>
+
+  <rect x="520" y="890" width="160" height="50" rx="25" fill="rgba(255,215,0,0.12)" stroke="#FFD700" stroke-width="1" opacity="0.7"/>
+  <text x="600" y="923" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="600" fill="#FFD700" opacity="0.9">라이브밴드</text>
+
+  <rect x="740" y="890" width="160" height="50" rx="25" fill="rgba(255,215,0,0.12)" stroke="#FFD700" stroke-width="1" opacity="0.7"/>
+  <text x="820" y="923" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="600" fill="#FFD700" opacity="0.9">댄스홀</text>
+
+  <!-- Bottom branding -->
+  <text x="600" y="1060" text-anchor="middle" font-family="sans-serif" font-size="30" font-weight="300" fill="rgba(255,255,255,0.4)" letter-spacing="0.05em">nolcool.com</text>
 </svg>

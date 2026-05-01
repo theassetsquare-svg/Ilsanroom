@@ -20,6 +20,7 @@ const NICKNAME_MAP = {
   'pajuyadangskydomenight': '막내',
   'ulsanchampionnight': '춘자',
   'gangnamjuliananight': '태양',
+  'daejeonsevennight': '4인1조 w.t원숭이',
 };
 
 function findImage(slug) {
