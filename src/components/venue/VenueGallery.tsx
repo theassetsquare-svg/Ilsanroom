@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { getVenueScreenshotUrl } from '@/lib/screenshot-url';
 
 interface VenueGalleryProps {
   slug: string;

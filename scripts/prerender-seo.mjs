@@ -825,14 +825,25 @@ const NICKNAME_OG_SLUGS = new Set([
   'ilsanmyeongwolgwanyojeong','ilsanroom','busanyeonsandongmulnight','busanmulnight',
   'seongnamshampoonight','suwonchancenight','sinlimgrandprixnight','cheongdamh2onight',
   'pajuyadangskydomenight','ulsanchampionnight','gangnamjuliananight','dapsimnidontellmamanight',
+  'daejeonsevennight',
 ]);
-function getVenueOgImage(slug) {
+/** 스크린샷 서비스 폴백 URL (slug 해시로 3개 서비스 로테이션) */
+const catPathMap = { club:'clubs', night:'nights', lounge:'lounges', room:'rooms', yojeong:'yojeong', hoppa:'hoppa' };
+function getScreenshotFallback(slug, cat) {
+  const pageUrl = `${BASE_URL}/${catPathMap[cat] || 'clubs'}/${slug}`;
+  const hash = slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % 3;
+  if (hash === 0) return `https://image.thum.io/get/width/1200/crop/1200/${pageUrl}`;
+  if (hash === 1) return `https://api.microlink.io/?url=${encodeURIComponent(pageUrl)}&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1200&viewport.height=1200`;
+  return `https://image.thum.io/get/width/1200/crop/1200/${pageUrl}`;
+}
+
+function getVenueOgImage(slug, cat) {
   if (JPG_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}.jpg`;
   if (NICKNAME_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}.jpg`;
-  // 실제 이미지 파일이 있을 때만 venue 이미지, 없으면 기본 OG
+  // 실제 이미지 파일이 있을 때만 venue 이미지, 없으면 스크린샷 폴백
   const venueImg = path.join(DIST, 'venues', `${slug}-1.jpg`);
   if (fs.existsSync(venueImg)) return `${BASE_URL}/venues/${slug}-1.jpg`;
-  return OG_IMAGE;
+  return getScreenshotFallback(slug, cat);
 }
 
 let venueCount = 0;
@@ -922,7 +933,7 @@ for (const v of venues) {
   writePage(routePath, {
     title: hookTitle,
     description: desc,
-    ogImage: getVenueOgImage(v.slug),
+    ogImage: getVenueOgImage(v.slug, v.cat),
     ssrBody: generateVenueSsrBody(v, venues),
     jsonLdList: [venueJsonLd, faqJsonLd, breadcrumbJsonLd],
     datePublished,

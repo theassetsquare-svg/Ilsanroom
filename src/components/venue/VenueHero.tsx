@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Badge from '@/components/ui/Badge';
+import { getVenueScreenshotUrl } from '@/lib/screenshot-url';
 
 interface VenueHeroProps {
   name: string;
@@ -44,6 +45,8 @@ export default function VenueHero({
   const handleImageError = () => {
     if (imgSrc.includes('.webp')) {
       setImgSrc(`/venues/${slug}-1.jpg`);
+    } else if (!imgSrc.includes('thum.io') && !imgSrc.includes('microlink') && !imgSrc.includes('screenshotone')) {
+      setImgSrc(getVenueScreenshotUrl(slug!, category, 1200, 630));
     } else {
       setHasImage(false);
     }
