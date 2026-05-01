@@ -51,6 +51,25 @@ const seedJogakList: JogakItem[] = [
   { id: 'sj-5', title: '대전 나이트 주말 같이 가실 분', region: '대전', gender: '혼성', current: 2, max: 5, time: '토요일 21:00' },
 ];
 
+/* ── 지금 뜨는 토론 — 논쟁 유발해서 클릭 + 댓글 유도 ── */
+const seedDebates = [
+  { id: 'db-1', topic: '클럽 vs 나이트, 진짜 만남 확률 높은 곳은?', heat: 89, side: ['클럽이지', '나이트 압승'], comments: 47 },
+  { id: 'db-2', topic: '강남 vs 홍대, 가성비는 어디가 나아?', heat: 76, side: ['강남이 비싸도 강남', '홍대가 진짜'], comments: 31 },
+  { id: 'db-3', topic: '혼자 가면 진짜 눈치 보여? 솔직하게', heat: 92, side: ['상관없음', '좀 그렇지..'], comments: 58 },
+  { id: 'db-4', topic: '룸 vs 오픈 테이블, 접대는 어디서?', heat: 67, side: ['룸이 답', '오픈이 분위기'], comments: 22 },
+  { id: 'db-5', topic: '금요일밤 vs 토요일밤, 언제가 더 미쳤어?', heat: 83, side: ['불금이지', '토요일 진짜'], comments: 39 },
+  { id: 'db-6', topic: '호빠 처음인데 뭐 입고 가야함?', heat: 71, side: ['캐주얼 OK', '꾸며야지'], comments: 44 },
+];
+
+/* ── "이거 나야" 공감 반응 — 클릭 중독 ── */
+const quickReactions = ['ㅋㅋㅋ 찐', '완전 공감', '나도 이거', '대박..', '실화?!', '이건 좀..'];
+
+/* ── 무한 추천 문구 — 끝없는 탐색 유도 ── */
+const nextHooks = [
+  '이것도 볼래?', '다른 데도 궁금하지?', '여기는 가봤어?',
+  '아직 안 봤지?', '이건 진짜 숨은 맛집', '사람들이 찜한 곳',
+];
+
 /* ── VS Polls — 매일 다른 투표 3세트 ── */
 const vsPolls = [
   { q: '강남 양대산맥! 어디가 더 미쳤어?', a: '레이스', b: '아르쥬', aEmoji: '🔥', bEmoji: '💎', aPct: 54, bPct: 46 },
@@ -173,6 +192,135 @@ const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, r
     </div>
   );
 });
+
+/* ── 무한 추천 루프 컴포넌트 — 끝없이 스크롤하게 ── */
+const RECOMMEND_BATCH = 6;
+function InfiniteRecommendLoop({ venues, popularVenues }: { venues: Venue[]; popularVenues: Venue[] }) {
+  const [batches, setBatches] = useState(1);
+  const [seenIds, setSeenIds] = useState<Set<string>>(() => new Set(popularVenues.slice(0, 20).map(v => v.id)));
+  const loaderRef = useRef<HTMLDivElement>(null);
+
+  // Intersection Observer — 바닥에 닿으면 다음 배치 로드
+  useEffect(() => {
+    const el = loaderRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setBatches(prev => Math.min(prev + 1, 20)); // 최대 20배치 = 120개
+      }
+    }, { rootMargin: '200px' });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const allRecs = useMemo(() => {
+    const result: Venue[][] = [];
+    const used = new Set(seenIds);
+    for (let i = 0; i < batches; i++) {
+      const seed = new Date().getDate() * 100 + i * 37;
+      const pool = venues.filter(v => !used.has(v.id));
+      const shuffled = [...pool].sort((a, b) => {
+        const ha = ((a.id.charCodeAt(0) || 0) * 31 + seed) % 1000;
+        const hb = ((b.id.charCodeAt(0) || 0) * 31 + seed) % 1000;
+        return ha - hb;
+      });
+      const batch = shuffled.slice(0, RECOMMEND_BATCH);
+      batch.forEach(v => used.add(v.id));
+      if (batch.length > 0) result.push(batch);
+    }
+    return result;
+  }, [batches, venues, seenIds]);
+
+  // 카테고리별 교차 추천 문구
+  const crossCatHooks: Record<string, { text: string; cat: string; href: string }[]> = {
+    club: [{ text: '클럽 가기 전에 라운지 한잔?', cat: 'lounge', href: '/lounges' }, { text: '클럽 말고 나이트는?', cat: 'night', href: '/nights' }],
+    night: [{ text: '나이트 끝나고 2차 어디?', cat: 'room', href: '/rooms' }, { text: '클럽도 한번 가봐', cat: 'club', href: '/clubs' }],
+    lounge: [{ text: '분위기 있는 요정도 있어', cat: 'yojeong', href: '/yojeong' }, { text: '라운지 취향이면 호빠도', cat: 'hoppa', href: '/hoppa' }],
+    room: [{ text: '룸 말고 요정은 어때?', cat: 'yojeong', href: '/yojeong' }, { text: '클럽에서 마무리?', cat: 'club', href: '/clubs' }],
+    yojeong: [{ text: '격식 풀고 나이트 가자', cat: 'night', href: '/nights' }, { text: '조용한 라운지도 좋아', cat: 'lounge', href: '/lounges' }],
+    hoppa: [{ text: '호빠 끝나고 클럽 갈래?', cat: 'club', href: '/clubs' }, { text: '2차는 라운지에서', cat: 'lounge', href: '/lounges' }],
+  };
+
+  return (
+    <section className="px-4 py-3 max-w-3xl mx-auto">
+      {allRecs.map((batch, bIdx) => {
+        const hookText = nextHooks[bIdx % nextHooks.length];
+        const firstCat = batch[0]?.category || 'club';
+        const crossHook = crossCatHooks[firstCat]?.[bIdx % 2];
+        return (
+          <div key={bIdx}>
+            {/* 배치 헤더 */}
+            <div className="flex items-center gap-2 mb-2 mt-4">
+              <span className="text-sm font-bold text-[#111]">{hookText}</span>
+              <div className="flex-1 h-px bg-gray-200" />
+            </div>
+            {/* 2열 그리드 */}
+            <div className="grid grid-cols-2 gap-2.5">
+              {batch.map(v => (
+                <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} target="_blank" rel="noopener noreferrer"
+                  className="rounded-xl border border-gray-100 bg-white overflow-hidden shadow-sm active:scale-[0.98] transition-transform">
+                  <div className={`relative w-full overflow-hidden bg-gradient-to-br ${
+                    v.category === 'club' ? 'from-violet-500 to-indigo-700' :
+                    v.category === 'night' ? 'from-blue-500 to-purple-700' :
+                    v.category === 'lounge' ? 'from-amber-500 to-orange-700' :
+                    v.category === 'room' ? 'from-rose-500 to-pink-700' :
+                    v.category === 'yojeong' ? 'from-emerald-500 to-teal-700' :
+                    'from-pink-500 to-rose-700'
+                  }`} style={{ aspectRatio: '4/3' }}>
+                    <img src={`/venues/${v.slug}-1.webp`} alt={v.nameKo} loading="lazy" width={300} height={225}
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                      className="absolute inset-0 w-full h-full object-cover z-[1]" />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span className="text-2xl">{catEmoji[v.category] || '🎵'}</span>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/70 px-2 py-1.5">
+                      <p className="text-[12px] font-bold text-white truncate">{v.nameKo}</p>
+                      <p className="text-[10px] text-white/80">{catLabel[v.category]} · {v.regionKo}</p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* 교차 카테고리 추천 — 매 배치마다 다른 카테고리 유도 */}
+            {crossHook && bIdx % 2 === 0 && (
+              <Link to={crossHook.href} className="mt-2 block rounded-xl bg-gradient-to-r from-[#F5F3FF] to-white border border-purple-100 p-3 active:bg-purple-50 transition text-center">
+                <p className="text-sm font-bold text-[#8B5CF6]">{catEmoji[crossHook.cat]} {crossHook.text} →</p>
+              </Link>
+            )}
+
+            {/* 커뮤니티 유도 — 홀수 배치마다 */}
+            {bIdx % 3 === 1 && (
+              <Link to="/community/free?write=true" className="mt-2 block rounded-xl border border-orange-100 bg-orange-50/50 p-3 active:bg-orange-50 transition text-center">
+                <p className="text-[13px] font-bold text-[#111]">💬 이 중에 가본 데 있어? 후기 남겨봐</p>
+                <p className="text-[10px] text-[#666] mt-0.5">첫 글 작성 시 +50P 적립</p>
+              </Link>
+            )}
+          </div>
+        );
+      })}
+
+      {/* 무한 로딩 트리거 */}
+      <div ref={loaderRef} className="py-6 text-center">
+        {batches < 20 ? (
+          <div className="flex flex-col items-center gap-2">
+            <div className="flex gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-bounce" style={{ animationDelay: '0ms' }} />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-bounce" style={{ animationDelay: '150ms' }} />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-bounce" style={{ animationDelay: '300ms' }} />
+            </div>
+            <p className="text-xs text-[#666]">더 많은 곳을 찾고 있어요...</p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            <p className="text-sm font-bold text-[#111]">전국 {venues.length}곳 다 봤어!</p>
+            <Link to="/community" className="inline-block rounded-full bg-[#8B5CF6] px-5 py-2 text-sm font-bold text-white active:scale-95 transition">커뮤니티 가기 →</Link>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
 
 /* ══════════════════════════════════════════════════════ */
 /*                    HOMEPAGE                            */
@@ -611,9 +759,41 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* ═══ 실시간 한줄 피드 ═══ */}
+      {/* ═══ 실시간 활동 스트림 — 사이트가 살아있는 느낌 ═══ */}
       <section className="px-4 py-2 max-w-3xl mx-auto">
-        <LiveActivityFeed maxItems={1} compact />
+        <div className="rounded-2xl border border-green-100 bg-gradient-to-r from-green-50/50 to-white p-3">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+            </span>
+            <span className="text-xs font-bold text-[#111]">지금 활동 중</span>
+            <span className="text-[10px] text-gray-400 ml-auto">실시간</span>
+          </div>
+          <LiveActivityFeed maxItems={4} interval={5000} />
+        </div>
+      </section>
+
+      {/* ═══ 한마디 남기기 — 커뮤니티 글쓰기 유도 ═══ */}
+      <section className="px-4 py-2 max-w-3xl mx-auto">
+        <Link to="/community/free?write=true" className="block rounded-2xl border border-purple-100 bg-gradient-to-r from-[#F5F3FF] to-white p-4 active:bg-purple-50 transition">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#8B5CF6]/10">
+              <span className="text-lg">✏️</span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-gray-400">오늘 밤 어땠어? 한마디 남겨봐</p>
+            </div>
+            <span className="shrink-0 rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white">글쓰기</span>
+          </div>
+          <div className="flex items-center gap-3 mt-2 text-[10px] text-gray-400">
+            <span>📝 첫 글 작성 시 +50P</span>
+            <span>·</span>
+            <span>💬 댓글 달면 +10P</span>
+            <span>·</span>
+            <span>♥ 좋아요 받으면 +5P</span>
+          </div>
+        </Link>
       </section>
 
       {/* ═══ 3. VS 투표 — 첫 화면에서 즉시 터치 인터랙션 (1개만) ═══ */}
@@ -695,7 +875,12 @@ export default function HomePage() {
             </div>
             <p className="text-[15px] font-bold text-[#111] leading-snug mb-1">{displayPosts[0].title}</p>
             <p className="text-[12px] text-[#555] leading-relaxed line-clamp-2">댓글 {displayPosts[0].comments}개의 반응이 쏟아지고 있습니다...</p>
-            <div className="flex items-center justify-between mt-2">
+            <div className="flex items-center gap-1.5 mt-2 overflow-x-auto scrollbar-hide">
+              {quickReactions.slice(0, 4).map(r => (
+                <span key={r} className="shrink-0 rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[10px] text-[#555]">{r}</span>
+              ))}
+            </div>
+            <div className="flex items-center justify-between mt-1.5">
               <div className="flex items-center gap-2 text-[11px] text-[#666]">
                 <span>♥ {displayPosts[0].likes}</span>
                 <span>💬 {displayPosts[0].comments}</span>
@@ -717,6 +902,15 @@ export default function HomePage() {
             </Link>
           ))}
         </div>
+        {/* 지금 읽는 사람 수 — FOMO 유발 */}
+        <div className="flex items-center justify-center gap-1.5 mt-2 py-1.5 rounded-lg bg-green-50 border border-green-100">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-green-500" />
+          </span>
+          <span className="text-[11px] text-green-700 font-medium">지금 {Math.floor(30 + (new Date().getHours() * 7 + new Date().getMinutes()) % 45)}명이 커뮤니티 보는 중</span>
+        </div>
+
         {/* 커뮤니티 보드 퀵링크 */}
         <div className="flex gap-2 mt-2 overflow-x-auto scrollbar-hide">
           {[
@@ -728,6 +922,33 @@ export default function HomePage() {
           ].map(b => (
             <Link key={b.label} to={b.href} className="shrink-0 flex items-center gap-1 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-[11px] font-medium text-[#555] active:bg-gray-50">
               <span>{b.emoji}</span>{b.label}
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ 5.5 뜨거운 토론 — 논쟁 유발 → 댓글 참여 유도 ═══ */}
+      <section className="px-4 py-2 max-w-3xl mx-auto">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <h2 className="text-base font-bold text-[#111]">뜨거운 토론</h2>
+            <span className="rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-bold text-white">HOT</span>
+          </div>
+          <Link to="/community/free" className="text-xs text-[#8B5CF6] font-medium">참여하기 →</Link>
+        </div>
+        <div className="space-y-2">
+          {seedDebates.slice(0, 3).map(debate => (
+            <Link key={debate.id} to="/community/free" className="block rounded-xl border border-orange-100 bg-gradient-to-r from-orange-50/40 to-white p-3 active:bg-orange-50 transition">
+              <p className="text-[13px] font-bold text-[#111] leading-snug mb-1.5">{debate.topic}</p>
+              <div className="flex items-center gap-2">
+                <div className="flex gap-1.5 flex-1">
+                  {debate.side.map((s, i) => (
+                    <span key={i} className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${i === 0 ? 'bg-[#8B5CF6]/10 text-[#8B5CF6]' : 'bg-pink-100 text-pink-600'}`}>"{s}"</span>
+                  ))}
+                </div>
+                <span className="text-[10px] text-[#666]">💬 {debate.comments}</span>
+                <span className="text-[10px] text-red-500 font-bold">{debate.heat}°</span>
+              </div>
             </Link>
           ))}
         </div>
@@ -1164,6 +1385,30 @@ export default function HomePage() {
                 );
               }
 
+              // 24번째 — 뜨거운 토론 유도
+              if (idx + 1 === 24) {
+                const debate = seedDebates[new Date().getDate() % seedDebates.length];
+                cards.push(
+                  <Link key={`debate-cta-${idx}`} to="/community/free" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl border border-orange-100 bg-orange-50/50 p-3 active:bg-orange-50 transition">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="rounded bg-red-500 px-1.5 py-0.5 text-[9px] font-bold text-white">HOT</span>
+                      <span className="text-[11px] text-red-500 font-bold">{debate.heat}° 뜨거운 토론</span>
+                    </div>
+                    <p className="text-sm font-bold text-[#111]">💬 {debate.topic}</p>
+                  </Link>
+                );
+              }
+
+              // 28번째 — 글쓰기 강력 유도
+              if (idx + 1 === 28) {
+                cards.push(
+                  <Link key={`write-cta-${idx}`} to="/community/free?write=true" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] p-4 active:scale-[0.98] transition text-center">
+                    <p className="text-base font-bold text-white">여기까지 봤으면 한마디 남기고 가</p>
+                    <p className="text-[11px] text-white/70 mt-0.5">첫 글 +50P · 댓글 +10P · 좋아요 +5P</p>
+                  </Link>
+                );
+              }
+
               return cards;
             })}
           </div>
@@ -1215,6 +1460,9 @@ export default function HomePage() {
           )}
         </div>
       </section>
+
+      {/* ═══ 무한 추천 루프 — 끝없이 더보기 ═══ */}
+      <InfiniteRecommendLoop venues={openVenues} popularVenues={popularVenues} />
 
       {/* ═══ QUICK LINKS — 확장된 "더 놀기" 그리드 ═══ */}
       <section className="px-4 py-3 max-w-3xl mx-auto space-y-3">
