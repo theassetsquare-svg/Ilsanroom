@@ -43,13 +43,18 @@ export default function HomeCommunityHub() {
           <p className="text-sm text-neon-text-muted mt-1">같은 밤을 보내는 사람들끼리 수다 떠는 곳</p>
         </div>
         <div className="flex gap-2">
-          {user && (
+          {user ? (
             <button
               onClick={() => setShowWrite(true)}
               className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-bold text-white transition hover:bg-neon-primary-light"
             >
               글쓰기
             </button>
+          ) : (
+            <Link to="/login?redirect=/community/free?write=true"
+              className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-bold text-white transition hover:bg-neon-primary-light">
+              글쓰기
+            </Link>
           )}
           <Link to="/community" className="rounded-xl border border-neon-border px-4 py-2.5 text-sm font-medium text-neon-text-muted transition hover:bg-neon-surface-2">
             전체보기
@@ -100,14 +105,7 @@ export default function HomeCommunityHub() {
         </div>
       )}
 
-      {/* Show login prompt if not logged in */}
-      {!user && (
-        <div className="mt-4 rounded-xl bg-violet-50 p-4 text-center">
-          <p className="text-sm text-neon-text-muted">
-            <Link to="/login" className="font-semibold text-neon-primary hover:underline">로그인</Link>하고 커뮤니티에 참여하세요
-          </p>
-        </div>
-      )}
+      {/* 비회원: 가입 유도 문구 표시하지 않음 — 콘텐츠가 재미있으면 자발적으로 가입 */}
 
       <WritePostModal open={showWrite} onClose={() => setShowWrite(false)} />
     </section>

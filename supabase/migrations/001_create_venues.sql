@@ -1,9 +1,12 @@
 -- =============================================
 -- venues 테이블 (놀쿨 가게 정보 시스템)
 -- 실행: Supabase Dashboard → SQL Editor
+-- 기존 venues 테이블이 있으면 DROP 후 재생성
 -- =============================================
 
-CREATE TABLE IF NOT EXISTS venues (
+DROP TABLE IF EXISTS venues CASCADE;
+
+CREATE TABLE venues (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   slug TEXT UNIQUE NOT NULL,
   name TEXT NOT NULL,
@@ -61,6 +64,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_venues_updated_at ON venues;
 CREATE TRIGGER trg_venues_updated_at
   BEFORE UPDATE ON venues
   FOR EACH ROW
@@ -70,10 +74,12 @@ CREATE TRIGGER trg_venues_updated_at
 ALTER TABLE venues ENABLE ROW LEVEL SECURITY;
 
 -- 누구나 읽기 가능
+DROP POLICY IF EXISTS "venues_select_all" ON venues;
 CREATE POLICY "venues_select_all" ON venues
   FOR SELECT USING (true);
 
 -- 소유자만 수정 가능
+DROP POLICY IF EXISTS "venues_update_owner" ON venues;
 CREATE POLICY "venues_update_owner" ON venues
   FOR UPDATE USING (auth.uid() = owner_id);
 

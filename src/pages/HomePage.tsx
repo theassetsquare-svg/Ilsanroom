@@ -11,6 +11,7 @@ import { useFavorites as useFavoritesHook } from '@/hooks/useFavorites';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import LiveStats from '@/components/live/LiveStats';
 import { articles as magazineArticles } from '@/data/magazine-articles';
+import { useAuth } from '@/hooks/useAuth';
 
 /* ── Helpers ── */
 function getCategoryHref(category: string, slug: string, region: string) {
@@ -32,8 +33,8 @@ const catHrefs: Record<string, string> = { club: '/clubs', night: '/nights', lou
 /* ── Region labels for 지역별 tab filter ── */
 const regionLabels = ['전체', '강남', '압구정', '홍대', '이태원', '부산', '대구', '광주', '대전', '수원', '일산', '인천', '성남', '천안', '울산'];
 
-/* ── Seed community posts (DB 비어있을 때 사이트가 살아보이게) ── */
-const seedHotPosts: HotPost[] = [
+/* ── Seed community posts — 시간·날짜별 회전, AI냄새 0% ── */
+const allSeedPosts: HotPost[] = [
   { id: 'seed-1', board: '후기', author: '강남불주먹', title: '레이스 금요일 다녀옴 — 역시 사운드 미쳤다', likes: 24, comments: 8, time: '3시간 전' },
   { id: 'seed-2', board: '자유', author: '택시비폭탄', title: '택시비가 술값보다 나온 사람 나만?? ㅋㅋ', likes: 41, comments: 19, time: '1시간 전' },
   { id: 'seed-3', board: '팁', author: '부산바다남', title: '입장료 아끼는 법 3가지 (진짜 됨)', likes: 31, comments: 6, time: '2시간 전' },
@@ -42,23 +43,155 @@ const seedHotPosts: HotPost[] = [
   { id: 'seed-6', board: '자유', author: '새벽감성러', title: '어젯밤 일 아직도 술깸ㅋㅋ', likes: 22, comments: 11, time: '5시간 전' },
   { id: 'seed-7', board: 'Q&A', author: '첫호빠녀', title: '호빠 혼자 가면 진짜 괜찮음??', likes: 17, comments: 23, time: '2시간 전' },
   { id: 'seed-8', board: '후기', author: '접대성공', title: '일산명월관 접대로 갔는데 거래처가 감동함', likes: 35, comments: 9, time: '6시간 전' },
+  { id: 'seed-9', board: '자유', author: '홍대미아', title: '홍대 길 잃어서 새벽 4시에 편의점서 라면먹음ㅋㅋ', likes: 52, comments: 27, time: '7시간 전' },
+  { id: 'seed-10', board: '후기', author: '압구정도련님', title: '아르쥬 VIP 후기 — 돈값은 하는듯', likes: 38, comments: 15, time: '5시간 전' },
+  { id: 'seed-11', board: '팁', author: '나이트고수', title: '부킹 잘 되는 자리 위치 공개함 (경험담)', likes: 67, comments: 34, time: '1시간 전' },
+  { id: 'seed-12', board: 'Q&A', author: '처음이라', title: '룸 갈때 양주 뭐 시켜야됨? 진심 모름', likes: 19, comments: 31, time: '3시간 전' },
+  { id: 'seed-13', board: '후기', author: '부산갈매기', title: '고구려나이트 토요일 갔는데 사람 미쳤음 ㄹㅇ', likes: 44, comments: 18, time: '8시간 전' },
+  { id: 'seed-14', board: '자유', author: '야근탈출', title: '금요일 퇴근하고 바로 클럽가는 사람 있음? 나임ㅋ', likes: 33, comments: 22, time: '2시간 전' },
+  { id: 'seed-15', board: '모집', author: '혼놀러', title: '오늘 밤 강남 아무데나 같이 갈 사람??', likes: 11, comments: 9, time: '45분 전' },
+  { id: 'seed-16', board: '후기', author: '대전사나이', title: '세븐나이트 웨이터가 진짜 프로임 인정', likes: 29, comments: 12, time: '6시간 전' },
+  { id: 'seed-17', board: '팁', author: '인싸되고싶다', title: '클럽 처음 가는 사람 복장 꿀팁 (남자편)', likes: 55, comments: 28, time: '4시간 전' },
+  { id: 'seed-18', board: '자유', author: '소주파이터', title: '어제 양주 3병 까고 살아남은 나 칭찬해줘', likes: 48, comments: 35, time: '9시간 전' },
+  { id: 'seed-19', board: 'Q&A', author: '라운지초보', title: '라운지 혼자 가면 좌석 어디 앉음?', likes: 15, comments: 18, time: '1시간 전' },
+  { id: 'seed-20', board: '후기', author: '일산토박이', title: '라붐 리뉴얼 다녀왔는데 인테리어 쩔더라', likes: 36, comments: 11, time: '3시간 전' },
+  { id: 'seed-21', board: '모집', author: '대구형님', title: '이번주 토 대구 나이트 4인조 ㄱㄱ', likes: 8, comments: 5, time: '20분 전' },
+  { id: 'seed-22', board: '자유', author: '새벽감성', title: '새벽 2시에 혼자 택시타고 집 가면서 드는 생각.jpg', likes: 61, comments: 42, time: '10시간 전' },
+  { id: 'seed-23', board: '후기', author: '접대왕', title: '거래처 모시고 요정 갔더니 계약 따냄ㅋㅋ 실화임', likes: 73, comments: 31, time: '7시간 전' },
+  { id: 'seed-24', board: '팁', author: '가성비왕', title: '강남에서 10만원 이하로 노는 법 (진짜됨)', likes: 89, comments: 47, time: '5시간 전' },
+  { id: 'seed-25', board: '자유', author: '금요일좋아', title: '월요일인데 벌써 금요일 계획 세우는중ㅋ', likes: 37, comments: 16, time: '2시간 전' },
+  { id: 'seed-26', board: 'Q&A', author: '첫클럽녀', title: '여자 혼자 클럽 가도 괜찮아?? 솔직하게 말해줘', likes: 42, comments: 56, time: '4시간 전' },
+  { id: 'seed-27', board: '후기', author: '인천터미널', title: '인천 라운지 가봤는데 강남이랑 비교불가 ㄹㅇ', likes: 21, comments: 13, time: '6시간 전' },
+  { id: 'seed-28', board: '모집', author: '수원조각', title: '수원 오늘 벙개!! 찬스돔 ㄱ??', likes: 16, comments: 11, time: '15분 전' },
+  { id: 'seed-29', board: '자유', author: '퇴근후맥주', title: '퇴근하고 혼술하다가 여기 들어옴.. 나만 그럼?', likes: 45, comments: 29, time: '1시간 전' },
+  { id: 'seed-30', board: '팁', author: '호빠고수녀', title: '호빠에서 대접 잘 받는 꿀팁 5가지 (여자필독)', likes: 78, comments: 41, time: '3시간 전' },
+  { id: 'seed-31', board: '후기', author: '광주사자', title: '광주 나이트 분위기 생각보다 괜찮던데?', likes: 25, comments: 8, time: '8시간 전' },
+  { id: 'seed-32', board: '자유', author: '헬스끝나이트', title: '헬스장 갔다가 나이트 가는 사람 나밖에 없지ㅋㅋ', likes: 39, comments: 24, time: '4시간 전' },
+  { id: 'seed-33', board: 'Q&A', author: '양주초보', title: '양주 종류가 너무 많은데 뭐 시켜야 안 망함?', likes: 34, comments: 38, time: '2시간 전' },
+  { id: 'seed-34', board: '후기', author: '울산코알라', title: '울산 나이트 3곳 비교 — 결론은 하나임', likes: 31, comments: 14, time: '7시간 전' },
+  { id: 'seed-35', board: '자유', author: '불금전사', title: '이번주 불금은 진짜 역대급으로 놀거임 선언', likes: 27, comments: 19, time: '5시간 전' },
 ];
-const seedJogakList: JogakItem[] = [
+// 시간+날짜 기반 회전 — 방문할 때마다 다른 글
+function getSeedHotPosts(): HotPost[] {
+  const d = new Date();
+  const seed = d.getFullYear() * 1000 + (d.getMonth() + 1) * 32 + d.getDate();
+  const hourShift = Math.floor(d.getHours() / 3); // 3시간마다 변경
+  const start = (seed * 7 + hourShift * 5) % allSeedPosts.length;
+  const result: HotPost[] = [];
+  for (let i = 0; i < 8; i++) {
+    const post = allSeedPosts[(start + i) % allSeedPosts.length];
+    // 시간 표시도 동적으로
+    const times = ['방금', '5분 전', '12분 전', '30분 전', '1시간 전', '2시간 전', '3시간 전', '4시간 전'];
+    result.push({ ...post, time: times[i] });
+  }
+  return result;
+}
+const seedHotPosts = getSeedHotPosts();
+const allSeedJogak: JogakItem[] = [
   { id: 'sj-1', title: '금요일 홍대 버뮤다 같이 갈 사람', region: '홍대', gender: '혼성', current: 2, max: 4, time: '이번 금요일 23:00' },
   { id: 'sj-2', title: '강남 레이스 테이블 엔빵 모집', region: '강남', gender: '남녀무관', current: 3, max: 6, time: '토요일 22:00' },
   { id: 'sj-3', title: '부산 고구려 주말 조각 급구', region: '해운대', gender: '혼성', current: 4, max: 8, time: '금요일 21:00' },
   { id: 'sj-4', title: '수원 찬스돔 오늘 벙개 갈 사람!!', region: '수원', gender: '누구나', current: 1, max: 3, time: '오늘 23:30' },
   { id: 'sj-5', title: '대전 나이트 주말 같이 가실 분', region: '대전', gender: '혼성', current: 2, max: 5, time: '토요일 21:00' },
+  { id: 'sj-6', title: '일산 라붐 이번주 ㄱㄱ 2명 더 구함', region: '일산', gender: '혼성', current: 3, max: 5, time: '금요일 22:00' },
+  { id: 'sj-7', title: '강남 호빠 첫방문 같이 갈 여자분!!', region: '강남', gender: '여성', current: 1, max: 3, time: '토요일 20:00' },
+  { id: 'sj-8', title: '대구 나이트 급구 오늘 밤!!', region: '대구', gender: '남녀무관', current: 2, max: 4, time: '오늘 22:00' },
+  { id: 'sj-9', title: '이태원 라운지 소규모 모임', region: '이태원', gender: '혼성', current: 2, max: 4, time: '금요일 21:30' },
+  { id: 'sj-10', title: '인천 주말 나이트 크루 모집중', region: '인천', gender: '누구나', current: 3, max: 6, time: '토요일 21:00' },
 ];
+// 조각모임도 회전
+function getSeedJogak(): JogakItem[] {
+  const d = new Date();
+  const seed = d.getDate() + Math.floor(d.getHours() / 6);
+  const result: JogakItem[] = [];
+  for (let i = 0; i < 5; i++) result.push(allSeedJogak[(seed + i) % allSeedJogak.length]);
+  return result;
+}
+const seedJogakList = getSeedJogak();
 
 /* ── 지금 뜨는 토론 — 논쟁 유발해서 클릭 + 댓글 유도 ── */
-const seedDebates = [
+const allSeedDebates = [
   { id: 'db-1', topic: '클럽 vs 나이트, 진짜 만남 확률 높은 곳은?', heat: 89, side: ['클럽이지', '나이트 압승'], comments: 47 },
   { id: 'db-2', topic: '강남 vs 홍대, 가성비는 어디가 나아?', heat: 76, side: ['강남이 비싸도 강남', '홍대가 진짜'], comments: 31 },
   { id: 'db-3', topic: '혼자 가면 진짜 눈치 보여? 솔직하게', heat: 92, side: ['상관없음', '좀 그렇지..'], comments: 58 },
   { id: 'db-4', topic: '룸 vs 오픈 테이블, 접대는 어디서?', heat: 67, side: ['룸이 답', '오픈이 분위기'], comments: 22 },
   { id: 'db-5', topic: '금요일밤 vs 토요일밤, 언제가 더 미쳤어?', heat: 83, side: ['불금이지', '토요일 진짜'], comments: 39 },
   { id: 'db-6', topic: '호빠 처음인데 뭐 입고 가야함?', heat: 71, side: ['캐주얼 OK', '꾸며야지'], comments: 44 },
+  { id: 'db-7', topic: '나이트 부킹 vs 클럽 헌팅, 뭐가 더 자연스러움?', heat: 85, side: ['부킹 편함', '헌팅이 진짜'], comments: 52 },
+  { id: 'db-8', topic: '양주 vs 맥주, 분위기 잡으려면?', heat: 74, side: ['양주 한병이면 끝', '맥주가 편해'], comments: 33 },
+  { id: 'db-9', topic: '서울 vs 지방 나이트, 수준 차이 있음?', heat: 91, side: ['서울이 다름', '지방도 꿀잼'], comments: 61 },
+  { id: 'db-10', topic: '나이트 갈 때 향수 뿌려야함 말아야함?', heat: 68, side: ['필수임', '자연이 최고'], comments: 29 },
+  { id: 'db-11', topic: '클럽 새벽 1시 vs 11시, 갈 타이밍은?', heat: 79, side: ['새벽이 진짜', '일찍 가야 자리'], comments: 37 },
+  { id: 'db-12', topic: '혼술 후 나이트 vs 처음부터 나이트?', heat: 72, side: ['한잔 하고가', '맨정신이 나음'], comments: 41 },
+  { id: 'db-13', topic: '라운지 데이트 vs 레스토랑 데이트?', heat: 81, side: ['라운지가 분위기', '밥이 먼저지'], comments: 48 },
+  { id: 'db-14', topic: '택시 vs 대리, 새벽 귀가 어떻게 함?', heat: 65, side: ['택시 무조건', '대리가 편해'], comments: 26 },
+  { id: 'db-15', topic: '요정 가봄? 솔직히 어때?', heat: 88, side: ['인생 바뀜', '생각보다 그냥'], comments: 55 },
+];
+// 토론도 시간별 회전
+function getSeedDebates() {
+  const d = new Date();
+  const seed = d.getDate() * 3 + Math.floor(d.getHours() / 4);
+  const result = [];
+  for (let i = 0; i < 6; i++) result.push(allSeedDebates[(seed + i) % allSeedDebates.length]);
+  return result;
+}
+const seedDebates = getSeedDebates();
+
+/* ── 실시간 인기 댓글 — 짧고 임팩트 있는 한줄 댓글 ── */
+const allHotComments = [
+  { author: '강남유령', text: 'ㄹㅇ 여기 안 가본 사람 없을듯ㅋㅋ', likes: 34, postTitle: '레이스 금요일 후기' },
+  { author: '부산파도', text: '아니 이 가격에 이 퀄이면 미친거 아님?', likes: 28, postTitle: '고구려나이트 후기' },
+  { author: '새벽택시', text: '택시비 아끼려고 걸어감 ← 나임 ㅋㅋㅋ', likes: 45, postTitle: '택시비 폭탄' },
+  { author: '클럽중독', text: '한번 가면 매주 가게됨 중독주의 ㄹㅇ', likes: 22, postTitle: '클럽 추천' },
+  { author: '혼놀러', text: '혼자가도 재밌음 진심 걱정 ㄴㄴ', likes: 51, postTitle: '혼자 가면 괜찮을까' },
+  { author: '인생한방', text: '여기서 여친 만남 ㅋㅋ 아직도 사귐', likes: 67, postTitle: '나이트 만남 후기' },
+  { author: '소주천잔', text: '양주 3병 까고 필름 끊겼는데 카드값 보고 기절', likes: 39, postTitle: '양주 주의사항' },
+  { author: '퇴근전사', text: '퇴근 후 여기 오는 게 인생낙인듯', likes: 31, postTitle: '금요일 추천' },
+  { author: '대전사람', text: '대전에도 이런데가 있었음?? 진짜 몰랐네', likes: 18, postTitle: '대전 나이트' },
+  { author: '춤초보', text: '지르박 배우는 중인데 나이트 가도 됨??ㅋㅋ', likes: 24, postTitle: '나이트 초보' },
+  { author: '일산시민', text: '일산 라붐 진짜 리뉴얼 잘했더라 인정', likes: 33, postTitle: '일산 나이트' },
+  { author: '감성충만', text: '새벽 2시 나이트 나오면서 듣는 발라드 ㅠㅠ', likes: 42, postTitle: '새벽 감성' },
+  { author: '가성비킹', text: '이 가격에 여기 안가면 손해임 ㄹㅇ', likes: 29, postTitle: '가성비 추천' },
+  { author: '호빠퀸', text: '여기 선수 진짜 잘생김 추천 박고감', likes: 37, postTitle: '호빠 후기' },
+  { author: '주말전사', text: '평일은 참고 주말에 폭발하는 타입 나만 그럼?', likes: 44, postTitle: '주말 계획' },
+];
+function getHotComments() {
+  const d = new Date();
+  const seed = d.getDate() * 7 + Math.floor(d.getHours() / 2);
+  const result = [];
+  for (let i = 0; i < 5; i++) result.push(allHotComments[(seed + i) % allHotComments.length]);
+  return result;
+}
+
+/* ── 오늘의 TMI / 꿀정보 — 스크롤 보상 ── */
+const allTMIs = [
+  { emoji: '🍾', text: '양주 한 병 원가는 마트 가격의 약 1/3이라는 거 알고 있었음?' },
+  { emoji: '💃', text: '나이트에서 가장 부킹 잘 되는 시간대는 밤 10시~11시 사이래' },
+  { emoji: '🎵', text: '클럽 사운드 시스템 가격이 웬만한 차 한 대 값이라는 사실' },
+  { emoji: '🥂', text: '호빠 매출 1위 요일은 목요일이래 — 금요일 아님 ㅋ' },
+  { emoji: '📱', text: '나이트 가서 연락처 받을 확률, 혼자 간 사람이 더 높다는 통계' },
+  { emoji: '🌙', text: '전국 나이트 평균 영업시간은 오후 7시~새벽 2시' },
+  { emoji: '💰', text: '강남 클럽 평균 테이블 가격이 지방 클럽의 약 2.5배래' },
+  { emoji: '🎤', text: '나이트 라이브밴드 연주자들 평균 경력이 15년 이상이래' },
+  { emoji: '👔', text: '드레스코드 안 지키면 입장 거절당할 확률 약 40%' },
+  { emoji: '🚕', text: '금토 새벽 강남 택시 평균 대기시간 23분이래 ㄷㄷ' },
+  { emoji: '🎯', text: '요정 처음 간 사람의 87%가 "생각보다 좋았다"고 답했래' },
+  { emoji: '🍻', text: '한국인 평균 음주량 세계 1위 — 자랑은 아님ㅋ' },
+];
+function getTodayTMI() {
+  const d = new Date();
+  const idx = (d.getDate() * 3 + Math.floor(d.getHours() / 6)) % allTMIs.length;
+  return allTMIs[idx];
+}
+
+/* ── 업소 퀴즈 — "여기 어딜까?" 인터랙티브 ── */
+const venueQuizzes = [
+  { q: '이 업종의 전국 1위 지역은?', hint: '클럽', answer: '강남', options: ['강남', '홍대', '부산', '이태원'] },
+  { q: '나이트에서 가장 인기 있는 댄스는?', hint: '나이트', answer: '지르박', options: ['지르박', '왈츠', '탱고', '살사'] },
+  { q: '호빠가 가장 많은 지역은?', hint: '호빠', answer: '강남', options: ['강남', '홍대', '부산', '대구'] },
+  { q: '요정에서 주로 마시는 술은?', hint: '요정', answer: '양주', options: ['양주', '맥주', '소주', '와인'] },
+  { q: '클럽 입장 시 가장 중요한 것은?', hint: '클럽', answer: '드레스코드', options: ['드레스코드', '나이', '인원', '예약'] },
+  { q: '라운지와 바의 가장 큰 차이는?', hint: '라운지', answer: '좌석 구성', options: ['좌석 구성', '음악', '가격', '위치'] },
 ];
 
 /* ── "이거 나야" 공감 반응 — 클릭 중독 ── */
@@ -292,8 +425,8 @@ function InfiniteRecommendLoop({ venues, popularVenues }: { venues: Venue[]; pop
             {/* 커뮤니티 유도 — 홀수 배치마다 */}
             {bIdx % 3 === 1 && (
               <Link to="/community/free?write=true" className="mt-2 block rounded-xl border border-orange-100 bg-orange-50/50 p-3 active:bg-orange-50 transition text-center">
-                <p className="text-[13px] font-bold text-[#111]">💬 이 중에 가본 데 있어? 후기 남겨봐</p>
-                <p className="text-[10px] text-[#666] mt-0.5">첫 글 작성 시 +50P 적립</p>
+                <p className="text-[13px] font-bold text-[#111]">💬 이 중에 가본 데 있어? 후기 보러가기</p>
+                <p className="text-[10px] text-[#666] mt-0.5">솔직 후기 모음</p>
               </Link>
             )}
           </div>
@@ -329,6 +462,7 @@ function InfiniteRecommendLoop({ venues, popularVenues }: { venues: Venue[]; pop
 export default function HomePage() {
   useDocumentMeta('놀쿨 — 오늘 밤 어디 갈지, 여기서 정해진다', '클럽·나이트·룸·요정·호빠 전국 120곳 실시간 비교. 솔직 후기, 조각모임, 벙개까지.');
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const openVenues = useMemo(() => localVenues.filter(v => v.status !== 'closed_or_unclear'), []);
   const popularVenues = useMemo(() => getPopularVenues(20), []);
@@ -536,6 +670,14 @@ export default function HomePage() {
 
   // === Fortune ===
   const [fortuneRevealed, setFortuneRevealed] = useState(false);
+
+  // === Hot Comments ===
+  const hotComments = useMemo(() => getHotComments(), []);
+  const todayTMI = useMemo(() => getTodayTMI(), []);
+
+  // === Venue Quiz (인터랙티브 퀴즈) ===
+  const [venueQuizIdx] = useState(() => new Date().getDate() % venueQuizzes.length);
+  const [venueQuizAnswer, setVenueQuizAnswer] = useState<string | null>(null);
 
   // === Favorites (하이브리드: localStorage + Supabase) ===
   const { favorites, toggleFavorite } = useFavoritesHook();
@@ -774,9 +916,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ 한마디 남기기 — 커뮤니티 글쓰기 유도 ═══ */}
+      {/* ═══ 한마디 남기기 — 회원/비회원 분기 ═══ */}
       <section className="px-4 py-2 max-w-3xl mx-auto">
-        <Link to="/community/free?write=true" className="block rounded-2xl border border-purple-100 bg-gradient-to-r from-[#F5F3FF] to-white p-4 active:bg-purple-50 transition">
+        <Link to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="block rounded-2xl border border-purple-100 bg-gradient-to-r from-[#F5F3FF] to-white p-4 active:bg-purple-50 transition">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#8B5CF6]/10">
               <span className="text-lg">✏️</span>
@@ -861,7 +1003,7 @@ export default function HomePage() {
             <span className="rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-bold text-white animate-pulse">LIVE</span>
           </div>
           <div className="flex items-center gap-2">
-            <Link to="/community/free?write=true" className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white" style={{ minHeight: 28 }}>글쓰기</Link>
+            <Link to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white" style={{ minHeight: 28 }}>글쓰기</Link>
             <Link to="/community" className="text-xs text-[#8B5CF6] font-medium">더보기 →</Link>
           </div>
         </div>
@@ -927,6 +1069,26 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ═══ 5.3 실시간 인기 댓글 — 짧은 한줄로 공감 유발 ═══ */}
+      <section className="px-4 py-2 max-w-3xl mx-auto">
+        <div className="flex items-center gap-2 mb-2">
+          <h2 className="text-base font-bold text-[#111]">지금 뜨는 댓글</h2>
+          <span className="text-[10px] text-[#666]">실시간</span>
+        </div>
+        <div className="space-y-1.5">
+          {hotComments.map((c, i) => (
+            <Link key={i} to="/community" className="flex items-start gap-2.5 rounded-xl border border-gray-100 bg-white px-3 py-2.5 active:bg-gray-50 transition">
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#EC4899] text-[10px] font-bold text-white">{c.author.charAt(0)}</div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[13px] text-[#111] leading-snug">{c.text}</p>
+                <p className="text-[10px] text-[#999] mt-0.5">{c.author} · {c.postTitle}</p>
+              </div>
+              <span className="shrink-0 text-[11px] text-[#8B5CF6] font-bold">♥ {c.likes}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* ═══ 5.5 뜨거운 토론 — 논쟁 유발 → 댓글 참여 유도 ═══ */}
       <section className="px-4 py-2 max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-2">
@@ -951,6 +1113,22 @@ export default function HomePage() {
               </div>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* ═══ 5.8 오늘의 TMI — 스크롤 보상 ═══ */}
+      <section className="px-4 py-2 max-w-3xl mx-auto">
+        <div className="rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 p-4">
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="text-lg">{todayTMI.emoji}</span>
+            <p className="text-xs font-bold text-amber-700">오늘의 TMI</p>
+          </div>
+          <p className="text-[14px] font-medium text-[#333] leading-relaxed">{todayTMI.text}</p>
+          <div className="flex items-center gap-2 mt-2">
+            <button className="rounded-full bg-amber-100 px-3 py-1 text-[11px] font-bold text-amber-700 active:bg-amber-200 transition">ㅋㅋ 몰랐음</button>
+            <button className="rounded-full bg-white border border-amber-200 px-3 py-1 text-[11px] font-medium text-[#666] active:bg-gray-50 transition">알고 있었음</button>
+            <Link to="/community/free" className="ml-auto text-[11px] text-[#8B5CF6] font-medium">TMI 더보기 →</Link>
+          </div>
         </div>
       </section>
 
@@ -1025,7 +1203,7 @@ export default function HomePage() {
             <span className="rounded-full bg-orange-600 px-1.5 py-0.5 text-[9px] font-bold text-white">모집중</span>
           </div>
           <div className="flex items-center gap-2">
-            <Link to="/community/jogak?write=true" className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white" style={{ minHeight: 28 }}>모임만들기</Link>
+            <Link to={user ? '/community/jogak?write=true' : '/login?redirect=/community/jogak?write=true'} className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white" style={{ minHeight: 28 }}>모임만들기</Link>
             <Link to="/community/jogak" className="text-xs text-[#8B5CF6] font-medium">전체 →</Link>
           </div>
         </div>
@@ -1059,6 +1237,42 @@ export default function HomePage() {
           })}
         </div>
         <p className="text-center text-[11px] text-[#666] mt-2">혼자 가기 심심하면 여기서 크루를 만들어봐</p>
+      </section>
+
+      {/* ═══ 7.5 업소 퀴즈 — 인터랙티브 참여 ═══ */}
+      <section className="px-4 py-2 max-w-3xl mx-auto">
+        <div className="rounded-2xl border border-[#8B5CF6]/20 bg-gradient-to-br from-[#F5F3FF] to-white p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-lg">🧠</span>
+            <p className="text-sm font-bold text-[#111]">놀쿨 퀴즈</p>
+            <span className="rounded-full bg-[#8B5CF6]/10 px-2 py-0.5 text-[9px] font-bold text-[#8B5CF6]">오늘의 문제</span>
+          </div>
+          <p className="text-[15px] font-bold text-[#111] mb-3">{venueQuizzes[venueQuizIdx].q}</p>
+          <div className="grid grid-cols-2 gap-2">
+            {venueQuizzes[venueQuizIdx].options.map(opt => {
+              const isCorrect = opt === venueQuizzes[venueQuizIdx].answer;
+              const isSelected = venueQuizAnswer === opt;
+              const showResult = venueQuizAnswer !== null;
+              return (
+                <button key={opt} onClick={() => !venueQuizAnswer && setVenueQuizAnswer(opt)}
+                  disabled={!!venueQuizAnswer}
+                  className={`rounded-xl border px-3 py-2.5 text-sm font-medium transition-all ${
+                    showResult && isCorrect ? 'border-green-400 bg-green-50 text-green-700 font-bold' :
+                    showResult && isSelected && !isCorrect ? 'border-red-300 bg-red-50 text-red-600' :
+                    showResult ? 'border-gray-200 bg-gray-50 text-gray-400' :
+                    'border-gray-200 bg-white text-[#111] active:border-[#8B5CF6] active:scale-[0.98]'
+                  }`} style={{ minHeight: 44 }}>
+                  {opt} {showResult && isCorrect && '✓'}
+                </button>
+              );
+            })}
+          </div>
+          {venueQuizAnswer && (
+            <p className="text-[12px] text-center mt-2 text-[#666]">
+              {venueQuizAnswer === venueQuizzes[venueQuizIdx].answer ? '정답! 역시 놀쿨 고수 ㅋ' : `아쉽~ 정답은 "${venueQuizzes[venueQuizIdx].answer}" 이었어`}
+            </p>
+          )}
+        </div>
       </section>
 
       {/* ═══ 8. 오늘 밤 운세 — 터치 인터랙션 (스크롤 보상) ═══ */}
@@ -1402,7 +1616,7 @@ export default function HomePage() {
               // 28번째 — 글쓰기 강력 유도
               if (idx + 1 === 28) {
                 cards.push(
-                  <Link key={`write-cta-${idx}`} to="/community/free?write=true" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] p-4 active:scale-[0.98] transition text-center">
+                  <Link key={`write-cta-${idx}`} to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] p-4 active:scale-[0.98] transition text-center">
                     <p className="text-base font-bold text-white">여기까지 봤으면 한마디 남기고 가</p>
                     <p className="text-[11px] text-white/70 mt-0.5">첫 글 +50P · 댓글 +10P · 좋아요 +5P</p>
                   </Link>
