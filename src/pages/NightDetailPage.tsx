@@ -79,6 +79,8 @@ export default function NightDetailPage() {
 
   return (
     <>
+      {/* 대전세븐나이트: 고정 전화바 높이만큼 하단 여백 추가 */}
+      {isDaejeonSeven && <style>{`body { padding-bottom: 80px !important; }`}</style>}
       <VenueDetailPage
         venue={venue}
         categoryLabel="나이트"
