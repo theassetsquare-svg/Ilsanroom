@@ -70,13 +70,13 @@ export default function ComparePage() {
             ⚖️ 두 곳 놓고 따져보면<br />
             <span style={{ color: '#60A5FA' }}>후회가 없다</span>
           </h1>
-          <p className="text-base text-white/60 mb-6" style={{ lineHeight: '1.7' }}>
+          <p className="text-base mb-6" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.6)' }}>
             2~3곳 선택하면 양주·룸·분위기 항목별 비교표가 나온다.
           </p>
 
           {/* 인기 비교 조합 */}
           <div className="mt-6">
-            <p className="text-xs text-white/40 mb-3">🔥 가장 많이 비교된 조합</p>
+            <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.4)' }}>🔥 가장 많이 비교된 조합</p>
             <div className="flex flex-wrap justify-center gap-2">
               {popularComparisons.map((pc) => (
                 <button
@@ -88,8 +88,8 @@ export default function ComparePage() {
                       .map(v => v.id);
                     if (ids.length >= 2) setSelected(ids);
                   }}
-                  className="rounded-full bg-white/10 backdrop-blur-sm px-4 py-2 text-xs text-white/80 border border-white/10 hover:bg-white/20 transition"
-                  style={{ minHeight: 36 }}
+                  className="rounded-full bg-white/10 backdrop-blur-sm px-4 py-2 text-xs border border-white/10 hover:bg-white/20 transition"
+                  style={{ minHeight: 36, color: 'rgba(255,255,255,0.8)' }}
                 >
                   {pc.label}
                 </button>

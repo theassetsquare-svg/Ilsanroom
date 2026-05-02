@@ -64,7 +64,7 @@ export default function EventsPage() {
             📅 놓치면 후회할<br />
             <span style={{ color: '#EC4899' }}>이번 달 파티·행사</span>
           </h1>
-          <p className="text-base text-white/60 mb-6" style={{ lineHeight: '1.7' }}>
+          <p className="text-base mb-6" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.6)' }}>
             DJ 게스트, 기념행사, 시즌 이벤트. 달력에 표시해두고 가라.
           </p>
 
@@ -74,13 +74,13 @@ export default function EventsPage() {
               {upcomingEvents.map(e => (
                 <div key={e.id} className="rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 px-5 py-3 flex items-center gap-3">
                   <div className="text-center">
-                    <p className="text-2xl font-black text-white leading-none">{e.date.split('-')[2]}</p>
-                    <p className="text-[10px] text-white/50">{e.date.split('-')[1]}월</p>
+                    <p className="text-2xl font-black leading-none" style={{ color: '#FFFFFF' }}>{e.date.split('-')[2]}</p>
+                    <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.5)' }}>{e.date.split('-')[1]}월</p>
                   </div>
                   <div className="h-8 w-px bg-white/20" />
                   <div>
-                    <p className="text-sm font-bold text-white">{e.title}</p>
-                    <p className="text-xs text-white/50">{e.venue} · {e.time}</p>
+                    <p className="text-sm font-bold" style={{ color: '#FFFFFF' }}>{e.title}</p>
+                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>{e.venue} · {e.time}</p>
                   </div>
                 </div>
               ))}

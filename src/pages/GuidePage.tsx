@@ -92,7 +92,7 @@ export default function GuidePage() {
             처음이라 긴장된다고?<br />
             <span style={{ color: '#A78BFA' }}>이거 읽고 가면 프로다</span>
           </h1>
-          <p className="text-base text-white/60 mb-6 max-w-lg mx-auto" style={{ lineHeight: '1.7' }}>
+          <p className="text-base mb-6 max-w-lg mx-auto" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.6)' }}>
             드레스코드, 예산, 혼자 가도 되는지까지.<br />
             업종별 핵심만 2분이면 끝난다.
           </p>
@@ -106,15 +106,15 @@ export default function GuidePage() {
                   setOpenGuide(g.category);
                   document.getElementById(`guide-${g.category}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }}
-                className="flex items-center gap-1.5 rounded-full bg-white/10 backdrop-blur-sm px-4 py-2 text-sm text-white/90 transition hover:bg-white/20 border border-white/5"
-                style={{ minHeight: 44 }}
+                className="flex items-center gap-1.5 rounded-full bg-white/10 backdrop-blur-sm px-4 py-2 text-sm transition hover:bg-white/20 border border-white/5"
+                style={{ minHeight: 44, color: 'rgba(255,255,255,0.9)' }}
               >
                 <span>{g.icon}</span> {g.category}
               </button>
             ))}
           </div>
 
-          <p className="mt-8 text-xs text-white/40">총 <strong className="text-[#8B5CF6]">8,420</strong>명이 이 가이드로 첫 방문 성공</p>
+          <p className="mt-8 text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>총 <strong style={{ color: '#8B5CF6' }}>8,420</strong>명이 이 가이드로 첫 방문 성공</p>
         </div>
       </div>
 

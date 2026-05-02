@@ -25,21 +25,21 @@ export default function MagazinePage() {
               </span>
               <PageLiveCounter pageName="매거진 읽는 중" baseCount={37} className="text-white/80 [&_strong]:text-white" />
             </div>
-            <span className="text-xs text-white/40">총 {articles.length}편</span>
+            <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>총 {articles.length}편</span>
           </div>
 
           {/* 피처드 아티클 — 대형 카드 */}
           <Link to={`/magazine/${featured.id}`} className="block group">
             <div className="rounded-2xl bg-gradient-to-br from-[#8B5CF6]/20 via-white/5 to-[#EC4899]/10 border border-white/10 p-8 sm:p-10 transition-all hover:border-white/20 hover:shadow-2xl hover:shadow-purple-900/20">
               <div className="flex items-center gap-3 mb-4">
-                <span className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white">{featured.tag}</span>
-                <span className="text-xs text-white/40">{featured.date}</span>
-                <span className="text-xs text-amber-400 font-bold ml-auto">FEATURED</span>
+                <span className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold" style={{ color: '#FFFFFF' }}>{featured.tag}</span>
+                <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{featured.date}</span>
+                <span className="text-xs font-bold ml-auto" style={{ color: '#FBBF24' }}>FEATURED</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight mb-4 group-hover:text-[#C4B5FD] transition-colors">{featured.title}</h2>
-              <p className="text-base text-white/60 leading-relaxed line-clamp-3" style={{ lineHeight: '1.8' }}>{featured.excerpt}</p>
+              <h2 className="text-2xl sm:text-3xl font-black leading-tight mb-4 group-hover:text-[#C4B5FD] transition-colors" style={{ color: '#FFFFFF' }}>{featured.title}</h2>
+              <p className="text-base leading-relaxed line-clamp-3" style={{ lineHeight: '1.8', color: 'rgba(255,255,255,0.6)' }}>{featured.excerpt}</p>
               <div className="mt-6 flex items-center gap-2">
-                <span className="text-sm font-bold text-[#8B5CF6] group-hover:text-[#C4B5FD] transition-colors">읽으러 가기 →</span>
+                <span className="text-sm font-bold group-hover:text-[#C4B5FD] transition-colors" style={{ color: '#8B5CF6' }}>읽으러 가기 →</span>
               </div>
             </div>
           </Link>

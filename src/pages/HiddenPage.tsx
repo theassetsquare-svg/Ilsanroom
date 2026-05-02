@@ -73,13 +73,13 @@ export default function HiddenPage() {
             단골만 알던 곳,<br />
             <span style={{ color: '#C4B5FD' }}>여기서 처음 공개한다</span>
           </h1>
-          <p className="text-base text-white/50 mb-4" style={{ lineHeight: '1.7' }}>
+          <p className="text-base mb-4" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.5)' }}>
             매주 1곳씩 숨겨진 명소를 발굴한다.<br />
             아는 사람만 가던 곳을 처음 꺼냈다.
           </p>
-          <div className="inline-flex items-center gap-2 rounded-xl bg-amber-500/15 border border-amber-500/20 px-4 py-2">
+          <div className="inline-flex items-center gap-2 rounded-xl px-4 py-2" style={{ background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.2)' }}>
             <span className="text-sm">🤫</span>
-            <span className="text-xs text-amber-300 font-medium">현재 {hiddenGems.length}곳 공개 중 · 다음 공개까지 D-3</span>
+            <span className="text-xs font-medium" style={{ color: '#FCD34D' }}>현재 {hiddenGems.length}곳 공개 중 · 다음 공개까지 D-3</span>
           </div>
         </div>
       </div>

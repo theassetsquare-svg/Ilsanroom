@@ -20,10 +20,10 @@ export default function VSPage() {
             <span className="text-5xl">⚔️</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
-            <span className="text-red-400">A</span> vs <span className="text-blue-400">B</span>
+            <span style={{ color: '#F87171' }}>A</span> vs <span style={{ color: '#60A5FA' }}>B</span>
             <br />어디가 더 낫냐고?
           </h1>
-          <p className="text-base text-white/60 mb-4" style={{ lineHeight: '1.7' }}>
+          <p className="text-base mb-4" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.6)' }}>
             인기 업소끼리 실시간 대결. 한 표 던지고 결과 확인해봐.
           </p>
           <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 border border-white/10">

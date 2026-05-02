@@ -105,7 +105,7 @@ export default function TestimonialsPage() {
             현직 사장님들이<br />
             <span style={{ color: '#F59E0B' }}>직접 말한다</span>
           </h1>
-          <p className="text-base text-white/60 mb-6" style={{ lineHeight: '1.7' }}>
+          <p className="text-base mb-6" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.6)' }}>
             "반신반의했는데 전화가 쏟아졌다."<br />
             입점 업주 생생 인터뷰.
           </p>
@@ -113,18 +113,18 @@ export default function TestimonialsPage() {
           {/* 핵심 수치 */}
           <div className="flex justify-center gap-6">
             <div className="text-center">
-              <p className="text-3xl font-black text-white">{totalTestimonials}</p>
-              <p className="text-xs text-white/40">업주 후기</p>
+              <p className="text-3xl font-black" style={{ color: '#FFFFFF' }}>{totalTestimonials}</p>
+              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>업주 후기</p>
             </div>
             <div className="h-12 w-px bg-white/20" />
             <div className="text-center">
-              <p className="text-3xl font-black text-amber-400">★ {avgRating}</p>
-              <p className="text-xs text-white/40">평균 만족도</p>
+              <p className="text-3xl font-black" style={{ color: '#FBBF24' }}>★ {avgRating}</p>
+              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>평균 만족도</p>
             </div>
             <div className="h-12 w-px bg-white/20" />
             <div className="text-center">
-              <p className="text-3xl font-black text-emerald-400">100%</p>
-              <p className="text-xs text-white/40">재등록률</p>
+              <p className="text-3xl font-black" style={{ color: '#34D399' }}>100%</p>
+              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>재등록률</p>
             </div>
           </div>
         </div>

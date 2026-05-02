@@ -123,15 +123,15 @@ export default function RankingPage() {
           <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
             🏆 인기 랭킹 <span style={{ color: '#F59E0B' }}>TOP 20</span>
           </h1>
-          <p className="text-base text-white/60 mb-6" style={{ lineHeight: '1.7' }}>
+          <p className="text-base mb-6" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.6)' }}>
             전국 클럽·나이트·라운지·룸·요정·호빠<br />
             지금 사람들이 가장 많이 보는 곳
           </p>
 
           {/* 너의 1위는? 인터랙티브 */}
-          <div className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/20 px-5 py-2.5">
+          <div className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5" style={{ background: 'linear-gradient(to right, rgba(245,158,11,0.2), rgba(249,115,22,0.2))', border: '1px solid rgba(245,158,11,0.2)' }}>
             <span className="text-sm">🤔</span>
-            <span className="text-sm text-amber-300 font-medium">너의 1위는 어디야? 아래에서 확인하고 투표해봐</span>
+            <span className="text-sm font-medium" style={{ color: '#FCD34D' }}>너의 1위는 어디야? 아래에서 확인하고 투표해봐</span>
           </div>
         </div>
       </div>

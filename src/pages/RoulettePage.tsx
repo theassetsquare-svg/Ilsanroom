@@ -22,7 +22,7 @@ export default function RoulettePage() {
             고민 끝.<br />
             <span style={{ color: '#F59E0B' }}>룰렛이 골라준다</span>
           </h1>
-          <p className="text-base text-white/60 mb-6" style={{ lineHeight: '1.7' }}>
+          <p className="text-base mb-6" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.6)' }}>
             어디 갈지 못 정하겠다면?<br />
             탭 한 번이면 오늘 밤이 정해진다.
           </p>
