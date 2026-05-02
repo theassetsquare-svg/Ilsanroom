@@ -73,14 +73,14 @@ const testimonials = [
   },
 ];
 
-function getPlanColor(plan: string): string {
-  const colors: Record<string, string> = {
-    "프리미엄": "bg-violet-100 text-violet-700 border-violet-200",
-    "프로": "bg-blue-100 text-blue-700 border-blue-200",
-    "엔터프라이즈": "bg-amber-100 text-amber-700 border-amber-200",
-    "베이직": "bg-gray-100 text-gray-600 border-gray-200",
+function getPlanStyle(plan: string): React.CSSProperties {
+  const styles: Record<string, React.CSSProperties> = {
+    "프리미엄": { backgroundColor: '#EDE9FE', color: '#6D28D9', borderColor: '#DDD6FE' },
+    "프로": { backgroundColor: '#DBEAFE', color: '#1D4ED8', borderColor: '#BFDBFE' },
+    "엔터프라이즈": { backgroundColor: '#FEF3C7', color: '#B45309', borderColor: '#FDE68A' },
+    "베이직": { backgroundColor: '#F3F4F6', color: '#4B5563', borderColor: '#E5E7EB' },
   };
-  return colors[plan] || "bg-gray-100 text-gray-600 border-gray-200";
+  return styles[plan] || { backgroundColor: '#F3F4F6', color: '#4B5563', borderColor: '#E5E7EB' };
 }
 
 export default function TestimonialsPage() {
@@ -138,7 +138,7 @@ export default function TestimonialsPage() {
               <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-[#8B5CF6]/20">
                 {/* 하이라이트 배지 */}
                 <div className="mb-4 rounded-lg bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100 px-3 py-2">
-                  <p className="text-xs font-bold text-amber-700">핵심: {t.highlight}</p>
+                  <p className="text-xs font-bold" style={{ color: '#B45309' }}>핵심: {t.highlight}</p>
                 </div>
 
                 <div className="mb-4 flex items-start gap-4">
@@ -148,7 +148,7 @@ export default function TestimonialsPage() {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-[#111]">{t.name}</span>
-                      <span className={`rounded-full border px-2 py-0.5 text-xs font-medium ${getPlanColor(t.plan)}`}>
+                      <span className="rounded-full border px-2 py-0.5 text-xs font-medium" style={getPlanStyle(t.plan)}>
                         {t.plan}
                       </span>
                     </div>
@@ -161,7 +161,7 @@ export default function TestimonialsPage() {
                 {/* 별점 */}
                 <div className="mb-3 flex items-center gap-1">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <span key={i} className={`text-sm ${i < t.rating ? 'text-amber-400' : 'text-gray-200'}`}>★</span>
+                    <span key={i} className="text-sm" style={{ color: i < t.rating ? '#FBBF24' : '#E5E7EB' }}>★</span>
                   ))}
                 </div>
 

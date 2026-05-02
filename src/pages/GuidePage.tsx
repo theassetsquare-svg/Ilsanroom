@@ -138,7 +138,7 @@ export default function GuidePage() {
                   </h2>
                   <div className="flex items-center gap-3">
                     <GuideReadCount category={g.category} />
-                    <span className={`text-xl text-gray-400 transition-transform ${openGuide === g.category ? 'rotate-180' : ''}`}>▾</span>
+                    <span className={`text-xl transition-transform ${openGuide === g.category ? 'rotate-180' : ''}`} style={{ color: '#9CA3AF' }}>▾</span>
                   </div>
                 </button>
 
@@ -154,15 +154,15 @@ export default function GuidePage() {
                         <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>{g.budget}</p>
                       </div>
                       <div className="rounded-xl bg-gray-50 p-4 border border-gray-100">
-                        <h3 className="text-xs font-bold text-emerald-600 mb-2 flex items-center gap-1">🙋 혼자 가도 되나?</h3>
+                        <h3 className="text-xs font-bold mb-2 flex items-center gap-1" style={{ color: '#059669' }}>🙋 혼자 가도 되나?</h3>
                         <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>{g.alone}</p>
                       </div>
                       <div className="rounded-xl bg-gray-50 p-4 border border-gray-100">
-                        <h3 className="text-xs font-bold text-amber-600 mb-2 flex items-center gap-1">🤝 매너/에티켓</h3>
+                        <h3 className="text-xs font-bold mb-2 flex items-center gap-1" style={{ color: '#D97706' }}>🤝 매너/에티켓</h3>
                         <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>{g.manner}</p>
                       </div>
                       <div className="rounded-xl bg-gray-50 p-4 border border-gray-100">
-                        <h3 className="text-xs font-bold text-blue-600 mb-2 flex items-center gap-1">🕐 언제 가면 좋지?</h3>
+                        <h3 className="text-xs font-bold mb-2 flex items-center gap-1" style={{ color: '#2563EB' }}>🕐 언제 가면 좋지?</h3>
                         <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>{g.bestTime}</p>
                       </div>
                     </div>
@@ -190,7 +190,7 @@ export default function GuidePage() {
 
         {/* ═══ 실시간 활동 피드 ═══ */}
         <div className="mt-8 rounded-2xl border border-gray-100 bg-gray-50 p-4">
-          <p className="text-xs font-bold text-gray-500 mb-3">실시간 커뮤니티 활동</p>
+          <p className="text-xs font-bold mb-3" style={{ color: '#6B7280' }}>실시간 커뮤니티 활동</p>
           <LiveActivityFeed maxItems={4} interval={8000} />
         </div>
 

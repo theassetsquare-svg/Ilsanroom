@@ -114,7 +114,7 @@ export default function HiddenPage() {
                     <span className="ml-auto text-xl">{gem.emoji}</span>
                   </div>
                   <h2 className="text-xl font-bold text-[#111] mb-2">{gem.name}</h2>
-                  <p className="text-sm font-medium text-amber-600 mb-3">{gem.hook}</p>
+                  <p className="text-sm font-medium mb-3" style={{ color: '#D97706' }}>{gem.hook}</p>
                   <p className="text-sm text-[#555] leading-relaxed" style={{ lineHeight: '1.7' }}>{gem.reason}</p>
                   <p className="mt-4 text-sm font-bold text-[#8B5CF6]">자세히 보기 →</p>
                 </Link>
