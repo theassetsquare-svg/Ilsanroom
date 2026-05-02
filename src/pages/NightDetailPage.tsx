@@ -84,14 +84,14 @@ function DaejeonSevenHeaderSection() {
   );
 }
 
-/* 대전세븐나이트 고정 하단 전화 바 — 모바일 최적화 */
+/* 대전세븐나이트 고정 하단 전화 바 — MobileBottomNav(56px) 바로 위에 위치 */
 function DaejeonSevenFixedBar() {
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 safe-area-bottom">
+    <div className="fixed bottom-[56px] left-0 right-0 z-40 md:bottom-0">
       <a
         href="tel:01032421504"
-        className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#1E3A5F] to-[#0F2744] px-6 py-5 shadow-[0_-4px_20px_rgba(0,0,0,0.4)]"
-        style={{ minHeight: '60px', paddingBottom: 'max(20px, env(safe-area-inset-bottom))' }}
+        className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#1E3A5F] to-[#0F2744] px-6 py-4 shadow-[0_-4px_20px_rgba(0,0,0,0.4)]"
+        style={{ minHeight: '52px' }}
       >
         <span className="text-base font-bold text-[#FFD700] sm:text-lg">4인1조 w.t원숭이</span>
         <span className="text-xl font-black text-white tracking-wide sm:text-2xl">010-3242-1504</span>
@@ -113,7 +113,7 @@ export default function NightDetailPage() {
   return (
     <>
       {/* 대전세븐나이트: 고정 전화바 높이만큼 하단 여백 추가 */}
-      {isDaejeonSeven && <style>{`body { padding-bottom: 80px !important; }`}</style>}
+      {isDaejeonSeven && <style>{`body { padding-bottom: 120px !important; }`}</style>}
       <VenueDetailPage
         venue={venue}
         categoryLabel="나이트"

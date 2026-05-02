@@ -38,19 +38,19 @@
   <text x="600" y="280" text-anchor="middle" font-family="sans-serif" font-size="200" font-weight="900" fill="#FFD700" opacity="0.06">SEVEN</text>
 
   <!-- Main title -->
-  <text x="600" y="420" text-anchor="middle" font-family="sans-serif" font-size="110" font-weight="900" fill="url(#gold)" filter="url(#shadow)" letter-spacing="-0.02em">대전세븐나이트</text>
+  <text x="600" y="420" text-anchor="middle" font-family="sans-serif" font-size="110" font-weight="900" fill="#FFD700" letter-spacing="-0.02em">대전세븐나이트</text>
 
   <!-- Divider -->
   <line x1="350" y1="470" x2="850" y2="470" stroke="#FFD700" stroke-width="3" opacity="0.5"/>
 
   <!-- 4인1조 w.t원숭이 -->
   <rect x="340" y="520" width="520" height="80" rx="40" fill="rgba(255,215,0,0.15)" stroke="#FFD700" stroke-width="2"/>
-  <text x="600" y="573" text-anchor="middle" font-family="sans-serif" font-size="48" font-weight="800" fill="#FFD700" filter="url(#glow)">4인1조 w.t원숭이</text>
+  <text x="600" y="573" text-anchor="middle" font-family="sans-serif" font-size="48" font-weight="800" fill="#FFD700">4인1조 w.t원숭이</text>
 
   <!-- Phone number -->
   <rect x="280" y="660" width="640" height="100" rx="50" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
   <text x="560" y="725" text-anchor="middle" font-family="sans-serif" font-size="52" font-weight="900" fill="white" letter-spacing="0.05em">010-3242-1504</text>
-  <text x="340" y="725" text-anchor="middle" font-family="sans-serif" font-size="44">&#x1F4DE;</text>
+  <text x="340" y="725" text-anchor="middle" font-family="sans-serif" font-size="44" fill="white">&#x1F4DE;</text>
 
   <!-- Tagline -->
   <text x="600" y="840" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="600" fill="rgba(255,255,255,0.7)">둔산동 중심, 격이 다른 댄스홀</text>
