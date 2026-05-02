@@ -83,10 +83,10 @@ function getRankChange(slug: string, _idx: number, period: string): { icon: stri
   const hash = slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
   const seed = period === 'daily' ? hash + new Date().getDate() : period === 'weekly' ? hash + Math.floor(new Date().getDate() / 7) : hash;
   const mod = seed % 7;
-  if (mod < 2) return { icon: '▲', color: 'text-green-500', text: `${mod + 1}` };
-  if (mod < 4) return { icon: '▼', color: 'text-red-400', text: `${mod - 1}` };
-  if (mod === 4) return { icon: 'NEW', color: 'text-[#8B5CF6]', text: '' };
-  return { icon: '━', color: 'text-gray-400', text: '' };
+  if (mod < 2) return { icon: '▲', color: '#22C55E', text: `${mod + 1}` };
+  if (mod < 4) return { icon: '▼', color: '#F87171', text: `${mod - 1}` };
+  if (mod === 4) return { icon: 'NEW', color: '#8B5CF6', text: '' };
+  return { icon: '━', color: '#9CA3AF', text: '' };
 }
 
 /* ═══ 시즌 투표 시스템 ═══ */
@@ -604,7 +604,7 @@ export default function RankingPage() {
                 const cc = catColors[v.category] || '#8B5CF6';
                 return (
                   <div key={v.id} className="flex items-center gap-3">
-                    <span className={`w-6 text-center text-xs font-bold ${i < 3 ? 'text-[#8B5CF6]' : 'text-gray-400'}`}>{i + 1}</span>
+                    <span className="w-6 text-center text-xs font-bold" style={{ color: i < 3 ? '#8B5CF6' : '#9CA3AF' }}>{i + 1}</span>
                     <span className="w-20 sm:w-28 truncate text-xs font-medium" style={{ color: '#111' }}>{v.nameKo}</span>
                     <div className="flex-1 h-5 rounded-lg bg-gray-100 overflow-hidden">
                       <div className="h-full rounded-lg transition-all duration-700" style={{ width: `${pct}%`, backgroundColor: cc }} />
@@ -629,16 +629,16 @@ export default function RankingPage() {
               <Link target="_blank" rel="noopener noreferrer" key={v.id} to={getCategoryHref(v.category, v.slug, v.region)}
                 className="flex items-center gap-3 sm:gap-4 rounded-xl border bg-white px-4 py-3 transition hover:shadow-md hover:border-[#8B5CF6]/30"
                 style={{ borderColor: '#E5E7EB', minHeight: 64 }}>
-                <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-sm font-black ${
-                  i === 0 ? 'bg-yellow-100 text-yellow-600' : i === 1 ? 'bg-gray-100 text-gray-500' : i === 2 ? 'bg-amber-50 text-amber-500' : 'bg-gray-50 text-gray-400'
-                }`}>{i + 1}</span>
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-sm font-black" style={
+                  i === 0 ? { backgroundColor: '#FEF9C3', color: '#CA8A04' } : i === 1 ? { backgroundColor: '#F3F4F6', color: '#6B7280' } : i === 2 ? { backgroundColor: '#FFFBEB', color: '#F59E0B' } : { backgroundColor: '#F9FAFB', color: '#9CA3AF' }
+                }>{i + 1}</span>
                 <span className="h-8 w-8 shrink-0 rounded-lg flex items-center justify-center text-sm" style={{ backgroundColor: cc + '15' }}>
                   {categories.find(c => c.key === v.category)?.emoji || '🎵'}
                 </span>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <h3 className="truncate text-sm font-bold" style={{ color: '#111' }}>{v.nameKo}</h3>
-                    {v.isPremium && <span className="text-[10px] font-bold text-[#8B5CF6] bg-[#F3F0FF] px-1.5 py-0.5 rounded">AD</span>}
+                    {v.isPremium && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: '#8B5CF6', backgroundColor: '#F3F0FF' }}>AD</span>}
                   </div>
                   <p className="text-xs" style={{ color: '#999' }}>{v.regionKo} · {catLabel[v.category] || v.category}</p>
                 </div>
@@ -650,8 +650,8 @@ export default function RankingPage() {
                 </div>
                 <span className="sm:hidden text-xs font-bold" style={{ color: cc }}>{score.toFixed(1)}</span>
                 <div className="shrink-0 flex items-center gap-0.5">
-                  <span className={`text-xs font-bold ${ch.color}`}>{ch.icon}</span>
-                  {ch.text && <span className={`text-[10px] ${ch.color}`}>{ch.text}</span>}
+                  <span className="text-xs font-bold" style={{ color: ch.color }}>{ch.icon}</span>
+                  {ch.text && <span className="text-[10px]" style={{ color: ch.color }}>{ch.text}</span>}
                 </div>
               </Link>
             );
