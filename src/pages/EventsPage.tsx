@@ -62,7 +62,7 @@ export default function EventsPage() {
 
           <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
             📅 놓치면 후회할<br />
-            <span className="bg-gradient-to-r from-[#EC4899] to-[#8B5CF6] bg-clip-text text-transparent">이번 달 파티·행사</span>
+            <span style={{ color: '#EC4899' }}>이번 달 파티·행사</span>
           </h1>
           <p className="text-base text-white/60 mb-6" style={{ lineHeight: '1.7' }}>
             DJ 게스트, 기념행사, 시즌 이벤트. 달력에 표시해두고 가라.

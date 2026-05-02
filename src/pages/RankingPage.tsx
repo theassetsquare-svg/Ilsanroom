@@ -121,7 +121,7 @@ export default function RankingPage() {
             <PageLiveCounter pageName="랭킹 보는 중" baseCount={63} className="text-white/80 [&_strong]:text-white" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
-            🏆 인기 랭킹 <span className="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">TOP 20</span>
+            🏆 인기 랭킹 <span style={{ color: '#F59E0B' }}>TOP 20</span>
           </h1>
           <p className="text-base text-white/60 mb-6" style={{ lineHeight: '1.7' }}>
             전국 클럽·나이트·라운지·룸·요정·호빠<br />

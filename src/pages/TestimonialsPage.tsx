@@ -103,7 +103,7 @@ export default function TestimonialsPage() {
 
           <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
             현직 사장님들이<br />
-            <span className="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">직접 말한다</span>
+            <span style={{ color: '#F59E0B' }}>직접 말한다</span>
           </h1>
           <p className="text-base text-white/60 mb-6" style={{ lineHeight: '1.7' }}>
             "반신반의했는데 전화가 쏟아졌다."<br />

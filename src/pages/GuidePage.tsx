@@ -90,7 +90,7 @@ export default function GuidePage() {
 
           <h1 className="text-3xl sm:text-4xl font-black text-white mb-3 leading-tight">
             처음이라 긴장된다고?<br />
-            <span className="bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] bg-clip-text text-transparent">이거 읽고 가면 프로다</span>
+            <span style={{ color: '#A78BFA' }}>이거 읽고 가면 프로다</span>
           </h1>
           <p className="text-base text-white/60 mb-6 max-w-lg mx-auto" style={{ lineHeight: '1.7' }}>
             드레스코드, 예산, 혼자 가도 되는지까지.<br />

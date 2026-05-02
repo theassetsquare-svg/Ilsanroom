@@ -68,7 +68,7 @@ export default function ComparePage() {
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
             ⚖️ 두 곳 놓고 따져보면<br />
-            <span className="bg-gradient-to-r from-blue-400 to-red-400 bg-clip-text text-transparent">후회가 없다</span>
+            <span style={{ color: '#60A5FA' }}>후회가 없다</span>
           </h1>
           <p className="text-base text-white/60 mb-6" style={{ lineHeight: '1.7' }}>
             2~3곳 선택하면 양주·룸·분위기 항목별 비교표가 나온다.

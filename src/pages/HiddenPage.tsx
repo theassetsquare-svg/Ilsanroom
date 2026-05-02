@@ -71,7 +71,7 @@ export default function HiddenPage() {
           <div className="text-6xl mb-4">🔮</div>
           <h1 className="text-3xl sm:text-4xl font-black text-white mb-3 leading-tight">
             단골만 알던 곳,<br />
-            <span className="bg-gradient-to-r from-[#C4B5FD] to-[#F0ABFC] bg-clip-text text-transparent">여기서 처음 공개한다</span>
+            <span style={{ color: '#C4B5FD' }}>여기서 처음 공개한다</span>
           </h1>
           <p className="text-base text-white/50 mb-4" style={{ lineHeight: '1.7' }}>
             매주 1곳씩 숨겨진 명소를 발굴한다.<br />

@@ -20,7 +20,7 @@ export default function RoulettePage() {
           <div className="text-6xl mb-4 animate-bounce" style={{ animationDuration: '2s' }}>🎰</div>
           <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
             고민 끝.<br />
-            <span className="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">룰렛이 골라준다</span>
+            <span style={{ color: '#F59E0B' }}>룰렛이 골라준다</span>
           </h1>
           <p className="text-base text-white/60 mb-6" style={{ lineHeight: '1.7' }}>
             어디 갈지 못 정하겠다면?<br />
