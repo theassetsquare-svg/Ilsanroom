@@ -51,50 +51,69 @@ function DapsimnriCheonSaSection({ venue }: { venue: { staffPhone?: string } }) 
   );
 }
 
-/* 대전세븐나이트 본문 위 헤더 이미지 + 담당 원숭이 전화 섹션 */
+/* 대전세븐나이트 헤더 — 울산챔피언나이트(춘자) 스타일 참고
+   SVG <img> 대신 순수 HTML/CSS로 렌더링 (모바일 호환 100%) */
 function DaejeonSevenHeaderSection() {
   return (
     <div className="flex flex-col items-center gap-6">
-      {/* 헤더 이미지 — 울산챔피언나이트 스타일 참고 */}
-      <div className="w-full max-w-[480px] aspect-square rounded-2xl overflow-hidden shadow-xl border-2 border-[#FFD700]/30">
-        <img
-          src="/og/daejeonsevennight.svg"
-          alt="대전세븐나이트 담당 원숭이"
-          width={480}
-          height={480}
-          className="w-full h-full object-cover"
-          loading="eager"
-        />
+      {/* 헤더 카드 — 울산챔피언 "춘자" 스타일 */}
+      <div
+        className="w-full max-w-[480px] rounded-2xl overflow-hidden shadow-xl"
+        style={{
+          background: 'linear-gradient(135deg, #0F2744 0%, #1E3A5F 50%, #0a1628 100%)',
+          border: '2px solid rgba(255, 215, 0, 0.3)',
+        }}
+      >
+        <div className="flex flex-col items-center justify-center px-6 py-12 text-center" style={{ minHeight: 320 }}>
+          {/* 가게명 */}
+          <p style={{ color: '#FFFFFF', fontSize: 28, fontWeight: 900, letterSpacing: '-0.02em', marginBottom: 12 }}>
+            대전세븐나이트
+          </p>
+          {/* 원숭이 닉네임 — 크게 */}
+          <p style={{ color: '#FFD700', fontSize: 80, fontWeight: 900, letterSpacing: '0.02em', lineHeight: 1.1, marginBottom: 16 }}>
+            원숭이
+          </p>
+          {/* 부제 */}
+          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 16, fontWeight: 600 }}>
+            둔산동 중심, 격이 다른 댄스홀
+          </p>
+        </div>
       </div>
 
-      {/* 담당 원숭이 전화번호 CTA */}
+      {/* 전화번호 CTA */}
       <div className="w-full max-w-[480px] text-center">
         <a
           href="tel:01032421504"
-          className="flex flex-col items-center gap-3 rounded-2xl bg-gradient-to-r from-[#1E3A5F] to-[#0F2744] px-8 py-6 shadow-lg transition hover:shadow-xl active:scale-[0.98]"
+          className="flex flex-col items-center gap-3 rounded-2xl px-8 py-6 shadow-lg transition hover:shadow-xl active:scale-[0.98]"
+          style={{ background: 'linear-gradient(to right, #1E3A5F, #0F2744)' }}
         >
-          <span className="text-lg font-bold text-[#FFD700]">대전세븐나이트 담당 원숭이</span>
-          <span className="text-3xl font-black text-white tracking-wide">
-            📞 010-3242-1504
+          <span style={{ color: '#FFD700', fontSize: 18, fontWeight: 700 }}>대전세븐나이트 담당 원숭이</span>
+          <span style={{ color: '#FFFFFF', fontSize: 28, fontWeight: 900, letterSpacing: '0.05em' }}>
+            010-3242-1504
           </span>
-          <span className="text-sm text-white/70">터치하면 바로 전화 연결</span>
+          <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>터치하면 바로 전화 연결</span>
         </a>
       </div>
     </div>
   );
 }
 
-/* 대전세븐나이트 고정 하단 전화 바 — MobileBottomNav(56px) 바로 위에 위치 */
+/* 대전세븐나이트 고정 하단 전화 바 — MobileBottomNav(56px) 바로 위에 위치
+   Tailwind 임의값 대신 inline style로 색상 100% 보장 */
 function DaejeonSevenFixedBar() {
   return (
-    <div className="fixed bottom-[56px] left-0 right-0 z-40 md:bottom-0">
+    <div className="fixed left-0 right-0 z-40" style={{ bottom: 56 }}>
       <a
         href="tel:01032421504"
-        className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#1E3A5F] to-[#0F2744] px-6 py-4 shadow-[0_-4px_20px_rgba(0,0,0,0.4)]"
-        style={{ minHeight: '52px' }}
+        className="flex items-center justify-center gap-3 px-6 py-4"
+        style={{
+          background: 'linear-gradient(to right, #1E3A5F, #0F2744)',
+          minHeight: 52,
+          boxShadow: '0 -4px 20px rgba(0,0,0,0.4)',
+        }}
       >
-        <span className="text-base font-bold text-[#FFD700] sm:text-lg">4인1조 w.t원숭이</span>
-        <span className="text-xl font-black text-white tracking-wide sm:text-2xl">010-3242-1504</span>
+        <span style={{ color: '#FFD700', fontSize: 16, fontWeight: 700 }}>4인1조 w.t원숭이</span>
+        <span style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 900, letterSpacing: '0.05em' }}>010-3242-1504</span>
       </a>
     </div>
   );
