@@ -1,33 +1,20 @@
 name: Auto Content Generator
 
-# 매 시간 실행 (0분에)
 on:
   schedule:
-    - cron: '0 * * * *'  # 매 시간 정각
-  workflow_dispatch: {}   # 수동 실행도 가능
+    - cron: '0 * * * *'
+  workflow_dispatch: {}
 
 jobs:
   generate:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
       - name: Generate post + comments
-        run: |
-          # 1. 새 글 1개 + 댓글 3~5개 자동 생성
-          curl -s -X POST \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/rpc/auto_generate_content" \
-            -H "apikey: ${{ secrets.SUPABASE_SERVICE_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}" \
-            -H "Content-Type: application/json" \
-            -d '{}'
-
-          echo "Post generated"
-
-          # 2. 최근 글에 자동 댓글 추가 (글 쓰면 반응이 온다)
-          curl -s -X POST \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/rpc/auto_reply_to_recent" \
-            -H "apikey: ${{ secrets.SUPABASE_SERVICE_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}" \
-            -H "Content-Type: application/json" \
-            -d '{}'
-
-          echo "Auto replies added"
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: node scripts/auto-content.mjs

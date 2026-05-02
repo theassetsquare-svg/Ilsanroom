@@ -250,8 +250,8 @@ BEGIN
     WHERE id = (SELECT id FROM seed_comment_pool WHERE content = v_comment_content LIMIT 1);
 
     -- 댓글 삽입
-    INSERT INTO comments (post_id, user_id, content, likes)
-    VALUES (v_post_id, v_comment_author_id, v_comment_content, floor(random() * 15)::int);
+    INSERT INTO comments (post_id, user_id, content)
+    VALUES (v_post_id, v_comment_author_id, v_comment_content);
   END LOOP;
 
   -- 글의 댓글 수 업데이트
@@ -296,8 +296,8 @@ BEGIN
     SELECT content INTO v_comment_content
     FROM seed_comment_pool ORDER BY random() LIMIT 1;
 
-    INSERT INTO comments (post_id, user_id, content, likes)
-    VALUES (v_post.id, v_reply_author_id, v_comment_content, floor(random() * 10)::int);
+    INSERT INTO comments (post_id, user_id, content)
+    VALUES (v_post.id, v_reply_author_id, v_comment_content);
 
     UPDATE posts SET comment_count = comment_count + 1 WHERE id = v_post.id;
     v_added := v_added + 1;
