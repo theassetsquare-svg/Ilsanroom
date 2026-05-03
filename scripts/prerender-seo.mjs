@@ -930,6 +930,27 @@ for (const pg of staticPages) {
       ],
     });
   }
+  // 매핑 없는 정적 페이지(예: /lounge/*) 폴백 — 무조건 H1 + WebPage + BreadcrumbList 부착
+  else {
+    ssrBody = enrichSsr(`<h1>${escHtml(pg.title)}</h1><p>${escHtml(pg.desc)}</p>`, pg.path, pg.title);
+    jsonLdList.push({
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: pg.title,
+      description: pg.desc,
+      url: BASE_URL + pg.path,
+      inLanguage: 'ko-KR',
+      isPartOf: { '@type': 'WebSite', name: '놀쿨', url: BASE_URL },
+    });
+    jsonLdList.push({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: '홈', item: BASE_URL + '/' },
+        { '@type': 'ListItem', position: 2, name: pg.title, item: BASE_URL + pg.path },
+      ],
+    });
+  }
   writePage(pg.path, { title: pg.title, description: pg.desc, ssrBody, jsonLdList: jsonLdList.length > 0 ? jsonLdList : undefined });
   pageCount++;
 }
@@ -1141,6 +1162,41 @@ console.log(`✅ 업소 상세 페이지 ${venueCount}개 생성`);
 // ══════════════════════════════════════════
 const dynamicPages = [];
 
+// CollectionPage + BreadcrumbList 자동 생성 헬퍼 (동적 SEO 페이지 공통)
+function collectionJsonLd(routePath, title, description, items) {
+  const collectionLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: title,
+    description,
+    url: `https://nolcool.com${routePath}`,
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: items.length,
+      itemListElement: items.slice(0, 30).map((it, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        name: it.nameKo || it.name || it,
+      })),
+    },
+  };
+  // 경로 분해해서 BreadcrumbList 생성
+  const parts = routePath.split('/').filter(Boolean);
+  const crumbs = [{ '@type': 'ListItem', position: 1, name: '홈', item: 'https://nolcool.com/' }];
+  let acc = '';
+  parts.forEach((p, i) => {
+    acc += `/${p}`;
+    crumbs.push({
+      '@type': 'ListItem',
+      position: i + 2,
+      name: decodeURIComponent(p),
+      item: `https://nolcool.com${acc}`,
+    });
+  });
+  const breadcrumbLd = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs };
+  return [collectionLd, breadcrumbLd];
+}
+
 // ── best/[category] — 인기순 (6개) ──
 for (const [catKey, catInfo] of Object.entries(catMap)) {
   const catVenues = venues.filter(vv => vv.cat === catKey);
@@ -1153,7 +1209,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   ssrBody += `<ol>`;
   catVenues.forEach((vv, idx) => { ssrBody += `<li>${idx + 1}. ${escHtml(vv.nameKo)} — ${escHtml(vv.regionKo)} ${catInfo.labelKo}</li>`; });
   ssrBody += `</ol>`;
-  writePage(p, { title, description: desc, ssrBody, keywords: `${catInfo.labelKo} 인기, ${catInfo.labelKo} 추천, ${catInfo.labelKo} 랭킹, ${catInfo.labelKo} TOP` });
+  writePage(p, { title, description: desc, ssrBody, keywords: `${catInfo.labelKo} 인기, ${catInfo.labelKo} 추천, ${catInfo.labelKo} 랭킹, ${catInfo.labelKo} TOP`, jsonLdList: collectionJsonLd(p, title, desc, catVenues) });
   dynamicPages.push(p);
 }
 
@@ -1168,7 +1224,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p><ul>`;
   catVenues.forEach(vv => { ssrBody += `<li>${escHtml(vv.nameKo)} — ${escHtml(vv.regionKo)}</li>`; });
   ssrBody += `</ul>`;
-  writePage(p, { title, description: desc, ssrBody, keywords: `신규 ${catInfo.labelKo}, 새 ${catInfo.labelKo}, ${catInfo.labelKo} 오픈` });
+  writePage(p, { title, description: desc, ssrBody, keywords: `신규 ${catInfo.labelKo}, 새 ${catInfo.labelKo}, ${catInfo.labelKo} 오픈`, jsonLdList: collectionJsonLd(p, title, desc, catVenues) });
   dynamicPages.push(p);
 }
 
@@ -1199,7 +1255,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
   ssrBody += `<dt>${escHtml(regionKo)}에 몇 곳 있나요?</dt>`;
   ssrBody += `<dd>${escHtml(regionKo)}에는 ${regionVenues.length}곳의 유흥 업소가 등록되어 있습니다.</dd>`;
   ssrBody += `</dl></section>`;
-  writePage(p, { title, description: desc, ssrBody, keywords: `${regionKo} 밤문화, ${regionKo} 클럽, ${regionKo} 나이트, ${regionKo} 룸, ${regionKo} 유흥` });
+  writePage(p, { title, description: desc, ssrBody, keywords: `${regionKo} 밤문화, ${regionKo} 클럽, ${regionKo} 나이트, ${regionKo} 룸, ${regionKo} 유흥`, jsonLdList: collectionJsonLd(p, title, desc, regionVenues) });
   dynamicPages.push(p);
 
   // ── region/[region]/[category] — 지역+업종 크로스 ──
@@ -1213,7 +1269,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     let cSsr = `<h1>${escHtml(ct)}</h1><p>${escHtml(cd)}</p><ul>`;
     crossVenues.forEach(cv => { cSsr += `<li>${escHtml(cv.nameKo)} — ${escHtml(cv.shortDesc.slice(0, 60))}</li>`; });
     cSsr += `</ul>`;
-    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천` });
+    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: collectionJsonLd(cp, ct, cd, crossVenues) });
     dynamicPages.push(cp);
   }
 }
@@ -1235,7 +1291,7 @@ for (const [tag, tagVenues] of Object.entries(allTags)) {
   let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p><ul>`;
   tagVenues.forEach(tv => { ssrBody += `<li>${escHtml(tv.nameKo)} — ${escHtml(tv.regionKo)} ${catLabelMap[tv.cat] || tv.cat}</li>`; });
   ssrBody += `</ul>`;
-  writePage(p, { title, description: desc, ssrBody, keywords: `${tag}, ${tag} 추천, 밤문화 ${tag}` });
+  writePage(p, { title, description: desc, ssrBody, keywords: `${tag}, ${tag} 추천, 밤문화 ${tag}`, jsonLdList: collectionJsonLd(p, title, desc, tagVenues) });
   dynamicPages.push(p);
 }
 
@@ -1256,7 +1312,7 @@ for (const [st, stVenues] of Object.entries(stationVenues)) {
   let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p><ul>`;
   stVenues.forEach(sv => { ssrBody += `<li>${escHtml(sv.nameKo)} — ${escHtml(sv.regionKo)} ${catLabelMap[sv.cat] || sv.cat}</li>`; });
   ssrBody += `</ul>`;
-  writePage(p, { title, description: desc, ssrBody, keywords: `${st} 근처, ${st} 밤문화, ${st} 클럽, ${st} 나이트` });
+  writePage(p, { title, description: desc, ssrBody, keywords: `${st} 근처, ${st} 밤문화, ${st} 클럽, ${st} 나이트`, jsonLdList: collectionJsonLd(p, title, desc, stVenues) });
   dynamicPages.push(p);
 }
 
