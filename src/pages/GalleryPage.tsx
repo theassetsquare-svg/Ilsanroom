@@ -21,7 +21,10 @@ interface Clip {
   avatar_url: string | null;
   comments: ClipComment[];
   comment_count: number;
+  venue_category: string;
 }
+
+const VENUE_TABS = ['전체', '나이트', '클럽', '라운지', '호빠'] as const;
 
 interface ClipComment {
   id: string;
@@ -33,16 +36,16 @@ interface ClipComment {
 
 /* ── 시드 클립 (DB 비어있을 때 표시 — 실제 존재하는 이미지 사용) ── */
 const SEED_CLIPS: Clip[] = [
-  { id: 's1', user_id: '', image_url: '/venues/gangnamclub-peak-1.jpg', caption: '금요일 피크 분위기 미쳤다 ㅋㅋ 역시 강남은 다르네', likes: 47, liked: false, created_at: new Date(Date.now() - 3600000 * 2).toISOString(), author: '강남유흥러', avatar_url: null, comments: [{ id: 'sc1', user_id: '', content: '여기 요즘 웨이팅 있던데 ㄷㄷ', author: '클럽마스터', created_at: new Date(Date.now() - 3600000 * 1).toISOString() }, { id: 'sc2', user_id: '', content: '부스 예약하고 가야 됨 진짜', author: '파티피플', created_at: new Date(Date.now() - 1800000).toISOString() }], comment_count: 2 },
-  { id: 's2', user_id: '', image_url: '/venues/hongdaeclub-pacific-1.jpg', caption: '홍대 토요일 밤 현장. 이 에너지 실화냐', likes: 38, liked: false, created_at: new Date(Date.now() - 3600000 * 5).toISOString(), author: '홍대불주먹', avatar_url: null, comments: [{ id: 'sc3', user_id: '', content: '홍대는 역시 주말이지 ㅎㅎ', author: '주말전사', created_at: new Date(Date.now() - 3600000 * 4).toISOString() }], comment_count: 1 },
-  { id: 's3', user_id: '', image_url: '/venues/cheongdamclub-arju-1.jpg', caption: '아르쥬 양주 세팅 클래스.. 이게 프리미엄이지', likes: 62, liked: false, created_at: new Date(Date.now() - 86400000 * 1).toISOString(), author: '분위기장인', avatar_url: null, comments: [{ id: 'sc4', user_id: '', content: '아르쥬 서비스 진짜 좋음 인정', author: '단골손님', created_at: new Date(Date.now() - 86400000 * 0.8).toISOString() }, { id: 'sc5', user_id: '', content: '여기 실장님 추천받고 갔는데 대만족', author: '첫방문후기', created_at: new Date(Date.now() - 86400000 * 0.5).toISOString() }], comment_count: 2 },
-  { id: 's4', user_id: '', image_url: '/venues/suwonchancenight-1.jpg', caption: '수원찬스 부스에서 본 뷰 ㄹㅇ 예술이다', likes: 29, liked: false, created_at: new Date(Date.now() - 86400000 * 1.5).toISOString(), author: '새벽감성', avatar_url: null, comments: [{ id: 'sc9', user_id: '', content: '수원 가면 여기가 국룰이지', author: '경기도민', created_at: new Date(Date.now() - 86400000 * 1.2).toISOString() }], comment_count: 1 },
-  { id: 's5', user_id: '', image_url: '/venues/ilsanmyeongwolgwanyojeong-1.jpg', caption: '일산 명월관 처음 가봤는데 한실 분위기 진짜 다르다', likes: 34, liked: false, created_at: new Date(Date.now() - 86400000 * 2).toISOString(), author: '룸매니아', avatar_url: null, comments: [{ id: 'sc6', user_id: '', content: '여기 접대 자리로 최고임 강추', author: '금요일밤', created_at: new Date(Date.now() - 86400000 * 1.8).toISOString() }], comment_count: 1 },
-  { id: 's6', user_id: '', image_url: '/venues/gangnamclub-utopia-1.jpg', caption: '유토피아 사운드 시스템 국내 탑인듯 ㅋㅋ', likes: 55, liked: false, created_at: new Date(Date.now() - 86400000 * 3).toISOString(), author: '나이트초보', avatar_url: null, comments: [{ id: 'sc7', user_id: '', content: '강남 유토피아 진짜 레전드', author: '클럽마스터', created_at: new Date(Date.now() - 86400000 * 2.5).toISOString() }, { id: 'sc8', user_id: '', content: '외국인도 엄청 많더라', author: '파티피플', created_at: new Date(Date.now() - 86400000 * 2).toISOString() }], comment_count: 2 },
-  { id: 's7', user_id: '', image_url: '/venues/busanasiadnight-1.jpg', caption: '부산 아시아드 금토 분위기 서울 안부러움', likes: 41, liked: false, created_at: new Date(Date.now() - 86400000 * 3.5).toISOString(), author: '부산사나이', avatar_url: null, comments: [{ id: 'sc10', user_id: '', content: '해운대 끝나고 여기 오면 딱이야', author: '남포동킹', created_at: new Date(Date.now() - 86400000 * 3).toISOString() }], comment_count: 1 },
-  { id: 's8', user_id: '', image_url: '/venues/ilsanshampoonight-1.jpg', caption: '일산 샴푸나이트 밴드 라이브 오늘도 불태웠다', likes: 36, liked: false, created_at: new Date(Date.now() - 86400000 * 4).toISOString(), author: '일산토박이', avatar_url: null, comments: [{ id: 'sc11', user_id: '', content: '샴푸 밴드 트로트 메들리 진짜 미침 ㅋㅋ', author: '댄스왕', created_at: new Date(Date.now() - 86400000 * 3.8).toISOString() }], comment_count: 1 },
-  { id: 's9', user_id: '', image_url: '/venues/daejeonsevennight-1.jpg', caption: '대전세븐 7번째 방문인데 매번 새로움 ㄹㅇ', likes: 28, liked: false, created_at: new Date(Date.now() - 86400000 * 5).toISOString(), author: '대전감성', avatar_url: null, comments: [], comment_count: 0 },
-  { id: 's10', user_id: '', image_url: '/venues/cheongdamh2onight-1.jpg', caption: '청담 H2O 물 컨셉 인테리어 보고 반했다', likes: 51, liked: false, created_at: new Date(Date.now() - 86400000 * 5.5).toISOString(), author: '청담동주민', avatar_url: null, comments: [{ id: 'sc12', user_id: '', content: '여기 양주 세팅 퀄리티 ㄷㄷ', author: '위스키러버', created_at: new Date(Date.now() - 86400000 * 5).toISOString() }, { id: 'sc13', user_id: '', content: '펩시맨 실장 서비스 찐이야', author: 'VIP단골', created_at: new Date(Date.now() - 86400000 * 4.5).toISOString() }], comment_count: 2 },
+  { id: 's1', user_id: '', image_url: '/venues/gangnamclub-peak-1.jpg', caption: '금요일 피크 분위기 미쳤다 ㅋㅋ 역시 강남은 다르네', likes: 47, liked: false, created_at: new Date(Date.now() - 3600000 * 2).toISOString(), author: '강남유흥러', avatar_url: null, comments: [{ id: 'sc1', user_id: '', content: '여기 요즘 웨이팅 있던데 ㄷㄷ', author: '클럽마스터', created_at: new Date(Date.now() - 3600000 * 1).toISOString() }, { id: 'sc2', user_id: '', content: '부스 예약하고 가야 됨 진짜', author: '파티피플', created_at: new Date(Date.now() - 1800000).toISOString() }], comment_count: 2, venue_category: '클럽' },
+  { id: 's2', user_id: '', image_url: '/venues/hongdaeclub-pacific-1.jpg', caption: '홍대 토요일 밤 현장. 이 에너지 실화냐', likes: 38, liked: false, created_at: new Date(Date.now() - 3600000 * 5).toISOString(), author: '홍대불주먹', avatar_url: null, comments: [{ id: 'sc3', user_id: '', content: '홍대는 역시 주말이지 ㅎㅎ', author: '주말전사', created_at: new Date(Date.now() - 3600000 * 4).toISOString() }], comment_count: 1, venue_category: '클럽' },
+  { id: 's3', user_id: '', image_url: '/venues/cheongdamclub-arju-1.jpg', caption: '아르쥬 양주 세팅 클래스.. 이게 프리미엄이지', likes: 62, liked: false, created_at: new Date(Date.now() - 86400000 * 1).toISOString(), author: '분위기장인', avatar_url: null, comments: [{ id: 'sc4', user_id: '', content: '아르쥬 서비스 진짜 좋음 인정', author: '단골손님', created_at: new Date(Date.now() - 86400000 * 0.8).toISOString() }, { id: 'sc5', user_id: '', content: '여기 실장님 추천받고 갔는데 대만족', author: '첫방문후기', created_at: new Date(Date.now() - 86400000 * 0.5).toISOString() }], comment_count: 2, venue_category: '클럽' },
+  { id: 's4', user_id: '', image_url: '/venues/suwonchancenight-1.jpg', caption: '수원찬스 부스에서 본 뷰 ㄹㅇ 예술이다', likes: 29, liked: false, created_at: new Date(Date.now() - 86400000 * 1.5).toISOString(), author: '새벽감성', avatar_url: null, comments: [{ id: 'sc9', user_id: '', content: '수원 가면 여기가 국룰이지', author: '경기도민', created_at: new Date(Date.now() - 86400000 * 1.2).toISOString() }], comment_count: 1, venue_category: '나이트' },
+  { id: 's5', user_id: '', image_url: '/venues/ilsanmyeongwolgwanyojeong-1.jpg', caption: '일산 명월관 처음 가봤는데 한실 분위기 진짜 다르다', likes: 34, liked: false, created_at: new Date(Date.now() - 86400000 * 2).toISOString(), author: '룸매니아', avatar_url: null, comments: [{ id: 'sc6', user_id: '', content: '여기 접대 자리로 최고임 강추', author: '금요일밤', created_at: new Date(Date.now() - 86400000 * 1.8).toISOString() }], comment_count: 1, venue_category: '라운지' },
+  { id: 's6', user_id: '', image_url: '/venues/gangnamclub-utopia-1.jpg', caption: '유토피아 사운드 시스템 국내 탑인듯 ㅋㅋ', likes: 55, liked: false, created_at: new Date(Date.now() - 86400000 * 3).toISOString(), author: '나이트초보', avatar_url: null, comments: [{ id: 'sc7', user_id: '', content: '강남 유토피아 진짜 레전드', author: '클럽마스터', created_at: new Date(Date.now() - 86400000 * 2.5).toISOString() }, { id: 'sc8', user_id: '', content: '외국인도 엄청 많더라', author: '파티피플', created_at: new Date(Date.now() - 86400000 * 2).toISOString() }], comment_count: 2, venue_category: '클럽' },
+  { id: 's7', user_id: '', image_url: '/venues/busanasiadnight-1.jpg', caption: '부산 아시아드 금토 분위기 서울 안부러움', likes: 41, liked: false, created_at: new Date(Date.now() - 86400000 * 3.5).toISOString(), author: '부산사나이', avatar_url: null, comments: [{ id: 'sc10', user_id: '', content: '해운대 끝나고 여기 오면 딱이야', author: '남포동킹', created_at: new Date(Date.now() - 86400000 * 3).toISOString() }], comment_count: 1, venue_category: '나이트' },
+  { id: 's8', user_id: '', image_url: '/venues/ilsanshampoonight-1.jpg', caption: '일산 샴푸나이트 밴드 라이브 오늘도 불태웠다', likes: 36, liked: false, created_at: new Date(Date.now() - 86400000 * 4).toISOString(), author: '일산토박이', avatar_url: null, comments: [{ id: 'sc11', user_id: '', content: '샴푸 밴드 트로트 메들리 진짜 미침 ㅋㅋ', author: '댄스왕', created_at: new Date(Date.now() - 86400000 * 3.8).toISOString() }], comment_count: 1, venue_category: '나이트' },
+  { id: 's9', user_id: '', image_url: '/venues/daejeonsevennight-1.jpg', caption: '대전세븐 7번째 방문인데 매번 새로움 ㄹㅇ', likes: 28, liked: false, created_at: new Date(Date.now() - 86400000 * 5).toISOString(), author: '대전감성', avatar_url: null, comments: [], comment_count: 0, venue_category: '나이트' },
+  { id: 's10', user_id: '', image_url: '/venues/cheongdamh2onight-1.jpg', caption: '청담 H2O 물 컨셉 인테리어 보고 반했다', likes: 51, liked: false, created_at: new Date(Date.now() - 86400000 * 5.5).toISOString(), author: '청담동주민', avatar_url: null, comments: [{ id: 'sc12', user_id: '', content: '여기 양주 세팅 퀄리티 ㄷㄷ', author: '위스키러버', created_at: new Date(Date.now() - 86400000 * 5).toISOString() }, { id: 'sc13', user_id: '', content: '펩시맨 실장 서비스 찐이야', author: 'VIP단골', created_at: new Date(Date.now() - 86400000 * 4.5).toISOString() }], comment_count: 2, venue_category: '나이트' },
 ];
 
 /* ── Helpers ── */
@@ -70,6 +73,7 @@ export default function GalleryPage() {
   const [loading, setLoading] = useState(true);
   const [showUpload, setShowUpload] = useState(false);
   const [doubleTapId, setDoubleTapId] = useState<string | null>(null);
+  const [selectedTab, setSelectedTab] = useState<typeof VENUE_TABS[number]>('전체');
 
   /* ── 피드 불러오기 ── */
   const fetchClips = useCallback(async () => {
@@ -89,7 +93,7 @@ export default function GalleryPage() {
           .eq('category', 'clip')
           .order('created_at', { ascending: false })
           .limit(30);
-        if (fb && fb.length > 0) setClips(fb.map((p: any) => mapClip(p)));
+        if (fb && fb.length > 0) setClips([...fb.map((p: any) => mapClip(p)), ...SEED_CLIPS]);
         else setClips(SEED_CLIPS);
       } else if (data && data.length > 0) {
         const clipIds = data.map((p: any) => p.id);
@@ -113,7 +117,8 @@ export default function GalleryPage() {
             }
           }
         }
-        setClips(data.map((p: any) => ({ ...mapClip(p), comments: commentsMap[p.id] || [] })));
+        const real = data.map((p: any) => ({ ...mapClip(p), comments: commentsMap[p.id] || [] }));
+        setClips([...real, ...SEED_CLIPS]);
       } else {
         setClips(SEED_CLIPS);
       }
@@ -127,10 +132,12 @@ export default function GalleryPage() {
   function mapClip(p: any): Clip {
     let imageUrl = '';
     let caption = p.title || '';
+    let venueCategory = '';
     try {
       const parsed = JSON.parse(p.content);
       imageUrl = parsed.imageUrl || '';
       caption = parsed.caption || p.title || '';
+      venueCategory = parsed.venueCategory || '';
     } catch {
       imageUrl = p.content || '';
     }
@@ -146,6 +153,7 @@ export default function GalleryPage() {
       avatar_url: (p.users as any)?.avatar_url || null,
       comments: [],
       comment_count: p.comment_count || 0,
+      venue_category: venueCategory,
     };
   }
 
@@ -231,6 +239,9 @@ export default function GalleryPage() {
   /* ── 이미지 에러 핸들링 ── */
   const [imgErrors, setImgErrors] = useState<Set<string>>(new Set());
 
+  /* ── 카테고리 필터 ── */
+  const filteredClips = selectedTab === '전체' ? clips : clips.filter(c => c.venue_category === selectedTab);
+
   return (
     <div>
       {/* ═══ VISUAL HERO ═══ */}
@@ -275,11 +286,19 @@ export default function GalleryPage() {
 
           {/* 탭 필터 */}
           <div className="flex-1 flex items-center gap-2 overflow-x-auto scrollbar-hide">
-            {['전체', '나이트', '클럽', '라운지', '호빠'].map((tab, i) => (
-              <button key={tab} className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold transition ${i === 0 ? 'bg-[#111] text-white' : 'bg-gray-100 text-[#555]'}`} style={{ minHeight: 36 }}>
-                {tab}
-              </button>
-            ))}
+            {VENUE_TABS.map(tab => {
+              const active = selectedTab === tab;
+              return (
+                <button
+                  key={tab}
+                  onClick={() => setSelectedTab(tab)}
+                  className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold transition ${active ? 'bg-[#111] text-white' : 'bg-gray-100 text-[#555]'}`}
+                  style={{ minHeight: 36 }}
+                >
+                  {tab}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -300,7 +319,7 @@ export default function GalleryPage() {
               </div>
             ))}
           </div>
-        ) : clips.length === 0 ? (
+        ) : filteredClips.length === 0 ? (
           <div className="py-20 text-center px-4">
             <div className="mx-auto mb-6 w-24 h-24 rounded-full bg-gray-50 flex items-center justify-center">
               <svg className="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -308,8 +327,8 @@ export default function GalleryPage() {
                 <circle cx="12" cy="13" r="3" strokeWidth={1.5} />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-[#111] mb-1">아직 클립이 없습니다</h3>
-            <p className="text-sm text-[#555] mb-6">첫 번째 현장 사진을 올려보세요!</p>
+            <h3 className="text-lg font-bold text-[#111] mb-1">{selectedTab === '전체' ? '아직 클립이 없습니다' : `${selectedTab} 클립이 아직 없어요`}</h3>
+            <p className="text-sm text-[#555] mb-6">{selectedTab === '전체' ? '첫 번째 현장 사진을 올려보세요!' : '첫 번째로 올려보세요!'}</p>
             <button
               onClick={() => requireLogin() && setShowUpload(true)}
               className="rounded-xl px-6 py-3 text-sm font-bold text-white"
@@ -320,7 +339,7 @@ export default function GalleryPage() {
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
-            {clips.map(clip => {
+            {filteredClips.map(clip => {
               const isExpanded = expandedComments.has(clip.id);
               const isMine = user?.id === clip.user_id;
               const hasImgError = imgErrors.has(clip.id);
@@ -392,7 +411,17 @@ export default function GalleryPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                       </svg>
                     </button>
-                    <button onClick={() => document.getElementById(`comment-${clip.id}`)?.focus()} style={{ minHeight: 44 }}>
+                    <button
+                      onClick={() => {
+                        if (isSeed) { if (requireLogin()) setShowUpload(true); return; }
+                        const el = document.getElementById(`comment-${clip.id}`) as HTMLInputElement | null;
+                        if (el) {
+                          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          setTimeout(() => el.focus(), 250);
+                        }
+                      }}
+                      style={{ minHeight: 44 }}
+                    >
                       <svg className="w-7 h-7" fill="none" stroke="#111" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                       </svg>
@@ -533,8 +562,11 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [caption, setCaption] = useState('');
+  const [venueCategory, setVenueCategory] = useState<string>('');
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
+
+  const CATEGORY_OPTIONS = ['나이트', '클럽', '라운지', '호빠'];
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
@@ -553,6 +585,7 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
     setPreviewUrl(null);
     setFile(null);
     setCaption('');
+    setVenueCategory('');
     setError('');
   };
 
@@ -590,7 +623,7 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
       }
       const imageUrl: string = upJson.publicUrl;
 
-      const content = JSON.stringify({ imageUrl, caption: caption.trim() });
+      const content = JSON.stringify({ imageUrl, caption: caption.trim(), venueCategory });
       const { error: dbErr } = await supabase
         .from('posts')
         .insert({
@@ -729,6 +762,31 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
           </div>
           <div className="px-4 pb-2 flex items-center justify-between">
             <span className="text-xs text-[#999]">{caption.length}/2,200</span>
+          </div>
+
+          {/* 업종 카테고리 */}
+          <div className="px-4 pb-4">
+            <p className="text-xs text-[#999] mb-2">어디 업종이에요?</p>
+            <div className="flex flex-wrap gap-2">
+              {CATEGORY_OPTIONS.map(cat => {
+                const active = venueCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setVenueCategory(active ? '' : cat)}
+                    className="rounded-full px-4 py-2 text-xs font-bold active:scale-95 transition border"
+                    style={{
+                      backgroundColor: active ? '#8B5CF6' : '#fff',
+                      color: active ? '#fff' : '#555',
+                      borderColor: active ? '#8B5CF6' : '#E5E7EB',
+                      minHeight: 36,
+                    }}
+                  >
+                    {cat}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* 추천 태그 */}
