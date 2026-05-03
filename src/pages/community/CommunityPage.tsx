@@ -245,9 +245,6 @@ export default function CommunityPage() {
                 { id: 's3', cat: '팁', title: '입장료 아끼는 법 3가지 (진짜 됨)', likes: 31, comments: 6 },
                 { id: 's4', cat: '후기', title: '찬스돔 부킹 솔직후기 — 강호동 실장 대박', likes: 28, comments: 14 },
                 { id: 's5', cat: '모집', title: '토요일 강남 같이 갈 사람 2명 구함', likes: 14, comments: 7 },
-                { id: 's6', cat: '자유', title: '어젯밤 일 아직도 술깸ㅋㅋ', likes: 22, comments: 11 },
-                { id: 's7', cat: 'Q&A', title: '호빠 혼자 가면 진짜 괜찮음??', likes: 17, comments: 23 },
-                { id: 's8', cat: '후기', title: '일산명월관 접대로 갔는데 거래처가 감동함', likes: 35, comments: 9 },
               ].map((post, idx) => (
                 <Link key={post.id} to="/community/free" className="flex items-center gap-4 rounded-xl border border-neon-border bg-neon-bg px-4 sm:px-5 py-4 transition hover:border-neon-primary/40 hover:bg-neon-surface" style={{ minHeight: 56 }}>
                   <span className="text-lg font-black shrink-0" style={{ color: idx < 3 ? '#8B5CF6' : '#999', width: 24, textAlign: 'center' }}>{idx + 1}</span>
