@@ -1,8 +1,10 @@
-name: Auto Content Generator (legacy - disabled)
+name: Auto Content v2 (Time-based)
 
-# v2 (auto-content-v2.yml)로 대체됨
-# 수동 실행은 가능 (workflow_dispatch)
 on:
+  schedule:
+    # 매 15분마다 실행 (96회/일)
+    # KST 기준 시간대별로 글 생성 확률 조정 (auto-content-v2.mjs 내부)
+    - cron: '*/15 * * * *'
   workflow_dispatch: {}
 
 jobs:
@@ -13,8 +15,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Generate post + comments
+      - name: Generate post + progressive comments
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-        run: node scripts/auto-content.mjs
+        run: node scripts/auto-content-v2.mjs

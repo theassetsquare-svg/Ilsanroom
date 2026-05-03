@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import ErrorBoundary from './components/ui/ErrorBoundary';
+import { RewardToastProvider } from './components/community/RewardToast';
 
 /* chunk load 실패 시 자동 재시도 (배포 후 구 chunk 404 대응) */
 function lazyRetry(factory: () => Promise<any>) {
@@ -212,6 +213,7 @@ export default function App() {
         </Route>
       </Routes>
     </Suspense>
+    <RewardToastProvider />
     </ErrorBoundary>
   );
 }
