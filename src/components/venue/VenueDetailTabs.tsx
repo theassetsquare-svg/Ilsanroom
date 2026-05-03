@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import type { Venue } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
 import { getVenueEvent } from '@/data/venue-events';
+import { fetchReviews, submitReview, type Review as DBReview } from '@/lib/review-api';
 
 interface FAQ {
   question: string;
@@ -324,15 +325,15 @@ function getSeedReviews(slug: string): Review[] {
   return reviews;
 }
 
-function getStoredReviews(venueSlug: string): Review[] {
-  try {
-    const stored = localStorage.getItem(`reviews_${venueSlug}`);
-    return stored ? JSON.parse(stored) : [];
-  } catch { return []; }
-}
-
-function saveReviews(venueSlug: string, reviews: Review[]) {
-  try { localStorage.setItem(`reviews_${venueSlug}`, JSON.stringify(reviews)); } catch {}
+function dbToLocal(r: DBReview): Review {
+  return {
+    id: r.id,
+    userName: r.is_anonymous ? '익명' : (r.user_profiles?.nickname || '회원'),
+    rating: r.rating,
+    text: r.content,
+    date: r.created_at.slice(0, 10),
+    isMine: false,
+  };
 }
 
 function VenueReviewSection({ venue }: { venue: Venue }) {
@@ -341,39 +342,44 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
   const [showWrite, setShowWrite] = useState(false);
   const [rating, setRating] = useState(0);
   const [text, setText] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
-    const userReviews = getStoredReviews(venue.slug);
-    const seeds = getSeedReviews(venue.slug);
-    // 유저 리뷰 위에, 시드 리뷰 아래
-    setReviews([...userReviews, ...seeds]);
+    let alive = true;
+    fetchReviews(venue.slug, 30).then(({ data }) => {
+      if (!alive) return;
+      const dbReviews = data.map(dbToLocal);
+      const seeds = getSeedReviews(venue.slug);
+      setReviews([...dbReviews, ...seeds]);
+    });
+    return () => { alive = false; };
   }, [venue.slug]);
 
-  const handleSubmit = () => {
-    if (!text.trim() || !user || rating === 0) return;
-    const newReview: Review = {
-      id: `r-${Date.now()}`,
-      userName: (user.user_metadata?.name as string) || '사용자',
+  const handleSubmit = async () => {
+    if (!text.trim() || !user || rating === 0 || submitting) return;
+    setSubmitting(true);
+    setSubmitError(null);
+    const result = await submitReview({
+      venue_id: venue.slug,
       rating,
-      text: text.trim(),
-      date: new Date().toISOString().slice(0, 10),
-      isMine: true,
-    };
-    const userReviews = getStoredReviews(venue.slug);
-    const updatedUser = [newReview, ...userReviews];
-    saveReviews(venue.slug, updatedUser);
+      content: text.trim(),
+    });
+    setSubmitting(false);
+    if (result.error) {
+      setSubmitError(result.error);
+      return;
+    }
+    // 성공 — 다시 불러오기
+    const { data } = await fetchReviews(venue.slug, 30);
+    const dbReviews = data.map(dbToLocal);
+    // 내 새 리뷰 표시 (가장 최신이 내 것)
+    if (dbReviews.length > 0) dbReviews[0].isMine = true;
     const seeds = getSeedReviews(venue.slug);
-    setReviews([...updatedUser, ...seeds]);
+    setReviews([...dbReviews, ...seeds]);
     setText('');
     setRating(0);
     setShowWrite(false);
-  };
-
-  const handleDelete = (id: string) => {
-    const userReviews = getStoredReviews(venue.slug).filter(r => r.id !== id);
-    saveReviews(venue.slug, userReviews);
-    const seeds = getSeedReviews(venue.slug);
-    setReviews([...userReviews, ...seeds]);
   };
 
   const avg = reviews.length > 0 ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : '0.0';
@@ -447,10 +453,11 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
             />
           </div>
           <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
-            <button onClick={handleSubmit} disabled={!text.trim() || rating === 0}
+            {submitError && <p className="mb-2 text-center text-sm" style={{ color: '#EF4444' }}>{submitError}</p>}
+            <button onClick={handleSubmit} disabled={!text.trim() || rating === 0 || submitting}
               className="w-full rounded-xl py-4 text-base font-bold transition active:scale-[0.98] disabled:opacity-30"
               style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 56 }}>
-              리뷰 저장
+              {submitting ? '저장 중...' : '리뷰 저장'}
             </button>
           </div>
         </div>
@@ -472,9 +479,6 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs" style={{ color: '#999' }}>{r.date}</span>
-                  {r.isMine && (
-                    <button onClick={() => handleDelete(r.id)} className="text-xs" style={{ color: '#EF4444', minHeight: 28 }}>삭제</button>
-                  )}
                 </div>
               </div>
               <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{r.text}</p>
