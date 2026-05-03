@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { createClient } from '@/lib/supabase';
 import { useNewPosts, type NewPost } from '@/hooks/useNewPosts';
 
@@ -47,32 +47,44 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 function NotificationDropdown({ posts, onClose, onMarkRead }: { posts: NewPost[]; onClose: () => void; onMarkRead: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const handler = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) onClose(); };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
+    // 모바일에서 mousedown은 touch 이벤트와 타이밍이 꼬여 패널 내부 탭도 outside로 잡힘.
+    // pointerdown + setTimeout 0으로 이벤트 사이클 한 단계 늦춰 안전하게 닫는다.
+    const handler = (e: PointerEvent | MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) onClose();
+    };
+    document.addEventListener('pointerdown', handler);
+    return () => document.removeEventListener('pointerdown', handler);
   }, [onClose]);
 
-  const handleClick = (post: NewPost) => {
-    onMarkRead();
-    onClose();
-    navigate(`/community/post/${post.id}`);
-  };
+  // 패널 내부 탭은 document까지 버블링 시키지 않는다 (iOS Safari z-index 안전장치)
+  const stop = (e: React.PointerEvent | React.MouseEvent) => e.stopPropagation();
 
   return (
-    <div ref={ref} className="absolute right-0 top-full mt-1 w-80 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-[100]">
+    <div
+      ref={ref}
+      onPointerDownCapture={stop}
+      onMouseDownCapture={stop}
+      className="absolute right-0 top-full mt-1 w-80 max-w-[calc(100vw-16px)] bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-[200]"
+      style={{ touchAction: 'manipulation' }}
+    >
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
         <span className="text-sm font-bold text-[#111]">새 글 알림</span>
-        <button onClick={() => { onMarkRead(); onClose(); }} className="text-xs text-[#8B5CF6] font-medium">모두 읽음</button>
+        <button onClick={() => { onMarkRead(); onClose(); }} className="text-xs text-[#8B5CF6] font-medium" style={{ minHeight: 32 }}>모두 읽음</button>
       </div>
       {posts.length === 0 ? (
         <div className="px-4 py-8 text-center text-sm text-gray-400">새로운 글이 없습니다</div>
       ) : (
         <div className="max-h-[360px] overflow-y-auto">
           {posts.map((p) => (
-            <button key={p.id} onClick={() => handleClick(p)} className="w-full text-left flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition border-b border-gray-50 last:border-0">
+            <Link
+              key={p.id}
+              to={`/community/post/${p.id}`}
+              onClick={() => { onMarkRead(); onClose(); }}
+              className="w-full text-left flex items-start gap-3 px-4 py-3 active:bg-gray-100 hover:bg-gray-50 transition border-b border-gray-50 last:border-0"
+              style={{ minHeight: 56, touchAction: 'manipulation' }}
+            >
               <span className="shrink-0 mt-0.5 inline-flex items-center rounded-md bg-[#F3F0FF] px-1.5 py-0.5 text-[10px] font-bold text-[#8B5CF6]">
                 {CATEGORY_LABELS[p.category] || p.category}
               </span>
@@ -80,11 +92,11 @@ function NotificationDropdown({ posts, onClose, onMarkRead }: { posts: NewPost[]
                 <p className="text-sm font-medium text-[#111] truncate">{p.title}</p>
                 <p className="text-[11px] text-gray-400 mt-0.5">{new Date(p.created_at).toLocaleString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
               </div>
-            </button>
+            </Link>
           ))}
         </div>
       )}
-      <Link to="/community" onClick={() => { onMarkRead(); onClose(); }} className="block text-center text-sm font-medium text-[#8B5CF6] py-3 border-t border-gray-100 hover:bg-gray-50 transition">
+      <Link to="/community" onClick={() => { onMarkRead(); onClose(); }} className="block text-center text-sm font-medium text-[#8B5CF6] py-3 border-t border-gray-100 active:bg-gray-100 hover:bg-gray-50 transition">
         커뮤니티 전체보기
       </Link>
     </div>
