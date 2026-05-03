@@ -49,6 +49,23 @@ const SEED_CLIPS: Clip[] = [
 ];
 
 /* ── Helpers ── */
+/* 캡션·댓글에서 #해시태그 / @멘션 자동 인식 → 보라색 강조 (인스타 동일) */
+function renderRichText(text: string): React.ReactNode[] {
+  if (!text) return [];
+  // # 뒤에 한글/영문/숫자/_ , @ 동일
+  const parts = text.split(/(#[\p{L}\p{N}_]+|@[\p{L}\p{N}_]+)/gu);
+  return parts.map((part, i) => {
+    if (part.startsWith('#') || part.startsWith('@')) {
+      return (
+        <span key={i} className="text-[#8B5CF6] font-medium cursor-pointer">
+          {part}
+        </span>
+      );
+    }
+    return part;
+  });
+}
+
 function timeAgo(dateStr: string): string {
   const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
   if (diff < 60) return '방금';
@@ -446,7 +463,7 @@ export default function GalleryPage() {
 
                   {clip.caption && (
                     <p className="px-4 mt-1 text-sm text-[#111] leading-relaxed">
-                      <span className="font-bold">{clip.author}</span>{' '}{clip.caption}
+                      <span className="font-bold">{clip.author}</span>{' '}{renderRichText(clip.caption)}
                     </p>
                   )}
 
@@ -461,7 +478,7 @@ export default function GalleryPage() {
                     {(isExpanded ? clip.comments : clip.comments.slice(-2)).map(c => (
                       <div key={c.id} className="flex items-start gap-1 mb-1">
                         <p className="text-sm flex-1 text-[#111]">
-                          <span className="font-bold">{c.author}</span>{' '}{c.content}
+                          <span className="font-bold">{c.author}</span>{' '}{renderRichText(c.content)}
                         </p>
                         {user?.id === c.user_id && (
                           <button onClick={() => deleteComment(clip.id, c.id)} className="text-[10px] shrink-0 text-gray-400 pt-0.5" style={{ minHeight: 28 }}>삭제</button>
@@ -569,50 +586,93 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
 
   const CATEGORY_OPTIONS = ['나이트', '클럽', '라운지', '호빠'];
 
-  /* ── 모바일 OOM 방지: 1440px 리사이즈 + JPEG 85% 압축 ── */
-  async function compressImage(orig: File, maxDim = 1440, quality = 0.85): Promise<File> {
-    // createImageBitmap = iOS Safari 15+ / Chrome 모두 지원, 메모리 효율 ↑
-    const bitmap = await createImageBitmap(orig);
-    let { width, height } = bitmap;
-    if (width > maxDim || height > maxDim) {
-      const ratio = Math.min(maxDim / width, maxDim / height);
-      width = Math.round(width * ratio);
-      height = Math.round(height * ratio);
-    }
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) { bitmap.close(); throw new Error('canvas context unavailable'); }
-    ctx.drawImage(bitmap, 0, 0, width, height);
-    bitmap.close();
-    const blob = await new Promise<Blob | null>(r => canvas.toBlob(r, 'image/jpeg', quality));
-    if (!blob) throw new Error('compress failed');
-    const newName = orig.name.replace(/\.\w+$/, '') + '.jpg';
-    return new File([blob], newName, { type: 'image/jpeg' });
+  /* ── 모바일 OOM 방지: <Image> + canvas 1440px JPEG 85% ── */
+  /* 인스타와 동일한 방식 — 가장 호환성 좋고 메모리 효율적 */
+  function compressImage(orig: File, maxDim = 1440, quality = 0.85): Promise<File> {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(orig);
+      const img = new Image();
+      // 갤럭시 Samsung Internet 등 일부 구버전 호환
+      img.decoding = 'async';
+      img.onload = () => {
+        try {
+          let tw = img.naturalWidth || img.width;
+          let th = img.naturalHeight || img.height;
+          if (!tw || !th) throw new Error('이미지 크기 못 읽음');
+
+          if (tw > maxDim || th > maxDim) {
+            const r = Math.min(maxDim / tw, maxDim / th);
+            tw = Math.max(1, Math.round(tw * r));
+            th = Math.max(1, Math.round(th * r));
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = tw;
+          canvas.height = th;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) throw new Error('canvas 컨텍스트 없음');
+          // 흰색 배경으로 깔아서 EXIF/투명 채널 영향 제거
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(0, 0, tw, th);
+          ctx.drawImage(img, 0, 0, tw, th);
+          // GC 힌트 — 큰 이미지 메모리 빨리 해제
+          img.src = '';
+          URL.revokeObjectURL(url);
+          canvas.toBlob(
+            blob => {
+              if (!blob) return reject(new Error('압축 결과 비어있음'));
+              const newName = (orig.name || 'photo').replace(/\.\w+$/, '') + '.jpg';
+              resolve(new File([blob], newName, { type: 'image/jpeg' }));
+            },
+            'image/jpeg',
+            quality
+          );
+        } catch (e: any) {
+          URL.revokeObjectURL(url);
+          reject(e);
+        }
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error('사진을 불러올 수 없습니다'));
+      };
+      img.src = url;
+    });
   }
+
+  const [compressing, setCompressing] = useState(false);
 
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
+    // input 재선택 가능하도록 value 초기화
+    if (e.target) e.target.value = '';
     if (!f) return;
-    if (!f.type.startsWith('image/')) { setError('사진 파일만 올릴 수 있습니다'); return; }
-    // 원본 30MB까지 허용 (압축 후 사이즈 작아짐)
-    if (f.size > 30 * 1024 * 1024) { setError('너무 큰 사진이에요. 30MB 이하 사진을 올려주세요'); return; }
+    if (!f.type.startsWith('image/') && !/\.(jpe?g|png|heic|heif|webp)$/i.test(f.name)) {
+      setError('사진 파일만 올릴 수 있어요');
+      return;
+    }
+    // 50MB 초과만 사전 차단 (그 이하는 무조건 압축 시도)
+    if (f.size > 50 * 1024 * 1024) {
+      setError('사진이 너무 커요 (50MB 초과)');
+      return;
+    }
     setError('');
     setStep('edit');
+    setCompressing(true);
     try {
       const compressed = await compressImage(f);
       setFile(compressed);
       setPreviewUrl(URL.createObjectURL(compressed));
     } catch (err: any) {
-      // 압축 실패하면 원본 시도 (단 10MB 초과면 거부)
-      if (f.size > 10 * 1024 * 1024) {
-        setError('사진을 처리할 수 없어요. 다른 사진을 시도해주세요');
+      // 압축 실패: 원본이 작으면 그대로 사용, 크면 거부
+      if (f.size <= 5 * 1024 * 1024) {
+        setFile(f);
+        setPreviewUrl(URL.createObjectURL(f));
+      } else {
+        setError('사진을 처리할 수 없어요. 다른 사진으로 시도해주세요. (' + (err?.message || '알 수 없음') + ')');
         setStep('select');
-        return;
       }
-      setFile(f);
-      setPreviewUrl(URL.createObjectURL(f));
+    } finally {
+      setCompressing(false);
     }
   };
 
@@ -696,15 +756,15 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
 
   return (
     <div className="fixed inset-0 z-[150] flex flex-col bg-white">
-      {/* 헤더 */}
+      {/* 헤더 — 인스타 스타일 (좌: 뒤로/취소, 중앙: 제목, 우: 공유) */}
       <div className="flex items-center justify-between px-4 border-b border-gray-100" style={{ height: 52 }}>
         <button
           onClick={step === 'edit' ? goBack : onClose}
           className="text-sm font-medium text-[#555] flex items-center gap-1"
-          style={{ minHeight: 44 }}
+          style={{ minHeight: 44, minWidth: 44 }}
         >
           {step === 'edit' ? (
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           ) : '취소'}
@@ -712,7 +772,18 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
         <h2 className="text-base font-bold text-[#111]">
           {step === 'select' ? '새 게시물' : step === 'edit' ? '새 게시물' : '게시 중...'}
         </h2>
-        <div style={{ width: 44 }} />
+        {step === 'edit' ? (
+          <button
+            onClick={handlePost}
+            disabled={uploading || compressing || !file}
+            className="text-sm font-bold disabled:opacity-40 active:scale-95 transition"
+            style={{ color: '#8B5CF6', minHeight: 44, minWidth: 44 }}
+          >
+            공유
+          </button>
+        ) : (
+          <div style={{ width: 44 }} />
+        )}
       </div>
 
       {/* ── STEP 1: 소스 선택 ── */}
@@ -763,37 +834,85 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
         </div>
       )}
 
-      {/* ── STEP 2: 편집 + 글쓰기 ── */}
+      {/* ── STEP 2: 편집 + 글쓰기 (인스타 스타일) ── */}
       {step === 'edit' && (
         <>
         <div className="flex-1 overflow-y-auto pb-24">
-          {previewUrl && (
-            <div className="w-full aspect-square bg-black overflow-hidden">
-              <img src={previewUrl} alt="미리보기" loading="eager" className="w-full h-full object-contain" />
-            </div>
-          )}
-          <div className="flex items-start gap-3 px-4 py-4">
-            <div className="w-9 h-9 rounded-full bg-[#8B5CF6] flex items-center justify-center text-white text-sm font-bold shrink-0">
-              {(user?.user_metadata?.name as string)?.charAt(0) || '나'}
-            </div>
+          {/* 캡션 영역 — 작은 썸네일 + textarea 가로 배치 (인스타 정확) */}
+          <div className="flex gap-3 px-4 pt-4 pb-3">
+            {compressing ? (
+              <div className="shrink-0 w-[72px] h-[72px] rounded bg-gray-50 flex items-center justify-center">
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#8B5CF6] border-t-transparent" />
+              </div>
+            ) : previewUrl ? (
+              <div className="shrink-0 w-[72px] h-[72px] rounded overflow-hidden bg-black">
+                <img src={previewUrl} alt="미리보기" loading="eager" className="w-full h-full object-cover" />
+              </div>
+            ) : (
+              <div className="shrink-0 w-[72px] h-[72px] rounded bg-gray-50" />
+            )}
             <textarea
               value={caption}
               onChange={e => setCaption(e.target.value)}
-              placeholder="이 순간을 설명해보세요..."
+              placeholder="문구 입력... (#해시태그 @멘션 가능)"
               rows={4}
               maxLength={2200}
-              className="flex-1 text-[16px] outline-none resize-none bg-transparent text-[#111]"
-              style={{ lineHeight: '1.7' }}
+              className="flex-1 text-[15px] outline-none resize-none bg-transparent text-[#111] min-h-[72px]"
+              style={{ lineHeight: '1.5' }}
               autoFocus
             />
           </div>
-          <div className="px-4 pb-2 flex items-center justify-between">
-            <span className="text-xs text-[#999]">{caption.length}/2,200</span>
+
+          {/* 글자 수 카운트 */}
+          <div className="px-4 pb-3 flex items-center justify-end">
+            <span className="text-[11px] text-[#bbb]">{caption.length}/2,200</span>
           </div>
 
-          {/* 업종 카테고리 */}
-          <div className="px-4 pb-4">
-            <p className="text-xs text-[#999] mb-2">어디 업종이에요?</p>
+          {/* 추천 태그 — 빠른 입력 도우미 (직접 #해시태그 입력도 textarea에서 가능) */}
+          <div className="px-4 pb-4 border-b border-gray-100">
+            <div className="flex flex-wrap gap-2">
+              {['#오늘밤', '#나이트라이프', '#클럽', '#분위기맛집', '#놀쿨', '#현장', '#댄스', '#양주'].map(tag => (
+                <button
+                  key={tag}
+                  onClick={() => setCaption(prev => prev.endsWith(' ') || prev === '' ? prev + tag + ' ' : prev + ' ' + tag + ' ')}
+                  className="rounded-full px-3 py-1.5 text-xs font-medium active:scale-95 transition"
+                  style={{ backgroundColor: '#F3F0FF', color: '#8B5CF6', minHeight: 32 }}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 옵션 메뉴 행 — 인스타 스타일 (사람 태그하기, 위치 추가, 카테고리) */}
+          <div className="border-b border-gray-100">
+            <button
+              type="button"
+              onClick={() => setCaption(prev => prev.endsWith(' ') || prev === '' ? prev + '@' : prev + ' @')}
+              className="w-full flex items-center justify-between px-4 py-3.5 active:bg-gray-50 transition"
+              style={{ minHeight: 48 }}
+            >
+              <span className="text-[15px] text-[#111]">사람 태그하기</span>
+              <svg className="w-4 h-4 text-[#bbb]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={() => setCaption(prev => prev.endsWith(' ') || prev === '' ? prev + '#' : prev + ' #')}
+              className="w-full flex items-center justify-between px-4 py-3.5 active:bg-gray-50 transition border-t border-gray-100"
+              style={{ minHeight: 48 }}
+            >
+              <span className="text-[15px] text-[#111]">해시태그 추가</span>
+              <svg className="w-4 h-4 text-[#bbb]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+
+          {/* 업종 카테고리 — 인스타의 "위치 추가"와 동일한 톤 */}
+          <div className="px-4 py-3.5 border-b border-gray-100">
+            <p className="text-[15px] text-[#111] mb-2.5">업종</p>
             <div className="flex flex-wrap gap-2">
               {CATEGORY_OPTIONS.map(cat => {
                 const active = venueCategory === cat;
@@ -816,48 +935,28 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
             </div>
           </div>
 
-          {/* 추천 태그 */}
-          <div className="px-4 pb-4">
-            <p className="text-xs text-[#999] mb-2">추천 태그</p>
-            <div className="flex flex-wrap gap-2">
-              {['#오늘밤', '#나이트라이프', '#클럽', '#분위기맛집', '#놀쿨', '#현장', '#댄스', '#양주'].map(tag => (
-                <button
-                  key={tag}
-                  onClick={() => setCaption(prev => prev.endsWith(' ') || prev === '' ? prev + tag : prev + ' ' + tag)}
-                  className="rounded-full px-3 py-1.5 text-xs font-medium active:scale-95 transition"
-                  style={{ backgroundColor: '#F3F0FF', color: '#8B5CF6', minHeight: 32 }}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* 가이드라인 */}
-          <div className="mx-4 mb-4 rounded-xl bg-gray-50 p-4">
-            <p className="text-xs font-bold text-[#555] mb-2">클립 가이드</p>
-            <ul className="text-xs text-[#777] space-y-1" style={{ lineHeight: '1.6' }}>
-              <li>현장 분위기가 느껴지는 사진이 인기 많아요</li>
-              <li>얼굴이 나오는 사진은 본인 동의 하에 올려주세요</li>
-              <li>큰 사진은 자동으로 1440px로 줄여서 올라가요</li>
-            </ul>
+          {/* 가이드라인 (작게) */}
+          <div className="px-4 py-4">
+            <p className="text-[11px] text-[#999]" style={{ lineHeight: '1.6' }}>
+              얼굴이 나오는 사진은 본인 동의 하에 · 큰 사진은 자동으로 1440px로 압축
+            </p>
           </div>
 
           {error && <p className="px-4 pb-4 text-sm text-red-500">{error}</p>}
         </div>
 
-        {/* ── 하단 고정 공유 버튼 (인스타 스타일) ── */}
+        {/* ── 하단 고정 공유 버튼 (모바일 엄지 도달 영역) ── */}
         <div
           className="border-t border-gray-100 bg-white px-4 py-3"
           style={{ paddingBottom: 'calc(12px + env(safe-area-inset-bottom))' }}
         >
           <button
             onClick={handlePost}
-            disabled={uploading || !file}
+            disabled={uploading || compressing || !file}
             className="w-full rounded-xl text-base font-bold text-white disabled:opacity-40 active:scale-[0.98] transition"
             style={{ backgroundColor: '#8B5CF6', minHeight: 52 }}
           >
-            {uploading ? '게시 중...' : '공유하기'}
+            {compressing ? '사진 처리 중...' : uploading ? '게시 중...' : '공유하기'}
           </button>
         </div>
         </>
