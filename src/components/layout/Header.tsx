@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { createClient } from '@/lib/supabase';
 import { useNewPosts, type NewPost } from '@/hooks/useNewPosts';
+import StealthToggle from '@/components/privacy/StealthToggle';
 
 /* ── 6종류 업소 카테고리 — 인기순 (헤더 상단 노출) ── */
 const categoryTabs = [
@@ -435,6 +436,25 @@ export default function Header() {
                   {item.label}
                 </Link>
               ))}
+            </div>
+
+            <div className="mx-4 border-t border-gray-100" />
+
+            {/* Privacy — 프라이버시 6대 약속 + Stealth 토글 */}
+            <div className="px-2 py-3">
+              <p className="px-3 pb-2 text-xs font-bold text-emerald-600 uppercase tracking-wider">프라이버시</p>
+              <div className="px-3 pb-2">
+                <StealthToggle />
+              </div>
+              <Link
+                to="/privacy-promise"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-[#111] active:bg-gray-50 transition-colors"
+                style={{ minHeight: 44 }}
+              >
+                <span className="text-lg">🔒</span>
+                프라이버시 6대 약속
+              </Link>
             </div>
 
             <div className="mx-4 border-t border-gray-100" />

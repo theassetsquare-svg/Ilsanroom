@@ -5,6 +5,7 @@ import Footer from '@/components/layout/Footer';
 import MobileBottomNav from '@/components/layout/MobileBottomNav';
 import BackToTop from '@/components/layout/BackToTop';
 import Toast from '@/components/ui/Toast';
+import SecretModeToast from '@/components/privacy/SecretModeToast';
 import JsonLd from '@/components/seo/JsonLd';
 
 const organizationJsonLd = {
@@ -85,6 +86,7 @@ export default function MainLayout() {
       <MobileBottomNav />
       <BackToTop />
       <Toast />
+      <SecretModeToast />
     </div>
   );
 }

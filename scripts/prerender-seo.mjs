@@ -60,12 +60,18 @@ function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdLis
   let html = baseHtml;
   const desc = truncateDesc(description || '', 150);
   const can = `${BASE_URL}${canonical}`;
-  const og = ogImage || OG_IMAGE;
 
-  // title
+  // ★ 프라이버시 — 카톡 공유 위장
+  // og:* 와 twitter:* 는 항상 중립 고정. 업소·업종 단어 절대 노출 X.
+  // <title> 와 <meta name=description> 만 페이지별 SEO 키워드 사용 (Google 검색 노출).
+  const SAFE_OG_TITLE = '놀쿨 — 오늘 밤 가이드';
+  const SAFE_OG_DESC = '전국 실시간. 친구·연인과 어디 갈지 한 곳에서.';
+  const SAFE_OG_IMAGE = `${BASE_URL}/og/nolcool-og.jpg`;
+
+  // title (SEO — Google·검색결과)
   html = html.replace(/<title>[^<]*<\/title>/, `<title>${escHtml(title)}</title>`);
 
-  // meta description
+  // meta description (SEO — Google snippet)
   html = html.replace(
     /<meta name="description" content="[^"]*"/,
     `<meta name="description" content="${escHtml(desc)}"`
@@ -77,16 +83,16 @@ function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdLis
     html = html.replace('</head>', `    ${kwMeta}\n  </head>`);
   }
 
-  // og:title
+  // og:title — 카톡 공유 위장 (중립 고정)
   html = html.replace(
     /<meta property="og:title" content="[^"]*"/,
-    `<meta property="og:title" content="${escHtml(title)}"`
+    `<meta property="og:title" content="${escHtml(SAFE_OG_TITLE)}"`
   );
 
-  // og:description
+  // og:description — 카톡 공유 위장 (중립 고정)
   html = html.replace(
     /<meta property="og:description" content="[^"]*"/,
-    `<meta property="og:description" content="${escHtml(desc)}"`
+    `<meta property="og:description" content="${escHtml(SAFE_OG_DESC)}"`
   );
 
   // og:url
@@ -95,28 +101,28 @@ function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdLis
     `<meta property="og:url" content="${escHtml(can)}"`
   );
 
-  // og:image
+  // og:image — 카톡 공유 위장 (업소 사진 X, 중립 로고)
   html = html.replace(
     /<meta property="og:image" content="[^"]*"/,
-    `<meta property="og:image" content="${escHtml(og)}"`
+    `<meta property="og:image" content="${escHtml(SAFE_OG_IMAGE)}"`
   );
 
-  // twitter:title
+  // twitter:title — 중립
   html = html.replace(
     /<meta name="twitter:title" content="[^"]*"/,
-    `<meta name="twitter:title" content="${escHtml(title)}"`
+    `<meta name="twitter:title" content="${escHtml(SAFE_OG_TITLE)}"`
   );
 
-  // twitter:description
+  // twitter:description — 중립
   html = html.replace(
     /<meta name="twitter:description" content="[^"]*"/,
-    `<meta name="twitter:description" content="${escHtml(desc)}"`
+    `<meta name="twitter:description" content="${escHtml(SAFE_OG_DESC)}"`
   );
 
-  // twitter:image
+  // twitter:image — 중립
   html = html.replace(
     /<meta name="twitter:image" content="[^"]*"/,
-    `<meta name="twitter:image" content="${escHtml(og)}"`
+    `<meta name="twitter:image" content="${escHtml(SAFE_OG_IMAGE)}"`
   );
 
   // canonical
