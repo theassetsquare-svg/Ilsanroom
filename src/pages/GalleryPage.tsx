@@ -675,18 +675,7 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
         <h2 className="text-base font-bold text-[#111]">
           {step === 'select' ? '새 게시물' : step === 'edit' ? '새 게시물' : '게시 중...'}
         </h2>
-        {step === 'edit' ? (
-          <button
-            onClick={handlePost}
-            disabled={uploading}
-            className="text-sm font-bold text-[#8B5CF6] disabled:opacity-40"
-            style={{ minHeight: 44 }}
-          >
-            공유
-          </button>
-        ) : (
-          <div style={{ width: 44 }} />
-        )}
+        <div style={{ width: 44 }} />
       </div>
 
       {/* ── STEP 1: 소스 선택 ── */}
@@ -739,7 +728,8 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
 
       {/* ── STEP 2: 편집 + 글쓰기 ── */}
       {step === 'edit' && (
-        <div className="flex-1 overflow-y-auto">
+        <>
+        <div className="flex-1 overflow-y-auto pb-24">
           {previewUrl && (
             <div className="w-full aspect-square bg-black overflow-hidden">
               <img src={previewUrl} alt="미리보기" loading="eager" className="w-full h-full object-contain" />
@@ -818,6 +808,22 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
 
           {error && <p className="px-4 pb-4 text-sm text-red-500">{error}</p>}
         </div>
+
+        {/* ── 하단 고정 공유 버튼 (인스타 스타일) ── */}
+        <div
+          className="border-t border-gray-100 bg-white px-4 py-3"
+          style={{ paddingBottom: 'calc(12px + env(safe-area-inset-bottom))' }}
+        >
+          <button
+            onClick={handlePost}
+            disabled={uploading || !file}
+            className="w-full rounded-xl text-base font-bold text-white disabled:opacity-40 active:scale-[0.98] transition"
+            style={{ backgroundColor: '#8B5CF6', minHeight: 52 }}
+          >
+            {uploading ? '게시 중...' : '공유하기'}
+          </button>
+        </div>
+        </>
       )}
 
       {/* ── STEP 3: 업로드 중 ── */}
