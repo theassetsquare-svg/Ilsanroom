@@ -569,15 +569,51 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
 
   const CATEGORY_OPTIONS = ['나이트', '클럽', '라운지', '호빠'];
 
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  /* ── 모바일 OOM 방지: 1440px 리사이즈 + JPEG 85% 압축 ── */
+  async function compressImage(orig: File, maxDim = 1440, quality = 0.85): Promise<File> {
+    // createImageBitmap = iOS Safari 15+ / Chrome 모두 지원, 메모리 효율 ↑
+    const bitmap = await createImageBitmap(orig);
+    let { width, height } = bitmap;
+    if (width > maxDim || height > maxDim) {
+      const ratio = Math.min(maxDim / width, maxDim / height);
+      width = Math.round(width * ratio);
+      height = Math.round(height * ratio);
+    }
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) { bitmap.close(); throw new Error('canvas context unavailable'); }
+    ctx.drawImage(bitmap, 0, 0, width, height);
+    bitmap.close();
+    const blob = await new Promise<Blob | null>(r => canvas.toBlob(r, 'image/jpeg', quality));
+    if (!blob) throw new Error('compress failed');
+    const newName = orig.name.replace(/\.\w+$/, '') + '.jpg';
+    return new File([blob], newName, { type: 'image/jpeg' });
+  }
+
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
-    if (f.size > 10 * 1024 * 1024) { setError('10MB 이하의 사진만 올릴 수 있습니다'); return; }
     if (!f.type.startsWith('image/')) { setError('사진 파일만 올릴 수 있습니다'); return; }
-    setFile(f);
-    setPreviewUrl(URL.createObjectURL(f));
-    setStep('edit');
+    // 원본 30MB까지 허용 (압축 후 사이즈 작아짐)
+    if (f.size > 30 * 1024 * 1024) { setError('너무 큰 사진이에요. 30MB 이하 사진을 올려주세요'); return; }
     setError('');
+    setStep('edit');
+    try {
+      const compressed = await compressImage(f);
+      setFile(compressed);
+      setPreviewUrl(URL.createObjectURL(compressed));
+    } catch (err: any) {
+      // 압축 실패하면 원본 시도 (단 10MB 초과면 거부)
+      if (f.size > 10 * 1024 * 1024) {
+        setError('사진을 처리할 수 없어요. 다른 사진을 시도해주세요');
+        setStep('select');
+        return;
+      }
+      setFile(f);
+      setPreviewUrl(URL.createObjectURL(f));
+    }
   };
 
   const goBack = () => {
@@ -803,7 +839,7 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
             <ul className="text-xs text-[#777] space-y-1" style={{ lineHeight: '1.6' }}>
               <li>현장 분위기가 느껴지는 사진이 인기 많아요</li>
               <li>얼굴이 나오는 사진은 본인 동의 하에 올려주세요</li>
-              <li>10MB 이하 사진만 올릴 수 있어요</li>
+              <li>큰 사진은 자동으로 1440px로 줄여서 올라가요</li>
             </ul>
           </div>
 
