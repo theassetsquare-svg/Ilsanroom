@@ -167,8 +167,12 @@ function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdLis
   }
 
   // SSR body content — inject inside root div for crawlers (React replaces on hydration)
+  // 정규식으로 root div 속성 변동 허용 (style 등)
   if (ssrBody) {
-    html = html.replace('<div id="root"></div>', `<div id="root"><div class="ssr-seo" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">${ssrBody}</div></div>`);
+    html = html.replace(
+      /<div id="root"([^>]*)><\/div>/,
+      `<div id="root"$1><div class="ssr-seo" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">${ssrBody}</div></div>`
+    );
   }
 
   return html;
