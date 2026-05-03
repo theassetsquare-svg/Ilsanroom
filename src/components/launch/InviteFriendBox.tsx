@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trackEvent } from '@/lib/visitor-tracker';
 
 /* 카톡 원클릭 친구 초대 박스 — 입소문 가속기.
    Web Share API (모바일 카톡/메시지 자동) → 폴백 = 클립보드 복사.
@@ -11,6 +12,7 @@ export default function InviteFriendBox() {
   const [copied, setCopied] = useState(false);
 
   const share = async () => {
+    trackEvent('share_click', { url: INVITE_URL, channel: 'home_invite_box' });
     // 1. Web Share API (모바일 = 카톡/메시지/메일 시트 열림)
     if (typeof navigator !== 'undefined' && 'share' in navigator) {
       try {
