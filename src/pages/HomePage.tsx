@@ -10,6 +10,7 @@ import JsonLd from '@/components/seo/JsonLd';
 import { useFavorites as useFavoritesHook } from '@/hooks/useFavorites';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import LiveStats from '@/components/live/LiveStats';
+import { TemperatureRanking } from '@/components/community/TemperatureRanking';
 import { articles as magazineArticles } from '@/data/magazine-articles';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -760,15 +761,17 @@ export default function HomePage() {
         itemListElement: popularVenues.slice(0, 10).map((v, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'LocalBusiness', name: v.nameKo, address: v.address } })),
       }} />
 
-      {/* ═══ 1. HERO (압축) + 6개 카테고리 — 모바일 첫 화면에 다 보이게 ═══ */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#1a0533] via-[#2d1b69] to-[#0f172a]">
+      {/* ═══ 1. HERO V2 (다크 + 네온) + 6개 카테고리 ═══ */}
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0A0A0F 0%, #1F0A2A 50%, #0A0A1F 100%)' }}>
+        {/* 네온 글로우 파티클 */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(8)].map((_, i) => (
+          {[...Array(12)].map((_, i) => (
             <div key={i} className="absolute rounded-full animate-pulse" style={{
-              width: `${4 + (i % 3) * 3}px`, height: `${4 + (i % 3) * 3}px`,
-              top: `${10 + (i * 9) % 80}%`, left: `${5 + (i * 13) % 90}%`,
-              background: i % 2 === 0 ? '#8B5CF6' : '#EC4899',
-              opacity: 0.3, animationDelay: `${i * 0.3}s`, animationDuration: `${2 + i % 3}s`,
+              width: `${4 + (i % 3) * 4}px`, height: `${4 + (i % 3) * 4}px`,
+              top: `${8 + (i * 8) % 84}%`, left: `${4 + (i * 11) % 92}%`,
+              background: i % 3 === 0 ? '#FF2E93' : i % 3 === 1 ? '#A855F7' : '#FFD700',
+              opacity: 0.4, animationDelay: `${i * 0.25}s`, animationDuration: `${2 + i % 3}s`,
+              boxShadow: i % 3 === 0 ? '0 0 12px #FF2E93' : i % 3 === 1 ? '0 0 12px #A855F7' : '0 0 12px #FFD700',
             }} />
           ))}
         </div>
@@ -829,6 +832,11 @@ export default function HomePage() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* ═══ 1.5 실시간 밤의 온도 TOP 10 — 명예욕 자극, 회원 활동 유도 ═══ */}
+      <section className="px-4 py-3 max-w-3xl mx-auto">
+        <TemperatureRanking limit={5} />
       </section>
 
       {/* ═══ 2. 미니 성향테스트 — "3초 만에 오늘 밤 결정" (→ /quiz 유도) ═══ */}
