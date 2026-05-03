@@ -9,7 +9,7 @@ const sectionDefs = [
   { title: "업소후기", description: "직접 가본 솔직한 방문 후기", href: "/community/reviews", icon: "⭐", category: "reviews", hookLine: "별점 4점 이상만 모아봤더니 공통점이 있었다" },
   { title: "오늘어디갈까", description: "오늘 밤 어디 갈지 같이 고민하는 곳", href: "/community/qna", icon: "🗺️", category: "discussion", hookLine: "강남 vs 홍대, 오늘 밤 정답은?" },
   { title: "조각모집", description: "같이 놀러갈 사람 구하는 곳", href: "/community/jogak", icon: "🧩", category: "party", hookLine: "모집 마감 임박! 빈자리 3개 남음" },
-  { title: "꿀팁", description: "밤놀이 고수들의 실전 노하우", href: "/community/tips", icon: "💡", category: "tips", hookLine: "입장료 아끼는 법, 진작 알았으면..." },
+  { title: "꿀팁", description: "밤놀이 고수들의 실전 노하우", href: "/community/tips", icon: "💡", category: "tips", hookLine: "줄 안 서고 들어가는 법, 진작 알았으면..." },
   { title: "자유게시판", description: "자유롭게 이야기 나누는 공간", href: "/community/free", icon: "💬", category: "free", hookLine: "어젯밤 일 아직도 생각나서 씀" },
 ];
 
@@ -247,7 +247,7 @@ export default function CommunityPage() {
               {[
                 { id: 's1', cat: '후기', title: '레이스 금요일 다녀옴 — 역시 사운드 미쳤다', likes: 24, comments: 8 },
                 { id: 's2', cat: '자유', title: '택시비가 술값보다 나온 사람 나만?? ㅋㅋ', likes: 41, comments: 19 },
-                { id: 's3', cat: '팁', title: '입장료 아끼는 법 3가지 (진짜 됨)', likes: 31, comments: 6 },
+                { id: 's3', cat: '팁', title: '평일에 가야 자리 잡는 이유 3가지', likes: 31, comments: 6 },
                 { id: 's4', cat: '후기', title: '찬스돔 부킹 솔직후기 — 강호동 실장 대박', likes: 28, comments: 14 },
                 { id: 's5', cat: '모집', title: '토요일 강남 같이 갈 사람 2명 구함', likes: 14, comments: 7 },
               ].map((post, idx) => (

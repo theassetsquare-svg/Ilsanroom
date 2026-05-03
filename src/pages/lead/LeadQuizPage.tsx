@@ -30,11 +30,11 @@ const QUESTIONS = [
   },
   {
     id: 'budget',
-    question: '1인당 예산은?',
+    question: '원하는 무드 강도는?',
     options: [
-      { value: 'low', label: '3만원 이하', icon: '💰', desc: '가성비 중심' },
-      { value: 'mid', label: '3~7만원', icon: '💎', desc: '적당한 퀄리티' },
-      { value: 'high', label: '7만원 이상', icon: '👑', desc: '프리미엄' },
+      { value: 'low', label: '캐주얼', icon: '☕', desc: '편하게 한잔' },
+      { value: 'mid', label: '밸런스', icon: '🍷', desc: '적당한 퀄리티' },
+      { value: 'high', label: '프리미엄', icon: '👑', desc: '격이 다른 무드' },
     ],
   },
 ] as const;
@@ -56,7 +56,7 @@ function getRecommendation(answers: QuizAnswer) {
     answers.vibe === 'moderate' ? '소셜 타입' : '파티 타입';
 
   const budgetLabel =
-    answers.budget === 'low' ? '가성비파' :
+    answers.budget === 'low' ? '캐주얼파' :
     answers.budget === 'mid' ? '밸런스파' : '프리미엄파';
 
   const companionLabel =
@@ -71,7 +71,7 @@ function getRecommendation(answers: QuizAnswer) {
       answers.vibe === 'calm'
         ? '조용한 대화와 분위기 있는 공간을 선호하시는군요. 프라이빗한 라운지나 칵테일바가 딱 맞습니다. 예약하고 가면 대기 없이 바로 입장 가능한 곳들을 추천드립니다.'
         : answers.vibe === 'moderate'
-        ? '적당한 활기 속에서 즐기는 타입이시네요. 음악은 있지만 대화가 되는 곳, 안주가 맛있는 곳 위주로 추천드립니다. 2차 이동 없이 한 곳에서 해결되는 곳들이에요.'
+        ? '적당한 활기 속에서 즐기는 타입이시네요. 음악은 있지만 대화가 되는 곳, 안주가 맛있는 곳 위주로 추천드립니다. 자리 옮기지 않고 한 곳에서 해결되는 곳들이에요.'
         : '에너지 넘치는 밤을 즐기시는 분이군요! 사운드 시스템 좋고, DJ 라인업 탄탄한 곳 위주로 추천드립니다. 금토 자정 이후가 피크타임이에요.',
   };
 }

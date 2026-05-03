@@ -284,9 +284,9 @@ const SEED_REVIEW_POOL = [
   { text: '금요일에 갔는데 사람 진짜 많았음. 부스 예약하고 가길 잘했다. 음악은 요즘 유행하는 곡 위주로 틀어줘서 좋았는데 화장실이 좀 멀었음', rating: 4 },
   { text: '친구 생일에 갔는데 분위기 최고였음. 생일 이벤트로 케이크랑 샴페인 서비스 해줬다. 직원들 친절하고 청결 상태도 괜찮았음', rating: 5 },
   { text: '주말 피크타임에 가면 웨이팅 있을 수 있음. 평일에 가면 여유롭고 서비스도 더 좋음. 양주 구성이 다양해서 선택지가 많은 편', rating: 4 },
-  { text: '인테리어 리뉴얼 하고 나서 확실히 달라졌음. 조명이랑 음향 퀄리티가 올라갔고 부스도 넓어짐. 가격대는 비슷한데 만족도는 훨씬 높아졌다', rating: 5 },
+  { text: '인테리어 리뉴얼 하고 나서 확실히 달라졌음. 조명이랑 음향 퀄리티가 올라갔고 부스도 넓어짐. 만족도가 훨씬 높아졌다', rating: 5 },
   { text: '세 번째 방문인데 올 때마다 느끼는게 실장님이 단골 관리를 잘함. 전화하면 바로 자리 잡아주고 취향도 기억해줌', rating: 5 },
-  { text: '솔직히 가격이 좀 있긴 한데 그만큼 퀄리티가 나옴. 처음 가는 사람한테는 부담될 수 있지만 한번 가면 왜 비싼지 이해됨', rating: 4 },
+  { text: '솔직히 격이 있는 곳이긴 한데 그만큼 퀄리티가 나옴. 처음 가는 사람한테는 부담될 수 있지만 한번 가면 왜 단골이 많은지 이해됨', rating: 4 },
   { text: '혼자 갔는데 전혀 어색하지 않았음. 직원분이 잘 챙겨줘서 편하게 놀았다. 다만 토요일 밤에는 예약 필수', rating: 4 },
   { text: '분위기는 좋은데 환기가 좀 아쉬웠음. 그래도 음악 선곡이랑 조명은 진짜 잘함. 친구들이랑 가기 좋은 곳', rating: 3 },
   { text: '여기 단골인데 최근에 새로 온 DJ가 선곡을 기가 막히게 함. 예전보다 확실히 분위기가 좋아졌음. 강추', rating: 5 },
@@ -294,7 +294,7 @@ const SEED_REVIEW_POOL = [
   { text: '토요일에 웨이팅 30분 했는데 들어가니까 그만한 가치는 있었음. 사운드 시스템이 진짜 좋고 플로어도 넓어서 답답하지 않았다', rating: 4 },
   { text: '처음 와봤는데 생각보다 편안한 분위기라 좋았음. 화려한 곳 찾는 사람한테는 좀 심심할 수도 있지만 편하게 놀기엔 딱', rating: 4 },
   { text: '여자끼리 갔는데 웨이터가 잘 챙겨줘서 불편한 상황 없었음. 화장실도 깨끗하고 동선도 편함', rating: 5 },
-  { text: '양주 종류가 다양하고 가격대별로 선택지가 있어서 좋았음. 입문용으로 괜찮은 곳. 단 주말에는 미리 전화해야 됨', rating: 4 },
+  { text: '양주 종류가 다양하고 등급별로 선택지가 있어서 좋았음. 입문용으로 괜찮은 곳. 단 주말에는 미리 전화해야 됨', rating: 4 },
 ];
 
 const SEED_NAMES = [
@@ -452,7 +452,7 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
               autoFocus
             />
           </div>
-          <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
+          <div className="fixed bottom-14 md:bottom-0 left-0 right-0 px-4 py-4 border-t z-40" style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
             {submitError && <p className="mb-2 text-center text-sm" style={{ color: '#EF4444' }}>{submitError}</p>}
             <button onClick={handleSubmit} disabled={!text.trim() || rating === 0 || submitting}
               className="w-full rounded-xl py-4 text-base font-bold transition active:scale-[0.98] disabled:opacity-30"

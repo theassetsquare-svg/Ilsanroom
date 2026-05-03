@@ -40,7 +40,7 @@ const REGIONS = [
 export default function NightlifeGuidePage() {
   useDocumentMeta(
     '서울경기 나이트라이프 완벽 가이드 — 현지인만 아는 진짜 핫플',
-    '서울 경기 나이트라이프 현지인 추천 가이드. 강남 홍대 이태원 일산 클럽 라운지 바 드레스코드 가격대 인사이더 팁 총정리.'
+    '서울 경기 나이트라이프 현지인 추천 가이드. 강남 홍대 이태원 일산 클럽 라운지 바 드레스코드 무드 인사이더 팁 총정리.'
   );
 
   const [name, setName] = useState('');
@@ -72,7 +72,7 @@ export default function NightlifeGuidePage() {
           현지인만 아는 진짜 핫플. 관광객용 리스트가 아닌, 매주 밤을 즐기는 사람들의 솔직한 추천.
         </p>
         <p className="text-sm text-neon-muted">
-          드레스코드부터 가격대, 최적 방문 시간까지 — 이 가이드 하나면 어디서든 실패 없는 밤.
+          드레스코드부터 무드, 최적 방문 시간까지 — 이 가이드 하나면 어디서든 실패 없는 밤.
         </p>
       </section>
 

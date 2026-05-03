@@ -363,7 +363,7 @@ export default function PartyRecruitPage() {
                 </Suspense>
               </div>
             </div>
-            <div className="fixed bottom-0 left-0 right-0 px-4 py-4 border-t"  style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
+            <div className="fixed bottom-14 md:bottom-0 left-0 right-0 px-4 py-4 border-t z-40"  style={{ backgroundColor: '#FFFFFF', borderColor: '#E5E7EB' }}>
               <button onClick={handleSubmit} disabled={submitting || !writeTitle.trim() || !writeContent.trim()}
                 className="w-full rounded-xl py-4 text-base font-bold transition active:scale-[0.98] disabled:opacity-30"
                 style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 56 }}>

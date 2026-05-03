@@ -63,7 +63,7 @@ function ReviewCard({ review, onUpvote }: { review: Review; onUpvote: (id: strin
       {review.images && review.images.length > 0 && (
         <div className="mt-3 flex gap-2 overflow-x-auto">
           {review.images.map((url, i) => (
-            <img key={i} src={url} alt="" className="h-24 w-24 rounded-lg object-cover border border-neon-border flex-shrink-0" />
+            <img key={i} src={url} alt="후기 사진" loading="lazy" width={96} height={96} className="h-24 w-24 rounded-lg object-cover border border-neon-border flex-shrink-0" />
           ))}
         </div>
       )}

@@ -18,7 +18,7 @@ const regions = [
 ];
 
 export default function NightsPage() {
-  useDocumentMeta('라이브 밴드가 울리면, 모르는 사람도 파트너가 된다', '소셜댄스 나이트 58곳 총집합. 강남 부산 수원 일산 부킹 문화부터 드레스코드 입장료 시간대별 분위기까지. 부스·룸 구성, 양주 시세, 첫방문 매너 가이드. 첫 발 딛기 전에 읽어라.');
+  useDocumentMeta('라이브 밴드가 울리면, 모르는 사람도 파트너가 된다', '소셜댄스 나이트 58곳 총집합. 강남 부산 수원 일산 부킹 문화부터 드레스코드 시간대별 분위기까지. 부스·룸 구성, 양주 라인업, 첫방문 매너 가이드. 첫 발 딛기 전에 읽어라.');
   const venues = getVenuesByCategory('night');
   const featured = venues.find(v => v.isPremium) || venues[0];
 
@@ -60,7 +60,7 @@ export default function NightsPage() {
       <BrowseOtherCategories currentPath="/nights" />
 
       <div className="rounded-xl bg-gradient-to-r from-blue-50 to-white border border-blue-200 p-4 text-center">
-        <p className="text-sm font-bold text-blue-600">👇 부킹 시스템 · 양주 시세 · 첫 방문 매너까지 아래에 전부 적었다</p>
+        <p className="text-sm font-bold text-blue-600">👇 부킹 시스템 · 양주 라인업 · 첫 방문 매너까지 아래에 전부 적었다</p>
         <p className="text-xs text-[#999] mt-1">처음 가는 사람도 단골처럼 즐기는 방법</p>
       </div>
 
@@ -92,7 +92,7 @@ export default function NightsPage() {
 
       <FirstVisitGuide category="나이트"
         dress="세미 포멀~포멀 권장. 정장 또는 셋업이 기본. 너무 캐주얼하면 무드에 안 맞을 수 있음."
-        budget="방문비 1~3만원 + 양주 1병 10~30만원. 부스/룸 추가 비용 발생. 웨이터 팁 별도."
+        budget="양주 위주 운영. 부스/룸 구성과 웨이터 매너는 매장별로 확인."
         alone="웨이터에게 안내 요청하면 부스 배정. 부킹 시스템으로 파트너 매칭 가능."
         reservation="좌석은 미리 예약 권장. 금토 저녁에는 일찍 가야 좋은 자리 확보 가능."
       />

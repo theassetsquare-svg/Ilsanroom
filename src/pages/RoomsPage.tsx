@@ -17,7 +17,7 @@ const regions = [
 ];
 
 export default function RoomsPage() {
-  useDocumentMeta('바깥 소리 하나 안 들리는 방, 그게 룸이다', '4인 소형부터 30인 단체석까지 룸 전체 카테고리. 인원별 사이즈, 발렌타인 조니워커 양주 라인업, 예약 팁, 시세 비교. 일산 강남 수원 부산 룸 정보 한눈에. 1인 7~20만원 객단가 가이드.');
+  useDocumentMeta('바깥 소리 하나 안 들리는 방, 그게 룸이다', '4인 소형부터 30인 단체석까지 룸 전체 카테고리. 인원별 사이즈, 발렌타인 조니워커 양주 라인업, 예약 팁, 분위기 비교. 일산 강남 수원 부산 룸 정보 한눈에 정리.');
   const venues = getVenuesByCategory('room');
   const featured = venues.find(v => v.isPremium) || venues[0];
 

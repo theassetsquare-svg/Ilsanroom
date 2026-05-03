@@ -58,7 +58,7 @@ function RoomCard({ venue, region }: { venue: Venue; region: string }) {
 export default function RegionalRoomsPage() {
   const { region = '' } = useParams<{ region: string }>();
   const regionKo = regionNames[region] || region;
-  useDocumentMeta(`${regionKo} 룸 — 4인부터 30인 단체석까지 모아보기`, `${regionKo} 프라이빗 룸 전체 리스트. 인원별 사이즈 4인 소형부터 단체석, 발렌타인 조니워커 양주 라인업, 예약 팁, 시세 비교. ${regionKo} 룸 정보 한눈에.`);
+  useDocumentMeta(`${regionKo} 룸 — 4인부터 30인 단체석까지 모아보기`, `${regionKo} 프라이빗 룸 전체 리스트. 인원별 사이즈 4인 소형부터 단체석, 발렌타인 조니워커 양주 라인업, 예약 팁, 분위기 비교. ${regionKo} 룸 정보 한눈에.`);
   const rooms = getVenuesByCategoryAndRegion('room', region);
   const [activePurpose, setActivePurpose] = useState<string | null>(null);
   const featured = rooms.find(v => v.isPremium) || rooms[0];

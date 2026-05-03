@@ -99,9 +99,9 @@ const faqCategories: FaqCategory[] = [
           "네, 1년 과금 시 20% 할인이 적용됩니다. 프로 플랜 기준 월 ₩49,000 → 1년 ₩470,400(월 ₩39,200)으로 이용할 수 존재합니다. 1년 플랜 전환은 관리화면에서 언제든 지원됩니다.",
       },
       {
-        question: "무료 체험 기간이 끝나면 어떤 과정을 거치나요?",
+        question: "무료 사용 기간이 끝나면 어떤 과정을 거치나요?",
         answer:
-          "14일 무료 체험 종료 후 자동으로 무료 플랜으로 전환됩니다. 별도의 과금이 발생하지 않으며, 원할 때 유료 플랜으로 업그레이드할 수 존재합니다. 체험 중 등록한 데이터는 모두 유지됩니다.",
+          "14일 무료 사용 종료 후 자동으로 무료 플랜으로 전환됩니다. 별도의 과금이 발생하지 않으며, 원할 때 유료 플랜으로 업그레이드할 수 존재합니다. 체험 중 등록한 데이터는 모두 유지됩니다.",
       },
     ],
   },
@@ -205,7 +205,7 @@ function CategorySection({ category }: { category: FaqCategory }) {
 }
 
 export default function HelpPage() {
-  useDocumentMeta('자주 묻는 질문, 여기 다 답해놨다', '나이 제한, 복장 규정, 입장료, 예약 방법, 환불 정책, 회원 등급, 포인트 사용까지 자주 묻는 질문 한 번에 해결. 검색 한 번이면 답이 나오는 통합 FAQ 페이지.');
+  useDocumentMeta('자주 묻는 질문, 여기 다 답해놨다', '나이 제한, 복장 규정, 예약 방법, 환불 정책, 회원 등급, 포인트 사용까지 자주 묻는 질문 한 번에 해결. 검색 한 번이면 답이 나오는 통합 FAQ 페이지.');
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 

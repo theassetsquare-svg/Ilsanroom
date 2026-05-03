@@ -51,7 +51,7 @@ export default function SafetyPage() {
           </div>
           <div className="flex gap-3 items-start">
             <span className="shrink-0 text-neon-green">●</span>
-            <p>귀가 전 가족이나 친구에게 현재 위치와 귀가 예정 시간을 알려주세요.</p>
+            <p>귀가 전 친구에게 현재 위치와 귀가 예정 시간을 알려주세요.</p>
           </div>
         </div>
       </div>

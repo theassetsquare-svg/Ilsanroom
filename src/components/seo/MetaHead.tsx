@@ -13,8 +13,8 @@ const categoryNames: Record<VenueCategory, string> = {
 const categoryDescriptions: Record<VenueCategory, { title: string; desc: string; ogDesc: string }> = {
   club: {
     title: '전국 EDM·힙합 파티 공간 비교',
-    desc: '강남, 홍대, 이태원 등 전국 주요 도시 DJ 파티 공간을 한눈에 비교하세요. 드레스코드, 입장료, 분위기까지 솔직하게.',
-    ogDesc: '강남·홍대·이태원 파티 공간 비교. 드레스코드, 입장료, 분위기 솔직 리뷰.',
+    desc: '강남, 홍대, 이태원 등 전국 주요 도시 DJ 파티 공간을 한눈에 비교하세요. 드레스코드, 분위기, 무드까지 솔직하게.',
+    ogDesc: '강남·홍대·이태원 파티 공간 비교. 드레스코드, 분위기, 무드 솔직 리뷰.',
   },
   night: {
     title: '소셜댄스·부킹 명소 가이드',

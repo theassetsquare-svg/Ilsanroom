@@ -261,7 +261,7 @@ export default function GalleryPage() {
             <div className="relative">
               <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-300">
                 {user?.user_metadata?.avatar_url ? (
-                  <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
+                  <img src={user.user_metadata.avatar_url} alt="내 프로필" loading="lazy" width={64} height={64} className="w-full h-full rounded-full object-cover" />
                 ) : (
                   <svg className="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -331,7 +331,7 @@ export default function GalleryPage() {
                     <div className="w-9 h-9 rounded-full overflow-hidden bg-gradient-to-br from-[#8B5CF6] to-[#EC4899] p-[2px]">
                       <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden">
                         {clip.avatar_url ? (
-                          <img src={clip.avatar_url} alt="" className="w-full h-full object-cover" />
+                          <img src={clip.avatar_url} alt={`${clip.author} 프로필`} loading="lazy" width={36} height={36} className="w-full h-full object-cover" />
                         ) : (
                           <span className="text-sm font-bold text-[#8B5CF6]">{clip.author.charAt(0)}</span>
                         )}
@@ -684,7 +684,7 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
         <div className="flex-1 overflow-y-auto">
           {previewUrl && (
             <div className="w-full aspect-square bg-black overflow-hidden">
-              <img src={previewUrl} alt="미리보기" className="w-full h-full object-contain" />
+              <img src={previewUrl} alt="미리보기" loading="eager" className="w-full h-full object-contain" />
             </div>
           )}
           <div className="flex items-start gap-3 px-4 py-4">

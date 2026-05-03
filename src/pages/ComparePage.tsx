@@ -179,7 +179,7 @@ export default function ComparePage() {
         {/* 중간 퀴즈 */}
         <MidContentQuiz
           question="업소 고를 때 뭐가 제일 중요해?"
-          options={['분위기가 전부다', '양주 종류와 가성비', '위치가 가까운 곳', '후기 좋은 곳이 답이다']}
+          options={['분위기가 전부다', '양주 라인업', '위치가 가까운 곳', '후기 좋은 곳이 답이다']}
           seed="compare-quiz"
         />
 

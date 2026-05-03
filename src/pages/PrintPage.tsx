@@ -5,7 +5,7 @@ import PrintButton from '@/components/ui/PrintButton';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function PrintPage() {
-  useDocumentMeta('매장 정보 인쇄 — 종이로 출력', '업소 상세 정보(주소·전화·영업시간·메뉴·시세·예약 안내)를 종이로 깔끔하게 출력. 인쇄 최적화 레이아웃, 거래처 전달용 1페이지 요약본 생성 가능.');
+  useDocumentMeta('매장 정보 인쇄 — 종이로 출력', '업소 상세 정보(주소·전화·영업시간·예약 안내)를 종이로 깔끔하게 출력. 인쇄 최적화 레이아웃, 거래처 전달용 1페이지 요약본 생성 가능.');
   const { slug } = useParams<{ slug: string }>();
   const venue = slug ? getVenueBySlug(slug) : undefined;
 

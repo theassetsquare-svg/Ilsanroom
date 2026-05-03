@@ -16,7 +16,7 @@ function getTimeMult(): number {
 const SEED_HOT_POSTS = [
   { id: 'h1', title: '강남 레이스 금요일 다녀온 솔직후기', category: '후기', likes: 47, comments: 23 },
   { id: 'h2', title: '택시비가 술값보다 나온 사람 나만??', category: '자유', likes: 38, comments: 19 },
-  { id: 'h3', title: '입장료 아끼는 법 3가지 (진짜 됨)', category: '팁', likes: 34, comments: 11 },
+  { id: 'h3', title: '평일에 가야 자리 잡는 이유 3가지', category: '팁', likes: 34, comments: 11 },
   { id: 'h4', title: '수원찬스돔 부킹 솔직후기', category: '후기', likes: 31, comments: 15 },
   { id: 'h5', title: '토요일 강남 같이 갈 사람 2명 구함', category: '모집', likes: 22, comments: 8 },
   { id: 'h6', title: '호빠 혼자 가면 진짜 괜찮음??', category: 'Q&A', likes: 19, comments: 27 },

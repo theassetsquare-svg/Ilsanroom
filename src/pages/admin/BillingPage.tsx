@@ -1,7 +1,7 @@
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function BillingPage() {
-  useDocumentMeta('구독·결제 내역 한눈에', '현재 요금제·결제 이력·변경·해지 한 페이지에서 처리. 무료/스타트/프로/VIP 4단계 요금제. 14일 무료 체험 후 자동 결제.');
+  useDocumentMeta('구독·결제 내역 한눈에', '현재 요금제·결제 이력·변경·해지 한 페이지에서 처리. 무료/스타트/프로/VIP 4단계 요금제. 14일 무료 사용 후 자동 결제.');
   const paymentHistory = [
     {
       id: "INV-2026-001",

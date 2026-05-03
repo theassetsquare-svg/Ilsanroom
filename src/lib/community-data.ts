@@ -129,7 +129,7 @@ export const freePosts: Post[] = [
 export const reviewPosts: Post[] = [
   {
     id: 'r1', board: 'reviews', title: '강남청담클럽 레이스 주말 방문 후기',
-    content: '사운드 시스템이 정말 좋았고, DJ 라인업도 만족스러웠습니다. VIP 테이블 서비스도 깔끔하고 직원들이 친절했어요. 다만 주말이라 사람이 엄청 많아서 댄스플로어는 좀 답답했습니다. 가격대는 VIP 테이블 80만원 정도였고, 입장료는 3만원이었습니다. 전체적으로 만족스러운 경험이었고 다음에 또 가고 싶습니다.',
+    content: '사운드 시스템이 정말 좋았고, DJ 라인업도 만족스러웠습니다. VIP 테이블 서비스도 깔끔하고 직원들이 친절했어요. 다만 주말이라 사람이 엄청 많아서 댄스플로어는 좀 답답했습니다. 전체적으로 만족스러운 경험이었고 다음에 또 가고 싶습니다.',
     excerpt: '사운드 시스템이 정말 좋았고, DJ 라인업도 만족스러웠습니다...',
     author: authors.clubmaster, createdAt: '2026-03-13T10:00:00Z',
     views: 567, likes: 89, isLiked: false, isBookmarked: false,
@@ -140,7 +140,7 @@ export const reviewPosts: Post[] = [
   },
   {
     id: 'r2', board: 'reviews', title: '강남청담클럽 사운드 금요일 밤 솔직 리뷰',
-    content: '음악은 항상 좋은데 주말에는 사람이 너무 많아서 조금 답답할 수 있어요. 평일에 가면 훨씬 쾌적하게 즐길 수 있습니다. 사운드 퀄리티는 강남 클럽 중에서 상위권이고, DJ 믹싱도 안정적이에요. 입장료 1만5천원 정도.',
+    content: '음악은 항상 좋은데 주말에는 사람이 너무 많아서 조금 답답할 수 있어요. 평일에 가면 훨씬 쾌적하게 즐길 수 있습니다. 사운드 퀄리티는 강남 클럽 중에서 상위권이고, DJ 믹싱도 안정적이에요. 캐주얼한 무드.',
     excerpt: '음악은 항상 좋은데 주말에는 사람이 너무 많아서...',
     author: authors.hongdae, createdAt: '2026-03-12T20:00:00Z',
     views: 345, likes: 67, isLiked: false, isBookmarked: false,
@@ -162,7 +162,7 @@ export const reviewPosts: Post[] = [
   },
   {
     id: 'r4', board: 'reviews', title: '부산연산동물나이트 오션뷰 후기',
-    content: '테라스에서 보는 오션뷰가 진짜 압도적입니다. 밤에 해운대 바다를 배경으로 춤추는 건 진짜 잊을 수 없어요. 여름 되면 사람 엄청 많아질 듯. 가격은 입장료 5만원에 테이블 80만원 정도. 부산 여행 중이라면 꼭 가보세요.',
+    content: '테라스에서 보는 오션뷰가 진짜 압도적입니다. 밤에 해운대 바다를 배경으로 춤추는 건 진짜 잊을 수 없어요. 여름 되면 사람 엄청 많아질 듯. 부산 여행 중이라면 꼭 가보세요.',
     excerpt: '테라스에서 보는 오션뷰가 진짜 압도적입니다...',
     author: authors.busan, createdAt: '2026-03-11T18:00:00Z',
     views: 456, likes: 56, isLiked: false, isBookmarked: false,
@@ -180,7 +180,7 @@ export const reviewPosts: Post[] = [
     commentCount: 28, images: [], hashtags: ['일산요정', '명월관', '접대', '한정식'],
     readTimeMin: 2, isPopular: true, isReported: false,
     venueTag: '일산명월관요정', venueRegion: '일산', rating: 4.9,
-    comments: [makeComment('cr5', 'r5', 'tour', '명월관 한정식 퀄리티는 서울 대비 가성비 최고입니다')],
+    comments: [makeComment('cr5', 'r5', 'tour', '명월관 한정식 퀄리티는 서울 대비 단연 최고입니다')],
   },
 ];
 
@@ -200,7 +200,7 @@ export const partyPosts: Post[] = [
   },
   {
     id: 'p2', board: 'party', title: '홍대 클럽 투어 멤버 구합니다 (3/21)',
-    content: '강남 클럽 3~4곳 돌아볼 예정입니다. 강남청담클럽 사운드 → 압구정클럽 하입 → 압구정클럽 인트로 루트로 생각 중이에요. 중간에 포차에서 간단히 먹고 이동할 계획. 교통비 제외 1인당 10만원 정도 예상.',
+    content: '강남 클럽 3~4곳 돌아볼 예정입니다. 강남청담클럽 사운드 → 압구정클럽 하입 → 압구정클럽 인트로 루트로 생각 중이에요. 중간에 포차에서 간단히 먹고 이동할 계획.',
     excerpt: '강남 클럽 3~4곳 돌아볼 예정입니다...',
     author: authors.hongdae, createdAt: '2026-03-13T10:00:00Z',
     views: 345, likes: 45, isLiked: false, isBookmarked: false,
@@ -263,11 +263,11 @@ export const tipsPosts: Post[] = [
   },
   {
     id: 't2', board: 'tips', title: 'VIP 테이블 200% 활용하는 방법',
-    content: 'VIP 테이블 예약의 장단점이랑 가성비 좋게 쓰는 법, 매너까지 정리해봤다. 인원수에 맞는 테이블 고르는 게 제일 중요하고, 음료는 한 번에 몰아서 시키는 것보다 나눠서 주문하는 게 낫더라.',
-    excerpt: 'VIP 테이블 예약의 장단점, 가성비 좋은 이용법...',
+    content: 'VIP 테이블 예약의 장단점이랑 잘 쓰는 법, 매너까지 정리해봤다. 인원수에 맞는 테이블 고르는 게 제일 중요하고, 음료는 한 번에 몰아서 시키는 것보다 나눠서 주문하는 게 낫더라.',
+    excerpt: 'VIP 테이블 예약의 장단점, 잘 쓰는 법...',
     author: authors.vip, createdAt: '2026-03-09T14:00:00Z',
     views: 1567, likes: 312, isLiked: false, isBookmarked: false,
-    commentCount: 56, images: [], hashtags: ['VIP', '테이블', '가성비'],
+    commentCount: 56, images: [], hashtags: ['VIP', '테이블', '실전'],
     readTimeMin: 2, isPopular: true, isReported: false,
     tipCategory: '고급', bookmarks: 189,
     comments: [],
@@ -403,11 +403,11 @@ export const qnaPosts: Post[] = [
   },
   {
     id: 'q5', board: 'qna', title: '요정은 어떤 곳인가요? 처음 가보려는데',
-    content: '요정이 어떤 곳인지, 가격대는 어떤지, 복장은 어떻게 해야 하는지 궁금합니다.',
+    content: '요정이 어떤 곳인지, 분위기는 어떤지, 복장은 어떻게 해야 하는지 궁금합니다.',
     excerpt: '요정이 어떤 곳인지...',
     author: authors.newbie, createdAt: '2026-03-10T14:00:00Z',
     views: 234, likes: 19, isLiked: false, isBookmarked: false,
-    commentCount: 3, images: [], hashtags: ['요정', '초보', '가격'],
+    commentCount: 3, images: [], hashtags: ['요정', '초보', '분위기'],
     readTimeMin: 1, isPopular: false, isReported: false,
     isSolved: false, answerCount: 3,
     comments: [makeComment('cq5', 'q5', 'vip', '요정은 한정식+국악 공연이 있는 전통 접대 공간이에요. 세미포멀 이상 복장 추천.')],

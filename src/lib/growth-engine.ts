@@ -124,7 +124,7 @@ export const EMAIL_SEQUENCE = [
   { day: 11, week: 2, subject: '실제 VIP 후기: 놀쿨로 인생 업소 찾은 이야기', type: 'value' },
   { day: 15, week: 3, subject: '검색으로 찾아서 망한 밤 vs 놀쿨로 찾아서 성공한 밤', type: 'problem' },
   { day: 18, week: 3, subject: '매주 어디 갈지 고민하는 시간: 평균 47분 → 놀쿨: 3초', type: 'problem' },
-  { day: 22, week: 4, subject: 'VIP 기능 48시간 무료 체험 — 숨겨진 업소 공개', type: 'convert' },
+  { day: 22, week: 4, subject: 'VIP 등급 48시간 미리보기 — 숨겨진 업소 공개', type: 'convert' },
   { day: 25, week: 4, subject: '300명 중 261명 등록 — 마감 임박', type: 'convert' },
   { day: 28, week: 4, subject: '내일부터 정가. 지금이 마지막', type: 'convert' },
 ] as const;

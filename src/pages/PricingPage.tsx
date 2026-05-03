@@ -1,7 +1,7 @@
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function PricingPage() {
-  useDocumentMeta('요금제 4단계, 0원부터 시작 가능', '무료 체험 14일 후 결정해도 늦지 않습니다. 베이직·프로·프리미엄·VIP 4단계 비교, 지역과 업소 특성 맞춤 제안. 해지도 클릭 한 번. 카카오톡 besta12로 상세 문의.');
+  useDocumentMeta('요금제 4단계, 0원부터 시작 가능', '무료 사용 14일 후 결정해도 늦지 않습니다. 베이직·프로·프리미엄·VIP 4단계 비교, 지역과 업소 특성 맞춤 제안. 해지도 클릭 한 번. 카카오톡 besta12로 상세 문의.');
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">

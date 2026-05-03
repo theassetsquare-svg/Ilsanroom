@@ -16,7 +16,7 @@ const regions = [
 ];
 
 export default function YojeongPage() {
-  useDocumentMeta('대금 소리에 정찬 15첩, 한 번 오면 단골 된다', '전통 요정 정찬 국악 라이브 프라이빗 룸. 비즈니스 만찬 외국 손님 접대 검증. 코스 가격대 15~25만원, 예약 방법, 드레스코드, 매너까지 입문자 가이드 정리. 일산명월관 등 추천.');
+  useDocumentMeta('대금 소리에 정찬 15첩, 한 번 오면 단골 된다', '전통 요정 정찬 국악 라이브 프라이빗 룸. 비즈니스 만찬 외국 손님 접대 검증. 코스 구성, 예약 방법, 드레스코드, 매너까지 입문자 가이드 정리. 일산명월관 등 추천.');
   const venues = getVenuesByCategory('yojeong');
   const featured = venues.find(v => v.isPremium) || venues[0];
 
@@ -84,7 +84,7 @@ export default function YojeongPage() {
 
       <FirstVisitGuide category="격식 있는 한식 접대"
         dress="세미 포멀 이상 필수. 옛 멋이 살아있는 곳의 격조에 맞는 차림 권장. 한복도 환영."
-        budget="코스 요리 20~100만원+. 정찰제 매장 확인. 주류 별도인 곳도 있음."
+        budget="코스 요리 중심. 정찰제 매장 확인. 주류 별도인 곳도 있음."
         alone="1인 이용보다 만찬·회식 자리. 전화 문의 시 참석자·코스 조절 가능."
         reservation="미리 문의 필수. 원하는 공간과 코스를 확보하려면 최소 하루 전 연락."
       />

@@ -156,7 +156,7 @@ export default function ReviewForm({ venueId, venueName, onSuccess, onCancel }: 
         <div className="flex flex-wrap gap-2 mb-2">
           {images.map((url, i) => (
             <div key={i} className="relative h-20 w-20 rounded-lg overflow-hidden border border-neon-border">
-              <img src={url} alt="" className="h-full w-full object-cover" />
+              <img src={url} alt="업로드 사진 미리보기" loading="lazy" width={80} height={80} className="h-full w-full object-cover" />
               <button
                 onClick={() => removeImage(i)}
                 className="absolute top-0.5 right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-black/60 text-xs text-white"
