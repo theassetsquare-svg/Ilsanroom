@@ -93,7 +93,7 @@ export default function GalleryPage() {
           .eq('category', 'clip')
           .order('created_at', { ascending: false })
           .limit(30);
-        if (fb && fb.length > 0) setClips([...fb.map((p: any) => mapClip(p)), ...SEED_CLIPS]);
+        if (fb && fb.length > 0) setClips(fb.map((p: any) => mapClip(p)));
         else setClips(SEED_CLIPS);
       } else if (data && data.length > 0) {
         const clipIds = data.map((p: any) => p.id);
@@ -117,8 +117,7 @@ export default function GalleryPage() {
             }
           }
         }
-        const real = data.map((p: any) => ({ ...mapClip(p), comments: commentsMap[p.id] || [] }));
-        setClips([...real, ...SEED_CLIPS]);
+        setClips(data.map((p: any) => ({ ...mapClip(p), comments: commentsMap[p.id] || [] })));
       } else {
         setClips(SEED_CLIPS);
       }
@@ -133,11 +132,13 @@ export default function GalleryPage() {
     let imageUrl = '';
     let caption = p.title || '';
     let venueCategory = '';
+    let jsonAuthor = '';
     try {
       const parsed = JSON.parse(p.content);
       imageUrl = parsed.imageUrl || '';
       caption = parsed.caption || p.title || '';
       venueCategory = parsed.venueCategory || '';
+      jsonAuthor = parsed.author || '';
     } catch {
       imageUrl = p.content || '';
     }
@@ -149,7 +150,7 @@ export default function GalleryPage() {
       likes: p.likes || 0,
       liked: false,
       created_at: p.created_at,
-      author: (p.users as any)?.nickname || getSeedNickname(p.id),
+      author: (p.users as any)?.nickname || jsonAuthor || getSeedNickname(p.id),
       avatar_url: (p.users as any)?.avatar_url || null,
       comments: [],
       comment_count: p.comment_count || 0,
