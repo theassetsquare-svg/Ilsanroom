@@ -105,7 +105,7 @@ export default function PersonalizedPicks() {
           <h2 className="text-xl font-bold text-neon-text">당신이 좋아할 곳</h2>
           <p className="mt-1 text-sm text-neon-text-muted">최근 활동 기반 맞춤 추천</p>
         </div>
-        <span className="rounded-full bg-violet-500/10 px-3 py-1 text-xs text-violet-400">AI 추천</span>
+        <span className="rounded-full bg-violet-500/10 px-3 py-1 text-xs text-violet-400">취향 매칭</span>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {recommendations.map(venue => (

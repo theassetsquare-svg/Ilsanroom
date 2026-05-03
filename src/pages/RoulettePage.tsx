@@ -5,7 +5,6 @@ import { MidContentHook, ReadFinishCount, ReadCompletionReward, ReadingMilestone
 import { Link } from 'react-router-dom';
 
 const Roulette = lazy(() => import('@/components/interactive/Roulette'));
-const AIChatbot = lazy(() => import('@/components/interactive/AIChatbot'));
 
 export default function RoulettePage() {
   useDocumentMeta('고민 끝, 룰렛이 대신 골라준다', '오늘 밤 갈 곳 못 정했을 때 탭 한 번이면 결정. 지역·업종·예산·인원 필터 적용해 평점 가중치 랜덤 추천. 다시 돌리기 무제한.');
@@ -42,14 +41,6 @@ export default function RoulettePage() {
         </Suspense>
 
         <MidContentHook seed="roulette-mid" variant={6} />
-
-        <section>
-          <h2 className="mb-4 text-xl font-bold text-[#111]">AI에게 물어보기</h2>
-          <p className="text-sm text-[#555] mb-4" style={{ lineHeight: '1.7' }}>
-            룰렛이 마음에 안 든다면 AI한테 취향 말해봐. 맞춤 추천해준다.
-          </p>
-          <Suspense fallback={null}><AIChatbot /></Suspense>
-        </section>
 
         {/* ═══ BOTTOM ═══ */}
         <ReadCompletionReward teaser="룰렛 당첨 업소를 더 알고 싶다면">

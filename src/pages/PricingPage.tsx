@@ -37,7 +37,7 @@ export default function PricingPage() {
           </div>
           <div className="flex items-center gap-3">
             <span style={{ color: '#22C55E' }}>✓</span>
-            <span>구글·네이버·AI 검색 최적화 (SEO)</span>
+            <span>구글·네이버 검색 상위노출 최적화 (SEO)</span>
           </div>
           <div className="flex items-center gap-3">
             <span style={{ color: '#22C55E' }}>✓</span>

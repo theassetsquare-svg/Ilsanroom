@@ -95,7 +95,7 @@ export const freePosts: Post[] = [
   },
   {
     id: 'f6', board: 'free', title: '요즘 홍대 트렌드가 바뀐 것 같아요',
-    content: '예전에는 인디 음악 위주였는데 요즘은 EDM 비중이 많이 높아진 느낌. 홍대만의 색깔이 조금 줄어든 것 같아서 아쉽기도 하네요. 여러분은 어떻게 생각하세요?',
+    content: '예전엔 인디 위주였는데 요즘 홍대 EDM이 너무 많아짐ㅠ 홍대 색깔 죽는 느낌인데 다들 어떻게 봄?',
     excerpt: '예전에는 인디 음악 위주였는데...',
     author: authors.hongdae, createdAt: '2026-03-11T14:00:00Z',
     views: 456, likes: 67, isLiked: false, isBookmarked: false,

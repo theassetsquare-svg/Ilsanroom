@@ -8,7 +8,6 @@ const MBTIQuiz = lazy(() => import('@/components/interactive/MBTIQuiz'));
 const Roulette = lazy(() => import('@/components/interactive/Roulette'));
 const VSBattle = lazy(() => import('@/components/interactive/VSBattle'));
 const DressCodeChecker = lazy(() => import('@/components/interactive/DressCodeChecker'));
-const AIChatbot = lazy(() => import('@/components/interactive/AIChatbot'));
 const HotRightNow = lazy(() => import('@/components/interactive/KillerFeatures').then(m => ({ default: m.HotRightNow })));
 const AttendanceCheck = lazy(() => import('@/components/interactive/KillerFeatures').then(m => ({ default: m.AttendanceCheck })));
 const DrinkBudgetCalc = lazy(() => import('@/components/interactive/KillerFeatures').then(m => ({ default: m.DrinkBudgetCalc })));
@@ -16,7 +15,6 @@ const InviteFriend = lazy(() => import('@/components/interactive/KillerFeatures'
 
 const sectionList = [
   { emoji: '🔥', label: '지금 핫한 곳' },
-  { emoji: '🤖', label: 'AI 챗봇' },
   { emoji: '📅', label: '출석 도장' },
   { emoji: '🎭', label: 'MBTI 테스트' },
   { emoji: '🎰', label: '룰렛' },
@@ -65,17 +63,6 @@ export default function QuizPage() {
             지금 이 시간 핫한 곳
           </h2>
           <Suspense fallback={null}><HotRightNow /></Suspense>
-        </section>
-
-        <NextSectionTeaser text="AI한테 취향 말하면 맞춤 추천해준다" emoji="🤖" />
-
-        {/* AI Chatbot */}
-        <section>
-          <h2 className="mb-4 text-xl font-bold text-[#111] flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-base">🤖</span>
-            AI 챗봇
-          </h2>
-          <Suspense fallback={null}><AIChatbot /></Suspense>
         </section>
 
         <MidContentHook seed="quiz-mid1" variant={7} />
