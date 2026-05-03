@@ -21,7 +21,7 @@ function getCategoryHref(category: string, slug: string, region: string) {
 }
 
 export default function PricePage() {
-  useDocumentMeta('양주·부스·룸 한눈에 보기', '업종별 양주 라인업, 부스 구성, 룸 타입까지. 가기 전에 미리 확인해봐.');
+  useDocumentMeta('양주·부스·룸 한눈에 보기', '업종별 양주 라인업(발렌타인 조니워커 로얄살루트), 부스 사이즈, 룸 타입까지 정리. 가기 전에 미리 확인하고 예약하세요.');
   const [category, setCategory] = useState<CategoryFilter>('all');
   const [showAll, setShowAll] = useState(false);
 

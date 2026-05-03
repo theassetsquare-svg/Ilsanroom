@@ -44,7 +44,7 @@ function postToQuestion(post: Post): QuestionItem {
 const categoryFilters = ["전체", "입장", "예약", "드레스코드", "가격", "교통"] as const;
 
 export default function QnAPage() {
-  useDocumentMeta('오늘 밤 어디 가냐고? 여기서 추천받아', '갈 곳 못 정한 사람들이 모여서 서로 추천해주는 게시판.');
+  useDocumentMeta('오늘 밤 어디 가냐고? 여기서 추천받아', '갈 곳 못 정한 사람들이 모여 서로 추천해주는 Q&A 게시판. 인원·예산·분위기·지역만 적으면 단골 회원들이 빠르게 답해줍니다.');
   const { user } = useAuth();
   const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState<number | null>(null);

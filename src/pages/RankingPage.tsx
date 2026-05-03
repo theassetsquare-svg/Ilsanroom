@@ -503,7 +503,7 @@ function VoteSection() {
 
 /* ═══ 메인 ═══ */
 export default function RankingPage() {
-  useDocumentMeta('인기 랭킹 TOP 20 — 지금 사람들이 가장 많이 보는 곳', '클럽·나이트·라운지·룸·요정·호빠 전국 인기 순위. 지역별·업종별 필터 실시간 확인.');
+  useDocumentMeta('인기 랭킹 TOP 20 — 지금 사람들이 가장 많이 보는 곳', '실시간 조회수·평점·전화클릭 합산 TOP 30. 지역·업종별 필터로 강남 홍대 이태원 일산 부산 1위 업소 확인. 매시간 자동 업데이트.');
   const [category, setCategory] = useState('all');
   const [region, setRegion] = useState('all');
   const [period, setPeriod] = useState<'daily' | 'weekly' | 'monthly'>('weekly');

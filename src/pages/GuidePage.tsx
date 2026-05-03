@@ -70,7 +70,7 @@ const guides = [
 ];
 
 export default function GuidePage() {
-  useDocumentMeta('처음이라 긴장된다고? 이거 읽고 가면 프로다', '드레스코드, 예산, 혼자 가도 되는지까지. 업종별 입문 핵심만 정리했다.');
+  useDocumentMeta('처음이라 긴장된다고? 이거 읽고 가면 프로다', '클럽 나이트 라운지 룸 요정 호빠 업종별 입문 가이드. 드레스코드 예산 혼자 가도 되는지 안전 팁까지. 5분이면 다 읽어요.');
   const [openGuide, setOpenGuide] = useState<string | null>('클럽');
   const containerRef = useRef<HTMLDivElement>(null);
 

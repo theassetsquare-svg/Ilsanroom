@@ -16,7 +16,7 @@ const regions = [
 ];
 
 export default function LoungesPage() {
-  useDocumentMeta('조용히 한 잔, 대화만 남는 밤을 원한다면', '시끄러운 데 싫은 사람을 위한 라운지 3곳. 접대·데이트·혼술 무드별로 골라봐.');
+  useDocumentMeta('조용히 한 잔, 대화만 남는 밤을 원한다면', '강남 홍대 이태원 일산 라운지바 비교 가이드. 칵테일·위스키·와인 시세 분위기 드레스코드 접대 데이트 혼술 추천까지. 야경 좋은 루프탑 호텔 라운지 베스트 정리. 1인 3~15만원 예산별 코스.');
   const venues = getVenuesByCategory('lounge');
   const featured = venues.find(v => v.isPremium) || venues[0];
 

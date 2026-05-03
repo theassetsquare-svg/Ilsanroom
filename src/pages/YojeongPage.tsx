@@ -16,7 +16,7 @@ const regions = [
 ];
 
 export default function YojeongPage() {
-  useDocumentMeta('대금 소리에 정찬 15첩, 한 번 오면 단골 된다', '전통 요정의 격식과 맛을 한 자리에. 비즈니스 만찬, 외국 손님 접대까지 검증된 곳.');
+  useDocumentMeta('대금 소리에 정찬 15첩, 한 번 오면 단골 된다', '전통 요정 정찬 국악 라이브 프라이빗 룸. 비즈니스 만찬 외국 손님 접대 검증. 코스 가격대 15~25만원, 예약 방법, 드레스코드, 매너까지 입문자 가이드 정리. 일산명월관 등 추천.');
   const venues = getVenuesByCategory('yojeong');
   const featured = venues.find(v => v.isPremium) || venues[0];
 

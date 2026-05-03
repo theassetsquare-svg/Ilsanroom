@@ -31,7 +31,7 @@ function useLiveNumber(base: number, range: number) {
 }
 
 export default function CommunityPage() {
-  useDocumentMeta('밤 사람들이 모이는 커뮤니티', '후기, 꿀팁, 파티 모집, 오늘 밤 추천까지. 같이 노는 사람들의 광장.');
+  useDocumentMeta('밤 사람들이 모이는 커뮤니티', '강남 홍대 이태원 일산 부산 수원 클럽 나이트 라운지 룸 요정 호빠 후기 꿀팁 파티모집 Q&A 자유게시판 패션 조각모임 9개 게시판. 매일 새 글 200개 이상 올라오는 진짜 회원 익명 광장.');
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [recentPosts, setRecentPosts] = useState<{ id: string; title: string; category: string; likes: number; comment_count: number }[]>([]);
   const [hotCommentPosts, setHotCommentPosts] = useState<{ id: string; title: string; category: string; comment_count: number }[]>([]);
