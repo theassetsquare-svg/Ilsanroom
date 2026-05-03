@@ -677,12 +677,69 @@ const staticPages = [
 // ══════════════════════════════════════════
 const categoryPaths = new Set(['/clubs', '/nights', '/lounges', '/rooms', '/yojeong', '/hoppa']);
 // ── 홈페이지: WebSite + Organization JSON-LD ──
+// 홈 SSR 강화: H2×6 카테고리 + 각 카테고리 TOP 5 + 지역 분포
+let homeSsr = `<h1>놀쿨 — 오늘 밤 어디 갈지, 여기서 정해진다</h1>`;
+homeSsr += `<p>대한민국 전국 클럽, 나이트, 라운지, 룸, 요정, 호빠 ${venues.length}곳의 실시간 시세·후기·정보. 모바일에서 바로 비교하고 오늘 갈 곳을 정하세요.</p>`;
+const HOME_CATS = [
+  { key: 'club', ko: '클럽', desc: 'EDM·힙합·테크노 — 새벽까지 안 멈추는 곳' },
+  { key: 'night', ko: '나이트', desc: '라이브 밴드와 부스 — 모르는 사람도 파트너가 되는 곳' },
+  { key: 'lounge', ko: '라운지', desc: '조용히 한 잔, 대화만 남는 밤' },
+  { key: 'room', ko: '룸', desc: '바깥 소리 하나 안 들리는 방, 우리만의 시간' },
+  { key: 'yojeong', ko: '요정', desc: '대금 소리에 정찬, 한 번 가면 단골 되는 곳' },
+  { key: 'hoppa', ko: '호빠', desc: '처음이어도 혼자여도 괜찮은, 여성 전용 호스트바' },
+];
+HOME_CATS.forEach(c => {
+  const list = venues.filter(vv => vv.cat === c.key);
+  if (list.length === 0) return;
+  homeSsr += `<h2>${escHtml(c.ko)} ${list.length}곳 — ${escHtml(c.desc)}</h2>`;
+  homeSsr += `<ul>`;
+  list.slice(0, 8).forEach(vv => { homeSsr += `<li>${escHtml(vv.regionKo)} ${escHtml(c.ko)} ${escHtml(vv.nameKo)}</li>`; });
+  homeSsr += `</ul>`;
+});
+const homeAllRegions = [...new Set(venues.map(v => v.regionKo))];
+homeSsr += `<h2>지역별 나이트라이프</h2>`;
+homeSsr += `<p>서비스 지역: ${homeAllRegions.map(r => escHtml(r)).join(', ')}. 각 지역의 클럽·나이트·라운지·룸 비교는 놀쿨에서.</p>`;
 writePage('/', {
   title: '놀쿨 — 오늘 밤 어디 갈지, 여기서 정해진다',
   description: `전국 클럽·나이트·라운지·룸·요정·호빠 ${venues.length}곳 실시간 비교. 후기·시세·예약 한 곳에서.`,
   jsonLdList: [WEBSITE_JSONLD, ORG_JSONLD],
-  ssrBody: `<h1>놀쿨 — 오늘 밤 어디 갈지, 여기서 정해진다</h1><p>대한민국 전국 클럽, 나이트, 라운지, 룸, 요정, 호빠 ${venues.length}곳의 실시간 정보를 제공하는 나이트라이프 플랫폼입니다.</p>`
+  ssrBody: homeSsr
 });
+
+// 커뮤니티 게시판 SSR — 카테고리/규칙/조각/패션 등 게시판 H1+H2+P
+const COMMUNITY_BOARD_BLURBS = {
+  '/community': () => {
+    let s = `<h1>밤 사람들이 모이는 커뮤니티</h1>`;
+    s += `<p>전국 ${venues.length}곳을 다녀본 사람들이 모여 후기, 꿀팁, 추천을 남기는 광장. 광고 없이 진짜 경험만.</p>`;
+    s += `<h2>커뮤니티 게시판</h2><ul>`;
+    s += `<li>오늘 어디 가냐고? Q&A — 갈 곳 못 정했을 때 추천받는 곳</li>`;
+    s += `<li>가본 사람만 쓰는 후기 — 별점과 한 줄 평</li>`;
+    s += `<li>고수들의 밤놀이 꿀팁 — 입장 타이밍, 자리 잡는 법</li>`;
+    s += `<li>파티 멤버 모집 — 인원 채우고, 날짜 맞추고, N빵</li>`;
+    s += `<li>자유게시판 — 잡담, 궁금한 거, 웃긴 얘기</li>`;
+    s += `<li>업종별 복장 가이드 — 클럽·나이트·요정·라운지 드레스코드</li>`;
+    s += `<li>조각 모집 — 자리 하나 남았을 때 바로 구하는 곳</li>`;
+    s += `</ul>`;
+    s += `<h2>지금 인기 있는 주제</h2>`;
+    s += `<p>강남 클럽 줄 안 서고 들어가는 시간대, 홍대 클럽 부킹 잘 되는 요일, 룸 처음 가는 사람을 위한 가이드, 호빠 첫 방문 매너, 요정 코스 가격대.</p>`;
+    s += `<h2>업종별 정보</h2>`;
+    HOME_CATS.forEach(c => {
+      const list = venues.filter(vv => vv.cat === c.key);
+      if (list.length === 0) return;
+      s += `<h3>${escHtml(c.ko)} 관련 글 — ${list.length}곳</h3>`;
+      s += `<p>${escHtml(c.ko)} 후기와 비교, ${list.slice(0,5).map(vv => escHtml(vv.nameKo)).join(', ')} 이야기.</p>`;
+    });
+    return s;
+  },
+  '/community/qna': () => `<h1>오늘 밤 어디 가냐고? 여기서 추천받아</h1><p>갈 곳 못 정한 사람들이 모여 서로 추천해주는 게시판. 인원, 분위기, 예산만 적으면 단골들이 답해줍니다.</p><h2>자주 묻는 질문</h2><ul><li>강남 클럽 줄 안 서는 시간은?</li><li>홍대 4명 갈 만한 라운지 추천</li><li>여자친구 생일, 룸 처음인데 어디?</li><li>30대 남자 혼자 가기 좋은 곳</li><li>커플이 가기 좋은 분위기 좋은 곳</li></ul>`,
+  '/community/reviews': () => `<h1>가본 사람만 쓸 수 있다, 실제 방문 후기</h1><p>별점과 한 줄 평으로 보는 업소 리얼 리뷰. 광고 아닌 진짜 목소리.</p><h2>최근 후기 카테고리</h2><ul><li>클럽 후기 — 음악, 부킹, 입장</li><li>나이트 후기 — 밴드, 부스, 룸</li><li>라운지 후기 — 분위기, 안주, 가격</li><li>룸 후기 — 시설, 양주 구성, 매니저</li><li>요정 후기 — 정찬, 공연, 분위기</li><li>호빠 후기 — 매너, 분위기, 가격</li></ul>`,
+  '/community/tips': () => `<h1>고수들이 풀어놓은 밤놀이 실전 꿀팁</h1><p>입장 타이밍, 자리 잡는 법, 안 당하는 법. 경험자만 아는 노하우.</p><h2>분야별 꿀팁</h2><ul><li>클럽 입장 줄 줄이는 법</li><li>나이트 부스 잘 잡는 시간</li><li>룸 양주 구성 합리적으로 짜는 법</li><li>요정 코스 처음 받는 가이드</li><li>호빠 매너와 흐름</li><li>대리, 택시 잡는 시간대 노하우</li></ul>`,
+  '/community/party': () => `<h1>같이 갈 사람 손! 파티 멤버 모집</h1><p>날짜 맞추고, 인원 채우고, N빵. 혼자 가기 아까울 때 여기서 구해.</p><h2>모집 카테고리</h2><ul><li>오늘 밤 즉시 모집</li><li>주말 미리 매칭</li><li>특정 업소 함께 갈 사람</li><li>커플/짝남짝녀 모임</li><li>30대 모임</li><li>출장 와서 동행</li></ul>`,
+  '/community/free': () => `<h1>아무 말 대잔치, 자유게시판</h1><p>잡담, 궁금한 거, 웃긴 얘기 다 OK. 규칙만 지키면 뭐든 써.</p><h2>인기 주제</h2><ul><li>오늘 있었던 일</li><li>밤문화 입문 질문</li><li>황당했던 경험</li><li>추천하고 싶은 음악</li><li>맛집·해장 정보</li></ul>`,
+  '/community/fashion': () => `<h1>운동화 신고 가도 돼? 업종별 복장 가이드</h1><p>클럽·나이트·요정·라운지, 어디냐에 따라 옷이 다르다. 한눈에 정리.</p><h2>업종별 드레스코드</h2><ul><li>강남 클럽 — 운동화 OK한 곳, NO인 곳</li><li>홍대 클럽 — 캐주얼 위주</li><li>이태원 클럽 — 트렌디 패션</li><li>나이트 — 깔끔하면 OK</li><li>라운지 — 비즈니스 캐주얼 권장</li><li>요정 — 정장 권장</li><li>호빠 — 단정한 캐주얼</li></ul>`,
+  '/community/jogak': () => `<h1>급하게 한 명 구한다, 조각 모집</h1><p>자리 하나 남았을 때, 바로 올리고 바로 구한다. 빠른 매칭 게시판.</p><h2>오늘 모집 진행 방식</h2><ul><li>지역, 업소, 인원, 시간만 적으면 끝</li><li>회원 100P 이상 작성 가능</li><li>매칭 후 채팅으로 약속 확정</li><li>노쇼 방지를 위한 평점 시스템</li></ul>`,
+  '/community/guidelines': () => `<h1>이것만 지키면 된다, 커뮤니티 규칙</h1><p>광고·욕설·개인정보 노출 금지. 기본 매너만 지키면 자유롭게.</p><h2>금지 사항</h2><ul><li>광고/홍보 글 (업주 인증 사전 등록 필수)</li><li>욕설, 비방, 인신공격</li><li>개인정보(전화번호, 주소) 노출</li><li>2차 알선, 불법 거래 암시</li><li>도배 및 동일 글 반복</li></ul>`,
+};
 
 for (const pg of staticPages) {
   let ssrBody = undefined;
@@ -742,6 +799,10 @@ for (const pg of staticPages) {
         { '@type': 'Question', name: `${catKo} 처음인데 어떻게 가나요?`, acceptedAnswer: { '@type': 'Answer', text: `놀쿨 입문 가이드(nolcool.com/guide)에서 ${catKo} 첫 방문 팁을 확인하세요. 드레스코드, 예산, 분위기까지 정리되어 있습니다.` } },
       ]
     });
+  }
+  // 커뮤니티 게시판 SSR
+  else if (COMMUNITY_BOARD_BLURBS[pg.path]) {
+    ssrBody = COMMUNITY_BOARD_BLURBS[pg.path]();
   }
   writePage(pg.path, { title: pg.title, description: pg.desc, ssrBody, jsonLdList: jsonLdList.length > 0 ? jsonLdList : undefined });
   pageCount++;
