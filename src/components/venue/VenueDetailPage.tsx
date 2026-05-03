@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { lazy, Suspense, useEffect, useState, useMemo } from 'react';
 import Breadcrumb from '@/components/layout/Breadcrumb';
-import PageViewTracker from '@/components/venue/PageViewTracker';
 import VenueHero from '@/components/venue/VenueHero';
 import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
 import VenueJsonLd from '@/components/venue/VenueJsonLd';
@@ -99,7 +98,6 @@ export default function VenueDetailPage({
 
   return (
     <div className="bg-neon-bg">
-      <PageViewTracker venueId={venue.id} venueName={venue.nameKo} category={venue.category} region={venue.region} />
       <VenueJsonLd
         venue={venue}
         breadcrumbItems={breadcrumbItems}
