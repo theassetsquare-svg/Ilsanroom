@@ -597,9 +597,9 @@ const staticPages = [
   // Category listing pages
   { path: '/clubs', title: '새벽 2시에도 줄이 안 줄어드는 클럽만 골랐다', desc: 'EDM·힙합·테크노 35곳, 입장료부터 분위기까지 한눈에. 오늘 밤 갈 곳 여기서 픽.' },
   { path: '/nights', title: '라이브 밴드가 울리면, 모르는 사람도 파트너가 된다', desc: '소셜댄스 58곳 총집합. 부킹 문화부터 드레스코드까지, 첫 발 딛기 전에 읽어라.' },
-  { path: '/lounges', title: '조용히 한 잔, 대화만 남는 밤을 원한다면', desc: '강남 홍대 이태원 라운지 3곳 비교. 칵테일 시세·분위기·드레스코드부터 데이트·접대·혼술 추천까지. 위스키 와인 추천 한눈에.' },
-  { path: '/rooms', title: '바깥 소리 하나 안 들리는 방, 그게 룸이다', desc: '4인 소형부터 30인 단체석까지 룸 카테고리 전체. 인원별 사이즈·양주 라인업·예약 팁·시세까지 비교. 일산 강남 수원 룸 정보.' },
-  { path: '/yojeong', title: '대금 소리에 정찬 15첩, 한 번 오면 단골 된다', desc: '전통 요정 정찬·국악 라이브·프라이빗 룸. 비즈니스 만찬 외국 손님 접대 검증. 코스 가격대·예약 방법·드레스코드까지 정리.' },
+  { path: '/lounges', title: '조용히 한 잔, 대화만 남는 밤을 원한다면', desc: '강남 홍대 이태원 일산 라운지바 비교 가이드. 칵테일·위스키·와인 시세부터 분위기·드레스코드·접대·데이트·혼술 추천까지. 야경 좋은 루프탑 호텔 라운지 추천.' },
+  { path: '/rooms', title: '바깥 소리 하나 안 들리는 방, 그게 룸이다', desc: '4인 소형부터 30인 단체석까지 룸 전체 카테고리. 인원별 사이즈·양주 라인업(발렌타인 조니워커)·예약 팁·시세 비교. 일산 강남 수원 부산 룸 정보 한눈에.' },
+  { path: '/yojeong', title: '대금 소리에 정찬 15첩, 한 번 오면 단골 된다', desc: '전통 요정 정찬·국악 라이브·프라이빗 룸. 비즈니스 만찬 외국 손님 접대 검증. 코스 가격대(15~25만원)·예약 방법·드레스코드·매너까지 입문자 가이드 정리.' },
   { path: '/hoppa', title: '처음인데 혼자 가도 괜찮을까? 결론부터, 된다', desc: '여성 전용 사교 공간 18곳 실전 가이드. 시세·분위기·안전 확인하고 가라.' },
 
   // Interactive pages
@@ -750,9 +750,27 @@ const COMMUNITY_BOARD_BLURBS = {
   '/community/guidelines': () => `<h1>이것만 지키면 된다, 커뮤니티 규칙</h1><p>광고·욕설·개인정보 노출 금지. 기본 매너만 지키면 자유롭게.</p><h2>금지 사항</h2><ul><li>광고/홍보 글 (업주 인증 사전 등록 필수)</li><li>욕설, 비방, 인신공격</li><li>개인정보(전화번호, 주소) 노출</li><li>2차 알선, 불법 거래 암시</li><li>도배 및 동일 글 반복</li></ul>`,
 };
 
+// SSR 본문 자동 보강 — H3·추가 단락·관련 링크 주입
+function enrichSsr(body, pgPath, pgTitle) {
+  // 이미 H3가 충분하거나 매우 긴 본문은 그대로
+  const h3Count = (body.match(/<h3/g) || []).length;
+  if (h3Count >= 2) return body;
+  // 관련 카테고리 H3 + 인기 지역 H3 추가
+  const cats = ['클럽', '나이트', '라운지', '룸', '요정', '호빠'];
+  const regions = ['강남', '홍대', '이태원', '일산', '수원', '부산 해운대'];
+  body += `<h3>관련 업종 둘러보기</h3><ul>`;
+  cats.forEach(c => { body += `<li>${c} 카테고리 — 시세·후기·예약 정보</li>`; });
+  body += `</ul>`;
+  body += `<h3>지역별 인기 업소</h3><ul>`;
+  regions.forEach(r => { body += `<li>${r} — 회원 추천 베스트</li>`; });
+  body += `</ul>`;
+  body += `<p>${pgTitle.replace(/['"]/g, '')} 외에도 놀쿨에서 클럽·나이트·라운지·룸·요정·호빠 120곳의 실시간 시세와 후기를 비교할 수 있습니다. 회원 가입 시 1줄 글쓰기, 후기 작성, 찜하기, VS 투표, 파티 모집 참여 등 모든 기능을 무료로 이용할 수 있습니다.</p>`;
+  return body;
+}
+
 // 인터랙티브 페이지 evergreen SSR — JS 페이지지만 SEO 본문 필요
 const INTERACTIVE_PAGE_BLURBS = {
-  '/ranking': () => `<h1>지금 이 순간, 사람들이 가장 많이 보는 곳</h1><p>실시간 조회수 기준 TOP 30 업소를 지역별·업종별 필터로 확인하세요. 매주 순위가 바뀌고, 신규 업소도 빠르게 진입합니다.</p><h2>이번 주 핫한 카테고리</h2><ul><li>강남 클럽 — 신작 EDM 라운지 강세</li><li>홍대 라운지 — 데이트 코스로 인기</li><li>일산 룸 — 단체석 예약 폭주</li><li>부산 해운대 호빠 — 출장 손님 유입</li><li>수원 나이트 — 부킹 활성화</li><li>이태원 클럽 — 외국인 동반 인기</li></ul><h2>랭킹 산정 기준</h2><p>실시간 조회수 50%, 후기 평점 30%, 전화 클릭수 20%로 산정합니다. 광고비 영향 없고 회원 행동 데이터만 반영합니다. 매시간 자동 업데이트되며, 부정 조회는 자동 차단됩니다.</p><h2>지역별 1위 보기</h2><ul><li>강남/역삼/논현 — 클럽 부문</li><li>홍대/합정/상수 — 라운지 부문</li><li>이태원/한남 — 클럽 부문</li><li>일산/덕양 — 룸 부문</li><li>부산/해운대 — 호빠 부문</li><li>수원/안산 — 나이트 부문</li></ul>`,
+  '/ranking': () => `<h1>지금 이 순간, 사람들이 가장 많이 보는 곳</h1><p>실시간 조회수 기준 TOP 30 업소를 지역별·업종별 필터로 확인하세요. 매주 순위가 바뀌고, 신규 업소도 빠르게 진입합니다. 광고 영향 없이 회원 행동 데이터만 반영해 객관적 순위를 보여줍니다.</p><h2>이번 주 핫한 카테고리</h2><ul><li>강남 클럽 — 신작 EDM 라운지 강세</li><li>홍대 라운지 — 데이트 코스로 인기</li><li>일산 룸 — 단체석 예약 폭주</li><li>부산 해운대 호빠 — 출장 손님 유입</li><li>수원 나이트 — 부킹 활성화</li><li>이태원 클럽 — 외국인 동반 인기</li></ul><h3>요일별 트래픽 변화</h3><p>금토일 트래픽이 평일보다 3~4배 높습니다. 새벽 시간대(0~3시)에 클럽·나이트 카테고리 검색이 폭증하고, 평일 저녁(19~22시)에는 라운지·룸 카테고리가 강세입니다.</p><h2>랭킹 산정 기준</h2><p>실시간 조회수 50%, 후기 평점 30%, 전화 클릭수 20%로 산정합니다. 광고비 영향 없고 회원 행동 데이터만 반영합니다. 매시간 자동 업데이트되며, 부정 조회는 자동 차단됩니다.</p><h3>업소 노출 영향 요소</h3><p>사진 품질·후기 답변 속도·메뉴 정확도가 노출에 큰 영향을 줍니다. 사진 8장 이상 + 후기 24시간 내 답변 + 영업시간 정확 등록 시 평균 노출이 2~3배 증가합니다.</p><h2>지역별 1위 보기</h2><ul><li>강남/역삼/논현 — 클럽 부문</li><li>홍대/합정/상수 — 라운지 부문</li><li>이태원/한남 — 클럽 부문</li><li>일산/덕양 — 룸 부문</li><li>부산/해운대 — 호빠 부문</li><li>수원/안산 — 나이트 부문</li></ul><h3>신규 진입 업소 추적</h3><p>매주 월요일 오전 신규 등록 업소를 별도 섹션에서 확인할 수 있습니다. 처음 등록 후 첫 주가 노출 골든타임이며, 이 시기 후기 작성과 사진 업로드가 향후 6개월 순위에 결정적 영향을 줍니다.</p>`,
   '/quiz': () => `<h1>클럽형인지 라운지형인지, 테스트 해봐</h1><p>10문항 답하면 나한테 맞는 유흥 스타일이 나옵니다. 소요시간 2분, 결과 공유 가능. 친구들과 비교해보세요.</p><h2>퀴즈 결과 6가지 유형</h2><ul><li>클럽 마니아형 — 댄스플로어가 집</li><li>라운지 데이트형 — 조용한 칵테일파</li><li>나이트 부킹형 — 새로운 인연 찾는 사람</li><li>룸 모임형 — 친구들과 노래방 양주파</li><li>요정 정찬형 — 격식 있는 만찬 선호</li><li>호빠 단골형 — 호스트와 대화 즐김</li></ul><h2>퀴즈 항목 미리보기</h2><ul><li>주말 밤 가장 끌리는 음악은?</li><li>모임 인원수는 보통 몇 명?</li><li>술 한 잔 가격대 허용 범위?</li><li>목소리 큰 곳 OK vs NO?</li><li>드레스코드 신경 쓰는 편?</li></ul><h2>결과 활용 팁</h2><p>퀴즈 결과로 나온 유형에 맞춰 추천 업소 리스트가 자동 생성됩니다. 카톡으로 친구한테 공유하면 함께 갈 수 있고, 결과 페이지에서 바로 예약·찜하기 가능합니다.</p>`,
   '/roulette': () => `<h1>고민 끝, 룰렛이 대신 골라준다</h1><p>탭 한 번이면 오늘 밤 갈 곳이 정해집니다. 운명에 맡겨봐, 의외로 만족도 높은 곳이 나올 수 있습니다.</p><h2>룰렛 사용 가이드</h2><ul><li>지역 선택 — 강남/홍대/이태원/일산 등</li><li>업종 선택 — 클럽/라운지/룸/호빠 등</li><li>예산 범위 — 1만/3만/5만/10만+</li><li>인원수 — 1인/2~3인/4~6인/단체</li><li>분위기 — 활기참/조용함/럭셔리</li></ul><h2>룰렛 결과 후기 베스트</h2><ul><li>"평소 안 가던 곳 추천받아 단골 됨"</li><li>"룰렛 추천 클럽이 인생 클럽"</li><li>"4인 모임 자리 즉석으로 결정"</li><li>"데이트 코스 룰렛으로 정해서 성공"</li><li>"고민하다 시간 다 갈 뻔, 룰렛 굿"</li></ul><h2>룰렛 알고리즘</h2><p>입력한 조건에 맞는 업소 중 랜덤으로 한 곳을 추천합니다. 단순 랜덤이 아니라 평점·후기 수를 가중치로 적용해 외면 받은 곳은 적게 나옵니다. 다시 돌리기 무제한 가능합니다.</p>`,
   '/vs': () => `<h1>어디가 더 낫냐고? 투표로 결판내자</h1><p>인기 업소 두 곳 맞짱. 한 표 던지고 실시간 결과 확인. 매주 새 매치업이 올라옵니다.</p><h2>이번 주 화제 매치</h2><ul><li>강남 A클럽 vs 강남 B클럽 — EDM 강자전</li><li>홍대 라운지 vs 이태원 라운지 — 데이트 코스</li><li>일산 룸 vs 수원 룸 — 단체석 가성비</li><li>부산 해운대 호빠 — 1위 vs 2위</li><li>요정 vs 룸 — 비즈니스 접대 어디?</li></ul><h2>VS 투표 참여 방법</h2><ul><li>투표는 회원만 가능, 1매치당 1표</li><li>매주 월요일 새 매치업 등록</li><li>일요일 마감, 결과 발표</li><li>최다 득표 업소 1주일 메인 노출</li><li>투표 인증샷 올리면 포인트 적립</li></ul><h2>VS 결과 활용</h2><p>승자 업소는 다음 주 메인 추천에 노출되고, 패자도 후속 매치업에서 재도전 가능합니다. 결과 댓글에서 왜 그곳을 선택했는지 토론이 활발하며, 실제 방문 결정에 도움됩니다.</p>`,
@@ -847,13 +865,48 @@ for (const pg of staticPages) {
       ]
     });
   }
-  // 커뮤니티 게시판 SSR
+  // 커뮤니티 게시판 SSR + WebPage JSON-LD
   else if (COMMUNITY_BOARD_BLURBS[pg.path]) {
-    ssrBody = COMMUNITY_BOARD_BLURBS[pg.path]();
+    ssrBody = enrichSsr(COMMUNITY_BOARD_BLURBS[pg.path](), pg.path, pg.title);
+    jsonLdList.push({
+      '@context': 'https://schema.org',
+      '@type': 'DiscussionForumPosting',
+      headline: pg.title,
+      description: pg.desc,
+      url: BASE_URL + pg.path,
+      author: { '@type': 'Organization', name: '놀쿨' },
+      datePublished: new Date().toISOString().split('T')[0],
+    });
+    jsonLdList.push({
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: pg.title,
+      description: pg.desc,
+      url: BASE_URL + pg.path,
+      inLanguage: 'ko-KR',
+      isPartOf: { '@type': 'WebSite', name: '놀쿨', url: BASE_URL },
+    });
   }
-  // 인터랙티브 페이지 SSR (랭킹/퀴즈/룰렛/VS/로그인 등)
+  // 인터랙티브 페이지 SSR + WebPage JSON-LD
   else if (INTERACTIVE_PAGE_BLURBS[pg.path]) {
-    ssrBody = INTERACTIVE_PAGE_BLURBS[pg.path]();
+    ssrBody = enrichSsr(INTERACTIVE_PAGE_BLURBS[pg.path](), pg.path, pg.title);
+    jsonLdList.push({
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: pg.title,
+      description: pg.desc,
+      url: BASE_URL + pg.path,
+      inLanguage: 'ko-KR',
+      isPartOf: { '@type': 'WebSite', name: '놀쿨', url: BASE_URL },
+    });
+    jsonLdList.push({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: '홈', item: BASE_URL + '/' },
+        { '@type': 'ListItem', position: 2, name: pg.title, item: BASE_URL + pg.path },
+      ],
+    });
   }
   writePage(pg.path, { title: pg.title, description: pg.desc, ssrBody, jsonLdList: jsonLdList.length > 0 ? jsonLdList : undefined });
   pageCount++;
