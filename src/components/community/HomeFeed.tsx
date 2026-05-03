@@ -14,6 +14,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { createClient } from '@/lib/supabase';
 import { COLOR, RADIUS, SHADOW } from '@/lib/design-tokens';
+import { QuickPostInline } from './QuickPostInline';
 
 type FeedPost = {
   id: string;
@@ -132,6 +133,17 @@ export function HomeFeed() {
       >
         🔥 지금 뜨는 이야기
       </h2>
+
+      {/* 1줄 글쓰기 — 진입장벽 0 */}
+      <QuickPostInline
+        onPosted={() => {
+          // 새로고침해서 자기 글 즉시 노출
+          setPosts([]);
+          setPage(0);
+          setHasMore(true);
+          setTimeout(() => loadMore(), 50);
+        }}
+      />
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {posts.map(p => (
