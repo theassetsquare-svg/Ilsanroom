@@ -39,9 +39,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const userRes = await fetch(`${url}/auth/v1/user`, {
     headers: { apikey: anon, Authorization: `Bearer ${jwt}` },
   });
-  if (!userRes.ok) return Response.json({ error: '인증 실패' }, { status: 401 });
+  if (!userRes.ok) {
+    const detail = await userRes.text();
+    return Response.json({ error: `인증 실패 (${userRes.status})`, detail: detail.slice(0, 200) }, { status: 401 });
+  }
   const user = await userRes.json() as { id?: string };
-  if (!user.id) return Response.json({ error: '인증 실패' }, { status: 401 });
+  if (!user.id) return Response.json({ error: '인증 실패 (no id)' }, { status: 401 });
 
   // 2) 파일 추출
   let form: FormData;
