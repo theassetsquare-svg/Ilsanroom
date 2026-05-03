@@ -54,11 +54,28 @@ export default function VisitorAnalyticsPage() {
     const since = new Date(Date.now() - hours * 3600_000).toISOString();
     const { data, error } = await supabase
       .from('page_events')
-      .select('session_id, path, event_type, dwell_ms, source_type, device_type, utm_campaign')
+      .select('session_id, path, event_type, dwell_ms, source_type, device_type, utm_campaign, user_agent, user_id')
       .gte('created_at', since)
       .limit(20000);
 
     if (error || !data) { setLoading(false); return; }
+
+    // ── 진짜 사람만 ── 1차: 봇/관리자 세션 통째로 제외
+    const BOT_RE = /(bot|crawl|spider|slurp|googlebot|yeti|gptbot|claude|chatgpt|perplexity|headlesschrome|phantomjs|puppeteer|playwright|lighthouse|pagespeed)/i;
+    const sessionEventCount: Record<string, number> = {};
+    const sessionHasInteraction: Record<string, boolean> = {};
+    const excludedSessions = new Set<string>();
+    for (const r of data) {
+      sessionEventCount[r.session_id] = (sessionEventCount[r.session_id] || 0) + 1;
+      if (r.event_type !== 'view' && r.event_type !== 'exit') sessionHasInteraction[r.session_id] = true;
+      if (r.user_agent && BOT_RE.test(r.user_agent)) excludedSessions.add(r.session_id);
+      // 본인이 admin user_id인 세션은 제외 (다른 어드민 포함)
+      if (r.user_id && user && r.user_id === user.id) excludedSessions.add(r.session_id);
+    }
+    // 2차: 단발 view + 0초 체류 + 인터랙션 0 = 봇 시그니처
+    for (const sid of Object.keys(sessionEventCount)) {
+      if (sessionEventCount[sid] === 1 && !sessionHasInteraction[sid]) excludedSessions.add(sid);
+    }
 
     const byPath: Record<string, { views: number; dwellSum: number; dwellN: number; s50: number; s100: number; exitFast: number; exitTotal: number }> = {};
     const sessions = new Set<string>();
@@ -70,6 +87,7 @@ export default function VisitorAnalyticsPage() {
     let shareCount = 0;
 
     for (const r of data) {
+      if (excludedSessions.has(r.session_id)) continue;
       sessions.add(r.session_id);
       const p = r.path || '/';
       if (!byPath[p]) byPath[p] = { views: 0, dwellSum: 0, dwellN: 0, s50: 0, s100: 0, exitFast: 0, exitTotal: 0 };
@@ -123,7 +141,7 @@ export default function VisitorAnalyticsPage() {
     setSignups(signupCount);
     setShareClicks(shareCount);
     setLoading(false);
-  }, [hours]);
+  }, [hours, user]);
 
   useEffect(() => { if (isAdmin) load(); }, [isAdmin, load]);
 
@@ -135,8 +153,11 @@ export default function VisitorAnalyticsPage() {
   return (
     <div className="mx-auto max-w-6xl p-4 md:p-8">
       <h1 style={{ fontSize: '24px', fontWeight: 800, marginBottom: '8px', color: '#111' }}>방문자 행동 분석</h1>
-      <p style={{ color: '#666', marginBottom: '20px', fontSize: '14px' }}>
+      <p style={{ color: '#666', marginBottom: '8px', fontSize: '14px' }}>
         어디서 들어오고, 어디서 머물고, 어디서 떠나는지 한눈에 봅니다.
+      </p>
+      <p style={{ color: '#16A34A', marginBottom: '20px', fontSize: '12px', fontWeight: 700 }}>
+        ✓ 진짜 외부 방문자만 표시 — 관리자 본인·봇·크롤러·내부 트래픽 자동 제외
       </p>
 
       <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
