@@ -181,7 +181,12 @@ function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdLis
 const noIndexPathsSet = new Set(['/login', '/profile', '/dashboard', '/analytics', '/billing', '/onboarding', '/launch', '/admin/venues']);
 
 function writePage(routePath, meta) {
-  const dir = path.join(DIST, routePath);
+  // 파일시스템은 디코딩된 경로 (Cloudflare가 URL 디코딩 후 매칭)
+  // canonical/sitemap은 routePath 그대로 (인코딩 유지)
+  const decodedPath = routePath.split('/').map(s => {
+    try { return decodeURIComponent(s); } catch { return s; }
+  }).join('/');
+  const dir = path.join(DIST, decodedPath);
   fs.mkdirSync(dir, { recursive: true });
   const html = renderPage({ ...meta, canonical: routePath, noindex: noIndexPathsSet.has(routePath) });
   fs.writeFileSync(path.join(dir, 'index.html'), html);
