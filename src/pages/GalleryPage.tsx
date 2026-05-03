@@ -324,6 +324,8 @@ export default function GalleryPage() {
               const isExpanded = expandedComments.has(clip.id);
               const isMine = user?.id === clip.user_id;
               const hasImgError = imgErrors.has(clip.id);
+              // 시드 클립은 user_id 비어있고 id가 UUID가 아니므로 댓글 INSERT 시 22P02 에러
+              const isSeed = !clip.user_id || clip.id.length < 32;
               return (
                 <article key={clip.id}>
                   {/* 헤더 */}
@@ -438,25 +440,38 @@ export default function GalleryPage() {
                     ))}
                   </div>
 
-                  {/* 댓글 입력 */}
-                  <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-50">
-                    <input
-                      id={`comment-${clip.id}`}
-                      type="text"
-                      value={commentInputs[clip.id] || ''}
-                      onChange={e => setCommentInputs(prev => ({ ...prev, [clip.id]: e.target.value }))}
-                      onKeyDown={e => { if (e.key === 'Enter') addComment(clip.id); }}
-                      onFocus={() => { if (!user) navigate('/login'); }}
-                      placeholder="댓글 달기..."
-                      className="flex-1 text-sm py-2 outline-none bg-transparent text-[#111]"
-                      style={{ minHeight: 40 }}
-                    />
-                    {commentInputs[clip.id]?.trim() && (
-                      <button onClick={() => addComment(clip.id)} className="text-sm font-bold text-[#8B5CF6]" style={{ minHeight: 40 }}>
-                        게시
+                  {/* 댓글 입력 — 시드 클립에는 비활성, 직접 올리기 유도 */}
+                  {isSeed ? (
+                    <div className="flex items-center justify-between gap-2 px-4 py-3 border-b border-gray-50">
+                      <p className="text-xs text-[#999]">예시 클립이에요</p>
+                      <button
+                        onClick={() => requireLogin() && setShowUpload(true)}
+                        className="text-sm font-bold text-[#8B5CF6]"
+                        style={{ minHeight: 40 }}
+                      >
+                        내 클립 올리기 →
                       </button>
-                    )}
-                  </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-50">
+                      <input
+                        id={`comment-${clip.id}`}
+                        type="text"
+                        value={commentInputs[clip.id] || ''}
+                        onChange={e => setCommentInputs(prev => ({ ...prev, [clip.id]: e.target.value }))}
+                        onKeyDown={e => { if (e.key === 'Enter') addComment(clip.id); }}
+                        onFocus={() => { if (!user) navigate('/login'); }}
+                        placeholder="댓글 달기..."
+                        className="flex-1 text-sm py-2 outline-none bg-transparent text-[#111]"
+                        style={{ minHeight: 40 }}
+                      />
+                      {commentInputs[clip.id]?.trim() && (
+                        <button onClick={() => addComment(clip.id)} className="text-sm font-bold text-[#8B5CF6]" style={{ minHeight: 40 }}>
+                          게시
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </article>
               );
             })}
