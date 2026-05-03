@@ -230,8 +230,7 @@ function VoteSection() {
             return merged.slice(0, 40);
           });
         }
-      })
-      .catch(() => {});
+      }, () => {});
   }, []);
 
   const remainingVotes = useMemo(() => {
