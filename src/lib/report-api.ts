@@ -1,5 +1,6 @@
 // 4주차: 신고 시스템 API
 import { createClient } from './supabase';
+import { notify } from './notify';
 
 export type ReportReason = 'profanity' | 'spam' | 'false_info' | 'inappropriate' | 'other';
 export type ReportTargetType = 'post' | 'comment' | 'user';
@@ -51,6 +52,13 @@ export async function submitReport(params: {
     if (error.code === '23505') return { error: '이미 신고한 내용입니다' };
     return { error: error.message };
   }
+
+  notify({
+    action: 'report',
+    postId: `${params.targetType}:${params.targetId}`,
+    reason: `${getReasonLabel(params.reason)}${params.description ? ` — ${params.description}` : ''}`,
+    reporterEmail: user.email || undefined,
+  });
 
   return { success: true };
 }

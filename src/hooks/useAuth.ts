@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase';
+import { notify } from '@/lib/notify';
 import type { User } from '@supabase/supabase-js';
+
+const WELCOMED_KEY = 'nolcool:welcomed';
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
@@ -24,6 +27,22 @@ export function useAuth() {
     // 2) 세션 변경 감지 — TOKEN_REFRESHED 포함하여 영구 로그인 유지
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
+
+      // 신규 가입자 첫 SIGNED_IN 시 환영 이메일 1회만 발송 (관리자 알림 + 사용자 환영)
+      if (event === 'SIGNED_IN' && session?.user) {
+        try {
+          const welcomedSet = JSON.parse(localStorage.getItem(WELCOMED_KEY) || '[]') as string[];
+          if (!welcomedSet.includes(session.user.id)) {
+            notify({
+              action: 'welcome',
+              email: session.user.email || '',
+              name: (session.user.user_metadata?.name as string) || (session.user.email?.split('@')[0]) || '회원',
+            });
+            welcomedSet.push(session.user.id);
+            localStorage.setItem(WELCOMED_KEY, JSON.stringify(welcomedSet.slice(-50)));
+          }
+        } catch { /* localStorage 실패 무시 */ }
+      }
 
       // 토큰 갱신 실패 시 자동 재시도 (네트워크 일시 오류 등)
       if (event === 'TOKEN_REFRESHED' && !session) {

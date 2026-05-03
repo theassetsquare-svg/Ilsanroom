@@ -1,4 +1,5 @@
 import { Component, type ReactNode } from 'react';
+import { notify } from '@/lib/notify';
 
 interface Props {
   children: ReactNode;
@@ -63,6 +64,16 @@ export default class ErrorBoundary extends Component<Props, State> {
         msg.includes('error loading dynamically imported module')) {
       window.location.reload();
       return;
+    }
+
+    // 자동 복구 실패 임박 시 (2회째) 관리자 알림 1회 발송
+    if (this.state.retryCount === 1) {
+      notify({
+        action: 'contact',
+        name: '[자동] 페이지 에러',
+        email: 'noreply@nolcool.com',
+        message: `URL: ${window.location.href}\nUA: ${navigator.userAgent}\nError: ${msg}\n${error.stack?.slice(0, 800) || ''}`,
+      });
     }
 
     // 기타 에러: 2회까지 자동 복구 시도
