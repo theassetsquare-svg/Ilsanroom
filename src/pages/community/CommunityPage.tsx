@@ -43,9 +43,11 @@ export default function CommunityPage() {
   useEffect(() => {
     const supabase = createClient();
     if (!supabase) return;
+    let alive = true;
 
     sectionDefs.forEach(async (sec) => {
       const { count } = await supabase.from('posts').select('*', { count: 'exact', head: true }).eq('category', sec.category);
+      if (!alive) return;
       setCounts(prev => ({ ...prev, [sec.category]: count || 0 }));
     });
 
@@ -55,7 +57,7 @@ export default function CommunityPage() {
       .order('likes', { ascending: false })
       .limit(5)
       .then(({ data }) => {
-        if (data && data.length > 0) setRecentPosts(data as any);
+        if (alive && data && data.length > 0) setRecentPosts(data as any);
       });
 
     // 오늘 가장 많이 댓글 달린 글 5개
@@ -64,8 +66,10 @@ export default function CommunityPage() {
       .order('comment_count', { ascending: false })
       .limit(5)
       .then(({ data }) => {
-        if (data && data.length > 0) setHotCommentPosts(data as any);
+        if (alive && data && data.length > 0) setHotCommentPosts(data as any);
       });
+
+    return () => { alive = false; };
   }, []);
 
   const catLabel: Record<string, string> = { reviews: '후기', discussion: 'Q&A', party: '모집', tips: '꿀팁', free: '자유' };
