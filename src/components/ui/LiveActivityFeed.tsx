@@ -70,16 +70,16 @@ interface Props {
 }
 
 export default function LiveActivityFeed({ maxItems = 5, interval = 6000, compact = false, className = '', category }: Props) {
-  const [items, setItems] = useState<{ text: string; time: string; id: number }[]>([]);
   const idRef = useRef(0);
-
-  useEffect(() => {
-    const init = Array.from({ length: maxItems }, () => {
+  // CLS 방지: 초기 항목 동기 생성 (첫 페인트부터 height 확정)
+  const [items, setItems] = useState<{ text: string; time: string; id: number }[]>(() =>
+    Array.from({ length: maxItems }, () => {
       idRef.current++;
       return { ...generateActivity(category), id: idRef.current };
-    });
-    setItems(init);
+    })
+  );
 
+  useEffect(() => {
     const timer = setInterval(() => {
       idRef.current++;
       const newItem = { ...generateActivity(category), id: idRef.current };

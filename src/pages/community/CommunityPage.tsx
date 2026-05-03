@@ -13,14 +13,15 @@ const sectionDefs = [
   { title: "자유게시판", description: "자유롭게 이야기 나누는 공간", href: "/community/free", icon: "💬", category: "free", hookLine: "어젯밤 일 아직도 생각나서 씀" },
 ];
 
-/* 실시간 느낌 숫자: 시간대에 따라 변동 */
+/* 실시간 느낌 숫자: 시간대에 따라 변동 — CLS 방지 위해 초기값 동기 계산 */
 function useLiveNumber(base: number, range: number) {
-  const [num, setNum] = useState(base);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  useEffect(() => {
+  const [num, setNum] = useState(() => {
     const h = new Date().getHours();
     const mult = (h >= 20 || h < 3) ? 1.4 : (h >= 15) ? 0.9 : 0.6;
-    setNum(Math.floor(base * mult) + Math.floor(Math.random() * range));
+    return Math.floor(base * mult) + Math.floor(Math.random() * range);
+  });
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  useEffect(() => {
     timerRef.current = setInterval(() => {
       setNum(prev => prev + Math.floor(Math.random() * 5) - 2);
     }, 6000);
