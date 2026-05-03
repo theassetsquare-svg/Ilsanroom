@@ -563,22 +563,32 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
     setError('');
 
     try {
-      const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg';
-      const fileName = `clips/${user.id}/${Date.now()}.${ext}`;
-
-      const { data: uploadData, error: uploadErr } = await supabase.storage
-        .from('post-media')
-        .upload(fileName, file, { cacheControl: '3600', upsert: false });
-
-      if (uploadErr) {
-        setError('사진 업로드 실패: ' + uploadErr.message);
+      // service_role로 RLS 우회 (호스팅 Supabase는 storage.objects 정책 추가 불가)
+      const { data: sessionData } = await supabase.auth.getSession();
+      const jwt = sessionData.session?.access_token;
+      if (!jwt) {
+        setError('로그인 세션이 만료되었습니다. 다시 로그인해주세요.');
         setStep('edit');
         setUploading(false);
         return;
       }
 
-      const { data: urlData } = supabase.storage.from('post-media').getPublicUrl(uploadData.path);
-      const imageUrl = urlData.publicUrl;
+      const fd = new FormData();
+      fd.append('file', file);
+
+      const upRes = await fetch('/api/clip-upload', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${jwt}` },
+        body: fd,
+      });
+      const upJson = await upRes.json().catch(() => ({} as any));
+      if (!upRes.ok || !upJson?.publicUrl) {
+        setError('사진 업로드 실패: ' + (upJson?.error || upRes.statusText));
+        setStep('edit');
+        setUploading(false);
+        return;
+      }
+      const imageUrl: string = upJson.publicUrl;
 
       const content = JSON.stringify({ imageUrl, caption: caption.trim() });
       const { error: dbErr } = await supabase
