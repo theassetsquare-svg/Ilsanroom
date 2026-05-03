@@ -15,6 +15,8 @@ import { HomeFeed } from '@/components/community/HomeFeed';
 import FreshPostsZone from '@/components/home/FreshPostsZone';
 import StreakBadge from '@/components/home/StreakBadge';
 import PrivacyTrustBadge from '@/components/privacy/PrivacyTrustBadge';
+import OpenBetaBanner from '@/components/launch/OpenBetaBanner';
+import InviteFriendBox from '@/components/launch/InviteFriendBox';
 import { articles as magazineArticles } from '@/data/magazine-articles';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -838,10 +840,16 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ═══ 1.30 OPEN BETA 시그널 — 첫 100명 창립멤버 긴박감 ═══ */}
+      <OpenBetaBanner />
+
       {/* ═══ 1.35 프라이버시 신뢰 뱃지 — 백만 회원 친구 추천 안심 포인트 ═══ */}
       <section className="px-4 pt-3 pb-1 max-w-3xl mx-auto">
         <PrivacyTrustBadge />
       </section>
+
+      {/* ═══ 1.37 카톡 원클릭 친구 초대 — 입소문 가속기 ═══ */}
+      <InviteFriendBox />
 
       {/* ═══ 1.4 방금 올라온 글 보호 영역 — #1 커뮤니티 재미. 30분 내 글 최상단 노출 ═══ */}
       <FreshPostsZone />

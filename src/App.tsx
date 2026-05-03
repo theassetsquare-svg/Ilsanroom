@@ -56,6 +56,7 @@ const GuidelinesPage = lazyRetry(() => import('./pages/community/GuidelinesPage'
 const JogakPage = lazyRetry(() => import('./pages/community/JogakPage'));
 const PrivacyPage = lazyRetry(() => import('./pages/PrivacyPage'));
 const PrivacyPromisePage = lazyRetry(() => import('./pages/PrivacyPromisePage'));
+const WelcomePage = lazyRetry(() => import('./pages/WelcomePage'));
 const TermsPage = lazyRetry(() => import('./pages/TermsPage'));
 const DisclaimerPage = lazyRetry(() => import('./pages/DisclaimerPage'));
 const VenueTermsPage = lazyRetry(() => import('./pages/VenueTermsPage'));
@@ -168,6 +169,7 @@ export default function App() {
           {/* Legal & Info */}
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/privacy-promise" element={<PrivacyPromisePage />} />
+          <Route path="/welcome" element={<WelcomePage />} />
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/disclaimer" element={<DisclaimerPage />} />
           <Route path="/venue-terms" element={<VenueTermsPage />} />
