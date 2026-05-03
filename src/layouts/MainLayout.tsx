@@ -56,6 +56,16 @@ function ScrollToTop() {
 }
 
 export default function MainLayout() {
+  // instant-hero (index.html) 첫 마운트 시 페이드아웃 후 제거
+  useEffect(() => {
+    const ih = document.getElementById('instant-hero');
+    if (!ih) return;
+    requestAnimationFrame(() => {
+      ih.style.opacity = '0';
+      setTimeout(() => ih.remove(), 350);
+    });
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col">
       <a href="#main-content" className="skip-nav">본문으로 건너뛰기</a>
