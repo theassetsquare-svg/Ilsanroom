@@ -14,9 +14,12 @@
 interface Env {
   SUPABASE_URL?: string;
   SUPABASE_SERVICE_KEY: string;
+  SUPABASE_ANON_KEY?: string;
+  VITE_SUPABASE_ANON_KEY?: string;
 }
 
 const DEFAULT_URL = 'https://rkqnblbajhnehmxfnvri.supabase.co';
+const DEFAULT_ANON = 'sb_publishable_hjLH8puvrYsVNPt38KROkQ_v99vtC3c';
 const ALLOWED_MIME = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/heic', 'image/heif'];
 const MAX_BYTES = 10 * 1024 * 1024;
 
@@ -32,8 +35,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const jwt = auth.startsWith('Bearer ') ? auth.slice(7) : '';
   if (!jwt) return Response.json({ error: '로그인이 필요합니다.' }, { status: 401 });
 
+  const anon = context.env.SUPABASE_ANON_KEY || context.env.VITE_SUPABASE_ANON_KEY || DEFAULT_ANON;
   const userRes = await fetch(`${url}/auth/v1/user`, {
-    headers: { apikey: jwt, Authorization: `Bearer ${jwt}` },
+    headers: { apikey: anon, Authorization: `Bearer ${jwt}` },
   });
   if (!userRes.ok) return Response.json({ error: '인증 실패' }, { status: 401 });
   const user = await userRes.json() as { id?: string };
