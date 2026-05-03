@@ -56,15 +56,11 @@ function screenshotoneUrl(pageUrl: string, w = 1200, h = 1200): string {
   return `https://api.screenshotone.com/take?${params.toString()}`;
 }
 
-/** 3개 서비스 로테이션 — slug 해시 기반 */
+/** 2개 서비스 로테이션 — slug 해시 기반
+ * (screenshotone은 브라우저 ORB 차단 + CORS 정책으로 <img>에서 사용 불가) */
 export function getScreenshotUrl(pageUrl: string, slug: string, w = 1200, h = 1200): string {
-  const idx = slugHash(slug) % 3;
-  switch (idx) {
-    case 0: return thumUrl(pageUrl, w, h);
-    case 1: return microlinkUrl(pageUrl, w, h);
-    case 2: return screenshotoneUrl(pageUrl, w, h);
-    default: return thumUrl(pageUrl, w, h);
-  }
+  const idx = slugHash(slug) % 2;
+  return idx === 0 ? thumUrl(pageUrl, w, h) : microlinkUrl(pageUrl, w, h);
 }
 
 /** 업소 상세페이지 스크린샷 URL */
