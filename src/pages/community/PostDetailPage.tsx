@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase';
 import ShareButton from '@/components/ui/ShareButton';
 import ReportButton from '@/components/moderation/ReportButton';
 import { getSeedNickname } from '@/lib/fake-users';
+import { NextPostInline } from '@/components/community/NextPostInline';
 
 interface CommentData {
   id: string;
@@ -388,6 +389,11 @@ export default function PostDetailPage() {
         <Link to="/login" className="block text-center text-sm font-medium py-3 mb-8" style={{ color: '#8B5CF6' }}>
           로그인하고 댓글 달기
         </Link>
+      )}
+
+      {/* ══════ 다음글 자동 인라인 — 도파민 스크롤 루프 ══════ */}
+      {relatedPosts.length > 0 && relatedPosts[0]?.id && (
+        <NextPostInline nextPostId={relatedPosts[0].id} />
       )}
 
       {/* ══════ 관련 글 — 사이트 이탈 방지 ══════ */}
