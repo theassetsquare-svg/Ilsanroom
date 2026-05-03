@@ -11,6 +11,7 @@ import ShareButtons from '@/components/interactive/ShareButtons';
 import { MidContentHook } from '@/components/engagement/ReadingEngagement';
 import RelatedVenues30 from '@/components/venue/RelatedVenues30';
 import LiveStats from '@/components/live/LiveStats';
+import VenueLivePulse from '@/components/venue/VenueLivePulse';
 import type { Venue } from '@/types';
 
 const VenueSeoContent = lazy(() => import('@/components/venue/VenueSeoContent'));
@@ -125,9 +126,9 @@ export default function VenueDetailPage({
         slug={venue.slug}
       />
 
-      {/* ═══ 3. 지금 보는 중 ═══ */}
+      {/* ═══ 3. 라이브 펄스 — 보는중/조회/찜 회전 메시지 ═══ */}
       <div className="mx-auto max-w-[1200px] px-4 pt-3 sm:px-6">
-        <p className="text-xs text-[#8B5CF6] font-medium">{'\uD83D\uDC40'} 지금 {viewingNow}명이 이 페이지를 보고 있습니다</p>
+        <VenueLivePulse slug={venue.slug} isPremium={venue.isPremium} initialViewing={viewingNow} />
       </div>
 
 

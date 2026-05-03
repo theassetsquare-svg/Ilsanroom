@@ -12,6 +12,8 @@ import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import LiveStats from '@/components/live/LiveStats';
 import { TemperatureRanking } from '@/components/community/TemperatureRanking';
 import { HomeFeed } from '@/components/community/HomeFeed';
+import FreshPostsZone from '@/components/home/FreshPostsZone';
+import StreakBadge from '@/components/home/StreakBadge';
 import { articles as magazineArticles } from '@/data/magazine-articles';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -833,6 +835,14 @@ export default function HomePage() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* ═══ 1.4 방금 올라온 글 보호 영역 — #1 커뮤니티 재미. 30분 내 글 최상단 노출 ═══ */}
+      <FreshPostsZone />
+
+      {/* ═══ 1.45 단골 뱃지 — #4 매일 중독. 방문 연속일 표시 ═══ */}
+      <section className="px-4 pt-2 pb-1 max-w-3xl mx-auto">
+        <StreakBadge />
       </section>
 
       {/* ═══ 1.5 실시간 밤의 온도 TOP 10 — 명예욕 자극, 회원 활동 유도 ═══ */}
