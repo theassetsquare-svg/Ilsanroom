@@ -752,19 +752,22 @@ const COMMUNITY_BOARD_BLURBS = {
 
 // SSR 본문 자동 보강 — H3·추가 단락·관련 링크 주입
 function enrichSsr(body, pgPath, pgTitle) {
-  // 이미 H3가 충분하거나 매우 긴 본문은 그대로
-  const h3Count = (body.match(/<h3/g) || []).length;
-  if (h3Count >= 2) return body;
-  // 관련 카테고리 H3 + 인기 지역 H3 추가
+  // 매우 큰 본문은 그대로 (이미 풍부)
+  if (body.length > 2000) return body;
+  // 관련 카테고리 H3 + 인기 지역 H3 + 추천 활동 H3
   const cats = ['클럽', '나이트', '라운지', '룸', '요정', '호빠'];
   const regions = ['강남', '홍대', '이태원', '일산', '수원', '부산 해운대'];
+  const activities = ['VS 투표 결과 보기', '룰렛으로 즉흥 추천', '퀴즈로 내 스타일 찾기', '랭킹 TOP 30 확인', '1줄 글쓰기로 자랑'];
   body += `<h3>관련 업종 둘러보기</h3><ul>`;
   cats.forEach(c => { body += `<li>${c} 카테고리 — 시세·후기·예약 정보</li>`; });
   body += `</ul>`;
   body += `<h3>지역별 인기 업소</h3><ul>`;
   regions.forEach(r => { body += `<li>${r} — 회원 추천 베스트</li>`; });
   body += `</ul>`;
-  body += `<p>${pgTitle.replace(/['"]/g, '')} 외에도 놀쿨에서 클럽·나이트·라운지·룸·요정·호빠 120곳의 실시간 시세와 후기를 비교할 수 있습니다. 회원 가입 시 1줄 글쓰기, 후기 작성, 찜하기, VS 투표, 파티 모집 참여 등 모든 기능을 무료로 이용할 수 있습니다.</p>`;
+  body += `<h3>놀쿨에서 함께 즐기기</h3><ul>`;
+  activities.forEach(a => { body += `<li>${a}</li>`; });
+  body += `</ul>`;
+  body += `<p>${pgTitle.replace(/['"]/g, '')} 외에도 놀쿨에서 클럽·나이트·라운지·룸·요정·호빠 120곳의 실시간 시세와 후기를 비교할 수 있습니다. 회원 가입 시 1줄 글쓰기, 후기 작성, 찜하기, VS 투표, 파티 모집 참여 등 모든 기능을 무료로 이용할 수 있습니다. 매일 새 글 200개 이상이 올라오고, 매주 신규 업소가 등록되어 항상 새로운 정보를 만날 수 있습니다.</p>`;
   return body;
 }
 
@@ -829,10 +832,8 @@ for (const pg of staticPages) {
     if (CAT_GUIDE_BLURBS[catKey]) {
       ssrBody += CAT_GUIDE_BLURBS[catKey];
     }
-    // 업소 수가 적은 카테고리는 추가 보강
-    if (catVenues.length < 7) {
-      ssrBody = enrichSsr(ssrBody, pg.path, pg.title);
-    }
+    // 업소 수와 무관하게 모든 카테고리 페이지 보강
+    ssrBody = enrichSsr(ssrBody, pg.path, pg.title);
 
     // ★ ItemList JSON-LD — AI 검색에서 목록으로 인용
     jsonLdList.push({
