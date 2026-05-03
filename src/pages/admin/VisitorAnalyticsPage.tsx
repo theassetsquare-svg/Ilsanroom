@@ -160,6 +160,20 @@ export default function VisitorAnalyticsPage() {
         >
           새로고침
         </button>
+        <button
+          onClick={async () => {
+            if (!confirm('지금까지 쌓인 모든 page_events 로그를 삭제합니다. (관리자/봇 테스트 데이터 제거)\n계속할까요?')) return;
+            const supabase = createClient();
+            if (!supabase) return;
+            const { error } = await supabase.from('page_events').delete().gt('id', 0);
+            if (error) { alert('삭제 실패: ' + error.message); return; }
+            alert('완료. 이제부터 진짜 방문자만 기록됩니다.');
+            load();
+          }}
+          style={{ padding: '8px 14px', borderRadius: '8px', background: '#DC2626', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 600 }}
+        >
+          오염 데이터 초기화
+        </button>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px', marginBottom: '20px' }}>

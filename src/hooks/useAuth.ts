@@ -22,14 +22,14 @@ export function useAuth() {
     // 1) 로컬 저장소에서 세션 로드 (빠름, 서버 요청 없음)
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
-      setTrackerUser(session?.user?.id ?? null);
+      setTrackerUser(session?.user?.id ?? null, session?.user?.email ?? null);
       setLoading(false);
     });
 
     // 2) 세션 변경 감지 — TOKEN_REFRESHED 포함하여 영구 로그인 유지
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
-      setTrackerUser(session?.user?.id ?? null);
+      setTrackerUser(session?.user?.id ?? null, session?.user?.email ?? null);
 
       // 신규 가입자 첫 SIGNED_IN 시 환영 이메일 1회만 발송 (관리자 알림 + 사용자 환영)
       if (event === 'SIGNED_IN' && session?.user) {

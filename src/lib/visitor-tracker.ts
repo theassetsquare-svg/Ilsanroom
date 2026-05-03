@@ -16,6 +16,22 @@ type DeviceType = 'mobile' | 'tablet' | 'desktop';
 const SESSION_KEY = 'nc_session_id';
 const ATTR_KEY = 'nc_session_attr'; // UTM/source 한 세션 동안 유지
 
+/* ── 관리자/봇/개발 트래픽 제외 — "진짜 방문자"만 기록 ── */
+const ADMIN_EMAILS = ['qotjsdnr123@naver.com', 'baesunwook513@gmail.com', 'theassetsquare@gmail.com'];
+const BOT_UA_RE = /bot|crawl|spider|slurp|bingpreview|facebookexternalhit|whatsapp|telegram|googlebot|yeti|gptbot|claude|chatgpt|perplexity|headlesschrome|phantomjs|puppeteer|playwright|lighthouse|pagespeed/i;
+
+function isBot(ua: string): boolean {
+  return BOT_UA_RE.test(ua);
+}
+
+function isInternalHost(): boolean {
+  if (typeof window === 'undefined') return true;
+  const h = window.location.hostname;
+  return h === 'localhost' || h === '127.0.0.1' || h.endsWith('.pages.dev') || h.startsWith('192.168.') || h.startsWith('10.');
+}
+
+let trackingDisabled = false; // 관리자 로그인 시 true
+
 const sessionId = ((): string => {
   if (typeof window === 'undefined') return 'ssr';
   let id = sessionStorage.getItem(SESSION_KEY);
@@ -112,12 +128,22 @@ let firedEvents = new Set<EventType>();
 let timers: number[] = [];
 let currentUserId: string | null = null;
 
-export function setTrackerUser(userId: string | null) {
+export function setTrackerUser(userId: string | null, email?: string | null) {
   currentUserId = userId;
+  // 관리자 이메일이면 추적 비활성화 — 진짜 방문자 데이터만 남음
+  if (email && ADMIN_EMAILS.includes(email)) {
+    trackingDisabled = true;
+    try { localStorage.setItem('nc_admin_skip', '1'); } catch {}
+  }
 }
 
 function send(eventType: EventType, opts?: { dwellMs?: number; meta?: Record<string, any>; once?: boolean }) {
   if (typeof window === 'undefined') return;
+  // 관리자/봇/개발 트래픽 차단 — 진짜 방문자 데이터만 남김
+  if (trackingDisabled) return;
+  try { if (localStorage.getItem('nc_admin_skip') === '1') { trackingDisabled = true; return; } } catch {}
+  if (isInternalHost()) return;
+  if (isBot(navigator.userAgent || '')) return;
   const once = opts?.once !== false; // default = once per page
   if (once && firedEvents.has(eventType)) return;
   if (once) firedEvents.add(eventType);
