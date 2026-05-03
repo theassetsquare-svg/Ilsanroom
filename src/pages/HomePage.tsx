@@ -462,7 +462,7 @@ function InfiniteRecommendLoop({ venues, popularVenues }: { venues: Venue[]; pop
 /* ══════════════════════════════════════════════════════ */
 
 export default function HomePage() {
-  useDocumentMeta('놀쿨 — 오늘 밤 어디 갈지, 여기서 정해진다', '클럽·나이트·룸·요정·호빠 전국 120곳 실시간 비교. 솔직 후기, 조각모임, 벙개까지.');
+  useDocumentMeta('놀쿨 — 오늘 밤 어디 갈지, 여기서 정해진다', '강남 홍대 이태원 일산 부산 수원 전국 클럽·나이트·라운지·룸·요정·호빠 120곳 실시간 비교. 솔직 후기, 시세 비교, 부킹 문화, 드레스코드, 조각모임, 벙개까지. 한 곳에서 다 본다.');
   const navigate = useNavigate();
   const { user } = useAuth();
 

@@ -17,7 +17,7 @@ const regions = [
 ];
 
 export default function ClubsPage() {
-  useDocumentMeta('새벽 2시에도 줄이 안 줄어드는 클럽만 골랐다', 'EDM·힙합·테크노 35곳, 입장료부터 분위기까지 한눈에. 오늘 밤 갈 곳 여기서 픽.');
+  useDocumentMeta('새벽 2시에도 줄이 안 줄어드는 클럽만 골랐다', '강남 홍대 이태원 일산 EDM·힙합·테크노 클럽 35곳. 입장료 분위기 드레스코드 영업시간 한눈에. 첫방문 코스, 게스트 라인업, 부킹 문화까지. 오늘 밤 갈 곳 여기서 픽.');
   const venues = getVenuesByCategory('club');
   const featured = venues.find(v => v.isPremium) || venues[0];
 

@@ -18,7 +18,7 @@ const regions = [
 ];
 
 export default function NightsPage() {
-  useDocumentMeta('라이브 밴드가 울리면, 모르는 사람도 파트너가 된다', '소셜댄스 58곳 총집합. 부킹 문화부터 드레스코드까지, 첫 발 딛기 전에 읽어라.');
+  useDocumentMeta('라이브 밴드가 울리면, 모르는 사람도 파트너가 된다', '소셜댄스 나이트 58곳 총집합. 강남 부산 수원 일산 부킹 문화부터 드레스코드 입장료 시간대별 분위기까지. 부스·룸 구성, 양주 시세, 첫방문 매너 가이드. 첫 발 딛기 전에 읽어라.');
   const venues = getVenuesByCategory('night');
   const featured = venues.find(v => v.isPremium) || venues[0];
 

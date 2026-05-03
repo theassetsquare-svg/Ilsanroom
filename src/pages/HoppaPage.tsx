@@ -24,7 +24,7 @@ const regions = [
 ];
 
 export default function HoppaPage() {
-  useDocumentMeta('처음인데 혼자 가도 괜찮을까? 결론부터, 된다', '여성 전용 사교 공간 18곳 실전 가이드. 시세·분위기·안전 정보 확인하고 가라.');
+  useDocumentMeta('처음인데 혼자 가도 괜찮을까? 결론부터, 된다', '여성 전용 사교 공간 호빠 18곳 실전 가이드. 강남 종로 영등포 시세 분위기 안전 정보 매너. 초이스 방법, 가격대 5~15만원, 첫방문 동선까지. 여자 혼자도 안전하게.');
   const venues = getVenuesByCategory('hoppa');
   const featured = venues.find(v => v.isPremium) || venues[0];
 
