@@ -11,6 +11,7 @@ import { useFavorites as useFavoritesHook } from '@/hooks/useFavorites';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import LiveStats from '@/components/live/LiveStats';
 import { TemperatureRanking } from '@/components/community/TemperatureRanking';
+import { HomeFeed } from '@/components/community/HomeFeed';
 import { articles as magazineArticles } from '@/data/magazine-articles';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -838,6 +839,9 @@ export default function HomePage() {
       <section className="px-4 py-3 max-w-3xl mx-auto">
         <TemperatureRanking limit={5} />
       </section>
+
+      {/* ═══ 1.7 무한피드 — 1초 이탈 방지 + 페이지뷰 ↑↑ (TikTok/IG 스타일) ═══ */}
+      <HomeFeed />
 
       {/* ═══ 2. 미니 성향테스트 — "3초 만에 오늘 밤 결정" (→ /quiz 유도) ═══ */}
       <section className="px-4 py-2 max-w-3xl mx-auto">
