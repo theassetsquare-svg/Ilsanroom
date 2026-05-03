@@ -40,7 +40,7 @@ const caseStudies = [
 ];
 
 export default function CaseStudiesPage() {
-  useDocumentMeta('등록 후 예약이 250% 늘었다, 실제 사례', '일산명월관·수원찬스돔·강남레이스의 입점 전후 변화. 숫자로 확인.');
+  useDocumentMeta('등록 후 예약이 250% 늘었다, 실제 사례', '일산명월관·수원찬스돔·강남레이스 입점 전후 매출·전화·리뷰 변화 숫자로 공개. 6개월간 트래픽 그래프, 신규 고객 유입 경로, 단골 전환율까지 실제 사례 분석.');
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <h1 className="text-2xl font-extrabold text-neon-text mb-1">입점 사례 연구</h1>

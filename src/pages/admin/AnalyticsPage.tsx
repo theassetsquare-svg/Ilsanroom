@@ -1,7 +1,7 @@
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function AnalyticsPage() {
-  useDocumentMeta('유입 경로부터 전화 건수까지, 분석 리포트', '어디서 들어왔고, 뭘 눌렀고, 전환은 몇 건인지 그래프로 확인.');
+  useDocumentMeta('유입 경로부터 전화 건수까지, 분석 리포트', '어디서 들어왔고 뭘 눌렀고 전환 몇 건인지 그래프로. 요일·시간대 트래픽, 클릭률, 평점 추이까지. 매주 월요일 자동 리포트.');
   const stats = [
     { label: "총 페이지뷰", value: "12,847", change: "+14.2%", up: true },
     { label: "검색 노출", value: "8,392", change: "+8.7%", up: true },

@@ -205,7 +205,7 @@ function CategorySection({ category }: { category: FaqCategory }) {
 }
 
 export default function HelpPage() {
-  useDocumentMeta('자주 묻는 질문, 여기 다 답해놨다', '나이 제한, 복장 규정, 입장료 궁금증. 검색 한 번에 해결.');
+  useDocumentMeta('자주 묻는 질문, 여기 다 답해놨다', '나이 제한, 복장 규정, 입장료, 예약 방법, 환불 정책, 회원 등급, 포인트 사용까지 자주 묻는 질문 한 번에 해결. 검색 한 번이면 답이 나오는 통합 FAQ 페이지.');
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 

@@ -135,7 +135,7 @@ const sections = [
 ];
 
 export default function PrivacyPage() {
-  useDocumentMeta('개인정보 수집·이용·파기 안내', '수집 항목, 보유 기간, 제3자 제공 여부를 투명하게 공개.');
+  useDocumentMeta('개인정보 수집·이용·파기 안내', '수집 항목·보유 기간·제3자 제공 여부 투명 공개. 개인정보보호법 준수, SSL 암호화, 자동 파기 정책, 회원 탈퇴 시 즉시 삭제. 안전하고 투명한 데이터 처리 방침 전문 공시.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">

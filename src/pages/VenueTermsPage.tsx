@@ -135,7 +135,7 @@ const sections = [
 ];
 
 export default function VenueTermsPage() {
-  useDocumentMeta('업소 등록 및 광고 게재 약관', '게재 조건, 환불 정책, 삭제 기준. 등록 전 반드시 확인.');
+  useDocumentMeta('업소 등록 및 광고 게재 약관', '업소 게재 조건·환불 정책·삭제 기준 명시. 신청 절차, 콘텐츠 검수 기준, 부적절 광고 처리, 분쟁 시 환불·중재 절차까지. 사장님 등록 전 반드시 읽으세요.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">

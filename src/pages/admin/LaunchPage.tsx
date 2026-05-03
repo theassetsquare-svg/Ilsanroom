@@ -86,7 +86,7 @@ const domainStrategy = [
 ];
 
 export default function LaunchChecklistPage() {
-  useDocumentMeta('심사 통과! 오픈 전 마지막 체크', '대시보드 접속 전 확인할 항목 리스트. 하나씩 체크하면 끝.');
+  useDocumentMeta('심사 통과! 오픈 전 마지막 체크', '대시보드 접속 전 사진·영업시간·메뉴·알림 설정·요금제 체크리스트. 첫 일주일 노출량이 검색 순위 결정하니 꼼꼼하게.');
   const allItems = sections.flatMap((s) => s.items);
   const totalItems = allItems.length;
   const doneItems = allItems.filter((i) => i.status === "done").length;

@@ -8,7 +8,7 @@ const Roulette = lazy(() => import('@/components/interactive/Roulette'));
 const AIChatbot = lazy(() => import('@/components/interactive/AIChatbot'));
 
 export default function RoulettePage() {
-  useDocumentMeta('고민 끝, 룰렛이 대신 골라준다', '탭 한 번이면 오늘 밤 갈 곳이 정해진다. 운명에 맡겨봐.');
+  useDocumentMeta('고민 끝, 룰렛이 대신 골라준다', '오늘 밤 갈 곳 못 정했을 때 탭 한 번이면 결정. 지역·업종·예산·인원 필터 적용해 평점 가중치 랜덤 추천. 다시 돌리기 무제한.');
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (

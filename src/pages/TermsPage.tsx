@@ -94,7 +94,7 @@ const articles = [
 ];
 
 export default function TermsPage() {
-  useDocumentMeta('서비스 이용약관', '가입, 이용, 탈퇴 시 적용되는 권리와 의무 전문.');
+  useDocumentMeta('서비스 이용약관', '놀쿨 가입·이용·탈퇴 시 적용되는 회원 권리와 의무 전문. 서비스 운영 정책, 금지 행위, 분쟁 해결, 약관 변경 절차까지 명문화. 입회 전 반드시 확인.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">

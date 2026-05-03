@@ -52,7 +52,7 @@ const disclaimerSections = [
 ];
 
 export default function DisclaimerPage() {
-  useDocumentMeta('법적 고지 및 면책사항', '본 사이트 정보는 참고 목적이며 법적 보증을 하지 않습니다.');
+  useDocumentMeta('법적 고지 및 면책사항', '본 사이트 정보는 참고 목적이며 법적 보증을 하지 않습니다. 업소 정보 변경 시 책임 한계, 사용자 콘텐츠 면책, 외부 링크 책임 범위, 분쟁 시 관할 법원까지 안내.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">

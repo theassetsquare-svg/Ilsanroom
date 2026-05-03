@@ -26,7 +26,7 @@ const catColors: Record<string, string> = {
 };
 
 export default function EventsPage() {
-  useDocumentMeta('놓치면 후회할 이번 달 파티·행사 일정', 'DJ 게스트, 기념행사, 시즌 이벤트. 달력에 표시해두고 가라.');
+  useDocumentMeta('놓치면 후회할 이번 달 파티·행사 일정', 'DJ 게스트, 기념행사, 핼러윈·크리스마스·연말 시즌 파티 일정 캘린더. 강남 홍대 이태원 일산 부산 핫스팟 이벤트 정리. 달력에 표시하고 예약 미리 잡고 가라.');
   const containerRef = useRef<HTMLDivElement>(null);
 
   // 곧 다가오는 이벤트

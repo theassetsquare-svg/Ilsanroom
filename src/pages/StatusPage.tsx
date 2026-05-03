@@ -78,7 +78,7 @@ const uptimeDays = Array.from({ length: 30 }).map((_, i) => {
 });
 
 export default function StatusPage() {
-  useDocumentMeta('서버 상태·점검 일정 확인', '실시간 가동률과 예정된 점검, 장애 알림을 한눈에.');
+  useDocumentMeta('서버 상태·점검 일정 확인', '놀쿨 실시간 가동률, 예정된 점검 일정, 장애 알림을 한눈에 확인. 최근 7일 가동률 그래프, 응답 시간, 인시던트 히스토리까지 투명하게 공개. 문제 발생 시 즉시 공지.');
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 

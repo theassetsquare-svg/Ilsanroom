@@ -22,7 +22,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 const ADMIN_PIN = 'nolcool2026';
 
 export default function AdminPage() {
-  useDocumentMeta('관리자 페이지', '놀쿨 사이트 관리');
+  useDocumentMeta('관리자 페이지 — 회원·매장·신고 관리', '놀쿨 사이트 운영 관리자 전용. 회원 관리, 매장 등록 심사, 신고 처리, 차단/삭제 결정, 알림 설정, 프리미엄 결제 모니터링까지 한곳에서.');
   const { user, loading: authLoading } = useAuth();
   const supabase = createClient();
   const isAdmin = user && ADMIN_EMAILS.includes(user.email || '');

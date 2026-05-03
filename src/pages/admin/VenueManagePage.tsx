@@ -23,7 +23,7 @@ const emptyVenue: Partial<DbVenue> = {
 };
 
 export default function VenueManagePage() {
-  useDocumentMeta('매장 정보 수정·삭제', '관리자 전용. 등록된 업소 정보를 바로 수정하거나 삭제.');
+  useDocumentMeta('매장 수정·삭제 — 관리자 전용', '관리자 전용 페이지. 업소 정보 수정·사진 교체·영업 상태 토글·리뷰 신고 처리·광고 노출 영역 변경 모두 가능.');
   const { user, loading: authLoading } = useAuth();
   const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
 

@@ -15,7 +15,7 @@ interface PageStat {
 }
 
 export default function VisitorAnalyticsPage() {
-  useDocumentMeta('방문자 행동 분석', '페이지별 체류·스크롤·이탈 데이터');
+  useDocumentMeta('방문자 행동 분석 — 체류·이탈·전환', '페이지별 체류 시간, 스크롤 깊이, 이탈 지점, 클릭 히트맵, 디바이스·OS·유입 채널 분석 데이터. 1초 이탈 페이지 진단과 개선 우선순위 결정용 운영진 전용 도구.');
   const { user, loading: authLoading } = useAuth();
   const isAdmin = user && ADMIN_EMAILS.includes(user.email || '');
 

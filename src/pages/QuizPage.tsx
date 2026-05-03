@@ -26,7 +26,7 @@ const sectionList = [
 ];
 
 export default function QuizPage() {
-  useDocumentMeta('클럽형인지 라운지형인지, 테스트 해봐', '10문항 답하면 나한테 맞는 유흥 스타일이 나온다. 소요시간 2분.');
+  useDocumentMeta('클럽형인지 라운지형인지, 테스트 해봐', '10문항 2분이면 나한테 맞는 유흥 스타일 결과. 클럽 라운지 나이트 룸 요정 호빠 6가지 유형. 친구와 비교 공유 가능.');
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (

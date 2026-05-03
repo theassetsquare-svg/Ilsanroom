@@ -206,8 +206,10 @@ export default function SearchPage() {
   const suggestRef = useRef<HTMLFormElement>(null);
 
   useDocumentMeta(
-    queryParam ? `"${queryParam}" 검색 결과 — 지금 뜨는 곳 총정리` : '통합 검색 — 업소명·지역·키워드로 찾기',
-    '지역·업종·이름 아무거나 입력. 실시간 랭킹과 정확한 정보를 한눈에.'
+    queryParam ? `"${queryParam}" 검색 결과 — 지금 뜨는 곳 총정리` : '이름만 치면 바로 나온다, 통합 검색',
+    queryParam
+      ? `'${queryParam}' 관련 강남 홍대 이태원 일산 부산 핫스팟 검색 결과. 실시간 랭킹 평점 후기 시세 비교까지 한눈에 확인.`
+      : '지역·업종·이름·분위기·예산 아무거나 입력하면 120곳 중 딱 맞는 곳. 자동완성·오타 보정·인기 검색어 추천까지 통합 검색 엔진.'
   );
 
   const { results, total } = useMemo(() => smartSearch(queryParam, categoryParam), [queryParam, categoryParam]);

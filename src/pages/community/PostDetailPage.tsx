@@ -42,12 +42,20 @@ function useViewCount(postId: string | undefined): number {
 }
 
 export default function PostDetailPage() {
-  useDocumentMeta('커뮤니티 글 상세 — 솔직한 후기와 실시간 토론', '클럽·나이트·룸·호빠 실제 이용자 후기와 댓글. 가기 전에 꼭 확인하세요.');
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
 
   const [post, setPost] = useState<any>(null);
+
+  // 동적 SEO: 글 제목 + 본문 첫 100자
+  const dynamicTitle = post?.title
+    ? `${post.title} — 커뮤니티 실시간 토론`
+    : '커뮤니티 글 상세 — 솔직한 후기와 실시간 토론';
+  const dynamicDesc = post?.content
+    ? `${String(post.content).replace(/[\n\r]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 140)} — 강남 홍대 이태원 일산 부산 클럽·나이트·룸·라운지·요정·호빠 회원 실시간 토론.`
+    : '클럽·나이트·룸·호빠 실제 이용자 후기와 댓글. 가기 전에 꼭 확인하세요. 강남 홍대 이태원 일산 부산 회원 실시간 의견 정리.';
+  useDocumentMeta(dynamicTitle, dynamicDesc);
   const [comments, setComments] = useState<CommentData[]>([]);
   const [commentText, setCommentText] = useState('');
   const [replyTo, setReplyTo] = useState<{ id: string; nickname: string } | null>(null);

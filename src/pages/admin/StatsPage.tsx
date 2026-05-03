@@ -30,7 +30,7 @@ const LEVEL_LABELS: Record<string, string> = {
 };
 
 export default function StatsPage() {
-  useDocumentMeta('실시간 통계', '놀쿨 운영 통계 대시보드');
+  useDocumentMeta('실시간 통계 — 놀쿨 운영 대시보드', '놀쿨 사이트 전체 회원 수, 일일 방문자, 콘텐츠 작성량, 전환율, 검색 유입 추이를 실시간으로 모니터링. 운영진 전용 통합 통계 대시보드.');
   const { user, loading: authLoading } = useAuth();
   const isAdmin = user && ADMIN_EMAILS.includes(user.email || '');
 

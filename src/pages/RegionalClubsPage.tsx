@@ -47,7 +47,7 @@ function ClubCard({ venue, href }: { venue: Venue; href: string }) {
 export default function RegionalClubsPage() {
   const { region = '' } = useParams<{ region: string }>();
   const regionKo = regionNames[region] || region;
-  useDocumentMeta(`${regionKo} 클럽 리스트`, `${regionKo} EDM·힙합 클럽 모아보기. 입장료, 분위기, 영업시간 비교.`);
+  useDocumentMeta(`${regionKo} 클럽 — 입장료·분위기·영업시간 한눈에`, `${regionKo} EDM·힙합·테크노 클럽 전체 리스트. 입장료 시세 분위기 드레스코드 영업시간 비교. 첫방문 코스, 게스트 라인업, 부킹 문화까지 ${regionKo} 밤문화 정리.`);
   const clubs = getVenuesByCategoryAndRegion('club', region);
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
   const featured = clubs.find(v => v.isPremium) || clubs[0];

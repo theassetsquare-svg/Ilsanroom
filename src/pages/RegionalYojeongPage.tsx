@@ -48,7 +48,7 @@ function YojeongCard({ venue, region }: { venue: Venue; region: string }) {
 export default function RegionalYojeongPage() {
   const { region = '' } = useParams<{ region: string }>();
   const regionKo = regionNames[region] || region;
-  useDocumentMeta(`${regionKo} 요정 안내`, `${regionKo} 전통 한정식 요정. 코스 요리와 국악 라이브가 있는 접대 명소.`);
+  useDocumentMeta(`${regionKo} 요정 — 정찬 15첩과 국악 라이브 접대 명소`, `${regionKo} 전통 요정 정찬 코스 국악 라이브 프라이빗 룸. 비즈니스 만찬 외국 손님 접대 검증. 코스 가격대 15~25만원, 예약 방법, 드레스코드, 매너까지.`);
   const yojeongs = getVenuesByCategoryAndRegion('yojeong', region);
   const featured = yojeongs.find(v => v.isPremium) || yojeongs[0];
 

@@ -23,7 +23,7 @@ function useLiveNumber(base: number, range: number) {
 export default function LoungeIndexPage() {
   useDocumentMeta(
     '업종별 라운지 — 같은 취향끼리 모이는 곳',
-    '나이트·클럽·룸·요정·호빠·라운지바 업종별 전용 게시판. 같은 관심사 사람들과 대화하세요.'
+    '나이트·클럽·룸·요정·호빠·라운지바 6개 업종별 전용 게시판. 같은 곳 다녀온 사람끼리 후기 공유, 추천 받기, 단골 매장 비교까지. 익명으로 솔직하게 대화하는 곳.'
   );
 
   const [counts, setCounts] = useState<Record<string, number>>({});

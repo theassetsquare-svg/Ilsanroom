@@ -89,3 +89,13 @@ export function getCategoryScreenshotUrl(category: string): string {
   const catPath = categoryPathMap[category] || 'clubs';
   return thumUrl(`${SITE_URL}/${catPath}`, 1200, 630);
 }
+
+/** 현재 스크린샷 URL이 실패했을 때 다른 서비스로 폴백.
+ * thum.io 403 시 microlink로 전환, microlink 실패 시 null. */
+export function getNextScreenshotUrl(currentSrc: string, slug: string, category: string, w = 1200, h = 1200): string | null {
+  const catPath = categoryPathMap[category] || 'clubs';
+  const pageUrl = `${SITE_URL}/${catPath}/${slug}`;
+  if (currentSrc.includes('thum.io')) return microlinkUrl(pageUrl, w, h);
+  if (currentSrc.includes('microlink')) return thumUrl(pageUrl, w, h);
+  return null;
+}

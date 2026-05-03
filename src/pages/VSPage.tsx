@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const VSBattle = lazy(() => import('@/components/interactive/VSBattle'));
 
 export default function VSPage() {
-  useDocumentMeta('어디가 더 낫냐고? 투표로 결판내자', '인기 업소끼리 맞짱. 한 표 던지고 실시간 결과 확인해봐.');
+  useDocumentMeta('어디가 더 낫냐고? 투표로 결판내자', '강남 클럽 vs 강남 클럽, 홍대 라운지 vs 이태원 라운지 등 인기 업소 맞대결. 회원 실시간 투표 결과로 진짜 1위 확인.');
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (

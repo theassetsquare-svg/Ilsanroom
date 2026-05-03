@@ -59,7 +59,7 @@ function timeAgo(dateStr: string): string {
 /*           CLIP PAGE — 인스타 스타일          */
 /* ══════════════════════════════════════════ */
 export default function GalleryPage() {
-  useDocumentMeta('클립 — 실시간 나이트라이프 포토 피드', '손님들이 직접 올리는 현장 사진. 지금 가장 핫한 곳을 사진으로 먼저 확인.');
+  useDocumentMeta('클립 — 실시간 나이트라이프 포토 피드', '회원이 직접 올린 매장 내부 실사 사진. 조명, 룸 배치, 무대 크기, 부스 분위기, 양주 라인업까지 직접 가기 전에 눈으로 먼저 확인. 강남 홍대 일산 핫플 실시간 사진 피드.');
   const { user } = useAuth();
   const navigate = useNavigate();
   const supabase = createClient();

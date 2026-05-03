@@ -84,7 +84,7 @@ function getPlanStyle(plan: string): React.CSSProperties {
 }
 
 export default function TestimonialsPage() {
-  useDocumentMeta('현직 사장님 5명이 직접 말한다', '"반신반의했는데 전화가 쏟아졌다." 입점 업주 생생 인터뷰.');
+  useDocumentMeta('현직 사장님 5명이 직접 말한다', '"반신반의했는데 전화가 쏟아졌다." 입점 6개월차 업주들의 생생 인터뷰. 매출 변화, 광고 비교, 리뷰 효과, 검색 노출까지 숫자로 증명한 입점 후기 5건 정리.');
   const containerRef = useRef<HTMLDivElement>(null);
 
   // 하이라이트 수치

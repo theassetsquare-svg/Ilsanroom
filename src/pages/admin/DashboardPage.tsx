@@ -83,7 +83,7 @@ const quickLinks = [
 ];
 
 export default function DashboardPage() {
-  useDocumentMeta('내 매장 현황판, 실시간 확인', '오늘 방문자, 전화 클릭, 인기 시간대. 사장님 전용 데이터.');
+  useDocumentMeta('내 매장 현황판, 실시간 확인', '오늘 방문자·전화 클릭·찜 추가·후기 작성 수·유입 지역 분포까지. 사장님 전용 5분마다 자동 갱신 실시간 매장 현황 대시보드.');
   const { user, loading: authLoading } = useAuth();
   const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
 

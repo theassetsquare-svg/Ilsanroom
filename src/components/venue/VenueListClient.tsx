@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import type { Venue } from '@/types';
 import { VenueCardStats } from '@/components/ui/LiveStats';
 import { ListMidHook, TopPicksMini } from '@/components/venue/CategoryListingEngagement';
-import { getVenueScreenshotUrl } from '@/lib/screenshot-url';
+import { getVenueScreenshotUrl, getNextScreenshotUrl } from '@/lib/screenshot-url';
 
 interface VenueListClientProps {
   venues: Venue[];
@@ -118,7 +118,13 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
                         if (!img.src.includes('thum.io') && !img.src.includes('microlink') && !img.src.includes('screenshotone')) {
                           img.src = getVenueScreenshotUrl(venue.slug, venue.category, 600, 600);
                         } else {
-                          img.style.display = 'none';
+                          const next = getNextScreenshotUrl(img.src, venue.slug, venue.category, 600, 600);
+                          if (next && img.dataset.fallbackTried !== '1') {
+                            img.dataset.fallbackTried = '1';
+                            img.src = next;
+                          } else {
+                            img.style.display = 'none';
+                          }
                         }
                       }}
                       className="absolute inset-0 w-full h-full object-cover z-[1]"

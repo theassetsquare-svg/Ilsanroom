@@ -37,7 +37,7 @@ function signInWith(provider: 'kakao' | 'google') {
 }
 
 export default function LoginPage() {
-  useDocumentMeta('카카오 탭 한 번, 3초면 로그인 끝', '로그인하면 후기 작성, 찜하기, 포인트 적립 전부 가능.');
+  useDocumentMeta('카카오 탭 한 번, 3초면 로그인 끝', '카카오·네이버·구글 3초 로그인. 가입 즉시 100P, 1줄 글쓰기·찜하기·후기 작성·VS 투표까지. 닉네임만 공개되고 본명은 절대 비공개.');
   const [loading, setLoading] = useState<'kakao' | 'google' | 'naver' | 'email' | null>(null);
   const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [email, setEmail] = useState('');

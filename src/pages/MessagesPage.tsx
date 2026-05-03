@@ -192,7 +192,7 @@ function MessageItem({
 
 /* ── 메인 ── */
 export default function MessagesPage() {
-  useDocumentMeta('쪽지함 — 1:1 메시지', '조각모임 멤버와 1:1 대화하세요. 쪽지로 편하게 소통.');
+  useDocumentMeta('쪽지함 — 조각모임·벙개 멤버와 1:1 대화', '조각모임·벙개 멤버와 1:1로 대화하세요. 받은 쪽지·보낸 쪽지 분리 관리, 익명 닉네임 보호, 신고·차단 기능 제공. 매칭된 사람과 약속 잡기 빠르게.');
   const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const [tab, setTab] = useState<'received' | 'sent'>(

@@ -38,7 +38,7 @@ const hiddenGems = [
 ];
 
 export default function HiddenPage() {
-  useDocumentMeta('단골만 알던 곳, 여기서 처음 공개한다', '매주 1곳씩 비공개 업소 오픈. 아는 사람만 가던 곳을 꺼냈다.');
+  useDocumentMeta('단골만 알던 곳, 여기서 처음 공개한다', '매주 월요일 1곳씩 비공개 업소 오픈. 강남·홍대·일산 단골만 가던 숨은 룸·라운지·요정·호빠 큐레이션. 회원 전용 공개, 1주일 후 일반 공개로 전환되는 시크릿 매장 정보.');
   const [revealedIdx, setRevealedIdx] = useState<Set<number>>(new Set([0]));
   const containerRef = useRef<HTMLDivElement>(null);
 

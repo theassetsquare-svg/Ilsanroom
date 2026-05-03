@@ -16,8 +16,8 @@ const REWARD_TIERS = [
 
 export default function MyReferralsPage() {
   useDocumentMeta(
-    '내 추천 현황 — 친구 초대 보상',
-    '친구를 초대하고 VIP 혜택을 무료로 받으세요. 1명 초대하면 이번 달 무료, 3명이면 평생 무료.'
+    '내 추천 현황 — 친구 초대 보상 누적 확인',
+    '친구를 초대하고 VIP 혜택을 무료로. 1명 이번 달 무료, 3명 평생 무료. 누적 초대 수, 가입 완료 친구 명단, 적립 포인트, 등급(브론즈/실버/골드/다이아) 한눈에.'
   );
 
   const [copied, setCopied] = useState(false);
