@@ -1,8 +1,9 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 import { RewardToastProvider } from './components/community/RewardToast';
+import { installVisitorTracker, trackPageView } from './lib/visitor-tracker';
 
 /* chunk load 실패 시 자동 재시도 (배포 후 구 chunk 404 대응) */
 function lazyRetry(factory: () => Promise<any>) {
@@ -82,6 +83,7 @@ const OnboardingPage = lazyRetry(() => import('./pages/admin/OnboardingPage'));
 const LaunchPage = lazyRetry(() => import('./pages/admin/LaunchPage'));
 const VenueManagePage = lazyRetry(() => import('./pages/admin/VenueManagePage'));
 const StatsPage = lazyRetry(() => import('./pages/admin/StatsPage'));
+const VisitorAnalyticsPage = lazyRetry(() => import('./pages/admin/VisitorAnalyticsPage'));
 const PostDetailPage = lazyRetry(() => import('./pages/community/PostDetailPage'));
 const NightlifeGuidePage = lazyRetry(() => import('./pages/lead/NightlifeGuidePage'));
 const LeadQuizPage = lazyRetry(() => import('./pages/lead/LeadQuizPage'));
@@ -111,6 +113,8 @@ function PageLoading() {
 
 export default function App() {
   const location = useLocation();
+  useEffect(() => { installVisitorTracker(); }, []);
+  useEffect(() => { trackPageView(location.pathname); }, [location.pathname]);
   return (
     <ErrorBoundary resetKey={location.pathname}>
     <Suspense fallback={<PageLoading />}>
@@ -201,6 +205,7 @@ export default function App() {
           <Route path="/launch" element={<LaunchPage />} />
           <Route path="/admin/venues" element={<VenueManagePage />} />
           <Route path="/admin/stats" element={<StatsPage />} />
+          <Route path="/admin/visitors" element={<VisitorAnalyticsPage />} />
           {/* SEO Dynamic Pages */}
           <Route path="/best/:category" element={<BestCategoryPage />} />
           <Route path="/new/:category" element={<NewCategoryPage />} />
