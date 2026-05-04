@@ -1200,6 +1200,7 @@ export const venues: Venue[] = [
     slug: 'daejeonsevennight',
     name: '대전세븐나이트',
     nameKo: '대전세븐나이트',
+    staffNickname: '원숭이',
     category: 'night' as VenueCategory,
     region: 'daejeon',
     regionKo: '대전',
