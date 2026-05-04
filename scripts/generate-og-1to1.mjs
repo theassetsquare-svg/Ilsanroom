@@ -33,13 +33,12 @@ function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>
 function buildSvg(v) {
   const label = CAT_LABEL[v.cat] || '';
   const bg = CAT_COLOR[v.cat] || '#8B5CF6';
-  const nameLen = v.nameKo.length;
-  const nameSize = nameLen > 12 ? 110 : nameLen > 9 ? 130 : nameLen > 6 ? 150 : 170;
   const nick = v.nick || '';
-  const nickLine = nick
-    ? `<text x="600" y="820" text-anchor="middle" font-family="KO" font-size="${nick.length > 4 ? 130 : 150}" font-weight="900" fill="#FCD34D" letter-spacing="0.02em">${esc(nick)}</text>
-       <text x="600" y="900" text-anchor="middle" font-family="KO" font-size="42" font-weight="600" fill="rgba(255,255,255,0.7)">담당 닉네임</text>`
-    : '';
+  // 닉네임이 메인 — 가장 크게
+  const nickSize = nick.length > 5 ? 280 : nick.length > 3 ? 340 : 400;
+  // 가게이름은 상단 작게
+  const nameLen = v.nameKo.length;
+  const nameSize = nameLen > 12 ? 56 : nameLen > 9 ? 64 : nameLen > 6 ? 72 : 80;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -52,14 +51,17 @@ function buildSvg(v) {
   </defs>
   <rect width="1200" height="1200" fill="url(#bg)"/>
   <rect x="60" y="60" width="1080" height="1080" rx="48" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
-  <rect x="500" y="140" width="200" height="64" rx="32" fill="rgba(255,255,255,0.18)"/>
-  <text x="600" y="184" text-anchor="middle" font-family="KO" font-size="40" font-weight="900" fill="white">${esc(label)}</text>
-  ${v.region ? `<text x="600" y="270" text-anchor="middle" font-family="KO" font-size="48" font-weight="700" fill="rgba(255,255,255,0.85)">${esc(v.region)}</text>` : ''}
-  <text x="600" y="${nick ? 480 : 600}" text-anchor="middle" font-family="KO" font-size="${nameSize}" font-weight="900" fill="white" letter-spacing="-0.02em">${esc(v.nameKo)}</text>
-  ${nick ? `<line x1="400" y1="600" x2="800" y2="600" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
-            <text x="600" y="700" text-anchor="middle" font-family="KO" font-size="48" font-weight="600" fill="rgba(255,255,255,0.7)">실시간 응대</text>` : ''}
-  ${nickLine}
-  <text x="600" y="1100" text-anchor="middle" font-family="KO" font-size="44" font-weight="700" fill="rgba(255,255,255,0.6)">놀쿨 — nolcool.com</text>
+  <!-- 상단: 카테고리 배지 + 지역 -->
+  <rect x="500" y="130" width="200" height="60" rx="30" fill="rgba(255,255,255,0.2)"/>
+  <text x="600" y="172" text-anchor="middle" font-family="KO" font-size="36" font-weight="900" fill="white">${esc(label)}</text>
+  ${v.region ? `<text x="600" y="240" text-anchor="middle" font-family="KO" font-size="40" font-weight="700" fill="rgba(255,255,255,0.7)">${esc(v.region)}</text>` : ''}
+  <!-- 가게이름 (작게, 상단) -->
+  <text x="600" y="340" text-anchor="middle" font-family="KO" font-size="${nameSize}" font-weight="700" fill="rgba(255,255,255,0.9)" letter-spacing="-0.02em">${esc(v.nameKo)}</text>
+  <!-- 닉네임 (메인 — 가장 크게) -->
+  ${nick ? `<text x="600" y="${nick.length > 3 ? 720 : 780}" text-anchor="middle" font-family="KO" font-size="${nickSize}" font-weight="900" fill="#FCD34D" letter-spacing="-0.04em">${esc(nick)}</text>
+            <text x="600" y="900" text-anchor="middle" font-family="KO" font-size="44" font-weight="600" fill="rgba(255,255,255,0.8)">담당자에게 직접 연락</text>` : ''}
+  <!-- 하단 도메인 -->
+  <text x="600" y="1090" text-anchor="middle" font-family="KO" font-size="42" font-weight="700" fill="rgba(255,255,255,0.55)">놀쿨 — nolcool.com</text>
 </svg>`;
 }
 
