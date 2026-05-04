@@ -99,7 +99,7 @@ export default function TipsPage() {
     { id: 'seed-10', title: '취했을 때 택시 안전하게 잡는 꿀팁', category: '안전', difficulty: '쉬움', author: '안전귀가', bookmarks: 31, summary: '카카오택시 미리 예약 걸어놓기. 대리운전 번호 저장해두기. 친구한테 위치 공유 필수.' },
     { id: 'seed-11', title: '라운지에서 자연스럽게 대화 거는 법', category: '입문', difficulty: '보통', author: '라운지단골', bookmarks: 28, summary: '옆 테이블 건배 제안이 제일 자연스러움. 갑자기 말 걸면 경계함. 분위기 읽는 게 먼저.' },
     { id: 'seed-12', title: '클럽에서 소지품 안 잃어버리는 방법', category: '안전', difficulty: '쉬움', author: '폰분실3회', bookmarks: 25, summary: '주머니 지퍼 달린 바지 입기. 가방은 락커에. 핸드폰 분실방지 줄 강추. 경험에서 나온 팁임 ㅠ' },
-    { id: 'seed-13', title: '웨이터 팁 문화 어디까지가 적당한지', category: '예절', difficulty: '보통', author: '팁줄까말까', bookmarks: 22, summary: '잘 해주면 만원 정도 주면 다음에 VIP 대우 받음. 안 줘도 상관없긴 한데 단골 되려면 좀 챙겨.' },
+    { id: 'seed-13', title: '웨이터 팁 문화 어디까지가 적당한지', category: '예절', difficulty: '보통', author: '팁줄까말까', bookmarks: 22, summary: '잘 해주면 살짝 챙겨주면 다음에 VIP 대우 받음. 안 줘도 상관없긴 한데 단골 되려면 좀 챙겨.' },
     { id: 'seed-14', title: '혼술족 클럽 가는 현실적 후기', category: '입문', difficulty: '보통', author: '혼놀러', bookmarks: 19, summary: '바 카운터 앉으면 바텐더가 말 걸어줌. 의외로 혼자 온 사람 많음. 어색한 건 처음 10분만.' },
     { id: 'seed-15', title: '나이트 끝나고 다른 곳 갈 때 주의사항', category: '안전', difficulty: '보통', author: '안전제일', bookmarks: 15, summary: '처음 본 사람이랑 다른 데로 이동은 위험. 친구한테 위치 공유하고 가기. 현금 많이 들고 다니지 말 것.' },
   ];
