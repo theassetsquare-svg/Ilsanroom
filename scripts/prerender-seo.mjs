@@ -441,11 +441,11 @@ function generateVenueSsrBody(v, allVenues) {
   html += `<dt>${name} 어디에 있나요?</dt>`;
   html += `<dd>${name}${eunNeun(v.nameKo)} ${region}에 위치한 ${catKo}입니다.${v.address ? ' 주소는 ' + escHtml(v.address) + '입니다.' : ''}${v.nearbyStation ? ' ' + escHtml(v.nearbyStation) + '에서 가깝습니다.' : ''}</dd>`;
   html += `<dt>${name} 영업시간은?</dt>`;
-  html += `<dd>${name}의 영업시간과 실시간 정보는 놀쿨(nolcool.com)에서 확인할 수 있습니다.</dd>`;
+  html += `<dd>${name}의 영업시간과 실시간 정보는 사이트에서 확인할 수 있습니다.</dd>`;
   html += `<dt>${name} 예약 방법은?</dt>`;
-  html += `<dd>${name} 방문 예약은 놀쿨에서 담당자에게 직접 문의할 수 있습니다.${staff ? ' 담당: ' + staff : ''}</dd>`;
+  html += `<dd>${name} 방문 예약은 담당자에게 직접 문의할 수 있습니다.${staff ? ' 담당: ' + staff : ''}</dd>`;
   html += `<dt>${region} ${catKo} 추천은?</dt>`;
-  html += `<dd>${region}에서 ${catKo}${eulReul(catKo)} 찾는다면 ${name}${eulReul(v.nameKo)} 추천합니다. 실시간 후기와 비교 정보는 놀쿨에서 확인하세요.</dd>`;
+  html += `<dd>${region}에서 ${catKo}${eulReul(catKo)} 찾는다면 ${name}${eulReul(v.nameKo)} 추천합니다. 실시간 후기와 비교 정보는 카테고리 안에서 확인하세요.</dd>`;
   html += `</dl>`;
   html += `</section>`;
 
@@ -463,7 +463,7 @@ function generateVenueSsrBody(v, allVenues) {
 
   // ★ 방문 안내 섹션 — "가게이름 후기", "가게이름 가는법" 검색 대응
   html += `<h2>${name} 방문 안내</h2>`;
-  html += `<p>${name}${eulReul(v.nameKo)} 처음 방문하신다면, 놀쿨(nolcool.com)에서 사전 정보를 확인하세요. `;
+  html += `<p>${name}${eulReul(v.nameKo)} 처음 방문하신다면, 본 페이지에서 사전 정보를 확인하세요. `;
   html += `${name}의 분위기, 인기 시간대, 복장 가이드까지 미리 알 수 있습니다. `;
   if (v.nearbyStation) html += `교통편은 ${escHtml(v.nearbyStation)}이 가장 가깝습니다. `;
   html += `${name} 실제 방문 후기는 커뮤니티에서 확인 가능합니다.</p>`;
@@ -497,7 +497,7 @@ function generateVenueSsrBody(v, allVenues) {
   }
 
   html += `<h2>${name} 총정리</h2>`;
-  html += `<p>${region} ${catKo} ${name} — 실시간 후기, 분위기, 예약 안내를 놀쿨(nolcool.com)에서 확인하세요. ${region} ${catKo} 비교, 순위, 방문 후기까지 한 곳에서 볼 수 있습니다. ${name} 방문 전 반드시 놀쿨에서 최신 정보를 확인하세요.</p>`;
+  html += `<p>${region} ${catKo} ${name} — 실시간 후기, 분위기, 예약 안내를 본 페이지에서 확인하세요. ${region} ${catKo} 비교, 순위, 방문 후기까지 한 곳에서 볼 수 있습니다. ${name} 방문 전 반드시 최신 정보를 확인하세요.</p>`;
 
   // ★ 관련 업소 내부 링크 — 크롤러 깊이 탐색 유도
   if (allVenues) {
@@ -552,11 +552,11 @@ function generateVenueFaqJsonLd(v) {
 
   const faqs = [
     { q: `${name} 어디에 있나요?`, a: `${name}${eunNeun(name)} ${region}에 위치한 ${catKo}입니다.${v.address ? ' 주소: ' + v.address : ''}${v.nearbyStation ? ' ' + v.nearbyStation + ' 근처입니다.' : ''}` },
-    { q: `${name} 예약 방법은?`, a: `${name} 예약은 놀쿨(nolcool.com)에서 담당자에게 직접 문의할 수 있습니다.${staff ? ' 담당: ' + staff : ''}` },
-    { q: `${region} ${catKo} 추천은?`, a: `${region}에서 ${catKo}${eulReul(catKo)} 찾는다면 ${name}${eulReul(name)} 추천합니다. 놀쿨에서 실시간 후기와 비교 정보를 확인하세요.` },
+    { q: `${name} 예약 방법은?`, a: `${name} 예약은 담당자에게 직접 문의할 수 있습니다.${staff ? ' 담당: ' + staff : ''}` },
+    { q: `${region} ${catKo} 추천은?`, a: `${region}에서 ${catKo}${eulReul(catKo)} 찾는다면 ${name}${eulReul(name)} 추천합니다. 실시간 후기와 비교 정보를 확인하세요.` },
     { q: `${name} 분위기는 어떤가요?`, a: `${name}${eunNeun(name)} ${v.features.slice(0, 3).join(', ')} 등의 특징이 있는 ${region} ${catKo}입니다.` },
-    { q: `${name} 후기는?`, a: `${name} 실제 방문 후기는 놀쿨(nolcool.com) 커뮤니티에서 확인할 수 있습니다. 직접 가본 사람들의 솔직한 평가를 읽어보세요.` },
-    { q: `${name} 처음 가는데 혼자 가도 되나요?`, a: `${name}${eunNeun(name)} 혼자 방문하는 손님도 많습니다. 놀쿨 가이드에서 첫 방문 팁을 확인하세요.` },
+    { q: `${name} 후기는?`, a: `${name} 실제 방문 후기는 커뮤니티에서 확인할 수 있습니다. 직접 가본 사람들의 솔직한 평가를 읽어보세요.` },
+    { q: `${name} 처음 가는데 혼자 가도 되나요?`, a: `${name}${eunNeun(name)} 혼자 방문하는 손님도 많습니다. 방문 가이드에서 첫 방문 팁을 확인하세요.` },
   ];
 
   return {
@@ -722,7 +722,7 @@ HOME_CATS.forEach(c => {
 });
 const homeAllRegions = [...new Set(venues.map(v => v.regionKo))];
 homeSsr += `<h2>지역별 나이트라이프</h2>`;
-homeSsr += `<p>서비스 지역: ${homeAllRegions.map(r => escHtml(r)).join(', ')}. 각 지역의 클럽·나이트·라운지·룸 비교는 놀쿨에서.</p>`;
+homeSsr += `<p>서비스 지역: ${homeAllRegions.map(r => escHtml(r)).join(', ')}. 각 지역의 클럽·나이트·라운지·룸을 카테고리에서 비교해보세요.</p>`;
 writePage('/', {
   title: '놀쿨 — 오늘 밤 어디 갈지, 여기서 정해진다',
   description: `강남 홍대 이태원 일산 부산 수원 전국 클럽·나이트·라운지·룸·요정·호빠 ${venues.length}곳 실시간 비교. 솔직 후기, 분위기 비교, 부킹 문화, 드레스코드, 조각모임, 벙개까지. 한 곳에서 다 본다.`,
@@ -779,10 +779,10 @@ function enrichSsr(body, pgPath, pgTitle) {
   body += `<h3>지역별 인기 업소</h3><ul>`;
   regions.forEach(r => { body += `<li>${r} — 회원 추천 베스트</li>`; });
   body += `</ul>`;
-  body += `<h3>놀쿨에서 함께 즐기기</h3><ul>`;
+  body += `<h3>함께 즐기기</h3><ul>`;
   activities.forEach(a => { body += `<li>${a}</li>`; });
   body += `</ul>`;
-  body += `<p>${pgTitle.replace(/['"]/g, '')} 외에도 놀쿨에서 클럽·나이트·라운지·룸·요정·호빠 120곳의 실시간 후기와 분위기를 비교할 수 있습니다. 회원 가입 시 1줄 글쓰기, 후기 작성, 찜하기, VS 투표, 파티 모집 참여 등 모든 기능을 무료로 이용할 수 있습니다. 매일 새 글 200개 이상이 올라오고, 매주 신규 업소가 등록되어 항상 새로운 정보를 만날 수 있습니다.</p>`;
+  body += `<p>${pgTitle.replace(/['"]/g, '')} 외에도 클럽·나이트·라운지·룸·요정·호빠 120곳의 실시간 후기와 분위기를 비교할 수 있습니다. 회원 가입 시 1줄 글쓰기, 후기 작성, 찜하기, VS 투표, 파티 모집 참여 등 모든 기능을 무료로 이용할 수 있습니다. 매일 새 글 200개 이상이 올라오고, 매주 신규 업소가 등록되어 항상 새로운 정보를 만날 수 있습니다.</p>`;
   return body;
 }
 
@@ -843,7 +843,7 @@ for (const pg of staticPages) {
     });
     for (const [rg, names] of Object.entries(regionGroups)) {
       ssrBody += `<h3>${escHtml(rg)} ${catKo}</h3>`;
-      ssrBody += `<p>${escHtml(rg)}에서 인기 있는 ${catKo}: ${names.map(n => escHtml(n)).join(', ')}. 실시간 후기와 비교는 놀쿨에서 확인하세요.</p>`;
+      ssrBody += `<p>${escHtml(rg)}에서 인기 있는 ${catKo}: ${names.map(n => escHtml(n)).join(', ')}. 실시간 후기와 비교는 각 업소 페이지에서 확인하세요.</p>`;
     }
     // ★ Evergreen 가이드 — 업소 수와 무관하게 SEO 본문 풍부
     if (CAT_GUIDE_BLURBS[catKey]) {
@@ -1251,7 +1251,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
   // FAQ
   ssrBody += `<section><h2>${escHtml(regionKo)} 밤문화 FAQ</h2><dl>`;
   ssrBody += `<dt>${escHtml(regionKo)} 밤문화 추천은?</dt>`;
-  ssrBody += `<dd>${escHtml(regionKo)}에서 인기 있는 곳: ${regionVenues.slice(0, 5).map(rv => escHtml(rv.nameKo)).join(', ')}. 놀쿨에서 비교해보세요.</dd>`;
+  ssrBody += `<dd>${escHtml(regionKo)}에서 인기 있는 곳: ${regionVenues.slice(0, 5).map(rv => escHtml(rv.nameKo)).join(', ')}. 각 업소 페이지에서 비교해보세요.</dd>`;
   ssrBody += `<dt>${escHtml(regionKo)}에 몇 곳 있나요?</dt>`;
   ssrBody += `<dd>${escHtml(regionKo)}에는 ${regionVenues.length}곳의 유흥 업소가 등록되어 있습니다.</dd>`;
   ssrBody += `</dl></section>`;
