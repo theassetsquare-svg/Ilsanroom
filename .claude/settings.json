@@ -1,0 +1,55 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"=== 놀쿨(NOLCOOL) 세션 ===\"; echo \"📅 $(date '+%Y-%m-%d %H:%M')\"; echo \"📂 $(pwd)\"; if [ -d .git ]; then echo \"🌿 branch: $(git branch --show-current)\"; echo \"📝 last 3 commits:\"; git log --oneline -3 2>/dev/null | sed 's/^/    /'; UNCOMMITTED=$(git status --porcelain 2>/dev/null | wc -l); if [ \"$UNCOMMITTED\" -gt 0 ]; then echo \"⚠️  미커밋 변경 ${UNCOMMITTED}건\"; fi; fi; echo \"🎯 우선순위: 커뮤니티재미 > 100페이지/세션 > 백만회원 > 매일중독\"; echo \"🚫 가격/2차/무료체험/가족 단어 금지 | title 중복단어 금지 | '놀쿨' 홈만\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CMD=$(jq -r '.tool_input.command // \"\"'); FIRST=$(echo \"$CMD\" | head -1); if echo \"$FIRST\" | grep -Eq '^[[:space:]]*rm[[:space:]]+-rf?[[:space:]]+(/|/[^a-zA-Z]|~|\\$HOME)'; then echo '🛑 차단: 위험한 rm -rf 시스템 경로' >&2; exit 2; fi; if echo \"$FIRST\" | grep -Eq '^[[:space:]]*git[[:space:]]+push[[:space:]].*(--force|--force-with-lease|[[:space:]]-f([[:space:]]|$)).*\\b(main|master)\\b'; then echo '🛑 차단: main/master force-push 금지' >&2; exit 2; fi; if echo \"$FIRST\" | grep -Eq '^[[:space:]]*git[[:space:]]+reset[[:space:]]+--hard[[:space:]]+origin'; then echo '🛑 차단: git reset --hard origin 금지' >&2; exit 2; fi; exit 0"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(jq -r '.tool_input.file_path // .tool_input.path // \"\"'); case \"$FILE\" in *.ts|*.tsx) echo \"💡 TypeScript 변경됨: $FILE → 'npx tsc --noEmit' 권장\" >&2 ;; *gold-content*|*venue*content*) echo \"💡 콘텐츠 변경됨: title 중복단어/금지어/'놀쿨' 검수 필요\" >&2 ;; esac; exit 0"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CMD=$(jq -r '.tool_input.command // \"\"'); if echo \"$CMD\" | grep -Eq '^git commit'; then echo \"✅ commit 완료 → 'git push origin main' 후 nolcool.com 라이브 확인 필수\" >&2; fi; if echo \"$CMD\" | grep -Eq '^git push'; then echo \"🚀 push 완료 → Cloudflare Pages 배포 자동 시작 (~2분). nolcool.com에서 반영 확인\" >&2; fi; exit 0"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"=== 세션 종료 체크리스트 ===\"; if [ -d .git ]; then UNCOMMITTED=$(git status --porcelain 2>/dev/null | wc -l); UNPUSHED=$(git log @{u}.. --oneline 2>/dev/null | wc -l); [ \"$UNCOMMITTED\" -gt 0 ] && echo \"⚠️  미커밋 ${UNCOMMITTED}건\"; [ \"$UNPUSHED\" -gt 0 ] && echo \"⚠️  미푸시 ${UNPUSHED}커밋\"; [ \"$UNCOMMITTED\" -eq 0 ] && [ \"$UNPUSHED\" -eq 0 ] && echo \"✅ git 깨끗\"; fi; echo \"📌 라이브 확인: https://nolcool.com\"; echo \"📌 메모리 업데이트 했나? (~/.claude/projects/-home-user-ilsanroom/memory/)\""
+          }
+        ]
+      }
+    ]
+  }
+}

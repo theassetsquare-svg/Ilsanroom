@@ -49,3 +49,62 @@ Do NOT ask. Just fix. Report all titles when done.
   "Fix bug" → reproduce test → make it pass
   "Add feature" → write check → implement → verify
   Multi-step: `Step → verify → Step → verify`
+
+## STACK
+- Frontend: Vite + React 18 + TypeScript + react-helmet-async + react-router-dom (BrowserRouter, base "/")
+- Backend: Supabase (Auth/DB/Storage) + Cloudflare Pages Functions (`functions/`)
+- Hosting: Cloudflare Pages (auto-deploy on `git push origin main`)
+- SEO: Static prerender via `scripts/prerender-seo.mjs` (runs after `vite build`)
+- Domain: nolcool.com (primary), ilsanroom.pages.dev → 301 → nolcool.com
+
+## FILE MAP
+- `CLAUDE.md` — 본 규칙 (이 파일)
+- `index.html` — SPA 엔트리, 정적 SEO 폴백 H1+JSON-LD
+- `vite.config.ts` / `tsconfig.json` / `wrangler.toml` — 빌드·배포 설정
+- `package.json scripts.build` = `vite build && node scripts/prerender-seo.mjs`
+- `src/pages/` — 라우트 페이지 (HomePage, ClubsPage, NightsPage, RoomsPage, YojeongPage, LoungesPage, HoppaPage + 6종 *DetailPage)
+- `src/pages/community/` — 7개 게시판 (free/qna/reviews/tips/party/jogak/fashion)
+- `src/pages/admin/` `auth/` `lead/` `my/` `seo/` — 관리/인증/리드/마이/SEO 정적
+- `src/components/` — venue/community/seo/home/layout/ui 등 17개 도메인 폴더
+- `src/data/venues.ts` — 6업종 업소 마스터 데이터 (UNIQUE 콘텐츠 1000+자/업소)
+- `src/data/magazine-articles.ts` `venue-events.ts` — 매거진/이벤트
+- `src/lib/community-data.ts` `fake-users.ts` `growth-engine.ts` — 커뮤니티 시드·유저
+- `src/lib/content-filter.ts` `feature-flags.ts` `analytics.ts` — 모더레이션/플래그/분석
+- `scripts/prerender-seo.mjs` — 정적 HTML SSR + sitemap/llms.txt/robots 자동 생성
+- `scripts/seed-venues.mjs` `auto-content*.mjs` `seed-content.sql` — 콘텐츠 시드
+- `scripts/optimize-images.mjs` `generate-og-images.ts` — 이미지 최적화/OG
+- `scripts/seo-check-hook.sh` — SEO 검증 훅 스크립트
+- `scripts/migrate.mjs` `supabase/migrations/*.sql` — DB 마이그레이션 (push 시 자동)
+- `functions/api/*` — Cloudflare Pages Functions (clip-upload 등 service_role 경유)
+- `public/` — 정적 자산 (robots.txt/sitemap.xml/llms.txt 빌드 시 덮어쓰기)
+- `.claude/agents/` — 5개 subagent (venue-analyst/copy-reviewer/mobile-tester/data-validator/seo-auditor)
+- `.claude/settings.json` — hooks 5종 (jq 기반 위험명령 차단)
+- `~/.claude/skills/nolcool-venue-content/` — 6업종 콘텐츠 작성 SKILL
+
+## 검증 커맨드
+- 빌드+프리렌더: `npm run build` (vite + prerender-seo.mjs)
+- 타입체크: `npx tsc --noEmit`
+- 라이브 SEO 풀체인: `bash scripts/seo-check-hook.sh` 또는 `seo-content-auditor` subagent
+- title 중복단어 검출: `grep -oE '<title>[^<]+</title>' dist/**/index.html | awk '{for(i=1;i<=NF;i++)if(seen[$i]++)print}'`
+- 가격 단어 검출: `grep -rE '(만원\|입장료\|가성비\|시세\|가격대)' src/data/ src/lib/community-data.ts`
+- "놀쿨" 본문 등장 (홈 외 0~2회 OK): `grep -rc '놀쿨' src/data/venues.ts`
+- 라이브 페이지 헤더 검사: `curl -sI https://nolcool.com/{path}/` (200/301 확인)
+- sitemap 카운트: `curl -s https://nolcool.com/sitemap.xml \| grep -c '<loc>'`
+- 모바일 뷰포트 QA: `gstack` skill (390×844)
+
+## 함정 (Pitfalls)
+- **HashRouter 금지**: BrowserRouter + base "/" 만. `/#/` URL 들어오면 SEO 박살.
+- **Next.js 도입 금지**: Vite SPA 유지. 프리렌더는 `prerender-seo.mjs`가 처리.
+- **'놀쿨' stuffing**: 본문 3회 이상 = 페널티. 홈 title만 "놀쿨 — hook" 허용, 그 외 페이지 title에 "놀쿨" 절대 X.
+- **title 중복단어**: 같은 단어 2회 이상 등장 시 즉시 삭제 (예: "장안동호빠 장안동호빠").
+- **공유 콘텐츠 풀 (gold-content 공통)**: 업소마다 UNIQUE 1000+자 필수. 공유 풀 사용 = SEO 죽음.
+- **가짜 전화번호**: placeholder/임의 번호 절대 X. 없으면 빈 값.
+- **카카오맵 등 지도 임베드**: 노출 X (메모리 `feedback_no_map_no_price`).
+- **가격 노출**: 만원/입장료/가성비/시세/가격대 단어 사이트 전체 금지.
+- **외부 링크 target 누락**: 모든 외부 링크 `target="_blank" rel="noopener noreferrer"`.
+- **react-helmet-async 누락**: 모든 페이지에 `useDocumentMeta` 또는 `<Helmet>` 필수. 누락 시 동적 title 안 먹음.
+- **prerender 결과 미푸시**: `npm run build`만 돌리고 `dist/`만 본 채 끝내면 라이브 반영 X. push해서 Cloudflare Pages 트리거 필수.
+- **Supabase 직접 SQL 실행 시도**: 사용자가 직접 마이그레이션 함 (`feedback_supabase_user_manages`). SQL 파일+방법만 제공.
+- **storage.objects RLS 변경 시도**: 막혀있음. 업로드는 `functions/api/clip-upload` Pages Function 경유 (`project_clip_upload_arch`).
+- **Bottom bar 겹침**: 모바일 fixed bottom 요소가 본문 마지막 줄을 가린다. `padding-bottom: env(safe-area-inset-bottom) + bar height`.
+- **`ilsanroom.pages.dev` canonical**: 301로 nolcool.com 통합. canonical에 nolcool.com 박혀있어야 함.
