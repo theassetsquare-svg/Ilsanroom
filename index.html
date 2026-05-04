@@ -43,25 +43,7 @@
   <!-- v6-fullscreen-post -->
 </head>
   <body class="bg-[#F5F5F5] text-[#111111] antialiased">
-    <!-- instant-hero: HTML 파싱 즉시 페인트, JS 무관, LCP < 100ms -->
-    <div id="instant-hero" style="position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,#0A0A0F 0%,#1F0A2A 50%,#0A0A1F 100%);color:#F5F5FA;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;transition:opacity .35s ease">
-      <div role="heading" aria-level="2" style="font-size:28px;font-weight:900;line-height:1.2;text-align:center;margin:0 0 8px;letter-spacing:-0.02em">오늘 밤 어디 갈지<br>여기서 정해진다</div>
-      <p style="font-size:14px;color:#9CA3B5;margin:0 0 28px;text-align:center">전국 121곳 · 실시간 라인업 · 솔직 후기</p>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;max-width:360px">
-        <a href="/clubs" style="background:#15151D;border:1px solid #2D2D3D;border-radius:14px;padding:16px 6px;min-height:44px;text-align:center;color:#F5F5FA;text-decoration:none;font-size:13px;font-weight:700">🎵 클럽</a>
-        <a href="/nights" style="background:#15151D;border:1px solid #2D2D3D;border-radius:14px;padding:16px 6px;min-height:44px;text-align:center;color:#F5F5FA;text-decoration:none;font-size:13px;font-weight:700">🌃 나이트</a>
-        <a href="/lounges" style="background:#15151D;border:1px solid #2D2D3D;border-radius:14px;padding:16px 6px;min-height:44px;text-align:center;color:#F5F5FA;text-decoration:none;font-size:13px;font-weight:700">🍸 라운지</a>
-        <a href="/rooms" style="background:#15151D;border:1px solid #2D2D3D;border-radius:14px;padding:16px 6px;min-height:44px;text-align:center;color:#F5F5FA;text-decoration:none;font-size:13px;font-weight:700">🥃 룸</a>
-        <a href="/yojeong" style="background:#15151D;border:1px solid #2D2D3D;border-radius:14px;padding:16px 6px;min-height:44px;text-align:center;color:#F5F5FA;text-decoration:none;font-size:13px;font-weight:700">🏮 요정</a>
-        <a href="/hoppa" style="background:#15151D;border:1px solid #2D2D3D;border-radius:14px;padding:16px 6px;min-height:44px;text-align:center;color:#F5F5FA;text-decoration:none;font-size:13px;font-weight:700">💄 호빠</a>
-      </div>
-      <div style="margin-top:24px;font-size:12px;color:#6B7280;display:flex;align-items:center;gap:8px">
-        <span style="display:inline-block;width:14px;height:14px;border:2px solid #FF2E93;border-top-color:transparent;border-radius:50%;animation:nc-spin 1s linear infinite"></span>
-        곧 모든 콘텐츠 표시
-      </div>
-      <style>@keyframes nc-spin{to{transform:rotate(360deg)}}</style>
-    </div>
-    <div id="root" style="position:relative;z-index:1"></div>
+    <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
