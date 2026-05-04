@@ -181,6 +181,25 @@ function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdLis
     );
   }
 
+  // ★ instant-hero — 페이지별 동적 (홈만 카테고리 그리드, 그 외는 페이지 H1 hero)
+  // SEO: 비-홈은 LCP element = H1(가게이름/페이지 제목) → 가게이름 검색 상위노출 강화
+  // UX: 사용자 첫 페인트에 "놀쿨 홈"이 아닌 자기가 들어온 페이지 제목이 보임 → 깜빡임 0
+  if (canonical !== '/') {
+    const newHero = `<div id="instant-hero" style="position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,#0A0A0F 0%,#1F0A2A 50%,#0A0A1F 100%);color:#F5F5FA;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;transition:opacity .35s ease">
+      <h1 style="font-size:28px;font-weight:900;line-height:1.25;text-align:center;margin:0 0 12px;letter-spacing:-0.02em;color:#F5F5FA;max-width:340px">${escHtml(title)}</h1>
+      <p style="font-size:13px;color:#9CA3B5;margin:0 0 24px;text-align:center;max-width:340px;line-height:1.55">${escHtml(desc)}</p>
+      <div style="display:flex;align-items:center;gap:8px;color:#6B7280;font-size:12px">
+        <span style="display:inline-block;width:14px;height:14px;border:2px solid #FF2E93;border-top-color:transparent;border-radius:50%;animation:nc-spin 1s linear infinite"></span>
+        실시간 정보 로딩
+      </div>
+      <style>@keyframes nc-spin{to{transform:rotate(360deg)}}</style>
+    </div>`;
+    html = html.replace(
+      /<div id="instant-hero"[\s\S]*?<style>@keyframes nc-spin\{to\{transform:rotate\(360deg\)\}\}<\/style>\s*<\/div>/,
+      newHero
+    );
+  }
+
   return html;
 }
 
