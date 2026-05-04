@@ -108,7 +108,7 @@ export default function ReviewsPage() {
     { id: 'seed-2', title: '찬스돔 부킹 시스템 체계적이라 놀람', author: '수원놀이꾼', date: '2026-04-18', venue: '찬스돔', rating: 4, helpful: 22, comments: 8, hasPhoto: false, excerpt: '웨이터가 알아서 잘 연결해줌. 테이블 위치도 나쁘지 않았고 음악도 괜찮았다 솔직히.' },
     { id: 'seed-3', title: '고구려 뷔페 호텔급인거 실화냐', author: '먹보리뷰어', date: '2026-04-18', venue: '고구려', rating: 5, helpful: 45, comments: 15, hasPhoto: true, excerpt: '초이스 전에 뷔페부터 감동받음ㅋㅋ 랍스타 나오는 유흥업소가 어딨어. 룸도 넓고 완벽.' },
     { id: 'seed-4', title: '디엠 분위기는 진짜 격이 다름', author: '무드러버', date: '2026-04-17', venue: '디엠', rating: 4, helpful: 19, comments: 9, hasPhoto: false, excerpt: '인테리어는 진짜 서울 어디 내놔도 탑급. 특별한 날 가는 곳 느낌. 분위기 잘 잡고 싶을 때 추천.' },
-    { id: 'seed-5', title: '일산룸 8명 회식 다녀온 후기', author: '일산회사원', date: '2026-04-17', venue: '일산룸', rating: 4, helpful: 15, comments: 5, hasPhoto: false, excerpt: '룸 사이즈 넉넉하고 노래방 음향 좋음. 직원분들 응대 친절해서 분위기 좋았다.' },
+    { id: 'seed-5', title: '일산룸 8명 모임 다녀온 후기', author: '일산회사원', date: '2026-04-17', venue: '일산룸', rating: 4, helpful: 15, comments: 5, hasPhoto: false, excerpt: '룸 사이즈 넉넉하고 노래방 음향 좋음. 직원분들 응대 친절해서 분위기 좋았다.' },
     { id: 'seed-6', title: '아르쥬 처음인데 여기 왜 유명한지 알겠음', author: '라운지초보', date: '2026-04-17', venue: '아르쥬', rating: 5, helpful: 31, comments: 11, hasPhoto: true, excerpt: '칵테일 퀄리티가 바 수준이고 조명이 예술임. 데이트로 가기 딱이야 진짜.' },
     { id: 'seed-7', title: '하입 토요일 갔는데 사람 미침ㅋㅋ', author: '주말전사', date: '2026-04-16', venue: '하입', rating: 4, helpful: 24, comments: 7, hasPhoto: false, excerpt: '입장 줄이 겁나 길었는데 들어가니까 에너지 ㄹㅇ 대박. 근데 너무 붐벼서 움직이기 힘듦.' },
     { id: 'seed-8', title: '명월관 양주 퀄리티 인정합니다', author: '양주감별사', date: '2026-04-16', venue: '일산명월관', rating: 5, helpful: 28, comments: 10, hasPhoto: false, excerpt: '가짜 양주 걱정했는데 여긴 확실함. 초이스도 좋고 실장님이 잘 챙겨줌. 단골 될듯.' },

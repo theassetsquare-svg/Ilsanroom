@@ -28,8 +28,8 @@ const categoryDescriptions: Record<VenueCategory, { title: string; desc: string;
   },
   room: {
     title: '프라이빗 모임 공간 비교',
-    desc: '회식, 생일파티, 비즈니스 모임까지. 전국 프라이빗 공간을 인원·예산·지역별로 비교하고 예약하세요.',
-    ogDesc: '회식·생일·비즈니스 맞춤 프라이빗 공간. 인원·예산별 비교.',
+    desc: '비즈니스 모임, 생일파티, 단체 모임까지. 전국 프라이빗 공간을 인원·예산·지역별로 비교하고 예약하세요.',
+    ogDesc: '비즈니스·생일·모임 맞춤 프라이빗 공간. 인원·예산별 비교.',
   },
   yojeong: {
     title: '한정식·국악 전통 접대 문화 안내',

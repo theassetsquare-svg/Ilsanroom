@@ -28,7 +28,7 @@ export default function YojeongPage() {
         <div className="mt-6">
           <CategoryHero
             emoji="🏮"
-            title="전통 한정식 · 국악 회식"
+            title="전통 한정식 · 국악 정찬"
             hook="가야금 선율이 흐르고, 15가지 한정식이 하나씩 차려진다. 격이 다른 만찬의 시작."
             venueCount={venues.length}
             gradient="from-emerald-600 via-teal-700 to-cyan-800"
@@ -85,7 +85,7 @@ export default function YojeongPage() {
       <FirstVisitGuide category="격식 있는 한식 접대"
         dress="세미 포멀 이상 필수. 옛 멋이 살아있는 곳의 격조에 맞는 차림 권장. 한복도 환영."
         budget="코스 요리 중심. 정찰제 매장 확인. 주류 별도인 곳도 있음."
-        alone="1인 이용보다 만찬·회식 자리. 전화 문의 시 참석자·코스 조절 가능."
+        alone="1인 이용보다 만찬·모임 자리. 전화 문의 시 참석자·코스 조절 가능."
         reservation="미리 문의 필수. 원하는 공간과 코스를 확보하려면 최소 하루 전 연락."
       />
 
@@ -100,7 +100,7 @@ export default function YojeongPage() {
       <CategoryVSBattle venueA="일산명월관요정" venueB="강남청담클럽 아르쥬" topic="만찬 장소 대결 — 전통 정찬 vs 모던" />
 
       <RelatedMagazine articles={[
-        { title: '일산명월관 완벽 가이드: 회식부터 기념행사까지', tag: '격식' },
+        { title: '일산명월관 완벽 가이드: 만찬부터 기념행사까지', tag: '격식' },
         { title: '한국 고유의 코스 요리 문화의 역사와 현재', tag: '문화' },
       ]} />
 

@@ -60,7 +60,7 @@ export default function RoomsPage() {
 
       <div className="rounded-xl bg-gradient-to-r from-rose-50 to-white border border-rose-200 p-4 text-center">
         <p className="text-sm font-bold text-rose-600">👇 룸 크기별 추천 · 예약 꿀팁 · 예산 가이드 아래에 전부 정리</p>
-        <p className="text-xs text-[#999] mt-1">회식·생일·모임 목적별로 딱 맞는 곳 찾는 법</p>
+        <p className="text-xs text-[#999] mt-1">비즈니스·생일·모임 목적별로 딱 맞는 곳 찾는 법</p>
       </div>
 
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
@@ -72,7 +72,7 @@ export default function RoomsPage() {
           </p>
           <MidContentHook seed="rooms-intro" />
           <p className="text-base leading-relaxed text-neon-text-muted">
-            룸 크기는 4인 소형부터 30인 넘는 대형까지 선택 폭이 넓다. 룸에서 생일파티, 회식, 동창회, 기업 워크숍 뒤풀이까지 인원에 맞게 고르면 된다. 일산은 신실장이 전화 한 통이면 인원수에 맞는 자리를 바로 잡아준다. 해운대 마린시티에는 개별 공간이 60개 넘는 대형 시설도 있다.
+            룸 크기는 4인 소형부터 30인 넘는 대형까지 선택 폭이 넓다. 룸에서 생일파티, 비즈니스 모임, 단체 모임, 기업 워크숍 뒤풀이까지 인원에 맞게 고르면 된다. 일산은 신실장이 전화 한 통이면 인원수에 맞는 자리를 바로 잡아준다. 해운대 마린시티에는 개별 공간이 60개 넘는 대형 시설도 있다.
           </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
             룸 예약의 핵심은 사전 전화다. 원하는 인원, 예산, 음식 주문 여부를 미리 말하면 딱 맞는 룸 크기를 배정받는다. 금토는 빨리 차니까 이틀 전에는 연락하자. 주중은 한산해서 여유롭게 쓸 수 있다. 주차장 있는 곳이 많아서 차 끌고 가기도 좋다.

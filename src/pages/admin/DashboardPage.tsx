@@ -55,7 +55,7 @@ const reservations = [
   { id: 2, date: "2026-03-14", people: 8, status: "승인", note: "단체모임" },
   { id: 3, date: "2026-03-15", people: 2, status: "대기중", note: "-" },
   { id: 4, date: "2026-03-15", people: 6, status: "완료", note: "VIP룸 요청" },
-  { id: 5, date: "2026-03-16", people: 10, status: "대기중", note: "회식" },
+  { id: 5, date: "2026-03-16", people: 10, status: "대기중", note: "모임" },
 ];
 
 const upcomingEvents = [
