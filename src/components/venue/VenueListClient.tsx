@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import type { Venue } from '@/types';
 import { VenueCardStats } from '@/components/ui/LiveStats';
 import { ListMidHook, TopPicksMini } from '@/components/venue/CategoryListingEngagement';
-import { getVenueScreenshotUrl, getNextScreenshotUrl } from '@/lib/screenshot-url';
 
 interface VenueListClientProps {
   venues: Venue[];
@@ -114,18 +113,8 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
                       height={300}
                       loading="lazy"
                       onError={(e) => {
-                        const img = e.target as HTMLImageElement;
-                        if (!img.src.includes('thum.io') && !img.src.includes('microlink') && !img.src.includes('screenshotone')) {
-                          img.src = getVenueScreenshotUrl(venue.slug, venue.category, 600, 600);
-                        } else {
-                          const next = getNextScreenshotUrl(img.src, venue.slug, venue.category, 600, 600);
-                          if (next && img.dataset.fallbackTried !== '1') {
-                            img.dataset.fallbackTried = '1';
-                            img.src = next;
-                          } else {
-                            img.style.display = 'none';
-                          }
-                        }
+                        // Local image missing → hide and show gradient fallback below
+                        (e.target as HTMLImageElement).style.display = 'none';
                       }}
                       className="absolute inset-0 w-full h-full object-cover z-[1]"
                     />

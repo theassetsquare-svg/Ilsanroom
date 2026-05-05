@@ -1,10 +1,8 @@
 /**
  * OG Image URL generator — public/og/ 정적 파일 참조.
  * 닉네임이 있는 가게는 실제 사진 + 닉네임 오버레이 JPG를 사용.
- * 이미지 없는 업소는 스크린샷 서비스 폴백.
+ * 이미지 없는 업소는 기본 OG 이미지 폴백.
  */
-
-import { getVenueScreenshotUrl } from '@/lib/screenshot-url';
 
 const SITE_URL = 'https://nolcool.com';
 
@@ -33,18 +31,18 @@ const JPG_OG_SLUGS = new Set([
   'haeundaehoppa-kkantappiya',
 ]);
 
-/** 이미지 파일이 없는 업소 — 스크린샷 서비스 폴백 */
-const NO_IMAGE_SLUGS: Record<string, string> = {
-  'seongnamshampoonight': 'night',
-  'gangnamclub-face': 'club',
-  'ilsanclub-cj': 'club',
-  'busanhoppa-star': 'hoppa',
-  'haeundaehoppa-michelin': 'hoppa',
-  'busanhoppa-aura': 'hoppa',
-  'daeguhoppa-perfect': 'hoppa',
-  'gangnam-hoppa-again': 'hoppa',
-  'hongdae-hoppa': 'hoppa',
-};
+/** 이미지 파일이 없는 업소 — 기본 OG 이미지 폴백 */
+const NO_IMAGE_SLUGS = new Set([
+  'seongnamshampoonight',
+  'gangnamclub-face',
+  'ilsanclub-cj',
+  'busanhoppa-star',
+  'haeundaehoppa-michelin',
+  'busanhoppa-aura',
+  'daeguhoppa-perfect',
+  'gangnam-hoppa-again',
+  'hongdae-hoppa',
+]);
 
 /** 업소 상세 OG image (slug 기반) — JPG 우선 (카톡/밴드/인스타 호환) */
 export function getVenueOgImageBySlug(slug: string): string {
@@ -56,9 +54,9 @@ export function getVenueOgImageBySlug(slug: string): string {
   if (NICKNAME_OG_SLUGS.has(slug)) {
     return `${SITE_URL}/og/${slug}.jpg`;
   }
-  // 이미지 없는 업소 — 스크린샷 서비스 폴백
-  if (NO_IMAGE_SLUGS[slug]) {
-    return getVenueScreenshotUrl(slug, NO_IMAGE_SLUGS[slug]);
+  // 이미지 없는 업소 — 기본 OG 이미지로 폴백
+  if (NO_IMAGE_SLUGS.has(slug)) {
+    return `${SITE_URL}/og/nolcool-og.jpg`;
   }
   // 기본: 실제 가게 사진 JPG (SVG 대신 JPG 사용)
   return `${SITE_URL}/venues/${slug}-1.jpg`;

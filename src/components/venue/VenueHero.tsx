@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Badge from '@/components/ui/Badge';
-import { getVenueScreenshotUrl, getNextScreenshotUrl } from '@/lib/screenshot-url';
 
 interface VenueHeroProps {
   name: string;
@@ -41,21 +40,10 @@ export default function VenueHero({
   const bgPattern = categoryBgPatterns[category] || categoryBgPatterns.club;
   const [hasImage, setHasImage] = useState(true);
   const [imgSrc, setImgSrc] = useState(slug ? `/venues/${slug}-1.webp` : '');
-  const [fallbackTried, setFallbackTried] = useState(false);
 
   const handleImageError = () => {
     if (imgSrc.includes('.webp')) {
       setImgSrc(`/venues/${slug}-1.jpg`);
-    } else if (!imgSrc.includes('thum.io') && !imgSrc.includes('microlink') && !imgSrc.includes('screenshotone')) {
-      setImgSrc(getVenueScreenshotUrl(slug!, category, 1200, 630));
-    } else if (!fallbackTried) {
-      const next = getNextScreenshotUrl(imgSrc, slug!, category, 1200, 630);
-      if (next) {
-        setFallbackTried(true);
-        setImgSrc(next);
-      } else {
-        setHasImage(false);
-      }
     } else {
       setHasImage(false);
     }
