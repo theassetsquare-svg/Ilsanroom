@@ -17,7 +17,7 @@ export default function BestCategoryPage() {
   const filtered = venues.filter(v => v.category === catKey && v.status !== 'closed_or_unclear');
 
   useDocumentMeta(
-    `${catKo} 인기 TOP ${filtered.length} — 사람들이 가장 많이 찾는 ${catKo}`,
+    `${catKo} 인기 TOP ${filtered.length} — 후기·조회수 기준 실시간 랭킹`,
     `전국 ${catKo} 인기순 ${filtered.length}곳 비교. 조회수·후기 기준 실시간 랭킹. 지금 가장 핫한 ${catKo}를 확인하세요.`,
     undefined,
     `${catKo} 인기, ${catKo} 추천, ${catKo} 랭킹, ${catKo} TOP, 인기 ${catKo}`

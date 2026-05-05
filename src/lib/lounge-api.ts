@@ -18,12 +18,12 @@ export interface LoungePost {
 }
 
 export const LOUNGE_DEFS: { type: LoungeType; name: string; icon: string; desc: string; href: string }[] = [
-  { type: 'night', name: '나이트 라운지', icon: '🌙', desc: '나이트 이야기', href: '/lounge/night' },
-  { type: 'club', name: '클럽 라운지', icon: '🎵', desc: '클럽 이야기', href: '/lounge/club' },
-  { type: 'room', name: '룸 라운지', icon: '🚪', desc: '룸 이야기', href: '/lounge/room' },
-  { type: 'yojung', name: '요정 라운지', icon: '🏮', desc: '요정 이야기', href: '/lounge/yojung' },
-  { type: 'hoppa', name: '호빠 라운지', icon: '🥂', desc: '호빠 이야기', href: '/lounge/hoppa' },
-  { type: 'lounge', name: '라운지바 라운지', icon: '🍸', desc: '라운지바 이야기', href: '/lounge/lounge' },
+  { type: 'night', name: '나이트 라운지', icon: '🌙', desc: '부킹·매니저·양주 토크', href: '/lounge/night' },
+  { type: 'club', name: '클럽 라운지', icon: '🎵', desc: 'DJ·게스트·라인업 정보', href: '/lounge/club' },
+  { type: 'room', name: '룸 라운지', icon: '🚪', desc: '양주·인원·매니저 후기', href: '/lounge/room' },
+  { type: 'yojung', name: '요정 라운지', icon: '🏮', desc: '정찬·국악 코스 정보', href: '/lounge/yojung' },
+  { type: 'hoppa', name: '호빠 라운지', icon: '🥂', desc: '여성 사교 안전 후기', href: '/lounge/hoppa' },
+  { type: 'lounge', name: '라운지바 라운지', icon: '🍸', desc: '칵테일·위스키 추천방', href: '/lounge/lounge' },
   { type: 'free', name: '자유게시판', icon: '💬', desc: '자유로운 대화', href: '/lounge/free' },
   { type: 'qna', name: '질문답변', icon: '❓', desc: '뭐든 물어보세요', href: '/lounge/qna' },
 ];

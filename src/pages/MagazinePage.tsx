@@ -28,6 +28,13 @@ export default function MagazinePage() {
             <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>총 {articles.length}편</span>
           </div>
 
+          <h1 className="text-3xl sm:text-4xl font-black mb-3" style={{ color: '#FFFFFF', letterSpacing: '-0.02em' }}>
+            밤문화 매거진 — 가기 전에 읽는 글
+          </h1>
+          <p className="text-sm sm:text-base mb-8" style={{ color: 'rgba(255,255,255,0.55)' }}>
+            지역 분석, 업종 비교, 신규 매장 현장 리포트
+          </p>
+
           {/* 피처드 아티클 — 대형 카드 */}
           <Link to={`/magazine/${featured.id}`} className="block group">
             <div className="rounded-2xl bg-gradient-to-br from-[#8B5CF6]/20 via-white/5 to-[#EC4899]/10 border border-white/10 p-8 sm:p-10 transition-all hover:border-white/20 hover:shadow-2xl hover:shadow-purple-900/20">
