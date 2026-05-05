@@ -193,7 +193,7 @@ export default function TestimonialsPage() {
               프리미엄 입점 시 <strong>상위 노출, 인증 배지, 대시보드 분석, QR 명함</strong>이 제공된다.
               무료 베이직부터 시작할 수 있으니 부담 없이 시작해봐.
             </p>
-            <Link to="/business" className="inline-flex items-center gap-1 text-sm font-bold text-[#8B5CF6] hover:text-[#7C3AED] mt-2">
+            <Link to="/pricing" className="inline-flex items-center gap-1 text-sm font-bold text-[#8B5CF6] hover:text-[#7C3AED] mt-2">
               입점 안내 보기 →
             </Link>
           </div>
