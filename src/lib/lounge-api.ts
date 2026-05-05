@@ -33,25 +33,14 @@ export async function fetchLoungePosts(loungeType: LoungeType, limit = 20, offse
   if (!supabase) return { data: [] as LoungePost[], count: 0 };
 
   try {
-    const { data, count, error } = await supabase
+    const { data, count } = await supabase
       .from('lounge_posts')
-      .select('*, user_profiles!left(nickname, avatar_url, level)', { count: 'exact' })
+      .select('*', { count: 'exact' })
       .eq('lounge_type', loungeType)
       .eq('status', 'active')
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
-
-    if (error) {
-      const { data: fb, count: c2 } = await supabase
-        .from('lounge_posts')
-        .select('*', { count: 'exact' })
-        .eq('lounge_type', loungeType)
-        .eq('status', 'active')
-        .order('created_at', { ascending: false })
-        .range(offset, offset + limit - 1);
-      return { data: (fb || []) as LoungePost[], count: c2 || 0 };
-    }
-    return { data: (data || []) as unknown as LoungePost[], count: count || 0 };
+    return { data: (data || []) as LoungePost[], count: count || 0 };
   } catch {
     return { data: [] as LoungePost[], count: 0 };
   }
@@ -113,7 +102,7 @@ export async function fetchLoungeComments(postId: string) {
   try {
     const { data } = await supabase
       .from('lounge_comments')
-      .select('*, user_profiles!left(nickname, avatar_url, level)')
+      .select('*')
       .eq('post_id', postId)
       .eq('status', 'active')
       .order('created_at', { ascending: true });
