@@ -58,7 +58,7 @@ function ScrollToTop() {
 
 export default function MainLayout() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col pb-[72px] md:pb-0">
       <a href="#main-content" className="skip-nav">본문으로 건너뛰기</a>
       <ScrollToTop />
       <JsonLd data={organizationJsonLd} />
