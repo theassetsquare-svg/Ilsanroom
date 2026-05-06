@@ -421,7 +421,7 @@ export default function VenueManagePage() {
     <div className="mx-auto max-w-7xl px-4 py-6">
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold">업소 풀에디터</h1>
+          <h1 className="text-2xl font-bold text-gray-900">업소 풀에디터</h1>
           <p className="mt-1 text-sm text-neon-text-muted">
             총 {venues.length}개 · 필터 {filtered.length}개
             {selected.size > 0 && <span className="ml-2 text-neon-primary">({selected.size}개 선택)</span>}

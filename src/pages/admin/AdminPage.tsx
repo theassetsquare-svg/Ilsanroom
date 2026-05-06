@@ -394,84 +394,72 @@ export default function AdminPage() {
       {/* ═══ 글 관리 ═══ */}
       {activeTab === 'posts' && !loading && (
         <div>
-          {/* 카테고리 필터 */}
-          <div className="flex gap-1 mb-4 overflow-x-auto">
-            <button
-              onClick={() => setCategoryFilter('all')}
-              className="shrink-0 px-3 py-2 text-xs font-medium rounded-lg"
-              style={{
-                backgroundColor: categoryFilter === 'all' ? '#111' : '#F3F4F6',
-                color: categoryFilter === 'all' ? '#FFF' : '#555',
-                minHeight: 32,
-              }}
-            >
+          {/* 카테고리 필터 — chip 스타일 */}
+          <div className="mb-3 flex flex-wrap gap-1.5">
+            <FilterChip active={categoryFilter === 'all'} onClick={() => setCategoryFilter('all')}>
               전체
-            </button>
+            </FilterChip>
             {allCategories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setCategoryFilter(cat)}
-                className="shrink-0 px-3 py-2 text-xs font-medium rounded-lg"
-                style={{
-                  backgroundColor: categoryFilter === cat ? '#111' : '#F3F4F6',
-                  color: categoryFilter === cat ? '#FFF' : '#555',
-                  minHeight: 32,
-                }}
-              >
-                {CATEGORY_LABELS[cat] || cat} ({posts.filter(p => p.category === cat).length})
-              </button>
+              <FilterChip key={cat} active={categoryFilter === cat} onClick={() => setCategoryFilter(cat)}>
+                {CATEGORY_LABELS[cat] || cat} <span className="opacity-70">{posts.filter(p => p.category === cat).length}</span>
+              </FilterChip>
             ))}
           </div>
 
-          <p className="text-xs mb-2" style={{ color: '#999' }}>
-            {filteredPosts.length}개 표시 중
-          </p>
+          <p className="mb-3 text-xs text-gray-500">{filteredPosts.length}개 표시 중</p>
 
           <div className="space-y-2">
-            {filteredPosts.length === 0 && <p style={{ color: '#999' }}>글이 없습니다.</p>}
+            {filteredPosts.length === 0 && <p className="py-8 text-center text-sm text-gray-500">글이 없습니다.</p>}
             {filteredPosts.map(post => (
-              <div key={post.id} className="rounded-xl border p-4" style={{ borderColor: post.is_pinned ? '#8B5CF6' : '#E5E7EB', backgroundColor: post.is_pinned ? '#F5F3FF' : '#FFF' }}>
+              <div
+                key={post.id}
+                className={`rounded-lg border p-4 ${
+                  post.is_pinned ? 'border-purple-300 bg-purple-50' : 'border-gray-200 bg-white'
+                }`}
+              >
                 <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1 min-w-0">
+                  <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      {post.is_pinned && <span className="text-xs px-2 py-0.5 rounded-full font-bold" style={{ backgroundColor: '#8B5CF6', color: '#FFF' }}>고정</span>}
-                      <p className="text-sm font-bold truncate" style={{ color: '#111' }}>{post.title}</p>
+                      {post.is_pinned && (
+                        <span className="rounded-full bg-purple-600 px-2 py-0.5 text-[10px] font-bold text-white">고정</span>
+                      )}
+                      <p className="truncate text-sm font-semibold text-gray-900">{post.title}</p>
                     </div>
-                    <p className="text-xs mt-1 line-clamp-2" style={{ color: '#555' }}>{post.content?.slice(0, 120)}</p>
-                    <p className="text-xs mt-1" style={{ color: '#999' }}>
-                      {CATEGORY_LABELS[post.category] || post.category} · {post.created_at?.slice(0, 10)} · 좋아요 {post.likes || 0} · 조회 {post.views || 0}
+                    <p className="mt-1 line-clamp-2 text-xs text-gray-600">{post.content?.slice(0, 120)}</p>
+                    <p className="mt-1.5 text-[11px] text-gray-500">
+                      {CATEGORY_LABELS[post.category] || post.category} · {post.created_at?.slice(0, 10)} · ♥ {post.likes || 0} · 👁 {post.views || 0}
+                      <span className="ml-2 text-gray-400">{post.user_id?.slice(0, 8)}…</span>
                     </p>
-                    <p className="text-xs" style={{ color: '#BBB' }}>ID: {post.user_id?.slice(0, 12)}...</p>
                   </div>
-                  <div className="flex flex-col gap-1 shrink-0">
+                  <div className="flex shrink-0 flex-col gap-1">
                     <button
                       onClick={() => handleDeletePost(post.id)}
                       disabled={deleting === post.id}
-                      className="rounded-lg px-3 py-1 text-xs font-bold text-white disabled:opacity-50"
-                      style={{ backgroundColor: '#EF4444', minHeight: 28 }}
+                      className="rounded-md bg-red-500 px-2.5 py-1 text-xs font-medium text-white hover:bg-red-600 disabled:opacity-50"
                     >
                       {deleting === post.id ? '...' : '삭제'}
                     </button>
                     <button
                       onClick={() => handleTogglePin(post)}
-                      className="rounded-lg px-3 py-1 text-xs font-medium"
-                      style={{ backgroundColor: post.is_pinned ? '#E5E7EB' : '#EDE9FE', color: post.is_pinned ? '#555' : '#7C3AED', minHeight: 28 }}
+                      className={`rounded-md px-2.5 py-1 text-xs font-medium ${
+                        post.is_pinned
+                          ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
+                      }`}
                     >
                       {post.is_pinned ? '고정해제' : '고정'}
                     </button>
                     <button
                       onClick={() => handleDeleteAllByUser(post.user_id)}
-                      className="rounded-lg px-3 py-1 text-xs font-medium"
-                      style={{ backgroundColor: '#FEE2E2', color: '#DC2626', minHeight: 28 }}
+                      className="rounded-md bg-red-50 px-2.5 py-1 text-xs font-medium text-red-700 hover:bg-red-100"
                     >
-                      유저 전체삭제
+                      유저글 일괄삭제
                     </button>
                     <button
                       onClick={() => handleBan(post.user_id || '')}
-                      className="rounded-lg px-3 py-1 text-xs font-medium"
-                      style={{ backgroundColor: '#111', color: '#FFF', minHeight: 28 }}
+                      className="rounded-md bg-gray-900 px-2.5 py-1 text-xs font-medium text-white hover:bg-gray-700"
                     >
-                      차단
+                      유저 차단
                     </button>
                   </div>
                 </div>
@@ -813,5 +801,20 @@ export default function AdminPage() {
         </div>
       )}
     </div>
+  );
+}
+
+function FilterChip({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`rounded-full px-3 py-1 text-xs font-medium transition ${
+        active
+          ? 'bg-gray-900 text-white'
+          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+      }`}
+    >
+      {children}
+    </button>
   );
 }

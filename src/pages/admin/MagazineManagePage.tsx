@@ -249,7 +249,7 @@ export default function MagazineManagePage() {
     <div className="mx-auto max-w-7xl px-4 py-6">
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold">매거진 에디터</h1>
+          <h1 className="text-2xl font-bold text-gray-900">매거진 에디터</h1>
           <p className="mt-1 text-sm text-neon-text-muted">총 {articles.length}개 · 필터 {filtered.length}개</p>
         </div>
         <div className="flex gap-2">

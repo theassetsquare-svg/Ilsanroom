@@ -127,7 +127,7 @@ export default function MediaLibraryPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
       <div className="mb-5 flex flex-wrap items-center gap-3">
-        <h1 className="text-xl font-bold text-neon-text">미디어 라이브러리</h1>
+        <h1 className="text-2xl font-bold text-gray-900">미디어 라이브러리</h1>
         <span className="text-xs text-neon-text-muted">총 {items.length}개</span>
         <div className="ml-auto flex flex-wrap gap-2">
           <input

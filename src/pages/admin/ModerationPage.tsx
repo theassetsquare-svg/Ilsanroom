@@ -172,7 +172,7 @@ export default function ModerationPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
       <div className="mb-5 flex flex-wrap items-center gap-3">
-        <h1 className="text-xl font-bold text-neon-text">모더레이션</h1>
+        <h1 className="text-2xl font-bold text-gray-900">모더레이션</h1>
       </div>
 
       {/* 탭 */}
