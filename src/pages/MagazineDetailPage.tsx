@@ -1,7 +1,8 @@
 import { useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
-import { getArticleById, articles } from '@/data/magazine-articles';
+import { articles as localArticles } from '@/data/magazine-articles';
+import { useArticle, useArticles } from '@/hooks/useMagazine';
 import ShareButton from '@/components/ui/ShareButton';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { ReadTimeEstimate, MidContentHook, ReadFinishCount, ReadCompletionReward, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
@@ -9,7 +10,9 @@ import { ReadTimeEstimate, MidContentHook, ReadFinishCount, ReadCompletionReward
 export default function MagazineDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const article = id ? getArticleById(id) : undefined;
+  const { article: dbArticle } = useArticle(id);
+  const article = dbArticle || (id ? localArticles.find(a => a.id === id) : undefined);
+  const { articles } = useArticles();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useDocumentMeta(

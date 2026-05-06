@@ -1,13 +1,14 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
-import { articles } from '@/data/magazine-articles';
+import { useArticles } from '@/hooks/useMagazine';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { MidContentHook, ReadFinishCount, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
 
 export default function MagazinePage() {
   useDocumentMeta('밤문화 읽을거리, 여기 다 모았다', '강남 홍대 이태원 일산 지역 분석, 클럽 vs 라운지 업종 비교, 신규 매장 현장 리포트. 가기 전에 읽으면 달라지는 매거진.');
   const containerRef = useRef<HTMLDivElement>(null);
+  const { articles } = useArticles();
   const featured = articles[0];
   const rest = articles.slice(1);
 

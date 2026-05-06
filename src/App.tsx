@@ -84,6 +84,7 @@ const BillingPage = lazyRetry(() => import('./pages/admin/BillingPage'));
 const OnboardingPage = lazyRetry(() => import('./pages/admin/OnboardingPage'));
 const LaunchPage = lazyRetry(() => import('./pages/admin/LaunchPage'));
 const VenueManagePage = lazyRetry(() => import('./pages/admin/VenueManagePage'));
+const MagazineManagePage = lazyRetry(() => import('./pages/admin/MagazineManagePage'));
 const StatsPage = lazyRetry(() => import('./pages/admin/StatsPage'));
 const VisitorAnalyticsPage = lazyRetry(() => import('./pages/admin/VisitorAnalyticsPage'));
 const PostDetailPage = lazyRetry(() => import('./pages/community/PostDetailPage'));
@@ -209,6 +210,7 @@ export default function App() {
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/launch" element={<LaunchPage />} />
           <Route path="/admin/venues" element={<VenueManagePage />} />
+          <Route path="/admin/magazine" element={<MagazineManagePage />} />
           <Route path="/admin/stats" element={<StatsPage />} />
           <Route path="/admin/visitors" element={<VisitorAnalyticsPage />} />
           {/* SEO Dynamic Pages */}
