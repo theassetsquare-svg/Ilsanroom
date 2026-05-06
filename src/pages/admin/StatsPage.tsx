@@ -16,7 +16,7 @@ interface StatsData {
   todayUsers: number;
   topVenues: Array<{ name: string; slug: string; category: string; view_count: number; review_count: number }>;
   topUsers: Array<{ nickname: string; points: number; level: string }>;
-  recentPosts: Array<{ title: string; category: string; created_at: string; nickname: string }>;
+  recentPosts: Array<{ title: string; category: string; created_at: string; user_id: string }>;
   categoryStats: Array<{ category: string; count: number }>;
 }
 
@@ -61,15 +61,15 @@ export default function StatsPage() {
         recentPostsRes,
       ] = await Promise.all([
         supabase.from('venues').select('id', { count: 'exact', head: true }),
-        supabase.from('user_profiles').select('id', { count: 'exact', head: true }),
+        supabase.from('user_profiles').select('user_id', { count: 'exact', head: true }),
         supabase.from('reviews').select('id', { count: 'exact', head: true }),
-        supabase.from('community_posts').select('id', { count: 'exact', head: true }),
-        supabase.from('community_posts').select('id', { count: 'exact', head: true }).gte('created_at', todayStart),
+        supabase.from('posts').select('id', { count: 'exact', head: true }),
+        supabase.from('posts').select('id', { count: 'exact', head: true }).gte('created_at', todayStart),
         supabase.from('reviews').select('id', { count: 'exact', head: true }).gte('created_at', todayStart),
-        supabase.from('user_profiles').select('id', { count: 'exact', head: true }).gte('created_at', todayStart),
+        supabase.from('user_profiles').select('user_id', { count: 'exact', head: true }).gte('joined_at', todayStart),
         supabase.from('venues').select('name,slug,category,view_count,review_count').order('view_count', { ascending: false }).limit(10),
         supabase.from('user_profiles').select('nickname,points,level').order('points', { ascending: false }).limit(10),
-        supabase.from('community_posts').select('title,category,created_at,nickname').order('created_at', { ascending: false }).limit(10),
+        supabase.from('posts').select('title,category,created_at,user_id').order('created_at', { ascending: false }).limit(10),
       ]);
 
       // 카테고리별 통계
@@ -242,7 +242,7 @@ export default function StatsPage() {
                     <div className="truncate text-sm text-white">{p.title}</div>
                   </div>
                   <div className="text-right text-xs text-gray-500">
-                    <div>{p.nickname || '익명'}</div>
+                    <div>{p.user_id ? p.user_id.slice(0, 8) : '익명'}</div>
                     <div>{new Date(p.created_at).toLocaleDateString('ko-KR')}</div>
                   </div>
                 </div>
