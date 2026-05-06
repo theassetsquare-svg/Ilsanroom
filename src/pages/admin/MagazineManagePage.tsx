@@ -247,18 +247,18 @@ export default function MagazineManagePage() {
   // ─── 목록 ───
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
-      <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-b border-gray-200 pb-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">매거진 에디터</h1>
-          <p className="mt-1 text-sm text-neon-text-muted">총 {articles.length}개 · 필터 {filtered.length}개</p>
+          <p className="mt-1 text-xs text-gray-500">총 {articles.length}개 · 필터 {filtered.length}개</p>
         </div>
         <div className="flex gap-2">
           {articles.length === 0 && (
-            <button onClick={importLocalArticles} className="rounded-xl border border-neon-border px-4 py-2.5 text-sm hover:bg-neon-surface-2">
+            <button onClick={importLocalArticles} className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
               로컬 {localArticles.length}개 가져오기
             </button>
           )}
-          <button onClick={() => { setEditing({ ...empty }); setIsNew(true); setMsg(null); }} className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-bold text-white transition hover:bg-neon-primary-light">
+          <button onClick={() => { setEditing({ ...empty }); setIsNew(true); setMsg(null); }} className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700">
             + 새 글
           </button>
         </div>

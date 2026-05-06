@@ -129,25 +129,28 @@ export default function SeoOverridesPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
-      <div className="mb-5 flex flex-wrap items-center gap-3">
-        <h1 className="text-2xl font-bold text-gray-900">SEO 메타 에디터</h1>
-        <span className="text-xs text-neon-text-muted">총 {rows.length}개 오버라이드</span>
-        <div className="ml-auto flex flex-wrap gap-2">
-          <input
-            type="text"
-            placeholder="path/title/메모 검색"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="w-56 rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm outline-none focus:border-neon-primary"
-          />
-          <button
-            type="button"
-            onClick={() => { setEditing({ ...empty }); setIsNew(true); }}
-            className="rounded-lg bg-neon-primary px-4 py-2 text-sm font-bold text-white hover:bg-neon-primary-light"
-          >
-            + 새 오버라이드
-          </button>
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-b border-gray-200 pb-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">SEO 메타 에디터</h1>
+          <p className="mt-1 text-xs text-gray-500">총 {rows.length}개 오버라이드</p>
         </div>
+        <button
+          type="button"
+          onClick={() => { setEditing({ ...empty }); setIsNew(true); }}
+          className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700"
+        >
+          + 새 오버라이드
+        </button>
+      </div>
+
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="path/title/메모 검색"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="w-full max-w-sm rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-purple-500"
+        />
       </div>
 
       <div className="mb-4 rounded-lg border border-neon-border bg-neon-bg-elevated p-3 text-xs text-neon-text-muted">

@@ -123,8 +123,11 @@ export default function StatsPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">실시간 통계</h1>
+      <div className="mb-6 flex items-end justify-between border-b border-gray-200 pb-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">실시간 통계</h1>
+          <p className="mt-1 text-xs text-gray-500">5분마다 자동 갱신</p>
+        </div>
         <div className="flex items-center gap-3">
           {lastUpdated && (
             <span className="text-xs text-gray-500">

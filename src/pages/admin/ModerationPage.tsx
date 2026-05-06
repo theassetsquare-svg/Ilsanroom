@@ -171,8 +171,9 @@ export default function ModerationPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
-      <div className="mb-5 flex flex-wrap items-center gap-3">
+      <div className="mb-5 border-b border-gray-200 pb-4">
         <h1 className="text-2xl font-bold text-gray-900">모더레이션</h1>
+        <p className="mt-1 text-xs text-gray-500">신고/숨김/유저 차단 관리</p>
       </div>
 
       {/* 탭 */}

@@ -419,16 +419,16 @@ export default function VenueManagePage() {
   // ─────────── 목록 ───────────
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
-      <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-b border-gray-200 pb-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">업소 풀에디터</h1>
-          <p className="mt-1 text-sm text-neon-text-muted">
+          <p className="mt-1 text-xs text-gray-500">
             총 {venues.length}개 · 필터 {filtered.length}개
-            {selected.size > 0 && <span className="ml-2 text-neon-primary">({selected.size}개 선택)</span>}
+            {selected.size > 0 && <span className="ml-2 text-purple-700">({selected.size}개 선택)</span>}
           </p>
         </div>
         <button onClick={() => { setEditing({ ...emptyVenue }); setIsNew(true); setMsg(null); }}
-          className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-bold text-white transition hover:bg-neon-primary-light">
+          className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700">
           + 새 업소
         </button>
       </div>

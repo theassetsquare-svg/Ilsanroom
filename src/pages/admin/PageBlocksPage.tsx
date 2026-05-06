@@ -144,33 +144,36 @@ export default function PageBlocksPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
-      <div className="mb-5 flex flex-wrap items-center gap-3">
-        <h1 className="text-2xl font-bold text-gray-900">페이지 블록 에디터</h1>
-        <span className="text-xs text-neon-text-muted">총 {rows.length}개 블록</span>
-        <div className="ml-auto flex flex-wrap gap-2">
-          <select
-            value={filterPage}
-            onChange={e => setFilterPage(e.target.value)}
-            className="rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm outline-none focus:border-neon-primary"
-          >
-            <option value="all">전체 페이지</option>
-            {pageKeys.map(p => <option key={p} value={p}>{p}</option>)}
-          </select>
-          <input
-            type="text"
-            placeholder="검색"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="w-48 rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm outline-none focus:border-neon-primary"
-          />
-          <button
-            type="button"
-            onClick={() => { setEditing({ ...empty }); setIsNew(true); }}
-            className="rounded-lg bg-neon-primary px-4 py-2 text-sm font-bold text-white hover:bg-neon-primary-light"
-          >
-            + 새 블록
-          </button>
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-b border-gray-200 pb-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">페이지 블록 에디터</h1>
+          <p className="mt-1 text-xs text-gray-500">총 {rows.length}개 블록</p>
         </div>
+        <button
+          type="button"
+          onClick={() => { setEditing({ ...empty }); setIsNew(true); }}
+          className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700"
+        >
+          + 새 블록
+        </button>
+      </div>
+
+      <div className="mb-4 flex flex-wrap gap-2">
+        <select
+          value={filterPage}
+          onChange={e => setFilterPage(e.target.value)}
+          className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-purple-500"
+        >
+          <option value="all">전체 페이지</option>
+          {pageKeys.map(p => <option key={p} value={p}>{p}</option>)}
+        </select>
+        <input
+          type="text"
+          placeholder="검색"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="w-48 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-purple-500"
+        />
       </div>
 
       {/* 카탈로그 — 사용 중인 블록 키 안내 */}

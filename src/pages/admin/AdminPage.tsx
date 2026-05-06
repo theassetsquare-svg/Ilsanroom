@@ -342,10 +342,10 @@ export default function AdminPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 pb-24">
       {/* 헤더 */}
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex items-end justify-between border-b border-gray-200 pb-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">대시보드</h1>
-          <p className="text-xs text-gray-500">{user.email}</p>
+          <p className="mt-1 text-xs text-gray-500">{user.email}</p>
         </div>
         <button
           onClick={loadData}

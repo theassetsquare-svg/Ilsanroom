@@ -126,33 +126,36 @@ export default function MediaLibraryPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
-      <div className="mb-5 flex flex-wrap items-center gap-3">
-        <h1 className="text-2xl font-bold text-gray-900">미디어 라이브러리</h1>
-        <span className="text-xs text-neon-text-muted">총 {items.length}개</span>
-        <div className="ml-auto flex flex-wrap gap-2">
-          <input
-            type="text"
-            placeholder="파일명/alt 검색"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="w-48 rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm outline-none focus:border-neon-primary"
-          />
-          <input
-            ref={fileRef}
-            type="file"
-            multiple
-            accept="image/jpeg,image/png,image/webp,image/gif"
-            onChange={e => handleFiles(e.target.files)}
-            className="hidden"
-            id="media-upload-input"
-          />
-          <label
-            htmlFor="media-upload-input"
-            className={`cursor-pointer rounded-lg bg-neon-primary px-4 py-2 text-sm font-bold text-white hover:bg-neon-primary-light ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
-          >
-            {uploading ? '업로드 중…' : '+ 이미지 업로드'}
-          </label>
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-b border-gray-200 pb-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">미디어 라이브러리</h1>
+          <p className="mt-1 text-xs text-gray-500">총 {items.length}개</p>
         </div>
+        <input
+          ref={fileRef}
+          type="file"
+          multiple
+          accept="image/jpeg,image/png,image/webp,image/gif"
+          onChange={e => handleFiles(e.target.files)}
+          className="hidden"
+          id="media-upload-input"
+        />
+        <label
+          htmlFor="media-upload-input"
+          className={`cursor-pointer rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700 ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
+        >
+          {uploading ? '업로드 중…' : '+ 이미지 업로드'}
+        </label>
+      </div>
+
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="파일명/alt 검색"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="w-full max-w-xs rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-purple-500"
+        />
       </div>
 
       {msg && (
