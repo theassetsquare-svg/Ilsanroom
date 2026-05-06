@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
+import AdminLayout from './layouts/AdminLayout';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 import { RewardToastProvider } from './components/community/RewardToast';
 import { installVisitorTracker, trackPageView } from './lib/visitor-tracker';
@@ -206,21 +207,12 @@ export default function App() {
           <Route path="/auth/callback" element={<AuthCallbackPage />} />
           <Route path="/auth/naver-callback" element={<NaverCallbackPage />} />
           <Route path="/setup-nickname" element={<SetupNicknamePage />} />
-          {/* Admin */}
+          {/* Legacy admin (사이트 레이아웃 유지) */}
           <Route path="/dashboard" element={<Navigate to="/" replace />} />
-          <Route path="/admin" element={<AdminPage />} />
           <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/billing" element={<BillingPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/launch" element={<LaunchPage />} />
-          <Route path="/admin/venues" element={<VenueManagePage />} />
-          <Route path="/admin/magazine" element={<MagazineManagePage />} />
-          <Route path="/admin/media" element={<MediaLibraryPage />} />
-          <Route path="/admin/seo" element={<SeoOverridesPage />} />
-          <Route path="/admin/blocks" element={<PageBlocksPage />} />
-          <Route path="/admin/moderation" element={<ModerationPage />} />
-          <Route path="/admin/stats" element={<StatsPage />} />
-          <Route path="/admin/visitors" element={<VisitorAnalyticsPage />} />
           {/* SEO Dynamic Pages */}
           <Route path="/best/:category" element={<BestCategoryPage />} />
           <Route path="/new/:category" element={<NewCategoryPage />} />
@@ -230,6 +222,18 @@ export default function App() {
           <Route path="/near/:station" element={<NearStationPage />} />
           {/* 404 */}
           <Route path="*" element={<NotFoundPage />} />
+        </Route>
+        {/* Admin (사이드바 레이아웃) — 단계 7 */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminPage />} />
+          <Route path="venues" element={<VenueManagePage />} />
+          <Route path="magazine" element={<MagazineManagePage />} />
+          <Route path="media" element={<MediaLibraryPage />} />
+          <Route path="seo" element={<SeoOverridesPage />} />
+          <Route path="blocks" element={<PageBlocksPage />} />
+          <Route path="moderation" element={<ModerationPage />} />
+          <Route path="stats" element={<StatsPage />} />
+          <Route path="visitors" element={<VisitorAnalyticsPage />} />
         </Route>
       </Routes>
     </Suspense>
