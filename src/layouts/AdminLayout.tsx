@@ -3,10 +3,9 @@ import { NavLink, Outlet, Link } from 'react-router-dom';
 import { createClient } from '@/lib/supabase';
 
 // 운영자 1인용 게이트 — 비밀번호 1회 입력으로 모든 /admin/* 진입.
-// Supabase 로그인 화면을 띄우지 않음. 백그라운드에서 자동 사인인하여 RLS(`is_admin()`) 통과.
+// Supabase 로그인 화면을 띄우지 않음. 게이트 통과 시 서버에서 관리자 계정을
+// 자동 보장(생성/비번 갱신)한 뒤 그 자격증명으로 백그라운드 사인인.
 const ADMIN_PIN = 'nolcool2026';
-const ADMIN_EMAIL = 'theassetsquare@gmail.com';
-const ADMIN_PW = 'asd9048asd!!';
 const SS_KEY = 'nolcool_admin_auth';
 
 interface NavItem {
@@ -28,17 +27,34 @@ const NAV: NavItem[] = [
   { to: '/admin/visitors', label: '방문자 분석', icon: '👥', group: '분석' },
 ];
 
-async function ensureAdminSignedIn(): Promise<boolean> {
+async function ensureAdminSignedIn(): Promise<{ ok: boolean; detail?: string }> {
   const supabase = createClient();
-  if (!supabase) return false;
-  const { data } = await supabase.auth.getSession();
-  if (data.session?.user?.email === ADMIN_EMAIL) return true;
-  // 다른 계정으로 로그인되어 있으면 먼저 로그아웃
-  if (data.session && data.session.user?.email !== ADMIN_EMAIL) {
-    await supabase.auth.signOut();
+  if (!supabase) return { ok: false, detail: 'Supabase 클라이언트 없음' };
+
+  // 1) 서버에서 관리자 계정 보장 + 자격증명 받기
+  const bootRes = await fetch('/api/admin-bootstrap', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ pin: ADMIN_PIN }),
+  });
+  if (!bootRes.ok) {
+    const t = await bootRes.text().catch(() => '');
+    return { ok: false, detail: `bootstrap ${bootRes.status}: ${t.slice(0, 200)}` };
   }
-  const { error } = await supabase.auth.signInWithPassword({ email: ADMIN_EMAIL, password: ADMIN_PW });
-  return !error;
+  const creds = await bootRes.json() as { email: string; password: string };
+
+  // 2) 기존에 다른 계정으로 로그인돼 있으면 정리
+  const { data } = await supabase.auth.getSession();
+  if (data.session?.user?.email && data.session.user.email !== creds.email) {
+    await supabase.auth.signOut();
+  } else if (data.session?.user?.email === creds.email) {
+    return { ok: true };
+  }
+
+  // 3) 받은 자격증명으로 사인인
+  const { error } = await supabase.auth.signInWithPassword(creds);
+  if (error) return { ok: false, detail: `signIn: ${error.message}` };
+  return { ok: true };
 }
 
 export default function AdminLayout() {
@@ -59,10 +75,10 @@ export default function AdminLayout() {
     setSigningIn(true);
     setSignInError('');
     ensureAdminSignedIn()
-      .then(ok => {
+      .then(res => {
         if (cancelled) return;
-        setSignInReady(ok);
-        if (!ok) setSignInError('관리자 자동 로그인 실패 — 비밀번호/이메일 확인 필요');
+        setSignInReady(res.ok);
+        if (!res.ok) setSignInError(`관리자 자동 로그인 실패: ${res.detail || '원인 불명'}`);
       })
       .catch(e => {
         if (cancelled) return;
@@ -224,7 +240,7 @@ export default function AdminLayout() {
             {signInError}
             <button
               type="button"
-              onClick={() => { setSignInReady(false); setSigningIn(true); ensureAdminSignedIn().then(ok => { setSignInReady(ok); setSigningIn(false); if (!ok) setSignInError('자동 로그인 재시도 실패'); else setSignInError(''); }); }}
+              onClick={() => { setSignInReady(false); setSigningIn(true); ensureAdminSignedIn().then(res => { setSignInReady(res.ok); setSigningIn(false); if (!res.ok) setSignInError(`재시도 실패: ${res.detail || ''}`); else setSignInError(''); }); }}
               className="ml-3 rounded-lg bg-red-500/20 px-3 py-1 text-xs font-bold text-red-200 hover:bg-red-500/30"
             >
               재시도
