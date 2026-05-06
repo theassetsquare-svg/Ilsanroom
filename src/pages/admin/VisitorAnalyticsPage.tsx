@@ -151,7 +151,7 @@ export default function VisitorAnalyticsPage() {
   const conversionRate = totalSessions > 0 ? ((signups / totalSessions) * 100).toFixed(2) : '0.00';
 
   return (
-    <div className="mx-auto max-w-6xl p-4 md:p-8">
+    <div className="mx-auto max-w-6xl p-4 md:p-8" style={{ background: '#fff', color: '#111', minHeight: '100vh' }}>
       <h1 style={{ fontSize: '24px', fontWeight: 800, marginBottom: '8px', color: '#111' }}>방문자 행동 분석</h1>
       <p style={{ color: '#666', marginBottom: '8px', fontSize: '14px' }}>
         어디서 들어오고, 어디서 머물고, 어디서 떠나는지 한눈에 봅니다.
