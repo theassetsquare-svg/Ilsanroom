@@ -31,7 +31,6 @@ async function ensureAdminSignedIn(): Promise<{ ok: boolean; detail?: string }> 
   const supabase = createClient();
   if (!supabase) return { ok: false, detail: 'Supabase 클라이언트 없음' };
 
-  // 1) 서버에서 관리자 계정 보장 + 자격증명 받기
   const bootRes = await fetch('/api/admin-bootstrap', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -43,7 +42,6 @@ async function ensureAdminSignedIn(): Promise<{ ok: boolean; detail?: string }> 
   }
   const creds = await bootRes.json() as { email: string; password: string };
 
-  // 2) 기존에 다른 계정으로 로그인돼 있으면 정리
   const { data } = await supabase.auth.getSession();
   if (data.session?.user?.email && data.session.user.email !== creds.email) {
     await supabase.auth.signOut();
@@ -51,7 +49,6 @@ async function ensureAdminSignedIn(): Promise<{ ok: boolean; detail?: string }> 
     return { ok: true };
   }
 
-  // 3) 받은 자격증명으로 사인인
   const { error } = await supabase.auth.signInWithPassword(creds);
   if (error) return { ok: false, detail: `signIn: ${error.message}` };
   return { ok: true };
@@ -68,7 +65,6 @@ export default function AdminLayout() {
   const [err, setErr] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // 게이트 통과 시 자동 사인인 — 끝날 때까지 Outlet 렌더 대기
   useEffect(() => {
     if (!authed) return;
     let cancelled = false;
@@ -102,15 +98,16 @@ export default function AdminLayout() {
     }
   };
 
+  // ── 비밀번호 게이트 (라이트 카드, 사이트 톤) ───────────────────────────
   if (!authed) {
     return (
-      <div className="flex min-h-[80vh] items-center justify-center px-4">
-        <div className="w-full max-w-sm rounded-2xl border border-neon-border bg-neon-surface p-8 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-neon-bg">
+      <div className="flex min-h-[80vh] items-center justify-center bg-[#F5F5F5] px-4">
+        <div className="w-full max-w-sm rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-sm">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
             <span className="text-2xl">🔒</span>
           </div>
-          <h1 className="mb-1 text-lg font-bold text-neon-text">관리자 인증</h1>
-          <p className="mb-6 text-sm text-neon-text-muted">관리자 비밀번호를 입력하세요</p>
+          <h1 className="mb-1 text-lg font-bold text-gray-900">관리자 인증</h1>
+          <p className="mb-6 text-sm text-gray-500">관리자 비밀번호를 입력하세요</p>
           <form onSubmit={submit}>
             <input
               type="password"
@@ -118,32 +115,33 @@ export default function AdminLayout() {
               onChange={e => { setPin(e.target.value); setErr(''); }}
               placeholder="비밀번호"
               autoFocus
-              className={`mb-3 w-full rounded-xl border px-4 py-3 text-center text-sm outline-none ${err ? 'border-red-500' : 'border-neon-border'} bg-neon-bg-base text-neon-text`}
+              className={`mb-3 w-full rounded-xl border px-4 py-3 text-center text-sm outline-none ${err ? 'border-red-500' : 'border-gray-300'} bg-white text-gray-900`}
               style={{ minHeight: 48 }}
             />
-            {err && <p className="mb-3 text-xs text-red-400">{err}</p>}
+            {err && <p className="mb-3 text-xs text-red-500">{err}</p>}
             <button
               type="submit"
               disabled={!pin.trim()}
-              className="w-full rounded-xl bg-neon-primary px-6 py-3 text-sm font-bold text-white disabled:opacity-40"
+              className="w-full rounded-xl bg-purple-600 px-6 py-3 text-sm font-bold text-white hover:bg-purple-700 disabled:opacity-40"
               style={{ minHeight: 48 }}
             >
               확인
             </button>
           </form>
-          <Link to="/" className="mt-4 inline-block text-xs text-neon-text-muted">홈으로 돌아가기</Link>
+          <Link to="/" className="mt-4 inline-block text-xs text-gray-500">홈으로 돌아가기</Link>
         </div>
       </div>
     );
   }
 
+  // ── 인증 후 사이드바 + 본문 (다크 테마 — 모든 admin 페이지가 다크 가정) ──
   const groups: Array<NavItem['group']> = ['CMS', '운영', '분석'];
 
   const navList = (
     <nav className="space-y-4">
       {groups.map(g => (
         <div key={g}>
-          <p className="mb-1 px-3 text-[10px] font-bold uppercase tracking-wider text-neon-text-muted/60">{g}</p>
+          <p className="mb-1 px-3 text-[10px] font-bold uppercase tracking-wider text-gray-500">{g}</p>
           <ul>
             {NAV.filter(n => n.group === g).map(n => (
               <li key={n.to}>
@@ -154,8 +152,8 @@ export default function AdminLayout() {
                   className={({ isActive }) =>
                     `flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition ${
                       isActive
-                        ? 'bg-neon-primary/15 text-neon-primary-light font-bold'
-                        : 'text-neon-text/80 hover:bg-neon-bg hover:text-neon-text'
+                        ? 'bg-purple-600/20 text-purple-300 font-bold'
+                        : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                     }`
                   }
                 >
@@ -168,12 +166,12 @@ export default function AdminLayout() {
         </div>
       ))}
 
-      <div className="border-t border-neon-border pt-4">
+      <div className="border-t border-gray-800 pt-4">
         <Link
           to="/"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-neon-text/80 hover:bg-neon-bg hover:text-neon-text"
+          className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white"
         >
           <span>↗</span> 사이트 보기
         </Link>
@@ -182,8 +180,9 @@ export default function AdminLayout() {
           onClick={() => {
             try { sessionStorage.removeItem(SS_KEY); } catch { /* noop */ }
             setAuthed(false);
+            setSignInReady(false);
           }}
-          className="mt-1 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm text-neon-text-muted hover:bg-neon-bg hover:text-neon-text"
+          className="mt-1 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm text-gray-400 hover:bg-gray-800 hover:text-white"
         >
           <span>🚪</span> 잠금
         </button>
@@ -192,39 +191,39 @@ export default function AdminLayout() {
   );
 
   return (
-    <div className="flex min-h-screen bg-neon-bg-base">
+    <div className="admin-shell flex min-h-screen bg-gray-950 text-gray-100">
       {/* 데스크탑 사이드바 */}
-      <aside className="hidden w-60 shrink-0 border-r border-neon-border bg-neon-surface md:block">
+      <aside className="hidden w-60 shrink-0 border-r border-gray-800 bg-gray-900 md:block">
         <div className="sticky top-0 max-h-screen overflow-y-auto p-4">
           <div className="mb-4 px-3">
-            <p className="text-base font-bold text-neon-text">놀쿨 관리자</p>
+            <p className="text-base font-bold text-white">놀쿨 관리자</p>
           </div>
           {navList}
         </div>
       </aside>
 
       {/* 모바일 헤더 */}
-      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between border-b border-neon-border bg-neon-surface px-4 py-2 md:hidden">
+      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between border-b border-gray-800 bg-gray-900 px-4 py-2 md:hidden">
         <button
           type="button"
           onClick={() => setMobileOpen(v => !v)}
           aria-label="메뉴 열기"
-          className="rounded-lg p-2 text-neon-text hover:bg-neon-bg"
+          className="rounded-lg p-2 text-white hover:bg-gray-800"
         >
           ☰
         </button>
-        <p className="text-sm font-bold text-neon-text">놀쿨 관리자</p>
-        <Link to="/" target="_blank" rel="noopener noreferrer" className="text-xs text-neon-primary-light">↗</Link>
+        <p className="text-sm font-bold text-white">놀쿨 관리자</p>
+        <Link to="/" target="_blank" rel="noopener noreferrer" className="text-xs text-purple-300">↗</Link>
       </div>
 
       {/* 모바일 드로어 */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 flex md:hidden">
-          <div className="fixed inset-0 bg-black/60" onClick={() => setMobileOpen(false)} />
-          <aside className="relative w-64 max-w-[80%] overflow-y-auto bg-neon-surface p-4">
+          <div className="fixed inset-0 bg-black/70" onClick={() => setMobileOpen(false)} />
+          <aside className="relative w-64 max-w-[80%] overflow-y-auto bg-gray-900 p-4">
             <div className="mb-4 flex items-center justify-between px-3">
-              <p className="text-base font-bold text-neon-text">관리자</p>
-              <button type="button" onClick={() => setMobileOpen(false)} className="text-neon-text-muted">✕</button>
+              <p className="text-base font-bold text-white">관리자</p>
+              <button type="button" onClick={() => setMobileOpen(false)} className="text-gray-400">✕</button>
             </div>
             {navList}
           </aside>
@@ -233,10 +232,10 @@ export default function AdminLayout() {
 
       <main className="flex-1 pt-12 md:pt-0">
         {signingIn && (
-          <div className="p-12 text-center text-sm text-neon-text-muted">관리자 인증 중...</div>
+          <div className="p-12 text-center text-sm text-gray-400">관리자 인증 중...</div>
         )}
         {!signingIn && signInError && (
-          <div className="m-6 rounded-xl border border-red-500/40 bg-red-500/5 p-4 text-sm text-red-300">
+          <div className="m-6 rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-300">
             {signInError}
             <button
               type="button"

@@ -532,3 +532,24 @@ a:not([class]) {
 .rich-content img { max-width: 100%; border-radius: 8px; margin: 8px 0; }
 .rich-content video { max-width: 100%; border-radius: 8px; margin: 8px 0; }
 .rich-content iframe { max-width: 100%; border-radius: 8px; }
+
+/* ★ /admin 영역 전용 다크 테마 오버라이드 ★
+   사이트 본체는 라이트 모드지만 admin 페이지들은 모두 다크 테마(bg-gray-800/text-white)
+   가정이라, .admin-shell 스코프에서 neon-* 클래스의 라이트 색을 다크로 강제 반전. */
+.admin-shell { color-scheme: dark; }
+.admin-shell .text-neon-text { color: #F3F4F6 !important; }
+.admin-shell .text-neon-text-muted { color: #D1D5DB !important; }
+.admin-shell .text-neon-text-subtle { color: #9CA3AF !important; }
+.admin-shell .bg-neon-bg,
+.admin-shell .bg-neon-bg-base { background-color: #030712 !important; }
+.admin-shell .bg-neon-surface { background-color: #111827 !important; }
+.admin-shell .bg-neon-surface-2 { background-color: #1F2937 !important; }
+.admin-shell .border-neon-border { border-color: #374151 !important; }
+.admin-shell h1, .admin-shell h2, .admin-shell h3, .admin-shell h4 { color: #F3F4F6; }
+.admin-shell label { color: #D1D5DB; }
+.admin-shell input, .admin-shell textarea, .admin-shell select {
+  background-color: #1F2937;
+  color: #F3F4F6;
+  border-color: #374151;
+}
+.admin-shell input::placeholder, .admin-shell textarea::placeholder { color: #6B7280; }
