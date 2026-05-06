@@ -134,15 +134,15 @@ export default function AdminLayout() {
     );
   }
 
-  // ── 인증 후 사이드바 + 본문 (다크 테마 — 모든 admin 페이지가 다크 가정) ──
+  // ── 인증 후 사이드바 + 본문 (라이트 테마 — 워드프레스 어드민 톤) ──
   const groups: Array<NavItem['group']> = ['CMS', '운영', '분석'];
 
   const navList = (
-    <nav className="space-y-4">
+    <nav className="space-y-5">
       {groups.map(g => (
         <div key={g}>
-          <p className="mb-1 px-3 text-[10px] font-bold uppercase tracking-wider text-gray-500">{g}</p>
-          <ul>
+          <p className="mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-gray-400">{g}</p>
+          <ul className="space-y-0.5">
             {NAV.filter(n => n.group === g).map(n => (
               <li key={n.to}>
                 <NavLink
@@ -150,14 +150,14 @@ export default function AdminLayout() {
                   end={n.to === '/admin'}
                   onClick={() => setMobileOpen(false)}
                   className={({ isActive }) =>
-                    `flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition ${
+                    `flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition ${
                       isActive
-                        ? 'bg-purple-600/20 text-purple-300 font-bold'
-                        : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                        ? 'bg-purple-50 text-purple-700 font-semibold'
+                        : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
                     }`
                   }
                 >
-                  <span className="text-base">{n.icon}</span>
+                  <span className="text-base leading-none">{n.icon}</span>
                   <span>{n.label}</span>
                 </NavLink>
               </li>
@@ -166,12 +166,12 @@ export default function AdminLayout() {
         </div>
       ))}
 
-      <div className="border-t border-gray-800 pt-4">
+      <div className="border-t border-gray-200 pt-4">
         <Link
           to="/"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white"
+          className="flex items-center gap-2.5 rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
         >
           <span>↗</span> 사이트 보기
         </Link>
@@ -182,7 +182,7 @@ export default function AdminLayout() {
             setAuthed(false);
             setSignInReady(false);
           }}
-          className="mt-1 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm text-gray-400 hover:bg-gray-800 hover:text-white"
+          className="mt-0.5 flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-left text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900"
         >
           <span>🚪</span> 잠금
         </button>
@@ -191,39 +191,39 @@ export default function AdminLayout() {
   );
 
   return (
-    <div className="admin-shell flex min-h-screen bg-gray-950 text-gray-100">
+    <div className="admin-shell flex min-h-screen bg-gray-50 text-gray-900">
       {/* 데스크탑 사이드바 */}
-      <aside className="hidden w-60 shrink-0 border-r border-gray-800 bg-gray-900 md:block">
+      <aside className="hidden w-60 shrink-0 border-r border-gray-200 bg-white md:block">
         <div className="sticky top-0 max-h-screen overflow-y-auto p-4">
-          <div className="mb-4 px-3">
-            <p className="text-base font-bold text-white">놀쿨 관리자</p>
+          <div className="mb-5 px-3">
+            <p className="text-base font-bold text-gray-900">놀쿨 관리자</p>
           </div>
           {navList}
         </div>
       </aside>
 
       {/* 모바일 헤더 */}
-      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between border-b border-gray-800 bg-gray-900 px-4 py-2 md:hidden">
+      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-2 md:hidden">
         <button
           type="button"
           onClick={() => setMobileOpen(v => !v)}
           aria-label="메뉴 열기"
-          className="rounded-lg p-2 text-white hover:bg-gray-800"
+          className="rounded-md p-2 text-gray-700 hover:bg-gray-100"
         >
           ☰
         </button>
-        <p className="text-sm font-bold text-white">놀쿨 관리자</p>
-        <Link to="/" target="_blank" rel="noopener noreferrer" className="text-xs text-purple-300">↗</Link>
+        <p className="text-sm font-bold text-gray-900">놀쿨 관리자</p>
+        <Link to="/" target="_blank" rel="noopener noreferrer" className="rounded-md px-2 py-1 text-xs text-purple-700 hover:bg-purple-50">↗</Link>
       </div>
 
       {/* 모바일 드로어 */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 flex md:hidden">
-          <div className="fixed inset-0 bg-black/70" onClick={() => setMobileOpen(false)} />
-          <aside className="relative w-64 max-w-[80%] overflow-y-auto bg-gray-900 p-4">
-            <div className="mb-4 flex items-center justify-between px-3">
-              <p className="text-base font-bold text-white">관리자</p>
-              <button type="button" onClick={() => setMobileOpen(false)} className="text-gray-400">✕</button>
+          <div className="fixed inset-0 bg-black/40" onClick={() => setMobileOpen(false)} />
+          <aside className="relative w-64 max-w-[80%] overflow-y-auto bg-white p-4 shadow-xl">
+            <div className="mb-5 flex items-center justify-between px-3">
+              <p className="text-base font-bold text-gray-900">관리자</p>
+              <button type="button" onClick={() => setMobileOpen(false)} aria-label="닫기" className="rounded-md p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-900">✕</button>
             </div>
             {navList}
           </aside>
@@ -232,15 +232,15 @@ export default function AdminLayout() {
 
       <main className="flex-1 pt-12 md:pt-0">
         {signingIn && (
-          <div className="p-12 text-center text-sm text-gray-400">관리자 인증 중...</div>
+          <div className="p-12 text-center text-sm text-gray-500">관리자 인증 중...</div>
         )}
         {!signingIn && signInError && (
-          <div className="m-6 rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-300">
+          <div className="m-6 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
             {signInError}
             <button
               type="button"
               onClick={() => { setSignInReady(false); setSigningIn(true); ensureAdminSignedIn().then(res => { setSignInReady(res.ok); setSigningIn(false); if (!res.ok) setSignInError(`재시도 실패: ${res.detail || ''}`); else setSignInError(''); }); }}
-              className="ml-3 rounded-lg bg-red-500/20 px-3 py-1 text-xs font-bold text-red-200 hover:bg-red-500/30"
+              className="ml-3 rounded-md bg-red-100 px-3 py-1 text-xs font-bold text-red-700 hover:bg-red-200"
             >
               재시도
             </button>

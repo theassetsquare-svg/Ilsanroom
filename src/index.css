@@ -533,33 +533,14 @@ a:not([class]) {
 .rich-content video { max-width: 100%; border-radius: 8px; margin: 8px 0; }
 .rich-content iframe { max-width: 100%; border-radius: 8px; }
 
-/* ★ /admin 영역 — 라이트 테마 강제 (워드프레스 관리자처럼 흰배경+검정글씨) ★ */
-.admin-shell { color-scheme: light; background: #F5F5F5; color: #111827; }
-.admin-shell h1, .admin-shell h2, .admin-shell h3, .admin-shell h4 { color: #111827; }
-.admin-shell label { color: #374151; }
-/* admin 안에서 잘못 박힌 다크 클래스를 라이트로 강제 반전 */
-.admin-shell .bg-gray-950,
-.admin-shell .bg-gray-900,
-.admin-shell .bg-gray-800 { background-color: #FFFFFF !important; }
-.admin-shell .text-white,
-.admin-shell .text-gray-100,
-.admin-shell .text-gray-200 { color: #111827 !important; }
-.admin-shell .text-gray-300,
-.admin-shell .text-gray-400 { color: #4B5563 !important; }
-.admin-shell .text-gray-500 { color: #6B7280 !important; }
-.admin-shell .border-gray-800,
-.admin-shell .border-gray-700 { border-color: #E5E7EB !important; }
-.admin-shell .divide-gray-700 > * + * { border-color: #E5E7EB !important; }
-.admin-shell .bg-purple-900\/30,
-.admin-shell .bg-purple-900\/50 { background-color: #F3E8FF !important; }
-.admin-shell .text-purple-300 { color: #6D28D9 !important; }
-.admin-shell .border-purple-700 { border-color: #C4B5FD !important; }
-.admin-shell .bg-red-900\/30 { background-color: #FEF2F2 !important; }
-.admin-shell .text-red-300 { color: #B91C1C !important; }
-.admin-shell .border-red-700 { border-color: #FCA5A5 !important; }
+/* ★ /admin 영역 — 라이트 테마 (워드프레스 관리자 톤). 컴포넌트는 라이트 클래스로 직접 작성.
+   아래 룰은 자식 페이지가 다크 클래스를 잘못 박았을 때의 안전망. */
+.admin-shell { color-scheme: light; }
 .admin-shell input, .admin-shell textarea, .admin-shell select {
   background-color: #FFFFFF;
   color: #111827;
   border-color: #D1D5DB;
 }
 .admin-shell input::placeholder, .admin-shell textarea::placeholder { color: #9CA3AF; }
+/* 컴포넌트가 모두 라이트로 직접 작성됐으므로 추가 강제 반전 룰은 두지 않음.
+   의도된 흰 글씨(보라/주황 버튼 위)와 충돌을 피하기 위함. */

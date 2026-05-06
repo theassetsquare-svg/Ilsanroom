@@ -116,7 +116,7 @@ export default function StatsPage() {
   }
 
   if (!isAdmin) {
-    return <div className="flex min-h-[60vh] items-center justify-center text-gray-400">
+    return <div className="flex min-h-[60vh] items-center justify-center text-gray-600">
       관리자만 접근 가능합니다.
     </div>;
   }
@@ -124,7 +124,7 @@ export default function StatsPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">실시간 통계</h1>
+        <h1 className="text-2xl font-bold text-gray-900">실시간 통계</h1>
         <div className="flex items-center gap-3">
           {lastUpdated && (
             <span className="text-xs text-gray-500">
@@ -141,7 +141,7 @@ export default function StatsPage() {
       </div>
 
       {error && (
-        <div className="mb-4 rounded-lg bg-red-900/30 border border-red-700 p-3 text-sm text-red-300">
+        <div className="mb-4 rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-700">
           {error}
         </div>
       )}
@@ -169,12 +169,12 @@ export default function StatsPage() {
 
           {/* 카테고리별 업소 수 */}
           <div className="mb-8">
-            <h2 className="mb-3 text-lg font-semibold text-white">카테고리별 업소</h2>
+            <h2 className="mb-3 text-lg font-semibold text-gray-900">카테고리별 업소</h2>
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
               {stats.categoryStats.map((c) => (
-                <div key={c.category} className="rounded-lg bg-gray-800 p-3 text-center">
-                  <div className="text-xs text-gray-400">{CATEGORY_LABELS[c.category] || c.category}</div>
-                  <div className="mt-1 text-xl font-bold text-white">{c.count}</div>
+                <div key={c.category} className="rounded-lg bg-white border border-gray-200 p-3 text-center">
+                  <div className="text-xs text-gray-600">{CATEGORY_LABELS[c.category] || c.category}</div>
+                  <div className="mt-1 text-xl font-bold text-gray-900">{c.count}</div>
                 </div>
               ))}
             </div>
@@ -183,22 +183,22 @@ export default function StatsPage() {
           <div className="grid gap-6 lg:grid-cols-2">
             {/* 인기 업소 TOP 10 */}
             <div>
-              <h2 className="mb-3 text-lg font-semibold text-white">인기 업소 TOP 10</h2>
-              <div className="rounded-lg bg-gray-800 divide-y divide-gray-700">
+              <h2 className="mb-3 text-lg font-semibold text-gray-900">인기 업소 TOP 10</h2>
+              <div className="rounded-lg bg-white border border-gray-200 divide-y divide-gray-200">
                 {stats.topVenues.length === 0 ? (
                   <div className="p-4 text-center text-gray-500">데이터 없음</div>
                 ) : stats.topVenues.map((v, i) => (
                   <div key={v.slug} className="flex items-center gap-3 px-4 py-3">
                     <span className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${
-                      i < 3 ? 'bg-purple-600 text-white' : 'bg-gray-700 text-gray-400'
+                      i < 3 ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700'
                     }`}>{i + 1}</span>
                     <div className="flex-1 min-w-0">
-                      <div className="truncate text-sm font-medium text-white">{v.name}</div>
+                      <div className="truncate text-sm font-medium text-gray-900">{v.name}</div>
                       <div className="text-xs text-gray-500">
                         {CATEGORY_LABELS[v.category] || v.category} · 후기 {v.review_count || 0}
                       </div>
                     </div>
-                    <span className="text-sm text-gray-400">{(v.view_count || 0).toLocaleString()}회</span>
+                    <span className="text-sm text-gray-600">{(v.view_count || 0).toLocaleString()}회</span>
                   </div>
                 ))}
               </div>
@@ -206,17 +206,17 @@ export default function StatsPage() {
 
             {/* 활동왕 TOP 10 */}
             <div>
-              <h2 className="mb-3 text-lg font-semibold text-white">활동왕 TOP 10</h2>
-              <div className="rounded-lg bg-gray-800 divide-y divide-gray-700">
+              <h2 className="mb-3 text-lg font-semibold text-gray-900">활동왕 TOP 10</h2>
+              <div className="rounded-lg bg-white border border-gray-200 divide-y divide-gray-200">
                 {stats.topUsers.length === 0 ? (
                   <div className="p-4 text-center text-gray-500">데이터 없음</div>
                 ) : stats.topUsers.map((u, i) => (
                   <div key={u.nickname || i} className="flex items-center gap-3 px-4 py-3">
                     <span className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${
-                      i < 3 ? 'bg-yellow-600 text-white' : 'bg-gray-700 text-gray-400'
+                      i < 3 ? 'bg-amber-500 text-white' : 'bg-gray-200 text-gray-700'
                     }`}>{i + 1}</span>
                     <div className="flex-1 min-w-0">
-                      <div className="truncate text-sm font-medium text-white">{u.nickname || '(닉네임 없음)'}</div>
+                      <div className="truncate text-sm font-medium text-gray-900">{u.nickname || '(닉네임 없음)'}</div>
                       <div className="text-xs text-gray-500">
                         {LEVEL_LABELS[u.level] || u.level} · {u.points || 0}P
                       </div>
@@ -229,17 +229,17 @@ export default function StatsPage() {
 
           {/* 최근 게시글 */}
           <div className="mt-6">
-            <h2 className="mb-3 text-lg font-semibold text-white">최근 게시글</h2>
-            <div className="rounded-lg bg-gray-800 divide-y divide-gray-700">
+            <h2 className="mb-3 text-lg font-semibold text-gray-900">최근 게시글</h2>
+            <div className="rounded-lg bg-white border border-gray-200 divide-y divide-gray-200">
               {stats.recentPosts.length === 0 ? (
                 <div className="p-4 text-center text-gray-500">데이터 없음</div>
               ) : stats.recentPosts.map((p, i) => (
                 <div key={i} className="flex items-center gap-3 px-4 py-3">
-                  <span className="rounded bg-purple-900/50 px-2 py-0.5 text-xs text-purple-300">
+                  <span className="rounded bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700">
                     {p.category}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <div className="truncate text-sm text-white">{p.title}</div>
+                    <div className="truncate text-sm text-gray-900">{p.title}</div>
                   </div>
                   <div className="text-right text-xs text-gray-500">
                     <div>{p.user_id ? p.user_id.slice(0, 8) : '익명'}</div>
@@ -257,9 +257,9 @@ export default function StatsPage() {
 
 function StatCard({ label, value, accent }: { label: string; value: number; accent?: boolean }) {
   return (
-    <div className={`rounded-lg p-4 ${accent ? 'bg-purple-900/30 border border-purple-700' : 'bg-gray-800'}`}>
-      <div className="text-xs text-gray-400">{label}</div>
-      <div className={`mt-1 text-2xl font-bold ${accent ? 'text-purple-300' : 'text-white'}`}>
+    <div className={`rounded-lg p-4 ${accent ? 'bg-purple-50 border border-purple-200' : 'bg-white border border-gray-200'}`}>
+      <div className="text-xs text-gray-600">{label}</div>
+      <div className={`mt-1 text-2xl font-bold ${accent ? 'text-purple-700' : 'text-gray-900'}`}>
         {value.toLocaleString()}
       </div>
     </div>
