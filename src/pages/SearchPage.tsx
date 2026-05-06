@@ -7,6 +7,7 @@ import type { Venue } from '@/types';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { ReadFinishCount } from '@/components/engagement/ReadingEngagement';
+import { hasVenueImage } from '@/data/venue-image-manifest';
 
 /* ── 카테고리 설정 ── */
 const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
@@ -384,9 +385,11 @@ export default function SearchPage() {
               <Link key={venue.id || venue.slug} to={getCategoryPath(venue)} target="_blank" rel="noopener noreferrer" className="block">
                 <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
                   <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
-                    <img src={`/venues/${venue.slug}-1.webp`} alt={venue.nameKo} loading="lazy"
-                      className="absolute inset-0 w-full h-full object-cover z-[1]"
-                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                    {hasVenueImage(venue.slug) && (
+                      <img src={`/venues/${venue.slug}-1.webp`} alt={venue.nameKo} loading="lazy"
+                        className="absolute inset-0 w-full h-full object-cover z-[1]"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                    )}
                     <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${fallbackGradient[venue.category] || 'from-gray-500 to-gray-700'}`}>
                       <span className="text-3xl">{catEmoji[venue.category] || '🎵'}</span>
                       <span className="mt-1 text-xs font-bold text-white/80">{venue.nameKo.slice(0, 4)}</span>

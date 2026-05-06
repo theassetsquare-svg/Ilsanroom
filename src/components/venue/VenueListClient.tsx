@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import type { Venue } from '@/types';
 import { VenueCardStats } from '@/components/ui/LiveStats';
 import { ListMidHook, TopPicksMini } from '@/components/venue/CategoryListingEngagement';
+import { hasVenueImage } from '@/data/venue-image-manifest';
 
 interface VenueListClientProps {
   venues: Venue[];
@@ -106,18 +107,20 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
                 <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
                   {/* 이미지 — 1:1 정사각형 */}
                   <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
-                    <img
-                      src={`/venues/${venue.slug}-1.webp`}
-                      alt={venue.nameKo}
-                      width={300}
-                      height={300}
-                      loading="lazy"
-                      onError={(e) => {
-                        // Local image missing → hide and show gradient fallback below
-                        (e.target as HTMLImageElement).style.display = 'none';
-                      }}
-                      className="absolute inset-0 w-full h-full object-cover z-[1]"
-                    />
+                    {hasVenueImage(venue.slug) && (
+                      <img
+                        src={`/venues/${venue.slug}-1.webp`}
+                        alt={venue.nameKo}
+                        width={300}
+                        height={300}
+                        loading="lazy"
+                        onError={(e) => {
+                          // 만에 하나 manifest 누락 시 graceful fallback
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                        className="absolute inset-0 w-full h-full object-cover z-[1]"
+                      />
+                    )}
                     {/* Fallback */}
                     <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${fallbackGradient[venue.category] || 'from-gray-500 to-gray-700'}`}>
                       <span className="text-3xl">{catEmoji[venue.category] || '🎵'}</span>
