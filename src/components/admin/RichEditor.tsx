@@ -1,5 +1,6 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import Image from '@tiptap/extension-image';
 import { useEffect } from 'react';
 
 interface Props {
@@ -13,7 +14,7 @@ const btnActive = 'bg-neon-primary/20 text-neon-primary-light';
 
 export default function RichEditor({ value, onChange }: Props) {
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [StarterKit, Image.configure({ inline: false, allowBase64: false, HTMLAttributes: { class: 'rich-img' } })],
     content: value,
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
     editorProps: {
@@ -50,10 +51,11 @@ export default function RichEditor({ value, onChange }: Props) {
         <button type="button" onClick={() => editor.chain().focus().toggleCodeBlock().run()} className={`${btn} font-mono ${editor.isActive('codeBlock') ? btnActive : ''}`}>{'</>'}</button>
         <span className="mx-1 w-px bg-neon-border" />
         <button type="button" onClick={() => {
-          const url = prompt('링크 URL');
+          const url = prompt('이미지 URL (미디어 라이브러리에서 복사)');
           if (!url) return;
-          editor.chain().focus().setHardBreak().run();
-        }} className={btn}>↵</button>
+          editor.chain().focus().setImage({ src: url }).run();
+        }} className={btn} title="이미지 삽입">🖼</button>
+        <a href="/admin/media" target="_blank" rel="noopener noreferrer" className={btn} title="미디어 라이브러리 열기">📁</a>
         <button type="button" onClick={() => editor.chain().focus().undo().run()} className={btn} disabled={!editor.can().undo()}>↶</button>
         <button type="button" onClick={() => editor.chain().focus().redo().run()} className={btn} disabled={!editor.can().redo()}>↷</button>
       </div>
