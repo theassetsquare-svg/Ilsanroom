@@ -203,7 +203,7 @@ export default function AdminLayout() {
       </aside>
 
       {/* 모바일 헤더 */}
-      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-2 md:hidden">
+      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-2 shadow-sm md:hidden">
         <button
           type="button"
           onClick={() => setMobileOpen(v => !v)}

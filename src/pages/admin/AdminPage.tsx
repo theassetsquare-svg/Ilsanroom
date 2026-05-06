@@ -340,25 +340,19 @@ export default function AdminPage() {
   const allCategories = [...new Set(posts.map(p => p.category).filter(Boolean))];
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8 pb-24">
+    <div className="mx-auto max-w-6xl px-4 py-8 pb-24">
       {/* 헤더 */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold" style={{ color: '#111' }}>관리자 페이지</h1>
-          <p className="text-xs" style={{ color: '#999' }}>{user.email}</p>
+          <h1 className="text-2xl font-bold text-gray-900">대시보드</h1>
+          <p className="text-xs text-gray-500">{user.email}</p>
         </div>
-        <div className="flex gap-2">
-          <button
-            onClick={loadData}
-            className="rounded-xl px-4 py-2 text-sm font-bold"
-            style={{ backgroundColor: '#F3F4F6', color: '#555', minHeight: 40 }}
-          >
-            새로고침
-          </button>
-          <Link to="/" className="rounded-xl px-4 py-2 text-sm font-bold flex items-center" style={{ backgroundColor: '#8B5CF6', color: '#FFF', minHeight: 40 }}>
-            홈
-          </Link>
-        </div>
+        <button
+          onClick={loadData}
+          className="rounded-lg bg-purple-600 px-3 py-1.5 text-sm text-white hover:bg-purple-700"
+        >
+          새로고침
+        </button>
       </div>
 
       {/* 검색 */}
@@ -367,29 +361,35 @@ export default function AdminPage() {
         value={searchQuery}
         onChange={e => setSearchQuery(e.target.value)}
         placeholder="글/댓글/사용자ID 검색..."
-        className="w-full rounded-xl border px-4 py-3 text-sm mb-4 outline-none"
-        style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }}
+        className="mb-4 w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-purple-500"
       />
 
-      {/* 탭 */}
-      <div className="flex gap-1 mb-4 overflow-x-auto">
-        {tabs.map(tab => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
-            className="shrink-0 px-4 py-3 text-sm font-medium rounded-xl transition"
-            style={{
-              backgroundColor: activeTab === tab.key ? '#8B5CF6' : '#F3F4F6',
-              color: activeTab === tab.key ? '#FFF' : '#555',
-              minHeight: 44,
-            }}
-          >
-            {tab.label} {tab.count !== undefined && `(${tab.count})`}
-          </button>
-        ))}
+      {/* 탭 — 워드프레스 underline 톤 */}
+      <div className="mb-6 flex gap-1 overflow-x-auto border-b border-gray-200">
+        {tabs.map(tab => {
+          const active = activeTab === tab.key;
+          return (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`shrink-0 border-b-2 px-4 py-2.5 text-sm font-medium transition ${
+                active
+                  ? 'border-purple-600 text-purple-700'
+                  : 'border-transparent text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              {tab.label}
+              {tab.count !== undefined && (
+                <span className={`ml-1.5 rounded-full px-2 py-0.5 text-xs ${
+                  active ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-600'
+                }`}>{tab.count}</span>
+              )}
+            </button>
+          );
+        })}
       </div>
 
-      {loading && <p className="py-8 text-center" style={{ color: '#999' }}>불러오는 중...</p>}
+      {loading && <p className="py-8 text-center text-sm text-gray-500">불러오는 중...</p>}
 
       {/* ═══ 글 관리 ═══ */}
       {activeTab === 'posts' && !loading && (
