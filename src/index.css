@@ -533,23 +533,33 @@ a:not([class]) {
 .rich-content video { max-width: 100%; border-radius: 8px; margin: 8px 0; }
 .rich-content iframe { max-width: 100%; border-radius: 8px; }
 
-/* ★ /admin 영역 전용 다크 테마 오버라이드 ★
-   사이트 본체는 라이트 모드지만 admin 페이지들은 모두 다크 테마(bg-gray-800/text-white)
-   가정이라, .admin-shell 스코프에서 neon-* 클래스의 라이트 색을 다크로 강제 반전. */
-.admin-shell { color-scheme: dark; }
-.admin-shell .text-neon-text { color: #F3F4F6 !important; }
-.admin-shell .text-neon-text-muted { color: #D1D5DB !important; }
-.admin-shell .text-neon-text-subtle { color: #9CA3AF !important; }
-.admin-shell .bg-neon-bg,
-.admin-shell .bg-neon-bg-base { background-color: #030712 !important; }
-.admin-shell .bg-neon-surface { background-color: #111827 !important; }
-.admin-shell .bg-neon-surface-2 { background-color: #1F2937 !important; }
-.admin-shell .border-neon-border { border-color: #374151 !important; }
-.admin-shell h1, .admin-shell h2, .admin-shell h3, .admin-shell h4 { color: #F3F4F6; }
-.admin-shell label { color: #D1D5DB; }
+/* ★ /admin 영역 — 라이트 테마 강제 (워드프레스 관리자처럼 흰배경+검정글씨) ★ */
+.admin-shell { color-scheme: light; background: #F5F5F5; color: #111827; }
+.admin-shell h1, .admin-shell h2, .admin-shell h3, .admin-shell h4 { color: #111827; }
+.admin-shell label { color: #374151; }
+/* admin 안에서 잘못 박힌 다크 클래스를 라이트로 강제 반전 */
+.admin-shell .bg-gray-950,
+.admin-shell .bg-gray-900,
+.admin-shell .bg-gray-800 { background-color: #FFFFFF !important; }
+.admin-shell .text-white,
+.admin-shell .text-gray-100,
+.admin-shell .text-gray-200 { color: #111827 !important; }
+.admin-shell .text-gray-300,
+.admin-shell .text-gray-400 { color: #4B5563 !important; }
+.admin-shell .text-gray-500 { color: #6B7280 !important; }
+.admin-shell .border-gray-800,
+.admin-shell .border-gray-700 { border-color: #E5E7EB !important; }
+.admin-shell .divide-gray-700 > * + * { border-color: #E5E7EB !important; }
+.admin-shell .bg-purple-900\/30,
+.admin-shell .bg-purple-900\/50 { background-color: #F3E8FF !important; }
+.admin-shell .text-purple-300 { color: #6D28D9 !important; }
+.admin-shell .border-purple-700 { border-color: #C4B5FD !important; }
+.admin-shell .bg-red-900\/30 { background-color: #FEF2F2 !important; }
+.admin-shell .text-red-300 { color: #B91C1C !important; }
+.admin-shell .border-red-700 { border-color: #FCA5A5 !important; }
 .admin-shell input, .admin-shell textarea, .admin-shell select {
-  background-color: #1F2937;
-  color: #F3F4F6;
-  border-color: #374151;
+  background-color: #FFFFFF;
+  color: #111827;
+  border-color: #D1D5DB;
 }
-.admin-shell input::placeholder, .admin-shell textarea::placeholder { color: #6B7280; }
+.admin-shell input::placeholder, .admin-shell textarea::placeholder { color: #9CA3AF; }
