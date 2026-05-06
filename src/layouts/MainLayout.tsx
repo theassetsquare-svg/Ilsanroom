@@ -7,6 +7,7 @@ import BackToTop from '@/components/layout/BackToTop';
 import Toast from '@/components/ui/Toast';
 import SecretModeToast from '@/components/privacy/SecretModeToast';
 import JsonLd from '@/components/seo/JsonLd';
+import { useSeoOverride } from '@/hooks/useSeoOverride';
 
 const organizationJsonLd = {
   '@context': 'https://schema.org',
@@ -56,11 +57,17 @@ function ScrollToTop() {
   return null;
 }
 
+function SeoOverrideRunner() {
+  useSeoOverride();
+  return null;
+}
+
 export default function MainLayout() {
   return (
     <div className="flex min-h-screen flex-col pb-[72px] md:pb-0">
       <a href="#main-content" className="skip-nav">본문으로 건너뛰기</a>
       <ScrollToTop />
+      <SeoOverrideRunner />
       <JsonLd data={organizationJsonLd} />
       <JsonLd data={websiteJsonLd} />
       <Header />
