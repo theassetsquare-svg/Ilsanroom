@@ -1,8 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, Outlet, Link } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+import { createClient } from '@/lib/supabase';
 
-const ADMIN_EMAILS = ['qotjsdnr123@naver.com', 'theassetsquare@gmail.com'];
+// 운영자 1인용 게이트 — 비밀번호 1회 입력으로 모든 /admin/* 진입.
+// Supabase 로그인 화면을 띄우지 않음. 백그라운드에서 자동 사인인하여 RLS(`is_admin()`) 통과.
+const ADMIN_PIN = 'nolcool2026';
+const ADMIN_EMAIL = 'theassetsquare@gmail.com';
+const ADMIN_PW = 'asd9048asd!!';
+const SS_KEY = 'nolcool_admin_auth';
 
 interface NavItem {
   to: string;
@@ -12,35 +17,86 @@ interface NavItem {
 }
 
 const NAV: NavItem[] = [
-  // CMS
   { to: '/admin', label: '대시보드', icon: '🏠', group: 'CMS' },
   { to: '/admin/venues', label: '업소 관리', icon: '🏢', group: 'CMS' },
   { to: '/admin/magazine', label: '매거진', icon: '📰', group: 'CMS' },
   { to: '/admin/media', label: '미디어 라이브러리', icon: '🖼', group: 'CMS' },
   { to: '/admin/blocks', label: '페이지 블록', icon: '🧩', group: 'CMS' },
   { to: '/admin/seo', label: 'SEO 메타', icon: '🔎', group: 'CMS' },
-  // 운영
   { to: '/admin/moderation', label: '모더레이션', icon: '🛡', group: '운영' },
-  // 분석
   { to: '/admin/stats', label: '통계', icon: '📊', group: '분석' },
   { to: '/admin/visitors', label: '방문자 분석', icon: '👥', group: '분석' },
 ];
 
+async function ensureAdminSignedIn(): Promise<void> {
+  const supabase = createClient();
+  if (!supabase) return;
+  const { data } = await supabase.auth.getSession();
+  if (data.session?.user?.email === ADMIN_EMAIL) return;
+  await supabase.auth.signInWithPassword({ email: ADMIN_EMAIL, password: ADMIN_PW });
+}
+
 export default function AdminLayout() {
-  const { user, loading } = useAuth();
-  const isAdmin = !!(user?.email && ADMIN_EMAILS.includes(user.email));
+  const [authed, setAuthed] = useState<boolean>(() => {
+    try { return sessionStorage.getItem(SS_KEY) === 'true'; } catch { return false; }
+  });
+  const [pin, setPin] = useState('');
+  const [err, setErr] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  if (loading) return <div className="p-8 text-center text-sm text-neon-text-muted">로딩...</div>;
-  if (!user) {
+  // 게이트 통과 시 백그라운드 자동 사인인 (DB 쓰기용)
+  useEffect(() => {
+    if (authed) {
+      ensureAdminSignedIn().catch(() => { /* 실패해도 UI는 보임 */ });
+    }
+  }, [authed]);
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (pin === ADMIN_PIN) {
+      try { sessionStorage.setItem(SS_KEY, 'true'); } catch { /* noop */ }
+      setAuthed(true);
+      setErr('');
+    } else {
+      setErr('비밀번호가 틀립니다');
+      setPin('');
+    }
+  };
+
+  if (!authed) {
     return (
-      <div className="p-8 text-center">
-        <p className="mb-4 text-sm text-neon-text-muted">로그인 필요</p>
-        <Link to="/login" className="rounded-lg bg-neon-primary px-4 py-2 text-sm font-bold text-white">로그인</Link>
+      <div className="flex min-h-[80vh] items-center justify-center px-4">
+        <div className="w-full max-w-sm rounded-2xl border border-neon-border bg-neon-surface p-8 text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-neon-bg">
+            <span className="text-2xl">🔒</span>
+          </div>
+          <h1 className="mb-1 text-lg font-bold text-neon-text">관리자 인증</h1>
+          <p className="mb-6 text-sm text-neon-text-muted">관리자 비밀번호를 입력하세요</p>
+          <form onSubmit={submit}>
+            <input
+              type="password"
+              value={pin}
+              onChange={e => { setPin(e.target.value); setErr(''); }}
+              placeholder="비밀번호"
+              autoFocus
+              className={`mb-3 w-full rounded-xl border px-4 py-3 text-center text-sm outline-none ${err ? 'border-red-500' : 'border-neon-border'} bg-neon-bg-base text-neon-text`}
+              style={{ minHeight: 48 }}
+            />
+            {err && <p className="mb-3 text-xs text-red-400">{err}</p>}
+            <button
+              type="submit"
+              disabled={!pin.trim()}
+              className="w-full rounded-xl bg-neon-primary px-6 py-3 text-sm font-bold text-white disabled:opacity-40"
+              style={{ minHeight: 48 }}
+            >
+              확인
+            </button>
+          </form>
+          <Link to="/" className="mt-4 inline-block text-xs text-neon-text-muted">홈으로 돌아가기</Link>
+        </div>
       </div>
     );
   }
-  if (!isAdmin) return <div className="p-8 text-center text-sm text-red-400">관리자 권한 필요 ({user.email})</div>;
 
   const groups: Array<NavItem['group']> = ['CMS', '운영', '분석'];
 
@@ -82,6 +138,16 @@ export default function AdminLayout() {
         >
           <span>↗</span> 사이트 보기
         </Link>
+        <button
+          type="button"
+          onClick={() => {
+            try { sessionStorage.removeItem(SS_KEY); } catch { /* noop */ }
+            setAuthed(false);
+          }}
+          className="mt-1 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm text-neon-text-muted hover:bg-neon-bg hover:text-neon-text"
+        >
+          <span>🚪</span> 잠금
+        </button>
       </div>
     </nav>
   );
@@ -93,7 +159,6 @@ export default function AdminLayout() {
         <div className="sticky top-0 max-h-screen overflow-y-auto p-4">
           <div className="mb-4 px-3">
             <p className="text-base font-bold text-neon-text">놀쿨 관리자</p>
-            <p className="mt-0.5 truncate text-[11px] text-neon-text-muted">{user.email}</p>
           </div>
           {navList}
         </div>
