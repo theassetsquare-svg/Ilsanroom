@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
+import { usePageBlock } from '@/hooks/usePageBlock';
 import { venues as localVenues, getPopularVenues } from '@/data/venues';
 import type { Venue } from '@/types';
 import { createClient } from '@/lib/supabase';
@@ -471,6 +472,10 @@ export default function HomePage() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  // 단계 5 — 관리자가 /admin/blocks에서 덮어쓸 수 있는 블록들
+  const heroH1Override = usePageBlock('home', 'hero_h1', '');
+  const heroSubtitle = usePageBlock('home', 'hero_subtitle', '');
+
   const openVenues = useMemo(() => localVenues.filter(v => v.status !== 'closed_or_unclear'), []);
   const popularVenues = useMemo(() => getPopularVenues(20), []);
 
@@ -786,7 +791,7 @@ export default function HomePage() {
           {/* 실시간 접속자 + 타이틀 — 한 줄 */}
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-[22px] sm:text-[28px] font-black text-white leading-tight">
-              {(() => {
+              {heroH1Override || (() => {
                 const h = new Date().getHours();
                 if (h >= 18 && h < 21) return '오늘 밤, 어디 갈래?';
                 if (h >= 21 || h < 4) return '지금 나가면 딱이다';
@@ -794,6 +799,9 @@ export default function HomePage() {
                 return '저녁 되면 바로 출발';
               })()}
             </h1>
+            {heroSubtitle && (
+              <p className="mt-1 text-[13px] sm:text-sm text-white/80 w-full">{heroSubtitle}</p>
+            )}
             <div className="inline-flex items-center gap-1.5 rounded-full bg-white/10 backdrop-blur-sm px-2.5 py-1 shrink-0">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
