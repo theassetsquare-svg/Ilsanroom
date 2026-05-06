@@ -28,27 +28,50 @@ const NAV: NavItem[] = [
   { to: '/admin/visitors', label: '방문자 분석', icon: '👥', group: '분석' },
 ];
 
-async function ensureAdminSignedIn(): Promise<void> {
+async function ensureAdminSignedIn(): Promise<boolean> {
   const supabase = createClient();
-  if (!supabase) return;
+  if (!supabase) return false;
   const { data } = await supabase.auth.getSession();
-  if (data.session?.user?.email === ADMIN_EMAIL) return;
-  await supabase.auth.signInWithPassword({ email: ADMIN_EMAIL, password: ADMIN_PW });
+  if (data.session?.user?.email === ADMIN_EMAIL) return true;
+  // 다른 계정으로 로그인되어 있으면 먼저 로그아웃
+  if (data.session && data.session.user?.email !== ADMIN_EMAIL) {
+    await supabase.auth.signOut();
+  }
+  const { error } = await supabase.auth.signInWithPassword({ email: ADMIN_EMAIL, password: ADMIN_PW });
+  return !error;
 }
 
 export default function AdminLayout() {
   const [authed, setAuthed] = useState<boolean>(() => {
     try { return sessionStorage.getItem(SS_KEY) === 'true'; } catch { return false; }
   });
+  const [signingIn, setSigningIn] = useState<boolean>(false);
+  const [signInReady, setSignInReady] = useState<boolean>(false);
+  const [signInError, setSignInError] = useState<string>('');
   const [pin, setPin] = useState('');
   const [err, setErr] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // 게이트 통과 시 백그라운드 자동 사인인 (DB 쓰기용)
+  // 게이트 통과 시 자동 사인인 — 끝날 때까지 Outlet 렌더 대기
   useEffect(() => {
-    if (authed) {
-      ensureAdminSignedIn().catch(() => { /* 실패해도 UI는 보임 */ });
-    }
+    if (!authed) return;
+    let cancelled = false;
+    setSigningIn(true);
+    setSignInError('');
+    ensureAdminSignedIn()
+      .then(ok => {
+        if (cancelled) return;
+        setSignInReady(ok);
+        if (!ok) setSignInError('관리자 자동 로그인 실패 — 비밀번호/이메일 확인 필요');
+      })
+      .catch(e => {
+        if (cancelled) return;
+        setSignInError(String(e?.message || e));
+      })
+      .finally(() => {
+        if (!cancelled) setSigningIn(false);
+      });
+    return () => { cancelled = true; };
   }, [authed]);
 
   const submit = (e: React.FormEvent) => {
@@ -193,7 +216,22 @@ export default function AdminLayout() {
       )}
 
       <main className="flex-1 pt-12 md:pt-0">
-        <Outlet />
+        {signingIn && (
+          <div className="p-12 text-center text-sm text-neon-text-muted">관리자 인증 중...</div>
+        )}
+        {!signingIn && signInError && (
+          <div className="m-6 rounded-xl border border-red-500/40 bg-red-500/5 p-4 text-sm text-red-300">
+            {signInError}
+            <button
+              type="button"
+              onClick={() => { setSignInReady(false); setSigningIn(true); ensureAdminSignedIn().then(ok => { setSignInReady(ok); setSigningIn(false); if (!ok) setSignInError('자동 로그인 재시도 실패'); else setSignInError(''); }); }}
+              className="ml-3 rounded-lg bg-red-500/20 px-3 py-1 text-xs font-bold text-red-200 hover:bg-red-500/30"
+            >
+              재시도
+            </button>
+          </div>
+        )}
+        {!signingIn && signInReady && <Outlet />}
       </main>
     </div>
   );
