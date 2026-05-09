@@ -9,7 +9,7 @@ const hiddenGems = [
     name: '일산명월관요정',
     region: '일산',
     category: '요정',
-    hook: '15가지 한정식에 국악 라이브까지, 요정 문화의 끝판왕',
+    hook: '15가지 한정식에 국악 라이브까지, 요정 문화의 격을 잇는다',
     reason: '전통 요정이 전국에 거의 남아있지 않은 상황에서, 일산명월관요정은 30개 프라이빗 룸과 정찰제 한정식을 유지하며 전통 문화를 이어가고 있습니다. 비즈니스 접대와 거래처 만찬에 활용되는 희소한 공간입니다.',
     href: '/yojeong/ilsan/ilsanmyeongwolgwanyojeong',
     week: '이번 달 2주차',

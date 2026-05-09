@@ -16,7 +16,7 @@ const regions = [
 ];
 
 export default function YojeongPage() {
-  useDocumentMeta('요정 갔는데 격 떨어지면 끝장이죠? 20년 실장이 봐드림', '사장님 모시는데 격 떨어지면 다음은 없어요. 20년 일한 요정 실장이 한정식·접대·진행 매너 한 줄로 정리합니다. 진짜 격 있는 곳만 →');
+  useDocumentMeta('요정에서 격 떨어지면 다음은 없죠 — 20년 실장이 봐드림', '사장님 모시는데 격 떨어지면 다음은 없어요. 20년 일한 요정 실장이 한정식·접대·진행 매너 한 줄로 정리합니다. 진짜 격 있는 곳만 →');
   const venues = getVenuesByCategory('yojeong');
   const featured = venues.find(v => v.isPremium) || venues[0];
 
