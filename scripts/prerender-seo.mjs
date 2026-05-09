@@ -633,7 +633,7 @@ const staticPages = [
   { path: '/quiz', title: '클럽형인지 라운지형인지, 테스트 해봐', desc: '10문항 2분이면 나한테 딱 맞는 유흥 스타일 결과. 클럽·라운지·나이트·룸·요정·호빠 6가지 유형 자동 매칭. 결과별 강남 홍대 이태원 일산 추천 업소 리스트, 친구와 비교 공유, 카톡 결과 발송 가능.' },
   { path: '/roulette', title: '고민 끝, 룰렛이 대신 골라준다', desc: '오늘 밤 갈 곳 못 정했을 때 탭 한 번이면 결정. 지역·업종·예산·인원 필터 적용 후 평점 가중치 랜덤 추천. 강남 홍대 이태원 일산 부산 120곳 풀에서 선택, 다시 돌리기 무제한, 결과 카톡 공유 가능.' },
   { path: '/vs', title: '어디가 더 낫냐고? 투표로 결판내자', desc: '강남 클럽 vs 강남 클럽, 홍대 라운지 vs 이태원 라운지 등 인기 업소 맞대결. 회원 실시간 투표 결과로 진짜 1위 확인. 매주 월요일 새 매치업 공개, 결과 댓글로 토론, 승자 업소는 다음 주 메인 노출.' },
-  { path: '/ranking', title: '지금 이 순간, 사람들이 가장 많이 보는 곳', desc: '실시간 조회수 50% + 후기 평점 30% + 전화 클릭 20% 합산 TOP 30 랭킹. 지역·업종별 필터로 강남 홍대 이태원 일산 부산 1위 업소 즉시 확인. 광고 영향 없이 매시간 자동 업데이트되는 객관적 순위.' },
+  { path: '/ranking', title: '인기 랭킹 TOP 20 — 회원이 직접 투표한 카테고리별 1위', desc: '회원 직접 투표 기반 카테고리·지역별 랭킹. 강남 홍대 이태원 일산 부산 클럽·나이트·룸·요정·라운지·호빠 1위 업소를 매월 1일 시즌 초기화로 확인. 가짜 점수·등락 표시 없음.' },
   { path: '/venue-info', title: '양주·부스·룸 한눈에 보기', desc: '업종별 양주 라인업(발렌타인 12·17·21년산, 조니워커 블루, 로얄살루트), 부스 4~12인 사이즈, 룸 4~30인 타입까지 정리. 강남 홍대 일산 부산 인기 업소 가이드. 가기 전에 미리 확인하고 예약하세요.' },
   { path: '/compare', title: '두 곳 놓고 따져보면 후회가 없다', desc: '분위기·후기·평점·접근성·매너 5개 항목별 두 업소 1대1 비교표. 강남 vs 홍대, 클럽 vs 라운지 등 인기 매치업 모음. 매니저 평판, 음악 장르, 드레스코드까지 한눈에. 고민 끝 선택만.' },
   { path: '/search', title: '이름만 치면 바로 나온다, 통합 검색', desc: '지역·업종·이름·분위기·예산 무엇이든 입력하면 강남 홍대 이태원 일산 부산 120곳 중 딱 맞는 곳. 자동완성, 오타 보정, 인기 검색어 추천, 한글·영문·초성 검색까지 지원하는 놀쿨 통합 검색 엔진.' },
@@ -1207,7 +1207,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   const p = `/best/${catInfo.path}`;
   const title = `${catInfo.labelKo} 인기 TOP ${catVenues.length} — 회원들이 가장 많이 찾는 핫스팟 랭킹`;
   const topNames = catVenues.slice(0, 3).map(vv => vv.nameKo).join(', ');
-  const desc = `전국 ${catInfo.labelKo} 인기 TOP ${catVenues.length}곳 실시간 비교 가이드 — ${topNames} 등 인기 ${catInfo.labelKo} 분위기, 후기, 평점, 매니저 평판, 드레스코드, 전화번호, 영업시간, 예약 팁까지 매시간 자동 업데이트되는 ${catInfo.labelKo} 핫스팟 랭킹.`;
+  const desc = `전국 ${catInfo.labelKo} TOP ${catVenues.length}곳 비교 가이드 — ${topNames} 등 인기 ${catInfo.labelKo} 분위기, 매니저 평판, 드레스코드, 전화번호, 예약 팁까지 정리. 매일 자동 갱신되는 ${catInfo.labelKo} 추천 리스트.`;
   let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
   ssrBody += `<ol>`;
   catVenues.forEach((vv, idx) => { ssrBody += `<li>${idx + 1}. ${escHtml(vv.nameKo)} — ${escHtml(vv.regionKo)} ${catInfo.labelKo}</li>`; });
