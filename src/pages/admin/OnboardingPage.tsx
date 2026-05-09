@@ -2,7 +2,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { Link } from 'react-router-dom';
 
 export default function OnboardingPage() {
-  useDocumentMeta('3분이면 끝나는 입점 신청', '사업자등록증·매장 사진 3장이면 입점 완료. 24시간 내 심사·노출 시작. 14일 무료 사용 후 요금제 선택. 카카오톡 besta12로 상세 문의. 복잡한 거 전혀 없어요.');
+  useDocumentMeta('입점 신청 — 사장님 전용', '사업자등록증·매장 사진 3장이면 입점 신청 가능. 카카오톡 besta12로 상세 문의 가능. 노출 위치·기간은 협의 후 확정.');
 
   return (
     <div className="mx-auto max-w-lg px-4 py-12">

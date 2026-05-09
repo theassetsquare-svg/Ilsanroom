@@ -76,14 +76,13 @@ export default function UserLevelCard() {
         </div>
       </div>
 
-      {/* 포인트 안내 */}
+      {/* 포인트 안내 — 실제 RPC 적립값만 (lounge-api/review-api 기준) */}
       <div className="mt-4 rounded-lg bg-violet-500/5 border border-violet-500/20 p-3">
         <p className="text-xs font-medium text-violet-400 mb-1">포인트 적립 방법</p>
         <div className="grid grid-cols-2 gap-1 text-xs text-neon-text-muted">
           <span>후기 작성: +10P</span>
-          <span>댓글 작성: +5P</span>
-          <span>사진 업로드: +5P</span>
-          <span>추천 받기: +2P</span>
+          <span>후기 댓글: +5P</span>
+          <span>라운지 글: +8P</span>
         </div>
       </div>
     </div>

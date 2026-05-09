@@ -94,7 +94,7 @@ const sections = [
 ];
 
 export default function GuidelinesPage() {
-  useDocumentMeta('이것만 지키면 된다, 커뮤니티 규칙', '광고·욕설·개인정보 노출·도배·성매매 암시는 즉시 차단. 익명 보장하되 기본 매너만 지키면 자유롭게. 신고·블락·차단 시스템과 운영진 24시간 모니터링으로 깨끗한 광장 유지.');
+  useDocumentMeta('이것만 지키면 된다, 커뮤니티 규칙', '광고·욕설·개인정보 노출·도배·성매매 암시는 즉시 차단. 익명 보장하되 기본 매너만 지키면 자유롭게. 신고·블락·차단 시스템으로 깨끗한 광장 유지.');
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-12">

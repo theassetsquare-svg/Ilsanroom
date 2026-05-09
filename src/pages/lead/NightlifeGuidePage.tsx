@@ -81,7 +81,7 @@ export default function NightlifeGuidePage() {
         <section className="mx-auto mb-12 max-w-md rounded-2xl border border-neon-primary/20 bg-neon-surface p-6 shadow-lg">
           <h2 className="mb-2 text-center text-xl font-bold">무료 가이드 다운로드</h2>
           <p className="mb-4 text-center text-sm text-neon-muted">
-            이메일로 전체 가이드 PDF + 매주 업데이트되는 핫플 리스트를 받아보세요.
+            이메일을 남겨두시면 새 가이드와 큐레이션이 준비될 때 안내드립니다.
           </p>
           <form onSubmit={handleSubmit} className="space-y-3">
             <input
@@ -114,7 +114,7 @@ export default function NightlifeGuidePage() {
           <div className="mb-2 text-4xl">✅</div>
           <h2 className="mb-2 text-xl font-bold text-green-800">가이드가 이메일로 전송되었습니다!</h2>
           <p className="text-sm text-green-700">
-            {name}님, 받은 편지함을 확인해주세요. 매주 금요일 핫플 업데이트도 함께 받아보실 수 있습니다.
+            {name}님, 신청이 접수되었습니다. 가이드가 준비되면 이메일로 안내드립니다.
           </p>
         </section>
       )}

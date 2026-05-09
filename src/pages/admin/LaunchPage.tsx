@@ -25,12 +25,12 @@ const sections = [
   {
     title: "SaaS & 결제",
     items: [
-      { task: "요금제 페이지 (4단계)", status: "done", note: "무료/₩99K/₩299K/₩599K" },
-      { task: "토스페이먼츠 정기결제 연동", status: "done", note: "빌링키/재시도/취소 구현" },
-      { task: "업주 온보딩 4단계 위저드", status: "done", note: "정보→사진→결제→완료" },
-      { task: "업주 대시보드 CMS", status: "done", note: "통계/예약/리뷰/이벤트/구독 관리" },
-      { task: "구독 해지 방지 3단계", status: "done", note: "할인→일시정지→최종확인" },
-      { task: "토스 Secret Key 설정", status: "pending", note: ".env TOSS_SECRET_KEY" },
+      { task: "요금제 안내 페이지", status: "pending", note: "단가는 카카오톡 besta12 협의 후 확정" },
+      { task: "결제 PG 연동", status: "pending", note: "단가 확정 후 연동 예정" },
+      { task: "업주 온보딩 안내", status: "done", note: "카카오톡 문의 → 정보 전달 → 등록" },
+      { task: "운영 통계 페이지", status: "done", note: "/admin/stats 실시간 Supabase 연결" },
+      { task: "구독 해지 흐름", status: "pending", note: "결제 PG 연동 후 정의" },
+      { task: "결제 키 설정", status: "pending", note: "PG 결정 후 .env 환경변수" },
     ],
   },
   {
@@ -86,7 +86,7 @@ const domainStrategy = [
 ];
 
 export default function LaunchChecklistPage() {
-  useDocumentMeta('심사 통과! 오픈 전 마지막 체크', '대시보드 접속 전 사진·영업시간·메뉴·알림 설정·요금제 체크리스트. 첫 일주일 노출량이 검색 순위 결정하니 꼼꼼하게.');
+  useDocumentMeta('오픈 전 체크리스트 — 사장님 전용', '대시보드 접속 전 사진·영업시간·메뉴·알림 설정 항목을 한 페이지에서 점검. 빠진 정보는 노출에 영향이 가니 꼼꼼하게 채워두세요.');
   const allItems = sections.flatMap((s) => s.items);
   const totalItems = allItems.length;
   const doneItems = allItems.filter((i) => i.status === "done").length;

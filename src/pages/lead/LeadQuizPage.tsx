@@ -157,9 +157,9 @@ export default function LeadQuizPage() {
         {/* Email capture */}
         {!emailSubmitted ? (
           <div className="rounded-2xl border border-neon-primary/20 bg-neon-surface p-6">
-            <h3 className="mb-2 text-center font-bold">더 많은 맞춤 추천을 받고 싶다면?</h3>
+            <h3 className="mb-2 text-center font-bold">맞춤 추천 알림 받기</h3>
             <p className="mb-4 text-center text-sm text-neon-muted">
-              매주 금요일, 당신의 취향에 맞는 이번 주 핫플을 이메일로 보내드립니다.
+              취향에 맞는 큐레이션이 새로 준비되면 이메일로 안내드립니다. 발송 일정은 미리 약속하지 않습니다.
             </p>
             <form onSubmit={handleEmailSubmit} className="flex gap-2">
               <input
@@ -181,7 +181,7 @@ export default function LeadQuizPage() {
         ) : (
           <div className="rounded-2xl border border-green-500/20 bg-green-50 p-6 text-center">
             <p className="text-lg font-bold text-green-800">구독 완료!</p>
-            <p className="text-sm text-green-700">매주 금요일 맞춤 추천을 보내드립니다.</p>
+            <p className="text-sm text-green-700">맞춤 추천이 준비되는 대로 이메일로 안내드립니다.</p>
           </div>
         )}
 

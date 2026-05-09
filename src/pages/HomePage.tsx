@@ -908,11 +908,9 @@ export default function HomePage() {
             <span className="shrink-0 rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white">글쓰기</span>
           </div>
           <div className="flex items-center gap-3 mt-2 text-[10px] text-gray-400">
-            <span>📝 첫 글 작성 시 +50P</span>
+            <span>📝 후기 한 줄도 OK</span>
             <span>·</span>
-            <span>💬 댓글 달면 +10P</span>
-            <span>·</span>
-            <span>♥ 좋아요 받으면 +5P</span>
+            <span>💬 다녀온 사람만 아는 디테일</span>
           </div>
         </Link>
       </section>
@@ -922,10 +920,9 @@ export default function HomePage() {
         {(() => {
           const poll = todayPolls[0];
           const voted = vsVotes[0];
-          const hourShift = new Date().getHours() % 5 - 2;
-          const baseA = Math.max(20, Math.min(80, poll.aPct + hourShift));
-          const aPct = voted ? (voted === poll.a ? Math.min(baseA + 3, 85) : baseA) : baseA;
-          const bPct = 100 - aPct;
+          // 실제 투표 데이터가 연결되기 전까지는 50/50 표시 (가공 수치 금지)
+          const aPct = 50;
+          const bPct = 50;
           return (
             <div className="rounded-2xl border border-[#8B5CF6]/20 bg-gradient-to-br from-[#FAFAFE] to-[#F5F3FF] p-4 shadow-sm">
               <div className="flex items-center justify-between mb-2">
@@ -1524,7 +1521,7 @@ export default function HomePage() {
                 cards.push(
                   <Link key={`write-cta-${idx}`} to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] p-4 active:scale-[0.98] transition text-center">
                     <p className="text-base font-bold text-white">여기까지 봤으면 한마디 남기고 가</p>
-                    <p className="text-[11px] text-white/70 mt-0.5">첫 글 +50P · 댓글 +10P · 좋아요 +5P</p>
+                    <p className="text-[11px] text-white/70 mt-0.5">단골만 아는 디테일이 다음 사람을 살린다</p>
                   </Link>
                 );
               }

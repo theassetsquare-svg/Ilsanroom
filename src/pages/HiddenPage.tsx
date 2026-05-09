@@ -38,7 +38,7 @@ const hiddenGems = [
 ];
 
 export default function HiddenPage() {
-  useDocumentMeta('단골만 알던 곳, 여기서 처음 공개한다', '매주 월요일 1곳씩 비공개 업소 오픈. 강남·홍대·일산 단골만 가던 숨은 룸·라운지·요정·호빠 큐레이션. 회원 전용 공개, 1주일 후 일반 공개로 전환되는 시크릿 매장 정보.');
+  useDocumentMeta('단골만 알던 곳, 여기서 처음 공개한다', '강남·홍대·일산 단골만 가던 숨은 룸·라운지·요정·호빠 큐레이션. 첫 방문에는 안 보이는 디테일을 기록한 사람들의 후기.');
   const [revealedIdx, setRevealedIdx] = useState<Set<number>>(new Set([0]));
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -140,7 +140,7 @@ export default function HiddenPage() {
               <strong>30년 넘은 역사</strong>를 가진 곳이다.
               단골만 아는 숨겨진 시스템이 있다는 소문.
             </p>
-            <p className="text-xs text-[#999] mt-2">매주 월요일 업데이트</p>
+            <p className="text-xs text-[#999] mt-2">기록한 사람이 늘면 다음 후보가 공개된다</p>
           </div>
         </ReadCompletionReward>
 

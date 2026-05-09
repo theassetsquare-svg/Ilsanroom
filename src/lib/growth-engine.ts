@@ -117,14 +117,14 @@ export function isValidEmail(email: string): boolean {
 // ---------------------------------------------------------------------------
 
 export const EMAIL_SEQUENCE = [
-  { day: 1, week: 1, subject: '환영! 놀쿨 VIP가 된 걸 축하합니다', type: 'trust' },
-  { day: 3, week: 1, subject: '이번 주말 갈 만한 곳 3선', type: 'trust' },
-  { day: 5, week: 1, subject: '단골들만 아는 숨겨진 업소 이야기', type: 'trust' },
+  { day: 1, week: 1, subject: '환영합니다! 놀쿨 가입 안내', type: 'trust' },
+  { day: 3, week: 1, subject: '주말에 가볼 만한 곳 모음', type: 'trust' },
+  { day: 5, week: 1, subject: '단골만 아는 숨은 업소 이야기', type: 'trust' },
   { day: 8, week: 2, subject: '놀쿨 매치 퀴즈: 당신의 밤 유형은?', type: 'value' },
-  { day: 11, week: 2, subject: '실제 VIP 후기: 놀쿨로 인생 업소 찾은 이야기', type: 'value' },
-  { day: 15, week: 3, subject: '검색으로 찾아서 망한 밤 vs 놀쿨로 찾아서 성공한 밤', type: 'problem' },
-  { day: 18, week: 3, subject: '매주 어디 갈지 고민하는 시간: 평균 47분 → 놀쿨: 3초', type: 'problem' },
-  { day: 22, week: 4, subject: 'VIP 등급 48시간 미리보기 — 숨겨진 업소 공개', type: 'convert' },
-  { day: 25, week: 4, subject: '300명 중 261명 등록 — 마감 임박', type: 'convert' },
-  { day: 28, week: 4, subject: '내일부터 정가. 지금이 마지막', type: 'convert' },
+  { day: 11, week: 2, subject: '단골이 다시 찾는 매장의 공통점', type: 'value' },
+  { day: 15, week: 3, subject: '검색으로 찾아서 망한 밤, 단골 후기로 찾는 밤', type: 'problem' },
+  { day: 18, week: 3, subject: '오늘 어디 갈지 고민될 때 보는 큐레이션', type: 'problem' },
+  { day: 22, week: 4, subject: '단골만 알던 숨은 매장 이야기', type: 'convert' },
+  { day: 25, week: 4, subject: '이번 주 후기 많이 쌓인 매장 모음', type: 'convert' },
+  { day: 28, week: 4, subject: '한 번 가본 사람이 다시 찾는 이유', type: 'convert' },
 ] as const;
