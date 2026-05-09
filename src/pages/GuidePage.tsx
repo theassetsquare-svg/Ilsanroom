@@ -114,7 +114,7 @@ export default function GuidePage() {
             ))}
           </div>
 
-          <p className="mt-8 text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>총 <strong style={{ color: '#8B5CF6' }}>8,420</strong>명이 이 가이드로 첫 방문 성공</p>
+          {/* 출처 없는 "8,420명" 가공 카피 제거 (놀쿨 신뢰 규칙) */}
         </div>
       </div>
 
@@ -188,11 +188,7 @@ export default function GuidePage() {
           seed="guide-quiz"
         />
 
-        {/* ═══ 실시간 활동 피드 ═══ */}
-        <div className="mt-8 rounded-2xl border border-gray-100 bg-gray-50 p-4">
-          <p className="text-xs font-bold mb-3" style={{ color: '#6B7280' }}>실시간 커뮤니티 활동</p>
-          <LiveActivityFeed maxItems={4} interval={8000} />
-        </div>
+        {/* 무작위 가짜 활동 피드 섹션 제거 (놀쿨 신뢰 규칙) */}
 
         {/* ═══ BOTTOM REWARD ═══ */}
         <ReadCompletionReward teaser="끝까지 읽은 사람만 보는 첫 방문 꿀팁">

@@ -122,8 +122,6 @@ export function ReadCompletionReward({
 }) {
   const [revealed, setRevealed] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const now = new Date();
-  const daySeed = now.getFullYear() * 400 + (now.getMonth() + 1) * 32 + now.getDate();
 
   // 자동 표시: 이 영역이 뷰포트에 들어오면 reveal
   useEffect(() => {
@@ -136,7 +134,8 @@ export function ReadCompletionReward({
     return () => observer.disconnect();
   }, []);
 
-  const count = readerCount || (287 + (daySeed * 7) % 413);
+  // 시드 기반 가짜 reader count 제거 (놀쿨 신뢰 규칙).
+  void readerCount;
 
   return (
     <div ref={ref} className="my-8">
@@ -146,10 +145,6 @@ export function ReadCompletionReward({
           <p className="text-sm font-bold text-[#111] mb-1">
             {teaser || '끝까지 읽은 사람만 보는 숨겨진 정보'}
           </p>
-          <p className="text-xs text-[#8B5CF6]">{count.toLocaleString()}명이 이 정보를 확인했어요</p>
-          <div className="mt-3 h-1 rounded-full bg-gray-200 overflow-hidden">
-            <div className="h-full rounded-full bg-[#8B5CF6] animate-pulse" style={{ width: '60%' }} />
-          </div>
           <p className="mt-2 text-xs text-[#999]">조금만 더 스크롤하면 공개됩니다</p>
         </div>
       ) : (
@@ -157,7 +152,6 @@ export function ReadCompletionReward({
           <div className="flex items-center gap-2 mb-4">
             <span className="text-lg">🎉</span>
             <p className="text-sm font-bold text-[#8B5CF6]">끝까지 읽은 당신에게만 공개!</p>
-            <span className="ml-auto text-xs text-[#999]">{count.toLocaleString()}명 확인</span>
           </div>
           {children}
         </div>
@@ -166,19 +160,9 @@ export function ReadCompletionReward({
   );
 }
 
-// ── 완독자 수 표시 ──
-export function ReadFinishCount({ pageName, baseCount }: { pageName?: string; baseCount?: number }) {
-  const now = new Date();
-  const daySeed = now.getFullYear() * 400 + (now.getMonth() + 1) * 32 + now.getDate();
-  const hour = now.getHours();
-  const hourBonus = Math.floor(hour * 3.7);
-  const count = (baseCount || 150) + (daySeed * 3) % 200 + hourBonus;
-
-  return (
-    <p className="text-xs text-[#8B5CF6] font-medium">
-      {pageName ? `${pageName}을(를)` : '이 글을'} 끝까지 읽은 사람: <strong>{count.toLocaleString()}명</strong>
-    </p>
-  );
+// ── 완독자 수 표시 — 시드 기반 가짜 카운터(놀쿨 신뢰 규칙) 제거. 호환을 위해 시그니처 유지.
+export function ReadFinishCount(_: { pageName?: string; baseCount?: number }) {
+  return null;
 }
 
 // ── 중간 퀴즈/질문 (인터랙티브) ──

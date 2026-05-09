@@ -23,18 +23,33 @@ jobs:
         if: github.event_name == 'push'
 
       - name: Notify search engines (sitemap ping)
-        if: github.event_name == 'push'
         run: |
           curl -s "https://www.google.com/ping?sitemap=https://nolcool.com/sitemap.xml" || true
           curl -s "https://www.bing.com/ping?sitemap=https://nolcool.com/sitemap.xml" || true
           echo "Search engines notified"
 
       - name: Health check after deploy
-        if: github.event_name == 'push'
         run: |
-          sleep 30
+          sleep 60
           status=$(curl -s -o /dev/null -w "%{http_code}" "https://nolcool.com/")
           echo "Site status: $status"
           if [ "$status" != "200" ]; then
             echo "::warning::Site returned $status after deploy"
+          fi
+
+      - name: Verify daily freshness meta
+        run: |
+          today_kst=$(TZ=Asia/Seoul date '+%Y-%m-%d')
+          html=$(curl -s "https://nolcool.com/?ts=$(date +%s)")
+          if echo "$html" | grep -q "name=\"date\" content=\"$today_kst\""; then
+            echo "[OK] meta date == $today_kst"
+          else
+            echo "::warning::meta date mismatch (expected $today_kst)"
+          fi
+          # sitemap lastmod also checked
+          smap=$(curl -s "https://nolcool.com/sitemap.xml")
+          if echo "$smap" | grep -q "<lastmod>$today_kst</lastmod>"; then
+            echo "[OK] sitemap lastmod == $today_kst"
+          else
+            echo "::warning::sitemap lastmod mismatch (expected $today_kst)"
           fi

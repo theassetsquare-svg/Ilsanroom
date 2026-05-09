@@ -99,11 +99,11 @@ const allSeedJogak: JogakItem[] = [
   { id: 'sj-1', title: '금요일 홍대 버뮤다 같이 갈 사람', region: '홍대', gender: '혼성', current: 2, max: 4, time: '이번 금요일 23:00' },
   { id: 'sj-2', title: '강남 레이스 테이블 엔빵 모집', region: '강남', gender: '남녀무관', current: 3, max: 6, time: '토요일 22:00' },
   { id: 'sj-3', title: '부산 고구려 주말 조각 급구', region: '해운대', gender: '혼성', current: 4, max: 8, time: '금요일 21:00' },
-  { id: 'sj-4', title: '수원 찬스돔 오늘 벙개 갈 사람!!', region: '수원', gender: '누구나', current: 1, max: 3, time: '오늘 23:30' },
+  { id: 'sj-4', title: '수원 찬스돔 평일 벙개 갈 사람!!', region: '수원', gender: '누구나', current: 1, max: 3, time: '목요일 23:30' },
   { id: 'sj-5', title: '대전 나이트 주말 같이 가실 분', region: '대전', gender: '혼성', current: 2, max: 5, time: '토요일 21:00' },
   { id: 'sj-6', title: '일산 라붐 이번주 ㄱㄱ 2명 더 구함', region: '일산', gender: '혼성', current: 3, max: 5, time: '금요일 22:00' },
   { id: 'sj-7', title: '강남 호빠 첫방문 같이 갈 여자분!!', region: '강남', gender: '여성', current: 1, max: 3, time: '토요일 20:00' },
-  { id: 'sj-8', title: '대구 나이트 급구 오늘 밤!!', region: '대구', gender: '남녀무관', current: 2, max: 4, time: '오늘 22:00' },
+  { id: 'sj-8', title: '대구 나이트 주말 급구!!', region: '대구', gender: '남녀무관', current: 2, max: 4, time: '토요일 22:00' },
   { id: 'sj-9', title: '이태원 라운지 소규모 모임', region: '이태원', gender: '혼성', current: 2, max: 4, time: '금요일 21:30' },
   { id: 'sj-10', title: '인천 주말 나이트 크루 모집중', region: '인천', gender: '누구나', current: 3, max: 6, time: '토요일 21:00' },
 ];
@@ -281,7 +281,7 @@ const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, r
 const RECOMMEND_BATCH = 6;
 function InfiniteRecommendLoop({ venues, popularVenues }: { venues: Venue[]; popularVenues: Venue[] }) {
   const [batches, setBatches] = useState(1);
-  const [seenIds, setSeenIds] = useState<Set<string>>(() => new Set(popularVenues.slice(0, 20).map(v => v.id)));
+  const [seenIds] = useState<Set<string>>(() => new Set(popularVenues.slice(0, 20).map(v => v.id)));
   const loaderRef = useRef<HTMLDivElement>(null);
 
   // Intersection Observer — 바닥에 닿으면 다음 배치 로드
@@ -683,16 +683,7 @@ export default function HomePage() {
     return top[d % top.length];
   }, [popularVenues]);
 
-  // === 실시간 접속자 (세션 고정 — 흔들리면 가짜 티 남) ===
-  const liveCount = useMemo(() => {
-    const now = new Date();
-    const h = now.getHours();
-    const dow = now.getDay();
-    const base = (dow === 5 || dow === 6) ? 340 : (dow === 0 || dow === 4) ? 260 : 180;
-    const timeMult = (h >= 20 || h < 2) ? 1.3 : (h >= 17) ? 1.0 : (h >= 12) ? 0.6 : 0.4;
-    const daySeed = now.getFullYear() * 400 + (now.getMonth() + 1) * 32 + now.getDate();
-    return Math.round(base * timeMult + (daySeed % 50));
-  }, []);
+  // 가짜 실시간 접속자 카운터 제거 — 출처 검증 불가 (놀쿨 신뢰 규칙)
 
   return (
     <div className="bg-white min-h-screen">
@@ -737,13 +728,7 @@ export default function HomePage() {
             {heroSubtitle && (
               <p className="mt-1 text-[13px] sm:text-sm text-white/80 w-full">{heroSubtitle}</p>
             )}
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-white/10 backdrop-blur-sm px-2.5 py-1 shrink-0">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-              </span>
-              <span className="text-[11px] font-medium text-white/90">{liveCount.toLocaleString()}명</span>
-            </div>
+            {/* 가짜 라이브 접속자 배지 제거 (놀쿨 신뢰 규칙) */}
           </div>
 
           {/* 지역 퀵셀렉터 — 터치 한 번으로 "내 동네 있다" 확인 */}
