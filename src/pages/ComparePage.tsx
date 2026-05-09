@@ -135,7 +135,9 @@ export default function ComparePage() {
                   <dl className="space-y-2 text-sm">
                     <div><dt className="text-[#999] text-xs">카테고리</dt><dd className="text-[#111] font-medium">{categoryLabels[v.category]}</dd></div>
                     <div><dt className="text-[#999] text-xs">지역</dt><dd className="text-[#111]">{v.regionKo}</dd></div>
-                    <div><dt className="text-[#999] text-xs">평점</dt><dd className="font-bold" style={{ color: '#F59E0B' }}>★ {v.rating.toFixed(1)}</dd></div>
+                    {v.reviewCount > 0 && v.rating > 0 && (
+                      <div><dt className="text-[#999] text-xs">평점</dt><dd className="font-bold" style={{ color: '#F59E0B' }}>★ {v.rating.toFixed(1)} ({v.reviewCount})</dd></div>
+                    )}
                     {v.staffNickname && <div><dt className="text-[#999] text-xs">담당</dt><dd style={{ color: '#D97706' }}>{v.staffNickname}</dd></div>}
                     <div><dt className="text-[#999] text-xs">양주</dt><dd className="text-[#111]">{v.liquorInfo || '매장 문의'}</dd></div>
                     <div><dt className="text-[#999] text-xs">부스</dt><dd className="text-[#111]">{v.boothInfo || '매장 문의'}</dd></div>

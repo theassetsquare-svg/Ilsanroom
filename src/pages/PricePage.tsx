@@ -90,7 +90,7 @@ export default function PricePage() {
                   {(category === 'all' || category === 'night') && <td className="px-4 py-3 text-neon-text">{v.category === 'night' ? (v.boothInfo || '매장 문의') : '-'}</td>}
                   {(category === 'all' || ['night', 'room', 'yojeong', 'hoppa'].includes(category)) && <td className="px-4 py-3 text-neon-text">{['night', 'room', 'yojeong', 'hoppa'].includes(v.category) ? (v.roomInfo || '매장 문의') : '-'}</td>}
                   {['club', 'lounge'].includes(category) && <td className="px-4 py-3 text-neon-text">{v.roomInfo || '매장 문의'}</td>}
-                  <td className="px-4 py-3 text-neon-gold">★ {v.rating.toFixed(1)}</td>
+                  <td className="px-4 py-3 text-neon-gold">{v.reviewCount > 0 && v.rating > 0 ? `★ ${v.rating.toFixed(1)}` : '—'}</td>
                 </tr>
               ))}
             </tbody>

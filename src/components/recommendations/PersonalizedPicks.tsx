@@ -122,8 +122,12 @@ export default function PersonalizedPicks() {
             </div>
             <div className="flex items-center gap-2 text-sm text-neon-text-muted">
               <span>{venue.regionKo}</span>
-              <span>·</span>
-              <span className="text-amber-400">★ {venue.rating}</span>
+              {venue.reviewCount > 0 && venue.rating > 0 && (
+                <>
+                  <span>·</span>
+                  <span className="text-amber-400">★ {venue.rating}</span>
+                </>
+              )}
             </div>
             <p className="mt-2 text-xs text-neon-text-muted line-clamp-2">{venue.shortDescription}</p>
           </Link>

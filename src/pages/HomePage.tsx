@@ -1019,14 +1019,7 @@ export default function HomePage() {
             </Link>
           ))}
         </div>
-        {/* 지금 읽는 사람 수 — FOMO 유발 */}
-        <div className="flex items-center justify-center gap-1.5 mt-2 py-1.5 rounded-lg bg-green-50 border border-green-100">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-green-500" />
-          </span>
-          <span className="text-[11px] text-green-700 font-medium">지금 {Math.floor(30 + (new Date().getHours() * 7 + new Date().getMinutes()) % 45)}명이 커뮤니티 보는 중</span>
-        </div>
+        {/* 시간 시드 기반 가짜 라이브 카운터 제거 (놀쿨 신뢰 규칙) */}
 
         {/* 커뮤니티 보드 퀵링크 */}
         <div className="flex gap-2 mt-2 overflow-x-auto scrollbar-hide">

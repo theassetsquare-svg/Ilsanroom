@@ -314,106 +314,10 @@ const ORG_JSONLD = {
   contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', availableLanguage: 'Korean' }
 };
 
-/**
- * 업소별 SSR 후기 — 각 업소마다 100% 고유한 후기 생성
- * slug+nameKo 해시로 템플릿 조합을 결정하여 업소마다 다른 후기
- */
-function getVenueReviews(v) {
-  const name = v.nameKo;
-  const region = v.regionKo;
-  const catKo = catLabelMap[v.cat] || v.cat;
-  const staff = v.staffNickname || '';
-  const feat0 = v.features[0] || '분위기';
-  const feat1 = v.features[1] || '서비스';
-  const feat2 = v.features[2] || '인테리어';
-
-  // slug 기반 해시로 고유 인덱스 생성
-  const hash = v.slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-
-  const authors = ['직장인탈출', '새벽감성', '금토전사', '밤산책러', 'DJ추종자', '댄스중독', '파티피플', '야행성인간', '퇴근후한잔', '분위기캐치', '주말탐험가', '클럽초보', '단골손님', '첫방문객', '데이트코스', '모임러버', '혼놀족', '퇴근파', '출장족', '핫플헌터'];
-
-  const nightPool = [
-    `${name} 처음 갔는데 밴드 라이브가 진짜 좋았음. ${region}에서 이 정도 퀄리티는 처음이라 놀람.`,
-    `${name} 금토 밤에 갔는데 ${feat0}${iGa(feat0)} 확실히 다르더라. 사람 많은데 그만큼 분위기 살아있음.`,
-    `${region} ${catKo} 여러 곳 다녀봤는데 ${name}${iGa(name)} 시설·음향·매너 다 최고.`,
-    `${staff ? staff + ' 실장 추천으로 갔는데 ' : '지인 추천으로 갔는데 '}${name} 진짜 후회 없었음. ${feat1} 수준이 다름.`,
-    `혼자 갔는데도 전혀 어색하지 않았음. ${name} 스태프들이 자연스럽게 잘 안내해줌.`,
-    `${name}에서 ${feat2} 보고 감탄함. ${region} 다른 ${catKo}랑은 급이 다르다는 걸 느낌.`,
-    `지인 생일로 ${name} 갔는데 분위기 세팅이 완벽했음. 생일 축하 이벤트도 해주더라.`,
-    `매주 ${name} 가는 단골인데 갈 때마다 새로운 재미가 있음. ${feat0}${iGa(feat0)} 특히 좋음.`,
-  ];
-
-  const clubPool = [
-    `DJ가 분위기 읽는 능력이 대단함. ${name} 사운드 시스템 진짜 제대로.`,
-    `주말에 줄 서서 기다렸는데 ${name} 들어가니까 보람 있었음. ${feat0} 확실히 돈 쓴 느낌.`,
-    `${region}에서 이 정도 ${catKo}는 ${name}${iGa(name)} 유일함. 음악 장르도 다양.`,
-    `${name} ${feat1}${iGa(feat1)} 진짜 미쳤음. 친구들 데려갔더니 다들 단골 되겠다고.`,
-    `외국인 친구 데려갔는데 ${name} 보고 한국 클럽 수준에 깜짝 놀람. ${feat2}도 글로벌급.`,
-    `${name} 금요일에 갔는데 에너지가 다름. ${region} 클럽 중 여기만한 데 없음.`,
-    `${staff ? staff + '한테 VIP 안내받았는데 ' : ''}${name} VIP석 뷰가 미쳤음. 재방문 확정.`,
-    `${name} 3번째 방문인데 매번 새로운 DJ 라인업이 좋음. ${feat0} 퀄리티 일정함.`,
-  ];
-
-  const hoppaPool = [
-    `친구랑 ${name} 갔는데 호스트분들이 대화를 잘 이끌어줘서 어색한 순간이 없었음.`,
-    `${name} 몇 번째인데 항상 만족. 선택폭 넓고 강요 없어서 편함.`,
-    `${region}에서 ${name}만한 데 없는듯. ${feat0}${iGa(feat0)} 확실히 다름.`,
-    `처음 가봤는데 ${name} 분위기가 편안해서 긴장이 바로 풀렸음.${staff ? ' ' + staff + ' 덕분.' : ''}`,
-    `여자 넷이서 갔는데 ${name} 진짜 재밌었음. 호스트분 매너가 좋아서 또 가기로 함.`,
-    `${name} ${feat1}${iGa(feat1)} 다른 데보다 확실히 나음. ${region} 호빠 중 최고.`,
-  ];
-
-  const roomPool = [
-    `모임으로 ${name} 왔는데 룸 크기 딱 좋고 음향도 괜찮음.${staff ? ' ' + staff + '이 세팅 잘 해줌.' : ''}`,
-    `시설 면에서 ${region} 룸 중 ${name}${iGa(name)} 가장 나았음. 양주 라인업도 괜찮음.`,
-    `${name} 프라이빗하게 놀기 딱 좋음. ${feat0}${iGa(feat0)} 다른 곳보다 확실히 좋음.`,
-    `지인 모임으로 ${name} 예약했는데 ${feat1} 수준에 다들 만족하셨음.`,
-    `${name} 6인룸 이용했는데 넓고 깨끗함. ${region}에서 룸 찾으면 여기 추천.`,
-    `${staff ? staff + ' 실장이 음료 세팅부터 마무리까지 완벽하게 챙겨줌. ' : ''}${name} 재방문 확정.`,
-  ];
-
-  const loungePool = [
-    `조용히 한 잔 하고 싶을 때 ${name} 감. ${feat0}${iGa(feat0)} 고급스러움.`,
-    `데이트 코스로 ${name} 왔는데 분위기 최고. ${region}에서 이런 곳 찾기 쉽지 않음.`,
-    `${name} 칵테일 퀄리티가 좋음. ${feat1}도 감각적이라 사진 찍기 좋음.`,
-    `접대 자리로 ${name} 예약했는데 격식과 편안함이 동시에. ${region} 라운지 중 최고.`,
-    `${name} 혼자 와서 바 자리에 앉았는데 바텐더 대화가 즐거웠음. 단골 될 듯.`,
-    `${staff ? staff + ' 추천 양주가 ' : '추천 양주가 '}기가 막혔음. ${name} 분위기랑 딱 맞는 선곡도 좋음.`,
-  ];
-
-  const yojeongPool = [
-    `거래처 접대로 ${name} 왔는데 한정식 코스 퀄리티가 높고 국악 라이브도 격식 있었음.`,
-    `외국 손님 모시고 ${name} 갔는데 한국 전통 문화 체험으로 최고. ${feat0}${iGa(feat0)} 감동.`,
-    `${name} 15첩 코스가 진짜 제대로. ${region} 요정 중 음식 퀄리티 원탑.`,
-    `${staff ? staff + '이 세심하게 챙겨줘서 ' : ''}${name}에서 편하게 접대 마침. 상대방도 감탄.`,
-    `${name} 프라이빗 룸에서 국악 공연 감상하며 식사. 이런 경험은 여기서만 가능.`,
-    `${region} ${catKo} 처음이었는데 ${name} 격식이 딱 맞아서 다음에도 여기로 정함.`,
-  ];
-
-  const pools = { night: nightPool, club: clubPool, hoppa: hoppaPool, room: roomPool, lounge: loungePool, yojeong: yojeongPool };
-  const pool = pools[v.cat] || nightPool;
-
-  // 해시 기반으로 3개 고유 선택 (업소마다 다른 조합)
-  const idx0 = hash % pool.length;
-  const idx1 = (hash * 3 + 7) % pool.length;
-  const idx2 = (hash * 7 + 13) % pool.length;
-  // 중복 방지
-  const indices = [idx0];
-  if (!indices.includes(idx1)) indices.push(idx1);
-  else indices.push((idx1 + 1) % pool.length);
-  if (!indices.includes(idx2)) indices.push(idx2);
-  else {
-    for (let i = 0; i < pool.length; i++) {
-      const candidate = (idx2 + i) % pool.length;
-      if (!indices.includes(candidate)) { indices.push(candidate); break; }
-    }
-  }
-
-  return indices.map((i, pos) => ({
-    text: pool[i],
-    author: authors[(hash + pos * 7) % authors.length]
-  }));
-}
+// getVenueReviews() 가공 후기 풀(6 업종 × 6~8개 템플릿) 영구 제거.
+// 사유: 시드 hash 조합으로 fabricated quote+author를 venue마다 SSR + JSON-LD `review`/`aggregateRating`에 박아 넣어
+// 구글의 fake-review 스팸 정책 위반 위험 + 놀쿨 신뢰 규칙 (가공 후기·인터뷰 게시 금지)을 정면 위반.
+// 실제 후기는 /community/reviews 회원 작성 글만 노출.
 
 /**
  * Generate SSR body content for venue detail pages.
@@ -463,16 +367,11 @@ function generateVenueSsrBody(v, allVenues) {
   html += `</dl>`;
   html += `</section>`;
 
-  // ★ 후기 섹션 — 구글이 "살아있는 콘텐츠"로 인식 + "가게이름 후기" 검색 대응
+  // 가공된 SSR blockquote 후기 제거 (놀쿨 신뢰 규칙 + 구글 fake review 스팸 정책 회피).
+  // 실제 후기는 /community/reviews 에서 회원이 직접 작성한 것만 노출.
   html += `<section>`;
   html += `<h2>${name} 방문 후기</h2>`;
-  const reviewTemplates = getVenueReviews(v);
-  reviewTemplates.forEach(r => {
-    html += `<blockquote>`;
-    html += `<p>"${escHtml(r.text)}"</p>`;
-    html += `<footer>— ${escHtml(r.author)}</footer>`;
-    html += `</blockquote>`;
-  });
+  html += `<p>${name} 방문 후기는 <a href="/community/reviews">놀쿨 커뮤니티 후기 게시판</a>에서 회원이 직접 작성한 글만 모아두었습니다. 별점·블록쿼트 형태의 가공 후기는 게시하지 않습니다.</p>`;
   html += `</section>`;
 
   // ★ 방문 안내 섹션 — "가게이름 후기", "가게이름 가는법" 검색 대응
@@ -1091,14 +990,8 @@ for (const v of venues) {
 
   const faqJsonLd = generateVenueFaqJsonLd(v);
 
-  // ★ 개별 Review JSON-LD — 구글 검색결과에 별점+후기 스니펫 표시
-  const reviews = getVenueReviews(v);
-  const reviewDates = reviews.map((_, i) => {
-    const d = new Date();
-    d.setDate(d.getDate() - (i * 7 + Math.floor(Math.random() * 5)));
-    return d.toISOString().slice(0, 10);
-  });
-
+  // 가공 aggregateRating + review 배열 제거 (구글 fake review 스팸 정책 회피).
+  // 실제 후기 DB 연동 전까지 NightClub/BarOrPub schema는 평점·후기 필드 없이 발행.
   const venueJsonLd = {
     '@context': 'https://schema.org',
     '@type': v.cat === 'club' || v.cat === 'night' ? 'NightClub' : v.cat === 'lounge' || v.cat === 'hoppa' ? 'BarOrPub' : v.cat === 'yojeong' ? 'Restaurant' : 'EntertainmentBusiness',
@@ -1114,14 +1007,6 @@ for (const v of venues) {
       opens: '19:00',
       closes: '05:00',
     }],
-    aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.5', bestRating: '5', ratingCount: String(80 + (v.slug.length * 3) % 100), worstRating: '1' },
-    review: reviews.slice(0, 3).map((r, i) => ({
-      '@type': 'Review',
-      author: { '@type': 'Person', name: r.author },
-      datePublished: reviewDates[i],
-      reviewBody: r.text,
-      reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' }
-    })),
   };
   if (v.lat && v.lng) venueJsonLd.geo = { '@type': 'GeoCoordinates', latitude: v.lat, longitude: v.lng };
   if (v.staffNickname) venueJsonLd.employee = { '@type': 'Person', name: v.staffNickname };
