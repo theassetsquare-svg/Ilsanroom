@@ -1045,6 +1045,77 @@ for (const v of venues) {
 console.log(`✅ 업소 상세 페이지 ${venueCount}개 생성`);
 
 // ══════════════════════════════════════════
+// 4-A2. 매거진 article 상세 페이지 (Article JSON-LD + SSR 본문)
+// 시즌9 — Googlebot에 individual article 노출 강화 (이전엔 SPA fallback만)
+// ══════════════════════════════════════════
+const magazineSrc = fs.readFileSync('src/data/magazine-articles.ts', 'utf8');
+function parseMagazineArticles() {
+  const result = [];
+  // 각 article 블록은 "{\n    id: '...'" 로 시작
+  const blocks = magazineSrc.split(/\n  \{\n    id:/);
+  for (let i = 1; i < blocks.length; i++) {
+    const block = '    id:' + blocks[i];
+    const id = block.match(/id:\s*'([^']+)'/)?.[1];
+    const title = block.match(/title:\s*'([^']+)'/)?.[1];
+    const excerpt = block.match(/excerpt:\s*'([^']+)'/)?.[1];
+    const tag = block.match(/tag:\s*'([^']+)'/)?.[1];
+    const date = block.match(/date:\s*'([^']+)'/)?.[1];
+    const contentMatch = block.match(/content:\s*`([\s\S]*?)`,?\s*\n  \},?/);
+    const content = contentMatch ? contentMatch[1] : '';
+    if (id && title && content) result.push({ id, title, excerpt: excerpt || '', tag: tag || '매거진', date: date || BUILD_DATE_KST, content });
+  }
+  return result;
+}
+const magazineArticles = parseMagazineArticles();
+let magazineCount = 0;
+for (const a of magazineArticles) {
+  const routePath = `/magazine/${a.id}`;
+  const canonical = `${BASE_URL}${routePath}`;
+  const desc = truncateDesc(a.excerpt, 150);
+  // SSR 본문: H1 + tag 라벨 + 본문 HTML 그대로 (이미 H2/H3/p 마크업)
+  const ssrBody = `<article>
+<h1>${escHtml(a.title)}</h1>
+<p><strong>${escHtml(a.tag)}</strong> · <time datetime="${escHtml(a.date)}">${escHtml(a.date)}</time></p>
+${a.content}
+<p><a href="${BASE_URL}/magazine">← 매거진 전체 보기</a></p>
+</article>`;
+  // Article JSON-LD
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: a.title,
+    description: a.excerpt,
+    datePublished: a.date,
+    dateModified: BUILD_DATE_KST,
+    author: { '@type': 'Organization', name: '놀쿨', url: BASE_URL },
+    publisher: {
+      '@type': 'Organization',
+      name: '놀쿨',
+      logo: { '@type': 'ImageObject', url: `${BASE_URL}/logo-512.png` },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+    articleSection: a.tag,
+    inLanguage: 'ko-KR',
+  };
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: '놀쿨', url: BASE_URL },
+    { name: '매거진', url: `${BASE_URL}/magazine` },
+    { name: a.title, url: canonical },
+  ]);
+  writePage(routePath, {
+    title: a.title,
+    description: desc,
+    ssrBody,
+    jsonLdList: [articleJsonLd, breadcrumbJsonLd],
+    datePublished: a.date,
+    dateModified: BUILD_DATE_KST,
+    keywords: `${a.title}, ${a.tag}, 밤문화 매거진, 놀쿨 매거진, 밤문화 ${a.tag}`,
+  });
+  magazineCount++;
+}
+console.log(`✅ 매거진 article 상세 페이지 ${magazineCount}개 생성`);
+
+// ══════════════════════════════════════════
 // 4-B. 동적 SEO 페이지 대량 생성 (1000+)
 // best, new, region, region+category, tag, near
 // ══════════════════════════════════════════
@@ -1242,14 +1313,18 @@ for (const v of venues) {
   }
   sitemapXml += `  <url><loc>${BASE_URL}${routePath}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
 }
+// Magazine article pages (시즌9 — Article schema + SSR 본문 prerender)
+for (const a of magazineArticles) {
+  sitemapXml += `  <url><loc>${BASE_URL}/magazine/${a.id}/</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>\n`;
+}
 // Dynamic SEO pages (best, new, region, tag, near)
 for (const dp of dynamicPages) {
   sitemapXml += `  <url><loc>${BASE_URL}${dp}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>\n`;
 }
 sitemapXml += `</urlset>`;
 fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml);
-const totalSitemapUrls = 1 + staticPages.length + regionalCount + venues.length + dynamicPages.length;
-console.log(`✅ sitemap.xml 생성 (총 ${totalSitemapUrls}개 URL, 동적 ${dynamicPages.length}개 포함)`);
+const totalSitemapUrls = 1 + staticPages.length + regionalCount + venues.length + magazineArticles.length + dynamicPages.length;
+console.log(`✅ sitemap.xml 생성 (총 ${totalSitemapUrls}개 URL, 동적 ${dynamicPages.length}개 + 매거진 ${magazineArticles.length}개 포함)`);
 
 // ══════════════════════════════════════════
 // 5b. _redirects 자동 생성 — 짧은 URL → 정식 URL 301
@@ -1543,6 +1618,10 @@ async function submitIndexNow() {
     }
     allUrls.push(`${BASE_URL}${rp}/`);
   }
+  // 매거진 article (시즌9)
+  for (const a of magazineArticles) {
+    allUrls.push(`${BASE_URL}/magazine/${a.id}/`);
+  }
   // 동적 SEO 페이지
   for (const dp of dynamicPages) {
     allUrls.push(`${BASE_URL}${dp}/`);
@@ -1606,9 +1685,10 @@ console.log(`\n🎉 프리렌더링 완료!`);
 console.log(`   정적: ${staticPages.length}개`);
 console.log(`   지역별: ${regionalCount}개`);
 console.log(`   업소 상세: ${venueCount}개`);
+console.log(`   매거진: ${magazineCount}개`);
 console.log(`   동적 SEO: ${dynamicPages.length}개`);
 console.log(`   ────────────────`);
-console.log(`   총 ${pageCount + regionalCount + venueCount + dynamicPages.length}개 고유 HTML 생성`);
+console.log(`   총 ${pageCount + regionalCount + venueCount + magazineCount + dynamicPages.length}개 고유 HTML 생성`);
 
 // 빌드 시 자동 인덱싱 제출
 console.log(`\n🔔 검색엔진 인덱싱 제출 중...`);
