@@ -18,7 +18,7 @@ const regions = [
 ];
 
 export default function NightsPage() {
-  useDocumentMeta('라이브 밴드가 울리면, 모르는 사람도 파트너가 된다', '소셜댄스 나이트 58곳 총집합. 강남 부산 수원 일산 부킹 문화부터 드레스코드 시간대별 분위기까지. 부스·룸 구성, 양주 라인업, 첫방문 매너 가이드. 첫 발 딛기 전에 읽어라.');
+  useDocumentMeta('나이트 — 부킹 진짜 잘 잡히나요? 10년차 웨이터가 봐드립니다', '이 나이트, 부킹 진짜 되나요? 홀·부스·물·진행을 10년차 현장 웨이터가 1,000+ 업소 데이터로 1줄 진단 — 1차로 끝낼 곳 vs 갈 곳. 지금 무료 →');
   const venues = getVenuesByCategory('night');
   const featured = venues.find(v => v.isPremium) || venues[0];
 

@@ -16,7 +16,7 @@ const regions = [
 ];
 
 export default function YojeongPage() {
-  useDocumentMeta('대금 소리에 정찬 15첩, 한 번 오면 단골 된다', '전통 요정 정찬 국악 라이브 프라이빗 룸. 비즈니스 만찬 외국 손님 접대 검증. 코스 구성, 예약 방법, 드레스코드, 매너까지 입문자 가이드 정리. 일산명월관 등 추천.');
+  useDocumentMeta('요정 — 격조 진짜 다른가요? 20년차 실장이 봐드립니다', '이 요정, 진짜 격조 있나요? 한정식·접대·진행 매너를 20년차 현장 실장이 1줄 진단 — 어른 자리 망치기 전에. 진짜 격이 있는 곳만. 지금 무료 →');
   const venues = getVenuesByCategory('yojeong');
   const featured = venues.find(v => v.isPremium) || venues[0];
 

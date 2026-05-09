@@ -24,7 +24,7 @@ const regions = [
 ];
 
 export default function HoppaPage() {
-  useDocumentMeta('처음인데 혼자 가도 괜찮을까? 결론부터, 된다', '여성 전용 사교 공간 호빠 18곳 실전 가이드. 강남 종로 영등포 분위기 안전 정보 매너. 초이스 방법, 첫방문 동선까지 정리. 여자 혼자도 안전하게.');
+  useDocumentMeta('호빠 — 선수 진짜 괜찮나요? 10년차 실장이 봐드립니다', '이 호빠, 선수 진짜 괜찮나요? 외모·매너·진행을 10년차 현장 실장이 1줄 진단 — 어색한 시간 날리기 전에. 진짜 케어되는 곳만. 지금 무료 →');
   const venues = getVenuesByCategory('hoppa');
   const featured = venues.find(v => v.isPremium) || venues[0];
 

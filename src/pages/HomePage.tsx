@@ -468,7 +468,7 @@ function InfiniteRecommendLoop({ venues, popularVenues }: { venues: Venue[]; pop
 /* ══════════════════════════════════════════════════════ */
 
 export default function HomePage() {
-  useDocumentMeta('놀쿨 — 오늘 밤 어디 갈지, 여기서 정해진다', '강남 홍대 이태원 일산 부산 수원 전국 클럽·나이트·라운지·룸·요정·호빠 120곳 실시간 비교. 솔직 후기, 무드 비교, 부킹 문화, 드레스코드, 조각모임, 벙개까지. 한 곳에서 다 본다.');
+  useDocumentMeta('놀쿨 — 이 가게 가도 될까요? 20년차 현장이 봐드립니다', '이 가게, 진짜 갈 만한가요? 물·라인업·진행을 20년차 현장이 1,000+ 업소 데이터로 1줄 진단. 주말 망치기 전에 — 지금 무료 →');
   const navigate = useNavigate();
   const { user } = useAuth();
 

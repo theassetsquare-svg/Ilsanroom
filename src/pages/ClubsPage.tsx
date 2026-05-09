@@ -17,7 +17,7 @@ const regions = [
 ];
 
 export default function ClubsPage() {
-  useDocumentMeta('새벽 2시에도 줄이 안 줄어드는 클럽만 골랐다', '강남 홍대 이태원 일산 EDM·힙합·테크노 클럽 35곳. 분위기 드레스코드 영업시간 한눈에. 첫방문 코스, 게스트 라인업, 부킹 문화까지. 오늘 밤 갈 곳 여기서 픽.');
+  useDocumentMeta('클럽 — 입장 진짜 되나요? 10년차 MD가 봐드립니다', '이 클럽, 진짜 갈 만한가요? 입장 컷·물·DJ 라인업을 10년차 현장 MD가 1줄 진단 — 주말 망치고 택시비 날리기 전에. 지금 무료 →');
   const venues = getVenuesByCategory('club');
   const featured = venues.find(v => v.isPremium) || venues[0];
 

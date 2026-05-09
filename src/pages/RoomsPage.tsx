@@ -17,7 +17,7 @@ const regions = [
 ];
 
 export default function RoomsPage() {
-  useDocumentMeta('바깥 소리 하나 안 들리는 방, 그게 룸이다', '4인 소형부터 30인 단체석까지 룸 전체 카테고리. 인원별 사이즈, 발렌타인 조니워커 양주 라인업, 예약 팁, 분위기 비교. 일산 강남 수원 부산 룸 정보 한눈에 정리.');
+  useDocumentMeta('룸 — 초이스 진짜 만족하나요? 10년차 실장이 봐드립니다', '이 룸, 진짜 갈 만한가요? 초이스·양주 라인·진행 케어를 10년차 현장 실장이 1줄 진단 — 후회하기 전에 진짜 좋은 곳만. 지금 무료 →');
   const venues = getVenuesByCategory('room');
   const featured = venues.find(v => v.isPremium) || venues[0];
 
