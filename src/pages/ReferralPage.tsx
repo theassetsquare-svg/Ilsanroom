@@ -5,80 +5,37 @@ const steps = [
     step: 1,
     title: "안내 링크 공유",
     description:
-      "내 프로필에서 고유 알림 URL을 복사하여 친구에게 카카오톡, 문자, SNS 등으로 공유하세요.",
+      "내 프로필에서 고유 추천 URL을 복사해 친구에게 카카오톡·문자·SNS로 공유하세요.",
     icon: "🔗",
   },
   {
     step: 2,
     title: "친구 가입 완료",
     description:
-      "공유한 주소를 통해 친구가 본 플랫폼에 회원가입을 완료하면 안내가 인정됩니다.",
+      "공유한 주소를 통해 친구가 회원가입하면 추천 실적으로 누적됩니다.",
     icon: "👤",
   },
   {
     step: 3,
-    title: "보상 지급",
+    title: "함께 사용",
     description:
-      "공유가 확인되면 안내인과 피연결인 모두에게 보상이 자동 지급됩니다.",
+      "친구도 같은 페이지에서 후기·랭킹·커뮤니티를 함께 보며 놀쿨을 사용합니다.",
     icon: "🎁",
-  },
-];
-
-const rewards = [
-  {
-    tier: "브론즈",
-    range: "1~4명 제안",
-    reward: "권유 1건당 500 리워드",
-    color: "from-amber-700 to-amber-900",
-    borderColor: "border-amber-700/30",
-    textColor: "text-amber-400",
-  },
-  {
-    tier: "실버",
-    range: "5~14명 홍보",
-    reward: "1건당 800 적립금",
-    color: "from-neutral-400 to-neutral-600",
-    borderColor: "border-neutral-500/30",
-    textColor: "text-neon-text",
-  },
-  {
-    tier: "골드",
-    range: "15~29명 추천",
-    reward: "1건당 1,200 적립금 + 프리미엄 1주 무료",
-    color: "from-yellow-500 to-yellow-700",
-    borderColor: "border-yellow-600/30",
-    textColor: "text-neon-gold",
-  },
-  {
-    tier: "다이아몬드",
-    range: "30명 이상 연결",
-    reward: "추천 1건당 2,000 리워드 + 프리미엄 1개월 무료",
-    color: "from-violet-500 to-violet-700",
-    borderColor: "border-violet-500/30",
-    textColor: "text-neon-primary-light",
   },
 ];
 
 const faqs = [
   {
-    q: "소개 보상은 언제 지급되나요?",
-    a: "친구가 회원가입을 완료한 후 24시간 이내에 자동 지급됩니다.",
+    q: "추천 실적은 어떻게 확인하나요?",
+    a: "내 프로필 > 추천 링크 탭에서 누적 추천 인원과 추천 코드를 확인할 수 있습니다.",
   },
   {
-    q: "적립금은 어디에 쓰나요?",
-    a: "프리미엄 구독 결제, 이벤트 응모, 제휴 업소 할인 쿠폰 교환 등에 쓰면 됩니다.",
+    q: "이미 가입한 친구도 추천이 되나요?",
+    a: "아닙니다. 추천 링크를 통해 신규 가입한 회원만 추천 실적으로 인정됩니다.",
   },
   {
-    q: "추천 인원에 제한이 있나요?",
-    a: "제한 없습니다. 많이 소개할수록 등급이 올라가고 보상도 커집니다.",
-  },
-  {
-    q: "이미 가입한 친구도 소개가 되나요?",
-    a: "아닙니다. 연결 경로를 통해 신규 가입한 회원만 권유 실적으로 인정됩니다.",
-  },
-  {
-    q: "초대 현황은 어디서 확인하나요?",
-    a: "내 프로필 > 소개 프로그램 탭에서 링크 공유 현황, 누적 리워드, 등급이 실시간으로 보입니다.",
+    q: "보상 정책은 어떻게 되나요?",
+    a: "현재 추천 적립·보상 정책은 운영진 검토 후 별도 공지됩니다. 검증되지 않은 약속은 표기하지 않습니다.",
   },
 ];
 
@@ -90,16 +47,16 @@ export default function ReferralPage() {
         {/* Hero */}
         <div className="mb-16 text-center">
           <div className="mb-4 inline-flex rounded-full bg-neon-primary/20 px-4 py-1.5 text-sm font-medium text-neon-primary-light">
-            저희 알리기 프로그램
+            친구 추천
           </div>
           <h1 className="mb-4 text-4xl font-bold md:text-5xl">
-            친구를 알리고
+            친구에게
             <br />
-            <span className="text-neon-primary-light">보상을 받으세요</span>
+            <span className="text-neon-primary-light">놀쿨 공유하기</span>
           </h1>
           <p className="mx-auto max-w-xl text-lg text-neon-text-muted">
-            소개 URL을 공유하면 당신과 친구 모두에게 리워드가 지급됩니다.
-            소개할수록 등급이 올라가고, 보상도 커집니다.
+            추천 링크를 공유하면 친구도 같은 페이지에서 후기·랭킹·커뮤니티를 함께 봅니다.
+            보상 정책은 운영진 검토 후 안내됩니다.
           </p>
         </div>
 
@@ -124,47 +81,6 @@ export default function ReferralPage() {
                 </p>
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* Rewards structure */}
-        <div className="mb-16">
-          <h2 className="mb-8 text-center text-2xl font-bold">
-            보상 <span className="text-neon-primary-light">등급</span>
-          </h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {rewards.map((tier) => (
-              <div
-                key={tier.tier}
-                className={`rounded-2xl border ${tier.borderColor} bg-neon-surface p-6`}
-              >
-                <div className="mb-3 flex items-center justify-between">
-                  <h3 className={`text-lg font-bold ${tier.textColor}`}>
-                    {tier.tier}
-                  </h3>
-                  <span className="rounded-full bg-neon-surface-2 px-3 py-1 text-xs text-neon-text-muted">
-                    {tier.range}
-                  </span>
-                </div>
-                <p className="text-sm text-neon-text">{tier.reward}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Referral bonus highlight */}
-        <div className="mb-16 rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-500/10 to-violet-50 p-8 text-center md:p-12">
-          <h2 className="mb-3 text-2xl font-bold">피추천인 혜택</h2>
-          <p className="mb-6 text-neon-text-muted">
-            링크 공유 경로를 통해 가입한 친구도 혜택을 받습니다
-          </p>
-          <div className="inline-flex flex-col items-center rounded-2xl bg-neon-surface/80 px-8 py-6">
-            <span className="mb-2 text-3xl font-bold text-neon-primary-light">
-              300P
-            </span>
-            <span className="text-sm text-neon-text-muted">
-              가입 즉시 당사 적립금 지급
-            </span>
           </div>
         </div>
 

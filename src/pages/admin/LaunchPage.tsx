@@ -4,7 +4,7 @@ const sections = [
   {
     title: "데이터 & 콘텐츠",
     items: [
-      { task: "100+ 업소 데이터 완성", status: "done", note: "101개 업소 등록 완료" },
+      { task: "업소 데이터 100개 이상 등록", status: "done", note: "현재 120개 업소 등록 (실시간은 어드민/통계 페이지)" },
       { task: "일산룸/명월관 메인 상단 프리미엄 카드", status: "done", note: "프리미엄 2개 놀쿨 내 상단 노출" },
       { task: "모든 가게이름 SEO (title/H1/JSON-LD)", status: "done", note: "7개 카테고리 상세 페이지 구조화 데이터" },
       { task: "매거진 콘텐츠 8개 시드", status: "done", note: "SEO 아티클 포함" },
@@ -16,7 +16,7 @@ const sections = [
     items: [
       { task: "llms.txt AI 크롤러 대응", status: "done", note: "업소/카테고리/API 정보 포함" },
       { task: "robots.txt AI 크롤러 허용", status: "done", note: "GPTBot/Bingbot/ClaudeBot 등" },
-      { task: "사이트맵 자동 생성", status: "done", note: "정적+동적(101개 업소) 라우트" },
+      { task: "사이트맵 자동 생성", status: "done", note: "정적+동적 라우트 (빌드시 venues 전수 반영)" },
       { task: "JSON-LD 구조화 데이터", status: "done", note: "WebSite+ItemList+LocalBusiness+FAQ+BreadcrumbList" },
       { task: "네이버/구글/Bing 사이트맵 제출", status: "pending", note: "커스텀 도메인 연결 후 제출" },
       { task: "GA4 + 네이버 전환 추적", status: "pending", note: ".env에 ID 설정 필요" },
