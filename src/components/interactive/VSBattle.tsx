@@ -85,7 +85,7 @@ export default function VSBattle() {
         <div className="flex items-center justify-center gap-1.5 mb-3">
           {BATTLES.map((_, i) => (
             <button key={i} onClick={() => setBattleIdx(i)} aria-label={`배틀 ${i + 1}`}
-              className="relative inline-flex items-center justify-center px-2 py-3 -mx-1 -my-2">
+              className="relative inline-flex items-center justify-center min-w-[32px] min-h-[32px] px-2 py-3 -mx-1 -my-2">
               <span className={`block h-1.5 rounded-full transition-all ${i === battleIdx ? 'w-5 bg-[#8B5CF6]' : 'w-1.5 bg-gray-300'}`} />
             </button>
           ))}
