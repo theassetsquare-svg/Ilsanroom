@@ -978,7 +978,7 @@ export default function HomePage() {
             <span className="rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-bold text-white animate-pulse">LIVE</span>
           </div>
           <div className="flex items-center gap-2">
-            <Link to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white" style={{ minHeight: 28 }}>글쓰기</Link>
+            <Link to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="inline-flex items-center rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 32 }}>글쓰기</Link>
             <Link to="/community" className="text-xs text-[#8B5CF6] font-medium">더보기 →</Link>
           </div>
         </div>
@@ -1142,7 +1142,7 @@ export default function HomePage() {
             <span className="rounded-full bg-orange-600 px-1.5 py-0.5 text-[9px] font-bold text-white">모집중</span>
           </div>
           <div className="flex items-center gap-2">
-            <Link to={user ? '/community/jogak?write=true' : '/login?redirect=/community/jogak?write=true'} className="rounded-full bg-[#8B5CF6] px-3 py-1 text-xs font-bold text-white" style={{ minHeight: 28 }}>모임만들기</Link>
+            <Link to={user ? '/community/jogak?write=true' : '/login?redirect=/community/jogak?write=true'} className="inline-flex items-center rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 32 }}>모임만들기</Link>
             <Link to="/community/jogak" className="text-xs text-[#8B5CF6] font-medium">전체 →</Link>
           </div>
         </div>

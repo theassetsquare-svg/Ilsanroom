@@ -100,7 +100,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {categoryLinks.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="text-sm transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
+                  <Link to={link.href} className="inline-block text-sm py-1.5 -my-1.5 px-1 -mx-1 transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
                     {link.label}
                   </Link>
                 </li>
@@ -113,7 +113,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {communityLinks.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="text-sm transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
+                  <Link to={link.href} className="inline-block text-sm py-1.5 -my-1.5 px-1 -mx-1 transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
                     {link.label}
                   </Link>
                 </li>
@@ -126,7 +126,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {infoLinks.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="text-sm transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
+                  <Link to={link.href} className="inline-block text-sm py-1.5 -my-1.5 px-1 -mx-1 transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
                     {link.label}
                   </Link>
                 </li>
@@ -135,7 +135,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <Link to="/" className="text-xl text-[#8B5CF6]">
+            <Link to="/" className="inline-flex items-center text-xl text-[#8B5CF6] py-2 -my-2 px-1 -mx-1 min-h-[44px]">
               <span style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span>
             </Link>
             <p className="mt-2 text-sm leading-relaxed" style={{ color: '#555' }}>
@@ -157,7 +157,7 @@ export default function Footer() {
                 <h4 className="mb-2 text-xs font-bold" style={{ color: '#8B5CF6' }}>{region}</h4>
                 <div className="flex flex-wrap gap-x-3 gap-y-1">
                   {links.map((link) => (
-                    <Link key={link.href} to={link.href} className="text-xs transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
+                    <Link key={link.href} to={link.href} className="inline-block text-xs px-2 py-1 -mx-1 -my-1 transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
                       {link.label}
                     </Link>
                   ))}

@@ -48,7 +48,7 @@ export default function SecretModeToast() {
           </div>
           <button
             onClick={dismiss}
-            className="flex h-7 w-7 items-center justify-center rounded-full text-[#999] hover:bg-white hover:text-[#555] transition"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-[#999] hover:bg-white hover:text-[#555] transition"
             aria-label="닫기"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -16,7 +16,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
         <li className="flex items-center leading-[1.25]">
           <Link target="_blank" rel="noopener noreferrer"
             to="/"
-            className="inline-flex items-center leading-[1.25] transition-colors hover:text-neon-primary-light"
+            className="inline-flex items-center leading-[1.25] px-2 -mx-1 py-1 -my-1 min-w-[32px] transition-colors hover:text-neon-primary-light"
           >
             홈
           </Link>
@@ -27,7 +27,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
             {item.href ? (
               <Link target="_blank" rel="noopener noreferrer"
                 to={item.href}
-                className="inline-flex items-center leading-[1.25] transition-colors hover:text-neon-primary-light"
+                className="inline-flex items-center leading-[1.25] px-2 -mx-1 py-1 -my-1 min-w-[32px] transition-colors hover:text-neon-primary-light"
               >
                 {item.label}
               </Link>

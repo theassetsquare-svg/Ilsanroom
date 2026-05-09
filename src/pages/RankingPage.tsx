@@ -379,15 +379,15 @@ function VoteSection() {
           <div className="flex gap-1.5">
             <button
               onClick={() => setVoteFilter('all')}
-              className={`rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap ${voteFilter === 'all' ? 'bg-[#111] text-white' : 'bg-gray-100 text-[#555]'}`}
-              style={{ minHeight: 28 }}
+              className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium whitespace-nowrap ${voteFilter === 'all' ? 'bg-[#111] text-white' : 'bg-gray-100 text-[#555]'}`}
+              style={{ minHeight: 32 }}
             >전체</button>
             {voteCats.map(c => (
               <button
                 key={c.key}
                 onClick={() => setVoteFilter(c.key)}
-                className={`rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap ${voteFilter === c.key ? 'text-white' : 'bg-gray-100 text-[#555]'}`}
-                style={voteFilter === c.key ? { backgroundColor: catColors[c.key], minHeight: 28 } : { minHeight: 28 }}
+                className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium whitespace-nowrap ${voteFilter === c.key ? 'text-white' : 'bg-gray-100 text-[#555]'}`}
+                style={voteFilter === c.key ? { backgroundColor: catColors[c.key], minHeight: 32 } : { minHeight: 32 }}
               >{c.emoji} {c.label}</button>
             ))}
           </div>
