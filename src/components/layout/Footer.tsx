@@ -157,7 +157,7 @@ export default function Footer() {
                 <h4 className="mb-2 text-xs font-bold" style={{ color: '#8B5CF6' }}>{region}</h4>
                 <div className="flex flex-wrap gap-x-3 gap-y-1">
                   {links.map((link) => (
-                    <Link key={link.href} to={link.href} className="inline-block text-xs px-2 py-1 -mx-1 -my-1 transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
+                    <Link key={link.href} to={link.href} className="inline-block text-xs px-2 py-2 -mx-1 -my-2 transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
                       {link.label}
                     </Link>
                   ))}

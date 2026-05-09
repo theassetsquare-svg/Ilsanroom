@@ -912,7 +912,7 @@ export default function HomePage() {
             <div className="rounded-2xl border border-[#8B5CF6]/20 bg-gradient-to-br from-[#FAFAFE] to-[#F5F3FF] p-4 shadow-sm">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-sm font-bold text-[#111]">{poll.q}</p>
-                <Link to="/vs" className="text-[11px] text-[#8B5CF6] font-medium shrink-0 ml-2">더보기</Link>
+                <Link to="/vs" className="text-[11px] text-[#8B5CF6] font-medium shrink-0 ml-2 inline-block py-1.5 -my-1.5">더보기</Link>
               </div>
               <div className="grid grid-cols-2 gap-2.5">
                 <button onClick={() => handleVsVote(0, poll.a)} disabled={!!voted}
@@ -946,7 +946,7 @@ export default function HomePage() {
       <section className="px-4 py-2 max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-base font-bold text-[#111]">지금 핫한 곳</h2>
-          <Link to="/ranking" className="text-xs text-[#8B5CF6] font-medium">전체 순위 →</Link>
+          <Link to="/ranking" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">전체 순위 →</Link>
         </div>
         <div className="grid grid-cols-2 gap-2.5">
           {popularVenues.slice(0, 4).map((v, i) => (
@@ -964,7 +964,7 @@ export default function HomePage() {
           </div>
           <div className="flex items-center gap-2">
             <Link to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="inline-flex items-center rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 32 }}>글쓰기</Link>
-            <Link to="/community" className="text-xs text-[#8B5CF6] font-medium">더보기 →</Link>
+            <Link to="/community" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">더보기 →</Link>
           </div>
         </div>
         {/* 첫 번째 글: 큰 카드 (클릭베이트) */}
@@ -1029,7 +1029,7 @@ export default function HomePage() {
             <h2 className="text-base font-bold text-[#111]">뜨거운 토론</h2>
             <span className="rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-bold text-white">HOT</span>
           </div>
-          <Link to="/community/free" className="text-xs text-[#8B5CF6] font-medium">참여하기 →</Link>
+          <Link to="/community/free" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">참여하기 →</Link>
         </div>
         <div className="space-y-2">
           {seedDebates.slice(0, 3).map(debate => (
@@ -1121,7 +1121,7 @@ export default function HomePage() {
           </div>
           <div className="flex items-center gap-2">
             <Link to={user ? '/community/jogak?write=true' : '/login?redirect=/community/jogak?write=true'} className="inline-flex items-center rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 32 }}>모임만들기</Link>
-            <Link to="/community/jogak" className="text-xs text-[#8B5CF6] font-medium">전체 →</Link>
+            <Link to="/community/jogak" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">전체 →</Link>
           </div>
         </div>
         <div className="space-y-2">
@@ -1210,7 +1210,7 @@ export default function HomePage() {
       <section className="py-3 max-w-3xl mx-auto">
         <div className="flex items-center justify-between px-4 mb-2">
           <h2 className="text-base font-bold text-[#111]">놀쿨 매거진</h2>
-          <Link to="/magazine" className="text-xs text-[#8B5CF6] font-medium">전체 →</Link>
+          <Link to="/magazine" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">전체 →</Link>
         </div>
         <div className="flex gap-3 px-4 overflow-x-auto scrollbar-hide pb-1" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
           {magazineTeasers.map(article => (
@@ -1248,7 +1248,7 @@ export default function HomePage() {
                       <p className="text-[10px] text-[#8B5CF6] font-medium">{copy?.painPoint}</p>
                     </div>
                   </div>
-                  <Link to={catHrefs[cat]} className="text-[11px] text-[#8B5CF6] font-medium">{copy?.cta} →</Link>
+                  <Link to={catHrefs[cat]} className="text-[11px] text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">{copy?.cta} →</Link>
                 </div>
                 <div className="space-y-1.5">
                   {top.map((v, i) => (
@@ -1271,7 +1271,7 @@ export default function HomePage() {
       <section className="px-4 py-2 max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-base font-bold text-[#111]">지금 뜨는 검색어</h2>
-          <Link to="/search" className="text-xs text-[#8B5CF6] font-medium">검색 →</Link>
+          <Link to="/search" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">검색 →</Link>
         </div>
         <div className="flex flex-wrap gap-2">
           {todayTrending.map((kw, i) => (
@@ -1318,7 +1318,7 @@ export default function HomePage() {
       <section className="py-2 max-w-3xl mx-auto">
         <div className="flex items-center justify-between px-4 mb-2">
           <h2 className="text-base font-bold text-[#111]">TOP 8</h2>
-          <Link to="/ranking" className="text-xs text-[#8B5CF6] font-medium">전체보기 →</Link>
+          <Link to="/ranking" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">전체보기 →</Link>
         </div>
         <div className="flex gap-2.5 px-4 overflow-x-auto scrollbar-hide pb-1">
           {popularVenues.slice(0, 8).map((v, i) => (
