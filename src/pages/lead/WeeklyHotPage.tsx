@@ -11,12 +11,6 @@ const WEEK_HOT = (() => {
     region: v.regionKo || v.region,
     category: v.category,
     slug: v.slug,
-    reason:
-      i === 0
-        ? '이번 주 검색량 1위. 금토 예약 마감 임박. 평일 방문이 오히려 분위기 좋다는 후기 다수.'
-        : i === 1
-        ? '신규 이벤트 오픈으로 방문자 급증. SNS 인증샷 핫플로 떠오르는 중. 드레스코드 완화.'
-        : '단체 모임 예약 폭주. 분위기 대비 퀄리티 최고라는 평. 주차 편리해서 경기권 인기.',
   }));
 })();
 
@@ -54,9 +48,9 @@ export default function WeeklyHotPage() {
           이번 주 가장 핫한 곳 3
         </h1>
         <p className="text-lg text-neon-muted">
-          주말 어디 갈지 고민하는 시간, 평균 47분.
+          주말 어디 갈지 한 통이면 끝.
           <br className="hidden md:block" />
-          금요일 알림 하나로 3초 만에 결정하세요.
+          금요일 오후 5시에 이번 주 TOP3를 메일로 보내드립니다.
         </p>
       </section>
 
@@ -78,7 +72,9 @@ export default function WeeklyHotPage() {
                   {venue.region}
                 </span>
               </div>
-              <p className="text-sm leading-relaxed text-neon-muted">{venue.reason}</p>
+              <p className="text-sm leading-relaxed text-neon-muted">
+                커뮤니티 후기·검색 추이를 종합해 매주 금요일에 새로 선정합니다.
+              </p>
             </div>
           ))}
         </div>
@@ -130,26 +126,6 @@ export default function WeeklyHotPage() {
         </section>
       )}
 
-      {/* Social proof */}
-      <section className="mt-10 text-center">
-        <p className="mb-2 text-sm text-neon-muted">이미 구독 중인 사람들</p>
-        <div className="flex items-center justify-center gap-4">
-          <div>
-            <p className="text-2xl font-bold text-neon-primary">2,847명</p>
-            <p className="text-xs text-neon-muted">구독자</p>
-          </div>
-          <div className="h-8 w-px bg-neon-border" />
-          <div>
-            <p className="text-2xl font-bold text-neon-primary">92%</p>
-            <p className="text-xs text-neon-muted">오픈율</p>
-          </div>
-          <div className="h-8 w-px bg-neon-border" />
-          <div>
-            <p className="text-2xl font-bold text-neon-primary">4.9/5</p>
-            <p className="text-xs text-neon-muted">만족도</p>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

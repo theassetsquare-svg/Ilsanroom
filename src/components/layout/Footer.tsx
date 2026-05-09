@@ -167,10 +167,13 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* 하단 카피라이트 */}
-        <div className="mt-8 border-t pt-4" style={{ borderColor: '#E5E7EB' }}>
+        {/* 하단 카피라이트 + 마지막 업데이트 (빌드 시각, 24h 자동 빌드) */}
+        <div className="mt-8 border-t pt-4 space-y-1" style={{ borderColor: '#E5E7EB' }}>
           <p className="text-center text-xs" style={{ color: '#666' }}>
             &copy; {new Date().getFullYear()} <span style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span> NOLCOOL. All rights reserved.
+          </p>
+          <p className="text-center text-[11px]" style={{ color: '#888' }}>
+            마지막 업데이트 <time dateTime={__BUILD_DATE__}>{__BUILD_DATE__}</time> · 24시간 자동 빌드
           </p>
         </div>
       </div>

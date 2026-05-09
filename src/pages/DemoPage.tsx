@@ -1,216 +1,37 @@
-"use client";
-
-import { useState } from "react";
-import {
-  BarChart3,
-  Star,
-  Eye,
-  TrendingUp,
-  MessageSquare,
-  Bell,
-  Settings,
-  ChevronRight,
-} from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
-const mockStats = [
-  { label: "오늘 유입수", value: "1,284", change: "+12%", icon: Eye },
-  { label: "평균 별점", value: "4.7", change: "+0.3", icon: Star },
-  { label: "이번 주 후기", value: "38", change: "+8", icon: MessageSquare },
-  { label: "검색 순위", value: "3위", change: "▲2", icon: TrendingUp },
-];
-
-const mockReviews = [
-  {
-    user: "김**",
-    rating: 5,
-    text: "느낌 최고! 음악 선곡도 좋고 스태프 친절해요.",
-    date: "2시간 전",
-  },
-  {
-    user: "이**",
-    rating: 4,
-    text: "음료 퀄리티 좋음. 주말엔 웨이팅이 좀 있어요.",
-    date: "5시간 전",
-  },
-  {
-    user: "박**",
-    rating: 5,
-    text: "인테리어 새로 한 듯 깔끔해졌네요. 또 올게요.",
-    date: "1일 전",
-  },
-];
-
-const sidebarItems = [
-  { icon: BarChart3, label: "현황판", active: true },
-  { icon: MessageSquare, label: "후기 운영", active: false },
-  { icon: Eye, label: "유입 파악", active: false },
-  { icon: Bell, label: "알림", active: false },
-  { icon: Settings, label: "설정", active: false },
-];
-
+/**
+ * 사장님 데모 화면 — 가짜 통계/후기 일괄 제거.
+ * 실제 어드민 화면 캡처/짧은 영상이 준비되는 대로 다시 게시한다.
+ */
 export default function DemoPage() {
-  useDocumentMeta('가입 없이 10초면 끝, 업주 화면 미리보기', '사장님 대시보드가 어떻게 생겼는지 궁금하면 지금 바로 클릭. 가입·결제 없이 실제 화면 동일 미리보기. 통계, 리뷰 관리, 사진 업로드, 영업 상태 변경까지 전부 체험 가능.');
-  const [activeTab, setActiveTab] = useState("현황판");
+  useDocumentMeta(
+    '업주 화면 미리보기 — 데모 정비 중',
+    '사장님이 보는 어드민 미리보기. 실제 화면 캡처로 교체 작업 중입니다. 입점 안내는 가격 페이지에서 확인하세요.'
+  );
 
   return (
-    <div className="min-h-screen bg-neon-bg text-neon-text">
-      <div className="mx-auto max-w-6xl px-4 py-16">
-        {/* Header */}
-        <div className="mb-12 text-center">
-          <span className="mb-4 inline-block rounded-full bg-violet-600/20 px-4 py-1 text-xs font-medium text-violet-400">
-            데모 체험
-          </span>
-          <h1 className="mb-4 text-4xl font-bold">
-            사장님 <span className="text-violet-400">현황판</span> 미리보기
-          </h1>
-          <p className="mx-auto max-w-lg text-lg text-neon-text-muted">
-            놀쿨 Pro 현황판을 직접 체험해보세요. 실제 수치 기반의
-            인터랙티브 데모입니다.
-          </p>
-        </div>
-
-        {/* Demo Dashboard */}
-        <div className="overflow-hidden rounded-2xl border border-neon-border bg-white">
-          {/* Demo Top Bar */}
-          <div className="flex items-center justify-between border-b border-neon-border px-6 py-3">
-            <div className="flex items-center gap-2">
-              <div className="h-3 w-3 rounded-full bg-red-500" />
-              <div className="h-3 w-3 rounded-full bg-yellow-500" />
-              <div className="h-3 w-3 rounded-full bg-green-500" />
-            </div>
-            <span className="text-xs text-neon-text-muted">
-              demo.nolcool.com
-            </span>
-            <div className="w-14" />
-          </div>
-
-          <div className="flex">
-            {/* Sidebar */}
-            <div className="hidden w-48 shrink-0 border-r border-neon-border p-4 md:block">
-              <div className="mb-6">
-                <span className="text-sm font-bold text-violet-400">놀쿨</span>
-                <span className="ml-1 text-xs text-neon-text-muted">Pro</span>
-              </div>
-              <nav className="space-y-1">
-                {sidebarItems.map((item) => (
-                  <button
-                    key={item.label}
-                    onClick={() => setActiveTab(item.label)}
-                    className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm transition-colors ${
-                      activeTab === item.label
-                        ? "bg-violet-600/20 text-violet-400"
-                        : "text-neon-text-muted hover:bg-neon-surface-2 hover:text-neon-text"
-                    }`}
-                  >
-                    <item.icon className="h-4 w-4" />
-                    {item.label}
-                  </button>
-                ))}
-              </nav>
-            </div>
-
-            {/* Main Content */}
-            <div className="flex-1 p-6">
-              <div className="mb-6 flex items-center justify-between">
-                <div>
-                  <h2 className="text-lg font-bold">현황판</h2>
-                  <p className="text-xs text-neon-text-muted">
-                    마지막 업데이트: 방금 전
-                  </p>
-                </div>
-                <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs text-green-400">
-                  실시간
-                </span>
-              </div>
-
-              {/* Stats Grid */}
-              <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-                {mockStats.map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="rounded-xl bg-neon-bg p-4"
-                  >
-                    <div className="mb-2 flex items-center justify-between">
-                      <stat.icon className="h-4 w-4 text-neon-text-muted" />
-                      <span className="text-xs text-green-400">
-                        {stat.change}
-                      </span>
-                    </div>
-                    <p className="text-2xl font-bold">{stat.value}</p>
-                    <p className="text-xs text-neon-text-muted">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Chart Placeholder */}
-              <div className="mb-6 rounded-xl bg-neon-bg p-4">
-                <h3 className="mb-4 text-sm font-semibold">주간 유입 추이</h3>
-                <div className="flex h-32 items-end gap-2">
-                  {[40, 65, 55, 80, 72, 90, 85].map((h, i) => (
-                    <div
-                      key={i}
-                      className="flex flex-1 flex-col items-center gap-1"
-                    >
-                      <div
-                        className="w-full rounded-t bg-violet-600/60"
-                        style={{ height: `${h}%` }}
-                      />
-                      <span className="text-xs text-neon-text-muted">
-                        {["\uC6D4", "\uD654", "\uC218", "\uBAA9", "\uAE08", "\uD1A0", "\uC77C"][i]}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Recent Reviews */}
-              <div className="rounded-xl bg-neon-bg p-4">
-                <h3 className="mb-4 text-sm font-semibold">최근 후기</h3>
-                <div className="space-y-3">
-                  {mockReviews.map((review, i) => (
-                    <div
-                      key={i}
-                      className="flex items-start justify-between rounded-lg bg-white p-3"
-                    >
-                      <div className="flex-1">
-                        <div className="mb-1 flex items-center gap-2">
-                          <span className="text-sm font-medium">
-                            {review.user}
-                          </span>
-                          <span className="flex gap-0.5 text-xs text-yellow-400">
-                            {"★".repeat(review.rating)}
-                          </span>
-                        </div>
-                        <p className="text-xs text-neon-text-muted">
-                          {review.text}
-                        </p>
-                      </div>
-                      <span className="shrink-0 text-xs text-neon-text-muted">
-                        {review.date}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* CTA */}
-        <div className="mt-12 text-center">
-          <p className="mb-4 text-sm text-neon-text-muted">
-            실제 수치로 매장을 운영하고 싶으신가요?
-          </p>
-          <Link target="_blank" rel="noopener noreferrer"
-            to="/pricing"
-            className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-violet-500"
-          >
-            체험하기
-            <ChevronRight className="h-4 w-4" />
-          </Link>
-        </div>
+    <div className="mx-auto max-w-3xl px-4 py-16 text-center">
+      <h1 className="text-2xl font-extrabold text-neon-text mb-3">업주 화면 미리보기</h1>
+      <p className="text-sm text-neon-text-muted mb-6 leading-relaxed">
+        실제 어드민 화면 캡처와 동일한 데모로 교체 중입니다.
+        <br />
+        가짜 데이터 대신 실제 환경을 보여드리기 위한 정비 단계입니다.
+      </p>
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        <Link
+          to="/pricing"
+          className="rounded-full bg-neon-primary px-5 py-2 text-sm font-semibold text-white"
+        >
+          입점 안내
+        </Link>
+        <Link
+          to="/admin"
+          className="rounded-full border border-neon-border px-5 py-2 text-sm text-neon-text"
+        >
+          관리자 진입
+        </Link>
       </div>
     </div>
   );

@@ -11,6 +11,16 @@ const DIST = path.resolve('dist');
 const BASE_URL = 'https://nolcool.com';
 const OG_IMAGE = `${BASE_URL}/og/nolcool-og.jpg`;
 
+// 빌드 시점(KST) — 모든 프리렌더 페이지의 last-modified·dateModified 기본값
+const BUILD_DATE_KST = (() => {
+  const d = new Date(Date.now() + 9 * 60 * 60 * 1000);
+  return d.toISOString().slice(0, 10); // YYYY-MM-DD
+})();
+const BUILD_ISO_KST = (() => {
+  const d = new Date(Date.now() + 9 * 60 * 60 * 1000);
+  return d.toISOString().replace('Z', '+09:00');
+})();
+
 // ── 기본 index.html 읽기 ──
 const baseHtml = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8');
 
@@ -150,6 +160,10 @@ function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdLis
     /<meta name="citation_public_url" content="[^"]*"/,
     `<meta name="citation_public_url" content="${escHtml(can)}"`
   );
+
+  // 모든 페이지 공통: 24시간 자동 빌드 → 매일 새 dateModified (구글 freshness 시그널)
+  const lastModMeta = `<meta name="last-modified" content="${BUILD_ISO_KST}">\n    <meta name="date" content="${BUILD_DATE_KST}">`;
+  html = html.replace('</head>', `    ${lastModMeta}\n  </head>`);
 
   // datePublished / dateModified meta (구글 "최근 업데이트" 시그널) + 네이버 og:type article
   if (datePublished) {

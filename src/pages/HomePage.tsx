@@ -991,7 +991,6 @@ export default function HomePage() {
           const baseA = Math.max(20, Math.min(80, poll.aPct + hourShift));
           const aPct = voted ? (voted === poll.a ? Math.min(baseA + 3, 85) : baseA) : baseA;
           const bPct = 100 - aPct;
-          const participants = Math.floor(300 + (137 + new Date().getDate() * 53) % 700);
           return (
             <div className="rounded-2xl border border-[#8B5CF6]/20 bg-gradient-to-br from-[#FAFAFE] to-[#F5F3FF] p-4 shadow-sm">
               <div className="flex items-center justify-between mb-2">
@@ -1020,7 +1019,7 @@ export default function HomePage() {
                   </div>
                 </button>
               </div>
-              <p className="mt-1.5 text-[11px] text-center text-[#666]">{voted ? `${voted === poll.a ? poll.a : poll.b} 선택!` : '터치해서 투표'} · {participants.toLocaleString()}명 참여</p>
+              <p className="mt-1.5 text-[11px] text-center text-[#666]">{voted ? `${voted === poll.a ? poll.a : poll.b} 선택!` : '터치해서 투표'}</p>
             </div>
           );
         })()}
