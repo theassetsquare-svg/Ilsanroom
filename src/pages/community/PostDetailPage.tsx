@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
@@ -18,28 +18,7 @@ interface CommentData {
   users?: { nickname: string | null; avatar_url: string | null } | null;
 }
 
-/* 날짜 시드 기반 뷰 카운트 시뮬레이션 */
-function useViewCount(postId: string | undefined): number {
-  const [count, setCount] = useState(0);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  useEffect(() => {
-    if (!postId) return;
-    // 포스트 ID 해시 기반으로 안정적인 초기값
-    let hash = 0;
-    for (let i = 0; i < postId.length; i++) {
-      hash = ((hash << 5) - hash + postId.charCodeAt(i)) | 0;
-    }
-    const base = Math.abs(hash % 200) + 30;
-    const h = new Date().getHours();
-    const mult = (h >= 20 || h < 3) ? 1.5 : (h >= 15) ? 1.0 : 0.7;
-    setCount(Math.floor(base * mult));
-    timerRef.current = setInterval(() => {
-      setCount(prev => prev + Math.floor(Math.random() * 3));
-    }, 12000);
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [postId]);
-  return count;
-}
+/* 시드/난수 기반 가짜 뷰 카운터 제거 (놀쿨 신뢰 규칙). DB의 실제 view_count만 사용. */
 
 export default function PostDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -66,7 +45,7 @@ export default function PostDetailPage() {
   const [likeCount, setLikeCount] = useState(0);
   const [relatedPosts, setRelatedPosts] = useState<any[]>([]);
 
-  const viewCount = useViewCount(id);
+  const viewCount = post?.view_count ?? 0;
   const supabase = createClient();
 
   // 글 불러오기
@@ -289,7 +268,8 @@ export default function PostDetailPage() {
       {/* 뒤로가기 */}
       <button onClick={() => navigate(-1)} className="text-sm mb-4" style={{ color: '#555', minHeight: 44 }}>← 뒤로</button>
 
-      {/* 조회수 배너 */}
+      {/* 조회수 배너 — view_count 0이면 숨김 (가짜 카운터 X) */}
+      {viewCount > 0 && (
       <div className="flex items-center gap-3 mb-4 rounded-lg px-4 py-2.5" style={{ backgroundColor: '#F3F0FF' }}>
         <span className="h-2 w-2 rounded-full bg-violet-500 animate-pulse" />
         <span className="text-xs font-bold" style={{ color: '#8B5CF6' }}>
@@ -299,6 +279,7 @@ export default function PostDetailPage() {
           <span className="text-xs" style={{ color: '#999' }}>· 댓글 {comments.length}개</span>
         )}
       </div>
+      )}
 
       {/* 글 제목 */}
       <h1 className="text-2xl font-bold mb-3" style={{ color: '#111' }}>{post.title}</h1>

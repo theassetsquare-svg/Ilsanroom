@@ -77,25 +77,20 @@ const WEATHER_RECS: Record<WeatherType, WeatherRecommendation> = {
   },
 };
 
-function simulateWeather(): WeatherType {
-  // Simulate weather based on month and random
+function pickByMonth(): WeatherType {
+  // 실제 기상 API 미연동 — 월별 결정적 톤만 노출 (Math.random 제거).
   const month = new Date().getMonth() + 1;
-  const rand = Math.random();
-
-  if (month >= 6 && month <= 8) {
-    return rand < 0.3 ? 'rain' : rand < 0.5 ? 'hot' : 'clear';
-  }
-  if (month >= 12 || month <= 2) {
-    return rand < 0.2 ? 'snow' : rand < 0.5 ? 'cold' : 'cloudy';
-  }
-  return rand < 0.3 ? 'rain' : rand < 0.6 ? 'cloudy' : 'clear';
+  if (month >= 6 && month <= 8) return 'hot';
+  if (month >= 12 || month <= 2) return 'cold';
+  if (month >= 3 && month <= 5) return 'clear';
+  return 'cloudy';
 }
 
 export default function WeatherPicks() {
   const [weather, setWeather] = useState<WeatherRecommendation | null>(null);
 
   useEffect(() => {
-    const type = simulateWeather();
+    const type = pickByMonth();
     setWeather(WEATHER_RECS[type]);
   }, []);
 

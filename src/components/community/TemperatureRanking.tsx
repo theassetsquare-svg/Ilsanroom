@@ -67,7 +67,7 @@ export function TemperatureRanking({ limit = 10 }: { limit?: number }) {
           🔥 실시간 밤의 온도 TOP {limit}
         </h3>
         <p style={{ fontSize: 11, margin: '2px 0 0', opacity: 0.9 }}>
-          매일 갱신 · 오늘의 활동왕
+          누적 활동량 기준 — 글·후기·댓글로 올라간다
         </p>
       </div>
 

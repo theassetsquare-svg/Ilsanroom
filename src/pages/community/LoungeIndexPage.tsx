@@ -1,24 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
-import { LOUNGE_DEFS, type LoungeType } from '@/lib/lounge-api';
+import { LOUNGE_DEFS } from '@/lib/lounge-api';
 import { createClient } from '@/lib/supabase';
 import UserLevelCard from '@/components/community/UserLevelCard';
-
-function useLiveNumber(base: number, range: number) {
-  const [num, setNum] = useState(base);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  useEffect(() => {
-    const h = new Date().getHours();
-    const mult = (h >= 20 || h < 3) ? 1.4 : (h >= 15) ? 0.9 : 0.6;
-    setNum(Math.floor(base * mult) + Math.floor(Math.random() * range));
-    timerRef.current = setInterval(() => {
-      setNum(prev => prev + Math.floor(Math.random() * 5) - 2);
-    }, 8000);
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [base, range]);
-  return num;
-}
 
 export default function LoungeIndexPage() {
   useDocumentMeta(
@@ -27,20 +12,31 @@ export default function LoungeIndexPage() {
   );
 
   const [counts, setCounts] = useState<Record<string, number>>({});
-  const liveViewers = useLiveNumber(89, 30);
-  const todayPosts = useLiveNumber(22, 12);
+  const [todayPosts, setTodayPosts] = useState<number | null>(null);
 
   useEffect(() => {
     const supabase = createClient();
     if (!supabase) return;
+    let alive = true;
 
     LOUNGE_DEFS.forEach(async (def) => {
       const { count } = await supabase
         .from('lounge_posts')
         .select('*', { count: 'exact', head: true })
         .eq('lounge_type', def.type);
-      setCounts(prev => ({ ...prev, [def.type]: count || 0 }));
+      if (alive) setCounts(prev => ({ ...prev, [def.type]: count || 0 }));
     });
+
+    // 오늘 새 글 수 (KST 자정 기준)
+    const kstNow = new Date(Date.now() + 9 * 3600000);
+    const kstMidnight = new Date(Date.UTC(kstNow.getUTCFullYear(), kstNow.getUTCMonth(), kstNow.getUTCDate()) - 9 * 3600000).toISOString();
+    supabase
+      .from('lounge_posts')
+      .select('*', { count: 'exact', head: true })
+      .gte('created_at', kstMidnight)
+      .then(({ count }) => { if (alive) setTodayPosts(count ?? 0); });
+
+    return () => { alive = false; };
   }, []);
 
   return (
@@ -54,11 +50,9 @@ export default function LoungeIndexPage() {
           </h1>
           <p className="text-neon-text-muted">같은 취향, 같은 관심사끼리 모이는 전용 게시판</p>
           <div className="mt-4 flex items-center justify-center gap-6 text-sm">
-            <span className="flex items-center gap-1 text-emerald-500">
-              <span className="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-              {liveViewers}명 접속 중
+            <span className="text-neon-text-muted">
+              오늘 새 글 {todayPosts === null ? '—' : todayPosts}개
             </span>
-            <span className="text-neon-text-muted">오늘 {todayPosts}개 새 글</span>
           </div>
         </div>
 
@@ -79,7 +73,7 @@ export default function LoungeIndexPage() {
                   </div>
                 </div>
                 <div className="flex items-center justify-between text-xs text-neon-text-muted">
-                  <span>{counts[def.type] || Math.floor(Math.random() * 30 + 5)}개 글</span>
+                  <span>{counts[def.type] ?? 0}개 글</span>
                   <span className="text-violet-400 group-hover:translate-x-1 transition-transform">→</span>
                 </div>
               </Link>

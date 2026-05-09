@@ -22,7 +22,7 @@ function getCategoryHref(v: Venue) {
   return map[v.category] || `/${v.category}/${v.slug}`;
 }
 
-/* 가장 많이 비교되는 조합 (시뮬레이션) */
+/* 비교 추천 조합 — 편집부 큐레이션 (실 사용자 통계 아님) */
 const popularComparisons = [
   { pair: ['일산룸', '일산명월관요정'], label: '일산 룸 vs 요정' },
   { pair: ['강남청담클럽 레이스', '홍대클럽'], label: '강남 클럽 vs 홍대 클럽' },
@@ -76,7 +76,7 @@ export default function ComparePage() {
 
           {/* 인기 비교 조합 */}
           <div className="mt-6">
-            <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.4)' }}>🔥 가장 많이 비교된 조합</p>
+            <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.4)' }}>🔥 편집부 추천 비교 조합</p>
             <div className="flex flex-wrap justify-center gap-2">
               {popularComparisons.map((pc) => (
                 <button

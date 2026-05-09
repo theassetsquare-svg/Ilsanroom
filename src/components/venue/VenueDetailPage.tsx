@@ -55,28 +55,9 @@ export default function VenueDetailPage({
     return () => { document.body.classList.remove('venue-detail-page'); };
   }, []);
 
-  // "지금 N명 보는 중" — 365일 매일 다른 수치, 24시간 활발
-  const [viewingNow] = useState(() => {
-    const now = new Date();
-    const hour = now.getHours();
-    const hash = venue.slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-    // 날짜 시드: 매일 다른 값
-    const daySeed = now.getFullYear() * 400 + (now.getMonth() + 1) * 32 + now.getDate();
-    const dayVar = ((daySeed * 2654435761 + hash) >>> 0) % 5; // 0~4 매일 다른 보정
-    // 요일 배율: 금토 피크
-    const dow = now.getDay();
-    const dowMult = (dow === 5 || dow === 6) ? 1.0 : (dow === 0 || dow === 4) ? 0.85 : 0.75;
-    let timeMult: number;
-    if (hour >= 22 || hour < 2) timeMult = 1.0;
-    else if (hour >= 20) timeMult = 0.9;
-    else if (hour >= 17) timeMult = 0.7;
-    else if (hour >= 12) timeMult = 0.5;
-    else if (hour >= 6) timeMult = 0.45;
-    else timeMult = 0.5;
-    const base = venue.isPremium ? 8 : 4;
-    const raw = base + (hash % 6) + dayVar;
-    return Math.max(2, Math.round(raw * timeMult * dowMult) + Math.floor(Math.random() * 3));
-  });
+  // "지금 N명 보는 중" — 시드 기반 가짜 카운터 제거 (놀쿨 신뢰 규칙).
+  // VenueLivePulse 자체가 null 컴포넌트라 0을 넘겨도 무시됨.
+  const viewingNow = 0;
 
   // 비슷한 업소 — 동적 hook text
   const relatedHookText = useMemo(() => {

@@ -54,6 +54,7 @@ function getSeedPosts(type: LoungeType): LoungePost[] {
   };
   const posts = seedMap[type] || seedMap.free;
   const now = Date.now();
+  // 가공 통계(랜덤 view/upvote/comment) 제거 — 시드 글은 0으로 표시. created_at만 안정적 간격.
   return posts.map((p, i) => ({
     id: `seed-${type}-${i}`,
     user_id: null,
@@ -61,12 +62,12 @@ function getSeedPosts(type: LoungeType): LoungePost[] {
     title: p.title,
     content: p.content,
     images: [],
-    view_count: Math.floor(Math.random() * 200) + 20,
-    upvote_count: Math.floor(Math.random() * 30) + 1,
-    comment_count: Math.floor(Math.random() * 15) + 1,
+    view_count: 0,
+    upvote_count: 0,
+    comment_count: 0,
     status: 'active',
-    created_at: new Date(now - (i + 1) * 3600000 * (Math.random() * 3 + 1)).toISOString(),
-    user_profiles: { nickname: p.nickname, avatar_url: null, level: ['newbie', 'regular', 'loyal'][Math.floor(Math.random() * 3)] },
+    created_at: new Date(now - (i + 1) * 3600000).toISOString(),
+    user_profiles: { nickname: p.nickname, avatar_url: null, level: 'newbie' },
   }));
 }
 
@@ -83,7 +84,7 @@ export default function LoungePage() {
     yojung: '전통 요정 방문 경험과 정보 공유. 정찬 15첩 코스, 국악 라이브, 비즈니스 만찬 후기. 일산명월관·종로요정·강남요정 등 코스 구성, 드레스코드, 예약 매너까지.',
     hoppa: '여성 전용 사교 공간 호빠 방문 후기·추천. 강남 종로 영등포 분위기, 매니저 평판, 첫방문 동선, 안전 정보까지. 여자 혼자 가도 안전한 호빠 정보 나누는 전용 게시판.',
     lounge: '강남 홍대 이태원 일산 라운지바 분위기·칵테일·위스키 추천 게시판. 데이트 코스, 접대용 라운지, 야경 좋은 루프탑·호텔 라운지 후기. 무드별 추천 공유.',
-    free: '업종 상관없이 자유롭게 대화하는 라운지 공간. 잡담, 질문, 황당썰, 후기, 추천, 푸념까지 익명으로 OK. 매일 새 글 200개 이상 올라오는 밤문화 회원들의 광장.',
+    free: '업종 상관없이 자유롭게 대화하는 라운지 공간. 잡담, 질문, 황당썰, 후기, 추천, 푸념까지 익명으로 OK. 밤문화 회원들이 모여 떠드는 광장.',
     qna: '밤문화 관련 궁금한 거 다 답해주는 Q&A 게시판. 첫방문 매너, 무드 비교, 업소 추천, 안전 팁, 드레스코드까지. 단골 회원들이 빠르게 답변해주는 실시간 질문방.',
   };
   useDocumentMeta(

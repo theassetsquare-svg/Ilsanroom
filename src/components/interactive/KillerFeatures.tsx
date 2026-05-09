@@ -179,7 +179,7 @@ export function HangoverFood() {
   );
 }
 
-/* ═══ [AK] 친구 초대 바이럴 ═══ */
+/* ═══ [AK] 친구 초대 — VIP 보장 같은 가공 보상 표기 제거 ═══ */
 export function InviteFriend() {
   const [copied, setCopied] = useState(false);
   const link = typeof window !== 'undefined' ? window.location.origin + '?ref=friend' : 'https://nolcool.com?ref=friend';
@@ -190,8 +190,8 @@ export function InviteFriend() {
 
   return (
     <div className="rounded-2xl border border-neon-primary/30 bg-gradient-to-r from-neon-primary/5 via-neon-surface to-neon-accent/5 p-6 text-center">
-      <h3 className="text-lg font-bold text-neon-text mb-2">친구 초대하면 둘 다 VIP!</h3>
-      <p className="text-sm text-neon-text-muted mb-4">카톡으로 링크 공유 → 친구 가입 → 나도 친구도 VIP 1주일</p>
+      <h3 className="text-lg font-bold text-neon-text mb-2">친구한테 놀쿨 공유하기</h3>
+      <p className="text-sm text-neon-text-muted mb-4">카톡으로 링크 한 번이면 끝. 가입까지 30초.</p>
       <button onClick={copy} className="rounded-xl bg-neon-primary px-6 py-3 font-bold text-white transition hover:bg-neon-primary-light btn-glow">
         {copied ? '링크 복사됨!' : '초대 링크 복사'}
       </button>

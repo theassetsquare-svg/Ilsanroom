@@ -74,12 +74,12 @@ export default function HiddenPage() {
             <span style={{ color: '#C4B5FD' }}>여기서 처음 공개한다</span>
           </h1>
           <p className="text-base mb-4" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.5)' }}>
-            매주 1곳씩 숨겨진 명소를 발굴한다.<br />
-            아는 사람만 가던 곳을 처음 꺼냈다.
+            아는 사람만 가던 숨은 명소를 발굴해 소개한다.<br />
+            새 곳이 더해지면 여기서 먼저 공개된다.
           </p>
           <div className="inline-flex items-center gap-2 rounded-xl px-4 py-2" style={{ background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.2)' }}>
             <span className="text-sm">🤫</span>
-            <span className="text-xs font-medium" style={{ color: '#FCD34D' }}>현재 {hiddenGems.length}곳 공개 중 · 다음 공개까지 D-3</span>
+            <span className="text-xs font-medium" style={{ color: '#FCD34D' }}>현재 {hiddenGems.length}곳 공개 중</span>
           </div>
         </div>
       </div>

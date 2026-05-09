@@ -26,7 +26,7 @@ function makeComment(id: string, postId: string, authorKey: string, content: str
     author: authors[authorKey] || authors.newbie,
     content,
     createdAt: '2026-03-13T12:00:00Z',
-    likes: Math.floor(Math.random() * 30),
+    likes: 0,
     isLiked: false,
     replies,
   };

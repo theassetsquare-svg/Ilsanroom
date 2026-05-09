@@ -1,7 +1,7 @@
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function PricingPage() {
-  useDocumentMeta('요금제 4단계, 0원부터 시작 가능', '무료 사용 14일 후 결정해도 늦지 않습니다. 베이직·프로·프리미엄·VIP 4단계 비교, 지역과 업소 특성 맞춤 제안. 해지도 클릭 한 번. 카카오톡 besta12로 상세 문의.');
+  useDocumentMeta('업소 입점·광고 문의 안내', '업소 상황·지역·규모에 맞춰 단가를 협의 후 안내합니다. 일률적인 요금표 없이 필요한 노출만 선택. 카카오톡 besta12로 상세 문의.');
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">
@@ -57,7 +57,7 @@ export default function PricingPage() {
       {/* 입점 업소 현황 */}
       <div className="grid grid-cols-3 gap-3 mb-8">
         <div className="rounded-xl border p-4 text-center" style={{ borderColor: '#E5E7EB' }}>
-          <p className="text-2xl font-black" style={{ color: '#8B5CF6' }}>116+</p>
+          <p className="text-2xl font-black" style={{ color: '#8B5CF6' }}>120</p>
           <p className="text-xs" style={{ color: '#888' }}>등록 업소</p>
         </div>
         <div className="rounded-xl border p-4 text-center" style={{ borderColor: '#E5E7EB' }}>
@@ -78,7 +78,7 @@ export default function PricingPage() {
           업소 상황에 맞는 최적 요금제를 안내드리겠습니다.<br />
           부담 없이 문의해주세요.
         </p>
-        <p className="text-xs text-white/60">24시간 365일 상담 가능</p>
+        <p className="text-xs text-white/60">메시지 주시면 빠르게 회신드립니다</p>
       </div>
 
       <p className="text-xs text-center" style={{ color: '#999' }}>

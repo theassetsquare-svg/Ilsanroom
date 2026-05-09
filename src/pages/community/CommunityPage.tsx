@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { createClient } from '@/lib/supabase';
@@ -13,37 +13,26 @@ const sectionDefs = [
   { title: "자유게시판", description: "자유롭게 이야기 나누는 공간", href: "/community/free", icon: "💬", category: "free", hookLine: "어젯밤 일 아직도 생각나서 씀" },
 ];
 
-/* 실시간 느낌 숫자: 시간대에 따라 변동 — CLS 방지 위해 초기값 동기 계산 */
-function useLiveNumber(base: number, range: number) {
-  const [num, setNum] = useState(() => {
-    const h = new Date().getHours();
-    const mult = (h >= 20 || h < 3) ? 1.4 : (h >= 15) ? 0.9 : 0.6;
-    return Math.floor(base * mult) + Math.floor(Math.random() * range);
-  });
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  useEffect(() => {
-    timerRef.current = setInterval(() => {
-      setNum(prev => prev + Math.floor(Math.random() * 5) - 2);
-    }, 6000);
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [base, range]);
-  return num;
-}
-
 export default function CommunityPage() {
-  useDocumentMeta('밤 사람들이 모이는 커뮤니티', '강남 홍대 이태원 일산 부산 수원 클럽 나이트 라운지 룸 요정 호빠 후기 꿀팁 파티모집 Q&A 자유게시판 패션 조각모임 9개 게시판. 매일 새 글 200개 이상 올라오는 진짜 회원 익명 광장.');
+  useDocumentMeta('밤 사람들이 모이는 커뮤니티', '강남 홍대 이태원 일산 부산 수원 클럽 나이트 라운지 룸 요정 호빠 후기 꿀팁 파티모집 Q&A 자유게시판 패션 조각모임 — 진짜 회원이 직접 쓰는 익명 광장.');
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [recentPosts, setRecentPosts] = useState<{ id: string; title: string; category: string; likes: number; comment_count: number }[]>([]);
   const [hotCommentPosts, setHotCommentPosts] = useState<{ id: string; title: string; category: string; comment_count: number }[]>([]);
-
-  const liveViewers = useLiveNumber(127, 40);
-  const todayPosts = useLiveNumber(34, 15);
-  const todayComments = useLiveNumber(89, 30);
+  const [todayPosts, setTodayPosts] = useState<number | null>(null);
+  const [totalPosts, setTotalPosts] = useState<number | null>(null);
 
   useEffect(() => {
     const supabase = createClient();
     if (!supabase) return;
     let alive = true;
+
+    // KST 자정 기준 오늘 작성된 글 — 실제 Supabase count
+    const kstNow = new Date();
+    const kstMidnight = new Date(kstNow.getFullYear(), kstNow.getMonth(), kstNow.getDate()).toISOString();
+    supabase.from('posts').select('*', { count: 'exact', head: true }).gte('created_at', kstMidnight)
+      .then(({ count }) => { if (alive) setTodayPosts(count ?? 0); });
+    supabase.from('posts').select('*', { count: 'exact', head: true })
+      .then(({ count }) => { if (alive) setTotalPosts(count ?? 0); });
 
     sectionDefs.forEach(async (sec) => {
       const { count } = await supabase.from('posts').select('*', { count: 'exact', head: true }).eq('category', sec.category);
@@ -88,21 +77,20 @@ export default function CommunityPage() {
             지금 이 순간에도 사람들이 모이고, 떠들고, 약속을 잡고 있다
           </p>
 
-          {/* 실시간 숫자 3개 */}
+          {/* Supabase 실시간 카운트 — 가짜 시드 없음 */}
           <div className="flex items-center justify-center gap-4 sm:gap-8 mb-4 flex-wrap">
             <div className="flex flex-col items-center">
-              <span className="text-2xl sm:text-3xl font-black" style={{ color: '#8B5CF6' }}>{liveViewers.toLocaleString()}</span>
-              <span className="text-xs mt-1" style={{ color: '#999' }}>접속 중</span>
-            </div>
-            <div className="h-8 w-px" style={{ backgroundColor: '#E5E7EB' }} />
-            <div className="flex flex-col items-center">
-              <span className="text-2xl sm:text-3xl font-black" style={{ color: '#10B981' }}>{todayPosts}</span>
+              <span className="text-2xl sm:text-3xl font-black" style={{ color: '#10B981' }}>
+                {todayPosts === null ? '—' : todayPosts.toLocaleString()}
+              </span>
               <span className="text-xs mt-1" style={{ color: '#999' }}>오늘 새 글</span>
             </div>
             <div className="h-8 w-px" style={{ backgroundColor: '#E5E7EB' }} />
             <div className="flex flex-col items-center">
-              <span className="text-2xl sm:text-3xl font-black" style={{ color: '#F59E0B' }}>{todayComments}</span>
-              <span className="text-xs mt-1" style={{ color: '#999' }}>오늘 댓글</span>
+              <span className="text-2xl sm:text-3xl font-black" style={{ color: '#8B5CF6' }}>
+                {totalPosts === null ? '—' : totalPosts.toLocaleString()}
+              </span>
+              <span className="text-xs mt-1" style={{ color: '#999' }}>누적 글</span>
             </div>
           </div>
 

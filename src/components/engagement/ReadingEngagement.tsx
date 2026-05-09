@@ -192,20 +192,9 @@ export function MidContentQuiz({
   seed?: string;
 }) {
   const [selected, setSelected] = useState<number | null>(null);
-  const now = new Date();
-  const daySeed = now.getFullYear() * 400 + (now.getMonth() + 1) * 32 + now.getDate();
-  const hash = seed ? seed.split('').reduce((a, c) => a + c.charCodeAt(0), 0) : 0;
-
-  // 각 옵션의 "투표율" (시뮬레이션)
-  const votes = useMemo(() => {
-    return options.map((_, i) => {
-      const base = 15 + ((daySeed * (i + 1) * 7 + hash) % 40);
-      return base;
-    });
-  }, [options, daySeed, hash]);
-
-  const total = votes.reduce((a, b) => a + b, 0);
-  const participants = 127 + (daySeed + hash) % 300;
+  // 시드 기반 가짜 투표율·참여자 수 제거 (놀쿨 신뢰 규칙).
+  // 사용자가 선택한 항목만 시각적으로 강조하고 비율 막대/참여자 수는 숨김.
+  void seed;
 
   return (
     <div className="my-6 rounded-2xl border border-[#8B5CF6]/15 bg-gradient-to-br from-white to-[#FAFAFE] p-5">
@@ -214,37 +203,28 @@ export function MidContentQuiz({
         {question}
       </p>
       <div className="space-y-2">
-        {options.map((opt, i) => {
-          const pct = Math.round((votes[i] / total) * 100);
-          return (
-            <button
-              key={i}
-              onClick={() => setSelected(i)}
-              disabled={selected !== null}
-              className={`relative w-full rounded-xl overflow-hidden text-left transition-all ${
-                selected === i ? 'ring-2 ring-[#8B5CF6]' :
-                selected !== null ? 'opacity-70' : 'hover:bg-gray-50 active:scale-[0.98]'
-              }`}
-              style={{ minHeight: 44 }}
-            >
-              {selected !== null && (
-                <div className="absolute inset-0 bg-[#8B5CF6]/5">
-                  <div className="h-full bg-[#8B5CF6]/10 transition-all duration-700"
-                    style={{ width: `${pct}%` }} />
-                </div>
+        {options.map((opt, i) => (
+          <button
+            key={i}
+            onClick={() => setSelected(i)}
+            disabled={selected !== null}
+            className={`relative w-full rounded-xl overflow-hidden text-left transition-all ${
+              selected === i ? 'ring-2 ring-[#8B5CF6] bg-[#8B5CF6]/5' :
+              selected !== null ? 'opacity-60' : 'hover:bg-gray-50 active:scale-[0.98]'
+            }`}
+            style={{ minHeight: 44 }}
+          >
+            <div className="relative z-10 flex items-center justify-between px-4 py-2.5">
+              <span className="text-sm text-[#111]">{opt}</span>
+              {selected === i && (
+                <span className="text-xs font-bold text-[#8B5CF6]">선택함</span>
               )}
-              <div className="relative z-10 flex items-center justify-between px-4 py-2.5">
-                <span className="text-sm text-[#111]">{opt}</span>
-                {selected !== null && (
-                  <span className="text-sm font-bold text-[#8B5CF6]">{pct}%</span>
-                )}
-              </div>
-            </button>
-          );
-        })}
+            </div>
+          </button>
+        ))}
       </div>
       <p className="mt-2 text-xs text-center text-[#999]">
-        {selected !== null ? `${participants.toLocaleString()}명 참여 완료` : '터치해서 참여하기'}
+        {selected !== null ? '의견 감사합니다' : '터치해서 참여하기'}
       </p>
     </div>
   );

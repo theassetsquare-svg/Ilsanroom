@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import WriteHeader from '@/components/community/WriteHeader';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -125,25 +125,9 @@ function SectionHeader({ title }: { title: string }) {
   return <div className="flex items-center gap-2 mb-2 mt-5 first:mt-0"><div className="h-px flex-1 bg-gray-200" /><span className="text-xs font-bold px-2" style={{ color: '#8B5CF6' }}>{title}</span><div className="h-px flex-1 bg-gray-200" /></div>;
 }
 
-/* ══════════════════════════════════════════════
-   실시간 카운터 (접속자 수 시뮬레이션)
-   ══════════════════════════════════════════════ */
+/* 시드 난수 접속자 카운터 제거 (놀쿨 신뢰 규칙) */
 function LiveCounter() {
-  const [count, setCount] = useState(0);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  useEffect(() => {
-    setCount(Math.floor(Math.random() * 30) + 15);
-    intervalRef.current = setInterval(() => {
-      setCount(prev => prev + Math.floor(Math.random() * 3) - 1);
-    }, 8000);
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-  }, []);
-  return (
-    <span className="inline-flex items-center gap-1 text-xs font-medium" style={{ color: '#10B981' }}>
-      <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-      {count}명 접속 중
-    </span>
-  );
+  return null;
 }
 
 /* ══════════════════════════════════════════════
@@ -336,22 +320,6 @@ export default function JogakPage() {
     return tu && tu !== '마감' && !tu.includes('일');
   }).slice(0, 5);
 
-  // 방금 참여 알림용 (최근 글)
-  const recentJoinTexts = [
-    '방금 1명이 참여 신청했어요',
-    '2분 전 새 조각이 올라왔어요',
-    '지금 3명이 조각을 찾고 있어요',
-    '5분 전 참여 확정됐어요',
-  ];
-  const [joinNotifIdx, setJoinNotifIdx] = useState(0);
-  const joinTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  useEffect(() => {
-    joinTimerRef.current = setInterval(() => {
-      setJoinNotifIdx(prev => (prev + 1) % recentJoinTexts.length);
-    }, 5000);
-    return () => { if (joinTimerRef.current) clearInterval(joinTimerRef.current); };
-  }, []);
-
   return (
     <div className="mx-auto max-w-3xl px-4 py-6 sm:py-10">
       {/* ═══ 헤더 ═══ */}
@@ -443,12 +411,6 @@ export default function JogakPage() {
       )}
 
       {/* 지역 필터 제거 — 조각글 카드 안에 지역 태그로 표시 */}
-
-      {/* ═══ 실시간 참여 알림 ═══ */}
-      <div className="mb-3 flex items-center gap-2 rounded-lg px-3 py-2" style={{ backgroundColor: '#F0FDF4' }}>
-        <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-        <span className="text-xs font-medium" style={{ color: '#059669' }}>{recentJoinTexts[joinNotifIdx]}</span>
-      </div>
 
       {/* ═══ 마감 임박 조각 ═══ */}
       {!loading && urgentPosts.length > 0 && (
