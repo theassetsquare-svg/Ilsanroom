@@ -24,7 +24,7 @@ const regions = [
 ];
 
 export default function HoppaPage() {
-  useDocumentMeta('호빠 — 선수 진짜 괜찮나요? 10년차 실장이 봐드립니다', '이 호빠, 선수 진짜 괜찮나요? 외모·매너·진행을 10년차 현장 실장이 1줄 진단 — 어색한 시간 날리기 전에. 진짜 케어되는 곳만. 지금 무료 →');
+  useDocumentMeta('호빠 가서 사진이랑 다른 선수면 어떡해요? 10년 실장이 미리 봐줌', '처음 가서 어색한 시간 30분이면 그날 끝나요. 10년 일한 호빠 실장이 외모·매너·진행 다 봐드립니다. 진짜 케어되는 곳만 보여드릴게요 →');
   const venues = getVenuesByCategory('hoppa');
   const featured = venues.find(v => v.isPremium) || venues[0];
 

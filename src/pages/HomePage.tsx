@@ -468,7 +468,7 @@ function InfiniteRecommendLoop({ venues, popularVenues }: { venues: Venue[]; pop
 /* ══════════════════════════════════════════════════════ */
 
 export default function HomePage() {
-  useDocumentMeta('놀쿨 — 이 가게 가도 될까요? 20년차 현장이 봐드립니다', '이 가게, 진짜 갈 만한가요? 물·라인업·진행을 20년차 현장이 1,000+ 업소 데이터로 1줄 진단. 주말 망치기 전에 — 지금 무료 →');
+  useDocumentMeta('놀쿨 — 오늘 어디 갈지 못 정했죠? 20년 굴러본 사람이 골라드림', '오늘 어디 갈지 못 정했죠? 거를 곳 천지예요. 클럽·나이트·룸·요정·라운지·호빠 20년 본 사람이 1,000+ 업소 1줄로 정리. 주말 망치기 전에 →');
   const navigate = useNavigate();
   const { user } = useAuth();
 

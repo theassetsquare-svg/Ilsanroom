@@ -16,7 +16,7 @@ const regions = [
 ];
 
 export default function LoungesPage() {
-  useDocumentMeta('라운지 — 분위기 진짜 좋나요? 10년차 실장이 봐드립니다', '이 라운지, 진짜 분위기 있나요? 인테리어·시그니처·만남 결을 10년차 현장 실장이 1줄 진단 — 어색한 자리 망치기 전에. 지금 무료 →');
+  useDocumentMeta('라운지 시끄러워서 데이트 망친 적 한 번이라도? 10년 실장이 거름', '분위기 보고 갔는데 어수선하면 데이트도 망합니다. 10년 본 라운지 실장이 인테리어·시그니처·만남 결까지 다 풀어드립니다. 조용히 가서 조용히 나와요 →');
   const venues = getVenuesByCategory('lounge');
   const featured = venues.find(v => v.isPremium) || venues[0];
 

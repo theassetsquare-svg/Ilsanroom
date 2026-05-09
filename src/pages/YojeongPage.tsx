@@ -16,7 +16,7 @@ const regions = [
 ];
 
 export default function YojeongPage() {
-  useDocumentMeta('요정 — 격조 진짜 다른가요? 20년차 실장이 봐드립니다', '이 요정, 진짜 격조 있나요? 한정식·접대·진행 매너를 20년차 현장 실장이 1줄 진단 — 어른 자리 망치기 전에. 진짜 격이 있는 곳만. 지금 무료 →');
+  useDocumentMeta('요정 갔는데 격 떨어지면 끝장이죠? 20년 실장이 봐드림', '사장님 모시는데 격 떨어지면 다음은 없어요. 20년 일한 요정 실장이 한정식·접대·진행 매너 한 줄로 정리합니다. 진짜 격 있는 곳만 →');
   const venues = getVenuesByCategory('yojeong');
   const featured = venues.find(v => v.isPremium) || venues[0];
 

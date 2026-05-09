@@ -17,7 +17,7 @@ const regions = [
 ];
 
 export default function RoomsPage() {
-  useDocumentMeta('룸 — 초이스 진짜 만족하나요? 10년차 실장이 봐드립니다', '이 룸, 진짜 갈 만한가요? 초이스·양주 라인·진행 케어를 10년차 현장 실장이 1줄 진단 — 후회하기 전에 진짜 좋은 곳만. 지금 무료 →');
+  useDocumentMeta('룸 초이스 한 번이라도 후회해본 사람만 봐요. 10년 실장이 까드림', '사진이랑 다르면 그 순간 분위기 끝납니다. 10년 일한 룸 실장이 초이스·양주 라인·진행 케어까지 매장별로 솔직하게. 후회하기 전에 일단 물어봐요 →');
   const venues = getVenuesByCategory('room');
   const featured = venues.find(v => v.isPremium) || venues[0];
 

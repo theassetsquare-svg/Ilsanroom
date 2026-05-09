@@ -17,7 +17,7 @@ const regions = [
 ];
 
 export default function ClubsPage() {
-  useDocumentMeta('클럽 — 입장 진짜 되나요? 10년차 MD가 봐드립니다', '이 클럽, 진짜 갈 만한가요? 입장 컷·물·DJ 라인업을 10년차 현장 MD가 1줄 진단 — 주말 망치고 택시비 날리기 전에. 지금 무료 →');
+  useDocumentMeta('클럽 줄 서다 입장컷 당하기 싫죠? 10년 MD가 들어갈 곳만 알려줌', '줄 서서 1시간 기다렸는데 컷이면 그날 끝납니다. 10년 일한 클럽 MD가 들어갈 수 있는 곳·물·DJ 솔직하게 다 깝니다. 택시비 날리기 전에 →');
   const venues = getVenuesByCategory('club');
   const featured = venues.find(v => v.isPremium) || venues[0];
 
