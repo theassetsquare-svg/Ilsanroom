@@ -45,8 +45,8 @@ const promises = [
 
 export default function PrivacyPromisePage() {
   useDocumentMeta(
-    '놀쿨 프라이버시 6대 약속 — 친구한테 추천해도 안전한 이유',
-    '카톡 공유 위장, 본명 절대 X, 신상털림 차단, Stealth 모드, 시크릿 안내, 결제 중립. 백만 사용자 프라이버시를 지키는 6대 약속.'
+    '프라이버시 6대 약속 — 친구한테 추천해도 안전한 이유',
+    '본명 비노출, 신상 보호, Stealth 모드, 시크릿 진입, 결제 명세서 중립 표기까지 — 사용자 프라이버시를 지키는 6대 약속을 정리했습니다.'
   );
 
   return (

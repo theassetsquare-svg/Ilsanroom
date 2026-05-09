@@ -26,8 +26,8 @@ const categories = [
 
 export default function WelcomePage() {
   useDocumentMeta(
-    '놀쿨 OPEN BETA — 창립멤버 100명 한정 모집',
-    '놀쿨이 막 열렸습니다. 첫 100명 창립멤버에게 ⭐ 영구 뱃지. 카톡 공유 안전 + 본명 X + Stealth 모드. 친구한테 추천해도 걱정 없는 유흥 가이드.'
+    'OPEN BETA — 창립멤버 100명 한정 모집',
+    '오픈 직후 첫 100명 창립멤버에게 영구 뱃지를 드립니다. 본명 비노출·Stealth 모드 등 프라이버시 설계로 안심하고 시작하세요.'
   );
   const { remaining, totalCount } = useFoundingMember(null);
 
