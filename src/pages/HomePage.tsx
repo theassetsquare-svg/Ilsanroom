@@ -736,7 +736,7 @@ export default function HomePage() {
             <span className="text-[10px] text-white/40 shrink-0 mr-0.5">전국 {openVenues.length}곳</span>
             {['강남', '홍대', '부산', '일산', '대구', '대전', '수원', '인천', '광주', '울산', '제주'].map(r => (
               <button key={r} onClick={() => { setActiveTab(3); setActiveRegion(r); document.getElementById('feed-section')?.scrollIntoView({ behavior: 'smooth' }); }}
-                className="shrink-0 rounded-full bg-white/10 px-2.5 py-1 text-[10px] text-white/70 font-medium active:bg-white/20 transition">
+                className="shrink-0 rounded-full bg-white/10 px-3 py-1.5 text-[10px] text-white/70 font-medium active:bg-white/20 transition" style={{ minHeight: 32 }}>
                 {r}
               </button>
             ))}
