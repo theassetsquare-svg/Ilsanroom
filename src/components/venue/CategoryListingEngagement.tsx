@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import type { Venue } from '@/types';
 
@@ -12,28 +12,7 @@ interface CategoryHeroProps {
   accentColor: string; // e.g. 'violet', 'blue', 'amber'
 }
 
-export function CategoryHero({ emoji, title, hook, venueCount, gradient, accentColor }: CategoryHeroProps) {
-  const [viewerCount, setViewerCount] = useState(0);
-
-  useEffect(() => {
-    const now = new Date();
-    const hour = now.getHours();
-    const daySeed = now.getFullYear() * 400 + (now.getMonth() + 1) * 32 + now.getDate();
-    const base = 18 + (daySeed % 30);
-    const hourMultiplier = hour >= 20 || hour < 4 ? 3.2 : hour >= 17 ? 2.1 : hour >= 12 ? 1.4 : 0.8;
-    const initial = Math.floor(base * hourMultiplier);
-    setViewerCount(initial);
-
-    const interval = setInterval(() => {
-      setViewerCount(prev => {
-        const delta = Math.random() > 0.5 ? 1 : -1;
-        return Math.max(initial - 5, Math.min(initial + 12, prev + delta));
-      });
-    }, 4000 + Math.random() * 3000);
-
-    return () => clearInterval(interval);
-  }, []);
-
+export function CategoryHero({ emoji, title, hook, venueCount, gradient, accentColor: _ }: CategoryHeroProps) {
   return (
     <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${gradient} p-6 sm:p-8`}>
       {/* Background decoration */}
@@ -51,13 +30,6 @@ export function CategoryHero({ emoji, title, hook, venueCount, gradient, accentC
         <div className="flex flex-wrap items-center gap-4">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 backdrop-blur-sm px-4 py-1.5 text-sm font-bold text-white">
             {venueCount}개 업소
-          </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 backdrop-blur-sm px-4 py-1.5 text-sm font-bold text-white">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
-            </span>
-            지금 {viewerCount}명 보는 중
           </span>
         </div>
       </div>
@@ -174,7 +146,7 @@ export function TopPicksMini({ venues, hrefPattern, accentColor }: TopPicksProps
   return (
     <div className={`col-span-full rounded-2xl border ${style} p-5 my-2`}>
       <h3 className="text-base font-bold text-[#111] mb-3">
-        사람들이 가장 많이 본 TOP 3
+        프리미엄 추천 TOP 3
       </h3>
       <div className="grid gap-3 sm:grid-cols-3">
         {top3.map((v, i) => (
@@ -224,18 +196,7 @@ export function BrowseOtherCategories({ currentPath }: { currentPath: string }) 
   );
 }
 
-// ── Bottom finish counter ──
-export function BottomFinishCounter({ baseCount }: { baseCount?: number }) {
-  const now = new Date();
-  const daySeed = now.getFullYear() * 400 + (now.getMonth() + 1) * 32 + now.getDate();
-  const hour = now.getHours();
-  const count = (baseCount || 180) + (daySeed * 5) % 320 + Math.floor(hour * 4.2);
-
-  return (
-    <div className="flex items-center justify-center gap-2 py-4">
-      <span className="text-sm text-[#8B5CF6] font-medium">
-        끝까지 본 사람: <strong>{count.toLocaleString()}명</strong>
-      </span>
-    </div>
-  );
+// 출처 없는 카운터 비표시 (호환을 위해 빈 컴포넌트 유지)
+export function BottomFinishCounter(_: { baseCount?: number }) {
+  return null;
 }

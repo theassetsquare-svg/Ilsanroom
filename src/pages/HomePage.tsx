@@ -145,63 +145,6 @@ function getSeedDebates() {
 }
 const seedDebates = getSeedDebates();
 
-/* ── 실시간 인기 댓글 — 짧고 임팩트 있는 한줄 댓글 ── */
-const allHotComments = [
-  { author: '강남유령', text: 'ㄹㅇ 여기 안 가본 사람 없을듯ㅋㅋ', likes: 34, postTitle: '레이스 금요일 후기' },
-  { author: '부산파도', text: '이 분위기에 이 퀄이면 미친거 아님?', likes: 28, postTitle: '고구려나이트 후기' },
-  { author: '새벽택시', text: '택시비 아끼려고 걸어감 ← 나임 ㅋㅋㅋ', likes: 45, postTitle: '택시비 폭탄' },
-  { author: '클럽중독', text: '한번 가면 매주 가게됨 중독주의 ㄹㅇ', likes: 22, postTitle: '클럽 추천' },
-  { author: '혼놀러', text: '혼자가도 재밌음 진심 걱정 ㄴㄴ', likes: 51, postTitle: '혼자 가면 괜찮을까' },
-  { author: '인생한방', text: '여기서 여친 만남 ㅋㅋ 아직도 사귐', likes: 67, postTitle: '나이트 만남 후기' },
-  { author: '소주천잔', text: '양주 3병 까고 필름 끊겼는데 카드값 보고 기절', likes: 39, postTitle: '양주 주의사항' },
-  { author: '퇴근전사', text: '퇴근 후 여기 오는 게 인생낙인듯', likes: 31, postTitle: '금요일 추천' },
-  { author: '대전사람', text: '대전에도 이런데가 있었음?? 진짜 몰랐네', likes: 18, postTitle: '대전 나이트' },
-  { author: '춤초보', text: '지르박 배우는 중인데 나이트 가도 됨??ㅋㅋ', likes: 24, postTitle: '나이트 초보' },
-  { author: '일산시민', text: '일산 라붐 진짜 리뉴얼 잘했더라 인정', likes: 33, postTitle: '일산 나이트' },
-  { author: '감성충만', text: '새벽 2시 나이트 나오면서 듣는 발라드 ㅠㅠ', likes: 42, postTitle: '새벽 감성' },
-  { author: '단골픽', text: '여기 한번 가면 다른데 못감 ㄹㅇ', likes: 29, postTitle: '단골 추천' },
-  { author: '호빠퀸', text: '여기 선수 진짜 잘생김 추천 박고감', likes: 37, postTitle: '호빠 후기' },
-  { author: '주말전사', text: '평일은 참고 주말에 폭발하는 타입 나만 그럼?', likes: 44, postTitle: '주말 계획' },
-];
-function getHotComments() {
-  const d = new Date();
-  const seed = d.getDate() * 7 + Math.floor(d.getHours() / 2);
-  const result = [];
-  for (let i = 0; i < 5; i++) result.push(allHotComments[(seed + i) % allHotComments.length]);
-  return result;
-}
-
-/* ── 오늘의 TMI / 꿀정보 — 스크롤 보상 ── */
-const allTMIs = [
-  { emoji: '🍾', text: '양주 한 병 원가는 마트 가격의 약 1/3이라는 거 알고 있었음?' },
-  { emoji: '💃', text: '나이트에서 가장 부킹 잘 되는 시간대는 밤 10시~11시 사이래' },
-  { emoji: '🎵', text: '클럽 사운드 시스템 가격이 웬만한 차 한 대 값이라는 사실' },
-  { emoji: '🥂', text: '호빠 매출 1위 요일은 목요일이래 — 금요일 아님 ㅋ' },
-  { emoji: '📱', text: '나이트 가서 연락처 받을 확률, 혼자 간 사람이 더 높다는 통계' },
-  { emoji: '🌙', text: '전국 나이트 평균 영업시간은 오후 7시~새벽 2시' },
-  { emoji: '💰', text: '강남 클럽 평균 테이블 가격이 지방 클럽의 약 2.5배래' },
-  { emoji: '🎤', text: '나이트 라이브밴드 연주자들 평균 경력이 15년 이상이래' },
-  { emoji: '👔', text: '드레스코드 안 지키면 입장 거절당할 확률 약 40%' },
-  { emoji: '🚕', text: '금토 새벽 강남 택시 평균 대기시간 23분이래 ㄷㄷ' },
-  { emoji: '🎯', text: '요정 처음 간 사람의 87%가 "생각보다 좋았다"고 답했래' },
-  { emoji: '🍻', text: '한국인 평균 음주량 세계 1위 — 자랑은 아님ㅋ' },
-];
-function getTodayTMI() {
-  const d = new Date();
-  const idx = (d.getDate() * 3 + Math.floor(d.getHours() / 6)) % allTMIs.length;
-  return allTMIs[idx];
-}
-
-/* ── 업소 퀴즈 — "여기 어딜까?" 인터랙티브 ── */
-const venueQuizzes = [
-  { q: '이 업종의 전국 1위 지역은?', hint: '클럽', answer: '강남', options: ['강남', '홍대', '부산', '이태원'] },
-  { q: '나이트에서 가장 인기 있는 댄스는?', hint: '나이트', answer: '지르박', options: ['지르박', '왈츠', '탱고', '살사'] },
-  { q: '호빠가 가장 많은 지역은?', hint: '호빠', answer: '강남', options: ['강남', '홍대', '부산', '대구'] },
-  { q: '요정에서 주로 마시는 술은?', hint: '요정', answer: '양주', options: ['양주', '맥주', '소주', '와인'] },
-  { q: '클럽 입장 시 가장 중요한 것은?', hint: '클럽', answer: '드레스코드', options: ['드레스코드', '나이', '인원', '예약'] },
-  { q: '라운지와 바의 가장 큰 차이는?', hint: '라운지', answer: '좌석 구성', options: ['좌석 구성', '음악', '가격', '위치'] },
-];
-
 /* ── "이거 나야" 공감 반응 — 클릭 중독 ── */
 const quickReactions = ['ㅋㅋㅋ 찐', '완전 공감', '나도 이거', '대박..', '실화?!', '이건 좀..'];
 
@@ -683,14 +626,6 @@ export default function HomePage() {
   // === Fortune ===
   const [fortuneRevealed, setFortuneRevealed] = useState(false);
 
-  // === Hot Comments ===
-  const hotComments = useMemo(() => getHotComments(), []);
-  const todayTMI = useMemo(() => getTodayTMI(), []);
-
-  // === Venue Quiz (인터랙티브 퀴즈) ===
-  const [venueQuizIdx] = useState(() => new Date().getDate() % venueQuizzes.length);
-  const [venueQuizAnswer, setVenueQuizAnswer] = useState<string | null>(null);
-
   // === Favorites (하이브리드: localStorage + Supabase) ===
   const { favorites, toggleFavorite } = useFavoritesHook();
 
@@ -1112,26 +1047,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ 5.3 실시간 인기 댓글 — 짧은 한줄로 공감 유발 ═══ */}
-      <section className="px-4 py-2 max-w-3xl mx-auto">
-        <div className="flex items-center gap-2 mb-2">
-          <h2 className="text-base font-bold text-[#111]">지금 뜨는 댓글</h2>
-          <span className="text-[10px] text-[#666]">실시간</span>
-        </div>
-        <div className="space-y-1.5">
-          {hotComments.map((c, i) => (
-            <Link key={i} to="/community" className="flex items-start gap-2.5 rounded-xl border border-gray-100 bg-white px-3 py-2.5 active:bg-gray-50 transition">
-              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#EC4899] text-[10px] font-bold text-white">{c.author.charAt(0)}</div>
-              <div className="flex-1 min-w-0">
-                <p className="text-[13px] text-[#111] leading-snug">{c.text}</p>
-                <p className="text-[10px] text-[#999] mt-0.5">{c.author} · {c.postTitle}</p>
-              </div>
-              <span className="shrink-0 text-[11px] text-[#8B5CF6] font-bold">♥ {c.likes}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
       {/* ═══ 5.5 뜨거운 토론 — 논쟁 유발 → 댓글 참여 유도 ═══ */}
       <section className="px-4 py-2 max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-2">
@@ -1156,22 +1071,6 @@ export default function HomePage() {
               </div>
             </Link>
           ))}
-        </div>
-      </section>
-
-      {/* ═══ 5.8 오늘의 TMI — 스크롤 보상 ═══ */}
-      <section className="px-4 py-2 max-w-3xl mx-auto">
-        <div className="rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 p-4">
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-lg">{todayTMI.emoji}</span>
-            <p className="text-xs font-bold text-amber-700">오늘의 TMI</p>
-          </div>
-          <p className="text-[14px] font-medium text-[#333] leading-relaxed">{todayTMI.text}</p>
-          <div className="flex items-center gap-2 mt-2">
-            <button className="rounded-full bg-amber-100 px-3 py-1 text-[11px] font-bold text-amber-700 active:bg-amber-200 transition">ㅋㅋ 몰랐음</button>
-            <button className="rounded-full bg-white border border-amber-200 px-3 py-1 text-[11px] font-medium text-[#666] active:bg-gray-50 transition">알고 있었음</button>
-            <Link to="/community/free" className="ml-auto text-[11px] text-[#8B5CF6] font-medium">TMI 더보기 →</Link>
-          </div>
         </div>
       </section>
 
@@ -1280,42 +1179,6 @@ export default function HomePage() {
           })}
         </div>
         <p className="text-center text-[11px] text-[#666] mt-2">혼자 가기 심심하면 여기서 크루를 만들어봐</p>
-      </section>
-
-      {/* ═══ 7.5 업소 퀴즈 — 인터랙티브 참여 ═══ */}
-      <section className="px-4 py-2 max-w-3xl mx-auto">
-        <div className="rounded-2xl border border-[#8B5CF6]/20 bg-gradient-to-br from-[#F5F3FF] to-white p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-lg">🧠</span>
-            <p className="text-sm font-bold text-[#111]">놀쿨 퀴즈</p>
-            <span className="rounded-full bg-[#8B5CF6]/10 px-2 py-0.5 text-[9px] font-bold text-[#8B5CF6]">오늘의 문제</span>
-          </div>
-          <p className="text-[15px] font-bold text-[#111] mb-3">{venueQuizzes[venueQuizIdx].q}</p>
-          <div className="grid grid-cols-2 gap-2">
-            {venueQuizzes[venueQuizIdx].options.map(opt => {
-              const isCorrect = opt === venueQuizzes[venueQuizIdx].answer;
-              const isSelected = venueQuizAnswer === opt;
-              const showResult = venueQuizAnswer !== null;
-              return (
-                <button key={opt} onClick={() => !venueQuizAnswer && setVenueQuizAnswer(opt)}
-                  disabled={!!venueQuizAnswer}
-                  className={`rounded-xl border px-3 py-2.5 text-sm font-medium transition-all ${
-                    showResult && isCorrect ? 'border-green-400 bg-green-50 text-green-700 font-bold' :
-                    showResult && isSelected && !isCorrect ? 'border-red-300 bg-red-50 text-red-600' :
-                    showResult ? 'border-gray-200 bg-gray-50 text-gray-400' :
-                    'border-gray-200 bg-white text-[#111] active:border-[#8B5CF6] active:scale-[0.98]'
-                  }`} style={{ minHeight: 44 }}>
-                  {opt} {showResult && isCorrect && '✓'}
-                </button>
-              );
-            })}
-          </div>
-          {venueQuizAnswer && (
-            <p className="text-[12px] text-center mt-2 text-[#666]">
-              {venueQuizAnswer === venueQuizzes[venueQuizIdx].answer ? '정답! 역시 놀쿨 고수 ㅋ' : `아쉽~ 정답은 "${venueQuizzes[venueQuizIdx].answer}" 이었어`}
-            </p>
-          )}
-        </div>
       </section>
 
       {/* ═══ 8. 오늘 밤 운세 — 터치 인터랙션 (스크롤 보상) ═══ */}

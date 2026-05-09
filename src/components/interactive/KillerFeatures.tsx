@@ -5,15 +5,26 @@ import { Link } from 'react-router-dom';
 import { venues } from '@/data/venues';
 import ShareButtons from './ShareButtons';
 
-/* ═══ [F] 지금 이 시간 핫한 곳 ═══ */
+/* ═══ [F] 지금 이 시간 추천 (날짜·시간 기반 결정적 선정) ═══ */
 export function HotRightNow() {
   const [hour, setHour] = useState(22);
-  useEffect(() => { setHour(new Date().getHours()); }, []);
+  const [bucket, setBucket] = useState(0);
+  useEffect(() => {
+    const d = new Date();
+    setHour(d.getHours());
+    // 24h 자동 갱신: 날짜 + 시간/4 단위로 버킷 변경
+    setBucket(d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate() + Math.floor(d.getHours() / 4));
+  }, []);
 
   const openVenues = venues.filter((v) => v.status !== 'closed_or_unclear');
-  const shuffled = [...openVenues].sort(() => Math.random() - 0.5);
-  const top3 = shuffled.slice(0, 3);
-  const timeLabel = hour >= 22 || hour < 4 ? '심야 핫플' : hour >= 18 ? '저녁 추천' : '오후 추천';
+  // 결정적 회전: bucket 기반 인덱스 시작점 + 3칸 슬라이스 (랜덤 X)
+  const start = openVenues.length > 0 ? bucket % openVenues.length : 0;
+  const top3 = [
+    openVenues[start % openVenues.length],
+    openVenues[(start + 1) % openVenues.length],
+    openVenues[(start + 2) % openVenues.length],
+  ].filter(Boolean);
+  const timeLabel = hour >= 22 || hour < 4 ? '심야 추천' : hour >= 18 ? '저녁 추천' : '오후 추천';
 
   return (
     <div className="rounded-2xl border border-neon-pink/30 bg-neon-surface p-6">
@@ -131,50 +142,9 @@ export function AttendanceCheck() {
   );
 }
 
-/* ═══ [S] 술값 계산기 ═══ */
+/* 술값 계산기는 가격 비노출 정책에 따라 비활성화 (CLAUDE.md / feedback_no_price_anywhere) */
 export function DrinkBudgetCalc() {
-  const [people, setPeople] = useState('');
-  const [drink, setDrink] = useState('양주');
-  const [rounds, setRounds] = useState('1');
-
-  const prices: Record<string, number> = { '양주': 200000, '맥주': 50000, '소주': 30000, '칵테일': 80000, '와인': 150000 };
-  const total = people && rounds ? Number(people) * prices[drink] * Number(rounds) : 0;
-  const perPerson = total && people ? Math.ceil(total / Number(people)) : 0;
-
-  return (
-    <div className="rounded-2xl border border-neon-accent/30 bg-neon-surface p-6">
-      <h3 className="text-lg font-bold text-neon-text mb-4">술값 계산기</h3>
-      <div className="grid grid-cols-3 gap-3 mb-4">
-        <div>
-          <label className="block text-xs text-neon-text-muted mb-1">인원</label>
-          <input type="number" value={people} onChange={(e) => setPeople(e.target.value)} placeholder="4"
-            className="w-full rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none focus:border-neon-accent" />
-        </div>
-        <div>
-          <label className="block text-xs text-neon-text-muted mb-1">주종</label>
-          <select value={drink} onChange={(e) => setDrink(e.target.value)}
-            className="w-full rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none">
-            {Object.keys(prices).map((d) => <option key={d} value={d}>{d}</option>)}
-          </select>
-        </div>
-        <div>
-          <label className="block text-xs text-neon-text-muted mb-1">차수</label>
-          <select value={rounds} onChange={(e) => setRounds(e.target.value)}
-            className="w-full rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm text-neon-text outline-none">
-            <option value="1">1곳만</option><option value="2">2곳까지</option><option value="3">3곳까지</option>
-          </select>
-        </div>
-      </div>
-      {total > 0 && (
-        <div className="rounded-xl bg-neon-accent/10 p-4 text-center">
-          <p className="text-sm text-neon-text-muted">예상 총 비용</p>
-          <p className="text-3xl font-bold text-neon-accent">{total.toLocaleString()}원</p>
-          <p className="text-sm text-neon-text-muted mt-1">1인당 {perPerson.toLocaleString()}원</p>
-        </div>
-      )}
-      <p className="mt-3 text-xs text-neon-text-subtle">※ 참고용 예상 금액입니다. 실제 비용은 업소마다 다릅니다.</p>
-    </div>
-  );
+  return null;
 }
 
 /* ═══ [T] 대리운전 원클릭 ═══ */

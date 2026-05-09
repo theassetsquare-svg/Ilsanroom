@@ -41,52 +41,14 @@ function getCategoryHref(category: string, slug: string, region: string) {
   return map[category] || `/${category}/${slug}`;
 }
 
-const premiumScores: Record<string, number> = {
-  ilsanroom: 4.9, ilsanmyeongwolgwanyojeong: 4.8,
-  busanyeonsandongmulnight: 4.7, seongnamshampoonight: 4.6,
-  suwonchancenight: 4.5, sinlimgrandprixnight: 4.5,
-  cheongdamh2onight: 4.4, pajuyadangskydomenight: 4.3, ulsanchampionnight: 4.3,
-  haeundaegoguryeo: 4.7,
-};
-
-function getFavCount(slug: string): number {
-  try {
-    const saved = localStorage.getItem('nolcool_favorites');
-    if (!saved) return 0;
-    return JSON.parse(saved).includes(slug) ? 1 : 0;
-  } catch { return 0; }
-}
-
-function getVenueScore(slug: string): number {
-  if (premiumScores[slug]) return premiumScores[slug] + getFavCount(slug) * 0.1;
-  const hash = slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-  return (32 + (hash % 13)) / 10 + getFavCount(slug) * 0.1;
-}
-
-function getPeriodScore(slug: string, period: string): number {
-  const base = getVenueScore(slug);
-  const hash = slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-  const now = new Date();
-  if (period === 'daily') {
-    const s = (hash * 31 + now.getDate() * 17 + now.getHours()) % 11;
-    return Math.round((base + (s - 5) * 0.1) * 10) / 10;
-  }
-  if (period === 'weekly') {
-    const s = (hash * 13 + Math.floor(now.getDate() / 7) * 7 + now.getDay()) % 7;
-    return Math.round((base + (s - 3) * 0.1) * 10) / 10;
-  }
-  const s = (hash + now.getMonth()) % 5;
-  return Math.round((base + (s - 2) * 0.05) * 10) / 10;
-}
-
-function getRankChange(slug: string, _idx: number, period: string): { icon: string; color: string; text: string } {
-  const hash = slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-  const seed = period === 'daily' ? hash + new Date().getDate() : period === 'weekly' ? hash + Math.floor(new Date().getDate() / 7) : hash;
-  const mod = seed % 7;
-  if (mod < 2) return { icon: '▲', color: '#22C55E', text: `${mod + 1}` };
-  if (mod < 4) return { icon: '▼', color: '#F87171', text: `${mod - 1}` };
-  if (mod === 4) return { icon: 'NEW', color: '#8B5CF6', text: '' };
-  return { icon: '━', color: '#9CA3AF', text: '' };
+// 점수·등락 표시는 정확한 1차 데이터가 확보되기 전까지 사용하지 않습니다.
+// 정렬은 결정적 우선순위(프리미엄 → 카테고리 → slug)로만 수행합니다.
+function getOrderKey(v: { isPremium?: boolean; category: string; slug: string }, period: string): number {
+  // 결정적이고 시기 기반으로 회전: 날짜+슬러그+기간 해시. 가짜 점수 노출 X.
+  const periodSeed = period === 'daily' ? new Date().getDate() : period === 'weekly' ? Math.floor(new Date().getDate() / 7) : new Date().getMonth();
+  const slugHash = v.slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  const premiumBoost = v.isPremium ? 100000 : 0;
+  return premiumBoost + ((slugHash + periodSeed * 31) % 10000);
 }
 
 /* ═══ 시즌 투표 시스템 ═══ */
@@ -116,46 +78,7 @@ interface VoteItem {
   isSeed?: boolean;
 }
 
-function generateSeedVotes(): VoteItem[] {
-  const now = new Date();
-  const daySeed = now.getFullYear() * 400 + (now.getMonth() + 1) * 32 + now.getDate();
-  const raw = [
-    { nick: '강남유령', cat: 'club', venue: '강남클럽 레이스', reason: '사운드 시스템이 진짜 미쳤다. 금요일 밤 분위기 최고' },
-    { nick: '홍대불꽃', cat: 'night', venue: '신림그랑프리나이트', reason: '라이브밴드 퀄리티가 압도적. 트로트 좋아하면 무조건 여기' },
-    { nick: '부산갈매기', cat: 'night', venue: '부산연산동물나이트', reason: '부산 나이트 끝판왕. 규모도 크고 밴드 실력이 장난 아님' },
-    { nick: '수원첫방문', cat: 'night', venue: '수원찬스나이트', reason: '처음 갔는데 분위기 편하고 사람들 매너 좋아서 놀람' },
-    { nick: '대전원숭이팬', cat: 'night', venue: '대전세븐나이트', reason: '4인1조 시스템 너무 좋음. 원숭이 담당 최고' },
-    { nick: '일산단골', cat: 'room', venue: '일산룸', reason: '양주 라인업 풍성. 시설도 깔끔하고 서비스 만족' },
-    { nick: '해운대파도', cat: 'hoppa', venue: '해운대호빠 깐따삐야', reason: '호스트들 진짜 잘생겼고 분위기 재밌음' },
-    { nick: '압구정나이트', cat: 'lounge', venue: '압구정코드라운지', reason: '인테리어 감각이 다름. 조용하게 술 한잔 하기 좋아' },
-    { nick: '성남야행', cat: 'night', venue: '성남샴푸나이트', reason: '평일에 가도 사람 많고 분위기 좋음. 운영도 캐주얼' },
-    { nick: '울산챔피언', cat: 'night', venue: '울산챔피언나이트', reason: '춘자 담당 찐이다. 처음 가는 사람도 편하게 즐길수있음' },
-    { nick: '파주스카이', cat: 'night', venue: '파주야당스카이돔나이트', reason: '돔 형태 인테리어가 진짜 독특함. 경기 북부 최고' },
-    { nick: '청담물회', cat: 'night', venue: '청담H2O나이트', reason: '청담동이라 접근성 좋고 깔끔함. 첫방문자한테 추천' },
-    { nick: '대구밤사냥', cat: 'hoppa', venue: '대구호빠 퍼펙트', reason: '호스트 매칭 시스템이 잘 되어있고 분위기 안전함' },
-    { nick: '광주불주먹', cat: 'club', venue: '광주클럽 아레나', reason: 'DJ 초청 이벤트 자주 하고 캐주얼한 운영' },
-    { nick: '인천새벽', cat: 'night', venue: '부천메리트나이트', reason: '인천에서 가까워서 자주 감. 주말 분위기 진짜 좋음' },
-    { nick: '강남클럽러', cat: 'club', venue: '압구정클럽 캔디맨', reason: 'VIP룸 시설이 미쳤다. 생일파티 하기 딱 좋음' },
-    { nick: '요정초보', cat: 'yojeong', venue: '일산명월관요정', reason: '요정 처음이었는데 한복 입은 분들이 너무 친절했음' },
-    { nick: '홍대힙스터', cat: 'club', venue: '홍대클럽 하우스', reason: '힙합 음악 좋아하면 여기임. 매주 다른 DJ 라인업' },
-    { nick: '대전청년', cat: 'lounge', venue: '대전라운지 블루', reason: '칵테일 맛집. 바텐더 실력 좋고 분위기 고급스러움' },
-    { nick: '부산서면', cat: 'club', venue: '부산클럽 옥타곤', reason: '서면 클럽 중에 규모 최고. 주말마다 미어터짐' },
-  ];
-  const shuffled = [...raw].sort((a, b) => {
-    const ha = a.nick.split('').reduce((s, c) => s + c.charCodeAt(0), daySeed);
-    const hb = b.nick.split('').reduce((s, c) => s + c.charCodeAt(0), daySeed);
-    return (ha % 100) - (hb % 100);
-  });
-  return shuffled.slice(0, 12).map((v, i) => ({
-    id: `seed-${daySeed}-${i}`,
-    nickname: v.nick,
-    category: v.cat,
-    venue_name: v.venue,
-    reason: v.reason,
-    created_at: new Date(now.getTime() - (i * 45 + Math.floor(Math.random() * 60)) * 60000).toISOString(),
-    isSeed: true,
-  }));
-}
+// 시드 가짜 투표 제거 — 회원 실투표만 표시 (DB가 비면 빈 상태 노출)
 
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -170,7 +93,7 @@ function timeAgo(dateStr: string): string {
 /* ── 투표 섹션 ── */
 function VoteSection() {
   const [user, setUser] = useState<any>(null);
-  const [votes, setVotes] = useState<VoteItem[]>(generateSeedVotes);
+  const [votes, setVotes] = useState<VoteItem[]>([]);
   const [voteCat, setVoteCat] = useState('night');
   const [venueName, setVenueName] = useState('');
   const [reason, setReason] = useState('');
@@ -223,12 +146,8 @@ function VoteSection() {
       .then(({ data }) => {
         if (data && data.length > 0) {
           const real: VoteItem[] = data.map(d => ({ ...d, isSeed: false }));
-          setVotes(prev => {
-            const seeds = prev.filter(v => v.isSeed);
-            const merged = [...real, ...seeds];
-            merged.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-            return merged.slice(0, 40);
-          });
+          real.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+          setVotes(real.slice(0, 40));
         }
       }, () => {});
   }, []);
@@ -502,7 +421,7 @@ function VoteSection() {
 
 /* ═══ 메인 ═══ */
 export default function RankingPage() {
-  useDocumentMeta('인기 랭킹 TOP 20 — 지금 사람들이 가장 많이 보는 곳', '실시간 조회수·평점·전화클릭 합산 TOP 30. 지역·업종별 필터로 강남 홍대 이태원 일산 부산 1위 업소 확인. 매시간 자동 업데이트.');
+  useDocumentMeta('인기 랭킹 TOP 20 — 회원이 직접 투표한 카테고리별 1위', '회원 직접 투표 기반 카테고리·지역별 랭킹. 강남 홍대 이태원 일산 부산 클럽·나이트·룸·요정·라운지·호빠 1위 업소를 매월 1일 시즌 초기화로 확인.');
   const [category, setCategory] = useState('all');
   const [region, setRegion] = useState('all');
   const [period, setPeriod] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
@@ -512,11 +431,10 @@ export default function RankingPage() {
     let list = venues.filter((v) => v.status !== 'closed_or_unclear');
     if (category !== 'all') list = list.filter((v) => v.category === category);
     if (region !== 'all') list = list.filter((v) => v.regionKo.includes(region));
-    return [...list].sort((a, b) => getPeriodScore(b.slug, period) - getPeriodScore(a.slug, period)).slice(0, 20);
+    return [...list].sort((a, b) => getOrderKey(b, period) - getOrderKey(a, period)).slice(0, 20);
   }, [category, region, period]);
 
-  const maxScore = ranked.length > 0 ? Math.max(...ranked.map((v) => getPeriodScore(v.slug, period))) : 5;
-  const periodLabel = period === 'daily' ? '오늘 실시간 기준' : period === 'weekly' ? '이번 주 누적 기준' : '이번 달 누적 기준';
+  const periodLabel = period === 'daily' ? '오늘 기준' : period === 'weekly' ? '이번 주 기준' : '이번 달 기준';
 
   const scrollToVote = () => {
     document.getElementById('vote-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -592,38 +510,12 @@ export default function RankingPage() {
           <span className="text-xs font-medium" style={{ color: '#8B5CF6' }}>{periodLabel}</span>
         </div>
 
-        {/* 차트 */}
-        {ranked.length > 0 && (
-          <div className="mb-8 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-            <h2 className="text-sm font-bold mb-4" style={{ color: '#111' }}>상위 10곳 점수 분포</h2>
-            <div className="space-y-2.5">
-              {ranked.slice(0, 10).map((v, i) => {
-                const score = getPeriodScore(v.slug, period);
-                const pct = (score / maxScore) * 100;
-                const cc = catColors[v.category] || '#8B5CF6';
-                return (
-                  <div key={v.id} className="flex items-center gap-3">
-                    <span className="w-6 text-center text-xs font-bold" style={{ color: i < 3 ? '#8B5CF6' : '#9CA3AF' }}>{i + 1}</span>
-                    <span className="w-20 sm:w-28 truncate text-xs font-medium" style={{ color: '#111' }}>{v.nameKo}</span>
-                    <div className="flex-1 h-5 rounded-lg bg-gray-100 overflow-hidden">
-                      <div className="h-full rounded-lg transition-all duration-700" style={{ width: `${pct}%`, backgroundColor: cc }} />
-                    </div>
-                    <span className="w-8 text-right text-xs font-bold" style={{ color: cc }}>{score.toFixed(1)}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
         <MidContentHook seed="ranking-mid" variant={0} />
 
-        {/* 순위 리스트 */}
+        {/* 순위 리스트 — 점수·등락 표시는 정확한 1차 데이터 확보 전까지 비노출 */}
         <div className="space-y-2">
           {ranked.map((v, i) => {
-            const ch = getRankChange(v.slug, i, period);
             const cc = catColors[v.category] || '#8B5CF6';
-            const score = getPeriodScore(v.slug, period);
             return (
               <Link target="_blank" rel="noopener noreferrer" key={v.id} to={getCategoryHref(v.category, v.slug, v.region)}
                 className="flex items-center gap-3 sm:gap-4 rounded-xl border bg-white px-4 py-3 transition hover:shadow-md hover:border-[#8B5CF6]/30"
@@ -640,17 +532,6 @@ export default function RankingPage() {
                     {v.isPremium && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: '#8B5CF6', backgroundColor: '#F3F0FF' }}>AD</span>}
                   </div>
                   <p className="text-xs" style={{ color: '#999' }}>{v.regionKo} · {catLabel[v.category] || v.category}</p>
-                </div>
-                <div className="hidden sm:flex items-center gap-2 w-32">
-                  <div className="h-2 flex-1 rounded-full bg-gray-100">
-                    <div className="h-2 rounded-full transition-all duration-500" style={{ width: `${(score / 5) * 100}%`, backgroundColor: cc }} />
-                  </div>
-                  <span className="text-xs font-bold" style={{ color: cc }}>{score.toFixed(1)}</span>
-                </div>
-                <span className="sm:hidden text-xs font-bold" style={{ color: cc }}>{score.toFixed(1)}</span>
-                <div className="shrink-0 flex items-center gap-0.5">
-                  <span className="text-xs font-bold" style={{ color: ch.color }}>{ch.icon}</span>
-                  {ch.text && <span className="text-[10px]" style={{ color: ch.color }}>{ch.text}</span>}
                 </div>
               </Link>
             );
@@ -679,7 +560,7 @@ export default function RankingPage() {
         <div className="mt-8 rounded-xl bg-gray-50 p-4">
           <p className="text-xs font-bold mb-1" style={{ color: '#8B5CF6' }}>랭킹·투표 기준 안내</p>
           <ul className="text-xs space-y-1" style={{ color: '#555' }}>
-            <li><strong>인기 랭킹:</strong> 조회수·검색량·관심도 종합. 일간/주간/월간 자동 갱신.</li>
+            <li><strong>리스트 정렬:</strong> 프리미엄·카테고리 기반 결정적 순서. 정확한 점수 데이터 확보 전까지 점수·등락은 비표시.</li>
             <li><strong>투표 랭킹:</strong> 회원 직접 투표. 카테고리별 월 1표. 매월 1일 시즌 초기화.</li>
             <li><strong>공정성:</strong> 1인 1계정, 카테고리당 월 1회. 변경·취소 불가.</li>
           </ul>

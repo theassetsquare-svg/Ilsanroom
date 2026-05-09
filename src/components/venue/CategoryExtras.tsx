@@ -70,9 +70,9 @@ export function PopularTimes({ slots }: { slots: TimeSlot[] }) {
 /* ── [B] VS 대결 ── */
 export function CategoryVSBattle({ venueA, venueB, topic }: { venueA: string; venueB: string; topic: string }) {
   const [voted, setVoted] = useState<'a' | 'b' | null>(null);
-  const [va, setVa] = useState(Math.floor(Math.random() * 30) + 30);
-  const [vb, setVb] = useState(Math.floor(Math.random() * 30) + 30);
-  const total = va + vb;
+  const [va, setVa] = useState(0);
+  const [vb, setVb] = useState(0);
+  const total = Math.max(1, va + vb);
 
   const vote = (side: 'a' | 'b') => {
     if (voted) return;
