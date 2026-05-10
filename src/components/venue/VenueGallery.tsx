@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getVenueImageSlots } from '@/data/venue-image-manifest';
+import { getVenueImageSlots, hasVenueImage } from '@/data/venue-image-manifest';
 
 interface VenueGalleryProps {
   slug: string;
@@ -38,9 +38,10 @@ function isSquareSlot(slug: string, n: number): boolean {
 
 export default function VenueGallery({ slug, name }: VenueGalleryProps) {
   const [failed, setFailed] = useState<Set<number>>(new Set());
-  // 시즌29 — 빌드시 스캔된 실재 슬롯만 렌더 (없으면 [1,2,3,4] 폴백 — 새 venue 자동 인식 호환)
+  // 시즌29 — 이미지 없는 venue는 갤러리 자체를 skip. 있는 venue는 manifest 슬롯만 렌더.
+  if (!hasVenueImage(slug)) return null;
   const slots = getVenueImageSlots(slug);
-  const renderSlots = slots.length > 0 ? slots : [1, 2, 3, 4];
+  const renderSlots = slots.length > 0 ? slots : [1];
 
   const handleError = (n: number) => {
     setFailed((prev) => new Set(prev).add(n));

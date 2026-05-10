@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Badge from '@/components/ui/Badge';
+import { hasVenueImage } from '@/data/venue-image-manifest';
 
 interface VenueHeroProps {
   name: string;
@@ -38,8 +39,10 @@ export default function VenueHero({
 }: VenueHeroProps) {
   const gradient = categoryGradients[category] || categoryGradients.club;
   const bgPattern = categoryBgPatterns[category] || categoryBgPatterns.club;
-  const [hasImage, setHasImage] = useState(true);
-  const [imgSrc, setImgSrc] = useState(slug ? `/venues/${slug}-1.webp` : '');
+  // 시즌29 — manifest로 이미지 보유 여부 사전 확정. 없으면 img 자체 렌더 skip (404 0건).
+  const slugHasImage = !!slug && hasVenueImage(slug);
+  const [hasImage, setHasImage] = useState(slugHasImage);
+  const [imgSrc, setImgSrc] = useState(slugHasImage ? `/venues/${slug}-1.webp` : '');
 
   const handleImageError = () => {
     if (imgSrc.includes('.webp')) {
