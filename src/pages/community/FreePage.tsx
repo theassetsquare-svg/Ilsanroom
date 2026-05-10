@@ -183,7 +183,7 @@ export default function FreeBoardPage() {
               <div className="mt-6 flex items-center justify-center gap-2">
                 {pageNumbers.map((page) => (
                   <button key={page} onClick={() => setCurrentPage(page)}
-                    className={`flex h-8 w-8 items-center justify-center rounded-lg text-sm transition ${page === currentPage ? "bg-neon-primary text-neon-text" : "bg-neon-surface text-neon-text-muted hover:bg-neon-surface-2"}`}>
+                    className={`flex h-11 w-11 items-center justify-center rounded-lg text-sm transition ${page === currentPage ? "bg-neon-primary text-neon-text" : "bg-neon-surface text-neon-text-muted hover:bg-neon-surface-2"}`}>
                     {page}
                   </button>
                 ))}
