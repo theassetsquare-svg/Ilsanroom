@@ -66,7 +66,7 @@ function truncateDesc(text, maxLen = 150) {
 /**
  * HTML의 head 메타 태그를 교체
  */
-function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords }) {
+function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords, preloadImage }) {
   let html = baseHtml;
   const desc = truncateDesc(description || '', 150);
   // canonical은 sitemap loc과 동일 형식이어야 함 (trailing slash 일치).
@@ -181,6 +181,12 @@ function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdLis
   // 모든 페이지 공통: 24시간 자동 빌드 → 매일 새 dateModified (구글 freshness 시그널)
   const lastModMeta = `<meta name="last-modified" content="${BUILD_ISO_KST}">\n    <meta name="date" content="${BUILD_DATE_KST}">`;
   html = html.replace('</head>', `    ${lastModMeta}\n  </head>`);
+
+  // 시즌29-F — LCP preload: hero 이미지 JS 번들과 병렬 다운로드 시작 (PC LCP 3.5~4.2s → <2.5s)
+  if (preloadImage) {
+    const preloadTag = `<link rel="preload" as="image" href="${escHtml(preloadImage)}" fetchpriority="high" type="image/webp">`;
+    html = html.replace('</head>', `    ${preloadTag}\n  </head>`);
+  }
 
   // datePublished / dateModified meta (구글 "최근 업데이트" 시그널) + 네이버 og:type article
   if (datePublished) {
@@ -1154,6 +1160,9 @@ for (const v of venues) {
   venueJsonLd.dateModified = dateModified;
 
   const venueKeywords = [v.nameKo, `${v.regionKo} ${catLabelMap[v.cat]}`, `${v.nameKo} 후기`, `${v.nameKo} 예약`, `${v.regionKo} ${catLabelMap[v.cat]} 추천`, `${v.regionKo} 밤문화`].join(', ');
+  // 시즌29-F — 실재하는 hero webp만 preload (404 0건 유지)
+  const heroWebp = path.join('public', 'venues', `${v.slug}-1.webp`);
+  const preloadImage = fs.existsSync(heroWebp) ? `/venues/${v.slug}-1.webp` : undefined;
   writePage(routePath, {
     title: hookTitle,
     description: desc,
@@ -1163,6 +1172,7 @@ for (const v of venues) {
     datePublished,
     dateModified,
     keywords: venueKeywords,
+    preloadImage,
   });
   venueCount++;
 }
