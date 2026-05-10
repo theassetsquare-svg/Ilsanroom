@@ -144,6 +144,20 @@ function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdLis
     `<link rel="canonical" href="${escHtml(can)}"`
   );
 
+  // 시즌28 — hreflang ko-KR/ko/x-default 페이지별 canonical과 동기화
+  html = html.replace(
+    /<link rel="alternate" hreflang="ko-KR" href="[^"]*"/,
+    `<link rel="alternate" hreflang="ko-KR" href="${escHtml(can)}"`
+  );
+  html = html.replace(
+    /<link rel="alternate" hreflang="ko" href="[^"]*"/,
+    `<link rel="alternate" hreflang="ko" href="${escHtml(can)}"`
+  );
+  html = html.replace(
+    /<link rel="alternate" hreflang="x-default" href="[^"]*"/,
+    `<link rel="alternate" hreflang="x-default" href="${escHtml(can)}"`
+  );
+
   // noindex for private pages
   if (noindex) {
     html = html.replace(
