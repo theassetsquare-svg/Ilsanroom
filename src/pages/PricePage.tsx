@@ -1,7 +1,7 @@
 
 
 import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../components/ui/SafeLink';
 import { venues } from '@/data/venues';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 
 const NAV_ITEMS = [
   { label: '홈', to: '/' },

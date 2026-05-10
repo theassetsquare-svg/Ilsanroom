@@ -371,7 +371,7 @@ function generateVenueSsrBody(v, allVenues) {
   // 실제 후기는 /community/reviews 에서 회원이 직접 작성한 것만 노출.
   html += `<section>`;
   html += `<h2>${name} 방문 후기</h2>`;
-  html += `<p>${name} 방문 후기는 <a href="/community/reviews">놀쿨 커뮤니티 후기 게시판</a>에서 회원이 직접 작성한 글만 모아두었습니다. 별점·블록쿼트 형태의 가공 후기는 게시하지 않습니다.</p>`;
+  html += `<p>${name} 방문 후기는 <a href="/community/reviews" target="_blank" rel="noopener noreferrer">놀쿨 커뮤니티 후기 게시판</a>에서 회원이 직접 작성한 글만 모아두었습니다. 별점·블록쿼트 형태의 가공 후기는 게시하지 않습니다.</p>`;
   html += `</section>`;
 
   // ★ 방문 안내 섹션 — "가게이름 후기", "가게이름 가는법" 검색 대응
@@ -429,7 +429,7 @@ function generateVenueSsrBody(v, allVenues) {
         } else {
           rvPath = `/${rvCm.path}/${rv.slug}`;
         }
-        html += `<li><a href="${rvPath}">${escHtml(rv.nameKo)}</a> — ${escHtml(rv.regionKo)} ${rvCatKo}</li>`;
+        html += `<li><a href="${rvPath}" target="_blank" rel="noopener noreferrer">${escHtml(rv.nameKo)}</a> — ${escHtml(rv.regionKo)} ${rvCatKo}</li>`;
       });
       html += `</ul></section>`;
     }
@@ -437,7 +437,7 @@ function generateVenueSsrBody(v, allVenues) {
 
   // ★ 커뮤니티 안내 — 가공 카운터(후기N·댓글N·마지막글) 제거 (놀쿨 신뢰 규칙)
   html += `<section><h2>${name} 커뮤니티</h2>`;
-  html += `<p>${name} 관련 글과 질문은 <a href="/community">놀쿨 커뮤니티</a>에서 회원이 직접 작성한 글만 모아두었습니다. 가공된 후기 수·댓글 수·"마지막 글" 자동 카운터는 게시하지 않습니다.</p>`;
+  html += `<p>${name} 관련 글과 질문은 <a href="/community" target="_blank" rel="noopener noreferrer">놀쿨 커뮤니티</a>에서 회원이 직접 작성한 글만 모아두었습니다. 가공된 후기 수·댓글 수·"마지막 글" 자동 카운터는 게시하지 않습니다.</p>`;
   html += `</section>`;
 
   // ★ 관련 키워드 — 검색엔진이 연관 검색어로 인식
@@ -1069,7 +1069,7 @@ for (const a of magazineArticles) {
 <h1>${escHtml(a.title)}</h1>
 <p><strong>${escHtml(a.tag)}</strong> · <time datetime="${escHtml(a.date)}">${escHtml(a.date)}</time></p>
 ${a.content}
-<p><a href="${BASE_URL}/magazine">← 매거진 전체 보기</a></p>
+<p><a href="${BASE_URL}/magazine" target="_blank" rel="noopener noreferrer">← 매거진 전체 보기</a></p>
 </article>`;
   // Article JSON-LD
   const articleJsonLd = {

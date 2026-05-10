@@ -1,7 +1,7 @@
 
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 import { getPopularVenues } from '@/data/venues';
 import type { Venue } from '@/types';
 

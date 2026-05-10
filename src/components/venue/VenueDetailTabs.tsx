@@ -1,7 +1,7 @@
 
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 import type { Venue } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
 import { getVenueEvent } from '@/data/venue-events';

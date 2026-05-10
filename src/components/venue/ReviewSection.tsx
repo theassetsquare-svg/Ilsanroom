@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 import OwnerReply from './OwnerReply';
 import { fetchReviews, submitReview, type Review } from '@/lib/review-api';
 import { useAuth } from '@/hooks/useAuth';

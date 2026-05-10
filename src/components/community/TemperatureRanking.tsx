@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 import { createClient } from '@/lib/supabase';
 import { getTemperatureLevel } from '@/lib/temperature';
 

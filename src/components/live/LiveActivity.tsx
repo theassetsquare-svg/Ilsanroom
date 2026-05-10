@@ -1,5 +1,5 @@
 import { useState, useEffect, memo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 import { createClient } from '@/lib/supabase';
 
 type HotPost = { id: string; title: string; category: string; likes: number; comments: number };

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 import type { Venue } from '@/types';
 import { venues as localVenues } from '@/data/venues';
 

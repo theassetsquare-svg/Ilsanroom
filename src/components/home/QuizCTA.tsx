@@ -1,6 +1,6 @@
 
 
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 
 export default function QuizCTA() {
   return (

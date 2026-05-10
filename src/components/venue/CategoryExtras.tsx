@@ -1,7 +1,7 @@
 
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 import ShareButtons from '@/components/interactive/ShareButtons';
 
 /* ── [D] 첫 방문 가이드 ── */

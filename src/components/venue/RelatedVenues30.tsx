@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 import type { Venue, VenueCategory } from '@/types';
 import { venues as allVenues } from '@/data/venues';
 

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+import { Link } from '../components/ui/SafeLink';
 import { useAuth } from '@/hooks/useAuth';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import {

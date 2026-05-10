@@ -1,7 +1,7 @@
 
 
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 
 type WeatherType = 'clear' | 'cloudy' | 'rain' | 'snow' | 'hot' | 'cold';
 

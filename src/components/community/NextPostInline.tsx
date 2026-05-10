@@ -12,7 +12,8 @@
  *  3) 펼친 후 URL을 다음글로 replaceState (뒤로가기 자연스러움)
  */
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 import { createClient } from '@/lib/supabase';
 import { COLOR, RADIUS } from '@/lib/design-tokens';
 

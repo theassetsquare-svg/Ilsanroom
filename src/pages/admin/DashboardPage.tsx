@@ -2,7 +2,7 @@
 
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
-import { Link } from 'react-router-dom';
+import { Link } from '../../components/ui/SafeLink';
 
 const ADMIN_EMAILS = ['qotjsdnr123@naver.com'];
 

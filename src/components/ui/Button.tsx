@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from './SafeLink';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'glow' | 'danger';
 type ButtonSize = 'sm' | 'md' | 'lg';

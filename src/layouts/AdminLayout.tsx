@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { NavLink, Outlet, Link } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
+import { Link } from '../components/ui/SafeLink';
 import { createClient } from '@/lib/supabase';
 
 // 운영자 1인용 게이트 — 비밀번호 1회 입력으로 모든 /admin/* 진입.

@@ -1,5 +1,6 @@
 import { useRef } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { articles as localArticles } from '@/data/magazine-articles';
 import { useArticle, useArticles } from '@/hooks/useMagazine';

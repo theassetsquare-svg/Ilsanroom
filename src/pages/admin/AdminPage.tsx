@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
-import { Link } from 'react-router-dom';
+import { Link } from '../../components/ui/SafeLink';
 import { fetchReports, resolveReport, getReasonLabel, type Report } from '@/lib/report-api';
 
 const ADMIN_EMAILS = ['qotjsdnr123@naver.com', 'baesunwook513@gmail.com', 'theassetsquare@gmail.com'];

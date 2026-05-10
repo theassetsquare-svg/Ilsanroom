@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useArticles } from '@/hooks/useMagazine';
 import { PageLiveCounter } from '@/components/ui/LiveStats';

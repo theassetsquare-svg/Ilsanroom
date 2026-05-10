@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 import { lazy, Suspense, useEffect, useState, useMemo } from 'react';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueHero from '@/components/venue/VenueHero';

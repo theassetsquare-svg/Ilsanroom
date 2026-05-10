@@ -2,7 +2,7 @@ import { lazy, Suspense, useRef } from 'react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { MidContentHook, ReadFinishCount, ReadCompletionReward, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
-import { Link } from 'react-router-dom';
+import { Link } from '../components/ui/SafeLink';
 
 const Roulette = lazy(() => import('@/components/interactive/Roulette'));
 

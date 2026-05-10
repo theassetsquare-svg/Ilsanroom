@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+import { Link } from '../components/ui/SafeLink';
 import { Search } from 'lucide-react';
 import { venues as allVenues } from '@/data/venues';
 import type { Venue } from '@/types';

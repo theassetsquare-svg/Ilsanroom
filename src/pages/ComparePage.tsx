@@ -1,7 +1,7 @@
 
 
 import { useState, useMemo, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../components/ui/SafeLink';
 import { venues } from '@/data/venues';
 import Badge from '@/components/ui/Badge';
 import type { Venue } from '@/types';

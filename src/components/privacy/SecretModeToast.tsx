@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 
 /* 첫 방문 시크릿 모드 권장 토스트 — 1회 노출 후 영구 dismiss
    유흥 사용자가 가족·연인 폰에 흔적 안 남기는 방법 안내.

@@ -1,7 +1,7 @@
 
 import { useState, useRef } from 'react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
-import { Link } from 'react-router-dom';
+import { Link } from '../components/ui/SafeLink';
 import { PageLiveCounter, GuideReadCount } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import { MidContentHook, ReadFinishCount, ReadCompletionReward, NextSectionTeaser, MidContentQuiz, ReadingMilestone } from '@/components/engagement/ReadingEngagement';

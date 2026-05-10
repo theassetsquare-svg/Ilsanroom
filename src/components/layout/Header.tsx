@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 import { createClient } from '@/lib/supabase';
 import { useNewPosts, type NewPost } from '@/hooks/useNewPosts';
 import StealthToggle from '@/components/privacy/StealthToggle';

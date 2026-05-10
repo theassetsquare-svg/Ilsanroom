@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 import { useFoundingMember } from '@/hooks/useFoundingMember';
 
 /* OPEN BETA 시그널 배너 — 런칭 직후 첫 100명 한정 분위기.

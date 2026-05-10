@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 import { fetchPosts, type Post, type PostCategory } from '@/lib/community-api';
 
 const CATS: PostCategory[] = ['reviews', 'discussion', 'party', 'tips', 'free'];

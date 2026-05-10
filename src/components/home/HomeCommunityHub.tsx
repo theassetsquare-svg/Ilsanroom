@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 import { useAuth } from '@/hooks/useAuth';
 import { fetchPosts, type Post } from '@/lib/community-api';
 import WritePostModal from '@/components/community/WritePostModal';

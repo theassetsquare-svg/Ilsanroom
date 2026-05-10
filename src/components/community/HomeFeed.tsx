@@ -11,7 +11,7 @@
  *  - magazine : 매거진 카드 (옵션, 추후)
  */
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 import { createClient } from '@/lib/supabase';
 import { COLOR, RADIUS, SHADOW } from '@/lib/design-tokens';
 import { QuickPostInline } from './QuickPostInline';

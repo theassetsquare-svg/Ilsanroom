@@ -1,5 +1,5 @@
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
-import { Link } from 'react-router-dom';
+import { Link } from '../../components/ui/SafeLink';
 
 export default function OnboardingPage() {
   useDocumentMeta('입점 신청 — 사장님 전용', '사업자등록증·매장 사진 3장이면 입점 신청 가능. 카카오톡 besta12로 상세 문의 가능. 노출 위치·기간은 협의 후 확정.');

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../../components/ui/SafeLink';
 import { createClient } from '@/lib/supabase';
 import { COLOR, SHADOW, RADIUS, TYPO, TOUCH } from '@/lib/design-tokens';
 import { TemperatureBar } from '@/components/community/TemperatureBadge';

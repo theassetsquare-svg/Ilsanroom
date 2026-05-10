@@ -13,7 +13,7 @@
  *  4) 등록 후 페이지 새로고침 (피드에 즉시 노출)
  */
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 import { useAuth } from '@/hooks/useAuth';
 import { createPost } from '@/lib/community-api';
 import { checkContent } from '@/lib/content-filter';

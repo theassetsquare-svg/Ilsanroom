@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../components/ui/SafeLink';
 import { getPopularVenues } from '@/data/venues';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 

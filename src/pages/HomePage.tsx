@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { usePageBlock } from '@/hooks/usePageBlock';
 import { venues as localVenues, getPopularVenues } from '@/data/venues';

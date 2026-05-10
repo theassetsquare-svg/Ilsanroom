@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/SafeLink';
 
 /* 홈 상단 프라이버시 신뢰 뱃지 — 백만 회원이 친구 추천할 때 안심 포인트
    카톡 공유 위장 + 본명 X + 신상털림 차단 핵심 3가지 강조.

@@ -3,7 +3,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import JsonLd from '@/components/seo/JsonLd';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { MidContentHook, ReadFinishCount, ReadCompletionReward, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
-import { Link } from 'react-router-dom';
+import { Link } from '../components/ui/SafeLink';
 
 const events = [
   { id: 'e1', title: '강남청담클럽 레이스 EDM 위크엔드', venue: '강남청담클럽 레이스', date: '2026-03-21', time: '23:00', region: '강남', category: '클럽', desc: '강남 대표 EDM 파티. 해외 게스트 DJ 라인업과 함께하는 주말 페스티벌 분위기.' },
