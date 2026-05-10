@@ -54,14 +54,16 @@ export default function VenueHero({
 
   return (
     <section className="relative min-h-[240px] overflow-hidden border-b border-neon-border sm:min-h-[300px]">
-      {/* Real venue image background */}
+      {/* Real venue image background — LCP target, eager + high priority */}
       {slug && hasImage && (
         <img
           src={imgSrc}
           alt={name}
           width={1200}
           height={630}
-          loading="lazy"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
           onError={handleImageError}
           className="absolute inset-0 h-full w-full object-cover"
         />

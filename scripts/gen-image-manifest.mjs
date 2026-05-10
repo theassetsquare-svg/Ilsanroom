@@ -26,8 +26,8 @@ for (const f of files) {
   }
 }
 
-// 슬러그별 광고 override는 항상 유효 슬롯 (이미지 파일 없어도 컴포넌트가 별도 경로 사용)
-const OVERRIDE_SLOTS = { 'haeundaehoppa-kkantappiya': [4] };
+// 시즌29 — 실재 파일 기반만. 가공 override 사용 시 해당 파일이 실재해야 함.
+const OVERRIDE_SLOTS = {};
 for (const [slug, ns] of Object.entries(OVERRIDE_SLOTS)) {
   if (!slotsBySlug.has(slug)) slotsBySlug.set(slug, new Set());
   for (const n of ns) slotsBySlug.get(slug).add(n);

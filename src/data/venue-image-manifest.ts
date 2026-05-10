@@ -184,7 +184,7 @@ const VENUE_IMAGE_SLOTS = new Map<string, readonly number[]>([
   ['gwangjusangmunight', [1, 2, 3]],
   ['gwangjutotonight', [1, 2]],
   ['haeundaegoguryeo', [1, 2, 3, 4]],
-  ['haeundaehoppa-kkantappiya', [1, 2, 3, 4]],
+  ['haeundaehoppa-kkantappiya', [1, 2, 3]],
   ['haeundaehoppa-velvet', [1]],
   ['hongdaeclub-bermuda', [1, 2]],
   ['hongdaeclub-dokkaebi', [1, 2]],

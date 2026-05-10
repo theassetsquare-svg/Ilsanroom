@@ -16,12 +16,9 @@ const SQUARE_SLOTS: Record<string, number[]> = {
 /**
  * 슬러그별 특정 슬롯에서 기본 파일명 대신 사용할 이미지 경로.
  * 브라우저/CDN 캐시 완전 무효화를 위해 파일명 자체를 교체할 때 사용.
+ * 시즌29: 실재하는 파일만 등록 (없는 override는 404를 만든다).
  */
-const IMAGE_OVERRIDES: Record<string, Record<number, string>> = {
-  'haeundaehoppa-kkantappiya': {
-    4: '/venues/haeundaehoppa-kkantappiya-subin-ad.jpg',
-  },
-};
+const IMAGE_OVERRIDES: Record<string, Record<number, string>> = {};
 
 const CACHE_VER = 'v2';
 
