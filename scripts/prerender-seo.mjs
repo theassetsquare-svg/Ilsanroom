@@ -209,6 +209,8 @@ function venueHref(v) {
   return `/${catMap[v.cat].path}/${v.slug}/`;
 }
 const SITE_NAV_ANCHORS = `<nav aria-label="카테고리"><ul><li><a href="/clubs/">클럽</a></li><li><a href="/nights/">나이트</a></li><li><a href="/lounges/">라운지</a></li><li><a href="/rooms/">룸</a></li><li><a href="/yojeong/">요정</a></li><li><a href="/hoppa/">호빠</a></li><li><a href="/community/">커뮤니티</a></li><li><a href="/magazine/">매거진</a></li><li><a href="/search/">검색</a></li></ul></nav>`;
+// 시즌22 — 사이트 footer SSR 내부링크 (정적 유틸/lounge/lead 페이지 reachable)
+const SITE_FOOTER_ANCHORS = `<footer aria-label="사이트맵"><h2>전체 메뉴</h2><nav aria-label="사이트맵 링크"><ul><li><a href="/guide/">입문 가이드</a></li><li><a href="/safety/">안전 가이드</a></li><li><a href="/help/">자주 묻는 질문</a></li><li><a href="/venue-info/">양주·부스·룸 안내</a></li><li><a href="/events/">이벤트 일정</a></li><li><a href="/gallery/">매장 사진</a></li><li><a href="/map/">지도</a></li><li><a href="/ranking/">인기 랭킹</a></li><li><a href="/quiz/">스타일 퀴즈</a></li><li><a href="/roulette/">룰렛 추천</a></li><li><a href="/vs/">VS 매치업</a></li><li><a href="/compare/">업소 비교</a></li><li><a href="/hidden/">숨은 명소</a></li><li><a href="/welcome/">놀쿨 소개</a></li><li><a href="/login/">로그인</a></li><li><a href="/profile/">내 프로필</a></li><li><a href="/referral/">친구 초대</a></li><li><a href="/onboarding/">업소 입점</a></li><li><a href="/pricing/">요금제</a></li><li><a href="/dashboard/">매장 대시보드</a></li><li><a href="/analytics/">분석 리포트</a></li><li><a href="/billing/">결제 관리</a></li><li><a href="/launch/">오픈 체크</a></li><li><a href="/demo/">업주 데모</a></li><li><a href="/case-studies/">운영 사례</a></li><li><a href="/testimonials/">업주 인터뷰</a></li><li><a href="/status/">서비스 상태</a></li><li><a href="/privacy-promise/">프라이버시 정책</a></li><li><a href="/disclaimer/">고지 사항</a></li><li><a href="/terms/">이용 약관</a></li><li><a href="/privacy/">개인정보 처리</a></li><li><a href="/venue-terms/">업주 약관</a></li><li><a href="/lounge/">업종별 라운지</a></li><li><a href="/lounge/club/">클럽 라운지</a></li><li><a href="/lounge/night/">나이트 라운지</a></li><li><a href="/lounge/room/">룸 라운지</a></li><li><a href="/lounge/lounge/">라운지바 라운지</a></li><li><a href="/lounge/yojung/">요정 라운지</a></li><li><a href="/lounge/hoppa/">호빠 라운지</a></li><li><a href="/lounge/free/">자유 라운지</a></li><li><a href="/lounge/qna/">Q&A 라운지</a></li><li><a href="/lead/nightlife-guide/">밤문화 가이드</a></li><li><a href="/lead/quiz/">스타일 진단</a></li><li><a href="/lead/weekly-hot/">주간 핫스팟</a></li></ul></nav></footer>`;
 
 function writePage(routePath, meta) {
   // 파일시스템은 디코딩된 경로 (Cloudflare가 URL 디코딩 후 매칭)
@@ -218,7 +220,13 @@ function writePage(routePath, meta) {
   }).join('/');
   const dir = path.join(DIST, decodedPath);
   fs.mkdirSync(dir, { recursive: true });
-  const html = renderPage({ ...meta, canonical: routePath, noindex: noIndexPathsSet.has(routePath) });
+  // 시즌26 — landmark 자동 보강: enrichSsr 거치지 않은 동적 페이지에도 <nav>+<footer> 보장
+  let ssrBody = meta.ssrBody;
+  if (ssrBody) {
+    if (!ssrBody.includes('aria-label="카테고리"')) ssrBody = SITE_NAV_ANCHORS + ssrBody;
+    if (!ssrBody.includes('aria-label="사이트맵"')) ssrBody = ssrBody + SITE_FOOTER_ANCHORS;
+  }
+  const html = renderPage({ ...meta, ssrBody, canonical: routePath, noindex: noIndexPathsSet.has(routePath) });
   fs.writeFileSync(path.join(dir, 'index.html'), html);
 }
 
@@ -695,9 +703,6 @@ const COMMUNITY_BOARD_BLURBS = {
   '/community/jogak': () => `<h1>급하게 한 명 구한다, 조각 모집</h1><p>자리 하나 남았을 때, 바로 올리고 바로 구한다. 빠른 매칭 게시판.</p><h2>오늘 모집 진행 방식</h2><ul><li>지역, 업소, 인원, 시간만 적으면 끝</li><li>회원 100P 이상 작성 가능</li><li>매칭 후 채팅으로 약속 확정</li><li>노쇼 방지를 위한 평점 시스템</li></ul>`,
   '/community/guidelines': () => `<h1>이것만 지키면 된다, 커뮤니티 규칙</h1><p>광고·욕설·개인정보 노출 금지. 기본 매너만 지키면 자유롭게.</p><h2>금지 사항</h2><ul><li>광고/홍보 글 (업주 인증 사전 등록 필수)</li><li>욕설, 비방, 인신공격</li><li>개인정보(전화번호, 주소) 노출</li><li>불법 거래 암시 및 우회 표현</li><li>도배 및 동일 글 반복</li></ul>`,
 };
-
-// 시즌22 — 사이트 footer SSR 내부링크 (정적 유틸/lounge/lead 페이지 reachable)
-const SITE_FOOTER_ANCHORS = `<footer aria-label="사이트맵"><h2>전체 메뉴</h2><nav><ul><li><a href="/guide/">입문 가이드</a></li><li><a href="/safety/">안전 가이드</a></li><li><a href="/help/">자주 묻는 질문</a></li><li><a href="/venue-info/">양주·부스·룸 안내</a></li><li><a href="/events/">이벤트 일정</a></li><li><a href="/gallery/">매장 사진</a></li><li><a href="/map/">지도</a></li><li><a href="/ranking/">인기 랭킹</a></li><li><a href="/quiz/">스타일 퀴즈</a></li><li><a href="/roulette/">룰렛 추천</a></li><li><a href="/vs/">VS 매치업</a></li><li><a href="/compare/">업소 비교</a></li><li><a href="/hidden/">숨은 명소</a></li><li><a href="/welcome/">놀쿨 소개</a></li><li><a href="/login/">로그인</a></li><li><a href="/profile/">내 프로필</a></li><li><a href="/referral/">친구 초대</a></li><li><a href="/onboarding/">업소 입점</a></li><li><a href="/pricing/">요금제</a></li><li><a href="/dashboard/">매장 대시보드</a></li><li><a href="/analytics/">분석 리포트</a></li><li><a href="/billing/">결제 관리</a></li><li><a href="/launch/">오픈 체크</a></li><li><a href="/demo/">업주 데모</a></li><li><a href="/case-studies/">운영 사례</a></li><li><a href="/testimonials/">업주 인터뷰</a></li><li><a href="/status/">서비스 상태</a></li><li><a href="/privacy-promise/">프라이버시 정책</a></li><li><a href="/disclaimer/">고지 사항</a></li><li><a href="/terms/">이용 약관</a></li><li><a href="/privacy/">개인정보 처리</a></li><li><a href="/venue-terms/">업주 약관</a></li><li><a href="/lounge/">업종별 라운지</a></li><li><a href="/lounge/club/">클럽 라운지</a></li><li><a href="/lounge/night/">나이트 라운지</a></li><li><a href="/lounge/room/">룸 라운지</a></li><li><a href="/lounge/lounge/">라운지바 라운지</a></li><li><a href="/lounge/yojung/">요정 라운지</a></li><li><a href="/lounge/hoppa/">호빠 라운지</a></li><li><a href="/lounge/free/">자유 라운지</a></li><li><a href="/lounge/qna/">Q&A 라운지</a></li><li><a href="/lead/nightlife-guide/">밤문화 가이드</a></li><li><a href="/lead/quiz/">스타일 진단</a></li><li><a href="/lead/weekly-hot/">주간 핫스팟</a></li></ul></nav></footer>`;
 
 // SSR 본문 자동 보강 — H3·추가 단락·관련 링크 주입
 function enrichSsr(body, pgPath, pgTitle) {
