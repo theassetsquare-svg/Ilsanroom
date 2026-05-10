@@ -435,17 +435,9 @@ function generateVenueSsrBody(v, allVenues) {
     }
   }
 
-  // ★ 커뮤니티 활성 시그널 — 구글이 "살아있는 사이트"로 인식
-  const seed = v.slug.length + v.nameKo.length;
-  const postCount = 12 + (seed % 30);
-  const commentCount = postCount * 2 + (seed % 15);
-  const daysAgo = (seed % 3);
-  const recentDate = new Date();
-  recentDate.setDate(recentDate.getDate() - daysAgo);
-  const recentStr = recentDate.toISOString().slice(0, 10);
-  html += `<section><h2>${name} 커뮤니티 현황</h2>`;
-  html += `<p>최근 후기 ${postCount}개 · 댓글 ${commentCount}개 · 마지막 글 ${recentStr}</p>`;
-  html += `<p>${name} 실시간 후기와 꿀팁은 놀쿨 커뮤니티에서 매일 업데이트됩니다.</p>`;
+  // ★ 커뮤니티 안내 — 가공 카운터(후기N·댓글N·마지막글) 제거 (놀쿨 신뢰 규칙)
+  html += `<section><h2>${name} 커뮤니티</h2>`;
+  html += `<p>${name} 관련 글과 질문은 <a href="/community">놀쿨 커뮤니티</a>에서 회원이 직접 작성한 글만 모아두었습니다. 가공된 후기 수·댓글 수·"마지막 글" 자동 카운터는 게시하지 않습니다.</p>`;
   html += `</section>`;
 
   // ★ 관련 키워드 — 검색엔진이 연관 검색어로 인식
@@ -559,7 +551,7 @@ const staticPages = [
   { path: '/lounge/qna', title: '라운지 질문답변 — 뭐든 물어보세요', desc: '밤문화 관련 궁금한 거 다 답해주는 Q&A 게시판. 첫방문 매너, 강남 홍대 이태원 일산 부산 분위기 비교, 업소 추천, 안전 팁, 드레스코드까지. 단골 회원들이 빠르게 답변해주는 실시간 질문방.' },
 
   // Launch & Privacy
-  { path: '/welcome', title: '환영합니다 — 놀쿨 시작 가이드', desc: '본명·주민번호 없이 닉네임만으로 가입. 전국 클럽·나이트·라운지·룸·요정·호빠 분위기·라인업·후기 비교. 커뮤니티에서 회원들과 정보를 나눕니다.' },
+  { path: '/welcome', title: '처음 오셨다면 — 익명 가입·후기·찜 한 번에', desc: '본명·주민번호 없이 닉네임만으로 가입. 전국 클럽·나이트·라운지·룸·요정·호빠 분위기·라인업·후기 비교. 커뮤니티에서 회원들과 정보를 나눕니다.' },
   { path: '/privacy-promise', title: '프라이버시 보호 정책 — 익명 활동 원칙', desc: '본명·주민번호 비수집, 닉네임만 노출, 광고·팝업 최소화, 탈퇴 시 즉시 삭제. 익명 활동을 원칙으로 운영하는 놀쿨 프라이버시 정책 안내.' },
 
   // Legal & Info
