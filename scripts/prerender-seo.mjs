@@ -1813,6 +1813,19 @@ async function pingSitemap() {
   console.log(`✅ Sitemap ping 완료 (Google은 Search Console에서 자동 크롤링)`);
 }
 
+// 시즌27-F — dist/404.html 생성 (CF Pages가 unknown route fallback으로 사용, soft-404 방지)
+{
+  const html404 = renderPage({
+    title: '페이지 없음 — 놀쿨',
+    description: '요청하신 페이지를 찾을 수 없습니다. 홈으로 돌아가 카테고리·지역으로 다시 찾아보세요.',
+    canonical: '/404',
+    noindex: true,
+    ssrBody: `${SITE_NAV_ANCHORS}<main><h1>페이지를 찾을 수 없습니다</h1><p>주소가 바뀌었거나 삭제된 페이지일 수 있습니다.</p><p><a href="/">홈으로 돌아가기</a> · <a href="/clubs/">클럽</a> · <a href="/nights/">나이트</a> · <a href="/rooms/">룸</a> · <a href="/yojeong/">요정</a> · <a href="/lounges/">라운지</a> · <a href="/hoppa/">호빠</a></p></main>${SITE_FOOTER_ANCHORS}`,
+  });
+  fs.writeFileSync(path.join(DIST, '404.html'), html404);
+  console.log(`   404 페이지: dist/404.html`);
+}
+
 console.log(`\n🎉 프리렌더링 완료!`);
 console.log(`   정적: ${staticPages.length}개`);
 console.log(`   지역별: ${regionalCount}개`);
