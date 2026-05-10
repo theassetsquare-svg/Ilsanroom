@@ -79,7 +79,7 @@ export default function QRCode({ url, size = 150, venueName }: QRCodeProps) {
         <head><title>${venueName} QR코드</title></head>
         <body style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;">
           <h2>${venueName}</h2>
-          <img src="${dataUrl}" width="${size}" height="${size}" />
+          <img src="${dataUrl}" width="${size}" height="${size}" alt="${venueName} QR코드" />
           <p style="margin-top:16px;color:#666;font-size:12px;">${url}</p>
           <script>window.print();</script>
         </body>

@@ -203,6 +203,13 @@ function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdLis
 
 const noIndexPathsSet = new Set(['/login', '/profile', '/dashboard', '/analytics', '/billing', '/onboarding', '/launch', '/admin/venues']);
 
+// 시즌21 — SSR 내부링크: JS 미실행 봇(Yeti/Daum)도 anchor depth 1로 카테고리 도달
+function venueHref(v) {
+  if (['club', 'room', 'yojeong'].includes(v.cat)) return `/${catMap[v.cat].path}/${v.region}/${v.slug}/`;
+  return `/${catMap[v.cat].path}/${v.slug}/`;
+}
+const SITE_NAV_ANCHORS = `<nav aria-label="카테고리"><ul><li><a href="/clubs/">클럽</a></li><li><a href="/nights/">나이트</a></li><li><a href="/lounges/">라운지</a></li><li><a href="/rooms/">룸</a></li><li><a href="/yojeong/">요정</a></li><li><a href="/hoppa/">호빠</a></li><li><a href="/community/">커뮤니티</a></li><li><a href="/magazine/">매거진</a></li><li><a href="/search/">검색</a></li></ul></nav>`;
+
 function writePage(routePath, meta) {
   // 파일시스템은 디코딩된 경로 (Cloudflare가 URL 디코딩 후 매칭)
   // canonical/sitemap은 routePath 그대로 (인코딩 유지)
@@ -620,12 +627,14 @@ const HOME_CATS = [
   { key: 'yojeong', ko: '요정', desc: '대금 소리에 정찬, 한 번 가면 단골 되는 곳' },
   { key: 'hoppa', ko: '호빠', desc: '처음이어도 혼자여도 괜찮은, 여성 전용 호스트바' },
 ];
+// 시즌21 — 홈에서 카테고리·업소 SSR 내부링크 (JS 미실행 봇 anchor depth 1)
+homeSsr += SITE_NAV_ANCHORS;
 HOME_CATS.forEach(c => {
   const list = venues.filter(vv => vv.cat === c.key);
   if (list.length === 0) return;
-  homeSsr += `<h2>${escHtml(c.ko)} ${list.length}곳 — ${escHtml(c.desc)}</h2>`;
+  homeSsr += `<h2><a href="/${catMap[c.key].path}/">${escHtml(c.ko)}</a> ${list.length}곳 — ${escHtml(c.desc)}</h2>`;
   homeSsr += `<ul>`;
-  list.slice(0, 8).forEach(vv => { homeSsr += `<li>${escHtml(vv.regionKo)} ${escHtml(c.ko)} ${escHtml(vv.nameKo)}</li>`; });
+  list.slice(0, 8).forEach(vv => { homeSsr += `<li><a href="${venueHref(vv)}">${escHtml(vv.regionKo)} ${escHtml(c.ko)} ${escHtml(vv.nameKo)}</a></li>`; });
   homeSsr += `</ul>`;
 });
 const homeAllRegions = [...new Set(venues.map(v => v.regionKo))];
@@ -675,14 +684,23 @@ const COMMUNITY_BOARD_BLURBS = {
 
 // SSR 본문 자동 보강 — H3·추가 단락·관련 링크 주입
 function enrichSsr(body, pgPath, pgTitle) {
+  // 시즌21 — 모든 페이지에 카테고리 SSR 내부링크 (JS 미실행 봇용)
+  body = SITE_NAV_ANCHORS + body;
   // 매우 큰 본문은 그대로 (이미 풍부)
   if (body.length > 2000) return body;
   // 관련 카테고리 H3 + 인기 지역 H3 + 추천 활동 H3
-  const cats = ['클럽', '나이트', '라운지', '룸', '요정', '호빠'];
+  const catLinks = [
+    { href: '/clubs/', ko: '클럽' },
+    { href: '/nights/', ko: '나이트' },
+    { href: '/lounges/', ko: '라운지' },
+    { href: '/rooms/', ko: '룸' },
+    { href: '/yojeong/', ko: '요정' },
+    { href: '/hoppa/', ko: '호빠' },
+  ];
   const regions = ['강남', '홍대', '이태원', '일산', '수원', '부산 해운대'];
   const activities = ['VS 투표 결과 보기', '룰렛으로 즉흥 추천', '퀴즈로 내 스타일 찾기', '랭킹 TOP 30 확인', '1줄 글쓰기로 자랑'];
   body += `<h3>관련 업종 둘러보기</h3><ul>`;
-  cats.forEach(c => { body += `<li>${c} 카테고리 — 후기·분위기·예약 정보</li>`; });
+  catLinks.forEach(c => { body += `<li><a href="${c.href}">${c.ko}</a> 카테고리 — 후기·분위기·예약 정보</li>`; });
   body += `</ul>`;
   body += `<h3>지역별 인기 업소</h3><ul>`;
   regions.forEach(r => { body += `<li>${r} — 회원 추천 베스트</li>`; });
@@ -740,7 +758,7 @@ for (const pg of staticPages) {
     const catInfo = catMap[catKey];
     ssrBody = `<h1>${escHtml(pg.title)}</h1><p>${escHtml(pg.desc)}</p>`;
     ssrBody += `<h2>전국 ${catKo} ${catVenues.length}곳 리스트</h2><ul>`;
-    catVenues.forEach(vv => { ssrBody += `<li>${escHtml(vv.nameKo)} — ${escHtml(vv.regionKo)} ${catKo}</li>`; });
+    catVenues.forEach(vv => { ssrBody += `<li><a href="${venueHref(vv)}">${escHtml(vv.nameKo)}</a> — ${escHtml(vv.regionKo)} ${catKo}</li>`; });
     ssrBody += `</ul>`;
     // ★ 지역별 안내 추가 (AI가 지역+업종 검색 시 인용)
     const regionGroups = {};
@@ -900,7 +918,7 @@ for (const [cat, regions] of Object.entries(regionsByCategory)) {
       let regSsr = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
       regSsr += `<h2>${escHtml(regionKo)} ${catLabelMap[cat]} ${regionVenues.length}곳</h2><ul>`;
       regionVenues.forEach(vv => {
-        regSsr += `<li><strong>${escHtml(vv.nameKo)}</strong> — ${escHtml(vv.shortDesc.slice(0, 80))}</li>`;
+        regSsr += `<li><a href="${venueHref(vv)}"><strong>${escHtml(vv.nameKo)}</strong></a> — ${escHtml(vv.shortDesc.slice(0, 80))}</li>`;
       });
       regSsr += `</ul>`;
       // ★ AI 인용용 FAQ
@@ -1161,7 +1179,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   const desc = `전국 ${catInfo.labelKo} TOP ${catVenues.length}곳 비교 가이드 — ${topNames} 등 인기 ${catInfo.labelKo} 분위기, 매니저 평판, 드레스코드, 전화번호, 예약 팁까지 정리. 매일 자동 갱신되는 ${catInfo.labelKo} 추천 리스트.`;
   let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
   ssrBody += `<ol>`;
-  catVenues.forEach((vv, idx) => { ssrBody += `<li>${idx + 1}. ${escHtml(vv.nameKo)} — ${escHtml(vv.regionKo)} ${catInfo.labelKo}</li>`; });
+  catVenues.forEach((vv, idx) => { ssrBody += `<li>${idx + 1}. <a href="${venueHref(vv)}">${escHtml(vv.nameKo)}</a> — ${escHtml(vv.regionKo)} ${catInfo.labelKo}</li>`; });
   ssrBody += `</ol>`;
   writePage(p, { title, description: desc, ssrBody, keywords: `${catInfo.labelKo} 인기, ${catInfo.labelKo} 추천, ${catInfo.labelKo} 랭킹, ${catInfo.labelKo} TOP`, jsonLdList: collectionJsonLd(p, title, desc, catVenues) });
   dynamicPages.push(p);
@@ -1176,7 +1194,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   const newNames = catVenues.slice(0, 3).map(vv => vv.nameKo).join(', ');
   const desc = `최근 새로 오픈한 ${catInfo.labelKo} ${catVenues.length}곳 신규 입점 리스트와 첫방문 가이드. ${newNames} 등 강남 홍대 이태원 일산 부산 수원 신생 핫스팟. 오픈 직후라 손님 적고 서비스 좋은 신규 ${catInfo.labelKo}만 모아 분위기·콘셉트·예약 팁까지 비교.`;
   let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p><ul>`;
-  catVenues.forEach(vv => { ssrBody += `<li>${escHtml(vv.nameKo)} — ${escHtml(vv.regionKo)}</li>`; });
+  catVenues.forEach(vv => { ssrBody += `<li><a href="${venueHref(vv)}">${escHtml(vv.nameKo)}</a> — ${escHtml(vv.regionKo)}</li>`; });
   ssrBody += `</ul>`;
   writePage(p, { title, description: desc, ssrBody, keywords: `신규 ${catInfo.labelKo}, 새 ${catInfo.labelKo}, ${catInfo.labelKo} 오픈`, jsonLdList: collectionJsonLd(p, title, desc, catVenues) });
   dynamicPages.push(p);
@@ -1199,7 +1217,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
   let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
   for (const [ck, rvs] of Object.entries(byCat)) {
     ssrBody += `<h2>${escHtml(regionKo)} ${escHtml(ck)} (${rvs.length}곳)</h2><ul>`;
-    rvs.forEach(rv => { ssrBody += `<li>${escHtml(rv.nameKo)} — ${escHtml(rv.shortDesc.slice(0, 60))}</li>`; });
+    rvs.forEach(rv => { ssrBody += `<li><a href="${venueHref(rv)}">${escHtml(rv.nameKo)}</a> — ${escHtml(rv.shortDesc.slice(0, 60))}</li>`; });
     ssrBody += `</ul>`;
   }
   // FAQ
@@ -1221,7 +1239,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     const crossNames = crossVenues.slice(0, 3).map(cv => cv.nameKo).join(', ');
     const cd = `${regionKo} ${catInfo.labelKo} ${crossVenues.length}곳 실시간 비교 가이드 — ${crossNames} 등 인기 ${catInfo.labelKo} 분위기, 후기, 평점, 매니저 평판, 드레스코드, 전화번호, 영업시간, 예약 팁, 첫방문 동선까지 한눈에 정리한 ${regionKo} 핫스팟 비교 페이지.`;
     let cSsr = `<h1>${escHtml(ct)}</h1><p>${escHtml(cd)}</p><ul>`;
-    crossVenues.forEach(cv => { cSsr += `<li>${escHtml(cv.nameKo)} — ${escHtml(cv.shortDesc.slice(0, 60))}</li>`; });
+    crossVenues.forEach(cv => { cSsr += `<li><a href="${venueHref(cv)}">${escHtml(cv.nameKo)}</a> — ${escHtml(cv.shortDesc.slice(0, 60))}</li>`; });
     cSsr += `</ul>`;
     writePage(cp, { title: ct, description: cd, ssrBody: cSsr, keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: collectionJsonLd(cp, ct, cd, crossVenues) });
     dynamicPages.push(cp);
@@ -1243,7 +1261,7 @@ for (const [tag, tagVenues] of Object.entries(allTags)) {
   const tagTopNames = tagVenues.slice(0, 3).map(tv => tv.nameKo).join(', ');
   const desc = `'${tag}' 태그로 모은 클럽·나이트·라운지·룸·요정·호빠 ${tagVenues.length}곳 큐레이션. ${tagTopNames} 등 강남 홍대 이태원 일산 부산 핫스팟 정리. 같은 분위기·콘셉트끼리 묶어 한번에 비교 가능한 ${tag} 전용 페이지.`;
   let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p><ul>`;
-  tagVenues.forEach(tv => { ssrBody += `<li>${escHtml(tv.nameKo)} — ${escHtml(tv.regionKo)} ${catLabelMap[tv.cat] || tv.cat}</li>`; });
+  tagVenues.forEach(tv => { ssrBody += `<li><a href="${venueHref(tv)}">${escHtml(tv.nameKo)}</a> — ${escHtml(tv.regionKo)} ${catLabelMap[tv.cat] || tv.cat}</li>`; });
   ssrBody += `</ul>`;
   writePage(p, { title, description: desc, ssrBody, keywords: `${tag}, ${tag} 추천, 밤문화 ${tag}`, jsonLdList: collectionJsonLd(p, title, desc, tagVenues) });
   dynamicPages.push(p);
@@ -1264,7 +1282,7 @@ for (const [st, stVenues] of Object.entries(stationVenues)) {
   const stTopNames = stVenues.slice(0, 3).map(sv => sv.nameKo).join(', ');
   const desc = `${st} 근처 도보 5분 거리 클럽·나이트·라운지·룸·요정·호빠 ${stVenues.length}곳 위치 정리. ${stTopNames} 등 ${st} 인근 핫스팟 평점·후기·전화번호 비교. ${st}에서 술 한잔, 클럽, 룸 가기 좋은 곳을 거리순으로 안내.`;
   let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p><ul>`;
-  stVenues.forEach(sv => { ssrBody += `<li>${escHtml(sv.nameKo)} — ${escHtml(sv.regionKo)} ${catLabelMap[sv.cat] || sv.cat}</li>`; });
+  stVenues.forEach(sv => { ssrBody += `<li><a href="${venueHref(sv)}">${escHtml(sv.nameKo)}</a> — ${escHtml(sv.regionKo)} ${catLabelMap[sv.cat] || sv.cat}</li>`; });
   ssrBody += `</ul>`;
   writePage(p, { title, description: desc, ssrBody, keywords: `${st} 근처, ${st} 밤문화, ${st} 클럽, ${st} 나이트`, jsonLdList: collectionJsonLd(p, title, desc, stVenues) });
   dynamicPages.push(p);

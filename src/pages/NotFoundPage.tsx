@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from '../components/ui/SafeLink';
 import { getPopularVenues } from '@/data/venues';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -21,6 +22,20 @@ function getCategoryLabel(cat: string) {
 
 export default function NotFound() {
   useDocumentMeta('페이지를 찾을 수 없습니다 — 인기 업소 추천', '주소가 바뀌었거나 삭제된 페이지. 대신 강남 홍대 이태원 일산 부산 인기 업소 6곳 추천. 검색하거나 카테고리(클럽·나이트·라운지·룸·요정·호빠)에서 다시 찾아보세요.');
+  // SPA fallback returns 200 for unknown URLs → soft-404 위험. robots noindex로 Google 색인 차단.
+  useEffect(() => {
+    let robots = document.querySelector('meta[name="robots"]');
+    const prev = robots?.getAttribute('content') || null;
+    if (!robots) {
+      robots = document.createElement('meta');
+      robots.setAttribute('name', 'robots');
+      document.head.appendChild(robots);
+    }
+    robots.setAttribute('content', 'noindex, nofollow');
+    return () => {
+      if (prev !== null) robots!.setAttribute('content', prev);
+    };
+  }, []);
   const popularVenues = getPopularVenues(6);
 
   return (
