@@ -1,22 +1,12 @@
 import { useEffect } from 'react';
-// react-helmet-async는 HelmetProvider에서 사용됨
 
 /**
- * react-helmet-async + DOM 직접 조작 병행
- * - Helmet: SSR/프리렌더링 시 head 태그 자동 관리
- * - useEffect: 클라이언트 SPA 네비게이션 시 즉시 반영
- * 모든 페이지에서 기존 호출 패턴 그대로 사용
+ * SPA 네비게이션 시 head 메타 즉시 반영.
+ * SSR HTML은 prerender-seo.mjs가 페이지별 og/twitter/canonical을 박아둠 (renderPage).
+ * 시즌22 — SAFE_OG_* 강제 덮어쓰기 제거. SSR이 박은 page-specific og/twitter 값을 hydration 후에도 유지.
+ * (메모리 project_og_dynamic: og 및 twitter 메타 페이지별 동적, 통일 금지.)
  */
-/* ── 프라이버시 — 카톡 공유 위장 ──
-   og:title / og:description / og:image / twitter:* 는 항상 중립 고정.
-   Kakao/Twitter/Facebook 미리보기에 업소·업종 단어 절대 노출 X.
-   SEO는 <title>·<meta name=description>·페이지 본문이 담당하므로 영향 없음.
-   유흥 사용자가 친구 단톡방·연인 카톡에 링크 보내도 안전. */
-const SAFE_OG_TITLE = '놀쿨 — 오늘 밤 가이드';
-const SAFE_OG_DESC = '전국 실시간. 친구·연인과 어디 갈지 한 곳에서.';
-const SAFE_OG_IMAGE = 'https://nolcool.com/og/nolcool-og.jpg';
-
-export function useDocumentMeta(title: string, description: string, _ogImage?: string, keywords?: string) {
+export function useDocumentMeta(title: string, description: string, ogImage?: string, keywords?: string) {
   useEffect(() => {
     // 브라우저 탭 제목 — Stealth 모드에서 위장됨 (StealthMode 컴포넌트가 처리)
     if (!document.documentElement.hasAttribute('data-stealth')) {
@@ -38,26 +28,20 @@ export function useDocumentMeta(title: string, description: string, _ogImage?: s
       }
     };
 
-    // Standard meta — SEO용 (Google 검색)
+    // Standard meta — SEO용
     setMeta('name', 'description', trimmedDesc);
     if (keywords) setMeta('name', 'keywords', keywords);
 
-    // Open Graph — 항상 중립 (Kakao/Facebook 공유 미리보기 위장)
-    setMeta('property', 'og:title', SAFE_OG_TITLE);
-    setMeta('property', 'og:description', SAFE_OG_DESC);
-    setMeta('property', 'og:type', 'website');
+    // Open Graph + Twitter — page-specific (SSR 값과 일치)
+    setMeta('property', 'og:title', title);
+    setMeta('property', 'og:description', trimmedDesc);
     setMeta('property', 'og:url', currentUrl);
-    setMeta('property', 'og:locale', 'ko_KR');
-    setMeta('property', 'og:site_name', '놀쿨');
-    setMeta('property', 'og:image', SAFE_OG_IMAGE);
-    setMeta('property', 'og:image:width', '1200');
-    setMeta('property', 'og:image:height', '1200');
-
-    // Twitter Card — 항상 중립
-    setMeta('name', 'twitter:card', 'summary_large_image');
-    setMeta('name', 'twitter:title', SAFE_OG_TITLE);
-    setMeta('name', 'twitter:description', SAFE_OG_DESC);
-    setMeta('name', 'twitter:image', SAFE_OG_IMAGE);
+    setMeta('name', 'twitter:title', title);
+    setMeta('name', 'twitter:description', trimmedDesc);
+    if (ogImage) {
+      setMeta('property', 'og:image', ogImage);
+      setMeta('name', 'twitter:image', ogImage);
+    }
 
     // Canonical link
     let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
@@ -69,5 +53,5 @@ export function useDocumentMeta(title: string, description: string, _ogImage?: s
       canonical.href = currentUrl;
       document.head.appendChild(canonical);
     }
-  }, [title, description, _ogImage, keywords]);
+  }, [title, description, ogImage, keywords]);
 }

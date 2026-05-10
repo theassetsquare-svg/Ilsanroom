@@ -450,6 +450,19 @@ function generateVenueSsrBody(v, allVenues) {
   html += `<p>관련 글과 질문은 <a href="/community" target="_blank" rel="noopener noreferrer">놀쿨 커뮤니티</a>에서 회원이 직접 작성한 글만 모아두었습니다. 가공된 후기 수·댓글 수·"마지막 글" 자동 카운터는 게시하지 않습니다.</p>`;
   html += `</section>`;
 
+  // 시즌22 — 태그·역 anchor (tag/near 페이지 reachable)
+  if (v.tags && v.tags.length > 0) {
+    html += `<section><h2>태그로 더 찾기</h2><ul>`;
+    v.tags.forEach(t => { html += `<li><a href="/tag/${encodeURIComponent(t)}/">#${escHtml(t)} 관련 업소</a></li>`; });
+    html += `</ul></section>`;
+  }
+  if (v.nearbyStation) {
+    const stName = v.nearbyStation.match(/([^\s]+역)/)?.[1] || v.nearbyStation.split(' ')[0];
+    if (stName) {
+      html += `<section><h2>역 근처 업소</h2><p><a href="/near/${encodeURIComponent(stName)}/">${escHtml(stName)} 근처 업소 모아보기</a></p></section>`;
+    }
+  }
+
   // ★ 관련 키워드 — 검색엔진이 연관 검색어로 인식 (nameKo 1회 + 카테고리·지역)
   html += `<footer><p>${name}, ${region} ${catKo}, ${region} ${catKo} 추천, ${region} 밤문화</p></footer>`;
   html += `</article>`;
@@ -653,13 +666,14 @@ const COMMUNITY_BOARD_BLURBS = {
     let s = `<h1>밤 사람들이 모이는 커뮤니티</h1>`;
     s += `<p>전국 ${venues.length}곳을 다녀본 사람들이 모여 후기, 꿀팁, 추천을 남기는 광장. 광고 없이 진짜 경험만.</p>`;
     s += `<h2>커뮤니티 게시판</h2><ul>`;
-    s += `<li>오늘 어디 가냐고? Q&A — 갈 곳 못 정했을 때 추천받는 곳</li>`;
-    s += `<li>가본 사람만 쓰는 후기 — 별점과 한 줄 평</li>`;
-    s += `<li>고수들의 밤놀이 꿀팁 — 입장 타이밍, 자리 잡는 법</li>`;
-    s += `<li>파티 멤버 모집 — 인원 채우고, 날짜 맞추고, N빵</li>`;
-    s += `<li>자유게시판 — 잡담, 궁금한 거, 웃긴 얘기</li>`;
-    s += `<li>업종별 복장 가이드 — 클럽·나이트·요정·라운지 드레스코드</li>`;
-    s += `<li>조각 모집 — 자리 하나 남았을 때 바로 구하는 곳</li>`;
+    s += `<li><a href="/community/qna/">오늘 어디 가냐고? Q&A</a> — 갈 곳 못 정했을 때 추천받는 곳</li>`;
+    s += `<li><a href="/community/reviews/">가본 사람만 쓰는 후기</a> — 별점과 한 줄 평</li>`;
+    s += `<li><a href="/community/tips/">고수들의 밤놀이 꿀팁</a> — 입장 타이밍, 자리 잡는 법</li>`;
+    s += `<li><a href="/community/party/">파티 멤버 모집</a> — 인원 채우고, 날짜 맞추고, N빵</li>`;
+    s += `<li><a href="/community/free/">자유게시판</a> — 잡담, 궁금한 거, 웃긴 얘기</li>`;
+    s += `<li><a href="/community/fashion/">업종별 복장 가이드</a> — 클럽·나이트·요정·라운지 드레스코드</li>`;
+    s += `<li><a href="/community/jogak/">조각 모집</a> — 자리 하나 남았을 때 바로 구하는 곳</li>`;
+    s += `<li><a href="/community/guidelines/">커뮤니티 규칙</a> — 매너 가이드</li>`;
     s += `</ul>`;
     s += `<h2>지금 인기 있는 주제</h2>`;
     s += `<p>강남 클럽 줄 안 서고 들어가는 시간대, 홍대 클럽 부킹 잘 되는 요일, 룸 처음 가는 사람을 위한 가이드, 호빠 첫 방문 매너, 요정 코스 안내.</p>`;
@@ -682,12 +696,15 @@ const COMMUNITY_BOARD_BLURBS = {
   '/community/guidelines': () => `<h1>이것만 지키면 된다, 커뮤니티 규칙</h1><p>광고·욕설·개인정보 노출 금지. 기본 매너만 지키면 자유롭게.</p><h2>금지 사항</h2><ul><li>광고/홍보 글 (업주 인증 사전 등록 필수)</li><li>욕설, 비방, 인신공격</li><li>개인정보(전화번호, 주소) 노출</li><li>불법 거래 암시 및 우회 표현</li><li>도배 및 동일 글 반복</li></ul>`,
 };
 
+// 시즌22 — 사이트 footer SSR 내부링크 (정적 유틸/lounge/lead 페이지 reachable)
+const SITE_FOOTER_ANCHORS = `<footer aria-label="사이트맵"><h2>전체 메뉴</h2><nav><ul><li><a href="/guide/">입문 가이드</a></li><li><a href="/safety/">안전 가이드</a></li><li><a href="/help/">자주 묻는 질문</a></li><li><a href="/venue-info/">양주·부스·룸 안내</a></li><li><a href="/events/">이벤트 일정</a></li><li><a href="/gallery/">매장 사진</a></li><li><a href="/map/">지도</a></li><li><a href="/ranking/">인기 랭킹</a></li><li><a href="/quiz/">스타일 퀴즈</a></li><li><a href="/roulette/">룰렛 추천</a></li><li><a href="/vs/">VS 매치업</a></li><li><a href="/compare/">업소 비교</a></li><li><a href="/hidden/">숨은 명소</a></li><li><a href="/welcome/">놀쿨 소개</a></li><li><a href="/login/">로그인</a></li><li><a href="/profile/">내 프로필</a></li><li><a href="/referral/">친구 초대</a></li><li><a href="/onboarding/">업소 입점</a></li><li><a href="/pricing/">요금제</a></li><li><a href="/dashboard/">매장 대시보드</a></li><li><a href="/analytics/">분석 리포트</a></li><li><a href="/billing/">결제 관리</a></li><li><a href="/launch/">오픈 체크</a></li><li><a href="/demo/">업주 데모</a></li><li><a href="/case-studies/">운영 사례</a></li><li><a href="/testimonials/">업주 인터뷰</a></li><li><a href="/status/">서비스 상태</a></li><li><a href="/privacy-promise/">프라이버시 정책</a></li><li><a href="/disclaimer/">고지 사항</a></li><li><a href="/terms/">이용 약관</a></li><li><a href="/privacy/">개인정보 처리</a></li><li><a href="/venue-terms/">업주 약관</a></li><li><a href="/lounge/">업종별 라운지</a></li><li><a href="/lounge/club/">클럽 라운지</a></li><li><a href="/lounge/night/">나이트 라운지</a></li><li><a href="/lounge/room/">룸 라운지</a></li><li><a href="/lounge/lounge/">라운지바 라운지</a></li><li><a href="/lounge/yojung/">요정 라운지</a></li><li><a href="/lounge/hoppa/">호빠 라운지</a></li><li><a href="/lounge/free/">자유 라운지</a></li><li><a href="/lounge/qna/">Q&A 라운지</a></li><li><a href="/lead/nightlife-guide/">밤문화 가이드</a></li><li><a href="/lead/quiz/">스타일 진단</a></li><li><a href="/lead/weekly-hot/">주간 핫스팟</a></li></ul></nav></footer>`;
+
 // SSR 본문 자동 보강 — H3·추가 단락·관련 링크 주입
 function enrichSsr(body, pgPath, pgTitle) {
   // 시즌21 — 모든 페이지에 카테고리 SSR 내부링크 (JS 미실행 봇용)
   body = SITE_NAV_ANCHORS + body;
-  // 매우 큰 본문은 그대로 (이미 풍부)
-  if (body.length > 2000) return body;
+  // 매우 큰 본문은 그대로 (이미 풍부) + footer anchor만 추가
+  if (body.length > 2000) return body + SITE_FOOTER_ANCHORS;
   // 관련 카테고리 H3 + 인기 지역 H3 + 추천 활동 H3
   const catLinks = [
     { href: '/clubs/', ko: '클럽' },
@@ -709,8 +726,23 @@ function enrichSsr(body, pgPath, pgTitle) {
   activities.forEach(a => { body += `<li>${a}</li>`; });
   body += `</ul>`;
   body += `<p>${pgTitle.replace(/['"]/g, '')} 외에도 클럽·나이트·라운지·룸·요정·호빠 업소 후기와 분위기를 비교할 수 있습니다. 회원 가입 시 1줄 글쓰기, 후기 작성, 찜하기, VS 투표, 파티 모집 참여 등 기능을 무료로 이용할 수 있습니다.</p>`;
-  return body;
+  return body + SITE_FOOTER_ANCHORS;
 }
+
+// 시즌22 — 매거진 article 미리 파싱 (INTERACTIVE_PAGE_BLURBS['/magazine']에서 anchor 생성용)
+const _earlyMagazineSrc = fs.readFileSync('src/data/magazine-articles.ts', 'utf8');
+function _parseEarlyMagazineArticles() {
+  const result = [];
+  const blocks = _earlyMagazineSrc.split(/\n  \{\n    id:/);
+  for (let i = 1; i < blocks.length; i++) {
+    const block = '    id:' + blocks[i];
+    const id = block.match(/id:\s*'([^']+)'/)?.[1];
+    const title = block.match(/title:\s*'([^']+)'/)?.[1];
+    if (id && title) result.push({ id, title });
+  }
+  return result;
+}
+const _earlyMagazineList = _parseEarlyMagazineArticles();
 
 // 인터랙티브 페이지 evergreen SSR — JS 페이지지만 SEO 본문 필요
 const INTERACTIVE_PAGE_BLURBS = {
@@ -735,7 +767,10 @@ const INTERACTIVE_PAGE_BLURBS = {
   '/welcome': () => `<h1>놀쿨에 오신 것을 환영합니다</h1><p>유흥 정보를 안전하게 비교하고 커뮤니티에서 정보를 나누는 가이드 플랫폼입니다. 가입은 무료이며 본명·주민번호 입력 없이 닉네임만 정하면 끝.</p><h2>플랫폼에서 할 수 있는 일</h2><ul><li>업소 분위기·라인업·후기 비교</li><li>커뮤니티에서 정보 교류</li><li>VS 투표·룰렛·퀴즈로 결정 도움</li><li>찜하기로 가고 싶은 곳 모으기</li></ul><h2>가입 안내</h2><p>카카오·네이버·구글 OAuth로 빠르게 가입할 수 있습니다. 본명·주민번호는 받지 않고 닉네임만 노출됩니다. 탈퇴는 1클릭으로 처리됩니다.</p><h2>플랫폼 소개</h2><p>전국 클럽, 나이트, 라운지, 룸, 요정, 호빠 업소의 분위기·라인업·후기를 비교하고, 커뮤니티에서 회원들과 정보를 나눕니다. 매월 콘텐츠가 갱신됩니다.</p>`,
   '/privacy-promise': () => `<h1>프라이버시 보호 정책</h1><p>유흥 정보를 다루는 플랫폼이라 더 엄격하게 익명성·개인정보 보호 원칙을 운영합니다.</p><h2>본명·주민번호 비수집</h2><p>가입 시 본명·주민번호·생년월일을 받지 않습니다. 카카오/네이버/구글 OAuth는 사용자 식별 토큰만 사용하며, 닉네임만으로 활동합니다.</p><h2>익명 활동</h2><p>댓글·후기·채팅에서 닉네임만 표시되며 본명은 노출되지 않습니다.</p><h2>광고·팝업 최소화</h2><p>강압적인 가입 유도 팝업과 외부 침투형 배너를 최소화하여 후기·정보 중심으로 화면을 구성합니다.</p><h2>탈퇴·삭제</h2><p>탈퇴는 1클릭으로 처리되며, 즉시 데이터 삭제 절차가 실행됩니다. 자세한 보유 기간·삭제 정책은 운영 문서를 참고하세요.</p><h2>변경 고지</h2><p>본 정책의 중대한 변경은 사전 고지 후에만 적용됩니다. 시행 일자와 변경 사항은 사이트 내 공지에 안내됩니다.</p>`,
   '/venue-info': () => `<h1>양주·부스·룸 한눈에 보기</h1><p>업종별 양주 라인업, 부스 구성, 룸 타입까지. 가기 전에 미리 확인하세요.</p><h2>업종별 핵심 정보</h2><ul><li>나이트 — 부스 + 룸 둘 다 보유</li><li>클럽 — VIP 부스 위주</li><li>룸 — 인원별 룸 사이즈</li><li>요정 — 프라이빗 룸 + 한정식</li><li>호빠 — 룸별 호스트 배정</li></ul><h2>양주 라인업 표준</h2><ul><li>발렌타인 12·17·21년산</li><li>조니워커 블랙·그린·블루</li><li>로얄살루트 21·25년</li><li>맥캘란 12·18년</li><li>국내산 양주 (앱솔루트, 잭다니엘)</li></ul><h2>부스·룸 사이즈 가이드</h2><p>4인 룸은 노래방기기 + 소파 + 양주 1병이 표준이고, 8인 룸은 무대 + 대형 소파 + 양주 2병 이상이 일반적입니다. 부스는 클럽·나이트의 좌석 단위로 4~6인 기준이 많고, VIP 부스는 8~12인까지 수용합니다. 인원에 맞는 사이즈로 예약해야 동선이 편합니다.</p>`,
-  '/magazine': () => `<h1>밤문화 매거진</h1><p>지역 분석, 업종 비교, 현장 리포트 등 가기 전에 읽으면 도움 되는 글을 모았습니다.</p><h2>매거진 카테고리</h2><ul><li>지역 분석 — 강남/홍대/이태원 등</li><li>업종 비교 — 클럽 vs 라운지 등</li><li>현장 리포트 — 신규 오픈 매장</li><li>인터뷰 — 업주·매니저 이야기</li><li>트렌드 — 최신 음악·시즌 이벤트</li></ul><h2>매거진 이용 안내</h2><p>새 글이 등록되면 회원 알림 설정에 따라 안내됩니다. 좋아요·댓글이 활발한 글은 홈 영역에 노출될 수 있습니다.</p>`,
+  '/magazine': () => {
+    const articleLis = _earlyMagazineList.map(a => `<li><a href="/magazine/${a.id}/">${escHtml(a.title)}</a></li>`).join('');
+    return `<h1>밤문화 매거진</h1><p>지역 분석, 업종 비교, 현장 리포트 등 가기 전에 읽으면 도움 되는 글을 모았습니다.</p><h2>최신 매거진 글 ${_earlyMagazineList.length}편</h2><ul>${articleLis}</ul><h2>매거진 카테고리</h2><ul><li>지역 분석 — 강남/홍대/이태원 등</li><li>업종 비교 — 클럽 vs 라운지 등</li><li>현장 리포트 — 신규 오픈 매장</li><li>인터뷰 — 업주·매니저 이야기</li><li>트렌드 — 최신 음악·시즌 이벤트</li></ul><h2>매거진 이용 안내</h2><p>새 글이 등록되면 회원 알림 설정에 따라 안내됩니다. 좋아요·댓글이 활발한 글은 홈 영역에 노출될 수 있습니다.</p>`;
+  },
   '/events': () => `<h1>업소 이벤트·행사 일정</h1><p>DJ 게스트, 기념행사, 시즌 이벤트 등 업소가 등록한 일정을 모아 보여줍니다. 일정은 업소가 직접 관리하므로 정확도는 매장 페이지에서 다시 확인해주세요.</p><h2>등록되는 이벤트 유형</h2><ul><li>DJ·게스트 라이브</li><li>시즌 한정 메뉴</li><li>기념일 프로모션</li><li>단체 안내</li><li>회원 대상 안내</li></ul><h2>이벤트 알림</h2><p>회원 가입 후 알림 설정에서 이벤트 알림을 켜면 새로운 이벤트가 등록될 때 알림을 받을 수 있습니다. 관심 지역·업종만 필터링도 가능합니다.</p>`,
   '/gallery': () => `<h1>매장 내부 사진 갤러리</h1><p>조명, 룸 배치, 무대 구성 등 직접 가기 전에 매장 분위기를 확인할 수 있습니다.</p><h2>갤러리 카테고리</h2><ul><li>외관·간판 사진</li><li>룸 내부 사진</li><li>무대·DJ 부스</li><li>라운지 공간</li><li>주차장·입구</li></ul><h2>사진 보는 팁</h2><ul><li>가급적 최근 사진 위주</li><li>조명·분위기 확인</li><li>룸 사이즈 비교</li><li>주차 가능 여부 체크</li></ul><h2>사진 등록·신고</h2><p>업주가 등록한 사진과 회원 후기 사진이 표시됩니다. 인물이 식별되는 사진은 모자이크 처리하거나 차단 신고할 수 있습니다.</p>`,
   '/hidden': () => `<h1>덜 알려진 업소 모음</h1><p>광고보다는 입소문으로 운영되는 업소들을 소개합니다. 등록 여부는 업소 협조에 따라 달라집니다.</p><h2>히든 업소 특징</h2><ul><li>광고보다 단골 중심 운영</li><li>예약 권장</li><li>응대 수준이 안정적</li></ul><h2>이용 가이드</h2><p>대부분 사전 예약을 권장하며, 분위기를 해치지 않는 선에서 사진·후기 작성을 부탁드립니다. 새 업소 추천이 있다면 커뮤니티 게시판으로 제보해주세요.</p>`,
@@ -766,9 +801,28 @@ for (const pg of staticPages) {
       if (!regionGroups[vv.regionKo]) regionGroups[vv.regionKo] = [];
       regionGroups[vv.regionKo].push(vv.nameKo);
     });
+    // 시즌22 — 지역 H3 → anchor (region 페이지 reachable). club/room/yojeong은 /cat/region/, 그 외는 /region/{ko}/
+    const hasCatRegionPath = ['club', 'room', 'yojeong'].includes(catKey);
     for (const [rg, names] of Object.entries(regionGroups)) {
-      ssrBody += `<h3>${escHtml(rg)} ${catKo}</h3>`;
+      // catVenue 첫 항목으로 region slug 가져오기
+      const sample = catVenues.find(vv => vv.regionKo === rg);
+      const regionHref = hasCatRegionPath && sample
+        ? `/${catInfo.path}/${sample.region}/`
+        : `/region/${encodeURIComponent(rg)}/`;
+      ssrBody += `<h3><a href="${regionHref}">${escHtml(rg)} ${catKo}</a></h3>`;
       ssrBody += `<p>${escHtml(rg)}에서 인기 있는 ${catKo}: ${names.map(n => escHtml(n)).join(', ')}. 실시간 후기와 비교는 각 업소 페이지에서 확인하세요.</p>`;
+    }
+    // 시즌22 — 카테고리 페이지 footer: best/new/region 전체 anchor
+    ssrBody += `<h3>${catKo} 더 둘러보기</h3><ul>`;
+    ssrBody += `<li><a href="/best/${catInfo.path}/">${catKo} 인기 TOP</a></li>`;
+    ssrBody += `<li><a href="/new/${catInfo.path}/">새로 입점한 ${catKo}</a></li>`;
+    ssrBody += `</ul>`;
+    // 모든 region 페이지 anchor (/region/{ko}/)
+    const allRegionsForCat = [...new Set(catVenues.map(vv => vv.regionKo))];
+    if (allRegionsForCat.length > 0) {
+      ssrBody += `<h3>지역별 ${catKo}</h3><ul>`;
+      allRegionsForCat.forEach(rk => { ssrBody += `<li><a href="/region/${encodeURIComponent(rk)}/">${escHtml(rk)} 밤문화</a></li>`; });
+      ssrBody += `</ul>`;
     }
     // ★ Evergreen 가이드 — 업소 수와 무관하게 SEO 본문 풍부
     if (CAT_GUIDE_BLURBS[catKey]) {
@@ -1227,6 +1281,14 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
   ssrBody += `<dt>${escHtml(regionKo)}에 몇 곳 있나요?</dt>`;
   ssrBody += `<dd>${escHtml(regionKo)}에는 ${regionVenues.length}곳의 유흥 업소가 등록되어 있습니다.</dd>`;
   ssrBody += `</dl></section>`;
+  // 시즌22 — 지역×업종 anchor (region/{ko}/{cat} reachable)
+  ssrBody += `<h2>${escHtml(regionKo)} 업종별 더보기</h2><ul>`;
+  for (const [catKey, catInfo] of Object.entries(catMap)) {
+    const cv = regionVenues.filter(rv => rv.cat === catKey);
+    if (cv.length === 0) continue;
+    ssrBody += `<li><a href="/region/${encodeURIComponent(regionKo)}/${catInfo.path}/">${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} ${cv.length}곳</a></li>`;
+  }
+  ssrBody += `</ul>`;
   writePage(p, { title, description: desc, ssrBody, keywords: `${regionKo} 밤문화, ${regionKo} 클럽, ${regionKo} 나이트, ${regionKo} 룸, ${regionKo} 유흥`, jsonLdList: collectionJsonLd(p, title, desc, regionVenues) });
   dynamicPages.push(p);
 
