@@ -128,7 +128,7 @@ export const articles: MagazineArticle[] = [
   {
     id: 'nationwide-dancehall-guide',
     title: '전국 소셜 댄스홀 지역별 특징 총정리',
-    excerpt: '서울·부산·대구·대전·울산·수원·인천 등 전국 주요 도시별 댄스홀 문화를 정리합니다.',
+    excerpt: '서울·부산·대구·대전·울산·수원·인천 — 도시마다 다른 댄스홀 분위기, 음악 취향, 운영 방식까지 한 번에 비교합니다.',
     tag: '정보',
     date: '2026-02-28',
     content: `<h2>도시마다 다른 댄스홀 문화</h2>
