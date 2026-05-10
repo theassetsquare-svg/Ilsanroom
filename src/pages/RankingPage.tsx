@@ -306,7 +306,7 @@ function VoteSection() {
                         voted ? 'opacity-40 line-through' :
                         voteCat === c.key ? 'text-white shadow-md' : 'bg-gray-100 hover:bg-gray-200'
                       }`}
-                      style={voteCat === c.key && !voted ? { backgroundColor: catColors[c.key], minHeight: 32 } : { color: voted ? '#BBB' : '#555', minHeight: 32 }}
+                      style={voteCat === c.key && !voted ? { backgroundColor: catColors[c.key], minHeight: 44 } : { color: voted ? '#BBB' : '#555', minHeight: 44 }}
                     >
                       {c.emoji} {c.label} {voted && '✓'}
                     </button>
@@ -380,14 +380,14 @@ function VoteSection() {
             <button
               onClick={() => setVoteFilter('all')}
               className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium whitespace-nowrap ${voteFilter === 'all' ? 'bg-[#111] text-white' : 'bg-gray-100 text-[#555]'}`}
-              style={{ minHeight: 32 }}
+              style={{ minHeight: 44 }}
             >전체</button>
             {voteCats.map(c => (
               <button
                 key={c.key}
                 onClick={() => setVoteFilter(c.key)}
                 className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium whitespace-nowrap ${voteFilter === c.key ? 'text-white' : 'bg-gray-100 text-[#555]'}`}
-                style={voteFilter === c.key ? { backgroundColor: catColors[c.key], minHeight: 32 } : { minHeight: 32 }}
+                style={voteFilter === c.key ? { backgroundColor: catColors[c.key], minHeight: 44 } : { minHeight: 44 }}
               >{c.emoji} {c.label}</button>
             ))}
           </div>
@@ -489,7 +489,7 @@ export default function RankingPage() {
               <button key={r.key} onClick={() => setRegion(r.key)}
                 className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all whitespace-nowrap ${
                   region === r.key ? 'bg-[#111] text-white' : 'bg-white text-[#555] border border-gray-200 hover:border-gray-400'
-                }`} style={{ minHeight: 32 }}>
+                }`} style={{ minHeight: 44 }}>
                 {r.label}
               </button>
             ))}

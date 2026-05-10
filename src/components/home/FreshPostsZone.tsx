@@ -80,7 +80,7 @@ export default function FreshPostsZone() {
           <Link
             to="/community"
             className="text-[11px] font-bold text-rose-600 hover:text-rose-700 active:scale-95 transition inline-flex items-center px-2 -mx-2"
-            style={{ minHeight: 32 }}
+            style={{ minHeight: 44 }}
           >
             전체 →
           </Link>

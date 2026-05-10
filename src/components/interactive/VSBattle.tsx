@@ -157,9 +157,9 @@ export default function VSBattle() {
 
         {/* 네비게이션 */}
         <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
-          <button onClick={prev} className="text-sm text-[#999] hover:text-[#111] transition-colors" style={{ minHeight: 32 }}>← 이전</button>
+          <button onClick={prev} className="text-sm text-[#999] hover:text-[#111] transition-colors" style={{ minHeight: 44 }}>← 이전</button>
           <span className="text-xs text-[#999]">{battleIdx + 1} / {BATTLES.length}</span>
-          <button onClick={next} className="text-sm text-[#999] hover:text-[#111] transition-colors" style={{ minHeight: 32 }}>다음 →</button>
+          <button onClick={next} className="text-sm text-[#999] hover:text-[#111] transition-colors" style={{ minHeight: 44 }}>다음 →</button>
         </div>
 
         {hasVoted && (

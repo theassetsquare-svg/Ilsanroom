@@ -635,7 +635,7 @@ export default function JogakPage() {
                       <button onClick={async () => {
                         const result = await deletePost(post.id);
                         if (!result.error) { setSelectedPost(null); setPosts(prev => prev.filter(p => p.id !== post.id)); }
-                      }} className="text-xs mb-3" style={{ color: '#EF4444', minHeight: 32 }}>글 삭제</button>
+                      }} className="text-xs mb-3" style={{ color: '#EF4444', minHeight: 44 }}>글 삭제</button>
                     )}
 
                     {/* 댓글 */}

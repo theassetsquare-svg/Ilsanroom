@@ -73,7 +73,7 @@ function NotificationDropdown({ posts, onClose, onMarkRead }: { posts: NewPost[]
     >
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
         <span className="text-sm font-bold text-[#111]">새 글 알림</span>
-        <button onClick={() => { onMarkRead(); onClose(); }} className="text-xs text-[#8B5CF6] font-medium" style={{ minHeight: 32 }}>모두 읽음</button>
+        <button onClick={() => { onMarkRead(); onClose(); }} className="text-xs text-[#8B5CF6] font-medium" style={{ minHeight: 44 }}>모두 읽음</button>
       </div>
       {posts.length === 0 ? (
         <div className="px-4 py-8 text-center text-sm text-gray-400">새로운 글이 없습니다</div>

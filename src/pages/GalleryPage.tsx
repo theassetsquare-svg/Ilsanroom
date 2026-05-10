@@ -877,7 +877,7 @@ function UploadModal({ onClose, onPosted }: { onClose: () => void; onPosted: () 
                   key={tag}
                   onClick={() => setCaption(prev => prev.endsWith(' ') || prev === '' ? prev + tag + ' ' : prev + ' ' + tag + ' ')}
                   className="rounded-full px-3 py-1.5 text-xs font-medium active:scale-95 transition"
-                  style={{ backgroundColor: '#F3F0FF', color: '#8B5CF6', minHeight: 32 }}
+                  style={{ backgroundColor: '#F3F0FF', color: '#8B5CF6', minHeight: 44 }}
                 >
                   {tag}
                 </button>

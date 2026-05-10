@@ -64,7 +64,7 @@ function DaejeonSevenHeaderSection() {
           border: '2px solid rgba(255, 215, 0, 0.3)',
         }}
       >
-        <div className="flex flex-col items-center justify-center px-6 py-12 text-center" style={{ minHeight: 320 }}>
+        <div className="flex flex-col items-center justify-center px-6 py-12 text-center" style={{ minHeight: 440 }}>
           {/* 가게명 */}
           <p style={{ color: '#FFFFFF', fontSize: 28, fontWeight: 900, letterSpacing: '-0.02em', marginBottom: 12 }}>
             대전세븐나이트

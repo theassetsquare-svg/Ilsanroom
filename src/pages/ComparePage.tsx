@@ -113,7 +113,7 @@ export default function ComparePage() {
                     ? 'bg-[#8B5CF6] text-white shadow-md'
                     : 'border border-gray-200 bg-white text-[#555] hover:border-[#8B5CF6]/30'
                 }`}
-                style={{ minHeight: 32 }}
+                style={{ minHeight: 44 }}
               >
                 {v.nameKo}
               </button>

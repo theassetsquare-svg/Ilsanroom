@@ -269,7 +269,7 @@ const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, r
         </div>
       </Link>
       <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(venue.id); }}
-        className="absolute top-2 right-2 z-[3] flex h-8 w-8 items-center justify-center rounded-full bg-black/30 backdrop-blur-sm" aria-label="찜하기">
+        className="absolute top-2 right-2 z-[3] flex h-11 w-11 items-center justify-center rounded-full bg-black/30 backdrop-blur-sm" aria-label="찜하기">
         <svg className={`h-4 w-4 ${isFavorite ? 'text-red-500 fill-red-500' : 'text-white'}`} fill={isFavorite ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
         </svg>
@@ -737,7 +737,7 @@ export default function HomePage() {
             <span className="text-[10px] text-white/40 shrink-0 mr-0.5">전국 {openVenues.length}곳</span>
             {['강남', '홍대', '부산', '일산', '대구', '대전', '수원', '인천', '광주', '울산', '제주'].map(r => (
               <button key={r} onClick={() => { setActiveTab(3); setActiveRegion(r); document.getElementById('feed-section')?.scrollIntoView({ behavior: 'smooth' }); }}
-                className="shrink-0 rounded-full bg-white/10 px-3 py-1.5 text-[10px] text-white/70 font-medium active:bg-white/20 transition" style={{ minHeight: 32 }}>
+                className="shrink-0 rounded-full bg-white/10 px-3 py-1.5 text-[10px] text-white/70 font-medium active:bg-white/20 transition" style={{ minHeight: 44, minWidth: 44 }}>
                 {r}
               </button>
             ))}
@@ -964,7 +964,7 @@ export default function HomePage() {
             <span className="rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-bold text-white animate-pulse">LIVE</span>
           </div>
           <div className="flex items-center gap-2">
-            <Link to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="inline-flex items-center rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 32 }}>글쓰기</Link>
+            <Link to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="inline-flex items-center rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 44 }}>글쓰기</Link>
             <Link to="/community" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">더보기 →</Link>
           </div>
         </div>
@@ -1121,7 +1121,7 @@ export default function HomePage() {
             <span className="rounded-full bg-orange-600 px-1.5 py-0.5 text-[9px] font-bold text-white">모집중</span>
           </div>
           <div className="flex items-center gap-2">
-            <Link to={user ? '/community/jogak?write=true' : '/login?redirect=/community/jogak?write=true'} className="inline-flex items-center rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 32 }}>모임만들기</Link>
+            <Link to={user ? '/community/jogak?write=true' : '/login?redirect=/community/jogak?write=true'} className="inline-flex items-center rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 44 }}>모임만들기</Link>
             <Link to="/community/jogak" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">전체 →</Link>
           </div>
         </div>
@@ -1278,7 +1278,7 @@ export default function HomePage() {
           {todayTrending.map((kw, i) => (
             <Link key={kw} to={`/search?q=${encodeURIComponent(kw)}`}
               className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 py-1.5 active:bg-gray-50 transition"
-              style={{ minHeight: 32 }}>
+              style={{ minHeight: 44 }}>
               <span className={`text-[10px] font-black ${i < 3 ? 'text-[#8B5CF6]' : 'text-[#666]'}`}>{i + 1}</span>
               <span className="text-[13px] font-medium text-[#111]">{kw}</span>
               {i < 2 && <span className="text-[9px] text-red-500 font-bold">HOT</span>}
@@ -1384,7 +1384,7 @@ export default function HomePage() {
                       ? 'bg-[#8B5CF6] text-white shadow-sm'
                       : 'bg-white text-[#555] border border-gray-200'
                   }`}
-                  style={{ minHeight: 32 }}
+                  style={{ minHeight: 44 }}
                 >
                   {r}
                 </button>

@@ -324,7 +324,7 @@ export default function SearchPage() {
                     <div className="flex items-center justify-between px-4 py-2">
                       <span className="text-[11px] font-bold text-gray-400 uppercase">최근 검색어</span>
                       <button onClick={() => { setRecentSearches([]); try { localStorage.removeItem('recentSearches'); } catch {} }}
-                        className="text-[11px] text-gray-400 hover:text-gray-600" style={{ minHeight: 32 }}>전체삭제</button>
+                        className="text-[11px] text-gray-400 hover:text-gray-600" style={{ minHeight: 44 }}>전체삭제</button>
                     </div>
                     {recentSearches.map((s, i) => (
                       <div key={i} className="flex items-center hover:bg-gray-50 transition">
@@ -358,7 +358,7 @@ export default function SearchPage() {
                     ? 'bg-[#8B5CF6] text-white shadow-md shadow-purple-200'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
-                style={{ minHeight: 32 }}>
+                style={{ minHeight: 44 }}>
                 {cat.label}
               </button>
             ))}

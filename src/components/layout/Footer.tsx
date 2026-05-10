@@ -100,7 +100,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {categoryLinks.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="inline-flex items-center min-w-[32px] text-sm py-1.5 -my-1.5 px-1 -mx-1 transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
+                  <Link to={link.href} className="inline-flex items-center min-w-[44px] text-sm py-1.5 -my-1.5 px-1 -mx-1 transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
                     {link.label}
                   </Link>
                 </li>
@@ -113,7 +113,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {communityLinks.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="inline-flex items-center min-w-[32px] text-sm py-1.5 -my-1.5 px-1 -mx-1 transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
+                  <Link to={link.href} className="inline-flex items-center min-w-[44px] text-sm py-1.5 -my-1.5 px-1 -mx-1 transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
                     {link.label}
                   </Link>
                 </li>
@@ -126,7 +126,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {infoLinks.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="inline-flex items-center min-w-[32px] text-sm py-1.5 -my-1.5 px-1 -mx-1 transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
+                  <Link to={link.href} className="inline-flex items-center min-w-[44px] text-sm py-1.5 -my-1.5 px-1 -mx-1 transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
                     {link.label}
                   </Link>
                 </li>

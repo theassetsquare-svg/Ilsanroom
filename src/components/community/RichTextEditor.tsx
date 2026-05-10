@@ -132,7 +132,7 @@ export default function RichTextEditor({ value, onChange, placeholder = '내용�
         <select
           onChange={(e) => handleHeading(e.target.value)}
           className="rounded-lg border px-2 py-1.5 text-xs outline-none"
-          style={{ borderColor: '#D1D5DB', color: '#333', minHeight: 32 }}
+          style={{ borderColor: '#D1D5DB', color: '#333', minHeight: 44 }}
         >
           {HEADING_OPTIONS.map(h => (
             <option key={h.value} value={h.value}>{h.label}</option>

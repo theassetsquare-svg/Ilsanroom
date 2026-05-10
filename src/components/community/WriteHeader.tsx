@@ -18,7 +18,7 @@ export default function WriteHeader({ onCancel, title = '글쓰기' }: WriteHead
     <div style={{ borderColor: '#E5E7EB' }}>
       {/* 상단 네비게이션 바 — 네이버 스타일 */}
       <div className="flex items-center gap-1 px-3 py-1.5 border-b overflow-x-auto scrollbar-hide" style={{ borderColor: '#F3F4F6', backgroundColor: '#FAFAFA', WebkitOverflowScrolling: 'touch' as any }}>
-        <Link to="/" className="flex items-center gap-1 mr-2 flex-shrink-0" style={{ minHeight: 32 }}>
+        <Link to="/" className="flex items-center gap-1 mr-2 flex-shrink-0" style={{ minHeight: 44 }}>
           <span className="text-base" style={{ fontWeight: 300, color: '#8B5CF6', letterSpacing: '0.05em' }}>놀쿨</span>
         </Link>
         <div className="w-px h-4 flex-shrink-0" style={{ backgroundColor: '#E5E7EB' }} />
