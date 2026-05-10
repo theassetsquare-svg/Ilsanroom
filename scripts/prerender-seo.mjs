@@ -222,7 +222,9 @@ function venueHref(v) {
   if (['club', 'room', 'yojeong'].includes(v.cat)) return `/${catMap[v.cat].path}/${v.region}/${v.slug}/`;
   return `/${catMap[v.cat].path}/${v.slug}/`;
 }
-const SITE_NAV_ANCHORS = `<nav aria-label="카테고리"><ul><li><a href="/clubs/">클럽</a></li><li><a href="/nights/">나이트</a></li><li><a href="/lounges/">라운지</a></li><li><a href="/rooms/">룸</a></li><li><a href="/yojeong/">요정</a></li><li><a href="/hoppa/">호빠</a></li><li><a href="/community/">커뮤니티</a></li><li><a href="/magazine/">매거진</a></li><li><a href="/search/">검색</a></li></ul></nav>`;
+// 시즌29 — Skip-to-content 링크 (WCAG 2.4.1 Bypass Blocks). 키보드/스크린리더 사용자 본문 바로 이동
+const SKIP_TO_CONTENT = `<a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:0;z-index:9999;background:#000;color:#fff;padding:8px 12px;text-decoration:none;font-weight:600" onfocus="this.style.left='8px'" onblur="this.style.left='-9999px'">본문 바로가기</a>`;
+const SITE_NAV_ANCHORS = `${SKIP_TO_CONTENT}<nav aria-label="카테고리"><ul><li><a href="/clubs/">클럽</a></li><li><a href="/nights/">나이트</a></li><li><a href="/lounges/">라운지</a></li><li><a href="/rooms/">룸</a></li><li><a href="/yojeong/">요정</a></li><li><a href="/hoppa/">호빠</a></li><li><a href="/community/">커뮤니티</a></li><li><a href="/magazine/">매거진</a></li><li><a href="/search/">검색</a></li></ul></nav>`;
 // 시즌22 — 사이트 footer SSR 내부링크 (정적 유틸/lounge/lead 페이지 reachable)
 const SITE_FOOTER_ANCHORS = `<footer aria-label="사이트맵"><h2>전체 메뉴</h2><nav aria-label="사이트맵 링크"><ul><li><a href="/guide/">입문 가이드</a></li><li><a href="/safety/">안전 가이드</a></li><li><a href="/help/">자주 묻는 질문</a></li><li><a href="/venue-info/">양주·부스·룸 안내</a></li><li><a href="/events/">이벤트 일정</a></li><li><a href="/gallery/">매장 사진</a></li><li><a href="/map/">지도</a></li><li><a href="/ranking/">인기 랭킹</a></li><li><a href="/quiz/">스타일 퀴즈</a></li><li><a href="/roulette/">룰렛 추천</a></li><li><a href="/vs/">VS 매치업</a></li><li><a href="/compare/">업소 비교</a></li><li><a href="/hidden/">숨은 명소</a></li><li><a href="/welcome/">놀쿨 소개</a></li><li><a href="/login/">로그인</a></li><li><a href="/profile/">내 프로필</a></li><li><a href="/referral/">친구 초대</a></li><li><a href="/onboarding/">업소 입점</a></li><li><a href="/pricing/">요금제</a></li><li><a href="/dashboard/">매장 대시보드</a></li><li><a href="/analytics/">분석 리포트</a></li><li><a href="/billing/">결제 관리</a></li><li><a href="/launch/">오픈 체크</a></li><li><a href="/demo/">업주 데모</a></li><li><a href="/case-studies/">운영 사례</a></li><li><a href="/testimonials/">업주 인터뷰</a></li><li><a href="/status/">서비스 상태</a></li><li><a href="/privacy-promise/">프라이버시 정책</a></li><li><a href="/disclaimer/">고지 사항</a></li><li><a href="/terms/">이용 약관</a></li><li><a href="/privacy/">개인정보 처리</a></li><li><a href="/venue-terms/">업주 약관</a></li><li><a href="/lounge/">업종별 라운지</a></li><li><a href="/lounge/club/">클럽 라운지</a></li><li><a href="/lounge/night/">나이트 라운지</a></li><li><a href="/lounge/room/">룸 라운지</a></li><li><a href="/lounge/lounge/">라운지바 라운지</a></li><li><a href="/lounge/yojung/">요정 라운지</a></li><li><a href="/lounge/hoppa/">호빠 라운지</a></li><li><a href="/lounge/free/">자유 라운지</a></li><li><a href="/lounge/qna/">Q&A 라운지</a></li><li><a href="/lead/nightlife-guide/">밤문화 가이드</a></li><li><a href="/lead/quiz/">스타일 진단</a></li><li><a href="/lead/weekly-hot/">주간 핫스팟</a></li></ul></nav></footer>`;
 
@@ -248,6 +250,25 @@ function writePage(routePath, meta) {
       if (href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return full;
       return `<a ${attrs.trim()} target="_blank" rel="noopener noreferrer">`;
     });
+    // 시즌29 — img loading=lazy + decoding=async 자동 주입 (LCP 비차단, 모바일 4G 페이지 weight 절감)
+    ssrBody = ssrBody.replace(/<img\s+([^>]*?)>/gi, (full, attrs) => {
+      let next = attrs;
+      if (!/loading=/i.test(next)) next = `${next.trim()} loading="lazy"`;
+      if (!/decoding=/i.test(next)) next = `${next.trim()} decoding="async"`;
+      return `<img ${next}>`;
+    });
+    // 시즌29 — Skip-to-content 타겟: 본문 첫 의미 영역 #main-content 보장
+    if (!ssrBody.includes('id="main-content"')) {
+      ssrBody = ssrBody.replace(
+        /(<\/nav>)/,
+        `$1<main id="main-content">`
+      );
+      // 닫는 main은 footer 직전에
+      ssrBody = ssrBody.replace(
+        /(<footer aria-label="사이트맵")/,
+        `</main>$1`
+      );
+    }
   }
   const html = renderPage({ ...meta, ssrBody, canonical: routePath, noindex: noIndexPathsSet.has(routePath) });
   fs.writeFileSync(path.join(dir, 'index.html'), html);
@@ -1105,6 +1126,11 @@ for (const v of venues) {
   };
   if (v.lat && v.lng) venueJsonLd.geo = { '@type': 'GeoCoordinates', latitude: v.lat, longitude: v.lng };
   if (v.staffNickname) venueJsonLd.employee = { '@type': 'Person', name: v.staffNickname };
+  // 시즌29 — Speakable schema (Google Assistant 음성 검색 답변 채택)
+  venueJsonLd.speakable = {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['h1', '.ssr-seo p:first-of-type'],
+  };
 
   // BreadcrumbList: 홈 > 카테고리 > 지역(있으면) > 업소
   const breadcrumbItems = [
