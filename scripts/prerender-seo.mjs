@@ -69,7 +69,10 @@ function truncateDesc(text, maxLen = 150) {
 function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords }) {
   let html = baseHtml;
   const desc = truncateDesc(description || '', 150);
-  const can = `${BASE_URL}${canonical}`;
+  // canonical은 sitemap loc과 동일 형식이어야 함 (trailing slash 일치).
+  // sitemap은 항상 `${routePath}/` 로 trailing slash 붙임 → canonical도 동일 처리.
+  const canonicalWithSlash = canonical.endsWith('/') ? canonical : `${canonical}/`;
+  const can = `${BASE_URL}${canonicalWithSlash}`;
 
   // ★ og:*/twitter:* 페이지별 동적 — 검색결과 썸네일·카톡 공유 미리보기 정확화
   // 홈은 브랜드 폴백 사용, 그 외 페이지는 title/description/ogImage 그대로 사용.
@@ -329,7 +332,8 @@ function generateVenueSsrBody(v, allVenues) {
   const name = escHtml(v.nameKo);
   const catKo = catLabelMap[v.cat] || v.cat;
   const region = escHtml(v.regionKo);
-  const desc = escHtml(v.description.slice(0, 500));
+  // 전체 description 사용 — body 확장으로 키워드 밀도 자연 희석 (1500-3000자 범위)
+  const desc = escHtml(v.description.slice(0, 1500));
   const features = v.features.slice(0, 5).map(f => escHtml(f)).join(', ');
   const staff = v.staffNickname ? escHtml(v.staffNickname) : '';
 
@@ -338,32 +342,32 @@ function generateVenueSsrBody(v, allVenues) {
   html += `<p itemprop="description">${region} ${catKo}. ${desc}</p>`;
 
   if (features) {
-    html += `<h2>${name} 분위기·특징</h2>`;
-    html += `<p>${name}의 특징: ${features}. ${region}에서 ${catKo}${eulReul(catKo)} 찾는다면 ${name}${iGa(v.nameKo)} 대표적이다.</p>`;
+    html += `<h2>분위기·특징</h2>`;
+    html += `<p>특징: ${features}. ${region}에서 ${catKo}${eulReul(catKo)} 찾는다면 대표적인 곳이다.</p>`;
   }
 
   if (staff) {
-    html += `<h2>${name} 담당자 안내</h2>`;
-    html += `<p>${name}${eunNeun(v.nameKo)} ${staff}${iGa(v.staffNickname)} 직접 관리하는 곳이다. 방문 전 문의하면 맞춤 안내를 받을 수 있다.</p>`;
+    html += `<h2>담당자 안내</h2>`;
+    html += `<p>${staff}${iGa(v.staffNickname)} 직접 관리하는 곳이다. 방문 전 문의하면 맞춤 안내를 받을 수 있다.</p>`;
   }
 
   if (v.nearbyStation) {
-    html += `<h2>${name} 위치·접근성</h2>`;
-    html += `<p>${name}${eunNeun(v.nameKo)} ${escHtml(v.nearbyStation)}에서 가깝다.${v.address ? ' 주소: ' + escHtml(v.address) : ''}</p>`;
+    html += `<h2>위치·접근성</h2>`;
+    html += `<p>${escHtml(v.nearbyStation)}에서 가깝다.${v.address ? ' 주소: ' + escHtml(v.address) : ''}</p>`;
   }
 
-  // ★ FAQ 섹션 — AI가 직접 인용할 수 있는 Q&A
+  // ★ FAQ 섹션 — AI가 직접 인용할 수 있는 Q&A (dt 검색쿼리 매칭은 nameKo 유지, dd는 본문)
   html += `<section>`;
   html += `<h2>${name} 자주 묻는 질문</h2>`;
   html += `<dl>`;
   html += `<dt>${name} 어디에 있나요?</dt>`;
-  html += `<dd>${name}${eunNeun(v.nameKo)} ${region}에 위치한 ${catKo}입니다.${v.address ? ' 주소는 ' + escHtml(v.address) + '입니다.' : ''}${v.nearbyStation ? ' ' + escHtml(v.nearbyStation) + '에서 가깝습니다.' : ''}</dd>`;
+  html += `<dd>${region}에 위치한 ${catKo}입니다.${v.address ? ' 주소는 ' + escHtml(v.address) + '입니다.' : ''}${v.nearbyStation ? ' ' + escHtml(v.nearbyStation) + '에서 가깝습니다.' : ''}</dd>`;
   html += `<dt>${name} 영업시간은?</dt>`;
-  html += `<dd>${name}의 영업시간과 실시간 정보는 사이트에서 확인할 수 있습니다.</dd>`;
+  html += `<dd>영업시간과 실시간 정보는 본 페이지에서 확인할 수 있습니다.</dd>`;
   html += `<dt>${name} 예약 방법은?</dt>`;
-  html += `<dd>${name} 방문 예약은 담당자에게 직접 문의할 수 있습니다.${staff ? ' 담당: ' + staff : ''}</dd>`;
+  html += `<dd>방문 예약은 담당자에게 직접 문의할 수 있습니다.${staff ? ' 담당: ' + staff : ''}</dd>`;
   html += `<dt>${region} ${catKo} 추천은?</dt>`;
-  html += `<dd>${region}에서 ${catKo}${eulReul(catKo)} 찾는다면 ${name}${eulReul(v.nameKo)} 추천합니다. 실시간 후기와 비교 정보는 카테고리 안에서 확인하세요.</dd>`;
+  html += `<dd>${region}에서 ${catKo}${eulReul(catKo)} 찾는다면 추천 후보입니다. 실시간 후기와 비교 정보는 카테고리 안에서 확인하세요.</dd>`;
   html += `</dl>`;
   html += `</section>`;
 
@@ -371,46 +375,45 @@ function generateVenueSsrBody(v, allVenues) {
   // 실제 후기는 /community/reviews 에서 회원이 직접 작성한 것만 노출.
   html += `<section>`;
   html += `<h2>${name} 방문 후기</h2>`;
-  html += `<p>${name} 방문 후기는 <a href="/community/reviews" target="_blank" rel="noopener noreferrer">놀쿨 커뮤니티 후기 게시판</a>에서 회원이 직접 작성한 글만 모아두었습니다. 별점·블록쿼트 형태의 가공 후기는 게시하지 않습니다.</p>`;
+  html += `<p>방문 후기는 <a href="/community/reviews" target="_blank" rel="noopener noreferrer">놀쿨 커뮤니티 후기 게시판</a>에서 회원이 직접 작성한 글만 모아두었습니다. 별점·블록쿼트 형태의 가공 후기는 게시하지 않습니다.</p>`;
   html += `</section>`;
 
   // ★ 방문 안내 섹션 — "가게이름 후기", "가게이름 가는법" 검색 대응
-  html += `<h2>${name} 방문 안내</h2>`;
-  html += `<p>${name}${eulReul(v.nameKo)} 처음 방문하신다면, 본 페이지에서 사전 정보를 확인하세요. `;
-  html += `${name}의 분위기, 인기 시간대, 복장 가이드까지 미리 알 수 있습니다. `;
+  html += `<h2>방문 안내</h2>`;
+  html += `<p>처음 방문하신다면 본 페이지에서 사전 정보를 확인하세요. `;
+  html += `분위기, 인기 시간대, 복장 가이드까지 미리 알 수 있습니다. `;
   if (v.nearbyStation) html += `교통편은 ${escHtml(v.nearbyStation)}이 가장 가깝습니다. `;
-  html += `${name} 실제 방문 후기는 커뮤니티에서 확인 가능합니다.</p>`;
+  html += `실제 방문 후기는 커뮤니티에서 확인 가능합니다.</p>`;
 
-  // ★ 업종별 상세 정보 섹션 — 가게이름 키워드 밀도 강화 + 1000자+ 보장
+  // ★ 업종별 상세 정보 섹션 — H2에는 nameKo 미포함 (stuffing 회피, body 키워드는 H1·FAQ·총정리에서 보충)
   if (v.cat === 'night' || v.cat === 'club') {
-    html += `<h2>${name} 분위기·음악</h2>`;
-    html += `<p>${name}${eunNeun(v.nameKo)} ${region}을 대표하는 ${catKo}로, ${features || '다양한 장르의 음악'}${eulReul(features || '음악')} 즐길 수 있다. `;
-    html += `${name}${eunNeun(v.nameKo)} 첫 방문자도 편하게 즐길 수 있는 분위기를 갖추고 있으며, `;
-    html += `${name} 단골들 사이에서 "한번 오면 또 온다"는 평가를 받고 있다.</p>`;
+    html += `<h2>분위기·음악</h2>`;
+    html += `<p>${region}을 대표하는 ${catKo}로, ${features || '다양한 장르의 음악'}${eulReul(features || '음악')} 즐길 수 있다. `;
+    html += `첫 방문자도 편하게 즐길 수 있는 분위기를 갖추고 있으며, 단골들 사이에서 "한번 오면 또 온다"는 평가를 받고 있다.</p>`;
   } else if (v.cat === 'room') {
-    html += `<h2>${name} 룸 구성·양주</h2>`;
-    html += `<p>${name}${eunNeun(v.nameKo)} ${region}에서 프라이빗한 모임에 최적화된 공간이다. `;
-    html += `${name}의 룸은 소규모 밀담부터 대규모 단체석까지 다양하게 구성되어 있다. `;
-    html += `${name} 양주 라인업은 캐주얼부터 프리미엄까지 폭넓어 비즈니스·모임·파티에 적합하다.</p>`;
+    html += `<h2>룸 구성·양주</h2>`;
+    html += `<p>${region}에서 프라이빗한 모임에 최적화된 공간이다. `;
+    html += `룸은 소규모 밀담부터 대규모 단체석까지 다양하게 구성되어 있다. `;
+    html += `양주 라인업은 캐주얼부터 프리미엄까지 폭넓어 비즈니스·모임·파티에 적합하다.</p>`;
   } else if (v.cat === 'hoppa') {
-    html += `<h2>${name} 이용 안내</h2>`;
-    html += `<p>${name}${eunNeun(v.nameKo)} ${region}에서 여성 고객을 위한 사교 공간이다. `;
-    html += `${name}${eunNeun(v.nameKo)} 호스트 선택의 폭이 넓고, 강요 없는 편안한 분위기가 특징이다. `;
-    html += `${name} 처음 방문하는 분도 부담 없이 즐길 수 있다.</p>`;
+    html += `<h2>이용 안내</h2>`;
+    html += `<p>${region}에서 여성 고객을 위한 사교 공간이다. `;
+    html += `호스트 선택의 폭이 넓고, 강요 없는 편안한 분위기가 특징이다. `;
+    html += `처음 방문하는 분도 부담 없이 즐길 수 있다.</p>`;
   } else if (v.cat === 'yojeong') {
-    html += `<h2>${name} 코스·접대</h2>`;
-    html += `<p>${name}${eunNeun(v.nameKo)} ${region}에서 격식 있는 접대와 한정식 코스를 제공하는 전통 요정이다. `;
-    html += `${name}의 코스 요리는 계절 식재료를 활용하며, 국악 라이브와 함께 품격 있는 자리를 만든다. `;
-    html += `${name}${eunNeun(v.nameKo)} 비즈니스 만찬과 외국 손님 접대에 최적이다.</p>`;
+    html += `<h2>코스·접대</h2>`;
+    html += `<p>${region}에서 격식 있는 접대와 한정식 코스를 제공하는 전통 요정이다. `;
+    html += `코스 요리는 계절 식재료를 활용하며, 국악 라이브와 함께 품격 있는 자리를 만든다. `;
+    html += `비즈니스 만찬과 외국 손님 접대에 최적이다.</p>`;
   } else if (v.cat === 'lounge') {
-    html += `<h2>${name} 분위기·메뉴</h2>`;
-    html += `<p>${name}${eunNeun(v.nameKo)} ${region}에서 조용하고 고급스러운 분위기의 라운지다. `;
-    html += `${name}${eunNeun(v.nameKo)} 데이트, 접대, 혼술 모든 상황에 맞는 공간을 제공한다. `;
-    html += `${name} 칵테일과 양주 메뉴는 바텐더 추천으로 선택할 수 있다.</p>`;
+    html += `<h2>분위기·메뉴</h2>`;
+    html += `<p>${region}에서 조용하고 고급스러운 분위기의 라운지다. `;
+    html += `데이트, 접대, 혼술 모든 상황에 맞는 공간을 제공한다. `;
+    html += `칵테일과 양주 메뉴는 바텐더 추천으로 선택할 수 있다.</p>`;
   }
 
   html += `<h2>${name} 총정리</h2>`;
-  html += `<p>${region} ${catKo} ${name} — 실시간 후기, 분위기, 예약 안내를 본 페이지에서 확인하세요. ${region} ${catKo} 비교, 순위, 방문 후기까지 한 곳에서 볼 수 있습니다. ${name} 방문 전 반드시 최신 정보를 확인하세요.</p>`;
+  html += `<p>${region} ${catKo} — 실시간 후기, 분위기, 예약 안내를 본 페이지에서 확인하세요. 비교, 순위, 방문 후기까지 한 곳에서 볼 수 있습니다. 방문 전 반드시 최신 정보를 확인하세요.</p>`;
 
   // ★ 관련 업소 내부 링크 — 크롤러 깊이 탐색 유도
   if (allVenues) {
@@ -436,12 +439,12 @@ function generateVenueSsrBody(v, allVenues) {
   }
 
   // ★ 커뮤니티 안내 — 가공 카운터(후기N·댓글N·마지막글) 제거 (놀쿨 신뢰 규칙)
-  html += `<section><h2>${name} 커뮤니티</h2>`;
-  html += `<p>${name} 관련 글과 질문은 <a href="/community" target="_blank" rel="noopener noreferrer">놀쿨 커뮤니티</a>에서 회원이 직접 작성한 글만 모아두었습니다. 가공된 후기 수·댓글 수·"마지막 글" 자동 카운터는 게시하지 않습니다.</p>`;
+  html += `<section><h2>커뮤니티</h2>`;
+  html += `<p>관련 글과 질문은 <a href="/community" target="_blank" rel="noopener noreferrer">놀쿨 커뮤니티</a>에서 회원이 직접 작성한 글만 모아두었습니다. 가공된 후기 수·댓글 수·"마지막 글" 자동 카운터는 게시하지 않습니다.</p>`;
   html += `</section>`;
 
-  // ★ 관련 키워드 — 검색엔진이 연관 검색어로 인식
-  html += `<footer><p>${name}, ${region} ${catKo}, ${region} ${catKo} 추천, ${name} 후기, ${name} 예약, ${name} 위치, ${region} 밤문화</p></footer>`;
+  // ★ 관련 키워드 — 검색엔진이 연관 검색어로 인식 (nameKo 1회 + 카테고리·지역)
+  html += `<footer><p>${name}, ${region} ${catKo}, ${region} ${catKo} 추천, ${region} 밤문화</p></footer>`;
   html += `</article>`;
   return html;
 }
@@ -1062,7 +1065,7 @@ const magazineArticles = parseMagazineArticles();
 let magazineCount = 0;
 for (const a of magazineArticles) {
   const routePath = `/magazine/${a.id}`;
-  const canonical = `${BASE_URL}${routePath}`;
+  const canonical = `${BASE_URL}${routePath}/`;
   const desc = truncateDesc(a.excerpt, 150);
   // SSR 본문: H1 + tag 라벨 + 본문 HTML 그대로 (이미 H2/H3/p 마크업)
   const ssrBody = `<article>
