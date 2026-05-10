@@ -1095,6 +1095,9 @@ for (const v of venues) {
   pubDate.setDate(pubDate.getDate() - dayOffset);
   const datePublished = pubDate.toISOString().slice(0, 10);
   const dateModified = new Date().toISOString().slice(0, 10);
+  // 시즌23 — venue 스키마에 datePublished/dateModified 직접 주입 (Google freshness 시그널)
+  venueJsonLd.datePublished = datePublished;
+  venueJsonLd.dateModified = dateModified;
 
   const venueKeywords = [v.nameKo, `${v.regionKo} ${catLabelMap[v.cat]}`, `${v.nameKo} 후기`, `${v.nameKo} 예약`, `${v.regionKo} ${catLabelMap[v.cat]} 추천`, `${v.regionKo} 밤문화`].join(', ');
   writePage(routePath, {
