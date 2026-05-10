@@ -27,7 +27,7 @@ export default function ReviewForm({ venueId, venueName, onSuccess, onCancel }: 
     return (
       <div className="rounded-xl border border-neon-border bg-neon-surface/50 p-6 text-center">
         <p className="text-neon-text-muted mb-3">후기를 작성하려면 로그인이 필요해요</p>
-        <a href="/login" className="inline-block rounded-lg bg-violet-600 px-5 py-2 text-sm font-bold text-white hover:bg-violet-700 transition">
+        <a href="/login" target="_blank" rel="noopener noreferrer" className="inline-block rounded-lg bg-violet-600 px-5 py-2 text-sm font-bold text-white hover:bg-violet-700 transition">
           로그인하기
         </a>
       </div>

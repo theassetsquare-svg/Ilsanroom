@@ -125,6 +125,8 @@ export default function ReferralPage() {
             </a>
             <a
               href="/login"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex rounded-xl border border-neon-border bg-neon-surface px-8 py-3 font-medium text-neon-text transition hover:bg-neon-surface-2"
             >
               로그인
