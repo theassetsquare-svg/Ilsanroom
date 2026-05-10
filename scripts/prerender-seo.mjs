@@ -716,13 +716,13 @@ function enrichSsr(body, pgPath, pgTitle) {
   ];
   const regions = ['강남', '홍대', '이태원', '일산', '수원', '부산 해운대'];
   const activities = ['VS 투표 결과 보기', '룰렛으로 즉흥 추천', '퀴즈로 내 스타일 찾기', '랭킹 TOP 30 확인', '1줄 글쓰기로 자랑'];
-  body += `<h3>관련 업종 둘러보기</h3><ul>`;
+  body += `<h2>관련 업종 둘러보기</h2><ul>`;
   catLinks.forEach(c => { body += `<li><a href="${c.href}">${c.ko}</a> 카테고리 — 후기·분위기·예약 정보</li>`; });
   body += `</ul>`;
-  body += `<h3>지역별 인기 업소</h3><ul>`;
+  body += `<h2>지역별 인기 업소</h2><ul>`;
   regions.forEach(r => { body += `<li>${r} — 회원 추천 베스트</li>`; });
   body += `</ul>`;
-  body += `<h3>함께 즐기기</h3><ul>`;
+  body += `<h2>함께 즐기기</h2><ul>`;
   activities.forEach(a => { body += `<li>${a}</li>`; });
   body += `</ul>`;
   body += `<p>${pgTitle.replace(/['"]/g, '')} 외에도 클럽·나이트·라운지·룸·요정·호빠 업소 후기와 분위기를 비교할 수 있습니다. 회원 가입 시 1줄 글쓰기, 후기 작성, 찜하기, VS 투표, 파티 모집 참여 등 기능을 무료로 이용할 수 있습니다.</p>`;
@@ -1235,9 +1235,17 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   const topNames = catVenues.slice(0, 3).map(vv => vv.nameKo).join(', ');
   const desc = `전국 ${catInfo.labelKo} TOP ${catVenues.length}곳 비교 가이드 — ${topNames} 등 인기 ${catInfo.labelKo} 분위기, 매니저 평판, 드레스코드, 전화번호, 예약 팁까지 정리. 매일 자동 갱신되는 ${catInfo.labelKo} 추천 리스트.`;
   let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
+  ssrBody += `<h2>${escHtml(catInfo.labelKo)} 인기 TOP ${catVenues.length} 랭킹</h2>`;
   ssrBody += `<ol>`;
   catVenues.forEach((vv, idx) => { ssrBody += `<li>${idx + 1}. <a href="${venueHref(vv)}">${escHtml(vv.nameKo)}</a> — ${escHtml(vv.regionKo)} ${catInfo.labelKo}</li>`; });
   ssrBody += `</ol>`;
+  ssrBody += `<h2>${escHtml(catInfo.labelKo)} 처음 가는 분 체크 포인트</h2>`;
+  ssrBody += `<p>${escHtml(catInfo.labelKo)} 처음이면 분위기·매니저 응대·드레스코드·예약 가능 시간을 먼저 확인하세요. 같은 ${catInfo.labelKo}라도 지역마다 손님 연령대와 음악 톤이 다릅니다. 위 랭킹은 회원들이 가장 많이 찾고 다시 방문하는 곳 순서로, 각 업소 상세 페이지에서 룸 구성·양주 라인업·실장 코멘트까지 비교해서 본인 스타일에 맞는 곳을 고르는 게 좋습니다.</p>`;
+  ssrBody += `<h2>${escHtml(catInfo.labelKo)} 자주 묻는 질문</h2>`;
+  ssrBody += `<dl><dt>${escHtml(catInfo.labelKo)} 어디가 제일 인기 있나요?</dt>`;
+  ssrBody += `<dd>현재 회원 검색·재방문 기준 TOP은 ${escHtml(topNames)} 입니다. 지역별로 다르니 가까운 곳부터 확인하세요.</dd>`;
+  ssrBody += `<dt>${escHtml(catInfo.labelKo)} 예약은 어떻게 하나요?</dt>`;
+  ssrBody += `<dd>각 업소 상세 페이지에 직통 번호가 있고, 평일 저녁이면 당일 통화로도 가능합니다. 주말은 미리 확인하세요.</dd></dl>`;
   writePage(p, { title, description: desc, ssrBody, keywords: `${catInfo.labelKo} 인기, ${catInfo.labelKo} 추천, ${catInfo.labelKo} 랭킹, ${catInfo.labelKo} TOP`, jsonLdList: collectionJsonLd(p, title, desc, catVenues) });
   dynamicPages.push(p);
 }
@@ -1250,9 +1258,17 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   const title = `새로 입점한 ${catInfo.labelKo} ${catVenues.length}곳 — 아직 안 가본 곳 먼저 발견`;
   const newNames = catVenues.slice(0, 3).map(vv => vv.nameKo).join(', ');
   const desc = `최근 새로 오픈한 ${catInfo.labelKo} ${catVenues.length}곳 신규 입점 리스트와 첫방문 가이드. ${newNames} 등 강남 홍대 이태원 일산 부산 수원 신생 핫스팟. 오픈 직후라 손님 적고 서비스 좋은 신규 ${catInfo.labelKo}만 모아 분위기·콘셉트·예약 팁까지 비교.`;
-  let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p><ul>`;
+  let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
+  ssrBody += `<h2>신규 ${escHtml(catInfo.labelKo)} ${catVenues.length}곳</h2><ul>`;
   catVenues.forEach(vv => { ssrBody += `<li><a href="${venueHref(vv)}">${escHtml(vv.nameKo)}</a> — ${escHtml(vv.regionKo)}</li>`; });
   ssrBody += `</ul>`;
+  ssrBody += `<h2>신규 ${escHtml(catInfo.labelKo)} 첫 방문 팁</h2>`;
+  ssrBody += `<p>오픈 직후의 ${escHtml(catInfo.labelKo)}는 손님이 아직 적어 매니저 응대가 꼼꼼하고 자리 선택도 자유로운 편입니다. 다만 운영 동선이 정착되기 전이라 평일 저녁이나 오픈 1~2시간 후에 가면 분위기를 더 정확히 볼 수 있습니다. 각 업소 페이지에서 콘셉트·룸 구성·실장 코멘트를 확인하고 직통 번호로 미리 통화해두면 첫방문이 훨씬 편합니다.</p>`;
+  ssrBody += `<h2>신규 ${escHtml(catInfo.labelKo)} 자주 묻는 질문</h2>`;
+  ssrBody += `<dl><dt>최근 오픈한 ${escHtml(catInfo.labelKo)} 어디가 좋아요?</dt>`;
+  ssrBody += `<dd>현재 신규 입점 리스트는 ${escHtml(newNames)} 입니다. 지역과 콘셉트로 추려서 비교하세요.</dd>`;
+  ssrBody += `<dt>신규 ${escHtml(catInfo.labelKo)}는 손님이 적나요?</dt>`;
+  ssrBody += `<dd>오픈 초기에는 평일 손님이 적은 편이라 분위기를 여유롭게 즐길 수 있고, 주말은 미리 예약하는 게 안전합니다.</dd></dl>`;
   writePage(p, { title, description: desc, ssrBody, keywords: `신규 ${catInfo.labelKo}, 새 ${catInfo.labelKo}, ${catInfo.labelKo} 오픈`, jsonLdList: collectionJsonLd(p, title, desc, catVenues) });
   dynamicPages.push(p);
 }
@@ -1303,9 +1319,17 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     const ct = `${regionKo} ${catInfo.labelKo} ${crossVenues.length}곳 — 한눈에 비교하고 고르기`;
     const crossNames = crossVenues.slice(0, 3).map(cv => cv.nameKo).join(', ');
     const cd = `${regionKo} ${catInfo.labelKo} ${crossVenues.length}곳 실시간 비교 가이드 — ${crossNames} 등 인기 ${catInfo.labelKo} 분위기, 후기, 평점, 매니저 평판, 드레스코드, 전화번호, 영업시간, 예약 팁, 첫방문 동선까지 한눈에 정리한 ${regionKo} 핫스팟 비교 페이지.`;
-    let cSsr = `<h1>${escHtml(ct)}</h1><p>${escHtml(cd)}</p><ul>`;
+    let cSsr = `<h1>${escHtml(ct)}</h1><p>${escHtml(cd)}</p>`;
+    cSsr += `<h2>${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} ${crossVenues.length}곳 리스트</h2><ul>`;
     crossVenues.forEach(cv => { cSsr += `<li><a href="${venueHref(cv)}">${escHtml(cv.nameKo)}</a> — ${escHtml(cv.shortDesc.slice(0, 60))}</li>`; });
     cSsr += `</ul>`;
+    cSsr += `<h2>${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} 고를 때 체크 포인트</h2>`;
+    cSsr += `<p>${escHtml(regionKo)} 안에서도 ${escHtml(catInfo.labelKo)}는 골목·분위기·연령대가 다 다릅니다. 평일·주말 손님 톤이 크게 갈리는 곳도 있어 같은 ${escHtml(catInfo.labelKo)}라고 하나로 묶어 비교하면 실수합니다. 위 ${crossVenues.length}곳은 회원들이 ${escHtml(regionKo)}에서 자주 비교하는 ${escHtml(catInfo.labelKo)}만 모아둔 리스트로, 각 페이지에서 룸 구성·양주 라인업·실장 코멘트·예약 가능 시간을 확인하고 본인 모임 컨셉에 맞춰 고르세요.</p>`;
+    cSsr += `<h2>${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} 자주 묻는 질문</h2>`;
+    cSsr += `<dl><dt>${escHtml(regionKo)}에서 ${escHtml(catInfo.labelKo)} 어디가 인기 있나요?</dt>`;
+    cSsr += `<dd>${escHtml(crossNames)} 등이 회원 검색·재방문 기준 인기 ${escHtml(catInfo.labelKo)}로 자주 언급됩니다.</dd>`;
+    cSsr += `<dt>${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} 예약은 어떻게 하나요?</dt>`;
+    cSsr += `<dd>각 업소 상세 페이지에서 직통 전화로 예약 가능 시간과 룸 사이즈를 미리 확인하세요. 주말은 일찍 마감되는 곳이 많습니다.</dd></dl>`;
     writePage(cp, { title: ct, description: cd, ssrBody: cSsr, keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: collectionJsonLd(cp, ct, cd, crossVenues) });
     dynamicPages.push(cp);
   }
@@ -1325,9 +1349,17 @@ for (const [tag, tagVenues] of Object.entries(allTags)) {
   const title = `#${tag} 관련 업소 ${tagVenues.length}곳 — 태그로 찾는 밤문화`;
   const tagTopNames = tagVenues.slice(0, 3).map(tv => tv.nameKo).join(', ');
   const desc = `'${tag}' 태그로 모은 클럽·나이트·라운지·룸·요정·호빠 ${tagVenues.length}곳 큐레이션. ${tagTopNames} 등 강남 홍대 이태원 일산 부산 핫스팟 정리. 같은 분위기·콘셉트끼리 묶어 한번에 비교 가능한 ${tag} 전용 페이지.`;
-  let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p><ul>`;
+  let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
+  ssrBody += `<h2>#${escHtml(tag)} 태그 업소 ${tagVenues.length}곳</h2><ul>`;
   tagVenues.forEach(tv => { ssrBody += `<li><a href="${venueHref(tv)}">${escHtml(tv.nameKo)}</a> — ${escHtml(tv.regionKo)} ${catLabelMap[tv.cat] || tv.cat}</li>`; });
   ssrBody += `</ul>`;
+  ssrBody += `<h2>#${escHtml(tag)} 태그 비교 가이드</h2>`;
+  ssrBody += `<p>같은 #${escHtml(tag)} 태그라도 지역과 업종에 따라 분위기와 손님 톤이 다릅니다. 위 ${tagVenues.length}곳은 회원들이 ${escHtml(tag)} 키워드로 자주 묶어 검색하는 업소만 모은 큐레이션이고, 각 페이지에서 룸 구성·양주 라인업·매니저 코멘트·예약 가능 시간을 비교하면 본인 모임에 맞는 곳을 더 빠르게 고를 수 있습니다.</p>`;
+  ssrBody += `<h2>#${escHtml(tag)} 자주 묻는 질문</h2>`;
+  ssrBody += `<dl><dt>#${escHtml(tag)} 태그 업소는 어떤 곳인가요?</dt>`;
+  ssrBody += `<dd>${escHtml(tagTopNames)} 등 ${tagVenues.length}곳이 이 태그로 묶여 있습니다. 각 업소 상세 페이지에서 정확한 분위기를 확인하세요.</dd>`;
+  ssrBody += `<dt>#${escHtml(tag)} 처음 가는데 뭐 챙겨야 하나요?</dt>`;
+  ssrBody += `<dd>드레스코드와 예약 가능 시간은 업소마다 달라서, 직통 전화로 미리 확인하면 첫방문이 훨씬 편합니다.</dd></dl>`;
   writePage(p, { title, description: desc, ssrBody, keywords: `${tag}, ${tag} 추천, 밤문화 ${tag}`, jsonLdList: collectionJsonLd(p, title, desc, tagVenues) });
   dynamicPages.push(p);
 }
@@ -1346,9 +1378,17 @@ for (const [st, stVenues] of Object.entries(stationVenues)) {
   const title = `${st} 근처 업소 ${stVenues.length}곳 — 역에서 걸어서 갈 수 있는 곳`;
   const stTopNames = stVenues.slice(0, 3).map(sv => sv.nameKo).join(', ');
   const desc = `${st} 근처 도보 5분 거리 클럽·나이트·라운지·룸·요정·호빠 ${stVenues.length}곳 위치 정리. ${stTopNames} 등 ${st} 인근 핫스팟 평점·후기·전화번호 비교. ${st}에서 술 한잔, 클럽, 룸 가기 좋은 곳을 거리순으로 안내.`;
-  let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p><ul>`;
+  let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
+  ssrBody += `<h2>${escHtml(st)} 근처 업소 ${stVenues.length}곳</h2><ul>`;
   stVenues.forEach(sv => { ssrBody += `<li><a href="${venueHref(sv)}">${escHtml(sv.nameKo)}</a> — ${escHtml(sv.regionKo)} ${catLabelMap[sv.cat] || sv.cat}</li>`; });
   ssrBody += `</ul>`;
+  ssrBody += `<h2>${escHtml(st)} 도보 가이드</h2>`;
+  ssrBody += `<p>${escHtml(st)}에서 출구를 나와 도보 5분 안쪽으로 갈 수 있는 ${stVenues.length}곳을 모았습니다. 늦은 시간에는 택시 잡기가 어렵기 때문에 역 근처에서 끝나는 코스가 안전합니다. 각 업소 페이지에서 정확한 도보 시간·골목 위치·매니저 직통 번호를 확인하고, 모임 시작 시간을 역 기준으로 잡으면 합류와 이동이 훨씬 편합니다.</p>`;
+  ssrBody += `<h2>${escHtml(st)} 근처 자주 묻는 질문</h2>`;
+  ssrBody += `<dl><dt>${escHtml(st)}에서 도보 5분 안에 갈 수 있는 곳은?</dt>`;
+  ssrBody += `<dd>${escHtml(stTopNames)} 등 총 ${stVenues.length}곳이 도보권 안에 있습니다. 출구 번호는 각 업소 페이지에서 확인하세요.</dd>`;
+  ssrBody += `<dt>${escHtml(st)} 늦은 시간에도 영업하나요?</dt>`;
+  ssrBody += `<dd>대부분 새벽까지 운영하지만 마감 시간은 업소마다 다릅니다. 직통 통화로 마감 전 입장 가능 여부를 확인하세요.</dd></dl>`;
   writePage(p, { title, description: desc, ssrBody, keywords: `${st} 근처, ${st} 밤문화, ${st} 클럽, ${st} 나이트`, jsonLdList: collectionJsonLd(p, title, desc, stVenues) });
   dynamicPages.push(p);
 }
