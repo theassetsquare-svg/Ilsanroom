@@ -157,8 +157,8 @@ for (const re of FAKE_PHONES) {
   violations.push(`📞 가짜 전화번호 패턴 ${re.source} 금지 (CLAUDE.md NEVER)`);
 }
 
-// 8) target=_blank rel 누락 — 이메일 템플릿(email.ts/mail) 제외 (메일 클라이언트가 target 무시)
-const isEmail = /email|mail/i.test(file);
+// 8) target=_blank rel 누락 — 이메일 템플릿(email.ts/mail/Resend 호출) 제외 (메일 클라이언트가 target 무시)
+const isEmail = /email|mail/i.test(file) || /api\.resend\.com|RESEND_API_KEY/.test(text);
 if (!isEmail && isSrc && /<a\s+[^>]*href=["']https?:\/\/[^"']+["'][^>]*>/.test(text)) {
   // target/_blank 없는 외부 링크 1개라도 있으면 경고
   const externals = text.match(/<a\s+[^>]*href=["']https?:\/\/[^"']+["'][^>]*>/g) || [];

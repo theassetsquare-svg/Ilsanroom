@@ -33,6 +33,19 @@ const LAYERS: Layer[] = [
   { id: 'L5', name: '\uc77c\uad04 \uac10\uc0ac CLI', what: 'src/dist/live \uc804\uc218 \uac80\uc218 \uba85\ub839\uc5b4', where: 'npm run audit:src | audit:dist | audit:live' },
 ];
 
+type Alert = { event: string; freq: string; channel: string; src: string };
+const ALERTS: Alert[] = [
+  { event: '신규 회원가입', freq: '15분', channel: '이메일', src: 'api/cron/activity-alert' },
+  { event: '새 게시글', freq: '15분', channel: '이메일', src: 'api/cron/activity-alert' },
+  { event: '새 댓글', freq: '15분', channel: '이메일', src: 'api/cron/activity-alert' },
+  { event: '새 후기', freq: '15분', channel: '이메일', src: 'api/cron/activity-alert' },
+  { event: '🚨 신고 접수', freq: '15분', channel: '이메일', src: 'api/cron/activity-alert' },
+  { event: '🎬 새 클립 업로드', freq: '15분', channel: '이메일', src: 'api/cron/activity-alert' },
+  { event: '사이트/API 다운', freq: '15분', channel: '텔레그램+이메일', src: 'workflows/monitoring' },
+  { event: '일일 리포트 (인기업소·활동왕)', freq: '매일 06:00 KST', channel: '이메일', src: 'api/cron/daily-stats' },
+  { event: 'Supabase 연결 오류', freq: '실시간', channel: '이메일', src: 'api/cron/health' },
+];
+
 const COMMANDS: { cmd: string; what: string }[] = [
   { cmd: 'npm run audit:src', what: 'src/ ts/tsx \uc804\uc218 \uac80\uc218 (245\uba85)' },
   { cmd: 'npm run audit:dist', what: 'dist/ HTML \uc804\uc218 \uac80\uc218 (\ube4c\ub4dc \ud6c4)' },
@@ -130,6 +143,35 @@ export default function AuditReportPage() {
             </li>
           ))}
         </ol>
+      </section>
+
+      <section className={card}>
+        <h2 className={h2}>이메일 알림 이벤트 ({ALERTS.length}종)</h2>
+        <p className="text-sm text-zinc-600 mb-3">
+          사이트에서 일어나는 모든 일이 자동으로 관리자 이메일로 전송됩니다.
+        </p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left text-zinc-500 border-b border-zinc-200">
+                <th className="py-2 pr-3">이벤트</th>
+                <th className="py-2 pr-3">주기</th>
+                <th className="py-2 pr-3">채널</th>
+                <th className="py-2 pr-3">소스</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ALERTS.map((a, i) => (
+                <tr key={i} className="border-b border-zinc-100">
+                  <td className="py-2 pr-3 text-zinc-800">{a.event}</td>
+                  <td className="py-2 pr-3 font-mono text-xs text-zinc-700">{a.freq}</td>
+                  <td className="py-2 pr-3 text-zinc-700">{a.channel}</td>
+                  <td className="py-2 pr-3 text-xs text-zinc-500 font-mono">{a.src}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section className={card}>

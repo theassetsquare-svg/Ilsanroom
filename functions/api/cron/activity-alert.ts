@@ -82,6 +82,30 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       });
     }
 
+    // 5. 새 신고 (모더레이션 큐) — 즉시 확인 필요
+    const reportsRes = await fetch(
+      `${context.env.SUPABASE_URL}/rest/v1/reports?select=reason,target_type,target_id,nickname,created_at&created_at=gte.${since}&order=created_at.desc`,
+      { headers }
+    );
+    const newReports = reportsRes.ok ? await reportsRes.json() : [];
+    if (newReports.length > 0) {
+      newReports.forEach((r: any) => {
+        alerts.push(`<li style="background:#fef2f2;padding:4px 8px;border-radius:6px;border-left:3px solid #dc2626">🚨 신고 — [${r.target_type}] ${r.reason} (by ${r.nickname || '익명'})</li>`);
+      });
+    }
+
+    // 6. 새 클립 업로드
+    const clipsRes = await fetch(
+      `${context.env.SUPABASE_URL}/rest/v1/clips?select=title,venue_slug,nickname,created_at&created_at=gte.${since}&order=created_at.desc`,
+      { headers }
+    );
+    const newClips = clipsRes.ok ? await clipsRes.json() : [];
+    if (newClips.length > 0) {
+      newClips.forEach((c: any) => {
+        alerts.push(`<li>🎬 새 클립 [${c.venue_slug || '-'}]: <strong>${c.title || '(제목없음)'}</strong> — ${c.nickname || '익명'}</li>`);
+      });
+    }
+
     // 알림 있을 때만 이메일 발송
     if (alerts.length > 0) {
       const kst = new Date(Date.now() + 9 * 3600000).toLocaleString('ko-KR');
@@ -109,6 +133,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       new_posts: newPosts.length,
       new_comments: newComments.length,
       new_reviews: newReviews.length,
+      new_reports: newReports.length,
+      new_clips: newClips.length,
       email_sent: alerts.length > 0,
       timestamp: new Date().toISOString(),
     });
