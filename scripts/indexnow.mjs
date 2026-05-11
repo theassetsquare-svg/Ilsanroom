@@ -16,8 +16,9 @@ const SITE = 'nolcool.com';
 const KEY = process.env.INDEXNOW_KEY;
 
 if (!KEY) {
-  console.error('INDEXNOW_KEY 환경변수가 필요합니다.');
-  process.exit(1);
+  console.log('⚠️  INDEXNOW_KEY 미설정 — 색인 제출 skip (24h cron 노이즈 회피)');
+  console.log('   설정 방법: https://www.indexnow.org/ 에서 키 발급 후 GitHub secret INDEXNOW_KEY 등록');
+  process.exit(0);
 }
 
 // sitemap.xml 또는 dist에서 URL 추출
