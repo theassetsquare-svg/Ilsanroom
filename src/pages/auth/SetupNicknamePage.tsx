@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createClient } from '@/lib/supabase';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function SetupNicknamePage() {
+  useDocumentMeta('닉네임 설정 — 커뮤니티에서 사용할 이름 정하기', '가입 후 첫 단계. 커뮤니티에서 사용할 닉네임을 2~12자로 정해주세요. 한글·영문·숫자 가능, 나중에 변경할 수 있습니다.');
   const navigate = useNavigate();
   const [nickname, setNickname] = useState('');
   const [error, setError] = useState('');

@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "nolcool: guard current file",
+      "type": "shell",
+      "command": "echo '{\"tool_name\":\"Write\",\"tool_input\":{\"file_path\":\"${file}\"}}' | node ${workspaceFolder}/scripts/nolcool-guard.mjs post",
+      "presentation": { "reveal": "silent", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "nolcool: audit src (all)",
+      "type": "shell",
+      "command": "npm run audit:src",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "nolcool: audit dist",
+      "type": "shell",
+      "command": "npm run audit:dist",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "nolcool: audit live",
+      "type": "shell",
+      "command": "npm run audit:live",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "nolcool: link audit",
+      "type": "shell",
+      "command": "node scripts/nolcool-link-audit.mjs --save /tmp/link.json",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    }
+  ]
+}

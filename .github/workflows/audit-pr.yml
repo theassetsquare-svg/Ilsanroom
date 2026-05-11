@@ -1,0 +1,54 @@
+name: Audit PR (guard + dist)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'scripts/**'
+      - 'package.json'
+      - 'vite.config.ts'
+  push:
+    branches: [main]
+
+jobs:
+  guard-src:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install
+        run: npm ci --no-audit --no-fund
+
+      - name: Guard src (all ts/tsx)
+        id: guard
+        run: |
+          set +e
+          fail=0
+          for f in $(find src -type f \( -name '*.ts' -o -name '*.tsx' \)); do
+            out=$(echo "{\"tool_name\":\"Write\",\"tool_input\":{\"file_path\":\"$PWD/$f\"}}" | node scripts/nolcool-guard.mjs post 2>&1)
+            if [ $? -ne 0 ]; then
+              echo "::error file=$f::guard violation"
+              echo "$out"
+              fail=1
+            fi
+          done
+          exit $fail
+
+      - name: Build + dist audit
+        run: npm run build
+
+      - name: Upload dist audit log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-audit-${{ github.run_id }}
+          path: |
+            dist/sitemap.xml
+            dist/robots.txt
+          retention-days: 7

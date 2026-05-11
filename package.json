@@ -5,8 +5,19 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/gen-image-manifest.mjs && vite build && node scripts/prerender-seo.mjs",
-    "preview": "vite preview"
+    "build": "node scripts/gen-image-manifest.mjs && vite build && node scripts/prerender-seo.mjs && node scripts/nolcool-dist-audit.mjs && node scripts/nolcool-cross-dup-audit.mjs && node scripts/nolcool-route-sitemap-audit.mjs",
+    "build:no-audit": "node scripts/gen-image-manifest.mjs && vite build && node scripts/prerender-seo.mjs",
+    "preview": "vite preview",
+    "audit:src": "node scripts/nolcool-guard-bulk.mjs",
+    "audit:dist": "node scripts/nolcool-dist-audit.mjs",
+    "audit:live": "node scripts/nolcool-live-audit.mjs",
+    "audit:link": "node scripts/nolcool-link-audit.mjs",
+    "audit:fresh": "node scripts/nolcool-freshness-audit.mjs",
+    "audit:routes": "node scripts/nolcool-route-sitemap-audit.mjs",
+    "audit:dup": "node scripts/nolcool-cross-dup-audit.mjs",
+    "audit:drift": "node scripts/nolcool-claudemd-drift.mjs",
+    "audit:cron": "node scripts/nolcool-cron-health.mjs",
+    "audit:all": "npm run audit:src && npm run audit:dist && npm run audit:dup && npm run audit:routes && npm run audit:drift && npm run audit:cron"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.99.3",

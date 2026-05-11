@@ -564,9 +564,18 @@ function getHookingTitle(nameKo, venue) {
   // fallback: 업소별 고유 문구 생성 (동일 fallback 방지)
   if (venue) {
     const catKo = catLabelMap[venue.cat] || venue.cat;
+    const nameHasRegion = nameKo.includes(venue.regionKo);
+    const nameHasCat = nameKo.includes(catKo);
+    // nameKo가 이미 지역/업종을 포함하면 중복 단어 회피
     const trait = venue.staffNickname
-      ? `${venue.staffNickname}${iGa(venue.staffNickname)} 이끄는 ${venue.regionKo} 명소`
-      : `한번 가면 단골 되는 ${venue.regionKo} ${catKo}`;
+      ? `${venue.staffNickname}${iGa(venue.staffNickname)} 이끄는 ${nameHasRegion ? '' : venue.regionKo + ' '}명소`.trim()
+      : nameHasRegion && nameHasCat
+        ? '한번 가면 단골 되는 곳'
+        : nameHasRegion
+          ? `한번 가면 단골 되는 ${catKo}`
+          : nameHasCat
+            ? `한번 가면 단골 되는 ${venue.regionKo}`
+            : `한번 가면 단골 되는 ${venue.regionKo} ${catKo}`;
     return `${nameKo} — ${trait}`;
   }
   return `${nameKo} — 실시간 후기와 비교 정보`;

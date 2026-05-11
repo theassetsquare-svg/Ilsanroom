@@ -10,6 +10,16 @@
         ]
       }
     ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '<system-reminder>🚨 놀쿨 자동가드 활성. 모든 Edit/Write는 가드 통과 필수. 위반: 가격단어(만원/입장료/가성비/시세/가격대), 금지단어(2차/무료체험/가족모임/상견례/부모님생신/돌잔치), title 중복단어, 홈 외 title에 \"놀쿨\", thum.io/microlink/screenshotone, HashRouter, Next.js import, 가짜 전화번호(010-0000/1234), 외부 링크 target=_blank 누락, 페이지에 useDocumentMeta 누락. CLAUDE.md + ~/.claude/skills/nolcool-* + MEMORY.md 룰 적용.</system-reminder>'"
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Bash",
@@ -19,15 +29,24 @@
             "command": "CMD=$(jq -r '.tool_input.command // \"\"'); FIRST=$(echo \"$CMD\" | head -1); if echo \"$FIRST\" | grep -Eq '^[[:space:]]*rm[[:space:]]+-rf?[[:space:]]+(/|/[^a-zA-Z]|~|\\$HOME)'; then echo '🛑 차단: 위험한 rm -rf 시스템 경로' >&2; exit 2; fi; if echo \"$FIRST\" | grep -Eq '^[[:space:]]*git[[:space:]]+push[[:space:]].*(--force|--force-with-lease|[[:space:]]-f([[:space:]]|$)).*\\b(main|master)\\b'; then echo '🛑 차단: main/master force-push 금지' >&2; exit 2; fi; if echo \"$FIRST\" | grep -Eq '^[[:space:]]*git[[:space:]]+reset[[:space:]]+--hard[[:space:]]+origin'; then echo '🛑 차단: git reset --hard origin 금지' >&2; exit 2; fi; exit 0"
           }
         ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node /home/user/ilsanroom/scripts/nolcool-guard.mjs pre"
+          }
+        ]
       }
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit|Write",
+        "matcher": "Edit|Write|MultiEdit",
         "hooks": [
           {
             "type": "command",
-            "command": "FILE=$(jq -r '.tool_input.file_path // .tool_input.path // \"\"'); case \"$FILE\" in *.ts|*.tsx) echo \"💡 TypeScript 변경됨: $FILE → 'npx tsc --noEmit' 권장\" >&2 ;; *gold-content*|*venue*content*) echo \"💡 콘텐츠 변경됨: title 중복단어/금지어/'놀쿨' 검수 필요\" >&2 ;; esac; exit 0"
+            "command": "node /home/user/ilsanroom/scripts/nolcool-guard.mjs post"
           }
         ]
       },
@@ -46,7 +65,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"=== 세션 종료 체크리스트 ===\"; if [ -d .git ]; then UNCOMMITTED=$(git status --porcelain 2>/dev/null | wc -l); UNPUSHED=$(git log @{u}.. --oneline 2>/dev/null | wc -l); [ \"$UNCOMMITTED\" -gt 0 ] && echo \"⚠️  미커밋 ${UNCOMMITTED}건\"; [ \"$UNPUSHED\" -gt 0 ] && echo \"⚠️  미푸시 ${UNPUSHED}커밋\"; [ \"$UNCOMMITTED\" -eq 0 ] && [ \"$UNPUSHED\" -eq 0 ] && echo \"✅ git 깨끗\"; fi; echo \"📌 라이브 확인: https://nolcool.com\"; echo \"📌 메모리 업데이트 했나? (~/.claude/projects/-home-user-ilsanroom/memory/)\""
+            "command": "echo \"=== 세션 종료 체크리스트 ===\"; if [ -d .git ]; then UNCOMMITTED=$(git status --porcelain 2>/dev/null | wc -l); UNPUSHED=$(git log @{u}.. --oneline 2>/dev/null | wc -l); [ \"$UNCOMMITTED\" -gt 0 ] && echo \"⚠️  미커밋 ${UNCOMMITTED}건\"; [ \"$UNPUSHED\" -gt 0 ] && echo \"⚠️  미푸시 ${UNPUSHED}커밋\"; [ \"$UNCOMMITTED\" -eq 0 ] && [ \"$UNPUSHED\" -eq 0 ] && echo \"✅ git 깨끗\"; fi; echo \"📌 라이브 확인: https://nolcool.com\"; echo \"📌 메모리 업데이트 했나? (~/.claude/projects/-home-user-ilsanroom/memory/)\"; if [ -f /tmp/nolcool-guard.log ]; then BLOCKS=$(grep -c BLOCK /tmp/nolcool-guard.log 2>/dev/null || echo 0); echo \"🛡️  이번 세션 가드 차단: ${BLOCKS}건 (/tmp/nolcool-guard.log)\"; fi"
           }
         ]
       }

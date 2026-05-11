@@ -4,7 +4,7 @@ import { getReferralStats } from '@/lib/growth-engine';
 
 export default function MyReferralsPage() {
   useDocumentMeta(
-    '내 추천 링크 — 친구에게 놀쿨 공유',
+    '내 추천 링크 — 친구 초대하고 같이 보기',
     '내 추천 링크를 카카오톡·문자·SNS로 공유. 친구가 같은 페이지에서 후기·랭킹·커뮤니티를 그대로 볼 수 있게 도와줍니다. 별도 보상 정책은 운영진 검토 후 안내됩니다.'
   );
 

@@ -1,3 +1,14 @@
 {
-  "IDX.agenticWorkspace": true
+  "IDX.agenticWorkspace": true,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "editor.formatOnSave": false,
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/public/venues": true
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.preferences.importModuleSpecifier": "relative"
 }

@@ -30,7 +30,7 @@ const LEVEL_LABELS: Record<string, string> = {
 };
 
 export default function StatsPage() {
-  useDocumentMeta('운영 통계 — 놀쿨 관리자', '회원 수, 일일 방문자, 콘텐츠 작성량, 검색 유입 추이를 한 화면에서 확인하는 운영진 전용 통합 통계 대시보드.');
+  useDocumentMeta('운영 통계 대시보드 — 회원·트래픽·콘텐츠 추이', '회원 수, 일일 방문자, 콘텐츠 작성량, 검색 유입 추이를 한 화면에서 확인하는 운영진 전용 통합 통계 대시보드.');
   const { user, loading: authLoading } = useAuth();
   const isAdmin = user && ADMIN_EMAILS.includes(user.email || '');
 

@@ -1,0 +1,60 @@
+name: Deep Audit (Daily Link + Freshness)
+
+on:
+  schedule:
+    # KST 09:30 (UTC 00:30) — live-audit 30분 후
+    - cron: '30 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  link:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+
+      - name: Link audit
+        id: link
+        run: |
+          node scripts/nolcool-link-audit.mjs --save /tmp/link.json 2>&1 | tee /tmp/link.txt
+        continue-on-error: true
+
+      - name: Upload link
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: link-audit-${{ github.run_id }}
+          path: |
+            /tmp/link.json
+            /tmp/link.txt
+          retention-days: 14
+
+      - name: Fail if broken > 0
+        run: |
+          if [ -f /tmp/link.json ]; then
+            broken=$(node -e "const r=require('/tmp/link.json');console.log((r.broken||[]).length)")
+            echo "broken=$broken"
+            if [ "$broken" -gt 0 ]; then
+              echo "::error::Link audit found $broken broken links/images"
+              exit 1
+            fi
+          fi
+
+  freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+
+      - name: Freshness audit
+        run: node scripts/nolcool-freshness-audit.mjs 2>&1 | tee /tmp/freshness.txt
+
+      - name: Upload freshness
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: freshness-${{ github.run_id }}
+          path: /tmp/freshness.txt
+          retention-days: 14

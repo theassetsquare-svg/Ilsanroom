@@ -26,6 +26,7 @@ const NAV: NavItem[] = [
   { to: '/admin/moderation', label: '모더레이션', icon: '🛡', group: '운영' },
   { to: '/admin/stats', label: '통계', icon: '📊', group: '분석' },
   { to: '/admin/visitors', label: '방문자 분석', icon: '👥', group: '분석' },
+  { to: '/admin/audit', label: '감사 시스템', icon: '🛠', group: '운영' },
 ];
 
 async function ensureAdminSignedIn(): Promise<{ ok: boolean; detail?: string }> {

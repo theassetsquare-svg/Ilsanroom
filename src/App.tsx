@@ -92,6 +92,7 @@ const PageBlocksPage = lazyRetry(() => import('./pages/admin/PageBlocksPage'));
 const ModerationPage = lazyRetry(() => import('./pages/admin/ModerationPage'));
 const StatsPage = lazyRetry(() => import('./pages/admin/StatsPage'));
 const VisitorAnalyticsPage = lazyRetry(() => import('./pages/admin/VisitorAnalyticsPage'));
+const AuditReportPage = lazyRetry(() => import('./pages/admin/AuditReportPage'));
 const PostDetailPage = lazyRetry(() => import('./pages/community/PostDetailPage'));
 const NightlifeGuidePage = lazyRetry(() => import('./pages/lead/NightlifeGuidePage'));
 const LeadQuizPage = lazyRetry(() => import('./pages/lead/LeadQuizPage'));
@@ -234,6 +235,7 @@ export default function App() {
           <Route path="moderation" element={<ModerationPage />} />
           <Route path="stats" element={<StatsPage />} />
           <Route path="visitors" element={<VisitorAnalyticsPage />} />
+          <Route path="audit" element={<AuditReportPage />} />
         </Route>
       </Routes>
     </Suspense>
