@@ -33,7 +33,7 @@ const exempt = new Set([
   '/auth/callback', '/auth/naver-callback',
   '/dashboard', '/onboarding', '/launch', '/billing', '/analytics',
   '/welcome', '/waitlist', '/hidden', '/print', '/referral',
-  '/my/referrals',
+  '/my/referrals', '/my/customize',
   // Navigate 리디렉트 (실제 페이지 없음)
   '/price', '/for-business',
 ]);
