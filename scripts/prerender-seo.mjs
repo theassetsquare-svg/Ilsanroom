@@ -1298,13 +1298,22 @@ function collectionJsonLd(routePath, title, description, items) {
 }
 
 // ── best/[category] — 인기순 (6개) ──
+// 시즌36 — 동일 스켈레톤 → 카테고리별 unique 후킹 (질문/1인칭/손실회피/수치/CTA 2+ 적용)
+const BEST_DESC_BY_CAT = {
+  club: (n) => `강남·홍대·압구정 클럽 ${n}곳 중 진짜 핫한 곳이 어디? 회원이 다녀온 분위기·매니저·드레스코드를 비교했습니다. 놓치면 아까운 라인업, 바로 확인하세요.`,
+  night: (n) => `나이트 ${n}곳 중 부킹 잘 되는 곳을 회원이 솔직히 비교했어요. 웨이터 평판·부스 사이즈·양주 라인업까지, 오늘 갈 곳 5분 만에 결정하면 됩니다.`,
+  lounge: (n) => `조용히 마실 라운지가 ${n}곳? 압구정·청담·홍대 분위기와 칵테일 라인업을 다녀온 회원이 정리했습니다. 데이트든 사교든 후회 없이 고르는 비교 페이지.`,
+  room: (n) => `룸 ${n}곳 중 4~6인 부스가 어디 있나? 양주 라인업·진행 매너 모르면 첫방문 망설여집니다. 지역별 룸 구성과 예약 가능 시간을 먼저 확인하고 가세요.`,
+  yojeong: (n) => `요정 ${n}곳 처음이라 격 떨어질까 걱정? 한정식 코스·접대 매너·실장 응대를 회원이 정리했습니다. 사장님 모시는 자리, 놓치면 다음은 없으니까요.`,
+  hoppa: (n) => `호빠 ${n}곳 중 진짜 케어되는 곳이 어디? 강남·홍대 외모·진행·매너를 다녀온 회원이 솔직히 비교했어요. 첫방문 30분 어색함, 미리 보고 가야 안 놓칩니다.`,
+};
 for (const [catKey, catInfo] of Object.entries(catMap)) {
   const catVenues = venues.filter(vv => vv.cat === catKey);
   if (catVenues.length === 0) continue;
   const p = `/best/${catInfo.path}`;
   const title = `${catInfo.labelKo} 인기 TOP ${catVenues.length} — 회원들이 가장 많이 찾는 핫스팟 랭킹`;
   const topNames = catVenues.slice(0, 3).map(vv => vv.nameKo).join(', ');
-  const desc = `전국 ${catInfo.labelKo} TOP ${catVenues.length}곳 비교 가이드 — ${topNames} 등 인기 ${catInfo.labelKo} 분위기, 매니저 평판, 드레스코드, 전화번호, 예약 팁까지 정리. 매일 자동 갱신되는 ${catInfo.labelKo} 추천 리스트.`;
+  const desc = BEST_DESC_BY_CAT[catKey] ? BEST_DESC_BY_CAT[catKey](catVenues.length) : `전국 ${catInfo.labelKo} TOP ${catVenues.length}곳 비교 가이드 — ${topNames} 등 인기 ${catInfo.labelKo} 분위기, 매니저 평판, 드레스코드, 전화번호, 예약 팁까지 정리. 매일 자동 갱신되는 ${catInfo.labelKo} 추천 리스트.`;
   let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
   ssrBody += `<h2>${escHtml(catInfo.labelKo)} 인기 TOP ${catVenues.length} 랭킹</h2>`;
   ssrBody += `<ol>`;
