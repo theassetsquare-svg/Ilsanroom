@@ -5,6 +5,8 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
 import { useFilteredPosts } from '@/hooks/useFilteredPosts';
+import { useDraftAutosave } from '@/hooks/useDraftAutosave';
+// ↑ useDocumentMeta 페이지: 임시저장 (영역 L-9)
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { PostListSkeleton } from '@/components/ui/Skeleton';
 
@@ -65,6 +67,15 @@ export default function ReviewsPage() {
   const [writeVenue, setWriteVenue] = useState("");
   const [writeRating, setWriteRating] = useState(0);
   const [submitting, setSubmitting] = useState(false);
+  // useDocumentMeta 페이지 임시저장 — L-9 (제목+본문만 보존, venue/rating은 빠른 재선택)
+  const { clearDraft } = useDraftAutosave({
+    key: 'reviews',
+    isOpen: showWriteModal,
+    title: writeTitle,
+    content: writeContent,
+    setTitle: setWriteTitle,
+    setContent: setWriteContent,
+  });
 
   useEffect(() => {
     (async () => {
@@ -96,6 +107,8 @@ export default function ReviewsPage() {
       setSubmitting(false);
       return;
     } else {
+      // useDocumentMeta L-9: 제출 성공 시 임시저장 삭제
+      clearDraft();
       setShowWriteModal(false);
       setWriteTitle(""); setWriteContent(""); setWriteVenue(""); setWriteRating(0);
       const { data } = await fetchPosts('reviews');

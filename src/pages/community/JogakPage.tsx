@@ -5,6 +5,8 @@ import WriteHeader from '@/components/community/WriteHeader';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { useFilteredPosts } from '@/hooks/useFilteredPosts';
+import { useDraftAutosave } from '@/hooks/useDraftAutosave';
+// ↑ useDocumentMeta 페이지: 임시저장 (영역 L-9)
 import { fetchPosts, createPost, fetchComments, createComment, deletePost, type Post } from '@/lib/community-api';
 import { getSeedNickname } from '@/lib/fake-users';
 import { PostListSkeleton } from '@/components/ui/Skeleton';
@@ -184,6 +186,25 @@ export default function JogakPage() {
   });
   const setField = (key: string, value: string) => setF(prev => ({ ...prev, [key]: value }));
 
+  // useDocumentMeta 페이지 임시저장 — L-9 (대형 폼 전체 직렬화)
+  const { clearDraft } = useDraftAutosave({
+    key: 'jogak',
+    isOpen: showWrite,
+    title: f.title,
+    content: JSON.stringify(f),
+    setTitle: (s: string) => setF(prev => ({ ...prev, title: s })),
+    setContent: (s: string) => {
+      try {
+        const restored = JSON.parse(s);
+        if (restored && typeof restored === 'object') {
+          setF(prev => ({ ...prev, ...restored }));
+        }
+      } catch {
+        // 파싱 실패 무시
+      }
+    },
+  });
+
   // DB 로드
   useEffect(() => {
     (async () => {
@@ -243,6 +264,8 @@ export default function JogakPage() {
 
     const result = await createPost({ category: 'party', title: f.title.trim(), content: contentJson });
     if (!result.error) {
+      // useDocumentMeta L-9: 제출 성공 시 임시저장 삭제
+      clearDraft();
       setShowWrite(false);
       setF({ title: '', region: '', jogakType: '테이블', venue: '', date: '', time: '', maxPeople: '4', gender: '누구나', ageRange: '', cost: '모든비용 엔빵', tableCost: '', perPerson: '', mdName: '', contact: '놀쿨 댓글', photo: '사진교환 선택', message: '', jogakCategory: 'female', venueType: '' });
       const { data } = await fetchPosts('party', 100);

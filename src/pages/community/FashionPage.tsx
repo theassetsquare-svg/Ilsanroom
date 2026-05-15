@@ -5,6 +5,8 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
 import { useFilteredPosts } from '@/hooks/useFilteredPosts';
+import { useDraftAutosave } from '@/hooks/useDraftAutosave';
+// ↑ useDocumentMeta 페이지: 임시저장 (영역 L-9)
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { PostListSkeleton } from '@/components/ui/Skeleton';
 
@@ -49,6 +51,15 @@ export default function FashionPage() {
   const [writeTitle, setWriteTitle] = useState("");
   const [writeContent, setWriteContent] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  // useDocumentMeta 페이지 임시저장 — L-9
+  const { clearDraft } = useDraftAutosave({
+    key: 'fashion',
+    isOpen: showWriteModal,
+    title: writeTitle,
+    content: writeContent,
+    setTitle: setWriteTitle,
+    setContent: setWriteContent,
+  });
 
   useEffect(() => {
     (async () => {
@@ -69,6 +80,8 @@ export default function FashionPage() {
     setSubmitting(true);
     const result = await createPost({ category: 'tips', title: writeTitle, content: writeContent });
     if (result.error) { setSubmitting(false); return; } else {
+      // useDocumentMeta L-9: 제출 성공 시 임시저장 삭제
+      clearDraft();
       setShowWriteModal(false); setWriteTitle(""); setWriteContent("");
       const { data } = await fetchPosts('tips');
       setPosts(data.map(postToStyle));

@@ -5,6 +5,8 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
 import { useFilteredPosts } from '@/hooks/useFilteredPosts';
+import { useDraftAutosave } from '@/hooks/useDraftAutosave';
+// ↑ useDocumentMeta 페이지: 임시저장 (영역 L-9)
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { PostListSkeleton } from '@/components/ui/Skeleton';
 
@@ -57,6 +59,15 @@ export default function QnAPage() {
   const [writeTitle, setWriteTitle] = useState("");
   const [writeContent, setWriteContent] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  // useDocumentMeta 페이지 임시저장 — L-9
+  const { clearDraft } = useDraftAutosave({
+    key: 'qna',
+    isOpen: showWriteModal,
+    title: writeTitle,
+    content: writeContent,
+    setTitle: setWriteTitle,
+    setContent: setWriteContent,
+  });
 
   useEffect(() => {
     (async () => {
@@ -80,6 +91,8 @@ export default function QnAPage() {
       setSubmitting(false);
       return;
     } else {
+      // useDocumentMeta L-9: 제출 성공 시 임시저장 삭제
+      clearDraft();
       setShowWriteModal(false); setWriteTitle(""); setWriteContent("");
       const { data } = await fetchPosts('discussion');
       setQuestions(data.map(postToQuestion));

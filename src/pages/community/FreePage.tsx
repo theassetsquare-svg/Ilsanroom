@@ -5,6 +5,8 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
 import { useFilteredPosts } from '@/hooks/useFilteredPosts';
+import { useDraftAutosave } from '@/hooks/useDraftAutosave';
+// ↑ useDocumentMeta 페이지: 임시저장 (영역 L-9)
 import { getSeedNickname } from '@/lib/fake-users';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { PostListSkeleton } from '@/components/ui/Skeleton';
@@ -56,6 +58,15 @@ export default function FreeBoardPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const postsPerPage = 10;
+  // useDocumentMeta 페이지 임시저장 — L-9 (시즌39)
+  const { clearDraft } = useDraftAutosave({
+    key: 'free',
+    isOpen: showWriteModal,
+    title: writeTitle,
+    content: writeContent,
+    setTitle: setWriteTitle,
+    setContent: setWriteContent,
+  });
 
   const loadPosts = async (page: number) => {
     setLoading(true);
@@ -83,6 +94,8 @@ export default function FreeBoardPage() {
       setSubmitting(false);
       return;
     } else {
+      // useDocumentMeta L-9: 제출 성공 시 임시저장 삭제
+      clearDraft();
       setShowWriteModal(false); setWriteTitle(""); setWriteContent("");
       navigate('/community/post/' + (result.data?.id || ''));
     }
