@@ -4,6 +4,7 @@ import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { useFilteredPosts } from '@/hooks/useFilteredPosts';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { PostListSkeleton } from '@/components/ui/Skeleton';
 
@@ -105,7 +106,8 @@ export default function QnAPage() {
     { id: 'seed-15', title: '라운지 마무리 가자고 하면 실례임?', author: '분위기파악중', date: '2026-04-13', answers: 11, likes: 24, solved: false, category: '예절' },
     { id: 'seed-16', title: '클럽 카드결제 잘 되는 곳 있어?', author: '카드파', date: '2026-04-12', answers: 4, likes: 8, solved: true, category: '분위기' },
   ];
-  const displayQuestions = questions.length > 0 ? questions : seedPosts;
+  const displayQuestions = useFilteredPosts(questions.length > 0 ? questions : seedPosts);
+  // ↑ useDocumentMeta 페이지 차단 필터 (영역 L)
 
   const filtered = activeCategory === "전체" ? displayQuestions : displayQuestions.filter((q) => q.category === activeCategory);
 

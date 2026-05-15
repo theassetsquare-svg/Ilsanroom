@@ -4,6 +4,7 @@ import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { useFilteredPosts } from '@/hooks/useFilteredPosts';
 import { getSeedNickname } from '@/lib/fake-users';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { PostListSkeleton } from '@/components/ui/Skeleton';
@@ -112,7 +113,8 @@ export default function FreeBoardPage() {
     { id: 'seed-17', title: '친구가 호빠 가자는데 남자도 갈수있음??', content: '', author: '궁금한토끼', date: '2026-04-13', comments: 14, likes: 9 },
     { id: 'seed-18', title: '레이스 웨이팅 1시간 기다린 사람 여기여기', content: '', author: '인내심테스트', date: '2026-04-12', comments: 6, likes: 31 },
   ];
-  const displayPosts = recentPosts.length > 0 ? recentPosts : seedPosts;
+  const displayPosts = useFilteredPosts(recentPosts.length > 0 ? recentPosts : seedPosts);
+  // ↑ useDocumentMeta 페이지 차단 필터 적용
 
   // 인기글 (좋아요 또는 댓글 많은 순)
   const hotPosts = [...displayPosts].sort((a, b) => (b.likes + b.comments * 2) - (a.likes + a.comments * 2)).slice(0, 3);

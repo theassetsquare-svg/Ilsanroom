@@ -4,6 +4,7 @@ import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { useFilteredPosts } from '@/hooks/useFilteredPosts';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { PostListSkeleton } from '@/components/ui/Skeleton';
 
@@ -124,7 +125,8 @@ export default function ReviewsPage() {
     { id: 'seed-17', title: '하입 사운드 업그레이드 했나? 전보다 좋아짐', author: '음향매니아', date: '2026-04-12', venue: '하입', rating: 4, helpful: 16, comments: 5, hasPhoto: false, excerpt: '저번달에 갔을때보다 확실히 소리가 좋아짐. 저음이 깨끗하게 빠지는 느낌. 인정.' },
     { id: 'seed-18', title: '일산명월관 처음 갔는데 실장님 덕에 편했음', author: '파주에서옴', date: '2026-04-12', venue: '일산명월관', rating: 5, helpful: 23, comments: 7, hasPhoto: false, excerpt: '요정 처음이라 긴장했는데 실장님이 하나하나 설명해주셔서 편하게 즐김. 초보한테 추천.' },
   ];
-  const displayReviews = reviews.length > 0 ? reviews : seedPosts;
+  const displayReviews = useFilteredPosts(reviews.length > 0 ? reviews : seedPosts);
+  // ↑ useDocumentMeta 페이지 차단 필터 (영역 L)
 
   let displayed = [...displayReviews];
   if (starFilter) displayed = displayed.filter((r) => r.rating === starFilter);

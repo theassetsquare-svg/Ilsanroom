@@ -4,6 +4,7 @@ import { Link } from '../../components/ui/SafeLink';
 import WriteHeader from '@/components/community/WriteHeader';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
+import { useFilteredPosts } from '@/hooks/useFilteredPosts';
 import { fetchPosts, createPost, fetchComments, createComment, deletePost, type Post } from '@/lib/community-api';
 import { getSeedNickname } from '@/lib/fake-users';
 import { PostListSkeleton } from '@/components/ui/Skeleton';
@@ -280,7 +281,8 @@ export default function JogakPage() {
     { id: 'seed-14', authorId: null, title: '강남 고구려 다음주 토요 대규모', author: '고구려VIP', date: '2026-04-18', comments: 15, region: '강남', jogakType: '테이블', venue: '고구려', meetDate: '2026-04-26', meetTime: '22:00', maxPeople: 10, currentPeople: 4, genderPref: '남녀 혼성', ageRange: '25~35세', costSplit: '모든비용 엔빵', tableCost: '', perPerson: '', contactMethod: '놀쿨 쪽지', photoExchange: '사진교환 필수', message: '고구려 대규모 조각 모집합니다. 남녀 5:5 맞출 거고 분위기 확실히 보장합니다.', jogakCategory: 'partner' },
     { id: 'seed-15', authorId: null, title: '부산 서면 벙개 지금 출발 ㄱ?', author: '서면즉흥남', date: '2026-04-18', comments: 7, region: '부산', jogakType: '헌팅', venue: '', meetDate: '2026-04-18', meetTime: '23:00', maxPeople: 3, currentPeople: 1, genderPref: '누구나', ageRange: '', costSplit: '각자 부담', contactMethod: '놀쿨 댓글', photoExchange: '사진교환 안 함', message: '서면 지금 나갈 건데 같이 갈 사람? 빨리 댓글!', jogakCategory: 'bungae' },
   ];
-  const displayPosts = posts.length > 0 ? posts : seedPosts;
+  const displayPosts = useFilteredPosts(posts.length > 0 ? posts : seedPosts);
+  // ↑ useDocumentMeta 페이지 차단 필터 (영역 L)
 
   // 필터링
   let filtered = displayPosts;

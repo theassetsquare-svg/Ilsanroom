@@ -4,6 +4,7 @@ import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { useFilteredPosts } from '@/hooks/useFilteredPosts';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { PostListSkeleton } from '@/components/ui/Skeleton';
 
@@ -93,7 +94,8 @@ export default function FashionPage() {
     { id: 'seed-14', title: '비 오는 날 클럽 신발 뭐 신어', author: '우천코디', excerpt: '방수 로퍼가 최고임. 운동화 신으면 젖어서 냄새남. 여분 양말 챙기는 센스.', likes: 9, date: '2026-04-13' },
     { id: 'seed-15', title: '30대 남자 나이트 코디 현실 조언', author: '삼십대형', excerpt: '20대처럼 입으면 오히려 구림. 깔끔한 니트에 코트 걸치면 나이값 하면서 멋있음. 무채색 위주로.', likes: 8, date: '2026-04-12' },
   ];
-  const displayPosts = posts.length > 0 ? posts : seedPosts;
+  const displayPosts = useFilteredPosts(posts.length > 0 ? posts : seedPosts);
+  // ↑ useDocumentMeta 페이지 차단 필터 (영역 L)
 
   // 인기 스타일 글
   const hotPosts = [...displayPosts].sort((a, b) => b.likes - a.likes).slice(0, 3);

@@ -4,6 +4,7 @@ import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { useFilteredPosts } from '@/hooks/useFilteredPosts';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { PostListSkeleton } from '@/components/ui/Skeleton';
 
@@ -104,7 +105,8 @@ export default function TipsPage() {
     { id: 'seed-14', title: '혼술족 클럽 가는 현실적 후기', category: '입문', difficulty: '보통', author: '혼놀러', bookmarks: 19, summary: '바 카운터 앉으면 바텐더가 말 걸어줌. 의외로 혼자 온 사람 많음. 어색한 건 처음 10분만.' },
     { id: 'seed-15', title: '나이트 끝나고 다른 곳 갈 때 주의사항', category: '안전', difficulty: '보통', author: '안전제일', bookmarks: 15, summary: '처음 본 사람이랑 다른 데로 이동은 위험. 친구한테 위치 공유하고 가기. 현금 많이 들고 다니지 말 것.' },
   ];
-  const displayTips = tips.length > 0 ? tips : seedPosts;
+  const displayTips = useFilteredPosts(tips.length > 0 ? tips : seedPosts);
+  // ↑ useDocumentMeta 페이지 차단 필터 (영역 L)
 
   const filtered = activeCat === ALL ? displayTips : displayTips.filter((t) => t.category === activeCat);
 

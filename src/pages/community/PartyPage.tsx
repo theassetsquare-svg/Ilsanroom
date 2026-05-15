@@ -4,6 +4,7 @@ import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { useFilteredPosts } from '@/hooks/useFilteredPosts';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { PostListSkeleton } from '@/components/ui/Skeleton';
 
@@ -165,7 +166,8 @@ export default function PartyRecruitPage() {
     { id: 'seed-14', title: '일산 라운지 다음주 토요일 모임', author: '킨텍스근처', eventDate: '2026-04-26', region: '일산', currentMembers: 1, maxMembers: 6, ageRange: '25~35세', status: '모집중', comments: 2, description: '일산 라운지에서 편하게 술 한잔 하면서 대화 나눌 분들 구합니다.' },
     { id: 'seed-15', title: '이태원 금요 클럽 6명 마감임박', author: '해밀턴단골', eventDate: '2026-04-18', region: '이태원', currentMembers: 5, maxMembers: 6, ageRange: '20대중반~30대', status: '마감', comments: 13, description: '이태원 클럽 마감됐습니다! 다음에 또 올릴게요~' },
   ];
-  const displayParties = parties.length > 0 ? parties : seedPosts;
+  const displayParties = useFilteredPosts(parties.length > 0 ? parties : seedPosts);
+  // ↑ useDocumentMeta 페이지 차단 필터 (영역 L)
 
   const filtered = statusFilter === "전체"
     ? displayParties
