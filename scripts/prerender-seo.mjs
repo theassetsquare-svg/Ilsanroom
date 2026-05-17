@@ -404,7 +404,16 @@ function generateVenueSsrBody(v, allVenues) {
 
   let html = `<article itemscope itemtype="https://schema.org/NightClub">`;
   html += `<h1 itemprop="name">${name}</h1>`;
-  html += `<p itemprop="description">${region} ${catKo}. ${desc}</p>`;
+  // 업소별 공식 백링크 — description 첫 발생 가게이름 1회만 anchor wrap (SSR HTML)
+  const backlinks = {
+    ilsanmyeongwolgwanyojeong: 'https://sunwook4.mycafe24.com/',
+  };
+  let descHtml = desc;
+  const backUrl = backlinks[v.slug];
+  if (backUrl && descHtml.includes(name)) {
+    descHtml = descHtml.replace(name, `<a href="${backUrl}" target="_blank" rel="noopener noreferrer">${name}</a>`);
+  }
+  html += `<p itemprop="description">${region} ${catKo}. ${descHtml}</p>`;
 
   if (features) {
     html += `<h2>분위기·특징</h2>`;
@@ -523,6 +532,9 @@ function generateVenueSsrBody(v, allVenues) {
 
   // ★ 관련 키워드 — 검색엔진이 연관 검색어로 인식 (nameKo 1회 + 카테고리·지역)
   html += `<footer><p>${name}, ${region} ${catKo}, ${region} ${catKo} 추천, ${region} 밤문화</p></footer>`;
+
+  // 백링크는 description 첫 발생 가게이름에 통합 (중복 anchor 제거)
+
   html += `</article>`;
   return html;
 }
