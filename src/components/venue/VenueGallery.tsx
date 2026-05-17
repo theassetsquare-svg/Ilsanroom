@@ -52,7 +52,7 @@ export default function VenueGallery({ slug, name }: VenueGalleryProps) {
             <div key={n} className="overflow-hidden rounded-xl">
               <img
                 src={getSrc(slug, n)}
-                alt={name}
+                alt={`${name} 매장 사진 ${n}`}
                 width={600}
                 height={isSquareSlot(slug, n) ? 600 : 400}
                 loading="lazy"
