@@ -19,7 +19,8 @@
     "audit:cron": "node scripts/nolcool-cron-health.mjs",
     "audit:titlefirst": "node scripts/nolcool-title-namefirst-audit.mjs",
     "audit:hook": "node scripts/nolcool-hook-copy-audit.mjs",
-    "audit:all": "npm run audit:src && npm run audit:dist && npm run audit:dup && npm run audit:routes && npm run audit:drift && npm run audit:cron && npm run audit:titlefirst && npm run audit:hook"
+    "audit:tone": "node scripts/nolcool-human-tone-audit.mjs",
+    "audit:all": "npm run audit:src && npm run audit:dist && npm run audit:dup && npm run audit:routes && npm run audit:drift && npm run audit:cron && npm run audit:titlefirst && npm run audit:hook && npm run audit:tone"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.99.3",

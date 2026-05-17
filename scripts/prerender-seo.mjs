@@ -1103,13 +1103,53 @@ function getVenueOgImage(slug) {
   return `${BASE_URL}/og/nolcool-og.jpg`;
 }
 
+// 시즌41 — 카테고리별 후킹 prefix (audit:hook 5원칙 통과: question·first-person·loss-aversion·number·cta 중 3+개)
+const HOOK_PREFIX_BY_CAT = {
+  club: [
+    '어느 클럽이 진짜? 우리 5분이면 안다.',
+    '솔직히 어디가 내 스타일? 망설이면 모른다.',
+    '어떤 분위기? 후회 안 하려면 먼저 봐.',
+  ],
+  night: [
+    '새벽 어디가 진짜? 5분이면 본다.',
+    '어느 댄스홀이 우리 자리? 망설이면 후회.',
+    '솔직히 어디로 갈지? 먼저 1줄 보자.',
+  ],
+  room: [
+    '어느 룸이 우리 자리? 5분이면 안다.',
+    '어디 가야 후회 안 할지? 망설이지 마.',
+    '솔직히 어떤 룸인지 먼저 1번 확인.',
+  ],
+  yojeong: [
+    '어떤 자리인지 모르면 후회. 5분 본다.',
+    '어느 요정이 진짜? 우리 먼저 가봤다.',
+    '솔직히 어디가 격이 다른지 5분 확인.',
+  ],
+  lounge: [
+    '어느 라운지가 우리 분위기? 5분이면 본다.',
+    '솔직히 어떤 라운지인지 망설이면 모른다.',
+    '어디가 진짜? 후회 전에 5분 먼저 봐.',
+  ],
+  hoppa: [
+    '솔직히 어디가 진짜? 5분이면 안다.',
+    '어느 가게가 우리 자리? 망설이면 후회.',
+    '어떤 분위기? 모르면 먼저 1줄 봐.',
+  ],
+};
+function pickHookPrefix(v) {
+  const opts = HOOK_PREFIX_BY_CAT[v.cat] || HOOK_PREFIX_BY_CAT.club;
+  let h = 0;
+  for (const c of v.slug) h = (h * 31 + c.charCodeAt(0)) | 0;
+  return opts[Math.abs(h) % opts.length];
+}
+
 let venueCount = 0;
 for (const v of venues) {
   const cm = catMap[v.cat];
   if (!cm) continue;
 
   const hookTitle = getHookingTitle(v.nameKo, v);
-  // meta description: shortDesc 보충 → "가게이름 — 설명" 형태 150자
+  // meta description: 시즌41 후킹 prefix + shortDesc 보충 → "가게이름 — 후킹. 설명" 150자
   let descBase = v.shortDesc || '';
   if (descBase.length < 80 && v.description) {
     const sentences = v.description.split(/[.!?]\s*/).filter(s => s.length > 10);
@@ -1120,7 +1160,8 @@ for (const v of venues) {
     }
   }
   if (!descBase || descBase.length < 30) descBase = v.description.slice(0, 130);
-  const desc = truncateDesc(`${v.nameKo} — ${descBase}`, 150);
+  const hookPrefix = pickHookPrefix(v);
+  const desc = truncateDesc(`${v.nameKo} — ${hookPrefix} ${descBase}`, 150);
 
   // Route path depends on category
   let routePath;
