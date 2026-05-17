@@ -56,9 +56,33 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
             <div>
               <h2 className="mb-3 text-xl font-bold text-neon-text">{venue.nameKo} 소개</h2>
               <p className="leading-relaxed text-neon-text-muted">
-                {venue.description.slice(0, 100).includes(venue.nameKo)
-                  ? venue.description
-                  : `${venue.nameKo} — ${venue.description}`}
+                {(() => {
+                  const full = venue.description.slice(0, 100).includes(venue.nameKo)
+                    ? venue.description
+                    : `${venue.nameKo} — ${venue.description}`;
+                  // 업소별 공식 백링크 (첫 등장 가게이름 1회만 앵커)
+                  const backlinks: Record<string, string> = {
+                    ilsanmyeongwolgwanyojeong: 'https://sunwook4.mycafe24.com/',
+                  };
+                  const url = backlinks[venue.slug];
+                  if (!url) return full;
+                  const idx = full.indexOf(venue.nameKo);
+                  if (idx === -1) return full;
+                  return (
+                    <>
+                      {full.slice(0, idx)}
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-neon-primary underline hover:text-neon-primary-light"
+                      >
+                        {venue.nameKo}
+                      </a>
+                      {full.slice(idx + venue.nameKo.length)}
+                    </>
+                  );
+                })()}
               </p>
             </div>
             <div className="rounded-2xl border border-neon-border bg-neon-surface p-6">
