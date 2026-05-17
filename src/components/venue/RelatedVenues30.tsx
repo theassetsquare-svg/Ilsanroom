@@ -54,7 +54,7 @@ export default function RelatedVenues30({ venue }: Props) {
     const usedIds = new Set([...sameCategory, ...sameRegion, ...similarVibe].map(v => v.id));
     const otherCategory = active.filter(v => v.category !== venue.category && !usedIds.has(v.id)).slice(0, 5);
 
-    // 5. 프리미엄 업소
+    // 5. 광고 강조 업소
     const usedIds2 = new Set([...Array.from(usedIds), ...otherCategory.map(v => v.id)]);
     const premium = active.filter(v => v.isPremium && !usedIds2.has(v.id)).slice(0, 5);
 

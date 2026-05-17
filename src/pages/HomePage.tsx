@@ -176,7 +176,7 @@ const allFortunes = [
   { emoji: '🥂', title: '인싸력 만렙', text: '사람이 모이는 곳에 니가 있다. 오늘은 단체전이 답.', lucky: '호빠', luckyColor: '로즈골드', luckyNum: 8, tip: '3명 이상이면 분위기 장악 가능. 크루를 소집하라.' },
   { emoji: '🌙', title: '새벽형 인간', text: '밤이 깊을수록 좋아진다. 새벽 타임이 진짜 시작.', lucky: '새벽 영업', luckyColor: '네이비', luckyNum: 2, tip: '자정 넘어서 도착하면 VIP 대우를 받는다.' },
   { emoji: '🎭', title: '변신의 밤', text: '평소와 다른 스타일을 시도하라. 오늘 밤은 반전이다.', lucky: '요정', luckyColor: '에메랄드', luckyNum: 6, tip: '드레스 코드를 한 단계 올리면 대접이 달라진다.' },
-  { emoji: '💎', title: '럭셔리 운', text: '오늘은 좋은 곳에 가야 한다. 아끼지 마라, 돌아온다.', lucky: '프리미엄 업소', luckyColor: '다이아', luckyNum: 4, tip: '테이블 예약하면 3배 더 즐긴다. 투자하라.' },
+  { emoji: '💎', title: '럭셔리 운', text: '오늘은 좋은 곳에 가야 한다. 아끼지 마라, 돌아온다.', lucky: '고급 업소', luckyColor: '다이아', luckyNum: 4, tip: '테이블 예약하면 3배 더 즐긴다. 투자하라.' },
   { emoji: '🎪', title: '파티 본능', text: '음악이 커질수록 기분이 올라간다. 미친 듯이 놀아라.', lucky: '클럽', luckyColor: '네온그린', luckyNum: 11, tip: '혼자 춤추는 사람이 가장 멋있다. 눈치 보지 마라.' },
 ];
 

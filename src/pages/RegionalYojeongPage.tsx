@@ -107,7 +107,7 @@ export default function RegionalYojeongPage() {
           <p className="text-sm leading-relaxed text-amber-900/80">
             요정은 한옥 또는 전통식 건물의 독립 좌석에서 코스 한정식과 함께 대화를 나누는
             격조 높은 만남의 장소입니다. 과거 정치인과 기업인이 주로 이용했으며,
-            현재는 귀빈 초대와 잊지 못할 기념일에 활용됩니다.
+            지금은 귀빈 초대와 중요한 자리에 주로 쓰입니다.
             단순한 식사를 넘어 한국의 미학과 예절이 담긴 독자적 문화 체험입니다.
           </p>
         </div>

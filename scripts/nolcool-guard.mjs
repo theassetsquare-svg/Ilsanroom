@@ -171,10 +171,50 @@ if (!isEmail && isSrc && /<a\s+[^>]*href=["']https?:\/\/[^"']+["'][^>]*>/.test(t
 }
 
 // 9) useDocumentMeta 누락 — 콘텐츠 페이지만. callback/redirect/error는 제외
+// Edit(부분수정)의 new_string엔 보통 useDocumentMeta가 없으니 파일 전체를 다시 읽어서 검사
 const NO_SEO_NEEDED = /(Callback|Redirect|Error|404|Logout)Page\.tsx$/;
-if (/\/src\/pages\/.+Page\.tsx$/.test(file) && !NO_SEO_NEEDED.test(file)
-    && !/useDocumentMeta|<Helmet|<title>/.test(text)) {
-  violations.push(`📄 페이지 컴포넌트에 useDocumentMeta/Helmet 누락 (SEO)`);
+if (/\/src\/pages\/.+Page\.tsx$/.test(file) && !NO_SEO_NEEDED.test(file)) {
+  const fullText = (pkt.tool_name === 'Edit' && existsSync(file))
+    ? (() => { try { return readFileSync(file, 'utf8'); } catch { return text; } })()
+    : text;
+  if (!/useDocumentMeta|<Helmet|<title>/.test(fullText)) {
+    violations.push(`📄 페이지 컴포넌트에 useDocumentMeta/Helmet 누락 (SEO)`);
+  }
+}
+
+// 9-2) v16 AI 클리셰 패턴 — venue 콘텐츠 + 페이지 본문 (data/lib/pages/components)
+// 양주 도메인 용어 "프리미엄 셀렉션/룸"은 유지 (업계 표준 카테고리)
+const AI_CLICHE = [
+  { re: /자리잡은|자리잡고\s*있/, label: '자리잡은 (사람말 "있는/들어선")' },
+  { re: /잊지\s*못할/, label: '잊지 못할' },
+  { re: /특별한\s*경험/, label: '특별한 경험' },
+  { re: /추천\s*드립/, label: '추천드립니다' },
+  { re: /본\s*(가게|클럽|업소|호빠|요정|룸|라운지|나이트)는/, label: '본 가게/클럽은' },
+  { re: /방문하시는\s*분들/, label: '방문하시는 분들' },
+  { re: /고객\s*여러분/, label: '고객 여러분' },
+  { re: /당점\s*(에서|은|의)/, label: '당점에서는' },
+  { re: /저희\s*(클럽|룸|업소|가게|라운지|호빠|요정)\s*에서는/, label: '저희 ~에서는' },
+  { re: /고품격\s*서비스/, label: '고품격 서비스' },
+  { re: /엄선된\s*[가-힣]/, label: '엄선된 ~' },
+  { re: /강력\s*추천/, label: '강력 추천' },
+  { re: /필수\s*방문/, label: '필수 방문' },
+  { re: /후회\s*없으/, label: '후회 없으실' },
+  { re: /만족스러우실/, label: '만족스러우실' },
+  { re: /탁월한\s*[가-힣]/, label: '탁월한 ~' },
+  { re: /최고의\s*선택/, label: '최고의 선택' },
+  { re: /분석한\s*결과/, label: '분석한 결과' },
+  { re: /종합\s*평가/, label: '종합 평가' },
+  // "프리미엄 [업종]"은 차단, 단 "프리미엄 셀렉션/룸/라인/위스키" 등 도메인 용어는 제외
+  { re: /프리미엄\s*(클럽|라운지|호빠|요정|나이트|업소|가게)/, label: '프리미엄 [업종]' },
+];
+// 페이지/data/components/lib 스코프 한정 (법률·도움말·FAQ 페이지 자연어 보호: 법률 페이지는 useDocumentMeta 있어서 isData에 포함되지만 위 표현이 거의 안 쓰임)
+const isContentScope = /\/src\/(data|pages|components|lib)\//.test(file);
+// 단, Privacy/Help/QnA/Terms 등 정책·FAQ 페이지는 일부 표현 자연어로 사용 가능 → 스코프 제외
+const isPolicyPage = /(Privacy|Help|Terms|QnA|FAQ|About)Page\.tsx$/.test(file);
+if (isContentScope && !isPolicyPage) {
+  for (const { re, label } of AI_CLICHE) {
+    if (re.test(text)) violations.push(`🤖 AI 클리셰 "${label}" — 사람 톤으로 (v16 친구톤)`);
+  }
 }
 
 // 10) "놀쿨" 본문 stuffing (홈 외 src/data/venues.ts 등) — 3회 이상
