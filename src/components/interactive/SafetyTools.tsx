@@ -97,12 +97,6 @@ export function LastTrainInfo() {
           <span className="text-neon-text font-medium">22:00~04:00 (20~40% 할증)</span>
         </div>
       </div>
-      <div className="mt-4 flex gap-2">
-        <a href="https://map.kakao.com/" target="_blank" rel="noopener noreferrer"
-          className="flex-1 rounded-lg bg-[#FEE500] py-2 text-center text-xs font-medium text-neutral-900 transition hover:bg-[#FDD700]">카카오맵</a>
-        <a href="https://map.naver.com/" target="_blank" rel="noopener noreferrer"
-          className="flex-1 rounded-lg bg-neon-green py-2 text-center text-xs font-medium text-white transition hover:bg-neon-green/90">네이버지도</a>
-      </div>
     </div>
   );
 }
