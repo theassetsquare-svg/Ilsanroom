@@ -777,6 +777,28 @@ export default function HomePage() {
         <PrivacyTrustBadge />
       </section>
 
+      {/* ═══ 1.35 v25 큐레이션 4가지 — 시점·상황·예산 진입점 ═══ */}
+      <section className="px-4 pt-2 pb-1 max-w-3xl mx-auto" aria-label="큐레이션 빠른 진입">
+        <div className="grid grid-cols-4 gap-2">
+          <Link to="/tonight" className="flex flex-col items-center justify-center gap-1 rounded-xl bg-gradient-to-br from-[#8B5CF6]/10 to-white border border-[#8B5CF6]/20 py-2.5 active:scale-[0.97] transition">
+            <span className="text-xl">🌙</span>
+            <span className="text-[11px] font-bold text-[#111] leading-tight">오늘 밤</span>
+          </Link>
+          <Link to="/weekend" className="flex flex-col items-center justify-center gap-1 rounded-xl bg-gradient-to-br from-[#EC4899]/10 to-white border border-[#EC4899]/20 py-2.5 active:scale-[0.97] transition">
+            <span className="text-xl">📅</span>
+            <span className="text-[11px] font-bold text-[#111] leading-tight">이번 주말</span>
+          </Link>
+          <Link to="/occasion" className="flex flex-col items-center justify-center gap-1 rounded-xl bg-gradient-to-br from-[#FCD34D]/10 to-white border border-[#FCD34D]/30 py-2.5 active:scale-[0.97] transition">
+            <span className="text-xl">🎯</span>
+            <span className="text-[11px] font-bold text-[#111] leading-tight">상황별</span>
+          </Link>
+          <Link to="/budget" className="flex flex-col items-center justify-center gap-1 rounded-xl bg-gradient-to-br from-[#10B981]/10 to-white border border-[#10B981]/20 py-2.5 active:scale-[0.97] transition">
+            <span className="text-xl">💼</span>
+            <span className="text-[11px] font-bold text-[#111] leading-tight">예산별</span>
+          </Link>
+        </div>
+      </section>
+
       {/* ═══ 1.37 카톡 원클릭 친구 초대 — 입소문 가속기 ═══ */}
       <InviteFriendBox />
 
