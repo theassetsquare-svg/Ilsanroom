@@ -408,16 +408,29 @@ export default function SearchPage() {
             ))}
           </div>
         ) : queryParam ? (
-          <div className="py-20 text-center">
+          <div className="py-12 text-center">
             <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gray-100">
               <Search className="h-8 w-8 text-gray-300" />
             </div>
-            <h3 className="text-lg font-bold text-gray-900">"{queryParam}" 검색 결과가 없습니다</h3>
-            <p className="mt-1 text-sm text-gray-500">다른 검색어나 카테고리로 다시 시도해 보세요</p>
+            <h3 className="text-lg font-bold text-gray-900">"{queryParam}" 결과가 없네</h3>
+            <p className="mt-1 text-sm text-gray-500">못 찾으면 큐레이션부터 둘러봐 — 4가지 추천</p>
+            <div className="mt-6 grid grid-cols-2 gap-2 max-w-md mx-auto">
+              <Link to="/tonight" className="flex items-center justify-center gap-2 rounded-xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 px-3 py-3 text-sm font-bold text-[#111] active:scale-95">
+                🌙 오늘 밤
+              </Link>
+              <Link to="/weekend" className="flex items-center justify-center gap-2 rounded-xl bg-[#EC4899]/10 border border-[#EC4899]/20 px-3 py-3 text-sm font-bold text-[#111] active:scale-95">
+                📅 이번 주말
+              </Link>
+              <Link to="/occasion" className="flex items-center justify-center gap-2 rounded-xl bg-[#FCD34D]/10 border border-[#FCD34D]/30 px-3 py-3 text-sm font-bold text-[#111] active:scale-95">
+                🎯 상황별
+              </Link>
+              <Link to="/budget" className="flex items-center justify-center gap-2 rounded-xl bg-[#10B981]/10 border border-[#10B981]/20 px-3 py-3 text-sm font-bold text-[#111] active:scale-95">
+                💼 예산별
+              </Link>
+            </div>
             <button onClick={() => { setInputValue(''); setSearchParams({}); }}
-              className="mt-6 rounded-xl bg-[#8B5CF6] px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-purple-100 active:scale-95"
-              style={{ minHeight: 44 }}>
-              전체 업소 보기
+              className="mt-6 text-sm text-gray-400 underline" style={{ minHeight: 44 }}>
+              아니면 전체 업소 보기
             </button>
           </div>
         ) : null}

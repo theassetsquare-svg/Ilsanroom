@@ -56,6 +56,24 @@ export default function RoulettePage() {
           </div>
         </ReadCompletionReward>
 
+        <nav className="rounded-2xl border border-gray-200 bg-white p-5" aria-label="큐레이션">
+          <h2 className="text-base font-bold text-[#111] mb-3">랜덤 말고 큐레이션으로 골라볼래?</h2>
+          <div className="grid grid-cols-2 gap-2">
+            <Link to="/tonight" className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-3 text-sm font-bold text-[#111] active:bg-gray-100">
+              🌙 오늘 밤 24곳 →
+            </Link>
+            <Link to="/weekend" className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-3 text-sm font-bold text-[#111] active:bg-gray-100">
+              📅 이번 주말 30곳 →
+            </Link>
+            <Link to="/occasion" className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-3 text-sm font-bold text-[#111] active:bg-gray-100">
+              🎯 상황별 6가지 →
+            </Link>
+            <Link to="/budget" className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-3 text-sm font-bold text-[#111] active:bg-gray-100">
+              💼 예산별 코스 4개 →
+            </Link>
+          </div>
+        </nav>
+
         <div className="text-center">
           <ReadFinishCount pageName="룰렛 페이지" baseCount={140} />
         </div>
