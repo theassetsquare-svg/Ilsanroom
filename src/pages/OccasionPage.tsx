@@ -88,7 +88,22 @@ export default function OccasionPage() {
           ))}
         </div>
 
-        <div className="mt-10 p-6 bg-neon-surface-2 rounded-xl text-center">
+        <nav className="mt-10 p-5 bg-neon-surface border border-neon-border rounded-xl" aria-label="다른 큐레이션">
+          <h2 className="text-base font-bold text-neon-text mb-3">상황 말고 시점·예산으로 골라볼래?</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <Link to="/tonight" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
+              🌙 오늘 밤 추천 24곳 →
+            </Link>
+            <Link to="/weekend" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
+              📅 이번 주말 30곳 →
+            </Link>
+            <Link to="/budget" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
+              💼 예산별 코스 4개 →
+            </Link>
+          </div>
+        </nav>
+
+        <div className="mt-6 p-6 bg-neon-surface-2 rounded-xl text-center">
           <p className="text-neon-text font-medium mb-3">아직도 망설인다면 룰렛으로 결정</p>
           <Link
             to="/roulette"

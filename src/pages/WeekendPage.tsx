@@ -106,6 +106,21 @@ export default function WeekendPage() {
             <li>· 예약 가능 곳은 매장 상세에서 바로 전화</li>
           </ul>
         </div>
+
+        <nav className="mt-6 p-5 bg-neon-surface border border-neon-border rounded-xl" aria-label="다른 큐레이션">
+          <h2 className="text-base font-bold text-neon-text mb-3">주말 말고 다른 자리 찾고 있어?</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <Link to="/tonight" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
+              🌙 오늘 밤 추천 24곳 →
+            </Link>
+            <Link to="/occasion" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
+              🎯 상황별 6가지 →
+            </Link>
+            <Link to="/budget" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
+              💼 예산별 코스 4개 →
+            </Link>
+          </div>
+        </nav>
       </section>
     </div>
   );

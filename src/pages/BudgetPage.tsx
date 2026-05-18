@@ -83,6 +83,21 @@ export default function BudgetPage() {
             <li>· 첫 방문이면 평일 저녁이 사람 적어서 분위기 살피기 좋다</li>
           </ul>
         </div>
+
+        <nav className="mt-6 p-5 bg-neon-surface border border-neon-border rounded-xl" aria-label="다른 큐레이션">
+          <h2 className="text-base font-bold text-neon-text mb-3">상황 말고 시점으로 골라볼래?</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <Link to="/tonight" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
+              🌙 오늘 밤 추천 24곳 →
+            </Link>
+            <Link to="/weekend" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
+              📅 이번 주말 30곳 →
+            </Link>
+            <Link to="/occasion" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
+              🎯 상황별 6가지 →
+            </Link>
+          </div>
+        </nav>
       </section>
     </div>
   );

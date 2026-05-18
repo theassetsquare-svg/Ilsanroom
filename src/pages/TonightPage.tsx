@@ -94,7 +94,22 @@ export default function TonightPage() {
           </section>
         ))}
 
-        <div className="mt-12 p-6 bg-neon-surface-2 rounded-xl text-center">
+        <nav className="mt-12 mb-6 p-5 bg-neon-surface border border-neon-border rounded-xl" aria-label="다른 큐레이션">
+          <h2 className="text-base font-bold text-neon-text mb-3">오늘 말고 다른 자리 찾고 있어?</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <Link to="/weekend" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
+              📅 이번 주말 핫플 30곳 →
+            </Link>
+            <Link to="/occasion" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
+              🎯 상황별 6가지 →
+            </Link>
+            <Link to="/budget" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
+              💼 예산별 코스 4개 →
+            </Link>
+          </div>
+        </nav>
+
+        <div className="p-6 bg-neon-surface-2 rounded-xl text-center">
           <p className="text-neon-text font-medium mb-3">고민되면 즉석 추천 한 번 돌려봐</p>
           <Link
             to="/roulette"
