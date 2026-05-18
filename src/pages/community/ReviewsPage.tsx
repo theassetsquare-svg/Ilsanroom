@@ -53,7 +53,7 @@ function StarDisplay({ rating, size = "md" }: { rating: number; size?: "sm" | "m
 }
 
 export default function ReviewsPage() {
-  useDocumentMeta('가본 사람만 쓸 수 있다, 실제 방문 후기', '별점·한 줄 평으로 보는 업소 리얼 리뷰. 광고 아닌 진짜 목소리. 클럽 나이트 라운지 룸 요정 호빠 모든 업종 후기 모음.');
+  useDocumentMeta('가본 사람만 쓸 수 있다, 실제 방문 후기', '어느 가게가 진짜? 광고 아닌 솔직히 가본 사람만 쓴 1줄 후기. 별점·한줄평으로 보는 6업종 리얼 리뷰. 강남 홍대 부산 모든 업종 모음. 바로 확인.');
   const { user } = useAuth();
   const navigate = useNavigate();
   const [starFilter, setStarFilter] = useState<number | null>(null);

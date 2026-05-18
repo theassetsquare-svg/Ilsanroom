@@ -100,7 +100,7 @@ function NbbangCalc() {
 }
 
 export default function PartyRecruitPage() {
-  useDocumentMeta('같이 갈 사람 손! 파티 멤버 모집', '날짜 맞추고 인원 채우고 N빵으로 비용 분담. 혼자 가기 아까울 때 여기서 구해. 클럽 4인 N빵, 라운지 짝매칭, 룸 단체석, 출장 동행, 주말 1박2일 클럽투어까지 빠른 매칭 게시판.');
+  useDocumentMeta('같이 갈 사람 손! 파티 멤버 모집', '혼자 가기 아깝다면? 우리끼리 같이 갈 사람 바로 모집. 클럽 4인 N빵·라운지 짝매칭·룸 단체석·주말 1박2일 투어까지. 인원 채워서 출발, 바로 확인.');
   const { user } = useAuth();
   const navigate = useNavigate();
   const [statusFilter, setStatusFilter] = useState<PartyStatus | "전체">("전체");

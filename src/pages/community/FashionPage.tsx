@@ -42,7 +42,7 @@ const DRESS_GUIDE = [
 ];
 
 export default function FashionPage() {
-  useDocumentMeta('운동화 신고 가도 돼? 업종별 복장 가이드', '클럽·나이트·요정·라운지·룸·호빠 업종별 드레스코드 정리. 운동화 반바지 가능 여부, 시즌별 옷차림, 첫방문 안전한 룩, 강남/홍대 클럽별 입장 거절 리스크까지 한눈에 정리.');
+  useDocumentMeta('운동화 신고 가도 돼? 업종별 복장 가이드', '운동화 신고 가도 돼? 6개 업종별 드레스코드 정리. 반바지 가능 여부·시즌 옷차림·첫방문 안전한 룩·강남/홍대 입장 거절 리스크까지 바로 확인. 후회 전에.');
   const { user } = useAuth();
   const navigate = useNavigate();
   const [posts, setPosts] = useState<StylePost[]>([]);

@@ -38,7 +38,7 @@ function postToSimple(post: Post): SimplePost {
 }
 
 export default function FreeBoardPage() {
-  useDocumentMeta('자유게시판 — 주제 제한 없이 솔직하게 떠드는 곳', '잡담 질문 자랑 푸념 황당썰 추천음악 맛집 해장정보 다 OK. 익명 보장, 규칙만 지키면 뭐든 자유롭게 쓸 수 있는 자유게시판. 밤문화 입문자 환영.');
+  useDocumentMeta('자유게시판 — 주제 제한 없이 솔직하게 떠드는 곳', '오늘 뭐 떠들고 싶어? 잡담 질문 자랑 푸념 황당썰 추천음악 맛집 해장정보 다 OK. 익명 보장, 규칙 1개만 지키면 자유. 밤문화 입문자도 바로 환영.');
   const { user } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();

@@ -30,7 +30,7 @@ const popularComparisons = [
 ];
 
 export default function ComparePage() {
-  useDocumentMeta('두 곳 놓고 따져보면 후회가 없다', '가격·분위기·후기·평점·접근성 항목별 두 업소 비교표. 강남 vs 홍대, 클럽 vs 라운지 인기 매치 모음. 고민 끝, 선택만 남았어요.');
+  useDocumentMeta('두 곳 놓고 따져보면 후회가 없다', '어느 가게가 내 스타일? 분위기·후기·평점·접근성·매너 5개 항목별 두 업소 1대1 비교. 강남 vs 홍대, 클럽 vs 라운지 인기 매치 모음. 고민 끝, 바로 확인.');
   const [selected, setSelected] = useState<string[]>([]);
   const [votes, setVotes] = useState<Record<string, number>>({});
   const containerRef = useRef<HTMLDivElement>(null);
