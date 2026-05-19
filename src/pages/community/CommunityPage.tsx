@@ -4,6 +4,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { createClient } from '@/lib/supabase';
 import { CommunityPulse } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
+import DailyPrompt from '@/components/community/DailyPrompt';
 
 const sectionDefs = [
   { title: "업소후기", description: "직접 가본 솔직한 방문 후기", href: "/community/reviews", icon: "⭐", category: "reviews", hookLine: "별점 4점 이상만 모아봤더니 공통점이 있었다" },
@@ -105,6 +106,9 @@ export default function CommunityPage() {
           </div>
           <LiveActivityFeed maxItems={5} interval={4000} />
         </div>
+
+        {/* ══════ 오늘의 글감 — 매일 자정 회전 ══════ */}
+        <DailyPrompt />
 
         {/* ══════ 지금 뜨는 글 (미리보기 스니펫 포함) ══════ */}
         {recentPosts.length > 0 && (
