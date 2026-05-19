@@ -9,6 +9,7 @@ import { useUserBlocks } from '@/hooks/useUserBlocks';
 import { useUserMemos } from '@/hooks/useUserMemos';
 import { useBookmarks } from '@/hooks/useBookmarks';
 import { useRecentPosts } from '@/hooks/useRecentPosts';
+import DailyPrompt from '@/components/community/DailyPrompt';
 
 type Tab = 'block' | 'memo' | 'bookmark' | 'recent';
 
@@ -51,6 +52,8 @@ export default function MyCustomizePage() {
       <p className="mb-6 text-center text-sm text-neon-muted">
         보기 싫은 거 숨기고, 다시 보고 싶은 건 모아두자. 내 브라우저에만 저장됩니다.
       </p>
+
+      <DailyPrompt />
 
       <div className="mb-6 grid grid-cols-4 gap-2">
         {TABS.map((t) => {

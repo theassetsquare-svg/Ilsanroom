@@ -197,6 +197,18 @@ function getSuggestions(query: string): string[] {
 /* ── 인기 검색어 ── */
 const TRENDING = ['강남클럽', '일산룸', '홍대나이트', '해운대클럽', '강남라운지', '부산호빠', '이태원', '압구정'];
 
+/* ── 검색박스 placeholder 회전 — 막막함 → 영감 ── */
+const PLACEHOLDER_HINTS = [
+  '오늘 강남 갈만한 곳',
+  '혼자 가도 되는 라운지',
+  '주말 사람 많은 클럽',
+  '일산 양주 라인업 좋은 룸',
+  '홍대 새벽까지 영업하는 곳',
+  '분위기 좋은 압구정 라운지',
+  '부산 해운대 핫스팟',
+  '강남 단골 많은 곳',
+];
+
 export default function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryParam = searchParams.get('q') || '';
@@ -221,6 +233,16 @@ export default function SearchPage() {
   useEffect(() => {
     try { setRecentSearches(JSON.parse(localStorage.getItem('recentSearches') || '[]')); } catch {}
   }, []);
+
+  /* placeholder 회전 — 4초마다 다음 힌트, 입력값 있으면 정지 */
+  const [hintIdx, setHintIdx] = useState(0);
+  useEffect(() => {
+    if (inputValue) return;
+    const id = setInterval(() => {
+      setHintIdx((i) => (i + 1) % PLACEHOLDER_HINTS.length);
+    }, 4000);
+    return () => clearInterval(id);
+  }, [inputValue]);
 
   useEffect(() => { setInputValue(queryParam); }, [queryParam]);
 
@@ -286,7 +308,7 @@ export default function SearchPage() {
                   value={inputValue}
                   onChange={(e) => { setInputValue(e.target.value); setShowSuggestions(true); }}
                   onFocus={() => setShowSuggestions(true)}
-                  placeholder="업소명, 지역, 키워드로 검색"
+                  placeholder={`예: ${PLACEHOLDER_HINTS[hintIdx]}`}
                   className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 pl-11 pr-10 text-[16px] outline-none transition-all focus:border-[#8B5CF6] focus:bg-white focus:ring-4 focus:ring-[#8B5CF6]/10 [&::-webkit-search-cancel-button]:hidden"
                   autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false}
                 />
