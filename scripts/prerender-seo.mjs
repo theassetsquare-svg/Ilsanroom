@@ -1189,7 +1189,7 @@ for (const v of venues) {
     for (const s of sentences) {
       if (descBase.length >= 120) break;
       if (descBase.includes(s.slice(0, 15))) continue;
-      descBase = descBase ? `${descBase}. ${s}` : s;
+      descBase = descBase ? `${descBase.replace(/[.!?]\s*$/, '')}. ${s}` : s;
     }
   }
   if (!descBase || descBase.length < 30) descBase = v.description.slice(0, 130);
