@@ -3,7 +3,6 @@ import { lazy, Suspense, useEffect, useState, useMemo } from 'react';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueHero from '@/components/venue/VenueHero';
 import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
-import VenueJsonLd from '@/components/venue/VenueJsonLd';
 import VenueDetailTabs from '@/components/venue/VenueDetailTabs';
 import VenueGallery from '@/components/venue/VenueGallery';
 import Card from '@/components/ui/Card';
@@ -70,23 +69,10 @@ export default function VenueDetailPage({
     return hooks[hash % hooks.length];
   }, [venue.slug]);
 
-  const nameHasRegion = venue.nameKo.includes(regionKo);
-  const breadcrumbItems = [
-    { name: '놀쿨', url: '/' },
-    { name: categoryLabel, url: categoryPath },
-    ...(nameHasRegion ? [] : [{ name: regionKo, url: regionPath }]),
-    { name: venue.nameKo, url: detailPath },
-  ];
-
   return (
     <div className="bg-neon-bg">
-      <VenueJsonLd
-        venue={venue}
-        breadcrumbItems={breadcrumbItems}
-        faqItems={faqs}
-        reviews={[]}
-        detailPath={detailPath}
-      />
+      {/* JSON-LD (NightClub/BarOrPub + BreadcrumbList + FAQPage) is emitted by SSR prerender-seo.mjs.
+          Runtime React duplicate removed 2026-05-19 to fix Google Rich Results "FAQPage 입력란이 중복되었습니다" error. */}
 
       {/* ═══ 1. Breadcrumb ═══ */}
       <section className="mx-auto max-w-[1200px] px-4 py-6 sm:px-6">
