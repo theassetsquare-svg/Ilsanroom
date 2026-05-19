@@ -66,7 +66,7 @@ function truncateDesc(text, maxLen = 150) {
 /**
  * HTML의 head 메타 태그를 교체
  */
-function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords, preloadImage }) {
+function renderPage({ title, description, canonical, ogImage, ogImageAlt, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords, preloadImage }) {
   let html = baseHtml;
   const desc = truncateDesc(description || '', 150);
   // canonical은 sitemap loc과 동일 형식이어야 함 (trailing slash 일치).
@@ -119,6 +119,21 @@ function renderPage({ title, description, canonical, ogImage, ssrBody, jsonLdLis
     /<meta property="og:image" content="[^"]*"/,
     `<meta property="og:image" content="${escHtml(ogImg)}"`
   );
+
+  // og:image:alt — Naver/Google 이미지 검색 컨텍스트 (시즌53 v26-day1)
+  // 페이지별 alt 명시 → 이미지 검색 노출 강화
+  const ogAlt = ogImageAlt || title;
+  if (!/og:image:alt/.test(html)) {
+    html = html.replace(
+      /(<meta property="og:image:height" content="[^"]*" \/>)/,
+      `$1\n    <meta property="og:image:alt" content="${escHtml(ogAlt)}" />`
+    );
+  } else {
+    html = html.replace(
+      /<meta property="og:image:alt" content="[^"]*"/,
+      `<meta property="og:image:alt" content="${escHtml(ogAlt)}"`
+    );
+  }
 
   // twitter:title — 페이지별 동적
   html = html.replace(
@@ -1109,6 +1124,18 @@ function getVenueOgImage(slug) {
   return `${BASE_URL}/og/nolcool-og.jpg`;
 }
 
+// 시즌53 v26-day1 — JSON-LD image 배열 (Naver/Google/AI 이미지 검색 시그널 강화)
+// 실제 존재하는 venue 이미지 1~4번까지 모두 수집. 1개뿐이면 단일 URL.
+function getVenueImageList(slug) {
+  const list = [];
+  for (let i = 1; i <= 4; i++) {
+    const p = path.join(DIST, 'venues', `${slug}-${i}.jpg`);
+    if (fs.existsSync(p)) list.push(`${BASE_URL}/venues/${slug}-${i}.jpg`);
+  }
+  if (list.length === 0) return getVenueOgImage(slug);
+  return list.length === 1 ? list[0] : list;
+}
+
 // 시즌41 — 카테고리별 후킹 prefix (audit:hook 5원칙 통과: question·first-person·loss-aversion·number·cta 중 3+개)
 const HOOK_PREFIX_BY_CAT = {
   club: [
@@ -1189,7 +1216,7 @@ for (const v of venues) {
     description: v.description.slice(0, 300),
     address: { '@type': 'PostalAddress', streetAddress: v.address || `${v.regionKo} ${v.nameKo}`, addressLocality: v.regionKo, addressCountry: 'KR' },
     url: `${BASE_URL}${routePath}`,
-    image: getVenueOgImage(v.slug),
+    image: getVenueImageList(v.slug),
     telephone: v.staffPhone || undefined,
     openingHoursSpecification: [{
       '@type': 'OpeningHoursSpecification',
@@ -1235,6 +1262,7 @@ for (const v of venues) {
     title: hookTitle,
     description: desc,
     ogImage: getVenueOgImage(v.slug),
+    ogImageAlt: `${v.nameKo} — ${v.regionKo} ${catLabelMap[v.cat]} 매장 사진`,
     ssrBody: generateVenueSsrBody(v, venues),
     jsonLdList: [venueJsonLd, faqJsonLd, breadcrumbJsonLd],
     datePublished,
