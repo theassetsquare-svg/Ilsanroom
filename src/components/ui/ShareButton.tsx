@@ -9,9 +9,25 @@ interface ShareButtonProps {
   className?: string;
 }
 
+/* 사람 톤 친구 인트로 — 페이지 URL 길이 % N으로 결정적 회전 */
+const FRIEND_INTROS = [
+  '이거 봐봐',
+  '너 이거 봤어?',
+  '같이 가볼래?',
+  '오 이런 글 있던데',
+  '이거 우리 얘기 아냐?',
+  '이거 진짜 공감됨 ㅋㅋ',
+];
+
+function pickFriendIntro(seed: string): string {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) | 0;
+  return FRIEND_INTROS[Math.abs(hash) % FRIEND_INTROS.length];
+}
+
 export default function ShareButton({
   title = '',
-  text = '이 업소 정보를 확인해 보세요!',
+  text,
   url,
   className = '',
 }: ShareButtonProps) {
@@ -19,10 +35,12 @@ export default function ShareButton({
   const [showDropdown, setShowDropdown] = useState(false);
 
   const shareUrl = typeof window !== 'undefined' ? (url || window.location.href) : '';
+  /* text 미지정 시 사람 톤 인트로 + 제목 */
+  const shareText = text ?? `${pickFriendIntro(shareUrl)}${title ? ` — ${title}` : ''}`;
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -45,7 +63,7 @@ export default function ShareButton({
   const handleNativeShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ title, text, url: shareUrl });
+        await navigator.share({ title, text: shareText, url: shareUrl });
       } catch {
         // cancelled
       }
