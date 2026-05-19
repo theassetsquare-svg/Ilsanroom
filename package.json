@@ -20,6 +20,7 @@
     "audit:titlefirst": "node scripts/nolcool-title-namefirst-audit.mjs",
     "audit:hook": "node scripts/nolcool-hook-copy-audit.mjs",
     "audit:tone": "node scripts/nolcool-human-tone-audit.mjs",
+    "audit:browser": "node scripts/nolcool-browser-audit.mjs",
     "audit:all": "npm run audit:src && npm run audit:dist && npm run audit:dup && npm run audit:routes && npm run audit:drift && npm run audit:cron && npm run audit:titlefirst && npm run audit:hook && npm run audit:tone"
   },
   "dependencies": {
@@ -42,6 +43,7 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.5.2",
+    "puppeteer-core": "^24.10.1",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.1.8",
     "typescript": "^5.8.3",
