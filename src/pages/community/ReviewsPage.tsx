@@ -165,8 +165,8 @@ export default function ReviewsPage() {
           <div className="mt-2"><PageLiveCounter pageName="후기 읽는 중" baseCount={28} /></div>
         </div>
 
-        {/* 인기 후기 하이라이트 */}
-        {!loading && hotReviews.length > 0 && (
+        {/* 인기 후기 하이라이트 — seedPosts 폴백으로 항상 즉시 렌더, CLS 0 */}
+        {hotReviews.length > 0 && (
           <div className="mb-6 rounded-2xl border p-4 sm:p-5" style={{ borderColor: '#F59E0B', backgroundColor: 'rgba(245,158,11,0.04)' }}>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-sm">🔥</span>
