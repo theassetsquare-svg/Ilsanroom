@@ -75,7 +75,7 @@ export default function DailyPrompt() {
           to="/community/free"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 rounded-full bg-amber-500 px-4 py-2 text-sm font-bold text-white hover:bg-amber-600 transition"
+          className="inline-flex items-center gap-1 rounded-full bg-amber-700 px-4 py-2 text-sm font-bold text-white hover:bg-amber-800 transition"
           style={{ minHeight: 36 }}
         >
           한 줄 써보기 →
@@ -84,7 +84,7 @@ export default function DailyPrompt() {
           to="/community/qna"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-white px-4 py-2 text-sm font-bold text-amber-700 hover:bg-amber-50 transition"
+          className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-white px-4 py-2 text-sm font-bold text-amber-800 hover:bg-amber-50 transition"
           style={{ minHeight: 36 }}
         >
           질문으로 올리기

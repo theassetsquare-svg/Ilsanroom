@@ -58,7 +58,7 @@ export default function MagazinePage() {
       <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-bold text-[#111]">전체 매거진</h2>
-          <p className="text-xs text-[#999]">가기 전에 읽으면 달라지는 글</p>
+          <p className="text-xs text-[#595959]">가기 전에 읽으면 달라지는 글</p>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -66,10 +66,10 @@ export default function MagazinePage() {
             <div key={a.id}>
               <Link to={`/magazine/${a.id}`} className="block group">
                 <article className="rounded-2xl border bg-white p-5 transition hover:shadow-lg hover:border-[#8B5CF6]/30" style={{ borderColor: '#E5E7EB', minHeight: 180 }}>
-                  <span className="rounded-full bg-[#8B5CF6]/10 px-2.5 py-0.5 text-xs font-bold" style={{ color: '#8B5CF6' }}>{a.tag}</span>
+                  <span className="rounded-full bg-[#8B5CF6]/10 px-2.5 py-0.5 text-xs font-bold" style={{ color: '#5B21B6' }}>{a.tag}</span>
                   <h3 className="mt-3 text-sm font-bold leading-snug line-clamp-2 group-hover:text-[#8B5CF6] transition-colors" style={{ color: '#111' }}>{a.title}</h3>
                   <p className="mt-2 text-xs line-clamp-3 leading-relaxed" style={{ color: '#555' }}>{a.excerpt}</p>
-                  <div className="mt-3 flex items-center justify-between text-xs" style={{ color: '#999' }}>
+                  <div className="mt-3 flex items-center justify-between text-xs" style={{ color: '#595959' }}>
                     <span>{a.date}</span>
                     <span className="text-[#8B5CF6] font-medium opacity-0 group-hover:opacity-100 transition-opacity">읽기 →</span>
                   </div>

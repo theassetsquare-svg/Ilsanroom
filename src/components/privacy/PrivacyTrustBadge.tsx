@@ -9,7 +9,6 @@ export default function PrivacyTrustBadge() {
     <Link
       to="/privacy-promise"
       className="block group"
-      aria-label="프라이버시 6대 약속 보기"
     >
       <div className="rounded-2xl border border-emerald-100 bg-gradient-to-r from-emerald-50 via-white to-violet-50 px-4 py-3 hover:border-emerald-200 hover:shadow-sm transition">
         <div className="flex items-center gap-3">
@@ -18,14 +17,14 @@ export default function PrivacyTrustBadge() {
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5 mb-0.5">
-              <span className="text-[11px] font-black text-emerald-600 uppercase tracking-wider">100% 익명</span>
-              <span className="text-[10px] text-emerald-500">·</span>
-              <span className="text-[11px] font-bold text-violet-600">카톡 안전</span>
-              <span className="text-[10px] text-violet-400">·</span>
-              <span className="text-[11px] font-bold text-rose-600">본명 X</span>
+              <span className="text-[11px] font-black text-emerald-700 uppercase tracking-wider">100% 익명</span>
+              <span className="text-[10px] text-emerald-700">·</span>
+              <span className="text-[11px] font-bold text-violet-700">카톡 안전</span>
+              <span className="text-[10px] text-violet-700">·</span>
+              <span className="text-[11px] font-bold text-rose-700">본명 X</span>
             </div>
             <p className="text-[12px] text-[#444] leading-snug">
-              친구한테 추천해도 걱정 없는 이유 <span className="text-emerald-600 font-bold group-hover:underline">→ 6대 약속</span>
+              친구한테 추천해도 걱정 없는 이유 <span className="text-emerald-700 font-bold group-hover:underline">→ 6대 약속</span>
             </p>
           </div>
         </div>

@@ -14,7 +14,6 @@ export default function OpenBetaBanner() {
       <Link
         to="/welcome"
         className="block group"
-        aria-label="놀쿨 OPEN BETA — 창립멤버 안내"
       >
         <div className="relative overflow-hidden rounded-2xl border border-amber-200 bg-gradient-to-r from-amber-50 via-rose-50 to-violet-50 px-4 py-3">
           {/* 점멸 라이브 닷 */}
@@ -25,20 +24,20 @@ export default function OpenBetaBanner() {
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-                <span className="text-[10px] font-black uppercase tracking-[0.15em] text-rose-600">OPEN BETA</span>
-                <span className="text-[10px] text-rose-400">·</span>
-                <span className="text-[11px] font-bold text-amber-700">놀쿨 방금 오픈</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.15em] text-rose-700">OPEN BETA</span>
+                <span className="text-[10px] text-rose-700">·</span>
+                <span className="text-[11px] font-bold text-amber-800">놀쿨 방금 오픈</span>
               </div>
               <p className="text-[13px] text-[#222] leading-snug">
                 {showRemaining ? (
                   <>
                     창립멤버 <strong className="text-rose-600">{remaining}자리</strong> 남음 ·{' '}
-                    <span className="text-violet-600 font-bold group-hover:underline">⭐ 1~100번 영구 뱃지 →</span>
+                    <span className="text-violet-700 font-bold group-hover:underline">⭐ 1~100번 영구 뱃지 →</span>
                   </>
                 ) : (
                   <>
                     창립멤버 첫 100명 <strong className="text-rose-600">⭐ 영구 뱃지</strong> ·{' '}
-                    <span className="text-violet-600 font-bold group-hover:underline">지금 가입 →</span>
+                    <span className="text-violet-700 font-bold group-hover:underline">지금 가입 →</span>
                   </>
                 )}
               </p>

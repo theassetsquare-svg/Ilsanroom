@@ -48,7 +48,7 @@ export default function SecretModeToast() {
           </div>
           <button
             onClick={dismiss}
-            className="flex h-9 w-9 items-center justify-center rounded-full text-[#999] hover:bg-white hover:text-[#555] transition"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-[#666] hover:bg-white hover:text-[#222] transition"
             aria-label="닫기"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -58,14 +58,14 @@ export default function SecretModeToast() {
         </div>
         <div className="px-4 py-3">
           <p className="text-[13px] text-[#444] leading-relaxed mb-2.5">
-            가족·연인이 폰 봐도 흔적 안 남게 <strong className="text-emerald-600">시크릿 모드</strong>로 즐기는 거 추천.<br />
-            <span className="text-[11px] text-[#777]">크롬: ⋮ → "새 시크릿 창" / 사파리: 탭 → 비공개</span>
+            가족·연인이 폰 봐도 흔적 안 남게 <strong className="text-emerald-700">시크릿 모드</strong>로 즐기는 거 추천.<br />
+            <span className="text-[11px] text-[#595959]">크롬: ⋮ → "새 시크릿 창" / 사파리: 탭 → 비공개</span>
           </p>
           <div className="flex items-center gap-2">
             <Link
               to="/privacy-promise"
               onClick={dismiss}
-              className="flex-1 text-center rounded-xl bg-emerald-500 px-3 py-2 text-[12px] font-bold text-white hover:bg-emerald-600 transition"
+              className="flex-1 text-center rounded-xl bg-emerald-700 px-3 py-2 text-[12px] font-bold text-white hover:bg-emerald-800 transition"
             >
               프라이버시 6대 약속 →
             </Link>

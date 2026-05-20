@@ -27,37 +27,32 @@ export default function CommunityPage() {
     if (!supabase) return;
     let alive = true;
 
-    // KST 자정 기준 오늘 작성된 글 — 실제 Supabase count
-    const kstNow = new Date();
-    const kstMidnight = new Date(kstNow.getFullYear(), kstNow.getMonth(), kstNow.getDate()).toISOString();
-    supabase.from('posts').select('*', { count: 'exact', head: true }).gte('created_at', kstMidnight)
-      .then(({ count }) => { if (alive) setTodayPosts(count ?? 0); });
-    supabase.from('posts').select('*', { count: 'exact', head: true })
-      .then(({ count }) => { if (alive) setTotalPosts(count ?? 0); });
+    // 순차 호출 — Supabase HTTP/2 동시 stream 한도 회피 (errors-in-console 0)
+    (async () => {
+      const kstNow = new Date();
+      const kstMidnight = new Date(kstNow.getFullYear(), kstNow.getMonth(), kstNow.getDate()).toISOString();
 
-    sectionDefs.forEach(async (sec) => {
-      const { count } = await supabase.from('posts').select('*', { count: 'exact', head: true }).eq('category', sec.category);
-      if (!alive) return;
-      setCounts(prev => ({ ...prev, [sec.category]: count || 0 }));
-    });
+      try { const { count } = await supabase.from('posts').select('*', { count: 'exact', head: true }).gte('created_at', kstMidnight); if (alive) setTodayPosts(count ?? 0); } catch {}
+      try { const { count } = await supabase.from('posts').select('*', { count: 'exact', head: true }); if (alive) setTotalPosts(count ?? 0); } catch {}
 
-    // 최근 인기글 5개
-    supabase.from('posts')
-      .select('id, title, category, likes, comment_count')
-      .order('likes', { ascending: false })
-      .limit(5)
-      .then(({ data }) => {
+      for (const sec of sectionDefs) {
+        if (!alive) return;
+        try {
+          const { count } = await supabase.from('posts').select('*', { count: 'exact', head: true }).eq('category', sec.category);
+          if (alive) setCounts(prev => ({ ...prev, [sec.category]: count || 0 }));
+        } catch {}
+      }
+
+      try {
+        const { data } = await supabase.from('posts').select('id, title, category, likes, comment_count').order('likes', { ascending: false }).limit(5);
         if (alive && data && data.length > 0) setRecentPosts(data as any);
-      });
+      } catch {}
 
-    // 오늘 가장 많이 댓글 달린 글 5개
-    supabase.from('posts')
-      .select('id, title, category, comment_count')
-      .order('comment_count', { ascending: false })
-      .limit(5)
-      .then(({ data }) => {
+      try {
+        const { data } = await supabase.from('posts').select('id, title, category, comment_count').order('comment_count', { ascending: false }).limit(5);
         if (alive && data && data.length > 0) setHotCommentPosts(data as any);
-      });
+      } catch {}
+    })();
 
     return () => { alive = false; };
   }, []);
@@ -84,14 +79,14 @@ export default function CommunityPage() {
               <span className="text-2xl sm:text-3xl font-black" style={{ color: '#10B981' }}>
                 {todayPosts === null ? '—' : todayPosts.toLocaleString()}
               </span>
-              <span className="text-xs mt-1" style={{ color: '#999' }}>오늘 새 글</span>
+              <span className="text-xs mt-1" style={{ color: '#595959' }}>오늘 새 글</span>
             </div>
             <div className="h-8 w-px" style={{ backgroundColor: '#E5E7EB' }} />
             <div className="flex flex-col items-center">
               <span className="text-2xl sm:text-3xl font-black" style={{ color: '#8B5CF6' }}>
                 {totalPosts === null ? '—' : totalPosts.toLocaleString()}
               </span>
-              <span className="text-xs mt-1" style={{ color: '#999' }}>누적 글</span>
+              <span className="text-xs mt-1" style={{ color: '#595959' }}>누적 글</span>
             </div>
           </div>
 
@@ -138,7 +133,7 @@ export default function CommunityPage() {
                       <span className="text-sm font-bold truncate" style={{ color: '#111' }}>{post.title}</span>
                     </div>
                   </div>
-                  <div className="flex shrink-0 gap-3 ml-3 text-xs" style={{ color: '#999' }}>
+                  <div className="flex shrink-0 gap-3 ml-3 text-xs" style={{ color: '#595959' }}>
                     <span style={{ color: '#EF4444' }}>♥ {post.likes}</span>
                     <span>💬 {post.comment_count || 0}</span>
                   </div>
@@ -212,7 +207,7 @@ export default function CommunityPage() {
                     <h3 className="text-lg font-bold group-hover:text-neon-primary-light">
                       {section.title}
                     </h3>
-                    <span className="text-xs" style={{ color: '#999' }}>
+                    <span className="text-xs" style={{ color: '#595959' }}>
                       게시글 <span className="text-neon-primary-light font-bold">{(counts[section.category] || 0).toLocaleString()}</span>개
                     </span>
                   </div>
@@ -220,7 +215,7 @@ export default function CommunityPage() {
                 <p className="text-sm leading-relaxed mb-2" style={{ color: '#555' }}>
                   {section.description}
                 </p>
-                <p className="text-xs font-bold" style={{ color: '#8B5CF6' }}>
+                <p className="text-xs font-bold" style={{ color: '#5B21B6' }}>
                   "{section.hookLine}"
                 </p>
               </Link>
@@ -251,7 +246,7 @@ export default function CommunityPage() {
                       <span className="text-sm font-bold truncate" style={{ color: '#111' }}>{post.title}</span>
                     </div>
                   </div>
-                  <div className="flex shrink-0 gap-3 ml-3 text-xs" style={{ color: '#999' }}>
+                  <div className="flex shrink-0 gap-3 ml-3 text-xs" style={{ color: '#595959' }}>
                     <span style={{ color: '#EF4444' }}>♥ {post.likes}</span>
                     <span>💬 {post.comments}</span>
                   </div>

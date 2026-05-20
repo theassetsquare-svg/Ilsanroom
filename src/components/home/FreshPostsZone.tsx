@@ -6,8 +6,9 @@ const CATS: PostCategory[] = ['reviews', 'discussion', 'party', 'tips', 'free'];
 const CAT_LABEL: Record<PostCategory, string> = {
   reviews: '후기', discussion: '토론', party: '모임', tips: '꿀팁', free: '자유',
 };
+// AA color-contrast (4.5:1) for small bold white text — darker shades
 const CAT_COLOR: Record<PostCategory, string> = {
-  reviews: '#F59E0B', discussion: '#8B5CF6', party: '#EC4899', tips: '#22C55E', free: '#3B82F6',
+  reviews: '#92400E', discussion: '#5B21B6', party: '#BE185D', tips: '#15803D', free: '#1D4ED8',
 };
 
 const FRESH_WINDOW_MS = 30 * 60 * 1000; // 30분
@@ -31,7 +32,13 @@ export default function FreshPostsZone() {
     let alive = true;
     const load = async () => {
       try {
-        const results = await Promise.all(CATS.map((c) => fetchPosts(c, 6, 0)));
+        // 순차 호출 — Supabase HTTP/2 동시 stream 한도 회피 (errors-in-console 0)
+        const results = [];
+        for (const c of CATS) {
+          if (!alive) return;
+          try { results.push(await fetchPosts(c, 6, 0)); }
+          catch { results.push({ data: [] }); }
+        }
         if (!alive) return;
         const all = results.flatMap((r) => r.data || []);
         all.sort(
