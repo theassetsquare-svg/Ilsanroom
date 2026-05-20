@@ -127,14 +127,14 @@ export default function CommunityPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold"
-                        style={{ backgroundColor: 'rgba(139,92,246,0.1)', color: '#8B5CF6' }}>
+                        style={{ backgroundColor: 'rgba(139,92,246,0.1)', color: '#5B21B6' }}>
                         {catLabel[post.category] || post.category}
                       </span>
                       <span className="text-sm font-bold truncate" style={{ color: '#111' }}>{post.title}</span>
                     </div>
                   </div>
                   <div className="flex shrink-0 gap-3 ml-3 text-xs" style={{ color: '#595959' }}>
-                    <span style={{ color: '#EF4444' }}>♥ {post.likes}</span>
+                    <span style={{ color: '#B91C1C' }}>♥ {post.likes}</span>
                     <span>💬 {post.comment_count || 0}</span>
                   </div>
                 </Link>
@@ -163,7 +163,7 @@ export default function CommunityPage() {
                 >
                   <div className="flex items-center gap-2 min-w-0">
                     <span className="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold"
-                      style={{ backgroundColor: 'rgba(139,92,246,0.1)', color: '#8B5CF6' }}>
+                      style={{ backgroundColor: 'rgba(139,92,246,0.1)', color: '#5B21B6' }}>
                       {catLabel[post.category] || post.category}
                     </span>
                     <span className="text-sm font-medium truncate" style={{ color: '#111' }}>{post.title}</span>
@@ -242,12 +242,12 @@ export default function CommunityPage() {
                   <span className="text-lg font-black shrink-0" style={{ color: idx < 3 ? '#8B5CF6' : '#999', width: 24, textAlign: 'center' }}>{idx + 1}</span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold" style={{ backgroundColor: 'rgba(139,92,246,0.1)', color: '#8B5CF6' }}>{post.cat}</span>
+                      <span className="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold" style={{ backgroundColor: 'rgba(139,92,246,0.1)', color: '#5B21B6' }}>{post.cat}</span>
                       <span className="text-sm font-bold truncate" style={{ color: '#111' }}>{post.title}</span>
                     </div>
                   </div>
                   <div className="flex shrink-0 gap-3 ml-3 text-xs" style={{ color: '#595959' }}>
-                    <span style={{ color: '#EF4444' }}>♥ {post.likes}</span>
+                    <span style={{ color: '#B91C1C' }}>♥ {post.likes}</span>
                     <span>💬 {post.comments}</span>
                   </div>
                 </Link>
@@ -272,7 +272,7 @@ export default function CommunityPage() {
               ].map((post) => (
                 <Link key={post.id} to="/community/free" className="flex items-center justify-between rounded-xl border border-neon-border bg-neon-bg px-4 sm:px-5 py-3 transition hover:border-neon-primary/40 hover:bg-neon-surface" style={{ minHeight: 48 }}>
                   <div className="flex items-center gap-2 min-w-0">
-                    <span className="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold" style={{ backgroundColor: 'rgba(139,92,246,0.1)', color: '#8B5CF6' }}>{post.cat}</span>
+                    <span className="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold" style={{ backgroundColor: 'rgba(139,92,246,0.1)', color: '#5B21B6' }}>{post.cat}</span>
                     <span className="text-sm font-medium truncate" style={{ color: '#111' }}>{post.title}</span>
                   </div>
                   <span className="shrink-0 ml-3 rounded-full px-3 py-1 text-xs font-bold" style={{ backgroundColor: '#FEE2E2', color: '#DC2626' }}>💬 {post.comments}</span>

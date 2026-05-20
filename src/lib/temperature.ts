@@ -1,13 +1,14 @@
 import { createClient } from '@/lib/supabase';
 
 // ── 밤의 온도 등급 (당근 매너온도 36.5도 모티브) ──
+// color: AA color-contrast 통과 (4.5:1, 작은 bold 텍스트용 다크 shade)
 export const TEMPERATURE_LEVELS = [
-  { key: 'newbie',    name: '새내기',   emoji: '🌱', minTemp: 36.5, color: '#9CA3AF', glow: false }, // 회색
-  { key: 'regular',   name: '단골',     emoji: '🍺', minTemp: 40,   color: '#3B82F6', glow: false }, // 파랑
-  { key: 'cooler',    name: '놀쿨러',   emoji: '🎵', minTemp: 50,   color: '#10B981', glow: false }, // 초록
-  { key: 'hotplace',  name: '핫플러',   emoji: '🔥', minTemp: 60,   color: '#F97316', glow: false }, // 주황
-  { key: 'king',      name: '밤의제왕', emoji: '⭐', minTemp: 75,   color: '#A855F7', glow: true  }, // 보라+글로우
-  { key: 'legend',    name: '레전드',   emoji: '👑', minTemp: 90,   color: '#F59E0B', glow: true  }, // 금색+글로우
+  { key: 'newbie',    name: '새내기',   emoji: '🌱', minTemp: 36.5, color: '#4B5563', glow: false }, // 회색
+  { key: 'regular',   name: '단골',     emoji: '🍺', minTemp: 40,   color: '#1D4ED8', glow: false }, // 파랑
+  { key: 'cooler',    name: '놀쿨러',   emoji: '🎵', minTemp: 50,   color: '#047857', glow: false }, // 초록
+  { key: 'hotplace',  name: '핫플러',   emoji: '🔥', minTemp: 60,   color: '#C2410C', glow: false }, // 주황
+  { key: 'king',      name: '밤의제왕', emoji: '⭐', minTemp: 75,   color: '#7E22CE', glow: true  }, // 보라+글로우
+  { key: 'legend',    name: '레전드',   emoji: '👑', minTemp: 90,   color: '#92400E', glow: true  }, // 금색+글로우
 ] as const;
 
 export type TemperatureLevelKey = (typeof TEMPERATURE_LEVELS)[number]['key'];

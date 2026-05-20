@@ -86,7 +86,7 @@ export function TemperatureRanking({ limit = 10 }: { limit?: number }) {
           />
         </div>
       ) : rows.length === 0 ? (
-        <p style={{ padding: 20, textAlign: 'center', color: '#999', fontSize: 13 }}>
+        <p style={{ padding: 20, textAlign: 'center', color: '#595959', fontSize: 13 }}>
           아직 랭킹 데이터가 없어요
         </p>
       ) : (
@@ -111,7 +111,7 @@ export function TemperatureRanking({ limit = 10 }: { limit?: number }) {
                     width: 28,
                     fontSize: medal ? 18 : 13,
                     fontWeight: 800,
-                    color: r.rank <= 3 ? level.color : '#888',
+                    color: r.rank <= 3 ? level.color : '#595959',
                     textAlign: 'center',
                   }}
                 >
