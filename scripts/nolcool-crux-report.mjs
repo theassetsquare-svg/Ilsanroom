@@ -125,7 +125,7 @@ async function main() {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${RESEND}` },
     body: JSON.stringify({
-      from: 'NOLCOOL <noreply@nolcool.com>',
+      from: '놀쿨 <onboarding@resend.dev>',
       to: TO,
       subject: subj,
       html,
