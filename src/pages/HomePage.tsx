@@ -23,6 +23,8 @@ const StreakBadge = lazy(() => import('@/components/home/StreakBadge'));
 const PrivacyTrustBadge = lazy(() => import('@/components/privacy/PrivacyTrustBadge'));
 const OpenBetaBanner = lazy(() => import('@/components/launch/OpenBetaBanner'));
 const InviteFriendBox = lazy(() => import('@/components/launch/InviteFriendBox'));
+const InfiniteRecommendLoop = lazy(() => import('@/components/home/InfiniteRecommendLoop'));
+const LuckyRoulette = lazy(() => import('@/components/home/LuckyRoulette'));
 import { articles as magazineArticles } from '@/data/magazine-articles';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -213,135 +215,6 @@ const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, r
     </div>
   );
 });
-
-/* ── 무한 추천 루프 컴포넌트 — 끝없이 스크롤하게 ── */
-const RECOMMEND_BATCH = 6;
-function InfiniteRecommendLoop({ venues, popularVenues }: { venues: Venue[]; popularVenues: Venue[] }) {
-  const [batches, setBatches] = useState(1);
-  const [seenIds] = useState<Set<string>>(() => new Set(popularVenues.slice(0, 20).map(v => v.id)));
-  const loaderRef = useRef<HTMLDivElement>(null);
-
-  // Intersection Observer — 바닥에 닿으면 다음 배치 로드
-  useEffect(() => {
-    const el = loaderRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setBatches(prev => Math.min(prev + 1, 20)); // 최대 20배치 = 120개
-      }
-    }, { rootMargin: '200px' });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
-  const allRecs = useMemo(() => {
-    const result: Venue[][] = [];
-    const used = new Set(seenIds);
-    for (let i = 0; i < batches; i++) {
-      const seed = new Date().getDate() * 100 + i * 37;
-      const pool = venues.filter(v => !used.has(v.id));
-      const shuffled = [...pool].sort((a, b) => {
-        const ha = ((a.id.charCodeAt(0) || 0) * 31 + seed) % 1000;
-        const hb = ((b.id.charCodeAt(0) || 0) * 31 + seed) % 1000;
-        return ha - hb;
-      });
-      const batch = shuffled.slice(0, RECOMMEND_BATCH);
-      batch.forEach(v => used.add(v.id));
-      if (batch.length > 0) result.push(batch);
-    }
-    return result;
-  }, [batches, venues, seenIds]);
-
-  // 카테고리별 교차 추천 문구
-  const crossCatHooks: Record<string, { text: string; cat: string; href: string }[]> = {
-    club: [{ text: '클럽 가기 전에 라운지 한잔?', cat: 'lounge', href: '/lounges' }, { text: '클럽 말고 나이트는?', cat: 'night', href: '/nights' }],
-    night: [{ text: '나이트 끝나고 마무리는 어디?', cat: 'room', href: '/rooms' }, { text: '클럽도 한번 가봐', cat: 'club', href: '/clubs' }],
-    lounge: [{ text: '분위기 있는 요정도 있어', cat: 'yojeong', href: '/yojeong' }, { text: '라운지 취향이면 호빠도', cat: 'hoppa', href: '/hoppa' }],
-    room: [{ text: '룸 말고 요정은 어때?', cat: 'yojeong', href: '/yojeong' }, { text: '클럽에서 마무리?', cat: 'club', href: '/clubs' }],
-    yojeong: [{ text: '격식 풀고 나이트 가자', cat: 'night', href: '/nights' }, { text: '조용한 라운지도 좋아', cat: 'lounge', href: '/lounges' }],
-    hoppa: [{ text: '호빠 끝나고 클럽 갈래?', cat: 'club', href: '/clubs' }, { text: '마무리는 라운지에서', cat: 'lounge', href: '/lounges' }],
-  };
-
-  return (
-    <section className="px-4 py-3 max-w-3xl mx-auto">
-      {allRecs.map((batch, bIdx) => {
-        const hookText = nextHooks[bIdx % nextHooks.length];
-        const firstCat = batch[0]?.category || 'club';
-        const crossHook = crossCatHooks[firstCat]?.[bIdx % 2];
-        return (
-          <div key={bIdx}>
-            {/* 배치 헤더 */}
-            <div className="flex items-center gap-2 mb-2 mt-4">
-              <span className="text-sm font-bold text-[#111]">{hookText}</span>
-              <div className="flex-1 h-px bg-gray-200" />
-            </div>
-            {/* 2열 그리드 */}
-            <div className="grid grid-cols-2 gap-2.5">
-              {batch.map(v => (
-                <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} target="_blank" rel="noopener noreferrer"
-                  className="rounded-xl border border-gray-100 bg-white overflow-hidden shadow-sm active:scale-[0.98] transition-transform">
-                  <div className={`relative w-full overflow-hidden bg-gradient-to-br ${
-                    v.category === 'club' ? 'from-violet-500 to-indigo-700' :
-                    v.category === 'night' ? 'from-blue-500 to-purple-700' :
-                    v.category === 'lounge' ? 'from-amber-500 to-orange-700' :
-                    v.category === 'room' ? 'from-rose-500 to-pink-700' :
-                    v.category === 'yojeong' ? 'from-emerald-500 to-teal-700' :
-                    'from-pink-500 to-rose-700'
-                  }`} style={{ aspectRatio: '4/3' }}>
-                    <img src={`/venues/${v.slug}-1.webp`} alt={v.nameKo} loading="lazy" width={300} height={225}
-                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                      className="absolute inset-0 w-full h-full object-cover z-[1]" />
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-2xl">{catEmoji[v.category] || '🎵'}</span>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/70 px-2 py-1.5">
-                      <p className="text-[12px] font-bold text-white truncate">{v.nameKo}</p>
-                      <p className="text-[10px] text-white/80">{catLabel[v.category]} · {v.regionKo}</p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-            {/* 교차 카테고리 추천 — 매 배치마다 다른 카테고리 유도 */}
-            {crossHook && bIdx % 2 === 0 && (
-              <Link to={crossHook.href} className="mt-2 block rounded-xl bg-gradient-to-r from-[#F5F3FF] to-white border border-purple-100 p-3 active:bg-purple-50 transition text-center">
-                <p className="text-sm font-bold text-[#8B5CF6]">{catEmoji[crossHook.cat]} {crossHook.text} →</p>
-              </Link>
-            )}
-
-            {/* 커뮤니티 유도 — 홀수 배치마다 */}
-            {bIdx % 3 === 1 && (
-              <Link to="/community/free?write=true" className="mt-2 block rounded-xl border border-orange-100 bg-orange-50/50 p-3 active:bg-orange-50 transition text-center">
-                <p className="text-[13px] font-bold text-[#111]">💬 이 중에 가본 데 있어? 후기 보러가기</p>
-                <p className="text-[10px] text-[#666] mt-0.5">솔직 후기 모음</p>
-              </Link>
-            )}
-          </div>
-        );
-      })}
-
-      {/* 무한 로딩 트리거 */}
-      <div ref={loaderRef} className="py-6 text-center">
-        {batches < 20 ? (
-          <div className="flex flex-col items-center gap-2">
-            <div className="flex gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-bounce" style={{ animationDelay: '0ms' }} />
-              <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-bounce" style={{ animationDelay: '150ms' }} />
-              <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-bounce" style={{ animationDelay: '300ms' }} />
-            </div>
-            <p className="text-xs text-[#666]">더 많은 곳을 찾고 있어요...</p>
-          </div>
-        ) : (
-          <div className="space-y-2">
-            <p className="text-sm font-bold text-[#111]">전국 {venues.length}곳 다 봤어!</p>
-            <Link to="/community" className="inline-block rounded-full bg-[#8B5CF6] px-5 py-2 text-sm font-bold text-white active:scale-95 transition">커뮤니티 가기 →</Link>
-          </div>
-        )}
-      </div>
-    </section>
-  );
-}
 
 /* ══════════════════════════════════════════════════════ */
 /*                    HOMEPAGE                            */
@@ -566,21 +439,6 @@ export default function HomePage() {
 
   // === Favorites (하이브리드: localStorage + Supabase) ===
   const { favorites, toggleFavorite } = useFavoritesHook();
-
-  // === Roulette ===
-  const [rouletteResult, setRouletteResult] = useState<Venue | null>(null);
-  const [rouletteSpinning, setRouletteSpinning] = useState(false);
-  const rouletteTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  useEffect(() => () => { if (rouletteTimerRef.current) clearTimeout(rouletteTimerRef.current); }, []);
-  const spinRoulette = useCallback(() => {
-    if (rouletteSpinning) return;
-    setRouletteSpinning(true);
-    setRouletteResult(null);
-    rouletteTimerRef.current = setTimeout(() => {
-      setRouletteResult(openVenues[Math.floor(Math.random() * openVenues.length)]);
-      setRouletteSpinning(false);
-    }, 1500);
-  }, [rouletteSpinning, openVenues]);
 
   const fortune = useMemo(() => getTodayFortune(), []);
   const fortuneScore = useMemo(() => Math.floor(60 + (new Date().getDate() * 7 + new Date().getMonth() * 13) % 40), []);
@@ -1446,47 +1304,10 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* ═══ LUCKY ROULETTE ═══ */}
-      <section className="px-4 py-4 max-w-3xl mx-auto">
-        <div className="rounded-2xl bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 p-5 text-center">
-          <p className="text-2xl mb-1">🎰</p>
-          <h2 className="text-lg font-bold text-[#111] mb-1">오늘 밤 여기 어때?</h2>
-          <p className="text-sm text-[#555] mb-3">탭 한 번으로 행운의 업소를 뽑아봐</p>
-          <button
-            onClick={spinRoulette}
-            disabled={rouletteSpinning}
-            className={`inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-bold transition-all ${
-              rouletteSpinning
-                ? 'bg-violet-100 text-[#555] animate-pulse'
-                : 'bg-[#8B5CF6] text-white hover:bg-[#7C3AED] active:scale-95 shadow-lg'
-            }`}
-            style={{ minHeight: 48 }}
-          >
-            {rouletteSpinning ? '돌리는 중...' : '🎲 돌려보기'}
-          </button>
+      {/* ═══ LUCKY ROULETTE (lazy — 위폴드 hydration TBT 절감) ═══ */}
+      <LuckyRoulette openVenues={openVenues} />
 
-          {rouletteResult && (
-            <Link
-              to={getCategoryHref(rouletteResult.category, rouletteResult.slug, rouletteResult.region)}
-              target="_blank" rel="noopener noreferrer"
-              className="mt-4 block rounded-xl bg-white border border-violet-200 p-4 text-left transition-all hover:shadow-md active:scale-[0.98]"
-            >
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-lg font-bold text-[#8B5CF6]">
-                  {rouletteResult.nameKo.charAt(0)}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-base font-bold text-[#111] truncate">{rouletteResult.nameKo}</p>
-                  <p className="text-xs text-[#555]">{rouletteResult.regionKo} · {catLabel[rouletteResult.category]}</p>
-                </div>
-                <span className="text-[#8B5CF6] text-lg">→</span>
-              </div>
-            </Link>
-          )}
-        </div>
-      </section>
-
-      {/* ═══ 무한 추천 루프 — 끝없이 더보기 ═══ */}
+      {/* ═══ 무한 추천 루프 (lazy) — 끝없이 더보기 ═══ */}
       <InfiniteRecommendLoop venues={openVenues} popularVenues={popularVenues} />
 
       {/* ═══ QUICK LINKS — 확장된 "더 놀기" 그리드 ═══ */}
