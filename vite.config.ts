@@ -22,5 +22,22 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+    // v28.0 — vendor splitting: 430KB 단일 청크 → 도메인별 분할
+    // 첫 페인트(LCP)에 필요한 vendor-react만 즉시 로드, 나머지는 라우트별 lazy 시 동반
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return;
+          if (/[\\/]react[\\/]|[\\/]react-dom[\\/]/.test(id) && !id.includes('react-router') && !id.includes('react-helmet') && !id.includes('react-icons')) return 'vendor-react';
+          if (id.includes('react-router')) return 'vendor-router';
+          if (id.includes('react-helmet-async')) return 'vendor-helmet';
+          if (id.includes('@supabase')) return 'vendor-supabase';
+          if (id.includes('lucide-react') || id.includes('react-icons')) return 'vendor-icons';
+          if (id.includes('framer-motion')) return 'vendor-framer';
+          if (id.includes('@tiptap') || id.includes('prosemirror')) return 'vendor-tiptap';
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
   },
 });
