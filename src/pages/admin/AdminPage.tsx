@@ -379,6 +379,8 @@ export default function AdminPage() {
                 <Link
                   key={tool.to}
                   to={tool.to}
+                  target="_self"
+                  rel=""
                   className="group flex items-start gap-2.5 rounded-lg border border-gray-200 bg-white p-3 transition hover:border-purple-300 hover:bg-purple-50/40"
                 >
                   <span className="text-xl leading-none">{tool.icon}</span>
