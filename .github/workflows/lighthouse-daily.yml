@@ -1,0 +1,70 @@
+name: Lighthouse Daily (PC + Mobile)
+
+on:
+  schedule:
+    # 매일 KST 04:00 (UTC 19:00 전날) — 다른 cron 부담 없는 시간대
+    - cron: '0 19 * * *'
+  workflow_dispatch:
+    inputs:
+      only:
+        description: 'Form factor (mobile / desktop / both)'
+        required: false
+        default: 'both'
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm install --no-save lighthouse@13
+
+      - name: Setup Chrome
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Run Lighthouse audit
+        env:
+          CHROMIUM_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
+        run: |
+          export CHROMIUM_PATH=$(which chrome || which google-chrome || which chromium)
+          echo "Chrome: $CHROMIUM_PATH"
+          ONLY="${{ github.event.inputs.only || 'both' }}"
+          if [ "$ONLY" = "both" ]; then
+            node scripts/lighthouse-audit.mjs --save /tmp/lighthouse.json 2>&1 | tee /tmp/lighthouse.txt
+          else
+            node scripts/lighthouse-audit.mjs --only "$ONLY" --save /tmp/lighthouse.json 2>&1 | tee /tmp/lighthouse.txt
+          fi
+        continue-on-error: true
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: |
+            /tmp/lighthouse.json
+            /tmp/lighthouse.txt
+          retention-days: 30
+
+      - name: Annotate failures
+        if: always()
+        run: |
+          if [ -f /tmp/lighthouse.json ]; then
+            fail=$(node -e "console.log(require('/tmp/lighthouse.json').failing_count || 0)")
+            echo "::notice::Lighthouse <90 카테고리: $fail 건"
+            if [ "$fail" -gt 0 ]; then
+              node -e "const r=require('/tmp/lighthouse.json'); for (const f of r.failing) console.log('::warning::'+f.ff+' '+f.url+' '+f.cat+'='+f.score);"
+            fi
+          fi
