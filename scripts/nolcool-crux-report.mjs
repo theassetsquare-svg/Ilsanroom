@@ -105,7 +105,7 @@ async function main() {
     `  PC LCP: ${rumByMetric(rumDesktop, 'LCP') ?? '-'}ms`,
     ``,
     `결론: 실사용자 경험 (CrUX/RUM) > Lab 점수`,
-    `대시보드: https://nolcool.com/admin/audit`,
+    `대시보드: https://nolcool.com/admin`,
   ];
 
   const body = lines.join('\n');
