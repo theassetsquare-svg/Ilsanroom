@@ -21,6 +21,19 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 const ADMIN_PIN = 'nolcool2026';
 
+// /admin 인덱스에서 9개 도구 전부 진입 가능하도록 노출 (사이드바와 동일 항목)
+const ADMIN_TOOLS: Array<{ to: string; label: string; icon: string; desc: string; group: 'CMS' | '운영' | '분석' }> = [
+  { to: '/admin/venues',     label: '업소 관리',          icon: '🏢', desc: '120+ 업소 콘텐츠·이미지·노출',         group: 'CMS' },
+  { to: '/admin/magazine',   label: '매거진',             icon: '📰', desc: '예약발행·WYSIWYG 본문 편집',            group: 'CMS' },
+  { to: '/admin/media',      label: '미디어 라이브러리',   icon: '🖼️', desc: '이미지 업로드·갤러리·삭제',              group: 'CMS' },
+  { to: '/admin/blocks',     label: '페이지 블록',         icon: '🧩', desc: '홈 히어로 등 카피 덮어쓰기',             group: 'CMS' },
+  { to: '/admin/seo',        label: 'SEO 메타',           icon: '🔎', desc: '페이지별 title/desc/og 덮어쓰기',       group: 'CMS' },
+  { to: '/admin/moderation', label: '모더레이션',          icon: '🛡️', desc: '신고큐·숨김컨텐츠·유저 ban',             group: '운영' },
+  { to: '/admin/audit',      label: '감사 시스템',         icon: '🛠️', desc: '빌드·라이브 SEO/링크 자동 점검',         group: '운영' },
+  { to: '/admin/stats',      label: '통계',               icon: '📊', desc: '회원·글·클립·신고 추이',                group: '분석' },
+  { to: '/admin/visitors',   label: '방문자 분석',         icon: '👥', desc: '경로·유입원·페이지뷰',                  group: '분석' },
+];
+
 export default function AdminPage() {
   useDocumentMeta('관리자 페이지 — 회원·매장·신고 관리', '놀쿨 사이트 운영 관리자 전용. 회원 관리, 매장 등록 심사, 신고 처리, 차단/삭제 결정, 알림 설정, 프리미엄 결제 모니터링까지 한곳에서.');
   const { user, loading: authLoading } = useAuth();
@@ -354,6 +367,34 @@ export default function AdminPage() {
           새로고침
         </button>
       </div>
+
+      {/* 9개 도구 빠른 진입 — 사이드바와 동일, /admin 인덱스에서 즉시 클릭 가능 */}
+      <section className="mb-6">
+        <h2 className="mb-3 text-sm font-semibold text-gray-700">관리자 도구</h2>
+        {(['CMS', '운영', '분석'] as const).map(group => (
+          <div key={group} className="mb-4">
+            <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-gray-400">{group}</p>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+              {ADMIN_TOOLS.filter(t => t.group === group).map(tool => (
+                <Link
+                  key={tool.to}
+                  to={tool.to}
+                  className="group flex items-start gap-2.5 rounded-lg border border-gray-200 bg-white p-3 transition hover:border-purple-300 hover:bg-purple-50/40"
+                >
+                  <span className="text-xl leading-none">{tool.icon}</span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-semibold text-gray-900 group-hover:text-purple-700">{tool.label}</span>
+                    <span className="mt-0.5 block text-[11px] leading-tight text-gray-500">{tool.desc}</span>
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        ))}
+      </section>
+
+      {/* 커뮤니티 모더레이션 — 아래 7탭 */}
+      <h2 className="mb-3 text-sm font-semibold text-gray-700">커뮤니티 모더레이션</h2>
 
       {/* 검색 */}
       <input
