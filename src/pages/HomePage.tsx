@@ -5,6 +5,7 @@ import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { usePageBlock } from '@/hooks/usePageBlock';
 import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
+import { VENUES_TOP4 } from '@/data/venues-top4';
 import type { Venue } from '@/types';
 import { createClient } from '@/lib/supabase';
 import JsonLd from '@/components/seo/JsonLd';
@@ -358,7 +359,9 @@ export default function HomePage() {
   // venues 341KB chunk를 첫 페인트에서 제외 → LCP 단축.
   // idle 시 dynamic import해 검색/필터/추천 활성화. 위 fold UI는 정적 카운트로 즉시 표시.
   const [openVenues, setOpenVenues] = useState<Venue[]>([]);
-  const [popularVenues, setPopularVenues] = useState<Venue[]>([]);
+  // 초기값 = 빌드 시 추출된 TOP4 정적 임베드 → 위폴드 "지금 핫한 곳" 4카드 즉시 렌더.
+  // venues.ts(341KB) idle 로드 끝나면 setPopularVenues(getPopularVenues(20))으로 덮어쓰기.
+  const [popularVenues, setPopularVenues] = useState<Venue[]>(() => VENUES_TOP4 as unknown as Venue[]);
   useEffect(() => {
     let cancelled = false;
     const run = () => import('@/data/venues').then(m => {
