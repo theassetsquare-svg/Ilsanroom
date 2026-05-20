@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback, memo, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -9,13 +9,16 @@ import type { Venue } from '@/types';
 import { createClient } from '@/lib/supabase';
 import JsonLd from '@/components/seo/JsonLd';
 import { useFavorites as useFavoritesHook } from '@/hooks/useFavorites';
-import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import LiveStats from '@/components/live/LiveStats';
-import TrendingTodayWidget from '@/components/widgets/TrendingTodayWidget';
-import RecentlyUpdatedWidget from '@/components/widgets/RecentlyUpdatedWidget';
-import { TemperatureRanking } from '@/components/community/TemperatureRanking';
-import { HomeFeed } from '@/components/community/HomeFeed';
 import FreshPostsZone from '@/components/home/FreshPostsZone';
+
+// 아래로 접힌 무거운 위젯들은 lazy — TBT(메인 스레드 블로킹) 감소가 목적.
+// 모두 above-the-fold 아래에 위치 → LCP/FCP 영향 0.
+const HomeFeed = lazy(() => import('@/components/community/HomeFeed').then(m => ({ default: m.HomeFeed })));
+const TemperatureRanking = lazy(() => import('@/components/community/TemperatureRanking').then(m => ({ default: m.TemperatureRanking })));
+const LiveActivityFeed = lazy(() => import('@/components/ui/LiveActivityFeed'));
+const TrendingTodayWidget = lazy(() => import('@/components/widgets/TrendingTodayWidget'));
+const RecentlyUpdatedWidget = lazy(() => import('@/components/widgets/RecentlyUpdatedWidget'));
 import StreakBadge from '@/components/home/StreakBadge';
 import PrivacyTrustBadge from '@/components/privacy/PrivacyTrustBadge';
 import OpenBetaBanner from '@/components/launch/OpenBetaBanner';
@@ -721,11 +724,15 @@ export default function HomePage() {
 
       {/* ═══ 1.5 실시간 밤의 온도 TOP 10 — 명예욕 자극, 회원 활동 유도 ═══ */}
       <section className="px-4 py-3 max-w-3xl mx-auto">
-        <TemperatureRanking limit={5} />
+        <Suspense fallback={<div className="h-32" aria-hidden="true" />}>
+          <TemperatureRanking limit={5} />
+        </Suspense>
       </section>
 
       {/* ═══ 1.7 무한피드 — 1초 이탈 방지 + 페이지뷰 ↑↑ (TikTok/IG 스타일) ═══ */}
-      <HomeFeed />
+      <Suspense fallback={<div className="h-96" aria-hidden="true" />}>
+        <HomeFeed />
+      </Suspense>
 
       {/* ═══ 2. 미니 성향테스트 — "3초 만에 오늘 밤 결정" (→ /quiz 유도) ═══ */}
       <section className="px-4 py-2 max-w-3xl mx-auto">
@@ -808,15 +815,21 @@ export default function HomePage() {
             <span className="text-xs font-bold text-[#111]">지금 활동 중</span>
             <span className="text-[10px] text-gray-400 ml-auto">실시간</span>
           </div>
-          <LiveActivityFeed maxItems={4} interval={5000} />
+          <Suspense fallback={<div className="h-24" aria-hidden="true" />}>
+            <LiveActivityFeed maxItems={4} interval={5000} />
+          </Suspense>
         </div>
       </section>
 
       {/* ═══ v28 오늘 가장 본 곳 — 실 page_events 24h 집계 (가짜 카운터 X). 데이터 없으면 자동 숨김 ═══ */}
-      <TrendingTodayWidget />
+      <Suspense fallback={null}>
+        <TrendingTodayWidget />
+      </Suspense>
 
       {/* ═══ v28 최근 업데이트 — 광고주가 실제로 갱신한 venue (updated_at 가짜 터치 X) ═══ */}
-      <RecentlyUpdatedWidget />
+      <Suspense fallback={null}>
+        <RecentlyUpdatedWidget />
+      </Suspense>
 
       {/* ═══ 한마디 남기기 — 회원/비회원 분기 ═══ */}
       <section className="px-4 py-2 max-w-3xl mx-auto">
