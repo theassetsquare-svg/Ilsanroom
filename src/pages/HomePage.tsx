@@ -12,6 +12,8 @@ import JsonLd from '@/components/seo/JsonLd';
 import { useFavorites as useFavoritesHook } from '@/hooks/useFavorites';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import LiveStats from '@/components/live/LiveStats';
+import TrendingTodayWidget from '@/components/widgets/TrendingTodayWidget';
+import RecentlyUpdatedWidget from '@/components/widgets/RecentlyUpdatedWidget';
 import { TemperatureRanking } from '@/components/community/TemperatureRanking';
 import { HomeFeed } from '@/components/community/HomeFeed';
 import FreshPostsZone from '@/components/home/FreshPostsZone';
@@ -902,6 +904,12 @@ export default function HomePage() {
           <LiveActivityFeed maxItems={4} interval={5000} />
         </div>
       </section>
+
+      {/* ═══ v28 오늘 가장 본 곳 — 실 page_events 24h 집계 (가짜 카운터 X). 데이터 없으면 자동 숨김 ═══ */}
+      <TrendingTodayWidget />
+
+      {/* ═══ v28 최근 업데이트 — 광고주가 실제로 갱신한 venue (updated_at 가짜 터치 X) ═══ */}
+      <RecentlyUpdatedWidget />
 
       {/* ═══ 한마디 남기기 — 회원/비회원 분기 ═══ */}
       <section className="px-4 py-2 max-w-3xl mx-auto">

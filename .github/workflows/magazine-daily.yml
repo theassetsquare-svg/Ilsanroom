@@ -1,0 +1,71 @@
+name: Daily Magazine + Widgets
+
+# v28 — 매일 KST 3시간대에 작동
+#  1) 사람이 미리 써둔 매거진 예약발행 (scheduled_for <= now → is_published=true)
+#  2) page_events 24h 집계 → public/data/trending-today.json
+#  3) venues.updated_at desc 집계 → public/data/recently-updated.json
+#  4) IndexNow 푸시
+#
+# AI 자동 본문 생성 단계 없음 (CLAUDE.md "No AI text" + feedback_no_ai_human_only).
+# 광고주/관리자가 /admin/magazine 에 미리 작성한 글만 시간대 분산 공개.
+
+on:
+  schedule:
+    # KST 12:00 (UTC 03:00) — 점심 매거진 공개
+    - cron: '0 3 * * *'
+    # KST 22:00 (UTC 13:00) — 밤 매거진 공개
+    - cron: '0 13 * * *'
+    # KST 02:00 (UTC 17:00) — 새벽 매거진 공개
+    - cron: '0 17 * * *'
+  workflow_dispatch:
+
+jobs:
+  promote-and-aggregate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Promote scheduled magazine articles
+        run: node scripts/magazine/promote-scheduled.mjs
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
+      - name: Aggregate Trending Today
+        run: node scripts/data/aggregate-trending.mjs
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
+      - name: Aggregate Recently Updated
+        run: node scripts/data/aggregate-recently-updated.mjs
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
+      - name: Commit data updates
+        run: |
+          git config user.name "nolcool-bot"
+          git config user.email "bot@nolcool.com"
+          git add public/data/trending-today.json public/data/recently-updated.json
+          if git diff --staged --quiet; then
+            echo "No data changes."
+          else
+            git commit -m "chore(data): widgets daily aggregate $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push
+          fi
+
+      - name: IndexNow push
+        run: node scripts/indexnow.mjs
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
