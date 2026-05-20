@@ -25,6 +25,8 @@ const SKIP = [
   '/scripts/nolcool-guard.mjs', '/scripts/nolcool-dist-audit.mjs',
   '/scripts/nolcool-live-audit.mjs', '/scripts/seo-check-hook.sh',
   '/scripts/auto-content', '/scripts/seed-', '/scripts/prerender-seo.mjs',
+  // DB 정리 마이그레이션은 금지단어를 패턴으로 참조해야 삭제 가능 (self-eat 방지)
+  '/supabase/migrations/',
   '/scripts/nolcool-link-audit.mjs', '/scripts/nolcool-freshness-audit.mjs',
   '/scripts/nolcool-guard-bulk.mjs', '/scripts/nolcool-route-sitemap-audit.mjs',
   '/scripts/nolcool-claudemd-drift.mjs', '/scripts/nolcool-cross-dup-audit.mjs',
