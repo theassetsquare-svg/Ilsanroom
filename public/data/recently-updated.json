@@ -1,4 +1,89 @@
 {
-  "generated_at": null,
-  "items": []
+  "generated_at": "2026-05-20T07:17:19.132Z",
+  "items": [
+    {
+      "path": "/rooms/busan-haeundae/haeundaegoguryeo",
+      "title": "해운대고구려",
+      "category": "room",
+      "region": "부산 해운대",
+      "updated_at": "2026-05-03T04:32:01.204606+00:00"
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "updated_at": "2026-05-03T04:32:01.204606+00:00"
+    },
+    {
+      "path": "/nights/cheongdamh2onight",
+      "title": "청담H2O나이트",
+      "category": "night",
+      "region": "청담",
+      "updated_at": "2026-05-03T04:32:01.204606+00:00"
+    },
+    {
+      "path": "/nights/gangnamjuliananight",
+      "title": "강남줄리아나나이트",
+      "category": "night",
+      "region": "강남",
+      "updated_at": "2026-05-03T04:32:01.204606+00:00"
+    },
+    {
+      "path": "/clubs/itaewon/itaewongaepanpocha",
+      "title": "이태원개판포차",
+      "category": "club",
+      "region": "이태원",
+      "updated_at": "2026-05-03T04:32:01.204606+00:00"
+    },
+    {
+      "path": "/nights/sinlimgrandprixnight",
+      "title": "신림그랑프리나이트",
+      "category": "night",
+      "region": "신림",
+      "updated_at": "2026-05-03T04:32:01.204606+00:00"
+    },
+    {
+      "path": "/nights/sangbonghangukgwannight",
+      "title": "상봉동한국관나이트",
+      "category": "night",
+      "region": "상봉동",
+      "updated_at": "2026-05-03T04:32:01.204606+00:00"
+    },
+    {
+      "path": "/nights/suyushampoonight",
+      "title": "수유샴푸나이트",
+      "category": "night",
+      "region": "수유",
+      "updated_at": "2026-05-03T04:32:01.204606+00:00"
+    },
+    {
+      "path": "/nights/doksangukbingwannight",
+      "title": "독산동국빈관나이트",
+      "category": "night",
+      "region": "독산",
+      "updated_at": "2026-05-03T04:32:01.204606+00:00"
+    },
+    {
+      "path": "/nights/dapsimnidontellmamanight",
+      "title": "답십리돈텔마마나이트",
+      "category": "night",
+      "region": "답십리",
+      "updated_at": "2026-05-03T04:32:01.204606+00:00"
+    },
+    {
+      "path": "/nights/gangseonight",
+      "title": "강서나이트",
+      "category": "night",
+      "region": "강서",
+      "updated_at": "2026-05-03T04:32:01.204606+00:00"
+    },
+    {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
+      "updated_at": "2026-05-03T04:32:01.204606+00:00"
+    }
+  ]
 }
