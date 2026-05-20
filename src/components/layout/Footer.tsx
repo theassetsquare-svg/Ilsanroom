@@ -158,7 +158,7 @@ export default function Footer() {
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {Object.entries(regionalLinks).map(([region, links]) => (
               <div key={region}>
-                <h4 className="mb-2 text-xs font-bold" style={{ color: '#8B5CF6' }}>{region}</h4>
+                <h4 className="mb-2 text-xs font-bold" style={{ color: '#6D28D9' }}>{region}</h4>
                 <div className="flex flex-wrap gap-x-3 gap-y-1">
                   {links.map((link) => (
                     <Link key={link.href} to={link.href} className="inline-block text-xs px-2 py-2 -mx-1 -my-2 transition-colors hover:text-[#8B5CF6]" style={{ color: '#555' }}>
@@ -176,7 +176,7 @@ export default function Footer() {
           <p className="text-center text-xs" style={{ color: '#666' }}>
             &copy; {new Date().getFullYear()} <span style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span> NOLCOOL. All rights reserved.
           </p>
-          <p className="text-center text-[11px]" style={{ color: '#888' }}>
+          <p className="text-center text-[11px]" style={{ color: '#595959' }}>
             마지막 업데이트 <time dateTime={__BUILD_DATE__}>{__BUILD_DATE__}</time> · 24시간 자동 빌드
           </p>
         </div>

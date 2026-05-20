@@ -67,9 +67,9 @@ export function FeaturedVenueCard({ venue, href, accentColor, categoryLabel }: F
             <span className="bg-amber-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">PREMIUM</span>
           )}
         </div>
-        <h3 className={`text-xl sm:text-2xl font-extrabold ${colors.text} mb-2 group-hover:underline`}>
+        <h2 className={`text-xl sm:text-2xl font-extrabold ${colors.text} mb-2 group-hover:underline`}>
           {venue.nameKo}
-        </h3>
+        </h2>
         <p className="text-base text-[#333] leading-relaxed mb-3 line-clamp-3">
           {venue.shortDescription}
         </p>

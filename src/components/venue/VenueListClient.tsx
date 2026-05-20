@@ -67,6 +67,7 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
         <select
           value={regionFilter}
           onChange={(e) => setRegionFilter(e.target.value)}
+          aria-label="지역 필터"
           className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-[#111] outline-none focus:border-[#8B5CF6]"
         >
           <option value="all">전체 지역</option>
@@ -78,6 +79,7 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
         <select
           value={sortKey}
           onChange={(e) => setSortKey(e.target.value as SortKey)}
+          aria-label="정렬 기준"
           className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-[#111] outline-none focus:border-[#8B5CF6]"
         >
           <option value="premium">추천순</option>
