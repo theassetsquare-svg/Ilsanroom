@@ -71,13 +71,18 @@ export function HomeFeed() {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+  // in-flight + 누적 ID 추적 (race + supabase 동률 페이지 반복 방지)
+  const loadingRef = useRef(false);
+  const seenIdsRef = useRef<Set<string>>(new Set());
 
   // 페이지 로드
   const loadMore = useCallback(async () => {
-    if (loading || !hasMore) return;
+    if (loadingRef.current || !hasMore) return;
+    loadingRef.current = true;
     setLoading(true);
     const supabase = createClient();
     if (!supabase) {
+      loadingRef.current = false;
       setLoading(false);
       return;
     }
@@ -89,16 +94,22 @@ export function HomeFeed() {
       .eq('is_hidden', false)
       .order('likes', { ascending: false })
       .order('created_at', { ascending: false })
+      .order('id', { ascending: false })
       .range(from, to);
     if (!error && data) {
-      setPosts(prev => [...prev, ...(data as FeedPost[])]);
-      if (data.length < PAGE_SIZE) setHasMore(false);
+      // 동률 정렬 + 페이지 경계로 같은 row가 다시 올라오는 케이스 client-side 제거
+      const fresh = (data as FeedPost[]).filter(p => !seenIdsRef.current.has(p.id));
+      fresh.forEach(p => seenIdsRef.current.add(p.id));
+      if (fresh.length > 0) setPosts(prev => [...prev, ...fresh]);
+      // 새 데이터가 PAGE_SIZE보다 적거나, 신규 row가 0이면 끝
+      if (data.length < PAGE_SIZE || fresh.length === 0) setHasMore(false);
       setPage(p => p + 1);
     } else {
       setHasMore(false);
     }
+    loadingRef.current = false;
     setLoading(false);
-  }, [loading, hasMore, page]);
+  }, [hasMore, page]);
 
   // 첫 로드
   useEffect(() => {
