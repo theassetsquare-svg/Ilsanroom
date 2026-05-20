@@ -7,7 +7,6 @@ import { usePageBlock } from '@/hooks/usePageBlock';
 import { venues as localVenues, getPopularVenues } from '@/data/venues';
 import type { Venue } from '@/types';
 import { createClient } from '@/lib/supabase';
-import { getSeedNickname } from '@/lib/fake-users';
 import JsonLd from '@/components/seo/JsonLd';
 import { useFavorites as useFavoritesHook } from '@/hooks/useFavorites';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
@@ -44,60 +43,6 @@ const catHrefs: Record<string, string> = { club: '/clubs', night: '/nights', lou
 /* ── Region labels for 지역별 tab filter ── */
 const regionLabels = ['전체', '강남', '압구정', '홍대', '이태원', '부산', '대구', '광주', '대전', '수원', '일산', '인천', '성남', '천안', '울산'];
 
-/* ── Seed community posts — 시간·날짜별 회전, AI냄새 0% ── */
-const allSeedPosts: HotPost[] = [
-  { id: 'seed-1', board: '후기', author: '강남불주먹', title: '레이스 금요일 다녀옴 — 역시 사운드 미쳤다', likes: 24, comments: 8, time: '3시간 전' },
-  { id: 'seed-2', board: '자유', author: '택시비폭탄', title: '택시비가 술값보다 나온 사람 나만?? ㅋㅋ', likes: 41, comments: 19, time: '1시간 전' },
-  { id: 'seed-3', board: '팁', author: '부산바다남', title: '평일에 가야 자리 잡는 이유 3가지', likes: 31, comments: 6, time: '2시간 전' },
-  { id: 'seed-4', board: '후기', author: '수원첫방문', title: '찬스돔 부킹 솔직후기 — 강호동 실장 대박', likes: 28, comments: 14, time: '4시간 전' },
-  { id: 'seed-5', board: '모집', author: '강남프린스', title: '토요일 강남 같이 갈 사람 2명 구함', likes: 14, comments: 7, time: '30분 전' },
-  { id: 'seed-6', board: '자유', author: '새벽감성러', title: '어젯밤 일 아직도 술깸ㅋㅋ', likes: 22, comments: 11, time: '5시간 전' },
-  { id: 'seed-7', board: 'Q&A', author: '첫호빠녀', title: '호빠 혼자 가면 진짜 괜찮음??', likes: 17, comments: 23, time: '2시간 전' },
-  { id: 'seed-8', board: '후기', author: '접대성공', title: '일산명월관 접대로 갔는데 거래처가 감동함', likes: 35, comments: 9, time: '6시간 전' },
-  { id: 'seed-9', board: '자유', author: '홍대미아', title: '홍대 길 잃어서 새벽 4시에 편의점서 라면먹음ㅋㅋ', likes: 52, comments: 27, time: '7시간 전' },
-  { id: 'seed-10', board: '후기', author: '압구정도련님', title: '아르쥬 VIP 후기 — 돈값은 하는듯', likes: 38, comments: 15, time: '5시간 전' },
-  { id: 'seed-11', board: '팁', author: '나이트고수', title: '부킹 잘 되는 자리 위치 공개함 (경험담)', likes: 67, comments: 34, time: '1시간 전' },
-  { id: 'seed-12', board: 'Q&A', author: '처음이라', title: '룸 갈때 양주 뭐 시켜야됨? 진심 모름', likes: 19, comments: 31, time: '3시간 전' },
-  { id: 'seed-13', board: '후기', author: '부산갈매기', title: '고구려나이트 토요일 갔는데 사람 미쳤음 ㄹㅇ', likes: 44, comments: 18, time: '8시간 전' },
-  { id: 'seed-14', board: '자유', author: '야근탈출', title: '금요일 퇴근하고 바로 클럽가는 사람 있음? 나임ㅋ', likes: 33, comments: 22, time: '2시간 전' },
-  { id: 'seed-15', board: '모집', author: '혼놀러', title: '오늘 밤 강남 아무데나 같이 갈 사람??', likes: 11, comments: 9, time: '45분 전' },
-  { id: 'seed-16', board: '후기', author: '대전사나이', title: '세븐나이트 웨이터가 진짜 프로임 인정', likes: 29, comments: 12, time: '6시간 전' },
-  { id: 'seed-17', board: '팁', author: '인싸되고싶다', title: '클럽 처음 가는 사람 복장 꿀팁 (남자편)', likes: 55, comments: 28, time: '4시간 전' },
-  { id: 'seed-18', board: '자유', author: '소주파이터', title: '어제 양주 3병 까고 살아남은 나 칭찬해줘', likes: 48, comments: 35, time: '9시간 전' },
-  { id: 'seed-19', board: 'Q&A', author: '라운지초보', title: '라운지 혼자 가면 좌석 어디 앉음?', likes: 15, comments: 18, time: '1시간 전' },
-  { id: 'seed-20', board: '후기', author: '일산토박이', title: '라붐 리뉴얼 다녀왔는데 인테리어 쩔더라', likes: 36, comments: 11, time: '3시간 전' },
-  { id: 'seed-21', board: '모집', author: '대구형님', title: '이번주 토 대구 나이트 4인조 ㄱㄱ', likes: 8, comments: 5, time: '20분 전' },
-  { id: 'seed-22', board: '자유', author: '새벽감성', title: '새벽 2시에 혼자 택시타고 집 가면서 드는 생각.jpg', likes: 61, comments: 42, time: '10시간 전' },
-  { id: 'seed-23', board: '후기', author: '접대왕', title: '거래처 모시고 요정 갔더니 계약 따냄ㅋㅋ 실화임', likes: 73, comments: 31, time: '7시간 전' },
-  { id: 'seed-24', board: '팁', author: '캐주얼파', title: '강남 처음 가는 사람 동선 정리해줌', likes: 89, comments: 47, time: '5시간 전' },
-  { id: 'seed-25', board: '자유', author: '금요일좋아', title: '월요일인데 벌써 금요일 계획 세우는중ㅋ', likes: 37, comments: 16, time: '2시간 전' },
-  { id: 'seed-26', board: 'Q&A', author: '첫클럽녀', title: '여자 혼자 클럽 가도 괜찮아?? 솔직하게 말해줘', likes: 42, comments: 56, time: '4시간 전' },
-  { id: 'seed-27', board: '후기', author: '인천터미널', title: '인천 라운지 가봤는데 강남이랑 비교불가 ㄹㅇ', likes: 21, comments: 13, time: '6시간 전' },
-  { id: 'seed-28', board: '모집', author: '수원조각', title: '수원 오늘 벙개!! 찬스돔 ㄱ??', likes: 16, comments: 11, time: '15분 전' },
-  { id: 'seed-29', board: '자유', author: '퇴근후맥주', title: '퇴근하고 혼술하다가 여기 들어옴.. 나만 그럼?', likes: 45, comments: 29, time: '1시간 전' },
-  { id: 'seed-30', board: '팁', author: '호빠고수녀', title: '호빠에서 대접 잘 받는 꿀팁 5가지 (여자필독)', likes: 78, comments: 41, time: '3시간 전' },
-  { id: 'seed-31', board: '후기', author: '광주사자', title: '광주 나이트 분위기 생각보다 괜찮던데?', likes: 25, comments: 8, time: '8시간 전' },
-  { id: 'seed-32', board: '자유', author: '헬스끝나이트', title: '헬스장 갔다가 나이트 가는 사람 나밖에 없지ㅋㅋ', likes: 39, comments: 24, time: '4시간 전' },
-  { id: 'seed-33', board: 'Q&A', author: '양주초보', title: '양주 종류가 너무 많은데 뭐 시켜야 안 망함?', likes: 34, comments: 38, time: '2시간 전' },
-  { id: 'seed-34', board: '후기', author: '울산코알라', title: '울산 나이트 3곳 비교 — 결론은 하나임', likes: 31, comments: 14, time: '7시간 전' },
-  { id: 'seed-35', board: '자유', author: '불금전사', title: '이번주 불금은 진짜 역대급으로 놀거임 선언', likes: 27, comments: 19, time: '5시간 전' },
-];
-// 시간+날짜 기반 회전 — 방문할 때마다 다른 글
-function getSeedHotPosts(): HotPost[] {
-  const d = new Date();
-  const seed = d.getFullYear() * 1000 + (d.getMonth() + 1) * 32 + d.getDate();
-  const hourShift = Math.floor(d.getHours() / 3); // 3시간마다 변경
-  const start = (seed * 7 + hourShift * 5) % allSeedPosts.length;
-  const result: HotPost[] = [];
-  for (let i = 0; i < 8; i++) {
-    const post = allSeedPosts[(start + i) % allSeedPosts.length];
-    // 시간 표시도 동적으로
-    const times = ['방금', '5분 전', '12분 전', '30분 전', '1시간 전', '2시간 전', '3시간 전', '4시간 전'];
-    result.push({ ...post, time: times[i] });
-  }
-  return result;
-}
-const seedHotPosts = getSeedHotPosts();
 const allSeedJogak: JogakItem[] = [
   { id: 'sj-1', title: '금요일 홍대 버뮤다 같이 갈 사람', region: '홍대', gender: '혼성', current: 2, max: 4, time: '이번 금요일 23:00' },
   { id: 'sj-2', title: '강남 레이스 테이블 엔빵 모집', region: '강남', gender: '남녀무관', current: 3, max: 6, time: '토요일 22:00' },
@@ -147,9 +92,6 @@ function getSeedDebates() {
   return result;
 }
 const seedDebates = getSeedDebates();
-
-/* ── "이거 나야" 공감 반응 — 클릭 중독 ── */
-const quickReactions = ['ㅋㅋㅋ 찐', '완전 공감', '나도 이거', '대박..', '실화?!', '이건 좀..'];
 
 /* ── 무한 추천 문구 — 끝없는 탐색 유도 ── */
 const nextHooks = [
@@ -211,17 +153,6 @@ const trendingKeywords = [
 ];
 
 /* ── Community hot posts — DB에서 가져옴 ── */
-const boardLabels: Record<string, string> = { free: '자유', reviews: '후기', party: '모집', tips: '팁', discussion: 'Q&A' };
-function getTimeLabel(dateStr: string) {
-  const diff = Date.now() - new Date(dateStr).getTime();
-  const h = Math.floor(diff / 3600000);
-  if (h < 1) return '방금';
-  if (h < 24) return `${h}시간 전`;
-  const d = Math.floor(h / 24);
-  return `${d}일 전`;
-}
-
-interface HotPost { id: string; board: string; author: string; title: string; likes: number; comments: number; time: string; }
 interface JogakItem { id: string; title: string; region: string; gender: string; current: number; max: number; time: string; }
 
 function getTodayFortune() {
@@ -496,33 +427,11 @@ export default function HomePage() {
   };
 
   // === COMMUNITY DATA FROM SUPABASE ===
-  const [hotPosts, setHotPosts] = useState<HotPost[]>([]);
   const [jogakList, setJogakList] = useState<JogakItem[]>([]);
 
   useEffect(() => {
     const supabase = createClient();
     if (!supabase) return;
-
-    // 인기글 8개
-    (async () => {
-      try {
-        const { data } = await supabase.from('posts')
-          .select('id, title, category, likes, comment_count, created_at, users!posts_user_id_fkey(nickname)')
-          .order('likes', { ascending: false })
-          .limit(8);
-        if (data && data.length > 0) {
-          setHotPosts(data.map((p: any) => ({
-            id: p.id,
-            board: boardLabels[p.category] || p.category,
-            author: p.users?.nickname || getSeedNickname(p.id),
-            title: p.title,
-            likes: p.likes || 0,
-            comments: p.comment_count || 0,
-            time: getTimeLabel(p.created_at),
-          })));
-        }
-      } catch {}
-    })();
 
     // 조각모임 최신 4개
     (async () => {
@@ -551,8 +460,6 @@ export default function HomePage() {
     })();
   }, []);
 
-  // === Display posts (DB 있으면 DB, 없으면 시드) ===
-  const displayPosts = useMemo(() => hotPosts.length > 0 ? hotPosts : seedHotPosts, [hotPosts]);
   const displayJogak = useMemo(() => jogakList.length > 0 ? jogakList : seedJogakList, [jogakList]);
 
   // === TAB STATE ===
@@ -986,59 +893,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ 5. 커뮤니티 인기글 — 티저형 (클릭 유도 강화) ═══ */}
+      {/* ═══ 5. 커뮤니티 보드 퀵링크 (인기글 리스트는 위 HomeFeed가 담당) ═══ */}
       <section className="px-4 py-3 max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <h2 className="text-base font-bold text-[#111]">커뮤니티</h2>
-            <span className="rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-bold text-white animate-pulse">LIVE</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Link to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="inline-flex items-center rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 44 }}>글쓰기</Link>
-            <Link to="/community" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">더보기 →</Link>
-          </div>
+          <h2 className="text-base font-bold text-[#111]">게시판 바로가기</h2>
+          <Link to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="inline-flex items-center rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 44 }}>글쓰기</Link>
         </div>
-        {/* 첫 번째 글: 큰 카드 (클릭베이트) */}
-        {displayPosts.length > 0 && (
-          <Link to={displayPosts[0].id.startsWith('seed-') ? '/community' : `/community/post/${displayPosts[0].id}`}
-            className="block rounded-2xl border border-gray-100 bg-gradient-to-r from-white to-[#FAFAFE] p-4 mb-2 active:bg-gray-50 transition">
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="rounded bg-[#F3F0FF] px-1.5 py-0.5 text-[11px] font-bold text-[#8B5CF6]">{displayPosts[0].board}</span>
-              <span className="text-[11px] text-[#666]">{displayPosts[0].author} · {displayPosts[0].time}</span>
-            </div>
-            <p className="text-[15px] font-bold text-[#111] leading-snug mb-1">{displayPosts[0].title}</p>
-            <p className="text-[12px] text-[#555] leading-relaxed line-clamp-2">댓글 {displayPosts[0].comments}개의 반응이 쏟아지고 있습니다...</p>
-            <div className="flex items-center gap-1.5 mt-2 overflow-x-auto scrollbar-hide">
-              {quickReactions.slice(0, 4).map(r => (
-                <span key={r} className="shrink-0 rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[10px] text-[#555]">{r}</span>
-              ))}
-            </div>
-            <div className="flex items-center justify-between mt-1.5">
-              <div className="flex items-center gap-2 text-[11px] text-[#666]">
-                <span>♥ {displayPosts[0].likes}</span>
-                <span>💬 {displayPosts[0].comments}</span>
-              </div>
-              <span className="text-[11px] font-bold text-[#8B5CF6]">계속 읽기 →</span>
-            </div>
-          </Link>
-        )}
-        {/* 나머지 글: 리스트 */}
-        <div className="space-y-1.5">
-          {displayPosts.slice(1, 6).map(post => (
-            <Link key={post.id} to={post.id.startsWith('seed-') ? '/community' : `/community/post/${post.id}`} className="flex items-center gap-2.5 rounded-xl border border-gray-100 bg-white px-3 py-2.5 active:bg-gray-50 transition">
-              <span className="flex-shrink-0 rounded bg-[#F3F0FF] px-1.5 py-0.5 text-[11px] font-bold text-[#8B5CF6]">{post.board}</span>
-              <p className="text-[13px] font-medium text-[#111] truncate flex-1">{post.title}</p>
-              <div className="flex-shrink-0 flex items-center gap-1.5 text-[11px] text-[#666]">
-                {post.likes > 0 && <span>♥{post.likes}</span>}
-                {post.comments > 0 && <span>💬{post.comments}</span>}
-              </div>
-            </Link>
-          ))}
-        </div>
-        {/* 시간 시드 기반 가짜 라이브 카운터 제거 (놀쿨 신뢰 규칙) */}
-
-        {/* 커뮤니티 보드 퀵링크 */}
-        <div className="flex gap-2 mt-2 overflow-x-auto scrollbar-hide">
+        <div className="flex gap-2 overflow-x-auto scrollbar-hide">
           {[
             { label: '후기', href: '/community/reviews', emoji: '📝' },
             { label: 'Q&A', href: '/community/qna', emoji: '❓' },
