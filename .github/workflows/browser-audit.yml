@@ -34,17 +34,17 @@ jobs:
         with:
           chrome-version: stable
 
-      - name: Run browser audit
+      - name: Run browser audit (PC+Mobile 전체 sitemap)
         id: audit
         env:
           CHROMIUM_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
         run: |
-          # setup-chrome doesn't always export path predictably; use which
           export CHROMIUM_PATH=$(which chrome || which google-chrome || which chromium)
           echo "Chrome: $CHROMIUM_PATH"
-          LIMIT="${{ github.event.inputs.limit || '50' }}"
+          # 스케줄 실행은 풀크롤(limit 0), 수동 dispatch는 입력값 우선
+          LIMIT="${{ github.event.inputs.limit || '0' }}"
           VP="${{ github.event.inputs.vp || 'both' }}"
-          node scripts/nolcool-browser-audit.mjs --limit "$LIMIT" --vp "$VP" --save /tmp/browser-audit.json 2>&1 | tee /tmp/browser-audit.txt
+          node scripts/nolcool-browser-audit.mjs --limit "$LIMIT" --vp "$VP" --concurrency 6 --save /tmp/browser-audit.json 2>&1 | tee /tmp/browser-audit.txt
         continue-on-error: true
 
       - name: Upload report
@@ -55,7 +55,14 @@ jobs:
           path: |
             /tmp/browser-audit.json
             /tmp/browser-audit.txt
-          retention-days: 14
+          retention-days: 30
+
+      - name: Send email alert (이슈 발견 시)
+        if: always()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+        run: node scripts/nolcool-browser-audit-report.mjs /tmp/browser-audit.json /tmp/browser-audit.txt
 
       - name: Fail if issues found
         run: |
