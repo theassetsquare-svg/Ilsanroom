@@ -4,14 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { usePageBlock } from '@/hooks/usePageBlock';
-import { venues as localVenues, getPopularVenues } from '@/data/venues';
+import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 import type { Venue } from '@/types';
 import { createClient } from '@/lib/supabase';
 import JsonLd from '@/components/seo/JsonLd';
 import { useFavorites as useFavoritesHook } from '@/hooks/useFavorites';
-import LiveStats from '@/components/live/LiveStats';
-import FreshPostsZone from '@/components/home/FreshPostsZone';
-
 // 아래로 접힌 무거운 위젯들은 lazy — TBT(메인 스레드 블로킹) 감소가 목적.
 // 모두 above-the-fold 아래에 위치 → LCP/FCP 영향 0.
 const HomeFeed = lazy(() => import('@/components/community/HomeFeed').then(m => ({ default: m.HomeFeed })));
@@ -19,10 +16,12 @@ const TemperatureRanking = lazy(() => import('@/components/community/Temperature
 const LiveActivityFeed = lazy(() => import('@/components/ui/LiveActivityFeed'));
 const TrendingTodayWidget = lazy(() => import('@/components/widgets/TrendingTodayWidget'));
 const RecentlyUpdatedWidget = lazy(() => import('@/components/widgets/RecentlyUpdatedWidget'));
-import StreakBadge from '@/components/home/StreakBadge';
-import PrivacyTrustBadge from '@/components/privacy/PrivacyTrustBadge';
-import OpenBetaBanner from '@/components/launch/OpenBetaBanner';
-import InviteFriendBox from '@/components/launch/InviteFriendBox';
+const LiveStats = lazy(() => import('@/components/live/LiveStats'));
+const FreshPostsZone = lazy(() => import('@/components/home/FreshPostsZone'));
+const StreakBadge = lazy(() => import('@/components/home/StreakBadge'));
+const PrivacyTrustBadge = lazy(() => import('@/components/privacy/PrivacyTrustBadge'));
+const OpenBetaBanner = lazy(() => import('@/components/launch/OpenBetaBanner'));
+const InviteFriendBox = lazy(() => import('@/components/launch/InviteFriendBox'));
 import { articles as magazineArticles } from '@/data/magazine-articles';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -356,8 +355,31 @@ export default function HomePage() {
   const heroH1Override = usePageBlock('home', 'hero_h1', '');
   const heroSubtitle = usePageBlock('home', 'hero_subtitle', '');
 
-  const openVenues = useMemo(() => localVenues.filter(v => v.status !== 'closed_or_unclear'), []);
-  const popularVenues = useMemo(() => getPopularVenues(20), []);
+  // venues 341KB chunk를 첫 페인트에서 제외 → LCP 단축.
+  // idle 시 dynamic import해 검색/필터/추천 활성화. 위 fold UI는 정적 카운트로 즉시 표시.
+  const [openVenues, setOpenVenues] = useState<Venue[]>([]);
+  const [popularVenues, setPopularVenues] = useState<Venue[]>([]);
+  useEffect(() => {
+    let cancelled = false;
+    const run = () => import('@/data/venues').then(m => {
+      if (cancelled) return;
+      const open = m.venues.filter(v => v.status !== 'closed_or_unclear');
+      setOpenVenues(open);
+      setPopularVenues(m.getPopularVenues(20));
+    });
+    // requestIdleCallback 우선, 없으면 setTimeout. FCP/LCP 측정 끝난 뒤 로드.
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void) => number;
+      cancelIdleCallback?: (h: number) => void;
+    };
+    const hasIdle = typeof w.requestIdleCallback === 'function';
+    const id = hasIdle ? w.requestIdleCallback!(run) : setTimeout(run, 200);
+    return () => {
+      cancelled = true;
+      if (hasIdle) w.cancelIdleCallback?.(id as number);
+      else clearTimeout(id as number);
+    };
+  }, []);
 
   // === 네이버 스타일 실시간 검색 ===
   const [searchQuery, setSearchQuery] = useState('');
@@ -560,12 +582,8 @@ export default function HomePage() {
   const fortune = useMemo(() => getTodayFortune(), []);
   const fortuneScore = useMemo(() => Math.floor(60 + (new Date().getDate() * 7 + new Date().getMonth() * 13) % 40), []);
 
-  // === Category counts ===
-  const catCounts = useMemo(() => {
-    const counts: Record<string, number> = {};
-    openVenues.forEach(v => { counts[v.category] = (counts[v.category] || 0) + 1; });
-    return counts;
-  }, [openVenues]);
+  // === Category counts (정적 — 빌드 시점 venues-counts.ts에서 주입) ===
+  const catCounts = VENUES_BY_CATEGORY;
 
   // === Category TOP 3 (각 카테고리별 상위 3개) ===
   const categoryTop3 = useMemo(() => {
@@ -630,13 +648,7 @@ export default function HomePage() {
           {/* 실시간 접속자 + 타이틀 — 한 줄 */}
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-[22px] sm:text-[28px] font-black text-white leading-tight">
-              {heroH1Override || (() => {
-                const h = new Date().getHours();
-                if (h >= 18 && h < 21) return '오늘 밤, 어디 갈래?';
-                if (h >= 21 || h < 4) return '지금 나가면 딱이다';
-                if (h >= 4 && h < 12) return '오늘 밤을 미리 정해놔';
-                return '저녁 되면 바로 출발';
-              })()}
+              {heroH1Override || '오늘 밤, 어디 갈래?'}
             </h1>
             {heroSubtitle && (
               <p className="mt-1 text-[13px] sm:text-sm text-white/80 w-full">{heroSubtitle}</p>
@@ -646,7 +658,7 @@ export default function HomePage() {
 
           {/* 지역 퀵셀렉터 — 터치 한 번으로 "내 동네 있다" 확인 */}
           <div className="flex items-center gap-1.5 mb-2 overflow-x-auto scrollbar-hide pb-0.5" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
-            <span className="text-[10px] text-white/40 shrink-0 mr-0.5">전국 {openVenues.length}곳</span>
+            <span className="text-[10px] text-white/40 shrink-0 mr-0.5">전국 {VENUES_TOTAL_OPEN}곳</span>
             {['강남', '홍대', '부산', '일산', '대구', '대전', '수원', '인천', '광주', '울산', '제주'].map(r => (
               <button key={r} onClick={() => { setActiveTab(3); setActiveRegion(r); document.getElementById('feed-section')?.scrollIntoView({ behavior: 'smooth' }); }}
                 className="shrink-0 rounded-full bg-white/10 px-3 py-1.5 text-[10px] text-white/70 font-medium active:bg-white/20 transition" style={{ minHeight: 44, minWidth: 44 }}>
@@ -682,11 +694,15 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 1.30 OPEN BETA 시그널 — 첫 100명 창립멤버 긴박감 ═══ */}
-      <OpenBetaBanner />
+      <Suspense fallback={null}>
+        <OpenBetaBanner />
+      </Suspense>
 
       {/* ═══ 1.35 프라이버시 신뢰 뱃지 — 백만 회원 친구 추천 안심 포인트 ═══ */}
       <section className="px-4 pt-3 pb-1 max-w-3xl mx-auto">
-        <PrivacyTrustBadge />
+        <Suspense fallback={null}>
+          <PrivacyTrustBadge />
+        </Suspense>
       </section>
 
       {/* ═══ 1.35 v25 큐레이션 4가지 — 시점·상황·예산 진입점 ═══ */}
@@ -712,14 +728,20 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 1.37 카톡 원클릭 친구 초대 — 입소문 가속기 ═══ */}
-      <InviteFriendBox />
+      <Suspense fallback={null}>
+        <InviteFriendBox />
+      </Suspense>
 
       {/* ═══ 1.4 방금 올라온 글 보호 영역 — #1 커뮤니티 재미. 30분 내 글 최상단 노출 ═══ */}
-      <FreshPostsZone />
+      <Suspense fallback={null}>
+        <FreshPostsZone />
+      </Suspense>
 
       {/* ═══ 1.45 단골 뱃지 — #4 매일 중독. 방문 연속일 표시 ═══ */}
       <section className="px-4 pt-2 pb-1 max-w-3xl mx-auto">
-        <StreakBadge />
+        <Suspense fallback={null}>
+          <StreakBadge />
+        </Suspense>
       </section>
 
       {/* ═══ 1.5 실시간 밤의 온도 TOP 10 — 명예욕 자극, 회원 활동 유도 ═══ */}
@@ -1516,7 +1538,9 @@ export default function HomePage() {
         </div>
 
         {/* 실시간 현황 위젯 */}
-        <LiveStats />
+        <Suspense fallback={null}>
+          <LiveStats />
+        </Suspense>
       </section>
 
       {/* ═══ SEO TEXT ═══ */}
@@ -1525,7 +1549,7 @@ export default function HomePage() {
           <h2 className="mb-2 text-base font-bold text-[#111]">전국 클럽·나이트·라운지 실시간 정보</h2>
           <div className="space-y-2 text-sm leading-relaxed text-[#555]">
             <p>
-              놀쿨은 전국 {openVenues.length}개 클럽, 나이트, 라운지, 룸, 요정, 호빠의 실시간 정보를 제공하는 대한민국 대표 나이트라이프 플랫폼입니다.
+              놀쿨은 전국 {VENUES_TOTAL_OPEN}개 클럽, 나이트, 라운지, 룸, 요정, 호빠의 실시간 정보를 제공하는 대한민국 대표 나이트라이프 플랫폼입니다.
               강남 클럽부터 일산 나이트, 부산 아시아드까지 직접 가본 사람의 솔직한 후기와 실시간 분위기를 확인할 수 있습니다.
             </p>
             <p>

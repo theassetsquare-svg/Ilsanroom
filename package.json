@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/gen-image-manifest.mjs && vite build && node scripts/prerender-seo.mjs && node scripts/nolcool-dist-audit.mjs && node scripts/nolcool-cross-dup-audit.mjs && node scripts/nolcool-route-sitemap-audit.mjs",
-    "build:no-audit": "node scripts/gen-image-manifest.mjs && vite build && node scripts/prerender-seo.mjs",
+    "build": "node scripts/gen-image-manifest.mjs && node scripts/gen-venues-counts.mjs && vite build && node scripts/prerender-seo.mjs && node scripts/nolcool-dist-audit.mjs && node scripts/nolcool-cross-dup-audit.mjs && node scripts/nolcool-route-sitemap-audit.mjs",
+    "build:no-audit": "node scripts/gen-image-manifest.mjs && node scripts/gen-venues-counts.mjs && vite build && node scripts/prerender-seo.mjs",
     "preview": "vite preview",
     "audit:src": "node scripts/nolcool-guard-bulk.mjs",
     "audit:dist": "node scripts/nolcool-dist-audit.mjs",
