@@ -991,16 +991,70 @@ for (const pg of staticPages) {
         };
       })
     });
-    // ★ FAQPage JSON-LD — 카테고리 리스팅 페이지용
+    // ★ FAQPage JSON-LD — 카테고리 리스팅 페이지용 (5 Q&A, 카테고리별 unique)
     const topNames = catVenues.slice(0, 5).map(vv => vv.nameKo).join(', ');
+    const regionsForCat = [...new Set(catVenues.map(vv => vv.regionKo))];
+    const regionListText = regionsForCat.slice(0, 6).join(', ');
+    // 카테고리별 차별화 Q&A 2개씩 추가
+    const CAT_FAQ_EXTRA = {
+      club: [
+        { q: `클럽 드레스코드 어떻게 입어요?`, a: `대부분 셔츠+슬랙스 또는 깔끔한 청바지면 입장됩니다. 슬리퍼·운동복은 거의 컷됩니다. 매장별 드레스코드는 각 업소 상세 페이지에 안내되어 있습니다.` },
+        { q: `클럽 입장 줄 얼마나 기다려요?`, a: `금토 자정~새벽 1시가 피크 타임입니다. 일찍 가거나 평일 방문이면 대기 시간이 짧습니다. 테이블 사전 예약 시 줄 없이 입장 가능합니다.` },
+      ],
+      night: [
+        { q: `나이트 부킹 시스템 어떻게 진행돼요?`, a: `웨이터가 좌석 배정 후 분위기를 묻고 매칭을 진행합니다. 매장마다 진행 스타일이 다르니 각 업소 상세 페이지의 부킹 안내를 확인하세요.` },
+        { q: `나이트 평일에도 영업해요?`, a: `대형 나이트는 목금토 위주, 일부는 365일 영업도 합니다. 매장별 운영시간은 각 업소 상세 페이지에 있습니다.` },
+      ],
+      lounge: [
+        { q: `라운지 데이트 분위기 어떤가요?`, a: `조명이 어둡고 소파가 깊으며 음악이 깔리는 무드가 일반적입니다. 시그니처 칵테일과 위스키·와인 셀렉션 중심으로 운영됩니다. 매장별 분위기는 상세 페이지의 사진을 참고하세요.` },
+        { q: `라운지 혼자 가도 자연스러워요?`, a: `라운지는 바 좌석 중심이라 1인 방문이 가장 자연스러운 업종입니다. 바텐더와 대화하며 한 잔 즐기는 손님이 많습니다.` },
+      ],
+      room: [
+        { q: `룸 인원수 어떻게 정해요?`, a: `4인 소형부터 30인 대형까지 룸 크기를 인원에 맞게 선택합니다. 사전 전화로 원하는 인원수를 말하면 딱 맞는 크기로 배정됩니다.` },
+        { q: `룸 예약은 언제 해야 해요?`, a: `금토 저녁은 이틀 전 예약 권장. 주중은 한산해서 당일 전화로도 가능합니다. 원하는 룸 크기 확보가 핵심입니다.` },
+      ],
+      yojeong: [
+        { q: `요정에서 거래처 자리 어떻게 진행돼요?`, a: `한정식 코스 중심에 전통 의상의 한국식 접대 응대가 더해집니다. 격을 중시하는 비즈니스 자리에 적합합니다. 매장별 코스 구성은 상세 페이지에서 확인 가능합니다.` },
+        { q: `요정 한정식 코스 어떤 게 나와요?`, a: `12첩~15첩 정통 한식 코스가 일반적이며 매장마다 시그니처 메뉴가 다릅니다. 사전 예약 시 코스 종류를 함께 안내받을 수 있습니다.` },
+      ],
+      hoppa: [
+        { q: `호빠 여자 혼자 방문해도 안전해요?`, a: `1인 방문이 절반에 가깝습니다. 모든 등록 업소는 영업 확인을 거쳤고, 실장이 처음부터 끝까지 안내합니다. 불쾌한 상황 시 즉시 직원에게 요청 가능합니다.` },
+        { q: `호빠 매니저는 어떻게 정해져요?`, a: `매장 측 안내에 따라 외모·성격·취향 기반으로 매칭됩니다. 사전 전화로 원하는 스타일을 말하면 맞춰주는 곳이 많습니다.` },
+      ],
+    };
+    const extraFaq = CAT_FAQ_EXTRA[catKey] || [];
     jsonLdList.push({
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
       mainEntity: [
         { '@type': 'Question', name: `${catKo} 추천은?`, acceptedAnswer: { '@type': 'Answer', text: `전국에서 인기 있는 ${catKo}는 ${topNames} 등 ${catVenues.length}곳이 있습니다. 놀쿨(nolcool.com)에서 비교해보세요.` } },
-        { '@type': 'Question', name: `${catKo} 몇 곳 있나요?`, acceptedAnswer: { '@type': 'Answer', text: `놀쿨에 등록된 ${catKo}는 전국 ${catVenues.length}곳입니다.` } },
+        { '@type': 'Question', name: `${catKo} 몇 곳 있나요?`, acceptedAnswer: { '@type': 'Answer', text: `놀쿨에 등록된 ${catKo}는 전국 ${catVenues.length}곳, ${regionsForCat.length}개 지역(${regionListText})에 분포되어 있습니다.` } },
         { '@type': 'Question', name: `${catKo} 처음인데 어떻게 가나요?`, acceptedAnswer: { '@type': 'Answer', text: `놀쿨 입문 가이드(nolcool.com/guide)에서 ${catKo} 첫 방문 팁을 확인하세요. 드레스코드, 예산, 분위기까지 정리되어 있습니다.` } },
+        ...extraFaq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
       ]
+    });
+    // ★ Schema.org LocalBusiness 변형 — Google 카테고리 인식 강화 (aggregateRating 없이)
+    const SCHEMA_TYPE_MAP = {
+      club: 'NightClub',
+      night: 'NightClub',
+      lounge: 'BarOrPub',
+      room: 'NightClub',
+      yojeong: 'Restaurant',
+      hoppa: 'NightClub',
+    };
+    jsonLdList.push({
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: pg.title,
+      description: pg.desc,
+      url: BASE_URL + pg.path,
+      inLanguage: 'ko-KR',
+      isPartOf: { '@type': 'WebSite', name: '놀쿨', url: BASE_URL },
+      about: {
+        '@type': SCHEMA_TYPE_MAP[catKey] || 'NightClub',
+        name: `전국 ${catKo}`,
+        description: `전국 ${catVenues.length}곳의 ${catKo} 정보 (${regionListText} 등 ${regionsForCat.length}개 지역)`,
+      },
     });
   }
   // 커뮤니티 게시판 SSR + WebPage JSON-LD
@@ -1067,7 +1121,13 @@ for (const pg of staticPages) {
       ],
     });
   }
-  writePage(pg.path, { title: pg.title, description: pg.desc, ssrBody, jsonLdList: jsonLdList.length > 0 ? jsonLdList : undefined });
+  // ★ 카테고리 페이지 og:image — /og/{slug}.svg 매핑 (clubs/nights/lounges/rooms/yojeong/hoppa)
+  let pageOgImage;
+  if (categoryPaths.has(pg.path)) {
+    const ogSlug = pg.path.replace(/^\//, '');
+    pageOgImage = `${BASE_URL}/og/${ogSlug}.svg`;
+  }
+  writePage(pg.path, { title: pg.title, description: pg.desc, ssrBody, jsonLdList: jsonLdList.length > 0 ? jsonLdList : undefined, ogImage: pageOgImage });
   pageCount++;
 }
 console.log(`✅ 정적 페이지 ${staticPages.length}개 생성`);
