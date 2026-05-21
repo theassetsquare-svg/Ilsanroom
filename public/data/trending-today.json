@@ -1,7 +1,14 @@
 {
-  "generated_at": "2026-05-21T06:40:18.017Z",
+  "generated_at": "2026-05-21T16:15:57.368Z",
   "window_hours": 24,
   "items": [
+    {
+      "path": "/nights/cheongdamh2onight",
+      "title": "청담H2O나이트",
+      "category": "night",
+      "region": "청담",
+      "views_24h": 2
+    },
     {
       "path": "/clubs/itaewon/itaewon-savage",
       "title": "이태원클럽 세비지",
@@ -87,25 +94,18 @@
       "views_24h": 2
     },
     {
-      "path": "/hoppa/busanhoppa-menz",
-      "title": "부산호빠 맨즈",
-      "category": "hoppa",
-      "region": "부산",
-      "views_24h": 2
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 1
     },
     {
-      "path": "/hoppa/suwonhoppa-aura",
-      "title": "수원호빠 아우라",
-      "category": "hoppa",
-      "region": "수원",
-      "views_24h": 2
-    },
-    {
-      "path": "/hoppa/daejeonhoppa-eclipse",
-      "title": "대전호빠 이클립스",
-      "category": "hoppa",
-      "region": "대전",
-      "views_24h": 2
+      "path": "/clubs/gangnam/gangnamclub-bamnbam",
+      "title": "강남청담클럽 밤앤밤",
+      "category": "club",
+      "region": "강남",
+      "views_24h": 1
     }
   ]
 }
