@@ -3,17 +3,77 @@
   "short_name": "놀쿨",
   "description": "전국 클럽, 나이트, 라운지, 룸, 요정, 호빠 업소 정보",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#8B5CF6",
   "background_color": "#07070D",
   "categories": ["entertainment", "lifestyle", "social"],
   "lang": "ko",
+  "dir": "ltr",
+  "id": "/",
   "icons": [
     {
       "src": "/favicon.ico",
       "sizes": "any",
       "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "클럽",
+      "short_name": "클럽",
+      "description": "전국 클럽 둘러보기",
+      "url": "/clubs/",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "나이트",
+      "short_name": "나이트",
+      "description": "전국 나이트 둘러보기",
+      "url": "/nights/",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "라운지",
+      "short_name": "라운지",
+      "description": "전국 라운지 둘러보기",
+      "url": "/lounges/",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "룸",
+      "short_name": "룸",
+      "description": "전국 룸 둘러보기",
+      "url": "/rooms/",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "요정",
+      "short_name": "요정",
+      "description": "전국 요정 둘러보기",
+      "url": "/yojeong/",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "호빠",
+      "short_name": "호빠",
+      "description": "전국 호빠 둘러보기",
+      "url": "/hoppa/",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    }
+  ],
+  "prefer_related_applications": false
 }
