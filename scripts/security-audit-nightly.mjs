@@ -150,6 +150,9 @@ async function main() {
   }
 
   // 3) 메일 (회귀 있을 때만)
+  // Cleanup — advisor에 잡히지 않도록 즉시 DROP
+  try { await execSql(`DROP TABLE IF EXISTS public._diag_sec_audit;`); } catch {}
+
   if (regressions.length) {
     const today = new Date().toISOString().slice(0, 10);
     const html = `
@@ -179,7 +182,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log('\n✅ 전체 정상 — 회귀 없음');
+  console.log('\n✅ 전체 정상 — 회귀 없음 (_diag_sec_audit cleanup 완료)');
 }
 
 main().catch(e => { console.error('❌', e); process.exit(1); });

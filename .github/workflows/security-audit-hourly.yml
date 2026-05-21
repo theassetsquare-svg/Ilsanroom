@@ -1,0 +1,26 @@
+name: Security Audit Hourly
+
+# 매시간 정각 — Supabase 보안 5지표 회귀 1시간 내 감지
+# 자동 fix 는 Supabase 권한 제약(Event Trigger·pg_cron 차단)으로 불가능,
+# 회귀 감지 + 메일 알림만 자동화 (실제 fix 는 마이그레이션 push 로 처리)
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run security audit
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFY_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+        run: node scripts/security-audit-nightly.mjs
