@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Sitemap fullcheck (515 URL)
+      - name: Sitemap fullcheck (516 URL)
         id: fullcheck
         env:
           SITE: https://nolcool.com
@@ -33,18 +33,30 @@ jobs:
           node scripts/nolcool-sitemap-fullcheck.mjs 2>&1 | tee /tmp/sitemap-fullcheck.txt
         continue-on-error: true
 
-      - name: Upload report
+      - name: Venue SEO audit (121 업소 가게이름 11지표)
+        id: venueseo
+        env:
+          SITE: https://nolcool.com
+          CONCURRENCY: '12'
+        run: |
+          set -o pipefail
+          node scripts/nolcool-venue-seo-audit.mjs 2>&1 | tee /tmp/venue-seo.txt
+        continue-on-error: true
+
+      - name: Upload reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: sitemap-fullcheck-${{ github.run_id }}
+          name: deep-audit-${{ github.run_id }}
           path: |
             audit-reports/sitemap-fullcheck-*.md
+            audit-reports/venue-seo-audit-*.md
             /tmp/sitemap-fullcheck.txt
+            /tmp/venue-seo.txt
           retention-days: 30
 
       - name: Send email alert on failure
-        if: steps.fullcheck.outcome == 'failure'
+        if: steps.fullcheck.outcome == 'failure' || steps.venueseo.outcome == 'failure'
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
@@ -65,7 +77,7 @@ jobs:
             }"
 
       - name: Fail step if issues found
-        if: steps.fullcheck.outcome == 'failure'
+        if: steps.fullcheck.outcome == 'failure' || steps.venueseo.outcome == 'failure'
         run: |
-          echo "::error::Sitemap fullcheck found non-2xx/3xx URLs — see report"
+          echo "::error::Deep audit found issues — see uploaded reports"
           exit 1
