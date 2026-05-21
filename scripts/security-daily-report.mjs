@@ -147,7 +147,7 @@ async function main() {
     </div>`;
 
   const emailBody = JSON.stringify({
-    from: '놀쿨 보안일일봇 <noreply@nolcool.com>',
+    from: '놀쿨 보안일일봇 <onboarding@resend.dev>',
     to: [NOTIFY_EMAIL],
     subject: `${allGreen ? '✅' : '🛑'} ${today} 놀쿨 보안 일일 상태`,
     html,
