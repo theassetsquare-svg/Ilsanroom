@@ -10,6 +10,7 @@ import type { Venue } from '@/types';
 import { createClient } from '@/lib/supabase';
 import JsonLd from '@/components/seo/JsonLd';
 import { useFavorites as useFavoritesHook } from '@/hooks/useFavorites';
+import { HOME_FAQ_SCHEMA } from '@/data/home-faq';
 // 아래로 접힌 무거운 위젯들은 lazy — TBT(메인 스레드 블로킹) 감소가 목적.
 // 모두 above-the-fold 아래에 위치 → LCP/FCP 영향 0.
 const HomeFeed = lazy(() => import('@/components/community/HomeFeed').then(m => ({ default: m.HomeFeed })));
@@ -169,13 +170,17 @@ function getTodayFortune() {
 const feedTabs = ['🔥인기', '🆕신규', '⭐추천', '📍지역별'] as const;
 
 /* ── VenueCard — 재사용 카드 컴포넌트 (memo로 불필요한 리렌더링 방지) ── */
-const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, rank }: { venue: Venue; isFavorite: boolean; toggleFavorite: (id: string) => void; rank?: number }) {
+const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, rank, priority }: { venue: Venue; isFavorite: boolean; toggleFavorite: (id: string) => void; rank?: number; priority?: boolean }) {
   return (
     <div className="relative">
       <Link target="_blank" rel="noopener noreferrer" to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
         <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
           <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
-            <img src={`/venues/${venue.slug}-1.webp`} alt={venue.nameKo} loading="lazy" width={300} height={300}
+            {/* R4-2 — TOP 4 첫 카드는 LCP 후보 → eager + fetchPriority high */}
+            <img src={`/venues/${venue.slug}-1.webp`} alt={venue.nameKo}
+              loading={priority ? 'eager' : 'lazy'}
+              {...(priority ? { fetchPriority: 'high' as const } : {})}
+              width={300} height={300}
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
               className="absolute inset-0 w-full h-full object-cover z-[1]" />
             <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${
@@ -221,13 +226,22 @@ const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, r
 /* ══════════════════════════════════════════════════════ */
 
 export default function HomePage() {
-  useDocumentMeta('놀쿨 — 오늘 어디 갈지 못 정했죠? 20년 굴러본 사람이 골라드림', '오늘 어디 갈지 못 정했죠? 거를 곳 천지예요. 클럽·나이트·룸·요정·라운지·호빠 20년 본 사람이 1,000+ 업소 1줄로 정리. 주말 망치기 전에 →');
+  useDocumentMeta('놀쿨 — 오늘 어디 갈지 못 정했죠? 20년 굴러본 사람이 골라드림', `오늘 어디 갈지 못 정했죠? 거를 곳 천지예요. 클럽·나이트·룸·요정·라운지·호빠 20년 본 사람이 ${VENUES_TOTAL_OPEN}곳 1줄로 정리. 주말 망치기 전에 →`);
   const navigate = useNavigate();
   const { user } = useAuth();
 
   // 단계 5 — 관리자가 /admin/blocks에서 덮어쓸 수 있는 블록들
   const heroH1Override = usePageBlock('home', 'hero_h1', '');
   const heroSubtitle = usePageBlock('home', 'hero_subtitle', '');
+
+  // R3-2 — Hero 네온 파티클 동적 카운트 (mobile 6 / pc 12 / reduced-motion 0)
+  const [particleCount, setParticleCount] = useState(12);
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mobile = window.matchMedia('(max-width: 768px)').matches;
+    setParticleCount(reduced ? 0 : mobile ? 6 : 12);
+  }, []);
 
   // venues 341KB chunk를 첫 페인트에서 제외 → LCP 단축.
   // idle 시 dynamic import해 검색/필터/추천 활성화. 위 fold UI는 정적 카운트로 즉시 표시.
@@ -489,12 +503,14 @@ export default function HomePage() {
         '@context': 'https://schema.org', '@type': 'ItemList', name: '인기 매장',
         itemListElement: popularVenues.slice(0, 10).map((v, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'LocalBusiness', name: v.nameKo, address: v.address } })),
       }} />
+      {/* R2-1 FAQPage Schema 34개 (6업종×5 + 사이트 4) — AI Overview 인용 */}
+      <JsonLd data={HOME_FAQ_SCHEMA} />
 
       {/* ═══ 1. HERO V2 (다크 + 네온) + 6개 카테고리 ═══ */}
       <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0A0A0F 0%, #1F0A2A 50%, #0A0A1F 100%)' }}>
         {/* 네온 글로우 파티클 */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(12)].map((_, i) => (
+          {[...Array(particleCount)].map((_, i) => (
             <div key={i} className="absolute rounded-full animate-pulse" style={{
               width: `${4 + (i % 3) * 4}px`, height: `${4 + (i % 3) * 4}px`,
               top: `${8 + (i * 8) % 84}%`, left: `${4 + (i * 11) % 92}%`,
@@ -505,7 +521,7 @@ export default function HomePage() {
           ))}
         </div>
 
-        <div className="relative z-10 px-4 pt-4 pb-3 max-w-3xl mx-auto">
+        <div className="relative z-10 px-4 pt-4 pb-3 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
           {/* 실시간 접속자 + 타이틀 — 한 줄 */}
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-[22px] sm:text-[28px] font-black text-white leading-tight">
@@ -560,14 +576,14 @@ export default function HomePage() {
       </Suspense>
 
       {/* ═══ 1.35 프라이버시 신뢰 뱃지 — 백만 회원 친구 추천 안심 포인트 ═══ */}
-      <section className="px-4 pt-3 pb-1 max-w-3xl mx-auto">
+      <section className="px-4 pt-3 pb-1 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <Suspense fallback={null}>
           <PrivacyTrustBadge />
         </Suspense>
       </section>
 
       {/* ═══ 1.35 v25 큐레이션 4가지 — 시점·상황·예산 진입점 ═══ */}
-      <section className="px-4 pt-2 pb-1 max-w-3xl mx-auto" aria-label="큐레이션 빠른 진입">
+      <section className="px-4 pt-2 pb-1 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto" aria-label="큐레이션 빠른 진입">
         <div className="grid grid-cols-4 gap-2">
           <Link to="/tonight" className="flex flex-col items-center justify-center gap-1 rounded-xl bg-gradient-to-br from-[#8B5CF6]/10 to-white border border-[#8B5CF6]/20 py-2.5 active:scale-[0.97] transition">
             <span className="text-xl">🌙</span>
@@ -599,14 +615,14 @@ export default function HomePage() {
       </Suspense>
 
       {/* ═══ 1.45 단골 뱃지 — #4 매일 중독. 방문 연속일 표시 ═══ */}
-      <section className="px-4 pt-2 pb-1 max-w-3xl mx-auto">
+      <section className="px-4 pt-2 pb-1 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <Suspense fallback={null}>
           <StreakBadge />
         </Suspense>
       </section>
 
       {/* ═══ 1.5 실시간 밤의 온도 TOP 10 — 명예욕 자극, 회원 활동 유도 ═══ */}
-      <section className="px-4 py-3 max-w-3xl mx-auto">
+      <section className="px-4 py-3 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <Suspense fallback={<div className="h-32" aria-hidden="true" />}>
           <TemperatureRanking limit={5} />
         </Suspense>
@@ -618,7 +634,7 @@ export default function HomePage() {
       </Suspense>
 
       {/* ═══ 2. 미니 성향테스트 — "3초 만에 오늘 밤 결정" (→ /quiz 유도) ═══ */}
-      <section className="px-4 py-2 max-w-3xl mx-auto">
+      <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         {quizStep === -1 ? (
           <button onClick={() => setQuizStep(0)}
             className="w-full rounded-2xl bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] p-4 text-left transition-all active:scale-[0.98] relative overflow-hidden">
@@ -688,7 +704,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 실시간 활동 스트림 — 사이트가 살아있는 느낌 ═══ */}
-      <section className="px-4 py-2 max-w-3xl mx-auto">
+      <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="rounded-2xl border border-green-100 bg-gradient-to-r from-green-50/50 to-white p-3">
           <div className="flex items-center gap-2 mb-2">
             <span className="relative flex h-2 w-2">
@@ -715,7 +731,7 @@ export default function HomePage() {
       </Suspense>
 
       {/* ═══ 한마디 남기기 — 회원/비회원 분기 ═══ */}
-      <section className="px-4 py-2 max-w-3xl mx-auto">
+      <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <Link to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="block rounded-2xl border border-purple-100 bg-gradient-to-r from-[#F5F3FF] to-white p-4 active:bg-purple-50 transition">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#8B5CF6]/10">
@@ -735,7 +751,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 3. VS 투표 — 첫 화면에서 즉시 터치 인터랙션 (1개만) ═══ */}
-      <section className="px-4 py-2 max-w-3xl mx-auto">
+      <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         {(() => {
           const poll = todayPolls[0];
           const voted = vsVotes[0];
@@ -777,20 +793,20 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 4. 실시간 TOP 4 — 핵심 업소 즉시 노출 ═══ */}
-      <section className="px-4 py-2 max-w-3xl mx-auto">
+      <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-base font-bold text-[#111]">지금 핫한 곳</h2>
           <Link to="/ranking" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">전체 순위 →</Link>
         </div>
         <div className="grid grid-cols-2 gap-2.5">
           {popularVenues.slice(0, 4).map((v, i) => (
-            <VenueCard key={v.id} venue={v} isFavorite={favorites.has(v.id)} toggleFavorite={toggleFavorite} rank={i + 1} />
+            <VenueCard key={v.id} venue={v} isFavorite={favorites.has(v.id)} toggleFavorite={toggleFavorite} rank={i + 1} priority={i === 0} />
           ))}
         </div>
       </section>
 
       {/* ═══ 5. 커뮤니티 보드 퀵링크 (인기글 리스트는 위 HomeFeed가 담당) ═══ */}
-      <section className="px-4 py-3 max-w-3xl mx-auto">
+      <section className="px-4 py-3 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-base font-bold text-[#111]">게시판 바로가기</h2>
           <Link to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="inline-flex items-center rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 44 }}>글쓰기</Link>
@@ -811,7 +827,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 5.5 뜨거운 토론 — 논쟁 유발 → 댓글 참여 유도 ═══ */}
-      <section className="px-4 py-2 max-w-3xl mx-auto">
+      <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <h2 className="text-base font-bold text-[#111]">뜨거운 토론</h2>
@@ -838,7 +854,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 6. 검색바 — 정보 섹션 시작 전 자연스런 위치 ═══ */}
-      <section className="px-4 py-1 max-w-3xl mx-auto">
+      <section className="px-4 py-1 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div ref={searchWrapperRef} className="relative mx-auto" style={{ maxWidth: 520 }}>
           <form onSubmit={handleSearchSubmit} className="relative">
             <div className={`flex items-center rounded-2xl border bg-white px-4 transition-all ${
@@ -901,7 +917,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 7. 조각모임 — 마감 임박 긴급감 + 클릭 유도 ═══ */}
-      <section className="px-4 py-3 max-w-3xl mx-auto">
+      <section className="px-4 py-3 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <h2 className="text-base font-bold text-[#111]">조각모임</h2>
@@ -945,7 +961,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 8. 오늘 밤 운세 — 터치 인터랙션 (스크롤 보상) ═══ */}
-      <section className="px-4 py-2 max-w-3xl mx-auto">
+      <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         {!fortuneRevealed ? (
           <button onClick={() => setFortuneRevealed(true)}
             className="w-full rounded-2xl bg-gradient-to-br from-indigo-900 via-purple-900 to-violet-800 p-5 text-center transition-all hover:shadow-xl active:scale-[0.98] relative overflow-hidden"
@@ -995,7 +1011,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 9. 매거진 스토리 — 콘텐츠 깊이 유도 (→ /magazine/*) ═══ */}
-      <section className="py-3 max-w-3xl mx-auto">
+      <section className="py-3 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between px-4 mb-2">
           <h2 className="text-base font-bold text-[#111]">놀쿨 매거진</h2>
           <Link to="/magazine" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">전체 →</Link>
@@ -1019,7 +1035,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 10. 카테고리별 TOP 3 — 드림고객 카피로 클릭 유도 ═══ */}
-      <section className="px-4 py-3 max-w-3xl mx-auto">
+      <section className="px-4 py-3 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <h2 className="text-base font-bold text-[#111] mb-3">카테고리별 인기 TOP 3</h2>
         <div className="space-y-4">
           {(['club', 'night', 'room', 'lounge', 'yojeong', 'hoppa'] as const).map(cat => {
@@ -1056,7 +1072,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ 11. 트렌딩 키워드 — 검색 유도 (→ /search) ═══ */}
-      <section className="px-4 py-2 max-w-3xl mx-auto">
+      <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-base font-bold text-[#111]">지금 뜨는 검색어</h2>
           <Link to="/search" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">검색 →</Link>
@@ -1076,7 +1092,7 @@ export default function HomePage() {
 
       {/* ═══ 12. 피처드 카드 + 가로 스크롤 TOP 8 ═══ */}
       {featuredVenue && (
-        <section className="px-4 py-2 max-w-3xl mx-auto">
+        <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
           <Link to={getCategoryHref(featuredVenue.category, featuredVenue.slug, featuredVenue.region)} target="_blank" rel="noopener noreferrer" className="block">
             <div className={`relative rounded-2xl overflow-hidden bg-gradient-to-br ${
               featuredVenue.category === 'club' ? 'from-violet-600 to-indigo-800' :
@@ -1103,7 +1119,7 @@ export default function HomePage() {
         </section>
       )}
 
-      <section className="py-2 max-w-3xl mx-auto">
+      <section className="py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between px-4 mb-2">
           <h2 className="text-base font-bold text-[#111]">TOP 8</h2>
           <Link to="/ranking" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">전체보기 →</Link>
@@ -1138,7 +1154,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ FEED — 정렬 탭 ═══ */}
-      <section id="feed-section" className="mt-2 max-w-3xl mx-auto">
+      <section id="feed-section" className="mt-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         {/* 정렬 탭 */}
         <div className="flex border-b border-gray-100">
           {feedTabs.map((tab, i) => (
@@ -1182,7 +1198,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ VENUE FEED — 2 Column Cards ═══ */}
-      <section className="px-4 py-4 max-w-3xl mx-auto">
+      <section className="px-4 py-4 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         {/* 탭 라벨 */}
         {activeTab === 0 && <p className="text-xs font-medium text-[#8B5CF6] mb-3">평점 + 리뷰 수 기반 실시간 인기순</p>}
         {activeTab === 1 && <p className="text-xs font-medium text-[#8B5CF6] mb-3">최근 등록된 업소 순</p>}
@@ -1311,7 +1327,7 @@ export default function HomePage() {
       <InfiniteRecommendLoop venues={openVenues} popularVenues={popularVenues} />
 
       {/* ═══ QUICK LINKS — 확장된 "더 놀기" 그리드 ═══ */}
-      <section className="px-4 py-3 max-w-3xl mx-auto space-y-3">
+      <section className="px-4 py-3 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto space-y-3">
         <h2 className="text-base font-bold text-[#111]">더 놀기</h2>
         <div className="grid grid-cols-4 gap-2">
           {[
@@ -1368,7 +1384,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══ SEO TEXT ═══ */}
-      <section className="px-4 pb-8 max-w-3xl mx-auto">
+      <section className="px-4 pb-8 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="rounded-2xl border border-gray-100 bg-[#F5F5F5] p-5">
           <h2 className="mb-2 text-base font-bold text-[#111]">전국 클럽·나이트·라운지 실시간 정보</h2>
           <div className="space-y-2 text-sm leading-relaxed text-[#555]">

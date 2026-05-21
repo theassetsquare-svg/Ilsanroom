@@ -68,10 +68,25 @@ async function fetchSitemap() {
   return [...text.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
 }
 
+// R2-4 — 11 뷰포트 (mobile 4 + tablet 2 + pc 5). 'both'=pc+mobile 기존, 'all'=11개 전체.
+const UA_MOBILE = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
+const UA_PC = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
 const VIEWPORTS = {
-  pc: { width: 1280, height: 800, isMobile: false, deviceScaleFactor: 1, ua: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36' },
-  mobile: { width: 390, height: 844, isMobile: true, deviceScaleFactor: 3, ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1' },
+  pc: { width: 1280, height: 800, isMobile: false, deviceScaleFactor: 1, ua: UA_PC },
+  mobile: { width: 390, height: 844, isMobile: true, deviceScaleFactor: 3, ua: UA_MOBILE },
+  'mobile-320': { width: 320, height: 568, isMobile: true, deviceScaleFactor: 2, ua: UA_MOBILE },
+  'mobile-375': { width: 375, height: 812, isMobile: true, deviceScaleFactor: 3, ua: UA_MOBILE },
+  'mobile-414': { width: 414, height: 896, isMobile: true, deviceScaleFactor: 3, ua: UA_MOBILE },
+  'mobile-480': { width: 480, height: 800, isMobile: true, deviceScaleFactor: 2, ua: UA_MOBILE },
+  'tablet-768': { width: 768, height: 1024, isMobile: false, deviceScaleFactor: 2, ua: UA_PC },
+  'tablet-1024': { width: 1024, height: 1366, isMobile: false, deviceScaleFactor: 2, ua: UA_PC },
+  'pc-1440': { width: 1440, height: 900, isMobile: false, deviceScaleFactor: 1, ua: UA_PC },
+  'pc-1600': { width: 1600, height: 900, isMobile: false, deviceScaleFactor: 1, ua: UA_PC },
+  'pc-1920': { width: 1920, height: 1080, isMobile: false, deviceScaleFactor: 1, ua: UA_PC },
+  'pc-2560': { width: 2560, height: 1440, isMobile: false, deviceScaleFactor: 1, ua: UA_PC },
 };
+VIEWPORTS['pc-1280'] = VIEWPORTS.pc;
+const VP_ALL = ['mobile-320', 'mobile-375', 'mobile-414', 'mobile-480', 'tablet-768', 'tablet-1024', 'pc-1280', 'pc-1440', 'pc-1600', 'pc-1920', 'pc-2560'];
 
 async function auditOne(browser, url, vpName) {
   const vp = VIEWPORTS[vpName];
@@ -100,6 +115,29 @@ async function auditOne(browser, url, vpName) {
   try {
     const resp = await page.goto(url, { waitUntil: 'networkidle2', timeout: 20000 });
     if (!resp || resp.status() >= 400) issues.push({ sev: 'HTTP', msg: `${resp ? resp.status() : 'no-response'}` });
+    // R2-4 — 11vp 레이아웃 검증 (가로 스크롤·폰트·터치 영역)
+    try {
+      const layoutIssues = await page.evaluate(() => {
+        const out = [];
+        const docW = document.documentElement.scrollWidth;
+        const winW = window.innerWidth;
+        if (docW > winW + 1) out.push({ sev: 'OVERFLOW', msg: `scrollW ${docW} > innerW ${winW}` });
+        const bodyFs = parseFloat(getComputedStyle(document.body).fontSize) || 0;
+        if (winW <= 480 && bodyFs > 0 && bodyFs < 14) out.push({ sev: 'FONT', msg: `body fontSize ${bodyFs}px < 14` });
+        if (winW <= 768) {
+          const els = Array.from(document.querySelectorAll('a,button'));
+          let small = 0;
+          for (const el of els) {
+            const r = el.getBoundingClientRect();
+            if (r.width === 0 || r.height === 0) continue;
+            if (r.width < 44 || r.height < 44) small++;
+          }
+          if (small > 8) out.push({ sev: 'TOUCH', msg: `${small} elements < 44px` });
+        }
+        return out;
+      });
+      for (const li of layoutIssues) issues.push(li);
+    } catch {}
   } catch (e) {
     issues.push({ sev: 'LOAD', msg: (e.message || String(e)).slice(0, 200) });
   }
@@ -112,7 +150,7 @@ async function main() {
   let urls = await fetchSitemap();
   console.log(`📄 sitemap URL: ${urls.length}`);
   if (LIMIT > 0) urls = urls.slice(0, LIMIT);
-  const viewports = VP === 'both' ? ['pc', 'mobile'] : [VP];
+  const viewports = VP === 'both' ? ['pc', 'mobile'] : VP === 'all' ? VP_ALL : [VP];
   console.log(`🚀 ${urls.length} URL × ${viewports.length} viewport = ${urls.length * viewports.length} loads (concurrency ${CONCURRENCY})`);
 
   const browser = await puppeteer.launch({
@@ -141,13 +179,14 @@ async function main() {
   await Promise.all(Array.from({ length: CONCURRENCY }, () => worker()));
   await browser.close();
 
-  const stats = { CONSOLE: 0, JS: 0, NET: 0, HTTP: 0, LOAD: 0 };
+  const stats = { CONSOLE: 0, JS: 0, NET: 0, HTTP: 0, LOAD: 0, OVERFLOW: 0, FONT: 0, TOUCH: 0 };
   for (const r of results) for (const i of r.issues) stats[i.sev] = (stats[i.sev] || 0) + 1;
   const totalErrors = Object.values(stats).reduce((a, b) => a + b, 0);
 
   console.log('\n');
   console.log(`📊 ${total} loads / 🛑 ${totalErrors} 이슈`);
   console.log(`   CONSOLE: ${stats.CONSOLE}  JS: ${stats.JS}  NET: ${stats.NET}  HTTP: ${stats.HTTP}  LOAD: ${stats.LOAD}`);
+  console.log(`   OVERFLOW: ${stats.OVERFLOW}  FONT: ${stats.FONT}  TOUCH: ${stats.TOUCH}`);
 
   if (results.length) {
     console.log('\n📋 이슈 상위 20:');

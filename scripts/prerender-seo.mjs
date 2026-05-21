@@ -629,7 +629,7 @@ let pageCount = 0;
 const staticPages = [
   // Category listing pages
   { path: '/clubs', title: '클럽 줄 서다 입장컷 당하기 싫죠? 10년 MD가 들어갈 곳만 알려줌', desc: '어떤 클럽이 진짜? 줄 서서 1시간 기다렸는데 컷이면 그날 끝. 10년 일한 MD가 들어갈 곳·물·DJ 솔직히 다 깝니다. 택시비 후회 전에 바로 확인 →' },
-  { path: '/nights', title: '나이트 부킹 한 번도 못 잡고 집 간 적? 10년 웨이터가 거를 곳 알려줘요', desc: '부킹 안 잡히는 나이트 가면 1차로 끝나요. 10년 짠밥 웨이터가 홀·부스·물·진행 다 풀어드립니다. 1,000+ 업소 갈 곳 vs 거를 곳 →' },
+  { path: '/nights', title: '나이트 부킹 한 번도 못 잡고 집 간 적? 10년 웨이터가 거를 곳 알려줘요', desc: '부킹 안 잡히는 나이트 가면 1차로 끝나요. 10년 짠밥 웨이터가 홀·부스·물·진행 다 풀어드립니다. 121곳 갈 곳 vs 거를 곳 →' },
   { path: '/lounges', title: '라운지 시끄러워서 데이트 망친 적 한 번이라도? 10년 실장이 거름', desc: '분위기 보고 갔는데 어수선하면 데이트도 망합니다. 10년 본 라운지 실장이 인테리어·시그니처·만남 결까지 다 풀어드립니다. 조용히 가서 조용히 나와요 →' },
   { path: '/rooms', title: '룸 초이스 한 번이라도 후회해본 사람만 봐요. 10년 실장이 까드림', desc: '사진이랑 다르면 그 순간 분위기 끝납니다. 10년 일한 룸 실장이 초이스·양주 라인·진행 케어까지 매장별로 솔직하게. 후회하기 전에 일단 물어봐요 →' },
   { path: '/yojeong', title: '요정에서 격 떨어지면 다음은 없죠 — 20년 실장이 봐드림', desc: '거래처 모실 자리 어디로? 격 떨어지면 다음 자리는 없다, 우리 20년차 실장이 한정식·접대·진행 매너 한 줄로 정리. 강남·일산·부산 진짜 격 있는 곳 바로 확인 →' },
@@ -762,10 +762,32 @@ HOME_CATS.forEach(c => {
 const homeAllRegions = [...new Set(venues.map(v => v.regionKo))];
 homeSsr += `<h2>지역별 나이트라이프</h2>`;
 homeSsr += `<p>서비스 지역: ${homeAllRegions.map(r => escHtml(r)).join(', ')}. 각 지역의 클럽·나이트·라운지·룸을 카테고리에서 비교해보세요.</p>`;
+// R2-2 H2 강화 + R2-1 FAQ 본문 노출 (AI Overview 인용 강화)
+homeSsr += `<h2>자주 묻는 질문</h2>`;
+homeSsr += `<dl>`;
+const HOME_FAQ_SSR = [
+  { q: '놀쿨이 뭐예요?', a: `전국 클럽·나이트·라운지·룸·요정·호빠 ${venues.length}곳을 정리한 정보 플랫폼입니다. 매장 정보·후기·커뮤니티가 한 곳에 모여 있습니다.` },
+  { q: '나이트랑 클럽이 어떻게 다른가요?', a: '나이트는 부킹·웨이터 시스템 중심, 클럽은 음악·스탠딩 중심입니다.' },
+  { q: '룸 초이스가 뭐예요?', a: '매장 측이 안내하는 매니저 중에서 손님이 직접 선택하는 시스템입니다.' },
+  { q: '광고 문의는 어떻게 해요?', a: '카톡 ID besta12로 문의하시면 상세 안내드립니다.' },
+  { q: '후기 작성 어떻게 해요?', a: '회원가입 후 /community/reviews 페이지에서 작성 가능합니다.' },
+];
+HOME_FAQ_SSR.forEach(f => { homeSsr += `<dt>${escHtml(f.q)}</dt><dd>${escHtml(f.a)}</dd>`; });
+homeSsr += `</dl>`;
+// R2-1 — FAQPage JSON-LD (SSR 정적 박기, Google Rich Results + AI Overview 인용)
+const HOME_FAQ_JSONLD = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: HOME_FAQ_SSR.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
 writePage('/', {
   title: '놀쿨 — 오늘 어디 갈지 못 정했죠? 20년 굴러본 사람이 골라드림',
   description: `오늘 어디 갈지 못 정했죠? 거를 곳 천지예요. 클럽·나이트·룸·요정·라운지·호빠 20년 본 사람이 ${venues.length}+ 업소 1줄로 정리. 주말 망치기 전에 →`,
-  jsonLdList: [WEBSITE_JSONLD, ORG_JSONLD],
+  jsonLdList: [WEBSITE_JSONLD, ORG_JSONLD, HOME_FAQ_JSONLD],
   ssrBody: homeSsr
 });
 
