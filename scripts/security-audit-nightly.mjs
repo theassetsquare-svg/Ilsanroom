@@ -49,10 +49,10 @@ async function selectDiag() {
   return res.json();
 }
 
-// 베이스라인 — 2026-05-21 마이그레이션 직후 측정값
+// 베이스라인 — 2026-05-21 Phase1+Phase2 INSERT 잠금 후 측정값
 const BASELINE = {
   search_path_missing: 0,
-  always_true: 39,        // 의도적 public-read INSERT/SELECT
+  always_true: 25,        // 익명 INSERT 3 (page_events/leads/waitlist) + 공개 SELECT 22
   secdef_public: 1,       // is_admin() 만 (RLS 평가 필요)
   rls_no_policy: 0,
   rls_disabled_count: 0,

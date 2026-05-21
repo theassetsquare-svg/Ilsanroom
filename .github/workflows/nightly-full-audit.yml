@@ -1,0 +1,61 @@
+name: Nightly Full Audit
+
+# 매일 KST 03:30 (UTC 18:30) — Security + 11vp Browser + Lighthouse 통합
+on:
+  schedule:
+    - cron: '30 18 * * *'
+  workflow_dispatch:
+
+jobs:
+  full-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+
+      - name: Install Chromium for puppeteer
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+        id: setup-chrome
+
+      # 1) Supabase 보안 5지표 회귀 감사
+      - name: Supabase security audit
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFY_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+        run: node scripts/security-audit-nightly.mjs
+
+      # 2) 11 뷰포트 라이브 풀크롤 (mobile-320~pc-2560)
+      - name: 11-viewport browser crawl
+        env:
+          CHROMIUM_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
+        run: node scripts/nolcool-browser-audit.mjs --vp all --limit 50 --concurrency 4 --save /tmp/11vp.json
+
+      # 3) Lighthouse PC+Mobile 핵심 5페이지
+      - name: Lighthouse 4축 측정
+        env:
+          CHROMIUM_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
+        run: |
+          npm install -g lighthouse
+          for url in https://nolcool.com/ https://nolcool.com/clubs/ https://nolcool.com/community/free https://nolcool.com/best/clubs https://nolcool.com/magazine; do
+            lighthouse "$url" --only-categories=performance,accessibility,best-practices,seo --output=json --output-path=/tmp/lh-$(echo $url | md5sum | cut -c1-8).json --chrome-flags="--headless --no-sandbox" --quiet || true
+          done
+
+      # 4) 실패 시 메일 (Resend) — security-audit-nightly.mjs 가 회귀시 이미 메일+exit1 함
+      - name: Alert on failure
+        if: failure()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFY_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+        run: |
+          curl -sS -X POST https://api.resend.com/emails \
+            -H "Authorization: Bearer $RESEND_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{\"from\":\"놀쿨 야간감사 <noreply@nolcool.com>\",\"to\":[\"$NOTIFY_EMAIL\"],\"subject\":\"🚨 놀쿨 야간 풀감사 실패\",\"html\":\"<p>$(date -u +%Y-%m-%d) 야간 풀감사가 실패했습니다. <a href='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'>로그 확인</a></p>\"}"
