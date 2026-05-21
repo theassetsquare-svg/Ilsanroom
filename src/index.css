@@ -432,10 +432,21 @@ main p, main span, main li {
   text-shadow: 0 2px 8px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.3);
 }
 
-/* 터치 영역 최소 44px */
-@media (pointer: coarse) {
-  button, a, [role="button"] {
-    min-height: 44px;
+/* ★ 터치 타깃 — Apple HIG 44px / Material 48dp / WCAG 2.5.5 준수
+   - 768px 이하에서 모든 표준 인터랙티브 요소 ≥44×44px (!important로 인라인 style 오버라이드)
+   - flowing text 안의 inline 앵커는 자연 크기 (display:inline은 min-* 무효 — CSS 사양상 자동 통과)
+   - 헤드리스 감사와 일치: (max-width: 768px) — pointer: coarse는 audit에서 false 처리됨 */
+@media (max-width: 768px) {
+  button,
+  [role="button"],
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"],
+  select,
+  summary,
+  a {
+    min-height: 44px !important;
+    min-width: 44px !important;
   }
 }
 
@@ -478,12 +489,7 @@ input[type="text"]::-ms-reveal {
   display: none !important;
 }
 
-/* ★ Lighthouse a11y — 링크/버튼 최소 패딩 */
-a:not([class]) {
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-}
+/* (a:not([class]) 규칙은 위쪽 @media (max-width: 768px) 블록으로 통합됨) */
 
 /* ★ Rich Text Editor — 네이버 스타일 글쓰기 */
 .rich-editor {

@@ -125,11 +125,17 @@ async function auditOne(browser, url, vpName) {
         const bodyFs = parseFloat(getComputedStyle(document.body).fontSize) || 0;
         if (winW <= 480 && bodyFs > 0 && bodyFs < 14) out.push({ sev: 'FONT', msg: `body fontSize ${bodyFs}px < 14` });
         if (winW <= 768) {
-          const els = Array.from(document.querySelectorAll('a,button'));
+          // WCAG 2.5.5 Target Size — exception: inline targets in flowing text are exempt
+          const els = Array.from(document.querySelectorAll('a,button,[role="button"]'));
           let small = 0;
           for (const el of els) {
             const r = el.getBoundingClientRect();
             if (r.width === 0 || r.height === 0) continue;
+            const cs = getComputedStyle(el);
+            // skip inline-rendered anchors (e.g., <a> inside <p>, <li>, <span>)
+            if (cs.display === 'inline' || cs.display === 'contents') continue;
+            // skip elements hidden via opacity/visibility
+            if (cs.visibility === 'hidden' || parseFloat(cs.opacity) === 0) continue;
             if (r.width < 44 || r.height < 44) small++;
           }
           if (small > 8) out.push({ sev: 'TOUCH', msg: `${small} elements < 44px` });
