@@ -1,0 +1,25 @@
+name: Security Daily Report
+
+# 매일 KST 09:00 (UTC 00:00) — Supabase 보안 5지표 "정상/회귀" 상태 메일
+# 회귀 시만 보내는 hourly/nightly 와 달리, 매일 1통 발송 (사장님 안심용)
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  daily-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Send daily security status mail
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFY_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+        run: node scripts/security-daily-report.mjs
