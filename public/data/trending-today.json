@@ -1,35 +1,7 @@
 {
-  "generated_at": "2026-05-20T19:11:50.448Z",
+  "generated_at": "2026-05-21T06:40:18.017Z",
   "window_hours": 24,
   "items": [
-    {
-      "path": "/nights/sangbonghangukgwannight",
-      "title": "상봉동한국관나이트",
-      "category": "night",
-      "region": "상봉동",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/ulsannewworldnight",
-      "title": "울산뉴월드나이트",
-      "category": "night",
-      "region": "울산",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/gumihobaknight",
-      "title": "구미호박나이트",
-      "category": "night",
-      "region": "구미",
-      "views_24h": 3
-    },
-    {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
-      "views_24h": 3
-    },
     {
       "path": "/clubs/itaewon/itaewon-savage",
       "title": "이태원클럽 세비지",
@@ -105,6 +77,34 @@
       "title": "해운대호빠 벨벳",
       "category": "hoppa",
       "region": "해운대",
+      "views_24h": 2
+    },
+    {
+      "path": "/hoppa/busanhoppa-aura",
+      "title": "부산호빠 아우라",
+      "category": "hoppa",
+      "region": "부산",
+      "views_24h": 2
+    },
+    {
+      "path": "/hoppa/busanhoppa-menz",
+      "title": "부산호빠 맨즈",
+      "category": "hoppa",
+      "region": "부산",
+      "views_24h": 2
+    },
+    {
+      "path": "/hoppa/suwonhoppa-aura",
+      "title": "수원호빠 아우라",
+      "category": "hoppa",
+      "region": "수원",
+      "views_24h": 2
+    },
+    {
+      "path": "/hoppa/daejeonhoppa-eclipse",
+      "title": "대전호빠 이클립스",
+      "category": "hoppa",
+      "region": "대전",
       "views_24h": 2
     }
   ]
