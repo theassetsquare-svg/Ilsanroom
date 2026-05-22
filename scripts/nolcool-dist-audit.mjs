@@ -112,6 +112,29 @@ for (const f of files) {
   }
 
   if (/(thum\.io|microlink\.io|screenshotone)/.test(html)) add('ERR', '3rd-party \uc774\ubbf8\uc9c0');
+
+  // 시즌55 — Google Rich Results "FAQPage/Organization/NightClub 중복" 회귀 차단
+  // 별도 <script type="application/ld+json"> 블록에서 root @type이 2회 이상 등장하면 ERR.
+  const ldRe = /<script\s+type=["']application\/ld\+json["']\s*>([\s\S]*?)<\/script>/gi;
+  const rootTypeCounts = {};
+  let ldMatch;
+  while ((ldMatch = ldRe.exec(html))) {
+    try {
+      const parsed = JSON.parse(ldMatch[1]);
+      const items = Array.isArray(parsed) ? parsed : [parsed];
+      for (const it of items) {
+        if (it && typeof it === 'object' && it['@type']) {
+          const t = Array.isArray(it['@type']) ? it['@type'].join('+') : it['@type'];
+          rootTypeCounts[t] = (rootTypeCounts[t] || 0) + 1;
+        }
+      }
+    } catch {
+      add('ERR', 'JSON-LD parse \uc2e4\ud328');
+    }
+  }
+  for (const [t, c] of Object.entries(rootTypeCounts)) {
+    if (c >= 2) add('ERR', `JSON-LD root @type "${t}" \uc911\ubcf5 ${c}\uac1c (Google Rich Results \uacbd\uace0)`);
+  }
 }
 
 for (const [t, urls] of titleMap) {

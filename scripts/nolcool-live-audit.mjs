@@ -86,6 +86,27 @@ async function audit(url) {
   for (const re of BANNED_RE) if (re.test(body)) add('ERR', `\uae08\uc9c0\uc5b4 /${re.source}/`);
 
   if (/(thum\.io|microlink\.io|screenshotone)/.test(html)) add('ERR', '3rd-party \uc774\ubbf8\uc9c0');
+
+  // 시즌55 — JSON-LD root @type 중복 차단 (Google Rich Results FAQPage \uc911\ubcf5 \ud68c\uadc0 \uac10\uc9c0)
+  const ldRe = /<script\s+type=["']application\/ld\+json["']\s*>([\s\S]*?)<\/script>/gi;
+  const rootTypeCounts = {};
+  let ldMatch;
+  while ((ldMatch = ldRe.exec(html))) {
+    try {
+      const parsed = JSON.parse(ldMatch[1]);
+      const items = Array.isArray(parsed) ? parsed : [parsed];
+      for (const it of items) {
+        if (it && typeof it === 'object' && it['@type']) {
+          const t = Array.isArray(it['@type']) ? it['@type'].join('+') : it['@type'];
+          rootTypeCounts[t] = (rootTypeCounts[t] || 0) + 1;
+        }
+      }
+    } catch { add('ERR', 'JSON-LD parse \uc2e4\ud328'); }
+  }
+  for (const [t, c] of Object.entries(rootTypeCounts)) {
+    if (c >= 2) add('ERR', `JSON-LD root @type "${t}" \uc911\ubcf5 ${c}\uac1c`);
+  }
+
   const iframes = html.match(/<iframe[^>]*src=["'][^"']+["'][^>]*>/g) || [];
   for (const i of iframes) if (/(map\.kakao|map\.naver|maps\.google)/.test(i)) { add('ERR', '\uc9c0\ub3c4 iframe'); break; }
 }
