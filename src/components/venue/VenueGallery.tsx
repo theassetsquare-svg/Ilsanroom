@@ -20,7 +20,7 @@ const SQUARE_SLOTS: Record<string, number[]> = {
  */
 const IMAGE_OVERRIDES: Record<string, Record<number, string>> = {};
 
-const CACHE_VER = 'v2';
+const CACHE_VER = 'v3';
 
 function getSrc(slug: string, n: number): string {
   const override = IMAGE_OVERRIDES[slug]?.[n];

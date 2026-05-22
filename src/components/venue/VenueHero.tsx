@@ -42,11 +42,11 @@ export default function VenueHero({
   // 시즌29 — manifest로 이미지 보유 여부 사전 확정. 없으면 img 자체 렌더 skip (404 0건).
   const slugHasImage = !!slug && hasVenueImage(slug);
   const [hasImage, setHasImage] = useState(slugHasImage);
-  const [imgSrc, setImgSrc] = useState(slugHasImage ? `/venues/${slug}-1.webp` : '');
+  const [imgSrc, setImgSrc] = useState(slugHasImage ? `/venues/${slug}-1.webp?v3` : '');
 
   const handleImageError = () => {
     if (imgSrc.includes('.webp')) {
-      setImgSrc(`/venues/${slug}-1.jpg`);
+      setImgSrc(`/venues/${slug}-1.jpg?v3`);
     } else {
       setHasImage(false);
     }

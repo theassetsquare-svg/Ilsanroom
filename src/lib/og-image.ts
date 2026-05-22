@@ -59,7 +59,7 @@ export function getVenueOgImageBySlug(slug: string): string {
     return `${SITE_URL}/og/nolcool-og.jpg`;
   }
   // 기본: 실제 가게 사진 JPG (SVG 대신 JPG 사용)
-  return `${SITE_URL}/venues/${slug}-1.jpg`;
+  return `${SITE_URL}/venues/${slug}-1.jpg?v3`;
 }
 
 /** 업소 상세 OG image (이름 기반 — API 폴백) */

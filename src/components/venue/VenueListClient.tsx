@@ -111,7 +111,7 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
                   <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
                     {hasVenueImage(venue.slug) && (
                       <img
-                        src={`/venues/${venue.slug}-1.webp`}
+                        src={`/venues/${venue.slug}-1.webp?v3`}
                         alt={venue.nameKo}
                         width={300}
                         height={300}

@@ -409,7 +409,7 @@ export default function SearchPage() {
                 <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
                   <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
                     {hasVenueImage(venue.slug) && (
-                      <img src={`/venues/${venue.slug}-1.webp`} alt={venue.nameKo} loading="lazy"
+                      <img src={`/venues/${venue.slug}-1.webp?v3`} alt={venue.nameKo} loading="lazy"
                         className="absolute inset-0 w-full h-full object-cover z-[1]"
                         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                     )}

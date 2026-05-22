@@ -1358,7 +1358,7 @@ for (const v of venues) {
   const venueKeywords = [v.nameKo, `${v.regionKo} ${catLabelMap[v.cat]}`, `${v.nameKo} 후기`, `${v.nameKo} 예약`, `${v.regionKo} ${catLabelMap[v.cat]} 추천`, `${v.regionKo} 밤문화`].join(', ');
   // 시즌29-F — 실재하는 hero webp만 preload (404 0건 유지)
   const heroWebp = path.join('public', 'venues', `${v.slug}-1.webp`);
-  const preloadImage = fs.existsSync(heroWebp) ? `/venues/${v.slug}-1.webp` : undefined;
+  const preloadImage = fs.existsSync(heroWebp) ? `/venues/${v.slug}-1.webp?v3` : undefined;
   writePage(routePath, {
     title: hookTitle,
     description: desc,
