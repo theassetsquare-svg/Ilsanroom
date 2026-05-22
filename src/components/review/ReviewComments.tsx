@@ -166,7 +166,7 @@ export default function ReviewComments({ reviewId }: Props) {
         </div>
       ) : (
         <p className="mt-3 text-center text-xs text-neon-text-muted">
-          <a href="/login" target="_blank" rel="noopener noreferrer" className="text-violet-400 hover:underline">로그인</a> 후 댓글 작성 가능
+          <a href="/login" className="text-violet-400 hover:underline">로그인</a> 후 댓글 작성 가능
         </p>
       )}
     </div>

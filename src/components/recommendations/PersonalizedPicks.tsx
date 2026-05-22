@@ -109,7 +109,7 @@ export default function PersonalizedPicks() {
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {recommendations.map(venue => (
-          <Link target="_blank" rel="noopener noreferrer"
+          <Link
             key={venue.id}
             to={getCategoryPath(venue)}
             className="group rounded-2xl border border-neon-border bg-neon-surface/50 p-5 transition-all hover:border-violet-500/40 hover:bg-white"

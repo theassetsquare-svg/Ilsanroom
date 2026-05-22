@@ -216,7 +216,7 @@ export default function VenueManagePage() {
     <div className="mx-auto max-w-md px-4 py-20 text-center">
       <h1 className="mb-4 text-2xl font-bold text-neon-text">관리자 전용</h1>
       <p className="mb-6 text-neon-text-muted">이 페이지는 관리자만 접근 가능합니다.</p>
-      <a target="_blank" rel="noopener noreferrer" href="/login" className="inline-block rounded-xl bg-neon-primary px-6 py-3 text-sm font-bold text-white">로그인</a>
+      <a href="/login" className="inline-block rounded-xl bg-neon-primary px-6 py-3 text-sm font-bold text-white">로그인</a>
     </div>
   );
 

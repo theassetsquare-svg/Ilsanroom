@@ -157,7 +157,7 @@ export default function ReviewsPage() {
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-10 sm:py-16">
         <div className="mb-6">
-          <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
+          <Link to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
           <h1 className="text-3xl font-bold">업소후기</h1>
           <p className="mt-2 text-sm font-bold" style={{ color: '#8B5CF6' }}>
             "광고글 아님. 직접 가본 사람들이 쓴 리얼 후기만 모았다."

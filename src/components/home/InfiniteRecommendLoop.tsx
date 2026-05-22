@@ -82,7 +82,7 @@ export default function InfiniteRecommendLoop({ venues, popularVenues }: { venue
             </div>
             <div className="grid grid-cols-2 gap-2.5">
               {batch.map(v => (
-                <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} target="_blank" rel="noopener noreferrer"
+                <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)}
                   className="rounded-xl border border-gray-100 bg-white overflow-hidden shadow-sm active:scale-[0.98] transition-transform">
                   <div className={`relative w-full overflow-hidden bg-gradient-to-br ${
                     v.category === 'club' ? 'from-violet-500 to-indigo-700' :

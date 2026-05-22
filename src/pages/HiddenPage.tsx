@@ -103,8 +103,6 @@ export default function HiddenPage() {
               ) : (
                 /* 공개된 카드 */
                 <Link
-                  target="_blank"
-                  rel="noopener noreferrer"
                   to={gem.href}
                   className="block rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:shadow-lg hover:border-[#8B5CF6]/30 animate-fade-in"
                 >

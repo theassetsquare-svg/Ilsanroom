@@ -171,8 +171,6 @@ export default function AdminLayout() {
       <div className="border-t border-gray-200 pt-4">
         <Link
           to="/"
-          target="_blank"
-          rel="noopener noreferrer"
           className="flex items-center gap-2.5 rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
         >
           <span>↗</span> 사이트 보기
@@ -215,7 +213,7 @@ export default function AdminLayout() {
           ☰
         </button>
         <p className="text-sm font-bold text-gray-900">놀쿨 관리자</p>
-        <Link to="/" target="_blank" rel="noopener noreferrer" className="rounded-md px-2 py-1 text-xs text-purple-700 hover:bg-purple-50">↗</Link>
+        <Link to="/" className="rounded-md px-2 py-1 text-xs text-purple-700 hover:bg-purple-50">↗</Link>
       </div>
 
       {/* 모바일 드로어 */}

@@ -134,7 +134,7 @@ export default function MagazineManagePage() {
   if (!user || !isAdmin) return (
     <div className="mx-auto max-w-md px-4 py-20 text-center">
       <h1 className="mb-4 text-2xl font-bold">관리자 전용</h1>
-      <a target="_blank" rel="noopener noreferrer" href="/login" className="inline-block rounded-xl bg-neon-primary px-6 py-3 text-sm font-bold text-white">로그인</a>
+      <a href="/login" className="inline-block rounded-xl bg-neon-primary px-6 py-3 text-sm font-bold text-white">로그인</a>
     </div>
   );
 

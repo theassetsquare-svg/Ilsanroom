@@ -405,7 +405,7 @@ export default function SearchPage() {
         {results.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {results.map((venue) => (
-              <Link key={venue.id || venue.slug} to={getCategoryPath(venue)} target="_blank" rel="noopener noreferrer" className="block">
+              <Link key={venue.id || venue.slug} to={getCategoryPath(venue)} className="block">
                 <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
                   <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
                     {hasVenueImage(venue.slug) && (

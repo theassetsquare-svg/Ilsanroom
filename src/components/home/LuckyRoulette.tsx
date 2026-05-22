@@ -54,7 +54,6 @@ export default function LuckyRoulette({ openVenues }: { openVenues: Venue[] }) {
         {result && (
           <Link
             to={getCategoryHref(result.category, result.slug, result.region)}
-            target="_blank" rel="noopener noreferrer"
             className="mt-4 block rounded-xl bg-white border border-violet-200 p-4 text-left transition-all hover:shadow-md active:scale-[0.98]"
           >
             <div className="flex items-center gap-3">

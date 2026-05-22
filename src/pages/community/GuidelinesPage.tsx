@@ -232,7 +232,7 @@ export default function GuidelinesPage() {
               규칙에 대한 궁금한 점이나, 부당한 제재에 대한 이의 신청, 기타 관련 문의는
               아래 페이지에서 접수하면 돼요.
             </p>
-            <Link target="_blank" rel="noopener noreferrer"
+            <Link
               to="/help"
               className="inline-flex items-center gap-2 rounded-xl bg-neon-primary px-6 py-3 text-sm font-medium transition hover:bg-neon-primary-light"
             >

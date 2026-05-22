@@ -117,16 +117,12 @@ export default function ReferralPage() {
           <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <a
               href="/login"
-              target="_blank"
-              rel="noopener noreferrer"
               className="inline-flex rounded-xl bg-neon-primary px-8 py-3 font-medium text-white transition hover:bg-neon-primary-light"
             >
               시작하기
             </a>
             <a
               href="/login"
-              target="_blank"
-              rel="noopener noreferrer"
               className="inline-flex rounded-xl border border-neon-border bg-neon-surface px-8 py-3 font-medium text-neon-text transition hover:bg-neon-surface-2"
             >
               로그인

@@ -73,8 +73,6 @@ export default function DailyPrompt() {
       <div className="flex flex-wrap gap-2">
         <Link
           to="/community/free"
-          target="_blank"
-          rel="noopener noreferrer"
           className="inline-flex items-center gap-1 rounded-full bg-amber-700 px-4 py-2 text-sm font-bold text-white hover:bg-amber-800 transition"
           style={{ minHeight: 36 }}
         >
@@ -82,8 +80,6 @@ export default function DailyPrompt() {
         </Link>
         <Link
           to="/community/qna"
-          target="_blank"
-          rel="noopener noreferrer"
           className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-white px-4 py-2 text-sm font-bold text-amber-800 hover:bg-amber-50 transition"
           style={{ minHeight: 36 }}
         >

@@ -517,7 +517,7 @@ export default function RankingPage() {
           {ranked.map((v, i) => {
             const cc = catColors[v.category] || '#8B5CF6';
             return (
-              <Link target="_blank" rel="noopener noreferrer" key={v.id} to={getCategoryHref(v.category, v.slug, v.region)}
+              <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)}
                 className="flex items-center gap-3 sm:gap-4 rounded-xl border bg-white px-4 py-3 transition hover:shadow-md hover:border-[#8B5CF6]/30"
                 style={{ borderColor: '#E5E7EB', minHeight: 64 }}>
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-sm font-black" style={

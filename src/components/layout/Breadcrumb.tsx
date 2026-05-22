@@ -14,7 +14,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
     <nav aria-label="breadcrumb" className="py-2" style={{ minHeight: '40px', display: 'flex', alignItems: 'center' }}>
       <ol className="flex flex-wrap items-center gap-x-1 gap-y-1 text-sm leading-[1.25] text-neon-text-muted">
         <li className="flex items-center leading-[1.25]">
-          <Link target="_blank" rel="noopener noreferrer"
+          <Link
             to="/"
             className="inline-flex items-center leading-[1.25] px-2 -mx-1 py-1 -my-1 min-w-[44px] transition-colors hover:text-neon-primary-light"
           >
@@ -25,7 +25,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
           <li key={i} className="flex items-center gap-1 leading-[1.25]">
             <span aria-hidden="true" className="inline-flex items-center leading-[1.25] text-neon-text-subtle">/</span>
             {item.href ? (
-              <Link target="_blank" rel="noopener noreferrer"
+              <Link
                 to={item.href}
                 className="inline-flex items-center leading-[1.25] px-2 -mx-1 py-1 -my-1 min-w-[44px] transition-colors hover:text-neon-primary-light"
               >

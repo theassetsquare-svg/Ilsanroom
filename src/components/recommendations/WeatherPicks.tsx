@@ -110,7 +110,7 @@ export default function WeatherPicks() {
 
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {weather.venues.map((venue) => (
-              <Link target="_blank" rel="noopener noreferrer"
+              <Link
                 key={venue.name}
                 to={venue.link}
                 className="group flex items-center gap-4 rounded-xl border border-neon-border bg-neon-surface/60 p-4 transition hover:border-neon-primary/40 hover:bg-neon-surface-2"

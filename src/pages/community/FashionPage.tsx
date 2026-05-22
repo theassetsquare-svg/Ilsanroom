@@ -117,7 +117,7 @@ export default function FashionPage() {
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-5xl px-4 py-10 sm:py-16">
         <div className="mb-8">
-          <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
+          <Link to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold">스타일 갤러리</h1>

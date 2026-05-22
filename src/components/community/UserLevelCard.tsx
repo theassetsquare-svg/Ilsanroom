@@ -25,7 +25,7 @@ export default function UserLevelCard() {
     return (
       <div className="rounded-xl border border-neon-border bg-neon-surface/50 p-5 text-center">
         <p className="text-neon-text-muted text-sm mb-2">로그인하면 나의 등급을 확인할 수 있어요</p>
-        <a href="/login" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center text-sm text-violet-400 hover:underline" style={{ minHeight: 44, minWidth: 44 }}>로그인</a>
+        <a href="/login" className="inline-flex items-center justify-center text-sm text-violet-400 hover:underline" style={{ minHeight: 44, minWidth: 44 }}>로그인</a>
       </div>
     );
   }

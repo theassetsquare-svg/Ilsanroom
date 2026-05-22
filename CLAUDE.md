@@ -11,7 +11,7 @@ Only "놀쿨" word is thin. Other text stays normal weight.
 Mobile: 16px font, 1.7 line-height, 44px touch, no bar overlap
 - useEffect cleanup ALL timers. persistSession:true. ErrorBoundary
 - Bestseller writing. No AI text.
-- All links open in new tab! target="_blank" rel="noopener noreferrer" Internal search ONLY
+- Internal links = SAME TAB (SPA nav, pageview/세션 증가, SEO/CWV 유리). External links = new tab `target="_blank" rel="noopener noreferrer"`. SafeLink Link 기본=같은 탭, prerender SSR도 외부만 _blank.
 
 ★★★ TITLE RULES — NO DUPLICATE WORDS! ★★★
 Homepage ONLY: "놀쿨 — hook title"

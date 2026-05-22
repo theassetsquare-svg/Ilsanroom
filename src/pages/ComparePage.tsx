@@ -127,7 +127,7 @@ export default function ComparePage() {
             <div className={`grid gap-4 ${selectedVenues.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
               {selectedVenues.map((v) => (
                 <div key={v.id} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                  <Link target="_blank" rel="noopener noreferrer" to={getCategoryHref(v)}>
+                  <Link to={getCategoryHref(v)}>
                     <h3 className="text-lg font-bold text-[#8B5CF6] hover:text-[#7C3AED] mb-2 transition-colors">{v.nameKo}</h3>
                   </Link>
                   {v.isPremium && <Badge variant="premium" className="mb-3">PREMIUM</Badge>}

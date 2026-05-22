@@ -200,7 +200,7 @@ export default function LoungePage() {
                   </>
                 ) : (
                   <p className="text-center text-sm text-neon-text-muted">
-                    <a href="/login" target="_blank" rel="noopener noreferrer" className="text-violet-400 hover:underline">로그인</a> 후 글 작성 가능
+                    <a href="/login" className="text-violet-400 hover:underline">로그인</a> 후 글 작성 가능
                   </p>
                 )}
               </div>

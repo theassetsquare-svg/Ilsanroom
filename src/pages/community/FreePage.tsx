@@ -138,7 +138,7 @@ export default function FreeBoardPage() {
         {/* 헤더 */}
         <div className="mb-6 flex items-start justify-between">
           <div>
-            <Link target="_blank" rel="noopener noreferrer" to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
+            <Link to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
             <h1 className="text-3xl font-bold">자유게시판</h1>
             <p className="mt-2 text-sm font-bold" style={{ color: '#8B5CF6' }}>
               "어젯밤 얘기 여기서 풀어. 읽다 보면 시간 녹는다."

@@ -173,7 +173,7 @@ const feedTabs = ['🔥인기', '🆕신규', '⭐추천', '📍지역별'] as c
 const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, rank, priority }: { venue: Venue; isFavorite: boolean; toggleFavorite: (id: string) => void; rank?: number; priority?: boolean }) {
   return (
     <div className="relative">
-      <Link target="_blank" rel="noopener noreferrer" to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
+      <Link to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
         <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
           <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
             {/* R4-2 — TOP 4 첫 카드는 LCP 후보 → eager + fetchPriority high */}
@@ -677,7 +677,7 @@ export default function HomePage() {
                 <div className="space-y-2">
                   <p className="text-lg font-black text-[#111]">{catEmoji[topCat]} {copy?.hook}</p>
                   {topVenue && (
-                    <Link to={getCategoryHref(topVenue.category, topVenue.slug, topVenue.region)} target="_blank" rel="noopener noreferrer"
+                    <Link to={getCategoryHref(topVenue.category, topVenue.slug, topVenue.region)}
                       className="flex items-center gap-3 rounded-xl bg-white border border-gray-200 p-3 active:bg-gray-50 transition">
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#F3F0FF] text-lg">{catEmoji[topCat]}</div>
                       <div className="flex-1 min-w-0">
@@ -880,7 +880,7 @@ export default function HomePage() {
                 <div className="py-2">
                   <p className="px-4 py-1.5 text-[11px] font-bold text-[#8B5CF6] tracking-wider">검색 결과</p>
                   {searchResults.map((v) => (
-                    <Link key={v.id || v.slug} to={getCategoryHref(v.category, v.slug, v.region)} target="_blank" rel="noopener noreferrer"
+                    <Link key={v.id || v.slug} to={getCategoryHref(v.category, v.slug, v.region)}
                       onClick={() => { setSearchFocused(false); setSearchQuery(''); }}
                       className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors">
                       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#F3F0FF] text-sm font-bold text-[#8B5CF6]">{v.nameKo.charAt(0)}</div>
@@ -1018,7 +1018,7 @@ export default function HomePage() {
         </div>
         <div className="flex gap-3 px-4 overflow-x-auto scrollbar-hide pb-1" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
           {magazineTeasers.map(article => (
-            <Link key={article.id} to={`/magazine/${article.id}`} target="_blank" rel="noopener noreferrer" className="flex-shrink-0" style={{ width: 240 }}>
+            <Link key={article.id} to={`/magazine/${article.id}`} className="flex-shrink-0" style={{ width: 240 }}>
               <div className="rounded-2xl border border-gray-100 bg-white overflow-hidden shadow-sm active:scale-[0.98] transition-transform">
                 <div className="bg-gradient-to-br from-[#1a0533] to-[#2d1b69] px-4 py-3">
                   <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold text-white">{article.tag}</span>
@@ -1056,7 +1056,7 @@ export default function HomePage() {
                 </div>
                 <div className="space-y-1.5">
                   {top.map((v, i) => (
-                    <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} target="_blank" rel="noopener noreferrer"
+                    <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)}
                       className="flex items-center gap-2.5 py-1.5 active:bg-gray-50 rounded-lg px-1 transition">
                       <span className={`flex h-5 w-5 items-center justify-center rounded text-[10px] font-black text-white ${i === 0 ? 'bg-[#8B5CF6]' : i === 1 ? 'bg-violet-400' : 'bg-gray-400'}`}>{i + 1}</span>
                       <span className="text-[13px] font-medium text-[#111] truncate flex-1">{v.nameKo}</span>
@@ -1093,7 +1093,7 @@ export default function HomePage() {
       {/* ═══ 12. 피처드 카드 + 가로 스크롤 TOP 8 ═══ */}
       {featuredVenue && (
         <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
-          <Link to={getCategoryHref(featuredVenue.category, featuredVenue.slug, featuredVenue.region)} target="_blank" rel="noopener noreferrer" className="block">
+          <Link to={getCategoryHref(featuredVenue.category, featuredVenue.slug, featuredVenue.region)} className="block">
             <div className={`relative rounded-2xl overflow-hidden bg-gradient-to-br ${
               featuredVenue.category === 'club' ? 'from-violet-600 to-indigo-800' :
               featuredVenue.category === 'night' ? 'from-blue-600 to-purple-800' :
@@ -1126,7 +1126,7 @@ export default function HomePage() {
         </div>
         <div className="flex gap-2.5 px-4 overflow-x-auto scrollbar-hide pb-1">
           {popularVenues.slice(0, 8).map((v, i) => (
-            <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} target="_blank" rel="noopener noreferrer" className="flex-shrink-0" style={{ width: 120 }}>
+            <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} className="flex-shrink-0" style={{ width: 120 }}>
               <div className="relative rounded-xl overflow-hidden" style={{ width: 120, height: 120 }}>
                 <img src={`/venues/${v.slug}-1.webp`} alt={v.nameKo} width={120} height={120} loading="lazy"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
@@ -1255,7 +1255,7 @@ export default function HomePage() {
                     <p className="text-xs font-bold text-[#8B5CF6] mb-2">🏆 이번주 TOP 5</p>
                     <div className="space-y-1">
                       {popularVenues.slice(0, 5).map((v, i) => (
-                        <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 py-1">
+                        <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} className="flex items-center gap-2 py-1">
                           <span className={`flex h-5 w-5 items-center justify-center rounded text-xs font-bold ${i < 3 ? 'bg-[#8B5CF6] text-white' : 'bg-gray-200 text-gray-600'}`}>{i + 1}</span>
                           <span className="text-sm text-[#111] truncate">{v.nameKo}</span>
                           <span className="ml-auto text-xs text-[#555]">{v.regionKo}</span>
@@ -1269,7 +1269,7 @@ export default function HomePage() {
               // 16번째 — 매거진 CTA
               if (idx + 1 === 16) {
                 cards.push(
-                  <Link key={`mag-cta-${idx}`} to="/magazine" target="_blank" rel="noopener noreferrer" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100 p-3 active:bg-gray-50 transition text-center">
+                  <Link key={`mag-cta-${idx}`} to="/magazine" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100 p-3 active:bg-gray-50 transition text-center">
                     <p className="text-sm font-bold text-[#111]">📰 놀쿨 매거진 — 업소별 심층 리뷰·비교 분석 읽기 →</p>
                   </Link>
                 );
@@ -1340,7 +1340,7 @@ export default function HomePage() {
             { icon: '🧠', title: '성향 테스트', href: '/quiz', desc: '내 취향 분석' },
             { icon: '🎉', title: '이벤트', href: '/events', desc: '진행중' },
           ].map(card => (
-            <Link key={card.title} to={card.href} target="_blank" rel="noopener noreferrer"
+            <Link key={card.title} to={card.href}
               className="flex flex-col items-center gap-0.5 rounded-xl border border-gray-200 bg-white p-2 text-center shadow-sm active:scale-[0.97] transition" style={{ minHeight: 56 }}>
               <span className="text-lg">{card.icon}</span>
               <span className="text-[12px] font-bold text-[#111]">{card.title}</span>

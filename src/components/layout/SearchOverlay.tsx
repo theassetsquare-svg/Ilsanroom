@@ -142,7 +142,7 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
         {results.length > 0 && (
           <div className="mt-3 max-h-80 overflow-y-auto rounded-xl border border-neon-border bg-neon-surface">
             {results.map((v) => (
-              <Link target="_blank" rel="noopener noreferrer"
+              <Link
                 key={v.id || v.slug}
                 to={getCategoryHref(v.category, v.slug, v.region)}
                 onClick={onClose}

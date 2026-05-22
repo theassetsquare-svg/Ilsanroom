@@ -117,7 +117,6 @@ export default function CommunityPage() {
                 <Link
                   key={post.id}
                   to={`/community/post/${post.id}`}
-                  target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-4 rounded-xl border border-neon-border bg-neon-bg px-4 sm:px-5 py-4 transition hover:border-neon-primary/40 hover:bg-neon-surface"
                   style={{ minHeight: 56 }}
                 >
@@ -157,7 +156,6 @@ export default function CommunityPage() {
                 <Link
                   key={post.id}
                   to={`/community/post/${post.id}`}
-                  target="_blank" rel="noopener noreferrer"
                   className="flex items-center justify-between rounded-xl border border-neon-border bg-neon-bg px-4 sm:px-5 py-3 transition hover:border-neon-primary/40 hover:bg-neon-surface"
                   style={{ minHeight: 48 }}
                 >
@@ -180,7 +178,7 @@ export default function CommunityPage() {
 
         {/* ══════ 업종별 라운지 배너 ══════ */}
         <div className="mb-8">
-          <Link to="/lounge" target="_blank" rel="noopener noreferrer"
+          <Link to="/lounge"
             className="block rounded-2xl border border-violet-200 p-5 sm:p-6 transition hover:border-violet-400 hover:shadow-lg"
             style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.08), rgba(236,72,153,0.06))' }}>
             <div className="flex items-center gap-3 mb-2">
@@ -197,7 +195,7 @@ export default function CommunityPage() {
           <h2 className="text-xl font-black mb-5" style={{ color: '#111' }}>게시판 둘러보기</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {sectionDefs.map((section) => (
-              <Link target="_blank" rel="noopener noreferrer" key={section.href}
+              <Link key={section.href}
                 to={section.href}
                 className="group rounded-2xl border border-neon-border bg-neon-surface p-5 transition-all hover:border-neon-primary/50 hover:bg-neon-surface/80 hover:shadow-lg hover:shadow-neon-primary/5"
               >

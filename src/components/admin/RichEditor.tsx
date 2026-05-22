@@ -55,7 +55,7 @@ export default function RichEditor({ value, onChange }: Props) {
           if (!url) return;
           editor.chain().focus().setImage({ src: url }).run();
         }} className={btn} title="이미지 삽입">🖼</button>
-        <a href="/admin/media" target="_blank" rel="noopener noreferrer" className={btn} title="미디어 라이브러리 열기">📁</a>
+        <a href="/admin/media" className={btn} title="미디어 라이브러리 열기">📁</a>
         <button type="button" onClick={() => editor.chain().focus().undo().run()} className={btn} disabled={!editor.can().undo()}>↶</button>
         <button type="button" onClick={() => editor.chain().focus().redo().run()} className={btn} disabled={!editor.can().redo()}>↷</button>
       </div>

@@ -55,13 +55,13 @@ export default function NotFound() {
       </p>
 
       <div className="flex gap-4 mb-12 mt-6">
-        <Link target="_blank" rel="noopener noreferrer"
+        <Link
           to="/"
           className="rounded-xl bg-neon-primary px-6 py-3 font-medium text-white transition hover:bg-neon-primary-light"
         >
           홈으로 돌아가기
         </Link>
-        <Link target="_blank" rel="noopener noreferrer"
+        <Link
           to="/search"
           className="rounded-xl border border-neon-border px-6 py-3 font-medium text-neon-text-muted transition hover:bg-neon-surface-2"
         >
@@ -74,7 +74,7 @@ export default function NotFound() {
         <h3 className="mb-4 text-sm font-semibold text-neon-primary">지금 핫한 곳</h3>
         <div className="grid grid-cols-2 gap-3">
           {popularVenues.map((v) => (
-            <Link target="_blank" rel="noopener noreferrer"
+            <Link
               key={v.id}
               to={getCategoryHref(v.category, v.slug, v.region)}
               className="rounded-xl border border-neon-border bg-white px-4 py-3 text-left transition-all card-hover"

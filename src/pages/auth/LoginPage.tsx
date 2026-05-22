@@ -215,8 +215,8 @@ export default function LoginPage() {
       </p>
       <p className="mt-2 text-center text-xs text-neon-text-muted">
         로그인하면 놀쿨의{' '}
-        <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-neon-primary hover:underline">이용약관</a> 및{' '}
-        <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-neon-primary hover:underline">개인정보처리방침</a>에 동의하는 것으로 간주됩니다.
+        <a href="/terms" className="text-neon-primary hover:underline">이용약관</a> 및{' '}
+        <a href="/privacy" className="text-neon-primary hover:underline">개인정보처리방침</a>에 동의하는 것으로 간주됩니다.
       </p>
     </div>
   );

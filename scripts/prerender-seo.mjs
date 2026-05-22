@@ -262,14 +262,16 @@ function writePage(routePath, meta) {
   if (ssrBody) {
     if (!ssrBody.includes('aria-label="카테고리"')) ssrBody = SITE_NAV_ANCHORS + ssrBody;
     if (!ssrBody.includes('aria-label="사이트맵"')) ssrBody = ssrBody + SITE_FOOTER_ANCHORS;
-    // 시즌27 — SSR anchor 전부 target="_blank" rel="noopener noreferrer" 자동 주입 (#hash·mailto·tel 제외)
+    // 시즌55 — 외부 링크만 target="_blank" 자동 주입. 내부 링크는 같은 탭 (100p/세션 + SEO 유리)
     ssrBody = ssrBody.replace(/<a\s+([^>]*?)>/gi, (full, attrs) => {
       if (/target=/i.test(attrs)) return full;
       const hrefM = attrs.match(/href=["']([^"']+)["']/i);
       if (!hrefM) return full;
       const href = hrefM[1];
       if (href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return full;
-      return `<a ${attrs.trim()} target="_blank" rel="noopener noreferrer">`;
+      const isInternal = href.startsWith('/') || href.startsWith(BASE_URL) || href.startsWith('nolcool.com');
+      if (isInternal) return full; // 내부 링크: 같은 탭
+      return `<a ${attrs.trim()} target="_blank" rel="noopener noreferrer">`; // 외부만 새 탭
     });
     // 시즌29 — img loading=lazy + decoding=async 자동 주입 (LCP 비차단, 모바일 4G 페이지 weight 절감)
     ssrBody = ssrBody.replace(/<img\s+([^>]*?)>/gi, (full, attrs) => {
@@ -464,7 +466,7 @@ function generateVenueSsrBody(v, allVenues) {
   // 실제 후기는 /community/reviews 에서 회원이 직접 작성한 것만 노출.
   html += `<section>`;
   html += `<h2>${name} 방문 후기</h2>`;
-  html += `<p>방문 후기는 <a href="/community/reviews" target="_blank" rel="noopener noreferrer">놀쿨 커뮤니티 후기 게시판</a>에서 회원이 직접 작성한 글만 모아두었습니다. 별점·블록쿼트 형태의 가공 후기는 게시하지 않습니다.</p>`;
+  html += `<p>방문 후기는 <a href="/community/reviews">놀쿨 커뮤니티 후기 게시판</a>에서 회원이 직접 작성한 글만 모아두었습니다. 별점·블록쿼트 형태의 가공 후기는 게시하지 않습니다.</p>`;
   html += `</section>`;
 
   // ★ 방문 안내 섹션 — "가게이름 후기", "가게이름 가는법" 검색 대응
@@ -521,7 +523,7 @@ function generateVenueSsrBody(v, allVenues) {
         } else {
           rvPath = `/${rvCm.path}/${rv.slug}`;
         }
-        html += `<li><a href="${rvPath}" target="_blank" rel="noopener noreferrer">${escHtml(rv.nameKo)}</a> — ${escHtml(rv.regionKo)} ${rvCatKo}</li>`;
+        html += `<li><a href="${rvPath}">${escHtml(rv.nameKo)}</a> — ${escHtml(rv.regionKo)} ${rvCatKo}</li>`;
       });
       html += `</ul></section>`;
     }
@@ -529,7 +531,7 @@ function generateVenueSsrBody(v, allVenues) {
 
   // ★ 커뮤니티 안내 — 가공 카운터(후기N·댓글N·마지막글) 제거 (놀쿨 신뢰 규칙)
   html += `<section><h2>커뮤니티</h2>`;
-  html += `<p>관련 글과 질문은 <a href="/community" target="_blank" rel="noopener noreferrer">놀쿨 커뮤니티</a>에서 회원이 직접 작성한 글만 모아두었습니다. 가공된 후기 수·댓글 수·"마지막 글" 자동 카운터는 게시하지 않습니다.</p>`;
+  html += `<p>관련 글과 질문은 <a href="/community">놀쿨 커뮤니티</a>에서 회원이 직접 작성한 글만 모아두었습니다. 가공된 후기 수·댓글 수·"마지막 글" 자동 카운터는 게시하지 않습니다.</p>`;
   html += `</section>`;
 
   // 시즌22 — 태그·역 anchor (tag/near 페이지 reachable)
@@ -1408,7 +1410,7 @@ for (const a of magazineArticles) {
 <h1>${escHtml(a.title)}</h1>
 <p><strong>${escHtml(a.tag)}</strong> · <time datetime="${escHtml(a.date)}">${escHtml(a.date)}</time></p>
 ${a.content}
-<p><a href="${BASE_URL}/magazine" target="_blank" rel="noopener noreferrer">← 매거진 전체 보기</a></p>
+<p><a href="${BASE_URL}/magazine">← 매거진 전체 보기</a></p>
 </article>`;
   // Article JSON-LD
   const articleJsonLd = {
