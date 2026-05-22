@@ -407,9 +407,16 @@ main p, main li, main dd, main dt {
 
 /* ═══════ 하단 레이아웃 정리 ═══════ */
 /* 1. 네비바: bottom:0 z:50 h:56px (MobileNav에서 이미 설정) */
-/* 2. 전화버튼: 모바일 bottom:72px right:16px / PC bottom:24px right:24px / z:300 (모든 팝업 위) (StickyPhoneBar에서 설정) */
+/* 2. 전화버튼: 모바일 bottom:72px right:16px / PC bottom:24px right:24px / z:80 (모달 z-100 미만 — 팝업 열리면 가려짐) (StickyPhoneBar에서 설정) */
 /* 3. 미션버튼: bottom:72px left:16px z:30 (DailyMissions에서 설정) */
 /* 4. 레벨바/추천바: position:relative 본문 안 (컴포넌트에서 설정) */
+
+/* 풀스크린 모달이 열리면 전화바 강제 숨김 (z-index만으로 부족한 케이스 대비) */
+body:has(.fixed.inset-0.z-\[100\]) [data-sticky-phone],
+body:has(.fixed.inset-0.z-\[150\]) [data-sticky-phone],
+body:has(.fixed.inset-0.z-\[200\]) [data-sticky-phone] {
+  display: none !important;
+}
 
 /* ═══════ MOBILE READABILITY — 전체 적용 ═══════ */
 /* 본문 기본: 16px, line-height 1.7, 최소 대비 4.5:1 */
