@@ -7,7 +7,7 @@ import type { Venue } from '@/types';
  */
 export function getHookingTitle(venue: Venue): string {
   const hooks: Record<string, string> = {
-    '일산룸': '일산룸 — 신실장이 직접 챙기는, 모임의 새로운 기준',
+    '일산룸': '일산룸 — 마두역 3분, 신실장 일대일 케어 + 삼중 차음재 완벽 시공',
     '일산명월관요정': '일산명월관 일산요정 — 한정식 15첩에 국악 라이브, 격이 다른 접대',
     '해운대고구려': '해운대고구려 — 60개 개실에 정찰제, 바가지 걱정 끝',
     '부산연산동물나이트': '부산연산동물나이트 — 밤마다 열기, 열대야급 흥',
