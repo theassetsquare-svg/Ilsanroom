@@ -10,6 +10,26 @@
 --   6. Rebuttal 48h (venue 항변 기간)
 --   7. Reporter trust score (정확 +1 / 거짓 -3 / <-5 shadowban)
 --   8. Honeypot + Turnstile (Pages Function 레이어)
+--
+-- ★ stack-overflow 회피: 시즌51 보안 베이스라인의 `auto_secure_new_function()`
+--   이벤트 트리거가 CREATE FUNCTION → ALTER FUNCTION ... SET search_path 를
+--   재귀 호출하므로, (a) 마이그레이션 동안 이벤트 트리거 임시 비활성,
+--   (b) 함수 정의 자체에 SET search_path 인라인 — 양쪽 다 적용.
+
+-- ── (A) auto-secure 이벤트 트리거 임시 비활성 ─────────────────
+DO $$
+DECLARE r record;
+BEGIN
+  FOR r IN
+    SELECT evtname FROM pg_event_trigger
+    WHERE evtname ILIKE 'auto_secure%' OR evtname ILIKE 'auto%secure%'
+  LOOP
+    EXECUTE format('ALTER EVENT TRIGGER %I DISABLE', r.evtname);
+  END LOOP;
+EXCEPTION WHEN insufficient_privilege THEN
+  -- 권한 없으면 인라인 SET search_path만 의지
+  NULL;
+END $$;
 
 -- ── 신고 테이블 ────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS venue_reports (
@@ -103,8 +123,14 @@ CREATE POLICY reporter_trust_admin_read ON reporter_trust FOR SELECT TO authenti
 
 -- ── Trust score 자동 갱신 트리거 ───────────────────────────────
 -- venue_reports.status가 'verified'/'rejected'로 바뀌면 reporter_trust 점수 갱신
+-- ★ search_path 인라인 SET: auto_secure_new_function() 이벤트 트리거의
+--   재귀 ALTER FUNCTION 호출 방지 (시즌51 보안 베이스라인 충돌 회피)
 CREATE OR REPLACE FUNCTION fn_update_reporter_trust()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_catalog
+AS $$
 BEGIN
   IF NEW.status = 'verified' AND OLD.status = 'pending' THEN
     INSERT INTO reporter_trust(fingerprint, score, total_reports, verified_reports)
@@ -125,10 +151,24 @@ BEGIN
   NEW.resolved_at = COALESCE(NEW.resolved_at, now());
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$;
 
 DROP TRIGGER IF EXISTS trg_update_reporter_trust ON venue_reports;
 CREATE TRIGGER trg_update_reporter_trust
   AFTER UPDATE OF status ON venue_reports
   FOR EACH ROW
   EXECUTE FUNCTION fn_update_reporter_trust();
+
+-- ── (B) auto-secure 이벤트 트리거 다시 활성화 ─────────────────
+DO $$
+DECLARE r record;
+BEGIN
+  FOR r IN
+    SELECT evtname FROM pg_event_trigger
+    WHERE evtname ILIKE 'auto_secure%' OR evtname ILIKE 'auto%secure%'
+  LOOP
+    EXECUTE format('ALTER EVENT TRIGGER %I ENABLE', r.evtname);
+  END LOOP;
+EXCEPTION WHEN insufficient_privilege THEN
+  NULL;
+END $$;
