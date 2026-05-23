@@ -37,6 +37,8 @@ export interface Venue {
   district?: string;
   lat?: number;
   lng?: number;
+  /* SEO alternateName 매핑 — Google/AI 검색 동의어 인식 */
+  aliases?: string[];
 }
 
 export interface CommunityPost {

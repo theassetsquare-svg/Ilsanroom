@@ -331,6 +331,13 @@ function parseVenues() {
       const tItems = tagsMatch[1].match(/'([^']+)'/g);
       if (tItems) tItems.forEach(t => tags.push(t.replace(/'/g, '')));
     }
+    /* SEO aliases (alternateName) — Google/AI 동의어 검색 매핑 */
+    const aliases = [];
+    const aliasMatch = block.match(/aliases:\s*\[([^\]]*)\]/);
+    if (aliasMatch) {
+      const aItems = aliasMatch[1].match(/'([^']+)'/g);
+      if (aItems) aItems.forEach(a => aliases.push(a.replace(/'/g, '')));
+    }
     if (slug && cat && region) {
       venues.push({
         slug, cat, region,
@@ -346,6 +353,7 @@ function parseVenues() {
         lng: lngMatch ? parseFloat(lngMatch[1]) : 0,
         features,
         tags,
+        aliases,
       });
     }
   }
@@ -1330,6 +1338,10 @@ for (const v of venues) {
   };
   if (v.lat && v.lng) venueJsonLd.geo = { '@type': 'GeoCoordinates', latitude: v.lat, longitude: v.lng };
   if (v.staffNickname) venueJsonLd.employee = { '@type': 'Person', name: v.staffNickname };
+  /* alternateName — Google/AI 검색 동의어 매핑 (예: "일산요정" 검색 시 명월관 매칭) */
+  if (Array.isArray(v.aliases) && v.aliases.length > 0) {
+    venueJsonLd.alternateName = v.aliases;
+  }
   // 시즌29 — Speakable schema (Google Assistant 음성 검색 답변 채택)
   venueJsonLd.speakable = {
     '@type': 'SpeakableSpecification',
@@ -1357,7 +1369,16 @@ for (const v of venues) {
   venueJsonLd.datePublished = datePublished;
   venueJsonLd.dateModified = dateModified;
 
-  const venueKeywords = [v.nameKo, `${v.regionKo} ${catLabelMap[v.cat]}`, `${v.nameKo} 후기`, `${v.nameKo} 예약`, `${v.regionKo} ${catLabelMap[v.cat]} 추천`, `${v.regionKo} 밤문화`].join(', ');
+  /* aliases도 meta keywords + 본문 검색 매핑에 포함 — 동의어 SEO 강화 */
+  const venueKeywords = [
+    v.nameKo,
+    ...(Array.isArray(v.aliases) ? v.aliases : []),
+    `${v.regionKo} ${catLabelMap[v.cat]}`,
+    `${v.nameKo} 후기`,
+    `${v.nameKo} 예약`,
+    `${v.regionKo} ${catLabelMap[v.cat]} 추천`,
+    `${v.regionKo} 밤문화`,
+  ].join(', ');
   // 시즌29-F — 실재하는 hero webp만 preload (404 0건 유지)
   const heroWebp = path.join('public', 'venues', `${v.slug}-1.webp`);
   const preloadImage = fs.existsSync(heroWebp) ? `/venues/${v.slug}-1.webp?v3` : undefined;
