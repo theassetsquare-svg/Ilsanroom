@@ -21,6 +21,8 @@
     "audit:hook": "node scripts/nolcool-hook-copy-audit.mjs",
     "audit:tone": "node scripts/nolcool-human-tone-audit.mjs",
     "audit:browser": "node scripts/nolcool-browser-audit.mjs",
+    "audit:titledup": "node scripts/title-dup-live-watch.mjs",
+    "audit:overlap": "node scripts/mobile-fixed-overlap-watch.mjs",
     "audit:all": "npm run audit:src && npm run audit:dist && npm run audit:dup && npm run audit:routes && npm run audit:drift && npm run audit:cron && npm run audit:titlefirst && npm run audit:hook && npm run audit:tone"
   },
   "dependencies": {
