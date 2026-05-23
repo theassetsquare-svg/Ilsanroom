@@ -41,43 +41,95 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
   const [regionFilter, setRegionFilter] = useState('all');
   const [sortKey, setSortKey] = useState<SortKey>('premium');
 
-  const filtered = useMemo(() => {
-    /* 폐업·미확인 venue 자동 제외 — 'closed_or_unclear' / 'closed' / 'permanently_closed' / 'temporarily_closed' 모두 차단 */
-    const CLOSED = new Set(['closed_or_unclear', 'closed', 'permanently_closed', 'temporarily_closed']);
-    let list = venues.filter((v) => !CLOSED.has(String(v.status || '')));
-    if (regionFilter !== 'all') {
-      list = list.filter((v) => {
-        // 정확 매칭
-        if (v.region === regionFilter || v.regionKo === regionFilter) return true;
-        // 상위 지역 prefix 매칭: 'busan' 선택 시 'busan-haeundae' 등 모두 포함
-        if (v.region.startsWith(regionFilter + '-')) return true;
-        return false;
-      });
+  /* 폐업·미확인 venue 자동 제외 — 'closed_or_unclear' / 'closed' / 'permanently_closed' / 'temporarily_closed' 모두 차단 */
+  const CLOSED = new Set(['closed_or_unclear', 'closed', 'permanently_closed', 'temporarily_closed']);
+  const openVenues = useMemo(() => venues.filter((v) => !CLOSED.has(String(v.status || ''))), [venues]);
+
+  function inRegion(v: Venue, key: string) {
+    if (v.region === key || v.regionKo === key) return true;
+    if (v.region.startsWith(key + '-')) return true;
+    return false;
+  }
+
+  /* 지역별 카운트 — 칩에 표시 (체류 ↑ 정보 밀도) */
+  const regionCounts = useMemo(() => {
+    const map: Record<string, number> = { all: openVenues.length };
+    for (const r of regions) {
+      map[r.key] = openVenues.filter((v) => inRegion(v, r.key)).length;
     }
-    list.sort((a, b) => {
+    return map;
+  }, [openVenues, regions]);
+
+  const filtered = useMemo(() => {
+    let list = openVenues;
+    if (regionFilter !== 'all') {
+      list = list.filter((v) => inRegion(v, regionFilter));
+    }
+    list = [...list].sort((a, b) => {
       if (sortKey === 'name') return a.nameKo.localeCompare(b.nameKo);
       if (a.isPremium !== b.isPremium) return a.isPremium ? -1 : 1;
       return a.nameKo.localeCompare(b.nameKo);
     });
     return list;
-  }, [venues, regionFilter, sortKey]);
+  }, [openVenues, regionFilter, sortKey]);
+
+  /* 칩 색상 — accentColor에 따라 활성 배경/테두리 변화 */
+  const accentBg: Record<string, string> = {
+    violet: 'bg-violet-600 border-violet-600',
+    blue: 'bg-blue-600 border-blue-600',
+    amber: 'bg-amber-600 border-amber-600',
+    rose: 'bg-rose-600 border-rose-600',
+    emerald: 'bg-emerald-600 border-emerald-600',
+    pink: 'bg-pink-600 border-pink-600',
+  };
+  const activeChip = accentBg[accentColor] || accentBg.violet;
 
   return (
     <div>
-      {/* Filters */}
-      <div className="mb-6 flex flex-wrap items-center gap-3">
-        <select
-          value={regionFilter}
-          onChange={(e) => setRegionFilter(e.target.value)}
-          aria-label="지역 필터"
-          className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-[#111] outline-none focus:border-[#8B5CF6]"
-        >
-          <option value="all">전체 지역</option>
-          {regions.map((r) => (
-            <option key={r.key} value={r.key}>{r.label}</option>
-          ))}
-        </select>
+      {/* 시즌63 — 지역 칩(pill) 가로 스크롤. 탭당 즉시 필터 → 다중 탭 유도 → 체류 ↑.
+          기존 <select> 대비 발견성·터치 친화성·인터랙션 카운트 모두 우위. */}
+      <div className="mb-3 -mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto">
+        <div className="flex items-center gap-2 pb-1 whitespace-nowrap" role="tablist" aria-label="지역 필터">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={regionFilter === 'all'}
+            onClick={() => setRegionFilter('all')}
+            className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 text-xs font-bold transition-colors ${
+              regionFilter === 'all'
+                ? `${activeChip} text-white`
+                : 'bg-white border-gray-200 text-[#333] hover:border-gray-400'
+            }`}
+            style={{ minHeight: 36 }}
+          >
+            전체
+            <span className={`inline-block min-w-[18px] rounded-full text-[10px] px-1 ${regionFilter === 'all' ? 'bg-white/20 text-white' : 'bg-gray-100 text-[#666]'}`}>{regionCounts.all}</span>
+          </button>
+          {regions.map((r) => {
+            const cnt = regionCounts[r.key] || 0;
+            if (cnt === 0) return null;
+            const active = regionFilter === r.key;
+            return (
+              <button
+                key={r.key}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => setRegionFilter(r.key)}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 text-xs font-bold transition-colors ${
+                  active ? `${activeChip} text-white` : 'bg-white border-gray-200 text-[#333] hover:border-gray-400'
+                }`}
+                style={{ minHeight: 36 }}
+              >
+                {r.label}
+                <span className={`inline-block min-w-[18px] rounded-full text-[10px] px-1 ${active ? 'bg-white/20 text-white' : 'bg-gray-100 text-[#666]'}`}>{cnt}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
+      <div className="mb-6 flex flex-wrap items-center gap-3">
         <select
           value={sortKey}
           onChange={(e) => setSortKey(e.target.value as SortKey)}
