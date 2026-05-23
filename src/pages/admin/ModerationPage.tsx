@@ -5,7 +5,28 @@ import { createClient } from '@/lib/supabase';
 
 const ADMIN_EMAILS = ['qotjsdnr123@naver.com', 'theassetsquare@gmail.com'];
 
-type Tab = 'reports' | 'hidden' | 'users';
+type Tab = 'reports' | 'hidden' | 'users' | 'venues';
+
+interface VenueReport {
+  id: number;
+  venue_slug: string;
+  reason: string;
+  evidence_url: string;
+  memo: string | null;
+  reporter_ip: string;
+  reporter_fingerprint: string;
+  status: 'pending' | 'verified' | 'rejected' | 'rebutted' | 'shadowbanned';
+  admin_note: string | null;
+  created_at: string;
+}
+
+const VENUE_REASON_LABEL: Record<string, string> = {
+  closed: '폐업',
+  wrong_info: '오정보',
+  duplicate: '중복',
+  scam: '사기·바가지',
+  other: '기타',
+};
 
 interface Report {
   id: string;
@@ -56,6 +77,8 @@ export default function ModerationPage() {
   const [reports, setReports] = useState<Report[]>([]);
   const [hiddenPosts, setHiddenPosts] = useState<Post[]>([]);
   const [users, setUsers] = useState<UserRow[]>([]);
+  const [venueReports, setVenueReports] = useState<VenueReport[]>([]);
+  const [venueReportFilter, setVenueReportFilter] = useState<'pending' | 'all'>('pending');
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
   const [userSearch, setUserSearch] = useState('');
@@ -68,17 +91,53 @@ export default function ModerationPage() {
     setLoading(true);
     const supabase = createClient();
     if (!supabase) { setLoading(false); return; }
-    const [r, h, u] = await Promise.all([
+    const [r, h, u, vr] = await Promise.all([
       supabase.from('reports').select('*').order('created_at', { ascending: false }).limit(200),
       supabase.from('posts').select('id,user_id,category,title,content,is_hidden,report_count,created_at').eq('is_hidden', true).order('created_at', { ascending: false }).limit(100),
       supabase.from('user_profiles').select('user_id,nickname,level,points,is_banned,ban_reason,banned_at').order('points', { ascending: false }).limit(200),
+      supabase.from('venue_reports').select('id,venue_slug,reason,evidence_url,memo,reporter_ip,reporter_fingerprint,status,admin_note,created_at').order('created_at', { ascending: false }).limit(300),
     ]);
     if (r.error) setMsg({ type: 'err', text: `신고 로드 실패: ${r.error.message}` });
     setReports((r.data || []) as Report[]);
     setHiddenPosts((h.data || []) as Post[]);
     setUsers((u.data || []) as UserRow[]);
+    setVenueReports((vr.data || []) as VenueReport[]);
     setLoading(false);
   }
+
+  // 시즌64 — venue 신고 처리 (verified=폐업 확정 / rejected=무고)
+  async function resolveVenueReport(id: number, status: 'verified' | 'rejected', note?: string) {
+    const supabase = createClient();
+    if (!supabase) return;
+    const { error } = await supabase.from('venue_reports')
+      .update({ status, admin_note: note || null })
+      .eq('id', id);
+    if (error) { setMsg({ type: 'err', text: error.message }); return; }
+    setMsg({ type: 'ok', text: status === 'verified' ? '폐업/오정보 확정 (트리거가 reporter 점수 +1)' : '신고 기각 (reporter 점수 -3)' });
+    loadAll();
+  }
+
+  // threshold 도달 venue 집계 — 같은 venue × 같은 reason × 서로 다른 fp 3+
+  const venueThresholds = useMemo(() => {
+    const map = new Map<string, { venue_slug: string; reason: string; fps: Set<string>; ids: number[] }>();
+    for (const v of venueReports) {
+      if (v.status !== 'pending') continue;
+      const k = `${v.venue_slug}|${v.reason}`;
+      const cur = map.get(k) || { venue_slug: v.venue_slug, reason: v.reason, fps: new Set<string>(), ids: [] };
+      cur.fps.add(v.reporter_fingerprint);
+      cur.ids.push(v.id);
+      map.set(k, cur);
+    }
+    return Array.from(map.values()).filter(x => x.fps.size >= 3);
+  }, [venueReports]);
+
+  const filteredVenueReports = useMemo(() => {
+    return venueReportFilter === 'pending'
+      ? venueReports.filter(v => v.status === 'pending')
+      : venueReports;
+  }, [venueReports, venueReportFilter]);
+
+  const venuePendingCount = venueReports.filter(v => v.status === 'pending').length;
 
   // 신고 처리
   async function resolveReport(id: string, status: 'resolved' | 'dismissed') {
@@ -180,6 +239,7 @@ export default function ModerationPage() {
       <div className="mb-4 flex gap-1 border-b border-neon-border">
         {([
           { k: 'reports', label: `신고 큐${pendingCount > 0 ? ` (${pendingCount})` : ''}` },
+          { k: 'venues', label: `업소 신고${venuePendingCount > 0 ? ` (${venuePendingCount})` : ''}` },
           { k: 'hidden', label: `숨김 컨텐츠 (${hiddenPosts.length})` },
           { k: 'users', label: `유저 (${users.length})` },
         ] as const).map(t => (
@@ -261,6 +321,91 @@ export default function ModerationPage() {
                       >
                         기각
                       </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 시즌64 — 업소 신고 (venue_reports) */}
+      {tab === 'venues' && !loading && (
+        <div>
+          {/* threshold 3+ 도달 — admin 즉시 검토 권장 */}
+          {venueThresholds.length > 0 && (
+            <div className="mb-4 rounded-lg border border-red-300 bg-red-50 p-3">
+              <p className="mb-2 text-xs font-bold text-red-700">⚠ threshold 도달 — 서로 다른 신고자 3+ (즉시 검토 권장)</p>
+              <ul className="space-y-1 text-xs text-red-700">
+                {venueThresholds.map(t => (
+                  <li key={`${t.venue_slug}|${t.reason}`}>
+                    <strong>{t.venue_slug}</strong> · {VENUE_REASON_LABEL[t.reason] || t.reason} · {t.fps.size}명 일치
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <div className="mb-3 flex gap-2">
+            <button
+              type="button"
+              onClick={() => setVenueReportFilter('pending')}
+              className={`rounded-lg px-3 py-1.5 text-xs font-bold ${venueReportFilter === 'pending' ? 'bg-neon-primary text-white' : 'bg-neon-bg text-neon-text-muted'}`}
+            >대기중 ({venuePendingCount})</button>
+            <button
+              type="button"
+              onClick={() => setVenueReportFilter('all')}
+              className={`rounded-lg px-3 py-1.5 text-xs font-bold ${venueReportFilter === 'all' ? 'bg-neon-primary text-white' : 'bg-neon-bg text-neon-text-muted'}`}
+            >전체 ({venueReports.length})</button>
+          </div>
+
+          {filteredVenueReports.length === 0 ? (
+            <div className="py-12 text-center text-sm text-neon-text-muted">업소 신고 없음 🎉</div>
+          ) : (
+            <div className="space-y-2">
+              {filteredVenueReports.map(v => (
+                <div key={v.id} className="rounded-lg border border-neon-border bg-neon-bg p-3">
+                  <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
+                    <a
+                      href={`/venue/${v.venue_slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-full bg-violet-500/20 px-2 py-0.5 font-bold text-violet-300 hover:underline"
+                    >{v.venue_slug}</a>
+                    <span className="rounded-full bg-red-500/20 px-2 py-0.5 font-bold text-red-300">{VENUE_REASON_LABEL[v.reason] || v.reason}</span>
+                    <span className={`rounded-full px-2 py-0.5 font-bold ${v.status === 'pending' ? 'bg-yellow-500/20 text-yellow-300' : v.status === 'verified' ? 'bg-green-500/20 text-green-300' : v.status === 'rejected' ? 'bg-gray-500/20 text-gray-400' : 'bg-orange-500/20 text-orange-300'}`}>{v.status}</span>
+                    <span className="ml-auto text-neon-text-muted">{new Date(v.created_at).toLocaleString('ko-KR')}</span>
+                  </div>
+                  <p className="mb-1 text-xs">
+                    <a
+                      href={v.evidence_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="break-all text-blue-400 hover:underline"
+                    >증거: {v.evidence_url}</a>
+                  </p>
+                  {v.memo && <p className="mb-2 text-sm text-neon-text">{v.memo}</p>}
+                  <p className="mb-2 font-mono text-[10px] text-neon-text-muted">ip={v.reporter_ip.slice(0, 12)} · fp={v.reporter_fingerprint.slice(0, 12)}</p>
+                  {v.admin_note && <p className="mb-2 rounded bg-amber-500/10 px-2 py-1 text-xs text-amber-300">📝 {v.admin_note}</p>}
+                  {v.status === 'pending' && (
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const note = prompt('관리자 메모 (선택, 검증 출처 등):') || '';
+                          resolveVenueReport(v.id, 'verified', note);
+                        }}
+                        className="rounded-lg bg-green-500/20 px-3 py-1.5 text-xs font-bold text-green-300 hover:bg-green-500/30"
+                      >폐업·오정보 확정</button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const note = prompt('기각 사유 (reporter 점수 -3):') || '';
+                          resolveVenueReport(v.id, 'rejected', note);
+                        }}
+                        className="rounded-lg bg-gray-500/20 px-3 py-1.5 text-xs font-bold text-gray-300 hover:bg-gray-500/30"
+                      >기각</button>
                     </div>
                   )}
                 </div>

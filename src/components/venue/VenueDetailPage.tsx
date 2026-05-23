@@ -15,6 +15,7 @@ import VenueLivePulse from '@/components/venue/VenueLivePulse';
 import type { Venue } from '@/types';
 
 const VenueSeoContent = lazy(() => import('@/components/venue/VenueSeoContent'));
+const VenueReportModal = lazy(() => import('@/components/venue/VenueReportModal'));
 
 interface FAQ {
   question: string;
@@ -58,6 +59,9 @@ export default function VenueDetailPage({
   // "지금 N명 보는 중" — 시드 기반 가짜 카운터 제거 (놀쿨 신뢰 규칙).
   // VenueLivePulse 자체가 null 컴포넌트라 0을 넘겨도 무시됨.
   const viewingNow = 0;
+
+  // 시즌64 — 폐업/오정보 신고 모달
+  const [reportOpen, setReportOpen] = useState(false);
 
   // 비슷한 업소 — 동적 hook text
   const relatedHookText = useMemo(() => {
@@ -187,12 +191,37 @@ export default function VenueDetailPage({
       </section>
 
 
+      {/* ═══ 13. 폐업/오정보 신고 — 작고 눈에 띄지 않게 (시즌64) ═══ */}
+      <section className="mx-auto max-w-[1200px] px-4 pb-8 sm:px-6">
+        <div className="text-center">
+          <button
+            type="button"
+            onClick={() => setReportOpen(true)}
+            className="text-[11px] text-[#999] underline-offset-2 hover:text-[#666] hover:underline"
+            style={{ minHeight: 44, padding: '8px 12px' }}
+          >
+            이 업소 폐업이거나 정보가 잘못됐나요? 신고
+          </button>
+        </div>
+      </section>
+
       {/* ═══ 14. Sticky Phone Bar ═══ */}
       <StickyPhoneBar
         phone={venue.staffPhone}
         staffName={venue.staffNickname}
         venueName={venue.nameKo}
       />
+
+      {/* 신고 모달 — 열렸을 때만 로드 (lazy) */}
+      {reportOpen && (
+        <Suspense fallback={null}>
+          <VenueReportModal
+            venueSlug={venue.slug}
+            venueName={venue.nameKo}
+            onClose={() => setReportOpen(false)}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

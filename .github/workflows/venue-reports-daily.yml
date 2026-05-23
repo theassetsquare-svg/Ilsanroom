@@ -1,0 +1,37 @@
+name: Venue Reports Daily
+
+# 시즌64 — 폐업/오정보 신고 일일 요약 + threshold 도달 즉시 알림
+#   - 매일 KST 09:30 (UTC 00:30) 정기 발송 (pending 0이어도 1통)
+#   - 매시간 정시: threshold(서로 다른 fp 3+ × 같은 venue × 같은 reason) 도달 시만 메일
+on:
+  schedule:
+    - cron: '30 0 * * *'   # 매일 KST 09:30
+    - cron: '15 * * * *'   # 매시간 15분 (threshold 즉시 알림)
+  workflow_dispatch:
+
+jobs:
+  venue-reports:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Daily summary (KST 09:30) — always send
+        if: github.event.schedule == '30 0 * * *' || github.event_name == 'workflow_dispatch'
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFY_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+        run: node scripts/venue-reports-daily.mjs
+      - name: Hourly threshold watch (send only if 3+ fp on same venue/reason)
+        if: github.event.schedule == '15 * * * *'
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFY_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+          THRESHOLD_ONLY: '1'
+        run: node scripts/venue-reports-daily.mjs
