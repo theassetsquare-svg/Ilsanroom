@@ -22,7 +22,7 @@ const TARGET_PAGES = [
     requiredKeywords: ['일산요정', '일산명월관'],
     minDensity: 1.0,
     maxDensity: 3.0,
-    minTitleKeywords: 1, /* title 안에 키워드 최소 1개 */
+    minTitleKeywords: 2, /* title 안에 두 키워드 모두 — 일산명월관 + 일산요정 동시 노출 (SEO #1 듀얼 상위) */
   },
 ];
 
