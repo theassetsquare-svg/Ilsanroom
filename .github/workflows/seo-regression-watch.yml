@@ -1,4 +1,4 @@
-name: SEO Regression Watch (title dup + 하단 overlap 24h)
+name: SEO Regression Watch (title dup + 하단 overlap + 중복 박스 24h)
 
 on:
   schedule:
@@ -47,3 +47,18 @@ jobs:
           export CHROMIUM_PATH=$(which chrome || which google-chrome || which chromium)
           echo "Chrome: $CHROMIUM_PATH"
           node scripts/mobile-fixed-overlap-watch.mjs
+
+  dup-card:
+    name: 카테고리 페이지 중복 박스 검사
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run dup-card-live-watch
+        run: node scripts/dup-card-live-watch.mjs
+        env:
+          ORIGIN: https://nolcool.com
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}

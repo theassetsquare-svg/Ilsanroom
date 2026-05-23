@@ -56,12 +56,7 @@ export default function RoomsPage() {
 
       <VenueListClient venues={venues} hrefPattern="/rooms/{region}/{slug}" regions={regions} showEngagementHooks accentColor="rose" />
 
-      <BrowseOtherCategories currentPath="/rooms" />
-
-      <div className="rounded-xl bg-gradient-to-r from-rose-50 to-white border border-rose-200 p-4 text-center">
-        <p className="text-sm font-bold text-rose-600">👇 룸 크기별 추천 · 예약 꿀팁 · 예산 가이드 아래에 전부 정리</p>
-        <p className="text-xs text-[#999] mt-1">비즈니스·생일·모임 목적별로 딱 맞는 곳 찾는 법</p>
-      </div>
+      <CategoryVSBattle venueA="일산룸" venueB="해운대고구려" topic="독립 룸 맞대결" />
 
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
@@ -98,14 +93,14 @@ export default function RoomsPage() {
         { day: '일요일', time: '17:00~22:00', level: 35 },
       ]} />
 
-      <CategoryVSBattle venueA="일산룸" venueB="해운대고구려" topic="독립 룸 맞대결" />
-
       <RelatedMagazine articles={[
         { title: '비즈니스 접대에 최적인 독립 룸 안내', tag: '비즈니스' },
         { title: '해운대고구려 — 마린시티 60개 개별 룸의 비밀', tag: '부산' },
       ]} />
 
       <LiveActivityFeed maxItems={5} category="room" />
+
+      <BrowseOtherCategories currentPath="/rooms" />
 
       <BottomFinishCounter baseCount={155} />
     </div>

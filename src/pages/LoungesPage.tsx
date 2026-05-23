@@ -55,12 +55,7 @@ export default function LoungesPage() {
 
       <VenueListClient venues={venues} hrefPattern="/lounges/{slug}" regions={regions} showEngagementHooks accentColor="amber" />
 
-      <BrowseOtherCategories currentPath="/lounges" />
-
-      <div className="rounded-xl bg-gradient-to-r from-amber-50 to-white border border-amber-200 p-4 text-center">
-        <p className="text-sm font-bold text-amber-700">👇 혼술 가능한 곳 · 예약 필수인 곳 · 칵테일 추천까지 아래에</p>
-        <p className="text-xs text-[#999] mt-1">라운지 처음이어도 바텐더 앞에서 안 쫄리는 법</p>
-      </div>
+      <CategoryVSBattle venueA="디엠" venueB="이디엇" topic="해당 동네 감성 바 맞대결" />
 
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
@@ -97,14 +92,14 @@ export default function LoungesPage() {
         { day: '일', time: '18:00~23:00', level: 40 },
       ]} />
 
-      <CategoryVSBattle venueA="디엠" venueB="이디엇" topic="해당 동네 감성 바 맞대결" />
-
       <RelatedMagazine articles={[
         { title: '논현·청담 무드 좋은 바 — 취향별 고르는 가이드', tag: '픽' },
         { title: '1인 가기 좋은 프라이빗 장소 TOP5', tag: '혼술' },
       ]} />
 
       <LiveActivityFeed maxItems={5} category="lounge" />
+
+      <BrowseOtherCategories currentPath="/lounges" />
 
       <BottomFinishCounter baseCount={128} />
     </div>

@@ -63,12 +63,7 @@ export default function HoppaPage() {
 
       <VenueListClient venues={venues} hrefPattern="/hoppa/{slug}" regions={regions} showEngagementHooks accentColor="pink" />
 
-      <BrowseOtherCategories currentPath="/hoppa" />
-
-      <div className="rounded-xl bg-gradient-to-r from-pink-50 to-white border border-pink-200 p-4 text-center">
-        <p className="text-sm font-bold text-pink-600">👇 분위기 · 안전 · 혼자 가는 법 · 호스트 매칭까지 아래에 전부 정리</p>
-        <p className="text-xs text-[#999] mt-1">처음이어도 걱정 없이 즐기는 완벽 가이드</p>
-      </div>
+      <CategoryVSBattle venueA="강남 로얄" venueB="강남 어게인" topic="해당 지역 호스트바 최강자는?" />
 
       {/* 여성 친화 안내 배너 — 로즈골드/핑크 */}
       <div className="rounded-2xl border border-pink-200 bg-gradient-to-r from-pink-50 via-white to-rose-50 p-6">
@@ -128,14 +123,14 @@ export default function HoppaPage() {
         { day: '일요일', time: '20:00~00:00', level: 35 },
       ]} />
 
-      <CategoryVSBattle venueA="강남 로얄" venueB="강남 어게인" topic="해당 지역 호스트바 최강자는?" />
-
       <RelatedMagazine articles={[
         { title: '호스트 공간 처음 가는 분을 위한 완벽 가이드', tag: '입문' },
         { title: '수도권 vs 해운대 — 권역별 무드 비교', tag: '비교' },
       ]} />
 
       <LiveActivityFeed maxItems={5} category="hoppa" />
+
+      <BrowseOtherCategories currentPath="/hoppa" />
 
       <BottomFinishCounter baseCount={162} />
     </div>

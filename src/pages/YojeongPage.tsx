@@ -55,12 +55,7 @@ export default function YojeongPage() {
 
       <VenueListClient venues={venues} hrefPattern="/yojeong/{region}/{slug}" regions={regions} showEngagementHooks accentColor="emerald" />
 
-      <BrowseOtherCategories currentPath="/yojeong" />
-
-      <div className="rounded-xl bg-gradient-to-r from-emerald-50 to-white border border-emerald-200 p-4 text-center">
-        <p className="text-sm font-bold text-emerald-700">👇 코스 종류 · 접대 매너 · 예약 방법까지 아래에 전부 정리</p>
-        <p className="text-xs text-[#999] mt-1">거래처 만찬에서 실수 안 하는 법</p>
-      </div>
+      <CategoryVSBattle venueA="일산명월관요정" venueB="강남청담클럽 아르쥬" topic="만찬 장소 대결 — 전통 정찬 vs 모던" />
 
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
@@ -97,14 +92,14 @@ export default function YojeongPage() {
         { day: '일요일', time: '12:00~15:00', level: 50 },
       ]} />
 
-      <CategoryVSBattle venueA="일산명월관요정" venueB="강남청담클럽 아르쥬" topic="만찬 장소 대결 — 전통 정찬 vs 모던" />
-
       <RelatedMagazine articles={[
         { title: '일산명월관 완벽 가이드: 만찬부터 기념행사까지', tag: '격식' },
         { title: '한국 고유의 코스 요리 문화의 역사와 현재', tag: '문화' },
       ]} />
 
       <LiveActivityFeed maxItems={5} category="yojeong" />
+
+      <BrowseOtherCategories currentPath="/yojeong" />
 
       <BottomFinishCounter baseCount={108} />
     </div>

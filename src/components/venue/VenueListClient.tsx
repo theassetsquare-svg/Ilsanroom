@@ -42,7 +42,9 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
   const [sortKey, setSortKey] = useState<SortKey>('premium');
 
   const filtered = useMemo(() => {
-    let list = venues.filter((v) => v.status !== 'closed_or_unclear');
+    /* 폐업·미확인 venue 자동 제외 — 'closed_or_unclear' / 'closed' / 'permanently_closed' / 'temporarily_closed' 모두 차단 */
+    const CLOSED = new Set(['closed_or_unclear', 'closed', 'permanently_closed', 'temporarily_closed']);
+    let list = venues.filter((v) => !CLOSED.has(String(v.status || '')));
     if (regionFilter !== 'all') {
       list = list.filter((v) => {
         // 정확 매칭
@@ -94,11 +96,13 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {filtered.map((venue, idx) => {
             const elements = [];
-            // Insert engagement hooks between cards
-            if (showEngagementHooks && idx > 0 && idx % 12 === 0) {
+            /* engagement hook 빈도 축소 (시즌62) — 같은 박스/메시지 4회+→1·2회로.
+               TopPicksMini: idx=14 단 1회 (사용자가 14개 카드 본 후 한 번만)
+               ListMidHook: idx=24 / idx=44 단 2회 */
+            if (showEngagementHooks && idx === 14) {
               elements.push(<TopPicksMini key={`top-${idx}`} venues={venues} hrefPattern={hrefPattern} accentColor={accentColor} />);
-            } else if (showEngagementHooks && idx > 0 && idx % 6 === 0) {
-              elements.push(<ListMidHook key={`hook-${idx}`} index={Math.floor(idx / 6) - 1} />);
+            } else if (showEngagementHooks && (idx === 24 || idx === 44)) {
+              elements.push(<ListMidHook key={`hook-${idx}`} index={idx === 24 ? 0 : 1} />);
             }
             elements.push(
               <Link

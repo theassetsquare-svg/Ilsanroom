@@ -57,12 +57,8 @@ export default function NightsPage() {
 
       <VenueListClient venues={venues} hrefPattern="/nights/{slug}" regions={regions} showEngagementHooks accentColor="blue" />
 
-      <BrowseOtherCategories currentPath="/nights" />
-
-      <div className="rounded-xl bg-gradient-to-r from-blue-50 to-white border border-blue-200 p-4 text-center">
-        <p className="text-sm font-bold text-blue-600">👇 부킹 시스템 · 양주 라인업 · 첫 방문 매너까지 아래에 전부 적었다</p>
-        <p className="text-xs text-[#999] mt-1">처음 가는 사람도 단골처럼 즐기는 방법</p>
-      </div>
+      {/* 시즌62 — 그리드 직후 인터랙티브 + 본문 즉시 노출 (체류 ↑) */}
+      <CategoryVSBattle venueA="수원찬스돔나이트" venueB="인천아라비안나이트" topic="경기 소셜댄스홀 최강자는?" />
 
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
@@ -105,14 +101,14 @@ export default function NightsPage() {
         { day: '일요일', time: '19:00~23:00', level: 40 },
       ]} />
 
-      <CategoryVSBattle venueA="수원찬스돔나이트" venueB="인천아라비안나이트" topic="경기 소셜댄스홀 최강자는?" />
-
       <RelatedMagazine articles={[
         { title: '처음 방문하는 분을 위한 A to Z 매너 안내', tag: '입문' },
         { title: '전국 소셜댄스 명소 동네별 특징 총정리', tag: '정보' },
       ]} />
 
       <LiveActivityFeed maxItems={5} category="night" />
+
+      <BrowseOtherCategories currentPath="/nights" />
 
       <BottomFinishCounter baseCount={172} />
     </div>
