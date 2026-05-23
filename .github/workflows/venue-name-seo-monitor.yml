@@ -1,0 +1,20 @@
+name: Venue Name SEO Monitor (121업소 가게이름 풀체크)
+
+on:
+  schedule:
+    # 매일 KST 06:00 (UTC 21:00) — 121업소 가게이름 SEO 9지표 풀체크
+    - cron: '0 21 * * *'
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run venue-name-seo-monitor (121 venue × 9 지표)
+        run: node scripts/venue-name-seo-monitor.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
