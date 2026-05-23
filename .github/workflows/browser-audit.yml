@@ -31,6 +31,26 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: page_events anon INSERT regression check
+        # 라이브 anon 키로 실제 INSERT 시도 → RLS 정책 회귀 감지
+        # 401(42501) 떨어지면 즉시 빨강 + 이메일
+        run: |
+          ANON_KEY="sb_publishable_hjLH8puvrYsVNPt38KROkQ_v99vtC3c"
+          SUPA_URL="https://rkqnblbajhnehmxfnvri.supabase.co"
+          STATUS=$(curl -s -o /tmp/pe.json -w "%{http_code}" \
+            -X POST "$SUPA_URL/rest/v1/page_events" \
+            -H "apikey: $ANON_KEY" \
+            -H "Authorization: Bearer $ANON_KEY" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=minimal" \
+            -d '{"session_id":"regression_'"$(date +%s)"'","path":"/_regression","event_type":"view","user_agent":"github-actions-regression"}')
+          echo "page_events INSERT HTTP=$STATUS"
+          cat /tmp/pe.json || true
+          if [ "$STATUS" != "201" ] && [ "$STATUS" != "200" ] && [ "$STATUS" != "204" ]; then
+            echo "::error::page_events anon INSERT 회귀 — HTTP $STATUS. RLS 정책(page_events_anon_insert) 확인 필요."
+            exit 1
+          fi
+
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@v1
         with:
