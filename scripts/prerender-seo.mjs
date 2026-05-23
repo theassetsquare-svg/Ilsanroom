@@ -444,7 +444,19 @@ function generateVenueSsrBody(v, allVenues) {
   const backlinks = {
     ilsanmyeongwolgwanyojeong: 'https://sunwook4.mycafe24.com/',
   };
-  let descHtml = desc;
+
+  // 키워드 스터핑 회피 — 본문 2번째+ 가게이름은 '여기' + 받침 무관 모음형 조사로 치환.
+  // H1·총정리·푸터·hero·JSON-LD에 가게이름이 이미 박혀있어, 본문 1회 + 여기로 충분.
+  const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const nameRe = new RegExp(escRe(name) + '(는|은|가|이|를|을|의|도|에서|에|으로|로|와|과|만)?', 'g');
+  let nameOcc = 0;
+  let descHtml = desc.replace(nameRe, (match, particle) => {
+    nameOcc++;
+    if (nameOcc <= 1) return match;
+    const particleMap = { '은': '는', '이': '가', '을': '를', '으로': '로' };
+    return '여기' + (particle ? (particleMap[particle] || particle) : '');
+  });
+
   const backUrl = backlinks[v.slug];
   if (backUrl && descHtml.includes(name)) {
     descHtml = descHtml.replace(name, `<a href="${backUrl}" target="_blank" rel="noopener noreferrer">${name}</a>`);
@@ -466,15 +478,15 @@ function generateVenueSsrBody(v, allVenues) {
     html += `<p>${escHtml(v.nearbyStation)}에서 가깝다.${v.address ? ' 주소: ' + escHtml(v.address) : ''}</p>`;
   }
 
-  // ★ FAQ 섹션 — AI가 직접 인용할 수 있는 Q&A (dt 검색쿼리 매칭은 nameKo 유지, dd는 본문)
+  // ★ FAQ 섹션 — visible H2/dt에는 nameKo 미포함 (stuffing 회피, JSON-LD FAQ는 별도로 풀 nameKo 유지)
   html += `<section>`;
-  html += `<h2>${name} 자주 묻는 질문</h2>`;
+  html += `<h2>자주 묻는 질문</h2>`;
   html += `<dl>`;
-  html += `<dt>${name} 어디에 있나요?</dt>`;
+  html += `<dt>어디에 있나요?</dt>`;
   html += `<dd>${region}에 위치한 ${catKo}입니다.${v.address ? ' 주소는 ' + escHtml(v.address) + '입니다.' : ''}${v.nearbyStation ? ' ' + escHtml(v.nearbyStation) + '에서 가깝습니다.' : ''}</dd>`;
-  html += `<dt>${name} 영업시간은?</dt>`;
+  html += `<dt>영업시간은?</dt>`;
   html += `<dd>영업시간과 실시간 정보는 본 페이지에서 확인할 수 있습니다.</dd>`;
-  html += `<dt>${name} 예약 방법은?</dt>`;
+  html += `<dt>예약 방법은?</dt>`;
   html += `<dd>방문 예약은 담당자에게 직접 문의할 수 있습니다.${staff ? ' 담당: ' + staff : ''}</dd>`;
   html += `<dt>${region} ${catKo} 추천은?</dt>`;
   html += `<dd>${region}에서 ${catKo}${eulReul(catKo)} 찾는다면 추천 후보입니다. 실시간 후기와 비교 정보는 카테고리 안에서 확인하세요.</dd>`;
@@ -484,7 +496,7 @@ function generateVenueSsrBody(v, allVenues) {
   // 가공된 SSR blockquote 후기 제거 (놀쿨 신뢰 규칙 + 구글 fake review 스팸 정책 회피).
   // 실제 후기는 /community/reviews 에서 회원이 직접 작성한 것만 노출.
   html += `<section>`;
-  html += `<h2>${name} 방문 후기</h2>`;
+  html += `<h2>방문 후기</h2>`;
   html += `<p>방문 후기는 <a href="/community/reviews">놀쿨 커뮤니티 후기 게시판</a>에서 회원이 직접 작성한 글만 모아두었습니다. 별점·블록쿼트 형태의 가공 후기는 게시하지 않습니다.</p>`;
   html += `</section>`;
 

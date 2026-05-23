@@ -1,0 +1,19 @@
+name: All Venues SEO Watch (121업소 9지표 24h)
+
+on:
+  schedule:
+    # 매일 KST 07:15 (UTC 22:15) — haeundaegoguryeo 07:00 직후
+    - cron: '15 22 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run all-venues-seo-watch
+        run: node scripts/all-venues-seo-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
