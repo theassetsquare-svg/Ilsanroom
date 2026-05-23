@@ -1,0 +1,19 @@
+name: Nights SEO Watch (/nights 카테고리 24h)
+
+on:
+  schedule:
+    # 매일 KST 07:05 (UTC 22:05)
+    - cron: '5 22 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run nights-seo-audit (실패시만 메일)
+        run: node scripts/nights-seo-audit.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
