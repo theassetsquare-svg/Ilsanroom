@@ -24,6 +24,32 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 
 const EXCLUDE_PREFIXES = ['/_verify', '/_final', '/_post_fix', '/_regression'];
 
+/* 시즌65 — 페이지 카테고리 분류 + 목표선
+ *   venue/magazine = 5분, 카테고리 리스트 = 2분, 세션 = 10분
+ *   transit/util(login/404/admin/auth/search) = 측정에서 제외 (구조적으로 짧을 수밖에 없음) */
+const VENUE_CATS = ['clubs', 'nights', 'rooms', 'yojeong', 'lounge', 'hoppa'];
+const CATEGORY_LIST_PATHS = new Set(VENUE_CATS.map(c => `/${c}`).concat(VENUE_CATS.map(c => `/${c}/`)));
+const TRANSIT_PREFIXES = ['/login', '/signup', '/404', '/admin', '/auth', '/search', '/logout', '/reset'];
+const DWELL_TARGETS = {
+  venue_detail: 300,    // 5분
+  magazine: 300,        // 5분
+  category_list: 120,   // 2분
+  session_total: 600,   // 10분 (세션 누적)
+};
+
+function classifyPath(path) {
+  if (!path || typeof path !== 'string') return 'other';
+  if (TRANSIT_PREFIXES.some(p => path === p || path.startsWith(p + '/') || path.startsWith(p + '?'))) return 'transit';
+  if (path.startsWith('/magazine/') && path.length > '/magazine/'.length) return 'magazine';
+  if (path === '/magazine' || path === '/magazine/') return 'magazine_list';
+  if (CATEGORY_LIST_PATHS.has(path)) return 'category_list';
+  // /clubs/gangnam/race 형태 — venue detail (segments 3+)
+  const segs = path.replace(/^\/|\/$/g, '').split('/');
+  if (segs.length >= 3 && VENUE_CATS.includes(segs[0])) return 'venue_detail';
+  if (segs.length === 2 && VENUE_CATS.includes(segs[0])) return 'category_list'; // /clubs/gangnam (region 필터)
+  return 'other';
+}
+
 function fetchJson(url, headers) {
   return new Promise((res, rej) => {
     const t = setTimeout(() => rej(new Error('timeout')), 30000);
@@ -139,11 +165,55 @@ function analyze(events) {
   const devices = {};
   for (const e of events) devices[e.device_type || 'unknown'] = (devices[e.device_type || 'unknown'] || 0) + 1;
 
+  /* 시즌65 — 카테고리별 평균 dwell + 미달 페이지 추출 */
+  const byCategory = { venue_detail: [], magazine: [], category_list: [], magazine_list: [], transit: [], other: [] };
+  for (const d of dwellRanking) {
+    const cat = classifyPath(d.path);
+    byCategory[cat]?.push(d);
+  }
+  function catSummary(arr, target) {
+    if (!arr || arr.length === 0) return { count: 0, avgSec: '0.0', target, belowTarget: 0, examples: [] };
+    const total = arr.reduce((sum, d) => sum + parseFloat(d.avgSec) * d.n, 0);
+    const samples = arr.reduce((sum, d) => sum + d.n, 0);
+    const avgSec = samples > 0 ? (total / samples).toFixed(1) : '0.0';
+    const below = arr.filter(d => parseFloat(d.avgSec) < target);
+    return {
+      count: arr.length,
+      avgSec,
+      target,
+      belowTarget: below.length,
+      examples: below.sort((a, b) => parseFloat(a.avgSec) - parseFloat(b.avgSec)).slice(0, 10),
+    };
+  }
+  const categoryStats = {
+    venue_detail: catSummary(byCategory.venue_detail, DWELL_TARGETS.venue_detail),
+    magazine: catSummary(byCategory.magazine, DWELL_TARGETS.magazine),
+    category_list: catSummary(byCategory.category_list, DWELL_TARGETS.category_list),
+  };
+
+  /* 세션 누적 dwell — exit dwell_ms를 세션 단위로 합산 (전체 dwell 10분 목표) */
+  const sessionTotalMs = {};
+  for (const e of events) {
+    if (e.event_type !== 'exit') continue;
+    const ms = Number(e.dwell_ms);
+    if (!Number.isFinite(ms) || ms <= 0 || ms > 10 * 60 * 1000) continue;
+    if (classifyPath(e.path) === 'transit') continue; // transit 페이지 제외
+    sessionTotalMs[e.session_id] = (sessionTotalMs[e.session_id] || 0) + ms;
+  }
+  const totals = Object.values(sessionTotalMs);
+  const sessionAvgSec = totals.length > 0
+    ? (totals.reduce((a, b) => a + b, 0) / totals.length / 1000).toFixed(1)
+    : '0.0';
+  const sessionTargetSec = DWELL_TARGETS.session_total;
+  const sessionsBelowTarget = totals.filter(ms => ms < sessionTargetSec * 1000).length;
+
   return {
     sessionCount, pageviewCount, avgDepth, avgUniqueDepth, bounceRate, bounceSessions,
     dwellTop: dwellRanking.slice(0, 10),
     dwellBottom: dwellRanking.slice(-10).reverse(),
     topEntries, topExits, devices,
+    categoryStats,
+    sessionAvgSec, sessionTargetSec, sessionsBelowTarget, sessionsWithExit: totals.length,
   };
 }
 
@@ -168,6 +238,53 @@ function buildEmail(a) {
       <tr><td style="border:1px solid #E5E7EB;padding:8px;background:#F8F9FA"><b>세션 깊이 (unique path 수)</b></td><td style="border:1px solid #E5E7EB;padding:8px;text-align:right;font-weight:bold;color:${depthColor};font-size:18px">${a.avgUniqueDepth}</td></tr>
       <tr><td style="border:1px solid #E5E7EB;padding:8px;background:#F8F9FA">Bounce rate (1페이지만 보고 나감)</td><td style="border:1px solid #E5E7EB;padding:8px;text-align:right;font-weight:bold;color:${bounceColor};font-size:18px">${a.bounceRate}% (${a.bounceSessions})</td></tr>
     </table>
+
+    <h3>🎯 카테고리별 평균 체류 (시즌65 — 목표선 미달 자동 추적)</h3>
+    ${(() => {
+      const cs = a.categoryStats;
+      const rows = [
+        ['venue 상세 (121업소)', cs.venue_detail, '5분'],
+        ['매거진', cs.magazine, '5분'],
+        ['카테고리 리스트', cs.category_list, '2분'],
+      ];
+      return tbl(['카테고리', '페이지수', '평균체류', '목표', '미달', '상태'], rows.map(([label, s, targetLabel]) => {
+        const avg = parseFloat(s.avgSec);
+        const ok = avg >= s.target;
+        const color = ok ? '#059669' : '#DC2626';
+        const mark = ok ? '✅' : '🛑';
+        return row([label, s.count, `<b style="color:${color}">${s.avgSec}s</b>`, targetLabel, s.belowTarget > 0 ? `<span style="color:#DC2626">${s.belowTarget}</span>` : '0', mark]);
+      }));
+    })()}
+
+    <h3>⏱ 세션 누적 dwell (시즌65 — 10분 목표 / transit 페이지 제외)</h3>
+    ${(() => {
+      const okSession = parseFloat(a.sessionAvgSec) >= a.sessionTargetSec;
+      const color = okSession ? '#059669' : '#DC2626';
+      const mark = okSession ? '✅' : '🛑';
+      return `<table style="border-collapse:collapse;width:100%;font-size:14px">
+        <tr><td style="border:1px solid #E5E7EB;padding:8px;background:#F8F9FA">측정 세션 (exit 이벤트 있음)</td><td style="border:1px solid #E5E7EB;padding:8px;text-align:right;font-weight:bold">${a.sessionsWithExit}</td></tr>
+        <tr><td style="border:1px solid #E5E7EB;padding:8px;background:#F8F9FA"><b>세션 평균 누적 dwell</b></td><td style="border:1px solid #E5E7EB;padding:8px;text-align:right;font-weight:bold;color:${color};font-size:18px">${mark} ${a.sessionAvgSec}s / 목표 ${a.sessionTargetSec}s</td></tr>
+        <tr><td style="border:1px solid #E5E7EB;padding:8px;background:#F8F9FA">10분 미달 세션</td><td style="border:1px solid #E5E7EB;padding:8px;text-align:right">${a.sessionsBelowTarget} / ${a.sessionsWithExit}</td></tr>
+      </table>`;
+    })()}
+
+    ${(() => {
+      // 미달 자동 알림 섹션 — 카테고리별 가장 짧은 페이지 노출 → 사장님이 즉시 손볼 곳
+      const alerts = [];
+      for (const [key, label] of [['venue_detail', 'venue 상세'], ['magazine', '매거진'], ['category_list', '카테고리 리스트']]) {
+        const s = a.categoryStats[key];
+        if (s.examples.length > 0) {
+          alerts.push(`<h4 style="color:#DC2626;margin:16px 0 8px">⚠ ${label} 목표(${s.target}s) 미달 ${s.belowTarget}개 — 손봐야 함</h4>
+            ${tbl(['Path', '평균체류 (초)', '목표 대비', '샘플'], s.examples.map(d => row([
+              `<a href="https://nolcool.com${esc(d.path)}">${esc(d.path)}</a>`,
+              `<span style="color:#DC2626"><b>${d.avgSec}s</b></span>`,
+              `${(parseFloat(d.avgSec) / s.target * 100).toFixed(0)}%`,
+              d.n,
+            ])))}`);
+        }
+      }
+      return alerts.length > 0 ? alerts.join('') : '<p style="color:#059669;margin:16px 0"><b>✅ 모든 카테고리 목표선 통과 — 깨끗.</b></p>';
+    })()}
 
     <h3>🏆 체류시간 Top 10 (가장 오래 보는 페이지)</h3>
     ${tbl(['Path', '평균 체류 (초)', '샘플'], a.dwellTop.map(d => row([`<a href="https://nolcool.com${esc(d.path)}">${esc(d.path)}</a>`, `<b>${d.avgSec}s</b>`, d.n])))}
@@ -217,7 +334,16 @@ async function sendEmail(html, subject) {
   const a = analyze(events);
   console.log(`   세션 ${a.sessionCount} / 페이지뷰 ${a.pageviewCount} / unique 깊이 ${a.avgUniqueDepth} / Bounce ${a.bounceRate}%`);
 
-  const subject = `[놀쿨] 체류시간 24h — 깊이 ${a.avgUniqueDepth} / Bounce ${a.bounceRate}%`;
+  // 시즌65 — 카테고리별 미달 + 세션 10분 미달이면 제목에 ⚠
+  const cs = a.categoryStats;
+  const venueBelow = cs.venue_detail.belowTarget;
+  const magBelow = cs.magazine.belowTarget;
+  const catBelow = cs.category_list.belowTarget;
+  const sessionBelow = parseFloat(a.sessionAvgSec) < a.sessionTargetSec;
+  const anyBelow = venueBelow + magBelow + catBelow > 0 || sessionBelow;
+  const subject = anyBelow
+    ? `⚠ [놀쿨] 체류 미달 — venue ${venueBelow} / mag ${magBelow} / list ${catBelow} / 세션 ${a.sessionAvgSec}s`
+    : `✅ [놀쿨] 체류시간 24h — 모든 카테고리 목표 통과 (깊이 ${a.avgUniqueDepth} / Bounce ${a.bounceRate}%)`;
   const html = buildEmail(a);
   await sendEmail(html, subject);
 })().catch(e => { console.error(e); process.exit(1); });
