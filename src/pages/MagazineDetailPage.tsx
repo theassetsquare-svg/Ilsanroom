@@ -5,6 +5,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { articles as localArticles } from '@/data/magazine-articles';
 import { useArticle, useArticles } from '@/hooks/useMagazine';
 import ShareButton from '@/components/ui/ShareButton';
+import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { ReadTimeEstimate, MidContentHook, ReadFinishCount, ReadCompletionReward, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
 
@@ -77,6 +78,37 @@ export default function MagazineDetailPage() {
           <span className="text-xs" style={{ color: '#999' }}>이 글이 유용했다면 공유해주세요</span>
         </div>
 
+        {/* ═══ 글 하단 전화 CTA (담당자 폰 있는 글만) ═══ */}
+        {(article as { phone?: string; staffName?: string; venueSlug?: string; venueName?: string }).phone && (
+          <div className="mb-8 rounded-2xl p-5 sm:p-6" style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)', border: '1px solid #BBF7D0' }}>
+            <p className="text-xs font-bold mb-1" style={{ color: '#15803D' }}>지금 예약·문의</p>
+            <p className="text-base sm:text-lg font-extrabold mb-3" style={{ color: '#111' }}>
+              {(article as { venueName?: string }).venueName || '담당자'}{' '}
+              {(article as { staffName?: string }).staffName}이 직접 안내합니다
+            </p>
+            <a
+              href={`tel:${((article as { phone?: string }).phone || '').replace(/-/g, '')}`}
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto rounded-full px-6 py-4 min-h-[52px] text-base font-extrabold text-white shadow-lg transition active:scale-95"
+              style={{ background: '#15803D' }}
+              aria-label={`${(article as { staffName?: string }).staffName || '담당자'} ${(article as { phone?: string }).phone} 전화걸기`}
+            >
+              <span style={{ fontSize: '20px' }}>📞</span>
+              <span>
+                {(article as { staffName?: string }).staffName} {(article as { phone?: string }).phone}
+              </span>
+            </a>
+            {(article as { venueSlug?: string }).venueSlug && (
+              <Link
+                to={`/yojeong/ilsan/${(article as { venueSlug?: string }).venueSlug}/`}
+                className="mt-3 inline-flex items-center gap-1 text-sm font-bold"
+                style={{ color: '#15803D' }}
+              >
+                {(article as { venueName?: string }).venueName} 상세 페이지 →
+              </Link>
+            )}
+          </div>
+        )}
+
         {/* ═══ BOTTOM REWARD ═══ */}
         <ReadCompletionReward teaser="끝까지 읽은 사람만 보는 추가 정보">
           <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>
@@ -123,6 +155,13 @@ export default function MagazineDetailPage() {
       </div>
 
       <ReadingMilestone containerRef={containerRef} />
+
+      {/* ═══ Sticky 전화바 — phone 필드 있는 글만 표시 ═══ */}
+      <StickyPhoneBar
+        phone={(article as { phone?: string }).phone}
+        staffName={(article as { staffName?: string }).staffName}
+        venueName={(article as { venueName?: string }).venueName || article.title}
+      />
     </div>
   );
 }

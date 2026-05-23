@@ -418,6 +418,11 @@ body:has(.fixed.inset-0.z-\[200\]) [data-sticky-phone] {
   display: none !important;
 }
 
+/* 공유 팝업/드롭다운 열릴 때 전화바 자동 숨김 — 카카오/인스타/URL복사 메뉴 가림 방지 (PC+모바일 전 페이지 공통) */
+body:has([data-share-popup="true"]) [data-sticky-phone] {
+  display: none !important;
+}
+
 /* ═══════ MOBILE READABILITY — 전체 적용 ═══════ */
 /* 본문 기본: 16px, line-height 1.7, 최소 대비 4.5:1 */
 body {

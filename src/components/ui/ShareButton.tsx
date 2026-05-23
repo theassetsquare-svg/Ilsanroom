@@ -85,7 +85,7 @@ export default function ShareButton({
       </button>
 
       {showDropdown && (
-        <div className="absolute right-0 top-full mt-2 z-50 w-40 rounded-xl glass-strong p-2 animate-scale-in">
+        <div data-share-popup="true" className="absolute right-0 top-full mt-2 z-50 w-40 rounded-xl glass-strong p-2 animate-scale-in">
           <button onClick={handleKakao} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-neon-text-muted hover:bg-neon-surface-2 hover:text-neon-text transition-colors">
             <span className="text-yellow-400">K</span> 카카오
           </button>
