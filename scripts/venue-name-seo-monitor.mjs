@@ -254,11 +254,13 @@ if (failed.length > 0) {
   failed.slice(0, 10).forEach(r => console.log(`  - ${r.v.name} (${r.score}/${r.max}): ${(r.fails || []).join(', ') || r.issues?.join(', ')}`));
 }
 
-const failedUrls = failed.map(r => r.v.url);
-const indexNow = await submitIndexNow(failedUrls);
-const subject = perfect === venues.length
-  ? `[놀쿨] ✅ 121/121 가게이름 SEO 만점 — Google/AI 상위노출 100% 충족`
-  : `[놀쿨] ⚠️ 가게이름 SEO ${perfect}/${venues.length} 만점 — 미달 ${failed.length}건`;
-await sendMail(subject, buildEmail(results, indexNow));
-
-if (failed.length > 0) process.exit(1);
+// ★ 메일 정책 — 실패시만 발송
+if (failed.length === 0) {
+  console.log(`✅ ${perfect}/${venues.length} 만점 — 메일 발송 안 함 (실패시만 정책)`);
+} else {
+  const failedUrls = failed.map(r => r.v.url);
+  const indexNow = await submitIndexNow(failedUrls);
+  const subject = `[놀쿨] ⚠️ 가게이름 SEO ${perfect}/${venues.length} 만점 — 미달 ${failed.length}건`;
+  await sendMail(subject, buildEmail(results, indexNow));
+  process.exit(1);
+}

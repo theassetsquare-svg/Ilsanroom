@@ -341,9 +341,12 @@ async function sendEmail(html, subject) {
   const catBelow = cs.category_list.belowTarget;
   const sessionBelow = parseFloat(a.sessionAvgSec) < a.sessionTargetSec;
   const anyBelow = venueBelow + magBelow + catBelow > 0 || sessionBelow;
-  const subject = anyBelow
-    ? `⚠ [놀쿨] 체류 미달 — venue ${venueBelow} / mag ${magBelow} / list ${catBelow} / 세션 ${a.sessionAvgSec}s`
-    : `✅ [놀쿨] 체류시간 24h — 모든 카테고리 목표 통과 (깊이 ${a.avgUniqueDepth} / Bounce ${a.bounceRate}%)`;
+  // ★ 메일 정책 — 실패시만 발송 (전체 통과시 stdout만)
+  if (!anyBelow) {
+    console.log(`✅ 전체 통과 — 깊이 ${a.avgUniqueDepth} / Bounce ${a.bounceRate}% / 세션 ${a.sessionAvgSec}s — 메일 발송 안 함`);
+    return;
+  }
+  const subject = `⚠ [놀쿨] 체류 미달 — venue ${venueBelow} / mag ${magBelow} / list ${catBelow} / 세션 ${a.sessionAvgSec}s`;
   const html = buildEmail(a);
   await sendEmail(html, subject);
 })().catch(e => { console.error(e); process.exit(1); });

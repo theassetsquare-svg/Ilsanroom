@@ -29,7 +29,14 @@ const report = JSON.parse(readFileSync(jsonPath, 'utf-8'));
 const { total_loads = 0, total_issues = 0, stats = {}, results = [] } = report;
 
 const today = new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().slice(0, 10);
-const status = total_issues === 0 ? '✅ 0 에러' : `🛑 ${total_issues}건`;
+
+// ★ 메일 정책 — 실패시만 발송
+if (total_issues === 0) {
+  console.log(`✅ ${today} 풀크롤 ${total_loads} loads / 0 에러 — 메일 발송 안 함 (실패시만 정책)`);
+  process.exit(0);
+}
+
+const status = `🛑 ${total_issues}건`;
 
 const body = [
   `놀쿨 PC+Mobile 풀크롤 ${today}`,
@@ -61,9 +68,7 @@ const html = `<pre style="font-family:ui-monospace,monospace;font-size:13px;line
 
 console.log(text);
 
-const subj = total_issues === 0
-  ? `[놀쿨 풀크롤] ${today} ✅ 0 에러 (${total_loads} loads)`
-  : `[놀쿨 풀크롤] ${today} 🛑 ${total_issues}건 발견`;
+const subj = `[놀쿨 풀크롤] ${today} 🛑 ${total_issues}건 발견`;
 
 const res = await fetch('https://api.resend.com/emails', {
   method: 'POST',

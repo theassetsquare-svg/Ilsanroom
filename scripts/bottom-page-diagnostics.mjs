@@ -150,6 +150,20 @@ async function main() {
     return issues.join(' / ');
   };
 
+  // ★ 메일 정책 — 실패시만 (문제 있는 페이지가 1+ 일 때만 발송)
+  const problemRows = rows.filter(r => {
+    if (r.size < 8000) return true;
+    if (r.imgCount < 2) return true;
+    if (r.firstPLen < 80) return true;
+    if (r.h1Len < 8) return true;
+    if (r.jsonLdCount === 0) return true;
+    return false;
+  });
+  if (problemRows.length === 0) {
+    console.log(`✅ Bottom 10 모두 정상 (HTML≥8KB, img≥2, 첫문단≥80자, H1≥8, JSON-LD≥1) — 메일 발송 안 함`);
+    return;
+  }
+
   const rowsHtml = rows.map(r => tr([
     `<a href="${BASE}${esc(r.path)}">${esc(r.path)}</a>`,
     `<b style="color:#DC2626">${r.avgSec.toFixed(1)}</b>`,

@@ -110,7 +110,12 @@ async function main() {
   console.log(`키워드 밀도: ${(a.density * 100).toFixed(2)}% (visible ${a.kwVisible}회 / ${a.textLen}자)`);
   console.log(`후킹 단어: ${a.hookHit.join(',') || '(없음)'}`);
 
-  await sendMail({ urgent: s.pass < s.total, status: 200, scoreRes: s, audit: a });
+  // ★ 메일 정책 — 실패시만 발송 (전체 통과시 stdout만)
+  if (s.pass >= s.total) {
+    console.log('\n✅ 전체 통과 — 메일 발송 안 함 (실패시만 정책)');
+    return;
+  }
+  await sendMail({ urgent: true, status: 200, scoreRes: s, audit: a });
 }
 
 async function sendMail({ urgent, status, scoreRes, audit: a }) {

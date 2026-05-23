@@ -232,9 +232,13 @@ async function sendEmail(html, hasIssues) {
     }
   }
 
+  // ★ 메일 정책 — 실패시만 발송
+  if (!hasIssues) {
+    console.log(`✅ 회귀 없음 — 메일 발송 안 함 (실패시만 정책)`);
+    return;
+  }
   const indexNowResult = await submitIndexNow(TARGET_PAGES.map(p => p.url));
   const html = buildEmailHtml(allResults, indexNowResult, hasIssues);
   await sendEmail(html, hasIssues);
-
-  if (hasIssues) process.exit(1);
+  process.exit(1);
 })();

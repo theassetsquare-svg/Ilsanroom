@@ -86,6 +86,12 @@ async function main() {
     return;
   }
 
+  // ★ 메일 정책 — 일일 모드도 실패시만 발송 (pending=0 + threshold=0 → 메일 skip)
+  if (!hasThreshold && pending.length === 0) {
+    console.log(`✅ 깨끗 — pending=0, threshold=0 — 메일 발송 안 함 (실패시만 정책)`);
+    return;
+  }
+
   const statusLabel = hasThreshold ? '⚠ threshold 도달' : (pending.length > 0 ? `대기 ${pending.length}건` : '✅ 신고 없음');
   const statusColor = hasThreshold ? '#DC2626' : (pending.length > 0 ? '#D97706' : '#059669');
 

@@ -190,11 +190,13 @@ async function sendEmail(html, subject) {
   const failed = results.filter(r => r.score < r.max);
   console.log(`\n📊 결과: ${perfect}/${total} 만점 / 미달 ${failed.length}건`);
 
-  const subject = perfect === total
-    ? `[놀쿨] 전체 SEO 9지표 ✅ ${total}/${total} 만점`
-    : `[놀쿨] 전체 SEO ⚠️ ${perfect}/${total} 만점 (미달 ${failed.length}건)`;
+  // ★ 메일 정책 — 실패시만 발송 (만점일 때 발송 안 함)
+  if (failed.length === 0) {
+    console.log(`✅ 전체 ${total}/${total} 만점 — 메일 발송 안 함`);
+    return;
+  }
+  const subject = `[놀쿨] 전체 SEO ⚠️ ${perfect}/${total} 만점 (미달 ${failed.length}건)`;
   const html = buildEmail(results, urls.length);
   await sendEmail(html, subject);
-
-  if (failed.length > 0) process.exit(1);
+  process.exit(1);
 })().catch(e => { console.error(e); process.exit(1); });

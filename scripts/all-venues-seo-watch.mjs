@@ -130,6 +130,9 @@ async function main() {
 }
 
 async function sendMail({ total, pass, issues }) {
+  // ★ 메일 정책 — 실패시만 발송
+  if (issues.length === 0) { console.log(`✅ 전 업소 ${pass}/${total} 통과 — 메일 발송 안 함`); return; }
+  if (!RESEND_API_KEY) { console.log('RESEND_API_KEY 없음 — 메일 skip'); return; }
   const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const kst = new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 19) + ' KST';
   const urgent = issues.length > 0;

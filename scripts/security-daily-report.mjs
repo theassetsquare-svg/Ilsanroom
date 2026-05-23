@@ -98,8 +98,15 @@ async function main() {
   // 3) 상태 판정
   const allGreen = Object.keys(BASELINE).every(k => (current[k] ?? -1) <= BASELINE[k]);
   const today = new Date().toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' });
-  const statusLabel = allGreen ? '✅ 정상' : '🛑 회귀';
-  const statusColor = allGreen ? '#059669' : '#DC2626';
+
+  // ★ 메일 정책 — 실패시만 발송 (회귀 시 보냄, 정상은 stdout만)
+  if (allGreen) {
+    console.log(`✅ ${today} 모든 지표 baseline 이하 — 메일 발송 안 함 (실패시만 정책)`);
+    return;
+  }
+
+  const statusLabel = '🛑 회귀';
+  const statusColor = '#DC2626';
 
   // 4) HTML 메일
   const rowsHtml = Object.keys(BASELINE).map(k => {

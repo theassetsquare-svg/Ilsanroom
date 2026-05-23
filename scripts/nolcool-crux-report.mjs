@@ -116,7 +116,16 @@ async function main() {
     return;
   }
 
-  const subj = `[놀쿨 CrUX] ${today} 모바일 LCP ${m.lcp ?? '-'}ms / CLS ${m.cls ?? '-'} / INP ${m.inp ?? '-'}ms`;
+  // ★ 메일 정책 — 실패시만 발송 (LCP/CLS/INP 모두 "good" 이면 메일 skip)
+  // 임계 — Mobile LCP>2500ms or CLS>0.1 or INP>200ms 중 하나라도 위반이면 발송
+  const mobileViolation = (m.lcp ?? 0) > 2500 || (m.cls ?? 0) > 0.1 || (m.inp ?? 0) > 200;
+  const desktopViolation = (d.lcp ?? 0) > 2500 || (d.cls ?? 0) > 0.1 || (d.inp ?? 0) > 200;
+  if (!mobileViolation && !desktopViolation) {
+    console.log(`\n✅ Mobile/PC 모두 CWV good — 메일 발송 안 함 (실패시만 정책)`);
+    return;
+  }
+
+  const subj = `[놀쿨 CrUX][⚠] ${today} CWV 회귀 — 모바일 LCP ${m.lcp ?? '-'}ms / CLS ${m.cls ?? '-'} / INP ${m.inp ?? '-'}ms`;
   const html = `<pre style="font-family:ui-monospace,monospace;font-size:13px;line-height:1.6">${body
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')}</pre>`;
