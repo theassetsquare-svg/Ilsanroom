@@ -226,10 +226,18 @@ function renderPage({ title, description, canonical, ogImage, ogImageAlt, ssrBod
 
   // SSR body content — inject inside root div for crawlers (React replaces on hydration)
   // 정규식으로 root div 속성 변동 허용 (style 등)
+  // 시즌57 — visible SSR hero block 추가: 빈 화면 0초 (LCP/체류 ↑)
+  // ssr-seo는 1px clip 유지 (봇용), ssr-hero는 화면에 보임 (React mount 전 첫 paint)
   if (ssrBody) {
+    const heroTitle = escHtml(title || '');
+    const heroDesc = escHtml(desc || description || '');
+    const heroImgTag = preloadImage
+      ? `<img src="${escHtml(preloadImage)}" alt="${escHtml(ogImageAlt || title || '')}" fetchpriority="high" decoding="async" style="display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#0a0a0a">`
+      : '';
+    const heroBlock = `<div class="ssr-hero" style="max-width:1200px;margin:0 auto;padding:88px 16px 24px;min-height:240px">${heroImgTag}<h1 style="margin:0 0 10px;font-size:24px;font-weight:800;color:#111;line-height:1.25;letter-spacing:-0.02em">${heroTitle}</h1><p style="margin:0;color:#444;font-size:15px;line-height:1.65;max-width:720px">${heroDesc}</p></div>`;
     html = html.replace(
       /<div id="root"([^>]*)><\/div>/,
-      `<div id="root"$1><div class="ssr-seo" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">${ssrBody}</div></div>`
+      `<div id="root"$1>${heroBlock}<div class="ssr-seo" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">${ssrBody}</div></div>`
     );
   }
 
