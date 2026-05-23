@@ -1,0 +1,19 @@
+name: All Pages SEO Monitor (sitemap 전수 9지표 풀체크)
+
+on:
+  schedule:
+    # 매일 KST 06:15 (UTC 21:15) — sitemap 516+ URL 9 보편 지표 풀체크
+    - cron: '15 21 * * *'
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run all-pages-seo-monitor (sitemap × 9 보편 지표)
+        run: node scripts/all-pages-seo-monitor.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}

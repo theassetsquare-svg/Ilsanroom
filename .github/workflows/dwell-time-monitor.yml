@@ -1,0 +1,21 @@
+name: Dwell Time Monitor (체류시간 24h 자동 리포트)
+
+on:
+  schedule:
+    # 매일 KST 06:30 (UTC 21:30) — 최근 24h page_events 분석 → 메일
+    - cron: '30 21 * * *'
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run dwell-time-monitor
+        run: node scripts/dwell-time-monitor.mjs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}

@@ -8,6 +8,7 @@ import ShareButton from '@/components/ui/ShareButton';
 import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { ReadTimeEstimate, MidContentHook, ReadFinishCount, ReadCompletionReward, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
+import RelatedVenuesForMagazine from '@/components/magazine/RelatedVenuesForMagazine';
 
 export default function MagazineDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -127,6 +128,13 @@ export default function MagazineDetailPage() {
         <div className="text-center mt-6 mb-8">
           <ReadFinishCount pageName="이 글" baseCount={90} />
         </div>
+
+        {/* 관련 venue — 본문 키워드 기반 자동 cross-link */}
+        <RelatedVenuesForMagazine
+          articleTitle={article.title}
+          articleExcerpt={article.excerpt}
+          articleTag={article.tag}
+        />
 
         {/* 관련 글 */}
         {relatedArticles.length > 0 && (
