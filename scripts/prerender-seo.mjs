@@ -231,8 +231,11 @@ function renderPage({ title, description, canonical, ogImage, ogImageAlt, ssrBod
   if (ssrBody) {
     const heroTitle = escHtml(title || '');
     const heroDesc = escHtml(desc || description || '');
-    const heroImgTag = preloadImage
-      ? `<img src="${escHtml(preloadImage)}" alt="${escHtml(ogImageAlt || title || '')}" fetchpriority="high" decoding="async" style="display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#0a0a0a">`
+    // preloadImage 있으면 hero img(eager + high priority), 없으면 og 이미지를 hero로 (lazy + low)
+    // 모든 페이지가 첫 paint에 이미지 1개 이상 보임 → 시각자극 0초
+    const heroImgSrc = preloadImage || ogImg;
+    const heroImgTag = heroImgSrc
+      ? `<img src="${escHtml(heroImgSrc)}" alt="${escHtml(ogImageAlt || title || '')}" ${preloadImage ? 'fetchpriority="high"' : 'loading="lazy" fetchpriority="low"'} decoding="async" style="display:block;width:100%;height:auto;max-height:280px;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#0a0a0a">`
       : '';
     const heroBlock = `<div class="ssr-hero" style="max-width:1200px;margin:0 auto;padding:88px 16px 24px;min-height:240px">${heroImgTag}<h1 style="margin:0 0 10px;font-size:24px;font-weight:800;color:#111;line-height:1.25;letter-spacing:-0.02em">${heroTitle}</h1><p style="margin:0;color:#444;font-size:15px;line-height:1.65;max-width:720px">${heroDesc}</p></div>`;
     html = html.replace(
