@@ -101,7 +101,11 @@ export function ReadingMilestone({ containerRef }: { containerRef: React.RefObje
   if (!activeMilestone) return null;
 
   return (
-    <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-[45] animate-fade-in">
+    <div
+      data-reading-milestone="true"
+      className="fixed left-1/2 -translate-x-1/2 z-[45] animate-fade-in"
+      style={{ bottom: 'calc(140px + env(safe-area-inset-bottom))' }}
+    >
       <div className="flex items-center gap-2 rounded-full bg-[#111]/90 px-5 py-2.5 text-white shadow-xl backdrop-blur-sm">
         <span className="text-lg">{activeMilestone.emoji}</span>
         <span className="text-sm font-bold">{activeMilestone.text}</span>

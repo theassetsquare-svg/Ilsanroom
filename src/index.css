@@ -423,8 +423,9 @@ body:has([data-share-popup="true"]) [data-sticky-phone] {
   display: none !important;
 }
 
-/* StickyPhoneBar 있는 페이지에서 SecretModeToast 자동 숨김 — 전화 CTA 우선, 4겹 쌓임 방지 (모바일 전 페이지) */
-body:has([data-sticky-phone]) [data-secret-toast="true"] {
+/* StickyPhoneBar 있는 페이지에서 SecretModeToast + ReadingMilestone 자동 숨김 — 전화 CTA 우선, 4겹 쌓임 방지 (모바일 전 페이지) */
+body:has([data-sticky-phone]) [data-secret-toast="true"],
+body:has([data-sticky-phone]) [data-reading-milestone="true"] {
   display: none !important;
 }
 
