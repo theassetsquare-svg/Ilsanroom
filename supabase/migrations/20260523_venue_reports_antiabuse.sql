@@ -17,7 +17,8 @@
 --   (b) 함수 정의 자체에 SET search_path 인라인 — 양쪽 다 적용.
 
 -- ── (A) auto-secure 이벤트 트리거 임시 비활성 ─────────────────
-DO $$
+-- ★ named dollar-quote ($secure_off$) — Supabase Dashboard SQL Editor 호환
+DO $secure_off$
 DECLARE r record;
 BEGIN
   FOR r IN
@@ -27,9 +28,9 @@ BEGIN
     EXECUTE format('ALTER EVENT TRIGGER %I DISABLE', r.evtname);
   END LOOP;
 EXCEPTION WHEN insufficient_privilege THEN
-  -- 권한 없으면 인라인 SET search_path만 의지
   NULL;
-END $$;
+END
+$secure_off$;
 
 -- ── 신고 테이블 ────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS venue_reports (
@@ -130,7 +131,7 @@ RETURNS TRIGGER
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = public, pg_catalog
-AS $$
+AS $trust_fn$
 BEGIN
   IF NEW.status = 'verified' AND OLD.status = 'pending' THEN
     INSERT INTO reporter_trust(fingerprint, score, total_reports, verified_reports)
@@ -150,8 +151,8 @@ BEGIN
   END IF;
   NEW.resolved_at = COALESCE(NEW.resolved_at, now());
   RETURN NEW;
-END;
-$$;
+END
+$trust_fn$;
 
 DROP TRIGGER IF EXISTS trg_update_reporter_trust ON venue_reports;
 CREATE TRIGGER trg_update_reporter_trust
@@ -160,7 +161,7 @@ CREATE TRIGGER trg_update_reporter_trust
   EXECUTE FUNCTION fn_update_reporter_trust();
 
 -- ── (B) auto-secure 이벤트 트리거 다시 활성화 ─────────────────
-DO $$
+DO $secure_on$
 DECLARE r record;
 BEGIN
   FOR r IN
@@ -171,4 +172,5 @@ BEGIN
   END LOOP;
 EXCEPTION WHEN insufficient_privilege THEN
   NULL;
-END $$;
+END
+$secure_on$;
