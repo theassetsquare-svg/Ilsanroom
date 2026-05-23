@@ -4,6 +4,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import MobileBottomNav from '@/components/layout/MobileBottomNav';
 import BackToTop from '@/components/layout/BackToTop';
+import ScrollProgress from '@/components/layout/ScrollProgress';
 import Toast from '@/components/ui/Toast';
 import SecretModeToast from '@/components/privacy/SecretModeToast';
 import JsonLd from '@/components/seo/JsonLd';
@@ -68,6 +69,7 @@ export default function MainLayout() {
       <a href="#main-content" className="skip-nav">본문으로 건너뛰기</a>
       <ScrollToTop />
       <SeoOverrideRunner />
+      <ScrollProgress />
       <JsonLd data={organizationJsonLd} />
       <JsonLd data={websiteJsonLd} />
       <Header />

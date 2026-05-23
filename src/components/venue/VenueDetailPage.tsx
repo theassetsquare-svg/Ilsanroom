@@ -9,6 +9,7 @@ import Card from '@/components/ui/Card';
 import ShareButtons from '@/components/interactive/ShareButtons';
 import { MidContentHook } from '@/components/engagement/ReadingEngagement';
 import RelatedVenues30 from '@/components/venue/RelatedVenues30';
+import RelatedMagazineForVenue from '@/components/venue/RelatedMagazineForVenue';
 import LiveStats from '@/components/live/LiveStats';
 import VenueLivePulse from '@/components/venue/VenueLivePulse';
 import type { Venue } from '@/types';
@@ -157,6 +158,11 @@ export default function VenueDetailPage({
             </div>
           </div>
         </Link>
+      </section>
+
+      {/* ═══ 10-b. 관련 매거진 — 본문 키워드 기반 자동 cross-link (역방향) ═══ */}
+      <section className="mx-auto max-w-[1200px] px-4 sm:px-6">
+        <RelatedMagazineForVenue venue={venue} />
       </section>
 
       {/* ═══ 11. 30개 추천 카드 (비교 늪) ═══ */}

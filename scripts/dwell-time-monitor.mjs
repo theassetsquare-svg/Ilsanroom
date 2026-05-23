@@ -41,7 +41,7 @@ function fetchJson(url, headers) {
 
 async function fetchEvents() {
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-  const url = `${SUPABASE_URL}/rest/v1/page_events?select=session_id,path,event_type,created_at,device_type,source_type&created_at=gt.${since}&order=created_at.asc&limit=10000`;
+  const url = `${SUPABASE_URL}/rest/v1/page_events?select=session_id,path,event_type,created_at,device_type,source_type,dwell_ms&created_at=gt.${since}&order=created_at.asc&limit=20000`;
   const r = await fetchJson(url, {
     'apikey': SUPABASE_SECRET_KEY,
     'Authorization': `Bearer ${SUPABASE_SECRET_KEY}`,
@@ -64,20 +64,54 @@ function analyze(events) {
   const pageviewCount = events.length;
   const avgDepth = sessionCount > 0 ? (pageviewCount / sessionCount).toFixed(2) : '0.00';
 
-  /* Bounce: 페이지뷰 1개만 있는 세션 */
-  const bounceSessions = Object.values(sessions).filter(s => s.length === 1).length;
+  /* Bounce: unique path 1개만 본 세션 (보조 이벤트는 path 중복이므로 unique로 셈) */
+  const uniquePathsBySession = Object.values(sessions).map(s => new Set(s.map(e => e.path)).size);
+  const bounceSessions = uniquePathsBySession.filter(n => n === 1).length;
   const bounceRate = sessionCount > 0 ? ((bounceSessions / sessionCount) * 100).toFixed(1) : '0.0';
 
-  /* 페이지별 평균 체류시간 — (다음 이벤트 시각 - 현재) 의 평균. 세션의 마지막 페이지는 제외(정확한 종료시각 모름) */
+  /* 진짜 세션 깊이 — unique path 평균 (보조 이벤트로 부풀려진 pageviewCount/sessionCount 아님) */
+  const avgUniqueDepth = sessionCount > 0
+    ? (uniquePathsBySession.reduce((a, b) => a + b, 0) / sessionCount).toFixed(2)
+    : '0.00';
+
+  /* 페이지별 평균 체류시간 — 정확 측정 ──
+   * 1순위: exit 이벤트의 dwell_ms 컬럼 (visitor-tracker가 페이지 떠날 때 정확히 기록)
+   * 2순위: path 변경 시점의 시간차 (exit 이벤트 누락된 모바일 일부)
+   * 같은 path 내 보조 이벤트(scroll/time_*) 사이 간격은 무시 — 페이지 체류시간이 아님 */
   const dwellByPath = {}; /* path → { totalMs, count } */
+  /* 1순위 — exit dwell_ms 직접 사용 */
+  for (const e of events) {
+    if (e.event_type !== 'exit') continue;
+    const ms = Number(e.dwell_ms);
+    if (!Number.isFinite(ms) || ms <= 0 || ms > 10 * 60 * 1000) continue;
+    const p = e.path;
+    if (!dwellByPath[p]) dwellByPath[p] = { totalMs: 0, count: 0 };
+    dwellByPath[p].totalMs += ms;
+    dwellByPath[p].count++;
+  }
+  /* 2순위 — path 변경 시점 시간차 (exit 누락 보강) */
   for (const evs of Object.values(sessions)) {
-    for (let i = 0; i < evs.length - 1; i++) {
-      const dwellMs = new Date(evs[i + 1].created_at) - new Date(evs[i].created_at);
-      if (dwellMs <= 0 || dwellMs > 10 * 60 * 1000) continue; /* 10분 초과는 비활성 간주 */
-      const p = evs[i].path;
-      if (!dwellByPath[p]) dwellByPath[p] = { totalMs: 0, count: 0 };
-      dwellByPath[p].totalMs += dwellMs;
-      dwellByPath[p].count++;
+    let curPath = evs[0]?.path;
+    let curStart = evs[0] ? new Date(evs[0].created_at).getTime() : 0;
+    let hasExitForCur = false;
+    for (let i = 1; i < evs.length; i++) {
+      if (evs[i].event_type === 'exit' && evs[i].path === curPath) {
+        hasExitForCur = true;
+        continue;
+      }
+      if (evs[i].path !== curPath) {
+        if (!hasExitForCur) {
+          const ms = new Date(evs[i].created_at).getTime() - curStart;
+          if (ms > 0 && ms <= 10 * 60 * 1000) {
+            if (!dwellByPath[curPath]) dwellByPath[curPath] = { totalMs: 0, count: 0 };
+            dwellByPath[curPath].totalMs += ms;
+            dwellByPath[curPath].count++;
+          }
+        }
+        curPath = evs[i].path;
+        curStart = new Date(evs[i].created_at).getTime();
+        hasExitForCur = false;
+      }
     }
   }
   const dwellRanking = Object.entries(dwellByPath)
@@ -106,7 +140,7 @@ function analyze(events) {
   for (const e of events) devices[e.device_type || 'unknown'] = (devices[e.device_type || 'unknown'] || 0) + 1;
 
   return {
-    sessionCount, pageviewCount, avgDepth, bounceRate, bounceSessions,
+    sessionCount, pageviewCount, avgDepth, avgUniqueDepth, bounceRate, bounceSessions,
     dwellTop: dwellRanking.slice(0, 10),
     dwellBottom: dwellRanking.slice(-10).reverse(),
     topEntries, topExits, devices,
@@ -116,7 +150,7 @@ function analyze(events) {
 function buildEmail(a) {
   const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const kst = new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 19) + ' KST';
-  const depthColor = parseFloat(a.avgDepth) >= 3 ? '#059669' : parseFloat(a.avgDepth) >= 2 ? '#F59E0B' : '#DC2626';
+  const depthColor = parseFloat(a.avgUniqueDepth) >= 3 ? '#059669' : parseFloat(a.avgUniqueDepth) >= 2 ? '#F59E0B' : '#DC2626';
   const bounceColor = parseFloat(a.bounceRate) <= 40 ? '#059669' : parseFloat(a.bounceRate) <= 60 ? '#F59E0B' : '#DC2626';
 
   const row = (cells) => `<tr>${cells.map(c => `<td style="border:1px solid #E5E7EB;padding:6px">${c}</td>`).join('')}</tr>`;
@@ -130,7 +164,8 @@ function buildEmail(a) {
     <table style="border-collapse:collapse;width:100%;font-size:14px">
       <tr><td style="border:1px solid #E5E7EB;padding:8px;background:#F8F9FA">세션 수</td><td style="border:1px solid #E5E7EB;padding:8px;text-align:right;font-weight:bold">${a.sessionCount.toLocaleString()}</td></tr>
       <tr><td style="border:1px solid #E5E7EB;padding:8px;background:#F8F9FA">페이지뷰</td><td style="border:1px solid #E5E7EB;padding:8px;text-align:right;font-weight:bold">${a.pageviewCount.toLocaleString()}</td></tr>
-      <tr><td style="border:1px solid #E5E7EB;padding:8px;background:#F8F9FA">세션당 페이지뷰 (세션 깊이)</td><td style="border:1px solid #E5E7EB;padding:8px;text-align:right;font-weight:bold;color:${depthColor};font-size:18px">${a.avgDepth}</td></tr>
+      <tr><td style="border:1px solid #E5E7EB;padding:8px;background:#F8F9FA">세션당 페이지뷰 (보조 이벤트 포함)</td><td style="border:1px solid #E5E7EB;padding:8px;text-align:right">${a.avgDepth}</td></tr>
+      <tr><td style="border:1px solid #E5E7EB;padding:8px;background:#F8F9FA"><b>세션 깊이 (unique path 수)</b></td><td style="border:1px solid #E5E7EB;padding:8px;text-align:right;font-weight:bold;color:${depthColor};font-size:18px">${a.avgUniqueDepth}</td></tr>
       <tr><td style="border:1px solid #E5E7EB;padding:8px;background:#F8F9FA">Bounce rate (1페이지만 보고 나감)</td><td style="border:1px solid #E5E7EB;padding:8px;text-align:right;font-weight:bold;color:${bounceColor};font-size:18px">${a.bounceRate}% (${a.bounceSessions})</td></tr>
     </table>
 
@@ -180,9 +215,9 @@ async function sendEmail(html, subject) {
   }
   console.log('📊 분석 중…');
   const a = analyze(events);
-  console.log(`   세션 ${a.sessionCount} / 페이지뷰 ${a.pageviewCount} / 깊이 ${a.avgDepth} / Bounce ${a.bounceRate}%`);
+  console.log(`   세션 ${a.sessionCount} / 페이지뷰 ${a.pageviewCount} / unique 깊이 ${a.avgUniqueDepth} / Bounce ${a.bounceRate}%`);
 
-  const subject = `[놀쿨] 체류시간 24h — 세션깊이 ${a.avgDepth} / Bounce ${a.bounceRate}%`;
+  const subject = `[놀쿨] 체류시간 24h — 깊이 ${a.avgUniqueDepth} / Bounce ${a.bounceRate}%`;
   const html = buildEmail(a);
   await sendEmail(html, subject);
 })().catch(e => { console.error(e); process.exit(1); });

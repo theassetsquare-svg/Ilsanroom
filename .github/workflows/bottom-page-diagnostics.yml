@@ -1,0 +1,21 @@
+name: Bottom Page Diagnostics (체류 짧은 페이지 진단)
+
+on:
+  schedule:
+    # 매일 KST 06:45 (UTC 21:45) — dwell-time-monitor 직후
+    - cron: '45 21 * * *'
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run bottom-page-diagnostics
+        run: node scripts/bottom-page-diagnostics.mjs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
