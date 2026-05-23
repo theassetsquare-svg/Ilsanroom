@@ -1,0 +1,24 @@
+name: Keyword SEO Monitor Watchdog
+
+on:
+  schedule:
+    # 매일 KST 06:30 (UTC 21:30) — 본 cron(21:00) 30분 뒤 점검
+    - cron: '30 21 * * *'
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  watchdog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Watchdog — 24h success run 확인
+        run: node scripts/keyword-monitor-watchdog.mjs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
