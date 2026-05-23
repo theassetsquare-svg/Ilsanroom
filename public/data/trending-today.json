@@ -1,5 +1,27 @@
 {
-  "generated_at": "2026-05-23T14:28:43.531Z",
+  "generated_at": "2026-05-23T17:52:24.889Z",
   "window_hours": 24,
-  "items": []
+  "items": [
+    {
+      "path": "/nights/bundangpongpongnight",
+      "title": "분당퐁퐁나이트",
+      "category": "night",
+      "region": "분당",
+      "views_24h": 4
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/indeokvon-gukbingwan-night",
+      "title": "인덕원국빈관나이트",
+      "category": "night",
+      "region": "인덕원",
+      "views_24h": 1
+    }
+  ]
 }
