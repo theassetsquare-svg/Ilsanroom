@@ -1,0 +1,19 @@
+name: Daeguhoppa Perfect Keyword Watch (대구호빠+동성로호빠 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 10:30 (UTC 01:30) — geondaehoppa-w 10:25 직후
+    - cron: '30 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run daeguhoppa-perfect-keyword-watch
+        run: node scripts/daeguhoppa-perfect-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
