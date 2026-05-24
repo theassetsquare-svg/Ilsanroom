@@ -1,0 +1,19 @@
+name: Busanyeonsandongmulnight Keyword Watch (부산연산동물나이트 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 08:15 (UTC 23:15) — busanasiadnight 08:10 직후
+    - cron: '15 23 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run busanyeonsandongmulnight-keyword-watch
+        run: node scripts/busanyeonsandongmulnight-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
