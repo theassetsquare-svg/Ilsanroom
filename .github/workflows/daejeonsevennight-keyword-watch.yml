@@ -1,0 +1,19 @@
+name: Daejeonsevennight Keyword Watch (대전세븐나이트 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 07:40 (UTC 22:40) — daegutotoganight 07:35 직후
+    - cron: '40 22 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run daejeonsevennight-keyword-watch
+        run: node scripts/daejeonsevennight-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
