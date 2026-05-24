@@ -68,24 +68,11 @@ function fetchOne(id: string): Promise<MagazineArticle | null> {
   if (isSkipped()) return Promise.resolve(null);
   const cached = idPromiseCache[id];
   if (cached) return cached;
-  const supabase = createClient();
-  if (!supabase) return Promise.resolve(null);
-  const p: Promise<MagazineArticle | null> = Promise.resolve(
-    supabase
-      .from('magazine_articles')
-      .select('*')
-      .eq('id', id)
-      .eq('is_published', true)
-      .maybeSingle()
-  ).then(({ data, error }) => {
-    if (error) {
-      const msg = String((error as { message?: string }).message || '');
-      const code = String((error as { code?: string }).code || '');
-      if (/401|jwt|api key|unauthor/i.test(msg) || code === 'PGRST301') markSkip();
-      return null;
-    }
-    return data ? dbToArticle(data as DbArticle) : null;
-  }).catch(() => { markSkip(); return null; });
+  // ★ 시즌70 — 별도 fetch 대신 list 결과에서 찾기 → detail 페이지 fetch 1회로 통합
+  const p: Promise<MagazineArticle | null> = fetchList().then(list => {
+    if (!list) return null;
+    return list.find(a => a.id === id) || null;
+  });
   idPromiseCache[id] = p;
   return p;
 }
