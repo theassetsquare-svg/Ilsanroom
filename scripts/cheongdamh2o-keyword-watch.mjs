@@ -23,13 +23,14 @@
  *   NOTIFICATION_EMAIL 기본 theassetsquare@gmail.com
  */
 import https from 'https';
+import { analyzeHook } from './lib/hook-detector.mjs';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/cheongdamh2onight/';
 const PRIMARY = '청담H2O나이트';
 const SECONDARY = '청담나이트';
-const HOOK_WORDS = ['진짜', '솔직히', '직접', '한번', '왜', '이유', '한번쯤', '다녀온', '후기', '꿀팁', '이것만', '단골', '정석', '티어'];
+// 시즌78: HOOK 화이트리스트 폐기. lib/hook-detector 5축 구조 패턴 사용.
 
 function fetchHtml(url) {
   return new Promise((res) => {
@@ -63,7 +64,9 @@ async function main() {
   const primaryDensity = (primaryCount * PRIMARY.length) / text.length;
   const titleWords = title.replace(/[—,.\-]/g, ' ').split(/\s+/).filter(w => w.length >= 2);
   const dupTitle = titleWords.filter((w, i) => titleWords.indexOf(w) !== i);
-  const hookHit = HOOK_WORDS.filter(w => title.includes(w) || desc.includes(w));
+  const hookTitle = analyzeHook(title);
+  const hookDesc = analyzeHook(desc);
+  const hookAxesHit = Math.max(hookTitle.axesHit, hookDesc.axesHit);
 
   // 10지표
   if (!title.includes(PRIMARY)) issues.push(`title 청담H2O나이트X`);
@@ -75,12 +78,12 @@ async function main() {
   if (!desc.includes(SECONDARY)) issues.push(`desc 청담나이트X`);
   if (primaryDensity > 0.035) issues.push(`청담H2O 밀도 ${(primaryDensity*100).toFixed(2)}%`);
   if (secondaryCount < 3) issues.push(`청담나이트 body ${secondaryCount}회 (≥3 필요)`);
-  if (hookHit.length === 0) issues.push('후킹 0');
+  if (hookAxesHit === 0) issues.push('후킹 5축 0 (title/desc 모두)');
 
   const snapshot = {
     title, desc, primaryCount, secondaryCount,
     primaryDensity: (primaryDensity*100).toFixed(2)+'%',
-    hookCount: hookHit.length, textLen: text.length,
+    hookCount: hookAxesHit, textLen: text.length,
   };
 
   console.log('청담H2O나이트 SEO watch');
@@ -89,7 +92,7 @@ async function main() {
   console.log('  desc:', desc);
   console.log('  청담H2O나이트:', primaryCount, '회 / 밀도', snapshot.primaryDensity);
   console.log('  청담나이트:', secondaryCount, '회');
-  console.log('  후킹:', hookHit.join(',') || '0');
+  console.log('  후킹 5축:', hookAxesHit);
   console.log('  회귀:', issues.length, '건');
 
   if (issues.length > 0) {

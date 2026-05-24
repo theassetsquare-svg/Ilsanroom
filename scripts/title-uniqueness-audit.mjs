@@ -1,23 +1,22 @@
 /**
- * 놀쿨 title 차별화 24h watch — 시즌77.
- * 매일 KST 07:35 — sitemap 전체 URL의 title 후미 5어절 + HOOK 단어 분포 검사.
- *
- * 회귀 사유:
- *  1) title 후미 5어절이 다른 페이지와 동일 (≥2 URL 공유)
- *  2) HOOK 14 단어 중 사이트 전체 5회 초과 사용
+ * 놀쿨 title 차별화 24h watch — 시즌78 (화이트리스트 0, 구조 패턴 + n-gram).
+ * 매일 KST 07:35 — sitemap 전체 URL의:
+ *   1) title 후미 5어절 중복 (≥2 URL 공유시)
+ *   2) n-gram (3~5 어절) 사이트 전체 5회 초과 사용
+ *   3) 후킹 5축 (숫자/질문/FOMO/구어체) 미달 페이지
  *
  * 환경:
  *  RESEND_API_KEY     필수
  *  NOTIFICATION_EMAIL 기본 theassetsquare@gmail.com
  */
 import https from 'https';
+import { analyzeHook, ngramOverused, HOOK_PATTERNS } from './lib/hook-detector.mjs';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const SITEMAP = 'https://nolcool.com/sitemap.xml';
-const HOOK_WORDS = ['진짜', '솔직히', '직접', '한번', '왜', '이유', '한번쯤', '다녀온', '후기', '꿀팁', '이것만', '단골', '정석', '티어'];
-const MAX_PAGES = 200;       // 안전 상한
-const HOOK_OVER = 5;          // 단어별 5회 초과 알림
+const MAX_PAGES = 200;
+const NGRAM_OVER = 5; // n-gram 사이트 전체 5회 초과 알림
 
 function fetchText(url) {
   return new Promise(res => {
@@ -71,45 +70,66 @@ async function main() {
     });
   }
 
-  // 2) HOOK 단어 분포
-  const hookCount = Object.fromEntries(HOOK_WORDS.map(w => [w, 0]));
-  for (const title of titles.values()) {
-    for (const w of HOOK_WORDS) {
-      const c = (title.match(new RegExp(w, 'g')) || []).length;
-      hookCount[w] += c;
-    }
-  }
-  for (const [w, c] of Object.entries(hookCount)) {
-    if (c > HOOK_OVER) issues.push({ type: 'HOOK 단어 남용', detail: `"${w}" ${c}회 (≥${HOOK_OVER + 1})` });
+  // 2) n-gram 사이트 전체 5회 초과 (어떤 표현이든)
+  const titlesArr = [...titles.values()];
+  const urlsArr = [...titles.keys()];
+  const overused = ngramOverused(titlesArr, urlsArr, NGRAM_OVER, 3, 5);
+  for (const { phrase, count, urls: u } of overused.slice(0, 20)) {
+    issues.push({ type: 'n-gram 남용', detail: `"${phrase}" ${count}회 (예: ${u.slice(0, 3).map(x => x.replace('https://nolcool.com', '')).join(', ')})` });
   }
 
-  console.log('\n=== title 차별화 감사 ===');
+  // 3) 후킹 5축 미달 (어떤 축도 자극 안한 title)
+  const noHook = [];
+  for (const [url, title] of titles) {
+    const { passed, axes } = analyzeHook(title);
+    if (!passed) noHook.push({ url, title });
+  }
+  if (noHook.length > 0) {
+    issues.push({ type: '후킹 5축 0', detail: `${noHook.length}개 페이지 (예: ${noHook.slice(0, 5).map(n => n.url.replace('https://nolcool.com', '')).join(', ')})` });
+  }
+
+  // 축별 분포 통계
+  const axisStat = HOOK_PATTERNS.map(p => ({ axis: p.axis, hits: 0 }));
+  for (const t of titlesArr) {
+    const { axes } = analyzeHook(t);
+    axes.forEach((a, i) => { axisStat[i].hits += a.hits; });
+  }
+
+  console.log('\n=== title 차별화 감사 (구조 패턴) ===');
   console.log('  scan URL:', titles.size);
   console.log('  후미 5어절 중복:', dupSuffix.length, '건');
-  console.log('  HOOK 분포:', JSON.stringify(hookCount));
+  console.log('  n-gram 남용 (≥6회):', overused.length, '건');
+  console.log('  후킹 5축 미달:', noHook.length, '건');
+  console.log('  5축 분포:', axisStat.map(a => `${a.axis}:${a.hits}`).join(' / '));
   console.log('  회귀:', issues.length, '건');
 
   if (issues.length > 0) {
-    await sendMail({ issues, hookCount, scannedCount: titles.size });
+    await sendMail({ issues, overused, noHook, axisStat, scannedCount: titles.size });
     process.exit(1);
   }
   console.log('✅ title 차별화 100% — 메일 발송 안 함');
 }
 
-async function sendMail({ issues, hookCount, scannedCount }) {
+async function sendMail({ issues, overused, noHook, axisStat, scannedCount }) {
   if (!RESEND_API_KEY) { console.log('RESEND_API_KEY 없음 — 메일 skip'); return; }
   const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const kst = new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 19) + ' KST';
-  const hookRows = Object.entries(hookCount).sort((a, b) => b[1] - a[1])
-    .map(([w, c]) => `<tr><td style="border:1px solid #E5E7EB;padding:4px">${w}</td><td style="border:1px solid #E5E7EB;padding:4px;color:${c > 5 ? '#DC2626' : '#111'}">${c}</td></tr>`).join('');
+  const ngRows = overused.slice(0, 15).map(o =>
+    `<tr><td style="border:1px solid #E5E7EB;padding:4px">${esc(o.phrase)}</td><td style="border:1px solid #E5E7EB;padding:4px;color:#DC2626">${o.count}회</td></tr>`,
+  ).join('');
+  const axisRows = axisStat.map(a =>
+    `<tr><td style="border:1px solid #E5E7EB;padding:4px">${esc(a.axis)}</td><td style="border:1px solid #E5E7EB;padding:4px">${a.hits}</td></tr>`,
+  ).join('');
   const html = `<div style="font-family:sans-serif;max-width:760px;margin:0 auto;padding:20px">
     <h2 style="color:#DC2626">[⚠ title 차별화 회귀] ${issues.length}건</h2>
-    <p style="color:#666;font-size:13px">측정: ${kst} · 검사 ${scannedCount} URL</p>
+    <p style="color:#666;font-size:13px">측정: ${kst} · 검사 ${scannedCount} URL · 시즌78 구조 패턴 (화이트리스트 0)</p>
     <h3>회귀</h3>
     <ul>${issues.map(i => `<li><b>${esc(i.type)}</b> — ${esc(i.detail)}</li>`).join('')}</ul>
-    <h3>HOOK 단어 분포</h3>
-    <table style="border-collapse:collapse;font-size:12px"><tr><th style="border:1px solid #E5E7EB;padding:4px">단어</th><th style="border:1px solid #E5E7EB;padding:4px">사용 횟수</th></tr>${hookRows}</table>
-    <p style="color:#9CA3AF;font-size:11px;margin-top:20px">매일 KST 07:35 — title-uniqueness-audit.mjs (실패시만)</p>
+    <h3>n-gram 남용 상위 15</h3>
+    <table style="border-collapse:collapse;font-size:12px"><tr><th style="border:1px solid #E5E7EB;padding:4px">표현</th><th style="border:1px solid #E5E7EB;padding:4px">사용 횟수</th></tr>${ngRows}</table>
+    <h3>후킹 5축 분포</h3>
+    <table style="border-collapse:collapse;font-size:12px"><tr><th style="border:1px solid #E5E7EB;padding:4px">축</th><th style="border:1px solid #E5E7EB;padding:4px">매칭</th></tr>${axisRows}</table>
+    <p style="color:#9CA3AF;font-size:11px;margin-top:20px">매일 KST 07:35 — title-uniqueness-audit.mjs (구조 패턴, 화이트리스트 0)</p>
   </div>`;
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -117,7 +137,7 @@ async function sendMail({ issues, hookCount, scannedCount }) {
     body: JSON.stringify({
       from: 'NOLCOOL auto <onboarding@resend.dev>',
       to: [TO],
-      subject: `[놀쿨][⚠] title 차별화 회귀 ${issues.length}건`,
+      subject: `[놀쿨][⚠] title 차별화 회귀 ${issues.length}건 (n-gram + 5축)`,
       html,
     }),
   });
