@@ -1,0 +1,19 @@
+name: Seongnamshampoonight Keyword Watch (성남샴푸나이트 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 08:35 (UTC 23:35) — sangbonghangukgwannight 08:30 직후
+    - cron: '35 23 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run seongnamshampoonight-keyword-watch
+        run: node scripts/seongnamshampoonight-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
