@@ -1,0 +1,19 @@
+name: Suwonkoreanight Keyword Watch (수원코리아나이트 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 08:45 (UTC 23:45) — suwonchancenight 08:40 직후
+    - cron: '45 23 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run suwonkoreanight-keyword-watch
+        run: node scripts/suwonkoreanight-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
