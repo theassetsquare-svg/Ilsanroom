@@ -129,6 +129,35 @@ export default function MagazineDetailPage() {
           <ReadFinishCount pageName="이 글" baseCount={90} />
         </div>
 
+        {/* ═══ 시즌72 — 매거진 SEO 보강 H2 (8글 동시 적용) ═══ */}
+        <div className="pt-6 mt-6 border-t" style={{ borderColor: '#E5E7EB' }}>
+          <h2 className="text-lg font-bold mb-3" style={{ color: '#111' }}>독자가 자주 묻는 것</h2>
+          <div className="space-y-3 text-sm" style={{ color: '#444', lineHeight: '1.8' }}>
+            <div>
+              <p className="font-bold mb-1" style={{ color: '#111' }}>Q. 글에 나온 가게 직접 가도 되나요?</p>
+              <p>네, 본문에 언급된 가게는 모두 실제 영업 중인 곳입니다. 단 운영시간·휴무는 방문 전 한 번 더 확인하는 게 안전합니다.</p>
+            </div>
+            <div>
+              <p className="font-bold mb-1" style={{ color: '#111' }}>Q. 처음 가는 사람도 부담 없을까요?</p>
+              <p>업종마다 분위기가 달라서 초행자가 멈칫하는 포인트가 있습니다. 본문 중반에 정리한 매너·동선 부분을 한 번 읽고 가면 어색함 없이 자연스럽게 섞입니다.</p>
+            </div>
+            <div>
+              <p className="font-bold mb-1" style={{ color: '#111' }}>Q. 본문에 없는 추가 정보는 어디서 보나요?</p>
+              <p>커뮤니티에 같은 가게 다녀온 사람들이 남긴 후기가 더 있습니다. 시간대별 분위기·줄·웨이팅 같은 디테일은 매거진보다 커뮤니티가 빠릅니다.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-6 mt-6 border-t" style={{ borderColor: '#E5E7EB' }}>
+          <h2 className="text-lg font-bold mb-3" style={{ color: '#111' }}>이 글 다 읽었다면 다음 단계</h2>
+          <p className="text-sm" style={{ color: '#444', lineHeight: '1.8' }}>
+            여기까지 읽었다면 단순 검색으로 들어온 사람보다 훨씬 깊이 알게 된 상태입니다.
+            아래 관련 가게 카드를 눌러 직접 라인업·부스·분위기를 확인하거나, 커뮤니티에서
+            같은 주제로 이야기 나누는 회원들의 실시간 코멘트를 살펴보세요. 매거진은 정리,
+            커뮤니티는 현장 — 두 곳을 같이 보면 처음 가는 가게도 단골처럼 자신 있게 들어갈 수 있습니다.
+          </p>
+        </div>
+
         {/* 관련 venue — 본문 키워드 기반 자동 cross-link */}
         <RelatedVenuesForMagazine
           articleTitle={article.title}
