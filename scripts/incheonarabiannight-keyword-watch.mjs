@@ -17,7 +17,7 @@
  *   8) "인천아라비안나이트" 밀도 ≤3.5%
  *   9) "인천나이트" body 등장 ≥3회
  *  10) 후킹 5축 ≥1축 (title 또는 desc)
- *  +) 디테일 토큰 (구월동/두바이/샹들리에/살사/격주) 모두 등장
+ *  +) 디테일 토큰 (구월동/모자이크/바차타/차이나타운/케밥) 모두 등장 (V2)
  *
  * 환경:
  *   RESEND_API_KEY     필수
@@ -31,7 +31,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/incheonarabiannight/';
 const PRIMARY = '인천아라비안나이트';
 const SECONDARY = '인천나이트';
-const DETAIL_TOKENS = ['구월동', '두바이', '샹들리에', '살사', '격주'];
+const DETAIL_TOKENS = ['구월동', '모자이크', '바차타', '차이나타운', '케밥'];
 
 function fetchHtml(url) {
   return new Promise((res) => {
