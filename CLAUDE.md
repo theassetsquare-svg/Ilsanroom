@@ -1,12 +1,20 @@
 # NOLCOOL — Nightlife (NOT kids/leisure)
 
-## ⭐⭐⭐ TITLE 차별화 절대규칙 (#0 — 모든 작업 최우선) ⭐⭐⭐
-**모든 venue/페이지 title·desc 작성 시 자기 검열 필수**. 위반 시 Google이 사이트 자체 템플릿으로 인식 → 색인 약화.
-1. **같은 후미 패턴 금지** — title 뒤 5어절 다른 페이지와 동일하면 즉시 교체 (예: "단골이 직접 가본 진짜 이유" 2번 X)
-2. **같은 후킹 단어 5회 초과 금지** — 14 HOOK_WORDS(진짜/솔직히/직접/한번/왜/이유/한번쯤/다녀온/후기/꿀팁/이것만/단골/정석/티어) 중 단어별 사이트 전체 5회 초과 사용 X. 특히 "단골" 남용 주의 — watch 통과용 쉬운 단어이지만 13개 다른 옵션 있음
-3. **5축 차별화 필수** — (시그니처·시점·감정·페르소나·후킹형태) 중 최소 2축 venue 고유성 반영
-4. **검증 스크립트** — `npm run audit:titleuniq` 또는 daily KST 07:35 자동 워치로 후미 5어절 중복·HOOK 단어 분포 자동 알림
-5. **신규 venue/title 변경 시** — 푸시 전 `node scripts/title-uniqueness-audit.mjs` 통과 필수
+## ⭐⭐⭐ TITLE/DESC/본문 차별화 절대규칙 (#0 — 모든 작업 최우선) ⭐⭐⭐
+**모든 venue/페이지 카피 작성 시 자기 검열 필수**. 위반 시 Google이 사이트 자체 템플릿으로 인식 → 색인 약화.
+
+**시즌78 패러다임**: 후킹 ≠ 단어. 후킹 = 언어 구조 효과. 단어 화이트리스트 영구 폐기.
+
+1. **후미 5어절 unique** — title 뒤 5어절 다른 페이지와 동일하면 즉시 교체 (예: "단골이 직접 가본 진짜 이유" 2번 X)
+2. **n-gram 5회 초과 금지** — 3~5어절 문구 단위가 사이트 전체 5회 초과 사용 X (단어 빈도가 아니라 **표현 패턴**)
+3. **후킹 5축 1축 이상** — 모든 title/desc는 `analyzeHook(text).passed === true` 필수
+   - 5축: 숫자/구체화 · 질문/대화 · FOMO/부정 · 1인칭/구어체 · 구체적 디테일
+   - 어떤 단어든 5축 중 1축이라도 자극하면 통과 (무제한 표현 커버)
+4. **5축 차별화 필수** — (시그니처·시점·감정·페르소나·후킹형태) 중 최소 2축 venue 고유성
+5. **본문 ≥3000자, H2 ≥5개** — 체류 10분 보장 (dwell-content-audit)
+6. **자동 검증** — 매일 KST 07:35 title-uniqueness, 07:40 dwell-content (실패시만 메일)
+7. **신규 venue/title 변경 시** — 푸시 전 `node scripts/title-uniqueness-audit.mjs` 통과 필수
+8. **공통 모듈** — 모든 watch는 `scripts/lib/hook-detector.mjs` import (단어 사전 사용 금지)
 
 ## MUST
 - DELETE all shared content pools! Write UNIQUE content for EACH venue! Time does not matter! SEO is #1!
