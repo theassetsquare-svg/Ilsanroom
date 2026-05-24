@@ -38,6 +38,11 @@ export default defineConfig({
         },
       },
     },
+    // ★ 시즌74 — admin-only 거대 chunk (vendor-tiptap 365KB)는 일반 페이지에서 modulepreload 제거
+    // 홈 FCP 1660ms → ↓ 기대 (vendor-tiptap은 /admin/magazine 진입시에만 lazy 로드)
+    modulePreload: {
+      resolveDependencies: (_filename, deps) => deps.filter(d => !/vendor-tiptap/.test(d)),
+    },
     chunkSizeWarningLimit: 600,
   },
 });
