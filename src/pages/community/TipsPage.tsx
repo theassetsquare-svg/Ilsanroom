@@ -52,7 +52,7 @@ const ALL = "전체" as const;
 const categories: Array<Category | typeof ALL> = [ALL, "입문", "절약", "보호", "예절"];
 
 export default function TipsPage() {
-  useDocumentMeta('고수들이 풀어놓은 밤놀이 실전 꿀팁', '어떤 가게가 안전? 초보가 호구되기 전에 무조건 봐. 입장 타이밍·자리 잡는 법·단골 매너까지 1편 정리. 강남 홍대 부산 6개 지역 팁 바로 확인. 후회 전에.');
+  useDocumentMeta('고수들이 풀어놓은 밤놀이 실전 꿀팁 모음이다', '어떤 가게가 안전? 초보가 호구되기 전에 무조건 봐. 입장 타이밍·자리 잡는 법·단골 매너까지 1편 정리. 강남 홍대 부산 6개 지역 팁 바로 확인. 후회 전에.');
   const { user } = useAuth();
   const navigate = useNavigate();
   const [activeCat, setActiveCat] = useState<Category | "전체">(ALL);

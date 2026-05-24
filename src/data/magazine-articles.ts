@@ -42,7 +42,7 @@ export const articles: MagazineArticle[] = [
   },
   {
     id: 'ilsan-myeongwolgwan-guide',
-    title: '일산요정 일산명월관 가이드 — 한정식 코스부터 국악 라이브까지',
+    title: '일산명월관요정 가이드 — 한정식 15첩과 국악 라이브가 펼쳐진다',
     excerpt: '일산요정 어디로 잡지? 일산명월관은 정발산 자락 대나무 정원에 자리 잡은 일산 권역 대표 전통 요정이다. 한정식 15첩·국악 라이브·다도 마무리 코스까지 직접 가본 정리. 거래처 모시는 자리, 헛걸음 없게 바로 확인.',
     tag: '요정',
     date: '2026-03-10',
@@ -70,7 +70,7 @@ export const articles: MagazineArticle[] = [
   },
   {
     id: 'edm-vs-social-dance',
-    title: 'EDM 파티홀 vs 소셜 댄스홀 — 완전히 다른 두 문화',
+    title: 'EDM 파티홀 vs 소셜 댄스홀 — 두 문화 한눈에 정리했다',
     excerpt: '어디 가야 할지 헷갈려? EDM 파티홀과 트로트·사교 댄스홀은 이름만 비슷할 뿐 연령대·복장·음악 5가지 모두 다르다. 모르고 가면 분위기 못 맞춰 후회한다, 한 표로 비교 정리했으니 바로 확인.',
     tag: '가이드',
     date: '2026-03-08',
@@ -91,7 +91,7 @@ export const articles: MagazineArticle[] = [
   },
   {
     id: 'first-dancehall-manner',
-    title: '처음 댄스홀 방문하는 분을 위한 매너 핸드북',
+    title: '처음 댄스홀 방문하는 분을 위한 매너 핸드북이다',
     excerpt: '소셜 댄스홀 처음인데 어색할까 걱정돼? 우리 회원이 첫방문 때 헤매던 6가지 — 복장·인사·파트너 청하는 법·자리 배치·퇴장 매너까지 한 권으로 정리. 모르면 어색해서 한 번 가고 끝, 미리 확인해서 헛걸음 없게 가자.',
     tag: '가이드',
     date: '2026-03-05',
@@ -115,7 +115,7 @@ export const articles: MagazineArticle[] = [
   },
   {
     id: 'hongdae-vs-itaewon',
-    title: '홍대·이태원 — 서울 양대 파티 타운 맞대결',
+    title: '홍대 vs 이태원 — 서울 양대 파티 타운 맞대결한다',
     excerpt: '오늘 밤 홍대? 이태원? 우리가 두 파티 타운 6가지 — 음악·분위기·접근성·연령대·외국인 비율·평균 소비까지 한 번에 비교했다. 잘못 가면 분위기 안 맞아서 후회, 가기 전에 바로 확인.',
     tag: '대결',
     date: '2026-03-03',
@@ -139,7 +139,7 @@ export const articles: MagazineArticle[] = [
   },
   {
     id: 'nationwide-dancehall-guide',
-    title: '전국 소셜 댄스홀 지역별 특징 총정리',
+    title: '전국 소셜 댄스홀 지역별 특징 한 번에 총정리했다',
     excerpt: '출장 가는 도시 댄스홀 어떨까? 서울·부산·대구·대전·울산·수원·인천 7개 도시 분위기·음악·연령대·복장 6가지 한 번에 비교. 모르고 가면 헛걸음, 미리 확인하고 출발하자.',
     tag: '정보',
     date: '2026-02-28',
@@ -166,7 +166,7 @@ export const articles: MagazineArticle[] = [
   },
   {
     id: 'weekly-hot-10-20260517',
-    title: '이번 주 핫플 TOP 10 — 5월 셋째 주 솔직 후기 1순위',
+    title: '이번 주 핫플 TOP 10 — 5월 셋째 주 솔직 후기다',
     excerpt: '이번 주 가본 핫플 10곳을 6 카테고리에서 1픽씩 골라 솔직 후기로 정리했다. 강남 EDM 클럽 레이스부터 일산 샴푸나이트, 해운대 고구려, 둔산동 한국관나이트까지. 5월 17일 기준 우리 픽.',
     tag: '주간',
     date: '2026-05-17',
