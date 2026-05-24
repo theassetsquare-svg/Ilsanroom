@@ -1,0 +1,19 @@
+name: Hoppa Keyword Watch (/hoppa 호빠 단일 키워드 상위노출 24h)
+
+on:
+  schedule:
+    # 매일 KST 10:00 (UTC 01:00) — pajuyadangskydome 09:55 직후
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run hoppa-keyword-watch
+        run: node scripts/hoppa-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
