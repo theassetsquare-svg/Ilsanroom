@@ -56,9 +56,15 @@ const isMd = file.endsWith('.md');
 const isHomePage = /HomePage\.(t|j)sx?$/.test(file);
 
 // 1) 가격 금지어 (사이트 전체)
-const PRICE = ['만원', '입장료', '가성비', '시세', '가격대'];
+// "만원" 은 가격 노출 컨텍스트에서만 차단. 혜택(차비/이벤트/쿠폰/사은품) 컨텍스트는 허용
+const PRICE = ['입장료', '가성비', '시세', '가격대'];
 for (const w of PRICE) {
   if (text.includes(w)) violations.push(`💸 가격단어 "${w}" 금지 (feedback_no_price_anywhere)`);
+}
+// "만원" 가격 노출 패턴만 차단 (룸비 30만원, 기본료 5만원, 입장 만원, 만원대/만원선/만원짜리 등)
+const MANWON_PRICE_RE = /(룸비|기본료|보증금|세팅비|입장(?!\s*가능)|메뉴|요금|가격|코스)\s*[\d일이삼사오육칠팔구십백천]*만원|[\d일이삼사오육칠팔구십백천]+\s*만원\s*(부터|이상|이하|선|대|짜리|상당)|만원대(?![가-힣])/;
+if (MANWON_PRICE_RE.test(text)) {
+  violations.push(`💸 가격 컨텍스트 "만원" 금지 (혜택/차비 컨텍스트는 허용)`);
 }
 
 // 2) 성인 금지어 / 가족 콘텐츠

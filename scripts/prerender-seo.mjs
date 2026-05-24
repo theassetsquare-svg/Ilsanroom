@@ -326,6 +326,8 @@ function parseVenues() {
     const desc = block.match(/description:\s*'([^']+)'/)?.[1];
     const staffNickname = block.match(/staffNickname:\s*'([^']+)'/)?.[1];
     const staffPhone = block.match(/staffPhone:\s*'([^']+)'/)?.[1];
+    const openHours = block.match(/openHours:\s*'([^']+)'/)?.[1];
+    const ageGroup = block.match(/ageGroup:\s*'([^']+)'/)?.[1];
     const address = block.match(/address:\s*'([^']+)'/)?.[1];
     const nearbyStation = block.match(/nearbyStation:\s*'([^']+)'/)?.[1];
     const latMatch = block.match(/lat:\s*([\d.]+)/);
@@ -358,6 +360,8 @@ function parseVenues() {
         description: desc || '',
         staffNickname: staffNickname || '',
         staffPhone: staffPhone || '',
+        openHours: openHours || '',
+        ageGroup: ageGroup || '',
         address: address || '',
         nearbyStation: nearbyStation || '',
         lat: latMatch ? parseFloat(latMatch[1]) : 0,
@@ -440,6 +444,18 @@ function generateVenueSsrBody(v, allVenues) {
 
   let html = `<article itemscope itemtype="https://schema.org/NightClub">`;
   html += `<h1 itemprop="name">${name}</h1>`;
+  // ★ SSR PhoneBar / 운영정보 — 검색엔진·AI 색인 + 클라이언트 hydration 전 노출 (시즌82)
+  if (v.staffPhone) {
+    const telDigits = v.staffPhone.replace(/-/g, '');
+    const staffLabel = v.staffNickname ? `${escHtml(v.staffNickname)} ` : '';
+    html += `<p class="ssr-phone"><a href="tel:${telDigits}" itemprop="telephone">📞 ${staffLabel}${escHtml(v.staffPhone)}</a></p>`;
+  }
+  if (v.openHours) {
+    html += `<p class="ssr-hours" itemprop="openingHours">⏰ 영업시간: ${escHtml(v.openHours)}</p>`;
+  }
+  if (v.ageGroup) {
+    html += `<p class="ssr-age">👤 입장 기준: ${escHtml(v.ageGroup)}</p>`;
+  }
   // 업소별 공식 백링크 — description 첫 발생 가게이름 1회만 anchor wrap (SSR HTML)
   const backlinks = {
     ilsanmyeongwolgwanyojeong: 'https://sunwook4.mycafe24.com/',
