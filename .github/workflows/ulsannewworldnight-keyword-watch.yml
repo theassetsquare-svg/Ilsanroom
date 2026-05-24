@@ -1,0 +1,19 @@
+name: Ulsannewworldnight Keyword Watch (울산뉴월드나이트 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 09:10 (UTC 00:10) — yeongdeungpoterminal 09:05 직후
+    - cron: '10 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run ulsannewworldnight-keyword-watch
+        run: node scripts/ulsannewworldnight-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
