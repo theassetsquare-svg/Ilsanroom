@@ -1,0 +1,19 @@
+name: Bucheonmeritnight Keyword Watch (부천메리트나이트 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 08:20 (UTC 23:20) — busanyeonsandongmulnight 08:15 직후
+    - cron: '20 23 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run bucheonmeritnight-keyword-watch
+        run: node scripts/bucheonmeritnight-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
