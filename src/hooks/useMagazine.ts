@@ -54,12 +54,8 @@ function fetchList(): Promise<MagazineArticle[] | null> {
       .eq('is_published', true)
       .order('date', { ascending: false })
   ).then(({ data, error }) => {
-    if (error) {
-      const msg = String((error as { message?: string }).message || '');
-      const code = String((error as { code?: string }).code || '');
-      if (/401|jwt|api key|unauthor/i.test(msg) || code === 'PGRST301') markSkip();
-      return null;
-    }
+    // 에러 발생시 즉시 마킹 (key 만료/회전/네트워크 모두 동일 처리)
+    if (error) { markSkip(); return null; }
     return data && data.length > 0 ? (data as DbArticle[]).map(dbToArticle) : null;
   }).catch(() => { markSkip(); return null; });
   listPromise = p;
