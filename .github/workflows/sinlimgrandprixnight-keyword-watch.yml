@@ -1,0 +1,19 @@
+name: Sinlimgrandprixnight Keyword Watch (신림그랑프리나이트 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 08:55 (UTC 23:55) — suyushampoo 08:50 직후
+    - cron: '55 23 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run sinlimgrandprixnight-keyword-watch
+        run: node scripts/sinlimgrandprixnight-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
