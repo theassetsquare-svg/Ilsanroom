@@ -1,0 +1,19 @@
+name: Ilsanshampoonight Keyword Watch (일산샴푸나이트 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 09:30 (UTC 00:30) — indeokvon 09:25 직후
+    - cron: '30 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run ilsanshampoonight-keyword-watch
+        run: node scripts/ilsanshampoonight-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
