@@ -1,0 +1,19 @@
+name: Cheonan Korea Keyword Watch (천안코리아나이트 + 천안나이트 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 09:50 (UTC 00:50) — cheonanstardom 09:45 직후
+    - cron: '50 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run cheonankorea-keyword-watch
+        run: node scripts/cheonankorea-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
