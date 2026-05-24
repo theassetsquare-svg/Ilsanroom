@@ -1,0 +1,19 @@
+name: Incheonarabiannight Keyword Watch (인천아라비안나이트 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 07:55 (UTC 22:55) — daejeononenight 07:50 직후
+    - cron: '55 22 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run incheonarabiannight-keyword-watch
+        run: node scripts/incheonarabiannight-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
