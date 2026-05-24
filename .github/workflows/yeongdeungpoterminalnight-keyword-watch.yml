@@ -1,0 +1,19 @@
+name: Yeongdeungpoterminalnight Keyword Watch (영등포터미널나이트 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 09:05 (UTC 00:05) — ansanhit 09:00 직후
+    - cron: '5 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run yeongdeungpoterminalnight-keyword-watch
+        run: node scripts/yeongdeungpoterminalnight-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
