@@ -29,6 +29,23 @@ function isDynamicSkip(href: string) {
   } catch { return false; }
 }
 
+// ★ 시즌71 — HTTP/2 stream limit (CF Pages ~6 동시) 회피 — concurrency 4 + 250ms stagger
+const MAX_CONCURRENT = 4;
+let inflight = 0;
+const queue: string[] = [];
+
+function drain() {
+  while (inflight < MAX_CONCURRENT && queue.length > 0) {
+    const key = queue.shift()!;
+    inflight++;
+    try {
+      fetch(key, { credentials: 'same-origin', priority: 'low' as any, mode: 'no-cors' })
+        .catch(() => {})
+        .finally(() => { inflight--; setTimeout(drain, 250); });
+    } catch { inflight--; }
+  }
+}
+
 function prefetch(href: string) {
   if (typeof window === 'undefined') return;
   if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
@@ -37,10 +54,8 @@ function prefetch(href: string) {
   const key = href.split('#')[0];
   if (prefetched.has(key)) return;
   prefetched.add(key);
-  // 브라우저 idle 때 HTML 미리 받기 → CF Pages edge cache hit + 클라이언트 캐시 활용
-  try {
-    fetch(key, { credentials: 'same-origin', priority: 'low' as any, mode: 'no-cors' }).catch(() => {});
-  } catch {}
+  queue.push(key);
+  drain();
 }
 
 export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(props, ref) {
