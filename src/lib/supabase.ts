@@ -30,6 +30,27 @@ function getSafeStorage(): Storage {
 
 export const safeStorage = getSafeStorage();
 
+// ★ 시즌73 — Supabase REST 동시 요청 큐 (HTTP/2 stream limit ~6 회피)
+// 홈 페이지에서 HomeFeed/TemperatureRanking/HomePage party fetch가 동시 폭발 →
+// ERR_HTTP2_SERVER_REFUSED_STREAM 5+건. 클라 측에서 max 4 동시로 throttle.
+const SB_MAX_CONCURRENT = 4;
+let sbInflight = 0;
+const sbWaiters: Array<() => void> = [];
+function sbAcquire(): Promise<void> {
+  if (sbInflight < SB_MAX_CONCURRENT) { sbInflight++; return Promise.resolve(); }
+  return new Promise(resolve => sbWaiters.push(() => { sbInflight++; resolve(); }));
+}
+function sbRelease() {
+  sbInflight--;
+  const next = sbWaiters.shift();
+  if (next) next();
+}
+async function queuedFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+  await sbAcquire();
+  try { return await fetch(input, init); }
+  finally { sbRelease(); }
+}
+
 // Client-side singleton — direct SDK queries, no API routes
 let clientInstance: ReturnType<typeof supabaseCreateClient<Database>> | null = null;
 
@@ -47,6 +68,7 @@ export function createClient() {
         storage: safeStorage,
         flowType: 'pkce',
       },
+      global: { fetch: queuedFetch },
     });
   }
   return clientInstance;
