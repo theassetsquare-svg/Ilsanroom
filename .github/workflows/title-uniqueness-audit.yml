@@ -1,0 +1,18 @@
+name: Title Uniqueness Audit (사이트 전체 후미 + HOOK 분포)
+
+on:
+  schedule:
+    # 매일 KST 07:35 (UTC 22:35)
+    - cron: '35 22 * * *'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run title-uniqueness-audit
+        run: node scripts/title-uniqueness-audit.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
