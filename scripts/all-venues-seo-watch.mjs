@@ -35,7 +35,7 @@ function fetchHtml(url) {
   });
 }
 
-function audit(html, venueName) {
+function audit(html, venueName, secondary) {
   const get = re => { const m = html.match(re); return m ? m[1].trim() : null; };
   const title = get(/<title>([^<]+)<\/title>/);
   const desc = get(/<meta\s+name="description"\s+content="([^"]+)"/i);
@@ -50,6 +50,13 @@ function audit(html, venueName) {
   const hookHit = HOOK_WORDS.filter(w => (title || '').includes(w) || (desc || '').includes(w));
   const titleWords = (title || '').replace(/[—,.\-]/g, ' ').split(/\s+/).filter(w => w.length >= 2);
   const dupTitle = titleWords.filter((w, i) => titleWords.indexOf(w) !== i);
+  // ★ 시즌69 — secondary 키워드 (지역+카테고리) 측정
+  // primary가 secondary를 prefix로 포함하는 경우 (예: "강남청담클럽 라퓨타" ⊃ "강남클럽"X)
+  // → secondary 단독 등장만 카운트 (venueName 매치 제외)
+  let secondaryCount = 0;
+  if (secondary && text.length) {
+    secondaryCount = (text.match(new RegExp(secondary.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length;
+  }
 
   return {
     title, desc, h1, titleLen: (title || '').length, descLen: (desc || '').length, h1Len: h1.length,
@@ -59,6 +66,7 @@ function audit(html, venueName) {
     dupTitleCount: dupTitle.length,
     nolcoolInTitle: /놀쿨/.test(title || ''),
     hasOgImg: !!ogImg, hasCanonical: !!canonical,
+    secondary, secondaryCount,
   };
 }
 
@@ -78,6 +86,8 @@ function reasons(r, venueName) {
   if (r.imgCount < 1) out.push('img 0');
   if (r.density > 0.035) out.push(`밀도 ${(r.density * 100).toFixed(2)}%`);
   if (r.hookCount === 0) out.push('후킹 0');
+  // ★ 시즌69 — secondary 키워드 body 등장 < 3회시 회귀
+  if (r.secondary && r.secondaryCount < 3) out.push(`${r.secondary} ${r.secondaryCount}회`);
   return out;
 }
 
@@ -85,9 +95,17 @@ async function main() {
   if (!RESEND_API_KEY) { console.error('RESEND_API_KEY 없음'); process.exit(1); }
 
   const vfile = readFileSync('src/data/venues.ts', 'utf8');
-  const blocks = [...vfile.matchAll(/slug:\s*'([^']+)'[\s\S]*?nameKo:\s*'([^']+)'/g)];
-  const slugToName = {};
-  for (const m of blocks) slugToName[m[1]] = m[2];
+  // ★ 시즌69 — slug → {name, secondary} 매핑 (regionKo + catKo)
+  const CAT_KO = { club: '클럽', night: '나이트', room: '룸', yojeong: '요정', lounge: '라운지', hoppa: '호빠' };
+  const blocks = [...vfile.matchAll(/slug:\s*'([^']+)'[\s\S]*?nameKo:\s*'([^']+)'[\s\S]*?category:\s*'([^']+)'[\s\S]*?regionKo:\s*'([^']+)'/g)];
+  const slugToMeta = {};
+  for (const m of blocks) {
+    const [, slug, nameKo, cat, regionKo] = m;
+    const catKo = CAT_KO[cat] || cat;
+    slugToMeta[slug] = { name: nameKo, secondary: `${regionKo}${catKo}` };
+  }
+  // 호환성 — 기존 slugToName 인터페이스 유지
+  const slugToName = Object.fromEntries(Object.entries(slugToMeta).map(([k, v]) => [k, v.name]));
   console.log('venues.ts:', Object.keys(slugToName).length);
 
   const sm = await fetch('https://nolcool.com/sitemap.xml');
@@ -106,10 +124,11 @@ async function main() {
     const batch = targets.slice(i, i + 8);
     const br = await Promise.all(batch.map(async (path) => {
       const slug = path.split('/').filter(Boolean).pop();
-      const venueName = slugToName[slug];
+      const meta = slugToMeta[slug] || { name: slugToName[slug], secondary: '' };
+      const venueName = meta.name;
       const r = await fetchHtml('https://nolcool.com' + path);
       if (r.status !== 200) return { path, slug, venueName, status: r.status };
-      const a = audit(r.html, venueName);
+      const a = audit(r.html, venueName, meta.secondary);
       return { path, slug, venueName, status: 200, ...a };
     }));
     results.push(...br);

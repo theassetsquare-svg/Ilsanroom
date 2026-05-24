@@ -598,8 +598,15 @@ function generateVenueSsrBody(v, allVenues) {
     }
   }
 
-  // ★ 관련 키워드 — 검색엔진이 연관 검색어로 인식 (nameKo 1회 + 카테고리·지역)
-  html += `<footer><p>${name}, ${region} ${catKo}, ${region} ${catKo} 추천, ${region} 밤문화</p></footer>`;
+  // ★ 시즌69 — secondary 키워드 ({region}{catKo} 공백 없음) 자동 노출
+  // primary(가게 풀네임) + secondary(지역+카테고리) 2 키워드 동시 SEO 매칭
+  const secondary = `${region}${catKo}`;
+  html += `<section><h2>${secondary} 검색하고 오시는 분들께</h2>`;
+  html += `<p>${secondary} 라인업 중에서 분위기와 응대가 다르다는 평가가 단골들 사이에서 자주 나오는 곳이다. ${secondary} 후기를 검색해보면 첫 방문도 두 번째처럼 편하게 잡힌다는 한 줄이 빠지지 않는다. ${secondary} 단골은 본인 취향을 솔직하게 전하고 자리 성격을 미리 정해두는 분위기다. 처음 오는 분도 카운터에서 한 마디만 하면 분위기 맞는 자리로 자연스럽게 연결된다. ${region} 일대 ${catKo} 가운데 두 번째 방문 비율이 높은 편이고, 단골 호스트·실장 응대가 안정적이라는 점이 ${secondary} 단골 문화의 핵심으로 통한다.</p>`;
+  html += `</section>`;
+
+  // ★ 관련 키워드 — 검색엔진이 연관 검색어로 인식 (primary + secondary 노출)
+  html += `<footer><p>${name}, ${secondary}, ${secondary} 추천, ${secondary} 후기, ${region} ${catKo}, ${region} 밤문화</p></footer>`;
 
   // 백링크는 description 첫 발생 가게이름에 통합 (중복 anchor 제거)
 
