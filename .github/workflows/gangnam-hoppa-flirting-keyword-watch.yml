@@ -1,0 +1,19 @@
+name: Gangnam Hoppa Flirting Keyword Watch (강남호빠+서울호빠 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 10:20 (UTC 01:20) — gangnam-hoppa-again 10:15 직후
+    - cron: '20 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run gangnam-hoppa-flirting-keyword-watch
+        run: node scripts/gangnam-hoppa-flirting-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
