@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-24T14:23:41.729Z",
+  "generated_at": "2026-05-24T17:50:31.351Z",
   "window_hours": 24,
   "items": [
     {
@@ -8,6 +8,20 @@
       "category": "night",
       "region": "부산",
       "views_24h": 5
+    },
+    {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
+      "views_24h": 4
+    },
+    {
+      "path": "/clubs/daejeon/daejeonsugarclub",
+      "title": "대전설탕클럽",
+      "category": "club",
+      "region": "대전",
+      "views_24h": 4
     },
     {
       "path": "/hoppa/jeonju-hoppa-gallery",
@@ -59,13 +73,6 @@
       "views_24h": 3
     },
     {
-      "path": "/clubs/daejeon/daejeonsugarclub",
-      "title": "대전설탕클럽",
-      "category": "club",
-      "region": "대전",
-      "views_24h": 3
-    },
-    {
       "path": "/clubs/itaewon/itaewon-savage",
       "title": "이태원클럽 세비지",
       "category": "club",
@@ -98,13 +105,6 @@
       "title": "홍대호빠",
       "category": "hoppa",
       "region": "홍대",
-      "views_24h": 2
-    },
-    {
-      "path": "/hoppa/jangandong-hoppa-flex",
-      "title": "장안동호빠 플렉스",
-      "category": "hoppa",
-      "region": "장안동",
       "views_24h": 2
     }
   ]
