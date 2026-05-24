@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { createClient } from '@/lib/supabase';
+import { createClient, SUPABASE_ANON_KEY } from '@/lib/supabase';
 import { articles as localArticles, type MagazineArticle } from '@/data/magazine-articles';
 
 interface DbArticle {
@@ -18,22 +18,24 @@ function dbToArticle(r: DbArticle): MagazineArticle {
   return { id: r.id, title: r.title, excerpt: r.excerpt, tag: r.tag, date: r.date, content: r.content };
 }
 
-// ★ 시즌70 — anon key 401(만료/회전)시 sessionStorage 마킹으로 같은 세션 내 재호출 skip
-// → 14 magazine 페이지 × 2vp = 28건 콘솔 401 노이즈 0건. DB 정상화 후 새 세션부터 자동 복귀.
+// ★ 시즌70 — anon key 401(만료/회전)시 localStorage 영구 마킹 (key prefix 기반 자동 만료)
+// 새 빌드에 새 key가 박히면 prefix 불일치로 마킹 자동 해제 → DB 자동 복귀
 const SKIP_KEY = 'nolcool-magazine-db-401';
+const KEY_FINGERPRINT = (SUPABASE_ANON_KEY || '').slice(0, 24);
 let memSkip = false;
 function isSkipped(): boolean {
   if (memSkip) return true;
   try {
-    if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem(SKIP_KEY) === '1') {
-      memSkip = true; return true;
-    }
+    if (typeof localStorage === 'undefined') return false;
+    const v = localStorage.getItem(SKIP_KEY);
+    if (v && v === KEY_FINGERPRINT) { memSkip = true; return true; }
+    if (v && v !== KEY_FINGERPRINT) { localStorage.removeItem(SKIP_KEY); }
   } catch { /* noop */ }
   return false;
 }
 function markSkip() {
   memSkip = true;
-  try { if (typeof sessionStorage !== 'undefined') sessionStorage.setItem(SKIP_KEY, '1'); } catch { /* noop */ }
+  try { if (typeof localStorage !== 'undefined') localStorage.setItem(SKIP_KEY, KEY_FINGERPRINT); } catch { /* noop */ }
 }
 
 // ★ Promise singleton — 같은 페이지에서 useArticle+useArticles 동시 마운트시 fetch 1회만 발사
