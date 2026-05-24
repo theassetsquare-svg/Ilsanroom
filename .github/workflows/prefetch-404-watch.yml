@@ -1,0 +1,30 @@
+name: prefetch-404-watch
+
+# 매일 KST 06:55 (UTC 21:55 전날) — SafeLink prefetch 404 회귀 감시
+# 새 동적 라우트 추가 시 DYNAMIC_PREFETCH_SKIP 누락을 자동 catch.
+on:
+  schedule:
+    - cron: '55 21 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install puppeteer-core
+        run: npm ci
+      - name: Install chromium
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y chromium-browser
+      - name: Run watch
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: theassetsquare@gmail.com
+          PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
+        run: node scripts/prefetch-404-watch.mjs

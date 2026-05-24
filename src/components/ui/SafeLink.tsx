@@ -13,10 +13,27 @@ import { Link as RouterLink, LinkProps } from 'react-router-dom';
 
 const prefetched = new Set<string>();
 
+// ★ 시즌71 — prerender 없는 동적 라우트는 prefetch skip (404 회피)
+// 일반 사용자 클릭 navigation은 SPA가 처리 (영향 없음)
+const DYNAMIC_PREFETCH_SKIP = [
+  /^\/community\/post\//,
+  /^\/messages\//,
+  /^\/profile\/[^/]+$/,
+  /^\/u\//,
+];
+
+function isDynamicSkip(href: string) {
+  try {
+    const path = href.startsWith('http') ? new URL(href).pathname : href.split('?')[0].split('#')[0];
+    return DYNAMIC_PREFETCH_SKIP.some(re => re.test(path));
+  } catch { return false; }
+}
+
 function prefetch(href: string) {
   if (typeof window === 'undefined') return;
   if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
   if (/^https?:\/\//i.test(href) && !href.includes(window.location.host)) return;
+  if (isDynamicSkip(href)) return;
   const key = href.split('#')[0];
   if (prefetched.has(key)) return;
   prefetched.add(key);
