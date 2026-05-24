@@ -7,6 +7,7 @@
  *   NOTIFICATION_EMAIL 기본 theassetsquare@gmail.com
  */
 import https from 'https';
+import { analyzeHook } from './lib/hook-detector.mjs';
 
 const CATS = [
   { path: '/clubs/',   kw: '클럽' },
@@ -19,7 +20,7 @@ const CATS = [
 const BASE = 'https://nolcool.com';
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
-const HOOK_WORDS = ['진짜', '솔직히', '직접', '한번', '왜', '이유', '한번쯤', '다녀온', '후기', '꿀팁', '이것만', '단골', '정석', '티어', '거를', '짠밥', '갈 곳'];
+// 시즌78: HOOK 화이트리스트 폐기. lib/hook-detector 5축 구조 패턴 사용.
 
 function fetchHtml(url) {
   return new Promise((res, rej) => {
@@ -53,7 +54,9 @@ function audit(html, KW) {
   const kwVisible = (text.match(new RegExp(KW, 'g')) || []).length;
   const density = (kwVisible * KW.length) / text.length;
 
-  const hookHit = HOOK_WORDS.filter(w => (title || '').includes(w) || (desc || '').includes(w));
+  const hookTitle = analyzeHook(title);
+  const hookDesc = analyzeHook(desc);
+  const hookAxesHit = Math.max(hookTitle.axesHit, hookDesc.axesHit);
   const titleWords = (title || '').split(/\s+/).filter(w => w.length >= 2);
   const dupWordInTitle = titleWords.some((w, i) => titleWords.indexOf(w) !== i);
 
@@ -67,7 +70,7 @@ function audit(html, KW) {
     kwInDesc: (desc || '').includes(KW),
     kwInH1: h1.includes(KW),
     kwVisible, textLen: text.length, density,
-    hookHit, hookCount: hookHit.length,
+    hookAxesHit,
     nolcoolInTitle: /놀쿨/.test(title || ''),
     dupWordInTitle,
   };
@@ -94,7 +97,7 @@ function score(a, KW) {
     { k: 'JSON-LD ≥2', ok: a.jsonLdBlocks >= 2 },
     { k: 'img ≥1', ok: a.imgCount >= 1 },
     { k: densLabel, ok: a.density >= densMin && a.density <= densMax },
-    { k: '후킹 단어 ≥1', ok: a.hookCount >= 1 },
+    { k: '후킹 5축 ≥1축 (title/desc)', ok: a.hookAxesHit >= 1 },
   ];
   const pass = checks.filter(c => c.ok).length;
   return { pass, total: checks.length, checks, fails: checks.filter(c => !c.ok) };
@@ -112,7 +115,7 @@ async function main() {
     if (r.status !== 200) { results.push({ path, kw, status: r.status, audit: null, scoreRes: null }); continue; }
     const a = audit(r.html, kw);
     const s = score(a, kw);
-    console.log(`  점수: ${s.pass}/${s.total} / 밀도 ${(a.density * 100).toFixed(2)}% / H2 ${a.h2Count} / 후킹 ${a.hookCount}`);
+    console.log(`  점수: ${s.pass}/${s.total} / 밀도 ${(a.density * 100).toFixed(2)}% / H2 ${a.h2Count} / 후킹 5축 ${a.hookAxesHit}`);
     for (const c of s.fails) console.log(`    ✗ ${c.k}`);
     results.push({ path, kw, status: 200, audit: a, scoreRes: s });
   }

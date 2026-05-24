@@ -19,10 +19,11 @@
  */
 import https from 'https';
 import { readFileSync } from 'fs';
+import { analyzeHook } from './lib/hook-detector.mjs';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
-const HOOK_WORDS = ['진짜', '솔직히', '직접', '한번', '왜', '이유', '한번쯤', '다녀온', '후기', '꿀팁', '이것만', '단골', '정석', '티어'];
+// 시즌78: HOOK 화이트리스트 폐기. lib/hook-detector 5축 구조 패턴 사용.
 
 function fetchHtml(url) {
   return new Promise((res) => {
@@ -47,7 +48,7 @@ function audit(html, venueName, secondary) {
   const text = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   const kwVisible = venueName ? (text.match(new RegExp(venueName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length : 0;
   const density = venueName && text.length ? (kwVisible * venueName.length) / text.length : 0;
-  const hookHit = HOOK_WORDS.filter(w => (title || '').includes(w) || (desc || '').includes(w));
+  const hookAxesHit = Math.max(analyzeHook(title).axesHit, analyzeHook(desc).axesHit);
   const titleWords = (title || '').replace(/[—,.\-]/g, ' ').split(/\s+/).filter(w => w.length >= 2);
   const dupTitle = titleWords.filter((w, i) => titleWords.indexOf(w) !== i);
   // ★ 시즌69 — secondary 키워드 (지역+카테고리) 측정
@@ -60,7 +61,7 @@ function audit(html, venueName, secondary) {
 
   return {
     title, desc, h1, titleLen: (title || '').length, descLen: (desc || '').length, h1Len: h1.length,
-    ldCount, imgCount, density, hookCount: hookHit.length,
+    ldCount, imgCount, density, hookAxesHit,
     kwInTitle: (title || '').includes(venueName),
     kwInDesc: (desc || '').includes(venueName),
     dupTitleCount: dupTitle.length,
@@ -85,7 +86,7 @@ function reasons(r, venueName) {
   if (r.ldCount < 3) out.push(`JSON-LD ${r.ldCount}`);
   if (r.imgCount < 1) out.push('img 0');
   if (r.density > 0.035) out.push(`밀도 ${(r.density * 100).toFixed(2)}%`);
-  if (r.hookCount === 0) out.push('후킹 0');
+  if (r.hookAxesHit === 0) out.push('후킹 5축 0 (title/desc 모두)');
   // ★ 시즌69 — secondary 키워드 body 등장 < 3회시 회귀
   if (r.secondary && r.secondaryCount < 3) out.push(`${r.secondary} ${r.secondaryCount}회`);
   return out;

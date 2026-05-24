@@ -8,12 +8,13 @@
  *   TARGET_URL         기본 https://nolcool.com/nights/
  */
 import https from 'https';
+import { analyzeHook } from './lib/hook-detector.mjs';
 
 const TARGET = process.env.TARGET_URL || 'https://nolcool.com/nights/';
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const KW = '나이트';
-const HOOK_WORDS = ['진짜', '솔직히', '직접', '한번', '왜', '이유', '한번쯤', '다녀온', '후기', '꿀팁', '이것만', '단골', '정석', '티어', '거를', '짠밥', '갈 곳'];
+// 시즌78: HOOK 화이트리스트 폐기. lib/hook-detector 5축 구조 패턴 사용.
 
 function fetchHtml(url) {
   return new Promise((res, rej) => {
@@ -47,7 +48,10 @@ function audit(html) {
   const kwVisible = (text.match(new RegExp(KW, 'g')) || []).length;
   const density = (kwVisible * KW.length) / text.length;
 
-  const hookHit = HOOK_WORDS.filter(w => (title || '').includes(w) || (desc || '').includes(w));
+  const hookTitle = analyzeHook(title);
+  const hookDesc = analyzeHook(desc);
+  const hookAxesHit = Math.max(hookTitle.axesHit, hookDesc.axesHit);
+  const hookSamples = [...hookTitle.axes, ...hookDesc.axes].filter(a => a.hits > 0).map(a => `${a.axis}(${a.samples.join('|')})`);
   const titleWords = (title || '').split(/\s+/).filter(w => w.length >= 2);
   const dupWordInTitle = titleWords.some((w, i) => titleWords.indexOf(w) !== i);
 
@@ -61,7 +65,7 @@ function audit(html) {
     kwInDesc: (desc || '').includes(KW),
     kwInH1: h1.includes(KW),
     kwVisible, textLen: text.length, density,
-    hookHit, hookCount: hookHit.length,
+    hookAxesHit, hookSamples,
     nolcoolInTitle: /놀쿨/.test(title || ''),
     dupWordInTitle,
   };
@@ -83,7 +87,7 @@ function score(a) {
     { k: 'JSON-LD ≥2', ok: a.jsonLdBlocks >= 2 },
     { k: 'img ≥1', ok: a.imgCount >= 1 },
     { k: '키워드 밀도 1.5~3.0%', ok: a.density >= 0.015 && a.density <= 0.030 },
-    { k: '후킹 단어 ≥1', ok: a.hookCount >= 1 },
+    { k: '후킹 5축 ≥1축 (title/desc)', ok: a.hookAxesHit >= 1 },
   ];
   const pass = checks.filter(c => c.ok).length;
   return { pass, total: checks.length, checks, fails: checks.filter(c => !c.ok) };
@@ -108,7 +112,7 @@ async function main() {
   console.log(`desc (${a.descLen}자): ${a.desc}`);
   console.log(`키워드 밀도: ${(a.density * 100).toFixed(2)}% (visible ${a.kwVisible}회 / ${a.textLen}자)`);
   console.log(`H2 블록: ${a.h2Count}개 / JSON-LD: ${a.jsonLdBlocks}블록`);
-  console.log(`후킹 단어: ${a.hookHit.join(',') || '(없음)'}`);
+  console.log(`후킹 5축: ${a.hookAxesHit}축 — ${a.hookSamples.join(', ') || '(없음)'}`);
 
   if (s.pass < s.total) {
     console.log(`\n⚠ ${s.fails.length}건 회귀 — 메일 발송`);
@@ -139,7 +143,7 @@ async function sendMail({ status, scoreRes, audit: a }) {
         <tr><td style="padding:6px 12px;background:#F3F4F6;font-weight:600">canonical</td><td style="padding:6px 12px">${esc(a.canonical)}</td></tr>
         <tr><td style="padding:6px 12px;background:#F3F4F6;font-weight:600">H2 / JSON-LD</td><td style="padding:6px 12px">H2 ${a.h2Count}개 / JSON-LD ${a.jsonLdBlocks}블록</td></tr>
         <tr><td style="padding:6px 12px;background:#F3F4F6;font-weight:600">키워드 밀도</td><td style="padding:6px 12px"><b>${(a.density * 100).toFixed(2)}%</b> (${a.kwVisible}회 / ${a.textLen}자)</td></tr>
-        <tr><td style="padding:6px 12px;background:#F3F4F6;font-weight:600">후킹 단어</td><td style="padding:6px 12px">${esc(a.hookHit.join(', ') || '(없음)')}</td></tr>
+        <tr><td style="padding:6px 12px;background:#F3F4F6;font-weight:600">후킹 5축</td><td style="padding:6px 12px">${a.hookAxesHit}축 — ${esc(a.hookSamples.join(', ') || '(없음)')}</td></tr>
       </table>
       <p style="color:#9CA3AF;font-size:11px;margin-top:20px">매일 KST 07:00 자동 — nights-seo-audit.mjs (실패시만 발송)</p>
     </div>`;
