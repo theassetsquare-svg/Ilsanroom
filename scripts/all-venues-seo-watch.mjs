@@ -11,7 +11,7 @@
  *   6) og:image + canonical 존재
  *   7) h1 ≥10자
  *   8) JSON-LD ≥3 + img ≥1
- *   9) 키워드 밀도 ≤3.5% + 후킹 단어 ≥1
+ *   9) 키워드 밀도 ≤3.5% + 후킹 단어 ≥1 (운영 임계 3.0%은 venue-density-audit 별도)
  *
  * 환경:
  *   RESEND_API_KEY     필수
