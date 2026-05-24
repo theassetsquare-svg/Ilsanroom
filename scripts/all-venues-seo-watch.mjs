@@ -102,7 +102,9 @@ async function main() {
   for (const m of blocks) {
     const [, slug, nameKo, cat, regionKo] = m;
     const catKo = CAT_KO[cat] || cat;
-    slugToMeta[slug] = { name: nameKo, secondary: `${regionKo}${catKo}` };
+    // regionKo 공백 포함시 마지막 토큰만 ("부산 해운대" → "해운대")
+    const lastRegion = (regionKo || '').split(/\s+/).filter(Boolean).pop() || regionKo;
+    slugToMeta[slug] = { name: nameKo, secondary: `${lastRegion}${catKo}` };
   }
   // 호환성 — 기존 slugToName 인터페이스 유지
   const slugToName = Object.fromEntries(Object.entries(slugToMeta).map(([k, v]) => [k, v.name]));
