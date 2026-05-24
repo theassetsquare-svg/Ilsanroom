@@ -1,0 +1,23 @@
+name: supabase-401-watch
+
+# 매일 KST 06:50 (UTC 21:50 전날) — Supabase anon key 401 회귀 감시
+# 키 만료/회전시 즉시 이메일 알림. 실패시만 메일.
+on:
+  schedule:
+    - cron: '50 21 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run watch
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: theassetsquare@gmail.com
+        run: node scripts/supabase-401-watch.mjs
