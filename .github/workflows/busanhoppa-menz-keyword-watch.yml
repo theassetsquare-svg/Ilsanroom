@@ -1,0 +1,19 @@
+name: Busanhoppa Menz Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 10:40 (UTC 01:40) — daejeonhoppa-eclipse 10:35 직후
+    - cron: '40 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run busanhoppa-menz-keyword-watch
+        run: node scripts/busanhoppa-menz-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
