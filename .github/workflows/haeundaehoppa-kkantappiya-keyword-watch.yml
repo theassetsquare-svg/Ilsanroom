@@ -1,0 +1,19 @@
+name: Haeundae Hoppa Kkantappiya Keyword Watch (해운대호빠+부산호빠 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 10:05 (UTC 01:05) — hoppa 카테고리 10:00 직후
+    - cron: '5 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run haeundaehoppa-kkantappiya-keyword-watch
+        run: node scripts/haeundaehoppa-kkantappiya-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
