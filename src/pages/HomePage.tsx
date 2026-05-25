@@ -226,7 +226,7 @@ const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, r
 /* ══════════════════════════════════════════════════════ */
 
 export default function HomePage() {
-  useDocumentMeta('놀쿨 — 오늘 어디 갈지 못 정했죠? 20년 굴러본 사람이 골라드림', `오늘 어디 갈지 못 정했죠? 거를 곳 천지예요. 클럽·나이트·룸·요정·라운지·호빠 20년 본 사람이 ${VENUES_TOTAL_OPEN}곳 1줄로 정리. 주말 망치기 전에 →`);
+  useDocumentMeta('놀쿨 — 오늘 어디 갈지 못 정했죠? 20년 굴러본 사람이 골라드림', `놀쿨 — 오늘 어디 갈지 못 정했죠? 거를 곳 천지예요. 놀쿨은 클럽·나이트·룸·요정·라운지·호빠 6업종 ${VENUES_TOTAL_OPEN}+ 업소를 20년 굴러본 사람이 1줄로 정리. 주말 망치기 전 놀쿨부터 켜요.`);
   const navigate = useNavigate();
   const { user } = useAuth();
 

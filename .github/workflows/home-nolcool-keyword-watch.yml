@@ -1,0 +1,19 @@
+name: Home Nolcool Keyword Watch (홈 놀쿨 단일 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 14:00 (UTC 05:00) — 시즌154
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run home-nolcool-keyword-watch
+        run: node scripts/home-nolcool-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
