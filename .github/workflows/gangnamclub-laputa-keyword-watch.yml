@@ -1,0 +1,19 @@
+name: Gangnamclub Laputa Keyword Watch (강남클럽·청담클럽 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 12:15 (UTC 03:15) — 시즌132
+    - cron: '15 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run gangnamclub-laputa-keyword-watch
+        run: node scripts/gangnamclub-laputa-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
