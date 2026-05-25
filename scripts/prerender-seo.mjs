@@ -1221,6 +1221,61 @@ for (const v of venues) {
   regionsByCategory[key][v.region] = v.regionKo;
 }
 
+// 시즌134: 지역×카테고리별 title 후미 5어절·desc 시그니처 unique 매핑
+// 동일 후미 "오늘 밤 갈 곳 여기서 고른다" 15× 중복 → 강남클럽/청담클럽 등 부모 페이지 카니발리제이션 회귀.
+// 각 region은 (a) 후미 5어절 unique (b) regionKo·"클럽" 단어 중복 X (c) 후킹 5축 ≥1 + 구체 시그니처 토큰
+const REGIONAL_SIG = {
+  club: {
+    gangnam:    { tail: '마니아가 매주 도는 핵심 라인업',     sig: '클러버 단골이 자정 넘어 도는 강남 핵심 라인업' },
+    apgujeong:  { tail: '단골이 새벽까지 머무는 자리',        sig: '로데오 단골이 새벽 5시까지 머무는 압구정 코스' },
+    cheongdam:  { tail: '멤버십 단골만 아는 셋 리스트',       sig: '청담 멤버십 단골만 아는 비공개 셋과 게스트 라인업' },
+    itaewon:    { tail: '외국인 게스트 DJ 부킹 거점',         sig: '이태원 외국인 게스트 DJ 부킹 거점 비교' },
+    hongdae:    { tail: '인디 감성과 EDM 같이 흐른다',        sig: '홍대 인디 감성과 EDM 라인업이 동시에 흐르는 거점' },
+    nowon:      { tail: '동북권 단골 자정 거점 모음',         sig: '노원 동북권 단골이 자정 전 모이는 거점' },
+    yongsan:    { tail: '한강뷰 옥상 라운지가 같이 있다',     sig: '용산 한강뷰 옥상 라운지와 댄스 플로어가 같이 있는 거점' },
+    seoul:      { tail: '광역 클러버 거점 한 페이지 비교',    sig: '서울 광역 클러버가 한 페이지에서 거점 비교' },
+    ilsan:      { tail: '호수공원 코스 묶어 잡는 자리',       sig: '일산 호수공원 산책 후 자정 입장하는 단골 동선' },
+    uijeongbu:  { tail: '1호선 막차까지 노는 거점',           sig: '의정부 1호선 막차 시간까지 머무는 동북권 거점' },
+    yongin:     { tail: '죽전·수지 단골 30분 동선',           sig: '용인 죽전·수지 단골 30분 안 동선 거점' },
+    bucheon:    { tail: '7호선 환승 동선이 짧다',             sig: '부천 7호선 환승객 동선이 짧은 거점' },
+    incheon:    { tail: '송도·구월동 클러버 거점 정리',       sig: '인천 송도·구월동 클러버 거점이 한 페이지에 정리' },
+    cheongju:   { tail: '성안길 30대 클러버 핫스팟',          sig: '청주 성안길 일대 30대 클러버 핫스팟 비교' },
+    daejeon:    { tail: '둔산동 신·구 핫스팟 한눈에',         sig: '대전 둔산동 신·구 핫스팟이 한 페이지에서 한눈에' },
+  },
+  room: {
+    ilsan:           { tail: '단골이 인원수 미리 일러주는 동선', sig: '일산 단골이 인원수와 시간 미리 일러주는 예약 동선' },
+    'busan-haeundae':{ tail: '해변 코스 묶어 잡는 자리',         sig: '해운대 해수욕장 산책 후 묶어 잡는 단골 코스' },
+  },
+  yojeong: {
+    ilsan: { tail: '국악 라이브 정찬 단골 코스', sig: '일산 가야금 라이브와 15첩 정찬 단골 코스' },
+  },
+};
+function regionalTitleDesc(cat, region, regionKo, count, allNames) {
+  const m = (REGIONAL_SIG[cat] || {})[region];
+  if (cat === 'club') {
+    const tail = m ? m.tail : `${count}곳 비교 한눈에 정리되는 핫스팟`;
+    const sig = m ? m.sig : `${regionKo} 광역 단골이 도는 핵심 거점`;
+    return {
+      title: `${regionKo} 클럽 ${count}곳 — ${tail}`,
+      desc: `${regionKo} 클럽 ${count}곳 — ${sig}. ${allNames} 등 분위기·드레스코드·게스트 라인업·부킹 문화·첫방문 매너까지 비교하고 골라보세요.`,
+    };
+  } else if (cat === 'room') {
+    const tail = m ? m.tail : `${count}곳 인원·구성 한눈에 비교`;
+    const sig = m ? m.sig : `${regionKo} 단골이 인원수 미리 일러주는 예약 동선`;
+    return {
+      title: `${regionKo} 룸 ${count}곳 — ${tail}`,
+      desc: `${regionKo} 룸 ${count}곳 — ${sig}. ${allNames} 등 4인 소형부터 30인 단체석, 양주 라인업·룸 구성·예약 팁까지 모임 전 비교.`,
+    };
+  } else {
+    const tail = m ? m.tail : `${count}곳 격조 코스 비교 정리`;
+    const sig = m ? m.sig : `${regionKo} 단골이 모시는 정찬 코스`;
+    return {
+      title: `${regionKo} 요정 ${count}곳 — ${tail}`,
+      desc: `${regionKo} 요정 ${count}곳 — ${sig}. ${allNames} 등 정찬 15첩·국악 라이브·프라이빗 룸, 비즈니스 만찬 코스·예약·드레스코드 매너까지 바로 확인.`,
+    };
+  }
+}
+
 let regionalCount = 0;
 for (const [cat, regions] of Object.entries(regionsByCategory)) {
   const cm = catMap[cat];
@@ -1230,20 +1285,8 @@ for (const [cat, regions] of Object.entries(regionsByCategory)) {
   if (['club', 'room', 'yojeong'].includes(cat)) {
     for (const [region, regionKo] of Object.entries(regions)) {
       const regionVenues = venues.filter(vv => vv.cat === cat && vv.region === region);
-      let title, desc;
-      const topVenue = regionVenues[0];
-      const topName = topVenue ? topVenue.nameKo : '';
       const allNames = regionVenues.slice(0, 3).map(vv => vv.nameKo).join(', ');
-      if (cat === 'club') {
-        title = `${regionKo} 클럽 ${regionVenues.length}곳 — 오늘 밤 갈 곳 여기서 고른다`;
-        desc = `${regionKo} 클럽 ${regionVenues.length}곳 실시간 비교. ${allNames} 등 분위기·드레스코드·영업시간·후기·게스트 라인업·부킹 문화·첫방문 매너까지 한눈에 확인하고 골라보세요. EDM·힙합·테크노 ${regionKo} 인기 핫스팟 정리.`;
-      } else if (cat === 'room') {
-        title = `${regionKo} 룸 ${regionVenues.length}곳 — 인원수 말하면 딱 맞게 세팅`;
-        desc = `${regionKo}에서 룸 어디가 진짜야? ${allNames} 등 ${regionVenues.length}곳 — 4인 소형부터 30인 단체석까지 인원별 사이즈, 양주 라인업 5종, 룸 구성, 예약 팁까지 모임 전 바로 확인.`;
-      } else {
-        title = `${regionKo} 요정 ${regionVenues.length}곳 — 격이 다른 만찬의 시작`;
-        desc = `${regionKo}에서 격 있는 자리 어디로 모실까? ${allNames} 등 ${regionVenues.length}곳 — 정찬 15첩 코스·국악 라이브·프라이빗 룸, 비즈니스 만찬 코스 구성, 예약·드레스코드 매너까지 바로 확인.`;
-      }
+      const { title, desc } = regionalTitleDesc(cat, region, regionKo, regionVenues.length, allNames);
       // SSR: 해당 지역 업소 이름 + 상세 설명 전부 포함
       let regSsr = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
       regSsr += `<h2>${escHtml(regionKo)} ${catLabelMap[cat]} ${regionVenues.length}곳</h2><ul>`;
