@@ -1,0 +1,19 @@
+name: Hongdae Maid Keyword Watch (홍대클럽 단일 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 13:45 (UTC 04:45) — 시즌151
+    - cron: '45 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run hongdaeclub-maid-keyword-watch
+        run: node scripts/hongdaeclub-maid-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
