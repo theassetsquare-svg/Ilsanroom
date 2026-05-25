@@ -115,7 +115,7 @@ async function main() {
     await sendMail({ failed });
     process.exit(1);
   }
-  console.log('✅ 전 카테고리 8 UI 패턴 통과');
+  console.log(`✅ 전 카테고리 ${MARKERS.length} UI 패턴 통과`);
 }
 
 async function sendMail({ failed }) {
