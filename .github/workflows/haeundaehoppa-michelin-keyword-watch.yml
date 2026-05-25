@@ -1,0 +1,19 @@
+name: Haeundaehoppa Michelin Keyword Watch (해운대호빠 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 11:35 (UTC 02:35) — 시즌125
+    - cron: '35 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run haeundaehoppa-michelin-keyword-watch
+        run: node scripts/haeundaehoppa-michelin-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
