@@ -1,0 +1,19 @@
+name: Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 12:55 (UTC 03:55) — 시즌141
+    - cron: '55 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run gangnamclub-face-keyword-watch
+        run: node scripts/gangnamclub-face-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}

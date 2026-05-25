@@ -1,0 +1,19 @@
+name: Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 13:00 (UTC 04:00) — 시즌142
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run gangnamclub-peak-keyword-watch
+        run: node scripts/gangnamclub-peak-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
