@@ -1,0 +1,19 @@
+name: Haeundaehoppa Velvet Keyword Watch (해운대호빠 벨벳 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 11:40 (UTC 02:40) — 시즌126
+    - cron: '40 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run haeundaehoppa-velvet-keyword-watch
+        run: node scripts/haeundaehoppa-velvet-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
