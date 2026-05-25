@@ -1,0 +1,19 @@
+name: Hongdae Hoppa Keyword Watch (홍대호빠 단일 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 11:45 (UTC 02:45) — 시즌127
+    - cron: '45 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run hongdae-hoppa-keyword-watch
+        run: node scripts/hongdae-hoppa-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
