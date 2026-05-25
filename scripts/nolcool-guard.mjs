@@ -117,6 +117,18 @@ for (const m of titleMatches) {
     }
   }
   if (dup.length) violations.push(`🔁 title 중복단어 [${dup.join(', ')}] in "${t}"`);
+  // 3) 시즌129 패턴: 합성+합성 토큰이 같은 2자 한국어 stem 공유 (예: 일산명월관요정 + 일산요정 = 일산×2, 요정×2)
+  //    역명(*역) 제외 — 위치 SEO 정당
+  const stemMap = new Map();
+  for (const tok of tokens) {
+    if (/역$/.test(tok)) continue;
+    if (tok.length < 4) continue; // 합성 토큰만
+    const s = tok.slice(0, 2);
+    if (!/^[가-힣]{2}$/.test(s)) continue;
+    stemMap.set(s, (stemMap.get(s) || 0) + 1);
+  }
+  const stemDup = [...stemMap.entries()].filter(([, c]) => c >= 2).map(([s, c]) => `${s}×${c}`);
+  if (stemDup.length) violations.push(`🔁 title 의미중복 stem [${stemDup.join(', ')}] in "${t}" (시즌129 패턴)`);
 }
 
 // 5) 3rd-party 이미지 서비스
