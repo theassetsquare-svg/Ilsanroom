@@ -1,0 +1,19 @@
+name: Busanhoppa Star Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 11:00 (UTC 02:00) — 시즌118
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run busanhoppa-star-keyword-watch
+        run: node scripts/busanhoppa-star-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
