@@ -1,7 +1,14 @@
 {
-  "generated_at": "2026-05-25T15:50:04.411Z",
+  "generated_at": "2026-05-25T18:20:38.603Z",
   "window_hours": 24,
   "items": [
+    {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
+      "views_24h": 5
+    },
     {
       "path": "/nights/bundangpongpongnight",
       "title": "분당퐁퐁나이트",
@@ -28,13 +35,6 @@
       "title": "파주야당스카이돔나이트",
       "category": "night",
       "region": "파주",
-      "views_24h": 4
-    },
-    {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
       "views_24h": 4
     },
     {
