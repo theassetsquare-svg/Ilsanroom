@@ -109,6 +109,9 @@ async function auditOne(browser, url, vpName) {
       const u = r.url();
       // ignore: external trackers, GA, etc
       if (/google-analytics|googletagmanager|googleads|doubleclick|gstatic|fonts\.googleapis/.test(u)) return;
+      // 시즌70 silencer 대칭 — Supabase magazine_articles 401은 앱이 잡고 빈 배열로 폴백한다.
+      // 콘솔은 silencer가 가리고, 네트워크는 audit이 가린다(둘 다 동일 정책).
+      if (s === 401 && /supabase\.co\/rest\/v1\/(magazine_articles|community_posts|community_comments)/.test(u)) return;
       issues.push({ sev: 'NET', msg: `${s} ${u.slice(0, 120)}` });
     }
   });

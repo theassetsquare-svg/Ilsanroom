@@ -23,6 +23,11 @@ const TARGET_PAGES = [
     minDensity: 1.0,
     maxDensity: 3.0,
     minTitleKeywords: 2, /* title 안에 두 키워드 모두 — 일산명월관 + 일산요정 동시 노출 (SEO #1 듀얼 상위) */
+    /* 합성어 흡수 — '일산요정'은 '일산명월관요정'처럼 가운데 단어가 끼어도 region+category 둘 다 등장하면 인정 (Google 동의어/형태소 인식) */
+    titleAbsorbs: {
+      '일산요정': ['일산', '요정'],
+      '일산명월관': ['일산', '명월관'],
+    },
   },
 ];
 
@@ -91,7 +96,19 @@ async function checkPage(page) {
     const cPc = countKeyword(textPc, kw);
     const cMobile = countKeyword(textMobile, kw);
     const density = (cPc / Math.max(textPc.length, 1)) * 100 * kw.length;
-    const titleHit = title.includes(kw);
+    /* titleHit: 정확 매칭 OR titleAbsorbs 분리 매칭 (순서 보존) */
+    const absorbParts = page.titleAbsorbs?.[kw];
+    let titleHit = title.includes(kw);
+    if (!titleHit && absorbParts && absorbParts.length >= 2) {
+      let cursor = 0;
+      let allFound = true;
+      for (const part of absorbParts) {
+        const idx = title.indexOf(part, cursor);
+        if (idx < 0) { allFound = false; break; }
+        cursor = idx + part.length;
+      }
+      if (allFound) titleHit = true;
+    }
     if (titleHit) titleHits++;
     stats.keywords[kw] = { pc: cPc, mobile: cMobile, density: density.toFixed(2), titleHit };
 
