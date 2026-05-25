@@ -1,0 +1,19 @@
+name: Jangandonghoppa Bbangbbang Keyword Watch (장안동호빠 단일 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 11:20 (UTC 02:20) — 시즌122
+    - cron: '20 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run jangandonghoppa-bbangbbang-keyword-watch
+        run: node scripts/jangandonghoppa-bbangbbang-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
