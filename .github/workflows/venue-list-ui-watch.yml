@@ -1,0 +1,19 @@
+name: Venue List UI Watch (카테고리 부동산급 UI 24h)
+
+on:
+  schedule:
+    # 매일 KST 14:05 (UTC 05:05) — 시즌155
+    - cron: '5 5 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run venue-list-ui-watch
+        run: node scripts/venue-list-ui-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
