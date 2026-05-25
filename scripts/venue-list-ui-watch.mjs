@@ -1,10 +1,10 @@
 /**
- * 카테고리 6페이지 부동산급 UI/UX 24h watch — 시즌155.
- * 매일 KST 14:05 — 8 UI 패턴 회귀시만 메일.
+ * 카테고리 6페이지 부동산급 UI/UX 24h watch — 시즌155+157.
+ * 매일 KST 14:05 — UI 패턴 회귀시만 메일.
  *
  * 검사 대상: /clubs/ /nights/ /lounges/ /rooms/ /yojeong/ /hoppa/
  *
- * 8 UI 마커 (VenueListClient.tsx 빌드 산출물에 포함):
+ * UI 마커 (VenueListClient + CompareBar + RecentVenuesBar 빌드 산출물에 포함):
  *   1) data-venue-list-v2 (컴포넌트 마운트 마커)
  *   2) venue-sort (정렬 드롭다운 4종)
  *   3) venue-count (결과 카운트 + 정렬 라벨)
@@ -13,9 +13,12 @@
  *   6) venue-hover-preview (호버 미리보기)
  *   7) venue-sentinel (무한 스크롤 sentinel)
  *   8) scroll-top (맨 위로 버튼)
+ *   9) venue-compare-check (시즌157C — 카드 좌측 상단 비교 체크박스)
+ *  10) venue-compare-bar (시즌157C — 비교 sticky bar)
+ *  11) recent-venues-bar (시즌157A — 최근 본 venue 바)
  *
  * 라이브는 SPA — 마커는 빌드된 JS chunk에 있다.
- * 각 카테고리 HTML의 <script src=...> chunk 1+개에 8 마커 모두 포함되면 OK.
+ * 각 카테고리 HTML의 <script src=...> chunk 1+개에 마커 모두 포함되면 OK.
  */
 import https from 'https';
 
@@ -32,6 +35,10 @@ const MARKERS = [
   'venue-hover-preview',
   'venue-sentinel',
   'scroll-top',
+  /* 시즌157 — 부동산 UX 보강 3종 */
+  'venue-compare-check',
+  'venue-compare-bar',
+  'recent-venues-bar',
 ];
 
 function fetchUrl(url) {

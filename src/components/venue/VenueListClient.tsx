@@ -7,6 +7,7 @@ import { VenueCardStats } from '@/components/ui/LiveStats';
 import { ListMidHook, TopPicksMini } from '@/components/venue/CategoryListingEngagement';
 import { hasVenueImage } from '@/data/venue-image-manifest';
 import { useBookmarks } from '@/hooks/useBookmarks';
+import { useCompareList } from '@/hooks/useCompareList';
 
 interface VenueListClientProps {
   venues: Venue[];
@@ -55,6 +56,7 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const { isBookmarked, toggle: toggleBookmark } = useBookmarks();
+  const { isInList: isInCompare, toggle: toggleCompare, isFull: compareFull } = useCompareList();
 
   /* 폐업·미확인 venue 자동 제외 */
   const CLOSED = new Set(['closed_or_unclear', 'closed', 'permanently_closed', 'temporarily_closed']);
@@ -249,9 +251,43 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
 
               const path = buildHref(hrefPattern, venue);
               const bookmarked = isBookmarked(path);
+              const inCompare = isInCompare(path);
 
               elements.push(
                 <div key={venue.id} className="group relative">
+                  {/* 비교 체크박스 — 부동산 정점 #10 (Redfin/Zillow compare check). 좌측 상단, 카드 클릭과 분리 */}
+                  <button
+                    type="button"
+                    aria-label={inCompare ? '비교 해제' : '비교에 추가'}
+                    aria-pressed={inCompare}
+                    data-testid="venue-compare-check"
+                    disabled={!inCompare && compareFull}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      toggleCompare({
+                        path,
+                        nameKo: venue.nameKo,
+                        category: venue.category,
+                        regionKo: venue.regionKo,
+                        slug: venue.slug,
+                      });
+                    }}
+                    className={`absolute top-2 left-2 z-[3] inline-flex items-center justify-center rounded-md backdrop-blur-sm transition-colors ${
+                      inCompare ? 'bg-violet-600 text-white' : 'bg-white/85 text-[#333] hover:bg-white'
+                    } ${!inCompare && compareFull ? 'opacity-40 cursor-not-allowed' : ''}`}
+                    style={{ width: 28, height: 28 }}
+                    title={!inCompare && compareFull ? '비교 최대 4곳' : (inCompare ? '비교 해제' : '비교에 추가 (최대 4)')}
+                  >
+                    {inCompare ? (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    ) : (
+                      <span aria-hidden="true" className="text-[10px] font-bold leading-none">VS</span>
+                    )}
+                  </button>
+
                   {/* 즐겨찾기 ♥ — 부동산 정점 #3 (Zillow heart, Redfin save). 카드 우측 상단 absolute */}
                   <button
                     type="button"

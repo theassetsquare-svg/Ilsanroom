@@ -1,6 +1,6 @@
 
 
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { Link } from '../components/ui/SafeLink';
 import { venues } from '@/data/venues';
 import Badge from '@/components/ui/Badge';
@@ -8,6 +8,7 @@ import type { Venue } from '@/types';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { MidContentHook, ReadFinishCount, ReadCompletionReward, MidContentQuiz, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
+import { useCompareList } from '@/hooks/useCompareList';
 
 const categoryLabels: Record<string, string> = {
   club: '클럽', night: '나이트', lounge: '라운지', room: '룸',
@@ -35,6 +36,17 @@ export default function ComparePage() {
   const [votes, setVotes] = useState<Record<string, number>>({});
   const containerRef = useRef<HTMLDivElement>(null);
 
+  /* 시즌157C — 카드 체크박스로 모은 비교 목록을 자동 prefill */
+  const { items: compareItems } = useCompareList();
+  useEffect(() => {
+    if (compareItems.length === 0) return;
+    const ids = compareItems
+      .map((c) => venues.find((v) => v.slug === c.slug)?.id)
+      .filter((x): x is string => !!x)
+      .slice(0, 4);
+    if (ids.length > 0) setSelected(ids);
+  }, [compareItems]);
+
   const openVenues = useMemo(() =>
     venues.filter((v) => v.status !== 'closed_or_unclear').sort((a, b) => b.rating - a.rating),
     []
@@ -49,7 +61,7 @@ export default function ComparePage() {
     setSelected((prev) =>
       prev.includes(id)
         ? prev.filter((x) => x !== id)
-        : prev.length < 3 ? [...prev, id] : prev
+        : prev.length < 4 ? [...prev, id] : prev
     );
   };
 
@@ -102,7 +114,7 @@ export default function ComparePage() {
       <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
         {/* Venue Selector */}
         <div className="mb-8">
-          <h2 className="mb-3 text-sm font-bold text-[#111]">비교할 업소 선택 (최대 3곳)</h2>
+          <h2 className="mb-3 text-sm font-bold text-[#111]">비교할 업소 선택 (최대 4곳)</h2>
           <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto">
             {openVenues.slice(0, 30).map((v) => (
               <button
@@ -123,8 +135,8 @@ export default function ComparePage() {
 
         {/* Comparison Table */}
         {selectedVenues.length >= 2 ? (
-          <div className="overflow-x-auto">
-            <div className={`grid gap-4 ${selectedVenues.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
+          <div className="overflow-x-auto" data-testid="compare-table">
+            <div className={`grid gap-4 ${selectedVenues.length === 2 ? 'grid-cols-2' : selectedVenues.length === 3 ? 'grid-cols-3' : 'grid-cols-2 sm:grid-cols-4'}`}>
               {selectedVenues.map((v) => (
                 <div key={v.id} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
                   <Link to={getCategoryHref(v)}>

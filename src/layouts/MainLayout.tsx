@@ -5,6 +5,8 @@ import Footer from '@/components/layout/Footer';
 import MobileBottomNav from '@/components/layout/MobileBottomNav';
 import BackToTop from '@/components/layout/BackToTop';
 import ScrollProgress from '@/components/layout/ScrollProgress';
+import RecentVenuesBar from '@/components/venue/RecentVenuesBar';
+import CompareBar from '@/components/venue/CompareBar';
 import Toast from '@/components/ui/Toast';
 import SecretModeToast from '@/components/privacy/SecretModeToast';
 import JsonLd from '@/components/seo/JsonLd';
@@ -76,6 +78,8 @@ export default function MainLayout() {
       <main id="main-content" className="flex-1 pt-[92px] md:pt-[56px] pb-[72px] md:pb-6">
         <Outlet />
       </main>
+      {/* 시즌157A — 최근 본 venue 영구 바 (items > 0일 때만 자동 표시) */}
+      <RecentVenuesBar />
       <div className="border-t border-neon-border bg-neon-surface">
         <p className="mx-auto max-w-[1200px] px-4 py-3 text-center text-sm text-neon-text-muted">
           구글 · ChatGPT · Gemini에서 <span className="text-neon-primary" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>"놀쿨"</span> 검색하세요
@@ -83,6 +87,8 @@ export default function MainLayout() {
       </div>
       <Footer />
       <MobileBottomNav />
+      {/* 시즌157C — 비교 선택 sticky bar (items > 0일 때만 표시) */}
+      <CompareBar />
       <BackToTop />
       <Toast />
       <SecretModeToast />

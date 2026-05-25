@@ -13,6 +13,7 @@ import RelatedMagazineForVenue from '@/components/venue/RelatedMagazineForVenue'
 import LiveStats from '@/components/live/LiveStats';
 import VenueLivePulse from '@/components/venue/VenueLivePulse';
 import type { Venue } from '@/types';
+import { useRecentVenues } from '@/hooks/useRecentVenues';
 
 const VenueSeoContent = lazy(() => import('@/components/venue/VenueSeoContent'));
 const VenueReportModal = lazy(() => import('@/components/venue/VenueReportModal'));
@@ -55,6 +56,18 @@ export default function VenueDetailPage({
     document.body.classList.add('venue-detail-page');
     return () => { document.body.classList.remove('venue-detail-page'); };
   }, []);
+
+  // 시즌157A — 최근 본 venue 영구 바에 push (Zillow·Coupang recently-viewed)
+  const { push: pushRecent } = useRecentVenues();
+  useEffect(() => {
+    pushRecent({
+      path: detailPath,
+      nameKo: venue.nameKo,
+      category: venue.category,
+      regionKo: venue.regionKo,
+      slug: venue.slug,
+    });
+  }, [detailPath, venue.nameKo, venue.category, venue.regionKo, venue.slug, pushRecent]);
 
   // "지금 N명 보는 중" — 시드 기반 가짜 카운터 제거 (놀쿨 신뢰 규칙).
   // VenueLivePulse 자체가 null 컴포넌트라 0을 넘겨도 무시됨.
