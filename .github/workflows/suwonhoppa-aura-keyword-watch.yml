@@ -1,0 +1,19 @@
+name: Suwonhoppa Aura Keyword Watch (수원호빠 단일 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 11:15 (UTC 02:15) — 시즌121
+    - cron: '15 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run suwonhoppa-aura-keyword-watch
+        run: node scripts/suwonhoppa-aura-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
