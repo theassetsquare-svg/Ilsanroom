@@ -1,0 +1,19 @@
+name: Cheongju Supermoon Keyword Watch (청주클럽 단일 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 13:35 (UTC 04:35) — 시즌149
+    - cron: '35 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run cheongju-supermoon-keyword-watch
+        run: node scripts/cheongju-supermoon-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
