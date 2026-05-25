@@ -1,0 +1,19 @@
+name: Itaewonclub Prism Keyword Watch (이태원클럽 단일 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 13:30 (UTC 04:30) — 시즌148
+    - cron: '30 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run itaewonclub-prism-keyword-watch
+        run: node scripts/itaewonclub-prism-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
