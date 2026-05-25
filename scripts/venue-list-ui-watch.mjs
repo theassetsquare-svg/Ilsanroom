@@ -55,25 +55,42 @@ function extractScripts(html) {
   return [...new Set(out)];
 }
 
+async function fetchChunk(s) {
+  const full = s.startsWith('http') ? s : BASE + (s.startsWith('/') ? s : '/' + s);
+  const cr = await fetchUrl(full);
+  return { src: s, body: cr.body };
+}
+
 async function checkCategory(path) {
   const url = BASE + path;
   const r = await fetchUrl(url);
   if (r.status !== 200) return { path, ok: false, missing: [`HTTP ${r.status}`] };
 
-  const scripts = extractScripts(r.body).filter(s => s.endsWith('.js'));
+  // 1-hop: HTML 자체 + eager chunks + 그 안에서 참조하는 lazy chunks (/assets/*.js)
+  const eager = extractScripts(r.body).filter(s => s.endsWith('.js'));
+  const visited = new Set();
   const missing = new Set(MARKERS);
 
-  // 청크 fetch (병렬)
-  const bodies = await Promise.all(scripts.slice(0, 30).map(async s => {
-    const full = s.startsWith('http') ? s : BASE + (s.startsWith('/') ? s : '/' + s);
-    const cr = await fetchUrl(full);
-    return cr.body;
-  }));
-  for (const body of bodies) {
-    for (const m of MARKERS) {
-      if (body.includes(m)) missing.delete(m);
+  // HTML 본문 자체에서 마커 매칭
+  for (const m of MARKERS) if (r.body.includes(m)) missing.delete(m);
+  if (missing.size === 0) return { path, ok: true, missing: [] };
+
+  // BFS 1-hop
+  let queue = eager.slice(0, 30);
+  for (let hop = 0; hop < 2 && queue.length && missing.size > 0; hop++) {
+    const fresh = queue.filter(s => !visited.has(s));
+    fresh.forEach(s => visited.add(s));
+    const bodies = await Promise.all(fresh.slice(0, 40).map(fetchChunk));
+    const next = new Set();
+    for (const { body } of bodies) {
+      for (const m of MARKERS) if (body.includes(m)) missing.delete(m);
+      // 동적 import 참조 추출 — Vite는 "assets/X.js" (선행 슬래시 X) 형식으로 저장
+      const refs = body.match(/(?:\/)?assets\/[A-Za-z0-9_\-]+\.js/g) || [];
+      refs.forEach(r => next.add(r.startsWith('/') ? r : '/' + r));
     }
+    queue = [...next];
   }
+
   return { path, ok: missing.size === 0, missing: [...missing] };
 }
 
