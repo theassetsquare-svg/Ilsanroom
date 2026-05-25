@@ -1,0 +1,19 @@
+name: Ilsanmyeongwolgwanyojeong Keyword Watch (일산명월관·일산요정 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 11:55 (UTC 02:55) — 시즌129
+    - cron: '55 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run ilsanmyeongwolgwanyojeong-keyword-watch
+        run: node scripts/ilsanmyeongwolgwanyojeong-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
