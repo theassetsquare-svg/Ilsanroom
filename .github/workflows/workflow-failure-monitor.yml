@@ -1,0 +1,22 @@
+name: Workflow Failure Monitor (24h 집계 메일)
+
+on:
+  schedule:
+    # 매일 KST 09:00 (UTC 00:00) — 24h 워크플로 실패 1통 통합
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run workflow-failure-monitor
+        run: node scripts/workflow-failure-monitor.mjs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
