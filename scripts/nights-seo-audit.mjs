@@ -17,14 +17,19 @@ const KW = '나이트';
 // 시즌78: HOOK 화이트리스트 폐기. lib/hook-detector 5축 구조 패턴 사용.
 
 function fetchHtml(url) {
-  return new Promise((res, rej) => {
-    const t = setTimeout(() => rej(new Error('timeout')), 30000);
-    https.get(url, { headers: { 'User-Agent': 'NolcoolNightsWatch/1.0' } }, r => {
-      const chunks = [];
-      r.on('data', d => chunks.push(d));
-      r.on('end', () => { clearTimeout(t); res({ status: r.statusCode, html: Buffer.concat(chunks).toString('utf8') }); });
-    }).on('error', e => { clearTimeout(t); rej(e); });
+  /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */
+  const _once = () => new Promise((res) => {
+    return new Promise((res, rej) => {
+      const t = setTimeout(() => rej(new Error('timeout')), 30000);
+      https.get(url, { headers: { 'User-Agent': 'NolcoolNightsWatch/1.0' } }, r => {
+        const chunks = [];
+        r.on('data', d => chunks.push(d));
+        r.on('end', () => { clearTimeout(t); res({ status: r.statusCode, html: Buffer.concat(chunks).toString('utf8') }); });
+      }).on('error', e => { clearTimeout(t); rej(e); });
   });
+  return _once().then(r => (r.status === 200 || (r.status >= 400 && r.status < 500))
+    ? r
+    : new Promise(rs => setTimeout(() => _once().then(rs), 5000)));
 }
 
 function pickAttr(html, re) { const m = html.match(re); return m ? m[1].trim() : null; }

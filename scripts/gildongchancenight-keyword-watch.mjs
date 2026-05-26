@@ -34,14 +34,18 @@ const SECONDARY = '길동나이트';
 // 시즌78: HOOK 화이트리스트 폐기. lib/hook-detector 5축 구조 패턴 사용.
 
 function fetchHtml(url) {
-  return new Promise((res) => {
-    const t = setTimeout(() => res({ status: 0, html: '' }), 20000);
-    https.get(url, { headers: { 'User-Agent': 'NolcoolGildongWatch/1.0' } }, r => {
-      const chunks = [];
-      r.on('data', d => chunks.push(d));
-      r.on('end', () => { clearTimeout(t); res({ status: r.statusCode, html: Buffer.concat(chunks).toString('utf8') }); });
-    }).on('error', () => { clearTimeout(t); res({ status: 0, html: '' }); });
+  /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */
+  const _once = () => new Promise((res) => {
+      const t = setTimeout(() => res({ status: 0, html: '' }), 20000);
+      https.get(url, { headers: { 'User-Agent': 'NolcoolGildongWatch/1.0' } }, r => {
+        const chunks = [];
+        r.on('data', d => chunks.push(d));
+        r.on('end', () => { clearTimeout(t); res({ status: r.statusCode, html: Buffer.concat(chunks).toString('utf8') }); });
+      }).on('error', () => { clearTimeout(t); res({ status: 0, html: '' }); });
   });
+  return _once().then(r => (r.status === 200 || (r.status >= 400 && r.status < 500))
+    ? r
+    : new Promise(rs => setTimeout(() => _once().then(rs), 5000)));
 }
 
 async function main() {

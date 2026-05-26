@@ -29,14 +29,18 @@ const KEYWORD = '노원청춘포차';
 const DETAIL_TOKENS = ['마들역 4번 출구', '빨간 천막', 'K-POP 떼창', '소떡소떡', '불암산 야경'];
 
 function fetchHtml(url) {
-  return new Promise((res) => {
-    const t = setTimeout(() => res({ status: 0, html: '' }), 20000);
-    https.get(url, { headers: { 'User-Agent': 'NolcoolNowonPochaWatch/1.0' } }, r => {
-      const chunks = [];
-      r.on('data', d => chunks.push(d));
-      r.on('end', () => { clearTimeout(t); res({ status: r.statusCode, html: Buffer.concat(chunks).toString('utf8') }); });
-    }).on('error', () => { clearTimeout(t); res({ status: 0, html: '' }); });
+  /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */
+  const _once = () => new Promise((res) => {
+      const t = setTimeout(() => res({ status: 0, html: '' }), 20000);
+      https.get(url, { headers: { 'User-Agent': 'NolcoolNowonPochaWatch/1.0' } }, r => {
+        const chunks = [];
+        r.on('data', d => chunks.push(d));
+        r.on('end', () => { clearTimeout(t); res({ status: r.statusCode, html: Buffer.concat(chunks).toString('utf8') }); });
+      }).on('error', () => { clearTimeout(t); res({ status: 0, html: '' }); });
   });
+  return _once().then(r => (r.status === 200 || (r.status >= 400 && r.status < 500))
+    ? r
+    : new Promise(rs => setTimeout(() => _once().then(rs), 5000)));
 }
 
 async function main() {

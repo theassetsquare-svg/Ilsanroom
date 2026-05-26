@@ -92,18 +92,21 @@ function dwellRanking(events) {
 }
 
 function fetchHtml(url) {
-  return new Promise((res) => {
-    const t = setTimeout(() => res({ ok: false, html: '', size: 0 }), 20000);
-    https.get(url, { headers: { 'User-Agent': 'NolcoolBottomDiag/1.0' } }, r => {
-      const chunks = [];
-      r.on('data', d => chunks.push(d));
-      r.on('end', () => {
-        clearTimeout(t);
-        const html = Buffer.concat(chunks).toString('utf8');
-        res({ ok: r.statusCode === 200, html, size: html.length, status: r.statusCode });
-      });
-    }).on('error', () => { clearTimeout(t); res({ ok: false, html: '', size: 0 }); });
+  /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */
+  const _once = () => new Promise((res) => {
+      const t = setTimeout(() => res({ ok: false, html: '', size: 0 }), 20000);
+      https.get(url, { headers: { 'User-Agent': 'NolcoolBottomDiag/1.0' } }, r => {
+        const chunks = [];
+        r.on('data', d => chunks.push(d));
+        r.on('end', () => {
+          clearTimeout(t);
+          const html = Buffer.concat(chunks).toString('utf8');
+          res({ ok: r.statusCode === 200, html, size: html.length, status: r.statusCode });
+      }).on('error', () => { clearTimeout(t); res({ ok: false, html: '', size: 0 }); });
   });
+  return _once().then(r => (r.status === 200 || (r.status >= 400 && r.status < 500))
+    ? r
+    : new Promise(rs => setTimeout(() => _once().then(rs), 5000)));
 }
 
 function diagnose(html) {

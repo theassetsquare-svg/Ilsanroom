@@ -37,14 +37,18 @@ const SECONDARY = '청담클럽';
 const DETAIL_TOKENS = ['코엑스', 'BPM 140', '펑타임 라인 어레이', '발코니석', '봉은사로'];
 
 function fetchHtml(url) {
-  return new Promise((res) => {
-    const t = setTimeout(() => res({ status: 0, html: '' }), 20000);
-    https.get(url, { headers: { 'User-Agent': 'NolcoolRaceWatch/1.0' } }, r => {
-      const chunks = [];
-      r.on('data', d => chunks.push(d));
-      r.on('end', () => { clearTimeout(t); res({ status: r.statusCode, html: Buffer.concat(chunks).toString('utf8') }); });
-    }).on('error', () => { clearTimeout(t); res({ status: 0, html: '' }); });
+  /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */
+  const _once = () => new Promise((res) => {
+      const t = setTimeout(() => res({ status: 0, html: '' }), 20000);
+      https.get(url, { headers: { 'User-Agent': 'NolcoolRaceWatch/1.0' } }, r => {
+        const chunks = [];
+        r.on('data', d => chunks.push(d));
+        r.on('end', () => { clearTimeout(t); res({ status: r.statusCode, html: Buffer.concat(chunks).toString('utf8') }); });
+      }).on('error', () => { clearTimeout(t); res({ status: 0, html: '' }); });
   });
+  return _once().then(r => (r.status === 200 || (r.status >= 400 && r.status < 500))
+    ? r
+    : new Promise(rs => setTimeout(() => _once().then(rs), 5000)));
 }
 
 async function main() {
