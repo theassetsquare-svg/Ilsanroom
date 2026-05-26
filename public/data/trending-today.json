@@ -1,14 +1,7 @@
 {
-  "generated_at": "2026-05-26T06:36:09.255Z",
+  "generated_at": "2026-05-26T16:42:27.944Z",
   "window_hours": 24,
   "items": [
-    {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
-      "views_24h": 4
-    },
     {
       "path": "/nights/busanmulnight",
       "title": "부산물나이트",
@@ -17,46 +10,39 @@
       "views_24h": 2
     },
     {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/daejeonsevennight",
+      "title": "대전세븐나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 1
+    },
+    {
+      "path": "/rooms/busan-haeundae/haeundaegoguryeo",
+      "title": "해운대고구려",
+      "category": "room",
+      "region": "부산 해운대",
+      "views_24h": 1
+    },
+    {
       "path": "/nights/ulsannewworldnight",
       "title": "울산뉴월드나이트",
       "category": "night",
       "region": "울산",
-      "views_24h": 2
+      "views_24h": 1
     },
     {
-      "path": "/nights/bundangpongpongnight",
-      "title": "분당퐁퐁나이트",
+      "path": "/nights/gwangjucheomdanempanight",
+      "title": "광주첨단엠파나이트",
       "category": "night",
-      "region": "분당",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/seongnamgukbingwannight",
-      "title": "성남국빈관나이트",
-      "category": "night",
-      "region": "성남",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/pajuyadangskydomenight",
-      "title": "파주야당스카이돔나이트",
-      "category": "night",
-      "region": "파주",
-      "views_24h": 2
-    },
-    {
-      "path": "/lounges/apgujeonglounge-dm",
-      "title": "압구정라운지 디엠",
-      "category": "lounge",
-      "region": "압구정",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/seongnamshampoonight",
-      "title": "성남샴푸나이트",
-      "category": "night",
-      "region": "성남",
-      "views_24h": 2
+      "region": "광주",
+      "views_24h": 1
     },
     {
       "path": "/nights/bucheongoraenight",
@@ -98,13 +84,6 @@
       "title": "일산물나이트",
       "category": "night",
       "region": "일산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/pyeongtaekhobaknight",
-      "title": "평택호박나이트",
-      "category": "night",
-      "region": "평택",
       "views_24h": 1
     }
   ]
