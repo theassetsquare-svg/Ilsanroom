@@ -39,9 +39,22 @@ const TO_EMAIL = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const INDEXNOW_KEY = process.env.INDEXNOW_KEY || '';
 
 async function fetchHtml(url, ua) {
-  const res = await fetch(url, { headers: { 'User-Agent': ua } });
-  if (!res.ok) throw new Error(`fetch ${url} ${res.status}`);
-  return await res.text();
+  /* 시즌168 — 일시적 5xx/timeout 1회 재시도 */
+  const once = async () => {
+    try {
+      const res = await fetch(url, { headers: { 'User-Agent': ua } });
+      return { ok: res.ok, status: res.status, text: res.ok ? await res.text() : '' };
+    } catch (e) {
+      return { ok: false, status: 0, text: '' };
+    }
+  };
+  let r = await once();
+  if (!r.ok && (r.status === 0 || r.status >= 500)) {
+    await new Promise(rs => setTimeout(rs, 5000));
+    r = await once();
+  }
+  if (!r.ok) throw new Error(`fetch ${url} ${r.status}`);
+  return r.text;
 }
 
 function extractTitle(html) {

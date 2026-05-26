@@ -36,7 +36,9 @@ async function extractKeyFromLive() {
 }
 
 async function pingSupabase(key) {
-  const url = `${SUPABASE_URL}/rest/v1/magazine_articles?select=id&limit=1`;
+  /* 시즌168 — magazine_articles RLS가 is_admin() 함수로 anon 거부 (의도) → 매일 false-positive.
+     venues 테이블은 anon select 허용 (public read). 키 유효성 검증 목적에 더 적합. */
+  const url = `${SUPABASE_URL}/rest/v1/venues?select=id&limit=1`;
   return fetchText(url, { apikey: key, Authorization: `Bearer ${key}` });
 }
 
