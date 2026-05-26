@@ -111,6 +111,9 @@ async function scanPage(page, url, viewport) {
       if (r.width === 0 || r.height === 0) continue;
       if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0') continue;
       if (r.bottom < vh - 100 || r.top > vh) continue;
+      /* 시즌164 — TOP-pinned sticky (top:0, bottom:auto) 는 부모 끝나면 자연 스크롤,
+         viewport 하단 phone bar와 본질적으로 경합 불가. 시즌155 카테고리 sticky 필터 6종 false-positive. */
+      if (cs.position === 'sticky' && cs.bottom === 'auto' && (cs.top === '0px' || parseFloat(cs.top) >= 0)) continue;
 
       /* 화이트리스트 */
       const isPhone = el.matches('[data-sticky-phone]') || el.closest('[data-sticky-phone]');
