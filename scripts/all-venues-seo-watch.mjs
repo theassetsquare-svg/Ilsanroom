@@ -49,6 +49,9 @@ function audit(html, venueName, secondary) {
   const h1 = (html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || [, ''])[1].replace(/<[^>]+>/g, '').trim();
   const ldCount = (html.match(/application\/ld\+json/g) || []).length;
   const imgCount = (html.match(/<img\s/gi) || []).length;
+  // ★ 시즌171 — 본문 분량 + H2 + breadcrumb 신규 지표
+  const h2Count = (html.match(/<h2[\s>]/gi) || []).length;
+  const hasBreadcrumb = /"@type"\s*:\s*"BreadcrumbList"/i.test(html);
   const text = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   const kwVisible = venueName ? (text.match(new RegExp(venueName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length : 0;
   const density = venueName && text.length ? (kwVisible * venueName.length) / text.length : 0;
@@ -72,6 +75,8 @@ function audit(html, venueName, secondary) {
     nolcoolInTitle: /놀쿨/.test(title || ''),
     hasOgImg: !!ogImg, hasCanonical: !!canonical,
     secondary, secondaryCount,
+    // ★ 시즌171 — 신규 3지표
+    bodyLen: text.length, h2Count, hasBreadcrumb,
   };
 }
 
@@ -93,6 +98,10 @@ function reasons(r, venueName) {
   if (r.hookAxesHit === 0) out.push('후킹 5축 0 (title/desc 모두)');
   // ★ 시즌69 — secondary 키워드 body 등장 < 3회시 회귀
   if (r.secondary && r.secondaryCount < 3) out.push(`${r.secondary} ${r.secondaryCount}회`);
+  // ★ 시즌171 — 신규 3지표 (체류 10분 + H2 구조 + breadcrumb schema)
+  if (r.bodyLen < 3000) out.push(`본문 ${r.bodyLen}자 (≥3000)`);
+  if (r.h2Count < 5) out.push(`H2 ${r.h2Count}개 (≥5)`);
+  if (!r.hasBreadcrumb) out.push('Breadcrumb JSON-LD X');
   return out;
 }
 
