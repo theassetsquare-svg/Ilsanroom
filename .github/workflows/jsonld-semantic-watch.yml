@@ -1,0 +1,20 @@
+name: JSON-LD Semantic Watch (Schema.org 의미 유효성)
+
+on:
+  schedule:
+    # 매일 KST 06:30 (UTC 21:30) — all-pages-quality-watch 06:25 직후
+    - cron: '30 21 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run jsonld-semantic-watch
+        run: node scripts/jsonld-semantic-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
