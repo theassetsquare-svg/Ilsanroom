@@ -10,18 +10,23 @@
  *   NOTIFICATION_EMAIL 기본 theassetsquare@gmail.com
  */
 import puppeteer from 'puppeteer-core';
+import fs from 'fs';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 
 function findChromium() {
+  // 시즌160 — ENV 우선, 그 다음 실존 경로만 선택 (이전: candidates[0] 무조건 → GH Actions에서 nix 경로 미존재 fail)
   const candidates = [
-    '/nix/store/lpdrfl6n16q5zdf8acp4bni7yczzcx3h-idx-builtins/bin/chromium',
-    '/usr/bin/chromium',
-    '/usr/bin/chromium-browser',
-    '/usr/bin/google-chrome',
     process.env.PUPPETEER_EXECUTABLE_PATH,
+    '/usr/bin/chromium-browser',
+    '/usr/bin/chromium',
+    '/usr/bin/google-chrome',
+    '/nix/store/lpdrfl6n16q5zdf8acp4bni7yczzcx3h-idx-builtins/bin/chromium',
   ].filter(Boolean);
+  for (const p of candidates) {
+    try { if (fs.existsSync(p)) return p; } catch {}
+  }
   return candidates[0];
 }
 

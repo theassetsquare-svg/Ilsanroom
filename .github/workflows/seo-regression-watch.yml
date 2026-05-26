@@ -15,12 +15,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
       - name: Run title-dup-live-watch
-        run: node scripts/title-dup-live-watch.mjs
         env:
           ORIGIN: https://nolcool.com
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+        run: |
+          export CHROMIUM_PATH=$(which chrome || which google-chrome || which chromium)
+          node scripts/title-dup-live-watch.mjs
 
   fixed-overlap:
     name: PC+Mobile 하단 fixed/sticky + PhoneBar 모달 회귀
@@ -56,9 +65,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
       - name: Run dup-card-live-watch
-        run: node scripts/dup-card-live-watch.mjs
         env:
           ORIGIN: https://nolcool.com
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+        run: |
+          export CHROMIUM_PATH=$(which chrome || which google-chrome || which chromium)
+          node scripts/dup-card-live-watch.mjs

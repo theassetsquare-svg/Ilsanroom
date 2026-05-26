@@ -25,6 +25,7 @@
  */
 import https from 'https';
 import { analyzeHook } from './lib/hook-detector.mjs';
+import { absorbsSecondary } from './lib/keyword-absorb.mjs';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
@@ -71,7 +72,7 @@ async function main() {
   const hookAxesHit = Math.max(hookTitle.axesHit, hookDesc.axesHit);
 
   if (!title.includes(PRIMARY)) issues.push(`title 대구호빠X`);
-  if (!title.includes(SECONDARY)) issues.push(`title 동성로호빠X`);
+  if (!absorbsSecondary(title, SECONDARY)) issues.push(`title 동성로호빠X`);
   if (title.length === 0 || title.length > 60) issues.push(`title ${title.length}자`);
   if (dupTitle.length > 0) issues.push(`title 중복 [${dupTitle.join(',')}]`);
   if (!desc.includes(PRIMARY)) issues.push(`desc 대구호빠X`);

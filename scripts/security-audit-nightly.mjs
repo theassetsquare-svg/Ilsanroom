@@ -72,7 +72,7 @@ async function sendEmail(subject, html) {
     return;
   }
   const body = JSON.stringify({
-    from: '놀쿨 보안봇 <noreply@nolcool.com>',
+    from: 'NOLCOOL 보안봇 <onboarding@resend.dev>',
     to: [NOTIFY_EMAIL],
     subject,
     html,
