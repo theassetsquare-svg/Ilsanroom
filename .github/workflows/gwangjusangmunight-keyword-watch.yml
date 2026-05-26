@@ -1,0 +1,19 @@
+name: Gwangjusangmunight Keyword Watch (광주상무나이트 2 키워드 24h)
+
+on:
+  schedule:
+    # 매일 KST 09:15 (UTC 00:15) — ulsannewworldnight 09:10 직후
+    - cron: '15 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run gwangjusangmunight-keyword-watch
+        run: node scripts/gwangjusangmunight-keyword-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
