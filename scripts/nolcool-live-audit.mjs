@@ -75,9 +75,12 @@ async function audit(url) {
   }
 
   const body = stripHtml(html);
-  for (const w of ['\ub9cc\uc6d0', '\uc785\uc7a5\ub8cc', '\uac00\uc131\ube44', '\uc2dc\uc138', '\uac00\uaca9\ub300']) {
-    if (body.includes(w)) add('ERR', `\ubcf8\ubb38 "${w}"`);
+  // 시즌82 정합 — "만원"은 가격 컨텍스트에서만 차단. 혜택/차비/이벤트 컨텍스트는 허용 (feedback_rules_serve_intent)
+  for (const w of ['입장료', '가성비', '시세', '가격대']) {
+    if (body.includes(w)) add('ERR', `본문 "${w}"`);
   }
+  const MANWON_PRICE_RE = /(룸비|기본료|보증금|세팅비|입장(?!\s*가능)|메뉴|요금|가격|코스)\s*[\d일이삼사오육칠팔구십백천]*만원|[\d일이삼사오육칠팔구십백천]+\s*만원\s*(부터|이상|이하|선|대|짜리|상당)|만원대(?![가-힣])/;
+  if (MANWON_PRICE_RE.test(body)) add('ERR', '본문 가격 컨텍스트 "만원"');
   const BANNED_RE = [
     /2\ucc28\s*(\uc11c\ube44\uc2a4|\ubaa8\uc784|\ucf5c|\uac00\ub2a5|\uac00\uaca9|\ube44\uc6a9|\uc9c4\ud589|\uc5f0\uacc4)/,
     /\ubb34\ub8cc\s*\uccb4\ud5d8/, /\ubd80\ubaa8\ub2d8\s*\uc0dd\uc2e0/, /\uc0c1\uacac\ub840/,
