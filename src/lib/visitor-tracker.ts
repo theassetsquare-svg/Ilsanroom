@@ -21,7 +21,12 @@ const ADMIN_EMAILS = ['qotjsdnr123@naver.com', 'baesunwook513@gmail.com', 'theas
 const BOT_UA_RE = /bot|crawl|spider|slurp|bingpreview|facebookexternalhit|whatsapp|telegram|googlebot|yeti|gptbot|claude|chatgpt|perplexity|headlesschrome|phantomjs|puppeteer|playwright|lighthouse|pagespeed/i;
 
 function isBot(ua: string): boolean {
-  return BOT_UA_RE.test(ua);
+  if (BOT_UA_RE.test(ua)) return true;
+  // 시즌161 — navigator.webdriver === true 인 자동화 트래픽 차단
+  // 8개 audit 스크립트(browser-audit/perf-audit/prefetch-404/dup-card/mobile-fixed-overlap/lighthouse/season40/measure-pagespeed)가
+  // 진짜 Chrome/Safari UA를 써서 BOT_UA_RE를 우회 → newPage()마다 fresh sessionStorage → 1세션=1path=Bounce 100%
+  if (typeof navigator !== 'undefined' && (navigator as any).webdriver === true) return true;
+  return false;
 }
 
 function isInternalHost(): boolean {
