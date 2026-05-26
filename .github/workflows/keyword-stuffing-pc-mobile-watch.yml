@@ -1,0 +1,20 @@
+name: Keyword Stuffing PC+Mobile Watch (전 페이지 양 디바이스 24h)
+
+on:
+  schedule:
+    # 매일 KST 06:20 (UTC 21:20) — all-venues-seo-watch 07:15 직전
+    - cron: '20 21 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run keyword-stuffing-pc-mobile-watch
+        run: node scripts/keyword-stuffing-pc-mobile-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
