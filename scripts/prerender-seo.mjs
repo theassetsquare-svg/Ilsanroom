@@ -238,9 +238,11 @@ function renderPage({ title, description, canonical, ogImage, ogImageAlt, ssrBod
       ? `<img src="${escHtml(heroImgSrc)}" alt="${escHtml(ogImageAlt || title || '')}" ${preloadImage ? 'fetchpriority="high"' : 'loading="lazy" fetchpriority="low"'} decoding="async" style="display:block;width:100%;height:auto;max-height:280px;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#0a0a0a">`
       : '';
     const heroBlock = `<div class="ssr-hero" style="max-width:1200px;margin:0 auto;padding:88px 16px 24px;min-height:240px">${heroImgTag}<h1 style="margin:0 0 10px;font-size:24px;font-weight:800;color:#111;line-height:1.25;letter-spacing:-0.02em">${heroTitle}</h1><p style="margin:0;color:#444;font-size:15px;line-height:1.65;max-width:720px">${heroDesc}</p></div>`;
+    // 시즌173 — ssr-hero가 visible H1을 제공하므로 ssrBody 첫 번째 H1은 H2로 강등 (페이지당 H1 정확히 1개 보장)
+    const ssrBodyNoH1 = ssrBody.replace(/<h1\b([^>]*)>([\s\S]*?)<\/h1>/, '<h2$1>$2</h2>');
     html = html.replace(
       /<div id="root"([^>]*)><\/div>/,
-      `<div id="root"$1>${heroBlock}<div class="ssr-seo" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">${ssrBody}</div></div>`
+      `<div id="root"$1>${heroBlock}<div class="ssr-seo" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">${ssrBodyNoH1}</div></div>`
     );
   }
 
