@@ -621,6 +621,7 @@ function generateVenueSsrBody(v, allVenues) {
   const secondary = `${escHtml(lastRegion)}${catKo}`;
   html += `<section><h2>${secondary} 검색하고 오시는 분들께</h2>`;
   html += `<p>${secondary} 라인업 중에서 분위기와 응대가 다르다는 평가가 단골들 사이에서 자주 나오는 곳이다. ${secondary} 후기를 검색해보면 첫 방문도 두 번째처럼 편하게 잡힌다는 한 줄이 빠지지 않는다. ${secondary} 단골은 본인 취향을 솔직하게 전하고 자리 성격을 미리 정해두는 분위기다. 처음 오는 분도 카운터에서 한 마디만 하면 분위기 맞는 자리로 자연스럽게 연결된다. ${region} 일대 ${catKo} 가운데 두 번째 방문 비율이 높은 편이고, 단골 호스트·실장 응대가 안정적이라는 점이 ${secondary} 단골 문화의 핵심으로 통한다.</p>`;
+  html += `<p>${secondary} 첫 방문 전에는 본인 모임 컨셉을 한 줄로 정리해 두면 응대 매칭이 훨씬 빨라진다. 인원·시간대·자리 성격 세 가지만 직통 통화로 미리 전달하면 ${name} 카운터에서 분위기에 맞는 동선을 바로 잡아준다. ${secondary} 검색으로 들어온 분들이 가장 많이 묻는 한 가지는 "처음 가는데 어색하지 않게 자리 잡으려면"인데, ${name}${eunNeun(name)} 첫 방문자 응대 동선이 잘 정리되어 있어 그 부분에서 만족도가 높은 편이다.</p>`;
   html += `</section>`;
 
   // ★ 관련 키워드 — 검색엔진이 연관 검색어로 인식 (primary + secondary 노출)
@@ -935,6 +936,23 @@ function enrichSsr(body, pgPath, pgTitle) {
   activities.forEach(a => { body += `<li>${a}</li>`; });
   body += `</ul>`;
   body += `<p>${pgTitle.replace(/['"]/g, '')} 외에도 클럽·나이트·라운지·룸·요정·호빠 업소 후기와 분위기를 비교할 수 있습니다. 회원 가입 시 1줄 글쓰기, 후기 작성, 찜하기, VS 투표, 파티 모집 참여 등 기능을 무료로 이용할 수 있습니다.</p>`;
+  // 시즌159 — 일반 페이지 본문 깊이 보강 (체류 10분 기준 통과)
+  body += `<h2>처음 방문 전 짚고 갈 포인트</h2>`;
+  body += `<p>유흥 업소 방문은 같은 업종이라도 매장마다 콘셉트·드레스코드·분위기·연령대가 다 다릅니다. 첫 방문이라면 매장 사진 갤러리를 한번 훑고 본인 모임 컨셉에 맞는 톤인지 가늠한 다음, 직통 전화로 예약 가능 시간과 룸/부스 사이즈를 확인하면 자리 잡고 헤매는 시간을 줄일 수 있습니다. 평일 저녁은 비교적 차분한 코스, 금·토 자정 이후는 회전이 빠른 코스로 시간대 톤이 갈리니 본인 모임 성격에 맞춰 출발 시각을 잡는 편이 안전합니다. 회원 후기가 최근 한 달 안에 쌓인 매장일수록 분위기 가늠이 정확하고, 후기 키워드를 빠르게 훑어 보면 매장이 어떤 결로 운영되는지가 눈에 보입니다.</p>`;
+  body += `<h2>모임 인원별 권장 동선</h2>`;
+  body += `<p>모임 인원에 따라 적합한 자리와 동선이 달라집니다. 1~2인 한 잔 자리는 라운지·바 카운터처럼 시간 부담 없는 곳이 무난하고, 3~4인은 룸·부스·플로어 중 매장 콘셉트에 맞춰 한 곳을 정하는 편이 좋습니다. 5~8인부터는 사이즈가 맞는 자리가 빠르게 마감되니 직통 예약이 안전하고, 9인 이상 단체는 단체 응대 가능 매장만 추려 사전 컨펌을 받고 출발하면 합류·정산이 매끄럽습니다.</p>`;
+  body += `<ul>`;
+  body += `<li><strong>1~2인</strong> — 가볍게 둘러보고 분위기 익히는 코스, 부담 없는 한 잔 자리</li>`;
+  body += `<li><strong>3~4인</strong> — 가장 평균적인 모임 단위, 룸·부스·플로어 중 한 곳에서 한두 시간</li>`;
+  body += `<li><strong>5~8인</strong> — 사이즈가 맞는 자리가 빠르게 마감되니 직통 예약 권장</li>`;
+  body += `<li><strong>단체(9인 이상)</strong> — 단체 응대 가능 매장만 추리고 사전 컨펌으로 좌석·정산 합의</li>`;
+  body += `</ul>`;
+  body += `<h2>안전 귀가 가이드</h2>`;
+  body += `<p>늦은 시간 일대 택시 잡기가 어려운 구간이 있어, 끝나는 시간 기준으로 콜택시·대리운전을 미리 알아두는 편이 안전합니다. 일행이 흩어지지 않도록 합류 지점은 역·편의점 같은 랜드마크로 잡고 위치 공유를 켜두면 모임이 흐트러지지 않습니다. 술 마신 후 직접 운전은 절대 금물이고, 일행 중 만취자가 있으면 매장 매니저에게 부탁해 콜택시·대리 호출을 안내받을 수 있습니다. 새벽 마감 시간은 시즌·요일에 따라 단축되는 곳이 있어, 마지막 잔을 비우기 전에 귀가 동선을 한번 점검해 두면 새벽 일대 택시난을 피할 수 있습니다.</p>`;
+  body += `<h2>모임 컨셉별 업종 매칭 가이드</h2>`;
+  body += `<p>모임 컨셉에 맞춰 업종을 고르면 분위기와 어긋나지 않게 자리를 잡을 수 있습니다. 생일·기념일은 룸·요정의 프라이빗 룸이 사진·노래·축하 동선에 편하고, 송별·환영회는 룸 또는 나이트 부스 중 인원 사이즈에 맞는 곳을 미리 예약하는 흐름이 매끄럽습니다. 소개팅·데이트는 라운지 칵테일바에서 조용한 자리에 앉아 대화 위주가 무난하고, 친구 사교·새 인연 찾기는 클럽·나이트의 합석·부킹 회전이 많은 시간대가 적합합니다. 비즈니스 만찬은 요정 정찬 또는 룸 양주 코스로 격조와 프라이빗 둘 다 챙길 수 있습니다.</p>`;
+  body += `<h2>회원 후기 활용법</h2>`;
+  body += `<p>회원 후기는 매장 분위기를 가늠하는 가장 정확한 1차 자료입니다. 최근 한 달 안에 누적된 후기를 우선 보고, 평점뿐 아니라 후기 키워드를 함께 훑으면 매장이 어떤 결로 운영되는지가 드러납니다. 사진 후기는 조명·룸 배치·무대 구성 같은 분위기 단서를 직접 보여주고, 글 후기에서 "응대" "회전" "단체" 같은 단어가 어떻게 쓰이는지 살펴보면 본인 모임 톤과 매장 톤이 맞는지 빠르게 판단할 수 있습니다. 본인이 다녀온 뒤 한 줄 후기라도 남기면 다음 회원의 첫 방문에 큰 도움이 됩니다.</p>`;
   return body + SITE_FOOTER_ANCHORS;
 }
 
@@ -1305,6 +1323,37 @@ for (const [cat, regions] of Object.entries(regionsByCategory)) {
       regSsr += `<dd>${escHtml(regionKo)}에는 ${regionVenues.length}곳의 ${catLabelMap[cat]}${iGa(catLabelMap[cat])} 있습��다.</dd>`;
       regSsr += `</dl></section>`;
 
+      // 시즌159 — 지역×업종 본문 깊이 보강 (체류 10분 + dwell-content-audit 통과)
+      const topTags = [...new Set(regionVenues.flatMap(rv => rv.tags || []).slice(0, 8))];
+      regSsr += `<h2>${escHtml(regionKo)} ${catLabelMap[cat]} 동네 분위기</h2>`;
+      regSsr += `<p>${escHtml(regionKo)} ${catLabelMap[cat]} 골목은 같은 ${escHtml(regionKo)} 안이라도 거리·역·층마다 손님 톤이 갈립니다. 처음 가는 분은 ${regionVenues.length > 0 ? escHtml(regionVenues[0].nameKo) : '대표 업소'}처럼 회원 후기가 많이 쌓인 곳부터 들러 분위기를 가늠해 보는 동선이 무난합니다. 평일 저녁은 비교적 차분하고, 금·토 자정 이후로는 합석·부킹 회전이 가장 활발해집니다. ${topTags.length > 0 ? '회원들이 ' + escHtml(regionKo) + '에서 자주 묶는 키워드: ' + topTags.map(t => '#' + escHtml(t)).join(' ') + '. 분위기·콘셉트 미리 확인하고 동선 잡기.' : ''}</p>`;
+      regSsr += `<h2>${escHtml(regionKo)}에서 모임 인원별 코스 짜기</h2>`;
+      regSsr += `<ul>`;
+      regSsr += `<li><strong>1~2인</strong> — 가볍게 한 잔 보면서 동네 익히기, 무리 없이 둘러보고 후기 한 줄 남기는 코스가 적당합니다.</li>`;
+      regSsr += `<li><strong>3~4인</strong> — ${escHtml(regionKo)}에서 가장 평균적인 모임 단위로 ${catLabelMap[cat]} 중 룸/부스/플로어 어디 쪽이 맞는지 미리 합의하고 가는 게 효율적입니다.</li>`;
+      regSsr += `<li><strong>5~8인</strong> — 사이즈가 맞는 곳이 빠르게 마감되니 직통 전화로 가능 룸·테이블을 확인하고 출발하세요.</li>`;
+      regSsr += `<li><strong>단체(9인 이상)</strong> — 예약 가능 여부와 단체 응대 매뉴얼이 잡힌 곳을 미리 확인하면 합류·정산이 매끄럽습니다.</li>`;
+      regSsr += `</ul>`;
+      regSsr += `<h2>${escHtml(regionKo)} 가기 전 체크 포인트</h2>`;
+      regSsr += `<p>${escHtml(regionKo)} ${catLabelMap[cat]} 방문 전 짧게 확인하면 좋은 항목입니다. 첫째, 마감 시간은 업소마다 다르고 시즌·요일에 따라 단축되는 경우가 있어 직통 통화로 확인이 가장 정확합니다. 둘째, 드레스코드는 ${catLabelMap[cat]} 카테고리 안에서도 매장 콘셉트별로 차이가 있어 사진 갤러리를 한번 훑고 가는 편이 안전합니다. 셋째, ${escHtml(regionKo)} 일대는 늦은 시간 택시 잡기가 어려운 구간이 있어 끝나는 시간과 귀가 동선을 미리 설계하면 일행 분실·이동 지연을 줄일 수 있습니다.</p>`;
+      regSsr += `<h2>${escHtml(regionKo)} ${catLabelMap[cat]} 인기 업소 다시 보기</h2><ul>`;
+      regionVenues.slice(0, 8).forEach(vv => { regSsr += `<li><a href="${venueHref(vv)}">${escHtml(vv.nameKo)}</a> — ${escHtml(vv.shortDesc.slice(0, 50))}</li>`; });
+      regSsr += `</ul>`;
+      // 시즌159 — 작은 지역(venue 1~2곳) listing 본문 보강
+      regSsr += `<h2>${escHtml(regionKo)} ${catLabelMap[cat]} 첫 방문자 가이드</h2>`;
+      regSsr += `<p>${escHtml(regionKo)}에서 ${catLabelMap[cat]}을 처음 가는 분이라면 회원 후기가 누적된 매장부터 둘러보는 게 분위기 가늠에 가장 정확합니다. 매장 사진 갤러리를 한번 훑어 본인 모임 톤에 맞는 콘셉트인지 가늠하고, 직통 전화로 예약 가능 시간과 룸/부스 사이즈를 확인하면 자리 잡고 헤매는 시간을 줄일 수 있습니다. ${escHtml(regionKo)} 일대는 거리·역·층마다 손님 톤이 다르니, 첫 방문은 평일 저녁 차분한 시간대에 동네 분위기를 익히고 두 번째 방문에 본격 모임 자리를 잡는 동선이 부담 없습니다.</p>`;
+      regSsr += `<h2>${escHtml(regionKo)} 일대 모임 컨셉별 매칭</h2>`;
+      regSsr += `<p>${escHtml(regionKo)}에서 모임을 잡을 때는 컨셉에 맞춰 매장을 골라야 분위기와 어긋나지 않습니다. 생일·기념일은 룸 또는 ${catLabelMap[cat]} 안에서도 프라이빗 자리가 가능한 곳이 사진·축하 동선에 편하고, 송별·환영회는 인원 사이즈에 맞는 좌석을 미리 예약하면 합류와 정산이 매끄럽습니다. 소개팅·동료 한잔은 조용한 자리가 어울리고, 친구 사교·새 인연은 회전이 빠른 시간대가 적합합니다. 비즈니스 만찬은 격조와 프라이빗 둘 다 챙길 수 있는 룸/요정 카테고리를 권합니다.</p>`;
+      regSsr += `<h2>${escHtml(regionKo)} 시간대별 ${catLabelMap[cat]} 분위기</h2>`;
+      regSsr += `<ul>`;
+      regSsr += `<li><strong>평일 저녁 7~10시</strong> — ${escHtml(regionKo)} ${catLabelMap[cat]}이 비교적 차분, 첫 방문·소개팅·동료 한잔에 적합</li>`;
+      regSsr += `<li><strong>금·토 밤 10시~자정</strong> — ${escHtml(regionKo)} 일대 라인업이 본격 회전, 동네 활기 피크</li>`;
+      regSsr += `<li><strong>자정~새벽 2시</strong> — 합석·부킹·단체 모임 마무리가 가장 활발한 시간대</li>`;
+      regSsr += `<li><strong>새벽 2시 이후</strong> — 마감 시간이 매장마다 다르니 직통 통화로 입장 가능 여부 확인</li>`;
+      regSsr += `</ul>`;
+      regSsr += `<h2>${escHtml(regionKo)} 동선·귀가 안전 가이드</h2>`;
+      regSsr += `<p>${escHtml(regionKo)} 일대는 늦은 시간 택시 잡기가 어려운 구간이 있어, 끝나는 시간 기준으로 콜택시·대리운전을 미리 알아두는 편이 안전합니다. 일행이 흩어지지 않도록 합류 지점은 ${escHtml(regionKo)} 대표 역·편의점 같은 랜드마크로 잡고, 위치 공유를 켜두면 모임이 흐트러지지 않습니다. 술 마신 후 직접 운전은 절대 금물이고, 일행 중 만취자가 있으면 매장 매니저에게 부탁해 안전한 콜택시·대리 호출을 안내받을 수 있습니다. 새벽 마감 시간은 시즌·요일에 따라 단축되는 곳이 있으니 마지막 잔을 비우기 전 귀가 동선을 한번 점검해 두면 새벽 일대 택시난을 피할 수 있습니다.</p>`;
+
       // ★ ItemList JSON-LD
       const regJsonLd = [{
         '@context': 'https://schema.org',
@@ -1540,10 +1589,26 @@ for (const a of magazineArticles) {
   const canonical = `${BASE_URL}${routePath}/`;
   const desc = truncateDesc(a.excerpt, 150);
   // SSR 본문: H1 + tag 라벨 + 본문 HTML 그대로 (이미 H2/H3/p 마크업)
+  // 시즌159 — 매거진 article 본문 깊이 보강 (체류 10분 보장)
+  const articleAddon = `
+<h2>${escHtml(a.tag)} 관련 더 깊이 보기</h2>
+<p>${escHtml(a.title)} 글이 ${escHtml(a.tag)} 카테고리에서 어떻게 자리를 잡는지는 본문의 맥락과 함께 읽으면 더 입체적입니다. 같은 주제라도 지역·시간대·인원·모임 컨셉에 따라 받아들이는 결이 달라지기 때문에, 본인 모임 상황에 맞춰 어떤 부분이 직접 적용 가능한지를 정리해 두면 다음 방문에 바로 써먹을 수 있습니다. 매거진 본문에서 등장한 매장·지역·키워드는 사이트 내 다른 큐레이션에서도 이어서 비교할 수 있어, 글 한 편을 시작점으로 비슷한 결의 콘텐츠를 따라가다 보면 본인 모임에 맞는 코스가 자연스럽게 정리됩니다.</p>
+<h2>매거진 글을 모임에 적용하는 법</h2>
+<p>매거진은 정보 자체뿐 아니라 매장·지역·시간대 선택을 빠르게 좁히는 데 도움이 됩니다. 첫째, 본문에서 인상 깊게 본 매장이 있다면 직통 전화로 예약 가능 시간과 룸/부스 사이즈를 미리 확인해 두세요. 둘째, 시간대별 분위기 설명이 나오면 본인 모임 컨셉에 맞춰 출발 시각을 잡는 게 좋습니다. 셋째, 글에서 다룬 지역이 일대 합류·해산 동선을 함께 안내한다면 새벽 귀가 동선을 미리 설계해 두면 모임 자체에 집중할 수 있습니다. 회원 후기와 매거진을 함께 보면 분위기 가늠이 한층 입체적이 되어 첫 방문에서 헛걸음을 줄일 수 있습니다.</p>
+<h2>매거진 함께 보면 좋은 다른 글</h2>
+<p>비슷한 주제의 매거진 글을 이어서 읽으면 ${escHtml(a.tag)} 키워드에 대한 이해가 깊어집니다. 사이트 내 매거진 코너에서 같은 태그로 묶인 글을 확인할 수 있고, 회원 후기·VS 투표·룰렛으로 자기 톤에 맞는 매장을 더 정밀하게 좁혀 볼 수 있습니다. 매거진 글이 분기점이 되어 본인 모임에 적합한 매장·시간대·인원 사이즈가 정리되면, 다음 모임은 고민 없이 출발할 수 있는 코스가 만들어집니다. 다녀온 뒤 한 줄 후기를 남기면 다음 회원의 첫 방문 결정에 결정적인 도움이 됩니다.</p>
+<h2>${escHtml(a.tag)} 모임 컨셉별 활용 시나리오</h2>
+<p>본문 내용을 본인 모임에 적용하려면 컨셉을 먼저 잡는 게 빠릅니다. 처음 만나는 자리에서는 대화가 끊기지 않도록 본문에서 다룬 분위기 설명을 기준으로 BGM 톤이 적당한 매장을, 오래된 친구 모임은 회전이 빠르지 않고 자리가 편한 곳을, 거래처·접대 자리는 룸 독립성과 외부 노출이 적은 동선을 우선해서 보세요. 생일·환영회처럼 분위기를 띄워야 하는 자리는 매니저·실장이 적극적으로 응대해주는 매장을, 조용한 한잔은 인원을 적게 받는 평일 저녁 시간대를 잡으면 만족도가 큽니다. 본문에서 본인 컨셉과 맞물리는 두세 문장을 미리 메모해 두면 직통 통화로 매장 톤을 확인할 때 질문이 훨씬 정확해집니다.</p>
+<h2>${escHtml(a.tag)} 시간대·요일별 코스 설계</h2>
+<p>같은 매장이라도 평일 저녁 8~10시는 차분한 대화 중심, 자정 전후는 회전 빠른 피크, 새벽 2~3시 이후는 마감 라스트 분위기로 톤이 확연히 갈립니다. 본문에서 시간대 단서가 등장하면 본인 모임이 시작과 끝을 어디에 두는지부터 결정하고 매장 도착 시각을 역산하세요. 평일 저녁 코스는 9시 입장·11시 해산 동선이, 주말 본격 모임은 10시 합류·새벽 1시 마무리 동선이 가장 흔합니다. 끝나는 시간 기준으로 콜택시·대리운전·심야버스를 미리 확인해 두면 새벽 귀가가 한결 수월하고, 같은 매거진 글을 다음 모임에서도 재활용할 수 있습니다.</p>
+<h2>${escHtml(a.tag)} 글을 본인 후기로 잇기</h2>
+<p>매거진 글이 마음에 들었다면 본인이 다녀온 매장 후기에 한 줄이라도 본문 인용을 더해 두면, 다음 회원이 본인 후기를 검색했을 때 매거진 글까지 자연스럽게 이어집니다. ${escHtml(a.tag)} 키워드는 사이트 내에서 자주 검색되는 주제라 본인 시각이 더해진 한 줄이 다음 방문자의 결정에 결정적인 단서가 됩니다. 본문에서 가장 인상 깊었던 한 문장을 본인 모임 상황에 맞춰 다시 풀어 적으면, 같은 글을 읽는 다른 회원에게도 본인 톤이 자연스럽게 전달되어 후기 자체가 새로운 매거진 단서로 자리 잡습니다. 매거진과 후기는 같은 맥락으로 연결될 때 가장 큰 도움이 됩니다.</p>
+`;
   const ssrBody = `<article>
 <h1>${escHtml(a.title)}</h1>
 <p><strong>${escHtml(a.tag)}</strong> · <time datetime="${escHtml(a.date)}">${escHtml(a.date)}</time></p>
 ${a.content}
+${articleAddon}
 <p><a href="${BASE_URL}/magazine">← 매거진 전체 보기</a></p>
 </article>`;
   // Article JSON-LD
@@ -1652,6 +1717,19 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   ssrBody += `<dd>현재 회원 검색·재방문 기준 TOP은 ${escHtml(topNames)} 입니다. 지역별로 다르니 가까운 곳부터 확인하세요.</dd>`;
   ssrBody += `<dt>${escHtml(catInfo.labelKo)} 예약은 어떻게 하나요?</dt>`;
   ssrBody += `<dd>각 업소 상세 페이지에 직통 번호가 있고, 평일 저녁이면 당일 통화로도 가능합니다. 주말은 미리 확인하세요.</dd></dl>`;
+  // 시즌159 — best 페이지 본문 깊이 보강
+  const bestRegionList = [...new Set(catVenues.map(vv => vv.regionKo))].slice(0, 8);
+  ssrBody += `<h2>${escHtml(catInfo.labelKo)} 인기 지역 분포</h2><ul>`;
+  bestRegionList.forEach(r => { const cnt = catVenues.filter(vv => vv.regionKo === r).length; ssrBody += `<li><strong>${escHtml(r)}</strong> — ${cnt}곳</li>`; });
+  ssrBody += `</ul>`;
+  ssrBody += `<h2>${escHtml(catInfo.labelKo)} 인원·모임 컨셉별 매칭</h2>`;
+  ssrBody += `<p>${escHtml(catInfo.labelKo)}는 같은 카테고리 안에서도 매장 콘셉트·분위기·연령대가 갈리기 때문에 본인 모임 톤에 맞춰 한 곳을 정하는 게 중요합니다. 1~2인 한 잔 자리는 분위기 가벼운 곳, 3~4인 모임은 룸·부스·플로어 중 본인 모임 컨셉에 맞는 한 곳, 5~8인 단체는 사이즈가 맞는 자리가 빠르게 마감되니 직통 예약 권장입니다. 9인 이상 단체는 단체 응대 가능 매장만 추리고 사전 컨펌으로 좌석·정산까지 합의해 두면 합류와 진행이 매끄럽습니다. 회원 후기에서 "단체" "응대" "회전" 같은 키워드가 어떻게 쓰이는지 살펴보면 본인 모임에 적합한지 빠르게 판단할 수 있습니다.</p>`;
+  ssrBody += `<h2>${escHtml(catInfo.labelKo)} 시간대별 분위기</h2>`;
+  ssrBody += `<p>${escHtml(catInfo.labelKo)}는 시간대에 따라 손님 톤이 갈립니다. 평일 저녁 7~10시는 비교적 차분해서 소개팅·동료 한잔·첫 방문에 적합하고, 금·토 밤 10시 이후는 본격 회전이 시작되어 ${escHtml(catInfo.labelKo)} 콘셉트의 활기를 가장 진하게 느낄 수 있습니다. 자정~새벽 2시는 합석·부킹·단체 모임 마무리가 가장 활발하며, 새벽 2시 이후 마감 시간은 매장마다 달라 직통 통화 확인이 가장 정확합니다. 본인 모임 톤에 맞춰 출발 시간을 잡으면 매장 분위기와 어긋나지 않게 자리를 잡을 수 있습니다.</p>`;
+  ssrBody += `<h2>${escHtml(catInfo.labelKo)} 방문 후 후기 활용</h2>`;
+  ssrBody += `<p>${escHtml(catInfo.labelKo)} 인기 랭킹은 회원 검색·재방문·후기 데이터를 종합해 자동 갱신됩니다. 다녀온 뒤 한 줄 후기라도 남기면 다음 방문자의 첫 방문 결정에 큰 도움이 되고, 본인이 자주 가는 매장의 랭킹 변동에도 영향을 줍니다. 사진 후기는 조명·룸 배치·분위기 단서를 직접 보여주기 때문에 다음 회원이 가장 많이 참고하는 자료입니다. 매장 측 응대 품질을 객관적으로 평가하고 싶다면 평점뿐 아니라 본인이 느낀 결정적 장면을 한 문장이라도 적어 두는 게 좋습니다.</p>`;
+  ssrBody += `<h2>${escHtml(catInfo.labelKo)} 비교할 때 보는 5가지</h2>`;
+  ssrBody += `<p>${escHtml(catInfo.labelKo)}를 처음 비교한다면 다음 다섯 가지를 차례로 보면 실수가 적습니다. 첫째 매장 콘셉트와 메인 손님 연령대, 둘째 자리 구성과 본인 인원에 맞는 룸·부스·플로어 사이즈, 셋째 매니저·실장 응대 톤과 후기 코멘트, 넷째 직통 예약 가능 시간과 마감 시간, 다섯째 동선과 끝나고 귀가 교통입니다. 위 다섯 가지를 모두 채운 매장 두 곳을 추려 직통 통화로 분위기를 짧게 확인해두면 본인 모임에 어느 쪽이 더 맞는지 즉시 판단할 수 있습니다. 회원 후기에서 결정적 문장을 한두 줄 발췌해 두면 모임 전 일행과 공유하기에도 편합니다.</p>`;
   writePage(p, { title, description: desc, ssrBody, keywords: `${catInfo.labelKo} 인기, ${catInfo.labelKo} 추천, ${catInfo.labelKo} 랭킹, ${catInfo.labelKo} TOP`, jsonLdList: collectionJsonLd(p, title, desc, catVenues) });
   dynamicPages.push(p);
 }
@@ -1675,6 +1753,25 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   ssrBody += `<dd>현재 신규 입점 리스트는 ${escHtml(newNames)} 입니다. 지역과 콘셉트로 추려서 비교하세요.</dd>`;
   ssrBody += `<dt>신규 ${escHtml(catInfo.labelKo)}는 손님이 적나요?</dt>`;
   ssrBody += `<dd>오픈 초기에는 평일 손님이 적은 편이라 분위기를 여유롭게 즐길 수 있고, 주말은 미리 예약하는 게 안전합니다.</dd></dl>`;
+  // 시즌159 — new 페이지 본문 깊이 보강
+  const newRegionList = [...new Set(catVenues.map(vv => vv.regionKo))].slice(0, 8);
+  ssrBody += `<h2>신규 ${escHtml(catInfo.labelKo)} 지역 분포</h2><ul>`;
+  newRegionList.forEach(r => { const cnt = catVenues.filter(vv => vv.regionKo === r).length; ssrBody += `<li><strong>${escHtml(r)}</strong> — ${cnt}곳</li>`; });
+  ssrBody += `</ul>`;
+  ssrBody += `<h2>신규 오픈 ${escHtml(catInfo.labelKo)} 활용 가이드</h2>`;
+  ssrBody += `<p>최근 오픈한 ${escHtml(catInfo.labelKo)}는 운영 동선이 정착되기 전이라 매니저 응대가 꼼꼼하고 자리 선택도 자유로운 편입니다. 다만 사진·메뉴·라인업 같은 1차 정보가 아직 충분히 누적되지 않아 매장 콘셉트를 직통 통화로 한번 확인하고 가는 편이 정확합니다. 오픈 첫 한 달은 회원 후기가 거의 없어 분위기 가늠이 어려울 수 있으니, 첫 방문은 평일 저녁 차분한 시간대에 잠깐 들러 매장 톤을 익혀 두고 본격 모임은 두 번째 방문에 잡는 동선이 안전합니다.</p>`;
+  ssrBody += `<h2>신규 ${escHtml(catInfo.labelKo)} 첫 방문 체크 포인트</h2>`;
+  ssrBody += `<ul>`;
+  ssrBody += `<li>매장 콘셉트 — 직통 전화로 분위기·연령대·드레스코드 직접 확인</li>`;
+  ssrBody += `<li>예약 가능 시간 — 오픈 직후는 평일 자리 여유 많은 편</li>`;
+  ssrBody += `<li>룸/부스 사이즈 — 인원에 맞는 자리가 있는지 미리 확인</li>`;
+  ssrBody += `<li>주차·교통 — 오픈 직후라 주차 안내가 정착 안 된 곳도 있음</li>`;
+  ssrBody += `<li>마감 시간 — 운영 초기 마감 시간이 자주 변동될 수 있음</li>`;
+  ssrBody += `</ul>`;
+  ssrBody += `<h2>신규 ${escHtml(catInfo.labelKo)} 후기 남기기</h2>`;
+  ssrBody += `<p>신규 오픈 매장은 회원 후기가 아직 적어, 본인이 다녀온 뒤 한 줄 후기라도 남기면 다음 방문자의 첫 방문 결정에 결정적인 도움이 됩니다. 사진 후기는 조명·룸 배치·무대 구성 같은 분위기 단서를 직접 보여주고, 글 후기는 응대·회전·인원 톤을 가늠하는 1차 자료가 됩니다. 오픈 초기 후기는 매장 운영자에게도 빠른 피드백이 되어 사진·메뉴·라인업 업데이트로 이어지는 경우가 많습니다. 본인이 자주 가는 동네에 새 매장이 생기면 회원 가입 후 한 줄이라도 남겨 두면 동네 정보가 더 빠르게 정리됩니다.</p>`;
+  ssrBody += `<h2>신규 ${escHtml(catInfo.labelKo)} 오픈 직후만의 장점</h2>`;
+  ssrBody += `<p>오픈 직후 ${escHtml(catInfo.labelKo)}는 단골 손님이 아직 자리 잡기 전이라 신규 방문자도 자리·응대를 가장 자유롭게 받을 수 있는 시기입니다. 매니저·실장이 본인 모임 톤을 한 번이라도 기억해 두면 두 번째 방문부터 응대 품질이 눈에 띄게 달라지고, 운영 초기 멤버십·이벤트 혜택을 가장 빨리 안내받을 수 있는 자리이기도 합니다. 다만 평일·주말 분위기 차이가 아직 정착되지 않아 같은 매장이라도 방문 요일에 따라 톤이 크게 달라질 수 있으니, 본격 모임 전에 평일 가벼운 자리로 한 번 분위기를 보고 두 번째 본격 모임을 잡는 동선이 가장 안전합니다.</p>`;
   writePage(p, { title, description: desc, ssrBody, keywords: `신규 ${catInfo.labelKo}, 새 ${catInfo.labelKo}, ${catInfo.labelKo} 오픈`, jsonLdList: collectionJsonLd(p, title, desc, catVenues) });
   dynamicPages.push(p);
 }
@@ -1714,6 +1811,31 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     ssrBody += `<li><a href="/region/${encodeURIComponent(regionKo)}/${catInfo.path}/">${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} ${cv.length}곳</a></li>`;
   }
   ssrBody += `</ul>`;
+  // 시즌159 — region 본문 깊이 보강
+  ssrBody += `<h2>${escHtml(regionKo)} 밤문화 한 줄 정리</h2>`;
+  const catCounts = Object.entries(byCat).map(([ck, rvs]) => `${escHtml(ck)} ${rvs.length}곳`).join(' · ');
+  ssrBody += `<p>${escHtml(regionKo)}에는 ${catCounts}이 등록되어 있고, 같은 ${escHtml(regionKo)}라도 거리·역·층에 따라 손님 톤이 갈립니다. 처음 가는 분은 회원 후기가 누적된 ${regionTopNames ? escHtml(regionTopNames) : '대표 업소'} 같은 곳부터 둘러보면서 동네 분위기를 잡고, 두 번째 방문에 본인 모임 컨셉에 맞는 업종으로 옮겨가는 동선이 무난합니다.</p>`;
+  ssrBody += `<h2>${escHtml(regionKo)} 가는 시간대별 분위기</h2>`;
+  ssrBody += `<ul>`;
+  ssrBody += `<li><strong>평일 저녁 7~10시</strong> — 비교적 차분, 첫 방문·소개팅·동료 한잔에 적합</li>`;
+  ssrBody += `<li><strong>금·토 밤 10시~자정</strong> — 라인업 본격 회전, 동네 활기 피크</li>`;
+  ssrBody += `<li><strong>자정~새벽 2시</strong> — 합석·부킹 회전이 가장 활발, 단체 모임 마무리 코스</li>`;
+  ssrBody += `<li><strong>새벽 2시 이후</strong> — 마감 시간이 업소마다 달라 직통 통화로 확인 권장</li>`;
+  ssrBody += `</ul>`;
+  ssrBody += `<h2>${escHtml(regionKo)} 모임 컨셉별 추천 업종</h2>`;
+  ssrBody += `<ul>`;
+  ssrBody += `<li><strong>생일·기념일</strong> — 룸/요정 프라이빗 룸이 사진·노래·축하 동선에 편함</li>`;
+  ssrBody += `<li><strong>송별·환영회</strong> — 룸 또는 나이트 부스, 인원 사이즈에 맞는 곳으로 미리 예약</li>`;
+  ssrBody += `<li><strong>소개팅·데이트</strong> — 라운지 칵테일바, 조용한 자리에서 대화 위주</li>`;
+  ssrBody += `<li><strong>친구 사교·새 인연</strong> — 클럽·나이트, 합석·부킹 회전이 많은 시간대 권장</li>`;
+  ssrBody += `<li><strong>비즈니스 만찬</strong> — 요정 정찬 또는 룸 양주, 격조와 프라이빗 둘 다 잡힘</li>`;
+  ssrBody += `</ul>`;
+  ssrBody += `<h2>${escHtml(regionKo)} 동선·교통 가이드</h2>`;
+  ssrBody += `<p>${escHtml(regionKo)} 일대는 늦은 시간 택시 잡기가 어려운 구간이 있어 끝나는 시간 기준으로 귀가 동선을 미리 설계하는 편이 안전합니다. 일행이 흩어지지 않도록 위치 공유를 켜두고, 합류 지점은 역·편의점 같이 누구나 찾기 쉬운 랜드마크로 잡으면 모임이 흐트러지지 않습니다. 직통 콜택시·대리운전 번호는 매장 매니저에게 부탁하면 안내받을 수 있습니다.</p>`;
+  ssrBody += `<h2>${escHtml(regionKo)} 첫 방문자 체크 포인트</h2>`;
+  ssrBody += `<p>${escHtml(regionKo)}가 처음이라면 회원 후기가 최근 한 달 안에 누적된 업소부터 둘러보는 게 분위기 가늠에 가장 정확합니다. 매장 사진 갤러리를 한번 훑어 본인 모임 톤에 맞는 콘셉트인지 가늠하고, 직통 전화로 예약 가능 시간과 룸/부스 사이즈를 확인하면 자리 잡고 헤매는 시간을 줄일 수 있습니다. 같은 ${escHtml(regionKo)} 안에서도 거리·역·층마다 손님 톤이 갈리니 첫 방문은 평일 저녁 차분한 시간대에 동네를 익히고, 두 번째 방문에 본격 모임 자리를 잡는 동선이 부담 없습니다.</p>`;
+  ssrBody += `<h2>${escHtml(regionKo)} 인근 합류·해산 동선</h2>`;
+  ssrBody += `<p>${escHtml(regionKo)} 모임은 합류와 해산 동선을 사전에 설계해 두면 모임 자체에 집중할 수 있습니다. 합류 지점은 ${escHtml(regionKo)} 대표 역의 출구·편의점 같은 랜드마크로 잡고, 일행이 늦으면 매장 안에서 기다리지 말고 약속한 랜드마크에서 잠깐 합류한 다음 함께 입장하는 흐름이 매끄럽습니다. 해산은 마지막 잔이 비기 전 미리 콜택시·대리를 호출해 두면 새벽 ${escHtml(regionKo)} 일대 택시난을 피할 수 있고, 일행이 만취한 경우 매장 매니저에게 부탁해 안전한 콜·대리를 안내받는 편이 빠릅니다.</p>`;
   writePage(p, { title, description: desc, ssrBody, keywords: `${regionKo} 밤문화, ${regionKo} 클럽, ${regionKo} 나이트, ${regionKo} 룸, ${regionKo} 유흥`, jsonLdList: collectionJsonLd(p, title, desc, regionVenues) });
   dynamicPages.push(p);
 
@@ -1736,6 +1858,21 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     cSsr += `<dd>${escHtml(crossNames)} 등이 회원 검색·재방문 기준 인기 ${escHtml(catInfo.labelKo)}로 자주 언급됩니다.</dd>`;
     cSsr += `<dt>${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} 예약은 어떻게 하나요?</dt>`;
     cSsr += `<dd>각 업소 상세 페이지에서 직통 전화로 예약 가능 시간과 룸 사이즈를 미리 확인하세요. 주말은 일찍 마감되는 곳이 많습니다.</dd></dl>`;
+    // 시즌159 — 본문 깊이 보강
+    cSsr += `<h2>${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} 인원별 코스</h2><ul>`;
+    cSsr += `<li><strong>2~3인</strong> — 가벼운 자리, 시간 제한 적은 분위기</li>`;
+    cSsr += `<li><strong>4~6인</strong> — ${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} 가장 평균적인 모임 단위</li>`;
+    cSsr += `<li><strong>7~10인</strong> — 룸·부스 사이즈 미리 확인하고 직통 예약</li>`;
+    cSsr += `<li><strong>단체(10인 이상)</strong> — 단체 응대 가능 매장만 추리고 사전 컨펌</li>`;
+    cSsr += `</ul>`;
+    cSsr += `<h2>${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} 가는 길·끝나고 동선</h2>`;
+    cSsr += `<p>${escHtml(regionKo)} 안에서 ${escHtml(catInfo.labelKo)} 거리는 역에서 도보권에 모여 있는 경우가 많지만, 매장마다 골목과 층이 달라 처음 가는 분은 직통 전화로 출구 번호와 입구 위치를 한번 확인하고 출발하면 헛걸음을 줄일 수 있습니다. 끝나는 시간 기준으로 콜택시·대리운전을 미리 알아두면 ${escHtml(regionKo)} 새벽 귀가가 한결 수월합니다. 일행이 많을 때는 합류 지점을 역·편의점 같은 랜드마크로 잡으면 모임이 흐트러지지 않습니다.</p>`;
+    cSsr += `<h2>${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} 처음 가는 분 체크리스트</h2>`;
+    cSsr += `<p>${escHtml(catInfo.labelKo)}는 같은 카테고리라도 ${escHtml(regionKo)} 안에서 콘셉트·분위기·연령대가 다 다릅니다. 평일 저녁은 조용한 코스, 금·토 자정 이후는 회전 빠른 코스로 갈리니 본인 모임 톤에 맞춰 시간대를 잡는 게 좋습니다. 드레스코드는 매장 사진을 한번 훑어 보고, 직통 전화로 예약 가능 시간과 룸/부스 사이즈를 확인하면 자리 잡고 헤매는 시간을 줄일 수 있습니다. ${crossVenues.slice(0, 5).map(cv => escHtml(cv.nameKo)).join(', ')} 같은 곳은 후기·평점이 자주 갱신되어 첫 방문 가늠이 비교적 쉽습니다.</p>`;
+    cSsr += `<h2>${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} 모임 컨셉별 매칭</h2>`;
+    cSsr += `<p>같은 ${escHtml(regionKo)} ${escHtml(catInfo.labelKo)}라도 모임 컨셉에 따라 고르는 기준이 달라집니다. 처음 만나는 자리는 대화가 끊기지 않게 BGM 볼륨이 적당한 곳, 오래된 친구 모임은 회전 느리고 자리 편한 곳, 거래처·접대 자리는 룸 독립성과 동선이 외부에 노출되지 않는 매장을 우선해서 보세요. 생일·환영회처럼 분위기를 띄워야 하는 자리는 매니저·실장이 적극적으로 응대해주는 곳을, 조용히 한잔하고 싶은 자리는 인원 적게 받는 시간대를 골라 잡으면 만족도가 큽니다. 위 ${crossVenues.length}곳 각 페이지에서 매장 톤을 한번 비교해 보면 본인 컨셉에 맞는 곳이 자연스럽게 추려집니다.</p>`;
+    cSsr += `<h2>${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} 시간대별 분위기</h2>`;
+    cSsr += `<p>${escHtml(regionKo)} ${escHtml(catInfo.labelKo)}는 시간대마다 손님 톤이 확연히 달라집니다. 저녁 8~10시는 1차 끝나고 합류하는 손님이 주를 이뤄 비교적 차분하고 대화 중심, 자정 전후는 회전이 가장 빠른 피크 시간대로 분위기가 가장 활성화됩니다. 새벽 2~3시 이후는 마감 전 라스트 분위기로 자리가 빨리 비기 시작하니, 끝나는 시간을 여유 있게 잡는 모임은 자정 전 입장을 권합니다. 평일과 주말 톤 차이도 큰 편이라, 처음 가는 분은 매장 후기에서 본인이 가려는 요일·시간대 코멘트를 찾아 보면 실제 분위기를 가늠하기 쉽습니다.</p>`;
     writePage(cp, { title: ct, description: cd, ssrBody: cSsr, keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: collectionJsonLd(cp, ct, cd, crossVenues) });
     dynamicPages.push(cp);
   }
@@ -1766,6 +1903,30 @@ for (const [tag, tagVenues] of Object.entries(allTags)) {
   ssrBody += `<dd>${escHtml(tagTopNames)} 등 ${tagVenues.length}곳이 이 태그로 묶여 있습니다. 각 업소 상세 페이지에서 정확한 분위기를 확인하세요.</dd>`;
   ssrBody += `<dt>#${escHtml(tag)} 처음 가는데 뭐 챙겨야 하나요?</dt>`;
   ssrBody += `<dd>드레스코드와 예약 가능 시간은 업소마다 달라서, 직통 전화로 미리 확인하면 첫방문이 훨씬 편합니다.</dd></dl>`;
+  // 시즌159 — 본문 깊이 보강
+  const tagRegions = [...new Set(tagVenues.map(tv => tv.regionKo))].slice(0, 8);
+  const tagCats = [...new Set(tagVenues.map(tv => catLabelMap[tv.cat] || tv.cat))];
+  ssrBody += `<h2>#${escHtml(tag)} 지역 분포</h2><ul>`;
+  tagRegions.forEach(r => { const cnt = tagVenues.filter(tv => tv.regionKo === r).length; ssrBody += `<li><strong>${escHtml(r)}</strong> — ${cnt}곳</li>`; });
+  ssrBody += `</ul>`;
+  ssrBody += `<h2>#${escHtml(tag)} 업종 분포</h2><ul>`;
+  tagCats.forEach(c => { const cnt = tagVenues.filter(tv => (catLabelMap[tv.cat] || tv.cat) === c).length; ssrBody += `<li><strong>${escHtml(c)}</strong> — ${cnt}곳</li>`; });
+  ssrBody += `</ul>`;
+  ssrBody += `<h2>#${escHtml(tag)} 큐레이션 활용법</h2>`;
+  ssrBody += `<p>#${escHtml(tag)} 태그는 회원들이 ${tagVenues.length}곳을 같은 결로 묶어 둔 큐레이션입니다. 본인 모임 컨셉에 ${escHtml(tag)} 키워드가 와닿는다면, 위 지역·업종 분포에서 가까운 곳부터 추려 두 곳 정도를 비교해 보면 됩니다. 같은 ${escHtml(tag)} 업소라도 평일·주말 손님 톤과 분위기가 다르니, 직통 전화로 예약 가능 시간과 룸/부스 사이즈를 확인하고 출발하면 헛걸음을 줄일 수 있습니다. 회원 후기를 빠르게 훑어 보면 ${escHtml(tag)} 키워드를 매장이 어떻게 풀어내는지가 눈에 보이고, 최근 한 달 안에 다녀온 후기가 누적된 곳일수록 분위기 가늠이 정확합니다. 첫 방문이라면 평일 저녁 시간대에 잠깐 들러 동네와 매장 톤을 익힌 다음, 다음 방문에 본격적으로 모임 자리를 잡는 동선이 부담 없습니다.</p>`;
+  ssrBody += `<h2>#${escHtml(tag)} 가기 전 체크 포인트</h2>`;
+  ssrBody += `<p>#${escHtml(tag)} 업소는 같은 태그 안에서도 콘셉트와 분위기가 갈리기 때문에 방문 전에 짧게 짚어 볼 항목이 있습니다. 첫째, 드레스코드는 매장 사진을 한번 훑어 본인 모임 톤에 맞춰야 어색하지 않습니다. 둘째, 예약 가능 시간과 룸/부스 사이즈는 직통 통화로 확인하면 자리 잡고 헤매는 시간을 줄일 수 있습니다. 셋째, 인원 사이즈는 모임 컨셉에 맞게 미리 합의해야 동선이 매끄럽고, 너무 작거나 크면 분위기가 어색해질 수 있습니다. 넷째, 마감 시간은 시즌·요일에 따라 단축되는 경우가 있어 늦은 시간 합류한다면 입장 가능 여부를 미리 확인하는 편이 안전합니다.</p>`;
+  ssrBody += `<ul>`;
+  ssrBody += `<li>드레스코드 — 매장 사진 한번 훑고 본인 톤에 맞추기, ${escHtml(tag)} 콘셉트에 어울리는 분위기</li>`;
+  ssrBody += `<li>예약 가능 시간 — 직통 통화로 룸/부스 사이즈와 인원 합석 가능 여부 확인</li>`;
+  ssrBody += `<li>인원 사이즈 — 너무 크거나 작으면 동선이 어색, 모임 컨셉에 맞춰 사이즈 합의</li>`;
+  ssrBody += `<li>마감 시간 — 시즌·요일에 따라 단축되는 경우가 있으니 늦은 합류는 사전 확인</li>`;
+  ssrBody += `<li>귀가 동선 — 새벽 택시·콜대리 미리 알아두고 일행 위치 공유 켜두기</li>`;
+  ssrBody += `</ul>`;
+  ssrBody += `<h2>#${escHtml(tag)} 시간대별 분위기</h2>`;
+  ssrBody += `<p>${escHtml(tag)} 업소는 시간대별로 손님 톤이 갈립니다. 평일 저녁 7~10시는 비교적 차분해서 소개팅·동료 한잔·첫 방문에 적합하고, 금·토 밤 10시 이후는 본격 회전이 시작되어 ${escHtml(tag)} 콘셉트의 활기를 가장 진하게 느낄 수 있습니다. 자정~새벽 2시는 합석·부킹·단체 모임 마무리가 가장 활발하며, 새벽 2시 이후는 매장마다 마감 시간이 달라 직통 통화 확인이 가장 정확합니다. 모임 톤에 맞춰 출발 시간을 잡으면 분위기와 어긋나지 않게 자리를 잡을 수 있습니다.</p>`;
+  ssrBody += `<h2>#${escHtml(tag)} 함께 보면 좋은 큐레이션</h2>`;
+  ssrBody += `<p>#${escHtml(tag)}와 비슷한 결로 자주 묶이는 키워드는 매장 콘셉트·분위기에 따라 갈립니다. 회원들이 검색·찜·후기에서 자주 함께 사용하는 태그를 참고하면 본인 모임에 맞는 곳을 더 빠르게 좁힐 수 있습니다. 같은 ${escHtml(tag)} 안에서도 지역 분포(${tagRegions.slice(0, 5).map(r => escHtml(r)).join(', ')}${tagRegions.length > 5 ? ' 등' : ''})에 따라 손님 톤이 다르니 가까운 지역부터 둘러보고, 두 번째 방문에 다른 지역으로 동선을 넓혀가는 흐름이 자연스럽습니다.</p>`;
   writePage(p, { title, description: desc, ssrBody, keywords: `${tag}, ${tag} 추천, 밤문화 ${tag}`, jsonLdList: collectionJsonLd(p, title, desc, tagVenues) });
   dynamicPages.push(p);
 }
@@ -1795,6 +1956,30 @@ for (const [st, stVenues] of Object.entries(stationVenues)) {
   ssrBody += `<dd>${escHtml(stTopNames)} 등 총 ${stVenues.length}곳이 도보권 안에 있습니다. 출구 번호는 각 업소 페이지에서 확인하세요.</dd>`;
   ssrBody += `<dt>${escHtml(st)} 늦은 시간에도 영업하나요?</dt>`;
   ssrBody += `<dd>대부분 새벽까지 운영하지만 마감 시간은 업소마다 다릅니다. 직통 통화로 마감 전 입장 가능 여부를 확인하세요.</dd></dl>`;
+  // 시즌159 — 본문 깊이 보강
+  const stCats = [...new Set(stVenues.map(sv => catLabelMap[sv.cat] || sv.cat))];
+  ssrBody += `<h2>${escHtml(st)} 업종별 분포</h2><ul>`;
+  stCats.forEach(c => { const cnt = stVenues.filter(sv => (catLabelMap[sv.cat] || sv.cat) === c).length; ssrBody += `<li><strong>${escHtml(c)}</strong> — ${cnt}곳</li>`; });
+  ssrBody += `</ul>`;
+  ssrBody += `<h2>${escHtml(st)} 시간대별 동선</h2><ul>`;
+  ssrBody += `<li><strong>저녁 7~10시</strong> — 첫 모임 자리, 차분한 분위기 위주</li>`;
+  ssrBody += `<li><strong>밤 10시~자정</strong> — ${escHtml(st)} 일대 활기 피크</li>`;
+  ssrBody += `<li><strong>자정~새벽 2시</strong> — 합석·부킹 회전 활발, 단체 마무리 코스</li>`;
+  ssrBody += `<li><strong>새벽 2시 이후</strong> — 마감 시간 직통 확인 필요</li>`;
+  ssrBody += `</ul>`;
+  ssrBody += `<h2>${escHtml(st)} 출구·도보 가이드</h2>`;
+  ssrBody += `<p>${escHtml(st)} 주변은 출구마다 도보 거리가 달라서, 매장 직통 전화로 정확한 출구 번호와 골목 위치를 확인하면 헛걸음을 줄일 수 있습니다. 일행이 흩어지지 않도록 합류 지점은 역·편의점 같은 랜드마크로 잡고, 위치 공유를 켜두면 동선이 매끄럽습니다. ${escHtml(st)} 인근은 늦은 시간 택시 잡기가 어려운 구간도 있어 끝나는 시간 기준으로 콜택시·대리운전을 미리 알아두는 편이 안전합니다. 모임 시작 시간을 ${escHtml(st)} 기준으로 잡으면 일행 합류와 이동 부담이 줄고, 첫 만남 자리에서 동선 때문에 시간을 허비하지 않습니다.</p>`;
+  ssrBody += `<h2>${escHtml(st)} 첫 방문 체크리스트</h2>`;
+  ssrBody += `<p>${escHtml(st)} 근처가 처음이라면 매장 카테고리와 분위기를 먼저 비교해 보고, 본인 모임 컨셉에 맞는 한 곳을 정한 다음 직통 전화로 예약·드레스코드·룸 사이즈를 확인하면 헛걸음 없이 자리를 잡을 수 있습니다. ${escHtml(st)} 일대는 출구마다 골목 분위기가 다르고, 같은 거리라도 매장 콘셉트가 갈리니 사진 갤러리를 한번 훑고 가는 편이 안전합니다. 늦은 시간 새벽 마감을 노린다면 마감 시간이 시즌·요일에 따라 단축되는 곳이 있어 직통 통화 확인이 가장 정확합니다.</p>`;
+  ssrBody += `<ul>`;
+  ssrBody += `<li>드레스코드 — 매장 갤러리 한번 훑고 매장 콘셉트에 맞춰 옷차림 정하기</li>`;
+  ssrBody += `<li>예약 가능 시간 — 직통 통화로 룸/부스 사이즈와 단체 가능 여부 확인</li>`;
+  ssrBody += `<li>인원·모임 컨셉 — 사이즈와 톤 미리 합의해서 동선 부담 줄이기</li>`;
+  ssrBody += `<li>주차·대중교통 — ${escHtml(st)} 인근 주차 여건 확인, 일행은 ${escHtml(st)}에서 합류</li>`;
+  ssrBody += `<li>귀가 동선 — 콜택시·대리 전화번호 메모, 일행 위치 공유 켜두기</li>`;
+  ssrBody += `</ul>`;
+  ssrBody += `<h2>${escHtml(st)} 모임 컨셉별 추천 시간대</h2>`;
+  ssrBody += `<p>${escHtml(st)} 일대에서 모임을 잡을 때는 컨셉에 맞춰 시간대를 고르면 분위기와 어긋나지 않습니다. 소개팅·동료 한잔 같은 차분한 자리는 평일 저녁 7~9시가 무난하고, 친구 사교·송별·환영회처럼 활기 있는 자리는 금·토 밤 10시 이후가 회전이 빠릅니다. 단체 모임 마무리 코스라면 자정 즈음 합류 시간을 잡으면 ${escHtml(st)} 일대 회전 피크와 맞물려 동선이 자연스럽고, 비즈니스 만찬은 룸/요정 카테고리가 적합하니 시간대보다 좌석 사이즈와 프라이빗 정도를 먼저 확인하세요.</p>`;
   writePage(p, { title, description: desc, ssrBody, keywords: `${st} 근처, ${st} 밤문화, ${st} 클럽, ${st} 나이트`, jsonLdList: collectionJsonLd(p, title, desc, stVenues) });
   dynamicPages.push(p);
 }

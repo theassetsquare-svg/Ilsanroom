@@ -15,7 +15,11 @@ import https from 'https';
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const SITEMAP = 'https://nolcool.com/sitemap.xml';
-const MIN_CHARS = 3000;
+// 시즌159 — page-type별 임계값 정밀화
+//  venue/magazine 상세 = 3000자 (실제 체류 10분 대상)
+//  listing(tag/region/near/best/new) = 2000자 (인덱스/큐레이션)
+const MIN_CHARS_DETAIL = 3000;
+const MIN_CHARS_LISTING = 2000;
 const MIN_H2 = 5;
 const MAX_PAGES = 200;
 const TOP_N_ALERT = 20;       // 미달 상위 20개만 메일
@@ -25,6 +29,20 @@ const EXEMPT_PATTERNS = [
   /\/legal\//, /\/admin\//, /\/auth\//, /\/my\//, /\/profile\//, /\/business\//, /\/contact/,
   /\/sitemap/, /\/robots/, /\/llms/, /\/404/, /\/search\?/,
 ];
+
+function classifyPath(url) {
+  const path = url.replace('https://nolcool.com', '');
+  // venue 상세: /clubs/<region>/<slug>
+  if (/^\/(clubs|nights|lounges|rooms|yojeong|hoppa)\/[^/]+\/[^/]+\/?$/.test(path)) return 'detail';
+  // magazine article
+  if (/^\/magazine\/[^/]+\/?$/.test(path)) return 'detail';
+  // 그 외(listing/index/aggregation/landing)
+  return 'listing';
+}
+
+function minCharsFor(url) {
+  return classifyPath(url) === 'detail' ? MIN_CHARS_DETAIL : MIN_CHARS_LISTING;
+}
 
 function fetchText(url) {
   return new Promise(res => {
@@ -52,21 +70,23 @@ async function main() {
     const text = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
     const chars = text.length;
     const h2Count = (html.match(/<h2/gi) || []).length;
-    results.push({ url, chars, h2: h2Count });
+    const kind = classifyPath(url);
+    const minChars = minCharsFor(url);
+    results.push({ url, chars, h2: h2Count, kind, minChars });
     scanned++;
     if (scanned % 30 === 0) console.log(`  scan ${scanned}/${pick.length}`);
   }
 
-  const under = results.filter(r => r.chars < MIN_CHARS).sort((a, b) => a.chars - b.chars);
+  const under = results.filter(r => r.chars < r.minChars).sort((a, b) => a.chars - b.chars);
   const lowH2 = results.filter(r => r.h2 < MIN_H2).sort((a, b) => a.h2 - b.h2);
 
   const issues = [];
-  if (under.length > 0) issues.push({ type: '본문 3000자 미만', count: under.length });
+  if (under.length > 0) issues.push({ type: `본문 미달 (detail<${MIN_CHARS_DETAIL}/listing<${MIN_CHARS_LISTING})`, count: under.length });
   if (lowH2.length > 0) issues.push({ type: 'H2 5개 미만', count: lowH2.length });
 
-  console.log('\n=== 체류 10분 콘텐츠 감사 ===');
+  console.log('\n=== 체류 10분 콘텐츠 감사 (시즌159 page-type별) ===');
   console.log('  검사 URL:', results.length);
-  console.log('  3000자 미만:', under.length, '개');
+  console.log('  본문 미달:', under.length, `개 (detail<${MIN_CHARS_DETAIL} / listing<${MIN_CHARS_LISTING})`);
   console.log('  H2 5개 미만:', lowH2.length, '개');
   console.log('  회귀:', issues.length, '건');
 
@@ -82,7 +102,7 @@ async function sendMail({ issues, under, lowH2, total }) {
   const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const kst = new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 19) + ' KST';
   const underRows = under.slice(0, 20).map(r =>
-    `<tr><td style="border:1px solid #E5E7EB;padding:4px"><a href="${r.url}">${esc(r.url.replace('https://nolcool.com', ''))}</a></td><td style="border:1px solid #E5E7EB;padding:4px;color:#DC2626">${r.chars}자</td><td style="border:1px solid #E5E7EB;padding:4px">${r.h2}</td></tr>`,
+    `<tr><td style="border:1px solid #E5E7EB;padding:4px"><a href="${r.url}">${esc(r.url.replace('https://nolcool.com', ''))}</a></td><td style="border:1px solid #E5E7EB;padding:4px;color:#DC2626">${r.chars}자 / 기준 ${r.minChars}</td><td style="border:1px solid #E5E7EB;padding:4px">${r.kind}</td><td style="border:1px solid #E5E7EB;padding:4px">${r.h2}</td></tr>`,
   ).join('');
   const lowH2Rows = lowH2.slice(0, 20).map(r =>
     `<tr><td style="border:1px solid #E5E7EB;padding:4px"><a href="${r.url}">${esc(r.url.replace('https://nolcool.com', ''))}</a></td><td style="border:1px solid #E5E7EB;padding:4px;color:#DC2626">${r.h2}</td></tr>`,
@@ -92,7 +112,7 @@ async function sendMail({ issues, under, lowH2, total }) {
     <p style="color:#666;font-size:13px">측정: ${kst} · 총 ${total} URL · 본문 3000자↓ ${under.length}개 · H2 5↓ ${lowH2.length}개</p>
     <h3>본문 3000자 미만 (보강 큐 상위 ${Math.min(20, under.length)}개)</h3>
     <table style="border-collapse:collapse;width:100%;font-size:12px">
-      <tr><th style="border:1px solid #E5E7EB;padding:4px">URL</th><th style="border:1px solid #E5E7EB;padding:4px">글자수</th><th style="border:1px solid #E5E7EB;padding:4px">H2</th></tr>${underRows}
+      <tr><th style="border:1px solid #E5E7EB;padding:4px">URL</th><th style="border:1px solid #E5E7EB;padding:4px">글자수/기준</th><th style="border:1px solid #E5E7EB;padding:4px">타입</th><th style="border:1px solid #E5E7EB;padding:4px">H2</th></tr>${underRows}
     </table>
     <h3>H2 5개 미만 (보강 큐 상위 ${Math.min(20, lowH2.length)}개)</h3>
     <table style="border-collapse:collapse;width:100%;font-size:12px">
