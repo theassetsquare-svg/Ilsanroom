@@ -1,27 +1,27 @@
 {
-  "generated_at": "2026-05-26T16:42:27.944Z",
+  "generated_at": "2026-05-26T19:12:55.251Z",
   "window_hours": 24,
   "items": [
+    {
+      "path": "/nights/daejeonsevennight",
+      "title": "대전세븐나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 2
+    },
     {
       "path": "/nights/busanmulnight",
       "title": "부산물나이트",
       "category": "night",
       "region": "부산",
       "views_24h": 2
-    },
-    {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daejeonsevennight",
-      "title": "대전세븐나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 1
     },
     {
       "path": "/rooms/busan-haeundae/haeundaegoguryeo",
@@ -52,13 +52,6 @@
       "views_24h": 1
     },
     {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 1
-    },
-    {
       "path": "/hoppa/jangandong-hoppa-flex",
       "title": "장안동호빠 플렉스",
       "category": "hoppa",
@@ -80,9 +73,9 @@
       "views_24h": 1
     },
     {
-      "path": "/nights/ilsan-mul-night",
-      "title": "일산물나이트",
-      "category": "night",
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
       "region": "일산",
       "views_24h": 1
     }
