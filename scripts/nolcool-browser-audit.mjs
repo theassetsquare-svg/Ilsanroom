@@ -99,6 +99,10 @@ async function auditOne(browser, url, vpName) {
       const t = m.text();
       // ignore noise: 404 favicon, third-party tracker blocks
       if (/favicon|chrome-extension|net::ERR_BLOCKED_BY_CLIENT/.test(t)) return;
+      // 시즌70 silencer 콘솔 대칭 — Supabase magazine/community 401은 앱이 빈 배열로 폴백.
+      // Chrome "Failed to load resource ... 401" 메시지의 URL은 location().url 로만 접근 가능.
+      const locUrl = (m.location && m.location().url) || '';
+      if (/status of 401/.test(t) && /supabase\.co\/rest\/v1\/(magazine_articles|community_posts|community_comments)/.test(locUrl)) return;
       issues.push({ sev: 'CONSOLE', msg: t.slice(0, 200) });
     }
   });
