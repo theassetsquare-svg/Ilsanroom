@@ -1,0 +1,15 @@
+name: Dwell Diagnostic (oneshot — Bounce 100% 원인 분석)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run dwell-diagnostic
+        run: node scripts/dwell-diagnostic.mjs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
