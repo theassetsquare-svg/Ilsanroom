@@ -58,4 +58,4 @@ jobs:
           curl -sS -X POST https://api.resend.com/emails \
             -H "Authorization: Bearer $RESEND_API_KEY" \
             -H "Content-Type: application/json" \
-            -d "{\"from\":\"놀쿨 야간감사 <noreply@nolcool.com>\",\"to\":[\"$NOTIFY_EMAIL\"],\"subject\":\"🚨 놀쿨 야간 풀감사 실패\",\"html\":\"<p>$(date -u +%Y-%m-%d) 야간 풀감사가 실패했습니다. <a href='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'>로그 확인</a></p>\"}"
+            -d "{\"from\":\"NOLCOOL 야간감사 <onboarding@resend.dev>\",\"to\":[\"$NOTIFY_EMAIL\"],\"subject\":\"🚨 놀쿨 야간 풀감사 실패\",\"html\":\"<p>$(date -u +%Y-%m-%d) 야간 풀감사가 실패했습니다. <a href='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'>로그 확인</a></p>\"}"

@@ -55,13 +55,26 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          if [ -d "backups/$(date -u '+%Y-%m-%d')" ]; then
-            git add backups/
-            git diff --cached --quiet || git commit -m "backup: $(date -u '+%Y-%m-%d') daily backup"
-            git push
-          else
-            echo "No backup files to commit"
+          # 시즌165 — 빈 dir/race condition tolerant. push 실패시 rebase 후 1회 재시도.
+          dir="backups/$(date -u '+%Y-%m-%d')"
+          if [ ! -d "$dir" ] || ! find "$dir" -name '*.json' -size +0c | grep -q .; then
+            echo "No backup files generated (SUPABASE_SERVICE_KEY 미설정 또는 모든 테이블 SKIP)"
+            exit 0
           fi
+          git add backups/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "backup: $(date -u '+%Y-%m-%d') daily backup"
+          for i in 1 2 3; do
+            if git push; then exit 0; fi
+            echo "push 실패 ($i/3) — rebase 후 재시도"
+            git pull --rebase origin main || true
+            sleep 5
+          done
+          echo "::warning::backup push 3회 실패 — 다음 cron까지 누적"
+          exit 0
 
       - name: Cleanup old backups (keep 7 days)
         run: |

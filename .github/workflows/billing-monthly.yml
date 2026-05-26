@@ -172,7 +172,7 @@ jobs:
             `;
 
             const emailBody = JSON.stringify({
-              from: "놀쿨 요금봇 <noreply@nolcool.com>",
+              from: "NOLCOOL 요금봇 <onboarding@resend.dev>",
               to: [NOTIFY_EMAIL],
               subject,
               html,
