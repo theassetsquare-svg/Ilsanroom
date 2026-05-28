@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-28T06:42:08.790Z",
+  "generated_at": "2026-05-28T16:53:30.330Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,34 +7,41 @@
       "title": "부산물나이트",
       "category": "night",
       "region": "부산",
-      "views_24h": 7
+      "views_24h": 6
     },
     {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 3
+      "path": "/nights/daejeonsevennight",
+      "title": "대전세븐나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 5
     },
     {
       "path": "/nights/gangseo-hobak",
       "title": "강서호박나이트",
       "category": "night",
       "region": "강서",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/ulsannewworldnight",
-      "title": "울산뉴월드나이트",
-      "category": "night",
-      "region": "울산",
       "views_24h": 2
     },
     {
-      "path": "/nights/cheonanstardomnight",
-      "title": "천안스타돔나이트",
-      "category": "night",
-      "region": "천안",
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 2
+    },
+    {
+      "path": "/clubs/itaewon/itaewonclub-utopia",
+      "title": "이태원클럽 유토피아",
+      "category": "club",
+      "region": "이태원",
+      "views_24h": 1
+    },
+    {
+      "path": "/hoppa/busanhoppa-aura",
+      "title": "부산호빠 아우라",
+      "category": "hoppa",
+      "region": "부산",
       "views_24h": 1
     },
     {
@@ -45,6 +52,27 @@
       "views_24h": 1
     },
     {
+      "path": "/nights/ansanhitnight",
+      "title": "안산히트나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/daejeonhangukgwannight",
+      "title": "대전한국관나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 1
+    },
+    {
       "path": "/nights/daejeononenight",
       "title": "대전원나이트",
       "category": "night",
@@ -52,31 +80,31 @@
       "views_24h": 1
     },
     {
-      "path": "/hoppa/daejeonhoppa-eclipse",
-      "title": "대전호빠 이클립스",
-      "category": "hoppa",
-      "region": "대전",
-      "views_24h": 1
-    },
-    {
-      "path": "/clubs/yongsan/yongsandragoncity",
-      "title": "용산드래곤시티",
-      "category": "club",
-      "region": "용산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/sinlimgrandprixnight",
-      "title": "신림그랑프리나이트",
+      "path": "/nights/dapsimnidontellmamanight",
+      "title": "답십리돈텔마마나이트",
       "category": "night",
-      "region": "신림",
+      "region": "답십리",
       "views_24h": 1
     },
     {
-      "path": "/nights/daeguhangukgwannight",
-      "title": "대구한국관나이트",
+      "path": "/nights/ilsan-hwajung-tunnel",
+      "title": "일산화정터널나이트",
       "category": "night",
-      "region": "대구",
+      "region": "일산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/ulsannewworldnight",
+      "title": "울산뉴월드나이트",
+      "category": "night",
+      "region": "울산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/cheonanstardomnight",
+      "title": "천안스타돔나이트",
+      "category": "night",
+      "region": "천안",
       "views_24h": 1
     }
   ]
