@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-29T16:42:16.783Z",
+  "generated_at": "2026-05-29T19:25:11.786Z",
   "window_hours": 24,
   "items": [
     {
@@ -38,13 +38,6 @@
       "views_24h": 2
     },
     {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
-      "views_24h": 2
-    },
-    {
       "path": "/nights/daejeonbongmyeongnight",
       "title": "대전봉명나이트",
       "category": "night",
@@ -64,6 +57,13 @@
       "category": "night",
       "region": "대전",
       "views_24h": 2
+    },
+    {
+      "path": "/hoppa/busanhoppa-aura",
+      "title": "부산호빠 아우라",
+      "category": "hoppa",
+      "region": "부산",
+      "views_24h": 1
     },
     {
       "path": "/nights/gwangjuallnight",
