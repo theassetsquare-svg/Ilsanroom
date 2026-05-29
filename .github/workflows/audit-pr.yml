@@ -41,12 +41,13 @@ jobs:
           done
           exit $fail
 
-      # 시즌176-A — .github/workflows/*.yml 전수 actionlint (yml typo·permission 사고 차단)
+      # 시즌176-A — .github/workflows/*.yml 전수 actionlint (yml syntax/expression 사고 차단)
+      # shellcheck 통합은 비활성 (스타일 노이즈) — 진짜 yml 구조/표현식 오류만 차단
       - name: Actionlint (all workflows)
         run: |
           set -e
           bash <(curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) 1.7.1 /usr/local/bin
-          actionlint -color
+          actionlint -shellcheck= -color
           echo "✓ .github/workflows/*.yml actionlint 통과"
 
       # 시즌175 — scripts/*.mjs 전수 syntax 차단 (시즌168 broken refactor 재발 방지)
