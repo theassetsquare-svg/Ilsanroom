@@ -25,13 +25,12 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */
   const _once = () => new Promise((res) => {
-    return new Promise((res, rej) => {
-      const t = setTimeout(() => rej(new Error('timeout')), 30000);
-      https.get(url, { headers: { 'User-Agent': 'NolcoolCategoriesWatch/1.0' } }, r => {
-        const chunks = [];
-        r.on('data', d => chunks.push(d));
-        r.on('end', () => { clearTimeout(t); res({ status: r.statusCode, html: Buffer.concat(chunks).toString('utf8') }); });
-      }).on('error', e => { clearTimeout(t); rej(e); });
+    const t = setTimeout(() => res({ status: 0, html: '' }), 30000);
+    https.get(url, { headers: { 'User-Agent': 'NolcoolCategoriesWatch/1.0' } }, r => {
+      const chunks = [];
+      r.on('data', d => chunks.push(d));
+      r.on('end', () => { clearTimeout(t); res({ status: r.statusCode, html: Buffer.concat(chunks).toString('utf8') }); });
+    }).on('error', () => { clearTimeout(t); res({ status: 0, html: '' }); });
   });
   return _once().then(r => (r.status === 200 || (r.status >= 400 && r.status < 500))
     ? r

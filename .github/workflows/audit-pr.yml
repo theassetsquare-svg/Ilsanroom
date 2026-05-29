@@ -40,6 +40,25 @@ jobs:
           done
           exit $fail
 
+      # 시즌175 — scripts/*.mjs 전수 syntax 차단 (시즌168 broken refactor 재발 방지)
+      - name: Syntax gate (all scripts/*.mjs)
+        run: |
+          set +e
+          fail=0
+          for f in $(find scripts -maxdepth 2 -type f -name '*.mjs'); do
+            err=$(node -c "$f" 2>&1)
+            if [ -n "$err" ]; then
+              echo "::error file=$f::syntax error"
+              echo "$err"
+              fail=1
+            fi
+          done
+          if [ $fail -ne 0 ]; then
+            echo "scripts/*.mjs 문법 에러 — push 차단 (cron 노이즈 사전 차단)"
+            exit 1
+          fi
+          echo "✓ scripts/*.mjs 전수 syntax OK"
+
       - name: Build + dist audit
         run: npm run build
 
