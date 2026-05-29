@@ -24,7 +24,7 @@ const BASE = 'https://nolcool.com';
 const SITEMAP = `${BASE}/sitemap.xml`;
 
 function fetchText(url) {
-  return new Promise((res) => {
+  const _once = () => new Promise((res) => {
     const t = setTimeout(() => res({ status: 0, text: '' }), 20000);
     https.get(url, { headers: { 'User-Agent': 'NolcoolDeepAuditWatch/1.0' } }, r => {
       const chunks = [];
@@ -32,6 +32,10 @@ function fetchText(url) {
       r.on('end', () => { clearTimeout(t); res({ status: r.statusCode, text: Buffer.concat(chunks).toString('utf8') }); });
     }).on('error', () => { clearTimeout(t); res({ status: 0, text: '' }); });
   });
+  // 시즌176-2 — transient 5xx/timeout 1회 재시도
+  return _once().then(r => (r.status === 200 || (r.status >= 400 && r.status < 500))
+    ? r
+    : new Promise(rs => setTimeout(() => _once().then(rs), 5000)));
 }
 
 async function audit(url) {

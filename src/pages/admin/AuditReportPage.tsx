@@ -58,6 +58,29 @@ const card = 'rounded-lg border border-zinc-200 bg-white p-4 shadow-sm';
 const h2 = 'text-lg font-semibold text-zinc-900 mb-3';
 const code = 'font-mono text-[12px] bg-zinc-100 text-zinc-800 px-2 py-1 rounded';
 
+type ActionsDigest = {
+  generated_at: string;
+  window_hours: number;
+  total_runs: number;
+  total_fail: number;
+  workflows: {
+    name: string;
+    total: number;
+    success: number;
+    failure: number;
+    in_progress: number;
+    last_fail: { created_at: string; url: string } | null;
+  }[];
+  deploy_sync: {
+    n: number;
+    avg_ms: number;
+    p50_ms: number;
+    p95_ms: number;
+    max_ms: number;
+    max_sample?: { ms: number; workflow: string; url: string };
+  } | null;
+};
+
 export default function AuditReportPage() {
   useDocumentMeta(
     '감사 시스템 운영 상태판 — 룰 14종 / 5층 방어 / CLI',
@@ -65,9 +88,14 @@ export default function AuditReportPage() {
   );
 
   const [logTail, setLogTail] = useState<string>('');
+  const [digest, setDigest] = useState<ActionsDigest | null>(null);
+  const [digestErr, setDigestErr] = useState<string>('');
   useEffect(() => {
-    // \uac00\ub4dc \ub85c\uadf8\ub294 \uc11c\ubc84 \ucabd \ud30c\uc77c \u2014 \uad00\ub9ac\uc790\uac00 \uc218\ub3d9\uc73c\xb7 cat /tmp/nolcool-guard.log \ud574\uc11c \ud655\uc778
     setLogTail('# tail -f /tmp/nolcool-guard.log');
+    fetch('/admin/actions-digest.json', { cache: 'no-store' })
+      .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+      .then((d: ActionsDigest) => setDigest(d))
+      .catch(e => setDigestErr(String(e?.message || e)));
   }, []);
 
   const stats = useMemo(() => ({
@@ -94,6 +122,68 @@ export default function AuditReportPage() {
         <Stat label="\ub808\uc774\uc5b4" value={stats.layers} />
         <Stat label="\uac10\uc0ac \uba85\ub839" value={stats.commands} />
       </div>
+
+      <section className={card}>
+        <div className="flex items-baseline justify-between mb-3">
+          <h2 className="text-lg font-semibold text-zinc-900">Actions 24h ({digest?.workflows.length ?? 0} 워크플로)</h2>
+          {digest && (
+            <span className="text-xs text-zinc-500 font-mono">
+              {new Date(digest.generated_at).toISOString().replace('T', ' ').slice(0, 16)}Z
+            </span>
+          )}
+        </div>
+        {digestErr && <p className="text-sm text-amber-700">스냅샷 로드 실패: {digestErr}</p>}
+        {!digest && !digestErr && <p className="text-sm text-zinc-500">로드 중…</p>}
+        {digest && (
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+              <Stat label="총 실행" value={digest.total_runs} />
+              <Stat label="회귀" value={digest.total_fail} tone={digest.total_fail > 0 ? 'bad' : undefined} />
+              {digest.deploy_sync ? (
+                <>
+                  <Stat label="deploy-sync p50 (s)" value={Math.round(digest.deploy_sync.p50_ms / 100) / 10} />
+                  <Stat label="deploy-sync p95 (s)" value={Math.round(digest.deploy_sync.p95_ms / 100) / 10} tone="warn" />
+                </>
+              ) : (
+                <>
+                  <Stat label="deploy-sync p50 (s)" value={0} />
+                  <Stat label="deploy-sync p95 (s)" value={0} />
+                </>
+              )}
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-zinc-500 border-b border-zinc-200">
+                    <th className="py-2 pr-3">워크플로</th>
+                    <th className="py-2 pr-3 text-right">성공/총</th>
+                    <th className="py-2 pr-3 text-right">회귀</th>
+                    <th className="py-2 pr-3 text-right">마지막 실패</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {digest.workflows.map(w => (
+                    <tr key={w.name} className="border-b border-zinc-100">
+                      <td className="py-2 pr-3 text-zinc-800">{w.name}</td>
+                      <td className="py-2 pr-3 text-right font-mono text-xs text-zinc-600">{w.success}/{w.total}</td>
+                      <td className="py-2 pr-3 text-right">
+                        {w.failure > 0
+                          ? <span className="inline-block px-2 py-0.5 rounded bg-red-100 text-red-700 text-xs font-semibold">{w.failure} fail</span>
+                          : <span className="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 text-xs">OK</span>}
+                      </td>
+                      <td className="py-2 pr-3 text-right text-xs">
+                        {w.last_fail
+                          ? <a href={w.last_fail.url} target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">{new Date(w.last_fail.created_at).toISOString().slice(5, 16).replace('T', ' ')} ↗</a>
+                          : <span className="text-zinc-400">—</span>}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+      </section>
 
       <section className={card}>
         <h2 className={h2}>\uc790\ub3d9 \ucc28\ub2e8 \ub8f0 (14\uc885)</h2>

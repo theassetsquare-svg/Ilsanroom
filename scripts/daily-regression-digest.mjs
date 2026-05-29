@@ -12,10 +12,14 @@
  *   NOTIFICATION_EMAIL    - 수신자
  */
 
+import { writeFileSync, mkdirSync } from 'node:fs';
+import { dirname } from 'node:path';
+
 const TOKEN = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
 const REPO = process.env.GH_REPO || 'theassetsquare-svg/Ilsanroom';
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
+const JSON_OUT = 'public/admin/actions-digest.json';
 
 if (!TOKEN) {
   console.log('⏭️  GITHUB_TOKEN 없음 — skip');
@@ -42,6 +46,41 @@ async function fetchRuns() {
   return all.filter(r => new Date(r.created_at).getTime() >= since);
 }
 
+// 시즌176 후속-1 — deploy-sync 실측: 최근 24h "Wait for CF Pages deploy" step 시간 분포
+async function measureDeploySync(runs) {
+  const samples = [];
+  const candidates = runs
+    .filter(r => r.event !== 'schedule' && r.conclusion === 'success')
+    .slice(0, 30); // 토큰/API 절약 위해 최대 30개
+  for (const run of candidates) {
+    try {
+      const r = await fetch(`https://api.github.com/repos/${REPO}/actions/runs/${run.id}/jobs`, {
+        headers: { Authorization: `Bearer ${TOKEN}` }
+      });
+      if (!r.ok) continue;
+      const data = await r.json();
+      for (const job of data.jobs || []) {
+        const step = (job.steps || []).find(s => s.name === 'Wait for CF Pages deploy');
+        if (step && step.started_at && step.completed_at) {
+          const ms = new Date(step.completed_at) - new Date(step.started_at);
+          samples.push({ ms, workflow: run.name, url: run.html_url });
+        }
+      }
+    } catch {}
+  }
+  if (samples.length === 0) return null;
+  const sorted = samples.map(s => s.ms).sort((a,b) => a-b);
+  const p = (q) => sorted[Math.min(sorted.length-1, Math.floor(sorted.length * q))];
+  return {
+    n: samples.length,
+    avg_ms: Math.round(sorted.reduce((a,b) => a+b, 0) / sorted.length),
+    p50_ms: p(0.5),
+    p95_ms: p(0.95),
+    max_ms: sorted[sorted.length-1],
+    max_sample: samples.find(s => s.ms === sorted[sorted.length-1]),
+  };
+}
+
 function aggregate(runs) {
   const byName = {};
   for (const r of runs) {
@@ -60,7 +99,7 @@ function aggregate(runs) {
   return byName;
 }
 
-function buildHtml(byName) {
+function buildHtml(byName, deploySync) {
   const entries = Object.entries(byName).sort(([,a],[,b]) => b.failure - a.failure || b.total - a.total);
   const totalFail = entries.reduce((s, [,b]) => s + b.failure, 0);
   const totalRuns = entries.reduce((s, [,b]) => s + b.total, 0);
@@ -68,6 +107,17 @@ function buildHtml(byName) {
   const headerColor = totalFail === 0 ? '#16A34A' : '#DC2626';
   const headerEmoji = totalFail === 0 ? '✅' : '🚨';
   const headerText = totalFail === 0 ? `회귀 0건 / ${entries.length} 워크플로 / ${totalRuns} 실행` : `회귀 ${totalFail}건 / ${entries.length} 워크플로 / ${totalRuns} 실행`;
+
+  const deployBlock = deploySync ? `
+    <div style="background:white;padding:14px 20px;border:1px solid #E5E7EB;border-top:0">
+      <h3 style="margin:0 0 8px;font-size:13px;color:#374151">⏱️ Deploy-sync 실측 (24h, n=${deploySync.n})</h3>
+      <div style="font-size:12px;color:#6B7280;display:flex;gap:16px">
+        <span>avg <strong style="color:#111">${(deploySync.avg_ms/1000).toFixed(1)}s</strong></span>
+        <span>p50 <strong>${(deploySync.p50_ms/1000).toFixed(1)}s</strong></span>
+        <span>p95 <strong>${(deploySync.p95_ms/1000).toFixed(1)}s</strong></span>
+        <span>max <strong style="color:#DC2626">${(deploySync.max_ms/1000).toFixed(1)}s</strong></span>
+      </div>
+    </div>` : '';
 
   const rows = entries.map(([name, b]) => {
     const failBadge = b.failure > 0
@@ -89,6 +139,7 @@ function buildHtml(byName) {
       <h2 style="margin:0;font-size:18px">${headerEmoji} 놀쿨 24h 회귀 다이제스트</h2>
       <p style="margin:6px 0 0;font-size:14px;opacity:0.9">${headerText}</p>
     </div>
+    ${deployBlock}
     <div style="background:white;padding:0;border:1px solid #E5E7EB;border-top:0;border-radius:0 0 8px 8px">
       <table style="width:100%;border-collapse:collapse">
         <thead><tr style="background:#F9FAFB;border-bottom:2px solid #E5E7EB">
@@ -121,9 +172,35 @@ async function sendMail(subject, html) {
 
 const runs = await fetchRuns();
 const byName = aggregate(runs);
+const deploySync = await measureDeploySync(runs);
 const totalFail = Object.values(byName).reduce((s, b) => s + b.failure, 0);
 const subject = totalFail === 0
   ? `[놀쿨][✅] 24h 회귀 0건 — ${Object.keys(byName).length} 워크플로 OK`
   : `[놀쿨][🚨] 24h 회귀 ${totalFail}건 — Actions 확인 필요`;
 console.log(`${runs.length} runs / ${Object.keys(byName).length} workflows / ${totalFail} fail`);
-await sendMail(subject, buildHtml(byName));
+if (deploySync) console.log(`deploy-sync: n=${deploySync.n} avg=${deploySync.avg_ms}ms p95=${deploySync.p95_ms}ms max=${deploySync.max_ms}ms`);
+
+// 시즌176 후속-3 — /admin/audit Actions 24h 카드용 JSON snapshot
+// (워크플로가 변경분만 commit → CF Pages 자동 배포 → AuditReportPage가 same-origin fetch)
+const snapshot = {
+  generated_at: new Date().toISOString(),
+  window_hours: 24,
+  total_runs: runs.length,
+  total_fail: totalFail,
+  workflows: Object.entries(byName)
+    .sort(([,a],[,b]) => b.failure - a.failure || b.total - a.total)
+    .map(([name, b]) => ({
+      name,
+      total: b.total,
+      success: b.success,
+      failure: b.failure,
+      in_progress: b.in_progress,
+      last_fail: b.last_fail,
+    })),
+  deploy_sync: deploySync,
+};
+mkdirSync(dirname(JSON_OUT), { recursive: true });
+writeFileSync(JSON_OUT, JSON.stringify(snapshot, null, 2));
+console.log(`snapshot → ${JSON_OUT}`);
+
+await sendMail(subject, buildHtml(byName, deploySync));

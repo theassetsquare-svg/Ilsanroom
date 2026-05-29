@@ -1,0 +1,8 @@
+{
+  "generated_at": "1970-01-01T00:00:00.000Z",
+  "window_hours": 24,
+  "total_runs": 0,
+  "total_fail": 0,
+  "workflows": [],
+  "deploy_sync": null
+}

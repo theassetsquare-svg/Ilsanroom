@@ -45,7 +45,7 @@ function minCharsFor(url) {
 }
 
 function fetchText(url) {
-  return new Promise(res => {
+  const _once = () => new Promise(res => {
     const t = setTimeout(() => res(''), 20000);
     https.get(url, { headers: { 'User-Agent': 'NolcoolDwellAudit/1.0' } }, r => {
       const chunks = [];
@@ -53,6 +53,8 @@ function fetchText(url) {
       r.on('end', () => { clearTimeout(t); res(Buffer.concat(chunks).toString('utf8')); });
     }).on('error', () => { clearTimeout(t); res(''); });
   });
+  // 시즌176-2 — transient 빈 응답 1회 재시도 (5xx/timeout false-positive 차단)
+  return _once().then(r => r ? r : new Promise(rs => setTimeout(() => _once().then(rs), 5000)));
 }
 
 async function main() {

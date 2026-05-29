@@ -19,7 +19,7 @@ const MAX_PAGES = 200;
 const NGRAM_OVER = 5; // n-gram 사이트 전체 5회 초과 알림
 
 function fetchText(url) {
-  return new Promise(res => {
+  const _once = () => new Promise(res => {
     const t = setTimeout(() => res(''), 20000);
     https.get(url, { headers: { 'User-Agent': 'NolcoolTitleAudit/1.0' } }, r => {
       const chunks = [];
@@ -27,6 +27,8 @@ function fetchText(url) {
       r.on('end', () => { clearTimeout(t); res(Buffer.concat(chunks).toString('utf8')); });
     }).on('error', () => { clearTimeout(t); res(''); });
   });
+  // 시즌176-2 — transient 빈 응답 1회 재시도
+  return _once().then(r => r ? r : new Promise(rs => setTimeout(() => _once().then(rs), 5000)));
 }
 
 function lastNTokens(title, n = 5) {

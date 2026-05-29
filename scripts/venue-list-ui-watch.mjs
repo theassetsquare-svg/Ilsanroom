@@ -42,7 +42,7 @@ const MARKERS = [
 ];
 
 function fetchUrl(url) {
-  return new Promise((res) => {
+  const _once = () => new Promise((res) => {
     const t = setTimeout(() => res({ status: 0, body: '' }), 20000);
     https.get(url, { headers: { 'User-Agent': 'NolcoolUiWatch/1.0' } }, r => {
       const chunks = [];
@@ -50,6 +50,10 @@ function fetchUrl(url) {
       r.on('end', () => { clearTimeout(t); res({ status: r.statusCode, body: Buffer.concat(chunks).toString('utf8') }); });
     }).on('error', () => { clearTimeout(t); res({ status: 0, body: '' }); });
   });
+  // 시즌176-2 — transient 5xx/timeout 1회 재시도
+  return _once().then(r => (r.status === 200 || (r.status >= 400 && r.status < 500))
+    ? r
+    : new Promise(rs => setTimeout(() => _once().then(rs), 5000)));
 }
 
 function extractScripts(html) {

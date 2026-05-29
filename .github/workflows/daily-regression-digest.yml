@@ -8,6 +8,7 @@ on:
 
 permissions:
   actions: read
+  contents: write
 
 jobs:
   digest:
@@ -22,3 +23,15 @@ jobs:
           GH_REPO: ${{ github.repository }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+
+      - name: Commit snapshot for /admin/audit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain public/admin/actions-digest.json)" ]; then
+            git add public/admin/actions-digest.json
+            git commit -m "chore(admin): actions-digest 24h snapshot $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push
+          else
+            echo "no snapshot diff"
+          fi
