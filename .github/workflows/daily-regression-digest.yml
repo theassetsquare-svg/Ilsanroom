@@ -1,0 +1,24 @@
+name: Daily Regression Digest (KST 09:00)
+
+on:
+  schedule:
+    # 매일 KST 09:00 (UTC 00:00) — Actions 24h 회귀 다이제스트 1통
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  actions: read
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Daily regression digest
+        run: node scripts/daily-regression-digest.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}

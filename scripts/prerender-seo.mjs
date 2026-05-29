@@ -6,6 +6,7 @@
  */
 import fs from 'fs';
 import path from 'path';
+import { execSync } from 'child_process';
 
 const DIST = path.resolve('dist');
 const BASE_URL = 'https://nolcool.com';
@@ -22,7 +23,13 @@ const BUILD_ISO_KST = (() => {
 })();
 
 // ── 기본 index.html 읽기 ──
-const baseHtml = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8');
+// 시즌176-B — build-sha 메타 주입 (deploy-sync 가드용, CF 배포 완료 검증)
+const BUILD_SHA = (process.env.GITHUB_SHA || (() => {
+  try { return execSync('git rev-parse HEAD').toString().trim(); }
+  catch { return 'local'; }
+})()).slice(0, 12);
+const _baseRaw = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8');
+const baseHtml = _baseRaw.replace('</head>', `    <meta name="build-sha" content="${BUILD_SHA}">\n  </head>`);
 
 function escHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

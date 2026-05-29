@@ -12,6 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Wait for CF Pages deploy
+        if: github.event_name != 'schedule'
+        run: node scripts/lib/wait-for-deploy.mjs
+
       - name: Run categories-seo-audit (실패시만 메일)
         run: node scripts/categories-seo-audit.mjs
         env:

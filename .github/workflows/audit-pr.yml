@@ -9,6 +9,7 @@ on:
       - 'scripts/**'
       - 'package.json'
       - 'vite.config.ts'
+      - '.github/workflows/**'
   push:
     branches: [main]
 
@@ -39,6 +40,14 @@ jobs:
             fi
           done
           exit $fail
+
+      # 시즌176-A — .github/workflows/*.yml 전수 actionlint (yml typo·permission 사고 차단)
+      - name: Actionlint (all workflows)
+        run: |
+          set -e
+          bash <(curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) 1.7.1 /usr/local/bin
+          actionlint -color
+          echo "✓ .github/workflows/*.yml actionlint 통과"
 
       # 시즌175 — scripts/*.mjs 전수 syntax 차단 (시즌168 broken refactor 재발 방지)
       - name: Syntax gate (all scripts/*.mjs)
