@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-28T19:32:07.959Z",
+  "generated_at": "2026-05-29T06:44:16.215Z",
   "window_hours": 24,
   "items": [
     {
@@ -10,31 +10,52 @@
       "views_24h": 5
     },
     {
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 3
+    },
+    {
       "path": "/nights/busanmulnight",
       "title": "부산물나이트",
       "category": "night",
       "region": "부산",
-      "views_24h": 5
-    },
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
       "views_24h": 2
     },
     {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
-      "views_24h": 1
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
     },
     {
       "path": "/clubs/itaewon/itaewonclub-utopia",
       "title": "이태원클럽 유토피아",
       "category": "club",
       "region": "이태원",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/gimpohobaknight",
+      "title": "김포호박나이트",
+      "category": "night",
+      "region": "김포",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 1
+    },
+    {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
       "views_24h": 1
     },
     {
@@ -52,6 +73,13 @@
       "views_24h": 1
     },
     {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
+      "category": "night",
+      "region": "강서",
+      "views_24h": 1
+    },
+    {
       "path": "/nights/ansanhitnight",
       "title": "안산히트나이트",
       "category": "night",
@@ -61,20 +89,6 @@
     {
       "path": "/nights/daejeonhangukgwannight",
       "title": "대전한국관나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
       "category": "night",
       "region": "대전",
       "views_24h": 1
@@ -91,20 +105,6 @@
       "title": "일산화정터널나이트",
       "category": "night",
       "region": "일산",
-      "views_24h": 1
-    },
-    {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/ulsannewworldnight",
-      "title": "울산뉴월드나이트",
-      "category": "night",
-      "region": "울산",
       "views_24h": 1
     }
   ]
