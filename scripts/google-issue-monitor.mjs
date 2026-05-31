@@ -225,6 +225,8 @@ async function main() {
   }
 
   console.log(`\n📊 결과: 🔴 ${crit.length} · 🟡 ${warn.length} · 🟦 ${pending.length} · 🟢 ${okCount} · ⏭️ ${skip.length}`);
+  for (const c of crit) console.log(`🔴 ${c.url}\n     ${c.reason} — ${c.hint || ''}`);
+  for (const w of warn) console.log(`🟡 ${w.url}\n     ${w.reason} — ${w.hint || ''}`);
 
   const hasProblem = crit.length || warn.length || pending.length;
   if (hasProblem) {
