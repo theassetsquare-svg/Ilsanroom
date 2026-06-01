@@ -14,6 +14,7 @@ jobs:
       - name: Search Console 검색분석 리포트
         run: node scripts/search-console-report.mjs
         env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
           GOOGLE_OAUTH_CLIENT_ID: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
           GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
           GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}

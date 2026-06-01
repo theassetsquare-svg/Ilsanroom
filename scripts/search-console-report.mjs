@@ -2,74 +2,25 @@
 /**
  * Google Search Console — 검색 분석 리포트 (키워드/페이지별 클릭·노출·CTR·평균순위)
  *
- * 환경변수 (GitHub Secrets):
- *   GOOGLE_OAUTH_CLIENT_ID / GOOGLE_OAUTH_CLIENT_SECRET / GOOGLE_REFRESH_TOKEN
+ * 인증 (scripts/lib/gsc-auth.mjs):
+ *   1순위 서비스계정 GSC_SA_JSON (만료 없음, 권장)
+ *   2순위 OAuth GOOGLE_OAUTH_CLIENT_ID/SECRET/REFRESH_TOKEN (폴백)
  *   RESEND_API_KEY / NOTIFICATION_EMAIL (메일 발송, 선택)
  *
  * 동작: searchanalytics.query 로 최근 28일 상위 키워드 + 상위 페이지를 조회,
  *       콘솔 로그로 출력하고 (RESEND 설정 시) 이메일 1통 발송. 읽기 전용.
  */
+import { getAccessToken, gscQuery, hasGscCredentials } from './lib/gsc-auth.mjs';
 
-const SITE_PROPERTY = 'sc-domain:nolcool.com';
 const DAYS = 28;
 const ROW_LIMIT = 25;
 
-const {
-  GOOGLE_OAUTH_CLIENT_ID,
-  GOOGLE_OAUTH_CLIENT_SECRET,
-  GOOGLE_REFRESH_TOKEN,
-} = process.env;
-
-if (!GOOGLE_OAUTH_CLIENT_ID || !GOOGLE_OAUTH_CLIENT_SECRET || !GOOGLE_REFRESH_TOKEN) {
-  console.log('⏭️  GOOGLE_OAUTH_* / GOOGLE_REFRESH_TOKEN 미설정 — 스킵');
+if (!hasGscCredentials()) {
+  console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON 또는 GOOGLE_OAUTH_*) — 스킵');
   process.exit(0);
 }
 
-function ymd(d) {
-  return d.toISOString().slice(0, 10);
-}
-
-async function refreshAccessToken() {
-  const body = new URLSearchParams({
-    client_id: GOOGLE_OAUTH_CLIENT_ID,
-    client_secret: GOOGLE_OAUTH_CLIENT_SECRET,
-    refresh_token: GOOGLE_REFRESH_TOKEN,
-    grant_type: 'refresh_token',
-  });
-  const r = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body,
-  });
-  const data = await r.json();
-  if (!data.access_token) {
-    console.warn('⚠️  access_token 갱신 실패:', JSON.stringify(data));
-    return null;
-  }
-  return data.access_token;
-}
-
-async function query(accessToken, dimensions) {
-  const end = new Date(Date.now() - 2 * 86400 * 1000); // GSC 데이터는 ~2일 지연
-  const start = new Date(end.getTime() - DAYS * 86400 * 1000);
-  const url = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(SITE_PROPERTY)}/searchAnalytics/query`;
-  const r = await fetch(url, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      startDate: ymd(start),
-      endDate: ymd(end),
-      dimensions,
-      rowLimit: ROW_LIMIT,
-    }),
-  });
-  if (!r.ok) {
-    console.log(`⚠️  query(${dimensions.join(',')}) ${r.status}: ${await r.text().catch(() => '')}`);
-    return { rows: [], start: ymd(start), end: ymd(end) };
-  }
-  const data = await r.json();
-  return { rows: data.rows || [], start: ymd(start), end: ymd(end) };
-}
+const query = (token, dimensions) => gscQuery(token, { dimensions, rowLimit: ROW_LIMIT, days: DAYS });
 
 function fmtRows(rows) {
   return rows.map((row, i) => {
@@ -137,7 +88,7 @@ async function sendEmail(range, queries, pages, totals) {
 }
 
 (async () => {
-  const token = await refreshAccessToken();
+  const token = await getAccessToken();
   if (!token) process.exit(0);
 
   const q = await query(token, ['query']);

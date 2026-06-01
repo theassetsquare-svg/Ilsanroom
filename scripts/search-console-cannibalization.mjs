@@ -2,8 +2,9 @@
 /**
  * Google Search Console — 카니발리제이션 + 기회 키워드 진단 (참고용 리포트)
  *
- * 환경변수 (GitHub Secrets):
- *   GOOGLE_OAUTH_CLIENT_ID / GOOGLE_OAUTH_CLIENT_SECRET / GOOGLE_REFRESH_TOKEN
+ * 인증 (scripts/lib/gsc-auth.mjs):
+ *   1순위 서비스계정 GSC_SA_JSON (만료 없음, 권장)
+ *   2순위 OAuth GOOGLE_OAUTH_CLIENT_ID/SECRET/REFRESH_TOKEN (폴백)
  *   RESEND_API_KEY / NOTIFICATION_EMAIL (메일 발송, 선택)
  *
  * 동작 (읽기 전용):
@@ -12,57 +13,19 @@
  *   3) ['device'] → PC/모바일 분리 요약
  *   콘솔 출력 + (RESEND 설정 시) 이메일 1통.
  */
+import { getAccessToken, gscQuery, hasGscCredentials } from './lib/gsc-auth.mjs';
 
-const SITE_PROPERTY = 'sc-domain:nolcool.com';
 const DAYS = 28;
 
-const { GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN } = process.env;
-
-if (!GOOGLE_OAUTH_CLIENT_ID || !GOOGLE_OAUTH_CLIENT_SECRET || !GOOGLE_REFRESH_TOKEN) {
-  console.log('⏭️  GOOGLE_OAUTH_* / GOOGLE_REFRESH_TOKEN 미설정 — 스킵');
+if (!hasGscCredentials()) {
+  console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON 또는 GOOGLE_OAUTH_*) — 스킵');
   process.exit(0);
 }
 
-const ymd = (d) => d.toISOString().slice(0, 10);
-
-async function refreshAccessToken() {
-  const r = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      client_id: GOOGLE_OAUTH_CLIENT_ID,
-      client_secret: GOOGLE_OAUTH_CLIENT_SECRET,
-      refresh_token: GOOGLE_REFRESH_TOKEN,
-      grant_type: 'refresh_token',
-    }),
-  });
-  const data = await r.json();
-  if (!data.access_token) {
-    console.warn('⚠️  access_token 갱신 실패:', JSON.stringify(data));
-    return null;
-  }
-  return data.access_token;
-}
-
-async function query(token, dimensions, rowLimit = 25000) {
-  const end = new Date(Date.now() - 2 * 86400 * 1000);
-  const start = new Date(end.getTime() - DAYS * 86400 * 1000);
-  const url = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(SITE_PROPERTY)}/searchAnalytics/query`;
-  const r = await fetch(url, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ startDate: ymd(start), endDate: ymd(end), dimensions, rowLimit }),
-  });
-  if (!r.ok) {
-    console.log(`⚠️  query(${dimensions.join(',')}) ${r.status}: ${await r.text().catch(() => '')}`);
-    return { rows: [], start: ymd(start), end: ymd(end) };
-  }
-  const data = await r.json();
-  return { rows: data.rows || [], start: ymd(start), end: ymd(end) };
-}
+const query = (token, dimensions, rowLimit = 25000) => gscQuery(token, { dimensions, rowLimit, days: DAYS });
 
 (async () => {
-  const token = await refreshAccessToken();
+  const token = await getAccessToken();
   if (!token) process.exit(0);
 
   const qp = await query(token, ['query', 'page']);

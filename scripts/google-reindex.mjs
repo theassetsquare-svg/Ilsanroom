@@ -16,17 +16,13 @@
  * 사용하려면 `--unsafe-indexing-api` 플래그 명시 (자기 위험).
  */
 
+import { getAccessToken, hasGscCredentials } from './lib/gsc-auth.mjs';
+
 const SITE = 'https://nolcool.com/';
 const SITE_PROPERTY = 'sc-domain:nolcool.com'; // Search Console 속성 형식: sc-domain 또는 https://...
 
-const {
-  GOOGLE_OAUTH_CLIENT_ID,
-  GOOGLE_OAUTH_CLIENT_SECRET,
-  GOOGLE_REFRESH_TOKEN,
-} = process.env;
-
-if (!GOOGLE_OAUTH_CLIENT_ID || !GOOGLE_OAUTH_CLIENT_SECRET || !GOOGLE_REFRESH_TOKEN) {
-  console.log('⏭️  GOOGLE_OAUTH_* / GOOGLE_REFRESH_TOKEN 미설정 — Google 재인덱싱 스킵');
+if (!hasGscCredentials()) {
+  console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON 또는 GOOGLE_OAUTH_*) — Google 재인덱싱 스킵');
   process.exit(0);
 }
 
@@ -64,26 +60,14 @@ async function notifyTokenExpired(reason) {
 }
 
 async function refreshAccessToken() {
-  const body = new URLSearchParams({
-    client_id: GOOGLE_OAUTH_CLIENT_ID,
-    client_secret: GOOGLE_OAUTH_CLIENT_SECRET,
-    refresh_token: GOOGLE_REFRESH_TOKEN,
-    grant_type: 'refresh_token',
-  });
-  const r = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body,
-  });
-  const data = await r.json();
-  if (!data.access_token) {
-    /* 시즌175 — invalid_grant (토큰 만료/취소) graceful skip + 갱신 가이드 메일 1통.
-       매일 워크플로 fail 노이즈 차단 (사용자 갱신 전까지). */
-    console.warn('⚠️  access_token 갱신 실패 — graceful skip:', JSON.stringify(data));
-    await notifyTokenExpired(JSON.stringify(data));
+  /* 서비스계정(GSC_SA_JSON) 우선 → OAuth refresh_token 폴백. 둘 다 실패 시 graceful skip + 안내 메일. */
+  const token = await getAccessToken();
+  if (!token) {
+    console.warn('⚠️  access_token 발급 실패 — graceful skip');
+    await notifyTokenExpired('서비스계정/OAuth 토큰 발급 실패');
     return null;
   }
-  return data.access_token;
+  return token;
 }
 
 async function submitSitemap(accessToken) {

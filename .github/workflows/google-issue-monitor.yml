@@ -20,6 +20,7 @@ jobs:
       - name: Search Console 문제 스캔 + 자동 재제출 + 강제 재크롤 + 리포트
         run: node scripts/google-issue-monitor.mjs --request-indexing
         env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
           GOOGLE_OAUTH_CLIENT_ID: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
           GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
           GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}

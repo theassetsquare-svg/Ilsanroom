@@ -6,15 +6,14 @@
  *       진짜 문제 데이터는 Search Console API(urlInspection)에 그대로 들어있다.
  *       메일을 기다려 파싱하는 것보다 API를 매일 직접 긁는 게 더 정확하고 누락이 없다.
  *
- * 환경변수 (GitHub Secrets):
- *   GOOGLE_OAUTH_CLIENT_ID
- *   GOOGLE_OAUTH_CLIENT_SECRET
- *   GOOGLE_REFRESH_TOKEN
+ * 인증 (scripts/lib/gsc-auth.mjs):
+ *   1순위 서비스계정 GSC_SA_JSON (만료 없음, 권장)
+ *   2순위 OAuth GOOGLE_OAUTH_CLIENT_ID/SECRET/REFRESH_TOKEN (폴백)
  *   RESEND_API_KEY            (선택 — 문제 발견 시 리포트 메일)
  *   NOTIFICATION_EMAIL        (선택 — 기본 theassetsquare@gmail.com)
  *
  * 동작:
- *   1) refresh_token → access_token (만료 시 graceful skip + 안내 메일 1통)
+ *   1) access_token 발급 (서비스계정 우선, 만료 시 graceful skip + 안내 메일 1통)
  *   2) 라이브 sitemap.xml 전체 URL 파싱
  *   3) urlInspection.index.inspect 로 페이지별 색인 상태 수집 (concurrency 5)
  *   4) 구조화 enum 기준 3분류:
@@ -31,19 +30,16 @@ const SITE = 'https://nolcool.com/';
 const SITE_PROPERTY = 'sc-domain:nolcool.com';
 const SITEMAP_URL = `${SITE}sitemap.xml`;
 
-const {
-  GOOGLE_OAUTH_CLIENT_ID,
-  GOOGLE_OAUTH_CLIENT_SECRET,
-  GOOGLE_REFRESH_TOKEN,
-  RESEND_API_KEY,
-} = process.env;
+import { getAccessToken, hasGscCredentials } from './lib/gsc-auth.mjs';
+
+const { RESEND_API_KEY } = process.env;
 const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const CONCURRENCY = Number(process.env.INSPECT_CONCURRENCY || 5);
 const MAX_INSPECT = Number(process.env.MAX_INSPECT || 1500); // 일일 quota 2000 안전선
 const doRequestIndexing = process.argv.includes('--request-indexing');
 
-if (!GOOGLE_OAUTH_CLIENT_ID || !GOOGLE_OAUTH_CLIENT_SECRET || !GOOGLE_REFRESH_TOKEN) {
-  console.log('⏭️  GOOGLE_OAUTH_* / GOOGLE_REFRESH_TOKEN 미설정 — 모니터 스킵');
+if (!hasGscCredentials()) {
+  console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON 또는 GOOGLE_OAUTH_*) — 모니터 스킵');
   process.exit(0);
 }
 
@@ -62,36 +58,23 @@ async function sendMail(subject, html) {
 }
 
 async function refreshAccessToken() {
-  const body = new URLSearchParams({
-    client_id: GOOGLE_OAUTH_CLIENT_ID,
-    client_secret: GOOGLE_OAUTH_CLIENT_SECRET,
-    refresh_token: GOOGLE_REFRESH_TOKEN,
-    grant_type: 'refresh_token',
-  });
-  const r = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body,
-  });
-  const data = await r.json();
-  if (!data.access_token) {
-    console.warn('⚠️  access_token 갱신 실패 — graceful skip:', JSON.stringify(data));
-    await sendMail('[놀쿨][🔑] Google OAuth refresh_token 갱신 필요',
+  const token = await getAccessToken();
+  if (!token) {
+    console.warn('⚠️  access_token 발급 실패 — graceful skip');
+    await sendMail('[놀쿨][🔑] Google 인증 갱신 필요',
       `<div style="font-family:sans-serif;max-width:680px;margin:0 auto;padding:20px">
-        <h2 style="color:#DC2626">[🔑 Google OAuth 토큰 만료] 문제 모니터 일시 중단</h2>
+        <h2 style="color:#DC2626">[🔑 Google 인증 실패] 문제 모니터 일시 중단</h2>
         <p style="color:#666;font-size:13px">측정: ${kstNow()}</p>
-        <p>refresh_token이 만료/취소됨 — 서치콘솔 문제 자동 감지가 멈춥니다.</p>
-        <p><strong>응답:</strong> ${JSON.stringify(data)}</p>
-        <h3>🔧 갱신 (5분)</h3>
+        <p>서치콘솔 인증 토큰을 발급하지 못했습니다 — 자동 감지가 멈춥니다.</p>
+        <h3>🔧 점검</h3>
         <ol>
-          <li>로컬: <code>GOOGLE_OAUTH_CLIENT_ID=… GOOGLE_OAUTH_CLIENT_SECRET=… node scripts/google-oauth-setup.mjs</code></li>
-          <li>출력된 새 refresh_token 복사</li>
-          <li>GitHub → Settings → Secrets → <code>GOOGLE_REFRESH_TOKEN</code> 교체</li>
+          <li><b>서비스계정(권장):</b> GitHub Secret <code>GSC_SA_JSON</code> 확인 + 서치콘솔 nolcool.com 속성에 <code>gsc-mcp@theasset-gsc.iam.gserviceaccount.com</code> 사용자 추가됐는지 확인</li>
+          <li><b>OAuth(폴백):</b> <code>node scripts/google-oauth-setup.mjs</code> 로 새 refresh_token 발급 → <code>GOOGLE_REFRESH_TOKEN</code> 교체</li>
         </ol>
       </div>`);
     return null;
   }
-  return data.access_token;
+  return token;
 }
 
 async function fetchSitemapUrls() {
