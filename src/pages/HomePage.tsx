@@ -10,7 +10,6 @@ import type { Venue } from '@/types';
 import { createClient } from '@/lib/supabase';
 import JsonLd from '@/components/seo/JsonLd';
 import { useFavorites as useFavoritesHook } from '@/hooks/useFavorites';
-import { HOME_FAQ_SCHEMA } from '@/data/home-faq';
 // 아래로 접힌 무거운 위젯들은 lazy — TBT(메인 스레드 블로킹) 감소가 목적.
 // 모두 above-the-fold 아래에 위치 → LCP/FCP 영향 0.
 const HomeFeed = lazy(() => import('@/components/community/HomeFeed').then(m => ({ default: m.HomeFeed })));
@@ -503,8 +502,8 @@ export default function HomePage() {
         '@context': 'https://schema.org', '@type': 'ItemList', name: '인기 매장',
         itemListElement: popularVenues.slice(0, 10).map((v, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'LocalBusiness', name: v.nameKo, address: v.address } })),
       }} />
-      {/* R2-1 FAQPage Schema 34개 (6업종×5 + 사이트 4) — AI Overview 인용 */}
-      <JsonLd data={HOME_FAQ_SCHEMA} />
+      {/* FAQPage JSON-LD은 SSR prerender-seo.mjs(HOME_FAQ_JSONLD)에서만 방출.
+          런타임 React 중복 제거 2026-06-01 — Google Rich Results "FAQPage 입력란이 중복되었습니다" 해결 (VenueDetailPage와 동일 패턴). */}
 
       {/* ═══ 1. HERO V2 (다크 + 네온) + 6개 카테고리 ═══ */}
       <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0A0A0F 0%, #1F0A2A 50%, #0A0A1F 100%)' }}>
