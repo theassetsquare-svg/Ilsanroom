@@ -286,13 +286,30 @@ async function main() {
   //   - 라이브 진짜 버그(realCrit) → 🔴 상세 리포트 (행동 필요)
   //   - 0건 → ✅ 한 줄 요약 (캐시지연/WARN/PENDING은 자동 재크롤됨, 행동 불필요)
   //   season66 "실패시만" 정책의 명시적 예외 — 이 모니터만 매일 요약 발송.
+  const inspected = okCount + crit.length + warn.length + pending.length; // 실제 검사된 URL 수
+  const total = inspected + skip.length;
+  const quotaExhausted = total > 0 && inspected < total * 0.2; // 80%+ 점검불가 = 할당량 소진
+
   if (realCrit.length) {
     await sendMail(
       `[놀쿨][🔴] 서치콘솔 코드 수정 필요 ${realCrit.length}건`,
       reportHtml(realCrit, warn, pending, okCount, skip),
     );
+  } else if (quotaExhausted) {
+    // 실제 검사가 거의 안 됨(할당량 소진) → "정상"이라 거짓 안심 주지 말고 점검불가로 정직하게 보고.
+    console.log(`⏭️ 점검불가 ${skip.length}/${total} — 할당량 소진, "정상" 대신 점검불가 메일 발송`);
+    await sendMail(
+      `[놀쿨][⏭️] 서치콘솔 점검불가 — 할당량 소진 (내일 자동 재시도)`,
+      `<div style="font-family:sans-serif;max-width:680px;margin:0 auto;padding:20px;color:#222">
+        <h2 style="color:#D97706">⏭️ 오늘은 점검 불가 — 할당량 소진</h2>
+        <p style="color:#666;font-size:13px">측정: ${kstNow()}</p>
+        <p style="font-size:14px">Google 서치콘솔 검사 API의 하루 할당량(~2000건)이 소진되어 <b>${total}개 중 ${inspected}개만 검사</b>되고 ${skip.length}개는 점검하지 못했습니다.</p>
+        <p style="font-size:14px;color:#16A34A">검사된 ${inspected}개 중 🔴 코드 버그는 <b>0건</b>입니다. 할당량은 매일 자동 초기화되므로 <b>내일 정기 실행에서 전체 재검사</b>됩니다 — 행동 필요 없음.</p>
+        <p style="color:#9CA3AF;font-size:12px;margin-top:16px">"정상"이 아니라 "점검불가"로 보내는 이유: 검사를 못 한 페이지를 정상이라 단정하지 않기 위함입니다.</p>
+      </div>`,
+    );
   } else {
-    console.log(`✅ 라이브 CRITICAL 0건 — 요약 메일 발송 (캐시지연 ${lagResolved.length}/WARN ${warn.length}/PENDING ${pending.length}는 자동 재크롤, 정상)`);
+    console.log(`✅ 라이브 CRITICAL 0건 — 요약 메일 발송 (검사 ${inspected}/${total}, 캐시지연 ${lagResolved.length}/WARN ${warn.length}/PENDING ${pending.length}는 자동 재크롤, 정상)`);
     await sendMail(
       `[놀쿨][✅] 서치콘솔 정상 — 코드 버그 0건`,
       `<div style="font-family:sans-serif;max-width:680px;margin:0 auto;padding:20px;color:#222">
