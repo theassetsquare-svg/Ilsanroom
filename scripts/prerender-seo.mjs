@@ -1279,6 +1279,52 @@ const REGIONAL_SIG = {
     ilsan: { tail: '국악 라이브 정찬 단골 코스', sig: '일산 가야금 라이브와 15첩 정찬 단골 코스' },
   },
 };
+
+// 지역+업종 크로스(/region/[regionKo]/[cat]) 전용 후킹 — regionKo 키.
+// night는 /nights/:region primary가 없어 이 cross가 유일한 지역 페이지 → 노다지 generic("지역 나이트") CTR 핵심.
+// 한국 나이트 본질 = 웨이터·합석·부킹·만남 (EDM/관중 톤 금지). 후미 5어절 unique + 지역 랜드마크로 n-gram 분산.
+const CROSS_SIG = {
+  night: {
+    '광주':   { tail: '상무지구 새벽까지 합석 도는 코스',     sig: '상무지구 일대 새벽까지 합석이 도는 웨이터 코스' },
+    '대전':   { tail: '둔산동 부킹 제대로 잡는 웨이터 라인',   sig: '둔산동 부킹을 제대로 잡아주는 웨이터 라인업' },
+    '대구':   { tail: '동성로 피크에 합석 몰리는 자리',       sig: '동성로 피크 시간 합석이 몰리는 단골 자리' },
+    '노원':   { tail: '막차 전 동북권 합석 붙는 거점',         sig: '동북권 막차 직전 합석이 빠르게 붙는 거점' },
+    '김포':   { tail: '한강신도시 토박이 합석 도는 코스',       sig: '한강신도시 토박이가 합석 도는 단골 코스' },
+    '수원':   { tail: '인계동 새벽 부킹 가장 센 라인',         sig: '인계동 새벽 부킹 회전이 가장 센 라인' },
+    '성남':   { tail: '모란 웨이터가 합석 척척 붙이는 자리',   sig: '모란 일대 웨이터가 합석을 척척 붙여주는 자리' },
+    '부천':   { tail: '7호선 환승객 합석 회전 빠른 거점',       sig: '7호선 환승객까지 합석 회전이 빠른 거점' },
+    '안산':   { tail: '중앙역 단골이 합석 빠르다 찍은 곳',     sig: '중앙역 단골이 합석 빠르기로 찍어둔 곳' },
+    '천안':   { tail: '신부동 단골 합석 회전 도는 자리',       sig: '신부동 단골 합석 회전이 꾸준히 도는 자리' },
+    '청주':   { tail: '성안길 웨이터가 합석 바로 잡아주는 라인', sig: '성안길 웨이터가 합석을 바로 잡아주는 라인' },
+    '부산':   { tail: '서면 새벽 합석 가장 활발한 거점',       sig: '서면 새벽 시간 합석이 가장 활발한 거점' },
+    '울산':   { tail: '삼산동 토박이 합석 빠른 라인',           sig: '삼산동 토박이 합석이 빠르게 붙는 라인' },
+    '일산':   { tail: '호수공원 코스 끝에 합석 잡는 자리',     sig: '호수공원 산책 코스 끝에 합석 잡는 자리' },
+    '청담':   { tail: '명품거리 멤버십 부킹 비공개 라인',       sig: '명품거리 멤버십 손님만 아는 비공개 부킹 라인' },
+    '강남':   { tail: '역삼 새벽 부킹 가장 센 거점',           sig: '역삼 일대 새벽 부킹 회전이 가장 센 거점' },
+    '신림':   { tail: '순환 라인 솔로도 합석 붙는 자리',       sig: '순환 라인에서 솔로 입장도 합석이 붙는 자리' },
+    '수유':   { tail: '북한산 산행 끝에 합석 푸는 거점',       sig: '북한산 산행 마치고 합석으로 푸는 단골 거점' },
+    '독산':   { tail: '가산 야근족 퇴근하고 합석 붙는 라인',   sig: '가산 디지털단지 야근족이 퇴근하고 합석 붙는 라인' },
+    '강서':   { tail: '발산역 토박이 합석 척척 붙는 코스',     sig: '발산역 토박이 합석이 척척 붙는 단골 코스' },
+    '길동':   { tail: '천호 라인 합석 빠르게 도는 거점',       sig: '천호 라인 합석이 빠르게 도는 거점' },
+    '파주':   { tail: '운정 토박이 합석 회전 도는 자리',       sig: '운정 토박이 합석 회전이 도는 자리' },
+    '화정':   { tail: '덕양 단골 합석 빠르다는 코스',           sig: '덕양구 단골이 합석 빠르다고 꼽는 코스' },
+    '구리':   { tail: '돌다리 동북권 합석 몰리는 라인',         sig: '돌다리 일대 동북권 합석이 몰리는 라인' },
+    '오산':   { tail: '운암동 토박이 합석 자주 붙는 거점',     sig: '운암동 토박이 합석이 자주 붙는 거점' },
+    '분당':   { tail: '서현 평일 저녁 합석 천천히 익는 라인',   sig: '서현 평일 저녁 합석이 천천히 익는 라인' },
+    '평택':   { tail: '소사벌 야근족 퇴근하고 합석 코스',       sig: '소사벌 야근족이 퇴근하고 합석으로 푸는 코스' },
+    '인천':   { tail: '구월동 토박이 합석 빠른 자리',           sig: '구월동 토박이 합석이 빠르게 붙는 자리' },
+    '서산':   { tail: '시내 토박이 합석 자주 도는 거점',       sig: '서산 시내 토박이 합석이 자주 도는 거점' },
+    '구미':   { tail: '원평동 단골 합석 자주 붙는 라인',       sig: '원평동 단골 합석이 자주 붙는 라인' },
+    '제주':   { tail: '시청 일대 관광객 섞여 합석 도는 거점',   sig: '시청 일대 관광객까지 섞여 합석 도는 거점' },
+    '창원':   { tail: '상남동 피크에 합석 몰리는 자리',         sig: '상남동 피크 시간 합석이 몰리는 자리' },
+    '부산 연산동': { tail: '라이브 무대 끼고 합석 도는 거점',   sig: '라이브 무대를 끼고 합석이 도는 거점' },
+    '상봉동': { tail: '망우로 동북권 합석 도는 코스',           sig: '망우로 일대 동북권 합석이 도는 코스' },
+    '답십리': { tail: '장한평 단골 합석 빠른 자리',             sig: '장한평 단골 합석이 빠르게 붙는 자리' },
+    '영등포': { tail: '타임스퀘어 끼고 합석 피크 도는 라인',     sig: '타임스퀘어를 끼고 합석 피크가 도는 라인' },
+    '의정부': { tail: '1호선 막차까지 합석 도는 거점',         sig: '1호선 막차 시간까지 합석이 도는 거점' },
+    '인덕원': { tail: '범계 라인 토박이 합석 빠른 코스',       sig: '범계 라인 토박이 합석이 빠른 코스' },
+  },
+};
 function regionalTitleDesc(cat, region, regionKo, count, allNames) {
   const m = (REGIONAL_SIG[cat] || {})[region];
   if (cat === 'club') {
@@ -1881,9 +1927,14 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     const crossVenues = regionVenues.filter(rv => rv.cat === catKey);
     if (crossVenues.length === 0) continue;
     const cp = `/region/${encodeURIComponent(regionKo)}/${catInfo.path}`;
-    const ct = `${regionKo} ${catInfo.labelKo} ${crossVenues.length}곳 — 한눈에 비교하고 고르기`;
     const crossNames = crossVenues.slice(0, 3).map(cv => cv.nameKo).join(', ');
-    const cd = `${regionKo}에서 ${catInfo.labelKo} 어디가 진짜야? ${crossNames} 등 ${crossVenues.length}곳 분위기·후기·평점·매니저·드레스코드·전화번호·영업시간·예약 팁까지 한 페이지에서 바로 확인. 헛걸음 전에 비교하고 가자.`;
+    const xs = (CROSS_SIG[catKey] || {})[regionKo];
+    const ct = xs
+      ? `${regionKo} ${catInfo.labelKo} ${crossVenues.length}곳 — ${xs.tail}`
+      : `${regionKo} ${catInfo.labelKo} ${crossVenues.length}곳 — 한눈에 비교하고 고르기`;
+    const cd = xs
+      ? `${regionKo}에서 ${catInfo.labelKo} 어디가 진짜야? ${xs.sig}. ${crossNames} 등 ${crossVenues.length}곳 분위기·후기·매니저·드레스코드·전화번호·예약 팁까지 한 페이지에서 바로 확인. 헛걸음 전에 비교하고 가자.`
+      : `${regionKo}에서 ${catInfo.labelKo} 어디가 진짜야? ${crossNames} 등 ${crossVenues.length}곳 분위기·후기·평점·매니저·드레스코드·전화번호·영업시간·예약 팁까지 한 페이지에서 바로 확인. 헛걸음 전에 비교하고 가자.`;
     let cSsr = `<h1>${escHtml(ct)}</h1><p>${escHtml(cd)}</p>`;
     cSsr += `<h2>${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} ${crossVenues.length}곳 리스트</h2><ul>`;
     crossVenues.forEach((cv, idx) => {
