@@ -1372,21 +1372,21 @@ function regionalTitleDesc(cat, region, regionKo, count, allNames) {
     const sig = m ? m.sig : `${regionKo} 광역 단골이 도는 핵심 거점`;
     return {
       title: `${regionKo} 클럽 ${count}곳 — ${tail}`,
-      desc: `${regionKo} 클럽 ${count}곳 — ${sig}. ${allNames} 등 분위기·드레스코드·게스트 라인업·부킹 문화·첫방문 매너까지 비교하고 골라보세요.`,
+      desc: `${regionKo} 클럽 어디가 진짜야? 안 가본 데서 헤매기 전에 ${count}곳 비교 — ${sig}. ${allNames} 등 분위기·드레스코드·게스트 라인업·부킹 문화·첫방문 매너까지 골라보세요.`,
     };
   } else if (cat === 'room') {
     const tail = m ? m.tail : `${count}곳 인원·구성 한눈에 비교`;
     const sig = m ? m.sig : `${regionKo} 단골이 인원수 미리 일러주는 예약 동선`;
     return {
       title: `${regionKo} 룸 ${count}곳 — ${tail}`,
-      desc: `${regionKo} 룸 ${count}곳 — ${sig}. ${allNames} 등 4인 소형부터 30인 단체석, 양주 라인업·룸 구성·예약 팁까지 모임 전 비교.`,
+      desc: `${regionKo} 룸 어디가 좋지? 자리 놓치면 인원 못 앉힌다, ${count}곳 비교 — ${sig}. ${allNames} 등 4인 소형부터 30인 단체석, 양주 라인업·룸 구성·예약 팁까지 모임 전 확인.`,
     };
   } else {
     const tail = m ? m.tail : `${count}곳 격조 코스 비교 정리`;
     const sig = m ? m.sig : `${regionKo} 단골이 모시는 정찬 코스`;
     return {
       title: `${regionKo} 요정 ${count}곳 — ${tail}`,
-      desc: `${regionKo} 요정 ${count}곳 — ${sig}. ${allNames} 등 정찬 15첩·국악 라이브·프라이빗 룸, 비즈니스 만찬 코스·예약·드레스코드 매너까지 바로 확인.`,
+      desc: `${regionKo} 요정 어디가 격조 있나? 안 가본 데로 모시면 큰일 난다, ${count}곳 — ${sig}. ${allNames} 등 정찬 15첩·국악 라이브·프라이빗 룸, 비즈니스 만찬 코스·예약·드레스코드 매너까지 확인.`,
     };
   }
 }
