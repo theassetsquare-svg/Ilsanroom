@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-01T18:37:59.249Z",
+  "generated_at": "2026-06-01T20:49:40.308Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,7 +7,7 @@
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 6
+      "views_24h": 7
     },
     {
       "path": "/nights/daejeonsevennight",
@@ -15,6 +15,13 @@
       "category": "night",
       "region": "대전",
       "views_24h": 4
+    },
+    {
+      "path": "/nights/daeguhangukgwannight",
+      "title": "대구한국관나이트",
+      "category": "night",
+      "region": "대구",
+      "views_24h": 2
     },
     {
       "path": "/nights/daejeonhangukgwannight",
@@ -70,13 +77,6 @@
       "title": "분당퐁퐁나이트",
       "category": "night",
       "region": "분당",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daeguhangukgwannight",
-      "title": "대구한국관나이트",
-      "category": "night",
-      "region": "대구",
       "views_24h": 1
     }
   ]
