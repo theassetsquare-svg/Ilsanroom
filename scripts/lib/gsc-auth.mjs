@@ -90,15 +90,27 @@ async function tokenFromOAuth() {
   return data.access_token;
 }
 
-/** 서비스계정 우선, 없으면 OAuth 폴백. 둘 다 없으면 null. */
+/** 해당 토큰이 SITE_PROPERTY 를 실제로 읽을 수 있는지 확인 (권한 없으면 403/404). */
+async function canAccess(token) {
+  const url = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(SITE_PROPERTY)}`;
+  const r = await fetch(url, { headers: { Authorization: `Bearer ${token}` } }).catch(() => null);
+  return !!(r && r.ok);
+}
+
+/**
+ * 서비스계정 우선, 없으면(또는 SITE_PROPERTY 권한 없으면) OAuth 폴백. 둘 다 안 되면 null.
+ * SA 토큰은 발급돼도 속성에 사용자로 추가돼야 데이터가 읽힌다 — 권한 검사 후 폴백해
+ * SA가 아직 권한 없을 때도 자동화가 멈추지 않게 한다.
+ */
 export async function getAccessToken() {
   const sa = loadServiceAccount();
   if (sa) {
     const t = await tokenFromServiceAccount(sa);
-    if (t) {
+    if (t && (await canAccess(t))) {
       console.log(`🔑 GSC 인증: 서비스계정 (${sa.client_email})`);
       return t;
     }
+    if (t) console.warn(`⚠️  서비스계정(${sa.client_email})이 ${SITE_PROPERTY} 권한 없음 — OAuth로 폴백`);
   }
   const oauth = await tokenFromOAuth();
   if (oauth) {
