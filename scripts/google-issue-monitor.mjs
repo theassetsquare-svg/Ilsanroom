@@ -243,7 +243,7 @@ async function main() {
   if (hasProblem) {
     await resubmitSitemap(token);
     if (doRequestIndexing) {
-      await requestIndexing(token, [...crit, ...pending].map(x => x.url).slice(0, 100));
+      await requestIndexing(token, [...crit, ...warn, ...pending].map(x => x.url).slice(0, 100));
     }
     await sendMail(
       `[놀쿨][🔍] 서치콘솔 문제 ${crit.length}🔴 ${warn.length}🟡 ${pending.length}🟦`,
