@@ -119,9 +119,20 @@ async function auditOne(browser, url, vpName) {
       issues.push({ sev: 'NET', msg: `${s} ${u.slice(0, 120)}` });
     }
   });
+  // networkidle2(≤2 연결 500ms)는 SPA 라이브 폴링 + 동시 크롤 부하에서 20s 안에 idle 미도달 가능 →
+  // false-positive LOAD 타임아웃. domcontentloaded로 1회 재시도해 "진짜 로드 실패"만 LOAD로 기록.
+  let resp = null;
   try {
-    const resp = await page.goto(url, { waitUntil: 'networkidle2', timeout: 20000 });
-    if (!resp || resp.status() >= 400) issues.push({ sev: 'HTTP', msg: `${resp ? resp.status() : 'no-response'}` });
+    resp = await page.goto(url, { waitUntil: 'networkidle2', timeout: 20000 });
+  } catch {
+    try {
+      resp = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 25000 });
+    } catch (e2) {
+      issues.push({ sev: 'LOAD', msg: (e2.message || String(e2)).slice(0, 200) });
+    }
+  }
+  if (resp) {
+    if (resp.status() >= 400) issues.push({ sev: 'HTTP', msg: `${resp.status()}` });
     // R2-4 — 11vp 레이아웃 검증 (가로 스크롤·폰트·터치 영역)
     try {
       const layoutIssues = await page.evaluate(() => {
@@ -151,8 +162,6 @@ async function auditOne(browser, url, vpName) {
       });
       for (const li of layoutIssues) issues.push(li);
     } catch {}
-  } catch (e) {
-    issues.push({ sev: 'LOAD', msg: (e.message || String(e)).slice(0, 200) });
   }
   await page.close();
   return issues;
