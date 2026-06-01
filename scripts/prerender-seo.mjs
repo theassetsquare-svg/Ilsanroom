@@ -1510,7 +1510,7 @@ for (const v of venues) {
     name: v.nameKo,
     description: v.description.slice(0, 300),
     address: { '@type': 'PostalAddress', streetAddress: v.address || `${v.regionKo} ${v.nameKo}`, addressLocality: v.regionKo, addressCountry: 'KR' },
-    url: `${BASE_URL}${routePath}`,
+    url: `${BASE_URL}${routePath}/`,
     image: getVenueImageList(v.slug),
     telephone: v.staffPhone || undefined,
     openingHoursSpecification: [{
@@ -1540,7 +1540,7 @@ for (const v of venues) {
   if (['club', 'room', 'yojeong'].includes(v.cat)) {
     breadcrumbItems.push({ name: v.regionKo, url: `${BASE_URL}/${cm.path}/${v.region}` });
   }
-  breadcrumbItems.push({ name: v.nameKo, url: `${BASE_URL}${routePath}` });
+  breadcrumbItems.push({ name: v.nameKo, url: `${BASE_URL}${routePath}/` });
   const breadcrumbJsonLd = generateBreadcrumbJsonLd(breadcrumbItems);
 
   // datePublished: 업소별 고유 "등록일" (slug 해시 기반) + dateModified: 오늘

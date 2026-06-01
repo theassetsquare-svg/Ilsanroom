@@ -117,6 +117,16 @@ async function inspect(token, inspectionUrl) {
   if (!r.ok) return { url: inspectionUrl, error: r.status };
   const data = await r.json();
   const idx = data.inspectionResult?.indexStatusResult || {};
+  const richRes = data.inspectionResult?.richResultsResult;
+  // 리치결과 FAIL 시 어떤 타입의 어떤 이슈인지 정확히 추출 (추측 제거)
+  const richIssues = [];
+  for (const di of richRes?.detectedItems || []) {
+    for (const it of di.items || []) {
+      for (const is of it.issues || []) {
+        if (is.severity === 'ERROR') richIssues.push(`${di.richResultType}: ${is.issueMessage}`);
+      }
+    }
+  }
   return {
     url: inspectionUrl,
     verdict: idx.verdict,
@@ -127,7 +137,8 @@ async function inspect(token, inspectionUrl) {
     googleCanonical: idx.googleCanonical,
     userCanonical: idx.userCanonical,
     mobile: data.inspectionResult?.mobileUsabilityResult?.verdict,
-    rich: data.inspectionResult?.richResultsResult?.verdict,
+    rich: richRes?.verdict,
+    richIssues,
   };
 }
 
@@ -151,7 +162,7 @@ function classify(r) {
   if (r.verdict === 'PASS') {
     // PASS인데 모바일/리치결과 문제만 있는 경우
     if (r.mobile === 'FAIL') return { bucket: 'WARN', reason: '모바일 사용성 문제', hint: '터치 타깃/뷰포트 점검' };
-    if (r.rich === 'FAIL') return { bucket: 'WARN', reason: '리치 결과(구조화 데이터) 오류', hint: 'JSON-LD 스키마 점검' };
+    if (r.rich === 'FAIL') return { bucket: 'WARN', reason: '리치 결과(구조화 데이터) 오류', hint: r.richIssues?.length ? r.richIssues.join(' · ') : 'JSON-LD 스키마 점검 (상세 이슈 없음 — FAQ 비적격/일시적 가능)' };
     return { bucket: 'OK' };
   }
   // verdict NEUTRAL/PARTIAL + 색인 안 됨 → 대기 (재제출로 유도)

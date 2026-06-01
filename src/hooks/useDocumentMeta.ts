@@ -14,7 +14,11 @@ export function useDocumentMeta(title: string, description: string, ogImage?: st
     }
 
     const trimmedDesc = description.slice(0, 150);
-    const currentUrl = window.location.href;
+    // canonical/og:url은 sitemap·prerender와 동일하게 trailing slash 통일.
+    // (Googlebot이 slash 없는 URL을 렌더하면 SSR canonical을 덮어써 '불일치'로 잡힘)
+    const { origin, pathname } = window.location;
+    const normalizedPath = pathname.endsWith('/') ? pathname : `${pathname}/`;
+    const currentUrl = `${origin}${normalizedPath}`;
 
     const setMeta = (attr: string, key: string, value: string) => {
       let el = document.querySelector(`meta[${attr}="${key}"]`);
