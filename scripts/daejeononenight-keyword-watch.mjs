@@ -7,7 +7,7 @@
  *   ② "대전나이트"   — 일반 키워드 (지역 + 카테고리 검색)
  *
  * 추가 검증 (시즌82 신규):
- *   ⓐ 막내 010-8677-1258 PhoneBar tel: 링크 존재
+ *   ⓐ 막내  PhoneBar tel: 링크 존재
  *   ⓑ 38세 / 22시 / 3만원 / 차비 핵심 정책 토큰 모두 등장
  *   ⓒ openHours "02:30" + "03:30" 모두 등장
  *
@@ -24,7 +24,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/daejeononenight/';
 const PRIMARY = '대전원나이트';
 const SECONDARY = '대전나이트';
-const PHONE = '010-8677-1258';
+const PHONE = '';
 const POLICY_TOKENS = ['38세', '22시', '3만원', '차비', '맥주', '02:30', '03:30'];
 
 function fetchHtml(url) {
