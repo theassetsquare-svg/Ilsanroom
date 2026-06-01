@@ -24,7 +24,6 @@ if (!GOOGLE_OAUTH_CLIENT_ID || !GOOGLE_OAUTH_CLIENT_SECRET || !GOOGLE_REFRESH_TO
 }
 
 const ymd = (d) => d.toISOString().slice(0, 10);
-const shortUrl = (u) => u.replace('https://nolcool.com', '').replace(/\/$/, '') || '/';
 
 async function refreshAccessToken() {
   const r = await fetch('https://oauth2.googleapis.com/token', {
@@ -71,7 +70,7 @@ async function query(token, dimensions, rowLimit = 25000) {
   const dev = await query(token, ['device'], 10);
   const range = { start: qp.start, end: qp.end };
 
-  // 1) 카니발리제이션: query -> 경쟁 페이지 목록
+  // query -> 페이지 목록
   const byQuery = new Map();
   for (const row of qp.rows) {
     const [kw, page] = row.keys;
@@ -83,13 +82,28 @@ async function query(token, dimensions, rowLimit = 25000) {
       pos: row.position || 0,
     });
   }
+
+  // 🔴 진짜 자기잠식만: "같은 페이지"가 2+ 서로 다른 URL(슬래시/파라미터/인코딩)로 갈려 자기랑 경쟁.
+  //    이름 다른 가게끼리 같은 generic 검색에 뜨는 건 카니발 아님 → 제외 (#0 규칙).
+  const normPath = (u) => {
+    let s = u;
+    try { s = decodeURIComponent(u); } catch { /* keep */ }
+    return (s.replace(/^https?:\/\/[^/]+/, '').replace(/[?#].*$/, '').replace(/\/+$/, '').toLowerCase()) || '/';
+  };
   const cannibal = [];
   for (const [kw, pages] of byQuery) {
-    if (pages.length < 2) continue;
-    const imp = pages.reduce((a, p) => a + p.imp, 0);
-    if (imp < 8) continue; // 노이즈 컷
-    pages.sort((a, b) => a.pos - b.pos);
-    cannibal.push({ kw, pages, imp, clicks: pages.reduce((a, p) => a + p.clicks, 0), n: pages.length });
+    const groups = new Map();
+    for (const p of pages) {
+      const k = normPath(p.page);
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(p);
+    }
+    for (const [path, variants] of groups) {
+      if (variants.length < 2) continue; // 같은 페이지가 2+ URL일 때만 = 진짜 자기잠식
+      const imp = variants.reduce((a, p) => a + p.imp, 0);
+      variants.sort((a, b) => a.pos - b.pos);
+      cannibal.push({ kw, path, variants, imp, clicks: variants.reduce((a, p) => a + p.clicks, 0), n: variants.length });
+    }
   }
   cannibal.sort((a, b) => b.imp - a.imp);
 
@@ -111,14 +125,15 @@ async function query(token, dimensions, rowLimit = 25000) {
 
   // ===== 콘솔 출력 =====
   console.log(`\n📊 놀쿨 카니발리제이션 진단  ${range.start} ~ ${range.end} (최근 ${DAYS}일)`);
-  console.log(`전체 키워드 ${byQuery.size}개 · 페이지경쟁 키워드 ${cannibal.length}개`);
+  console.log(`전체 키워드 ${byQuery.size}개 · 진짜 자기잠식(같은 페이지 多URL) ${cannibal.length}건`);
 
-  console.log(`\n=== 🩸 카니발리제이션 (같은 키워드 2+ 페이지 경쟁, 노출순 TOP25) ===`);
-  if (cannibal.length === 0) console.log('  (경쟁 없음 — 깨끗함)');
-  for (const c of cannibal.slice(0, 25)) {
-    console.log(`\n  "${c.kw}"  — ${c.n}개 페이지 경쟁 · 노출 ${c.imp} · 클릭 ${c.clicks}`);
-    for (const p of c.pages) {
-      console.log(`     ${p.pos.toFixed(1).padStart(5)}위 | 노출 ${String(p.imp).padStart(4)} 클릭 ${String(p.clicks).padStart(3)} | ${shortUrl(p.page)}`);
+  console.log(`\n=== 🔴 진짜 자기잠식 — 같은 페이지가 여러 URL로 갈려 자기랑 경쟁 ===`);
+  console.log(`(이름 다른 가게끼리 경쟁은 제외 = #0 규칙. 슬래시/파라미터/인코딩 중복만)`);
+  if (cannibal.length === 0) console.log('  ✅ 없음 — 깨끗함');
+  for (const c of cannibal) {
+    console.log(`\n  "${c.kw}" → 같은 페이지 [${c.path}] 가 ${c.n}개 URL로 갈림 · 노출 ${c.imp} 클릭 ${c.clicks}`);
+    for (const v of c.variants) {
+      console.log(`     ${v.pos.toFixed(1).padStart(5)}위 | 노출 ${String(v.imp).padStart(4)} 클릭 ${String(v.clicks).padStart(3)} | ${v.page}`);
     }
   }
 
@@ -138,17 +153,17 @@ async function query(token, dimensions, rowLimit = 25000) {
   if (RESEND_API_KEY) {
     const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
     const kst = new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 16) + ' KST';
-    const cannHtml = cannibal.slice(0, 25).map((c) => {
-      const rows = c.pages.map((p) => `<tr><td style="text-align:right">${p.pos.toFixed(1)}위</td><td style="text-align:right">${p.imp}</td><td style="text-align:right">${p.clicks}</td><td style="padding-left:10px;color:#374151">${shortUrl(p.page)}</td></tr>`).join('');
-      return `<div style="margin:14px 0;padding:10px;background:#FEF2F2;border-radius:8px"><b>"${c.kw}"</b> <span style="color:#DC2626">${c.n}개 페이지 경쟁</span> · 노출 ${c.imp} · 클릭 ${c.clicks}<table style="width:100%;font-size:12px;margin-top:6px">${rows}</table></div>`;
+    const cannHtml = cannibal.map((c) => {
+      const rows = c.variants.map((p) => `<tr><td style="text-align:right">${p.pos.toFixed(1)}위</td><td style="text-align:right">${p.imp}</td><td style="text-align:right">${p.clicks}</td><td style="padding-left:10px;color:#374151;font-size:11px">${p.page}</td></tr>`).join('');
+      return `<div style="margin:14px 0;padding:10px;background:#FEF2F2;border-radius:8px"><b>"${c.kw}"</b> → 같은 페이지 <code>${c.path}</code> <span style="color:#DC2626">${c.n}개 URL로 갈림</span> · 노출 ${c.imp} · 클릭 ${c.clicks}<table style="width:100%;font-size:12px;margin-top:6px">${rows}</table></div>`;
     }).join('');
     const oppHtml = opp.map((r) => `<tr><td style="text-align:right;font-weight:600">${r.pos.toFixed(1)}위</td><td style="text-align:right">${r.imp}</td><td style="text-align:right">${r.clicks}</td><td style="text-align:right">${r.ctr.toFixed(1)}%</td><td style="padding-left:10px">${r.kw}</td></tr>`).join('');
     const devHtml = deviceRows.map((d) => `<tr><td>${d.device}</td><td style="text-align:right">${d.clicks}</td><td style="text-align:right">${d.imp}</td><td style="text-align:right">${d.ctr}%</td><td style="text-align:right">${d.pos}</td></tr>`).join('');
     const html = `<div style="font-family:sans-serif;max-width:720px;margin:0 auto;padding:20px;color:#111">
-      <h2 style="color:#DC2626">🩸 놀쿨 카니발리제이션 진단 (${range.start} ~ ${range.end})</h2>
-      <p style="color:#666;font-size:12px">발송 ${kst} · 전체 키워드 ${byQuery.size} · 페이지경쟁 ${cannibal.length}건</p>
-      <h3>같은 키워드를 우리 페이지끼리 경쟁 (노출순 TOP25)</h3>
-      ${cannHtml || '<p>경쟁 없음 — 깨끗함</p>'}
+      <h2 style="color:#DC2626">🔴 놀쿨 자기잠식 진단 (${range.start} ~ ${range.end})</h2>
+      <p style="color:#666;font-size:12px">발송 ${kst} · 전체 키워드 ${byQuery.size} · 진짜 자기잠식 ${cannibal.length}건 (같은 페이지 多URL만)</p>
+      <h3>같은 페이지가 여러 URL로 갈려 자기랑 경쟁</h3>
+      ${cannHtml || '<p>✅ 없음 — 깨끗함</p>'}
       <h3 style="margin-top:24px">🎯 곧 1페이지 노다지 (4~15위)</h3>
       <table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr style="color:#6B7280"><th>순위</th><th>노출</th><th>클릭</th><th>CTR</th><th style="text-align:left;padding-left:10px">키워드</th></tr></thead><tbody>${oppHtml}</tbody></table>
       <h3 style="margin-top:24px">📱 디바이스별</h3>
