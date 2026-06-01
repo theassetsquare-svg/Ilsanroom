@@ -101,6 +101,19 @@ async function fetchSitemapUrls() {
   return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1].trim());
 }
 
+/** 라이브 페이지의 실제 <link rel="canonical"> 추출 (캐시지연 false-positive 재검증용). */
+async function fetchLiveCanonical(url) {
+  try {
+    const r = await fetch(url, { headers: { 'User-Agent': 'NolcoolIssueMonitor/1.0', 'Cache-Control': 'no-cache' } });
+    if (!r.ok) return null;
+    const html = await r.text();
+    const m = html.match(/<link[^>]+rel=["']canonical["'][^>]*>/i);
+    if (!m) return null;
+    const href = m[0].match(/href=["']([^"']+)["']/i);
+    return href ? href[1].trim() : null;
+  } catch { return null; }
+}
+
 async function resubmitSitemap(token) {
   const url = `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(SITE_PROPERTY)}/sitemaps/${encodeURIComponent(SITEMAP_URL)}`;
   const r = await fetch(url, { method: 'PUT', headers: { Authorization: `Bearer ${token}` } });
@@ -227,7 +240,8 @@ async function main() {
   let okCount = 0;
   for (const r of results) {
     const c = classify(r);
-    const row = { url: r.url, reason: c.reason, hint: c.hint };
+    // canonical 불일치는 라이브 재검증을 위해 Google/우리 canonical 보관
+    const row = { url: r.url, reason: c.reason, hint: c.hint, _gcanon: r.googleCanonical, _ucanon: r.userCanonical };
     if (c.bucket === 'CRITICAL') crit.push(row);
     else if (c.bucket === 'WARN') warn.push(row);
     else if (c.bucket === 'PENDING') pending.push(row);
@@ -235,13 +249,32 @@ async function main() {
     else okCount++;
   }
 
-  console.log(`\n📊 결과: 🔴 ${crit.length} · 🟡 ${warn.length} · 🟦 ${pending.length} · 🟢 ${okCount} · ⏭️ ${skip.length}`);
-  for (const c of crit) console.log(`🔴 ${c.url}\n     ${c.reason} — ${c.hint || ''}`);
+  // ★ 라이브 재검증 — Google 캐시 지연 false-positive 제거.
+  // urlInspection은 Google이 "마지막으로 크롤한" 상태라, 우리가 이미 코드를 고쳐 배포했어도
+  // 재크롤 전까지 옛 오류로 잡힌다(특히 canonical 불일치). 메일 쏘기 전에 라이브 HTML을 직접 봐서
+  // 지금도 진짜 깨졌는지 확인하고, 캐시 지연일 뿐이면 메일 X·재크롤만(자가치유).
+  const lagResolved = [];
+  const realCrit = [];
+  for (const c of crit) {
+    if (c.reason === 'canonical 불일치') {
+      const live = await fetchLiveCanonical(c.url);
+      // Google이 선택한 canonical(= 보통 정답 trailing-slash)과 라이브가 이미 일치하면 코드 정상.
+      if (live && c._gcanon && live === c._gcanon) {
+        console.log(`   ↺ ${c.url} — 라이브 canonical 이미 정상(${live}) = Google 캐시 지연 → 메일 생략, 재크롤만`);
+        lagResolved.push(c);
+        continue;
+      }
+    }
+    realCrit.push(c);
+  }
+
+  console.log(`\n📊 결과: 🔴 ${realCrit.length}(+캐시지연 ${lagResolved.length}) · 🟡 ${warn.length} · 🟦 ${pending.length} · 🟢 ${okCount} · ⏭️ ${skip.length}`);
+  for (const c of realCrit) console.log(`🔴 ${c.url}\n     ${c.reason} — ${c.hint || ''}`);
   for (const w of warn) console.log(`🟡 ${w.url}\n     ${w.reason} — ${w.hint || ''}`);
 
   const hasProblem = crit.length || warn.length || pending.length;
   if (hasProblem) {
-    // 색인 대기/리치결과는 정상·구글측 상태라 자동 처리만 하고 메일은 보내지 않음.
+    // 색인 대기/리치결과/캐시지연은 정상·구글측 상태라 자동 처리만 하고 메일은 보내지 않음.
     // (sitemap 재제출 + 강제 재크롤로 자동 해소 유도)
     await resubmitSitemap(token);
     if (doRequestIndexing) {
@@ -249,19 +282,19 @@ async function main() {
     }
   }
 
-  // ★ 메일은 🔴 CRITICAL(실제 코드 버그)일 때만 — PENDING/WARN 매 run 메일 스팸 제거
-  // (season66 "실패시만 메일" 정책: 색인대기 139건은 정상 steady-state, 버그 아님)
-  if (crit.length) {
+  // ★ 메일은 라이브에서 진짜 깨진 🔴 CRITICAL일 때만 — 캐시지연/PENDING/WARN은 조용히 자동 처리
+  // (season66 "실패시만 메일" 정책 + 캐시지연 false-positive 제거)
+  if (realCrit.length) {
     await sendMail(
-      `[놀쿨][🔴] 서치콘솔 코드 수정 필요 ${crit.length}건`,
-      reportHtml(crit, warn, pending, okCount, skip),
+      `[놀쿨][🔴] 서치콘솔 코드 수정 필요 ${realCrit.length}건`,
+      reportHtml(realCrit, warn, pending, okCount, skip),
     );
   } else {
-    console.log(`✅ CRITICAL 0건 — 메일 생략 (WARN ${warn.length}/PENDING ${pending.length}는 자동 처리, 정상)`);
+    console.log(`✅ 라이브 CRITICAL 0건 — 메일 생략 (캐시지연 ${lagResolved.length}/WARN ${warn.length}/PENDING ${pending.length}는 자동 재크롤, 정상)`);
   }
 
-  // CRITICAL은 사이트 코드 버그 신호 → 워크플로 빨간불로 눈에 띄게
-  if (crit.length) process.exit(1);
+  // 라이브에서 진짜 깨진 것만 워크플로 빨간불 (캐시지연은 초록불)
+  if (realCrit.length) process.exit(1);
 }
 
 main().catch(e => { console.error('❌ 실패:', e); process.exit(1); });
