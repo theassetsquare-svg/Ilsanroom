@@ -1,0 +1,170 @@
+#!/usr/bin/env node
+/**
+ * Google Search Console — 카니발리제이션 + 기회 키워드 진단 (참고용 리포트)
+ *
+ * 환경변수 (GitHub Secrets):
+ *   GOOGLE_OAUTH_CLIENT_ID / GOOGLE_OAUTH_CLIENT_SECRET / GOOGLE_REFRESH_TOKEN
+ *   RESEND_API_KEY / NOTIFICATION_EMAIL (메일 발송, 선택)
+ *
+ * 동작 (읽기 전용):
+ *   1) ['query','page'] 전수 조회 → 같은 키워드를 2+ 페이지가 경쟁(카니발리제이션) 검출
+ *   2) ['query'] → 4~15위 '곧 1페이지' 노다지 키워드
+ *   3) ['device'] → PC/모바일 분리 요약
+ *   콘솔 출력 + (RESEND 설정 시) 이메일 1통.
+ */
+
+const SITE_PROPERTY = 'sc-domain:nolcool.com';
+const DAYS = 28;
+
+const { GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN } = process.env;
+
+if (!GOOGLE_OAUTH_CLIENT_ID || !GOOGLE_OAUTH_CLIENT_SECRET || !GOOGLE_REFRESH_TOKEN) {
+  console.log('⏭️  GOOGLE_OAUTH_* / GOOGLE_REFRESH_TOKEN 미설정 — 스킵');
+  process.exit(0);
+}
+
+const ymd = (d) => d.toISOString().slice(0, 10);
+const shortUrl = (u) => u.replace('https://nolcool.com', '').replace(/\/$/, '') || '/';
+
+async function refreshAccessToken() {
+  const r = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: GOOGLE_OAUTH_CLIENT_ID,
+      client_secret: GOOGLE_OAUTH_CLIENT_SECRET,
+      refresh_token: GOOGLE_REFRESH_TOKEN,
+      grant_type: 'refresh_token',
+    }),
+  });
+  const data = await r.json();
+  if (!data.access_token) {
+    console.warn('⚠️  access_token 갱신 실패:', JSON.stringify(data));
+    return null;
+  }
+  return data.access_token;
+}
+
+async function query(token, dimensions, rowLimit = 25000) {
+  const end = new Date(Date.now() - 2 * 86400 * 1000);
+  const start = new Date(end.getTime() - DAYS * 86400 * 1000);
+  const url = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(SITE_PROPERTY)}/searchAnalytics/query`;
+  const r = await fetch(url, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ startDate: ymd(start), endDate: ymd(end), dimensions, rowLimit }),
+  });
+  if (!r.ok) {
+    console.log(`⚠️  query(${dimensions.join(',')}) ${r.status}: ${await r.text().catch(() => '')}`);
+    return { rows: [], start: ymd(start), end: ymd(end) };
+  }
+  const data = await r.json();
+  return { rows: data.rows || [], start: ymd(start), end: ymd(end) };
+}
+
+(async () => {
+  const token = await refreshAccessToken();
+  if (!token) process.exit(0);
+
+  const qp = await query(token, ['query', 'page']);
+  const q = await query(token, ['query']);
+  const dev = await query(token, ['device'], 10);
+  const range = { start: qp.start, end: qp.end };
+
+  // 1) 카니발리제이션: query -> 경쟁 페이지 목록
+  const byQuery = new Map();
+  for (const row of qp.rows) {
+    const [kw, page] = row.keys;
+    if (!byQuery.has(kw)) byQuery.set(kw, []);
+    byQuery.get(kw).push({
+      page,
+      clicks: row.clicks || 0,
+      imp: row.impressions || 0,
+      pos: row.position || 0,
+    });
+  }
+  const cannibal = [];
+  for (const [kw, pages] of byQuery) {
+    if (pages.length < 2) continue;
+    const imp = pages.reduce((a, p) => a + p.imp, 0);
+    if (imp < 8) continue; // 노이즈 컷
+    pages.sort((a, b) => a.pos - b.pos);
+    cannibal.push({ kw, pages, imp, clicks: pages.reduce((a, p) => a + p.clicks, 0), n: pages.length });
+  }
+  cannibal.sort((a, b) => b.imp - a.imp);
+
+  // 2) 4~15위 노다지
+  const opp = q.rows
+    .map((r) => ({ kw: r.keys[0], clicks: r.clicks || 0, imp: r.impressions || 0, ctr: (r.ctr || 0) * 100, pos: r.position || 0 }))
+    .filter((r) => r.pos >= 3.5 && r.pos <= 15 && r.imp >= 20)
+    .sort((a, b) => b.imp - a.imp)
+    .slice(0, 20);
+
+  // 3) device
+  const deviceRows = dev.rows.map((r) => ({
+    device: r.keys[0],
+    clicks: r.clicks || 0,
+    imp: r.impressions || 0,
+    ctr: ((r.ctr || 0) * 100).toFixed(1),
+    pos: (r.position || 0).toFixed(1),
+  }));
+
+  // ===== 콘솔 출력 =====
+  console.log(`\n📊 놀쿨 카니발리제이션 진단  ${range.start} ~ ${range.end} (최근 ${DAYS}일)`);
+  console.log(`전체 키워드 ${byQuery.size}개 · 페이지경쟁 키워드 ${cannibal.length}개`);
+
+  console.log(`\n=== 🩸 카니발리제이션 (같은 키워드 2+ 페이지 경쟁, 노출순 TOP25) ===`);
+  if (cannibal.length === 0) console.log('  (경쟁 없음 — 깨끗함)');
+  for (const c of cannibal.slice(0, 25)) {
+    console.log(`\n  "${c.kw}"  — ${c.n}개 페이지 경쟁 · 노출 ${c.imp} · 클릭 ${c.clicks}`);
+    for (const p of c.pages) {
+      console.log(`     ${p.pos.toFixed(1).padStart(5)}위 | 노출 ${String(p.imp).padStart(4)} 클릭 ${String(p.clicks).padStart(3)} | ${shortUrl(p.page)}`);
+    }
+  }
+
+  console.log(`\n=== 🎯 '곧 1페이지' 노다지 (4~15위, 노출≥20) TOP20 ===`);
+  console.log('순위   노출  클릭   CTR    키워드');
+  for (const r of opp) {
+    console.log(`${r.pos.toFixed(1).padStart(5)}  ${String(r.imp).padStart(5)}  ${String(r.clicks).padStart(4)}  ${(r.ctr.toFixed(1) + '%').padStart(6)}   ${r.kw}`);
+  }
+
+  console.log(`\n=== 📱 디바이스별 (PC/모바일/태블릿) ===`);
+  for (const d of deviceRows) {
+    console.log(`  ${d.device.padEnd(8)} 클릭 ${String(d.clicks).padStart(4)} · 노출 ${String(d.imp).padStart(5)} · CTR ${d.ctr}% · 평균순위 ${d.pos}`);
+  }
+
+  // ===== 이메일 =====
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
+  if (RESEND_API_KEY) {
+    const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
+    const kst = new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 16) + ' KST';
+    const cannHtml = cannibal.slice(0, 25).map((c) => {
+      const rows = c.pages.map((p) => `<tr><td style="text-align:right">${p.pos.toFixed(1)}위</td><td style="text-align:right">${p.imp}</td><td style="text-align:right">${p.clicks}</td><td style="padding-left:10px;color:#374151">${shortUrl(p.page)}</td></tr>`).join('');
+      return `<div style="margin:14px 0;padding:10px;background:#FEF2F2;border-radius:8px"><b>"${c.kw}"</b> <span style="color:#DC2626">${c.n}개 페이지 경쟁</span> · 노출 ${c.imp} · 클릭 ${c.clicks}<table style="width:100%;font-size:12px;margin-top:6px">${rows}</table></div>`;
+    }).join('');
+    const oppHtml = opp.map((r) => `<tr><td style="text-align:right;font-weight:600">${r.pos.toFixed(1)}위</td><td style="text-align:right">${r.imp}</td><td style="text-align:right">${r.clicks}</td><td style="text-align:right">${r.ctr.toFixed(1)}%</td><td style="padding-left:10px">${r.kw}</td></tr>`).join('');
+    const devHtml = deviceRows.map((d) => `<tr><td>${d.device}</td><td style="text-align:right">${d.clicks}</td><td style="text-align:right">${d.imp}</td><td style="text-align:right">${d.ctr}%</td><td style="text-align:right">${d.pos}</td></tr>`).join('');
+    const html = `<div style="font-family:sans-serif;max-width:720px;margin:0 auto;padding:20px;color:#111">
+      <h2 style="color:#DC2626">🩸 놀쿨 카니발리제이션 진단 (${range.start} ~ ${range.end})</h2>
+      <p style="color:#666;font-size:12px">발송 ${kst} · 전체 키워드 ${byQuery.size} · 페이지경쟁 ${cannibal.length}건</p>
+      <h3>같은 키워드를 우리 페이지끼리 경쟁 (노출순 TOP25)</h3>
+      ${cannHtml || '<p>경쟁 없음 — 깨끗함</p>'}
+      <h3 style="margin-top:24px">🎯 곧 1페이지 노다지 (4~15위)</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr style="color:#6B7280"><th>순위</th><th>노출</th><th>클릭</th><th>CTR</th><th style="text-align:left;padding-left:10px">키워드</th></tr></thead><tbody>${oppHtml}</tbody></table>
+      <h3 style="margin-top:24px">📱 디바이스별</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr style="color:#6B7280"><th style="text-align:left">기기</th><th>클릭</th><th>노출</th><th>CTR</th><th>평균순위</th></tr></thead><tbody>${devHtml}</tbody></table>
+      <p style="color:#9CA3AF;font-size:11px;margin-top:24px">읽기 전용 참고 리포트 · 데이터는 Google 정책상 약 2일 지연.</p>
+    </div>`;
+    const r = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'NOLCOOL auto <onboarding@resend.dev>',
+        to: [TO],
+        subject: `[놀쿨][🩸] 카니발리제이션 ${cannibal.length}건 · 노다지 ${opp.length}건`,
+        html,
+      }),
+    }).catch(() => null);
+    console.log(`\n📧 메일 발송: ${r ? r.status : '실패'} → ${TO}`);
+  }
+})();
