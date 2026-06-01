@@ -311,8 +311,9 @@ async function main() {
     );
   }
 
-  // 라이브에서 진짜 깨진 것만 워크플로 빨간불 (캐시지연은 초록불)
-  if (realCrit.length) process.exit(1);
+  // 워크플로는 항상 초록불 — 🔴 코드버그는 위 상세 메일로 행동 신호를 보냈고,
+  // exit 1로 워크플로를 빨갛게 만들면 actions-digest가 "워크플로 실패"로 또 메일을 보내 이중 알림이 된다.
+  // 진짜 인프라 크래시(OAuth/네트워크)만 main().catch에서 exit 1 → 그때만 디지스트가 정당하게 보고.
 }
 
 main().catch(e => { console.error('❌ 실패:', e); process.exit(1); });
