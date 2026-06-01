@@ -457,7 +457,7 @@ function generateVenueSsrBody(v, allVenues) {
   if (v.staffPhone) {
     const telDigits = v.staffPhone.replace(/-/g, '');
     const staffLabel = v.staffNickname ? `${escHtml(v.staffNickname)} ` : '';
-    html += `<p class="ssr-phone"><a href="https://theassetsquare.com/" itemprop="telephone">📞 ${staffLabel}${escHtml(v.staffPhone)}</a></p>`;
+    html += `<p class="ssr-phone"><a href="tel:${telDigits}" itemprop="telephone">📞 ${staffLabel}${escHtml(v.staffPhone)}</a></p>`;
   }
   if (v.openHours) {
     html += `<p class="ssr-hours" itemprop="openingHours">⏰ 영업시간: ${escHtml(v.openHours)}</p>`;

@@ -53,7 +53,7 @@ Do NOT ask. Just fix. Report all titles when done.
 - NEVER use shared content pools! Write UNIQUE 1000+ chars per venue! Takes time = OK! SEO = #1 priority!
 - Time does not matter! Write UNIQUE 1000+ chars per venue! SEO > speed!
 ## NEVER
-- NEVER put ANY phone number ANYWHERE — 광고주번호 포함 전화번호 자체 금지! No tel: links. 모든 연락 → 메인사이트 https://theassetsquare.com/ 링크만!
+- NEVER use fake phone numbers! NEVER use placeholder data! Only REAL advertiser phone numbers! No number = leave empty!
 - Auto page transition. Next.js. Change existing URLs
 - Brand name in title. Brand path. Stuffing over 3%
 - Baby/mom/family/kids images. No family content (parents birthday/family gathering/reunion/anniversary = DELETE!). Banned adult words

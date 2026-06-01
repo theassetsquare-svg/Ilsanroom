@@ -83,13 +83,13 @@ function DaejeonSevenHeaderSection() {
       {/* 전화번호 CTA */}
       <div className="w-full max-w-[480px] text-center">
         <a
-          href="https://theassetsquare.com/"
+          href="tel:01032421504"
           className="flex flex-col items-center gap-3 rounded-2xl px-8 py-6 shadow-lg transition hover:shadow-xl active:scale-[0.98]"
           style={{ background: 'linear-gradient(to right, #1E3A5F, #0F2744)' }}
         >
           <span style={{ color: '#FFD700', fontSize: 18, fontWeight: 700 }}>대전세븐나이트 담당 원숭이</span>
           <span style={{ color: '#FFFFFF', fontSize: 28, fontWeight: 900, letterSpacing: '0.05em' }}>
-            
+            010-3242-1504
           </span>
           <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>터치하면 바로 전화 연결</span>
         </a>
@@ -127,13 +127,13 @@ function ChangwonLululalalaHeaderSection() {
 
       <div className="w-full max-w-[480px] text-center">
         <a
-          href="https://theassetsquare.com/"
+          href="tel:01038546887"
           className="flex flex-col items-center gap-3 rounded-2xl px-8 py-6 shadow-lg transition hover:shadow-xl active:scale-[0.98]"
           style={{ background: 'linear-gradient(to right, #5C1A1A, #2A0A0A)' }}
         >
           <span style={{ color: '#FFB450', fontSize: 18, fontWeight: 700 }}>창원룰루랄라나이트 담당 짱구</span>
           <span style={{ color: '#FFFFFF', fontSize: 28, fontWeight: 900, letterSpacing: '0.05em' }}>
-            
+            010-3854-6887
           </span>
           <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: 14 }}>터치하면 바로 전화 연결</span>
         </a>
@@ -154,7 +154,7 @@ function ChangwonLululalalaFixedBar() {
   return (
     <div className="fixed left-0 right-0 z-40" style={{ bottom: 56 }}>
       <a
-        href="https://theassetsquare.com/"
+        href="tel:01038546887"
         className="flex items-center justify-center gap-3 px-6 py-4"
         style={{
           background: 'linear-gradient(to right, #5C1A1A, #2A0A0A)',
@@ -163,7 +163,7 @@ function ChangwonLululalalaFixedBar() {
         }}
       >
         <span style={{ color: '#FFB450', fontSize: 16, fontWeight: 700 }}>창원 짱구 직통</span>
-        <span style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 900, letterSpacing: '0.05em' }}></span>
+        <span style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 900, letterSpacing: '0.05em' }}>010-3854-6887</span>
       </a>
     </div>
   );
@@ -175,7 +175,7 @@ function DaejeonSevenFixedBar() {
   return (
     <div className="fixed left-0 right-0 z-40" style={{ bottom: 56 }}>
       <a
-        href="https://theassetsquare.com/"
+        href="tel:01032421504"
         className="flex items-center justify-center gap-3 px-6 py-4"
         style={{
           background: 'linear-gradient(to right, #1E3A5F, #0F2744)',
@@ -184,7 +184,7 @@ function DaejeonSevenFixedBar() {
         }}
       >
         <span style={{ color: '#FFD700', fontSize: 16, fontWeight: 700 }}>4인1조 w.t원숭이</span>
-        <span style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 900, letterSpacing: '0.05em' }}></span>
+        <span style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 900, letterSpacing: '0.05em' }}>010-3242-1504</span>
       </a>
     </div>
   );

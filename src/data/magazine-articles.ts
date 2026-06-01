@@ -46,7 +46,7 @@ export const articles: MagazineArticle[] = [
     excerpt: '일산요정 어디로 잡지? 일산명월관은 정발산 자락 대나무 정원에 자리 잡은 일산 권역 대표 전통 요정이다. 한정식 15첩·국악 라이브·다도 마무리 코스까지 직접 가본 정리. 거래처 모시는 자리, 헛걸음 없게 바로 확인.',
     tag: '요정',
     date: '2026-03-10',
-    phone: '',
+    phone: '010-3695-4929',
     staffName: '신실장',
     venueSlug: 'ilsanmyeongwolgwanyojeong',
     venueName: '일산명월관요정',

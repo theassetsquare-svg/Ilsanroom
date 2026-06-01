@@ -390,7 +390,7 @@ export default function VenueManagePage() {
               <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-neon-text-muted">담당자</h3>
               <div className="space-y-3">
                 <Field label="닉네임"><input value={editing.staff_nickname || ''} onChange={e => setEditing({ ...editing, staff_nickname: e.target.value })} className={inputCls} /></Field>
-                <Field label="전화번호"><input value={editing.staff_phone || ''} onChange={e => setEditing({ ...editing, staff_phone: e.target.value })} placeholder="" className={inputCls} /></Field>
+                <Field label="전화번호"><input value={editing.staff_phone || ''} onChange={e => setEditing({ ...editing, staff_phone: e.target.value })} placeholder="010-0000-0000" className={inputCls} /></Field>
               </div>
             </div>
 
