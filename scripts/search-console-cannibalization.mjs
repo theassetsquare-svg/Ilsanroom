@@ -148,9 +148,12 @@ async function query(token, dimensions, rowLimit = 25000) {
     console.log(`  ${d.device.padEnd(8)} 클릭 ${String(d.clicks).padStart(4)} · 노출 ${String(d.imp).padStart(5)} · CTR ${d.ctr}% · 평균순위 ${d.pos}`);
   }
 
-  // ===== 이메일 =====
+  // ===== 이메일 (기본 비발송 — 실패시만/인박스0 정책) =====
+  // 이 리포트가 잡는 자기잠식은 "같은 페이지가 URL 변형(슬래시/인코딩)으로 갈린" 경우뿐 —
+  // canonical이 이미 합치는 양성 신호다. 매일 메일 = 인박스 노이즈이므로 기본 비발송.
+  // 진단은 CI 콘솔 로그에 항상 남고, 정말 메일이 필요하면 CANNIBALIZATION_EMAIL=1로 옵트인.
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
-  if (RESEND_API_KEY) {
+  if (RESEND_API_KEY && process.env.CANNIBALIZATION_EMAIL === '1') {
     const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
     const kst = new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 16) + ' KST';
     const cannHtml = cannibal.map((c) => {

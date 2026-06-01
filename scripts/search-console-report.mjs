@@ -109,9 +109,11 @@ function htmlTable(title, rows) {
 }
 
 async function sendEmail(range, queries, pages, totals) {
+  // 참고용 검색분석 리포트 — 기본 비발송(인박스0). 진단은 CI 콘솔에 항상 남고,
+  // 메일이 필요하면 SEARCH_REPORT_EMAIL=1로 옵트인. 매일 요약은 별도 issue-monitor가 담당.
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
-  if (!RESEND_API_KEY) return;
+  if (!RESEND_API_KEY || process.env.SEARCH_REPORT_EMAIL !== '1') return;
   const kst = new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 16) + ' KST';
   const html = `<div style="font-family:sans-serif;max-width:720px;margin:0 auto;padding:20px;color:#111">
     <h2 style="color:#7C3AED">📊 놀쿨 서치콘솔 검색분석 (${range.start} ~ ${range.end})</h2>
