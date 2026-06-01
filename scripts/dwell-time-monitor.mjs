@@ -334,6 +334,14 @@ async function sendEmail(html, subject) {
   const a = analyze(events);
   console.log(`   세션 ${a.sessionCount} / 페이지뷰 ${a.pageviewCount} / unique 깊이 ${a.avgUniqueDepth} / Bounce ${a.bounceRate}%`);
 
+  // 표본이 너무 작으면(저트래픽) dwell/bounce가 통계적으로 무의미 → 메일 스킵.
+  // (예: 18세션 bounce 72%는 신뢰 불가. 진짜 트래픽 쌓이면 알림 재개)
+  const MIN_SESSIONS = 50;
+  if (a.sessionCount < MIN_SESSIONS) {
+    console.log(`   세션 ${a.sessionCount} < ${MIN_SESSIONS} — 표본 부족, 메일 스킵`);
+    return;
+  }
+
   // 시즌65 — 카테고리별 미달 + 세션 10분 미달이면 제목에 ⚠
   const cs = a.categoryStats;
   const venueBelow = cs.venue_detail.belowTarget;

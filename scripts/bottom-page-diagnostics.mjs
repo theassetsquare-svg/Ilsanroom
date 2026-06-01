@@ -126,6 +126,11 @@ async function main() {
   console.log(`   ${events.length}건`);
   if (events.length === 0) { console.log('데이터 없음'); return; }
 
+  // 표본 부족(저트래픽) 시 dwell 랭킹이 무의미 → 메일 스킵 (dwell-time-monitor와 동일 기준)
+  const MIN_SESSIONS = 50;
+  const sessionN = new Set(events.map(e => e.session_id)).size;
+  if (sessionN < MIN_SESSIONS) { console.log(`   세션 ${sessionN} < ${MIN_SESSIONS} — 표본 부족, 메일 스킵`); return; }
+
   const bottom = dwellRanking(events);
   if (bottom.length === 0) { console.log('Bottom 페이지 없음'); return; }
 

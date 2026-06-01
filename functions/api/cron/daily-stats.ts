@@ -91,7 +91,9 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       `<tr><td>${i + 1}</td><td>${u.nickname || '(없음)'}</td><td>${u.points || 0}P</td><td>${u.level}</td></tr>`
     ).join('');
 
-    await sendAdminEmail(context.env, `[놀쿨] 일일 리포트 — ${kstDate}`,
+    // 활동이 있을 때만 리포트 메일 발송 — 0/0/0 빈 리포트 노이즈 제거 (통계 행은 위에서 항상 저장)
+    const hasActivity = (newUsers + newPosts + newReviews) > 0;
+    if (hasActivity) await sendAdminEmail(context.env, `[놀쿨] 일일 리포트 — ${kstDate}`,
       `<div style="font-family:sans-serif;max-width:600px;margin:0 auto">
         <h2 style="color:#8B5CF6">놀쿨 일일 리포트</h2>
         <p style="color:#666">${kstDate} 기준</p>
