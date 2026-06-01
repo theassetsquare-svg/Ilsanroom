@@ -241,16 +241,23 @@ async function main() {
 
   const hasProblem = crit.length || warn.length || pending.length;
   if (hasProblem) {
+    // 색인 대기/리치결과는 정상·구글측 상태라 자동 처리만 하고 메일은 보내지 않음.
+    // (sitemap 재제출 + 강제 재크롤로 자동 해소 유도)
     await resubmitSitemap(token);
     if (doRequestIndexing) {
       await requestIndexing(token, [...crit, ...warn, ...pending].map(x => x.url).slice(0, 100));
     }
+  }
+
+  // ★ 메일은 🔴 CRITICAL(실제 코드 버그)일 때만 — PENDING/WARN 매 run 메일 스팸 제거
+  // (season66 "실패시만 메일" 정책: 색인대기 139건은 정상 steady-state, 버그 아님)
+  if (crit.length) {
     await sendMail(
-      `[놀쿨][🔍] 서치콘솔 문제 ${crit.length}🔴 ${warn.length}🟡 ${pending.length}🟦`,
+      `[놀쿨][🔴] 서치콘솔 코드 수정 필요 ${crit.length}건`,
       reportHtml(crit, warn, pending, okCount, skip),
     );
   } else {
-    console.log('✅ 문제 0건 — 메일 생략 (정상)');
+    console.log(`✅ CRITICAL 0건 — 메일 생략 (WARN ${warn.length}/PENDING ${pending.length}는 자동 처리, 정상)`);
   }
 
   // CRITICAL은 사이트 코드 버그 신호 → 워크플로 빨간불로 눈에 띄게
