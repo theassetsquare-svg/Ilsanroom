@@ -1,0 +1,19 @@
+name: Region Cross Title Watch (지역×업종 교차 후킹 title 24h)
+
+on:
+  schedule:
+    # 매일 KST 09:05 (UTC 00:05) — sinlim 08:55 직후, cannibalization 09:10 직전
+    - cron: '5 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run region-cross-title-watch
+        run: node scripts/region-cross-title-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
