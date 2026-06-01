@@ -256,7 +256,7 @@ function renderPage({ title, description, canonical, ogImage, ogImageAlt, ssrBod
   return html;
 }
 
-const noIndexPathsSet = new Set(['/login', '/profile', '/dashboard', '/analytics', '/billing', '/onboarding', '/launch', '/admin', '/admin/venues', '/admin/magazine', '/admin/media', '/admin/seo', '/admin/blocks', '/admin/moderation', '/admin/stats', '/admin/visitors', '/admin/audit', '/my/customize']);
+const noIndexPathsSet = new Set(['/login', '/profile', '/dashboard', '/analytics', '/billing', '/onboarding', '/launch', '/admin', '/admin/venues', '/admin/magazine', '/admin/media', '/admin/seo', '/admin/blocks', '/admin/moderation', '/admin/stats', '/admin/visitors', '/admin/audit', '/my/customize', '/search']);
 
 // 시즌21 — SSR 내부링크: JS 미실행 봇(Yeti/Daum)도 anchor depth 1로 카테고리 도달
 function venueHref(v) {
