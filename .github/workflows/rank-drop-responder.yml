@@ -1,0 +1,23 @@
+name: Rank Drop Responder (순위 하락 자동 대응)
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 매주 월요일 KST 09:45 (UTC 00:45) — venue-rank-trend(09:30) 15분 뒤
+    - cron: '45 0 * * 1'
+
+jobs:
+  respond:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 하락 가게 탐지 + 온페이지 진단 + 타깃 재크롤
+        run: node scripts/rank-drop-responder.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          GOOGLE_OAUTH_CLIENT_ID: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
+          GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
