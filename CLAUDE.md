@@ -11,7 +11,7 @@
    - 5축: 숫자/구체화 · 질문/대화 · FOMO/부정 · 1인칭/구어체 · 구체적 디테일
    - 어떤 단어든 5축 중 1축이라도 자극하면 통과 (무제한 표현 커버)
 4. **5축 차별화 필수** — (시그니처·시점·감정·페르소나·후킹형태) 중 최소 2축 venue 고유성
-5. **본문 ≥3000자, H2 ≥5개** — 체류 10분 보장 (dwell-content-audit)
+5. **본문 고유성 > 패딩 분량** — venue 상세 ≥1700자(detail)/≥2000자(listing), H2 ≥5개. ★3000자 패딩 폐기: 3000자 채우려 가게별 templated 보일러플레이트를 넣으면 그게 구조 지문(scaled-content-abuse)이 된다. 가게별 100% 고유 데이터로만 본문 구성 → 5-gram Jaccard <10% 필수. SSR 본문은 크롤러 프록시(숨김 div), 실제 체류는 React 본문이 만든다 (dwell-content-audit)
 6. **자동 검증** — 매일 KST 07:35 title-uniqueness, 07:40 dwell-content (실패시만 메일)
 7. **신규 venue/title 변경 시** — 푸시 전 `node scripts/title-uniqueness-audit.mjs` 통과 필수
 8. **공통 모듈** — 모든 watch는 `scripts/lib/hook-detector.mjs` import (단어 사전 사용 금지)

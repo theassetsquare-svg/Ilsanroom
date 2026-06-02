@@ -3,7 +3,7 @@
  * 매일 KST 07:40 — sitemap 전체 페이지 본문 글자 수 측정.
  *
  * 회귀 사유:
- *  - 본문 3000자 미만 (10분 읽기 분량 X) 페이지 알림
+ *  - 본문 미달 (detail<1700 / listing<2000자) 페이지 알림
  *  - H2 5개 미만 페이지 알림
  *
  * 환경:
@@ -16,9 +16,13 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const SITEMAP = 'https://nolcool.com/sitemap.xml';
 // 시즌159 — page-type별 임계값 정밀화
-//  venue/magazine 상세 = 3000자 (실제 체류 10분 대상)
-//  listing(tag/region/near/best/new) = 2000자 (인덱스/큐레이션)
-const MIN_CHARS_DETAIL = 3000;
+//  venue/magazine 상세 = 1700자 / listing = 2000자
+// ★ 구조 지문(structural fingerprint) 정합 (2026-06): venue 상세 floor를 3000→1700으로 내림.
+//   사유: Google 2026 scaled-content-abuse 집행은 "분량"이 아니라 "프로그래매틱 복붙(구조 지문)"을 본다.
+//   3000자를 채우려면 가게별 templated 보일러플레이트가 필요 → 그게 바로 48% Jaccard 지문의 원인이었다.
+//   가게별 100% 고유 데이터(description/liquorInfo/roomInfo/features)만으로 본문을 짜니 1850~2800자.
+//   고유성(<10% Jaccard) > 패딩 분량. SSR 본문은 크롤러 프록시(숨김 div)라 실제 체류는 React 본문이 만든다.
+const MIN_CHARS_DETAIL = 1700;
 const MIN_CHARS_LISTING = 2000;
 const MIN_H2 = 5;
 const MAX_PAGES = 200;
@@ -111,8 +115,8 @@ async function sendMail({ issues, under, lowH2, total }) {
   ).join('');
   const html = `<div style="font-family:sans-serif;max-width:780px;margin:0 auto;padding:20px">
     <h2 style="color:#DC2626">[⚠ 체류 10분 콘텐츠 회귀]</h2>
-    <p style="color:#666;font-size:13px">측정: ${kst} · 총 ${total} URL · 본문 3000자↓ ${under.length}개 · H2 5↓ ${lowH2.length}개</p>
-    <h3>본문 3000자 미만 (보강 큐 상위 ${Math.min(20, under.length)}개)</h3>
+    <p style="color:#666;font-size:13px">측정: ${kst} · 총 ${total} URL · 본문 미달(detail<${MIN_CHARS_DETAIL}/listing<${MIN_CHARS_LISTING}) ${under.length}개 · H2 5↓ ${lowH2.length}개</p>
+    <h3>본문 미달 (보강 큐 상위 ${Math.min(20, under.length)}개)</h3>
     <table style="border-collapse:collapse;width:100%;font-size:12px">
       <tr><th style="border:1px solid #E5E7EB;padding:4px">URL</th><th style="border:1px solid #E5E7EB;padding:4px">글자수/기준</th><th style="border:1px solid #E5E7EB;padding:4px">타입</th><th style="border:1px solid #E5E7EB;padding:4px">H2</th></tr>${underRows}
     </table>

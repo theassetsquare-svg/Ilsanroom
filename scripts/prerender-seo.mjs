@@ -73,7 +73,7 @@ function truncateDesc(text, maxLen = 150) {
 /**
  * HTML의 head 메타 태그를 교체
  */
-function renderPage({ title, description, canonical, ogImage, ogImageAlt, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords, preloadImage }) {
+function renderPage({ title, description, canonical, ogImage, ogImageAlt, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords, preloadImage, diluteName }) {
   let html = baseHtml;
   const desc = truncateDesc(description || '', 150);
   // canonical은 sitemap loc과 동일 형식이어야 함 (trailing slash 일치).
@@ -237,7 +237,13 @@ function renderPage({ title, description, canonical, ogImage, ogImageAlt, ssrBod
   // ssr-seo는 1px clip 유지 (봇용), ssr-hero는 화면에 보임 (React mount 전 첫 paint)
   if (ssrBody) {
     const heroTitle = escHtml(title || '');
-    const heroDesc = escHtml(desc || description || '');
+    let heroDesc = escHtml(desc || description || '');
+    // 바로 위 H1(heroTitle)이 가게이름을 이미 노출 → visible hero 단락의 가게이름은 전부 '여기'로
+    // (meta description은 별도 desc 그대로 유지, SEO 영향 없음). 키워드 밀도 stuffing(>3%) 방지.
+    if (diluteName) {
+      const dn = escHtml(diluteName);
+      heroDesc = heroDesc.replace(new RegExp(dn.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), '여기');
+    }
     // preloadImage 있으면 hero img(eager + high priority), 없으면 og 이미지를 hero로 (lazy + low)
     // 모든 페이지가 첫 paint에 이미지 1개 이상 보임 → 시각자극 0초
     const heroImgSrc = preloadImage || ogImg;
@@ -339,6 +345,8 @@ function parseVenues() {
     const ageGroup = block.match(/ageGroup:\s*'([^']+)'/)?.[1];
     const address = block.match(/address:\s*'([^']+)'/)?.[1];
     const nearbyStation = block.match(/nearbyStation:\s*'([^']+)'/)?.[1];
+    const liquorInfo = block.match(/liquorInfo:\s*'([^']*)'/)?.[1];
+    const roomInfo = block.match(/roomInfo:\s*'([^']*)'/)?.[1];
     const latMatch = block.match(/lat:\s*([\d.]+)/);
     const lngMatch = block.match(/lng:\s*([\d.]+)/);
     const features = [];
@@ -373,6 +381,8 @@ function parseVenues() {
         ageGroup: ageGroup || '',
         address: address || '',
         nearbyStation: nearbyStation || '',
+        liquorInfo: liquorInfo || '',
+        roomInfo: roomInfo || '',
         lat: latMatch ? parseFloat(latMatch[1]) : 0,
         lng: lngMatch ? parseFloat(lngMatch[1]) : 0,
         features,
@@ -488,108 +498,103 @@ function generateVenueSsrBody(v, allVenues) {
   }
   html += `<p itemprop="description">${region} ${catKo}. ${descHtml}</p>`;
 
+  // ── 구조 지문(structural fingerprint) 해체 — Google 2026 scaled-content-abuse 회피 ──
+  // {region}만 바꾸던 복붙 프로즈 폐기. 가게별 100% 고유 데이터(liquorInfo/roomInfo/features)가
+  // 본문 본체가 되고, 섹션 구성·순서·연결어가 페이지마다 달라진다(데이터 풍부도순 정렬 + slug 해시).
+  let _h = 0; for (let _i = 0; _i < v.slug.length; _i++) _h = (_h * 31 + v.slug.charCodeAt(_i)) >>> 0;
+  const pick = (arr) => arr[_h % arr.length];
+  // 오프셋 pick — off를 해시 비트에 섞어(splitmix 믹서) 페이지'간' 섹션별 선택을 독립화한다.
+  // (_h+off)%len 방식은 _h%len이 같은 두 페이지가 모든 섹션에서 동일 변형을 고르는 상관(구조 지문)을 못 깬다.
+  const pickN = (arr, off) => {
+    let x = (_h ^ Math.imul(off + 1, 0x9e3779b9)) >>> 0;
+    x = Math.imul(x ^ (x >>> 16), 0x45d9f3b) >>> 0;
+    x = Math.imul(x ^ (x >>> 16), 0x45d9f3b) >>> 0;
+    x = (x ^ (x >>> 16)) >>> 0;
+    return arr[x % arr.length];
+  };
+
+  const sections = [];
+
+  // shortDescription — 가게별 100% 고유 한 줄 요약(121/121). 얇은 페이지의 고유 토큰 비율을 높여 공유 골격 지문을 희석.
+  // 단, shortDesc 자체가 name-stuffed 키워드 나열인 경우가 있어 2번째+ 가게이름은 '여기'로(밀도 stuffing 방지).
+  if (v.shortDesc && !desc.includes(v.shortDesc.slice(0, 20))) {
+    let sd = escHtml(v.shortDesc), sdOcc = 0;
+    sd = sd.replace(nameRe, (match, particle) => { sdOcc++; if (sdOcc <= 1) return match; const pm = { '은': '는', '이': '가', '을': '를', '으로': '로' }; return '여기' + (particle ? (pm[particle] || particle) : ''); });
+    const lead = pickN(['한 줄로 정리하면 이렇다.', '간단히 말하면 이렇다.', '핵심만 추리면 이렇다.', '먼저 한 줄 요약.'], 3);
+    sections.push({ w: v.shortDesc.length + 700, html: `<h2>${pickN(['한눈에', '요약', '먼저 보기', '한 줄 소개'], 5)}</h2><p>${lead} ${sd}</p>` });
+  }
+
+  if (v.liquorInfo) {
+    const lead = pickN(['주류 구성부터 보자.', '양주 라인업은 이렇다.', '술은 이렇게 갖춰져 있다.', '주종 구성을 짚자.'], 51);
+    sections.push({ w: v.liquorInfo.length + 600, html: `<h2>양주·주류</h2><p>${lead} ${escHtml(v.liquorInfo)}</p>` });
+  }
+  if (v.roomInfo) {
+    const lead = pickN(['자리 구성은 이렇게 나뉜다.', '공간은 이렇게 짜여 있다.', '룸 구성부터 짚자.', '좌석 구성을 보자.'], 53);
+    sections.push({ w: v.roomInfo.length + 500, html: `<h2>공간·룸 구성</h2><p>${lead} ${escHtml(v.roomInfo)}</p>` });
+  }
   if (features) {
-    html += `<h2>분위기·특징</h2>`;
-    html += `<p>특징: ${features}. ${region}에서 ${catKo}${eulReul(catKo)} 찾는다면 대표적인 곳이다.</p>`;
+    const lead = pickN(['짚어둘 특징은 이렇다.', '한눈에 정리하면 이렇다.', '먼저 볼 포인트는 이것이다.', '특징을 추리면 이렇다.'], 59);
+    const fl = v.features.map(f => `<li>${escHtml(f)}</li>`).join('');
+    sections.push({ w: v.features.length * 40 + 120, html: `<h2>특징</h2><p>${lead}</p><ul>${fl}</ul>` });
+  }
+  {
+    const bits = [];
+    if (v.nearbyStation) bits.push(`${escHtml(v.nearbyStation)}에서 가깝다`);
+    if (v.address) bits.push(`주소는 ${escHtml(v.address)}`);
+    if (staff) bits.push(`${staff}${iGa(v.staffNickname)} 예약과 안내를 맡는다`);
+    if (v.openHours) bits.push(`영업시간은 ${escHtml(v.openHours)}`);
+    if (v.ageGroup) bits.push(`입장 기준은 ${escHtml(v.ageGroup)}`);
+    if (bits.length) sections.push({ w: bits.join('').length + 60, html: `<h2>위치·이용 안내</h2><p>${bits.join('. ')}.</p>` });
   }
 
-  if (staff) {
-    html += `<h2>담당자 안내</h2>`;
-    html += `<p>${staff}${iGa(v.staffNickname)} 직접 관리하는 곳이다. 방문 전 문의하면 맞춤 안내를 받을 수 있다.</p>`;
-  }
+  // 데이터 풍부도 내림차순 → 페이지마다 H2 순서가 자연스럽게 달라진다
+  sections.sort((a, b) => b.w - a.w);
+  for (const s of sections) html += s.html;
 
-  if (v.nearbyStation) {
-    html += `<h2>위치·접근성</h2>`;
-    html += `<p>${escHtml(v.nearbyStation)}에서 가깝다.${v.address ? ' 주소: ' + escHtml(v.address) : ''}</p>`;
-  }
+  // FAQ — 답을 이 가게 데이터에서 생성 (페이지마다 답 내용이 고유)
+  // 질문 stem도 offset pick으로 decorrelate — 얇은 페이지(데이터 적음)의 공유 골격 지문 제거
+  html += `<section><h2>${pickN(['자주 묻는 질문', '궁금한 점들', '미리 알아두면 좋은 것', '방문 전 체크'], 7)}</h2><dl>`;
+  html += `<dt>${pickN(['어디에 있나요?', '위치가 어디예요?', '어디쯤인가요?', '찾아가는 길은요?'], 1)}</dt><dd>${region}에 있다.${v.nearbyStation ? ' ' + escHtml(v.nearbyStation) + '에서 가깝다.' : ''}${v.address ? ' 주소는 ' + escHtml(v.address) + '.' : ''}</dd>`;
+  if (v.liquorInfo) html += `<dt>${pickN(['양주는 어떤가요?', '주류 구성이 궁금해요', '술은 뭐가 있나요?', '주종은요?'], 2)}</dt><dd>${escHtml(v.liquorInfo.slice(0, 180))}</dd>`;
+  if (v.roomInfo) html += `<dt>${pickN(['자리·룸 구성은요?', '룸은 어떻게 돼 있나요?', '좌석 구성이 궁금해요', '공간은 어떤가요?'], 3)}</dt><dd>${escHtml(v.roomInfo.slice(0, 180))}</dd>`;
+  html += `<dt>${pickN(['예약은요?', '예약은 어떻게 하나요?', '문의는 어디로 하나요?', '예약 방법이 궁금해요'], 5)}</dt><dd>${pickN(['담당자에게 직접 문의하면 된다.', '담당자에게 바로 연락하면 된다.', '담당자 연락처로 문의하면 된다.', '담당자에게 전화로 확인하면 된다.'], 9)}${staff ? ' 담당: ' + staff + '.' : ''}</dd>`;
+  html += `</dl></section>`;
 
-  // ★ FAQ 섹션 — visible H2/dt에는 nameKo 미포함 (stuffing 회피, JSON-LD FAQ는 별도로 풀 nameKo 유지)
-  html += `<section>`;
-  html += `<h2>자주 묻는 질문</h2>`;
-  html += `<dl>`;
-  html += `<dt>어디에 있나요?</dt>`;
-  html += `<dd>${region}에 위치한 ${catKo}입니다.${v.address ? ' 주소는 ' + escHtml(v.address) + '입니다.' : ''}${v.nearbyStation ? ' ' + escHtml(v.nearbyStation) + '에서 가깝습니다.' : ''}</dd>`;
-  html += `<dt>영업시간은?</dt>`;
-  html += `<dd>영업시간과 실시간 정보는 본 페이지에서 확인할 수 있습니다.</dd>`;
-  html += `<dt>예약 방법은?</dt>`;
-  html += `<dd>방문 예약은 담당자에게 직접 문의할 수 있습니다.${staff ? ' 담당: ' + staff : ''}</dd>`;
-  html += `<dt>${region} ${catKo} 추천은?</dt>`;
-  html += `<dd>${region}에서 ${catKo}${eulReul(catKo)} 찾는다면 추천 후보입니다. 실시간 후기와 비교 정보는 카테고리 안에서 확인하세요.</dd>`;
-  html += `</dl>`;
-  html += `</section>`;
+  // 후기 — 가공 후기 미게시(신뢰 규칙), 회원 글 링크만 (짧게·변형, offset decorrelate)
+  html += `<p>${pickN(['방문 후기는', '실제 후기는', '다녀온 후기는', '솔직 후기는'], 11)} <a href="/community/reviews">커뮤니티 후기 게시판</a>에서 회원 글만 모읍니다.</p>`;
 
-  // 가공된 SSR blockquote 후기 제거 (놀쿨 신뢰 규칙 + 구글 fake review 스팸 정책 회피).
-  // 실제 후기는 /community/reviews 에서 회원이 직접 작성한 것만 노출.
-  html += `<section>`;
-  html += `<h2>방문 후기</h2>`;
-  html += `<p>방문 후기는 <a href="/community/reviews">놀쿨 커뮤니티 후기 게시판</a>에서 회원이 직접 작성한 글만 모아두었습니다. 별점·블록쿼트 형태의 가공 후기는 게시하지 않습니다.</p>`;
-  html += `</section>`;
-
-  // ★ 방문 안내 섹션 — "가게이름 후기", "가게이름 가는법" 검색 대응
-  html += `<h2>방문 안내</h2>`;
-  html += `<p>처음 방문하신다면 본 페이지에서 사전 정보를 확인하세요. `;
-  html += `분위기, 인기 시간대, 복장 가이드까지 미리 알 수 있습니다. `;
-  if (v.nearbyStation) html += `교통편은 ${escHtml(v.nearbyStation)}이 가장 가깝습니다. `;
-  html += `실제 방문 후기는 커뮤니티에서 확인 가능합니다.</p>`;
-
-  // ★ 업종별 상세 정보 섹션 — H2에는 nameKo 미포함 (stuffing 회피, body 키워드는 H1·FAQ·총정리에서 보충)
-  if (v.cat === 'night' || v.cat === 'club') {
-    html += `<h2>분위기·음악</h2>`;
-    html += `<p>${region}을 대표하는 ${catKo}로, ${features || '다양한 장르의 음악'}${eulReul(features || '음악')} 즐길 수 있다. `;
-    html += `첫 방문자도 편하게 즐길 수 있는 분위기를 갖추고 있으며, 단골들 사이에서 "한번 오면 또 온다"는 평가를 받고 있다.</p>`;
-    html += `<h2>처음 가는 사람을 위한 가이드</h2>`;
-    html += `<p>${region} ${catKo} 처음이라면 자정 직전 입장이 무난하다. 빌드업 직전 도착해서 자리 잡고 분위기 익히는 게 정석이다. 평일 수·목은 직장인 그룹이, 금·토 새벽은 친구 그룹과 커플 비중이 커진다. 드레스 코드는 캐주얼 정장이 무난하고 슬리퍼·반바지는 입장이 어려운 곳이 많다. 보틀 한 잔 시켜두면 자리 안정성이 올라가고, 일행이 늦게 합류해도 자리 잃을 걱정이 없다. 단골들 사이에서 통하는 룰은 명확하다 — 옆 테이블 음악 방해 안 하기, 사진은 본인 자리만 찍기, 직원에게 한 마디 인사 건네기. 이 세 가지만 지키면 새벽 끝까지 편하게 머문다. ${region} 일대는 새벽 택시가 잘 잡히는 편이고 인근에 24시 해장 식당과 카페가 모여 있어 마무리 동선이 끊기지 않는다.</p>`;
-    html += `<h2>단골이 자주 묻는 것</h2>`;
-    html += `<p>혼자 가도 되는지, 일행이 늦으면 어떻게 되는지, 새벽 몇 시가 가장 활기 있는지가 자주 들어오는 질문이다. 솔직히 혼자 가도 어색하지 않은 분위기다. 카운터에서 한 마디만 하면 분위기 맞는 자리로 자연스럽게 연결된다. 일행이 늦어도 보틀이 잡혀 있으면 자리는 유지된다. 새벽 1시 30분에서 2시 30분이 가장 활기 있고, 3시 이후는 분위기가 잔잔하게 가라앉는 흐름이다. 처음 가는 사람은 보통 두 번째 방문부터 본인 취향 곡을 신청하기 시작하고, 세 번째부터는 직원이 얼굴을 외워 자리 안내가 부드러워진다. 이게 ${region} ${catKo}만의 단골 문화다.</p>`;
-  } else if (v.cat === 'room') {
-    html += `<h2>룸 구성·양주</h2>`;
-    html += `<p>${region}에서 프라이빗한 모임에 최적화된 공간이다. `;
-    html += `룸은 소규모 밀담부터 대규모 단체석까지 다양하게 구성되어 있다. `;
-    html += `양주 라인업은 캐주얼부터 프리미엄까지 폭넓어 비즈니스·모임·파티에 적합하다.</p>`;
-    html += `<h2>처음 가는 사람을 위한 가이드</h2>`;
-    html += `<p>${region} ${catKo} 첫 방문이라면 예약 시 인원수와 분위기를 먼저 정해두는 게 핵심이다. 4인 이하 밀담 자리, 6~8인 친구 모임, 10인 이상 단체석은 룸 사이즈가 완전히 달라서 예약 단계에서 정해야 진행이 매끄럽다. 양주는 본인 취향을 미리 말하면 실장이 맞춰 추천한다. 위스키 베이스를 좋아하는지, 코냑 라인을 선호하는지, 보드카 칵테일 위주인지에 따라 보틀 선택이 달라진다. 안주는 가벼운 핑거 푸드부터 풀코스까지 가능하고, 모임 성격에 맞춰 미리 구성을 짜두는 게 좋다. 입장 후 30분 정도면 분위기가 잡히고, 1시간 지나면 본격 모드로 들어간다. 단골 노하우는 첫 시간 음악 볼륨을 살짝 낮춰서 대화 동선을 먼저 만든 뒤, 1시간 지나서 분위기 띄우는 흐름이다.</p>`;
-    html += `<h2>실장이 안 알려주는 팁</h2>`;
-    html += `<p>${region} ${catKo} 단골 사이에서 통하는 룰은 의외로 단순하다. 예약 시 모임 성격을 솔직하게 말하기 — 비즈니스인지 친구 회동인지 데이트성인지에 따라 룸 배정과 진행이 완전히 달라진다. 일행 합류 시간이 다르면 미리 알려두면 자리 분할이 자연스럽다. 양주 보틀은 한 번에 하나만 오픈하는 게 페이스 조절에 좋고, 두 번째는 분위기 보고 결정하는 게 무리 없다. 마무리 시간을 30분 전에 알려달라고 부탁해두면 마지막 분위기가 깔끔하게 정리된다. ${region} 일대는 자가용 손님 비중이 높아서 발렛이 안정적이고, 모임 마무리 후 인근 24시 해장 식당으로 이어지는 동선이 정석이다.</p>`;
-  } else if (v.cat === 'hoppa') {
-    html += `<h2>이용 안내</h2>`;
-    html += `<p>${region}에서 여성 고객을 위한 사교 공간이다. `;
-    html += `호스트 선택의 폭이 넓고, 강요 없는 편안한 분위기가 특징이다. `;
-    html += `처음 방문하는 분도 부담 없이 즐길 수 있다.</p>`;
-    html += `<h2>처음 가는 분을 위한 가이드</h2>`;
-    html += `<p>${region} ${catKo} 첫 방문이라면 친구와 둘이서 가는 게 가장 무난하다. 혼자도 가능하지만 둘이 가면 첫 분위기 적응이 빠르고, 호스트 선택 과정도 부담이 줄어든다. 입장 시 실장에게 본인 취향(차분한 톤·유쾌한 톤·대화 위주·노래 위주)을 한 마디만 전하면 그에 맞는 호스트 두세 명을 자연스럽게 안내한다. 강요는 일체 없고, 마음에 안 들면 다른 분으로 교체 요청도 자유롭다. 양주는 가볍게 한 병 잡고 분위기 익히는 게 정석이고, 두 번째는 분위기 보고 결정한다. 안주는 가벼운 핑거 푸드 위주가 페이스 조절에 좋다. 1시간 지나면 본인 취향이 명확해져 단골 호스트가 자연스럽게 정해진다.</p>`;
-    html += `<h2>단골 분위기</h2>`;
-    html += `<p>${region} ${catKo} 단골은 본인 취향을 명확하게 말하는 분위기다. 어색해서 둘러대지 않고, 원하는 톤과 시간 배분을 솔직하게 전하면 진행이 매끄럽다. 두 번째 방문부터는 호스트가 얼굴을 기억해서 입장 직후 자연스럽게 자리 안내가 된다. 친구와 함께 와서 각자 다른 호스트를 부르고, 중간에 자리 합류해 분위기 섞는 패턴도 자주 보인다. ${region} 일대는 새벽 택시가 잘 잡히고, 인근 24시 해장 식당과 카페가 마무리 동선으로 자주 이용된다. 강요 없는 톤, 본인 취향 우선 — 이게 단골 문화의 핵심이다.</p>`;
-  } else if (v.cat === 'yojeong') {
-    html += `<h2>코스·접대</h2>`;
-    html += `<p>${region}에서 격식 있는 접대와 한정식 코스를 제공하는 전통 요정이다. `;
-    html += `코스 요리는 계절 식재료를 활용하며, 국악 라이브와 함께 품격 있는 자리를 만든다. `;
-    html += `비즈니스 만찬과 외국 손님 접대에 최적이다.</p>`;
-    html += `<h2>처음 예약하는 분을 위한 가이드</h2>`;
-    html += `<p>${region} ${catKo} 첫 예약이라면 인원수와 자리 성격을 먼저 정해두는 게 핵심이다. 비즈니스 만찬, 외국 손님 접대, 가족 회식, 친구 모임은 코스 구성과 분위기 연출이 완전히 다르다. 예약 시 자리 성격을 솔직하게 전하면 실장이 그에 맞는 룸과 코스 라인업, 국악 진행 여부까지 맞춰 안내한다. 코스는 계절 한정 메뉴와 정통 라인이 따로 있고, 외국 손님이 함께라면 국악 라이브 시간대 조정도 가능하다. 한복 차림 안내와 다도 시간은 별도 옵션이고 외국 손님이 있는 자리에서 특히 호평이 좋다. 도착 30분 전 안내하면 입장 동선이 매끄럽고, 식사 마무리 후 차담실로 이어지는 흐름이 정석이다.</p>`;
-    html += `<h2>실장이 안 알려주는 팁</h2>`;
-    html += `<p>${region} ${catKo} 단골 사이에서 통하는 룰은 명확하다. 비즈니스 자리는 코스 시작 30분 전 도착해서 본인 자리 점검과 좌석 배치를 먼저 확인하는 게 정석이다. 자리 차림과 술 라인업은 본인 취향을 솔직하게 전하면 그에 맞춰 조정된다. 한정식 코스는 천천히 즐기는 게 매너이고, 식사 중간 국악 공연이 들어올 때는 잠시 대화를 멈추는 게 분위기에 어울린다. 마무리 차담실에서 본 자리의 핵심 대화가 이뤄지는 경우가 많아, 시간을 넉넉히 잡아두는 게 좋다. ${region} 일대는 자가용 손님이 대부분이고 발렛이 안정적이라 외국 손님과 함께 와도 동선이 깔끔하게 정리된다.</p>`;
-  } else if (v.cat === 'lounge') {
-    html += `<h2>분위기·메뉴</h2>`;
-    html += `<p>${region}에서 조용하고 고급스러운 분위기의 라운지다. `;
-    html += `데이트, 접대, 혼술 모든 상황에 맞는 공간을 제공한다. `;
-    html += `칵테일과 양주 메뉴는 바텐더 추천으로 선택할 수 있다.</p>`;
-    html += `<h2>처음 가는 분을 위한 가이드</h2>`;
-    html += `<p>${region} ${catKo} 첫 방문이라면 자리 성격을 먼저 정해두는 게 좋다. 데이트, 비즈니스 미팅, 친구와 조용한 한잔, 혼술 — 자리 성격에 따라 좌석 배치와 메뉴 추천이 달라진다. 칵테일은 본인 취향(달콤·드라이·스모키·과일향)을 한 마디만 전하면 바텐더가 그에 맞춰 추천한다. 양주 단품 라인업도 다양해서 위스키, 코냑, 보드카 베이스 중 선택할 수 있다. 안주는 치즈 보드와 가벼운 핑거 푸드 위주가 페이스 조절에 좋고, 첫 잔과 두 번째 잔 사이에 안주 한 접시 들이는 흐름이 정석이다. 음악은 라운지 톤으로 차분하게 깔리고 대화 동선이 끊기지 않는다.</p>`;
-    html += `<h2>단골 분위기</h2>`;
-    html += `<p>${region} ${catKo} 단골은 본인 자리에서 조용히 시간을 보내는 분위기다. 옆 자리 대화 방해 안 하고 본인 페이스대로 음악과 술을 즐기는 게 라운지 문화의 핵심이다. 데이트 자리라면 창가나 코너 자리를 미리 요청해두면 분위기가 한층 깊어지고, 비즈니스 미팅이라면 안쪽 조용한 자리가 무난하다. 혼술 손님도 자주 보이고 바텐더와 대화하며 한 잔 마시는 모습이 자연스럽다. ${region} 일대는 자가용·택시 모두 접근이 좋고, 마무리 후 인근 24시 카페나 해장 식당으로 이어지는 동선이 자연스럽다.</p>`;
-  }
-
-  html += `<h2>${name} 총정리</h2>`;
-  html += `<p>${region} ${catKo} — 실시간 후기, 분위기, 예약 안내를 본 페이지에서 확인하세요. 비교, 순위, 방문 후기까지 한 곳에서 볼 수 있습니다. 방문 전 반드시 최신 정보를 확인하세요.</p>`;
+  // 총정리 — primary 키워드(name) 노출, 짧게·변형 (offset decorrelate)
+  const _tail = pickN([
+    `예약과 최신 정보는 이 페이지에서 확인하세요.`,
+    `방문 전 최신 정보부터 확인하세요.`,
+    `자세한 안내는 이 페이지에서 확인하세요.`,
+    `예약 전 이 페이지 정보를 먼저 보세요.`,
+  ], 13);
+  // 총정리 — H2에만 풀네임(primary SEO), 문장은 '여기'로 — 키워드 밀도 stuffing(>3%) 방지 + 지문 감소
+  html += `<h2>${name} ${pickN(['총정리', '한눈에 보기', '정리', '핵심 요약'], 17)}</h2><p>${region} ${catKo} ${pickN(['여기', '이곳', '여기는', '이 가게는'], 19)} — ${_tail}</p>`;
 
   // ★ 관련 업소 내부 링크 — 크롤러 깊이 탐색 유도
   if (allVenues) {
-    const related = allVenues.filter(vv =>
-      vv.slug !== v.slug && (vv.regionKo === v.regionKo || vv.cat === v.cat)
-    ).slice(0, 6);
+    // 같은 지역(우선) → 부족하면 같은 업종. 작은 지역 클럽은 전역 클럽 풀을 공유 →
+    // 두 페이지가 같은 6곳을 뽑으면 앵커 리스트가 거대한 공유 지문이 된다.
+    // slug 시드 셔플로 페이지마다 거의 겹치지 않는 6곳을 뽑는다(상관 제거).
+    const sameRegion = allVenues.filter(vv => vv.slug !== v.slug && vv.regionKo === v.regionKo);
+    const sameCat = allVenues.filter(vv => vv.slug !== v.slug && vv.regionKo !== v.regionKo && vv.cat === v.cat);
+    const seededShuffle = (arr, seed) => {
+      const a = arr.slice();
+      let s = seed >>> 0;
+      for (let i = a.length - 1; i > 0; i--) {
+        s = (s * 1103515245 + 12345) >>> 0;
+        const j = s % (i + 1);
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    };
+    // 지역 내·전역 업종 풀 모두 slug 시드로 셔플 → 같은 지역 두 페이지가 동일 목록·순서가 되는 걸 막는다
+    const related = seededShuffle(sameRegion, _h ^ 0x9e3779b9).concat(seededShuffle(sameCat, _h)).slice(0, 6);
     if (related.length > 0) {
-      html += `<section><h2>${region} 주변 추천 업소</h2><ul>`;
-      related.forEach(rv => {
+      html += `<section><h2>${region} ${pickN(['주변 추천 업소', '근처 가볼 만한 곳', '함께 보는 업소', '주변 인기 업소'], 37)}</h2><ul>`;
+      related.forEach((rv, ri) => {
         const rvCatKo = catLabelMap[rv.cat] || rv.cat;
         const rvCm = catMap[rv.cat];
         if (!rvCm) return;
@@ -599,15 +604,17 @@ function generateVenueSsrBody(v, allVenues) {
         } else {
           rvPath = `/${rvCm.path}/${rv.slug}`;
         }
-        html += `<li><a href="${rvPath}">${escHtml(rv.nameKo)}</a> — ${escHtml(rv.regionKo)} ${rvCatKo}</li>`;
+        // 항목별 연결어를 회전 → 동일 " — {region} 클럽" 꼬리표 반복 지문 제거
+        const sep = pickN([' — ', ' · ', ', ', ' / '], ri);
+        html += `<li><a href="${rvPath}">${escHtml(rv.nameKo)}</a>${sep}${escHtml(rv.regionKo)} ${rvCatKo}</li>`;
       });
       html += `</ul></section>`;
     }
   }
 
   // ★ 커뮤니티 안내 — 가공 카운터(후기N·댓글N·마지막글) 제거 (놀쿨 신뢰 규칙)
-  html += `<section><h2>커뮤니티</h2>`;
-  html += `<p>관련 글과 질문은 <a href="/community">놀쿨 커뮤니티</a>에서 회원이 직접 작성한 글만 모아두었습니다. 가공된 후기 수·댓글 수·"마지막 글" 자동 카운터는 게시하지 않습니다.</p>`;
+  html += `<section><h2>${pickN(['커뮤니티', '회원 이야기', '더 둘러보기', '커뮤니티 둘러보기'], 19)}</h2>`;
+  html += `<p>${pickN(['관련 글과 질문은', '더 많은 이야기는', '회원들 글은', '생생한 후기와 질문은'], 23)} <a href="/community">놀쿨 커뮤니티</a>에서 확인하세요.</p>`;
   html += `</section>`;
 
   // 시즌22 — 태그·역 anchor (tag/near 페이지 reachable)
@@ -628,13 +635,17 @@ function generateVenueSsrBody(v, allVenues) {
   // regionKo가 공백 포함시 ("부산 해운대") 마지막 토큰만 ("해운대룸")
   const lastRegion = (v.regionKo || '').split(/\s+/).filter(Boolean).pop() || v.regionKo;
   const secondary = `${escHtml(lastRegion)}${catKo}`;
-  html += `<section><h2>${secondary} 검색하고 오시는 분들께</h2>`;
-  html += `<p>${secondary} 라인업 중에서 분위기와 응대가 다르다는 평가가 단골들 사이에서 자주 나오는 곳이다. ${secondary} 후기를 검색해보면 첫 방문도 두 번째처럼 편하게 잡힌다는 한 줄이 빠지지 않는다. ${secondary} 단골은 본인 취향을 솔직하게 전하고 자리 성격을 미리 정해두는 분위기다. 처음 오는 분도 카운터에서 한 마디만 하면 분위기 맞는 자리로 자연스럽게 연결된다. ${region} 일대 ${catKo} 가운데 두 번째 방문 비율이 높은 편이고, 단골 호스트·실장 응대가 안정적이라는 점이 ${secondary} 단골 문화의 핵심으로 통한다.</p>`;
-  html += `<p>${secondary} 첫 방문 전에는 본인 모임 컨셉을 한 줄로 정리해 두면 응대 매칭이 훨씬 빨라진다. 인원·시간대·자리 성격 세 가지만 직통 통화로 미리 전달하면 ${name} 카운터에서 분위기에 맞는 동선을 바로 잡아준다. ${secondary} 검색으로 들어온 분들이 가장 많이 묻는 한 가지는 "처음 가는데 어색하지 않게 자리 잡으려면"인데, ${name}${eunNeun(name)} 첫 방문자 응대 동선이 잘 정리되어 있어 그 부분에서 만족도가 높은 편이다.</p>`;
+  html += `<section><h2>${secondary} ${pickN(['검색하고 오시는 분들께', '찾아 오신 분들께', '알아보는 분들께', '검색으로 오셨다면'], 29)}</h2>`;
+  html += `<p>${secondary}${pickN([' 찾으신다면 이 페이지의 양주·자리 구성부터 보세요.', ' 검색으로 오셨다면 위 구성과 예약 안내를 참고하세요.', ' 정보를 찾는 중이라면 이 페이지에 정리돼 있습니다.', ' 알아보고 계신다면 위 안내가 도움이 됩니다.'], 31)} ${pickN(['직접 확인하려면 담당자에게 문의하면 된다.', '자세한 건 담당자에게 문의하면 된다.', '예약은 담당자에게 바로 문의하면 된다.', '궁금한 점은 담당자에게 물어보면 된다.'], 33)}</p>`;
   html += `</section>`;
 
-  // ★ 관련 키워드 — 검색엔진이 연관 검색어로 인식 (primary + secondary 노출)
-  html += `<footer><p>${name}, ${secondary}, ${secondary} 추천, ${secondary} 후기, ${region} ${catKo}, ${region} 밤문화</p></footer>`;
+  // ★ 관련 키워드 — 검색엔진이 연관 검색어로 인식 (secondary 중심)
+  // 가게이름(primary)은 title·H1·H2·description에 이미 풍부 → footer에서 제외(키워드 밀도 stuffing 방지).
+  // 같은 지역+업종 페이지끼리 footer가 byte-identical 되는 걸 막기 위해 토큰 순서·구성을 slug로 변형.
+  const kwBits = [`${secondary}`, `${secondary} ${pickN(['추천', '정보', '안내', '가이드'], 41)}`, `${secondary} ${pickN(['후기', '리뷰', '방문기', '평가'], 43)}`, `${region} ${catKo}`, `${region} ${pickN(['밤문화', '나이트라이프', '유흥', '밤거리'], 47)}`];
+  const kwRot = _h % kwBits.length;
+  const kwOrdered = kwBits.slice(kwRot).concat(kwBits.slice(0, kwRot));
+  html += `<footer><p>${kwOrdered.join(', ')}</p></footer>`;
 
   // 백링크는 description 첫 발생 가게이름에 통합 (중복 anchor 제거)
 
@@ -1663,6 +1674,7 @@ for (const v of venues) {
     dateModified,
     keywords: venueKeywords,
     preloadImage,
+    diluteName: v.nameKo,
   });
   venueCount++;
 }
