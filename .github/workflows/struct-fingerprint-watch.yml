@@ -1,0 +1,18 @@
+name: Struct Fingerprint Watch (구조 지문 라이브 감시)
+
+on:
+  schedule:
+    # 매일 KST 07:45 (UTC 22:45)
+    - cron: '45 22 * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run struct-fingerprint-live-watch
+        run: node scripts/struct-fingerprint-live-watch.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
