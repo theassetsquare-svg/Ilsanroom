@@ -108,19 +108,24 @@ async function diagnose(v) {
     const h1 = (html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || [])[1] || '';
     if (!norm(h1.replace(/<[^>]+>/g, '')).includes(norm(v.name))) issues.push('H1 에 가게이름 없음');
 
-    // JSON-LD NightClub/LocalBusiness 스키마 존재
-    if (!/"@type"\s*:\s*"(NightClub|BarOrPub|LocalBusiness|Restaurant)"/.test(html)) {
+    // 업소 JSON-LD 스키마 존재 (venue-name-seo-monitor 와 동일 타입 집합 — room=EntertainmentBusiness, hoppa=BarOrPub 포함)
+    if (!/"@type"\s*:\s*"(NightClub|Restaurant|BarOrPub|EntertainmentBusiness|LocalBusiness)"/.test(html)) {
       issues.push('업소 JSON-LD 스키마 누락');
     }
 
-    // 키워드 밀도: 가게이름 등장수 / 본문 대략 글자수 (텍스트만)
-    const text = html.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ');
-    const body = text.replace(/\s+/g, '');
-    const nameKey = norm(v.name);
-    const count = nameKey ? (body.match(new RegExp(nameKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length : 0;
-    const density = body.length > 0 ? (count * nameKey.length) / body.length * 100 : 0;
-    if (density < 1.5) issues.push(`가게이름 키워드 밀도 ${density.toFixed(2)}% (<1.5% 미달, ${count}회)`);
-    else if (density > 2.5) issues.push(`가게이름 키워드 밀도 ${density.toFixed(2)}% (>2.5% 과다, ${count}회)`);
+    // 키워드 밀도: 가게이름 등장수 / 어절수 (venue-name-seo-monitor densityPct 와 동일 산식·밴드 0.5~3.5%)
+    const bodyText = html
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ');
+    const name = v.name;
+    let count = 0;
+    for (let i = 0; name && (i = bodyText.indexOf(name, i)) !== -1; i += name.length) count++;
+    const words = bodyText.split(/\s+/).filter(Boolean).length;
+    const density = (count / Math.max(words, 1)) * 100;
+    if (density < 0.5) issues.push(`가게이름 키워드 밀도 ${density.toFixed(2)}% (<0.5% 미달, ${count}회)`);
+    else if (density > 3.5) issues.push(`가게이름 키워드 밀도 ${density.toFixed(2)}% (>3.5% 과다, ${count}회)`);
 
     return { ok: issues.length === 0, status, issues, density: density.toFixed(2) };
   } catch (e) {
