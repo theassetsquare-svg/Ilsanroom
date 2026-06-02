@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-02T17:22:51.822Z",
+  "generated_at": "2026-06-02T19:59:30.414Z",
   "window_hours": 24,
   "items": [
     {
@@ -17,17 +17,17 @@
       "views_24h": 5
     },
     {
+      "path": "/nights/gildongchancenight",
+      "title": "길동찬스나이트",
+      "category": "night",
+      "region": "길동",
+      "views_24h": 4
+    },
+    {
       "path": "/nights/ulsannewworldnight",
       "title": "울산뉴월드나이트",
       "category": "night",
       "region": "울산",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
       "views_24h": 3
     },
     {
@@ -45,10 +45,10 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/gildongchancenight",
-      "title": "길동찬스나이트",
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
       "category": "night",
-      "region": "길동",
+      "region": "대전",
       "views_24h": 2
     },
     {
@@ -87,6 +87,13 @@
       "views_24h": 2
     },
     {
+      "path": "/nights/seosanhobaknight",
+      "title": "서산호박나이트",
+      "category": "night",
+      "region": "서산",
+      "views_24h": 1
+    },
+    {
       "path": "/hoppa/busanhoppa-aura",
       "title": "부산호빠 아우라",
       "category": "hoppa",
@@ -98,13 +105,6 @@
       "title": "부천클럽 파라곤",
       "category": "club",
       "region": "부천",
-      "views_24h": 1
-    },
-    {
-      "path": "/lounges/apgujeonglounge-dm",
-      "title": "압구정라운지 디엠",
-      "category": "lounge",
-      "region": "압구정",
       "views_24h": 1
     }
   ]
