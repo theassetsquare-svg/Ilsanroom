@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/gen-image-manifest.mjs && node scripts/gen-venues-counts.mjs && vite build && node scripts/prerender-seo.mjs && node scripts/nolcool-dist-audit.mjs && node scripts/nolcool-cross-dup-audit.mjs && node scripts/nolcool-route-sitemap-audit.mjs",
+    "build": "node scripts/gen-image-manifest.mjs && node scripts/gen-venues-counts.mjs && vite build && node scripts/prerender-seo.mjs && node scripts/nolcool-dist-audit.mjs && node scripts/nolcool-cross-dup-audit.mjs && node scripts/nolcool-route-sitemap-audit.mjs && node scripts/struct-fingerprint-audit.mjs",
     "build:no-audit": "node scripts/gen-image-manifest.mjs && node scripts/gen-venues-counts.mjs && vite build && node scripts/prerender-seo.mjs",
     "preview": "vite preview",
     "audit:src": "node scripts/nolcool-guard-bulk.mjs",
@@ -25,7 +25,8 @@
     "audit:overlap": "node scripts/mobile-fixed-overlap-watch.mjs",
     "audit:dupcard": "node scripts/dup-card-live-watch.mjs",
     "audit:venue-density": "node scripts/venue-density-audit.mjs",
-    "audit:all": "npm run audit:src && npm run audit:dist && npm run audit:dup && npm run audit:routes && npm run audit:drift && npm run audit:cron && npm run audit:titlefirst && npm run audit:hook && npm run audit:tone"
+    "audit:fingerprint": "node scripts/struct-fingerprint-audit.mjs",
+    "audit:all": "npm run audit:src && npm run audit:dist && npm run audit:dup && npm run audit:routes && npm run audit:drift && npm run audit:cron && npm run audit:titlefirst && npm run audit:hook && npm run audit:tone && npm run audit:fingerprint"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.99.3",

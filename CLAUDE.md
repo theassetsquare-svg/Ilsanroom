@@ -13,7 +13,7 @@
 4. **5축 차별화 필수** — (시그니처·시점·감정·페르소나·후킹형태) 중 최소 2축 venue 고유성
 5. **본문 고유성 > 패딩 분량** — venue 상세 ≥1700자(detail)/≥2000자(listing), H2 ≥5개. ★3000자 패딩 폐기: 3000자 채우려 가게별 templated 보일러플레이트를 넣으면 그게 구조 지문(scaled-content-abuse)이 된다. 가게별 100% 고유 데이터로만 본문 구성 → 5-gram Jaccard <10% 필수. SSR 본문은 크롤러 프록시(숨김 div), 실제 체류는 React 본문이 만든다 (dwell-content-audit)
 6. **자동 검증** — 매일 KST 07:35 title-uniqueness, 07:40 dwell-content (실패시만 메일)
-7. **신규 venue/title 변경 시** — 푸시 전 `node scripts/title-uniqueness-audit.mjs` 통과 필수
+7. **신규 venue/title 변경 시** — 푸시 전 `node scripts/title-uniqueness-audit.mjs` 통과 필수. 구조 지문은 `npm run build`가 끝에 `struct-fingerprint-audit.mjs` 자동 실행(카테고리별 전수 쌍 5-gram Jaccard, FAIL>15%면 빌드 중단) — 신규 venue 닮음 자동 차단
 8. **공통 모듈** — 모든 watch는 `scripts/lib/hook-detector.mjs` import (단어 사전 사용 금지)
 
 ## MUST
@@ -99,7 +99,8 @@ Do NOT ask. Just fix. Report all titles when done.
 - `~/.claude/skills/nolcool-venue-content/` — 6업종 콘텐츠 작성 SKILL
 
 ## 검증 커맨드
-- 빌드+프리렌더: `npm run build` (vite + prerender-seo.mjs)
+- 빌드+프리렌더: `npm run build` (vite + prerender-seo.mjs + dist/dup/route/구조지문 감사)
+- 구조 지문 단독: `npm run audit:fingerprint` (카테고리별 전수 쌍 5-gram Jaccard, FAIL>15%/WARN>10%)
 - 타입체크: `npx tsc --noEmit`
 - 라이브 SEO 풀체인: `bash scripts/seo-check-hook.sh` 또는 `seo-content-auditor` subagent
 - title 중복단어 검출: `grep -oE '<title>[^<]+</title>' dist/**/index.html | awk '{for(i=1;i<=NF;i++)if(seen[$i]++)print}'`
