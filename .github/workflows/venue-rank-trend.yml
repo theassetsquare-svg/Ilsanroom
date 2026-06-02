@@ -1,0 +1,22 @@
+name: Venue Rank Trend (가게이름 순위 추이 주간)
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 매주 월요일 KST 09:30 (UTC 00:30) — search-console-report(09:00) 30분 뒤
+    - cron: '30 0 * * 1'
+
+jobs:
+  trend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 가게이름 검색 순위 추이 (이번주 vs 전주)
+        run: node scripts/venue-rank-trend.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          GOOGLE_OAUTH_CLIENT_ID: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
+          GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
