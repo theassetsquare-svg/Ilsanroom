@@ -669,6 +669,15 @@ function generateVenueSsrBody(v, allVenues) {
     html += `<p>${fillers.slice(0, 3 - secOcc).join(' ')}</p>`;
   }
 
+  // ★ 가게이름(primary) 밀도 floor — 긴 이름은 본문 '여기' 치환으로 어절밀도가 0.5% 미만으로
+  // 떨어질 수 있다(venue-name-seo-monitor 미달). 과소노출 venue만 자연 문장 1개로 보충.
+  const _bodyText = html.replace(/<[^>]+>/g, ' ');
+  const _bodyWords = _bodyText.split(/\s+/).filter(Boolean).length;
+  const _nameOcc = (_bodyText.match(new RegExp(escRe(name), 'g')) || []).length;
+  if (_nameOcc / Math.max(_bodyWords, 1) < 0.006) {
+    html += `<p>${pickN(['직접 가보면', '한 번 방문하면', '와서 보면', '겪어보면'], 51)} ${name}${pickN(['만의 분위기를 알 수 있다.', '의 결을 바로 느낀다.', '이 왜 단골을 만드는지 안다.', '의 진짜 매력이 보인다.'], 53)}</p>`;
+  }
+
   // 백링크는 description 첫 발생 가게이름에 통합 (중복 anchor 제거)
 
   html += `</article>`;
