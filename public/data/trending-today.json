@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-06-04T16:20:02.855Z",
+  "generated_at": "2026-06-04T19:11:31.499Z",
   "window_hours": 24,
   "items": [
-    {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 3
-    },
     {
       "path": "/nights/daejeonsevennight",
       "title": "대전세븐나이트",
       "category": "night",
       "region": "대전",
       "views_24h": 3
+    },
+    {
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
     },
     {
       "path": "/nights/gwangjuallnight",
@@ -63,13 +63,6 @@
       "title": "강서호박나이트",
       "category": "night",
       "region": "강서",
-      "views_24h": 1
-    },
-    {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
       "views_24h": 1
     }
   ]
