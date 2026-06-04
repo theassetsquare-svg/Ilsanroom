@@ -1,7 +1,35 @@
 {
-  "generated_at": "2026-06-04T07:13:18.663Z",
+  "generated_at": "2026-06-04T16:20:02.855Z",
   "window_hours": 24,
   "items": [
+    {
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/daejeonsevennight",
+      "title": "대전세븐나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/gwangjuallnight",
+      "title": "광주올나이트",
+      "category": "night",
+      "region": "광주",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/daejeonhangukgwannight",
+      "title": "대전한국관나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
+    },
     {
       "path": "/nights/gimpohobaknight",
       "title": "김포호박나이트",
@@ -10,17 +38,31 @@
       "views_24h": 2
     },
     {
-      "path": "/clubs/gangnam/gangnamclub-laputa",
-      "title": "강남청담클럽 라퓨타",
-      "category": "club",
-      "region": "강남",
-      "views_24h": 2
+      "path": "/nights/ansanhitnight",
+      "title": "안산히트나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 1
     },
     {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
+      "path": "/nights/gwangjutotonight",
+      "title": "광주토토밤나이트",
       "category": "night",
-      "region": "대전",
+      "region": "광주",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gwangjucheomdanempanight",
+      "title": "광주첨단엠파나이트",
+      "category": "night",
+      "region": "광주",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
+      "category": "night",
+      "region": "강서",
       "views_24h": 1
     },
     {
@@ -28,48 +70,6 @@
       "title": "일산룸",
       "category": "room",
       "region": "일산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/seosanhobaknight",
-      "title": "서산호박나이트",
-      "category": "night",
-      "region": "서산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gwangjumgmnight",
-      "title": "광주MGM나이트",
-      "category": "night",
-      "region": "광주",
-      "views_24h": 1
-    },
-    {
-      "path": "/hoppa/haeundaehoppa-kkantappiya",
-      "title": "해운대호빠 깐따삐야",
-      "category": "hoppa",
-      "region": "부산 해운대",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/sangbonghangukgwannight",
-      "title": "상봉동한국관나이트",
-      "category": "night",
-      "region": "상봉동",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/seongnamshampoonight",
-      "title": "성남샴푸나이트",
-      "category": "night",
-      "region": "성남",
       "views_24h": 1
     }
   ]
