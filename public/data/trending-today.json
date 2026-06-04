@@ -1,19 +1,12 @@
 {
-  "generated_at": "2026-06-03T20:12:28.012Z",
+  "generated_at": "2026-06-04T07:13:18.663Z",
   "window_hours": 24,
   "items": [
     {
-      "path": "/nights/ulsanchampionnight",
-      "title": "울산챔피언나이트",
+      "path": "/nights/gimpohobaknight",
+      "title": "김포호박나이트",
       "category": "night",
-      "region": "울산",
-      "views_24h": 5
-    },
-    {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
+      "region": "김포",
       "views_24h": 2
     },
     {
@@ -24,17 +17,17 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/sangbonghangukgwannight",
-      "title": "상봉동한국관나이트",
-      "category": "night",
-      "region": "상봉동",
-      "views_24h": 2
-    },
-    {
       "path": "/nights/daejeononenight",
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
+      "views_24h": 1
+    },
+    {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
       "views_24h": 1
     },
     {
@@ -59,6 +52,13 @@
       "views_24h": 1
     },
     {
+      "path": "/nights/sangbonghangukgwannight",
+      "title": "상봉동한국관나이트",
+      "category": "night",
+      "region": "상봉동",
+      "views_24h": 1
+    },
+    {
       "path": "/nights/ansandontellmamanight",
       "title": "안산돈텔마마나이트",
       "category": "night",
@@ -70,41 +70,6 @@
       "title": "성남샴푸나이트",
       "category": "night",
       "region": "성남",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gwangjucheomdanempanight",
-      "title": "광주첨단엠파나이트",
-      "category": "night",
-      "region": "광주",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daeguhobaknight",
-      "title": "대구호박나이트",
-      "category": "night",
-      "region": "대구",
-      "views_24h": 1
-    },
-    {
-      "path": "/lounges/apgujeongcodelounge",
-      "title": "압구정코드라운지",
-      "category": "lounge",
-      "region": "압구정",
-      "views_24h": 1
-    },
-    {
-      "path": "/clubs/hongdae/hongdaeclub-bermuda",
-      "title": "홍대클럽 버뮤다",
-      "category": "club",
-      "region": "홍대",
       "views_24h": 1
     }
   ]
