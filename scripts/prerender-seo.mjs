@@ -606,7 +606,14 @@ function generateVenueSsrBody(v, allVenues) {
         }
         // 항목별 연결어를 회전 → 동일 " — {region} 클럽" 꼬리표 반복 지문 제거
         const sep = pickN([' — ', ' · ', ', ', ' / '], ri);
-        html += `<li><a href="${rvPath}">${escHtml(rv.nameKo)}</a>${sep}${escHtml(rv.regionKo)} ${rvCatKo}</li>`;
+        // 시즌172 — 같은 지역 관련업소 이름의 접두어(지역+업종, 예: '홍대클럽')가 페이지 키워드와
+        // 겹쳐 밀도 stuffing을 만든다 → 접두어 토큰을 제거해 노출 (tag/near 페이지와 동일 패턴)
+        const rvName = (() => {
+          const parts = (rv.nameKo || '').split(/\s+/);
+          const lastReg = (v.regionKo || '').split(/\s+/).filter(Boolean).pop() || v.regionKo;
+          return (parts.length > 1 && parts[0].includes(lastReg)) ? parts.slice(1).join(' ') : rv.nameKo;
+        })();
+        html += `<li><a href="${rvPath}">${escHtml(rvName)}</a>${sep}${escHtml(rv.regionKo)} ${rvCatKo}</li>`;
       });
       html += `</ul></section>`;
     }
@@ -636,16 +643,31 @@ function generateVenueSsrBody(v, allVenues) {
   const lastRegion = (v.regionKo || '').split(/\s+/).filter(Boolean).pop() || v.regionKo;
   const secondary = `${escHtml(lastRegion)}${catKo}`;
   html += `<section><h2>${secondary} ${pickN(['검색하고 오시는 분들께', '찾아 오신 분들께', '알아보는 분들께', '검색으로 오셨다면'], 29)}</h2>`;
-  html += `<p>${secondary}${pickN([' 찾으신다면 이 페이지의 양주·자리 구성부터 보세요.', ' 검색으로 오셨다면 위 구성과 예약 안내를 참고하세요.', ' 정보를 찾는 중이라면 이 페이지에 정리돼 있습니다.', ' 알아보고 계신다면 위 안내가 도움이 됩니다.'], 31)} ${pickN(['직접 확인하려면 담당자에게 문의하면 된다.', '자세한 건 담당자에게 문의하면 된다.', '예약은 담당자에게 바로 문의하면 된다.', '궁금한 점은 담당자에게 물어보면 된다.'], 33)}</p>`;
+  // secondary 키워드는 위 H2에 이미 노출 → 단락은 지시어로 받아 밀도 stuffing 방지
+  html += `<p>${pickN(['여기', '이곳', '이 가게', '이 페이지'], 30)}${pickN([' 찾으신다면 양주·자리 구성부터 보세요.', ' 검색으로 오셨다면 위 구성과 예약 안내를 참고하세요.', ' 정보를 찾는 중이라면 이 페이지에 정리돼 있습니다.', ' 알아보고 계신다면 위 안내가 도움이 됩니다.'], 31)} ${pickN(['직접 확인하려면 담당자에게 문의하면 된다.', '자세한 건 담당자에게 문의하면 된다.', '예약은 담당자에게 바로 문의하면 된다.', '궁금한 점은 담당자에게 물어보면 된다.'], 33)}</p>`;
   html += `</section>`;
 
   // ★ 관련 키워드 — 검색엔진이 연관 검색어로 인식 (secondary 중심)
   // 가게이름(primary)은 title·H1·H2·description에 이미 풍부 → footer에서 제외(키워드 밀도 stuffing 방지).
   // 같은 지역+업종 페이지끼리 footer가 byte-identical 되는 걸 막기 위해 토큰 순서·구성을 slug로 변형.
-  const kwBits = [`${secondary}`, `${secondary} ${pickN(['추천', '정보', '안내', '가이드'], 41)}`, `${secondary} ${pickN(['후기', '리뷰', '방문기', '평가'], 43)}`, `${region} ${catKo}`, `${region} ${pickN(['밤문화', '나이트라이프', '유흥', '밤거리'], 47)}`];
+  // secondary(지역+업종 붙임)는 키워드 1회만 — 나머지는 공백 분리형(region+catKo)으로 밀도 희석
+  const kwBits = [`${secondary}`, `${region} ${catKo} ${pickN(['추천', '정보', '안내', '가이드'], 41)}`, `${region} ${catKo} ${pickN(['후기', '리뷰', '방문기', '평가'], 43)}`, `${region} ${catKo}`, `${region} ${pickN(['밤문화', '나이트라이프', '유흥', '밤거리'], 47)}`];
   const kwRot = _h % kwBits.length;
   const kwOrdered = kwBits.slice(kwRot).concat(kwBits.slice(0, kwRot));
   html += `<footer><p>${kwOrdered.join(', ')}</p></footer>`;
+
+  // ★ 시즌69 floor — secondary(2번째 키워드)가 본문에 ≥3회 보장.
+  // 밀도 높은(가게명이 secondary를 포함하는) 페이지는 건드리지 않고, secondary 등장이 적은
+  // sparse 지역(같은 지역 업소 0~1곳)만 자연 문장으로 보충 → stuffing 없이 2키워드 SEO 충족.
+  const secOcc = (html.match(new RegExp(escRe(secondary), 'g')) || []).length;
+  if (secOcc < 3) {
+    const fillers = [
+      `${region} 지역에서 ${secondary} 정보를 찾는다면 이 페이지에 정리돼 있습니다.`,
+      `${secondary} 방문을 고민 중이라면 위 안내부터 확인하세요.`,
+      `처음 ${secondary} 검색으로 오셨다면 양주·자리 구성을 먼저 보세요.`,
+    ];
+    html += `<p>${fillers.slice(0, 3 - secOcc).join(' ')}</p>`;
+  }
 
   // 백링크는 description 첫 발생 가게이름에 통합 (중복 anchor 제거)
 

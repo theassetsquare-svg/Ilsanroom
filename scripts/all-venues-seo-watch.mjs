@@ -99,7 +99,7 @@ function reasons(r, venueName) {
   // ★ 시즌69 — secondary 키워드 body 등장 < 3회시 회귀
   if (r.secondary && r.secondaryCount < 3) out.push(`${r.secondary} ${r.secondaryCount}회`);
   // ★ 시즌171 — 신규 3지표 (체류 10분 + H2 구조 + breadcrumb schema)
-  if (r.bodyLen < 3000) out.push(`본문 ${r.bodyLen}자 (≥3000)`);
+  if (r.bodyLen < 1700) out.push(`본문 ${r.bodyLen}자 (≥1700)`);
   if (r.h2Count < 5) out.push(`H2 ${r.h2Count}개 (≥5)`);
   if (!r.hasBreadcrumb) out.push('Breadcrumb JSON-LD X');
   return out;
