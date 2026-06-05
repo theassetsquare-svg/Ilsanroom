@@ -11,7 +11,7 @@ const venues = [];
 while ((m = reVenue.exec(content)) !== null) venues.push({ slug: m[1], name: m[2], cat: m[3], region: m[4] });
 
 const catLabels = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
-const catSearch = { club: '클럽 내부 EDM 파티', night: '나이트클럽 댄스홀 무대', lounge: '라운지 바 인테리어', room: '룸살롱 프라이빗 룸 인테리어', yojeong: '요정 한정식 전통', hoppa: '호빠 호스트바 인테리어' };
+const catSearch = { club: '클럽 내부 EDM 파티', night: '나이트클럽 댄스홀 무대', lounge: '라운지 바 인테리어', room: '프라이빗 룸 고급 인테리어', yojeong: '요정 한정식 전통', hoppa: '호빠 호스트바 인테리어' };
 
 function getHash(fp) {
   try { return crypto.createHash('md5').update(fs.readFileSync(fp)).digest('hex'); }

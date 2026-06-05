@@ -280,7 +280,7 @@ export default function HomePage() {
   // 실시간 검색 — 토큰 분리 + 카테고리/지역 인식
   const catKw: Record<string, string> = useMemo(() => ({
     '클럽': 'club', '나이트': 'night', '나이트클럽': 'night', '라운지': 'lounge',
-    '바': 'lounge', '룸': 'room', '룸싸롱': 'room', '룸살롱': 'room',
+    '바': 'lounge', '룸': 'room',
     '요정': 'yojeong', '호빠': 'hoppa', '호스트바': 'hoppa', '고구려': 'night',
   }), []);
   const norm = useCallback((s: string) => s.toLowerCase().replace(/\s+/g, '').replace(/[^\wㄱ-ㅎㅏ-ㅣ가-힣]/g, ''), []);

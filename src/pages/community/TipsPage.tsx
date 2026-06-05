@@ -110,7 +110,7 @@ export default function TipsPage() {
     { id: 'seed-6', title: '양주 브랜드별 무드 매칭 정리함', category: '입문', difficulty: '고급', author: '양주박사', bookmarks: 44, summary: '발렌타인17년 단골픽 1위. 조니워커블랙도 무난. 로얄살루트는 접대용. 혼자 먹을 거면 잭다니엘.' },
     { id: 'seed-7', title: '부킹 성공률 높이는 현실적인 방법', category: '입문', difficulty: '보통', author: '부킹달인', bookmarks: 36, summary: '웨이터한테 미리 말해두는 게 핵심. 테이블 분위기 좋게 유지하고 있으면 웨이터가 알아서 연결해줌.' },
     { id: 'seed-8', title: '호빠 처음 가는 여자들 필독 가이드', category: '입문', difficulty: '쉬움', author: '호빠선배언니', bookmarks: 48, summary: '선수 맘에 안 들면 바로 체인지 가능함. 눈치 볼 필요 없음. 시간 잘 체크하고 연장은 신중하게.' },
-    { id: 'seed-9', title: '요정에서 초이스할 때 에티켓 정리', category: '예절', difficulty: '고급', author: '접대고수', bookmarks: 33, summary: '손가락으로 가리키면 안 됨. 눈짓이나 번호로 말하기. 아가씨한테 직접 물어보는 건 실례임.' },
+    { id: 'seed-9', title: '요정에서 매니저 고를 때 에티켓 정리', category: '예절', difficulty: '고급', author: '접대고수', bookmarks: 33, summary: '손가락으로 가리키면 안 됨. 눈짓이나 번호로 말하기. 아가씨한테 직접 물어보는 건 실례임.' },
     { id: 'seed-10', title: '취했을 때 택시 안전하게 잡는 꿀팁', category: '안전', difficulty: '쉬움', author: '안전귀가', bookmarks: 31, summary: '카카오택시 미리 예약 걸어놓기. 대리운전 번호 저장해두기. 친구한테 위치 공유 필수.' },
     { id: 'seed-11', title: '라운지에서 자연스럽게 대화 거는 법', category: '입문', difficulty: '보통', author: '라운지단골', bookmarks: 28, summary: '옆 테이블 건배 제안이 제일 자연스러움. 갑자기 말 걸면 경계함. 분위기 읽는 게 먼저.' },
     { id: 'seed-12', title: '클럽에서 소지품 안 잃어버리는 방법', category: '안전', difficulty: '쉬움', author: '폰분실3회', bookmarks: 25, summary: '주머니 지퍼 달린 바지 입기. 가방은 락커에. 핸드폰 분실방지 줄 강추. 경험에서 나온 팁임 ㅠ' },

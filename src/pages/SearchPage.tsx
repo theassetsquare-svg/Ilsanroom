@@ -31,7 +31,7 @@ const CATEGORIES = [
 
 const CATEGORY_KEYWORDS: Record<string, string> = {
   '클럽': 'club', '클럽스': 'club', '나이트': 'night', '나이트클럽': 'night',
-  '라운지': 'lounge', '바': 'lounge', '룸': 'room', '룸싸롱': 'room', '룸살롱': 'room',
+  '라운지': 'lounge', '바': 'lounge', '룸': 'room',
   '요정': 'yojeong', '한정식': 'yojeong', '호빠': 'hoppa', '호스트바': 'hoppa',
   '고구려': 'night',
 };

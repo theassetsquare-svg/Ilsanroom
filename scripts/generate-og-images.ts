@@ -123,7 +123,7 @@ const utilPages = [
   { file: 'ranking', title: '인기 랭킹 TOP 20', bg: '#7C3AED' },
   { file: 'magazine', title: '매거진', bg: '#0891B2' },
   { file: 'community', title: '커뮤니티', bg: '#059669' },
-  { file: 'quiz', title: '밤문화 MBTI', bg: '#EC4899' },
+  { file: 'quiz', title: '나이트라이프 MBTI', bg: '#EC4899' },
   { file: 'map', title: '지도', bg: '#1E3A5F' },
   { file: 'events', title: '이벤트', bg: '#D97706' },
   { file: 'pricing', title: '업주 요금제', bg: '#7C3AED' },

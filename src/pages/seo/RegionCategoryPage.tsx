@@ -25,7 +25,7 @@ export default function RegionCategoryPage() {
     `${decodedRegion} ${catKo} ${filtered.length}곳 — 한눈에 비교하고 고르기`,
     `${decodedRegion} 지역 ${catKo} ${filtered.length}곳 비교. 분위기·후기·위치 정보를 확인하고 오늘 밤 갈 곳을 정하세요.`,
     undefined,
-    `${decodedRegion} ${catKo}, ${decodedRegion} ${catKo} 추천, ${decodedRegion} 밤문화`
+    `${decodedRegion} ${catKo}, ${decodedRegion} ${catKo} 추천, ${decodedRegion} 나이트라이프`
   );
 
   return (

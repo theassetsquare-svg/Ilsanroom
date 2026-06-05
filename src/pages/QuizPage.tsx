@@ -24,7 +24,7 @@ const sectionList = [
 ];
 
 export default function QuizPage() {
-  useDocumentMeta('클럽형인지 라운지형인지, 테스트 해봐', '10문항 2분이면 나한테 맞는 유흥 스타일 결과. 클럽 라운지 나이트 룸 요정 호빠 6가지 유형. 친구와 비교 공유 가능.');
+  useDocumentMeta('클럽형인지 라운지형인지, 테스트 해봐', '10문항 2분이면 나한테 맞는 나이트라이프 스타일 결과. 클럽 라운지 나이트 룸 요정 호빠 6가지 유형. 친구와 비교 공유 가능.');
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -78,7 +78,7 @@ export default function QuizPage() {
         <section>
           <h2 className="mb-4 text-xl font-bold text-[#111] flex items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-50 text-base">🎭</span>
-            밤문화 MBTI (8유형)
+            나이트라이프 MBTI (8유형)
           </h2>
           <Suspense fallback={null}><MBTIQuiz /></Suspense>
         </section>

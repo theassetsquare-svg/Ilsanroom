@@ -4,7 +4,7 @@
  *
  * 측정 키워드:
  *   ① "대구호빠" — venue 지역+업종 (PRIMARY)
- *   ② "동성로호빠" — 대구 #1 유흥상권 (SECONDARY, shortDesc/description 수동 주입)
+ *   ② "동성로호빠" — 대구 #1 번화가상권 (SECONDARY, shortDesc/description 수동 주입)
  *
  * 10지표 + 디테일 토큰:
  *   1) HTTP 200
@@ -17,7 +17,7 @@
  *   8) "대구호빠" 밀도 ≤3.5%
  *   9) "동성로호빠" body 등장 ≥3회
  *  10) 후킹 5축 ≥1축 (title 또는 desc)
- *  +) 디테일 토큰 (엘리에나호텔/반월당역/70개/올초이스/발렛) 모두 등장
+ *  +) 디테일 토큰 (엘리에나호텔/반월당역/70개/올셀렉션/발렛) 모두 등장
  *
  * 환경:
  *   RESEND_API_KEY     필수
@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/hoppa/daeguhoppa-perfect/';
 const PRIMARY = '대구호빠';
 const SECONDARY = '동성로호빠';
-const DETAIL_TOKENS = ['엘리에나호텔', '반월당역', '70개', '올초이스', '발렛'];
+const DETAIL_TOKENS = ['엘리에나호텔', '반월당역', '70개', '올셀렉션', '발렛'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

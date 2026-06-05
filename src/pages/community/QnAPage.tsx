@@ -102,7 +102,7 @@ export default function QnAPage() {
 
   // 시드 글 (DB 비어있을 때 사이트가 살아보이게)
   const seedPosts: QuestionItem[] = [
-    { id: 'seed-1', title: '나이트 처음인데 뭐부터 해야됨?', author: '밤문화뉴비', date: '2026-04-18', answers: 12, likes: 27, solved: true, category: '입장' },
+    { id: 'seed-1', title: '나이트 처음인데 뭐부터 해야됨?', author: '나이트뉴비', date: '2026-04-18', answers: 12, likes: 27, solved: true, category: '입장' },
     { id: 'seed-2', title: '호빠 가본 여자분들 솔직후기 좀', author: '호기심냥이', date: '2026-04-18', answers: 15, likes: 30, solved: false, category: '전체' },
     { id: 'seed-3', title: '클럽 나이 확인 안 하는 데 있어?', author: '스물한살임', date: '2026-04-18', answers: 8, likes: 19, solved: false, category: '입장' },
     { id: 'seed-4', title: '요정 코스요리 몇 시간 걸려요?', author: '접대초보', date: '2026-04-18', answers: 6, likes: 14, solved: true, category: '전체' },
@@ -110,7 +110,7 @@ export default function QnAPage() {
     { id: 'seed-6', title: '나이트에서 부킹 거절해도 됨?', author: '소심한놈', date: '2026-04-17', answers: 11, likes: 25, solved: true, category: '예절' },
     { id: 'seed-7', title: '클럽 혼자 가면 진짜 어색함?', author: '솔로전사', date: '2026-04-17', answers: 14, likes: 28, solved: false, category: '입장' },
     { id: 'seed-8', title: '금요일이랑 토요일 분위기 차이 큼?', author: '주말고민러', date: '2026-04-17', answers: 7, likes: 16, solved: false, category: '전체' },
-    { id: 'seed-9', title: '룸싸롱 초이스 할 때 팁 좀', author: '첫룸방문', date: '2026-04-16', answers: 10, likes: 23, solved: true, category: '예절' },
+    { id: 'seed-9', title: '룸 셀렉션 할 때 팁 좀', author: '첫룸방문', date: '2026-04-16', answers: 10, likes: 23, solved: true, category: '예절' },
     { id: 'seed-10', title: '나이트 테이블 vs 스탠딩 뭐가 나음?', author: '캐주얼파', date: '2026-04-16', answers: 8, likes: 18, solved: false, category: '분위기' },
     { id: 'seed-11', title: '호빠 선수한테 연락처 물어봐도 됨?', author: '직진녀', date: '2026-04-16', answers: 13, likes: 26, solved: true, category: '예절' },
     { id: 'seed-12', title: '요정 처음 가는데 양주 뭐 시켜야함', author: '양주모름', date: '2026-04-15', answers: 9, likes: 20, solved: true, category: '분위기' },

@@ -334,6 +334,15 @@ if (isSrc && /(fixed\s+(?:bottom-0|inset-x-0\s+bottom-0))/.test(text)) {
 
 // 20) JSX 이벤트 핸들러 inline 함수 — 단순 안티패턴이라 가드 차단 X. CLAUDE.md 미규정.
 
+// 21) 위험단어(불법 연관·SEO 페널티) 재유입 차단 — src 콘텐츠 한정.
+//     매핑: 밤문화/유흥→나이트라이프 · 노래방→가라오케 · 룸살롱/룸싸롱→프라이빗룸 · 초이스→셀렉션
+const DANGEROUS = ['밤문화', '유흥', '룸살롱', '룸싸롱', '노래방', '초이스'];
+if (isSrc) {
+  for (const w of DANGEROUS) {
+    if (text.includes(w)) violations.push(`⛔ 위험단어 "${w}" 금지 (불법 연관·SEO 페널티) → 나이트라이프/가라오케/프라이빗룸/셀렉션`);
+  }
+}
+
 if (violations.length) {
   log(`BLOCK ${file}: ${violations.join(' | ')}`);
   console.error(`\n🛑 놀쿨 가드 차단 (${MODE}) — ${basename(file)}`);

@@ -1445,7 +1445,7 @@ INSERT INTO posts (category, title, content, venue_slug, rating, likes, views, i
 
 -- ── 해운대호빠 미슐랭 (부산 해운대 호빠) ──
 INSERT INTO posts (category, title, content, venue_slug, rating, likes, views, is_pinned, created_at, updated_at) VALUES ('reviews', '해운대호빠 미슐랭 다녀온 후기 (여성)', '친구랑 둘이서 해운대호빠 미슐랭 갔는데 되게 재밌었음. 호스트분들이 대화를 잘 이끌어줘서 어색한 순간이 없었음. 부산 해운대 쪽에서 여기만한 데 없는 것 같음. 분위기도 깔끔하고 안전한 느낌이어서 다음에 또 가려구요.', 'haeundaehoppa-michelin', 5, 34, 123, false, '2026-04-20T03:07:14.233Z', '2026-04-20T03:07:14.233Z');
-INSERT INTO posts (category, title, content, venue_slug, rating, likes, views, is_pinned, created_at, updated_at) VALUES ('reviews', '부산 해운대 호빠 찾는 분들 참고', '해운대호빠 미슐랭 몇 번째 방문인데 항상 만족함. 호스트 선택폭이 넓어서 좋고 강요하는 분위기가 아니라 편함. 특히 고급, 올초이스 부분이 마음에 듦. 친구들한테도 추천해줬더니 다들 괜찮다고 하더라.', 'haeundaehoppa-michelin', 5, 6, 114, false, '2026-04-28T17:39:56.901Z', '2026-04-28T17:39:56.901Z');
+INSERT INTO posts (category, title, content, venue_slug, rating, likes, views, is_pinned, created_at, updated_at) VALUES ('reviews', '부산 해운대 호빠 찾는 분들 참고', '해운대호빠 미슐랭 몇 번째 방문인데 항상 만족함. 호스트 선택폭이 넓어서 좋고 강요하는 분위기가 아니라 편함. 특히 고급, 올셀렉션 부분이 마음에 듦. 친구들한테도 추천해줬더니 다들 괜찮다고 하더라.', 'haeundaehoppa-michelin', 5, 6, 114, false, '2026-04-28T17:39:56.901Z', '2026-04-28T17:39:56.901Z');
 INSERT INTO posts (category, title, content, venue_slug, rating, likes, views, is_pinned, created_at, updated_at) VALUES ('tips', '해운대호빠 미슐랭 처음 가는 분들 팁', '해운대호빠 미슐랭 몇 번 가봤는데 알게 된 것들 공유함.
 
 1. 주말은 10시 이후가 피크

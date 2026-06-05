@@ -74,7 +74,7 @@ export async function sendWelcomeEmail(
 <body style="font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#1a1a1a;">
   <h1 style="color:#7c3aed;font-size:24px;">놀쿨에 오신 것을 환영합니다!</h1>
   <p>${userName}님, 회원가입이 완료되었습니다.</p>
-  <p>놀쿨에서 전국 밤문화 정보를 한눈에 확인해 보세요.</p>
+  <p>놀쿨에서 전국 나이트라이프 정보를 한눈에 확인해 보세요.</p>
   <ul>
     <li>인기 업소 랭킹 확인</li>
     <li>지역별 업소 탐색</li>

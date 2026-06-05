@@ -2,7 +2,7 @@ import { useStealthMode } from '@/hooks/useStealthMode';
 
 /* Stealth 모드 토글 — 헤더/메뉴에 노출
    ON 시 탭 제목 "📚 메모" + favicon 책 이모지로 위장.
-   유흥 사용자가 폰 잠깐 빌려줄 때 30초면 켜기/끄기 가능. */
+   나이트라이프 사용자가 폰 잠깐 빌려줄 때 30초면 켜기/끄기 가능. */
 
 export default function StealthToggle({ compact = false }: { compact?: boolean }) {
   const { on, toggle } = useStealthMode();

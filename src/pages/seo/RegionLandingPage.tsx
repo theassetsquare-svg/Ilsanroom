@@ -21,15 +21,15 @@ export default function RegionLandingPage() {
   }, {});
 
   useDocumentMeta(
-    `${region} 밤문화 ${filtered.length}곳 — 클럽·나이트·룸·라운지 한눈에`,
-    `${region} 지역 클럽, 나이트, 라운지, 룸, 요정, 호빠 ${filtered.length}곳 비교. ${region} 밤문화 정보를 한 곳에서 확인하세요.`,
+    `${region} 나이트라이프 ${filtered.length}곳 — 클럽·라운지·룸·요정 한눈에`,
+    `${region} 지역 클럽, 나이트, 라운지, 룸, 요정, 호빠 ${filtered.length}곳 비교. ${region} 나이트라이프 정보를 한 곳에서 확인하세요.`,
     undefined,
-    `${region} 밤문화, ${region} 클럽, ${region} 나이트, ${region} 룸, ${region} 유흥`
+    `${region} 나이트라이프, ${region} 클럽, ${region} 나이트, ${region} 룸, ${region} 라운지`
   );
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold">{region} 밤문화 {filtered.length}곳</h1>
+      <h1 className="mb-6 text-2xl font-bold">{region} 나이트라이프 {filtered.length}곳</h1>
       <p className="mb-8 text-gray-600">{region} 지역 나이트라이프 업소를 업종별로 정리했습니다.</p>
       {Object.entries(byCat).map(([cat, vList]) => (
         <section key={cat} className="mb-8">

@@ -24,10 +24,10 @@ export default function TagPage() {
   );
 
   useDocumentMeta(
-    `#${decodedTag} 관련 업소 ${filtered.length}곳 — 태그로 찾는 밤문화`,
+    `#${decodedTag} 관련 업소 ${filtered.length}곳 — 태그로 찾는 나이트라이프`,
     `'${decodedTag}' 태그가 붙은 클럽·나이트·라운지·룸 ${filtered.length}곳. 관심 키워드로 딱 맞는 곳을 찾아보세요.`,
     undefined,
-    `${decodedTag}, ${decodedTag} 추천, 밤문화 ${decodedTag}`
+    `${decodedTag}, ${decodedTag} 추천, 나이트라이프 ${decodedTag}`
   );
 
   return (

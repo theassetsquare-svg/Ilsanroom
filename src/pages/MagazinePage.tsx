@@ -6,7 +6,7 @@ import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { MidContentHook, ReadFinishCount, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
 
 export default function MagazinePage() {
-  useDocumentMeta('밤문화 읽을거리, 여기 다 모았다', '강남 홍대 이태원 일산 지역 분석, 클럽 vs 라운지 업종 비교, 신규 매장 현장 리포트. 가기 전에 읽으면 달라지는 매거진.');
+  useDocumentMeta('나이트라이프 읽을거리, 여기 다 모았다', '강남 홍대 이태원 일산 지역 분석, 클럽 vs 라운지 업종 비교, 신규 매장 현장 리포트. 가기 전에 읽으면 달라지는 매거진.');
   const containerRef = useRef<HTMLDivElement>(null);
   const { articles } = useArticles();
   const featured = articles[0];
@@ -30,7 +30,7 @@ export default function MagazinePage() {
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-black mb-3" style={{ color: '#FFFFFF', letterSpacing: '-0.02em' }}>
-            밤문화 매거진 — 가기 전에 읽는 글
+            나이트라이프 매거진 — 가기 전에 읽는 글
           </h1>
           <p className="text-sm sm:text-base mb-8" style={{ color: 'rgba(255,255,255,0.55)' }}>
             지역 분석, 업종 비교, 신규 매장 현장 리포트

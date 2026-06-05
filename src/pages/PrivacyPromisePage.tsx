@@ -64,7 +64,7 @@ export default function PrivacyPromisePage() {
             <span style={{ color: '#22C55E' }}>걱정 없는 이유</span>
           </h1>
           <p className="text-base text-white/70" style={{ lineHeight: '1.7' }}>
-            놀쿨은 유흥 사용자가 가장 무서워하는 6가지를 전부 막았다.<br />
+            놀쿨은 나이트라이프 사용자가 가장 무서워하는 6가지를 전부 막았다.<br />
             이 약속이 깨지면 사이트 자격 없음.
           </p>
         </div>

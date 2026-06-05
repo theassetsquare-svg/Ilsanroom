@@ -73,7 +73,7 @@ export default function DisclaimerPage() {
             <div>
               <h2 className="mb-2 font-bold text-amber-400">중요 안내</h2>
               <p className="text-sm leading-relaxed text-neon-text">
-                본 서비스는 밤문화 매장에 대한 자료를
+                본 서비스는 나이트라이프 매장에 대한 자료를
                 게재하는 플랫폼입니다. 본 웹사이트에 게시된 모든 내역는 내역 게재
                 용도으로만 사용되며, 어떠한 형태의 보증이나 추천을 의미하지
                 않습니다. 당사 사이트를 이용함으로써 아래의 면책조항에 동의하는 것으로

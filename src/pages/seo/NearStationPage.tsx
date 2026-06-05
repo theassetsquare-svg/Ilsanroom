@@ -24,9 +24,9 @@ export default function NearStationPage() {
 
   useDocumentMeta(
     `${decodedStation} 근처 업소 ${filtered.length}곳 — 역에서 걸어서 갈 수 있는 곳`,
-    `${decodedStation} 근처 클럽·나이트·라운지·룸 ${filtered.length}곳. 가까운 역에서 도보로 갈 수 있는 밤문화 장소를 찾아보세요.`,
+    `${decodedStation} 근처 클럽·나이트·라운지·룸 ${filtered.length}곳. 가까운 역에서 도보로 갈 수 있는 나이트라이프 장소를 찾아보세요.`,
     undefined,
-    `${decodedStation} 근처, ${decodedStation} 밤문화, ${decodedStation} 클럽, ${decodedStation} 나이트`
+    `${decodedStation} 근처, ${decodedStation} 나이트라이프, ${decodedStation} 클럽, ${decodedStation} 나이트`
   );
 
   return (

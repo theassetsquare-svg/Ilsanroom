@@ -17,7 +17,7 @@ const regions = [
 ];
 
 export default function RoomsPage() {
-  useDocumentMeta('룸 초이스 한 번이라도 후회해본 사람만 봐요. 10년 실장이 까드림', '사진이랑 다르면 그 순간 분위기 끝납니다. 10년 일한 룸 실장이 초이스·양주 라인·진행 케어까지 매장별로 솔직하게. 후회하기 전에 일단 물어봐요 →');
+  useDocumentMeta('룸 선택 한 번이라도 후회해본 사람만 봐요. 10년 실장이 까드림', '사진이랑 다르면 그 순간 분위기 끝납니다. 10년 일한 룸 실장이 셀렉션·양주 라인·진행 케어까지 매장별로 솔직하게. 후회하기 전에 일단 물어봐요 →');
   const venues = getVenuesByCategory('room');
   const featured = venues.find(v => v.isPremium) || venues[0];
 
@@ -63,7 +63,7 @@ export default function RoomsPage() {
             문 닫으면 바깥 소리가 안 들린다. 우리만의 시간이 시작된다.
           </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
-            벽으로 완전히 분리된 독립 룸이다. 룸은 옆에서 아무리 시끄럽게 해도 이쪽은 조용하다. 룸 안에서 방음이 되니까 비즈니스 얘기를 해도 되고, 마음껏 노래를 불러도 된다. 룸마다 독립 음향, 개별 조명, 노래방 기기까지 갖춰진 곳이 대부분이다.
+            벽으로 완전히 분리된 독립 룸이다. 룸은 옆에서 아무리 시끄럽게 해도 이쪽은 조용하다. 룸 안에서 방음이 되니까 비즈니스 얘기를 해도 되고, 마음껏 노래를 불러도 된다. 룸마다 독립 음향, 개별 조명, 가라오케 기기까지 갖춰진 곳이 대부분이다.
           </p>
           <MidContentHook seed="rooms-intro" />
           <p className="text-base leading-relaxed text-neon-text-muted">

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from '../ui/SafeLink';
 
 /* 첫 방문 시크릿 모드 권장 토스트 — 1회 노출 후 영구 dismiss
-   유흥 사용자가 가족·연인 폰에 흔적 안 남기는 방법 안내.
+   나이트라이프 사용자가 가족·연인 폰에 흔적 안 남기는 방법 안내.
    강요 X, 안내만. 닫기/링크 클릭 또는 8초 자동 fade out.
    z=60: StickyPhoneBar(80) 아래에 깔려서 CTA 우선.
    data-secret-toast: StickyPhoneBar 있는 페이지에서 CSS 자동 숨김. */

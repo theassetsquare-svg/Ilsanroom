@@ -41,7 +41,7 @@ export function getHookingTitle(venue: Venue): string {
     '부산호빠 맨즈': '부산호빠 맨즈 — 해운대호빠 단골이 넘어오는 광안리역 도보 룸에서 토박이 사투리가 격식을 씻겨준다',
     '부산호빠 아우라': '부산호빠 아우라 — 해운대호빠 단골이 센텀 통유리 룸에서 해무처럼 감싼다',
     '해운대호빠 벨벳': '해운대호빠 벨벳 — 부산호빠 단골이 장산역 차로 7분 청사포 야경 룸에서 와인에 녹는다',
-    '대구호빠 퍼펙트': '대구호빠 퍼펙트 — 동성로호빠 1순위, 엘리에나호텔 지하 70개 룸에서 올초이스 선택권을 쥐어준다',
+    '대구호빠 퍼펙트': '대구호빠 퍼펙트 — 동성로호빠 1순위, 엘리에나호텔 지하 70개 룸에서 올셀렉션 선택권을 쥐어준다',
     '전주호빠 갤러리': '전주호빠 갤러리 — 한옥마을 단골이 객리단길 도보 6분 액자 룸에서 추억을 그린다',
     '홍대호빠': '홍대호빠 — 홍대입구역 9번출구 도보 7분 경의선숲길 옆 부스 룸에서 인디 감성에 꽂힌다',
     // ── 나이트 (hooks 없던 46개) ──
@@ -148,7 +148,7 @@ export function getHookingTitle(venue: Venue): string {
 }
 
 function getCategoryKo(cat: string): string {
-  const map: Record<string, string> = { club: 'EDM 공간', night: '밤문화 명소', lounge: '바', room: '프라이빗 공간', yojeong: '전통 문화 공간', hoppa: '호스트클럽' };
+  const map: Record<string, string> = { club: 'EDM 공간', night: '나이트라이프 명소', lounge: '바', room: '프라이빗 공간', yojeong: '전통 문화 공간', hoppa: '호스트클럽' };
   return map[cat] || '업소';
 }
 

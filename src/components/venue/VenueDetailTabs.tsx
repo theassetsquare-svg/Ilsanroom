@@ -55,35 +55,42 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
           <div className="space-y-6">
             <div>
               <h2 className="mb-3 text-xl font-bold text-neon-text">{venue.nameKo} 소개</h2>
-              <p className="leading-relaxed text-neon-text-muted">
-                {(() => {
-                  const full = venue.description.slice(0, 100).includes(venue.nameKo)
-                    ? venue.description
-                    : `${venue.nameKo} — ${venue.description}`;
-                  // 업소별 공식 백링크 (첫 등장 가게이름 1회만 앵커)
-                  const backlinks: Record<string, string> = {
-                    ilsanmyeongwolgwanyojeong: 'https://sunwook4.mycafe24.com/',
-                  };
-                  const url = backlinks[venue.slug];
-                  if (!url) return full;
-                  const idx = full.indexOf(venue.nameKo);
-                  if (idx === -1) return full;
+              {(() => {
+                const full = venue.description.slice(0, 100).includes(venue.nameKo)
+                  ? venue.description
+                  : `${venue.nameKo} — ${venue.description}`;
+                // 업소별 공식 백링크 (첫 등장 가게이름 1회만 앵커)
+                const backlinks: Record<string, string> = {
+                  ilsanmyeongwolgwanyojeong: 'https://sunwook4.mycafe24.com/',
+                };
+                const url = backlinks[venue.slug];
+                // 가독성 — 긴 단일 문단을 문장 경계로 최대 3단락 분할 (텍스트 그대로, 단락만 분리)
+                const sentences = full.split(/(?<=[.다!?])\s+/).filter((s) => s.trim());
+                const per = Math.max(1, Math.ceil(sentences.length / 3));
+                const paras: string[] = [];
+                for (let i = 0; i < sentences.length; i += per) paras.push(sentences.slice(i, i + per).join(' '));
+                let anchored = false;
+                return paras.map((para, pi) => {
+                  if (url && !anchored) {
+                    const idx = para.indexOf(venue.nameKo);
+                    if (idx !== -1) {
+                      anchored = true;
+                      return (
+                        <p key={pi} className="mb-4 leading-relaxed text-neon-text-muted">
+                          {para.slice(0, idx)}
+                          <a href={url} target="_blank" rel="noopener noreferrer" className="text-neon-primary underline hover:text-neon-primary-light">
+                            {venue.nameKo}
+                          </a>
+                          {para.slice(idx + venue.nameKo.length)}
+                        </p>
+                      );
+                    }
+                  }
                   return (
-                    <>
-                      {full.slice(0, idx)}
-                      <a
-                        href={url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-neon-primary underline hover:text-neon-primary-light"
-                      >
-                        {venue.nameKo}
-                      </a>
-                      {full.slice(idx + venue.nameKo.length)}
-                    </>
+                    <p key={pi} className="mb-4 leading-relaxed text-neon-text-muted">{para}</p>
                   );
-                })()}
-              </p>
+                });
+              })()}
             </div>
             <div className="rounded-2xl border border-neon-border bg-neon-surface p-6">
               <h3 className="mb-4 font-bold text-neon-text">기본 정보</h3>

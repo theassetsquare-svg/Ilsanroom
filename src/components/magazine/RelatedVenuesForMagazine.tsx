@@ -69,7 +69,7 @@ const categoryKeywords: Record<string, string[]> = {
   club: ['클럽', 'EDM', '하우스', '강남클럽'],
   night: ['나이트', '나이트클럽', '돔'],
   lounge: ['라운지', '바'],
-  room: ['룸', '룸살롱'],
+  room: ['룸'],
   yojeong: ['요정', '한정식'],
   hoppa: ['호빠', '호스트'],
 };
