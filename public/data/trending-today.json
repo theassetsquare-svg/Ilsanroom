@@ -1,7 +1,28 @@
 {
-  "generated_at": "2026-06-05T06:56:52.939Z",
+  "generated_at": "2026-06-05T15:53:34.947Z",
   "window_hours": 24,
   "items": [
+    {
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 4
+    },
+    {
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
+      "category": "night",
+      "region": "오산",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 3
+    },
     {
       "path": "/nights/ilsanshampoonight",
       "title": "일산샴푸나이트",
@@ -10,17 +31,17 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/daejeonsevennight",
-      "title": "대전세븐나이트",
+      "path": "/nights/gildongchancenight",
+      "title": "길동찬스나이트",
       "category": "night",
-      "region": "대전",
-      "views_24h": 3
+      "region": "길동",
+      "views_24h": 2
     },
     {
-      "path": "/nights/ansanhitnight",
-      "title": "안산히트나이트",
-      "category": "night",
-      "region": "안산",
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
       "views_24h": 2
     },
     {
@@ -28,13 +49,6 @@
       "title": "강남청담클럽 레이스",
       "category": "club",
       "region": "강남",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
       "views_24h": 2
     },
     {
@@ -52,59 +66,45 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/gwangjucheomdanempanight",
-      "title": "광주첨단엠파나이트",
-      "category": "night",
-      "region": "광주",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
-      "category": "night",
-      "region": "오산",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/gwangjuallnight",
-      "title": "광주올나이트",
-      "category": "night",
-      "region": "광주",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/cheonanstardomnight",
-      "title": "천안스타돔나이트",
-      "category": "night",
-      "region": "천안",
+      "path": "/hoppa/haeundaehoppa-michelin",
+      "title": "해운대호빠 미슐랭",
+      "category": "hoppa",
+      "region": "부산 해운대",
       "views_24h": 1
     },
     {
-      "path": "/nights/doksangukbingwannight",
-      "title": "독산동국빈관나이트",
+      "path": "/nights/gwangjutotonight",
+      "title": "광주토토밤나이트",
       "category": "night",
-      "region": "독산",
+      "region": "광주",
       "views_24h": 1
     },
     {
-      "path": "/nights/incheonarabiannight",
-      "title": "인천아라비안나이트",
+      "path": "/nights/daejeonsevennight",
+      "title": "대전세븐나이트",
       "category": "night",
-      "region": "인천",
+      "region": "대전",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gangseonight",
+      "title": "강서나이트",
+      "category": "night",
+      "region": "강서",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/ansanhitnight",
+      "title": "안산히트나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
+      "category": "night",
+      "region": "강서",
       "views_24h": 1
     }
   ]
