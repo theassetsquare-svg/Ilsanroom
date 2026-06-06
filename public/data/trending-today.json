@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-06T14:41:09.986Z",
+  "generated_at": "2026-06-06T17:59:38.349Z",
   "window_hours": 24,
   "items": [
     {
@@ -10,11 +10,25 @@
       "views_24h": 6
     },
     {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/ilsan-hwajung-tunnel",
+      "title": "일산화정터널나이트",
+      "category": "night",
+      "region": "일산",
+      "views_24h": 2
+    },
+    {
       "path": "/nights/gangseo-hobak",
       "title": "강서호박나이트",
       "category": "night",
       "region": "강서",
-      "views_24h": 3
+      "views_24h": 2
     },
     {
       "path": "/nights/daejeonhangukgwannight",
@@ -24,11 +38,25 @@
       "views_24h": 2
     },
     {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 2
+      "path": "/nights/bucheongoraenight",
+      "title": "부천고래나이트",
+      "category": "night",
+      "region": "부천",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
+      "category": "night",
+      "region": "오산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/cheongjudontellmamanight",
+      "title": "청주돈텔마마나이트",
+      "category": "night",
+      "region": "청주",
+      "views_24h": 1
     },
     {
       "path": "/nights/dapsimnidontellmamanight",
@@ -40,13 +68,6 @@
     {
       "path": "/nights/ilsanshampoonight",
       "title": "일산샴푸나이트",
-      "category": "night",
-      "region": "일산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/ilsan-hwajung-tunnel",
-      "title": "일산화정터널나이트",
       "category": "night",
       "region": "일산",
       "views_24h": 1
@@ -84,27 +105,6 @@
       "title": "대전봉명나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 1
-    },
-    {
-      "path": "/hoppa/daeguhoppa-perfect",
-      "title": "대구호빠 퍼펙트",
-      "category": "hoppa",
-      "region": "대구",
-      "views_24h": 1
-    },
-    {
-      "path": "/hoppa/jeonju-hoppa-gallery",
-      "title": "전주호빠 갤러리",
-      "category": "hoppa",
-      "region": "전주",
-      "views_24h": 1
-    },
-    {
-      "path": "/clubs/gangnam/gangnamclub-race",
-      "title": "강남청담클럽 레이스",
-      "category": "club",
-      "region": "강남",
       "views_24h": 1
     }
   ]
