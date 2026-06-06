@@ -155,6 +155,22 @@ for (const f of files) {
   }
   if (fakeRating) add('ERR', '가짜 별점(aggregateRating/ratingValue) — 검증 후기 없이 평점 발행 금지');
 
+  // ★ 렌더 아티팩트 게이트 (2026-06-06) — 미치환 템플릿 변수·자료형 누수가 사용자 본문에 노출되면 배포 차단.
+  //   "[object Object]"·"${...}"·"{{...}}"·standalone undefined/NaN 은 published 한국어 카피에 절대 등장 X.
+  //   <main> 가시 텍스트만 검사(스크립트/JSON-LD 노이즈 제외) → false-positive 0.
+  {
+    const mainM = html.match(/<main id="main-content">[\s\S]*?<\/main>/);
+    const mainVis = mainM ? stripHtml(mainM[0]) : body;
+    const ARTIFACTS = [
+      [/\[object Object\]/, '[object Object]'],
+      [/\$\{[^}]*\}/, '미치환 템플릿 리터럴 ${…}'],
+      [/\{\{[^}]{0,40}\}\}/, '미치환 머스태시 {{…}}'],
+      [/\bundefined\b/, 'undefined 누수'],
+      [/\bNaN\b/, 'NaN 누수'],
+    ];
+    for (const [re, label] of ARTIFACTS) if (re.test(mainVis)) add('ERR', `렌더 아티팩트 "${label}"`);
+  }
+
   // ★ 업소 상세 엔티티 게이트 — 신규 업소 자동 적용 (LocalBusiness·직답·FAQ 미달 시 배포 차단)
   if (isVenueDetail) {
     const LB = ['NightClub', 'BarOrPub', 'Restaurant', 'EntertainmentBusiness'];

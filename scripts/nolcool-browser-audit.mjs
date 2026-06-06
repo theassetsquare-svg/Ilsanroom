@@ -99,10 +99,8 @@ async function auditOne(browser, url, vpName) {
       const t = m.text();
       // ignore noise: 404 favicon, third-party tracker blocks
       if (/favicon|chrome-extension|net::ERR_BLOCKED_BY_CLIENT/.test(t)) return;
-      // 시즌70 silencer 콘솔 대칭 — Supabase magazine/community 401은 앱이 빈 배열로 폴백.
-      // Chrome "Failed to load resource ... 401" 메시지의 URL은 location().url 로만 접근 가능.
-      const locUrl = (m.location && m.location().url) || '';
-      if (/status of 401/.test(t) && /supabase\.co\/rest\/v1\/(magazine_articles|community_posts|community_comments)/.test(locUrl)) return;
+      // 2026-06-06: magazine_articles 401 silencer 제거. is_admin() anon EXECUTE 재부여로
+      // 근본수정 완료 → 이 클래스의 Supabase 401이 재발하면 감사가 잡아내도록 더 이상 가리지 않는다.
       issues.push({ sev: 'CONSOLE', msg: t.slice(0, 200) });
     }
   });
@@ -113,9 +111,8 @@ async function auditOne(browser, url, vpName) {
       const u = r.url();
       // ignore: external trackers, GA, etc
       if (/google-analytics|googletagmanager|googleads|doubleclick|gstatic|fonts\.googleapis/.test(u)) return;
-      // 시즌70 silencer 대칭 — Supabase magazine_articles 401은 앱이 잡고 빈 배열로 폴백한다.
-      // 콘솔은 silencer가 가리고, 네트워크는 audit이 가린다(둘 다 동일 정책).
-      if (s === 401 && /supabase\.co\/rest\/v1\/(magazine_articles|community_posts|community_comments)/.test(u)) return;
+      // 2026-06-06: magazine_articles 401 네트워크 silencer 제거(콘솔과 대칭). 근본수정 후
+      // Supabase REST 401은 진짜 회귀이므로 NET 이슈로 정상 보고한다.
       issues.push({ sev: 'NET', msg: `${s} ${u.slice(0, 120)}` });
     }
   });

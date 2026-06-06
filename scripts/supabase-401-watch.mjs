@@ -40,9 +40,11 @@ async function extractKeyFromLive() {
 }
 
 async function pingSupabase(key) {
-  /* 시즌168 — magazine_articles RLS가 is_admin() 함수로 anon 거부 (의도) → 매일 false-positive.
-     venues 테이블은 anon select 허용 (public read). 키 유효성 검증 목적에 더 적합. */
-  const url = `${SUPABASE_URL}/rest/v1/venues?select=id&limit=1`;
+  /* 2026-06-06 정정 — 시즌168이 "magazine_articles 401은 is_admin() 거부로 의도된 것"이라 했으나
+     실제로는 anon에 is_admin() EXECUTE 권한이 유실된 버그였다(published 매거진은 anon-read 설계).
+     20260606_fix_is_admin_anon_execute 마이그레이션으로 근본수정 → 이제 매거진 공개 SELECT는 200이어야 정상.
+     앱이 실제로 쓰는 공개 쿼리(is_published=eq.true)를 그대로 ping해 이 클래스 회귀를 직접 잡는다. */
+  const url = `${SUPABASE_URL}/rest/v1/magazine_articles?select=id&is_published=eq.true&limit=1`;
   return fetchText(url, { apikey: key, Authorization: `Bearer ${key}` });
 }
 
