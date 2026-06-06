@@ -447,6 +447,45 @@ const ORG_JSONLD = {
 // 실제 후기는 /community/reviews 회원 작성 글만 노출.
 
 /**
+ * ★ 상단 직답(direct answer) — 가게이름 엔티티 1줄 요약 (구글 featured snippet + AI Overview/ChatGPT 인용 타깃).
+ * "[가게이름]은 [지역]의 [업종]으로 [특징·운영·예약]" 40~60 단어. 100% 가게 고유 사실로만 구성.
+ * 연결어는 slug 해시 pickN으로 회전 → 121 페이지 구조 지문(5-gram) 상관 제거.
+ */
+function generateVenueDirectAnswer(v) {
+  const name = escHtml(v.nameKo);
+  const catKo = catLabelMap[v.cat] || v.cat;
+  const region = escHtml(v.regionKo);
+  const ro = (w) => hasJongseong(w) ? '으로' : '로';
+  let _h = 0; for (let i = 0; i < v.slug.length; i++) _h = (_h * 31 + v.slug.charCodeAt(i)) >>> 0;
+  const pk = (arr, off) => {
+    let x = (_h ^ Math.imul(off + 1, 0x9e3779b9)) >>> 0;
+    x = Math.imul(x ^ (x >>> 16), 0x45d9f3b) >>> 0;
+    x = Math.imul(x ^ (x >>> 16), 0x45d9f3b) >>> 0;
+    x = (x ^ (x >>> 16)) >>> 0;
+    return arr[x % arr.length];
+  };
+  const feats = (v.features || []).slice(0, 2).map(f => escHtml(f));
+  const sents = [];
+  // 1) 엔티티 정의 — 이름·지역·업종(·핵심 특징 1~2개)
+  let s1 = `${name}${eunNeun(v.nameKo)} ${region}에 ${pk(['자리한', '위치한', '있는'], 1)} ${catKo}`;
+  if (feats.length) s1 += `${ro(catKo)}, ${feats.join(', ')}${pk([' 같은 특징이 있다.', ' 등으로 알려져 있다.', ' 같은 점이 강점이다.'], 2)}`;
+  else s1 += `다.`;
+  sents.push(s1);
+  // 2) 위치·운영 사실 (있는 데이터만)
+  const opBits = [];
+  if (v.nearbyStation) {
+    const st = v.nearbyStation.match(/([^\s]+역)/)?.[1] || v.nearbyStation.split(' ')[0];
+    opBits.push(`${escHtml(st)}에서 ${pk(['가깝다', '도보로 가깝다', '가까운 거리다'], 3)}`);
+  }
+  if (v.openHours) opBits.push(`영업시간은 ${escHtml(v.openHours)}이다`);
+  if (v.ageGroup) opBits.push(`입장 기준은 ${escHtml(v.ageGroup)}이다`);
+  if (opBits.length) sents.push(opBits.join(', ') + '.');
+  // 3) 예약·문의 — 사실 기반 행동 안내
+  sents.push(`${pk(['예약과 문의는', '예약·문의는', '방문 문의는'], 5)} 담당자에게 ${pk(['직접', '바로'], 6)} ${pk(['할 수 있다.', '연락하면 된다.', '문의하면 된다.'], 7)}${v.staffNickname ? ' 담당: ' + escHtml(v.staffNickname) + '.' : ''}`);
+  return `<p class="ssr-answer">${sents.join(' ')}</p>`;
+}
+
+/**
  * Generate SSR body content for venue detail pages.
  * Contains H1 (store name), H2s with store name, and opening paragraphs.
  * React will replace this on hydration.
@@ -463,6 +502,8 @@ function generateVenueSsrBody(v, allVenues) {
 
   let html = `<article itemscope itemtype="https://schema.org/NightClub">`;
   html += `<h1 itemprop="name">${name}</h1>`;
+  // ★ 상단 직답 — h1 바로 아래 첫 문단(p:first-of-type). 구글 스니펫 + AI 인용 + speakable 타깃.
+  html += generateVenueDirectAnswer(v);
   // ★ SSR PhoneBar / 운영정보 — 검색엔진·AI 색인 + 클라이언트 hydration 전 노출 (시즌82)
   if (v.staffPhone) {
     const telDigits = v.staffPhone.replace(/-/g, '');
@@ -1611,6 +1652,11 @@ function pickHookPrefix(v) {
   return opts[Math.abs(h) % opts.length];
 }
 
+// 공식 사이트 보유 업소(사장님 소유) — JSON-LD sameAs 엔티티 연결. SSR 본문 백링크와 동일 소스.
+const OFFICIAL_SITES = {
+  ilsanmyeongwolgwanyojeong: 'https://sunwook4.mycafe24.com/',
+};
+
 let venueCount = 0;
 for (const v of venues) {
   const cm = catMap[v.cat];
@@ -1647,9 +1693,11 @@ for (const v of venues) {
   const venueJsonLd = {
     '@context': 'https://schema.org',
     '@type': v.cat === 'club' || v.cat === 'night' ? 'NightClub' : v.cat === 'lounge' || v.cat === 'hoppa' ? 'BarOrPub' : v.cat === 'yojeong' ? 'Restaurant' : 'EntertainmentBusiness',
+    // ★ 엔티티 앵커 — 안정적 @id로 구글·AI가 이 가게를 고유 엔티티로 결합 (가게이름 검색 디스앰비규에이션)
+    '@id': `${BASE_URL}${routePath}/#business`,
     name: v.nameKo,
     description: v.description.slice(0, 300),
-    address: { '@type': 'PostalAddress', streetAddress: v.address || `${v.regionKo} ${v.nameKo}`, addressLocality: v.regionKo, addressCountry: 'KR' },
+    address: { '@type': 'PostalAddress', streetAddress: v.address || `${v.regionKo} ${v.nameKo}`, addressLocality: v.regionKo, addressRegion: v.regionKo, addressCountry: 'KR' },
     url: `${BASE_URL}${routePath}/`,
     image: getVenueImageList(v.slug),
     telephone: v.staffPhone || undefined,
@@ -1667,10 +1715,13 @@ for (const v of venues) {
     venueJsonLd.alternateName = v.aliases;
   }
   // 시즌29 — Speakable schema (Google Assistant 음성 검색 답변 채택)
+  // 시즌91 — 상단 직답(.ssr-answer)을 음성 답변 타깃으로: 전화번호 문단 대신 사실 요약을 읽도록.
   venueJsonLd.speakable = {
     '@type': 'SpeakableSpecification',
-    cssSelector: ['h1', '.ssr-seo p:first-of-type'],
+    cssSelector: ['h1', '.ssr-answer'],
   };
+  /* sameAs — 공식 사이트(사장님 소유 업소) 연결: 엔티티 신뢰·디스앰비규에이션 강화 */
+  if (OFFICIAL_SITES[v.slug]) venueJsonLd.sameAs = [OFFICIAL_SITES[v.slug]];
 
   // BreadcrumbList: 홈 > 카테고리 > 지역(있으면) > 업소
   const breadcrumbItems = [

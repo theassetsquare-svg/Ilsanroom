@@ -132,8 +132,11 @@ for (const f of files) {
   // 별도 <script type="application/ld+json"> 블록에서 root @type이 2회 이상 등장하면 ERR.
   const ldRe = /<script\s+type=["']application\/ld\+json["']\s*>([\s\S]*?)<\/script>/gi;
   const rootTypeCounts = {};
+  let fakeRating = false;
   let ldMatch;
   while ((ldMatch = ldRe.exec(html))) {
+    // ★ 가짜 별점 게이트 — 검증된 실제 후기 없이 aggregateRating/ratingValue/reviewCount 박으면 Google fake-review 정책 위반.
+    if (/"aggregateRating"|"ratingValue"|"reviewCount"/.test(ldMatch[1])) fakeRating = true;
     try {
       const parsed = JSON.parse(ldMatch[1]);
       const items = Array.isArray(parsed) ? parsed : [parsed];
@@ -149,6 +152,15 @@ for (const f of files) {
   }
   for (const [t, c] of Object.entries(rootTypeCounts)) {
     if (c >= 2) add('ERR', `JSON-LD root @type "${t}" \uc911\ubcf5 ${c}\uac1c (Google Rich Results \uacbd\uace0)`);
+  }
+  if (fakeRating) add('ERR', '가짜 별점(aggregateRating/ratingValue) — 검증 후기 없이 평점 발행 금지');
+
+  // ★ 업소 상세 엔티티 게이트 — 신규 업소 자동 적용 (LocalBusiness·직답·FAQ 미달 시 배포 차단)
+  if (isVenueDetail) {
+    const LB = ['NightClub', 'BarOrPub', 'Restaurant', 'EntertainmentBusiness'];
+    if (!LB.some(t => rootTypeCounts[t])) add('ERR', 'venue LocalBusiness 스키마 누락 (NightClub/BarOrPub/Restaurant/EntertainmentBusiness)');
+    if (!rootTypeCounts['FAQPage']) add('ERR', 'venue FAQPage 스키마 누락');
+    if (!/class=["']ssr-answer["']/.test(html)) add('ERR', 'venue 상단 직답 블록(.ssr-answer) 누락');
   }
 }
 
