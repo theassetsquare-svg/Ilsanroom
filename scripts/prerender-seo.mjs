@@ -273,7 +273,7 @@ function venueHref(v) {
 const SKIP_TO_CONTENT = `<a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:0;z-index:9999;background:#000;color:#fff;padding:8px 12px;text-decoration:none;font-weight:600" onfocus="this.style.left='8px'" onblur="this.style.left='-9999px'">본문 바로가기</a>`;
 const SITE_NAV_ANCHORS = `${SKIP_TO_CONTENT}<nav aria-label="카테고리"><ul><li><a href="/clubs/">클럽</a></li><li><a href="/nights/">나이트</a></li><li><a href="/lounges/">라운지</a></li><li><a href="/rooms/">룸</a></li><li><a href="/yojeong/">요정</a></li><li><a href="/hoppa/">호빠</a></li><li><a href="/community/">커뮤니티</a></li><li><a href="/magazine/">매거진</a></li><li><a href="/search/">검색</a></li></ul></nav>`;
 // 시즌22 — 사이트 footer SSR 내부링크 (정적 유틸/lounge/lead 페이지 reachable)
-const SITE_FOOTER_ANCHORS = `<footer aria-label="사이트맵"><h2>전체 메뉴</h2><nav aria-label="사이트맵 링크"><ul><li><a href="/tonight/">오늘 밤</a></li><li><a href="/weekend/">이번 주말</a></li><li><a href="/occasion/">상황별</a></li><li><a href="/budget/">예산별</a></li><li><a href="/guide/">입문 가이드</a></li><li><a href="/safety/">안전 가이드</a></li><li><a href="/help/">자주 묻는 질문</a></li><li><a href="/venue-info/">양주·부스·룸 안내</a></li><li><a href="/events/">이벤트 일정</a></li><li><a href="/gallery/">매장 사진</a></li><li><a href="/ranking/">인기 랭킹</a></li><li><a href="/quiz/">스타일 퀴즈</a></li><li><a href="/roulette/">룰렛 추천</a></li><li><a href="/vs/">VS 매치업</a></li><li><a href="/compare/">업소 비교</a></li><li><a href="/hidden/">숨은 명소</a></li><li><a href="/welcome/">놀쿨 소개</a></li><li><a href="/login/">로그인</a></li><li><a href="/profile/">내 프로필</a></li><li><a href="/referral/">친구 초대</a></li><li><a href="/onboarding/">업소 입점</a></li><li><a href="/pricing/">요금제</a></li><li><a href="/dashboard/">매장 대시보드</a></li><li><a href="/analytics/">분석 리포트</a></li><li><a href="/billing/">결제 관리</a></li><li><a href="/launch/">오픈 체크</a></li><li><a href="/demo/">업주 데모</a></li><li><a href="/case-studies/">운영 사례</a></li><li><a href="/testimonials/">업주 인터뷰</a></li><li><a href="/status/">서비스 상태</a></li><li><a href="/privacy-promise/">프라이버시 정책</a></li><li><a href="/disclaimer/">고지 사항</a></li><li><a href="/terms/">이용 약관</a></li><li><a href="/privacy/">개인정보 처리</a></li><li><a href="/venue-terms/">업주 약관</a></li><li><a href="/lounge/">업종별 라운지</a></li><li><a href="/lounge/club/">클럽 라운지</a></li><li><a href="/lounge/night/">나이트 라운지</a></li><li><a href="/lounge/room/">룸 라운지</a></li><li><a href="/lounge/lounge/">라운지바 라운지</a></li><li><a href="/lounge/yojung/">요정 라운지</a></li><li><a href="/lounge/hoppa/">호빠 라운지</a></li><li><a href="/lounge/free/">자유 라운지</a></li><li><a href="/lounge/qna/">Q&A 라운지</a></li><li><a href="/lead/nightlife-guide/">나이트라이프 가이드</a></li><li><a href="/lead/quiz/">스타일 진단</a></li><li><a href="/lead/weekly-hot/">주간 핫스팟</a></li></ul></nav></footer>`;
+const SITE_FOOTER_ANCHORS = `<footer aria-label="사이트맵"><h2>전체 메뉴</h2><nav aria-label="사이트맵 링크"><ul><li><a href="/tonight/">오늘 밤</a></li><li><a href="/weekend/">이번 주말</a></li><li><a href="/occasion/">상황별</a></li><li><a href="/budget/">예산별</a></li><li><a href="/guide/">입문 가이드</a></li><li><a href="/safety/">안전 가이드</a></li><li><a href="/help/">자주 묻는 질문</a></li><li><a href="/venue-info/">양주·부스·룸 안내</a></li><li><a href="/events/">이벤트 일정</a></li><li><a href="/gallery/">매장 사진</a></li><li><a href="/ranking/">인기 랭킹</a></li><li><a href="/quiz/">스타일 퀴즈</a></li><li><a href="/roulette/">룰렛 추천</a></li><li><a href="/vs/">VS 매치업</a></li><li><a href="/compare/">업소 비교</a></li><li><a href="/hidden/">숨은 명소</a></li><li><a href="/welcome/">놀쿨 소개</a></li><li><a href="/login/">로그인</a></li><li><a href="/profile/">내 프로필</a></li><li><a href="/referral/">친구 초대</a></li><li><a href="/onboarding/">업소 입점</a></li><li><a href="/pricing/">요금제</a></li><li><a href="/dashboard/">매장 대시보드</a></li><li><a href="/analytics/">분석 리포트</a></li><li><a href="/billing/">결제 관리</a></li><li><a href="/launch/">오픈 체크</a></li><li><a href="/demo/">업주 데모</a></li><li><a href="/case-studies/">운영 사례</a></li><li><a href="/testimonials/">업주 인터뷰</a></li><li><a href="/status/">서비스 상태</a></li><li><a href="/privacy-promise/">프라이버시 정책</a></li><li><a href="/disclaimer/">고지 사항</a></li><li><a href="/legal/">법적 준수 안내</a></li><li><a href="/terms/">이용 약관</a></li><li><a href="/privacy/">개인정보 처리</a></li><li><a href="/venue-terms/">업주 약관</a></li><li><a href="/lounge/">업종별 라운지</a></li><li><a href="/lounge/club/">클럽 라운지</a></li><li><a href="/lounge/night/">나이트 라운지</a></li><li><a href="/lounge/room/">룸 라운지</a></li><li><a href="/lounge/lounge/">라운지바 라운지</a></li><li><a href="/lounge/yojung/">요정 라운지</a></li><li><a href="/lounge/hoppa/">호빠 라운지</a></li><li><a href="/lounge/free/">자유 라운지</a></li><li><a href="/lounge/qna/">Q&A 라운지</a></li><li><a href="/lead/nightlife-guide/">나이트라이프 가이드</a></li><li><a href="/lead/quiz/">스타일 진단</a></li><li><a href="/lead/weekly-hot/">주간 핫스팟</a></li></ul></nav></footer>`;
 
 function writePage(routePath, meta) {
   // 파일시스템은 디코딩된 경로 (Cloudflare가 URL 디코딩 후 매칭)
@@ -1556,6 +1556,8 @@ for (const [cat, regions] of Object.entries(regionsByCategory)) {
       regSsr += `</ul>`;
       regSsr += `<h2>동선·귀가 안전 가이드</h2>`;
       regSsr += `<p>일대는 늦은 시간 택시 잡기가 어려운 구간이 있어, 끝나는 시간 기준으로 콜택시·대리운전을 미리 알아두는 편이 안전합니다. 일행이 흩어지지 않도록 합류 지점은 대표 역·편의점 같은 랜드마크로 잡고, 위치 공유를 켜두면 모임이 흐트러지지 않습니다. 술 마신 후 직접 운전은 절대 금물이고, 일행 중 만취자가 있으면 매장 매니저에게 부탁해 안전한 콜택시·대리 호출을 안내받을 수 있습니다. 새벽 마감 시간은 시즌·요일에 따라 단축되는 곳이 있으니 마지막 잔을 비우기 전 귀가 동선을 한번 점검해 두면 새벽 일대 택시난을 피할 수 있습니다.</p>`;
+      // 시즌88 — 허브-메시 cross-link(막다른길 0): 1곳뿐인 지역도 관련 태그/지역/업종/역으로 다음 갈 곳 보장
+      regSsr += aggHubMesh(regionVenues, 'region', regionKo);
 
       // ★ ItemList JSON-LD
       const regJsonLd = [{
@@ -1802,6 +1804,16 @@ for (const a of magazineArticles) {
   const routePath = `/magazine/${a.id}`;
   const canonical = `${BASE_URL}${routePath}/`;
   const desc = truncateDesc(a.excerpt, 150);
+  // 시즌88 — 퍼널 막다른길 0: 모든 매거진 글에 같은 태그 우선 관련글 + 업종 큐레이션 cross-link
+  const _relAll = magazineArticles.filter(x => x.id !== a.id);
+  const _relSame = _relAll.filter(x => x.tag === a.tag);
+  const _relPick = (_relSame.length >= 3 ? _relSame : [..._relSame, ..._relAll.filter(x => x.tag !== a.tag)]).slice(0, 4);
+  const _relLis = _relPick.map(x => `<li><a href="/magazine/${x.id}/">${escHtml(x.title)}</a></li>`).join('');
+  const _relNav = `
+<nav aria-label="이어서 볼 글" class="ssr-related">
+<h2>${escHtml(a.tag)} 글과 이어서 보면 좋은 것</h2>
+<ul>${_relLis}<li><a href="/clubs/">클럽 큐레이션 전체</a></li><li><a href="/nights/">나이트 큐레이션 전체</a></li></ul>
+</nav>`;
   // SSR 본문: H1 + tag 라벨 + 본문 HTML 그대로 (이미 H2/H3/p 마크업)
   // 시즌159 — 매거진 article 본문 깊이 보강 (체류 10분 보장)
   const articleAddon = `
@@ -1823,6 +1835,7 @@ for (const a of magazineArticles) {
 <p><strong>${escHtml(a.tag)}</strong> · <time datetime="${escHtml(a.date)}">${escHtml(a.date)}</time></p>
 ${a.content}
 ${articleAddon}
+${_relNav}
 <p><a href="${BASE_URL}/magazine">← 매거진 전체 보기</a></p>
 </article>`;
   // Article JSON-LD
@@ -1913,7 +1926,7 @@ function aggPick(key, arr, off) {
   x = (x ^ (x >>> 16)) >>> 0;
   return arr[x % arr.length];
 }
-const aggStationOf = (v) => v.nearbyStation ? (v.nearbyStation.match(/([^\s]+역)/)?.[1] || '') : '';
+function aggStationOf(v) { return v.nearbyStation ? (v.nearbyStation.match(/([^\s]+역)/)?.[1] || '') : ''; }
 // 멤버 업소 대표 하이라이트 — 페이지마다 멤버가 다르므로 100% 고유. features/shortDesc 실데이터.
 function aggHighlights(members, shortLabel, max = 6) {
   let html = '<ul>';
