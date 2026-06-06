@@ -273,7 +273,24 @@ function venueHref(v) {
 const SKIP_TO_CONTENT = `<a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:0;z-index:9999;background:#000;color:#fff;padding:8px 12px;text-decoration:none;font-weight:600" onfocus="this.style.left='8px'" onblur="this.style.left='-9999px'">본문 바로가기</a>`;
 const SITE_NAV_ANCHORS = `${SKIP_TO_CONTENT}<nav aria-label="카테고리"><ul><li><a href="/clubs/">클럽</a></li><li><a href="/nights/">나이트</a></li><li><a href="/lounges/">라운지</a></li><li><a href="/rooms/">룸</a></li><li><a href="/yojeong/">요정</a></li><li><a href="/hoppa/">호빠</a></li><li><a href="/community/">커뮤니티</a></li><li><a href="/magazine/">매거진</a></li><li><a href="/search/">검색</a></li></ul></nav>`;
 // 시즌22 — 사이트 footer SSR 내부링크 (정적 유틸/lounge/lead 페이지 reachable)
-const SITE_FOOTER_ANCHORS = `<footer aria-label="사이트맵"><h2>전체 메뉴</h2><nav aria-label="사이트맵 링크"><ul><li><a href="/tonight/">오늘 밤</a></li><li><a href="/weekend/">이번 주말</a></li><li><a href="/occasion/">상황별</a></li><li><a href="/budget/">예산별</a></li><li><a href="/guide/">입문 가이드</a></li><li><a href="/safety/">안전 가이드</a></li><li><a href="/help/">자주 묻는 질문</a></li><li><a href="/venue-info/">양주·부스·룸 안내</a></li><li><a href="/events/">이벤트 일정</a></li><li><a href="/gallery/">매장 사진</a></li><li><a href="/ranking/">인기 랭킹</a></li><li><a href="/quiz/">스타일 퀴즈</a></li><li><a href="/roulette/">룰렛 추천</a></li><li><a href="/vs/">VS 매치업</a></li><li><a href="/compare/">업소 비교</a></li><li><a href="/hidden/">숨은 명소</a></li><li><a href="/welcome/">놀쿨 소개</a></li><li><a href="/login/">로그인</a></li><li><a href="/profile/">내 프로필</a></li><li><a href="/referral/">친구 초대</a></li><li><a href="/onboarding/">업소 입점</a></li><li><a href="/pricing/">요금제</a></li><li><a href="/dashboard/">매장 대시보드</a></li><li><a href="/analytics/">분석 리포트</a></li><li><a href="/billing/">결제 관리</a></li><li><a href="/launch/">오픈 체크</a></li><li><a href="/demo/">업주 데모</a></li><li><a href="/case-studies/">운영 사례</a></li><li><a href="/testimonials/">업주 인터뷰</a></li><li><a href="/status/">서비스 상태</a></li><li><a href="/privacy-promise/">프라이버시 정책</a></li><li><a href="/disclaimer/">고지 사항</a></li><li><a href="/legal/">법적 준수 안내</a></li><li><a href="/terms/">이용 약관</a></li><li><a href="/privacy/">개인정보 처리</a></li><li><a href="/venue-terms/">업주 약관</a></li><li><a href="/lounge/">업종별 라운지</a></li><li><a href="/lounge/club/">클럽 라운지</a></li><li><a href="/lounge/night/">나이트 라운지</a></li><li><a href="/lounge/room/">룸 라운지</a></li><li><a href="/lounge/lounge/">라운지바 라운지</a></li><li><a href="/lounge/yojung/">요정 라운지</a></li><li><a href="/lounge/hoppa/">호빠 라운지</a></li><li><a href="/lounge/free/">자유 라운지</a></li><li><a href="/lounge/qna/">Q&A 라운지</a></li><li><a href="/lead/nightlife-guide/">나이트라이프 가이드</a></li><li><a href="/lead/quiz/">스타일 진단</a></li><li><a href="/lead/weekly-hot/">주간 핫스팟</a></li></ul></nav></footer>`;
+const SITE_FOOTER_ANCHORS = `<footer aria-label="사이트맵"><h2>전체 메뉴</h2><nav aria-label="사이트맵 링크"><ul><li><a href="/tonight/">오늘 밤</a></li><li><a href="/weekend/">이번 주말</a></li><li><a href="/occasion/">상황별</a></li><li><a href="/budget/">예산별</a></li><li><a href="/guide/">입문 가이드</a></li><li><a href="/safety/">안전 가이드</a></li><li><a href="/help/">자주 묻는 질문</a></li><li><a href="/venue-info/">양주·부스·룸 안내</a></li><li><a href="/events/">이벤트 일정</a></li><li><a href="/gallery/">매장 사진</a></li><li><a href="/ranking/">인기 랭킹</a></li><li><a href="/quiz/">스타일 퀴즈</a></li><li><a href="/roulette/">룰렛 추천</a></li><li><a href="/vs/">VS 매치업</a></li><li><a href="/compare/">업소 비교</a></li><li><a href="/hidden/">숨은 명소</a></li><li><a href="/welcome/">놀쿨 소개</a></li><li><a href="/login/">로그인</a></li><li><a href="/profile/">내 프로필</a></li><li><a href="/referral/">친구 초대</a></li><li><a href="/onboarding/">업소 입점</a></li><li><a href="/pricing/">요금제</a></li><li><a href="/dashboard/">매장 대시보드</a></li><li><a href="/analytics/">분석 리포트</a></li><li><a href="/billing/">결제 관리</a></li><li><a href="/launch/">오픈 체크</a></li><li><a href="/demo/">업주 데모</a></li><li><a href="/case-studies/">운영 사례</a></li><li><a href="/testimonials/">업주 인터뷰</a></li><li><a href="/status/">서비스 상태</a></li><li><a href="/privacy-promise/">프라이버시 정책</a></li><li><a href="/disclaimer/">고지 사항</a></li><li><a href="/legal/">법적 준수 안내</a></li><li><a href="/terms/">이용 약관</a></li><li><a href="/privacy/">개인정보 처리</a></li><li><a href="/venue-terms/">업주 약관</a></li><li><a href="/lounge/">업종별 라운지</a></li><li><a href="/lounge/club/">클럽 라운지</a></li><li><a href="/lounge/night/">나이트 라운지</a></li><li><a href="/lounge/room/">룸 라운지</a></li><li><a href="/lounge/lounge/">라운지바 라운지</a></li><li><a href="/lounge/yojung/">요정 라운지</a></li><li><a href="/lounge/hoppa/">호빠 라운지</a></li><li><a href="/lounge/free/">자유 라운지</a></li><li><a href="/lounge/qna/">Q&A 라운지</a></li><li><a href="/lead/nightlife-guide/">나이트라이프 가이드</a></li><li><a href="/lead/quiz/">스타일 진단</a></li><li><a href="/lead/weekly-hot/">주간 핫스팟</a></li></ul></nav><nav aria-label="최근 업데이트"><h2>다시 오면 새로 보이는 것</h2><ul><li><a href="/new/clubs/">이번에 새로 들어온 곳</a></li><li><a href="/magazine/">이번 주 매거진 글</a></li><li><a href="/tonight/">오늘 밤 갈 만한 곳</a></li></ul><p>콘텐츠 최근 갱신 ${BUILD_DATE_KST} 기준</p></nav></footer>`;
+
+// 시즌89 — 가시 브레드크럼: jsonLdList의 BreadcrumbList(이미 페이지별 정확한 이름·URL)에서 생성.
+// 전 페이지 유형 공통(venue/매거진/집계/정적). 상위 단계는 같은 탭 내부링크(퍼널 상향 동선),
+// 마지막 항목은 현재 페이지(aria-current, 비링크). 항목 2개 미만이면 생략(홈 등).
+function visibleBreadcrumb(meta) {
+  const list = (meta.jsonLdList || []).find(o => o && o['@type'] === 'BreadcrumbList');
+  const items = list && Array.isArray(list.itemListElement) ? list.itemListElement : null;
+  if (!items || items.length < 2) return '';
+  const lis = items.map((it, i) => {
+    const name = escHtml(String(it.name || ''));
+    if (i === items.length - 1) return `<li aria-current="page">${name}</li>`;
+    let rel = String(it.item || '/').replace(BASE_URL, '') || '/';
+    if (rel !== '/' && !rel.endsWith('/')) rel += '/';
+    return `<li><a href="${rel}">${name}</a></li>`;
+  }).join('');
+  return `<nav aria-label="현재 위치" class="ssr-breadcrumb"><ol>${lis}</ol></nav>`;
+}
 
 function writePage(routePath, meta) {
   // 파일시스템은 디코딩된 경로 (Cloudflare가 URL 디코딩 후 매칭)
@@ -317,6 +334,11 @@ function writePage(routePath, meta) {
         /(<footer aria-label="사이트맵")/,
         `</main>$1`
       );
+    }
+    // 시즌89 — 가시 브레드크럼을 <main> 최상단에 1회 주입 (퍼널 상향 동선 + SERP 일치)
+    const crumb = visibleBreadcrumb(meta);
+    if (crumb && !ssrBody.includes('class="ssr-breadcrumb"')) {
+      ssrBody = ssrBody.replace('<main id="main-content">', `<main id="main-content">${crumb}`);
     }
   }
   const html = renderPage({ ...meta, ssrBody, canonical: routePath, noindex: noIndexPathsSet.has(routePath) });
@@ -1881,7 +1903,7 @@ console.log(`✅ 매거진 article 상세 페이지 ${magazineCount}개 생성`)
 const dynamicPages = [];
 
 // CollectionPage + BreadcrumbList 자동 생성 헬퍼 (동적 SEO 페이지 공통)
-function collectionJsonLd(routePath, title, description, items) {
+function collectionJsonLd(routePath, title, description, items, crumbItems) {
   const collectionLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -1898,19 +1920,23 @@ function collectionJsonLd(routePath, title, description, items) {
       })),
     },
   };
-  // 경로 분해해서 BreadcrumbList 생성
-  const parts = routePath.split('/').filter(Boolean);
-  const crumbs = [{ '@type': 'ListItem', position: 1, name: '홈', item: 'https://nolcool.com/' }];
-  let acc = '';
-  parts.forEach((p, i) => {
-    acc += `/${p}`;
-    crumbs.push({
-      '@type': 'ListItem',
-      position: i + 2,
-      name: decodeURIComponent(p),
-      item: `https://nolcool.com${acc}`,
+  // 시즌89 — 집계 페이지 브레드크럼: 제너레이터가 실제 존재하는 부모 계층을 명시 전달(끊긴 /region/ 링크 방지).
+  // crumbItems 미전달 시에만 경로 분해 폴백(영문 세그먼트→한글 라벨).
+  let crumbs;
+  if (crumbItems && crumbItems.length) {
+    crumbs = crumbItems.map((it, i) => ({ '@type': 'ListItem', position: i + 1, name: it.name, item: it.url }));
+  } else {
+    const HUB_SEG_LABEL = { tag: '태그', region: '지역', near: '역 주변', best: '인기', new: '신규' };
+    const CATPATH_LABEL = { clubs: '클럽', nights: '나이트', lounges: '라운지', rooms: '룸', yojeong: '요정', hoppa: '호빠' };
+    const parts = routePath.split('/').filter(Boolean);
+    crumbs = [{ '@type': 'ListItem', position: 1, name: '홈', item: 'https://nolcool.com/' }];
+    let acc = '';
+    parts.forEach((p, i) => {
+      acc += `/${p}`;
+      const label = (i === 0 && HUB_SEG_LABEL[p]) || CATPATH_LABEL[p] || decodeURIComponent(p);
+      crumbs.push({ '@type': 'ListItem', position: i + 2, name: label, item: `https://nolcool.com${acc}` });
     });
-  });
+  }
   const breadcrumbLd = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs };
   return [collectionLd, breadcrumbLd];
 }
@@ -2019,7 +2045,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   ssrBody += `<dd>현재 회원 검색·재방문 기준 TOP은 ${escHtml(topNames)} 입니다. ${bestRegionStr} 지역에 주로 있으니 가까운 곳부터 확인하세요.</dd>`;
   ssrBody += `<dt>예약은 어떻게 하나요?</dt>`;
   ssrBody += `<dd>각 업소 상세 페이지에 직통 번호가 있고, 평일 저녁이면 당일 통화로도 가능합니다. 주말은 미리 확인하세요.</dd></dl>`;
-  writePage(p, { title, description: desc, ssrBody, keywords: `${catInfo.labelKo} 인기, ${catInfo.labelKo} 추천, ${catInfo.labelKo} 랭킹, ${catInfo.labelKo} TOP`, jsonLdList: collectionJsonLd(p, title, desc, catVenues) });
+  writePage(p, { title, description: desc, ssrBody, keywords: `${catInfo.labelKo} 인기, ${catInfo.labelKo} 추천, ${catInfo.labelKo} 랭킹, ${catInfo.labelKo} TOP`, jsonLdList: collectionJsonLd(p, title, desc, catVenues, [{ name: '놀쿨', url: BASE_URL }, { name: catInfo.labelKo, url: `${BASE_URL}/${catInfo.path}/` }, { name: '인기 순위', url: `${BASE_URL}${p}/` }]) });
   dynamicPages.push(p);
 }
 
@@ -2053,7 +2079,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   ssrBody += `<dd>현재 신규 입점 리스트는 ${escHtml(newNames)} 입니다. ${newRegionStr} 지역으로 추려서 비교하세요.</dd>`;
   ssrBody += `<dt>신규 매장은 손님이 적나요?</dt>`;
   ssrBody += `<dd>오픈 초기에는 평일 손님이 적은 편이라 분위기를 여유롭게 즐길 수 있고, 주말은 미리 예약하는 게 안전합니다.</dd></dl>`;
-  writePage(p, { title, description: desc, ssrBody, keywords: `신규 ${catInfo.labelKo}, 새 ${catInfo.labelKo}, ${catInfo.labelKo} 오픈`, jsonLdList: collectionJsonLd(p, title, desc, catVenues) });
+  writePage(p, { title, description: desc, ssrBody, keywords: `신규 ${catInfo.labelKo}, 새 ${catInfo.labelKo}, ${catInfo.labelKo} 오픈`, jsonLdList: collectionJsonLd(p, title, desc, catVenues, [{ name: '놀쿨', url: BASE_URL }, { name: catInfo.labelKo, url: `${BASE_URL}/${catInfo.path}/` }, { name: '신규 입점', url: `${BASE_URL}${p}/` }]) });
   dynamicPages.push(p);
 }
 
@@ -2111,7 +2137,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
   ssrBody += `<h2>${escHtml(regionKo)} 대표 업소 미리보기</h2>${aggHighlights(regionVenues, shortLabelFn)}`;
   ssrBody += aggInlineCta('region-' + regionKo, regionVenues);
   ssrBody += aggHubMesh(regionVenues, 'region', regionKo);
-  writePage(p, { title, description: desc, ssrBody, keywords: `${regionKo} 나이트라이프, ${regionKo} 클럽, ${regionKo} 나이트, ${regionKo} 룸, ${regionKo} 라운지`, jsonLdList: collectionJsonLd(p, title, desc, regionVenues) });
+  writePage(p, { title, description: desc, ssrBody, keywords: `${regionKo} 나이트라이프, ${regionKo} 클럽, ${regionKo} 나이트, ${regionKo} 룸, ${regionKo} 라운지`, jsonLdList: collectionJsonLd(p, title, desc, regionVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}${p}/` }]) });
   dynamicPages.push(p);
 
   // ── region/[region]/[category] — 지역+업종 크로스 ──
@@ -2150,7 +2176,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     cSsr += `<dt>예약은 어떻게 하나요?</dt>`;
     cSsr += `<dd>각 업소 상세 페이지에서 직통 전화로 예약 가능 시간과 룸 사이즈를 미리 확인하세요. 주말은 일찍 마감되는 곳이 많습니다.</dd></dl>`;
     cSsr += aggHubMesh(crossVenues, 'region', regionKo);
-    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: collectionJsonLd(cp, ct, cd, crossVenues) });
+    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]) });
     dynamicPages.push(cp);
   }
 }
@@ -2202,7 +2228,7 @@ for (const [tag, tagVenues] of Object.entries(allTags)) {
   ssrBody += `<dd>${tagVenues.slice(0, 3).map(tv => escHtml(tagShort(tv))).join(', ')} 등 ${tagVenues.length}곳이고, ${tagRegionStr} 지역에 있습니다. 각 업소 상세에서 분위기를 확인하세요.</dd>`;
   ssrBody += `<dt>어떤 업종이 포함되나요?</dt>`;
   ssrBody += `<dd>${tagCatStr} ${tagCats.length}개 업종이 '${escHtml(tag)}' 결로 묶여 있습니다. 위 업종으로 둘러보기에서 같은 업종 인기·신규 업소를 이어서 볼 수 있습니다.</dd></dl>`;
-  writePage(p, { title, description: desc, ssrBody, keywords: `${tag}, ${tag} 추천, 나이트라이프 ${tag}`, jsonLdList: collectionJsonLd(p, title, desc, tagVenues) });
+  writePage(p, { title, description: desc, ssrBody, keywords: `${tag}, ${tag} 추천, 나이트라이프 ${tag}`, jsonLdList: collectionJsonLd(p, title, desc, tagVenues, [{ name: '놀쿨', url: BASE_URL }, { name: `#${tag}`, url: `${BASE_URL}${p}/` }]) });
   dynamicPages.push(p);
 }
 
@@ -2249,7 +2275,7 @@ for (const [st, stVenues] of Object.entries(stationVenues)) {
   ssrBody += `<dd>${escHtml(stTopNames)} 등 총 ${stVenues.length}곳이 도보권 안에 있습니다. 출구 번호는 각 업소 페이지에서 확인하세요.</dd>`;
   ssrBody += `<dt>늦은 시간에도 영업하나요?</dt>`;
   ssrBody += `<dd>대부분 새벽까지 운영하지만 마감 시간은 업소마다 다릅니다. 직통 통화로 마감 전 입장 가능 여부를 확인하세요.</dd></dl>`;
-  writePage(p, { title, description: desc, ssrBody, keywords: `${st} 근처, ${st} 나이트라이프, ${st} 클럽, ${st} 나이트`, jsonLdList: collectionJsonLd(p, title, desc, stVenues) });
+  writePage(p, { title, description: desc, ssrBody, keywords: `${st} 근처, ${st} 나이트라이프, ${st} 클럽, ${st} 나이트`, jsonLdList: collectionJsonLd(p, title, desc, stVenues, [{ name: '놀쿨', url: BASE_URL }, { name: st, url: `${BASE_URL}${p}/` }]) });
   dynamicPages.push(p);
 }
 
