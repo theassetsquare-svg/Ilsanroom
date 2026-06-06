@@ -1,0 +1,28 @@
+name: Google Index Coverage (전수 색인 점검)
+
+on:
+  schedule:
+    # 매주 월 KST 09:00 (UTC 00:00) — 전수 검사라 일일 아님(쿼터·중복 크롤 방지)
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+    inputs:
+      nudge:
+        description: '색인 안 된 URL Indexing API publish (회색지대)'
+        type: boolean
+        default: false
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Inspect all sitemap URLs + report non-indexed
+        run: node scripts/google-index-coverage.mjs ${{ (github.event_name == 'workflow_dispatch' && inputs.nudge) && '--nudge-indexing-api' || '' }}
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          GOOGLE_OAUTH_CLIENT_ID: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
+          GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
