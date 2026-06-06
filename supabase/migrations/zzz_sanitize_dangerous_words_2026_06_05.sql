@@ -56,7 +56,7 @@ BEGIN
     SELECT COUNT(*) INTO v_cnt FROM venues
       WHERE (COALESCE(description,'') || COALESCE(short_description,'') ||
              COALESCE(room_info,'') || COALESCE(booth_info,'') ||
-             COALESCE(liquor_info,'') || COALESCE(atmosphere,''))
+             COALESCE(liquor_info,'') || COALESCE(array_to_string(atmosphere,' '),''))
             ~ '유흥|밤문화|노래방|룸살롱|룸싸롱|초이스';
   END IF;
   IF to_regclass('public.posts') IS NOT NULL THEN
