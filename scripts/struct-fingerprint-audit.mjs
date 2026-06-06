@@ -27,6 +27,12 @@ function articleText(html) {
   const body = m ? m[0] : '';
   return body.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
+// 집계 페이지(tag/region/near/best/new)는 <article> 없이 <main>에 본문 → main 추출.
+function mainText(html) {
+  const m = html.match(/<main id="main-content">[\s\S]*?<\/main>/);
+  const body = m ? m[0] : '';
+  return body.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
 function shingles(text, n = 5) {
   const toks = text.split(/\s+/);
   const s = new Set();
@@ -62,8 +68,39 @@ for (const [cat, d] of Object.entries(CAT_DIRS)) {
 }
 
 console.log(`\n📊 결과: 🛑 FAIL ${fail}쌍 / ⚠️ WARN ${warn}쌍`);
+
+// ── 집계 페이지(tag/region/near/best/new) 구조지문 — 카테고리 평균으로 게이트 ──
+// 1~2 멤버 thin 페이지는 nav 크롬 비중이 커 단일 쌍 max가 높을 수 있음(구조적 바닥).
+// 동일 템플릿 문단 회귀는 카테고리 "평균"을 50~80%로 튀게 만들므로 평균으로 차단(시즌88 해체 직후 tag13·region12·near23·new14·best7%).
+const AGG_DIRS = ['tag', 'region', 'near', 'best', 'new'];
+const AGG_FAIL_AVG = 0.35; // 템플릿 회귀(평균 50%+) 결정적 차단. 현재 최악 near 23% → 12%p 헤드룸
+const AGG_WARN_AVG = 0.25; // 드리프트 조기 경보
+const AGG_CAP = 80;        // n>80 카테고리는 경로 정렬 후 등간격 샘플(결정적·재현 가능)
+let aggFail = 0;
+console.log(`\n🔬 집계 페이지 구조 지문 — 카테고리 평균 FAIL>${AGG_FAIL_AVG * 100}% / WARN>${AGG_WARN_AVG * 100}% (5-gram Jaccard)`);
+for (const d of AGG_DIRS) {
+  const base = join(DIST, d);
+  if (!existsSync(base)) continue;
+  let files = walk(base).sort();
+  if (files.length > AGG_CAP) { const stride = files.length / AGG_CAP; files = Array.from({ length: AGG_CAP }, (_, k) => files[Math.floor(k * stride)]); }
+  const arts = files.map(f => ({ f, sh: shingles(mainText(readFileSync(f, 'utf8'))) })).filter(a => a.sh.size > 0);
+  if (arts.length < 2) { if (arts.length) console.log(`[${d}] n=${arts.length} (쌍 비교 불가)`); continue; }
+  let sum = 0, pairs = 0, maxJ = 0;
+  for (let i = 0; i < arts.length; i++) for (let j = i + 1; j < arts.length; j++) {
+    const J = jaccard(arts[i].sh, arts[j].sh); sum += J; pairs++; if (J > maxJ) maxJ = J;
+  }
+  const avg = pairs ? sum / pairs : 0;
+  const lvl = avg > AGG_FAIL_AVG ? '🛑 FAIL' : avg > AGG_WARN_AVG ? '⚠️ WARN' : '✅';
+  if (avg > AGG_FAIL_AVG) aggFail++;
+  console.log(`[${d}] ${lvl} n=${arts.length} · 평균 ${(avg * 100).toFixed(1)}% · 최대 ${(maxJ * 100).toFixed(1)}% · ${pairs}쌍`);
+}
+
 if (fail > 0) {
   console.log(`❌ 구조 지문 회귀 — 두 페이지 본문이 ${(FAIL_AT * 100)}% 초과로 닮음. 신규/수정 venue 고유 데이터(liquorInfo/roomInfo/features/shortDescription) 보강 필요.`);
   process.exit(1);
 }
-console.log('✅ 전 카테고리 구조 지문 정상 (FAIL 0)');
+if (aggFail > 0) {
+  console.log(`❌ 집계 페이지 구조 지문 회귀 — 카테고리 평균이 ${AGG_FAIL_AVG * 100}% 초과. tag/region/near/best/new 본문이 동일 템플릿 문단으로 회귀했는지 확인(멤버 실데이터·허브-메시로 고유화 필요).`);
+  process.exit(1);
+}
+console.log('✅ 전 카테고리 구조 지문 정상 (venue FAIL 0 / 집계 평균 정상)');
