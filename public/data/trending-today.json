@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-05T18:53:23.208Z",
+  "generated_at": "2026-06-06T06:20:05.882Z",
   "window_hours": 24,
   "items": [
     {
@@ -10,13 +10,6 @@
       "views_24h": 4
     },
     {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
-      "category": "night",
-      "region": "오산",
-      "views_24h": 3
-    },
-    {
       "path": "/nights/daejeononenight",
       "title": "대전원나이트",
       "category": "night",
@@ -24,24 +17,17 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/ilsanshampoonight",
-      "title": "일산샴푸나이트",
+      "path": "/nights/ulsannewworldnight",
+      "title": "울산뉴월드나이트",
       "category": "night",
-      "region": "일산",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
+      "region": "울산",
       "views_24h": 2
     },
     {
-      "path": "/nights/gildongchancenight",
-      "title": "길동찬스나이트",
-      "category": "night",
-      "region": "길동",
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
       "views_24h": 2
     },
     {
@@ -52,25 +38,25 @@
       "views_24h": 2
     },
     {
+      "path": "/hoppa/jeonju-hoppa-gallery",
+      "title": "전주호빠 갤러리",
+      "category": "hoppa",
+      "region": "전주",
+      "views_24h": 1
+    },
+    {
       "path": "/clubs/gangnam/gangnamclub-race",
       "title": "강남청담클럽 레이스",
       "category": "club",
       "region": "강남",
-      "views_24h": 2
+      "views_24h": 1
     },
     {
-      "path": "/nights/sangbonghangukgwannight",
-      "title": "상봉동한국관나이트",
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
       "category": "night",
-      "region": "상봉동",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/sinlimgrandprixnight",
-      "title": "신림그랑프리나이트",
-      "category": "night",
-      "region": "신림",
-      "views_24h": 2
+      "region": "강서",
+      "views_24h": 1
     },
     {
       "path": "/hoppa/haeundaehoppa-michelin",
@@ -80,10 +66,24 @@
       "views_24h": 1
     },
     {
+      "path": "/nights/gildongchancenight",
+      "title": "길동찬스나이트",
+      "category": "night",
+      "region": "길동",
+      "views_24h": 1
+    },
+    {
       "path": "/nights/gwangjutotonight",
       "title": "광주토토밤나이트",
       "category": "night",
       "region": "광주",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
+      "category": "night",
+      "region": "오산",
       "views_24h": 1
     },
     {
