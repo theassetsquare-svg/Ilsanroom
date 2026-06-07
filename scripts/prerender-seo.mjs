@@ -7,6 +7,7 @@
 import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
+import { provinceOf, localityOf } from './lib/region-admin.mjs';
 
 const DIST = path.resolve('dist');
 const BASE_URL = 'https://nolcool.com';
@@ -1721,7 +1722,7 @@ for (const v of venues) {
     '@id': `${BASE_URL}${routePath}/#business`,
     name: v.nameKo,
     description: v.description.slice(0, 300),
-    address: { '@type': 'PostalAddress', streetAddress: v.address || `${v.regionKo} ${v.nameKo}`, addressLocality: v.regionKo, addressRegion: v.regionKo, addressCountry: 'KR' },
+    address: { '@type': 'PostalAddress', streetAddress: v.address || `${v.regionKo} ${v.nameKo}`, addressLocality: localityOf(v.regionKo), addressRegion: provinceOf(v.regionKo) || v.regionKo, addressCountry: 'KR' },
     url: `${BASE_URL}${routePath}/`,
     image: getVenueImageList(v.slug),
     telephone: v.staffPhone || undefined,
@@ -2189,9 +2190,16 @@ for (const v of venues) {
     allTags[t].push(v);
   }
 }
+let singleTagNoindexCount = 0;
+let multiTagIndexCount = 0;
 for (const [tag, tagVenues] of Object.entries(allTags)) {
   if (tagVenues.length < 1) continue;
   const p = `/tag/${encodeURIComponent(tag)}`;
+  // 3단계 — 1업소만 묶인 tag는 구조적 thin(큐레이션 1곳) → 그 venue 상세와 경쟁.
+  // noindex + sitemap/IndexNow 제외(색인 요청 안 함)로 thin 묶음이 venue를 약화시키지 않게 한다.
+  // 2개 이상 실제로 묶이는 tag만 색인 가치 유지. 페이지 자체는 항상 생성(venue→tag 링크 막다른길 0).
+  const single = tagVenues.length === 1;
+  if (single) noIndexPathsSet.add(p);
   // 시즌88 — title 접미부도 key로 회전(전 태그 동일 접미부 지문 해체 + 후미 5어절 차별화)
   const title = `#${tag} ${aggPick(tag, ['관련 업소', '모음', '큐레이션', '추천 리스트'], 5)} ${tagVenues.length}곳 — ${aggPick(tag, ['태그로 찾는 나이트라이프', '같은 결끼리 모아본 곳', '한번에 비교하는 페이지', '결로 묶은 나이트라이프'], 6)}`;
   // 시즌172 — tagTopNames에서도 접두어 중복 제거 (시즌172 stuffing 해소)
@@ -2229,8 +2237,10 @@ for (const [tag, tagVenues] of Object.entries(allTags)) {
   ssrBody += `<dt>어떤 업종이 포함되나요?</dt>`;
   ssrBody += `<dd>${tagCatStr} ${tagCats.length}개 업종이 '${escHtml(tag)}' 결로 묶여 있습니다. 위 업종으로 둘러보기에서 같은 업종 인기·신규 업소를 이어서 볼 수 있습니다.</dd></dl>`;
   writePage(p, { title, description: desc, ssrBody, keywords: `${tag}, ${tag} 추천, 나이트라이프 ${tag}`, jsonLdList: collectionJsonLd(p, title, desc, tagVenues, [{ name: '놀쿨', url: BASE_URL }, { name: `#${tag}`, url: `${BASE_URL}${p}/` }]) });
-  dynamicPages.push(p);
+  // single-member tag는 sitemap/IndexNow에서 제외(색인 요청 안 함). 파일은 위에서 이미 생성됨.
+  if (single) { singleTagNoindexCount++; } else { multiTagIndexCount++; dynamicPages.push(p); }
 }
+console.log(`   tag: 단일묶음 ${singleTagNoindexCount}개 noindex(sitemap 제외) · 다업소 ${multiTagIndexCount}개 색인 유지`);
 
 // ── near/[station] — 역 근처 ──
 const stationVenues = {};
