@@ -73,6 +73,7 @@ npx tsc --noEmit     # 타입체크
 | `nolcool-entity-gate.mjs` | 단일 tag 색인·addressRegion 누락 | `audit:entity` |
 | `prefetch-route-gate.mjs` | 내부링크 prefetch 404 | `audit:prefetch` |
 | `og-asset-gate.mjs` | og:image .svg·카테고리 JPG 치수≠1200²·두부/빈카드 | `audit:og` |
+| `category-density-gate.mjs` | 6 카테고리 키워드 밀도 밴드 이탈(스터핑/희박) | `audit:catdensity` |
 
 추가로 `scripts/nolcool-guard.mjs`(Edit/Write 훅)가 작성 단계에서 가격어·금지어·title 중복·홈 외 '놀쿨'·3rd-party 이미지·HashRouter·Next.js import·가짜폰·외부링크 target 누락을 실시간 차단한다.
 
