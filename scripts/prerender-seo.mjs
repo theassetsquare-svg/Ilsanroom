@@ -1184,7 +1184,7 @@ for (const pg of staticPages) {
     const allRegionsForCat = [...new Set(catVenues.map(vv => vv.regionKo))];
     if (allRegionsForCat.length > 0) {
       ssrBody += `<h3>지역별 ${catKo}</h3><ul>`;
-      allRegionsForCat.forEach(rk => { ssrBody += `<li><a href="/region/${encodeURIComponent(rk)}/">${escHtml(rk)} 나이트라이프</a></li>`; });
+      allRegionsForCat.forEach(rk => { ssrBody += `<li><a href="/region/${encodeURIComponent(rk)}/">${escHtml(rk)}</a></li>`; });
       ssrBody += `</ul>`;
     }
     // ★ Evergreen 가이드 — 업소 수와 무관하게 SEO 본문 풍부
