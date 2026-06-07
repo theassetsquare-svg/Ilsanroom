@@ -1347,11 +1347,12 @@ for (const pg of staticPages) {
       ],
     });
   }
-  // ★ 카테고리 페이지 og:image — /og/{slug}.svg 매핑 (clubs/nights/lounges/rooms/yojeong/hoppa)
+  // ★ 카테고리 페이지 og:image — /og/{slug}.jpg 1200² 매핑 (clubs/nights/lounges/rooms/yojeong/hoppa)
+  // .jpg = gen-category-og.mjs가 임베드 한글폰트로 빌드(두부 0·1:1). 스크레이퍼 SVG 미렌더 회피.
   let pageOgImage;
   if (categoryPaths.has(pg.path)) {
     const ogSlug = pg.path.replace(/^\//, '');
-    pageOgImage = `${BASE_URL}/og/${ogSlug}.svg`;
+    pageOgImage = `${BASE_URL}/og/${ogSlug}.jpg`;
   }
   writePage(pg.path, { title: pg.title, description: pg.desc, ssrBody, jsonLdList: jsonLdList.length > 0 ? jsonLdList : undefined, ogImage: pageOgImage });
   pageCount++;

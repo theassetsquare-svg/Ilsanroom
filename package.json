@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/gen-image-manifest.mjs && node scripts/gen-venues-counts.mjs && node scripts/nolcool-readability-gate.mjs && vite build && node scripts/prerender-seo.mjs && node scripts/nolcool-dist-audit.mjs && node scripts/nolcool-cross-dup-audit.mjs && node scripts/nolcool-route-sitemap-audit.mjs && node scripts/struct-fingerprint-audit.mjs && node scripts/funnel-reachability-audit.mjs && node scripts/nolcool-entity-gate.mjs && node scripts/prefetch-route-gate.mjs",
+    "build": "node scripts/gen-image-manifest.mjs && node scripts/gen-venues-counts.mjs && node scripts/gen-category-og.mjs && node scripts/nolcool-readability-gate.mjs && vite build && node scripts/prerender-seo.mjs && node scripts/nolcool-dist-audit.mjs && node scripts/nolcool-cross-dup-audit.mjs && node scripts/nolcool-route-sitemap-audit.mjs && node scripts/struct-fingerprint-audit.mjs && node scripts/funnel-reachability-audit.mjs && node scripts/nolcool-entity-gate.mjs && node scripts/prefetch-route-gate.mjs && node scripts/og-asset-gate.mjs",
     "build:no-audit": "node scripts/gen-image-manifest.mjs && node scripts/gen-venues-counts.mjs && vite build && node scripts/prerender-seo.mjs",
     "preview": "vite preview",
     "audit:src": "node scripts/nolcool-guard-bulk.mjs",
@@ -30,6 +30,7 @@
     "audit:readability": "node scripts/nolcool-readability-gate.mjs",
     "audit:entity": "node scripts/nolcool-entity-gate.mjs",
     "audit:prefetch": "node scripts/prefetch-route-gate.mjs",
+    "audit:og": "node scripts/og-asset-gate.mjs",
     "audit:all": "npm run audit:src && npm run audit:dist && npm run audit:dup && npm run audit:routes && npm run audit:drift && npm run audit:cron && npm run audit:titlefirst && npm run audit:hook && npm run audit:tone && npm run audit:fingerprint && npm run audit:funnel"
   },
   "dependencies": {
