@@ -1,34 +1,48 @@
 {
-  "generated_at": "2026-06-07T06:56:36.467Z",
+  "generated_at": "2026-06-07T14:52:08.037Z",
   "window_hours": 24,
   "items": [
     {
-      "path": "/nights/ulsannewworldnight",
-      "title": "울산뉴월드나이트",
+      "path": "/nights/bucheongoraenight",
+      "title": "부천고래나이트",
+      "category": "night",
+      "region": "부천",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/ulsanchampionnight",
+      "title": "울산챔피언나이트",
       "category": "night",
       "region": "울산",
-      "views_24h": 4
+      "views_24h": 1
     },
     {
-      "path": "/nights/ilsan-hwajung-tunnel",
-      "title": "일산화정터널나이트",
-      "category": "night",
-      "region": "일산",
-      "views_24h": 2
+      "path": "/hoppa/jangandonghoppa-bbangbbang",
+      "title": "장안동호빠 빵빵",
+      "category": "hoppa",
+      "region": "장안동",
+      "views_24h": 1
     },
     {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 2
+      "views_24h": 1
+    },
+    {
+      "path": "/rooms/busan-haeundae/haeundaegoguryeo",
+      "title": "해운대고구려",
+      "category": "room",
+      "region": "부산 해운대",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/suyushampoonight",
+      "title": "수유샴푸나이트",
+      "category": "night",
+      "region": "수유",
+      "views_24h": 1
     },
     {
       "path": "/nights/sangbonghangukgwannight",
@@ -73,13 +87,6 @@
       "views_24h": 1
     },
     {
-      "path": "/nights/bucheongoraenight",
-      "title": "부천고래나이트",
-      "category": "night",
-      "region": "부천",
-      "views_24h": 1
-    },
-    {
       "path": "/nights/osanhobaknight",
       "title": "오산호박나이트",
       "category": "night",
@@ -91,20 +98,6 @@
       "title": "청주돈텔마마나이트",
       "category": "night",
       "region": "청주",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/dapsimnidontellmamanight",
-      "title": "답십리돈텔마마나이트",
-      "category": "night",
-      "region": "답십리",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/ilsanshampoonight",
-      "title": "일산샴푸나이트",
-      "category": "night",
-      "region": "일산",
       "views_24h": 1
     }
   ]
