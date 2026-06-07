@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-06T17:59:38.349Z",
+  "generated_at": "2026-06-07T06:56:36.467Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,14 +7,7 @@
       "title": "울산뉴월드나이트",
       "category": "night",
       "region": "울산",
-      "views_24h": 6
-    },
-    {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 3
+      "views_24h": 4
     },
     {
       "path": "/nights/ilsan-hwajung-tunnel",
@@ -36,6 +29,48 @@
       "category": "night",
       "region": "대전",
       "views_24h": 2
+    },
+    {
+      "path": "/nights/sangbonghangukgwannight",
+      "title": "상봉동한국관나이트",
+      "category": "night",
+      "region": "상봉동",
+      "views_24h": 1
+    },
+    {
+      "path": "/clubs/apgujeong/apgujeongclub-color",
+      "title": "압구정클럽 컬러",
+      "category": "club",
+      "region": "압구정",
+      "views_24h": 1
+    },
+    {
+      "path": "/lounges/apgujeonglounge-dm",
+      "title": "압구정라운지 디엠",
+      "category": "lounge",
+      "region": "압구정",
+      "views_24h": 1
+    },
+    {
+      "path": "/clubs/gangnam/gangnamclub-peak",
+      "title": "강남청담클럽 피크",
+      "category": "club",
+      "region": "강남",
+      "views_24h": 1
+    },
+    {
+      "path": "/clubs/apgujeong/apgujeongclub-hype",
+      "title": "압구정클럽 하입",
+      "category": "club",
+      "region": "압구정",
+      "views_24h": 1
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 1
     },
     {
       "path": "/nights/bucheongoraenight",
@@ -70,41 +105,6 @@
       "title": "일산샴푸나이트",
       "category": "night",
       "region": "일산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/nowonhobaknight",
-      "title": "노원호박나이트",
-      "category": "night",
-      "region": "노원",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daejeonsevennight",
-      "title": "대전세븐나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/ulsanchampionnight",
-      "title": "울산챔피언나이트",
-      "category": "night",
-      "region": "울산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
-      "category": "night",
-      "region": "대전",
       "views_24h": 1
     }
   ]
