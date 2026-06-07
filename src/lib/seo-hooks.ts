@@ -1,4 +1,5 @@
 import type { Venue } from '@/types';
+import { josa } from '@/lib/text-format';
 
 /**
  * Generate unique hooking title for each venue.
@@ -139,7 +140,7 @@ export function getHookingTitle(venue: Venue): string {
   // regionKo가 "부산 해운대" 같이 2단어인 경우도 각 단어별로 체크
   const regionParts = venue.regionKo.split(/\s+/).filter((p: string) => p.length >= 2);
   const trait = venue.staffNickname
-    ? `${venue.staffNickname}이(가) 이끄는 명소`
+    ? `${josa(venue.staffNickname, '이/가')} 이끄는 명소`
     : venue.isPremium
       ? `제대로 된 ${getCategoryKo(venue.category)}`
       : `한번 가면 단골 되는 ${getCategoryKo(venue.category)}`;

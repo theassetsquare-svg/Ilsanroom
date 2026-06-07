@@ -1,8 +1,8 @@
 import type { Venue } from '@/types';
+import { splitParagraphs, josa } from '@/lib/text-format';
 import {
   MidContentHook,
   ReadCompletionReward,
-  ReadFinishCount,
   MidContentQuiz,
 } from '@/components/engagement/ReadingEngagement';
 
@@ -46,38 +46,25 @@ export default function VenueSeoContent({ venue }: { venue: Venue }) {
 
   // ── 1. 오프닝 ──
   const openings = [
-    `${v}을(를) 처음 알게 된 건 지인 추천이었다. "${region}쪽에 괜찮은 ${cat} 있다"는 한마디에 가봤는데 그게 시작이었다.`,
-    `${region}에서 ${cat}을(를) 찾고 있다면 ${v}은(는) 한번쯤 들어봤을 이름이다. 이미 가본 사람들 사이에서는 입소문이 꽤 퍼져있다.`,
-    `솔직히 ${v} 처음 갔을때 기대가 크진 않았다. ${region} ${cat}이(가) 거기서 거기일 거라고 생각했으니까. 근데 틀렸다.`,
-    `${v}은(는) ${region}에서 오래된 곳이다. 오래됐다는 건 두 가지 의미가 있다. 하나는 노후했다는 뜻이고, 다른 하나는 그만큼 검증됐다는 뜻이다. 여기는 후자다.`,
-    `"${region} ${cat} 어디 가?" 이 질문을 받으면 보통 몇 군데 이름이 나오는데 ${v}은(는) 거기 항상 들어간다.`,
+    `${josa(v, '을/를')} 처음 알게 된 건 지인 추천이었다. "${region}쪽에 괜찮은 ${cat} 있다"는 한마디에 가봤는데 그게 시작이었다.`,
+    `${region}에서 ${josa(cat, '을/를')} 찾고 있다면 ${josa(v, '은/는')} 한번쯤 들어봤을 이름이다. 이미 가본 사람들 사이에서는 입소문이 꽤 퍼져있다.`,
+    `솔직히 ${v} 처음 갔을때 기대가 크진 않았다. ${region} ${josa(cat, '이/가')} 거기서 거기일 거라고 생각했으니까. 근데 틀렸다.`,
+    `${josa(v, '은/는')} ${region}에서 오래된 곳이다. 오래됐다는 건 두 가지 의미가 있다. 하나는 노후했다는 뜻이고, 다른 하나는 그만큼 검증됐다는 뜻이다. 여기는 후자다.`,
+    `"${region} ${cat} 어디 가?" 이 질문을 받으면 보통 몇 군데 이름이 나오는데 ${josa(v, '은/는')} 거기 항상 들어간다.`,
   ];
   const opening = pickBySlug(slug, openings);
 
-  // ── 2. 본문 (description 활용) ──
-  const desc = venue.description || '';
-  let descBlocks: string[] = [];
-  if (desc.length > 50) {
-    const sentences = desc.split(/(?<=[.다])\s+/).filter(s => s.length > 10);
-    if (sentences.length > 3) {
-      const mid = Math.ceil(sentences.length / 2);
-      descBlocks = [sentences.slice(0, mid).join(' '), sentences.slice(mid).join(' ')];
-    } else {
-      descBlocks = [desc];
-    }
-  }
-
-  // ── 3. 분위기/특징 ──
+  // ── 2. 분위기/특징 ──
   let featureText = '';
   if (venue.features.length > 0) {
     const featureIntros = [
       `${v}에서 인상적인 부분을 꼽자면`,
       `${v}에 가보면 몇 가지 눈에 띄는 점이 있다`,
-      `${v}이(가) 다른 곳과 뭐가 다르냐고 물으면`,
+      `${josa(v, '이/가')} 다른 곳과 뭐가 다르냐고 물으면`,
     ];
     const intro = pickBySlug(slug + 'f', featureIntros);
     featureText = venue.features.map((f, i) => {
-      if (i === 0) return `${intro}, 우선 ${f}이(가) 있다.`;
+      if (i === 0) return `${intro}, 우선 ${josa(f, '이/가')} 있다.`;
       if (i === venue.features.length - 1) return `그리고 ${f}까지. 이 정도면 충분하다.`;
       return `${f}도 있고.`;
     }).join(' ');
@@ -87,8 +74,8 @@ export default function VenueSeoContent({ venue }: { venue: Venue }) {
   let staffText = '';
   if (venue.staffNickname) {
     const staffTexts = [
-      `${v}은(는) ${venue.staffNickname}이(가) 직접 챙기는 곳이다. 전화 한 통이면 세팅부터 퇴실까지 알아서 다 해준다. ${v} 처음이라 뭘 어떻게 해야할지 모르겠으면 그냥 "${venue.staffNickname}한테 전화하세요"가 답이다.`,
-      `${v}에서 ${venue.staffNickname}이(가) 자리를 잡아주는데 한번 가면 이 분이 왜 단골 관리의 핵심인지 알게 된다. 취향 파악이 빠르고 세팅이 세심하다.`,
+      `${josa(v, '은/는')} ${josa(venue.staffNickname, '이/가')} 직접 챙기는 곳이다. 전화 한 통이면 세팅부터 퇴실까지 알아서 다 해준다. ${v} 처음이라 뭘 어떻게 해야할지 모르겠으면 그냥 "${venue.staffNickname}한테 전화하세요"가 답이다.`,
+      `${v}에서 ${josa(venue.staffNickname, '이/가')} 자리를 잡아주는데 한번 가면 이 분이 왜 단골 관리의 핵심인지 알게 된다. 취향 파악이 빠르고 세팅이 세심하다.`,
       `${v} 담당은 ${venue.staffNickname}. 예약부터 퇴실까지 밀착으로 케어해주는 스타일이라 ${v} 처음 가는 사람도 어색하지 않게 놀 수 있다.`,
     ];
     staffText = pickBySlug(slug + 's', staffTexts);
@@ -118,8 +105,8 @@ export default function VenueSeoContent({ venue }: { venue: Venue }) {
 
   // ── 8. 클로징 ──
   const closings = [
-    `${region}에서 ${cat}을(를) 찾고 있다면 ${v} 한번 가보는걸 추천한다. 첫 방문이 좀 긴장되면 ${v}에 미리 전화해서 예약하고 가는게 편하다.`,
-    `결론: ${v}은(는) 기대 이상이었다. ${region} ${cat} 중에서 무드와 분위기 둘 다 잡은 곳이 ${v}이다.`,
+    `${region}에서 ${josa(cat, '을/를')} 찾고 있다면 ${v} 한번 가보는걸 추천한다. 첫 방문이 좀 긴장되면 ${v}에 미리 전화해서 예약하고 가는게 편하다.`,
+    `결론: ${josa(v, '은/는')} 기대 이상이었다. ${region} ${cat} 중에서 무드와 분위기 둘 다 잡은 곳이 ${josa(v, '이다/다')}.`,
     `${v} 다시 갈 의향이 있냐고 물으면 "이미 다음 예약 잡았다"가 답이다.`,
     `${v} 처음이라 걱정되면 전화 한 통 먼저 하고 가라. 그게 제일 편하다.`,
   ];
@@ -147,23 +134,20 @@ export default function VenueSeoContent({ venue }: { venue: Venue }) {
   return (
     <article className="mt-6">
       {/* ── 오프닝 ── */}
-      <p className="text-sm leading-[1.85] text-[#444]">{opening}</p>
+      {splitParagraphs(opening, 280).map((para, i) => (
+        <p key={`open-${i}`} className="text-sm leading-[1.85] text-[#444] mb-4">{para}</p>
+      ))}
 
-      {/* ── 본문 ── */}
-      {descBlocks.length > 0 && (
-        <>
-          <MidContentHook seed={slug} variant={0} />
-          {descBlocks.map((block, i) => (
-            <p key={`desc-${i}`} className="text-sm leading-[1.85] text-[#444] mb-4">{block}</p>
-          ))}
-        </>
-      )}
+      {/* 본문 description은 기본정보 탭(VenueDetailTabs)에서 단일 렌더 — 여기서 중복 제거 */}
+      <MidContentHook seed={slug} variant={0} />
 
       {/* ── 분위기/특징 섹션 ── */}
       {featureText && (
         <>
           <SectionHeader emoji="💬" label="분위기·특징" venueName={v} />
-          <p className="text-sm leading-[1.85] text-[#444]">{featureText}</p>
+          {splitParagraphs(featureText, 280).map((para, i) => (
+            <p key={`feat-${i}`} className="text-sm leading-[1.85] text-[#444] mb-4">{para}</p>
+          ))}
         </>
       )}
 
@@ -227,19 +211,11 @@ export default function VenueSeoContent({ venue }: { venue: Venue }) {
       <p className="text-sm leading-[1.85] text-[#444]">{closing}</p>
 
       {/* ── 완독 보상 (스크롤 시 IntersectionObserver로 공개) ── */}
-      <ReadCompletionReward
-        teaser={`${v} — 끝까지 읽은 사람만 보는 숨겨진 팁`}
-        readerCount={200 + (hash % 300)}
-      >
+      <ReadCompletionReward teaser={`${v} — 끝까지 읽은 사람만 보는 숨겨진 팁`}>
         <p className="text-sm leading-[1.85] text-[#444] font-medium">
           {hiddenTip}
         </p>
       </ReadCompletionReward>
-
-      {/* ── 완독자 카운터 ── */}
-      <div className="mt-4 text-center">
-        <ReadFinishCount pageName={v} baseCount={120 + (hash % 180)} />
-      </div>
     </article>
   );
 }

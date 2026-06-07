@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from '../ui/SafeLink';
+import { splitParagraphs } from '@/lib/text-format';
 import type { Venue } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
 import { getVenueEvent } from '@/data/venue-events';
@@ -64,11 +65,8 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
                   ilsanmyeongwolgwanyojeong: 'https://sunwook4.mycafe24.com/',
                 };
                 const url = backlinks[venue.slug];
-                // 가독성 — 긴 단일 문단을 문장 경계로 최대 3단락 분할 (텍스트 그대로, 단락만 분리)
-                const sentences = full.split(/(?<=[.다!?])\s+/).filter((s) => s.trim());
-                const per = Math.max(1, Math.ceil(sentences.length / 3));
-                const paras: string[] = [];
-                for (let i = 0; i < sentences.length; i += per) paras.push(sentences.slice(i, i + per).join(' '));
+                // 가독성 — 길이 독립적으로 의미(문장) 단위 2~4문장 단락 분할 (단락당 ≤300자, 텍스트 그대로)
+                const paras = splitParagraphs(full, 280);
                 let anchored = false;
                 return paras.map((para, pi) => {
                   if (url && !anchored) {

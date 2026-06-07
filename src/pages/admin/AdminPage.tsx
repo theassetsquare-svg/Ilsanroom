@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
 import { Link } from '../../components/ui/SafeLink';
 import { fetchReports, resolveReport, getReasonLabel, type Report } from '@/lib/report-api';
+import { josa } from '@/lib/text-format';
 
 const ADMIN_EMAILS = ['qotjsdnr123@naver.com', 'baesunwook513@gmail.com', 'theassetsquare@gmail.com'];
 
@@ -176,7 +177,7 @@ export default function AdminPage() {
   // 사용자 차단
   const handleBan = (identifier: string) => {
     if (!identifier.trim()) return;
-    if (!confirm(`${identifier}을(를) 차단하시겠습니까?`)) return;
+    if (!confirm(`${josa(identifier, '을/를')} 차단하시겠습니까?`)) return;
     const updated = [...new Set([...bannedEmails, identifier.trim()])];
     setBannedEmails(updated);
     localStorage.setItem('nolcool_banned', JSON.stringify(updated));
