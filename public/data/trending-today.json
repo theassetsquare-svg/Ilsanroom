@@ -1,13 +1,20 @@
 {
-  "generated_at": "2026-06-07T14:52:08.037Z",
+  "generated_at": "2026-06-07T17:57:24.022Z",
   "window_hours": 24,
   "items": [
     {
-      "path": "/nights/bucheongoraenight",
-      "title": "부천고래나이트",
+      "path": "/nights/sangbonghangukgwannight",
+      "title": "상봉동한국관나이트",
       "category": "night",
-      "region": "부천",
+      "region": "상봉동",
       "views_24h": 2
+    },
+    {
+      "path": "/nights/dapsimnidontellmamanight",
+      "title": "답십리돈텔마마나이트",
+      "category": "night",
+      "region": "답십리",
+      "views_24h": 1
     },
     {
       "path": "/nights/ulsanchampionnight",
@@ -45,10 +52,10 @@
       "views_24h": 1
     },
     {
-      "path": "/nights/sangbonghangukgwannight",
-      "title": "상봉동한국관나이트",
+      "path": "/nights/bucheongoraenight",
+      "title": "부천고래나이트",
       "category": "night",
-      "region": "상봉동",
+      "region": "부천",
       "views_24h": 1
     },
     {
@@ -77,27 +84,6 @@
       "title": "압구정클럽 하입",
       "category": "club",
       "region": "압구정",
-      "views_24h": 1
-    },
-    {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
-      "category": "night",
-      "region": "오산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/cheongjudontellmamanight",
-      "title": "청주돈텔마마나이트",
-      "category": "night",
-      "region": "청주",
       "views_24h": 1
     }
   ]
