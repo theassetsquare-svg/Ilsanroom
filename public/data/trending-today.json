@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-07T17:57:24.022Z",
+  "generated_at": "2026-06-08T07:21:12.096Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,20 +7,55 @@
       "title": "상봉동한국관나이트",
       "category": "night",
       "region": "상봉동",
-      "views_24h": 2
+      "views_24h": 4
     },
     {
-      "path": "/nights/dapsimnidontellmamanight",
-      "title": "답십리돈텔마마나이트",
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
       "category": "night",
-      "region": "답십리",
-      "views_24h": 1
+      "region": "부산",
+      "views_24h": 2
     },
     {
       "path": "/nights/ulsanchampionnight",
       "title": "울산챔피언나이트",
       "category": "night",
       "region": "울산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/seosanhobaknight",
+      "title": "서산호박나이트",
+      "category": "night",
+      "region": "서산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
+      "category": "night",
+      "region": "강서",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
+      "category": "night",
+      "region": "오산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/ilsan-mul-night",
+      "title": "일산물나이트",
+      "category": "night",
+      "region": "일산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/dapsimnidontellmamanight",
+      "title": "답십리돈텔마마나이트",
+      "category": "night",
+      "region": "답십리",
       "views_24h": 1
     },
     {
@@ -56,34 +91,6 @@
       "title": "부천고래나이트",
       "category": "night",
       "region": "부천",
-      "views_24h": 1
-    },
-    {
-      "path": "/clubs/apgujeong/apgujeongclub-color",
-      "title": "압구정클럽 컬러",
-      "category": "club",
-      "region": "압구정",
-      "views_24h": 1
-    },
-    {
-      "path": "/lounges/apgujeonglounge-dm",
-      "title": "압구정라운지 디엠",
-      "category": "lounge",
-      "region": "압구정",
-      "views_24h": 1
-    },
-    {
-      "path": "/clubs/gangnam/gangnamclub-peak",
-      "title": "강남청담클럽 피크",
-      "category": "club",
-      "region": "강남",
-      "views_24h": 1
-    },
-    {
-      "path": "/clubs/apgujeong/apgujeongclub-hype",
-      "title": "압구정클럽 하입",
-      "category": "club",
-      "region": "압구정",
       "views_24h": 1
     }
   ]
