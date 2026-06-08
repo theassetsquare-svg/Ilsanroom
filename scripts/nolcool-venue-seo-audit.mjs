@@ -108,12 +108,10 @@ function auditPage(url, html) {
     }
   }
 
-  // 가게이름 후보: H1을 1순위로. 비어있으면 title 첫 토큰("—" 기준).
-  let storeName = h1;
-  if (!storeName) {
-    const seg = title.split(/[—\-|·]/);
-    storeName = (seg[0] || '').trim();
-  }
+  // 가게이름 후보: H1(없으면 title)의 첫 세그먼트("—" 등 구분자 앞).
+  // SSR 히어로 h1은 "가게이름 — 후크" 형태(시즌57)라 통째로 쓰면 desc/ld-name 매칭이 깨진다.
+  const nameSource = h1 || title;
+  const storeName = (nameSource.split(/[—\-|·]/)[0] || '').trim();
 
   const checks = {
     storeName,
