@@ -9,7 +9,7 @@
  *   node scripts/google-analytics-report.mjs --days=30      # 30일
  */
 
-const SITE_PROPERTY = 'sc-domain:nolcool.com';
+const SITE_PROPERTY = 'https://nolcool.com/'; // SA(gsc-mcp@theasset-gsc) siteOwner 속성
 const days = parseInt(process.argv.find(a => a.startsWith('--days='))?.split('=')[1] || '7', 10);
 
 const {

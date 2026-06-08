@@ -27,7 +27,7 @@
  */
 
 const SITE = 'https://nolcool.com/';
-const SITE_PROPERTY = 'sc-domain:nolcool.com';
+const SITE_PROPERTY = 'https://nolcool.com/'; // SA(gsc-mcp@theasset-gsc) siteOwner 속성
 const SITEMAP_URL = `${SITE}sitemap.xml`;
 
 import { getAccessToken, hasGscCredentials } from './lib/gsc-auth.mjs';

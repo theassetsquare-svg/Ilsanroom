@@ -19,7 +19,7 @@
 import { getAccessToken, hasGscCredentials } from './lib/gsc-auth.mjs';
 
 const SITE = 'https://nolcool.com/';
-const SITE_PROPERTY = 'sc-domain:nolcool.com'; // Search Console 속성 형식: sc-domain 또는 https://...
+const SITE_PROPERTY = 'https://nolcool.com/'; // SA(gsc-mcp@theasset-gsc) siteOwner 속성 (sc-domain 은 SA 권한 없음)
 
 if (!hasGscCredentials()) {
   console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON 또는 GOOGLE_OAUTH_*) — Google 재인덱싱 스킵');

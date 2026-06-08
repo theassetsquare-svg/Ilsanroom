@@ -15,7 +15,9 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 
-export const SITE_PROPERTY = process.env.GSC_SITE_PROPERTY || 'sc-domain:nolcool.com';
+// URL-prefix 속성(https://nolcool.com/) — 서비스계정 gsc-mcp@theasset-gsc 가 siteOwner.
+// (sc-domain:nolcool.com 도메인 속성에는 SA 권한이 없어 OAuth 만료 시 인증 실패했음)
+export const SITE_PROPERTY = process.env.GSC_SITE_PROPERTY || 'https://nolcool.com/';
 const SCOPE = 'https://www.googleapis.com/auth/webmasters.readonly';
 
 const b64url = (buf) =>
