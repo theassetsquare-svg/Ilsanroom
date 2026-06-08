@@ -1,14 +1,12 @@
 #!/usr/bin/env node
 /**
- * Google 자동 재인덱싱 — refresh_token 기반 (의존성 없음)
+ * Google 자동 재인덱싱 — 서비스계정(GSC_SA_JSON) 기반 (의존성 없음)
  *
  * 환경변수 (GitHub Secrets):
- *   GOOGLE_OAUTH_CLIENT_ID
- *   GOOGLE_OAUTH_CLIENT_SECRET
- *   GOOGLE_REFRESH_TOKEN
+ *   GSC_SA_JSON  (서비스계정 키 JSON — 만료 없음)
  *
  * 동작:
- *   1) refresh_token → access_token 갱신
+ *   1) 서비스계정 JWT → access_token 발급
  *   2) Search Console Sitemaps.submit (sitemap.xml 재크롤링 큐 등록) ← 안전, 공식
  *   3) urlInspection.index.inspect 로 샘플 5 URL 현재 색인 상태 점검 (모니터링)
  *
@@ -22,7 +20,7 @@ const SITE = 'https://nolcool.com/';
 const SITE_PROPERTY = 'https://nolcool.com/'; // SA(gsc-mcp@theasset-gsc) siteOwner 속성 (sc-domain 은 SA 권한 없음)
 
 if (!hasGscCredentials()) {
-  console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON 또는 GOOGLE_OAUTH_*) — Google 재인덱싱 스킵');
+  console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON) — Google 재인덱싱 스킵');
   process.exit(0);
 }
 
@@ -34,18 +32,17 @@ async function notifyTokenExpired(reason) {
   if (!RESEND_API_KEY) return;
   const kst = new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 19) + ' KST';
   const html = `<div style="font-family:sans-serif;max-width:680px;margin:0 auto;padding:20px">
-    <h2 style="color:#DC2626">[🔑 Google OAuth 토큰 만료] 재인덱싱 일시 중단</h2>
+    <h2 style="color:#DC2626">[🔑 Google 서비스계정 인증 실패] 재인덱싱 일시 중단</h2>
     <p style="color:#666;font-size:13px">측정 시각: ${kst}</p>
-    <p>refresh_token이 만료(또는 취소)되었습니다 — Google 자동 재인덱싱이 일시 중단됩니다.</p>
+    <p>서비스계정 토큰을 발급하지 못했습니다 — Google 자동 재인덱싱이 일시 중단됩니다.</p>
     <p><strong>응답:</strong> ${reason}</p>
-    <h3>🔧 갱신 방법 (5분)</h3>
+    <h3>🔧 점검</h3>
     <ol>
-      <li>로컬에서 <code>GOOGLE_OAUTH_CLIENT_ID=… GOOGLE_OAUTH_CLIENT_SECRET=… node scripts/google-oauth-setup.mjs</code> 실행</li>
-      <li>출력된 새 <code>refresh_token</code>을 복사</li>
-      <li>GitHub → repo Settings → Secrets → <code>GOOGLE_REFRESH_TOKEN</code> 값 교체</li>
+      <li>GitHub Secret <code>GSC_SA_JSON</code> 키 JSON이 유효한지 확인</li>
+      <li>서비스계정 <code>gsc-mcp@theasset-gsc.iam.gserviceaccount.com</code> 이 서치콘솔 <code>https://nolcool.com/</code> 속성의 소유자로 남아있는지 확인</li>
       <li>다음 KST 07:30 cron에서 자동 복구</li>
     </ol>
-    <p style="color:#9CA3AF;font-size:11px;margin-top:20px">갱신 전까지 사이트 콘텐츠는 정상 — sitemap.xml은 Google이 매일 알아서 크롤. 재인덱싱은 부스터일 뿐.</p>
+    <p style="color:#9CA3AF;font-size:11px;margin-top:20px">중단 중에도 사이트 콘텐츠는 정상 — sitemap.xml은 Google이 매일 알아서 크롤. 재인덱싱은 부스터일 뿐.</p>
   </div>`;
   await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -53,18 +50,18 @@ async function notifyTokenExpired(reason) {
     body: JSON.stringify({
       from: 'NOLCOOL auto <onboarding@resend.dev>',
       to: [TO],
-      subject: '[놀쿨][🔑] Google OAuth refresh_token 갱신 필요',
+      subject: '[놀쿨][🔑] Google 서비스계정 인증 갱신 필요',
       html,
     }),
   }).catch(() => {});
 }
 
 async function refreshAccessToken() {
-  /* 서비스계정(GSC_SA_JSON) 우선 → OAuth refresh_token 폴백. 둘 다 실패 시 graceful skip + 안내 메일. */
+  /* 서비스계정(GSC_SA_JSON)로 토큰 발급. 실패 시 graceful skip + 안내 메일. */
   const token = await getAccessToken();
   if (!token) {
     console.warn('⚠️  access_token 발급 실패 — graceful skip');
-    await notifyTokenExpired('서비스계정/OAuth 토큰 발급 실패');
+    await notifyTokenExpired('서비스계정 토큰 발급 실패');
     return null;
   }
   return token;

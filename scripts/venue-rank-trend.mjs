@@ -9,7 +9,7 @@
  * 📈개선 / 📉하락 / 🆕신규노출 / ⬇️순위권밖 추이를 한 통의 메일로 보낸다.
  *
  * 인증 (scripts/lib/gsc-auth.mjs):
- *   1순위 서비스계정 GSC_SA_JSON / 2순위 OAuth GOOGLE_OAUTH_*
+ *   서비스계정 GSC_SA_JSON (만료 없음)
  *   RESEND_API_KEY / NOTIFICATION_EMAIL (메일 발송)
  *
  * 동작:
@@ -29,7 +29,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const WINDOW = 7; // 비교 단위(일)
 
 if (!hasGscCredentials()) {
-  console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON 또는 GOOGLE_OAUTH_*) — 스킵');
+  console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON) — 스킵');
   process.exit(0);
 }
 

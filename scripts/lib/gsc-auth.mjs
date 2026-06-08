@@ -2,10 +2,10 @@
 /**
  * Google Search Console — 공용 인증 모듈
  *
- * 우선순위:
- *   1) 서비스계정 (GSC_SA_JSON 환경변수에 키 JSON 전체) — 만료 없음, 권장
- *      로컬: GOOGLE_APPLICATION_CREDENTIALS=/경로/theasset-gsc.json 도 지원
- *   2) OAuth refresh token (GOOGLE_OAUTH_CLIENT_ID/SECRET/REFRESH_TOKEN) — 폴백
+ * 인증: 서비스계정 (GSC_SA_JSON 환경변수에 키 JSON 전체) — 만료 없음.
+ *   로컬: GOOGLE_APPLICATION_CREDENTIALS=/경로/theasset-gsc.json 도 지원.
+ *   SA gsc-mcp@theasset-gsc 는 https://nolcool.com/ 의 siteOwner.
+ *   (OAuth refresh_token 방식은 7일 만료 문제로 폐기 — 2026-06-08)
  *
  * getAccessToken() → string | null
  * gscQuery(token, {dimensions, rowLimit, days, startDate, endDate}) → {rows, start, end}
@@ -73,27 +73,6 @@ async function tokenFromServiceAccount(sa) {
   return data.access_token;
 }
 
-async function tokenFromOAuth() {
-  const { GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN } = process.env;
-  if (!GOOGLE_OAUTH_CLIENT_ID || !GOOGLE_OAUTH_CLIENT_SECRET || !GOOGLE_REFRESH_TOKEN) return null;
-  const r = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      client_id: GOOGLE_OAUTH_CLIENT_ID,
-      client_secret: GOOGLE_OAUTH_CLIENT_SECRET,
-      refresh_token: GOOGLE_REFRESH_TOKEN,
-      grant_type: 'refresh_token',
-    }),
-  });
-  const data = await r.json();
-  if (!data.access_token) {
-    console.warn('⚠️  OAuth access_token 갱신 실패:', JSON.stringify(data));
-    return null;
-  }
-  return data.access_token;
-}
-
 /** 해당 토큰이 SITE_PROPERTY 를 실제로 읽을 수 있는지 확인 (권한 없으면 403/404). */
 async function canAccess(token) {
   const url = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(SITE_PROPERTY)}`;
@@ -102,33 +81,23 @@ async function canAccess(token) {
 }
 
 /**
- * 서비스계정 우선, 없으면(또는 SITE_PROPERTY 권한 없으면) OAuth 폴백. 둘 다 안 되면 null.
- * SA 토큰은 발급돼도 속성에 사용자로 추가돼야 데이터가 읽힌다 — 권한 검사 후 폴백해
- * SA가 아직 권한 없을 때도 자동화가 멈추지 않게 한다.
+ * 서비스계정 토큰 발급 + SITE_PROPERTY 권한 검사. 실패 시 null.
+ * SA(gsc-mcp@theasset-gsc)는 https://nolcool.com/ 의 siteOwner 이므로 정상 통과.
  */
 export async function getAccessToken() {
   const sa = loadServiceAccount();
-  if (sa) {
-    const t = await tokenFromServiceAccount(sa);
-    if (t && (await canAccess(t))) {
-      console.log(`🔑 GSC 인증: 서비스계정 (${sa.client_email})`);
-      return t;
-    }
-    if (t) console.warn(`⚠️  서비스계정(${sa.client_email})이 ${SITE_PROPERTY} 권한 없음 — OAuth로 폴백`);
+  if (!sa) return null;
+  const t = await tokenFromServiceAccount(sa);
+  if (t && (await canAccess(t))) {
+    console.log(`🔑 GSC 인증: 서비스계정 (${sa.client_email})`);
+    return t;
   }
-  const oauth = await tokenFromOAuth();
-  if (oauth) {
-    console.log('🔑 GSC 인증: OAuth refresh token');
-    return oauth;
-  }
+  if (t) console.warn(`⚠️  서비스계정(${sa.client_email})이 ${SITE_PROPERTY} 권한 없음`);
   return null;
 }
 
 export function hasGscCredentials() {
-  return !!(
-    loadServiceAccount() ||
-    (process.env.GOOGLE_OAUTH_CLIENT_ID && process.env.GOOGLE_OAUTH_CLIENT_SECRET && process.env.GOOGLE_REFRESH_TOKEN)
-  );
+  return !!loadServiceAccount();
 }
 
 const ymd = (d) => d.toISOString().slice(0, 10);

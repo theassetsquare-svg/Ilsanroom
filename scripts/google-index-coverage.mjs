@@ -16,7 +16,7 @@
  *          ※ 일반 페이지는 비공식(JobPosting/Broadcast 한정) → 회색지대, 사용자 선택
  *   5) Resend 로 색인 안 된 URL 전체 목록 + 사유별 카운트 메일
  *
- * 환경변수: GSC_SA_JSON 또는 GOOGLE_OAUTH_*  / RESEND_API_KEY / NOTIFICATION_EMAIL
+ * 환경변수: GSC_SA_JSON  / RESEND_API_KEY / NOTIFICATION_EMAIL
  *
  * ※ 색인 여부는 최종적으로 Google이 결정한다. 본 스크립트는 정직한 레버
  *   (sitemap 재제출 + 크롤 가능성 보장 + 보고)만 당기고, 조작은 하지 않는다.
@@ -46,7 +46,7 @@ const NOT_INDEXED_STATES = [
 ];
 
 if (!hasGscCredentials()) {
-  console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON 또는 GOOGLE_OAUTH_*) — 색인 커버리지 점검 스킵');
+  console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON) — 색인 커버리지 점검 스킵');
   process.exit(0);
 }
 

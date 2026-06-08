@@ -14,7 +14,7 @@
  *   - venue-rank-trend.mjs : 매주 추이 "리포트"(읽기). 본 스크립트는 그 하락분에 "대응".
  *   - indexnow.mjs / google-reindex.mjs : 매일 전체 벌크 재크롤. 본 스크립트는 하락 URL만 타깃.
  *
- * 인증: scripts/lib/gsc-auth.mjs (SA 우선 / OAuth 폴백)
+ * 인증: scripts/lib/gsc-auth.mjs (서비스계정 GSC_SA_JSON)
  *       INDEXNOW_KEY (재크롤 핑) / RESEND_API_KEY · NOTIFICATION_EMAIL (메일)
  *
  * 동작:
@@ -41,7 +41,7 @@ const CAT_PATH = { club: 'clubs', night: 'nights', lounge: 'lounges', room: 'roo
 const REGIONED = new Set(['club', 'room', 'yojeong']);
 
 if (!hasGscCredentials()) {
-  console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON 또는 GOOGLE_OAUTH_*) — 스킵');
+  console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON) — 스킵');
   process.exit(0);
 }
 

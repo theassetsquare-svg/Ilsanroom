@@ -3,8 +3,7 @@
  * Google Search Console — 카니발리제이션 + 기회 키워드 진단 (참고용 리포트)
  *
  * 인증 (scripts/lib/gsc-auth.mjs):
- *   1순위 서비스계정 GSC_SA_JSON (만료 없음, 권장)
- *   2순위 OAuth GOOGLE_OAUTH_CLIENT_ID/SECRET/REFRESH_TOKEN (폴백)
+ *   서비스계정 GSC_SA_JSON (만료 없음)
  *   RESEND_API_KEY / NOTIFICATION_EMAIL (메일 발송, 선택)
  *
  * 동작 (읽기 전용):
@@ -18,7 +17,7 @@ import { getAccessToken, gscQuery, hasGscCredentials } from './lib/gsc-auth.mjs'
 const DAYS = 28;
 
 if (!hasGscCredentials()) {
-  console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON 또는 GOOGLE_OAUTH_*) — 스킵');
+  console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON) — 스킵');
   process.exit(0);
 }
 

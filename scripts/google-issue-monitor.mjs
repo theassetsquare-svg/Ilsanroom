@@ -7,8 +7,7 @@
  *       메일을 기다려 파싱하는 것보다 API를 매일 직접 긁는 게 더 정확하고 누락이 없다.
  *
  * 인증 (scripts/lib/gsc-auth.mjs):
- *   1순위 서비스계정 GSC_SA_JSON (만료 없음, 권장)
- *   2순위 OAuth GOOGLE_OAUTH_CLIENT_ID/SECRET/REFRESH_TOKEN (폴백)
+ *   서비스계정 GSC_SA_JSON (만료 없음)
  *   RESEND_API_KEY            (선택 — 문제 발견 시 리포트 메일)
  *   NOTIFICATION_EMAIL        (선택 — 기본 theassetsquare@gmail.com)
  *
@@ -39,7 +38,7 @@ const MAX_INSPECT = Number(process.env.MAX_INSPECT || 1500); // 일일 quota 200
 const doRequestIndexing = process.argv.includes('--request-indexing');
 
 if (!hasGscCredentials()) {
-  console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON 또는 GOOGLE_OAUTH_*) — 모니터 스킵');
+  console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON) — 모니터 스킵');
   process.exit(0);
 }
 
@@ -68,8 +67,8 @@ async function refreshAccessToken() {
         <p>서치콘솔 인증 토큰을 발급하지 못했습니다 — 자동 감지가 멈춥니다.</p>
         <h3>🔧 점검</h3>
         <ol>
-          <li><b>서비스계정(권장):</b> GitHub Secret <code>GSC_SA_JSON</code> 확인 + 서치콘솔 nolcool.com 속성에 <code>gsc-mcp@theasset-gsc.iam.gserviceaccount.com</code> 사용자 추가됐는지 확인</li>
-          <li><b>OAuth(폴백):</b> <code>node scripts/google-oauth-setup.mjs</code> 로 새 refresh_token 발급 → <code>GOOGLE_REFRESH_TOKEN</code> 교체</li>
+          <li>GitHub Secret <code>GSC_SA_JSON</code> 키 JSON이 유효한지 확인</li>
+          <li>서비스계정 <code>gsc-mcp@theasset-gsc.iam.gserviceaccount.com</code> 이 서치콘솔 <code>https://nolcool.com/</code> 속성의 소유자로 남아있는지 확인</li>
         </ol>
       </div>`);
     return null;
