@@ -1,71 +1,11 @@
 {
-  "generated_at": "2026-06-07T02:33:16.754Z",
+  "generated_at": "2026-06-08T02:38:16.181Z",
   "window_hours": 24,
-  "total_runs": 195,
-  "total_fail": 4,
+  "total_runs": 202,
+  "total_fail": 0,
   "workflows": [
     {
-      "name": "Categories SEO Watch (6 카테고리 24h 통합)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-06-06T23:14:20Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/27076571701"
-      }
-    },
-    {
-      "name": "Nights SEO Watch (/nights 카테고리 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-06-06T23:07:03Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/27076429197"
-      }
-    },
-    {
-      "name": "All Pages SEO Monitor (sitemap 전수 9지표 풀체크)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-06-06T22:15:00Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/27075357815"
-      }
-    },
-    {
-      "name": "Sunday Deep Audit (Sitemap Fullcheck)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-06-06T19:11:54Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/27071346358"
-      }
-    },
-    {
-      "name": "Auto Content v2 (Time-based)",
-      "total": 14,
-      "success": 14,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "24h Site Monitoring",
-      "total": 14,
-      "success": 14,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Activity Alert (15min)",
       "total": 13,
       "success": 13,
       "failure": 0,
@@ -73,15 +13,23 @@
       "last_fail": null
     },
     {
-      "name": "Venue Reports Daily",
-      "total": 11,
-      "success": 11,
+      "name": "Auto Content v2 (Time-based)",
+      "total": 12,
+      "success": 12,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
-      "name": "Security Audit Hourly",
+      "name": "Activity Alert (15min)",
+      "total": 12,
+      "success": 12,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Venue Reports Daily",
       "total": 10,
       "success": 10,
       "failure": 0,
@@ -89,7 +37,31 @@
       "last_fail": null
     },
     {
-      "name": "Scheduled Cron Jobs",
+      "name": "24h Auto Build + SEO Notify",
+      "total": 10,
+      "success": 10,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Security Audit Hourly",
+      "total": 9,
+      "success": 9,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Audit PR (guard + dist)",
+      "total": 8,
+      "success": 8,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Google Re-Index (Sitemap + Inspect)",
       "total": 5,
       "success": 5,
       "failure": 0,
@@ -97,7 +69,7 @@
       "last_fail": null
     },
     {
-      "name": "24h Auto Build + SEO Notify",
+      "name": "Scheduled Cron Jobs",
       "total": 4,
       "success": 4,
       "failure": 0,
@@ -114,22 +86,6 @@
     },
     {
       "name": "Browser Audit (PC + Mobile)",
-      "total": 2,
-      "success": 2,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Auto SQL Migrations",
-      "total": 2,
-      "success": 2,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Audit PR (guard + dist)",
       "total": 2,
       "success": 2,
       "failure": 0,
@@ -329,14 +285,6 @@
       "last_fail": null
     },
     {
-      "name": "Google Re-Index (Sitemap + Inspect)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Cheongdamh2o Keyword Watch (청담H2O나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
@@ -354,6 +302,22 @@
     },
     {
       "name": "All Venues SEO Watch (121업소 9지표 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Categories SEO Watch (6 카테고리 24h 통합)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Nights SEO Watch (/nights 카테고리 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -434,6 +398,14 @@
     },
     {
       "name": "All Pages Quality Watch (5축 — anchor 200/img alt/H1/lang+viewport/canonical)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "All Pages SEO Monitor (sitemap 전수 9지표 풀체크)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -601,7 +573,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -609,7 +581,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -769,7 +741,7 @@
       "last_fail": null
     },
     {
-      "name": "Busanhoppa Aura Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
+      "name": "Suwonhoppa Beast Keyword Watch (수원호빠 단일 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -777,7 +749,7 @@
       "last_fail": null
     },
     {
-      "name": "Suwonhoppa Beast Keyword Watch (수원호빠 단일 키워드 24h)",
+      "name": "Busanhoppa Aura Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -881,7 +853,7 @@
       "last_fail": null
     },
     {
-      "name": "Changwon Lululalala Keyword Watch (창원룰루랄라나이트 + 창원나이트 2 키워드 24h)",
+      "name": "Cheonan Stardom Keyword Watch (천안스타돔나이트 + 천안나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -889,7 +861,7 @@
       "last_fail": null
     },
     {
-      "name": "Cheonan Stardom Keyword Watch (천안스타돔나이트 + 천안나이트 2 키워드 24h)",
+      "name": "Changwon Lululalala Keyword Watch (창원룰루랄라나이트 + 창원나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -1023,7 +995,26 @@
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
+    },
+    {
+      "name": "Workflow Failure Monitor (24h 집계 메일)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
     }
   ],
-  "deploy_sync": null
+  "deploy_sync": {
+    "n": 4,
+    "avg_ms": 82000,
+    "p50_ms": 51000,
+    "p95_ms": 182000,
+    "max_ms": 182000,
+    "max_sample": {
+      "ms": 182000,
+      "workflow": "Google Re-Index (Sitemap + Inspect)",
+      "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/27095855888"
+    }
+  }
 }
