@@ -17,7 +17,7 @@ const prefetched = new Set<string>();
 // 일반 사용자 클릭 navigation은 SPA가 처리 (영향 없음)
 const DYNAMIC_PREFETCH_SKIP = [
   /^\/community\/post\//,
-  /^\/messages\//,
+  /^\/messages(\/|$)/,
   /^\/profile\/[^/]+$/,
   /^\/u\//,
 ];
