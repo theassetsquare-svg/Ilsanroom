@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// 일회용 진단 — notify_on_comment stack depth 원인 격리. 실행 후 삭제 예정.
+// 일회용 진단 — notify_on_comment stack depth 원인 격리. 실행 후 삭제 예정. (run2)
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY;
 const headers = { apikey: KEY, Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json' };

@@ -2,6 +2,10 @@ name: zzz Probe Notify (oneshot)
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/_probe_notify.mjs'
 
 jobs:
   probe:
