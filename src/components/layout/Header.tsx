@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Link } from '../ui/SafeLink';
 import { createClient } from '@/lib/supabase';
 import { useNewPosts, type NewPost } from '@/hooks/useNewPosts';
+import { fetchNotifications, getUnreadCount, markAllAsRead, type Notification } from '@/lib/notification-api';
 import StealthToggle from '@/components/privacy/StealthToggle';
 
 /* ── 6종류 업소 카테고리 — 인기순 (헤더 상단 노출) ── */
@@ -47,7 +48,11 @@ const CATEGORY_LABELS: Record<string, string> = {
   free: '자유', fashion: '패션', jogak: '조각', qna: 'Q&A',
 };
 
-function NotificationDropdown({ posts, onClose, onMarkRead }: { posts: NewPost[]; onClose: () => void; onMarkRead: () => void }) {
+const NOTIF_ICON: Record<string, string> = {
+  comment: '💬', reply: '↩️', like: '👍', upvote: '👍', level_up: '🎉', best: '🏆',
+};
+
+function NotificationDropdown({ notifs, posts, onClose, onMarkRead }: { notifs: Notification[]; posts: NewPost[]; onClose: () => void; onMarkRead: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -72,13 +77,29 @@ function NotificationDropdown({ posts, onClose, onMarkRead }: { posts: NewPost[]
       style={{ touchAction: 'manipulation' }}
     >
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
-        <span className="text-sm font-bold text-[#111]">새 글 알림</span>
+        <span className="text-sm font-bold text-[#111]">알림</span>
         <button onClick={() => { onMarkRead(); onClose(); }} className="text-xs text-[#8B5CF6] font-medium" style={{ minHeight: 44 }}>모두 읽음</button>
       </div>
-      {posts.length === 0 ? (
-        <div className="px-4 py-8 text-center text-sm text-gray-400">새로운 글이 없습니다</div>
+      {notifs.length === 0 && posts.length === 0 ? (
+        <div className="px-4 py-8 text-center text-sm text-gray-400">알림이 없습니다</div>
       ) : (
         <div className="max-h-[360px] overflow-y-auto">
+          {notifs.map((n) => (
+            <Link
+              key={n.id}
+              to={n.link || '/'}
+              onClick={() => { onMarkRead(); onClose(); }}
+              className={`w-full text-left flex items-start gap-3 px-4 py-3 active:bg-gray-100 hover:bg-gray-50 transition border-b border-gray-50 last:border-0 ${n.is_read ? '' : 'bg-[#FAF7FF]'}`}
+              style={{ minHeight: 56, touchAction: 'manipulation' }}
+            >
+              <span className="shrink-0 mt-0.5 text-lg leading-none">{NOTIF_ICON[n.type] || '🔔'}</span>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium text-[#111] truncate">{n.title}</p>
+                {n.message && <p className="text-[12px] text-gray-500 truncate mt-0.5">{n.message}</p>}
+                <p className="text-[11px] text-gray-400 mt-0.5">{new Date(n.created_at).toLocaleString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+              </div>
+            </Link>
+          ))}
           {posts.map((p) => (
             <Link
               key={p.id}
@@ -111,10 +132,30 @@ export default function Header() {
   const [user, setUser] = useState<any>(null);
   const { pathname } = useLocation();
   const { count: newPostCount, posts: newPosts, refresh: refreshPosts } = useNewPosts(user, pathname);
+  const [notifs, setNotifs] = useState<Notification[]>([]);
+  const [notifUnread, setNotifUnread] = useState(0);
+
+  // 개인 알림(댓글/답글 등 notifications 테이블) 안 읽은 수 — 로그인 시 60초 폴링
+  useEffect(() => {
+    if (!user) { setNotifs([]); setNotifUnread(0); return; }
+    let alive = true;
+    const tick = () => { getUnreadCount().then((c) => { if (alive) setNotifUnread(c); }); };
+    tick();
+    const id = window.setInterval(tick, 60000);
+    return () => { alive = false; window.clearInterval(id); };
+  }, [user]);
+
+  // 드롭다운 열릴 때 개인 알림 목록 로드
+  useEffect(() => {
+    if (notifOpen && user) fetchNotifications(20).then(setNotifs);
+  }, [notifOpen, user]);
+
+  const badgeCount = notifUnread + newPostCount;
 
   const markAllRead = useCallback(() => {
     try { localStorage.setItem('community_seen_at', String(Date.now())); } catch {}
     refreshPosts();
+    markAllAsRead().then(() => { setNotifUnread(0); setNotifs((prev) => prev.map((n) => ({ ...n, is_read: true }))); });
   }, [refreshPosts]);
 
   useEffect(() => {
@@ -217,14 +258,14 @@ export default function Header() {
                     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
-                    {newPostCount > 0 && (
+                    {badgeCount > 0 && (
                       <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
-                        {newPostCount > 9 ? '9+' : newPostCount}
+                        {badgeCount > 9 ? '9+' : badgeCount}
                       </span>
                     )}
                   </button>
                   {notifOpen && (
-                    <NotificationDropdown posts={newPosts} onClose={() => setNotifOpen(false)} onMarkRead={markAllRead} />
+                    <NotificationDropdown notifs={notifs} posts={newPosts} onClose={() => setNotifOpen(false)} onMarkRead={markAllRead} />
                   )}
                 </div>
               )}
@@ -294,14 +335,14 @@ export default function Header() {
                     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
-                    {newPostCount > 0 && (
+                    {badgeCount > 0 && (
                       <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
-                        {newPostCount > 9 ? '9+' : newPostCount}
+                        {badgeCount > 9 ? '9+' : badgeCount}
                       </span>
                     )}
                   </button>
                   {notifOpen && (
-                    <NotificationDropdown posts={newPosts} onClose={() => setNotifOpen(false)} onMarkRead={markAllRead} />
+                    <NotificationDropdown notifs={notifs} posts={newPosts} onClose={() => setNotifOpen(false)} onMarkRead={markAllRead} />
                   )}
                 </div>
               )}
