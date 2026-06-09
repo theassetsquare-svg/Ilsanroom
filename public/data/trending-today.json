@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-09T15:54:56.194Z",
+  "generated_at": "2026-06-09T19:05:26.760Z",
   "window_hours": 24,
   "items": [
     {
@@ -17,6 +17,13 @@
       "views_24h": 6
     },
     {
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 3
+    },
+    {
       "path": "/clubs/yongin/yonginbyeolbam",
       "title": "용인사거리별밤",
       "category": "club",
@@ -24,17 +31,17 @@
       "views_24h": 3
     },
     {
+      "path": "/hoppa/daejeonhoppa-eclipse",
+      "title": "대전호빠 이클립스",
+      "category": "hoppa",
+      "region": "대전",
+      "views_24h": 3
+    },
+    {
       "path": "/hoppa/haeundaehoppa-michelin",
       "title": "해운대호빠 미슐랭",
       "category": "hoppa",
       "region": "부산 해운대",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
-      "category": "night",
-      "region": "대전",
       "views_24h": 2
     },
     {
@@ -94,10 +101,10 @@
       "views_24h": 1
     },
     {
-      "path": "/hoppa/daejeonhoppa-eclipse",
-      "title": "대전호빠 이클립스",
-      "category": "hoppa",
-      "region": "대전",
+      "path": "/nights/nowonstarnight",
+      "title": "노원스타나이트",
+      "category": "night",
+      "region": "노원",
       "views_24h": 1
     }
   ]
