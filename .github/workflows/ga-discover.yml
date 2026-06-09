@@ -1,0 +1,23 @@
+name: GA Discover (oneshot)
+
+# GA4 연결 검증 — 서비스계정(gsc-mcp@theasset-gsc)으로 측정ID G-W6VE6KHLLD 의
+# 숫자 속성ID 자동 발견 + 실시간 데이터 파이프 확인. 수동 실행 전용.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Discover GA4 property + realtime
+        run: node scripts/ga-discover.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          GA_MEASUREMENT_ID: G-W6VE6KHLLD
