@@ -19,7 +19,7 @@ async function run(label, query) {
 const LOAD = `DROP TABLE IF EXISTS public._probe_diag;
 CREATE TABLE public._probe_diag (id serial primary key, k text, v text);
 INSERT INTO public._probe_diag (k, v)
-  SELECT 'EVT', evtname||' | '||evtevent||' | enabled='||evtenabled||' | '||(evtfoid::regprocedure)::text
+  SELECT 'EVT', evtname||' | '||evtevent||' | enabled='||evtenabled::text||' | '||(evtfoid::regprocedure)::text
   FROM pg_event_trigger ORDER BY evtname;
 INSERT INTO public._probe_diag (k, v)
   SELECT 'EVT_SRC:'||evtname, pg_get_functiondef(evtfoid)
