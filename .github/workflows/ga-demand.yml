@@ -1,0 +1,27 @@
+name: GA4 Demand Insight (weekly)
+
+# 주 1회 사용자가 *원하는* 페이지를 GA4에서 발견 → 운영자가 그 페이지/콘텐츠를 더 만든다.
+# (불만족 적발은 ga-health.yml, 본 워크플로는 수요/사랑/성장 = 긍정 신호)
+on:
+  schedule:
+    # 매주 월 KST 11:00 (UTC 02:00) — 월요일 09:30 랭킹/09:45 하락대응과 시간 분리
+    - cron: '0 2 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ga-demand:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: GA4 demand insight
+        run: node scripts/ga-demand-insight.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
