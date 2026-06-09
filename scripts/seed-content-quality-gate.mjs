@@ -121,16 +121,20 @@ async function main() {
   if (hookPassRate < HOOK_PASS_TARGET) issues.push(`🎣 후킹 통과율 ${(hookPassRate * 100).toFixed(1)}% < 목표 ${(HOOK_PASS_TARGET * 100).toFixed(0)}%`);
   if (overused.length) issues.push(`♻️ ${NGRAM_OVER}회 초과 재탕 표현 ${overused.length}종 (양산 지문 위험)`);
 
-  if (!issues.length) {
+  // 후킹·재탕은 워크플로 로그에 항상 리포트(눈에 보이게). 단, 메일은 안 보냄 —
+  // 둘 다 기존 풀의 고정 특성이라 매주 같은 경고를 보내면 인박스 노이즈(메일=실패시만 정책).
+  if (issues.length) {
+    console.log('\n⚠️ 검문 리포트:\n  - ' + issues.join('\n  - '));
+    if (overused.length) console.log('  재탕 샘플:', overused.slice(0, 6).map((o) => `"${o.phrase}"×${o.count}`).join(' / '));
+  } else {
     console.log('✅ 시드 풀 검문 통과 — 금지어 0 · 후킹 충분 · 양산 지문 없음');
-    return;
   }
-  console.log('\n⚠️ 검문 이슈:\n  - ' + issues.join('\n  - '));
-  if (banned.length) console.log('  금지어 샘플:', banned.slice(0, 5).map((b) => `[${b.why}] ${b.title}`).join(' / '));
-  if (overused.length) console.log('  재탕 샘플:', overused.slice(0, 6).map((o) => `"${o.phrase}"×${o.count}`).join(' / '));
 
+  // 메일·하드FAIL은 라이브 위험인 금지어에만 — 금지어 글은 발행되면 즉시 사고.
+  if (!banned.length) return;
+  console.log('  금지어 샘플:', banned.slice(0, 5).map((b) => `[${b.why}] ${b.title}`).join(' / '));
   sendMail({ total: rows.length, banned, hookFails, hookPassRate, overused, issues })
-    .finally(() => process.exit(banned.length ? 1 : 0)); // 금지어만 하드 FAIL, 나머지는 경고 메일
+    .finally(() => process.exit(1));
 }
 
 async function sendMail({ total, banned, hookFails, hookPassRate, overused, issues }) {
