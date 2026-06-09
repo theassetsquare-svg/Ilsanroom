@@ -1,0 +1,28 @@
+name: GSC Growth Opportunity (weekly)
+
+# 색인·재제출은 다른 워크플로가 매일 함. 본 워크플로는 그 다음 단계 —
+# 이미 노출되는데 한 끗 모자란 "성장 기회"를 찾아 사람이 무엇을 고치면 되는지 알림.
+# 100% 읽기 전용(GSC API만, 사이트 크롤 0). 기회 있을 때만 메일.
+on:
+  schedule:
+    # 매주 월 KST 11:30 (UTC 02:30) — 09:30 랭킹/09:45 하락대응/11:00 수요인사이트와 시간 분리
+    - cron: '30 2 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sc-opportunity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: GSC growth opportunity finder
+        run: node scripts/search-console-opportunity.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
