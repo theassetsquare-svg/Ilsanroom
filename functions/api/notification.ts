@@ -168,23 +168,29 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           return Response.json({ error: '이메일이 필요합니다.' }, { status: 400 });
         }
 
-        await sendEmail(context.env, email, '놀쿨에 오신 것을 환영합니다! 🎉',
-          `<div style="font-family:sans-serif;max-width:480px;margin:0 auto">
-            <h2 style="color:#8B5CF6">환영합니다${name ? `, ${name}` : ''}! 🎉</h2>
-            <p>놀쿨 회원이 되신 것을 축하합니다.</p>
-            <p>전국 117개 이상의 매장 정보를 비교하고, 나에게 딱 맞는 곳을 찾아보세요.</p>
-            <ul>
-              <li>🎰 룰렛으로 랜덤 추천 받기</li>
-              <li>🧠 MBTI 퀴즈로 성향 분석</li>
-              <li>⚔️ VS 투표로 비교하기</li>
-            </ul>
-            <a href="https://nolcool.com" style="display:inline-block;padding:12px 24px;background:#8B5CF6;color:#fff;text-decoration:none;border-radius:8px;margin-top:16px">둘러보기</a>
-            <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
-            <p style="color:#888;font-size:12px">놀쿨 | nolcool.com</p>
-          </div>`
-        );
-
-        await sendWebhook(context.env, `👋 새 회원 가입: ${name || email}`);
+        // 환영 메일은 fire-and-forget 백그라운드 알림 — 사용자에게 노출되는 UI가 없다.
+        // 발신 도메인 미인증 등으로 메일이 실패해도 500을 던지면 안 됨(매 가입마다 콘솔/네트워크 500 노이즈).
+        // 메일/웹훅 실패는 조용히 삼키고 항상 200 반환한다.
+        try {
+          await sendEmail(context.env, email, '놀쿨에 오신 것을 환영합니다! 🎉',
+            `<div style="font-family:sans-serif;max-width:480px;margin:0 auto">
+              <h2 style="color:#8B5CF6">환영합니다${name ? `, ${name}` : ''}! 🎉</h2>
+              <p>놀쿨 회원이 되신 것을 축하합니다.</p>
+              <p>전국 117개 이상의 매장 정보를 비교하고, 나에게 딱 맞는 곳을 찾아보세요.</p>
+              <ul>
+                <li>🎰 룰렛으로 랜덤 추천 받기</li>
+                <li>🧠 MBTI 퀴즈로 성향 분석</li>
+                <li>⚔️ VS 투표로 비교하기</li>
+              </ul>
+              <a href="https://nolcool.com" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:12px 24px;background:#8B5CF6;color:#fff;text-decoration:none;border-radius:8px;margin-top:16px">둘러보기</a>
+              <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
+              <p style="color:#888;font-size:12px">놀쿨 | nolcool.com</p>
+            </div>`
+          );
+          await sendWebhook(context.env, `👋 새 회원 가입: ${name || email}`);
+        } catch (err) {
+          console.error('Welcome notification skipped:', err);
+        }
         return Response.json({ success: true });
       }
 
