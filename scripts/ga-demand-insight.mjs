@@ -98,8 +98,37 @@ async function main() {
   const land = await pageReport(token, '28daysAgo', 'today', 'landingPage');
   const entries = land.ok ? parseRows(land.body).filter((r) => r.path !== '(not set)').slice(0, 12) : [];
 
-  console.log(`🔥 수요 ${demand.length} · ❤️ 사랑 ${loved.length} · 📈 떠오름 ${rising.length} · 🚪 입구 ${entries.length}`);
-  await sendInsight({ totalSessions, totalViews, pageCount: all.length, demand, loved, rising, entries });
+  // 🔎 검색 수요: search / search_no_result 이벤트 + customEvent:search_term
+  //   search_no_result = 사용자가 찾았지만 사이트에 없는 페이지 = 만들 페이지 1순위.
+  const { searched, missing } = await searchTerms(token);
+
+  console.log(`🔥 수요 ${demand.length} · ❤️ 사랑 ${loved.length} · 📈 떠오름 ${rising.length} · 🚪 입구 ${entries.length} · 🔍 검색 ${searched.length} · 🛠️ 무결과 ${missing.length}`);
+  await sendInsight({ totalSessions, totalViews, pageCount: all.length, demand, loved, rising, entries, searched, missing });
+}
+
+async function searchTerms(token) {
+  const rep = await runReport(token, {
+    dateRanges: [{ startDate: '28daysAgo', endDate: 'today' }],
+    dimensions: [{ name: 'eventName' }, { name: 'customEvent:search_term' }],
+    metrics: [{ name: 'eventCount' }],
+    dimensionFilter: { filter: { fieldName: 'eventName', inListFilter: { values: ['search', 'search_no_result'] } } },
+    orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+    limit: 250,
+  });
+  if (!rep.ok) {
+    // 맞춤측정기준 등록 직후엔 전파 전이라 실패 가능 — 조용히 빈 목록
+    console.log(`ℹ️ search_term 쿼리 보류 (HTTP ${rep.status}) — 맞춤측정기준 전파(24~48h) 전이거나 데이터 없음`);
+    return { searched: [], missing: [] };
+  }
+  const searched = [], missing = [];
+  for (const r of (rep.body.rows || [])) {
+    const ev = r.dimensionValues?.[0]?.value;
+    const term = (r.dimensionValues?.[1]?.value || '').trim();
+    const count = num(r.metricValues?.[0]?.value);
+    if (!term || term === '(not set)') continue;
+    (ev === 'search_no_result' ? missing : searched).push({ term, count });
+  }
+  return { searched: searched.slice(0, 15), missing: missing.slice(0, 20) };
 }
 
 function tbl(title, list, cols) {
@@ -113,7 +142,7 @@ function tbl(title, list, cols) {
 
 const link = (x) => `<a href="https://nolcool.com${x.path}">${x.path}</a>`;
 
-async function sendInsight({ totalSessions, totalViews, pageCount, demand, loved, rising, entries }) {
+async function sendInsight({ totalSessions, totalViews, pageCount, demand, loved, rising, entries, searched, missing }) {
   if (!RESEND_API_KEY) { console.log('RESEND_API_KEY 없음 — 메일 skip'); return; }
   const html = `<div style="font-family:sans-serif;max-width:780px;margin:0 auto;padding:20px">
     <h2 style="color:#2563EB">[놀쿨 GA4] 사용자가 원하는 것 — 주간 수요 인사이트</h2>
@@ -131,6 +160,12 @@ async function sendInsight({ totalSessions, totalViews, pageCount, demand, loved
       { h: '증가', f: (x) => `+${x.delta}` }])}
     ${tbl('🚪 사람들이 들어오는 입구 (유입 진입점)', entries, [
       { h: '랜딩', f: link }, { h: '세션', f: (x) => x.sessions }, { h: '사용자', f: (x) => x.users }])}
+    ${(missing && missing.length) ? `<p style="color:#9A3412;font-size:13px;background:#FFF7ED;padding:10px;border-radius:8px;margin-top:18px">
+      🛠️ <b>아래는 사용자가 검색했지만 사이트에 결과가 없던 단어</b>입니다. = <b>지금 없는데 사람들이 찾는 페이지</b> = 만들면 바로 유입되는 1순위입니다.</p>` : ''}
+    ${tbl('🛠️ 검색했지만 결과 없음 (만들 페이지 1순위)', missing || [], [
+      { h: '검색어', f: (x) => x.term }, { h: '검색 횟수', f: (x) => x.count }])}
+    ${tbl('🔍 가장 많이 검색한 단어 (수요 키워드)', searched || [], [
+      { h: '검색어', f: (x) => x.term }, { h: '검색 횟수', f: (x) => x.count }])}
     <p style="color:#9CA3AF;font-size:11px;margin-top:22px">매주 월 KST 11:00 자동 — ga-demand-insight.mjs (속성 540830544). 사용자가 원하는 사이트 = #1 커뮤니티 재미 → 자발적 추천(바이럴).</p>
   </div>`;
   const r = await fetch('https://api.resend.com/emails', {
