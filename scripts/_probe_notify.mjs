@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// 일회용 진단 — notify_on_comment stack depth 원인 격리. 실행 후 삭제 예정. (run2)
+// 일회용 진단 v3 — plpgsql 함수 생성 stack depth 원인 격리. 실행 후 삭제 예정.
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY;
 const headers = { apikey: KEY, Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json' };
@@ -13,38 +13,31 @@ async function run(label, query) {
   const ok = res.ok && j?.success !== false;
   console.log(`\n=== ${label} === ${ok ? 'OK' : 'FAIL'}`);
   if (!ok) console.log('  err:', j?.error || j?.message || text);
-  else console.log('  ->', JSON.stringify(j).slice(0, 300));
+  else console.log('  ->', JSON.stringify(j).slice(0, 1500));
   return ok;
 }
 
-const P1 = `CREATE OR REPLACE FUNCTION public._probe_noop() RETURNS trigger AS $$ BEGIN RETURN NEW; END; $$ LANGUAGE plpgsql;`;
-const P2 = `CREATE OR REPLACE FUNCTION public._probe_body() RETURNS trigger AS $$
-DECLARE a uuid; t text;
-BEGIN
-  SELECT user_id, title INTO a, t FROM public.posts WHERE id = NEW.post_id;
-  RETURN NEW;
-END; $$ LANGUAGE plpgsql;`;
-const P3 = `CREATE OR REPLACE FUNCTION public._probe_ins() RETURNS trigger AS $$
-DECLARE a uuid;
-BEGIN
-  SELECT user_id INTO a FROM public.posts WHERE id = NEW.post_id;
-  IF a IS NOT NULL THEN
-    INSERT INTO public.notifications (user_id, type, title, message, link)
-    VALUES (a, 'comment', 'x', 'y', '/z');
-  END IF;
-  RETURN NEW;
-END; $$ LANGUAGE plpgsql;`;
-const P4 = `DROP TRIGGER IF EXISTS _probe_trg ON public.comments;
-CREATE TRIGGER _probe_trg AFTER INSERT ON public.comments FOR EACH ROW EXECUTE FUNCTION public._probe_noop();`;
-const CLEAN = `DROP TRIGGER IF EXISTS _probe_trg ON public.comments;
-DROP FUNCTION IF EXISTS public._probe_noop();
-DROP FUNCTION IF EXISTS public._probe_body();
-DROP FUNCTION IF EXISTS public._probe_ins();`;
+// T1: check_function_bodies=off 로 우회되는가
+const T1 = `SET check_function_bodies = off;
+CREATE OR REPLACE FUNCTION public._probe_cfb() RETURNS trigger AS $$ BEGIN RETURN NEW; END; $$ LANGUAGE plpgsql;`;
+
+// T2: 진단 결과를 스크래치 테이블에 적재 → PostgREST로 읽기
+const T2 = `DROP TABLE IF EXISTS public._probe_diag;
+CREATE TABLE public._probe_diag (k text, v text);
+INSERT INTO public._probe_diag
+  SELECT 'evt:'||evtname, evtevent||' -> '||(evtfoid::regprocedure)::text FROM pg_event_trigger;
+INSERT INTO public._probe_diag VALUES ('exec_sql_lang', (SELECT l.lanname FROM pg_proc p JOIN pg_language l ON l.oid=p.prolang WHERE p.proname='exec_sql' LIMIT 1));
+INSERT INTO public._probe_diag VALUES ('plpgsql_validator', (SELECT (lanvalidator::regprocedure)::text FROM pg_language WHERE lanname='plpgsql'));
+INSERT INTO public._probe_diag VALUES ('cfb_setting', (SELECT current_setting('check_function_bodies')));
+GRANT SELECT ON public._probe_diag TO anon, authenticated;`;
+
+const CLEAN = `DROP FUNCTION IF EXISTS public._probe_cfb();`;
 
 (async () => {
-  await run('P1 trivial trigger fn', P1);
-  await run('P2 fn with SELECT body', P2);
-  await run('P3 fn with INSERT notifications', P3);
-  await run('P4 CREATE TRIGGER on comments', P4);
-  await run('CLEANUP', CLEAN);
+  await run('T1 check_function_bodies=off', T1);
+  await run('T2 load diag table', T2);
+  await run('CLEANUP fn', CLEAN);
+  console.log('\n=== read diag via PostgREST ===');
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/_probe_diag?select=k,v`, { headers });
+  console.log(r.status, await r.text());
 })();
