@@ -15,11 +15,7 @@ function notify() {
 }
 
 async function fetchNewPosts(user: any, pathname: string) {
-  if (!user) {
-    sharedState = { count: 0, posts: [] };
-    notify();
-    return;
-  }
+  // 커뮤니티를 보고 있으면 = 다 읽은 것 → 기준선 갱신 + 신호 0 (로그인 여부 무관)
   if (pathname.startsWith('/community')) {
     try { localStorage.setItem('community_seen_at', String(Date.now())); } catch {}
     sharedState = { count: 0, posts: [] };
@@ -29,10 +25,16 @@ async function fetchNewPosts(user: any, pathname: string) {
   const supabase = createClient();
   if (!supabase) return;
   try {
-    const seenAt = localStorage.getItem('community_seen_at') || '0';
-    const since = seenAt === '0'
-      ? new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
-      : new Date(Number(seenAt)).toISOString();
+    // 비로그인 방문자에게도 "지난 방문 이후 새 글 N개" 변동 보상을 켠다 — 방문자 대다수가
+    // 구글에서 온 비로그인. 단 *첫 방문*엔 '놓친 글' 기준이 없으므로 과장 없이 기준선만 심고 0.
+    const seenRaw = localStorage.getItem('community_seen_at');
+    if (!seenRaw) {
+      try { localStorage.setItem('community_seen_at', String(Date.now())); } catch {}
+      sharedState = { count: 0, posts: [] };
+      notify();
+      return;
+    }
+    const since = new Date(Number(seenRaw)).toISOString();
     const { data, count: c } = await supabase
       .from('posts')
       .select('id, title, category, created_at', { count: 'exact' })
