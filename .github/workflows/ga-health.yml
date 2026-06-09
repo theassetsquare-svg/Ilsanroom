@@ -1,0 +1,27 @@
+name: GA4 Health Audit (daily)
+
+# 매일 GA4 속성 540830544 에서 직접 읽어 사용자 불만족 신호(이탈/체류/참여) 자동 적발.
+# 데이터 부족 시 조용히 보류, 문제 있을 때만 이메일 (mail-on-failure).
+on:
+  schedule:
+    # 매일 KST 08:00 (UTC 23:00) — 기존 06:15~07:35 감사군과 시간 분리
+    - cron: '0 23 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ga-health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: GA4 health audit
+        run: node scripts/ga-health-audit.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
