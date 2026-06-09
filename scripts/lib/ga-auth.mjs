@@ -12,7 +12,18 @@ import crypto from 'node:crypto';
 
 export const GA_PROPERTY = process.env.GA_PROPERTY_ID || 'properties/540830544';
 export const GA_MEASUREMENT_ID = process.env.GA_MEASUREMENT_ID || 'G-W6VE6KHLLD';
-const SCOPE = 'https://www.googleapis.com/auth/analytics.readonly';
+// 할당량/청구 프로젝트 override. SA 소속 프로젝트(theasset-gsc/447703608130)는
+// 사장님 접근 불가 → 사장님 소유 프로젝트로 Data API 사용량을 돌린다.
+// 그 프로젝트에 Data API 사용설정 + SA를 Service Usage Consumer 로 추가해야 작동.
+export const GA_QUOTA_PROJECT = process.env.GA_QUOTA_PROJECT || 'theassetsquare-search-console';
+// analytics.readonly = Data API 읽기, cloud-platform = quota project(x-goog-user-project) 지정 허용
+const SCOPE = 'https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/cloud-platform';
+
+function gaHeaders(token) {
+  const h = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
+  if (GA_QUOTA_PROJECT) h['x-goog-user-project'] = GA_QUOTA_PROJECT;
+  return h;
+}
 
 const b64url = (buf) =>
   Buffer.from(buf).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -68,7 +79,7 @@ export function gaErrorReason(status, body) {
 export async function runReport(token, requestBody) {
   const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/${GA_PROPERTY}:runReport`, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    headers: gaHeaders(token),
     body: JSON.stringify(requestBody),
   });
   const body = await r.json().catch(() => ({}));
@@ -79,7 +90,7 @@ export async function runReport(token, requestBody) {
 export async function runRealtimeReport(token, requestBody) {
   const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/${GA_PROPERTY}:runRealtimeReport`, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    headers: gaHeaders(token),
     body: JSON.stringify(requestBody),
   });
   const body = await r.json().catch(() => ({}));
