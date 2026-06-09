@@ -1,0 +1,30 @@
+name: Seed Content Quality Gate (weekly)
+
+# 커뮤니티 시드 풀 "발행 전 검문소" — auto-content-v2 가 발행하는 seed_post_pool 을 주1회 전수 검사.
+#   🚫 금지어(가격/2차 등) = 하드 FAIL
+#   🎣 후킹 5축 미달 / ♻️ 양산 지문(n-gram 재탕) = 경고 메일
+# 라이브 풀을 읽기 전용 SELECT 로 검사(쓰기 0, 사이트 크롤 0, 부하 0). 이슈 있을 때만 메일.
+on:
+  schedule:
+    # 매주 월 KST 11:45 (UTC 02:45) — 11:30 GSC 성장기회와 분리
+    - cron: '45 2 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  seed-quality-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Seed pool quality gate
+        run: node scripts/seed-content-quality-gate.mjs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
