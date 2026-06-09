@@ -1,0 +1,23 @@
+name: GA Data API enable (one-shot)
+
+# 일회용: SA(gsc-mcp@theasset-gsc) 권한으로 project 447703608130 의
+# analyticsdata/analyticsadmin API 를 코드로 직접 활성화 시도.
+# SA에 serviceusage.services.enable 권한 있으면 콘솔 없이 켜짐.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ga-enable:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Enable GA Data API via Service Usage
+        run: node scripts/ga-enable.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
