@@ -6,6 +6,7 @@ import { Search } from 'lucide-react';
 import { venues as allVenues } from '@/data/venues';
 import type { Venue } from '@/types';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
+import { trackEvent } from '@/lib/visitor-tracker';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { ReadFinishCount } from '@/components/engagement/ReadingEngagement';
 import { hasVenueImage } from '@/data/venue-image-manifest';
@@ -228,6 +229,15 @@ export default function SearchPage() {
 
   const { results, total } = useMemo(() => smartSearch(queryParam, categoryParam), [queryParam, categoryParam]);
   const suggestions = useMemo(() => getSuggestions(inputValue), [inputValue]);
+
+  /* 실제 검색(URL 확정 쿼리)을 GA4로 전달 — 무엇을 찾는지/무엇이 없어서 못 찾는지 수집.
+   * search_no_result = 사용자가 원하는데 사이트에 없는 페이지 = 만들어야 할 1순위 신호. */
+  useEffect(() => {
+    const q = queryParam.trim();
+    if (!q) return;
+    trackEvent('search', { search_term: q, results: total });
+    if (total === 0) trackEvent('search_no_result', { search_term: q });
+  }, [queryParam, total]);
 
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   useEffect(() => {

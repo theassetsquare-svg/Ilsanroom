@@ -8,7 +8,25 @@ import { createClient } from './supabase';
 type EventType =
   | 'view' | 'scroll_25' | 'scroll_50' | 'scroll_75' | 'scroll_100'
   | 'time_10s' | 'time_30s' | 'time_60s' | 'time_180s' | 'exit'
-  | 'signup' | 'login' | 'share_click' | 'post_create' | 'invite_open';
+  | 'signup' | 'login' | 'share_click' | 'post_create' | 'invite_open'
+  | 'search' | 'search_no_result';
+
+/* ── GA4(gtag) 전달 대상 이벤트 → GA4 권장 이벤트명 매핑 ──
+ * 의미 있는 행동만 GA4로도 보냄(스크롤/체류/뷰는 GA4 향상측정이 이미 수집).
+ * search_no_result = "검색했는데 없어서 못 찾음" = 만들어야 할 페이지 1순위 신호. */
+const GA4_EVENT_NAME: Partial<Record<EventType, string>> = {
+  signup: 'sign_up', login: 'login', share_click: 'share',
+  post_create: 'post_create', invite_open: 'invite_open',
+  search: 'search', search_no_result: 'search_no_result',
+};
+
+function forwardToGa4(eventType: EventType, meta?: Record<string, any>) {
+  const name = GA4_EVENT_NAME[eventType];
+  if (!name) return;
+  const gtag = (window as any).gtag;
+  if (typeof gtag !== 'function') return;
+  gtag('event', name, { ...(meta || {}) });
+}
 
 type SourceType = 'google' | 'naver' | 'kakao' | 'daum' | 'bing' | 'twitter' | 'facebook' | 'instagram' | 'youtube' | 'direct' | 'internal' | 'other';
 type DeviceType = 'mobile' | 'tablet' | 'desktop';
@@ -152,6 +170,9 @@ function send(eventType: EventType, opts?: { dwellMs?: number; meta?: Record<str
   const once = opts?.once !== false; // default = once per page
   if (once && firedEvents.has(eventType)) return;
   if (once) firedEvents.add(eventType);
+
+  // GA4(gtag)에도 의미 이벤트 전달 — 관리자/봇/내부 제외 후라 깨끗한 방문자 데이터만 쌓임
+  forwardToGa4(eventType, opts?.meta);
 
   const payload: Record<string, any> = {
     session_id: sessionId,
