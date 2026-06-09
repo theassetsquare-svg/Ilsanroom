@@ -24,8 +24,8 @@ INSERT INTO public._probe_diag (k, v)
 INSERT INTO public._probe_diag (k, v)
   SELECT 'EVT_SRC:'||evtname, pg_get_functiondef(evtfoid)
   FROM pg_event_trigger;
-INSERT INTO public._probe_diag (k, v) VALUES
-  ('exec_sql_src', (SELECT pg_get_functiondef('public.exec_sql'::regprocedure)));
+INSERT INTO public._probe_diag (k, v)
+  SELECT 'exec_sql_src', pg_get_functiondef(p.oid) FROM pg_proc p WHERE p.proname='exec_sql' LIMIT 1;
 NOTIFY pgrst, 'reload schema';`;
 
 (async () => {
