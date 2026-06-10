@@ -9,7 +9,9 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-W6VE6KHLLD');
+      // send_page_view:false — 자동 페이지뷰 끔. 진짜 방문자(봇·내부·관리자·자동화 제외)일 때만
+      // visitor-tracker가 page_view를 쏜다 → GA4 이탈율이 사람 기준으로 정상화(감사봇 오염 차단).
+      gtag('config', 'G-W6VE6KHLLD', { send_page_view: false });
     </script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/favicon.ico" sizes="48x48">

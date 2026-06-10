@@ -21,10 +21,20 @@ const GA4_EVENT_NAME: Partial<Record<EventType, string>> = {
 };
 
 function forwardToGa4(eventType: EventType, meta?: Record<string, any>) {
-  const name = GA4_EVENT_NAME[eventType];
-  if (!name) return;
   const gtag = (window as any).gtag;
   if (typeof gtag !== 'function') return;
+  // ★page_view는 send()의 봇·내부·관리자 게이트를 통과한 '진짜 방문자'에서만 발송.
+  // index.html config는 send_page_view:false → 자동 발송 없음 → 감사봇/링크미리보기 오염 0.
+  if (eventType === 'view') {
+    gtag('event', 'page_view', {
+      page_path: currentPath || window.location.pathname,
+      page_title: typeof document !== 'undefined' ? document.title : undefined,
+      page_location: window.location.href,
+    });
+    return;
+  }
+  const name = GA4_EVENT_NAME[eventType];
+  if (!name) return;
   gtag('event', name, { ...(meta || {}) });
 }
 

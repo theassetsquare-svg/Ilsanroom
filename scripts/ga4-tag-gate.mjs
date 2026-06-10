@@ -67,6 +67,20 @@ for (const f of walk(DIST)) {
   else if (nLoad > 1) errors.push(`${rel} GA4 로더 중복 ×${nLoad}`);
   if (nCfg === 0) errors.push(`${rel} GA4 config 누락 (${ID} 없음)`);
   else if (nCfg > 1) errors.push(`${rel} GA4 config 중복 ×${nCfg}`);
+
+  // send_page_view:false 필수 — 자동 페이지뷰를 끄고 진짜 방문자(봇·내부·관리자·감사봇 제외)
+  // 일 때만 visitor-tracker가 page_view를 쏜다. 빠지면 봇/링크미리보기가 이탈율을 오염시킨다.
+  // ★HTML 주석을 먼저 제거하고 gtag('config', ID, { … send_page_view:false … }) 호출 본문에서만 확인.
+  //   (주석에도 'send_page_view:false' 문구가 있어 단순 정규식은 false-pass 됨)
+  if (nCfg >= 1) {
+    const code = html.replace(/<!--[\s\S]*?-->/g, '');
+    const cfgRe = new RegExp(`gtag\\(\\s*['"]config['"]\\s*,\\s*['"]${ID}['"]\\s*,\\s*\\{([^}]*)\\}`, 'g');
+    let ok = false, m2;
+    while ((m2 = cfgRe.exec(code))) {
+      if (/send_page_view\s*:\s*false/i.test(m2[1])) ok = true;
+    }
+    if (!ok) errors.push(`${rel} send_page_view:false 누락 (config 옵션에 없음 → 자동 페이지뷰 미차단 → 봇 이탈율 오염)`);
+  }
 }
 
 console.log('📊 GA4 태그 게이트');
