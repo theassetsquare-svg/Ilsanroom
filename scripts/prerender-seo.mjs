@@ -274,7 +274,7 @@ function venueHref(v) {
 const SKIP_TO_CONTENT = `<a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:0;z-index:9999;background:#000;color:#fff;padding:8px 12px;text-decoration:none;font-weight:600" onfocus="this.style.left='8px'" onblur="this.style.left='-9999px'">본문 바로가기</a>`;
 const SITE_NAV_ANCHORS = `${SKIP_TO_CONTENT}<nav aria-label="카테고리"><ul><li><a href="/clubs/">클럽</a></li><li><a href="/nights/">나이트</a></li><li><a href="/lounges/">라운지</a></li><li><a href="/rooms/">룸</a></li><li><a href="/yojeong/">요정</a></li><li><a href="/hoppa/">호빠</a></li><li><a href="/community/">커뮤니티</a></li><li><a href="/magazine/">매거진</a></li><li><a href="/search/">검색</a></li></ul></nav>`;
 // 시즌22 — 사이트 footer SSR 내부링크 (정적 유틸/lounge/lead 페이지 reachable)
-const SITE_FOOTER_ANCHORS = `<footer aria-label="사이트맵"><h2>전체 메뉴</h2><nav aria-label="사이트맵 링크"><ul><li><a href="/tonight/">오늘 밤</a></li><li><a href="/weekend/">이번 주말</a></li><li><a href="/occasion/">상황별</a></li><li><a href="/budget/">예산별</a></li><li><a href="/guide/">입문 가이드</a></li><li><a href="/safety/">안전 가이드</a></li><li><a href="/help/">자주 묻는 질문</a></li><li><a href="/venue-info/">양주·부스·룸 안내</a></li><li><a href="/events/">이벤트 일정</a></li><li><a href="/gallery/">매장 사진</a></li><li><a href="/ranking/">인기 랭킹</a></li><li><a href="/quiz/">스타일 퀴즈</a></li><li><a href="/roulette/">룰렛 추천</a></li><li><a href="/vs/">VS 매치업</a></li><li><a href="/compare/">업소 비교</a></li><li><a href="/hidden/">숨은 명소</a></li><li><a href="/welcome/">놀쿨 소개</a></li><li><a href="/login/">로그인</a></li><li><a href="/profile/">내 프로필</a></li><li><a href="/referral/">친구 초대</a></li><li><a href="/onboarding/">업소 입점</a></li><li><a href="/pricing/">요금제</a></li><li><a href="/dashboard/">매장 대시보드</a></li><li><a href="/analytics/">분석 리포트</a></li><li><a href="/billing/">결제 관리</a></li><li><a href="/launch/">오픈 체크</a></li><li><a href="/demo/">업주 데모</a></li><li><a href="/case-studies/">운영 사례</a></li><li><a href="/testimonials/">업주 인터뷰</a></li><li><a href="/status/">서비스 상태</a></li><li><a href="/privacy-promise/">프라이버시 정책</a></li><li><a href="/disclaimer/">고지 사항</a></li><li><a href="/legal/">법적 준수 안내</a></li><li><a href="/terms/">이용 약관</a></li><li><a href="/privacy/">개인정보 처리</a></li><li><a href="/venue-terms/">업주 약관</a></li><li><a href="/lounge/">업종별 라운지</a></li><li><a href="/lounge/club/">클럽 라운지</a></li><li><a href="/lounge/night/">나이트 라운지</a></li><li><a href="/lounge/room/">룸 라운지</a></li><li><a href="/lounge/lounge/">라운지바 라운지</a></li><li><a href="/lounge/yojung/">요정 라운지</a></li><li><a href="/lounge/hoppa/">호빠 라운지</a></li><li><a href="/lounge/free/">자유 라운지</a></li><li><a href="/lounge/qna/">Q&A 라운지</a></li><li><a href="/lead/nightlife-guide/">나이트라이프 가이드</a></li><li><a href="/lead/quiz/">스타일 진단</a></li><li><a href="/lead/weekly-hot/">주간 핫스팟</a></li></ul></nav><nav aria-label="최근 업데이트"><h2>다시 오면 새로 보이는 것</h2><ul><li><a href="/new/clubs/">이번에 새로 들어온 곳</a></li><li><a href="/magazine/">이번 주 매거진 글</a></li><li><a href="/tonight/">오늘 밤 갈 만한 곳</a></li></ul><p>콘텐츠 최근 갱신 ${BUILD_DATE_KST} 기준</p></nav></footer>`;
+const SITE_FOOTER_ANCHORS = `<footer aria-label="사이트맵"><h2>전체 메뉴</h2><nav aria-label="사이트맵 링크"><ul><li><a href="/tonight/">오늘 밤</a></li><li><a href="/weekend/">이번 주말</a></li><li><a href="/occasion/">상황별</a></li><li><a href="/budget/">예산별</a></li><li><a href="/guide/">입문 가이드</a></li><li><a href="/safety/">안전 가이드</a></li><li><a href="/help/">자주 묻는 질문</a></li><li><a href="/venue-info/">양주·부스·룸 안내</a></li><li><a href="/events/">이벤트 일정</a></li><li><a href="/gallery/">매장 사진</a></li><li><a href="/ranking/">인기 랭킹</a></li><li><a href="/quiz/">스타일 퀴즈</a></li><li><a href="/roulette/">룰렛 추천</a></li><li><a href="/vs/">VS 매치업</a></li><li><a href="/compare/">업소 비교</a></li><li><a href="/hidden/">숨은 명소</a></li><li><a href="/welcome/">놀쿨 소개</a></li><li><a href="/login/">로그인</a></li><li><a href="/profile/">내 프로필</a></li><li><a href="/referral/">친구 초대</a></li><li><a href="/onboarding/">업소 입점</a></li><li><a href="/pricing/">요금제</a></li><li><a href="/dashboard/">매장 대시보드</a></li><li><a href="/analytics/">분석 리포트</a></li><li><a href="/billing/">결제 관리</a></li><li><a href="/launch/">오픈 체크</a></li><li><a href="/demo/">업주 데모</a></li><li><a href="/case-studies/">운영 사례</a></li><li><a href="/testimonials/">업주 인터뷰</a></li><li><a href="/status/">서비스 상태</a></li><li><a href="/privacy-promise/">프라이버시 정책</a></li><li><a href="/disclaimer/">고지 사항</a></li><li><a href="/legal/">법적 준수 안내</a></li><li><a href="/terms/">이용 약관</a></li><li><a href="/privacy/">개인정보 처리</a></li><li><a href="/venue-terms/">업주 약관</a></li><li><a href="/lounge/">업종별 라운지</a></li><li><a href="/lounge/club/">클럽 게시판</a></li><li><a href="/lounge/night/">나이트 게시판</a></li><li><a href="/lounge/room/">룸 게시판</a></li><li><a href="/lounge/lounge/">라운지바 게시판</a></li><li><a href="/lounge/yojung/">요정 게시판</a></li><li><a href="/lounge/hoppa/">호빠 게시판</a></li><li><a href="/lounge/free/">자유 게시판</a></li><li><a href="/lounge/qna/">Q&A 게시판</a></li><li><a href="/lead/nightlife-guide/">나이트라이프 가이드</a></li><li><a href="/lead/quiz/">스타일 진단</a></li><li><a href="/lead/weekly-hot/">주간 핫스팟</a></li></ul></nav><nav aria-label="최근 업데이트"><h2>다시 오면 새로 보이는 것</h2><ul><li><a href="/new/clubs/">이번에 새로 들어온 곳</a></li><li><a href="/magazine/">이번 주 매거진 글</a></li><li><a href="/tonight/">오늘 밤 갈 만한 곳</a></li></ul><p>콘텐츠 최근 갱신 ${BUILD_DATE_KST} 기준</p></nav></footer>`;
 
 // 시즌89 — 가시 브레드크럼: jsonLdList의 BreadcrumbList(이미 페이지별 정확한 이름·URL)에서 생성.
 // 전 페이지 유형 공통(venue/매거진/집계/정적). 상위 단계는 같은 탭 내부링크(퍼널 상향 동선),
@@ -1956,7 +1956,9 @@ function aggPick(key, arr, off) {
 }
 function aggStationOf(v) { return v.nearbyStation ? (v.nearbyStation.match(/([^\s]+역)/)?.[1] || '') : ''; }
 // 멤버 업소 대표 하이라이트 — 페이지마다 멤버가 다르므로 100% 고유. features/shortDesc 실데이터.
-function aggHighlights(members, shortLabel, max = 6) {
+// 시즌173 — 단일업종 집계(best/new/region×cat/단일업종 tag)에서는 업종 라벨이 멤버마다 반복돼
+// 페이지 전체 스터핑(라운지/나이트 밀도 >3.5%)을 만든다. omitCatLabel과 같은 업종이면 meta에서 생략.
+function aggHighlights(members, shortLabel, max = 6, omitCatLabel = null) {
   let html = '<ul>';
   for (const v of members.slice(0, max)) {
     const label = shortLabel ? shortLabel(v) : v.nameKo;
@@ -1964,7 +1966,8 @@ function aggHighlights(members, shortLabel, max = 6) {
     if (v.features && v.features.length) detail = v.features.slice(0, 2).join('·');
     else if (v.shortDesc) detail = v.shortDesc.slice(0, 38);
     const st = aggStationOf(v);
-    const meta = [v.regionKo, catLabelMap[v.cat] || v.cat, st].filter(Boolean).join(' ');
+    const catL = catLabelMap[v.cat] || v.cat;
+    const meta = [v.regionKo, (omitCatLabel && catL === omitCatLabel) ? '' : catL, st].filter(Boolean).join(' ');
     html += `<li><a href="${venueHref(v)}">${escHtml(label)}</a> — ${escHtml(meta)}${detail ? ` · ${escHtml(detail)}` : ''}</li>`;
   }
   return html + '</ul>';
@@ -1972,7 +1975,7 @@ function aggHighlights(members, shortLabel, max = 6) {
 // 허브-메시 cross-link — 멤버에서 파생한 관련 태그/지역/업종/역. self 차원 제외. 페이지마다 고유 + dead-end 0.
 function aggHubMesh(members, selfKind, selfKey) {
   const tagCount = {};
-  for (const v of members) for (const t of (v.tags || [])) { if (selfKind === 'tag' && t === selfKey) continue; tagCount[t] = (tagCount[t] || 0) + 1; }
+  for (const v of members) for (const t of (v.tags || [])) { if (t === selfKey) continue; tagCount[t] = (tagCount[t] || 0) + 1; }
   const topTags = Object.entries(tagCount).sort((a, b) => b[1] - a[1]).slice(0, 8).map(e => e[0]);
   const regions = [...new Set(members.map(v => v.regionKo))].filter(r => r && !(selfKind === 'region' && r === selfKey)).slice(0, 8);
   const stations = [...new Set(members.map(aggStationOf).filter(Boolean))].filter(s => !(selfKind === 'near' && s === selfKey)).slice(0, 6);
@@ -1985,7 +1988,7 @@ function aggHubMesh(members, selfKind, selfKey) {
   }
   if (regions.length) {
     html += `<h2>지역으로 둘러보기</h2><ul>`;
-    for (const r of regions) html += `<li><a href="/region/${encodeURIComponent(r)}/">${escHtml(r)} 나이트라이프</a></li>`;
+    for (const r of regions) html += `<li><a href="/region/${encodeURIComponent(r)}/">${escHtml(r)}</a></li>`;
     html += `</ul>`;
   }
   if (cats.length) {
@@ -2034,7 +2037,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   ssrBody += `<ol>`;
   catVenues.forEach((vv, idx) => { ssrBody += `<li>${idx + 1}. <a href="${venueHref(vv)}">${escHtml(vv.nameKo)}</a> — ${escHtml(vv.regionKo)}</li>`; });
   ssrBody += `</ol>`;
-  ssrBody += `<h2>대표 업소 미리보기</h2>${aggHighlights(catVenues, null)}`;
+  ssrBody += `<h2>대표 업소 미리보기</h2>${aggHighlights(catVenues, null, 6, catInfo.labelKo)}`;
   ssrBody += aggInlineCta('best-' + catKey, catVenues);
   if (bestRegionList.length > 1) {
     ssrBody += `<h2>인기 지역 분포</h2><ul>`;
@@ -2068,7 +2071,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   ssrBody += `<h2>신규 ${escHtml(catInfo.labelKo)} ${catVenues.length}곳</h2><ul>`;
   catVenues.forEach(vv => { ssrBody += `<li><a href="${venueHref(vv)}">${escHtml(newShort(vv))}</a> — ${escHtml(vv.regionKo)}</li>`; });
   ssrBody += `</ul>`;
-  ssrBody += `<h2>대표 업소 미리보기</h2>${aggHighlights(catVenues, newShort)}`;
+  ssrBody += `<h2>대표 업소 미리보기</h2>${aggHighlights(catVenues, newShort, 6, catInfo.labelKo)}`;
   ssrBody += aggInlineCta('new-' + catKey, catVenues);
   if (newRegionList.length > 1) {
     ssrBody += `<h2>지역 분포</h2><ul>`;
@@ -2102,7 +2105,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
   regionVenues.forEach(rv => { const ck = catLabelMap[rv.cat] || rv.cat; if (!byCat[ck]) byCat[ck] = []; byCat[ck].push(rv); });
   // 시즌88 — desc도 실제 멤버 업종만 노출(전체 6업종 나열 X) → 지역마다 고유
   const regionDescCats = Object.keys(byCat).join('·');
-  const desc = `${regionKo} ${regionDescCats} ${regionVenues.length}곳 통합 정리. ${regionTopNames} 등 인기 업소 후기·분위기·전화번호를 한눈에 비교. 처음 가는 사람도 후회 없이 고르는 ${regionKo} 나이트라이프 가이드.`;
+  const desc = `${regionKo} ${regionDescCats} ${regionVenues.length}곳 통합 정리. ${regionTopNames} 등 인기 업소 후기·분위기·전화번호를 한눈에 비교. 처음 가는 사람도 후회 없이 고르는 ${regionKo} 가이드.`;
   let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
   for (const [ck, rvs] of Object.entries(byCat)) {
     ssrBody += `<h2>${escHtml(ck)} (${rvs.length}곳)</h2><ul>`;
@@ -2118,11 +2121,11 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     ssrBody += `</ul>`;
   }
   // FAQ
-  ssrBody += `<section><h2>나이트라이프 FAQ</h2><dl>`;
-  ssrBody += `<dt>나이트라이프 추천은?</dt>`;
+  ssrBody += `<section><h2>자주 묻는 질문</h2><dl>`;
+  ssrBody += `<dt>${escHtml(regionKo)} 추천 업소는?</dt>`;
   ssrBody += `<dd>인기 있는 곳: ${regionVenues.slice(0, 5).map(shortLabelFn).map(escHtml).join(', ')}. 각 업소 페이지에서 비교해보세요.</dd>`;
   ssrBody += `<dt>몇 곳 있나요?</dt>`;
-  ssrBody += `<dd>이 지역에는 ${regionVenues.length}곳의 나이트라이프 매장이 등록되어 있습니다.</dd>`;
+  ssrBody += `<dd>이 지역에는 ${regionVenues.length}곳이 등록되어 있습니다.</dd>`;
   ssrBody += `</dl></section>`;
   // 시즌22 — 지역×업종 anchor (region/{ko}/{cat} reachable)
   ssrBody += `<h2>업종별 더보기</h2><ul>`;
@@ -2133,7 +2136,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
   }
   ssrBody += `</ul>`;
   // 시즌88 — 동일 템플릿 문단 제거 → 멤버 실데이터 본문 + 허브-메시(막다른길 0)
-  ssrBody += `<h2>나이트라이프 한 줄 정리</h2>`;
+  ssrBody += `<h2>${escHtml(regionKo)} 한 줄 정리</h2>`;
   const catCounts = Object.entries(byCat).map(([ck, rvs]) => `${escHtml(ck)} ${rvs.length}곳`).join(' · ');
   ssrBody += `<p>이 지역에는 ${catCounts}이 등록되어 있고, 같은 동네라도 거리·역·층에 따라 손님 톤이 갈립니다. 처음 가는 분은 회원 후기가 누적된 ${regionTopNames ? escHtml(regionTopNames) : '대표 업소'} 같은 곳부터 둘러보면서 동네 분위기를 잡고, 두 번째 방문에 본인 모임 컨셉에 맞는 업종으로 옮겨가는 동선이 무난합니다.</p>`;
   ssrBody += `<h2>${escHtml(regionKo)} 대표 업소 미리보기</h2>${aggHighlights(regionVenues, shortLabelFn)}`;
@@ -2147,7 +2150,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     const crossVenues = regionVenues.filter(rv => rv.cat === catKey);
     if (crossVenues.length === 0) continue;
     const cp = `/region/${encodeURIComponent(regionKo)}/${catInfo.path}`;
-    const crossNames = crossVenues.slice(0, 3).map(cv => cv.nameKo).join(', ');
+    const crossNames = crossVenues.slice(0, 3).map(cv => { const ps = (cv.nameKo || '').split(/\s+/); return ps.length > 1 ? ps.slice(1).join(' ') : cv.nameKo; }).join(', ');
     const xs = (CROSS_SIG[catKey] || {})[regionKo];
     const ct = xs
       ? `${regionKo} ${catInfo.labelKo} ${crossVenues.length}곳 — ${xs.tail}`
@@ -2156,7 +2159,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
       ? `${regionKo}에서 ${catInfo.labelKo} 어디가 진짜야? ${xs.sig}. ${crossNames} 등 ${crossVenues.length}곳 분위기·후기·매니저·드레스코드·전화번호·예약 팁까지 한 페이지에서 바로 확인. 헛걸음 전에 비교하고 가자.`
       : `${regionKo}에서 ${catInfo.labelKo} 어디가 진짜야? ${crossNames} 등 ${crossVenues.length}곳 분위기·후기·평점·매니저·드레스코드·전화번호·영업시간·예약 팁까지 한 페이지에서 바로 확인. 헛걸음 전에 비교하고 가자.`;
     let cSsr = `<h1>${escHtml(ct)}</h1><p>${escHtml(cd)}</p>`;
-    cSsr += `<h2>${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} ${crossVenues.length}곳 리스트</h2><ul>`;
+    cSsr += `<h2>${escHtml(regionKo)} 업소 ${crossVenues.length}곳 리스트</h2><ul>`;
     crossVenues.forEach((cv, idx) => {
       // 시즌172 — 상위 5곳만 shortDesc, 그 외는 suffix 라벨만
       const parts = (cv.nameKo || '').split(/\s+/);
@@ -2170,10 +2173,10 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     cSsr += `</ul>`;
     // 시즌88 — 동일 템플릿 문단 제거 → 멤버 실데이터 본문 + 허브-메시(막다른길 0)
     const crossShort = (cv) => { const ps = (cv.nameKo || '').split(/\s+/); return ps.length > 1 ? ps.slice(1).join(' ') : cv.nameKo; };
-    cSsr += `<h2>${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} 미리보기</h2>${aggHighlights(crossVenues, crossShort)}`;
+    cSsr += `<h2>${escHtml(regionKo)} 대표 업소 미리보기</h2>${aggHighlights(crossVenues, crossShort, 6, catInfo.labelKo)}`;
     cSsr += aggInlineCta('rc-' + regionKo + '-' + catKey, crossVenues);
     cSsr += `<h2>자주 묻는 질문</h2>`;
-    cSsr += `<dl><dt>${escHtml(regionKo)} ${escHtml(catInfo.labelKo)} 어디가 인기 있나요?</dt>`;
+    cSsr += `<dl><dt>${escHtml(regionKo)}에서 어디가 인기 있나요?</dt>`;
     cSsr += `<dd>${escHtml(crossNames)} 등이 회원 검색·재방문 기준으로 자주 언급됩니다.</dd>`;
     cSsr += `<dt>예약은 어떻게 하나요?</dt>`;
     cSsr += `<dd>각 업소 상세 페이지에서 직통 전화로 예약 가능 시간과 룸 사이즈를 미리 확인하세요. 주말은 일찍 마감되는 곳이 많습니다.</dd></dl>`;
@@ -2203,10 +2206,17 @@ for (const [tag, tagVenues] of Object.entries(allTags)) {
   if (single) noIndexPathsSet.add(p);
   // 시즌88 — title 접미부도 key로 회전(전 태그 동일 접미부 지문 해체 + 후미 5어절 차별화)
   const title = `#${tag} ${aggPick(tag, ['관련 업소', '모음', '큐레이션', '추천 리스트'], 5)} ${tagVenues.length}곳 — ${aggPick(tag, ['태그로 찾는 나이트라이프', '같은 결끼리 모아본 곳', '한번에 비교하는 페이지', '결로 묶은 나이트라이프'], 6)}`;
-  // 시즌172 — tagTopNames에서도 접두어 중복 제거 (시즌172 stuffing 해소)
-  const tagTopNames = tagVenues.slice(0, 3).map(tv => { const p = (tv.nameKo || '').split(/\s+/); return (p.length > 1 && p[0].includes(tag)) ? p.slice(1).join(' ') : tv.nameKo; }).join(', ');
   // 시즌88 — 동일 템플릿 문단 제거 → 멤버 업소 실데이터 고유 본문 + 허브-메시(막다른길 0)
-  const tagShort = (tv) => { const parts = (tv.nameKo || '').split(/\s+/); return (parts.length > 1 && parts[0].includes(tag)) ? parts.slice(1).join(' ') : tv.nameKo; };
+  // 시즌174 — 멤버 라벨 stuffing 해소. 태그어가 이름에 있으면 그 토큰 제거(브랜드 suffix/prefix 태그),
+  // 없으면 공유 지역+업종 접두(첫 토큰)를 떼 고유 상호만 노출(설명형 태그의 접두 반복 stuffing 해소). 지역은 줄 끝에 별도 표기.
+  const tagShort = (tv) => {
+    const parts = (tv.nameKo || '').split(/\s+/);
+    if (parts.length <= 1) return tv.nameKo;
+    const ti = parts.findIndex(pt => pt.includes(tag));
+    if (ti >= 0) { const kept = parts.filter((_, i) => i !== ti); if (kept.length) return kept.join(' '); }
+    return parts.slice(1).join(' ');
+  };
+  const tagTopNames = tagVenues.slice(0, 3).map(tagShort).join(', ');
   const tagRegions = [...new Set(tagVenues.map(tv => tv.regionKo))].slice(0, 8);
   const tagCats = [...new Set(tagVenues.map(tv => catLabelMap[tv.cat] || tv.cat))];
   const tagRegionStr = tagRegions.slice(0, 4).map(escHtml).join(', ');
@@ -2216,11 +2226,15 @@ for (const [tag, tagVenues] of Object.entries(allTags)) {
   let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
   // 멤버 실데이터로 짠 고유 인트로 (지역·업종 조합이 태그마다 달라 고유)
   ssrBody += `<p>${aggPick(tag, ['지금', '현재', '오늘 기준'], 0)} '${escHtml(tag)}' 결로 묶인 곳은 ${tagCatStr} ${tagVenues.length}곳이고, ${tagRegionStr}${tagRegions.length > 4 ? ' 등' : ''} 지역에 ${aggPick(tag, ['퍼져 있습니다', '분포합니다', '자리합니다'], 1)}.</p>`;
-  ssrBody += `<h2>'${escHtml(tag)}' 큐레이션 ${tagVenues.length}곳</h2><ul>`;
-  tagVenues.forEach(tv => { ssrBody += `<li><a href="${venueHref(tv)}">${escHtml(tagShort(tv))}</a> — ${escHtml(tv.regionKo)} ${escHtml(catLabelMap[tv.cat] || tv.cat)}</li>`; });
+  // 시즌173 — 단일업종 tag는 멤버 줄마다 업종 라벨이 반복돼 스터핑. 단일업종이면 줄 라벨 생략.
+  const tagSingleCat = tagCats.length === 1 ? tagCats[0] : null;
+  // 시즌174 — 단일지역 tag(압구정클럽 등)는 줄마다 지역명이 반복돼 stuffing. 단일지역이면 줄 지역 생략(지역은 title/인트로에 이미 노출).
+  const tagSingleRegion = tagRegions.length === 1;
+  ssrBody += `<h2>큐레이션 ${tagVenues.length}곳</h2><ul>`;
+  tagVenues.forEach(tv => { const cl = tagSingleCat ? '' : ` ${escHtml(catLabelMap[tv.cat] || tv.cat)}`; const rl = tagSingleRegion ? '' : ` — ${escHtml(tv.regionKo)}`; ssrBody += `<li><a href="${venueHref(tv)}">${escHtml(tagShort(tv))}</a>${rl}${cl}</li>`; });
   ssrBody += `</ul>`;
   // 대표 업소 하이라이트 — features/shortDesc 실데이터 (페이지마다 고유)
-  ssrBody += `<h2>대표 업소 미리보기</h2>${aggHighlights(tagVenues, tagShort)}`;
+  ssrBody += `<h2>대표 업소 미리보기</h2>${aggHighlights(tagVenues, tagShort, 6, tagSingleCat)}`;
   // 인라인 CTA (다크패턴 X)
   ssrBody += aggInlineCta(tag, tagVenues);
   // 분포 (실데이터)
@@ -2233,10 +2247,10 @@ for (const [tag, tagVenues] of Object.entries(allTags)) {
   ssrBody += aggHubMesh(tagVenues, 'tag', tag);
   // data-driven FAQ
   ssrBody += `<h2>자주 묻는 질문</h2>`;
-  ssrBody += `<dl><dt>'${escHtml(tag)}'로 묶인 업소는 어디인가요?</dt>`;
+  ssrBody += `<dl><dt>이 키워드로 묶인 업소는 어디인가요?</dt>`;
   ssrBody += `<dd>${tagVenues.slice(0, 3).map(tv => escHtml(tagShort(tv))).join(', ')} 등 ${tagVenues.length}곳이고, ${tagRegionStr} 지역에 있습니다. 각 업소 상세에서 분위기를 확인하세요.</dd>`;
   ssrBody += `<dt>어떤 업종이 포함되나요?</dt>`;
-  ssrBody += `<dd>${tagCatStr} ${tagCats.length}개 업종이 '${escHtml(tag)}' 결로 묶여 있습니다. 위 업종으로 둘러보기에서 같은 업종 인기·신규 업소를 이어서 볼 수 있습니다.</dd></dl>`;
+  ssrBody += `<dd>${tagCatStr} ${tagCats.length}개 업종이 이 결로 묶여 있습니다. 위 업종으로 둘러보기에서 같은 업종 인기·신규 업소를 이어서 볼 수 있습니다.</dd></dl>`;
   writePage(p, { title, description: desc, ssrBody, keywords: `${tag}, ${tag} 추천, 나이트라이프 ${tag}`, jsonLdList: collectionJsonLd(p, title, desc, tagVenues, [{ name: '놀쿨', url: BASE_URL }, { name: `#${tag}`, url: `${BASE_URL}${p}/` }]) });
   // single-member tag는 sitemap/IndexNow에서 제외(색인 요청 안 함). 파일은 위에서 이미 생성됨.
   if (single) { singleTagNoindexCount++; } else { multiTagIndexCount++; dynamicPages.push(p); }
@@ -2274,8 +2288,8 @@ for (const [st, stVenues] of Object.entries(stationVenues)) {
   const stShort = (sv) => { const parts = (sv.nameKo || '').split(/\s+/); return (parts.length > 1 && parts[0].includes(st.replace(/역$/, ''))) ? parts.slice(1).join(' ') : sv.nameKo; };
   const stCats = [...new Set(stVenues.map(sv => catLabelMap[sv.cat] || sv.cat))];
   const stRegions = [...new Set(stVenues.map(sv => sv.regionKo))].filter(Boolean);
-  ssrBody += `<p>${escHtml(st)}에서 도보 5분권에 ${stCats.join('·')} ${stVenues.length}곳이 ${aggPick(st, ['모여 있습니다', '자리합니다', '몰려 있습니다'], 0)}.${stRegions.length ? ` ${stRegions.slice(0, 3).map(escHtml).join(', ')} 일대라 늦은 시간 역 근처에서 끝나는 코스가 ${aggPick(st, ['편합니다', '안전합니다', '수월합니다'], 1)}.` : ''}</p>`;
-  ssrBody += `<h2>${escHtml(st)} 도보권 대표 업소</h2>${aggHighlights(stVenues, stShort)}`;
+  ssrBody += `<p>이 역에서 도보 5분권에 ${stCats.join('·')} ${stVenues.length}곳이 ${aggPick(st, ['모여 있습니다', '자리합니다', '몰려 있습니다'], 0)}.${stRegions.length ? ` ${stRegions.slice(0, 3).map(escHtml).join(', ')} 일대라 늦은 시간 역 근처에서 끝나는 코스가 ${aggPick(st, ['편합니다', '안전합니다', '수월합니다'], 1)}.` : ''}</p>`;
+  ssrBody += `<h2>도보권 대표 업소</h2>${aggHighlights(stVenues, stShort, 6, stCats.length === 1 ? stCats[0] : null)}`;
   ssrBody += aggInlineCta('near-' + st, stVenues);
   ssrBody += `<h2>업종별 분포</h2><ul>`;
   stCats.forEach(c => { const cnt = stVenues.filter(sv => (catLabelMap[sv.cat] || sv.cat) === c).length; ssrBody += `<li><strong>${escHtml(c)}</strong> — ${cnt}곳</li>`; });
