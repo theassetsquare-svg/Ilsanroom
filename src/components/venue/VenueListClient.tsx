@@ -381,6 +381,7 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
           type="button"
           aria-label="맨 위로 이동"
           data-testid="scroll-top"
+          data-back-to-top
           onClick={scrollTop}
           className="fixed bottom-24 right-4 z-[50] inline-flex items-center justify-center rounded-full bg-violet-600 text-white shadow-lg hover:bg-violet-700"
           style={{ width: 44, height: 44 }}
