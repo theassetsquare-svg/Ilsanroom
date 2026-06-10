@@ -2025,7 +2025,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   const catVenues = venues.filter(vv => vv.cat === catKey);
   if (catVenues.length === 0) continue;
   const p = `/best/${catInfo.path}`;
-  const title = `${catInfo.labelKo} 인기 TOP ${catVenues.length} — 회원들이 가장 많이 찾는다`;
+  const title = `${catInfo.labelKo} 인기 TOP ${catVenues.length} — ${aggPick('best-' + catKey, ['회원들이 가장 많이 찾는다', '왜 다들 여기로 몰릴까', '한 번 가면 또 찾는 단골집', '주말마다 북적이는 상위권', '두 번 세 번 다시 가는 곳', '발길 끊이지 않는 곳들'], 7)}`;
   const topNames = catVenues.slice(0, 3).map(vv => vv.nameKo).join(', ');
   const desc = BEST_DESC_BY_CAT[catKey] ? BEST_DESC_BY_CAT[catKey](catVenues.length) : `전국 ${catInfo.labelKo} TOP ${catVenues.length}곳 비교 가이드 — ${topNames} 등 인기 ${catInfo.labelKo} 분위기, 매니저 평판, 드레스코드, 전화번호, 예약 팁까지 정리. 매일 자동 갱신되는 ${catInfo.labelKo} 추천 리스트.`;
   // 시즌88 — 동일 템플릿 문단 제거 → 멤버 실데이터 본문 + 허브-메시(막다른길 0)
@@ -2059,7 +2059,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   const catVenues = venues.filter(vv => vv.cat === catKey);
   if (catVenues.length === 0) continue;
   const p = `/new/${catInfo.path}`;
-  const title = `새로 입점한 ${catInfo.labelKo} ${catVenues.length}곳 — 아직 안 가본 곳 먼저 발견`;
+  const title = `새로 입점한 ${catInfo.labelKo} ${catVenues.length}곳 — ${aggPick('new-' + catKey, ['아직 안 가본 곳 먼저 발견', '남들보다 한발 먼저 찜', '오픈빨 살아있을 때 가보기', '단골 자리잡기 전이 기회', '손님 적은 지금이 적기', '초기 응대 좋을 때 방문'], 7)}`;
   const newNames = catVenues.slice(0, 3).map(vv => vv.nameKo).join(', ');
   const desc = `새로 오픈한 ${catInfo.labelKo} 어디 있지? 최근 신규 입점 ${catVenues.length}곳 — ${newNames} 등 강남 홍대 이태원 일산 부산 수원 신생 핫스팟. 손님 적고 매니저 응대 좋은 오픈 직후 시점 놓치지 말고 바로 확인.`;
   // 시즌88 — 동일 템플릿 문단 제거 → 멤버 실데이터 본문 + 허브-메시(막다른길 0)
@@ -2096,7 +2096,7 @@ for (const v of venues) {
 }
 for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
   const p = `/region/${encodeURIComponent(regionKo)}`;
-  const title = `${regionKo} 나이트라이프 ${regionVenues.length}곳 — 클럽·라운지·룸·요정 한눈에`;
+  const title = `${regionKo} 나이트라이프 ${regionVenues.length}곳 — ${aggPick(regionKo, ['클럽·라운지·룸·요정 한눈에', '동네 핫스팟 한 페이지 정리', '어디부터 갈지 비교해보기', '가까운 인기 업소 모아보기', '처음 가도 후회 없는 코스', '업종별 분위기 한눈 비교', '회원 후기로 추린 동네 picks', '거리·업종별로 묶어 보기', '오늘 갈 곳 빠르게 고르기', '현지인이 자주 찾는 순서'], 7)}`;
   // 시즌172 — region 접두어 포함 venue는 suffix만 (브랜드 반복 희석)
   const shortLabelFn = (rv) => { const ps = (rv.nameKo || '').split(/\s+/); return (ps.length > 1 && ps[0].includes(regionKo)) ? ps.slice(1).join(' ') : rv.nameKo; };
   const regionTopNames = regionVenues.slice(0, 3).map(shortLabelFn).join(', ');
@@ -2205,7 +2205,7 @@ for (const [tag, tagVenues] of Object.entries(allTags)) {
   const single = tagVenues.length === 1;
   if (single) noIndexPathsSet.add(p);
   // 시즌88 — title 접미부도 key로 회전(전 태그 동일 접미부 지문 해체 + 후미 5어절 차별화)
-  const title = `#${tag} ${aggPick(tag, ['관련 업소', '모음', '큐레이션', '추천 리스트'], 5)} ${tagVenues.length}곳 — ${aggPick(tag, ['태그로 찾는 나이트라이프', '같은 결끼리 모아본 곳', '한번에 비교하는 페이지', '결로 묶은 나이트라이프'], 6)}`;
+  const title = `#${tag} ${aggPick(tag, ['관련 업소', '모음', '큐레이션', '추천 리스트'], 5)} ${tagVenues.length}곳 — ${aggPick(tag, ['태그로 찾는 나이트라이프', '같은 결끼리 모아본 곳', '한번에 비교하는 페이지', '결로 묶은 나이트라이프', '비슷한 분위기끼리 정리', '한 주제로 좁혀 보기', '취향 맞는 곳만 골라', '관심 태그 깊이 파보기'], 6)}`;
   // 시즌88 — 동일 템플릿 문단 제거 → 멤버 업소 실데이터 고유 본문 + 허브-메시(막다른길 0)
   // 시즌174 — 멤버 라벨 stuffing 해소. 태그어가 이름에 있으면 그 토큰 제거(브랜드 suffix/prefix 태그),
   // 없으면 공유 지역+업종 접두(첫 토큰)를 떼 고유 상호만 노출(설명형 태그의 접두 반복 stuffing 해소). 지역은 줄 끝에 별도 표기.
@@ -2269,7 +2269,7 @@ for (const v of venues) {
 for (const [st, stVenues] of Object.entries(stationVenues)) {
   const p = `/near/${encodeURIComponent(st)}`;
   // 시즌88 — title 접미부 회전(전 역 동일 접미부 지문 해체)
-  const title = `${st} ${aggPick(st, ['근처 업소', '도보권 업소', '인근 핫스팟'], 5)} ${stVenues.length}곳 — ${aggPick(st, ['역에서 걸어서 갈 수 있는 곳', '도보 5분권 모음', '걸어서 가는 나이트라이프', '역 근처 거리순 정리'], 6)}`;
+  const title = `${st} ${aggPick(st, ['근처 업소', '도보권 업소', '인근 핫스팟'], 5)} ${stVenues.length}곳 — ${aggPick(st, ['역에서 걸어서 갈 수 있는 곳', '도보 5분권 모음', '걸어서 가는 나이트라이프', '역 근처 거리순 정리', '지하철로 바로 닿는 곳', '퇴근길에 들르기 좋은', '한 정거장 안에서 해결', '역세권 거리순으로 모아'], 6)}`;
   // 시즌172 — 역명이 venue 접두어에 포함되면 suffix만 노출 (밀도 희석)
   const stTopNames = stVenues.slice(0, 3).map(sv => { const p = (sv.nameKo || '').split(/\s+/); return (p.length > 1 && p[0].includes(st.replace(/역$/, ''))) ? p.slice(1).join(' ') : sv.nameKo; }).join(', ');
   // 시즌88 — desc에 실제 멤버 업종만 노출(전체 6업종 나열 X) → 페이지마다 고유, 사파리/희석
