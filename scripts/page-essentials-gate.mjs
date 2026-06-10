@@ -26,6 +26,13 @@
  *   분류완전성:
  *     12) 모든 색인 경로가 KNOWN_SEGMENTS 중 하나에 매칭. 미지의 신규 최상위 섹션이
  *         등장하면 FAIL → "제가 없어도" 새 페이지 유형을 자동 고지(전용 게이트 필요 신호).
+ *   Lighthouse 2026 정적 만점(SEO 8감사 + Best-Practices) 미커버분 (시즌178, 현 dist 전수 0위반):
+ *     13) doctype <!doctype html> 첫 토큰 (Best Practices, quirks-mode 회피)
+ *     14) charset 선언이 head 첫 1024바이트 안 (Best Practices)
+ *     15) viewport 줌 허용 (user-scalable=no·maximum-scale<5 금지 = 접근성)
+ *     16) 크롤 가능 앵커 (javascript: href 0 — 크롤러가 못 따라감 = SEO)
+ *     17) 서술형 링크텍스트 ("여기/더보기/click here" 단독 금지 = SEO link-text)
+ *     18) og:image:alt (소셜/AI 카드 접근성) / 19) theme-color (모바일 UI)
  *
  * dist/{path}/index.html(prerender 결과)을 본다 → 빌드(prerender) 후 실행.
  * noindex 페이지(단일tag 등)는 sitemap에 없으므로 검사 대상 아님(라이브 색인 집합과 동일).
@@ -53,6 +60,12 @@ const KNOWN_SEGMENTS = new Set([
   'gallery', 'events', 'lead', 'testimonials', 'pricing', 'demo', 'case-studies',
   // 법무/정책
   'privacy-promise', 'privacy', 'terms', 'disclaimer', 'venue-terms', 'safety', 'legal', 'help',
+]);
+
+// Lighthouse link-text 비서술 블랙리스트 — 앵커 텍스트가 이것 단독이면 문맥 0 (가게명/주제어로 교체 필요).
+const GENERIC_LINK = new Set([
+  '여기', '여기를', '클릭', '클릭하세요', '바로가기', '더보기', '더 보기', '자세히', '자세히 보기', '보기',
+  'click here', 'click', 'read more', 'learn more', 'here', 'more', 'this', 'link', 'go', '>', '»', '→',
 ]);
 
 if (!existsSync(join(DIST, 'index.html'))) { console.log('⏭️  dist 없음 — 빌드 후 실행'); process.exit(0); }
@@ -133,6 +146,29 @@ for (const u of urls) {
   const noAlt = imgs.filter(im => !/\salt=/i.test(im)).length;
   if (noAlt > 0) out.push(`img alt 누락 ${noAlt}개`);
 
+  // ── Lighthouse 2026 정적 만점(SEO 8감사 + Best-Practices) 미커버분 (현 dist 전수 0위반으로 잠금) ──
+  // 13) doctype (Best Practices) — 첫 비공백 토큰이 <!doctype html> 이어야 quirks-mode 회피
+  if (!/^\s*<!doctype html>/i.test(h)) out.push('doctype 누락/비표준');
+  // 14) charset 선언이 head 첫 1024바이트 안 (Best Practices: 늦으면 일부 브라우저 재파싱)
+  if (!/charset/i.test(h.slice(0, 1024))) out.push('charset 1024바이트 밖');
+  // 15) viewport 줌 허용 (a11y/모바일 SEO) — user-scalable=no·maximum-scale<5 는 확대 차단=접근성 위반
+  const vp = (h.match(/<meta[^>]+name=["']viewport["'][^>]*content=["']([^"']*)["']/i) || [])[1] || '';
+  if (/user-scalable\s*=\s*(no|0)\b/i.test(vp)) out.push('viewport user-scalable=no(줌차단)');
+  const maxScale = (vp.match(/maximum-scale\s*=\s*([0-9.]+)/i) || [])[1];
+  if (maxScale && parseFloat(maxScale) < 5) out.push(`viewport maximum-scale<5(${maxScale}, 줌제한)`);
+  // 16) crawlable anchors (SEO) — javascript: href 는 크롤러가 못 따라감
+  const jsAnchors = (h.match(/<a\b[^>]*href=["']javascript:/gi) || []).length;
+  if (jsAnchors > 0) out.push(`크롤 불가 javascript: 링크 ${jsAnchors}개`);
+  // 17) 비서술 링크텍스트 (SEO link-text) — 앵커 텍스트가 generic 단독이면 문맥 0
+  const linkTexts = [...h.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a>/gi)]
+    .map(m => m[1].replace(/<[^>]+>/g, '').replace(/&[a-z]+;/gi, '').trim().toLowerCase());
+  const badLink = linkTexts.filter(t => t && GENERIC_LINK.has(t));
+  if (badLink.length) out.push(`비서술 링크텍스트 ${badLink.length}개("${badLink[0]}")`);
+  // 18) og:image:alt (소셜/AI 카드 접근성) — og:image 있으면 alt 동반
+  if (/property=["']og:image["']/i.test(h) && !/property=["']og:image:alt["']/i.test(h)) out.push('og:image:alt 누락');
+  // 19) theme-color (모바일 브라우저 UI 일관성)
+  if (!/name=["']theme-color["']/i.test(h)) out.push('theme-color 누락');
+
   if (out.length) errors.push(`${path} → ${out.join(' / ')}`);
 
   // 크로스페이지 집계
@@ -164,4 +200,4 @@ if (errors.length) {
   if (errors.length > 50) console.error(`   … 외 ${errors.length - 50}건`);
   process.exit(1);
 }
-console.log(`✅ 페이지 필수요소 메타-게이트 PASS — ${checked}장 전수: title·canonical·desc·h1×1·og·lang·viewport·JSON-LD·alt·중복0·분류완전`);
+console.log(`✅ 페이지 필수요소 메타-게이트 PASS — ${checked}장 전수: title·canonical·desc·h1×1·og·lang·viewport·JSON-LD·alt·중복0·분류완전 + Lighthouse정적(doctype·charset1024·줌허용·크롤앵커·서술링크·og:image:alt·theme-color)`);
