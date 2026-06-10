@@ -14,9 +14,10 @@
  *     2) canonical 정확히 1개·https://nolcool.com 자기참조 (Google: 색인 페이지 self-canonical 필수)
  *     3) meta description 존재·비어있지 않음 (길이≤150은 dist-stuffing 담당)
  *     4) <h1> 정확히 1개 (0개=구조 누락 / 2개+=계층 혼란)
- *     5) og:title + og:image 존재
- *     6) <html lang> 존재 / viewport meta 존재
- *     7) JSON-LD(application/ld+json) ≥1개 (구조화 데이터 = AI/검색 인용)
+ *     5) og:title·image·description·url·type + twitter:card 전부 존재 / og:image 절대URL
+ *     6) charset 존재(한글깨짐 방지) / <html lang>=ko / viewport meta 존재
+ *     7) JSON-LD(application/ld+json) ≥1개 + 전 블록 JSON.parse 유효 (깨진 LD = 전 구조화데이터 무시)
+ *     7b) <h2> ≥1 (콘텐츠 구조)
  *     8) robots noindex 아님 (색인 sitemap에 noindex = 모순)
  *     9) <img> 중 alt 속성 누락 0 (장식이미지는 alt="" 허용, 속성 자체 누락만 차단)
  *   크로스페이지:
@@ -98,16 +99,31 @@ for (const u of urls) {
   if (h1c === 0) out.push('h1 0개');
   else if (h1c > 1) out.push(`h1 ${h1c}개`);
 
-  // 5) og
+  // 5) og — 소셜/AI 인용 카드 완전성 (title·image·description·url·type 전부)
   if (!/property="og:title"/i.test(h)) out.push('og:title 누락');
   if (!/property="og:image"/i.test(h)) out.push('og:image 누락');
+  if (!/property="og:description"/i.test(h)) out.push('og:description 누락');
+  if (!/property="og:url"/i.test(h)) out.push('og:url 누락');
+  if (!/property="og:type"/i.test(h)) out.push('og:type 누락');
+  if (!/name="twitter:card"/i.test(h)) out.push('twitter:card 누락');
+  // og:image 절대 URL (상대경로면 스크레이퍼/카톡이 못 가져감)
+  const ogImg = (h.match(/property="og:image"\s+content="([^"]*)"/i) || [])[1] || '';
+  if (ogImg && !/^https?:\/\//.test(ogImg)) out.push(`og:image 상대경로(${ogImg.slice(0, 30)})`);
 
-  // 6) lang / viewport
-  if (!/<html[^>]+lang=/i.test(h)) out.push('html lang 누락');
+  // 6) charset / lang / viewport
+  if (!/charset=/i.test(h)) out.push('charset 누락'); // 누락 시 한글 깨짐
+  const langVal = (h.match(/<html[^>]+lang="([^"]*)"/i) || [])[1];
+  if (langVal == null) out.push('html lang 누락');
+  else if (langVal !== 'ko') out.push(`html lang≠ko(${langVal})`);
   if (!/name="viewport"/i.test(h)) out.push('viewport 누락');
 
-  // 7) JSON-LD
-  if (!/application\/ld\+json/i.test(h)) out.push('JSON-LD 0개');
+  // 7) JSON-LD ≥1개 + 전 블록 JSON.parse 유효 (깨진 LD = Google이 전 구조화데이터 무시)
+  const ldBlocks = [...h.matchAll(/<script[^>]+application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi)].map(m => m[1]);
+  if (ldBlocks.length === 0) out.push('JSON-LD 0개');
+  else { for (const b of ldBlocks) { try { JSON.parse(b); } catch { out.push('JSON-LD 파싱오류'); break; } } }
+
+  // 7b) <h2> ≥1 (제목 1개만으론 콘텐츠 구조 부재)
+  if (!/<h2[\s>]/i.test(h)) out.push('h2 0개');
 
   // 8) noindex 모순
   if (/<meta[^>]+name="robots"[^>]+noindex/i.test(h)) out.push('색인페이지인데 noindex');
