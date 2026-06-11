@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-11T16:54:40.703Z",
+  "generated_at": "2026-06-11T19:28:13.837Z",
   "window_hours": 24,
   "items": [
     {
@@ -10,6 +10,13 @@
       "views_24h": 5
     },
     {
+      "path": "/hoppa/daejeonhoppa-eclipse",
+      "title": "대전호빠 이클립스",
+      "category": "hoppa",
+      "region": "대전",
+      "views_24h": 3
+    },
+    {
       "path": "/nights/indeokvon-gukbingwan-night",
       "title": "인덕원국빈관나이트",
       "category": "night",
@@ -17,23 +24,9 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 2
-    },
-    {
       "path": "/nights/daejeononenight",
       "title": "대전원나이트",
       "category": "night",
-      "region": "대전",
-      "views_24h": 2
-    },
-    {
-      "path": "/hoppa/daejeonhoppa-eclipse",
-      "title": "대전호빠 이클립스",
-      "category": "hoppa",
       "region": "대전",
       "views_24h": 2
     },
@@ -45,18 +38,11 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/incheonarabiannight",
-      "title": "인천아라비안나이트",
+      "path": "/nights/bundangpongpongnight",
+      "title": "분당퐁퐁나이트",
       "category": "night",
-      "region": "인천",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daegubabambanight",
-      "title": "대구바밤바나이트",
-      "category": "night",
-      "region": "대구",
-      "views_24h": 1
+      "region": "분당",
+      "views_24h": 2
     },
     {
       "path": "/nights/nowonhobaknight",
@@ -77,6 +63,13 @@
       "title": "해운대호빠 미슐랭",
       "category": "hoppa",
       "region": "부산 해운대",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
       "views_24h": 1
     },
     {
@@ -105,6 +98,13 @@
       "title": "광주상무나이트",
       "category": "night",
       "region": "광주",
+      "views_24h": 1
+    },
+    {
+      "path": "/hoppa/daeguhoppa-perfect",
+      "title": "대구호빠 퍼펙트",
+      "category": "hoppa",
+      "region": "대구",
       "views_24h": 1
     }
   ]
