@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-12T07:11:00.035Z",
+  "generated_at": "2026-06-12T16:17:40.960Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,7 +7,21 @@
       "title": "일산명월관요정",
       "category": "yojeong",
       "region": "일산",
-      "views_24h": 7
+      "views_24h": 4
+    },
+    {
+      "path": "/nights/gildongchancenight",
+      "title": "길동찬스나이트",
+      "category": "night",
+      "region": "길동",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 3
     },
     {
       "path": "/nights/dapsimnidontellmamanight",
@@ -17,17 +31,17 @@
       "views_24h": 2
     },
     {
-      "path": "/hoppa/daejeonhoppa-eclipse",
-      "title": "대전호빠 이클립스",
-      "category": "hoppa",
-      "region": "대전",
+      "path": "/nights/ilsanshampoonight",
+      "title": "일산샴푸나이트",
+      "category": "night",
+      "region": "일산",
       "views_24h": 2
     },
     {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
       "category": "night",
-      "region": "대전",
+      "region": "오산",
       "views_24h": 2
     },
     {
@@ -45,13 +59,6 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/gildongchancenight",
-      "title": "길동찬스나이트",
-      "category": "night",
-      "region": "길동",
-      "views_24h": 1
-    },
-    {
       "path": "/nights/gimpohobaknight",
       "title": "김포호박나이트",
       "category": "night",
@@ -63,6 +70,13 @@
       "title": "상봉동한국관나이트",
       "category": "night",
       "region": "상봉동",
+      "views_24h": 1
+    },
+    {
+      "path": "/clubs/gangnam/gangnamclub-jack",
+      "title": "강남청담클럽 Jack",
+      "category": "club",
+      "region": "강남",
       "views_24h": 1
     },
     {
@@ -87,22 +101,8 @@
       "views_24h": 1
     },
     {
-      "path": "/nights/ilsanshampoonight",
-      "title": "일산샴푸나이트",
-      "category": "night",
-      "region": "일산",
-      "views_24h": 1
-    },
-    {
       "path": "/nights/ilsan-hwajung-tunnel",
       "title": "일산화정터널나이트",
-      "category": "night",
-      "region": "일산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/ilsan-mul-night",
-      "title": "일산물나이트",
       "category": "night",
       "region": "일산",
       "views_24h": 1
