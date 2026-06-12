@@ -100,27 +100,8 @@ export default function QnAPage() {
     setSubmitting(false);
   };
 
-  // 시드 글 (DB 비어있을 때 사이트가 살아보이게)
-  const seedPosts: QuestionItem[] = [
-    { id: 'seed-1', title: '나이트 처음인데 뭐부터 해야됨?', author: '나이트뉴비', date: '2026-04-18', answers: 12, likes: 27, solved: true, category: '입장' },
-    { id: 'seed-2', title: '호빠 가본 여자분들 솔직후기 좀', author: '호기심냥이', date: '2026-04-18', answers: 15, likes: 30, solved: false, category: '전체' },
-    { id: 'seed-3', title: '클럽 나이 확인 안 하는 데 있어?', author: '스물한살임', date: '2026-04-18', answers: 8, likes: 19, solved: false, category: '입장' },
-    { id: 'seed-4', title: '요정 코스요리 몇 시간 걸려요?', author: '접대초보', date: '2026-04-18', answers: 6, likes: 14, solved: true, category: '전체' },
-    { id: 'seed-5', title: '강남 라운지 테이블 예약 안 하면 못 들어감?', author: '라운지궁금', date: '2026-04-17', answers: 9, likes: 22, solved: true, category: '입장' },
-    { id: 'seed-6', title: '나이트에서 부킹 거절해도 됨?', author: '소심한놈', date: '2026-04-17', answers: 11, likes: 25, solved: true, category: '예절' },
-    { id: 'seed-7', title: '클럽 혼자 가면 진짜 어색함?', author: '솔로전사', date: '2026-04-17', answers: 14, likes: 28, solved: false, category: '입장' },
-    { id: 'seed-8', title: '금요일이랑 토요일 분위기 차이 큼?', author: '주말고민러', date: '2026-04-17', answers: 7, likes: 16, solved: false, category: '전체' },
-    { id: 'seed-9', title: '룸 셀렉션 할 때 팁 좀', author: '첫룸방문', date: '2026-04-16', answers: 10, likes: 23, solved: true, category: '예절' },
-    { id: 'seed-10', title: '나이트 테이블 vs 스탠딩 뭐가 나음?', author: '캐주얼파', date: '2026-04-16', answers: 8, likes: 18, solved: false, category: '분위기' },
-    { id: 'seed-11', title: '호빠 선수한테 연락처 물어봐도 됨?', author: '직진녀', date: '2026-04-16', answers: 13, likes: 26, solved: true, category: '예절' },
-    { id: 'seed-12', title: '요정 처음 가는데 양주 뭐 시켜야함', author: '양주모름', date: '2026-04-15', answers: 9, likes: 20, solved: true, category: '분위기' },
-    { id: 'seed-13', title: '클럽 재입장 가능한 데 있음?', author: '바람쐬러', date: '2026-04-15', answers: 5, likes: 11, solved: false, category: '입장' },
-    { id: 'seed-14', title: '나이트 웨이터한테 팁 줘야되나?', author: '팁문화궁금', date: '2026-04-14', answers: 7, likes: 15, solved: true, category: '예절' },
-    { id: 'seed-15', title: '라운지 마무리 가자고 하면 실례임?', author: '분위기파악중', date: '2026-04-13', answers: 11, likes: 24, solved: false, category: '예절' },
-    { id: 'seed-16', title: '클럽 카드결제 잘 되는 곳 있어?', author: '카드파', date: '2026-04-12', answers: 4, likes: 8, solved: true, category: '분위기' },
-  ];
-  const displayQuestions = useFilteredPosts(questions.length > 0 ? questions : seedPosts);
-  // ↑ useDocumentMeta 페이지 차단 필터 (영역 L)
+  const displayQuestions = useFilteredPosts(questions);
+  // ↑ useDocumentMeta 페이지 차단 필터 (진짜 DB 질문만 — 가짜 시드 0)
 
   const filtered = activeCategory === "전체" ? displayQuestions : displayQuestions.filter((q) => q.category === activeCategory);
 
@@ -148,7 +129,7 @@ export default function QnAPage() {
             </div>
             <div className="space-y-2">
               {hotQuestions.map((q, idx) => (
-                <button key={q.id} onClick={() => !q.id.startsWith('seed-') && navigate('/community/post/' + q.id)}
+                <button key={q.id} onClick={() => navigate('/community/post/' + q.id)}
                   className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition hover:bg-white"
                   style={{ minHeight: 44 }}>
                   <span className="text-sm font-black shrink-0" style={{ color: idx === 0 ? '#10B981' : '#6EE7B7', width: 20 }}>{idx + 1}</span>
@@ -209,7 +190,7 @@ export default function QnAPage() {
           {!loading && filtered.length > 0 && (
             <div className="space-y-3">
               {filtered.map((q) => (
-                <button key={q.id} onClick={() => !q.id.startsWith('seed-') && navigate('/community/post/' + q.id)}
+                <button key={q.id} onClick={() => navigate('/community/post/' + q.id)}
                   className="w-full text-left flex items-center gap-4 rounded-2xl border border-neon-border bg-neon-surface p-5 transition hover:border-neon-primary/30" style={{ minHeight: 48 }}>
                   <div className={`flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl text-xs ${q.solved ? "bg-neon-green/10 text-neon-green" : "bg-neon-surface-2 text-neon-text-muted"}`}>
                     <span className="text-lg font-bold">{q.answers}</span>
@@ -231,9 +212,18 @@ export default function QnAPage() {
             </div>
           )}
 
-          {!loading && filtered.length === 0 && activeCategory !== "전체" && (
+          {!loading && filtered.length === 0 && activeCategory !== "전체" && displayQuestions.length > 0 && (
             <div className="rounded-2xl border border-neon-border bg-neon-surface p-12 text-center text-neon-text-muted">
               해당 카테고리의 글이 없습니다. 다른 카테고리를 선택해보세요!
+            </div>
+          )}
+
+          {!loading && displayQuestions.length === 0 && (
+            <div className="rounded-2xl border border-neon-border py-14 text-center" style={{ backgroundColor: 'rgba(139,92,246,0.03)' }}>
+              <p className="text-base font-bold" style={{ color: '#111' }}>아직 질문이 없어요</p>
+              <p className="mt-2 text-sm" style={{ color: '#888' }}>오늘 밤 어디 갈지 고민이면 첫 질문을 남겨보세요. 가본 사람들이 답해줘요.</p>
+              <button onClick={handleWriteClick} className="mt-5 rounded-xl px-6 py-3 text-sm font-bold transition"
+                style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>첫 질문 올리기</button>
             </div>
           )}
         </section>

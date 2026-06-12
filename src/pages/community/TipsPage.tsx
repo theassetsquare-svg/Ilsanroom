@@ -100,26 +100,8 @@ export default function TipsPage() {
     setSubmitting(false);
   };
 
-  // 시드 글 (DB 비어있을 때 사이트가 살아보이게)
-  const seedPosts: TipCard[] = [
-    { id: 'seed-1', title: '게스트 등록으로 입장 라인 빠지는 법', category: '입문', difficulty: '쉬움', author: '단골꿀팁', bookmarks: 52, summary: '인스타 팔로우하고 DM으로 게스트 신청하면 줄 안 서고 바로 들어가는 곳 수두룩함. 모르면 손해.' },
-    { id: 'seed-2', title: '웨이터한테 처음 왔다고 말하면 생기는 일', category: '입문', difficulty: '쉬움', author: '나이트5년차', bookmarks: 47, summary: '솔직히 처음이라고 하면 웨이터가 좋은 자리 잡아줌. 아는 척하면 구석으로 보내버림 ㅋㅋ' },
-    { id: 'seed-3', title: '금토 줄 안 서고 바로 입장하는 시간대', category: '입문', difficulty: '보통', author: '타이밍장인', bookmarks: 41, summary: '10시 반~11시 사이가 골든타임. 12시 넘으면 30분은 기본으로 서야 됨. 새벽 2시 이후는 한산.' },
-    { id: 'seed-4', title: '테이블 잡을 때 인원수별 최적 전략', category: '절약', difficulty: '고급', author: '테이블마스터', bookmarks: 39, summary: '4명 이상이면 테이블이 n빵하면 오히려 쌈. 2명이면 바 스탠딩이 답. 3명이 제일 애매함.' },
-    { id: 'seed-5', title: '나이트 처음 가면 무조건 하는 실수 5가지', category: '입문', difficulty: '쉬움', author: '선배형', bookmarks: 55, summary: '입구에서 쭈뼛거리기, 핸드폰만 보기, 술 너무 빨리 마시기, 부킹 거절 못하기, 새벽에 택시 못잡기.' },
-    { id: 'seed-6', title: '양주 브랜드별 무드 매칭 정리함', category: '입문', difficulty: '고급', author: '양주박사', bookmarks: 44, summary: '발렌타인17년 단골픽 1위. 조니워커블랙도 무난. 로얄살루트는 접대용. 혼자 먹을 거면 잭다니엘.' },
-    { id: 'seed-7', title: '부킹 성공률 높이는 현실적인 방법', category: '입문', difficulty: '보통', author: '부킹달인', bookmarks: 36, summary: '웨이터한테 미리 말해두는 게 핵심. 테이블 분위기 좋게 유지하고 있으면 웨이터가 알아서 연결해줌.' },
-    { id: 'seed-8', title: '호빠 처음 가는 여자들 필독 가이드', category: '입문', difficulty: '쉬움', author: '호빠선배언니', bookmarks: 48, summary: '선수 맘에 안 들면 바로 체인지 가능함. 눈치 볼 필요 없음. 시간 잘 체크하고 연장은 신중하게.' },
-    { id: 'seed-9', title: '요정에서 매니저 고를 때 에티켓 정리', category: '예절', difficulty: '고급', author: '접대고수', bookmarks: 33, summary: '손가락으로 가리키면 안 됨. 눈짓이나 번호로 말하기. 아가씨한테 직접 물어보는 건 실례임.' },
-    { id: 'seed-10', title: '취했을 때 택시 안전하게 잡는 꿀팁', category: '안전', difficulty: '쉬움', author: '안전귀가', bookmarks: 31, summary: '카카오택시 미리 예약 걸어놓기. 대리운전 번호 저장해두기. 친구한테 위치 공유 필수.' },
-    { id: 'seed-11', title: '라운지에서 자연스럽게 대화 거는 법', category: '입문', difficulty: '보통', author: '라운지단골', bookmarks: 28, summary: '옆 테이블 건배 제안이 제일 자연스러움. 갑자기 말 걸면 경계함. 분위기 읽는 게 먼저.' },
-    { id: 'seed-12', title: '클럽에서 소지품 안 잃어버리는 방법', category: '안전', difficulty: '쉬움', author: '폰분실3회', bookmarks: 25, summary: '주머니 지퍼 달린 바지 입기. 가방은 락커에. 핸드폰 분실방지 줄 강추. 경험에서 나온 팁임 ㅠ' },
-    { id: 'seed-13', title: '웨이터 팁 문화 어디까지가 적당한지', category: '예절', difficulty: '보통', author: '팁줄까말까', bookmarks: 22, summary: '잘 해주면 살짝 챙겨주면 다음에 VIP 대우 받음. 안 줘도 상관없긴 한데 단골 되려면 좀 챙겨.' },
-    { id: 'seed-14', title: '혼술족 클럽 가는 현실적 후기', category: '입문', difficulty: '보통', author: '혼놀러', bookmarks: 19, summary: '바 카운터 앉으면 바텐더가 말 걸어줌. 의외로 혼자 온 사람 많음. 어색한 건 처음 10분만.' },
-    { id: 'seed-15', title: '나이트 끝나고 다른 곳 갈 때 주의사항', category: '안전', difficulty: '보통', author: '안전제일', bookmarks: 15, summary: '처음 본 사람이랑 다른 데로 이동은 위험. 친구한테 위치 공유하고 가기. 현금 많이 들고 다니지 말 것.' },
-  ];
-  const displayTips = useFilteredPosts(tips.length > 0 ? tips : seedPosts);
-  // ↑ useDocumentMeta 페이지 차단 필터 (영역 L)
+  const displayTips = useFilteredPosts(tips);
+  // ↑ useDocumentMeta 페이지 차단 필터 (진짜 DB 팁만 — 가짜 시드 0)
 
   const filtered = activeCat === ALL ? displayTips : displayTips.filter((t) => t.category === activeCat);
 
@@ -153,7 +135,7 @@ export default function TipsPage() {
             </div>
             <div className="space-y-2">
               {hotTips.map((tip, idx) => (
-                <button key={tip.id} onClick={() => !tip.id.startsWith('seed-') && navigate('/community/post/' + tip.id)}
+                <button key={tip.id} onClick={() => navigate('/community/post/' + tip.id)}
                   className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition hover:bg-white"
                   style={{ minHeight: 44 }}>
                   <span className="text-sm font-black shrink-0" style={{ color: idx === 0 ? '#EF4444' : '#F59E0B', width: 20 }}>{idx + 1}</span>
@@ -183,7 +165,7 @@ export default function TipsPage() {
         {!loading && filtered.length > 0 && (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((tip) => (
-              <button key={tip.id} onClick={() => !tip.id.startsWith('seed-') && navigate('/community/post/' + tip.id)}
+              <button key={tip.id} onClick={() => navigate('/community/post/' + tip.id)}
                 className="flex flex-col text-left rounded-2xl border border-neon-border bg-neon-surface p-5 transition hover:border-neon-primary/40 hover:shadow-lg hover:shadow-neon-primary/5" style={{ minHeight: 48 }}>
                 <div className="mb-3 flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -203,9 +185,18 @@ export default function TipsPage() {
           </div>
         )}
 
-        {!loading && filtered.length === 0 && activeCat !== ALL && (
+        {!loading && filtered.length === 0 && activeCat !== ALL && displayTips.length > 0 && (
           <div className="rounded-2xl border border-neon-border bg-neon-surface p-12 text-center text-neon-text-muted">
             해당 카테고리의 팁이 없습니다. 다른 카테고리를 선택해보세요!
+          </div>
+        )}
+
+        {!loading && displayTips.length === 0 && (
+          <div className="rounded-2xl border border-neon-border py-14 text-center" style={{ backgroundColor: 'rgba(139,92,246,0.03)' }}>
+            <p className="text-base font-bold" style={{ color: '#111' }}>아직 꿀팁이 없어요</p>
+            <p className="mt-2 text-sm" style={{ color: '#888' }}>직접 겪으며 알게 된 노하우, 첫 팁으로 풀어주세요. 초보들이 정말 고마워해요.</p>
+            <button onClick={handleWriteClick} className="mt-5 rounded-xl px-6 py-3 text-sm font-bold transition"
+              style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>첫 꿀팁 쓰기</button>
           </div>
         )}
 

@@ -7,7 +7,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { useFilteredPosts } from '@/hooks/useFilteredPosts';
 import { useDraftAutosave } from '@/hooks/useDraftAutosave';
 // ↑ useDocumentMeta 페이지: 임시저장 (영역 L-9)
-import { getSeedNickname } from '@/lib/fake-users';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { PostListSkeleton } from '@/components/ui/Skeleton';
 
@@ -30,7 +29,7 @@ function postToSimple(post: Post): SimplePost {
     id: post.id,
     title: post.title,
     content: post.content || '',
-    author: u?.nickname || getSeedNickname(post.id),
+    author: u?.nickname || '익명',
     date: post.created_at.slice(0, 10),
     comments: post.comment_count || 0,
     likes: post.likes || 0,
@@ -105,29 +104,8 @@ export default function FreeBoardPage() {
   const totalPages = Math.max(1, Math.ceil(totalCount / postsPerPage));
   const pageNumbers = Array.from({ length: Math.min(5, totalPages) }, (_, i) => i + 1);
 
-  // 시드 글 (DB 비어있을 때 사이트가 살아보이게)
-  const seedPosts: SimplePost[] = [
-    { id: 'seed-1', title: '어젯밤 일 아직도 술깸ㅋㅋㅋㅋ', content: '', author: '새벽감성러', date: '2026-04-18', comments: 14, likes: 32 },
-    { id: 'seed-2', title: '형들 혼자 가면 진짜 어색해??', content: '', author: '혼놀족지망', date: '2026-04-18', comments: 23, likes: 19 },
-    { id: 'seed-3', title: '택시비가 술값보다 많이 나온 사람 나만?ㅠ', content: '', author: '일산살이', date: '2026-04-18', comments: 11, likes: 41 },
-    { id: 'seed-4', title: '첫 나이트 갔는데 부킹 당함 ㄷㄷ 떨려서 죽는줄', content: '', author: '심장폭발남', date: '2026-04-18', comments: 18, likes: 27 },
-    { id: 'seed-5', title: '금토 아니고 수요일에 가봤는데 오히려 좋음', content: '', author: '수요일파', date: '2026-04-17', comments: 9, likes: 22 },
-    { id: 'seed-6', title: '드레스코드 때문에 입구컷 당한 썰 풉니다', content: '', author: '패션테러리스트', date: '2026-04-17', comments: 16, likes: 35 },
-    { id: 'seed-7', title: '웨이터한테 팁 얼마나 줘요? 진심 모르겟음', content: '', author: '사회초년생', date: '2026-04-17', comments: 21, likes: 14 },
-    { id: 'seed-8', title: '여친이랑 클럽 같이 간 후기..결론:헤어짐', content: '', author: '솔로복귀', date: '2026-04-17', comments: 31, likes: 53 },
-    { id: 'seed-9', title: '나이트에서 만나서 결혼까지 간 사람 있음?', content: '', author: '로맨티스트', date: '2026-04-16', comments: 12, likes: 18 },
-    { id: 'seed-10', title: '요즘 일산쪽 분위기 어떰?? 오랜만에 가려고', content: '', author: '복귀러', date: '2026-04-16', comments: 7, likes: 11 },
-    { id: 'seed-11', title: '라운지 vs 클럽 뭐가 더 만남 잘돼?', content: '', author: '효율주의자', date: '2026-04-16', comments: 19, likes: 28 },
-    { id: 'seed-12', title: '새벽3시에 라면먹고싶어서 나왔는데 후회중ㅋㅋ', content: '', author: '야식은진리', date: '2026-04-16', comments: 8, likes: 24 },
-    { id: 'seed-13', title: '30대 중반인데 아직 다녀도 되나요..ㅎ', content: '', author: '아재인정', date: '2026-04-15', comments: 25, likes: 37 },
-    { id: 'seed-14', title: '어제 고구려 갔다가 양주 3병 까버림 ㅎㄷㄷ', content: '', author: '간이두개', date: '2026-04-15', comments: 13, likes: 20 },
-    { id: 'seed-15', title: '부킹 성공률 높이는 법 아는사람?? 급함', content: '', author: '절박한형', date: '2026-04-14', comments: 17, likes: 15 },
-    { id: 'seed-16', title: '술 못마시는데 나이트 가도 재밌나', content: '', author: '음료수파', date: '2026-04-13', comments: 10, likes: 13 },
-    { id: 'seed-17', title: '친구가 호빠 가자는데 남자도 갈수있음??', content: '', author: '궁금한토끼', date: '2026-04-13', comments: 14, likes: 9 },
-    { id: 'seed-18', title: '레이스 웨이팅 1시간 기다린 사람 여기여기', content: '', author: '인내심테스트', date: '2026-04-12', comments: 6, likes: 31 },
-  ];
-  const displayPosts = useFilteredPosts(recentPosts.length > 0 ? recentPosts : seedPosts);
-  // ↑ useDocumentMeta 페이지 차단 필터 적용
+  const displayPosts = useFilteredPosts(recentPosts);
+  // ↑ useDocumentMeta 페이지 차단 필터 적용 (진짜 DB 글만 — 가짜 시드 0)
 
   // 인기글 (좋아요 또는 댓글 많은 순)
   const hotPosts = [...displayPosts].sort((a, b) => (b.likes + b.comments * 2) - (a.likes + a.comments * 2)).slice(0, 3);
@@ -172,12 +150,21 @@ export default function FreeBoardPage() {
 
         {loading && <PostListSkeleton />}
 
-        {!loading && (
+        {!loading && displayPosts.length === 0 && (
+          <section className="rounded-2xl border border-neon-border py-14 text-center" style={{ backgroundColor: 'rgba(139,92,246,0.03)' }}>
+            <p className="text-base font-bold" style={{ color: '#111' }}>아직 글이 없어요</p>
+            <p className="mt-2 text-sm" style={{ color: '#888' }}>이 게시판의 첫 글을 남겨보세요. 잡담이든 질문이든 환영이에요.</p>
+            <button onClick={handleWriteClick} className="mt-5 rounded-xl px-6 py-3 text-sm font-bold transition"
+              style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>첫 글 쓰기</button>
+          </section>
+        )}
+
+        {!loading && displayPosts.length > 0 && (
           <section>
             <h2 className="mb-4 text-lg font-bold">최근 글</h2>
             <div className="overflow-hidden rounded-xl border border-neon-border">
               {displayPosts.map((post, i) => (
-                <button key={post.id} onClick={() => !post.id.startsWith('seed-') && navigate('/community/post/' + post.id)}
+                <button key={post.id} onClick={() => navigate('/community/post/' + post.id)}
                   className={`flex w-full items-center justify-between px-5 py-4 text-left transition hover:bg-neon-surface-2 ${i !== displayPosts.length - 1 ? "border-b border-neon-border/50" : ""}`}
                   style={{ minHeight: 52 }}>
                   <div className="min-w-0 flex-1">

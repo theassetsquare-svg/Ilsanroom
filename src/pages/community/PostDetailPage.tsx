@@ -6,7 +6,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
 import ShareButton from '@/components/ui/ShareButton';
 import ReportButton from '@/components/moderation/ReportButton';
-import { getSeedNickname } from '@/lib/fake-users';
 import { NextPostInline } from '@/components/community/NextPostInline';
 
 interface CommentData {
@@ -191,7 +190,7 @@ export default function PostDetailPage() {
   const jogakData = post.category === 'party' ? parseJogakContent(post.content) : null;
 
   const CommentItem = ({ comment, depth = 0 }: { comment: CommentData; depth?: number }) => {
-    const nickname = (comment.users as any)?.nickname || getSeedNickname(comment.id);
+    const nickname = (comment.users as any)?.nickname || '익명';
     const children = childComments(comment.id);
     const isReplyTarget = replyTo?.id === comment.id;
 
@@ -288,7 +287,7 @@ export default function PostDetailPage() {
       {/* 작성자 + 날짜 + 삭제 */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2 text-xs" style={{ color: '#999' }}>
-          <span style={{ color: '#555' }}>{(post.users as any)?.nickname || getSeedNickname(post.id)}</span>
+          <span style={{ color: '#555' }}>{(post.users as any)?.nickname || '익명'}</span>
           <span>·</span>
           <span>{post.created_at?.slice(0, 10)}</span>
           <span className="rounded-full px-2 py-0.5" style={{ backgroundColor: '#F3F0FF', color: '#8B5CF6' }}>{post.category}</span>

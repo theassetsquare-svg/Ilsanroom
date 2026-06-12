@@ -5,7 +5,6 @@ import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
-import { getSeedNickname } from '@/lib/fake-users';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { ReadFinishCount } from '@/components/engagement/ReadingEngagement';
 
@@ -34,20 +33,6 @@ interface ClipComment {
   author: string;
   created_at: string;
 }
-
-/* ── 시드 클립 (DB 비어있을 때 표시 — 실제 존재하는 이미지 사용) ── */
-const SEED_CLIPS: Clip[] = [
-  { id: 's1', user_id: '', image_url: '/venues/gangnamclub-peak-1.jpg', caption: '금요일 피크 분위기 미쳤다 ㅋㅋ 역시 강남은 다르네', likes: 47, liked: false, created_at: new Date(Date.now() - 3600000 * 2).toISOString(), author: '강남나이트홀릭', avatar_url: null, comments: [{ id: 'sc1', user_id: '', content: '여기 요즘 웨이팅 있던데 ㄷㄷ', author: '클럽마스터', created_at: new Date(Date.now() - 3600000 * 1).toISOString() }, { id: 'sc2', user_id: '', content: '부스 예약하고 가야 됨 진짜', author: '파티피플', created_at: new Date(Date.now() - 1800000).toISOString() }], comment_count: 2, venue_category: '클럽' },
-  { id: 's2', user_id: '', image_url: '/venues/hongdaeclub-pacific-1.jpg', caption: '홍대 토요일 밤 현장. 이 에너지 실화냐', likes: 38, liked: false, created_at: new Date(Date.now() - 3600000 * 5).toISOString(), author: '홍대불주먹', avatar_url: null, comments: [{ id: 'sc3', user_id: '', content: '홍대는 역시 주말이지 ㅎㅎ', author: '주말전사', created_at: new Date(Date.now() - 3600000 * 4).toISOString() }], comment_count: 1, venue_category: '클럽' },
-  { id: 's3', user_id: '', image_url: '/venues/cheongdamclub-arju-1.jpg', caption: '아르쥬 양주 세팅 클래스.. 이게 프리미엄이지', likes: 62, liked: false, created_at: new Date(Date.now() - 86400000 * 1).toISOString(), author: '분위기장인', avatar_url: null, comments: [{ id: 'sc4', user_id: '', content: '아르쥬 서비스 진짜 좋음 인정', author: '단골손님', created_at: new Date(Date.now() - 86400000 * 0.8).toISOString() }, { id: 'sc5', user_id: '', content: '여기 실장님 추천받고 갔는데 대만족', author: '첫방문후기', created_at: new Date(Date.now() - 86400000 * 0.5).toISOString() }], comment_count: 2, venue_category: '클럽' },
-  { id: 's4', user_id: '', image_url: '/venues/suwonchancenight-1.jpg', caption: '수원찬스 부스에서 본 뷰 ㄹㅇ 예술이다', likes: 29, liked: false, created_at: new Date(Date.now() - 86400000 * 1.5).toISOString(), author: '새벽감성', avatar_url: null, comments: [{ id: 'sc9', user_id: '', content: '수원 가면 여기가 국룰이지', author: '경기도민', created_at: new Date(Date.now() - 86400000 * 1.2).toISOString() }], comment_count: 1, venue_category: '나이트' },
-  { id: 's5', user_id: '', image_url: '/venues/ilsanmyeongwolgwanyojeong-1.jpg', caption: '일산 명월관 처음 가봤는데 한실 분위기 진짜 다르다', likes: 34, liked: false, created_at: new Date(Date.now() - 86400000 * 2).toISOString(), author: '룸매니아', avatar_url: null, comments: [{ id: 'sc6', user_id: '', content: '여기 접대 자리로 최고임 강추', author: '금요일밤', created_at: new Date(Date.now() - 86400000 * 1.8).toISOString() }], comment_count: 1, venue_category: '라운지' },
-  { id: 's6', user_id: '', image_url: '/venues/gangnamclub-utopia-1.jpg', caption: '유토피아 사운드 시스템 국내 탑인듯 ㅋㅋ', likes: 55, liked: false, created_at: new Date(Date.now() - 86400000 * 3).toISOString(), author: '나이트초보', avatar_url: null, comments: [{ id: 'sc7', user_id: '', content: '강남 유토피아 진짜 레전드', author: '클럽마스터', created_at: new Date(Date.now() - 86400000 * 2.5).toISOString() }, { id: 'sc8', user_id: '', content: '외국인도 엄청 많더라', author: '파티피플', created_at: new Date(Date.now() - 86400000 * 2).toISOString() }], comment_count: 2, venue_category: '클럽' },
-  { id: 's7', user_id: '', image_url: '/venues/busanasiadnight-1.jpg', caption: '부산 아시아드 금토 분위기 서울 안부러움', likes: 41, liked: false, created_at: new Date(Date.now() - 86400000 * 3.5).toISOString(), author: '부산사나이', avatar_url: null, comments: [{ id: 'sc10', user_id: '', content: '해운대 끝나고 여기 오면 딱이야', author: '남포동킹', created_at: new Date(Date.now() - 86400000 * 3).toISOString() }], comment_count: 1, venue_category: '나이트' },
-  { id: 's8', user_id: '', image_url: '/venues/ilsanshampoonight-1.jpg', caption: '일산 샴푸나이트 밴드 라이브 오늘도 불태웠다', likes: 36, liked: false, created_at: new Date(Date.now() - 86400000 * 4).toISOString(), author: '일산토박이', avatar_url: null, comments: [{ id: 'sc11', user_id: '', content: '샴푸 밴드 트로트 메들리 진짜 미침 ㅋㅋ', author: '댄스왕', created_at: new Date(Date.now() - 86400000 * 3.8).toISOString() }], comment_count: 1, venue_category: '나이트' },
-  { id: 's9', user_id: '', image_url: '/venues/daejeonsevennight-1.jpg', caption: '대전세븐 7번째 방문인데 매번 새로움 ㄹㅇ', likes: 28, liked: false, created_at: new Date(Date.now() - 86400000 * 5).toISOString(), author: '대전감성', avatar_url: null, comments: [], comment_count: 0, venue_category: '나이트' },
-  { id: 's10', user_id: '', image_url: '/venues/cheongdamh2onight-1.jpg', caption: '청담 H2O 물 컨셉 인테리어 보고 반했다', likes: 51, liked: false, created_at: new Date(Date.now() - 86400000 * 5.5).toISOString(), author: '청담동주민', avatar_url: null, comments: [{ id: 'sc12', user_id: '', content: '여기 양주 세팅 퀄리티 ㄷㄷ', author: '위스키러버', created_at: new Date(Date.now() - 86400000 * 5).toISOString() }, { id: 'sc13', user_id: '', content: '펩시맨 실장 서비스 찐이야', author: 'VIP단골', created_at: new Date(Date.now() - 86400000 * 4.5).toISOString() }], comment_count: 2, venue_category: '나이트' },
-];
 
 /* ── Helpers ── */
 /* 캡션·댓글에서 #해시태그 / @멘션 자동 인식 → 보라색 강조 (인스타 동일) */
@@ -95,7 +80,8 @@ export default function GalleryPage() {
 
   /* ── 피드 불러오기 ── */
   const fetchClips = useCallback(async () => {
-    if (!supabase) { setClips(SEED_CLIPS); setLoading(false); return; }
+    // 진짜 DB 클립만 — 가짜 시드 0
+    if (!supabase) { setClips([]); setLoading(false); return; }
     try {
       const { data, error } = await supabase
         .from('posts')
@@ -112,7 +98,7 @@ export default function GalleryPage() {
           .order('created_at', { ascending: false })
           .limit(30);
         if (fb && fb.length > 0) setClips(fb.map((p: any) => mapClip(p)));
-        else setClips(SEED_CLIPS);
+        else setClips([]);
       } else if (data && data.length > 0) {
         const clipIds = data.map((p: any) => p.id);
         let commentsMap: Record<string, ClipComment[]> = {};
@@ -129,7 +115,7 @@ export default function GalleryPage() {
                 id: c.id,
                 user_id: c.user_id || '',
                 content: c.content,
-                author: c.users?.nickname || getSeedNickname(c.id),
+                author: c.users?.nickname || '익명',
                 created_at: c.created_at,
               });
             }
@@ -137,10 +123,10 @@ export default function GalleryPage() {
         }
         setClips(data.map((p: any) => ({ ...mapClip(p), comments: commentsMap[p.id] || [] })));
       } else {
-        setClips(SEED_CLIPS);
+        setClips([]);
       }
     } catch {
-      setClips(SEED_CLIPS);
+      setClips([]);
     } finally {
       setLoading(false);
     }
@@ -168,7 +154,7 @@ export default function GalleryPage() {
       likes: p.likes || 0,
       liked: false,
       created_at: p.created_at,
-      author: (p.users as any)?.nickname || jsonAuthor || getSeedNickname(p.id),
+      author: (p.users as any)?.nickname || jsonAuthor || '익명',
       avatar_url: (p.users as any)?.avatar_url || null,
       comments: [],
       comment_count: p.comment_count || 0,
@@ -362,8 +348,6 @@ export default function GalleryPage() {
               const isExpanded = expandedComments.has(clip.id);
               const isMine = user?.id === clip.user_id;
               const hasImgError = imgErrors.has(clip.id);
-              // 시드 클립은 user_id 비어있고 id가 UUID가 아니므로 댓글 INSERT 시 22P02 에러
-              const isSeed = !clip.user_id || clip.id.length < 32;
               return (
                 <article key={clip.id}>
                   {/* 헤더 */}
@@ -432,7 +416,6 @@ export default function GalleryPage() {
                     </button>
                     <button
                       onClick={() => {
-                        if (isSeed) { if (requireLogin()) setShowUpload(true); return; }
                         const el = document.getElementById(`comment-${clip.id}`) as HTMLInputElement | null;
                         if (el) {
                           el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -488,38 +471,25 @@ export default function GalleryPage() {
                     ))}
                   </div>
 
-                  {/* 댓글 입력 — 시드 클립에는 비활성, 직접 올리기 유도 */}
-                  {isSeed ? (
-                    <div className="flex items-center justify-between gap-2 px-4 py-3 border-b border-gray-50">
-                      <p className="text-xs text-[#999]">예시 클립이에요</p>
-                      <button
-                        onClick={() => requireLogin() && setShowUpload(true)}
-                        className="text-sm font-bold text-[#8B5CF6]"
-                        style={{ minHeight: 40 }}
-                      >
-                        내 클립 올리기 →
+                  {/* 댓글 입력 */}
+                  <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-50">
+                    <input
+                      id={`comment-${clip.id}`}
+                      type="text"
+                      value={commentInputs[clip.id] || ''}
+                      onChange={e => setCommentInputs(prev => ({ ...prev, [clip.id]: e.target.value }))}
+                      onKeyDown={e => { if (e.key === 'Enter') addComment(clip.id); }}
+                      onFocus={() => { if (!user) navigate('/login'); }}
+                      placeholder="댓글 달기..."
+                      className="flex-1 text-sm py-2 outline-none bg-transparent text-[#111]"
+                      style={{ minHeight: 40 }}
+                    />
+                    {commentInputs[clip.id]?.trim() && (
+                      <button onClick={() => addComment(clip.id)} className="text-sm font-bold text-[#8B5CF6]" style={{ minHeight: 40 }}>
+                        게시
                       </button>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-50">
-                      <input
-                        id={`comment-${clip.id}`}
-                        type="text"
-                        value={commentInputs[clip.id] || ''}
-                        onChange={e => setCommentInputs(prev => ({ ...prev, [clip.id]: e.target.value }))}
-                        onKeyDown={e => { if (e.key === 'Enter') addComment(clip.id); }}
-                        onFocus={() => { if (!user) navigate('/login'); }}
-                        placeholder="댓글 달기..."
-                        className="flex-1 text-sm py-2 outline-none bg-transparent text-[#111]"
-                        style={{ minHeight: 40 }}
-                      />
-                      {commentInputs[clip.id]?.trim() && (
-                        <button onClick={() => addComment(clip.id)} className="text-sm font-bold text-[#8B5CF6]" style={{ minHeight: 40 }}>
-                          게시
-                        </button>
-                      )}
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </article>
               );
             })}

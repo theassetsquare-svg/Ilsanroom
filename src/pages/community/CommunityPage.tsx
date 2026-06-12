@@ -5,6 +5,10 @@ import { createClient } from '@/lib/supabase';
 import { CommunityPulse } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import DailyPrompt from '@/components/community/DailyPrompt';
+import { venues } from '@/data/venues';
+
+// 놀쿨에 실제 등록된(영업확인) 업소 수 — venues.ts 1차 데이터 그대로, 가공·창작 0
+const REGISTERED_VENUE_COUNT = venues.filter(v => v.status !== 'closed_or_unclear').length;
 
 const sectionDefs = [
   { title: "업소후기", description: "직접 가본 솔직한 방문 후기", href: "/community/reviews", icon: "⭐", category: "reviews", hookLine: "별점 4점 이상만 모아봤더니 공통점이 있었다" },
@@ -104,6 +108,28 @@ export default function CommunityPage() {
 
         {/* ══════ 오늘의 글감 — 매일 자정 회전 ══════ */}
         <DailyPrompt />
+
+        {/* ══════ 운영팀 공식 안내 — 가짜 회원 사칭 아님, 운영자 1인칭 명시 / 실데이터만 ══════ */}
+        <div className="mb-8 rounded-2xl border p-5 sm:p-6" style={{ borderColor: 'rgba(139,92,246,0.35)', background: 'linear-gradient(135deg, rgba(139,92,246,0.06), rgba(16,185,129,0.04))' }}>
+          <div className="flex items-center gap-2 mb-3">
+            <span className="rounded-full px-2.5 py-0.5 text-[10px] font-black" style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF' }}>놀쿨 운영팀 공식</span>
+            <span className="text-xs" style={{ color: '#595959' }}>운영자가 직접 남기는 안내입니다</span>
+          </div>
+          <p className="text-base font-bold mb-1.5" style={{ color: '#111' }}>
+            지금 놀쿨에 등록된 업소 <span style={{ color: '#8B5CF6' }}>{REGISTERED_VENUE_COUNT.toLocaleString()}곳</span> — 다녀온 곳, 첫 후기 주인공이 되어보세요
+          </p>
+          <p className="text-sm mb-4" style={{ color: '#555', lineHeight: 1.7 }}>
+            여기 글·후기·댓글은 전부 실제 회원이 직접 씁니다. 자동으로 만들어 넣는 가짜 글은 한 건도 없어요. 다녀온 업소가 있다면 솔직한 한 줄이 다음 사람에게 가장 큰 도움이 됩니다.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <Link to="/community/reviews" className="rounded-xl px-4 py-2.5 text-sm font-bold text-white transition" style={{ backgroundColor: '#8B5CF6', minHeight: 44 }}>
+              후기 남기러 가기
+            </Link>
+            <Link to="/clubs" className="rounded-xl border px-4 py-2.5 text-sm font-bold transition" style={{ borderColor: '#E5E7EB', color: '#555', minHeight: 44 }}>
+              등록 업소 둘러보기
+            </Link>
+          </div>
+        </div>
 
         {/* ══════ 지금 뜨는 글 (미리보기 스니펫 포함) ══════ */}
         {recentPosts.length > 0 && (
@@ -221,64 +247,6 @@ export default function CommunityPage() {
           </div>
         </div>
 
-        {/* DB에 글이 없을 때 — 시드 인기글로 사이트가 살아보이게 */}
-        {recentPosts.length === 0 && (
-          <div className="mb-8 rounded-2xl border border-neon-border bg-neon-surface p-6 sm:p-8">
-            <div className="flex items-center gap-2 mb-5">
-              <span className="text-lg">🔥</span>
-              <h2 className="text-xl font-black" style={{ color: '#111' }}>지금 뜨는 글</h2>
-            </div>
-            <div className="space-y-3">
-              {[
-                { id: 's1', cat: '후기', title: '레이스 금요일 다녀옴 — 역시 사운드 미쳤다', likes: 24, comments: 8 },
-                { id: 's2', cat: '자유', title: '택시비가 술값보다 나온 사람 나만?? ㅋㅋ', likes: 41, comments: 19 },
-                { id: 's3', cat: '팁', title: '평일에 가야 자리 잡는 이유 3가지', likes: 31, comments: 6 },
-                { id: 's4', cat: '후기', title: '찬스돔 부킹 솔직후기 — 강호동 실장 대박', likes: 28, comments: 14 },
-                { id: 's5', cat: '모집', title: '토요일 강남 같이 갈 사람 2명 구함', likes: 14, comments: 7 },
-              ].map((post, idx) => (
-                <Link key={post.id} to="/community/free" className="flex items-center gap-4 rounded-xl border border-neon-border bg-neon-bg px-4 sm:px-5 py-4 transition hover:border-neon-primary/40 hover:bg-neon-surface" style={{ minHeight: 56 }}>
-                  <span className="text-lg font-black shrink-0" style={{ color: idx < 3 ? '#8B5CF6' : '#999', width: 24, textAlign: 'center' }}>{idx + 1}</span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold" style={{ backgroundColor: 'rgba(139,92,246,0.1)', color: '#5B21B6' }}>{post.cat}</span>
-                      <span className="text-sm font-bold truncate" style={{ color: '#111' }}>{post.title}</span>
-                    </div>
-                  </div>
-                  <div className="flex shrink-0 gap-3 ml-3 text-xs" style={{ color: '#595959' }}>
-                    <span style={{ color: '#B91C1C' }}>♥ {post.likes}</span>
-                    <span>💬 {post.comments}</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-        {hotCommentPosts.length === 0 && (
-          <div className="mb-8 rounded-2xl border border-neon-border bg-neon-surface p-6 sm:p-8">
-            <div className="flex items-center gap-2 mb-5">
-              <span className="text-lg">💬</span>
-              <h2 className="text-xl font-black" style={{ color: '#111' }}>댓글 폭발 중</h2>
-              <span className="text-xs rounded-full px-2 py-0.5 font-bold animate-pulse" style={{ backgroundColor: '#FEF3C7', color: '#D97706' }}>HOT</span>
-            </div>
-            <div className="space-y-2">
-              {[
-                { id: 'sc1', cat: 'Q&A', title: '클럽 혼자 가도 되나요? 진짜 궁금', comments: 23 },
-                { id: 'sc2', cat: '자유', title: '어젯밤 홍대 만취 썰 풀어봄 ㅋㅋ', comments: 19 },
-                { id: 'sc3', cat: '후기', title: '아르쥬 vs 레이스 내 결론', comments: 16 },
-                { id: 'sc4', cat: '자유', title: '나이트 갔다가 옛날 동창 만남 ㄷㄷ', comments: 27 },
-                { id: 'sc5', cat: 'Q&A', title: '부킹 안 당하면 어떻게 함?? 꿀팁좀', comments: 21 },
-              ].map((post) => (
-                <Link key={post.id} to="/community/free" className="flex items-center justify-between rounded-xl border border-neon-border bg-neon-bg px-4 sm:px-5 py-3 transition hover:border-neon-primary/40 hover:bg-neon-surface" style={{ minHeight: 48 }}>
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span className="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold" style={{ backgroundColor: 'rgba(139,92,246,0.1)', color: '#5B21B6' }}>{post.cat}</span>
-                    <span className="text-sm font-medium truncate" style={{ color: '#111' }}>{post.title}</span>
-                  </div>
-                  <span className="shrink-0 ml-3 rounded-full px-3 py-1 text-xs font-bold" style={{ backgroundColor: '#FEE2E2', color: '#DC2626' }}>💬 {post.comments}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

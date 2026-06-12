@@ -18,60 +18,6 @@ function timeAgo(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('ko-KR');
 }
 
-/* ── 시드 데이터 (DB 비어있을 때 살아있는 느낌) ── */
-function getSeedPosts(type: LoungeType): LoungePost[] {
-  const seedMap: Record<string, { title: string; content: string; nickname: string }[]> = {
-    night: [
-      { title: '수원찬스돔 주말 분위기 실화?', content: '어제 토요일에 갔는데 12시 넘으니까 부킹 미쳤음. 실장님이 알아서 자리 잡아주는데 센스가 장난 아님. 사운드도 새로 바꿨는지 체감이 다름.', nickname: '수원밤도깨비' },
-      { title: '성남샴푸 처음 가봤는데 솔직후기', content: '친구가 추천해서 갔는데 생각보다 넓고 사람도 많았음. 금요일이라 그런지 분위기 괜찮았고 음료 가격도 나이트치곤 합리적이었음.', nickname: '성남첫방문' },
-      { title: '나이트 혼자 가본 사람 있어?', content: '혼자 가면 좀 그런가 싶은데 부킹 잘 되는 곳이면 혼자가도 괜찮다는 얘기 들었거든. 경험자 후기 좀 부탁합니다.', nickname: '솔로댄서77' },
-    ],
-    club: [
-      { title: '강남 레이스 금요일 셋리스트 미쳤다', content: 'DJ가 바뀌었나? 어제 금요일 셋이 역대급이었음. EDM 좋아하면 무조건 가야함. 사운드 시스템도 업그레이드 된 느낌.', nickname: '강남불주먹' },
-      { title: '홍대 버뮤다 vs 청담 사운드 비교', content: '두 군데 다 자주 가는데 분위기가 확실히 다름. 버뮤다는 자유롭고 신나는 느낌, 사운드는 프리미엄 분위기. 취향 따라 갈리는듯.', nickname: '클럽투어러' },
-    ],
-    room: [
-      { title: '일산룸 접대 자리로 괜찮을까?', content: '거래처 접대 자리인데 일산 쪽에서 찾고 있습니다. 프라이빗하면서 분위기 좋은 곳 추천해주세요.', nickname: '직장인나이트홀릭' },
-      { title: '강남룸 매니저 선택 시스템 궁금', content: '처음 가보려는데 매니저 선택이 어떻게 진행되는지 궁금합니다. 후기 보면 다들 만족한다는데 실제로 어떤지 알려주세요.', nickname: '룸초보자' },
-    ],
-    yojung: [
-      { title: '일산명월관 솔직 후기 남김', content: '접대 자리로 갔는데 거래처분이 엄청 만족하셨음. 한복 입은 매니저분들 서비스가 격이 다르고, 양주 구성도 좋았음. 재방문 의사 100%.', nickname: '접대의신' },
-    ],
-    hoppa: [
-      { title: '강남호빠 로얄 여자 혼자 가봄', content: '친구 약속 펑크나서 혼자 갔는데 오히려 더 재밌었음ㅋㅋ 매니저들이 재미있게 해주고, 분위기 편안해서 스트레스 확 풀림.', nickname: '호빠여왕' },
-      { title: '호빠 처음인데 뭘 준비해야 해?', content: '친구들이랑 3명이서 가려는데 복장이나 매너 같은 기본 상식 좀 알려주세요. 완전 첫방문이라 아무것도 모름.', nickname: '호빠궁금해' },
-    ],
-    lounge: [
-      { title: '압구정 디엠 라운지 칵테일 추천', content: '여기 시그니처 칵테일 진짜 잘 만듦. 특히 로즈마리 넣은 건 여기서만 마실 수 있는 맛. 분위기도 조용하고 대화하기 좋음.', nickname: '칵테일감별사' },
-    ],
-    free: [
-      { title: '어젯밤 택시비가 술값보다 나왔다', content: '강남에서 일산까지 택시비 폭탄ㅋㅋ 술값보다 택시비가 더 나오는 아이러니. 다음엔 대리 부를듯.', nickname: '택시비폭탄' },
-      { title: '금요일 밤 루틴 공유', content: '퇴근 → 집에서 샤워 → 친구 만나서 저녁 → 10시쯤 출발 → 새벽 2시 귀가. 이 루틴이 진짜 답인듯ㅋㅋ', nickname: '금요일전사' },
-    ],
-    qna: [
-      { title: '나이트 드레스코드 어디까지 괜찮아?', content: '반바지+슬리퍼는 안 되는 건 아는데, 청바지+스니커즈는 되나요? 장소마다 다를 것 같긴 한데 보통 기준이 궁금합니다.', nickname: '패션고민러' },
-      { title: '부킹이 정확히 뭔가요?', content: '나이트 처음 가보려는데 부킹 시스템이 어떻게 되는지 궁금합니다. 자연스럽게 되는 건가요 아니면 신청하는 건가요?', nickname: '완전초보' },
-    ],
-  };
-  const posts = seedMap[type] || seedMap.free;
-  const now = Date.now();
-  // 가공 통계(랜덤 view/upvote/comment) 제거 — 시드 글은 0으로 표시. created_at만 안정적 간격.
-  return posts.map((p, i) => ({
-    id: `seed-${type}-${i}`,
-    user_id: null,
-    lounge_type: type,
-    title: p.title,
-    content: p.content,
-    images: [],
-    view_count: 0,
-    upvote_count: 0,
-    comment_count: 0,
-    status: 'active',
-    created_at: new Date(now - (i + 1) * 3600000).toISOString(),
-    user_profiles: { nickname: p.nickname, avatar_url: null, level: 'newbie' },
-  }));
-}
-
 export default function LoungePage() {
   const { type } = useParams<{ type: string }>();
   const loungeType = (type as LoungeType) || 'free';
@@ -102,16 +48,10 @@ export default function LoungePage() {
   const [error, setError] = useState('');
 
   const loadPosts = async () => {
+    // 진짜 DB 글만 — 가짜 시드 0
     const { data, count } = await fetchLoungePosts(loungeType);
-    if (data.length > 0) {
-      setPosts(data);
-      setTotal(count);
-    } else {
-      // 시드 데이터
-      const seed = getSeedPosts(loungeType);
-      setPosts(seed);
-      setTotal(seed.length);
-    }
+    setPosts(data);
+    setTotal(count);
   };
 
   useEffect(() => {
