@@ -1,0 +1,29 @@
+name: GSC Demand Gap (weekly)
+
+# 수요 감지 엔진 — 사람들이 검색하는데 놀쿨 페이지가 15~50위로 묻힌(약함/없음) 곳 발견.
+# opportunity(4~15위 밀기)·ga-demand(내부검색 무결과)와 역할 분리, 중복 0.
+# 100% 읽기 전용(GSC searchAnalytics API + venues.ts 파싱만, 사이트 크롤 0, 자동발행 0).
+# ★발견 리포트만 — 진짜 페이지는 사람이 만든다. 갭 있을 때만 메일.
+on:
+  schedule:
+    # 매주 월 KST 03:00 (UTC 18:00 일) — 00:00 리포트/02:30 기회/11:00 수요인사이트와 시간 분리
+    - cron: '0 18 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  demand-gap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: GSC demand gap finder (read-only)
+        run: node scripts/search-console-demand-gap.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
