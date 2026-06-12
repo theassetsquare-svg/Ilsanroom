@@ -35,14 +35,24 @@ function normalizePath(p: string): string {
 function forwardToGa4(eventType: EventType, meta?: Record<string, any>) {
   const gtag = (window as any).gtag;
   if (typeof gtag !== 'function') return;
+  const pagePath = currentPath || normalizePath(window.location.pathname);
   // ★page_view는 send()의 봇·내부·관리자 게이트를 통과한 '진짜 방문자'에서만 발송.
   // index.html config는 send_page_view:false → 자동 발송 없음 → 감사봇/링크미리보기 오염 0.
   if (eventType === 'view') {
     gtag('event', 'page_view', {
-      page_path: currentPath || normalizePath(window.location.pathname),
+      page_path: pagePath,
       page_title: typeof document !== 'undefined' ? document.title : undefined,
       page_location: window.location.href,
     });
+    return;
+  }
+  // ★끝까지읽기(scroll_100) — page_view와 ★동일한 send() 게이트(봇·관리자·내부 제외)를 통과한
+  // 진짜 방문자가 페이지 끝(≥99%)까지 읽었을 때만, 페이지당 1회 발송. page_path를 명시해
+  // 옵티마이저가 분자(끝까지읽기)·분모(page_view)를 ★같은 기준(게이트 통과 방문자)으로 나누게 한다
+  // → scrollRate 100% 초과가 구조적으로 불가능(scroll_100 ≤ page_view). 향상측정 'scroll'(90%·게이트
+  // 없음=봇 포함)은 더 이상 사용하지 않는다. 수치 조작 아님: 가짜 이벤트 주입 0, 진짜 방문자 1회만.
+  if (eventType === 'scroll_100') {
+    gtag('event', 'scroll_100', { page_path: pagePath, page_location: window.location.href });
     return;
   }
   const name = GA4_EVENT_NAME[eventType];

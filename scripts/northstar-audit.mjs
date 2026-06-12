@@ -42,6 +42,34 @@ const TARGET_BOUNCE_MAX = 0.40;   // 이탈률 40% 이하 = 양호. 목표=0%를
 
 const kst = () => new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 19) + ' KST';
 const pct = (n) => (n * 100).toFixed(1);
+const ymd = (d) => new Date(d).toISOString().slice(0, 10);
+
+// ── 추세 표시 — 전 기간(저장된 실측값) 대비 변화. 창작·합성 0, 측정만 ──
+// good='up' 이면 증가가 개선(↑녹색), good='down' 이면 감소가 개선. cur/prev 둘 다 유효할 때만 표시.
+function trendBadge(cur, prev, good, fmt) {
+  if (prev == null || !Number.isFinite(prev) || !Number.isFinite(cur)) {
+    return '<span style="color:#9CA3AF;font-size:12px">전 대비 비교불가(이전 데이터 없음)</span>';
+  }
+  const d = cur - prev;
+  const eps = Math.abs(prev) * 0.005;
+  let arrow, color;
+  if (Math.abs(d) <= eps) { arrow = '→'; color = '#6B7280'; }
+  else {
+    const improving = good === 'up' ? d > 0 : d < 0;
+    arrow = d > 0 ? '▲' : '▼';
+    color = improving ? '#059669' : '#DC2626';
+  }
+  const sign = d > 0 ? '+' : '';
+  return `<span style="color:${color};font-size:12px">${arrow} 전 대비 ${sign}${fmt(d)} (이전 ${fmt(prev)})</span>`;
+}
+function trendText(cur, prev, good, fmt) {
+  if (prev == null || !Number.isFinite(prev) || !Number.isFinite(cur)) return '(전 대비 -)';
+  const d = cur - prev;
+  const improving = good === 'up' ? d > 0 : d < 0;
+  const arrow = Math.abs(d) < 1e-9 ? '→' : (d > 0 ? '▲' : '▼');
+  const sign = d > 0 ? '+' : '';
+  return `(전 대비 ${arrow}${sign}${fmt(d)}${improving ? ' 개선' : d === 0 ? '' : ' 악화'})`;
+}
 
 function fetchJson(url, headers) {
   return new Promise((res, rej) => {
@@ -63,33 +91,41 @@ async function measureCtr() {
   if (!hasGscCredentials()) return { ok: false, reason: 'GSC 인증정보 없음' };
   const token = await getGscToken();
   if (!token) return { ok: false, reason: 'GSC 토큰 발급 실패' };
-  const q = await gscQuery(token, { dimensions: ['date'], rowLimit: 1, days: 28 });
+  const q = await gscQuery(token, { dimensions: ['date'], rowLimit: 1000, days: 28 });
   const pages = await gscQuery(token, { dimensions: ['page'], rowLimit: 1000, days: 28 });
   const tot = (q.rows || []).reduce(
     (a, r) => ({ clicks: a.clicks + (r.clicks || 0), imp: a.imp + (r.impressions || 0) }),
     { clicks: 0, imp: 0 },
   );
   const ctr = tot.imp ? tot.clicks / tot.imp : 0;
+  // ★추세 — 그 직전 28일(저장된 실측값) CTR. 현재창 시작 하루 전을 prev 종료로. 창작 0, 측정만.
+  const prevEnd = new Date(new Date(q.start).getTime() - 86400 * 1000);
+  const prevStart = new Date(prevEnd.getTime() - 27 * 86400 * 1000);
+  const qp = await gscQuery(token, { dimensions: ['date'], rowLimit: 1000, startDate: ymd(prevStart), endDate: ymd(prevEnd) });
+  const totP = (qp.rows || []).reduce(
+    (a, r) => ({ clicks: a.clicks + (r.clicks || 0), imp: a.imp + (r.impressions || 0) }),
+    { clicks: 0, imp: 0 },
+  );
+  const prevCtr = totP.imp >= MIN_GSC_IMPRESSIONS ? totP.clicks / totP.imp : null;
   // 기회 페이지 = 노출 충분(≥30)한데 CTR이 목표 미만 = 제목/설명만 손보면 클릭 솟는 곳
   const opp = (pages.rows || [])
     .map((r) => ({ page: r.keys[0], clicks: r.clicks || 0, imp: r.impressions || 0, ctr: r.ctr || 0, pos: r.position || 0 }))
     .filter((r) => r.imp >= 30 && r.ctr < TARGET_CTR)
     .sort((a, b) => b.imp - a.imp)
     .slice(0, 20);
-  return { ok: true, clicks: tot.clicks, imp: tot.imp, ctr, opp, range: { start: q.start, end: q.end } };
+  return { ok: true, clicks: tot.clicks, imp: tot.imp, ctr, prevCtr, opp, range: { start: q.start, end: q.end } };
 }
 
 // ── 지표② 끝까지읽기 + 체류10분 — Supabase page_events 24h ──
-async function measureReadDwell() {
-  if (!SUPABASE_SECRET_KEY) return { ok: false, reason: 'SUPABASE_SECRET_KEY 없음' };
-  const since = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
-  const url = `${SUPABASE_URL}/rest/v1/page_events?select=session_id,path,event_type,dwell_ms,created_at&created_at=gt.${since}&order=created_at.asc&limit=40000`;
+const RD_TRANSIT = ['/login', '/signup', '/404', '/admin', '/auth', '/search', '/logout', '/reset'];
+const rdIsTransit = (p) => RD_TRANSIT.some((t) => p === t || (p || '').startsWith(t + '/') || (p || '').startsWith(t + '?'));
+
+// page_events 윈도(gt..lt)를 읽어 끝까지읽기율·세션평균체류·측정세션수 집계. 같은 게이트(scroll_100/exit) 기준.
+async function readDwellWindow(gt, lt) {
+  let url = `${SUPABASE_URL}/rest/v1/page_events?select=session_id,path,event_type,dwell_ms,created_at&created_at=gt.${gt}&order=created_at.asc&limit=40000`;
+  if (lt) url += `&created_at=lt.${lt}`;
   const r = await fetchJson(url, { apikey: SUPABASE_SECRET_KEY, Authorization: `Bearer ${SUPABASE_SECRET_KEY}` });
-  if (r.status !== 200 || !Array.isArray(r.body)) return { ok: false, reason: `Supabase HTTP ${r.status}` };
-
-  const TRANSIT = ['/login', '/signup', '/404', '/admin', '/auth', '/search', '/logout', '/reset'];
-  const isTransit = (p) => TRANSIT.some((t) => p === t || (p || '').startsWith(t + '/') || (p || '').startsWith(t + '?'));
-
+  if (r.status !== 200 || !Array.isArray(r.body)) return { ok: false, status: r.status };
   const viewSessions = new Set();
   const readEndSessions = new Set();
   const sessionDwellMs = {};
@@ -98,17 +134,40 @@ async function measureReadDwell() {
     if (e.event_type === 'scroll_100') readEndSessions.add(e.session_id);
     if (e.event_type === 'exit') {
       const ms = Number(e.dwell_ms);
-      if (Number.isFinite(ms) && ms > 0 && ms <= 10 * 60 * 1000 && !isTransit(e.path)) {
+      if (Number.isFinite(ms) && ms > 0 && ms <= 10 * 60 * 1000 && !rdIsTransit(e.path)) {
         sessionDwellMs[e.session_id] = (sessionDwellMs[e.session_id] || 0) + ms;
       }
     }
   }
   const sessions = viewSessions.size;
-  const readEndRate = sessions ? readEndSessions.size / sessions : 0;
   const dwellTotals = Object.values(sessionDwellMs);
-  const avgSessionSec = dwellTotals.length ? dwellTotals.reduce((a, b) => a + b, 0) / dwellTotals.length / 1000 : 0;
-  const tenMinRate = dwellTotals.length ? dwellTotals.filter((ms) => ms >= TARGET_SESSION_SEC * 1000).length / dwellTotals.length : 0;
-  return { ok: true, sessions, readEndCount: readEndSessions.size, readEndRate, avgSessionSec, tenMinRate, measured: dwellTotals.length };
+  return {
+    ok: true,
+    sessions,
+    readEndCount: readEndSessions.size,
+    readEndRate: sessions ? readEndSessions.size / sessions : 0,
+    avgSessionSec: dwellTotals.length ? dwellTotals.reduce((a, b) => a + b, 0) / dwellTotals.length / 1000 : 0,
+    tenMinRate: dwellTotals.length ? dwellTotals.filter((ms) => ms >= TARGET_SESSION_SEC * 1000).length / dwellTotals.length : 0,
+    measured: dwellTotals.length,
+  };
+}
+
+async function measureReadDwell() {
+  if (!SUPABASE_SECRET_KEY) return { ok: false, reason: 'SUPABASE_SECRET_KEY 없음' };
+  const now = Date.now();
+  const cur = await readDwellWindow(new Date(now - 24 * 3600 * 1000).toISOString());
+  if (!cur.ok) return { ok: false, reason: `Supabase HTTP ${cur.status}` };
+  // ★추세 — 그 직전 24h(48h전~24h전, 저장된 실측값) 윈도. 창작 0, 측정만.
+  const prev = await readDwellWindow(
+    new Date(now - 48 * 3600 * 1000).toISOString(),
+    new Date(now - 24 * 3600 * 1000).toISOString(),
+  );
+  const prevValid = prev.ok && prev.sessions >= MIN_SESSIONS;
+  return {
+    ...cur,
+    prevReadEndRate: prevValid ? prev.readEndRate : null,
+    prevAvgSessionSec: prevValid && prev.measured >= MIN_SESSIONS ? prev.avgSessionSec : null,
+  };
 }
 
 // ── 지표③ 이탈률 — GA4 사이트 전체 (진짜 방문자만) ──
@@ -121,21 +180,34 @@ async function measureBounce() {
   });
   if (!rep.ok) return { ok: false, reason: gaErrorReason(rep.status, rep.body) };
   const m = rep.body.rows?.[0]?.metricValues || [];
+  // ★추세 — 그 직전 7일(14일전~8일전, 저장된 실측값) 이탈률. 창작 0, 측정만.
+  const repP = await runReport(token, {
+    dateRanges: [{ startDate: '14daysAgo', endDate: '8daysAgo' }],
+    metrics: [{ name: 'sessions' }, { name: 'bounceRate' }],
+  });
+  let prevBounce = null;
+  if (repP.ok) {
+    const mp = repP.body.rows?.[0]?.metricValues || [];
+    if (Number(mp[0]?.value || 0) >= MIN_SESSIONS) prevBounce = Number(mp[1]?.value || 0);
+  }
   return {
     ok: true,
     sessions: Number(m[0]?.value || 0),
     bounce: Number(m[1]?.value || 0),
     engage: Number(m[2]?.value || 0),
     avgDur: Number(m[3]?.value || 0),
+    prevBounce,
   };
 }
 
-function verdictRow(label, value, target, ok, dir) {
+function verdictRow(label, value, target, ok, dir, trendHtml) {
   const color = ok ? '#059669' : '#DC2626';
   const mark = ok ? '✅' : '🛑';
+  const trendCell = `<td style="border:1px solid #E5E7EB;padding:8px;text-align:right">${trendHtml || '<span style="color:#9CA3AF;font-size:12px">-</span>'}</td>`;
   return `<tr>
     <td style="border:1px solid #E5E7EB;padding:8px;background:#F8F9FA"><b>${label}</b></td>
     <td style="border:1px solid #E5E7EB;padding:8px;text-align:right;font-weight:bold;color:${color};font-size:18px">${mark} ${value}</td>
+    ${trendCell}
     <td style="border:1px solid #E5E7EB;padding:8px;text-align:right;color:#6B7280">목표 ${dir} ${target}</td></tr>`;
 }
 
@@ -164,26 +236,26 @@ async function sendMail({ ctr, rd, bo, fails }) {
     <h2 style="color:#DC2626">[놀쿨 북극성] 3대 지표 ${fails}건 목표 미달 (${kst().slice(0, 10)})</h2>
     <p style="color:#6B7280;font-size:12px">사장님이 못박은 3가지를 매일 한 통에 자동 측정 — 목표 미달시만 발송(자기수렴). 모든 수치 읽기전용·진짜 방문자 기준.</p>
 
-    <h3>① 클릭률 (CTR) — GSC 최근 28일</h3>
+    <h3>① 클릭률 (CTR) — GSC 최근 28일 <span style="color:#9CA3AF;font-size:12px">(전 대비 = 직전 28일)</span></h3>
     ${ctr.ok && ctr.imp >= MIN_GSC_IMPRESSIONS
-      ? `<table style="border-collapse:collapse;width:100%">${verdictRow('사이트 전체 CTR', pct(ctr.ctr) + '%', pct(TARGET_CTR) + '%', ctrOk, '≥')}
-         <tr><td colspan="3" style="border:1px solid #E5E7EB;padding:6px;font-size:12px;color:#6B7280">클릭 ${ctr.clicks} · 노출 ${ctr.imp} · ${ctr.range.start}~${ctr.range.end}</td></tr></table>
+      ? `<table style="border-collapse:collapse;width:100%">${verdictRow('사이트 전체 CTR', pct(ctr.ctr) + '%', pct(TARGET_CTR) + '%', ctrOk, '≥', trendBadge(ctr.ctr, ctr.prevCtr, 'up', (n) => pct(n) + '%p'))}
+         <tr><td colspan="4" style="border:1px solid #E5E7EB;padding:6px;font-size:12px;color:#6B7280">클릭 ${ctr.clicks} · 노출 ${ctr.imp} · ${ctr.range.start}~${ctr.range.end}</td></tr></table>
          <h4 style="margin:12px 0 6px">🔧 제목·설명만 손보면 클릭 솟는 기회 페이지 (노출 많은데 저CTR)</h4>${oppTable(ctr.opp)}`
       : `<p style="color:#6B7280">데이터 부족/조회불가 (${ctr.ok ? `노출 ${ctr.imp} < ${MIN_GSC_IMPRESSIONS}` : ctr.reason}) — 판정 보류</p>`}
 
-    <h3>② 끝까지 읽기 + 체류 10분 — page_events 최근 24h</h3>
+    <h3>② 끝까지 읽기 + 체류 10분 — page_events 최근 24h <span style="color:#9CA3AF;font-size:12px">(전 대비 = 직전 24h)</span></h3>
     ${rd.ok && rd.sessions >= MIN_SESSIONS
       ? `<table style="border-collapse:collapse;width:100%">
-         ${verdictRow('끝까지 읽기율 (scroll 100%)', pct(rd.readEndRate) + '%', pct(TARGET_READ_END) + '%', readOk, '≥')}
-         ${verdictRow('세션 평균 누적 체류', rd.avgSessionSec.toFixed(0) + '초', TARGET_SESSION_SEC + '초', dwellOk, '≥')}
-         <tr><td colspan="3" style="border:1px solid #E5E7EB;padding:6px;font-size:12px;color:#6B7280">세션 ${rd.sessions} · 끝까지읽음 ${rd.readEndCount} · 10분+ 세션비율 ${pct(rd.tenMinRate)}% (측정 ${rd.measured})</td></tr></table>`
+         ${verdictRow('끝까지 읽기율 (scroll 100%)', pct(rd.readEndRate) + '%', pct(TARGET_READ_END) + '%', readOk, '≥', trendBadge(rd.readEndRate, rd.prevReadEndRate, 'up', (n) => pct(n) + '%p'))}
+         ${verdictRow('세션 평균 누적 체류', rd.avgSessionSec.toFixed(0) + '초', TARGET_SESSION_SEC + '초', dwellOk, '≥', trendBadge(rd.avgSessionSec, rd.prevAvgSessionSec, 'up', (n) => n.toFixed(0) + '초'))}
+         <tr><td colspan="4" style="border:1px solid #E5E7EB;padding:6px;font-size:12px;color:#6B7280">세션 ${rd.sessions} · 끝까지읽음 ${rd.readEndCount} · 10분+ 세션비율 ${pct(rd.tenMinRate)}% (측정 ${rd.measured})</td></tr></table>`
       : `<p style="color:#6B7280">데이터 부족 (${rd.ok ? `세션 ${rd.sessions} < ${MIN_SESSIONS}` : rd.reason}) — 판정 보류</p>`}
 
-    <h3>③ 이탈률 → 0%를 향해 — GA4 최근 7일 (진짜 방문자)</h3>
+    <h3>③ 이탈률 → 0%를 향해 — GA4 최근 7일 (진짜 방문자) <span style="color:#9CA3AF;font-size:12px">(전 대비 = 직전 7일)</span></h3>
     ${bo.ok && bo.sessions >= MIN_SESSIONS
       ? `<table style="border-collapse:collapse;width:100%">
-         ${verdictRow('사이트 전체 이탈률', pct(bo.bounce) + '%', pct(TARGET_BOUNCE_MAX) + '%', bounceOk, '≤')}
-         <tr><td colspan="3" style="border:1px solid #E5E7EB;padding:6px;font-size:12px;color:#6B7280">세션 ${bo.sessions} · 참여율 ${pct(bo.engage)}% · 평균체류 ${bo.avgDur.toFixed(0)}초</td></tr></table>`
+         ${verdictRow('사이트 전체 이탈률', pct(bo.bounce) + '%', pct(TARGET_BOUNCE_MAX) + '%', bounceOk, '≤', trendBadge(bo.bounce, bo.prevBounce, 'down', (n) => pct(n) + '%p'))}
+         <tr><td colspan="4" style="border:1px solid #E5E7EB;padding:6px;font-size:12px;color:#6B7280">세션 ${bo.sessions} · 참여율 ${pct(bo.engage)}% · 평균체류 ${bo.avgDur.toFixed(0)}초</td></tr></table>`
       : `<p style="color:#6B7280">데이터 부족/조회불가 (${bo.ok ? `세션 ${bo.sessions} < ${MIN_SESSIONS}` : bo.reason}) — 판정 보류</p>`}
 
     <p style="background:#FEF2F2;border-left:3px solid #DC2626;padding:10px 12px;margin:16px 0;font-size:12px;color:#7F1D1D">
@@ -212,9 +284,9 @@ async function main() {
   const dwellFail = rd.ok && rd.measured >= MIN_SESSIONS && rd.avgSessionSec < TARGET_SESSION_SEC;
   const bounceFail = bo.ok && bo.sessions >= MIN_SESSIONS && bo.bounce > TARGET_BOUNCE_MAX;
 
-  console.log(`① CTR: ${ctr.ok ? pct(ctr.ctr) + '% (노출 ' + ctr.imp + ')' : ctr.reason}${ctrFail ? ' 🛑' : ''}`);
-  console.log(`② 끝까지읽기: ${rd.ok ? pct(rd.readEndRate) + '%' : rd.reason}${readFail ? ' 🛑' : ''} · 세션체류: ${rd.ok ? rd.avgSessionSec.toFixed(0) + '초' : '-'}${dwellFail ? ' 🛑' : ''}`);
-  console.log(`③ 이탈률: ${bo.ok ? pct(bo.bounce) + '%' : bo.reason}${bounceFail ? ' 🛑' : ''}`);
+  console.log(`① CTR: ${ctr.ok ? pct(ctr.ctr) + '% (노출 ' + ctr.imp + ') ' + trendText(ctr.ctr, ctr.prevCtr, 'up', (n) => pct(n) + '%p') : ctr.reason}${ctrFail ? ' 🛑' : ''}`);
+  console.log(`② 끝까지읽기: ${rd.ok ? pct(rd.readEndRate) + '% ' + trendText(rd.readEndRate, rd.prevReadEndRate, 'up', (n) => pct(n) + '%p') : rd.reason}${readFail ? ' 🛑' : ''} · 세션체류: ${rd.ok ? rd.avgSessionSec.toFixed(0) + '초 ' + trendText(rd.avgSessionSec, rd.prevAvgSessionSec, 'up', (n) => n.toFixed(0) + '초') : '-'}${dwellFail ? ' 🛑' : ''}`);
+  console.log(`③ 이탈률: ${bo.ok ? pct(bo.bounce) + '% ' + trendText(bo.bounce, bo.prevBounce, 'down', (n) => pct(n) + '%p') : bo.reason}${bounceFail ? ' 🛑' : ''}`);
 
   const fails = [ctrFail, readFail, dwellFail, bounceFail].filter(Boolean).length;
   if (fails === 0) {

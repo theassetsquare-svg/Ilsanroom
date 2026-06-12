@@ -33,6 +33,19 @@ const ENGAGE_LOW = 0.40;       // 참여율 40% 미만
 
 const kst = () => new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
 
+// 추세 — 직전 7일(저장된 실측값) 대비 점수 변화. 점수↑가 개선. 창작 0, 측정만.
+function scoreTrend(score, prevScore) {
+  if (prevScore == null || !Number.isFinite(prevScore)) return { text: '(전 대비 -)', html: '<span style="color:#9CA3AF;font-size:13px">전 대비 비교불가</span>' };
+  const d = score - prevScore;
+  const arrow = d === 0 ? '→' : (d > 0 ? '▲' : '▼');
+  const color = d > 0 ? '#059669' : d < 0 ? '#DC2626' : '#6B7280';
+  const sign = d > 0 ? '+' : '';
+  return {
+    text: `(전 대비 ${arrow}${sign}${d}, 직전 ${prevScore})`,
+    html: `<span style="color:${color};font-size:13px">${arrow} 전 대비 ${sign}${d} (직전 7일 ${prevScore}/100)</span>`,
+  };
+}
+
 async function siteScore(token) {
   const r = await runReport(token, {
     dateRanges: [{ startDate: '7daysAgo', endDate: 'today' }],
@@ -40,7 +53,17 @@ async function siteScore(token) {
   });
   if (!r.ok) return { ok: false, r };
   const m = r.body.rows?.[0]?.metricValues || [];
-  return { ok: true, sessions: Number(m[0]?.value || 0), engage: Number(m[1]?.value || 0), bounce: Number(m[2]?.value || 0) };
+  // ★추세 — 그 직전 7일(14일전~8일전, 저장된 실측값) 점수. 창작·합성 0, 측정만.
+  const rp = await runReport(token, {
+    dateRanges: [{ startDate: '14daysAgo', endDate: '8daysAgo' }],
+    metrics: [{ name: 'sessions' }, { name: 'engagementRate' }],
+  });
+  let prevScore = null;
+  if (rp.ok) {
+    const mp = rp.body.rows?.[0]?.metricValues || [];
+    if (Number(mp[0]?.value || 0) >= MIN_TOTAL_SESSIONS) prevScore = Math.round(Number(mp[1]?.value || 0) * 100);
+  }
+  return { ok: true, sessions: Number(m[0]?.value || 0), engage: Number(m[1]?.value || 0), bounce: Number(m[2]?.value || 0), prevScore };
 }
 
 // pagePath 별 행동 지표
@@ -65,13 +88,15 @@ async function pageRows(token) {
   }));
 }
 
-// pagePath 별 scroll 이벤트 수(GA4 향상된측정 'scroll' = 90% 도달) → 끝까지읽기 신호
+// pagePath 별 끝까지읽기 수 — ★게이트 통과한 'scroll_100'(visitor-tracker가 봇·관리자·내부 제외 후
+// page_view와 동일 길목에서 발송, ≥99% 도달) 만 집계. 향상측정 'scroll'(90%·게이트 없음=봇 포함)은
+// 분자가 분모(진짜 page_view)보다 커져 100%를 넘기므로 사용하지 않는다 → 분자·분모 기준 통일.
 async function scrollByPage(token) {
   const r = await runReport(token, {
     dateRanges: [{ startDate: '7daysAgo', endDate: 'today' }],
     dimensions: [{ name: 'pagePath' }],
     metrics: [{ name: 'eventCount' }],
-    dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { value: 'scroll' } } },
+    dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { value: 'scroll_100' } } },
     limit: 1000,
   });
   const map = new Map();
@@ -110,7 +135,8 @@ async function main() {
     process.exit(2);
   }
   const score = Math.round(site.engage * 100);
-  console.log(`📊 사이트 점수 ${score}/100 · 이탈 ${(site.bounce * 100).toFixed(0)}% · 세션 ${site.sessions}`);
+  const trend = scoreTrend(score, site.prevScore);
+  console.log(`📊 사이트 점수 ${score}/100 ${trend.text} · 이탈 ${(site.bounce * 100).toFixed(0)}% · 세션 ${site.sessions}`);
 
   if (site.sessions < MIN_TOTAL_SESSIONS) {
     console.log(`⏳ 데이터 축적중 (세션 ${site.sessions} < ${MIN_TOTAL_SESSIONS}) — 처방 보류, 메일 미발송`);
@@ -121,9 +147,10 @@ async function main() {
   const cand = rows
     .filter((p) => p.sessions >= MIN_PAGE_SESSIONS)
     .map((p) => {
-      // scrollRate = scroll(향상측정, 게이트 없음=봇·감사봇 포함) ÷ page_view(게이트=진짜 방문자만).
-      // 분자가 분모보다 클 수 있어(>100%) 물리 불가능값이 나옴 → [0,1] 클램프로 "끝까지읽기"를 상한 근사로만 사용.
-      // (수치 조작 아님: 가짜 이벤트 주입·전송 0. 표시 가능한 범위로 정직하게 자르기만.)
+      // scrollRate = scroll_100(게이트 통과=진짜 방문자만) ÷ page_view(게이트=진짜 방문자만).
+      // 분자·분모가 ★같은 길목(visitor-tracker send() 게이트) 을 통과하므로 scroll_100 ≤ page_view 가 구조적
+      // 으로 보장됨 → >100% 가 원천적으로 불가능. 클램프는 round-off 대비 방어용으로만 남겨 둠(거의 작동 안 함).
+      // (수치 조작 아님: 가짜 이벤트 주입·전송 0.)
       const rawScroll = p.views > 0 ? (scroll.get(p.path) || 0) / p.views : 0;
       const scrollRate = Math.min(1, Math.max(0, rawScroll));
       const pp = { ...p, scrollRate };
@@ -142,7 +169,7 @@ async function main() {
     console.log(`✅ 점수 ${score}/100 (목표 ${TARGET_SCORE}+) · 처방 대상 0 — 메일 미발송(자가수렴)`);
     return;
   }
-  await sendMail({ score, site, cand: cand.slice(0, 10) });
+  await sendMail({ score, trend, site, cand: cand.slice(0, 10) });
 }
 
 function card(p, i) {
@@ -153,10 +180,11 @@ function card(p, i) {
     <ul style="margin:0;padding-left:18px">${lis}</ul></div>`;
 }
 
-async function sendMail({ score, site, cand }) {
+async function sendMail({ score, trend, site, cand }) {
   if (!RESEND_API_KEY) { console.log('RESEND_API_KEY 없음 — 메일 skip'); return; }
   const html = `<div style="font-family:sans-serif;max-width:760px;margin:0 auto;padding:20px;color:#111">
     <h2 style="color:#7C3AED">[놀쿨 GA4 옵티마이저] 점수 ${score}/100 — 올릴 페이지 ${cand.length}곳 처방</h2>
+    <p style="margin:0 0 8px">${trend.html}</p>
     <p style="background:#F5F3FF;border-radius:8px;padding:12px;color:#374151;font-size:13px">
       아래는 <b>고치면 점수가 가장 많이 오를 순서(트래픽×갭)</b>로 정렬한 페이지와 ★구체 처방입니다.
       <b>사람이 진짜 콘텐츠로 적용</b>하세요. 자동 대량생성·가짜 이벤트 주입은 하지 않습니다(구글 페널티 방지).
