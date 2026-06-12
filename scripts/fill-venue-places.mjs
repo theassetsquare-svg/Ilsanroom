@@ -77,23 +77,51 @@ if (MODE_SEED) {
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const norm = (s) => String(s || '').replace(/[\s·\-_/()]/g, '').toLowerCase();
 
+// Places API (New) — 신규 GCP 키는 기본적으로 이 v1 엔드포인트만 활성(레거시=REQUEST_DENIED).
 async function placesLookup(v) {
-  const q = encodeURIComponent(`${v.nameKo} ${v.regionKo || ''}`.trim());
-  const ts = await fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${q}&language=ko&region=kr&key=${KEY}`).then((r) => r.json());
-  if (ts.status !== 'OK' || !ts.results?.length) return { skip: `textsearch ${ts.status}` };
+  const query = `${v.nameKo} ${v.regionKo || ''}`.trim();
+  const ts = await fetch('https://places.googleapis.com/v1/places:searchText', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': KEY,
+      'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.regularOpeningHours,places.location',
+    },
+    body: JSON.stringify({ textQuery: query, languageCode: 'ko', regionCode: 'KR' }),
+  }).then((r) => r.json());
+  if (ts.error) return { skip: `searchText ${ts.error.status || ts.error.code}` };
+  const results = ts.places || [];
+  if (!results.length) return { skip: 'searchText 결과 0' };
   // 이름 확실 일치만 채택(부분 포함, 불확실=skip)
-  const cand = ts.results.find((r) => { const a = norm(r.name), b = norm(v.nameKo); return a.includes(b) || b.includes(a); });
-  if (!cand) return { skip: `이름 불일치(top='${ts.results[0].name}')` };
-  const pid = cand.place_id;
-  const det = await fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${pid}&fields=name,formatted_address,opening_hours,geometry&language=ko&key=${KEY}`).then((r) => r.json());
-  if (det.status !== 'OK') return { skip: `details ${det.status}` };
-  const d = det.result;
-  const res = { place_id: pid, name: d.name, address: d.formatted_address || '', openHours: (d.opening_hours?.weekday_text || []).join(' / '), nearbyStation: '' };
-  // 가까운 지하철역(검증 가능). geometry 있으면 nearbysearch.
-  if (d.geometry?.location) {
-    const { lat, lng } = d.geometry.location;
-    const nb = await fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&rankby=distance&type=subway_station&language=ko&key=${KEY}`).then((r) => r.json());
-    if (nb.status === 'OK' && nb.results?.length) res.nearbyStation = nb.results[0].name;
+  const nm = (p) => p.displayName?.text || '';
+  const cand = results.find((p) => { const a = norm(nm(p)), b = norm(v.nameKo); return a.includes(b) || b.includes(a); });
+  if (!cand) return { skip: `이름 불일치(top='${nm(results[0])}')` };
+  const res = {
+    place_id: cand.id,
+    name: nm(cand),
+    address: cand.formattedAddress || '',
+    openHours: (cand.regularOpeningHours?.weekdayDescriptions || []).join(' / '),
+    nearbyStation: '',
+  };
+  // 가까운 지하철역(검증 가능). location 있으면 searchNearby.
+  if (cand.location) {
+    const { latitude, longitude } = cand.location;
+    const nb = await fetch('https://places.googleapis.com/v1/places:searchNearby', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Goog-Api-Key': KEY,
+        'X-Goog-FieldMask': 'places.displayName',
+      },
+      body: JSON.stringify({
+        includedTypes: ['subway_station'],
+        maxResultCount: 1,
+        rankPreference: 'DISTANCE',
+        languageCode: 'ko',
+        locationRestriction: { circle: { center: { latitude, longitude }, radius: 1500 } },
+      }),
+    }).then((r) => r.json());
+    if (!nb.error && nb.places?.length) res.nearbyStation = nb.places[0].displayName?.text || '';
   }
   return res;
 }
