@@ -789,6 +789,31 @@ function generateVenueFaqJsonLd(v) {
   };
 }
 
+/**
+ * generic FAQPage JSON-LD — 화면에 실제로 보이는 Q&A 배열을 그대로 스키마화.
+ * [{q,a}] 단일 소스로 visible <dl> + 이 JSON-LD를 동시 생성 → 화면↔스키마 100% 일치(창작 0).
+ * 지역/집계 페이지(/clubs/:region, /region/:r, /region/:r/:cat)의 "[지역][업종]" AEO 인용용.
+ */
+function faqPairsJsonLd(pairs) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: pairs.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
+}
+
+/** 화면용 <dl> — faqPairsJsonLd와 같은 배열을 받아 visible FAQ 렌더 (스키마와 byte-동치 보장) */
+function faqPairsDl(heading, pairs) {
+  let s = `<section><h2>${escHtml(heading)}</h2><dl>`;
+  for (const f of pairs) s += `<dt>${escHtml(f.q)}</dt><dd>${escHtml(f.a)}</dd>`;
+  s += `</dl></section>`;
+  return s;
+}
+
 function getHookingTitle(nameKo, venue) {
   // Extract from seo-hooks.ts
   const regex = new RegExp(`'${nameKo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}':\\s*'([^']+)'`);
@@ -1538,14 +1563,13 @@ for (const [cat, regions] of Object.entries(regionsByCategory)) {
         }
       });
       regSsr += `</ul>`;
-      // ★ AI 인용용 FAQ
-      regSsr += `<section><h2>${escHtml(regionKo)} ${catLabelMap[cat]} 자주 묻는 질문</h2>`;
-      regSsr += `<dl>`;
-      regSsr += `<dt>${escHtml(regionKo)} ${catLabelMap[cat]} 추천은?</dt>`;
-      regSsr += `<dd>인기 있는 곳은 ${regionVenues.slice(0, 5).map(vv => { const p = (vv.nameKo || '').split(/\s+/); return escHtml(p.length > 1 ? p.slice(1).join(' ') : vv.nameKo); }).join(', ')}${regionVenues.length > 5 ? ' 등' : ''}입니다. 놀쿨(nolcool.com)에서 비교해보세요.</dd>`;
-      regSsr += `<dt>몇 곳 있나요?</dt>`;
-      regSsr += `<dd>이 카테고리에는 ${regionVenues.length}곳의 매장이 있습니다.</dd>`;
-      regSsr += `</dl></section>`;
+      // ★ AI 인용용 FAQ — 화면 dl + FAQPage JSON-LD 단일 배열 소스(화면↔스키마 100% 일치)
+      const regTopNamesFaq = regionVenues.slice(0, 5).map(vv => { const p = (vv.nameKo || '').split(/\s+/); return p.length > 1 ? p.slice(1).join(' ') : vv.nameKo; }).join(', ');
+      const regFaqPairs = [
+        { q: `${regionKo} ${catLabelMap[cat]} 추천은?`, a: `인기 있는 곳은 ${regTopNamesFaq}${regionVenues.length > 5 ? ' 등' : ''}입니다. 놀쿨(nolcool.com)에서 비교해보세요.` },
+        { q: `몇 곳 있나요?`, a: `이 카테고리에는 ${regionVenues.length}곳의 매장이 있습니다.` },
+      ];
+      regSsr += faqPairsDl(`${regionKo} ${catLabelMap[cat]} 자주 묻는 질문`, regFaqPairs);
 
       // 시즌159 — 지역×업종 본문 깊이 보강 (체류 10분 + dwell-content-audit 통과)
       // 시즌172 — regionKo/catLabel 반복 희석 (대명사 치환)
@@ -1599,7 +1623,7 @@ for (const [cat, regions] of Object.entries(regionsByCategory)) {
           url: `${BASE_URL}/${cm.path}/${vv.region}/${vv.slug}`,
           description: `${vv.regionKo} ${catLabelMap[cat]} ${vv.nameKo}`
         }))
-      }];
+      }, faqPairsJsonLd(regFaqPairs)];
 
       writePage(`/${cm.path}/${region}`, { title, description: desc, ssrBody: regSsr, jsonLdList: regJsonLd });
       regionalCount++;
@@ -2048,12 +2072,13 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
     ssrBody += `</ul>`;
   }
   ssrBody += aggHubMesh(catVenues, 'best', catKey);
-  ssrBody += `<h2>자주 묻는 질문</h2>`;
-  ssrBody += `<dl><dt>${escHtml(catInfo.labelKo)} 어디가 제일 인기 있나요?</dt>`;
-  ssrBody += `<dd>현재 회원 검색·재방문 기준 TOP은 ${escHtml(topNames)} 입니다. ${bestRegionStr} 지역에 주로 있으니 가까운 곳부터 확인하세요.</dd>`;
-  ssrBody += `<dt>예약은 어떻게 하나요?</dt>`;
-  ssrBody += `<dd>각 업소 상세 페이지에 직통 번호가 있고, 평일 저녁이면 당일 통화로도 가능합니다. 주말은 미리 확인하세요.</dd></dl>`;
-  writePage(p, { title, description: desc, ssrBody, keywords: `${catInfo.labelKo} 인기, ${catInfo.labelKo} 추천, ${catInfo.labelKo} 랭킹, ${catInfo.labelKo} TOP`, jsonLdList: collectionJsonLd(p, title, desc, catVenues, [{ name: '놀쿨', url: BASE_URL }, { name: catInfo.labelKo, url: `${BASE_URL}/${catInfo.path}/` }, { name: '인기 순위', url: `${BASE_URL}${p}/` }]) });
+  // FAQ — 화면 dl + FAQPage JSON-LD 단일 배열 소스(화면↔스키마 100% 일치)
+  const bestFaqPairs = [
+    { q: `${catInfo.labelKo} 어디가 제일 인기 있나요?`, a: `현재 회원 검색·재방문 기준 TOP은 ${topNames} 입니다. ${bestRegionStr} 지역에 주로 있으니 가까운 곳부터 확인하세요.` },
+    { q: `예약은 어떻게 하나요?`, a: `각 업소 상세 페이지에 직통 번호가 있고, 평일 저녁이면 당일 통화로도 가능합니다. 주말은 미리 확인하세요.` },
+  ];
+  ssrBody += faqPairsDl('자주 묻는 질문', bestFaqPairs);
+  writePage(p, { title, description: desc, ssrBody, keywords: `${catInfo.labelKo} 인기, ${catInfo.labelKo} 추천, ${catInfo.labelKo} 랭킹, ${catInfo.labelKo} TOP`, jsonLdList: [...collectionJsonLd(p, title, desc, catVenues, [{ name: '놀쿨', url: BASE_URL }, { name: catInfo.labelKo, url: `${BASE_URL}/${catInfo.path}/` }, { name: '인기 순위', url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(bestFaqPairs)] });
   dynamicPages.push(p);
 }
 
@@ -2082,12 +2107,13 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
     ssrBody += `</ul>`;
   }
   ssrBody += aggHubMesh(catVenues, 'new', catKey);
-  ssrBody += `<h2>자주 묻는 질문</h2>`;
-  ssrBody += `<dl><dt>최근 오픈한 ${escHtml(catInfo.labelKo)} 어디가 좋아요?</dt>`;
-  ssrBody += `<dd>현재 신규 입점 리스트는 ${escHtml(newNames)} 입니다. ${newRegionStr} 지역으로 추려서 비교하세요.</dd>`;
-  ssrBody += `<dt>신규 매장은 손님이 적나요?</dt>`;
-  ssrBody += `<dd>오픈 초기에는 평일 손님이 적은 편이라 분위기를 여유롭게 즐길 수 있고, 주말은 미리 예약하는 게 안전합니다.</dd></dl>`;
-  writePage(p, { title, description: desc, ssrBody, keywords: `신규 ${catInfo.labelKo}, 새 ${catInfo.labelKo}, ${catInfo.labelKo} 오픈`, jsonLdList: collectionJsonLd(p, title, desc, catVenues, [{ name: '놀쿨', url: BASE_URL }, { name: catInfo.labelKo, url: `${BASE_URL}/${catInfo.path}/` }, { name: '신규 입점', url: `${BASE_URL}${p}/` }]) });
+  // FAQ — 화면 dl + FAQPage JSON-LD 단일 배열 소스(화면↔스키마 100% 일치)
+  const newFaqPairs = [
+    { q: `최근 오픈한 ${catInfo.labelKo} 어디가 좋아요?`, a: `현재 신규 입점 리스트는 ${newNames} 입니다. ${newRegionStr} 지역으로 추려서 비교하세요.` },
+    { q: `신규 매장은 손님이 적나요?`, a: `오픈 초기에는 평일 손님이 적은 편이라 분위기를 여유롭게 즐길 수 있고, 주말은 미리 예약하는 게 안전합니다.` },
+  ];
+  ssrBody += faqPairsDl('자주 묻는 질문', newFaqPairs);
+  writePage(p, { title, description: desc, ssrBody, keywords: `신규 ${catInfo.labelKo}, 새 ${catInfo.labelKo}, ${catInfo.labelKo} 오픈`, jsonLdList: [...collectionJsonLd(p, title, desc, catVenues, [{ name: '놀쿨', url: BASE_URL }, { name: catInfo.labelKo, url: `${BASE_URL}/${catInfo.path}/` }, { name: '신규 입점', url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(newFaqPairs)] });
   dynamicPages.push(p);
 }
 
@@ -2123,13 +2149,12 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     });
     ssrBody += `</ul>`;
   }
-  // FAQ
-  ssrBody += `<section><h2>자주 묻는 질문</h2><dl>`;
-  ssrBody += `<dt>${escHtml(regionKo)} 추천 업소는?</dt>`;
-  ssrBody += `<dd>인기 있는 곳: ${regionVenues.slice(0, 5).map(shortLabelFn).map(escHtml).join(', ')}. 각 업소 페이지에서 비교해보세요.</dd>`;
-  ssrBody += `<dt>몇 곳 있나요?</dt>`;
-  ssrBody += `<dd>이 지역에는 ${regionVenues.length}곳이 등록되어 있습니다.</dd>`;
-  ssrBody += `</dl></section>`;
+  // FAQ — 화면 dl + FAQPage JSON-LD 단일 배열 소스(화면↔스키마 100% 일치)
+  const regionFaqPairs = [
+    { q: `${regionKo} 추천 업소는?`, a: `인기 있는 곳: ${regionVenues.slice(0, 5).map(shortLabelFn).join(', ')}. 각 업소 페이지에서 비교해보세요.` },
+    { q: `몇 곳 있나요?`, a: `이 지역에는 ${regionVenues.length}곳이 등록되어 있습니다.` },
+  ];
+  ssrBody += faqPairsDl('자주 묻는 질문', regionFaqPairs);
   // 시즌22 — 지역×업종 anchor (region/{ko}/{cat} reachable)
   ssrBody += `<h2>업종별 더보기</h2><ul>`;
   for (const [catKey, catInfo] of Object.entries(catMap)) {
@@ -2145,7 +2170,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
   ssrBody += `<h2>${escHtml(regionKo)} 대표 업소 미리보기</h2>${aggHighlights(regionVenues, shortLabelFn)}`;
   ssrBody += aggInlineCta('region-' + regionKo, regionVenues);
   ssrBody += aggHubMesh(regionVenues, 'region', regionKo);
-  writePage(p, { title, description: desc, ssrBody, keywords: `${regionKo} 나이트라이프, ${regionKo} 클럽, ${regionKo} 나이트, ${regionKo} 룸, ${regionKo} 라운지`, jsonLdList: collectionJsonLd(p, title, desc, regionVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}${p}/` }]) });
+  writePage(p, { title, description: desc, ssrBody, keywords: `${regionKo} 나이트라이프, ${regionKo} 클럽, ${regionKo} 나이트, ${regionKo} 룸, ${regionKo} 라운지`, jsonLdList: [...collectionJsonLd(p, title, desc, regionVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(regionFaqPairs)] });
   dynamicPages.push(p);
 
   // ── region/[region]/[category] — 지역+업종 크로스 ──
@@ -2178,13 +2203,14 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     const crossShort = (cv) => { const ps = (cv.nameKo || '').split(/\s+/); return ps.length > 1 ? ps.slice(1).join(' ') : cv.nameKo; };
     cSsr += `<h2>${escHtml(regionKo)} 대표 업소 미리보기</h2>${aggHighlights(crossVenues, crossShort, 6, catInfo.labelKo)}`;
     cSsr += aggInlineCta('rc-' + regionKo + '-' + catKey, crossVenues);
-    cSsr += `<h2>자주 묻는 질문</h2>`;
-    cSsr += `<dl><dt>${escHtml(regionKo)}에서 어디가 인기 있나요?</dt>`;
-    cSsr += `<dd>${escHtml(crossNames)} 등이 회원 검색·재방문 기준으로 자주 언급됩니다.</dd>`;
-    cSsr += `<dt>예약은 어떻게 하나요?</dt>`;
-    cSsr += `<dd>각 업소 상세 페이지에서 직통 전화로 예약 가능 시간과 룸 사이즈를 미리 확인하세요. 주말은 일찍 마감되는 곳이 많습니다.</dd></dl>`;
+    // FAQ — 화면 dl + FAQPage JSON-LD 단일 배열 소스(화면↔스키마 100% 일치)
+    const crossFaqPairs = [
+      { q: `${regionKo}에서 어디가 인기 있나요?`, a: `${crossNames} 등이 회원 검색·재방문 기준으로 자주 언급됩니다.` },
+      { q: `예약은 어떻게 하나요?`, a: `각 업소 상세 페이지에서 직통 전화로 예약 가능 시간과 룸 사이즈를 미리 확인하세요. 주말은 일찍 마감되는 곳이 많습니다.` },
+    ];
+    cSsr += faqPairsDl('자주 묻는 질문', crossFaqPairs);
     cSsr += aggHubMesh(crossVenues, 'region', regionKo);
-    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]) });
+    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: [...collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]), faqPairsJsonLd(crossFaqPairs)] });
     dynamicPages.push(cp);
   }
 }
@@ -2248,13 +2274,13 @@ for (const [tag, tagVenues] of Object.entries(allTags)) {
   }
   // 허브-메시 cross-link — 관련 태그/지역/업종/역 (페이지마다 고유, dead-end 0)
   ssrBody += aggHubMesh(tagVenues, 'tag', tag);
-  // data-driven FAQ
-  ssrBody += `<h2>자주 묻는 질문</h2>`;
-  ssrBody += `<dl><dt>이 키워드로 묶인 업소는 어디인가요?</dt>`;
-  ssrBody += `<dd>${tagVenues.slice(0, 3).map(tv => escHtml(tagShort(tv))).join(', ')} 등 ${tagVenues.length}곳이고, ${tagRegionStr} 지역에 있습니다. 각 업소 상세에서 분위기를 확인하세요.</dd>`;
-  ssrBody += `<dt>어떤 업종이 포함되나요?</dt>`;
-  ssrBody += `<dd>${tagCatStr} ${tagCats.length}개 업종이 이 결로 묶여 있습니다. 위 업종으로 둘러보기에서 같은 업종 인기·신규 업소를 이어서 볼 수 있습니다.</dd></dl>`;
-  writePage(p, { title, description: desc, ssrBody, keywords: `${tag}, ${tag} 추천, 나이트라이프 ${tag}`, jsonLdList: collectionJsonLd(p, title, desc, tagVenues, [{ name: '놀쿨', url: BASE_URL }, { name: `#${tag}`, url: `${BASE_URL}${p}/` }]) });
+  // data-driven FAQ — 화면 dl + FAQPage JSON-LD 단일 배열 소스(화면↔스키마 100% 일치)
+  const tagFaqPairs = [
+    { q: `이 키워드로 묶인 업소는 어디인가요?`, a: `${tagVenues.slice(0, 3).map(tv => tagShort(tv)).join(', ')} 등 ${tagVenues.length}곳이고, ${tagRegionStr} 지역에 있습니다. 각 업소 상세에서 분위기를 확인하세요.` },
+    { q: `어떤 업종이 포함되나요?`, a: `${tagCatStr} ${tagCats.length}개 업종이 이 결로 묶여 있습니다. 위 업종으로 둘러보기에서 같은 업종 인기·신규 업소를 이어서 볼 수 있습니다.` },
+  ];
+  ssrBody += faqPairsDl('자주 묻는 질문', tagFaqPairs);
+  writePage(p, { title, description: desc, ssrBody, keywords: `${tag}, ${tag} 추천, 나이트라이프 ${tag}`, jsonLdList: [...collectionJsonLd(p, title, desc, tagVenues, [{ name: '놀쿨', url: BASE_URL }, { name: `#${tag}`, url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(tagFaqPairs)] });
   // single-member tag는 sitemap/IndexNow에서 제외(색인 요청 안 함). 파일은 위에서 이미 생성됨.
   if (single) { singleTagNoindexCount++; } else { multiTagIndexCount++; dynamicPages.push(p); }
 }
@@ -2298,12 +2324,13 @@ for (const [st, stVenues] of Object.entries(stationVenues)) {
   stCats.forEach(c => { const cnt = stVenues.filter(sv => (catLabelMap[sv.cat] || sv.cat) === c).length; ssrBody += `<li><strong>${escHtml(c)}</strong> — ${cnt}곳</li>`; });
   ssrBody += `</ul>`;
   ssrBody += aggHubMesh(stVenues, 'near', st);
-  ssrBody += `<h2>자주 묻는 질문</h2>`;
-  ssrBody += `<dl><dt>도보 5분 안에 갈 수 있는 곳은?</dt>`;
-  ssrBody += `<dd>${escHtml(stTopNames)} 등 총 ${stVenues.length}곳이 도보권 안에 있습니다. 출구 번호는 각 업소 페이지에서 확인하세요.</dd>`;
-  ssrBody += `<dt>늦은 시간에도 영업하나요?</dt>`;
-  ssrBody += `<dd>대부분 새벽까지 운영하지만 마감 시간은 업소마다 다릅니다. 직통 통화로 마감 전 입장 가능 여부를 확인하세요.</dd></dl>`;
-  writePage(p, { title, description: desc, ssrBody, keywords: `${st} 근처, ${st} 나이트라이프, ${st} 클럽, ${st} 나이트`, jsonLdList: collectionJsonLd(p, title, desc, stVenues, [{ name: '놀쿨', url: BASE_URL }, { name: st, url: `${BASE_URL}${p}/` }]) });
+  // FAQ — 화면 dl + FAQPage JSON-LD 단일 배열 소스(화면↔스키마 100% 일치)
+  const stFaqPairs = [
+    { q: `도보 5분 안에 갈 수 있는 곳은?`, a: `${stTopNames} 등 총 ${stVenues.length}곳이 도보권 안에 있습니다. 출구 번호는 각 업소 페이지에서 확인하세요.` },
+    { q: `늦은 시간에도 영업하나요?`, a: `대부분 새벽까지 운영하지만 마감 시간은 업소마다 다릅니다. 직통 통화로 마감 전 입장 가능 여부를 확인하세요.` },
+  ];
+  ssrBody += faqPairsDl('자주 묻는 질문', stFaqPairs);
+  writePage(p, { title, description: desc, ssrBody, keywords: `${st} 근처, ${st} 나이트라이프, ${st} 클럽, ${st} 나이트`, jsonLdList: [...collectionJsonLd(p, title, desc, stVenues, [{ name: '놀쿨', url: BASE_URL }, { name: st, url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(stFaqPairs)] });
   dynamicPages.push(p);
 }
 

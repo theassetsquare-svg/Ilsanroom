@@ -178,6 +178,17 @@ for (const f of files) {
     if (!rootTypeCounts['FAQPage']) add('ERR', 'venue FAQPage 스키마 누락');
     if (!/class=["']ssr-answer["']/.test(html)) add('ERR', 'venue 상단 직답 블록(.ssr-answer) 누락');
   }
+
+  // ★ [D] 스키마↔화면 일치 게이트 (STEP 1) — 화면에 보이는 Q&A(visible <dl><dt><dd>)가 있으면
+  //   반드시 동일 내용을 담은 FAQPage JSON-LD가 같이 있어야 한다(창작·불일치 0).
+  //   화면엔 FAQ가 보이는데 FAQPage 스키마가 없으면 = AI/Google이 인용 못 하는 반쪽 → 배포 차단.
+  //   지역/집계 페이지(/clubs/:region, /region/:r, /region/:r/:cat)에 단일 배열 소스로 둘 다 생성됨을 강제.
+  {
+    const hasVisibleFaq = /자주 묻는 질문/.test(body) && /<dt[\s>]/.test(html) && /<dd[\s>]/.test(html);
+    if (hasVisibleFaq && !rootTypeCounts['FAQPage']) {
+      add('ERR', '화면에 Q&A(자주 묻는 질문 dl)가 보이는데 FAQPage JSON-LD 누락 (스키마↔화면 불일치)');
+    }
+  }
 }
 
 for (const [t, urls] of titleMap) {
