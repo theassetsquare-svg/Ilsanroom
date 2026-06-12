@@ -23,17 +23,17 @@ const catLabel: Record<string, string> = {
 export default function TonightPage() {
   useDocumentMeta(
     '오늘 밤 어디 갈까? — 지금 분위기 좋은 핫플 모음',
-    '퇴근하고 나왔는데 어디 갈지 망설이는 사람? 오늘 밤 갈만한 곳 6업종에서 평점 4.0 이상만 추렸다. 클럽·나이트·라운지·룸 한 페이지에서 바로 확인.'
+    '퇴근하고 나왔는데 어디 갈지 망설이는 사람? 오늘 밤 갈만한 곳 6업종에서 영업 확인된 곳만 추렸다. 클럽·나이트·라운지·룸 한 페이지에서 바로 확인.'
   );
 
   const dayOfWeek = new Date().getDay();
   const isWeekendNight = dayOfWeek === 5 || dayOfWeek === 6;
 
   const tonight = useMemo(() => {
-    const filtered = venues
-      .filter((v) => v.status !== 'closed_or_unclear' && v.rating >= 4.0)
-      .sort((a, b) => b.rating - a.rating);
-    return filtered.slice(0, 24);
+    return venues
+      .filter((v) => v.status !== 'closed_or_unclear')
+      .sort((a, b) => (b.isPremium ? 1 : 0) - (a.isPremium ? 1 : 0))
+      .slice(0, 24);
   }, []);
 
   const byCategory = useMemo(() => {
@@ -55,7 +55,7 @@ export default function TonightPage() {
             오늘 밤 어디 갈까 — 지금 가도 안 후회할 24곳
           </h1>
           <p className="text-neon-text-muted text-base md:text-lg">
-            평점 4.0 이상만 추렸다. 가기 전에 한 번 확인하고 가자.
+            영업 확인된 6업종을 한 페이지에 모았다. 가기 전에 한 번 확인하고 가자.
           </p>
         </div>
 
@@ -85,7 +85,7 @@ export default function TonightPage() {
                 >
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="font-bold text-base text-neon-text">{v.name}</h3>
-                    <span className="text-sm font-bold text-neon-pink-bright">★ {v.rating.toFixed(1)}</span>
+                    <span className="text-xs px-2 py-0.5 bg-neon-surface-2 rounded text-neon-text-muted shrink-0">{catLabel[v.category]}</span>
                   </div>
                   <p className="text-sm text-neon-text-muted line-clamp-2">{v.address || v.region}</p>
                 </Link>

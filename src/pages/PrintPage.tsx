@@ -53,16 +53,22 @@ export default function PrintPage() {
         </div>
 
         {/* Rating */}
-        <div className="mb-6 flex items-center gap-4">
-          <div className="flex items-center gap-1">
-            <span className="text-2xl font-bold">{venue.rating}</span>
-            <span className="text-amber-500">★</span>
+        {(venue.reviewCount > 0 || venue.isPremium) && (
+          <div className="mb-6 flex items-center gap-4">
+            {venue.reviewCount > 0 && (
+              <>
+                <div className="flex items-center gap-1">
+                  <span className="text-2xl font-bold">{venue.rating}</span>
+                  <span className="text-amber-500">★</span>
+                </div>
+                <span className="text-sm text-neon-text-muted">리뷰 {venue.reviewCount}개</span>
+              </>
+            )}
+            {venue.isPremium && (
+              <span className="rounded-full border border-amber-500 px-2 py-0.5 text-xs font-bold text-amber-600">PREMIUM</span>
+            )}
           </div>
-          <span className="text-sm text-neon-text-muted">리뷰 {venue.reviewCount}개</span>
-          {venue.isPremium && (
-            <span className="rounded-full border border-amber-500 px-2 py-0.5 text-xs font-bold text-amber-600">PREMIUM</span>
-          )}
-        </div>
+        )}
 
         {/* Description */}
         <div className="mb-6">

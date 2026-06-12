@@ -52,10 +52,7 @@ export default function RegionalClubsPage() {
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
   const featured = clubs.find(v => v.isPremium) || clubs[0];
 
-  const avgRating = useMemo(() => {
-    if (clubs.length === 0) return 0;
-    return (clubs.reduce((sum, v) => sum + v.rating, 0) / clubs.length).toFixed(1);
-  }, [clubs]);
+  const premiumCount = useMemo(() => clubs.filter((v) => v.isPremium).length, [clubs]);
 
   const filteredClubs = useMemo(() => {
     if (!selectedGenre) return clubs;
@@ -99,8 +96,12 @@ export default function RegionalClubsPage() {
       <section className="mx-auto max-w-[1200px] px-4 pb-4 sm:px-6">
         <div className="flex items-center gap-4 rounded-lg border border-neon-border bg-white px-5 py-3">
           <span className="text-sm font-semibold text-neon-text">총 {clubs.length}개</span>
-          <span className="h-4 w-px bg-neon-border" />
-          <span className="text-sm text-neon-text-muted">평균 평점 <strong className="text-neon-text">{avgRating}</strong></span>
+          {premiumCount > 0 && (
+            <>
+              <span className="h-4 w-px bg-neon-border" />
+              <span className="text-sm text-neon-text-muted">추천 <strong className="text-neon-text">{premiumCount}곳</strong></span>
+            </>
+          )}
         </div>
       </section>
 

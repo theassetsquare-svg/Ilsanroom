@@ -23,13 +23,13 @@ const catLabel: Record<string, string> = {
 export default function WeekendPage() {
   useDocumentMeta(
     '이번 주말 어디 갈래? — 금토일 갈만한 핫플 큐레이션',
-    '주말은 시간 아까운 거 알지? 금토일 사람 몰리는 핫플과 평일보다 더 좋은 숨은 코스 한 번에 모았다. 6업종 평점 4.2 이상만, 바로 확인.'
+    '주말은 시간 아까운 거 알지? 금토일 사람 몰리는 핫플과 평일보다 더 좋은 숨은 코스 한 번에 모았다. 6업종 영업 확인된 곳만, 바로 확인.'
   );
 
   const weekend = useMemo(() => {
     return venues
-      .filter((v) => v.status !== 'closed_or_unclear' && v.rating >= 4.2)
-      .sort((a, b) => b.rating - a.rating)
+      .filter((v) => v.status !== 'closed_or_unclear')
+      .sort((a, b) => (b.isPremium ? 1 : 0) - (a.isPremium ? 1 : 0))
       .slice(0, 30);
   }, []);
 
@@ -47,13 +47,13 @@ export default function WeekendPage() {
             금토일 갈만한 30곳 — 어디가 진짜 핫한지 알려준다
           </h1>
           <p className="text-neon-text-muted text-base md:text-lg">
-            평점 4.2 이상 큐레이션. 주말 헛걸음 0번 만들자.
+            영업 확인된 곳만 큐레이션. 주말 헛걸음 0번 만들자.
           </p>
         </div>
 
         <section className="mb-10">
           <h2 className="text-xl md:text-2xl font-bold text-neon-text mb-4">
-            ★ 이번 주말 TOP 10 ★
+            이번 주말 먼저 볼 10곳
           </h2>
           <ol className="space-y-3">
             {top10.map((v, i) => (
@@ -72,7 +72,6 @@ export default function WeekendPage() {
                     </div>
                     <p className="text-sm text-neon-text-muted truncate">{v.address || v.region}</p>
                   </div>
-                  <span className="text-sm font-bold text-neon-pink-bright shrink-0">★ {v.rating.toFixed(1)}</span>
                 </Link>
               </li>
             ))}
@@ -92,7 +91,6 @@ export default function WeekendPage() {
               >
                 <div className="text-xs text-neon-text-muted mb-1">{catLabel[v.category]} · {v.region}</div>
                 <div className="font-bold text-sm text-neon-text">{v.name}</div>
-                <div className="text-xs text-neon-pink-bright mt-1">★ {v.rating.toFixed(1)}</div>
               </Link>
             ))}
           </div>
