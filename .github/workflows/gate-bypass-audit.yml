@@ -1,0 +1,39 @@
+name: Gate Bypass Audit (양방향 우회검증)
+
+# 빌드 체인의 모든 차단 게이트에 "위반 주입 → FAIL" 우회검증을 자동 실행한다.
+# dist 게이트가 dist/ 를 필요로 하므로 먼저 빌드한 뒤 전체 우회 실행을 돌린다.
+# (커버리지(무변형)는 build 자체에 박혀 있어 매 배포마다 강제됨 — 여기선 실제 변형 실행까지.)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/**'
+      - 'package.json'
+      - 'src/**'
+  workflow_dispatch:
+
+jobs:
+  bypass-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build (dist 게이트 우회검증 전제)
+        run: npm run build
+
+      - name: Gate bypass audit (위반 주입 → FAIL 확인 → 원복)
+        run: npm run audit:gates 2>&1 | tee /tmp/gate-bypass.txt
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate-bypass-${{ github.run_id }}
+          path: /tmp/gate-bypass.txt
+          retention-days: 14
