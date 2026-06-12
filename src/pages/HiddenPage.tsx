@@ -19,7 +19,7 @@ const hiddenGems = [
     name: '파주야당스카이돔나이트',
     region: '파주',
     category: '나이트',
-    hook: '경기 북부 유일의 대형 나이트, 높은 천장의 개방감',
+    hook: '높은 천장의 개방감이 돋보이는 파주권 대형 나이트',
     reason: '파주·일산·김포 지역에서 접근할 수 있는 대형 나이트클럽으로, 스카이돔이라는 이름에 걸맞은 높은 천장과 넓은 댄스 플로어가 특징입니다. 야당역 도보 접근 가능.',
     href: '/nights/pajuyadangskydomenight',
     week: '이번 달 1주차',

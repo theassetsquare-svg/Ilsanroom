@@ -14,15 +14,24 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
-const ROOT = 'src/pages';
+// src/pages(React 본문) + src/data(venue 마스터·매거진 HTML이 detail/지역/태그/매거진/llms.txt로 흘러 들어감)까지 전 페이지 커버
+const ROOTS = ['src/pages'];
+const EXTRA_FILES = ['src/data/venues.ts', 'src/data/magazine-articles.ts'];
 
 const BANNED = [
   { re: /직수입/, why: '장비·술 수입 출처 주장(검증 불가)' },
   { re: /메가\s?플로어/, why: '검증 안 된 수용 규모 과장' },
   { re: /[\d,]+\s*명\s*(?:넘게|이상)\s*(?:들어|수용)/, why: '검증 안 된 수용인원 단정' },
-  { re: /(?:충북|충남|충청|경북|경남|전북|전남|강원|전국|국내|세계)\s*유일/, why: '출처 없는 "유일" 주장' },
+  // 지역명 뒤에 권/도/북부 등 연결어가 끼어도(예: "충청권 유일", "경기 북부 유일") 잡는다
+  { re: /(?:충북|충남|충청|경북|경남|전북|전남|강원|전국|국내|세계|경기|서울|인천|대전|대구|부산|광주|울산|일산|청담|강남|홍대|이태원)\s*(?:권|도|북부|남부|동부|서부|일대|지역)?\s*유일/, why: '출처 없는 "유일" 주장' },
   { re: /(?:국내|세계|업계)\s*최[대고]/, why: '출처 없는 "최대·최고" 주장' },
   { re: /셀럽이?\s*(?:자주\s*)?출몰/, why: '검증 불가 셀럽 목격담' },
+  // 지어낸 후기/사례 단정(예: "…성사됐다는 실제 후기도 있다", "…대접받는다는 후기")
+  { re: /(?:[가-힣]다는|라는)\s*(?:실제\s*)?후기/, why: '출처 없는 창작 후기 단정' },
+  { re: /후기도\s*있다/, why: '출처 없는 창작 후기 단정' },
+  // 지어낸 비율 단정(예: "1인 고객 비율이 절반에 가깝다")
+  { re: /절반에\s*가까/, why: '출처 없는 비율 단정' },
+  { re: /(?:비율|손님|고객)[이가]?\s*절반/, why: '출처 없는 비율 단정' },
 ];
 
 function walk(dir) {
@@ -36,8 +45,9 @@ function walk(dir) {
   return out;
 }
 
+const targets = [...ROOTS.flatMap(walk), ...EXTRA_FILES];
 const errors = [];
-for (const fp of walk(ROOT)) {
+for (const fp of targets) {
   const src = readFileSync(fp, 'utf8');
   for (const { re, why } of BANNED) {
     const m = src.match(re);
@@ -52,4 +62,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log('✅ [콘텐츠/정직] 콘텐츠 정직 게이트 PASS — src/pages 본문에 출처 없는 수용인원·장비출처·유일/최대·셀럽 목격담 0');
+console.log(`✅ [콘텐츠/정직] 콘텐츠 정직 게이트 PASS — src/pages + src/data(venues·magazine) 전 페이지 본문에 출처 없는 수용인원·장비출처·유일/최대·셀럽 목격담·창작후기·비율단정 0 (${targets.length}파일 검사)`);

@@ -1,46 +1,21 @@
 import { useState } from 'react';
+import { Link } from '@/components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { captureLead, isValidEmail } from '@/lib/growth-engine';
 
-const REGIONS = [
-  {
-    name: '강남/청담',
-    venues: [
-      { name: '클럽 레이스', type: '클럽', tip: '금토 자정 이후 입장 시 대기 최소 40분. 11시 전 도착 필수. 드레스코드 엄격 — 운동화 절대 불가.', dress: '세미정장, 힐 필수' },
-      { name: '아레나', type: '클럽', tip: 'EDM 중심. 금요일보다 토요일이 분위기 더 좋다는 평이 많음. 테이블 예약하면 대기 패스.', dress: '캐주얼 OK, 슬리퍼 불가' },
-      { name: '퍼스트 라운지', type: '라운지', tip: '조용한 대화 원하면 평일 추천. 주말엔 DJ 타임 있어서 라운지보다 클럽 분위기.', dress: '스마트캐주얼' },
-    ],
-  },
-  {
-    name: '홍대/이태원',
-    venues: [
-      { name: '클럽 피스틴', type: '클럽', tip: '힙합 중심 클럽. 목요일 레이디스 나잇 운영. 현지인 비율 높은 날.', dress: '자유' },
-      { name: '카페 사운드', type: '바', tip: '라이브 재즈 공연 매주 수금. 공연 없는 날은 조용한 칵테일바. 2층 테라스 야경이 포인트.', dress: '자유' },
-      { name: '하드록 이태원', type: '펍', tip: '외국인 비율 높음. 영어 메뉴 완비. 금요일 밤 10시부터 DJ. 버거가 의외로 맛있음.', dress: '자유' },
-    ],
-  },
-  {
-    name: '일산/파주',
-    venues: [
-      { name: '일산룸', type: '룸', tip: '신실장 직접 관리. 단체 모임에 최적화. 예약 필수 — 당일 방문 시 대기 1시간 이상.', dress: '자유' },
-      { name: '웨스턴돔 라운지', type: '라운지', tip: '일산 유일 루프탑 라운지. 여름 시즌 테라스 인기 폭발. 겨울에는 실내만 운영.', dress: '스마트캐주얼' },
-      { name: '밤리단길 포차', type: '포차', tip: '후정역 3번출구. 테이블 회전 빠른 편. 안주 양이 많아서 2명이 3개면 충분.', dress: '자유' },
-    ],
-  },
-  {
-    name: '수원/분당',
-    venues: [
-      { name: '영통 펍스트리트', type: '펍', tip: '대학가라 20대 초반 비율 높음. 목금이 피크. 토요일은 의외로 조용한 편.', dress: '자유' },
-      { name: '분당 라운지W', type: '라운지', tip: '30대 직장인 비율 높음. 주차 편리한 게 최대 장점.', dress: '비즈니스캐주얼' },
-      { name: '인계동 클럽존', type: '클럽', tip: '수원 최대 클럽 밀집 지역. 금요일 밤 11시부터 본격 시작. 택시 잡기 어려우니 대리 미리 예약.', dress: '캐주얼' },
-    ],
-  },
+const CATEGORIES = [
+  { name: '클럽', href: '/clubs', desc: 'EDM·힙합 중심의 댄스 플로어 중심 업소' },
+  { name: '나이트', href: '/nights', desc: '라이브 밴드와 부킹 문화가 있는 사교 댄스홀' },
+  { name: '라운지', href: '/lounges', desc: '대화가 묻히지 않는 조용한 무드의 바·라운지' },
+  { name: '룸', href: '/rooms', desc: '프라이빗 룸에서 즐기는 모임 공간' },
+  { name: '요정', href: '/yojeong', desc: '한정식과 격을 갖춘 전통 접대 공간' },
+  { name: '호빠', href: '/hoppa', desc: '여성 손님을 위한 호스트바' },
 ];
 
 export default function NightlifeGuidePage() {
   useDocumentMeta(
-    '서울경기 나이트라이프 완벽 가이드 — 현지인만 아는 진짜 핫플',
-    '서울 경기 나이트라이프 현지인 추천 가이드. 강남 홍대 이태원 일산 클럽 라운지 바 드레스코드 무드 인사이더 팁 총정리.'
+    '서울경기 나이트라이프 — 업종별로 바로 찾는 업소 가이드',
+    '서울 경기 나이트라이프 업종별 안내. 클럽 나이트 라운지 룸 요정 호빠 6개 카테고리에서 등록된 업소를 지역별로 바로 확인하세요.'
   );
 
   const [name, setName] = useState('');
@@ -66,20 +41,20 @@ export default function NightlifeGuidePage() {
       {/* Hero */}
       <section className="mb-12 text-center">
         <h1 className="mb-4 text-3xl font-bold md:text-4xl">
-          서울/경기 나이트라이프 완벽 가이드
+          서울/경기 나이트라이프 — 업종별로 바로 찾기
         </h1>
         <p className="mb-2 text-lg text-neon-muted">
-          현지인만 아는 진짜 핫플. 관광객용 리스트가 아닌, 매주 밤을 즐기는 사람들의 솔직한 추천.
+          클럽·나이트·라운지·룸·요정·호빠 6개 카테고리. 원하는 업종을 골라 등록된 업소를 지역별로 확인하세요.
         </p>
         <p className="text-sm text-neon-muted">
-          드레스코드부터 무드, 최적 방문 시간까지 — 이 가이드 하나면 어디서든 실패 없는 밤.
+          새 글과 큐레이션 소식을 받고 싶으면 아래에 이메일을 남겨두세요.
         </p>
       </section>
 
       {/* Lead capture form */}
       {!submitted ? (
         <section className="mx-auto mb-12 max-w-md rounded-2xl border border-neon-primary/20 bg-neon-surface p-6 shadow-lg">
-          <h2 className="mb-2 text-center text-xl font-bold">무료 가이드 다운로드</h2>
+          <h2 className="mb-2 text-center text-xl font-bold">새 글·큐레이션 알림 신청</h2>
           <p className="mb-4 text-center text-sm text-neon-muted">
             이메일을 남겨두시면 새 가이드와 큐레이션이 준비될 때 안내드립니다.
           </p>
@@ -104,7 +79,7 @@ export default function NightlifeGuidePage() {
               disabled={loading}
               className="w-full rounded-lg bg-neon-primary px-4 py-3 text-base font-bold text-white transition hover:opacity-90 disabled:opacity-50"
             >
-              {loading ? '처리 중...' : '무료 가이드 받기'}
+              {loading ? '처리 중...' : '알림 신청하기'}
             </button>
           </form>
           <p className="mt-3 text-center text-xs text-neon-muted">스팸 없음. 언제든 구독 취소 가능.</p>
@@ -112,54 +87,47 @@ export default function NightlifeGuidePage() {
       ) : (
         <section className="mx-auto mb-12 max-w-md rounded-2xl border border-green-500/20 bg-green-50 p-6 text-center">
           <div className="mb-2 text-4xl">✅</div>
-          <h2 className="mb-2 text-xl font-bold text-green-800">가이드가 이메일로 전송되었습니다!</h2>
+          <h2 className="mb-2 text-xl font-bold text-green-800">신청이 접수되었습니다!</h2>
           <p className="text-sm text-green-700">
-            {name}님, 신청이 접수되었습니다. 가이드가 준비되면 이메일로 안내드립니다.
+            {name}님, 새 글과 큐레이션 소식이 준비되면 이메일로 안내드립니다.
           </p>
         </section>
       )}
 
-      {/* Preview content */}
+      {/* 업종별 카테고리 — 실제 등록 업소로 이동 */}
       <section className="mb-12">
-        <h2 className="mb-6 text-2xl font-bold">지역별 TOP 추천</h2>
-        {REGIONS.map((region) => (
-          <div key={region.name} className="mb-8">
-            <h3 className="mb-4 text-xl font-bold text-neon-primary">{region.name}</h3>
-            <div className="space-y-4">
-              {region.venues.map((venue) => (
-                <div
-                  key={venue.name}
-                  className="rounded-xl border border-neon-border bg-neon-surface p-4"
-                >
-                  <div className="mb-2 flex items-center gap-2">
-                    <span className="rounded-full bg-neon-primary/10 px-2 py-0.5 text-xs font-medium text-neon-primary">
-                      {venue.type}
-                    </span>
-                    <h4 className="font-bold">{venue.name}</h4>
-                  </div>
-                  <p className="mb-2 text-sm leading-relaxed text-neon-muted">{venue.tip}</p>
-                  <div className="flex flex-wrap gap-4 text-xs text-neon-muted">
-                    <span>👔 {venue.dress}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+        <h2 className="mb-6 text-2xl font-bold">업종별로 바로 찾기</h2>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {CATEGORIES.map((cat) => (
+            <Link
+              key={cat.name}
+              to={cat.href}
+              className="block rounded-xl border border-neon-border bg-neon-surface p-4 transition hover:border-neon-primary"
+            >
+              <div className="mb-1 flex items-center gap-2">
+                <span className="rounded-full bg-neon-primary/10 px-2 py-0.5 text-xs font-medium text-neon-primary">
+                  카테고리
+                </span>
+                <h3 className="font-bold text-neon-primary">{cat.name}</h3>
+              </div>
+              <p className="text-sm leading-relaxed text-neon-muted">{cat.desc}</p>
+            </Link>
+          ))}
+        </div>
       </section>
 
       {/* Bottom CTA */}
       {!submitted && (
         <section className="rounded-2xl bg-gradient-to-r from-neon-primary to-purple-700 p-8 text-center text-white">
-          <h2 className="mb-2 text-2xl font-bold">더 많은 숨겨진 업소가 궁금하다면?</h2>
+          <h2 className="mb-2 text-2xl font-bold">새 업소·큐레이션 소식 받기</h2>
           <p className="mb-4 text-sm opacity-90">
-            위 리스트는 맛보기입니다. 전체 가이드에는 50곳 이상의 현지인 추천 업소와 시즌별 이벤트 정보가 포함되어 있습니다.
+            등록 업소는 위 카테고리에서 바로 확인할 수 있습니다. 새 글과 큐레이션 소식을 이메일로 받아보세요.
           </p>
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="rounded-lg bg-white px-6 py-3 font-bold text-neon-primary transition hover:opacity-90"
           >
-            무료 가이드 받으러 가기 ↑
+            알림 신청하러 가기 ↑
           </button>
         </section>
       )}
