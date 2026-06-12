@@ -1,0 +1,29 @@
+name: Northstar 3-Metric Audit (daily)
+
+# 사장님 북극성 3대 지표(CTR · 끝까지읽기+체류10분 · 이탈률→0)를 매일 한 통에 통합 측정.
+# 읽기 전용(사이트 크롤 0 = 피해 0). 목표 미달시만 메일(자기수렴). 기존 시크릿 재사용.
+on:
+  schedule:
+    # 매일 KST 08:20 (UTC 23:20) — ga-health(08:00)/dwell(06:30)과 시간 분리
+    - cron: '20 23 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  northstar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Northstar 3-metric audit
+        run: node scripts/northstar-audit.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
