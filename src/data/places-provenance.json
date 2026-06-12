@@ -92,5 +92,12 @@
       "openHours",
       "nearbyStation"
     ]
+  },
+  "daegubabambanight": {
+    "source": "manual",
+    "note": "광고주 제공 주소",
+    "fields": [
+      "address"
+    ]
   }
 }

@@ -21,8 +21,9 @@ for (const block of blocks) {
   const nameKo = block.match(/nameKo:\s*'([^']+)'/)?.[1];
   const cat = block.match(/category:\s*'([^']+)'/)?.[1];
   const nick = block.match(/staffNickname:\s*'([^']+)'/)?.[1];
+  const phone = block.match(/staffPhone:\s*'([^']+)'/)?.[1];
   const region = block.match(/regionKo:\s*'([^']+)'/)?.[1];
-  if (slug && nameKo && cat) venues.push({ slug, nameKo, cat, nick, region });
+  if (slug && nameKo && cat) venues.push({ slug, nameKo, cat, nick, phone, region });
 }
 
 const CAT_LABEL = { club:'클럽', night:'나이트', lounge:'라운지', room:'룸', yojeong:'요정', hoppa:'호빠' };
@@ -34,8 +35,9 @@ function buildSvg(v) {
   const label = CAT_LABEL[v.cat] || '';
   const bg = CAT_COLOR[v.cat] || '#8B5CF6';
   const nick = v.nick || '';
-  // 닉네임이 메인 — 가장 크게
-  const nickSize = nick.length > 5 ? 280 : nick.length > 3 ? 340 : 400;
+  const phone = v.phone || '';
+  // 닉네임이 메인 — 가장 크게 (번호가 있으면 자리 확보 위해 약간 축소)
+  const nickSize = nick.length > 5 ? 260 : nick.length > 3 ? 320 : 360;
   // 가게이름은 상단 작게
   const nameLen = v.nameKo.length;
   const nameSize = nameLen > 12 ? 56 : nameLen > 9 ? 64 : nameLen > 6 ? 72 : 80;
@@ -58,8 +60,11 @@ function buildSvg(v) {
   <!-- 가게이름 (작게, 상단) -->
   <text x="600" y="340" text-anchor="middle" font-family="KO" font-size="${nameSize}" font-weight="700" fill="rgba(255,255,255,0.9)" letter-spacing="-0.02em">${esc(v.nameKo)}</text>
   <!-- 닉네임 (메인 — 가장 크게) -->
-  ${nick ? `<text x="600" y="${nick.length > 3 ? 720 : 780}" text-anchor="middle" font-family="KO" font-size="${nickSize}" font-weight="900" fill="#FCD34D" letter-spacing="-0.04em">${esc(nick)}</text>
-            <text x="600" y="900" text-anchor="middle" font-family="KO" font-size="44" font-weight="600" fill="rgba(255,255,255,0.8)">담당자에게 직접 연락</text>` : ''}
+  ${nick ? `<text x="600" y="${nick.length > 3 ? 700 : 740}" text-anchor="middle" font-family="KO" font-size="${nickSize}" font-weight="900" fill="#FCD34D" letter-spacing="-0.04em">${esc(nick)}</text>` : ''}
+  <!-- 전화번호 (있으면 닉네임 아래 크게) -->
+  ${phone ? `<rect x="270" y="820" width="660" height="110" rx="55" fill="rgba(255,255,255,0.14)" stroke="rgba(252,211,77,0.6)" stroke-width="3"/>
+             <text x="600" y="895" text-anchor="middle" font-family="KO" font-size="64" font-weight="900" fill="white" letter-spacing="0.02em">${esc(phone)}</text>`
+        : (nick ? `<text x="600" y="900" text-anchor="middle" font-family="KO" font-size="44" font-weight="600" fill="rgba(255,255,255,0.8)">담당자에게 직접 연락</text>` : '')}
   <!-- 하단 도메인 -->
   <text x="600" y="1090" text-anchor="middle" font-family="KO" font-size="42" font-weight="700" fill="rgba(255,255,255,0.55)">놀쿨 — nolcool.com</text>
 </svg>`;

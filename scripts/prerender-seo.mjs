@@ -1642,7 +1642,7 @@ const NICKNAME_OG_SLUGS = new Set([
   'ilsanmyeongwolgwanyojeong','ilsanroom','busanyeonsandongmulnight','busanmulnight',
   'seongnamshampoonight','suwonchancenight','sinlimgrandprixnight','cheongdamh2onight',
   'pajuyadangskydomenight','ulsanchampionnight','gangnamjuliananight','dapsimnidontellmamanight',
-  'daejeonsevennight',
+  'daejeonsevennight','daegubabambanight',
 ]);
 function getVenueOgImage(slug) {
   if (JPG_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}.jpg`;

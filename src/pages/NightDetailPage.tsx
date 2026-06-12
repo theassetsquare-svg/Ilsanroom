@@ -190,6 +190,62 @@ function DaejeonSevenFixedBar() {
   );
 }
 
+/* 대구바밤바나이트 — 1:1 썸네일(이름+둘리+번호) 이미지 + 둘리 전화 CTA */
+function DaeguBabambaSection({ venue }: { venue: { staffPhone?: string } }) {
+  return (
+    <div className="flex flex-col items-center gap-6">
+      {/* 1:1 썸네일 이미지 (구글 검색 썸네일과 동일) */}
+      <div className="w-full max-w-[480px] aspect-square rounded-2xl overflow-hidden shadow-xl border-2 border-[#FCD34D]/40">
+        <img
+          src="/og/daegubabambanight.jpg"
+          alt="대구바밤바나이트 둘리"
+          width={480}
+          height={480}
+          className="w-full h-full object-cover"
+          loading="eager"
+        />
+      </div>
+
+      {/* 둘리 전화번호 CTA — venue.staffPhone */}
+      {venue?.staffPhone && (
+        <div className="w-full max-w-[480px] text-center">
+          <a
+            href={`tel:${venue.staffPhone.replace(/-/g, '')}`}
+            className="flex flex-col items-center gap-3 rounded-2xl px-8 py-6 shadow-lg transition hover:shadow-xl active:scale-[0.98]"
+            style={{ background: 'linear-gradient(to right, #BE185D, #831843)' }}
+          >
+            <span style={{ color: '#FCD34D', fontSize: 18, fontWeight: 700 }}>대구바밤바나이트 담당 둘리</span>
+            <span style={{ color: '#FFFFFF', fontSize: 28, fontWeight: 900, letterSpacing: '0.05em' }}>
+              📞 {venue.staffPhone}
+            </span>
+            <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: 14 }}>터치하면 바로 전화 연결</span>
+          </a>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* 대구바밤바나이트 고정 하단 전화 바 — 둘리 직통 */
+function DaeguBabambaFixedBar() {
+  return (
+    <div className="fixed left-0 right-0 z-40" style={{ bottom: 56 }}>
+      <a
+        href="tel:01023877373"
+        className="flex items-center justify-center gap-3 px-6 py-4"
+        style={{
+          background: 'linear-gradient(to right, #BE185D, #831843)',
+          minHeight: 52,
+          boxShadow: '0 -4px 20px rgba(0,0,0,0.4)',
+        }}
+      >
+        <span style={{ color: '#FCD34D', fontSize: 16, fontWeight: 700 }}>대구 w.t둘리 직통</span>
+        <span style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 900, letterSpacing: '0.05em' }}>010-2387-7373</span>
+      </a>
+    </div>
+  );
+}
+
 export default function NightDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const venue = getVenueBySlug(slug!);
@@ -200,6 +256,7 @@ export default function NightDetailPage() {
   const isDapsimnri = slug === 'dapsimnidontellmamanight';
   const isDaejeonSeven = slug === 'daejeonsevennight';
   const isChangwonLulu = slug === 'changwon-lululalala';
+  const isDaeguBabamba = slug === 'daegubabambanight';
 
   const topContent = isDapsimnri
     ? <DapsimnriCheonSaSection venue={venue} />
@@ -207,12 +264,14 @@ export default function NightDetailPage() {
       ? <DaejeonSevenHeaderSection />
       : isChangwonLulu
         ? <ChangwonLululalalaHeaderSection />
-        : undefined;
+        : isDaeguBabamba
+          ? <DaeguBabambaSection venue={venue} />
+          : undefined;
 
   return (
     <>
       {/* 고정 전화바 venue: 하단 여백 추가 */}
-      {(isDaejeonSeven || isChangwonLulu) && <style>{`body { padding-bottom: 120px !important; }`}</style>}
+      {(isDaejeonSeven || isChangwonLulu || isDaeguBabamba) && <style>{`body { padding-bottom: 120px !important; }`}</style>}
       <VenueDetailPage
         venue={venue}
         categoryLabel="나이트"
@@ -227,6 +286,7 @@ export default function NightDetailPage() {
       />
       {isDaejeonSeven && <DaejeonSevenFixedBar />}
       {isChangwonLulu && <ChangwonLululalalaFixedBar />}
+      {isDaeguBabamba && <DaeguBabambaFixedBar />}
     </>
   );
 }
