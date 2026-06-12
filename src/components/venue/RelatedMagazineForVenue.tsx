@@ -7,10 +7,11 @@ import type { Venue } from '@/types';
  * venue 상세 → 관련 매거진 자동 추천 (역방향 cross-link, 2026-05-24).
  * 매칭 우선순위:
  *   1. article.venueSlug === venue.slug → 100점 (직접 연결된 가이드)
- *   2. article.venueName === venue.nameKo → 90점
- *   3. article.title/excerpt에 venue.nameKo 등장 → 60점
- *   4. article.title/excerpt에 venue.region 한글 키워드 등장 → 20점
- *   5. article.tag 또는 본문에 venue.category 키워드 등장 → 10~15점
+ *   2. article.content가 /{venue.slug}/ 링크 포함 → 100점 (권역 가이드 본문이 실제로 이 업소를 다룸 = 양방향 확정)
+ *   3. article.venueName === venue.nameKo → 90점
+ *   4. article.title/excerpt에 venue.nameKo 등장 → 60점
+ *   5. article.title/excerpt에 venue.region 한글 키워드 등장 → 20점
+ *   6. article.tag 또는 본문에 venue.category 키워드 등장 → 10~15점
  * 최대 3개. 매칭 0이면 렌더 안 함.
  */
 
@@ -50,6 +51,7 @@ export default function RelatedMagazineForVenue({ venue }: Props) {
       const text = `${a.title} ${a.excerpt}`;
       let score = 0;
       if (a.venueSlug && a.venueSlug === venue.slug) score += 100;
+      if (a.content && a.content.includes(`/${venue.slug}/`)) score += 100;
       if (a.venueName && venue.nameKo && a.venueName === venue.nameKo) score += 90;
       if (venue.nameKo && text.includes(venue.nameKo)) score += 60;
       for (const w of regionWords) if (text.includes(w)) score += 20;
