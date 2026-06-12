@@ -121,7 +121,11 @@ async function main() {
   const cand = rows
     .filter((p) => p.sessions >= MIN_PAGE_SESSIONS)
     .map((p) => {
-      const scrollRate = p.views > 0 ? (scroll.get(p.path) || 0) / p.views : 0;
+      // scrollRate = scroll(향상측정, 게이트 없음=봇·감사봇 포함) ÷ page_view(게이트=진짜 방문자만).
+      // 분자가 분모보다 클 수 있어(>100%) 물리 불가능값이 나옴 → [0,1] 클램프로 "끝까지읽기"를 상한 근사로만 사용.
+      // (수치 조작 아님: 가짜 이벤트 주입·전송 0. 표시 가능한 범위로 정직하게 자르기만.)
+      const rawScroll = p.views > 0 ? (scroll.get(p.path) || 0) / p.views : 0;
+      const scrollRate = Math.min(1, Math.max(0, rawScroll));
       const pp = { ...p, scrollRate };
       const rx = prescribe(pp);
       // 우선순위 = 트래픽 × (1 - 참여율) = 고치면 점수 가장 많이 오를 페이지

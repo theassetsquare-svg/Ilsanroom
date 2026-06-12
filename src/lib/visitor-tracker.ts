@@ -20,6 +20,18 @@ const GA4_EVENT_NAME: Partial<Record<EventType, string>> = {
   search: 'search', search_no_result: 'search_no_result',
 };
 
+/* ── page_path 정규화 — /clubs 와 /clubs/ 를 한 형태로 통합 ──
+ * canonical·sitemap·prerender 는 항상 뒤 슬래시(/clubs/). 그런데 SPA 내부이동(SafeLink)·
+ * location.pathname 은 슬래시 없음(/clubs). 직접/구글 유입은 /clubs/, 내부이동은 /clubs →
+ * GA·page_events 에 같은 페이지가 2개 path 로 쪼개져 이탈·체류가 반토막. (수치 조작 아님: 동일 URL 병합)
+ * canonical 형태(뒤 슬래시)로 통일 → 측정 신뢰 회복. */
+function normalizePath(p: string): string {
+  if (!p) return '/';
+  const clean = p.split('?')[0].split('#')[0];
+  if (clean === '/') return '/';
+  return clean.endsWith('/') ? clean : `${clean}/`;
+}
+
 function forwardToGa4(eventType: EventType, meta?: Record<string, any>) {
   const gtag = (window as any).gtag;
   if (typeof gtag !== 'function') return;
@@ -27,7 +39,7 @@ function forwardToGa4(eventType: EventType, meta?: Record<string, any>) {
   // index.html config는 send_page_view:false → 자동 발송 없음 → 감사봇/링크미리보기 오염 0.
   if (eventType === 'view') {
     gtag('event', 'page_view', {
-      page_path: currentPath || window.location.pathname,
+      page_path: currentPath || normalizePath(window.location.pathname),
       page_title: typeof document !== 'undefined' ? document.title : undefined,
       page_location: window.location.href,
     });
@@ -187,7 +199,7 @@ function send(eventType: EventType, opts?: { dwellMs?: number; meta?: Record<str
   const payload: Record<string, any> = {
     session_id: sessionId,
     user_id: currentUserId,
-    path: currentPath || window.location.pathname,
+    path: currentPath || normalizePath(window.location.pathname),
     event_type: eventType,
     dwell_ms: opts?.dwellMs ?? null,
     referrer: document.referrer || null,
@@ -228,11 +240,12 @@ function onExit() {
 
 export function trackPageView(path: string) {
   if (typeof window === 'undefined') return;
-  if (currentPath && currentPath !== path) {
+  const norm = normalizePath(path);
+  if (currentPath && currentPath !== norm) {
     const dwell = Date.now() - pageEnterTime;
     send('exit', { dwellMs: dwell, once: false });
   }
-  currentPath = path;
+  currentPath = norm;
   pageEnterTime = Date.now();
   firedEvents = new Set();
   timers.forEach(t => clearTimeout(t));
