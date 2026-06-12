@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase';
+import { checkContent, checkTitle } from '@/lib/content-filter';
 
 export type PostCategory = 'reviews' | 'discussion' | 'party' | 'tips' | 'free';
 
@@ -76,9 +77,17 @@ export async function createPost(post: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: '로그인이 필요합니다' };
 
+  // 모더레이션 — 불법·호객·스팸·욕설 차단 (제목+본문)
+  const titleCheck = checkTitle(post.title);
+  if (titleCheck.action === 'block') return { error: titleCheck.reason };
+  const safeTitle = titleCheck.action === 'mask' ? titleCheck.filteredText : post.title;
+  const bodyCheck = checkContent(post.content);
+  if (bodyCheck.action === 'block') return { error: bodyCheck.reason };
+  const safeContent = bodyCheck.action === 'mask' ? bodyCheck.filteredText : post.content;
+
   const { data, error } = await supabase
     .from('posts')
-    .insert({ ...post, user_id: user.id })
+    .insert({ ...post, title: safeTitle, content: safeContent, user_id: user.id })
     .select()
     .single();
 
@@ -124,8 +133,13 @@ export async function createComment(postId: string, content: string, parentId?: 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: '로그인이 필요합니다' };
 
+  // 모더레이션 — 불법·호객·스팸·욕설 차단 (마스킹 시 가림 처리된 텍스트로 저장)
+  const moderation = checkContent(content);
+  if (moderation.action === 'block') return { error: moderation.reason };
+  const safeContent = moderation.action === 'mask' ? moderation.filteredText : content;
+
   // 1차: parent_id 포함 시도
-  const insertData: any = { post_id: postId, user_id: user.id, content };
+  const insertData: any = { post_id: postId, user_id: user.id, content: safeContent };
   if (parentId) insertData.parent_id = parentId;
 
   const { data, error } = await supabase
@@ -140,7 +154,7 @@ export async function createComment(postId: string, content: string, parentId?: 
   if (error.message?.includes('parent_id') || error.code === '42703') {
     const { data: d2, error: e2 } = await supabase
       .from('comments')
-      .insert({ post_id: postId, user_id: user.id, content })
+      .insert({ post_id: postId, user_id: user.id, content: safeContent })
       .select('*')
       .single();
 
@@ -301,7 +315,15 @@ export async function createReview(review: {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: '로그인이 필요합니다' };
 
-  const insertData = { ...review, user_id: user.id } as any;
+  // 모더레이션 — 후기 본문이 있으면 불법·호객·스팸·욕설 차단
+  let safeReviewContent = review.content;
+  if (review.content && review.content.trim().length > 0) {
+    const check = checkContent(review.content);
+    if (check.action === 'block') return { error: check.reason };
+    safeReviewContent = check.action === 'mask' ? check.filteredText : review.content;
+  }
+
+  const insertData = { ...review, content: safeReviewContent, user_id: user.id } as any;
 
   const { data, error } = await supabase
     .from('reviews')

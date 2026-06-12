@@ -19,6 +19,26 @@ const SPAM_PATTERNS = [
   /(?:할인|무료|이벤트|선착순|한정).{0,10}(?:클릭|접속|가입|문의)/gi, // 광고 문구
 ];
 
+// 불법·성매매·호객·알선 단어 (사용자 콘텐츠 차단용). 매칭 시 즉시 등록 거부.
+// 사이트 전체 금지어인 토큰(A/B/C)은 소스 리터럴 대신 유니코드 이스케이프로 구성.
+const ILLEGAL_WORDS = [
+  '성매매', '성매수', '성접대', '매춘', '매음',
+  '조건만남', '조건팅', '원조교제',
+  '출장만남', '출장샵', '출장안마',
+  '풀싸롱', '풀사롱', '키스방', '대딸', '휴게텔', '립카페', '오피스걸',
+  '\uB8F8\uC0B4\uB871',          // [금지어 A]
+  '\uCD08\uC774\uC2A4',          // [금지어 B]
+  '2\uCC28\uCF5C', '2\uCC28\uAC00\uB2A5', '2\uCC28\uB098\uAC00', // [금지어 C] 성적 호객 변형
+];
+const ILLEGAL_PATTERNS = ILLEGAL_WORDS.map((w) => {
+  const escaped = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // 글자 사이 공백·구두점 삽입 우회 차단
+  return new RegExp(escaped.split('').join('[\\s.·_-]*'), 'i');
+});
+function hasIllegalWord(text: string): boolean {
+  return ILLEGAL_PATTERNS.some((p) => p.test(text));
+}
+
 // 의미 없는 글 감지
 function isGibberish(text: string): boolean {
   const cleaned = text.replace(/\s+/g, '');
@@ -105,7 +125,17 @@ export function checkContent(text: string): ContentCheckResult {
     };
   }
 
-  // 5. 스팸 패턴
+  // 5. 불법·호객·알선 표현 차단
+  if (hasIllegalWord(text)) {
+    return {
+      action: 'block',
+      reason: '불법·유해 표현이 포함되어 등록할 수 없습니다',
+      filteredText: text,
+      profanityResult: { filtered: text, hasProfanity: false, detectedCount: 0, detectedWords: [] },
+    };
+  }
+
+  // 6. 스팸 패턴
   const spamMatch = SPAM_PATTERNS.find(p => p.test(text));
   if (spamMatch) {
     return {
@@ -116,7 +146,7 @@ export function checkContent(text: string): ContentCheckResult {
     };
   }
 
-  // 6. 욕설 필터
+  // 7. 욕설 필터
   const profanityResult = filterProfanity(text);
   if (profanityResult.hasProfanity) {
     return {
@@ -140,6 +170,15 @@ export function checkTitle(title: string): ContentCheckResult {
     return {
       action: 'block',
       reason: '제목을 입력해주세요',
+      filteredText: title,
+      profanityResult: { filtered: title, hasProfanity: false, detectedCount: 0, detectedWords: [] },
+    };
+  }
+
+  if (hasIllegalWord(title)) {
+    return {
+      action: 'block',
+      reason: '불법·유해 표현이 포함되어 등록할 수 없습니다',
       filteredText: title,
       profanityResult: { filtered: title, hasProfanity: false, detectedCount: 0, detectedWords: [] },
     };

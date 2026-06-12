@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/gen-image-manifest.mjs && node scripts/gen-venues-counts.mjs && node scripts/gen-category-og.mjs && node scripts/nolcool-readability-gate.mjs && node scripts/venue-rating-source-gate.mjs && vite build && node scripts/prerender-seo.mjs && node scripts/nolcool-dist-audit.mjs && node scripts/nolcool-cross-dup-audit.mjs && node scripts/nolcool-route-sitemap-audit.mjs && node scripts/struct-fingerprint-audit.mjs && node scripts/funnel-reachability-audit.mjs && node scripts/nolcool-entity-gate.mjs && node scripts/prefetch-route-gate.mjs && node scripts/og-asset-gate.mjs && node scripts/category-density-gate.mjs && node scripts/dist-stuffing-gate.mjs && node scripts/dwell-content-gate.mjs && node scripts/title-uniqueness-gate.mjs && node scripts/aggregate-title-gate.mjs && node scripts/page-essentials-gate.mjs && node scripts/ga4-tag-gate.mjs",
+    "build": "node scripts/gen-image-manifest.mjs && node scripts/gen-venues-counts.mjs && node scripts/gen-category-og.mjs && node scripts/nolcool-readability-gate.mjs && node scripts/venue-rating-source-gate.mjs && node scripts/community-moderation-gate.mjs && vite build && node scripts/prerender-seo.mjs && node scripts/nolcool-dist-audit.mjs && node scripts/nolcool-cross-dup-audit.mjs && node scripts/nolcool-route-sitemap-audit.mjs && node scripts/struct-fingerprint-audit.mjs && node scripts/funnel-reachability-audit.mjs && node scripts/nolcool-entity-gate.mjs && node scripts/prefetch-route-gate.mjs && node scripts/og-asset-gate.mjs && node scripts/category-density-gate.mjs && node scripts/dist-stuffing-gate.mjs && node scripts/dwell-content-gate.mjs && node scripts/title-uniqueness-gate.mjs && node scripts/aggregate-title-gate.mjs && node scripts/page-essentials-gate.mjs && node scripts/ga4-tag-gate.mjs",
     "build:no-audit": "node scripts/gen-image-manifest.mjs && node scripts/gen-venues-counts.mjs && vite build && node scripts/prerender-seo.mjs",
     "preview": "vite preview",
     "audit:src": "node scripts/nolcool-guard-bulk.mjs",
@@ -38,6 +38,7 @@
     "audit:og": "node scripts/og-asset-gate.mjs",
     "audit:catdensity": "node scripts/category-density-gate.mjs",
     "audit:ga4": "node scripts/ga4-tag-gate.mjs",
+    "audit:moderation": "node scripts/community-moderation-gate.mjs",
     "audit:all": "npm run audit:src && npm run audit:dist && npm run audit:dup && npm run audit:routes && npm run audit:drift && npm run audit:cron && npm run audit:titlefirst && npm run audit:hook && npm run audit:tone && npm run audit:fingerprint && npm run audit:funnel"
   },
   "dependencies": {
