@@ -155,7 +155,7 @@ export default function TermsPage() {
         <div className="mt-12 rounded-xl border border-violet-500/20 bg-neon-primary-light/5 p-6 text-center">
           <p className="text-sm text-neon-text-muted">
             본 약관에 대해 궁금한 항목이 있으시면{" "}
-            <span className="font-medium text-neon-primary-light">support@neon.com</span>
+            <span className="font-medium text-neon-primary-light">theassetsquare@gmail.com</span>
             으로 문의해 주세요.
           </p>
         </div>
