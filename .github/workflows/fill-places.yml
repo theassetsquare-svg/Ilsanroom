@@ -1,0 +1,48 @@
+name: Fill venue Places (address/hours/station)
+
+# venue 빈 주소/영업시간/역을 Google Places로만 채운다(불확실=SKIP, 별점/리뷰 절대 X).
+# secret GOOGLE_PLACES_API_KEY 는 GitHub 서버 안에서만 쓰이고, 채운 값은
+# places-source-gate(빌드 게이트)로 출처가 증명돼야만 커밋된다.
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: '처리할 venue 수 제한(비우면 전체)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  fill:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install deps
+        run: npm ci
+      - name: Fill from Google Places
+        env:
+          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+        run: |
+          if [ -n "${{ github.event.inputs.limit }}" ]; then
+            node scripts/fill-venue-places.mjs --limit ${{ github.event.inputs.limit }}
+          else
+            node scripts/fill-venue-places.mjs
+          fi
+      - name: Build (전 게이트 검증 — 출처/구조지문/정직 통과해야만 진행)
+        run: npm run build
+      - name: Commit filled data
+        run: |
+          if git diff --quiet -- src/data/venues.ts src/data/places-provenance.json; then
+            echo "변경 없음 — 채울 신규 사실 없음"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/venues.ts src/data/places-provenance.json
+          git commit -m "feat(places): venue 주소·영업시간·역 Google Places 검증값 자동 채움 (구글 기준·불확실 SKIP·별점/리뷰 0)"
+          git push

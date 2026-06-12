@@ -1,0 +1,96 @@
+{
+  "indeokvon-gukbingwan-night": {
+    "source": "manual",
+    "note": "게이트 도입 전 기존 입력",
+    "fields": [
+      "nearbyStation"
+    ]
+  },
+  "daejeononenight": {
+    "source": "manual",
+    "note": "게이트 도입 전 기존 입력",
+    "fields": [
+      "openHours"
+    ]
+  },
+  "gangnam-hoppa-again": {
+    "source": "manual",
+    "note": "게이트 도입 전 기존 입력",
+    "fields": [
+      "address"
+    ]
+  },
+  "gangnam-hoppa-flirting": {
+    "source": "manual",
+    "note": "게이트 도입 전 기존 입력",
+    "fields": [
+      "address"
+    ]
+  },
+  "jangandong-hoppa-flex": {
+    "source": "manual",
+    "note": "게이트 도입 전 기존 입력",
+    "fields": [
+      "address"
+    ]
+  },
+  "jeonju-hoppa-gallery": {
+    "source": "manual",
+    "note": "게이트 도입 전 기존 입력",
+    "fields": [
+      "address"
+    ]
+  },
+  "hongdae-hoppa": {
+    "source": "manual",
+    "note": "게이트 도입 전 기존 입력",
+    "fields": [
+      "address",
+      "nearbyStation"
+    ]
+  },
+  "gangseo-hobak": {
+    "source": "manual",
+    "note": "게이트 도입 전 기존 입력",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation"
+    ]
+  },
+  "ilsan-hwajung-tunnel": {
+    "source": "manual",
+    "note": "게이트 도입 전 기존 입력",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation"
+    ]
+  },
+  "ilsan-mul-night": {
+    "source": "manual",
+    "note": "게이트 도입 전 기존 입력",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation"
+    ]
+  },
+  "itaewon-savage": {
+    "source": "manual",
+    "note": "게이트 도입 전 기존 입력",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation"
+    ]
+  },
+  "changwon-lululalala": {
+    "source": "manual",
+    "note": "게이트 도입 전 기존 입력",
+    "fields": [
+      "openHours",
+      "nearbyStation"
+    ]
+  }
+}
