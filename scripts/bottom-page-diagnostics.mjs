@@ -93,9 +93,16 @@ function dwellRanking(events) {
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */
-  const _once = () => new Promise((res) => {
+  /* 슬래시 없는 카테고리 경로(/lounges·/nights 등)는 308로 슬래시 버전에 리다이렉트된다.
+     따라가지 않으면 빈 본문(0KB)을 "thin 페이지"로 오판 → 매일 가짜 알람. Location을 최대 3홉 추적. */
+  const _get = (u, hops = 0) => new Promise((res) => {
     const t = setTimeout(() => res({ ok: false, html: '', size: 0 }), 20000);
-    https.get(url, { headers: { 'User-Agent': 'NolcoolBottomDiag/1.0' } }, r => {
+    https.get(u, { headers: { 'User-Agent': 'NolcoolBottomDiag/1.0' } }, r => {
+      if (r.statusCode >= 300 && r.statusCode < 400 && r.headers.location && hops < 3) {
+        clearTimeout(t); r.resume();
+        const next = new URL(r.headers.location, u).toString();
+        return res(_get(next, hops + 1));
+      }
       const chunks = [];
       r.on('data', d => chunks.push(d));
       r.on('end', () => {
@@ -105,6 +112,7 @@ function fetchHtml(url) {
       });
     }).on('error', () => { clearTimeout(t); res({ ok: false, html: '', size: 0 }); });
   });
+  const _once = () => _get(url);
   return _once().then(r => (r.status === 200 || (r.status >= 400 && r.status < 500))
     ? r
     : new Promise(rs => setTimeout(() => _once().then(rs), 5000)));
