@@ -637,7 +637,7 @@ function generateVenueSsrBody(v, allVenues) {
   html += `</dl></section>`;
 
   // 후기 — 가공 후기 미게시(신뢰 규칙), 회원 글 링크만 (짧게·변형, offset decorrelate)
-  html += `<p>${pickN(['방문 후기는', '실제 후기는', '다녀온 후기는', '솔직 후기는'], 11)} <a href="/community/reviews">커뮤니티 후기 게시판</a>에서 회원 글만 모읍니다.</p>`;
+  html += `<p>${pickN(['방문 후기는', '실제 후기는', '다녀온 후기는', '솔직 후기는'], 11)} <a href="/community/reviews/">커뮤니티 후기 게시판</a>에서 회원 글만 모읍니다.</p>`;
 
   // 총정리 — primary 키워드(name) 노출, 짧게·변형 (offset decorrelate)
   const _tail = pickN([
@@ -676,9 +676,9 @@ function generateVenueSsrBody(v, allVenues) {
         if (!rvCm) return;
         let rvPath;
         if (['club', 'room', 'yojeong'].includes(rv.cat)) {
-          rvPath = `/${rvCm.path}/${rv.region}/${rv.slug}`;
+          rvPath = `/${rvCm.path}/${rv.region}/${rv.slug}/`;
         } else {
-          rvPath = `/${rvCm.path}/${rv.slug}`;
+          rvPath = `/${rvCm.path}/${rv.slug}/`;
         }
         // 항목별 연결어를 회전 → 동일 " — {region} 클럽" 꼬리표 반복 지문 제거
         const sep = pickN([' — ', ' · ', ', ', ' / '], ri);
@@ -697,7 +697,7 @@ function generateVenueSsrBody(v, allVenues) {
 
   // ★ 커뮤니티 안내 — 가공 카운터(후기N·댓글N·마지막글) 제거 (놀쿨 신뢰 규칙)
   html += `<section><h2>${pickN(['커뮤니티', '회원 이야기', '더 둘러보기', '커뮤니티 둘러보기'], 19)}</h2>`;
-  html += `<p>${pickN(['관련 글과 질문은', '더 많은 이야기는', '회원들 글은', '생생한 후기와 질문은'], 23)} <a href="/community">놀쿨 커뮤니티</a>에서 확인하세요.</p>`;
+  html += `<p>${pickN(['관련 글과 질문은', '더 많은 이야기는', '회원들 글은', '생생한 후기와 질문은'], 23)} <a href="/community/">놀쿨 커뮤니티</a>에서 확인하세요.</p>`;
   html += `</section>`;
 
   // 시즌22 — 태그·역 anchor (tag/near 페이지 reachable)
