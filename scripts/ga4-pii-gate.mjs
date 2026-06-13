@@ -55,6 +55,28 @@ function walkSrc(dir, out = []) {
   }
 }
 
+// ── 2b) 전역 page_location 덮어쓰기: 향상측정 자동 이벤트(scroll/click) PII 누출 차단 ──
+//   gtag('event')만 scrubPii로 감싸면, GA4 향상측정이 자동 발송하는 이벤트는 raw document.location 을
+//   page_location(dl)으로 보내 쿼리스트링의 전화/이메일이 샌다. config·set 레벨 전역 덮어쓰기가 막는다.
+{
+  const html = readFileSync('index.html', 'utf8');
+  // config 호출에 page_location 이 정화된 값으로 설정돼야 함(raw location.href 직송 금지)
+  if (!/gtag\(\s*['"]config['"]\s*,\s*['"]G-W6VE6KHLLD['"]\s*,\s*\{[^}]*page_location\s*:/.test(html)) {
+    errors.push(`index.html: gtag('config')에 page_location 전역 설정 누락 — 자동 향상측정 이벤트가 raw href 직송(PII 누출)`);
+  }
+  if (/page_location\s*:\s*location\.href\b/.test(html) || /page_location\s*:\s*window\.location\.href\b/.test(html)) {
+    errors.push(`index.html: page_location 에 raw location.href 직송 — 쿼리 PII 누출(정화 함수 경유 필요)`);
+  }
+  if (!/__ncScrubGaUrl/.test(html) || !/redacted_phone/.test(html)) {
+    errors.push(`index.html: 인라인 PII 정화기(__ncScrubGaUrl/redact) 누락 — 번들 로드 전 자동 scroll 이 raw href 직송`);
+  }
+  // SPA 라우트 변경마다 gtag('set') 으로 정화된 page_location 전역 갱신
+  const tsrc = readFileSync(TRACKER, 'utf8');
+  if (!/gtag\(\s*['"]set['"]\s*,\s*\{\s*page_location\s*:\s*scrubUrl\(/.test(tsrc)) {
+    errors.push(`${TRACKER}: 라우트 변경 시 gtag('set',{page_location:scrubUrl(...)}) 전역 덮어쓰기 누락 — SPA 이동 후 자동 이벤트 PII 누출`);
+  }
+}
+
 // ── 3) 런타임 양방향: pii-scrub 를 esbuild 변환 후 실제 정화 검증 ──
 async function loadScrub() {
   const ts = readFileSync(SCRUB, 'utf8');

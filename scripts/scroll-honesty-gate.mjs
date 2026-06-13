@@ -54,7 +54,9 @@ function fnBody(src, name) {
   return null;
 }
 
-const countGtag = (s) => (s.match(/gtag\s*\(/g) || []).length;
+// ★발송(event)만 게이트 대상 — gtag('set',{page_location})·gtag('config')는 '발송'이 아니라
+//   파라미터 설정(향상측정 자동 이벤트의 PII 정화용)이라 게이트 밖(모든 방문자) 허용.
+const countSend = (s) => (s.match(/gtag\s*\(\s*['"]event['"]/g) || []).length;
 
 // ── A) ga-optimizer 끝까지읽기 분자 = 게이트 통과 'scroll_100' ──
 if (!fs.existsSync(OPTIMIZER)) {
@@ -91,10 +93,10 @@ if (!fs.existsSync(TRACKER)) {
   if (!fwd) {
     errors.push(`${TRACKER}: forwardToGa4 함수 없음 — GA 발송 길목 불명`);
   } else {
-    const totalGtag = countGtag(src);
-    const inFwd = countGtag(fwd.body);
-    if (totalGtag !== inFwd) {
-      errors.push(`${TRACKER}: gtag( 호출 ${totalGtag}건 중 ${inFwd}건만 forwardToGa4 내부 — 게이트 밖 GA 발송(봇 포함 위험) 차단`);
+    const totalSend = countSend(src);
+    const inFwd = countSend(fwd.body);
+    if (totalSend !== inFwd) {
+      errors.push(`${TRACKER}: gtag('event') 발송 ${totalSend}건 중 ${inFwd}건만 forwardToGa4 내부 — 게이트 밖 GA 발송(봇 포함 위험) 차단`);
     }
   }
 

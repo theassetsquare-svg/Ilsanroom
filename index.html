@@ -9,9 +9,24 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
+      // ★PII 관문(전역) — GA4 향상측정의 ★자동 이벤트(scroll/click/page_view 등)는 scrubPii를 거치지 않고
+      //   document.location 을 그대로 page_location(dl)으로 보낸다 → 쿼리스트링의 전화/이메일이 GA4로 샌다.
+      //   그래서 config·set 레벨에서 page_location을 ★안전 파라미터만 남긴 값으로 전역 덮어쓴다(자동 이벤트도 정화).
+      //   src/lib/pii-scrub.ts(scrubUrl)와 동일 화이트리스트·redact 규칙을 인라인 미러(번들 로드 전 자동 scroll 대비).
+      window.__ncScrubGaUrl = function(href){
+        try {
+          var u = new URL(href, 'https://nolcool.com');
+          var safe = {utm_source:1,utm_medium:1,utm_campaign:1,utm_content:1,utm_term:1,gclid:1,fbclid:1,ref:1,page:1,tab:1,sort:1,cat:1,type:1};
+          var kept = [];
+          u.searchParams.forEach(function(v,k){ if (safe[k.toLowerCase()]) kept.push(encodeURIComponent(k)+'='+encodeURIComponent(v)); });
+          var s = u.origin + u.pathname + (kept.length ? '?' + kept.join('&') : '');
+          return s.replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g,'[redacted_email]')
+                  .replace(/\b0\d{1,2}[-.\s]\d{3,4}[-.\s]\d{4}\b|\b0\d{8,10}\b/g,'[redacted_phone]');
+        } catch (e) { return String(href).split('?')[0]; }
+      };
       // send_page_view:false — 자동 페이지뷰 끔. 진짜 방문자(봇·내부·관리자·자동화 제외)일 때만
       // visitor-tracker가 page_view를 쏜다 → GA4 이탈율이 사람 기준으로 정상화(감사봇 오염 차단).
-      gtag('config', 'G-W6VE6KHLLD', { send_page_view: false });
+      gtag('config', 'G-W6VE6KHLLD', { send_page_view: false, page_location: window.__ncScrubGaUrl(location.href) });
     </script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/favicon.ico" sizes="48x48">

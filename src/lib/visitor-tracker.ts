@@ -4,7 +4,7 @@
  * 외부 SaaS 불필요. UTM/유입채널/디바이스/유저ID까지 자동 수집.
  */
 import { createClient } from './supabase';
-import { scrubPii } from './pii-scrub';
+import { scrubPii, scrubUrl } from './pii-scrub';
 
 type EventType =
   | 'view' | 'scroll_25' | 'scroll_50' | 'scroll_75' | 'scroll_100'
@@ -259,6 +259,12 @@ export function trackPageView(path: string) {
     send('exit', { dwellMs: dwell, once: false });
   }
   currentPath = norm;
+  // ★PII 전역 덮어쓰기 — GA4 향상측정 자동 이벤트(scroll/click 등)는 scrubPii를 안 거치고
+  //   document.location 을 page_location(dl)으로 보낸다. SPA 라우트 변경마다 gtag('set')으로
+  //   ★정화된 page_location 을 전역 설정 → 이후 자동 이벤트도 현재 페이지의 PII 없는 URL을 쓴다.
+  //   (게이트 무관: 자동 이벤트는 모든 방문자에서 발생 → 정화는 무조건 적용)
+  const _gtag = (window as any).gtag;
+  if (typeof _gtag === 'function') _gtag('set', { page_location: scrubUrl(window.location.href) });
   pageEnterTime = Date.now();
   firedEvents = new Set();
   timers.forEach(t => clearTimeout(t));
