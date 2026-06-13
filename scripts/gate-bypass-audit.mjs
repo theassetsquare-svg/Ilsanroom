@@ -263,6 +263,23 @@ const REGISTRY = {
     mutate: lazy(() => 'dist/index.html', (s) =>
       s.split('googletagmanager.com/gtag/js').join('example.com/x')),
   },
+  'scripts/lastmod-honesty-gate.mjs': {
+    phase: 'dist',
+    label: '미변경 페이지 lastmod 을 직전값과 다른 날짜로 위조(거짓 신선도 주입)',
+    mutate: () => {
+      const f = 'scripts/.seo-lastmod.json';
+      const orig = fs.readFileSync(f);
+      const cur = JSON.parse(orig.toString());
+      const prev = JSON.parse(fs.readFileSync('scripts/.seo-lastmod.prev.json', 'utf8'));
+      const today = new Date().toISOString().slice(0, 10);
+      // 해시가 직전과 동일(미변경)인 라우트 1개 → 직전 lastmod 과 다른 날짜로 위조 (계약 위반=일자 무관)
+      const target = Object.keys(cur).find((r) => prev[r] && prev[r].hash === cur[r].hash);
+      if (!target) throw new Error('미변경 라우트 없음 — 빌드 후 실행');
+      cur[target].lastmod = prev[target].lastmod === today ? '2099-01-01' : today;
+      fs.writeFileSync(f, JSON.stringify(cur, null, 0) + '\n');
+      return () => fs.writeFileSync(f, orig);
+    },
+  },
 };
 
 // 이 하니스 자기 자신(--coverage-only 로 빌드 체인에 들어가 있음) — 우회검증 대상 아님

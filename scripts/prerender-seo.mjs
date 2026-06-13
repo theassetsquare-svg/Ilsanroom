@@ -2419,6 +2419,9 @@ for (const dp of dynamicPages) {
 }
 sitemapXml += `</urlset>`;
 fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml);
+// ★ 직전 매니페스트 덤프 — lastmod-honesty-gate가 lastmodFor()와 ★동일한 직전값으로 검증하도록.
+//   NEW_LASTMOD로 덮어쓰기 전의 PREV_LASTMOD를 보존 (gitignore, 빌드 한정).
+fs.writeFileSync(path.resolve('scripts/.seo-lastmod.prev.json'), JSON.stringify(PREV_LASTMOD, null, 0) + '\n');
 // ★ 매니페스트 저장 — 다음 빌드가 이 해시·lastmod와 비교 (git 커밋 → CF/CI 빌드 간 영속)
 fs.writeFileSync(LASTMOD_MANIFEST_PATH, JSON.stringify(NEW_LASTMOD, null, 0) + '\n');
 {

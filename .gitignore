@@ -4,6 +4,8 @@
 .gh-secret-set.mjs
 # IndexNow 제출 스냅샷 — actions/cache로 영속(repo 커밋 X). .seo-lastmod.json은 커밋 대상이라 제외 안 함
 scripts/.indexnow-last.json
+# lastmod-honesty-gate용 직전 매니페스트 덤프 — 빌드 한정 산출물(repo 커밋 X)
+scripts/.seo-lastmod.prev.json
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
