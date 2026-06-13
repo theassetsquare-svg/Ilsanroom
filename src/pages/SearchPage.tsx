@@ -6,6 +6,7 @@ import { Search } from 'lucide-react';
 import { venues as allVenues } from '@/data/venues';
 import type { Venue } from '@/types';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
+import { escapeHtml } from '@/lib/sanitize-html';
 import { trackEvent } from '@/lib/visitor-tracker';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { ReadFinishCount } from '@/components/engagement/ReadingEngagement';
@@ -520,7 +521,8 @@ export default function SearchPage() {
 }
 
 function highlightMatch(text: string, query: string): string {
-  if (!query.trim()) return text;
-  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return text.replace(new RegExp(`(${escaped})`, 'gi'), '<strong class="text-[#8B5CF6]">$1</strong>');
+  const safe = escapeHtml(text);
+  if (!query.trim()) return safe;
+  const escaped = escapeHtml(query).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return safe.replace(new RegExp(`(${escaped})`, 'gi'), '<strong class="text-[#8B5CF6]">$1</strong>');
 }

@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase';
 import ShareButton from '@/components/ui/ShareButton';
 import ReportButton from '@/components/moderation/ReportButton';
 import { NextPostInline } from '@/components/community/NextPostInline';
+import { sanitizeHtml } from '@/lib/sanitize-html';
 
 interface CommentData {
   id: string;
@@ -320,7 +321,7 @@ export default function PostDetailPage() {
         <div className="rounded-xl p-5 mb-4" style={{ backgroundColor: '#F9FAFB', minHeight: 150 }}>
           {post.content?.startsWith('<') ? (
             <div className="rich-content text-base leading-relaxed" style={{ color: '#333', lineHeight: '1.8' }}
-              dangerouslySetInnerHTML={{ __html: post.content }} />
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
           ) : (
             <p className="text-base leading-relaxed" style={{ color: '#333', whiteSpace: 'pre-wrap', lineHeight: '1.8' }}>
               {post.content}
