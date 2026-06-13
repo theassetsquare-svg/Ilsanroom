@@ -4,7 +4,7 @@
  *
  * 매시간 audit 와 차이:
  *   - audit: 회귀 발견 시만 메일 (노이즈 최소)
- *   - 이 스크립트: 매일 1통 (정상이든 회귀든) — 사장님 안심용
+ *   - 이 스크립트: 회귀 시에만 메일. 정상이면 침묵(받은편지함에 안심메일 안 쌓이게, 자기수렴).
  *
  * 환경변수: SUPABASE_URL, SUPABASE_SERVICE_KEY, RESEND_API_KEY, NOTIFY_EMAIL
  */

@@ -264,10 +264,10 @@ async function main() {
     }
   }
 
-  // ★ 메일 정책 (사용자 요청 2026-06-01): 사장님이 매일 안심 확인하도록 0건이어도 한 줄 요약 1통.
+  // ★ 메일 정책 (2026-06-13 갱신): 행동이 필요한 신호만 발송 — 받은편지함에 매일 메일이 쌓이지 않게.
   //   - 라이브 진짜 버그(realCrit) → 🔴 상세 리포트 (행동 필요)
-  //   - 0건 → ✅ 한 줄 요약 (캐시지연/WARN/PENDING은 자동 재크롤됨, 행동 불필요)
-  //   season66 "실패시만" 정책의 명시적 예외 — 이 모니터만 매일 요약 발송.
+  //   - 할당량 소진 → ⏭️ 점검불가 (정상이라 단정 금지)
+  //   - 0건(정상) → 메일 침묵, 콘솔/Actions 로그에만 기록 (캐시지연/WARN/PENDING은 자동 재크롤)
   const inspected = okCount + crit.length + warn.length + pending.length; // 실제 검사된 URL 수
   const total = inspected + skip.length;
   const quotaExhausted = total > 0 && inspected < total * 0.2; // 80%+ 점검불가 = 할당량 소진
@@ -291,23 +291,9 @@ async function main() {
       </div>`,
     );
   } else {
-    console.log(`✅ 라이브 CRITICAL 0건 — 요약 메일 발송 (검사 ${inspected}/${total}, 캐시지연 ${lagResolved.length}/WARN ${warn.length}/PENDING ${pending.length}는 자동 재크롤, 정상)`);
-    await sendMail(
-      `[놀쿨][✅] 서치콘솔 정상 — 코드 버그 0건`,
-      `<div style="font-family:sans-serif;max-width:680px;margin:0 auto;padding:20px;color:#222">
-        <h2 style="color:#16A34A">✅ 서치콘솔 정상 — 행동 필요 없음</h2>
-        <p style="color:#666;font-size:13px">측정: ${kstNow()}</p>
-        <table style="border-collapse:collapse;font-size:14px;margin-top:8px">
-          <tr><td style="padding:4px 12px 4px 0">🔴 라이브 코드 버그</td><td style="font-weight:700;color:#16A34A">0건</td></tr>
-          <tr><td style="padding:4px 12px 4px 0">↺ 구글 캐시지연(자동 재크롤)</td><td>${lagResolved.length}건</td></tr>
-          <tr><td style="padding:4px 12px 4px 0">🟡 스키마 경고(자동 재크롤)</td><td>${warn.length}건</td></tr>
-          <tr><td style="padding:4px 12px 4px 0">🟦 색인 대기(자동 재크롤)</td><td>${pending.length}건</td></tr>
-          <tr><td style="padding:4px 12px 4px 0">🟢 정상 색인</td><td>${okCount}건</td></tr>
-          <tr><td style="padding:4px 12px 4px 0">⏭️ 점검불가(할당량/일시)</td><td>${skip.length}건</td></tr>
-        </table>
-        <p style="color:#9CA3AF;font-size:12px;margin-top:16px">이 메일은 "오늘도 이상 없음" 확인용입니다. 캐시지연·경고·색인대기는 매일 자동 재크롤로 해소되며 행동 불필요. 🔴 0건이면 안심하셔도 됩니다.</p>
-      </div>`,
-    );
+    // 정상(🔴 0건)이면 메일 침묵 — 매일 "이상 없음" 확인 메일이 받은편지함에 쌓이지 않도록(자기수렴).
+    // 행동이 필요한 신호(🔴 코드버그·점검불가)만 메일로 나간다. 정상 결과는 콘솔/Actions 로그에만 남긴다.
+    console.log(`✅ 라이브 CRITICAL 0건 — 메일 침묵(정상). 검사 ${inspected}/${total}, 캐시지연 ${lagResolved.length}/WARN ${warn.length}/PENDING ${pending.length}는 자동 재크롤.`);
   }
 
   // 워크플로는 항상 초록불 — 🔴 코드버그는 위 상세 메일로 행동 신호를 보냈고,

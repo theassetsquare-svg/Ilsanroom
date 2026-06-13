@@ -203,4 +203,10 @@ mkdirSync(dirname(JSON_OUT), { recursive: true });
 writeFileSync(JSON_OUT, JSON.stringify(snapshot, null, 2));
 console.log(`snapshot → ${JSON_OUT}`);
 
-await sendMail(subject, buildHtml(byName, deploySync));
+// 회귀 0건이면 메일 침묵 — 받은편지함에 "이상 없음" 메일이 매일 쌓이지 않게(자기수렴).
+// snapshot JSON 은 위에서 이미 기록됨(/admin/audit 카드는 영향 없음). 행동 필요한 회귀 시에만 메일.
+if (totalFail > 0) {
+  await sendMail(subject, buildHtml(byName, deploySync));
+} else {
+  console.log('✅ 회귀 0건 — 메일 침묵(정상). snapshot 만 기록.');
+}

@@ -5,7 +5,7 @@
  * 동작:
  *   1) pending 신고 전체 조회
  *   2) threshold 도달 (서로 다른 fp ≥3 × 같은 venue × 같은 reason) 별도 강조
- *   3) 매일 KST 09:30 메일 발송 (pending 0이어도 1통 — 사장님 안심용)
+ *   3) 매일 KST 09:30 — pending/threshold>0(행동 필요)일 때만 메일. 0건이면 침묵(자기수렴).
  *
  * 환경: SUPABASE_URL, SUPABASE_SERVICE_KEY, RESEND_API_KEY, NOTIFY_EMAIL
  */
