@@ -1915,7 +1915,7 @@ for (const a of magazineArticles) {
 ${a.content}
 ${articleAddon}
 ${_relNav}
-<p><a href="${BASE_URL}/magazine">← 매거진 전체 보기</a></p>
+<p><a href="${BASE_URL}/magazine/">← 매거진 전체 보기</a></p>
 </article>`;
   // Article JSON-LD
   const articleJsonLd = {
@@ -1937,7 +1937,7 @@ ${_relNav}
   };
   const breadcrumbJsonLd = generateBreadcrumbJsonLd([
     { name: '놀쿨', url: BASE_URL },
-    { name: '매거진', url: `${BASE_URL}/magazine` },
+    { name: '매거진', url: `${BASE_URL}/magazine/` },
     { name: a.title, url: canonical },
   ]);
   writePage(routePath, {
