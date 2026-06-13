@@ -131,6 +131,13 @@ let filledCount = 0;
 const skipped = [];
 let processed = 0;
 
+// 선택적 보강용 키가 없으면 = 할 일 없음(빈 필드 자동채움은 옵션). 실패가 아니라 정상 스킵.
+// (IndexNow/GSC 시크릿 부재 시 graceful skip 과 동일 패턴 — CI 가짜 빨강·노이즈 메일 방지)
+if (!MODE_MOCK && !KEY) {
+  console.log('⏭️  GOOGLE_PLACES_API_KEY 미설정 — Places 보강 건너뜀(정상). 활성화하려면 GH Secret 추가.');
+  process.exit(0);
+}
+
 for (const b of blocks) {
   if (processed >= LIMIT) break;
   const need = FIELDS.filter((f) => !b[f]);
