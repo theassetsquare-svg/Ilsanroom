@@ -5,6 +5,14 @@ import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
 import './index.css';
 
+// 배포 직후 stale index.html(SWR 캐시)이 퍼지된 옛 청크 해시를 참조해 동적 import 가 404 나는 경우,
+// 1회만 새로고침해 최신 청크를 받는다. 무한 루프 방지 위해 세션당 1회로 가드.
+window.addEventListener('vite:preloadError', () => {
+  if (sessionStorage.getItem('nc-reloaded-once')) return;
+  sessionStorage.setItem('nc-reloaded-once', '1');
+  window.location.reload();
+});
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <HelmetProvider>
