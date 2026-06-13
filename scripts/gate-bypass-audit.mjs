@@ -263,6 +263,15 @@ const REGISTRY = {
     mutate: lazy(() => 'dist/index.html', (s) =>
       s.split('googletagmanager.com/gtag/js').join('example.com/x')),
   },
+  'scripts/venue-density-audit.mjs': {
+    phase: 'dist',
+    label: 'venue 페이지에 가게이름을 과다 반복 주입(키워드 밀도 >3.0% 회귀)',
+    mutate: lazy(clubVenue(0), (s) => {
+      const name = (s.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1] || '').replace(/<[^>]+>/g, '').trim();
+      if (!name) throw new Error('h1 가게이름 추출 실패 — 빌드 후 실행');
+      return s.replace('</body>', `<p>${(name + ' ').repeat(120)}</p></body>`);
+    }),
+  },
   'scripts/lastmod-honesty-gate.mjs': {
     phase: 'dist',
     label: '미변경 페이지 lastmod 을 직전값과 다른 날짜로 위조(거짓 신선도 주입)',
