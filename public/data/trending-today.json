@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-13T15:00:03.151Z",
+  "generated_at": "2026-06-13T18:02:04.178Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,7 +7,14 @@
       "title": "안산돈텔마마나이트",
       "category": "night",
       "region": "안산",
-      "views_24h": 6
+      "views_24h": 5
+    },
+    {
+      "path": "/nights/ilsanshampoonight",
+      "title": "일산샴푸나이트",
+      "category": "night",
+      "region": "일산",
+      "views_24h": 4
     },
     {
       "path": "/nights/daegubabambanight",
@@ -17,17 +24,24 @@
       "views_24h": 4
     },
     {
+      "path": "/hoppa/daejeonhoppa-eclipse",
+      "title": "대전호빠 이클립스",
+      "category": "hoppa",
+      "region": "대전",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
+      "category": "night",
+      "region": "강서",
+      "views_24h": 3
+    },
+    {
       "path": "/nights/bundangpongpongnight",
       "title": "분당퐁퐁나이트",
       "category": "night",
       "region": "분당",
-      "views_24h": 3
-    },
-    {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
       "views_24h": 3
     },
     {
@@ -59,10 +73,10 @@
       "views_24h": 2
     },
     {
-      "path": "/hoppa/daejeonhoppa-eclipse",
-      "title": "대전호빠 이클립스",
-      "category": "hoppa",
-      "region": "대전",
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
       "views_24h": 2
     },
     {
@@ -91,20 +105,6 @@
       "title": "인덕원국빈관나이트",
       "category": "night",
       "region": "인덕원",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/nowonstarnight",
-      "title": "노원스타나이트",
-      "category": "night",
-      "region": "노원",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/ilsanshampoonight",
-      "title": "일산샴푸나이트",
-      "category": "night",
-      "region": "일산",
       "views_24h": 1
     }
   ]
