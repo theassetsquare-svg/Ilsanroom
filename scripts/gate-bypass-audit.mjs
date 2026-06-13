@@ -136,6 +136,11 @@ const REGISTRY = {
     label: 'reviewCount 0 인데 rating>0 (별점 창작) venue 블록 주입',
     mutate: append('src/data/venues.ts', "  {\n    slug: 'zzbypass-rating-test',\n    rating: 5,\n  },"),
   },
+  'scripts/venue-desc-completeness-gate.mjs': {
+    phase: 'pre',
+    label: '쉼표로 잘린 미완결 shortDescription venue 블록 주입',
+    mutate: append('src/data/venues.ts', "  {\n    slug: 'zzbypass-desc-test',\n    shortDescription: '이 문장은 끝맺지 못하고 잘린 채로 끝나는데,',\n  },"),
+  },
   'scripts/community-moderation-gate.mjs': {
     phase: 'pre',
     label: 'hasIllegalWord 무력화(return false) → 행동검증이 잡아야 함',
