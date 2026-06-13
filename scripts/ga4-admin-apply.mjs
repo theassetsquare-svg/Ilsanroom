@@ -13,7 +13,7 @@ import crypto from 'node:crypto';
 const PID = (process.env.GA_PROPERTY_ID || 'properties/540830544').replace(/^properties\//, '');
 const QUOTA = process.env.GA_QUOTA_PROJECT || 'theassetsquare-search-console';
 const ADMIN = 'https://analyticsadmin.googleapis.com/v1beta';
-const SCOPE = 'https://www.googleapis.com/auth/analytics.edit';
+const SCOPE = 'https://www.googleapis.com/auth/analytics.edit https://www.googleapis.com/auth/analytics.manage.users.readonly';
 const b64url = (b) => Buffer.from(b).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
 function loadSA() {
@@ -55,6 +55,14 @@ async function main() {
   if (!token) { console.error('❌ 토큰 없음 (GSC_SA_JSON 확인 / analytics.edit 거부 가능)'); process.exit(1); }
   globalThis.__t = token;
   console.log(`🔧 GA4 설정 적용 시도 · 속성 properties/${PID} · 스코프 analytics.edit\n`);
+
+  // 0) GA가 지금 이 SA를 무슨 역할로 보는지 직접 읽기 (편집자 전파됐는지 사실확인)
+  const ab = await api('GET', `properties/${PID}/accessBindings`);
+  if (ab.ok) {
+    const me = (ab.body.accessBindings || []).find((b) => /gsc-mcp@/.test(b.user || ''));
+    if (me) console.log(`【역할확인】 GA가 본 SA(${me.user}) 역할 = ${(me.roles || []).join(', ') || '(없음)'}\n`);
+    else console.log('【역할확인】 accessBindings 에 이 SA 없음(상위 상속이거나 미등록)\n');
+  } else console.log(`【역할확인】 accessBindings 읽기 실패 — ${ab.status} ${JSON.stringify(ab.body).slice(0, 120)}\n`);
 
   // 1) 데이터 보관 14개월
   const r1 = await api('PATCH', `properties/${PID}/dataRetentionSettings?updateMask=eventDataRetention`, { eventDataRetention: 'FOURTEEN_MONTHS' });
