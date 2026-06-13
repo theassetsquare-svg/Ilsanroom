@@ -1,0 +1,22 @@
+name: GA4 Admin Config Audit (read-only)
+
+# GA4 관리자 설정 9항목 현황을 Admin API 로 ★읽기만 해서 점검(설정 변경 0).
+# 수동 실행(workflow_dispatch). SA = analytics.readonly → GET 만 가능.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: GA4 admin config state (read-only)
+        run: node scripts/ga4-admin-state-audit.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
