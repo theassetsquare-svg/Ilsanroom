@@ -115,16 +115,18 @@ const RELATED_MAG_KEYWORDS: Record<string, string[]> = {
   hoppa: ['호빠', '호스트', '호스트바'],
 };
 
-export function RelatedMagazine({ category }: { category: keyof typeof RELATED_MAG_KEYWORDS }) {
+export function RelatedMagazine({ category, region }: { category: keyof typeof RELATED_MAG_KEYWORDS; region?: string }) {
   const words = RELATED_MAG_KEYWORDS[category] || [];
   const matched = articles
     .map((a) => {
       const text = `${a.title} ${a.excerpt} ${a.tag}`;
       let score = 0;
       for (const w of words) if (text.includes(w)) score += 10;
+      if (region && text.includes(region)) score += 30; // 권역 페이지: 지역명 일치 글 우선
       return { a, score };
     })
-    .filter((s) => s.score > 0)
+    // 권역 페이지는 지역+카테고리 모두 맞는 글만(없으면 렌더 안 함 — 가짜 매칭 금지)
+    .filter((s) => (region ? s.score >= 40 : s.score > 0))
     .sort((x, y) => y.score - x.score)
     .slice(0, 4)
     .map((s) => s.a);

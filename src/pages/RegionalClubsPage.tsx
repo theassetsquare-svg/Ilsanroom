@@ -8,6 +8,7 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import { getVenuesByCategoryAndRegion } from '@/data/venues';
 import type { Venue } from '@/types';
 import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter, ListMidHook, TopPicksMini } from '@/components/venue/CategoryListingEngagement';
+import { RelatedMagazine } from '@/components/venue/CategoryExtras';
 
 
 const regionNames: Record<string, string> = {
@@ -173,6 +174,7 @@ export default function RegionalClubsPage() {
       </section>
 
       <section className="mx-auto max-w-[1200px] px-4 pb-20 sm:px-6 space-y-8">
+        <RelatedMagazine category="club" region={regionKo} />
         <BrowseOtherCategories currentPath="/clubs" />
         <BottomFinishCounter baseCount={88} />
       </section>
