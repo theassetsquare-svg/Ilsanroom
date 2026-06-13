@@ -1647,9 +1647,12 @@ const NICKNAME_OG_SLUGS = new Set([
 function getVenueOgImage(slug) {
   if (JPG_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}.jpg`;
   if (NICKNAME_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}.jpg`;
-  // 실제 이미지 파일이 있을 때만 venue 이미지, 없으면 기본 OG 이미지
+  // 실제 업소 사진 우선 (SEO·공유 최적)
   const venueImg = path.join(DIST, 'venues', `${slug}-1.jpg`);
   if (fs.existsSync(venueImg)) return `${BASE_URL}/venues/${slug}-1.jpg`;
+  // 사진 없으면 생성된 1:1 네이밍/닉네임 OG 썸네일 (venue 121곳 전수 보유)
+  const ogThumb = path.join(DIST, 'og', `${slug}.jpg`);
+  if (fs.existsSync(ogThumb)) return `${BASE_URL}/og/${slug}.jpg`;
   return `${BASE_URL}/og/nolcool-og.jpg`;
 }
 
