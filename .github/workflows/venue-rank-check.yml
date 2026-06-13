@@ -1,0 +1,19 @@
+name: Venue Rank Check (지정 가게이름 GSC 실순위 즉석조회)
+
+on:
+  workflow_dispatch:
+    inputs:
+      targets:
+        description: '공백 구분 가게이름 (비우면 기본 12개)'
+        required: false
+        default: ''
+
+jobs:
+  rank-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: GSC 실순위 조회 (읽기전용·콘솔출력)
+        run: node scripts/venue-rank-check.mjs ${{ github.event.inputs.targets }}
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
