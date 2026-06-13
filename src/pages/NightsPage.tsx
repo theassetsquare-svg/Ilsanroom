@@ -101,10 +101,7 @@ export default function NightsPage() {
         { day: '일요일', time: '19:00~23:00', level: 40 },
       ]} />
 
-      <RelatedMagazine articles={[
-        { title: '처음 방문하는 분을 위한 A to Z 매너 안내', tag: '입문' },
-        { title: '전국 소셜댄스 명소 동네별 특징 총정리', tag: '정보' },
-      ]} />
+      <RelatedMagazine category="night" />
 
       <LiveActivityFeed maxItems={5} category="night" />
 

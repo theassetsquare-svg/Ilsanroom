@@ -26,7 +26,7 @@ const UA_PC = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chro
 const UA_MO = 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148';
 const CONCURRENCY = 12;
 
-function fetchText(url, ua) {
+function fetchOnce(url, ua) {
   return new Promise((res) => {
     const t = setTimeout(() => res({ status: 0, body: '', error: 'timeout' }), 15000);
     https.get(url, { headers: { 'User-Agent': ua, 'Accept': 'text/html,application/xml', 'Accept-Language': 'ko-KR' } }, r => {
@@ -35,6 +35,14 @@ function fetchText(url, ua) {
       r.on('end', () => { clearTimeout(t); res({ status: r.statusCode, body: Buffer.concat(chunks).toString('utf8') }); });
     }).on('error', e => { clearTimeout(t); res({ status: 0, body: '', error: e.message }); });
   });
+}
+
+/* 막 배포된 페이지의 일시적 timeout/5xx 1회 재시도 — false-positive 메일(0/9) 방지 */
+async function fetchText(url, ua) {
+  const r = await fetchOnce(url, ua);
+  if (r.status === 200 || (r.status >= 400 && r.status < 500)) return r;
+  await new Promise(rs => setTimeout(rs, 5000));
+  return fetchOnce(url, ua);
 }
 
 async function fetchSitemap() {

@@ -92,10 +92,7 @@ export default function LoungesPage() {
         { day: '일', time: '18:00~23:00', level: 40 },
       ]} />
 
-      <RelatedMagazine articles={[
-        { title: '논현·청담 무드 좋은 바 — 취향별 고르는 가이드', tag: '픽' },
-        { title: '1인 가기 좋은 프라이빗 장소 TOP5', tag: '혼술' },
-      ]} />
+      <RelatedMagazine category="lounge" />
 
       <LiveActivityFeed maxItems={5} category="lounge" />
 

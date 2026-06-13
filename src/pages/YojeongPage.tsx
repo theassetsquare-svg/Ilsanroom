@@ -95,10 +95,7 @@ export default function YojeongPage() {
         { day: '일요일', time: '12:00~15:00', level: 50 },
       ]} />
 
-      <RelatedMagazine articles={[
-        { title: '일산명월관 완벽 가이드: 만찬부터 기념행사까지', tag: '격식' },
-        { title: '한국 고유의 코스 요리 문화의 역사와 현재', tag: '문화' },
-      ]} />
+      <RelatedMagazine category="yojeong" />
 
       <LiveActivityFeed maxItems={5} category="yojeong" />
 

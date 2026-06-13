@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Link } from '../ui/SafeLink';
 import ShareButtons from '@/components/interactive/ShareButtons';
+import { articles } from '@/data/magazine-articles';
 
 /* ── [D] 첫 방문 가이드 ── */
 interface GuideProps {
@@ -104,16 +105,41 @@ export function CategoryVSBattle({ venueA, venueB, topic }: { venueA: string; ve
   );
 }
 
-/* ── 관련 매거진 ── */
-export function RelatedMagazine({ articles }: { articles: { title: string; tag: string }[] }) {
+/* ── 관련 매거진 — 카테고리별 실제 매거진 글로 cross-link (가짜 제목 금지) ── */
+const RELATED_MAG_KEYWORDS: Record<string, string[]> = {
+  club: ['클럽', 'EDM', '하우스', '테크노'],
+  night: ['나이트', '소셜댄스', '부킹'],
+  lounge: ['라운지', '바', '와인', '위스키'],
+  room: ['룸', '가라오케', '노래'],
+  yojeong: ['요정', '한정식', '한실', '국악'],
+  hoppa: ['호빠', '호스트', '호스트바'],
+};
+
+export function RelatedMagazine({ category }: { category: keyof typeof RELATED_MAG_KEYWORDS }) {
+  const words = RELATED_MAG_KEYWORDS[category] || [];
+  const matched = articles
+    .map((a) => {
+      const text = `${a.title} ${a.excerpt} ${a.tag}`;
+      let score = 0;
+      for (const w of words) if (text.includes(w)) score += 10;
+      return { a, score };
+    })
+    .filter((s) => s.score > 0)
+    .sort((x, y) => y.score - x.score)
+    .slice(0, 4)
+    .map((s) => s.a);
+
+  if (matched.length === 0) return null;
+
   return (
     <div>
       <h2 className="text-xl font-bold text-neon-text mb-4">관련 매거진</h2>
       <div className="grid gap-3 sm:grid-cols-2">
-        {articles.map((a, i) => (
-          <Link key={i} to="/magazine" className="rounded-xl border border-neon-border bg-neon-surface p-4 card-hover block">
+        {matched.map((a) => (
+          <Link key={a.id} to={`/magazine/${a.id}`} className="rounded-xl border border-neon-border bg-neon-surface p-4 card-hover block">
             <span className="rounded-full bg-neon-primary/10 px-2 py-0.5 text-xs text-neon-primary-light">{a.tag}</span>
             <p className="mt-2 text-sm font-semibold text-neon-text leading-snug">{a.title}</p>
+            <p className="mt-1 text-xs text-neon-text-muted line-clamp-2">{a.excerpt}</p>
           </Link>
         ))}
       </div>

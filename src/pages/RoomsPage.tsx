@@ -93,10 +93,7 @@ export default function RoomsPage() {
         { day: '일요일', time: '17:00~22:00', level: 35 },
       ]} />
 
-      <RelatedMagazine articles={[
-        { title: '비즈니스 접대에 최적인 독립 룸 안내', tag: '비즈니스' },
-        { title: '해운대고구려 — 마린시티 60개 개별 룸의 비밀', tag: '부산' },
-      ]} />
+      <RelatedMagazine category="room" />
 
       <LiveActivityFeed maxItems={5} category="room" />
 

@@ -123,10 +123,7 @@ export default function HoppaPage() {
         { day: '일요일', time: '20:00~00:00', level: 35 },
       ]} />
 
-      <RelatedMagazine articles={[
-        { title: '호스트 공간 처음 가는 분을 위한 완벽 가이드', tag: '입문' },
-        { title: '수도권 vs 해운대 — 권역별 무드 비교', tag: '비교' },
-      ]} />
+      <RelatedMagazine category="hoppa" />
 
       <LiveActivityFeed maxItems={5} category="hoppa" />
 
