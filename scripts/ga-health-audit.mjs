@@ -30,6 +30,14 @@ function kst() {
   return new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 19) + ' KST';
 }
 
+// ★메일 표시값 PII 마스킹 — GA가 보통 path 쿼리를 떼지만, landingPage 등에 이메일·전화가
+//   남을 가능성을 메일 본문에서 한 번 더 가린다(읽기전용 감시가 PII를 다시 노출하지 않게).
+function maskPii(s) {
+  return String(s == null ? '' : s)
+    .replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g, '[redacted_email]')
+    .replace(/\b0\d{1,2}[-.\s]\d{3,4}[-.\s]\d{4}\b|\b0\d{8,10}\b/g, '[redacted_phone]');
+}
+
 // 사이트 전체 합계 지표 (차원 없음 = 1행). 실패 시 {ok:false}.
 async function siteTotals(token, startDate, endDate) {
   const r = await runReport(token, {
@@ -152,7 +160,7 @@ async function main() {
 function rowsTable(title, list, fmt) {
   if (!list.length) return '';
   const r = list.slice(0, 25).map((x) => `<tr>
-    <td style="border:1px solid #E5E7EB;padding:6px;font-size:12px"><a href="https://nolcool.com${x.path}">${x.path}</a></td>
+    <td style="border:1px solid #E5E7EB;padding:6px;font-size:12px"><a href="https://nolcool.com${maskPii(x.path)}">${maskPii(x.path)}</a></td>
     <td style="border:1px solid #E5E7EB;padding:6px;font-size:12px">세션 ${x.sessions}</td>
     <td style="border:1px solid #E5E7EB;padding:6px;font-size:12px;color:#DC2626">${fmt(x)}</td></tr>`).join('');
   return `<h3>${title} (${list.length}${list.length > 25 ? ', 상위25' : ''})</h3>

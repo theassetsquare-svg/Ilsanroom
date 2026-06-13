@@ -172,6 +172,13 @@ const REGISTRY = {
     label: 'provenance 에 비허용 키(rating) 주입',
     mutate: jsonAddKey('src/data/places-provenance.json', (o) => Object.keys(o)[0], 'rating', 5),
   },
+  'scripts/ga4-pii-gate.mjs': {
+    phase: 'pre',
+    label: 'GA4 page_view 페이로드에서 scrubPii() 관문을 벗겨 href 직송(PII 누출)',
+    mutate: replaceAll('src/lib/visitor-tracker.ts',
+      "gtag('event', 'scroll_100', scrubPii({ page_path: pagePath, page_location: window.location.href }));",
+      "gtag('event', 'scroll_100', { page_path: pagePath, page_location: window.location.href });"),
+  },
 
   // ── post-build (dist) ──
   'scripts/nolcool-dist-audit.mjs': {

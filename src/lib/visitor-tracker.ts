@@ -4,6 +4,7 @@
  * 외부 SaaS 불필요. UTM/유입채널/디바이스/유저ID까지 자동 수집.
  */
 import { createClient } from './supabase';
+import { scrubPii } from './pii-scrub';
 
 type EventType =
   | 'view' | 'scroll_25' | 'scroll_50' | 'scroll_75' | 'scroll_100'
@@ -38,12 +39,14 @@ function forwardToGa4(eventType: EventType, meta?: Record<string, any>) {
   const pagePath = currentPath || normalizePath(window.location.pathname);
   // ★page_view는 send()의 봇·내부·관리자 게이트를 통과한 '진짜 방문자'에서만 발송.
   // index.html config는 send_page_view:false → 자동 발송 없음 → 감사봇/링크미리보기 오염 0.
+  // ★모든 gtag 페이로드는 scrubPii() 단일 관문 통과 — 이메일/전화/URL 쿼리 PII가 GA4로 안 새게.
+  //   (page_location=window.location.href 의 쿼리스트링이 PII 1순위 누출원이라 반드시 정화)
   if (eventType === 'view') {
-    gtag('event', 'page_view', {
+    gtag('event', 'page_view', scrubPii({
       page_path: pagePath,
       page_title: typeof document !== 'undefined' ? document.title : undefined,
       page_location: window.location.href,
-    });
+    }));
     return;
   }
   // ★끝까지읽기(scroll_100) — page_view와 ★동일한 send() 게이트(봇·관리자·내부 제외)를 통과한
@@ -52,12 +55,12 @@ function forwardToGa4(eventType: EventType, meta?: Record<string, any>) {
   // → scrollRate 100% 초과가 구조적으로 불가능(scroll_100 ≤ page_view). 향상측정 'scroll'(90%·게이트
   // 없음=봇 포함)은 더 이상 사용하지 않는다. 수치 조작 아님: 가짜 이벤트 주입 0, 진짜 방문자 1회만.
   if (eventType === 'scroll_100') {
-    gtag('event', 'scroll_100', { page_path: pagePath, page_location: window.location.href });
+    gtag('event', 'scroll_100', scrubPii({ page_path: pagePath, page_location: window.location.href }));
     return;
   }
   const name = GA4_EVENT_NAME[eventType];
   if (!name) return;
-  gtag('event', name, { ...(meta || {}) });
+  gtag('event', name, scrubPii({ ...(meta || {}) }));
 }
 
 type SourceType = 'google' | 'naver' | 'kakao' | 'daum' | 'bing' | 'twitter' | 'facebook' | 'instagram' | 'youtube' | 'direct' | 'internal' | 'other';
