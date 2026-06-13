@@ -19,8 +19,9 @@
 
 ## 3. CSP script-src 강제 전환 (운영자 판단)
 - 현재 CSP는 `frame-ancestors/base-uri/object-src`만 **강제**, `script-src`는 **Report-Only(관찰)** 상태.
-- 절차: ① 라이브에서 며칠간 브라우저 콘솔의 CSP-Report-Only 위반 로그 확인 → ② 위반 0 확인되면 → ③ `public/_headers`의 `Content-Security-Policy-Report-Only`를 `Content-Security-Policy`로 승격.
-- ★위반이 남아있는데 강제하면 인라인 스크립트(GA4·픽셀)가 막혀 사이트가 깨집니다. 반드시 위반 0 확인 후에만.
+- 위반은 이제 **자동 누적**됩니다: Report-Only가 `report-to`/`report-uri`로 `/api/csp-report`(Pages Function)에 위반을 POST → `csp_reports` 테이블에 유니크 위반(디렉티브+호스트+경로)만 1행씩 저장(쿼리스트링·PII 미저장, service_role 기록 / 관리자만 조회).
+- 절차: ① 며칠 방문 누적 → ② Supabase에서 `select * from csp_reports order by last_seen desc` 확인 → ③ **0행(또는 의도된 도메인만)** 이면 → ④ `public/_headers`의 `Content-Security-Policy-Report-Only`를 `Content-Security-Policy`로 승격(`report-to`/`report-uri`는 유지).
+- ★위반이 남아있는데 강제하면 인라인 스크립트(GA4·픽셀)가 막혀 사이트가 깨집니다. 반드시 `csp_reports` 비어있음 확인 후에만.
 
 ## 자동화로 이미 잠긴 항목 (참고)
 - Supabase RLS 회귀 — `security-audit-nightly.yml` 매일 KST 03:00 (RLS off·정책없음·always-true 베이스라인 비교, 회귀 시 메일).

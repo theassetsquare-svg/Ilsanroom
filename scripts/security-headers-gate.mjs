@@ -47,7 +47,16 @@ function main() {
     console.error('❌ 보안 헤더 누락:\n  - ' + missing.join('\n  - '));
     process.exit(2);
   }
-  console.log('✅ 보안 헤더 게이트 통과 — 필수 ' + REQUIRED.length + '종 + 강제CSP script-src 없음');
+
+  // Report-Only는 반드시 수집처(report-to 또는 report-uri)가 있어야 함.
+  // 없으면 위반이 "브라우저 콘솔에만" 남아 누적 안 됨 → 강제 전환 판정 불가.
+  const reportOnly = (txt.match(/^\s*Content-Security-Policy-Report-Only:\s*[^\n]*/im) || [''])[0];
+  if (reportOnly && !/report-to\s+\S+|report-uri\s+\S+/i.test(reportOnly)) {
+    console.error('❌ CSP Report-Only에 report-to/report-uri 수집처 없음 — 위반이 콘솔에만 남고 누적 안 됨.');
+    process.exit(2);
+  }
+
+  console.log('✅ 보안 헤더 게이트 통과 — 필수 ' + REQUIRED.length + '종 + 강제CSP script-src 없음 + Report-Only 수집처 존재');
 }
 
 main();
