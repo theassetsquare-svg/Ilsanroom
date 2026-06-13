@@ -26,6 +26,10 @@ const NEW_LASTMOD = {};           // 이번 빌드 결과로 저장할 매니페
 // 빌드 날짜·ISO 타임스탬프·연도 등 휘발성 토큰을 해시 입력에서 제거 → '오늘 빌드'/'푸터 연도'가
 // 콘텐츠 변경으로 오인되지 않게 한다 (의미 있는 본문 변경만 lastmod에 반영).
 const VOLATILE_DATE_RE = /\d{4}-\d{2}-\d{2}(?:T[\d:.+\-Z]+)?/g;
+// 사이트 공통 chrome(전역 카테고리 nav·사이트맵 footer 블록)은 전 페이지 동일 → 해시에서 제거.
+//   푸터 링크/문구 1곳을 바꿔도 수백 페이지 lastmod가 흔들리지 않게(테스트C). 페이지 고유
+//   keyword footer(<footer><p>…</p>)는 slug별 고유 콘텐츠라 제외하지 않음.
+const CHROME_STRIP_RE = /<nav aria-label="카테고리">[\s\S]*?<\/nav>|<footer aria-label="사이트맵">[\s\S]*?<\/footer>/g;
 
 // 빌드 시점(KST) — 모든 프리렌더 페이지의 last-modified·dateModified 기본값
 const BUILD_DATE_KST = (() => {
@@ -308,10 +312,11 @@ function visibleBreadcrumb(meta) {
 }
 
 function writePage(routePath, meta) {
-  // ★ lastmod 정직화 — 의미 콘텐츠(제목+설명+SSR본문, 날짜 정규화) 해시 캡처.
-  //   nav/footer/빌드날짜/JSON-LD dateModified 같은 휘발성 요소는 제외(meta.ssrBody는 footer 주입 전 원본).
+  // ★ lastmod 정직화 — 의미 콘텐츠(제목+설명+SSR본문)만 해시. 전역 chrome(카테고리 nav·사이트맵
+  //   footer)·빌드날짜/ISO타임스탬프는 입력에서 제거 → 푸터 한 줄/오늘 빌드가 lastmod를 흔들지 않게.
   {
-    const hi = `${meta.title || ''}\u0000${meta.description || ''}\u0000${meta.ssrBody || ''}`.replace(VOLATILE_DATE_RE, 'DATE');
+    const body = (meta.ssrBody || '').replace(CHROME_STRIP_RE, '');
+    const hi = `${meta.title || ''}\u0000${meta.description || ''}\u0000${body}`.replace(VOLATILE_DATE_RE, 'DATE');
     CONTENT_HASH_BY_ROUTE[routePath] = crypto.createHash('sha1').update(hi).digest('hex');
   }
   // 파일시스템은 디코딩된 경로 (Cloudflare가 URL 디코딩 후 매칭)
