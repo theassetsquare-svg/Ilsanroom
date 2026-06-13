@@ -1,0 +1,22 @@
+name: GA4 Admin Apply (manual, write)
+
+# 대표님 지시 — GA4 설정(보관14개월·핵심이벤트) 실제 적용 시도.
+# analytics.edit 스코프. SA 역할이 '편집자'면 적용, '뷰어'면 403(그 사실을 보고).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Apply GA4 admin settings
+        run: node scripts/ga4-admin-apply.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
