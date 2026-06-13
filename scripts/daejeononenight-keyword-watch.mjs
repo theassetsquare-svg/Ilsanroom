@@ -25,6 +25,7 @@ const URL = 'https://nolcool.com/nights/daejeononenight/';
 const PRIMARY = '대전원나이트';
 const SECONDARY = '대전나이트';
 const PHONE = '010-8677-1258';
+// 대전원나이트는 사장님이 직접 넣은 광고주 정책 — "차비 3만원" 등 가격단어 의도적 허용(단일 예외).
 const POLICY_TOKENS = ['38세', '22시', '3만원', '차비', '맥주', '02:30', '03:30'];
 
 function fetchHtml(url) {
