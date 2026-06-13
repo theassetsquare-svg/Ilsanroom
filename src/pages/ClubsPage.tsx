@@ -17,7 +17,7 @@ const regions = [
 ];
 
 export default function ClubsPage() {
-  useDocumentMeta('클럽 줄 서다 입장컷 당하기 싫죠? 10년 MD가 들어갈 곳만 알려줌', '클럽 줄 컷이면 그날 끝. 10년 MD가 강남·홍대 클럽 Funktion-One·드레스코드·해외 게스트 DJ·새벽 3시 피크·VIP 부킹까지 클럽 121곳 갈 곳만 추려요 →');
+  useDocumentMeta('클럽 줄 서다 입장컷 당하기 싫죠? 10년 MD가 들어갈 곳만 알려줌', '클럽 줄 컷이면 그날 끝. 10년 MD가 강남·홍대 클럽 Funktion-One·드레스코드·해외 게스트 DJ·새벽 3시 피크·VIP 부킹까지 클럽 121곳, 갈 곳만 추렸으니 줄 서기 전에 바로 확인 →');
   const venues = getVenuesByCategory('club');
   const featured = venues.find(v => v.isPremium) || venues[0];
   const byRegion = venues.reduce<Record<string, number>>((m, v) => { m[v.regionKo] = (m[v.regionKo] || 0) + 1; return m; }, {});

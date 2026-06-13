@@ -18,7 +18,7 @@ const regions = [
 export default function YojeongPage() {
   useDocumentMeta(
     '요정 — 거래처 모시는 자리, 한정식 12첩 가야금 선율 위에 격을 갖춘다',
-    '요정 — 사장님 모시는 자리, 격 떨어지면 다음은 없죠. 20년 실장이 한정식 12첩·국악 가야금·정찰제 매너 한 줄로 정리. 일산명월관·강남·여의도·종로·부산 진짜 요정만 →'
+    '요정 — 사장님 모시는 자리, 격 떨어지면 다음은 없죠. 20년 실장이 한정식 12첩·국악 가야금·정찰제 매너 한 줄로 정리. 일산명월관·강남·여의도·종로·부산 진짜 요정만 추렸으니 모시기 전에 먼저 확인 →'
   );
   const venues = getVenuesByCategory('yojeong');
   const featured = venues.find(v => v.isPremium) || venues[0];

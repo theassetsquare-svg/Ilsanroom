@@ -24,7 +24,7 @@ const regions = [
 ];
 
 export default function HoppaPage() {
-  useDocumentMeta('여자 혼자 호빠 가도 돼? 10년 실장이 외모·매너·진행 다 봐주는 18곳', '처음 호빠 가서 어색한 시간 30분이면 끝. 10년 일한 호빠 실장이 외모·매너·진행 다 봐드립니다. 강남·홍대·일산·해운대·대구 호빠 진짜 케어되는 18곳만 골라서 →');
+  useDocumentMeta('여자 혼자 호빠 가도 돼? 10년 실장이 외모·매너·진행 다 봐주는 18곳', '처음 호빠 가서 어색한 시간 30분이면 끝. 10년 일한 호빠 실장이 외모·매너·진행 다 봐드립니다. 강남·홍대·일산·해운대·대구 호빠 진짜 케어되는 18곳만 골랐으니 첫 방문 전에 먼저 확인 →');
   const venues = getVenuesByCategory('hoppa');
   const featured = venues.find(v => v.isPremium) || venues[0];
 

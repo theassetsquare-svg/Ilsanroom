@@ -25,7 +25,7 @@ export default function TagPage() {
 
   useDocumentMeta(
     `#${decodedTag} 관련 업소 ${filtered.length}곳 — 태그로 찾는 나이트라이프`,
-    `'${decodedTag}' 태그가 붙은 클럽·나이트·라운지·룸 ${filtered.length}곳. 관심 키워드로 딱 맞는 곳을 찾아보세요.`,
+    `'${decodedTag}' 태그 하나로 묶이는 클럽·나이트·라운지·룸 ${filtered.length}곳, 오늘 밤 어디부터 가볼지 지금 바로 확인하세요.`,
     undefined,
     `${decodedTag}, ${decodedTag} 추천, 나이트라이프 ${decodedTag}`
   );
