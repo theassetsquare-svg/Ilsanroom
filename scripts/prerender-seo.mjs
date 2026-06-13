@@ -6,12 +6,26 @@
  */
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { execSync } from 'child_process';
 import { provinceOf, localityOf } from './lib/region-admin.mjs';
 
 const DIST = path.resolve('dist');
 const BASE_URL = 'https://nolcool.com';
 const OG_IMAGE = `${BASE_URL}/og/nolcool-og.jpg`;
+
+// ★ lastmod 정직화 — 페이지별 "의미 콘텐츠" 해시를 직전 빌드와 비교해, 실제로 바뀐 URL만
+//   lastmod를 갱신한다. 안 바뀐 페이지는 이전 lastmod 그대로 유지 → 매일 today 도배 방지.
+const LASTMOD_MANIFEST_PATH = path.resolve('scripts/.seo-lastmod.json');
+const PREV_LASTMOD = (() => {
+  try { return JSON.parse(fs.readFileSync(LASTMOD_MANIFEST_PATH, 'utf8')); }
+  catch { return {}; }
+})();
+const CONTENT_HASH_BY_ROUTE = {}; // routePath -> 의미 콘텐츠 해시 (writePage에서 캡처)
+const NEW_LASTMOD = {};           // 이번 빌드 결과로 저장할 매니페스트 {routePath:{hash,lastmod}}
+// 빌드 날짜·ISO 타임스탬프·연도 등 휘발성 토큰을 해시 입력에서 제거 → '오늘 빌드'/'푸터 연도'가
+// 콘텐츠 변경으로 오인되지 않게 한다 (의미 있는 본문 변경만 lastmod에 반영).
+const VOLATILE_DATE_RE = /\d{4}-\d{2}-\d{2}(?:T[\d:.+\-Z]+)?/g;
 
 // 빌드 시점(KST) — 모든 프리렌더 페이지의 last-modified·dateModified 기본값
 const BUILD_DATE_KST = (() => {
@@ -294,6 +308,12 @@ function visibleBreadcrumb(meta) {
 }
 
 function writePage(routePath, meta) {
+  // ★ lastmod 정직화 — 의미 콘텐츠(제목+설명+SSR본문, 날짜 정규화) 해시 캡처.
+  //   nav/footer/빌드날짜/JSON-LD dateModified 같은 휘발성 요소는 제외(meta.ssrBody는 footer 주입 전 원본).
+  {
+    const hi = `${meta.title || ''}\u0000${meta.description || ''}\u0000${meta.ssrBody || ''}`.replace(VOLATILE_DATE_RE, 'DATE');
+    CONTENT_HASH_BY_ROUTE[routePath] = crypto.createHash('sha1').update(hi).digest('hex');
+  }
   // 파일시스템은 디코딩된 경로 (Cloudflare가 URL 디코딩 후 매칭)
   // canonical/sitemap은 routePath 그대로 (인코딩 유지)
   const decodedPath = routePath.split('/').map(s => {
@@ -2345,22 +2365,31 @@ console.log(`✅ 동적 SEO 페이지 ${dynamicPages.length}개 생성`);
 // ★ 비공개/관리 페이지 제외 (login, profile, dashboard, admin 등)
 // ══════════════════════════════════════════
 const today = new Date().toISOString().slice(0, 10);
+// ★ lastmod 정직화 — routePath의 콘텐츠 해시가 직전 빌드와 같으면 이전 lastmod 유지, 다르면(신규 포함) today.
+//   '오늘 빌드했으니 오늘 수정' 거짓 신선도를 차단하고, 실제 바뀐 페이지만 새 날짜를 갖게 한다.
+function lastmodFor(routePath) {
+  const h = CONTENT_HASH_BY_ROUTE[routePath];
+  const prev = PREV_LASTMOD[routePath];
+  const lm = (h && prev && prev.hash === h) ? prev.lastmod : today;
+  NEW_LASTMOD[routePath] = { hash: h || '', lastmod: lm };
+  return lm;
+}
 let sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 // Homepage
-sitemapXml += `  <url><loc>${BASE_URL}/</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>\n`;
+sitemapXml += `  <url><loc>${BASE_URL}/</loc><lastmod>${lastmodFor('/')}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>\n`;
 // Static pages (비공개 페이지 제외, trailing slash 추가)
 for (const pg of staticPages) {
   if (noIndexPathsSet.has(pg.path)) continue;
   const freq = pg.path.startsWith('/community') ? 'daily' : 'weekly';
   const pri = categoryPaths.has(pg.path) ? '0.9' : pg.path.startsWith('/community') ? '0.7' : '0.7';
-  sitemapXml += `  <url><loc>${BASE_URL}${pg.path}/</loc><lastmod>${today}</lastmod><changefreq>${freq}</changefreq><priority>${pri}</priority></url>\n`;
+  sitemapXml += `  <url><loc>${BASE_URL}${pg.path}/</loc><lastmod>${lastmodFor(pg.path)}</lastmod><changefreq>${freq}</changefreq><priority>${pri}</priority></url>\n`;
 }
 // Regional pages (trailing slash 추가)
 for (const [cat, regions] of Object.entries(regionsByCategory)) {
   const cm = catMap[cat];
   if (!cm || !['club', 'room', 'yojeong'].includes(cat)) continue;
   for (const region of Object.keys(regions)) {
-    sitemapXml += `  <url><loc>${BASE_URL}/${cm.path}/${region}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
+    sitemapXml += `  <url><loc>${BASE_URL}/${cm.path}/${region}/</loc><lastmod>${lastmodFor(`/${cm.path}/${region}`)}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
   }
 }
 // All venue detail pages (trailing slash 추가)
@@ -2373,18 +2402,25 @@ for (const v of venues) {
   } else {
     routePath = `/${cm.path}/${v.slug}`;
   }
-  sitemapXml += `  <url><loc>${BASE_URL}${routePath}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
+  sitemapXml += `  <url><loc>${BASE_URL}${routePath}/</loc><lastmod>${lastmodFor(routePath)}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
 }
 // Magazine article pages (시즌9 — Article schema + SSR 본문 prerender)
 for (const a of magazineArticles) {
-  sitemapXml += `  <url><loc>${BASE_URL}/magazine/${a.id}/</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>\n`;
+  sitemapXml += `  <url><loc>${BASE_URL}/magazine/${a.id}/</loc><lastmod>${lastmodFor(`/magazine/${a.id}`)}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>\n`;
 }
 // Dynamic SEO pages (best, new, region, tag, near)
 for (const dp of dynamicPages) {
-  sitemapXml += `  <url><loc>${BASE_URL}${dp}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>\n`;
+  sitemapXml += `  <url><loc>${BASE_URL}${dp}/</loc><lastmod>${lastmodFor(dp)}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>\n`;
 }
 sitemapXml += `</urlset>`;
 fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml);
+// ★ 매니페스트 저장 — 다음 빌드가 이 해시·lastmod와 비교 (git 커밋 → CF/CI 빌드 간 영속)
+fs.writeFileSync(LASTMOD_MANIFEST_PATH, JSON.stringify(NEW_LASTMOD, null, 0) + '\n');
+{
+  const _changed = Object.values(NEW_LASTMOD).filter(e => e.lastmod === today).length;
+  const _kept = Object.keys(NEW_LASTMOD).length - _changed;
+  console.log(`🕒 lastmod 정직화 — 변경/신규 ${_changed}개 today(${today}) · 유지 ${_kept}개 이전 날짜 (.seo-lastmod.json)`);
+}
 const totalSitemapUrls = 1 + staticPages.length + regionalCount + venues.length + magazineArticles.length + dynamicPages.length;
 console.log(`✅ sitemap.xml 생성 (총 ${totalSitemapUrls}개 URL, 동적 ${dynamicPages.length}개 + 매거진 ${magazineArticles.length}개 포함)`);
 

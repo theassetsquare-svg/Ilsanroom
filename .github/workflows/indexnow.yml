@@ -20,6 +20,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # 직전 제출 스냅샷 복원 (변경분만 제출하기 위한 비교 기준). 첫 실행은 빈 상태 = 전량 신규
+      - name: Restore IndexNow snapshot
+        uses: actions/cache/restore@v4
+        with:
+          path: scripts/.indexnow-last.json
+          key: indexnow-snapshot-${{ github.run_id }}
+          restore-keys: |
+            indexnow-snapshot-
+
       - name: Build (sitemap 생성)
         run: npm run build
         env:
@@ -30,3 +39,11 @@ jobs:
         run: node scripts/indexnow.mjs
         env:
           INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+
+      # 제출 후 갱신된 스냅샷 저장 → 다음 실행이 그 이후 변경분만 제출
+      - name: Save IndexNow snapshot
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: scripts/.indexnow-last.json
+          key: indexnow-snapshot-${{ github.run_id }}
