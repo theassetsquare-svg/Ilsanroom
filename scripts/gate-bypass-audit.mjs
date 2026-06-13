@@ -141,6 +141,11 @@ const REGISTRY = {
     label: '쉼표로 잘린 미완결 shortDescription venue 블록 주입',
     mutate: append('src/data/venues.ts', "  {\n    slug: 'zzbypass-desc-test',\n    shortDescription: '이 문장은 끝맺지 못하고 잘린 채로 끝나는데,',\n  },"),
   },
+  'scripts/mcp-readonly-gate.mjs': {
+    phase: 'pre',
+    label: 'MCP 서버에 쓰기 메서드(method:POST) 코드 주입',
+    mutate: append('scripts/mcp/nolcool-readonly-mcp.mjs', "const __bypass = { method: 'POST' };"),
+  },
   'scripts/community-moderation-gate.mjs': {
     phase: 'pre',
     label: 'hasIllegalWord 무력화(return false) → 행동검증이 잡아야 함',
