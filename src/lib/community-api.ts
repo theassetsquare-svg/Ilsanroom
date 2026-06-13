@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase';
 import { checkContent, checkTitle } from '@/lib/content-filter';
+import { trackEvent } from '@/lib/visitor-tracker';
 
 export type PostCategory = 'reviews' | 'discussion' | 'party' | 'tips' | 'free';
 
@@ -92,6 +93,8 @@ export async function createPost(post: {
     .single();
 
   if (error) return { error: error.message };
+  // 진짜 글 작성이 DB에 저장된 직후에만 GA4 post_create 발송(실제 행동 = 정직).
+  trackEvent('post_create', { category: post.category });
   return { data };
 }
 

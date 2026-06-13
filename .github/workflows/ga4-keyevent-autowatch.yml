@@ -1,0 +1,27 @@
+name: GA4 Key-Event Autowatch (read-only)
+
+# 목표 5개 이벤트(post_create/invite_open/search/search_no_result/share)가 실제로
+# 발생하기 시작하면 자동 감지 → "지정하세요" 메일. 발생/지정 끝나면 자동 침묵(자기수렴).
+# 읽기전용(GET/runReport) — 설정 변경 0. SA 뷰어 고정(쓰기권한0=안전선).
+on:
+  schedule:
+    - cron: '25 23 * * *'  # 매일 KST 08:25 (UTC 23:25)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: GA4 key-event autowatch
+        run: node scripts/ga4-keyevent-autowatch.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}

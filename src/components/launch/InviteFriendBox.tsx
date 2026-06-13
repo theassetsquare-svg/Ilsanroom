@@ -5,7 +5,7 @@ import { trackEvent } from '@/lib/visitor-tracker';
    Web Share API (모바일 카톡/메시지 자동) → 폴백 = 클립보드 복사.
    카톡 미리보기는 og:* 가 항상 중립 ("놀쿨 — 오늘 밤 가이드"). */
 
-const INVITE_URL = 'https://nolcool.com/welcome';
+const INVITE_URL = 'https://nolcool.com/welcome?utm_source=invite&utm_medium=kakao';
 const INVITE_TEXT = '놀쿨 — 오늘 밤 가이드. 카톡 공유해도 업소 단어 0%, 친구한테 추천해도 안전.';
 
 export default function InviteFriendBox() {

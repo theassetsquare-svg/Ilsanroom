@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useFoundingMember } from '@/hooks/useFoundingMember';
+import { trackEvent } from '@/lib/visitor-tracker';
 
 /* /welcome — OPEN BETA 환영 페이지
    첫 방문자/입소문 들어온 사람한테 "놀쿨이 뭐고 왜 지금 가입해야 하는지" 30초 컷 안내.
@@ -30,6 +32,13 @@ export default function WelcomePage() {
     '오픈 직후 첫 100명 창립멤버에게 영구 뱃지를 드립니다. 본명 비노출·Stealth 모드 등 프라이버시 설계로 안심하고 시작하세요.'
   );
   const { remaining, totalCount } = useFoundingMember(null);
+
+  // 초대 링크(utm_source=invite)로 /welcome 을 연 진짜 방문자만 invite_open 1회 발송.
+  // 내부 배너 클릭(표식 없음)은 집계 제외 = 정확한 입소문 측정.
+  useEffect(() => {
+    const src = new URLSearchParams(window.location.search).get('utm_source');
+    if (src === 'invite') trackEvent('invite_open', { channel: 'welcome' });
+  }, []);
 
   return (
     <div className="bg-white">
