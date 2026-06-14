@@ -79,6 +79,10 @@ export default function ClubsPage() {
         <p className="text-base leading-relaxed text-neon-text-muted">
           동네마다 색이 다릅니다. 강남·압구정·청담에는 규모가 큰 베뉴가 모여 있고, 홍대는 중소형 공간에 인디·얼터너티브가 섞입니다. 이태원은 외국인이 많은 동네라 다국적 파티 분위기가 강한 편입니다.
         </p>
+        <h3 className="text-base font-bold text-neon-text pt-1">오늘 클럽 어디부터 고를까?</h3>
+        <p className="text-base leading-relaxed text-neon-text-muted">
+          고민될 땐 음악부터 정하면 빠릅니다. EDM·하우스로 크게 놀고 싶으면 강남·압구정의 대형 클럽, 힙합·R&B에 가까운 밤이면 홍대 중소형, 국적 안 가리고 섞이고 싶으면 이태원이 답이죠. 인원도 변수입니다. 둘셋이면 바 카운터에서 시작해 플로어에 합류하는 게 편하고, 단체면 테이블 예약이 사실상 필수예요.
+        </p>
         <p className="text-base leading-relaxed text-neon-text-muted">
           영업시간·드레스코드·입장 조건은 업소마다 다릅니다. 확인된 정보만 표기하고, 확인되지 않은 항목은 비워 둡니다. 그러니 방문 전 각 업소 상세 페이지에서 영업 여부와 조건을 한 번 더 확인하는 편이 안전합니다. 슬리퍼·운동복 차림은 대부분 입장이 제한되니 깔끔한 옷차림을 권합니다.
         </p>

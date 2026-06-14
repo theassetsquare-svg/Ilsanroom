@@ -212,6 +212,24 @@ export default function FreeBoardPage() {
           ))}
         </div>
 
+        {/* 처음 온 사람용 안내 — 체류·진입장벽 낮추기 */}
+        <section className="mt-10 rounded-2xl border p-5 sm:p-6 space-y-3" style={{ borderColor: '#E5E7EB', backgroundColor: 'rgba(139,92,246,0.03)' }}>
+          <h2 className="text-base font-bold" style={{ color: '#111' }}>여기 처음이면 — 이렇게 쓰면 돼요</h2>
+          <p className="text-sm leading-relaxed" style={{ color: '#555' }}>
+            자유게시판은 말 그대로 주제 안 가립니다. 어젯밤 갔던 데 어땠는지, 다음 주말 어디 갈지 고민이라든지, 그냥 오늘 하루 푸념이라도 다 올려도 돼요.
+            잘 쓸 필요 없습니다. 한 줄짜리 질문이 의외로 댓글 제일 많이 달려요.
+          </p>
+          <ul className="space-y-1.5 text-sm" style={{ color: '#555' }}>
+            <li>· <b>잡담·푸념</b> — "오늘 진짜 별로였다" 같은 한 줄도 환영. 공감 댓글 금방 붙습니다</li>
+            <li>· <b>질문</b> — "이 동네 처음인데 어디부터?" 물어보면 먼저 가본 사람이 답해줘요</li>
+            <li>· <b>자랑·썰</b> — 어젯밤 황당했던 일, 우연히 만난 사람 얘기까지 다 풀어도 됩니다</li>
+          </ul>
+          <p className="text-sm leading-relaxed" style={{ color: '#555' }}>
+            닉네임은 익명이라 부담 없이 솔직하게 적으면 됩니다. 딱 하나, 다른 사람 헐뜯거나 연락처 막 뿌리는 건 안 돼요.
+            그거 빼면 진짜 자유. 글 남기면 그 글이 위 목록에 바로 올라가고, 반응 오면 알림으로 알려드립니다.
+          </p>
+        </section>
+
         {showWriteModal && (
           <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
             <WriteHeader onCancel={() => setShowWriteModal(false)} title="자유게시판 글쓰기" />

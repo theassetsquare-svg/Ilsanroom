@@ -81,6 +81,25 @@ export default function MagazinePage() {
           ))}
         </div>
 
+        {/* ═══ 본문 — 매거진 설명 (체류·AIO) ═══ */}
+        <section className="mt-12 rounded-2xl border bg-[#FAFAFA] p-6 space-y-3" style={{ borderColor: '#E5E7EB' }}>
+          <h2 className="text-base font-bold text-[#111]">매거진, 뭘 읽는 곳이냐면</h2>
+          <p className="text-sm leading-relaxed text-[#555]">
+            가기 전에 5분만 읽으면 그날 밤이 달라져요. 여기 글은 광고 카피가 아니라 직접 발품 판 기록입니다.
+            강남·홍대·이태원 같은 동네를 통째로 뜯어보는 지역 분석, 클럽과 라운지가 뭐가 어떻게 다른지 끝까지
+            비교하는 업종 가이드, 새로 문 연 매장에 먼저 다녀온 현장 리포트가 주로 올라옵니다.
+          </p>
+          <ul className="space-y-1 text-sm text-[#555]">
+            <li>· <b>지역 분석</b> — 이 동네는 첫차 끊기기 전 어디로 옮기는지, 토박이 동선까지</li>
+            <li>· <b>업종 비교</b> — 클럽 vs 라운지 vs 나이트, 오늘 기분엔 어디가 맞는지</li>
+            <li>· <b>현장 리포트</b> — 새로 생긴 곳, 줄 서기 전에 미리 보는 분위기</li>
+          </ul>
+          <p className="text-sm leading-relaxed text-[#555]">
+            읽다가 끌리는 곳이 생기면 글 안의 링크로 바로 그 업소 상세로 넘어가면 됩니다. 매주 새 글이 더해지니,
+            주말 계획 짜기 전 한 번 훑어보세요.
+          </p>
+        </section>
+
         {/* ═══ BOTTOM ═══ */}
         <div className="mt-10 text-center space-y-3">
           <ReadFinishCount pageName="매거진 목록" baseCount={120} />
