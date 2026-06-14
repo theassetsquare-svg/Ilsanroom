@@ -33,7 +33,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   try {
     // 1. 활동왕 TOP 5 선정 (포인트 기준)
     const championsRes = await fetch(
-      `${context.env.SUPABASE_URL}/rest/v1/user_profiles?select=id,nickname,points,level&order=points.desc&limit=5`,
+      `${context.env.SUPABASE_URL}/rest/v1/user_profiles?select=user_id,nickname,points,level&order=points.desc&limit=5`,
       { headers }
     );
     const champions = championsRes.ok ? await championsRes.json() : [];

@@ -146,6 +146,12 @@ const REGISTRY = {
     label: 'MCP 서버에 쓰기 메서드(method:POST) 코드 주입',
     mutate: append('scripts/mcp/nolcool-readonly-mcp.mjs', "const __bypass = { method: 'POST' };"),
   },
+  'scripts/cron-schema-drift-gate.mjs': {
+    phase: 'pre',
+    label: 'cron 에 유령 테이블(community_posts) 조회 코드 주입 → 드리프트가 잡아야 함',
+    mutate: append('functions/api/cron/activity-alert.ts',
+      "const __bypass = fetch('/rest/v1/community_posts?select=id');"),
+  },
   'scripts/community-moderation-gate.mjs': {
     phase: 'pre',
     label: 'hasIllegalWord 무력화(return false) → 행동검증이 잡아야 함',

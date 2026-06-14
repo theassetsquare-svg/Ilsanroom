@@ -49,7 +49,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
     // 인기 글 조회
     const postsRes = await fetch(
-      `${context.env.SUPABASE_URL}/rest/v1/community_posts?select=id,title,category,like_count,comment_count,view_count&order=view_count.desc&limit=10`,
+      `${context.env.SUPABASE_URL}/rest/v1/posts?select=id,title,category,likes,comment_count,views&order=views.desc&limit=10`,
       { headers }
     );
     const posts = postsRes.ok ? await postsRes.json() : [];

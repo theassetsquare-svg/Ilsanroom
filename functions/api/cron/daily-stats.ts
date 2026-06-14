@@ -31,9 +31,11 @@ async function sendAdminEmail(env: Env, subject: string, html: string) {
   }).catch(() => {});
 }
 
-async function countSince(env: Env, table: string, since: string): Promise<number> {
+// dateCol: 테이블마다 생성일 컬럼명이 다르다 — posts/reviews=created_at, user_profiles=joined_at.
+// (과거 결함: user_profiles 를 created_at 으로 세서 PostgREST 400 → 항상 0)
+async function countSince(env: Env, table: string, since: string, dateCol = 'created_at'): Promise<number> {
   const res = await fetch(
-    `${env.SUPABASE_URL}/rest/v1/${table}?select=id&created_at=gte.${since}`,
+    `${env.SUPABASE_URL}/rest/v1/${table}?select=${dateCol}&${dateCol}=gte.${since}`,
     { headers: { ...sbHeaders(env), 'Prefer': 'count=exact' } }
   );
   return parseInt(res.headers.get('content-range')?.split('/')[1] || '0');
@@ -55,8 +57,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   try {
     const [newReviews, newPosts, newUsers] = await Promise.all([
       countSince(context.env, 'reviews', yesterday),
-      countSince(context.env, 'community_posts', yesterday),
-      countSince(context.env, 'user_profiles', yesterday),
+      countSince(context.env, 'posts', yesterday),
+      countSince(context.env, 'user_profiles', yesterday, 'joined_at'),
     ]);
 
     const topVenuesRes = await fetch(
