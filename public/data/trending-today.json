@@ -1,28 +1,7 @@
 {
-  "generated_at": "2026-06-14T07:14:18.266Z",
+  "generated_at": "2026-06-14T15:07:33.034Z",
   "window_hours": 24,
   "items": [
-    {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 5
-    },
-    {
-      "path": "/hoppa/daejeonhoppa-eclipse",
-      "title": "대전호빠 이클립스",
-      "category": "hoppa",
-      "region": "대전",
-      "views_24h": 4
-    },
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
-      "views_24h": 3
-    },
     {
       "path": "/hoppa/busanhoppa-star",
       "title": "부산호빠 스타",
@@ -38,24 +17,10 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/bundangpongpongnight",
-      "title": "분당퐁퐁나이트",
-      "category": "night",
-      "region": "분당",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/ilsanshampoonight",
-      "title": "일산샴푸나이트",
-      "category": "night",
-      "region": "일산",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/gwangjusangmunight",
-      "title": "광주상무나이트",
-      "category": "night",
-      "region": "광주",
+      "path": "/hoppa/daejeonhoppa-eclipse",
+      "title": "대전호빠 이클립스",
+      "category": "hoppa",
+      "region": "대전",
       "views_24h": 2
     },
     {
@@ -66,10 +31,17 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/gumihobaknight",
-      "title": "구미호박나이트",
+      "path": "/nights/doksangukbingwannight",
+      "title": "독산동국빈관나이트",
       "category": "night",
-      "region": "구미",
+      "region": "독산",
+      "views_24h": 2
+    },
+    {
+      "path": "/clubs/hongdae/hongdaeclub-dokkaebi",
+      "title": "홍대클럽 도깨비",
+      "category": "club",
+      "region": "홍대",
       "views_24h": 2
     },
     {
@@ -80,10 +52,10 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/daejeonsevennight",
-      "title": "대전세븐나이트",
+      "path": "/nights/dapsimnidontellmamanight",
+      "title": "답십리돈텔마마나이트",
       "category": "night",
-      "region": "대전",
+      "region": "답십리",
       "views_24h": 2
     },
     {
@@ -94,17 +66,45 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/daeguhangukgwannight",
-      "title": "대구한국관나이트",
-      "category": "night",
-      "region": "대구",
-      "views_24h": 1
-    },
-    {
       "path": "/nights/busanmulnight",
       "title": "부산물나이트",
       "category": "night",
       "region": "부산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/sinlimgrandprixnight",
+      "title": "신림그랑프리나이트",
+      "category": "night",
+      "region": "신림",
+      "views_24h": 1
+    },
+    {
+      "path": "/rooms/busan-haeundae/haeundaegoguryeo",
+      "title": "해운대고구려",
+      "category": "room",
+      "region": "부산 해운대",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/daejeonhangukgwannight",
+      "title": "대전한국관나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/ansanhitnight",
+      "title": "안산히트나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/seongnamgukbingwannight",
+      "title": "성남국빈관나이트",
+      "category": "night",
+      "region": "성남",
       "views_24h": 1
     }
   ]
