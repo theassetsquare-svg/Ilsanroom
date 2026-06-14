@@ -167,6 +167,11 @@ const REGISTRY = {
     label: 'GA 스크립트에 gtag event(이벤트 주입) 흔적 주입',
     mutate: append('scripts/ga-optimizer.mjs', "// gtag('event','x')"),
   },
+  'scripts/diagnosis-property-gate.mjs': {
+    phase: 'pre',
+    label: '진단 스크립트에 NOLCOOL 외 GA4 속성 리터럴(properties/999999) 주입',
+    mutate: append('scripts/seo-weakness-diagnosis.mjs', '// properties/999999'),
+  },
   'scripts/content-honesty-gate.mjs': {
     phase: 'pre',
     label: '본문에 출처 없는 단정어("직수입") 주입',

@@ -1,0 +1,29 @@
+name: SEO Weakness Diagnosis (daily)
+
+# 사장님이 매일 아침 열어서 검토·판단하는 GSC+GA4 약점 진단 다이제스트.
+# striking-distance(4~15위) + 저CTR + GA4 고이탈 입구를 한 통에 모으고, 안전 레버를 *제안*으로 붙인다.
+# ★100% 읽기 전용 — 사이트·콘텐츠·광고주 전화 0 변경, 자동 수정 0. NOLCOOL 속성 전용(런타임 가드 + 빌드게이트 이중).
+# 약점 있을 때만 발송(깨끗한 날 침묵). 기존 시크릿 재사용(신규 0).
+on:
+  schedule:
+    # 매일 KST 09:40 (UTC 00:40) — ga-health 08:00 / northstar 08:20 / ga-optimizer 09:10 와 시간 분리
+    - cron: '40 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  seo-weakness-diagnosis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: SEO weakness diagnosis (read-only)
+        run: node scripts/seo-weakness-diagnosis.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}

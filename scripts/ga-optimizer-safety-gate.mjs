@@ -24,6 +24,7 @@ const GA_SCRIPTS = [
   'scripts/ga-health-audit.mjs',
   'scripts/ga-demand-insight.mjs',
   'scripts/northstar-audit.mjs',
+  'scripts/seo-weakness-diagnosis.mjs',
 ];
 
 const errors = [];
