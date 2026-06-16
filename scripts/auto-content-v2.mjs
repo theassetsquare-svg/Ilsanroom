@@ -130,13 +130,13 @@ async function main() {
 
         // 새 글에는 즉시 댓글 0~1개만 (자연스럽게)
         if (Math.random() < 0.4) {
-          const firstComment = await api('GET', `seed_comment_pool?limit=1&order=id.asc`);
-          if (firstComment.length) {
+          const commentPool = await api('GET', `seed_comment_pool?select=content`);
+          if (commentPool.length) {
             const replierId = pick(users.filter(u => u.id !== authorId) || users).id;
             await api('POST', 'comments', {
               post_id: postId,
               user_id: replierId,
-              content: firstComment[0].content,
+              content: pick(commentPool).content,
             });
             await api('PATCH', `posts?id=eq.${postId}`, { comment_count: 1 });
             console.log(`[v2] Initial comment added`);
@@ -167,7 +167,7 @@ async function main() {
     const wantsReply = Math.random() < ageScore * postProb;
     if (!wantsReply) continue;
 
-    const comments = await api('GET', `seed_comment_pool?limit=1&order=id.desc`);
+    const comments = await api('GET', `seed_comment_pool?select=content`);
     if (!comments.length) continue;
 
     const replierId = pick(users.filter(u => u.id !== post.user_id) || users).id;

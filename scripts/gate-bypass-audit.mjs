@@ -152,6 +152,12 @@ const REGISTRY = {
     mutate: append('functions/api/cron/activity-alert.ts',
       "const __bypass = fetch('/rest/v1/community_posts?select=id');"),
   },
+  'scripts/auto-content-variety-gate.mjs': {
+    phase: 'pre',
+    label: 'auto-content 댓글풀을 단일행(seed_comment_pool?limit=1)으로 조회 → 동일 댓글 반복 버그 재유입',
+    mutate: append('scripts/auto-content-v2.mjs',
+      "// const __bypass = await api('GET', 'seed_comment_pool?limit=1&order=id.desc');"),
+  },
   'scripts/community-moderation-gate.mjs': {
     phase: 'pre',
     label: 'hasIllegalWord 무력화(return false) → 행동검증이 잡아야 함',
