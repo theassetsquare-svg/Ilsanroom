@@ -17,13 +17,12 @@ interface NavItem {
 }
 
 const NAV: NavItem[] = [
-  { to: '/admin', label: '대시보드', icon: '🏠', group: 'CMS' },
+  { to: '/admin', label: '모더레이션', icon: '🛡', group: '운영' },
   { to: '/admin/venues', label: '업소 관리', icon: '🏢', group: 'CMS' },
   { to: '/admin/magazine', label: '매거진', icon: '📰', group: 'CMS' },
   { to: '/admin/media', label: '미디어 라이브러리', icon: '🖼', group: 'CMS' },
   { to: '/admin/blocks', label: '페이지 블록', icon: '🧩', group: 'CMS' },
   { to: '/admin/seo', label: 'SEO 메타', icon: '🔎', group: 'CMS' },
-  { to: '/admin/moderation', label: '모더레이션', icon: '🛡', group: '운영' },
   { to: '/admin/stats', label: '통계', icon: '📊', group: '분석' },
   { to: '/admin/visitors', label: '방문자 분석', icon: '👥', group: '분석' },
   { to: '/admin/audit', label: '감사 시스템', icon: '🛠', group: '운영' },

@@ -84,7 +84,6 @@ const AuthCallbackPage = lazyRetry(() => import('./pages/auth/AuthCallbackPage')
 const NaverCallbackPage = lazyRetry(() => import('./pages/auth/NaverCallbackPage'));
 const SetupNicknamePage = lazyRetry(() => import('./pages/auth/SetupNicknamePage'));
 const DashboardPage = lazyRetry(() => import('./pages/admin/DashboardPage'));
-const AdminPage = lazyRetry(() => import('./pages/admin/AdminPage'));
 const AnalyticsPage = lazyRetry(() => import('./pages/admin/AnalyticsPage'));
 const BillingPage = lazyRetry(() => import('./pages/admin/BillingPage'));
 const OnboardingPage = lazyRetry(() => import('./pages/admin/OnboardingPage'));
@@ -238,7 +237,7 @@ export default function App() {
         </Route>
         {/* Admin (사이드바 레이아웃) — 단계 7 */}
         <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminPage />} />
+          <Route index element={<ModerationPage />} />
           <Route path="venues" element={<VenueManagePage />} />
           <Route path="magazine" element={<MagazineManagePage />} />
           <Route path="media" element={<MediaLibraryPage />} />
