@@ -19,6 +19,12 @@ import { join } from 'node:path';
 const DIST = 'dist';
 const MIN_CHARS_DETAIL = 1700;
 const MIN_CHARS_LISTING = 2000;
+// 매거진은 venue 상세가 아니라 편집 기사 → 분량이 자연스럽게 다양하다(실측 본문 868~3000+자).
+// ★ 시즌159 패딩 제거(2026-06-16) 후 정직한 바닥. 1700 강제는 가게별 보일러플레이트 패딩을
+//   유발해 구조 지문(scaled-content-abuse)을 다시 만든다(CLAUDE.md #5, 매거진 미색인 56개 근본원인).
+//   그래서 매거진은 _relNav(내부링크) 제외 '편집 본문'으로 측정하고, 빈 스텁(본문 ~100자)만 잡는
+//   정직한 800자 바닥을 둔다. 고유성은 struct-fingerprint 매거진 블록이 따로 잠근다.
+const MIN_CHARS_MAGAZINE = 800;
 const MIN_H2 = 5;
 
 // dwell-content-audit.mjs와 동일 — legal/admin/auth/내부 페이지는 체류 면제
@@ -35,8 +41,15 @@ const EXEMPT_PATTERNS = [
 
 function classifyPath(path) {
   if (/^\/(clubs|nights|lounges|rooms|yojeong|hoppa)\/[^/]+\/[^/]+\/?$/.test(path)) return 'detail';
-  if (/^\/magazine\/[^/]+\/?$/.test(path)) return 'detail';
+  if (/^\/magazine\/[^/]+\/?$/.test(path)) return 'magazine';
   return 'listing';
+}
+// 매거진 편집 본문(<article>에서 _relNav 제외)만 추출 — struct-fingerprint magBodyText와 동일 기준.
+function magBodyChars(html) {
+  const m = html.match(/<article[\s\S]*?<\/article>/);
+  let body = m ? m[0] : '';
+  body = body.replace(/<nav aria-label="이어서 볼 글"[\s\S]*?<\/nav>/, ' ');
+  return body.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().length;
 }
 
 if (!existsSync(join(DIST, 'index.html'))) { console.log('⏭️  dist 없음 — 빌드 후 실행'); process.exit(0); }
@@ -57,10 +70,17 @@ for (const u of urls) {
   if (!existsSync(fp)) continue;
   checked++;
   const html = readFileSync(fp, 'utf8');
-  const text = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
-  const chars = text.length;
+  const kind = classifyPath(path);
   const h2 = (html.match(/<h2/gi) || []).length;
-  const min = classifyPath(path) === 'detail' ? MIN_CHARS_DETAIL : MIN_CHARS_LISTING;
+  let chars, min;
+  if (kind === 'magazine') {
+    chars = magBodyChars(html);
+    min = MIN_CHARS_MAGAZINE;
+  } else {
+    const text = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+    chars = text.length;
+    min = kind === 'detail' ? MIN_CHARS_DETAIL : MIN_CHARS_LISTING;
+  }
   const out = [];
   if (chars < min) out.push(`본문 ${chars}자 (≥${min})`);
   if (h2 < MIN_H2) out.push(`H2 ${h2}개 (≥${MIN_H2})`);

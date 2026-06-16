@@ -24,6 +24,10 @@ const SITEMAP = 'https://nolcool.com/sitemap.xml';
 //   고유성(<10% Jaccard) > 패딩 분량. SSR 본문은 크롤러 프록시(숨김 div)라 실제 체류는 React 본문이 만든다.
 const MIN_CHARS_DETAIL = 1700;
 const MIN_CHARS_LISTING = 2000;
+// 매거진은 편집 기사 → 분량 다양(편집 본문 868~3000+자). 시즌159 패딩 제거(2026-06-16) 후 정직한 바닥.
+// 1700 강제는 가게별 보일러플레이트 패딩을 유발해 구조 지문(scaled-content-abuse) 재생산 → 매거진
+// 미색인 56개 근본원인이었다. 빈 스텁만 잡는 800자 _relNav-제외 편집 본문 바닥. dwell-content-gate.mjs와 동일.
+const MIN_CHARS_MAGAZINE = 800;
 const MIN_H2 = 5;
 const MAX_PAGES = 200;
 const TOP_N_ALERT = 20;       // 미달 상위 20개만 메일
@@ -38,14 +42,24 @@ function classifyPath(url) {
   const path = url.replace('https://nolcool.com', '');
   // venue 상세: /clubs/<region>/<slug>
   if (/^\/(clubs|nights|lounges|rooms|yojeong|hoppa)\/[^/]+\/[^/]+\/?$/.test(path)) return 'detail';
-  // magazine article
-  if (/^\/magazine\/[^/]+\/?$/.test(path)) return 'detail';
+  // magazine article — 편집 본문 바닥(800자), _relNav 제외 측정
+  if (/^\/magazine\/[^/]+\/?$/.test(path)) return 'magazine';
   // 그 외(listing/index/aggregation/landing)
   return 'listing';
 }
 
 function minCharsFor(url) {
-  return classifyPath(url) === 'detail' ? MIN_CHARS_DETAIL : MIN_CHARS_LISTING;
+  const k = classifyPath(url);
+  if (k === 'detail') return MIN_CHARS_DETAIL;
+  if (k === 'magazine') return MIN_CHARS_MAGAZINE;
+  return MIN_CHARS_LISTING;
+}
+// 매거진 편집 본문(<article>에서 _relNav 제외) — dwell-content-gate.mjs / struct-fingerprint magBodyText와 동일 기준.
+function magBodyChars(html) {
+  const m = html.match(/<article[\s\S]*?<\/article>/);
+  let body = m ? m[0] : '';
+  body = body.replace(/<nav aria-label="이어서 볼 글"[\s\S]*?<\/nav>/, ' ');
+  return body.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().length;
 }
 
 function fetchText(url) {
@@ -73,10 +87,15 @@ async function main() {
   let scanned = 0;
   for (const url of pick) {
     const html = await fetchText(url);
-    const text = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
-    const chars = text.length;
-    const h2Count = (html.match(/<h2/gi) || []).length;
     const kind = classifyPath(url);
+    let chars;
+    if (kind === 'magazine') {
+      chars = magBodyChars(html);
+    } else {
+      const text = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+      chars = text.length;
+    }
+    const h2Count = (html.match(/<h2/gi) || []).length;
     const minChars = minCharsFor(url);
     results.push({ url, chars, h2: h2Count, kind, minChars });
     scanned++;

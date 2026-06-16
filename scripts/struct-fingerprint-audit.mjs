@@ -69,6 +69,43 @@ for (const [cat, d] of Object.entries(CAT_DIRS)) {
 
 console.log(`\n📊 결과: 🛑 FAIL ${fail}쌍 / ⚠️ WARN ${warn}쌍`);
 
+// ── 매거진 본문 구조 지문 — venue와 동일하게 전수 쌍 FAIL>15% ──
+// ★ 시즌159 'articleAddon' 패딩(tag/title만 바뀌는 6 H2 보일러플레이트)이 전 매거진에 공통 삽입
+//   → 5-gram Jaccard 평균 33.9%/최대 58.2%의 구조 지문 = Google "Discovered/Crawled - not indexed"
+//   56개 매거진 미색인 근본원인이었다(2026-06-16 제거). 매거진은 Article 스키마라 itemprop="name"이
+//   없어 위 venue 루프 필터에 안 걸렸고 → 게이트 사각지대였다. 여기서 전수 쌍을 직접 검사해 재발 차단.
+//   _relNav("이어서 볼 글" 관련 링크)는 내부링크라 본문 고유성 신호가 아니므로 제외하고 측정.
+function magBodyText(html) {
+  const m = html.match(/<article[\s\S]*?<\/article>/);
+  let body = m ? m[0] : '';
+  body = body.replace(/<nav aria-label="이어서 볼 글"[\s\S]*?<\/nav>/, ' ');
+  return body.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+{
+  const base = join(DIST, 'magazine');
+  if (existsSync(base)) {
+    const files = walk(base).filter(f => /<article/.test(readFileSync(f, 'utf8')));
+    const arts = files.map(f => { const t = magBodyText(readFileSync(f, 'utf8')); return { f, len: t.length, sh: shingles(t) }; }).filter(a => a.len > 200);
+    if (arts.length >= 2) {
+      let sum = 0, pairs = 0, maxJ = 0; const flagged = [];
+      for (let i = 0; i < arts.length; i++) for (let j = i + 1; j < arts.length; j++) {
+        const J = jaccard(arts[i].sh, arts[j].sh); sum += J; pairs++;
+        if (J > maxJ) maxJ = J;
+        if (J > WARN_AT) flagged.push({ a: arts[i].f, b: arts[j].f, J });
+      }
+      const avg = pairs ? sum / pairs : 0;
+      console.log(`\n🔬 매거진 본문 구조 지문 — FAIL>${FAIL_AT * 100}% / WARN>${WARN_AT * 100}% (5-gram Jaccard, 전수 쌍)`);
+      console.log(`[magazine] n=${arts.length} · 평균 ${(avg * 100).toFixed(1)}% · 최대 ${(maxJ * 100).toFixed(1)}% · 전수 ${pairs}쌍`);
+      flagged.sort((x, y) => y.J - x.J);
+      for (const p of flagged) {
+        const lvl = p.J > FAIL_AT ? '🛑 FAIL' : '⚠️ WARN';
+        if (p.J > FAIL_AT) fail++; else warn++;
+        console.log(`   ${lvl} ${(p.J * 100).toFixed(1)}%  ${p.a.replace('dist', '')}  ↔  ${p.b.replace('dist', '')}`);
+      }
+    }
+  }
+}
+
 // ── 집계 페이지(tag/region/near/best/new) 구조지문 — 카테고리 평균으로 게이트 ──
 // 1~2 멤버 thin 페이지는 nav 크롬 비중이 커 단일 쌍 max가 높을 수 있음(구조적 바닥).
 // 동일 템플릿 문단 회귀는 카테고리 "평균"을 50~80%로 튀게 만들므로 평균으로 차단(시즌88 해체 직후 tag13·region12·near23·new14·best7%).
