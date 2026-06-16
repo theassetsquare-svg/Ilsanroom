@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-15T20:19:53.486Z",
+  "generated_at": "2026-06-16T08:37:32.371Z",
   "window_hours": 24,
   "items": [
     {
@@ -10,20 +10,6 @@
       "views_24h": 4
     },
     {
-      "path": "/nights/suwonkoreanight",
-      "title": "수원코리아나이트",
-      "category": "night",
-      "region": "수원",
-      "views_24h": 4
-    },
-    {
-      "path": "/nights/gwangjumgmnight",
-      "title": "광주MGM나이트",
-      "category": "night",
-      "region": "광주",
-      "views_24h": 3
-    },
-    {
       "path": "/clubs/gangnam/gangnamclub-race",
       "title": "강남청담클럽 레이스",
       "category": "club",
@@ -31,17 +17,17 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
+      "path": "/nights/gangnamjuliananight",
+      "title": "강남줄리아나나이트",
       "category": "night",
-      "region": "강서",
-      "views_24h": 3
+      "region": "강남",
+      "views_24h": 2
     },
     {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
+      "path": "/nights/daeguhangukgwannight",
+      "title": "대구한국관나이트",
+      "category": "night",
+      "region": "대구",
       "views_24h": 2
     },
     {
@@ -52,32 +38,39 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/gangnamjuliananight",
-      "title": "강남줄리아나나이트",
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
       "category": "night",
-      "region": "강남",
-      "views_24h": 1
+      "region": "강서",
+      "views_24h": 2
     },
     {
-      "path": "/nights/daeguhangukgwannight",
-      "title": "대구한국관나이트",
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/daegutotoganight",
+      "title": "대구토토가나이트",
       "category": "night",
       "region": "대구",
-      "views_24h": 1
+      "views_24h": 2
     },
     {
-      "path": "/nights/seongnamgukbingwannight",
-      "title": "성남국빈관나이트",
+      "path": "/nights/daegubabambanight",
+      "title": "대구바밤바나이트",
+      "category": "night",
+      "region": "대구",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/seongnamshampoonight",
+      "title": "성남샴푸나이트",
       "category": "night",
       "region": "성남",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/bucheongoraenight",
-      "title": "부천고래나이트",
-      "category": "night",
-      "region": "부천",
-      "views_24h": 1
+      "views_24h": 2
     },
     {
       "path": "/nights/ansanhitnight",
@@ -87,17 +80,10 @@
       "views_24h": 1
     },
     {
-      "path": "/nights/gwangjucheomdanempanight",
-      "title": "광주첨단엠파나이트",
+      "path": "/nights/gwangjumgmnight",
+      "title": "광주MGM나이트",
       "category": "night",
       "region": "광주",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gurihobaknight",
-      "title": "구리호박나이트",
-      "category": "night",
-      "region": "구리",
       "views_24h": 1
     },
     {
@@ -105,6 +91,20 @@
       "title": "인천아라비안나이트",
       "category": "night",
       "region": "인천",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/ilsan-hwajung-tunnel",
+      "title": "일산화정터널나이트",
+      "category": "night",
+      "region": "일산",
+      "views_24h": 1
+    },
+    {
+      "path": "/hoppa/haeundaehoppa-michelin",
+      "title": "해운대호빠 미슐랭",
+      "category": "hoppa",
+      "region": "부산 해운대",
       "views_24h": 1
     }
   ]
