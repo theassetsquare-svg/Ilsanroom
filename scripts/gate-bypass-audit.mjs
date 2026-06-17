@@ -152,6 +152,12 @@ const REGISTRY = {
     mutate: append('functions/api/cron/activity-alert.ts',
       "const __bypass = fetch('/rest/v1/community_posts?select=id');"),
   },
+  'scripts/migration-safeupdate-gate.mjs': {
+    phase: 'pre',
+    label: 'WHERE 없는 최상위 UPDATE 마이그레이션 주입 → pg_safeupdate 게이트가 잡아야 함',
+    mutate: append('supabase/migrations/20260616_cleanup_dup_helper_comments.sql',
+      '\nUPDATE posts SET comment_count = 0;'),
+  },
   'scripts/auto-content-variety-gate.mjs': {
     phase: 'pre',
     label: 'auto-content 댓글풀을 단일행(seed_comment_pool?limit=1)으로 조회 → 동일 댓글 반복 버그 재유입',

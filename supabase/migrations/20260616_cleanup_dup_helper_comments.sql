@@ -11,7 +11,13 @@
 DELETE FROM comments WHERE content = '도우미 분이 친절하셨음';
 
 -- 모든 글 comment_count 를 실제 댓글 수로 재동기화(이번 정리 + 과거 드리프트 교정)
+-- ★ pg_safeupdate(supabase) 가 WHERE 없는 UPDATE 를 거부 → 트랜잭션 전체 롤백(DELETE 포함)되어
+--   2026-06-16 마이그레이션이 매 push 실패했다. 진짜 카운트와 다른 행만 갱신하도록 WHERE 추가:
+--   pg_safeupdate 통과 + 멱등(이미 맞는 행은 0건 갱신) + 0댓글 글의 stale 카운트도 교정.
 UPDATE posts p SET comment_count = (
+  SELECT COUNT(*) FROM comments c WHERE c.post_id = p.id
+)
+WHERE p.comment_count IS DISTINCT FROM (
   SELECT COUNT(*) FROM comments c WHERE c.post_id = p.id
 );
 
