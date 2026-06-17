@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-17T16:38:49.127Z",
+  "generated_at": "2026-06-17T19:16:14.687Z",
   "window_hours": 24,
   "items": [
     {
@@ -22,6 +22,13 @@
       "category": "night",
       "region": "신림",
       "views_24h": 3
+    },
+    {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
+      "views_24h": 2
     },
     {
       "path": "/nights/gwangjumgmnight",
@@ -98,13 +105,6 @@
       "title": "파주야당스카이돔나이트",
       "category": "night",
       "region": "파주",
-      "views_24h": 1
-    },
-    {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
       "views_24h": 1
     }
   ]
