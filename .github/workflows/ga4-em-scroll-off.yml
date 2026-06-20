@@ -1,0 +1,22 @@
+name: GA4 Enhanced Measurement Scroll OFF (write — needs SA editor)
+
+# 향상측정 '스크롤'을 끈다 — page_view 없는 ghost 세션(Unassigned/이탈 오염) 생성원 제거.
+# SA가 '편집자'일 때만 통과(평시 뷰어면 403 그대로 보고). 사이트 코드/콘텐츠 변경 0, 되돌릴 수 있음.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scroll-off:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Turn off GA4 Enhanced Measurement scroll
+        run: node scripts/ga4-em-scroll-off.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
