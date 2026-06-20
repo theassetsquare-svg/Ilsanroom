@@ -15,6 +15,7 @@ const communityLinks = [
   { href: '/occasion', label: '상황별' },
   { href: '/budget', label: '예산별' },
   { href: '/community', label: '커뮤니티' },
+  { href: '/magazine', label: '매거진' },
   { href: '/community/jogak', label: '조각모집' },
   { href: '/ranking', label: '랭킹' },
   { href: '/gallery', label: '클립' },
