@@ -1,43 +1,43 @@
 {
-  "generated_at": "2026-06-19T02:54:43.859Z",
+  "generated_at": "2026-06-20T02:27:48.622Z",
   "window_hours": 24,
-  "total_runs": 168,
+  "total_runs": 179,
   "total_fail": 0,
   "workflows": [
     {
-      "name": "Auto Content v2 (Time-based)",
-      "total": 8,
-      "success": 8,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "24h Site Monitoring",
-      "total": 8,
-      "success": 8,
+      "total": 10,
+      "success": 10,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
       "name": "Venue Reports Daily",
-      "total": 8,
-      "success": 8,
+      "total": 9,
+      "success": 9,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
-      "name": "Security Audit Hourly",
-      "total": 7,
-      "success": 7,
+      "name": "Auto Content v2 (Time-based)",
+      "total": 9,
+      "success": 9,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
       "name": "Activity Alert (15min)",
+      "total": 9,
+      "success": 9,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Security Audit Hourly",
       "total": 7,
       "success": 7,
       "failure": 0,
@@ -61,6 +61,38 @@
       "last_fail": null
     },
     {
+      "name": "Daily Regression Digest (KST 09:00)",
+      "total": 2,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 1,
+      "last_fail": null
+    },
+    {
+      "name": "Sinlimgrandprixnight Keyword Watch (신림그랑프리나이트 2 키워드 24h)",
+      "total": 2,
+      "success": 2,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Suwonkoreanight Keyword Watch (수원코리아나이트 2 키워드 24h)",
+      "total": 2,
+      "success": 2,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Suyushampoonight Keyword Watch (수유샴푸나이트 2 키워드 24h)",
+      "total": 2,
+      "success": 2,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
       "name": "24h Auto Build + SEO Notify",
       "total": 2,
       "success": 2,
@@ -72,38 +104,6 @@
       "name": "Browser Audit (PC + Mobile)",
       "total": 2,
       "success": 2,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Daily Regression Digest (KST 09:00)",
-      "total": 1,
-      "success": 0,
-      "failure": 0,
-      "in_progress": 1,
-      "last_fail": null
-    },
-    {
-      "name": "Sinlimgrandprixnight Keyword Watch (신림그랑프리나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Suwonkoreanight Keyword Watch (수원코리아나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Suyushampoonight Keyword Watch (수유샴푸나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 1,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -173,7 +173,7 @@
       "last_fail": null
     },
     {
-      "name": "Busanyeonsandongmulnight Keyword Watch (부산연산동물나이트 2 키워드 24h)",
+      "name": "Busanasiadnight Keyword Watch (부산아시아드나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -181,7 +181,7 @@
       "last_fail": null
     },
     {
-      "name": "Busanasiadnight Keyword Watch (부산아시아드나이트 2 키워드 24h)",
+      "name": "Busanyeonsandongmulnight Keyword Watch (부산연산동물나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -229,7 +229,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamjuliananight Keyword Watch (강남줄리아나나이트 2 키워드 24h)",
+      "name": "Struct Fingerprint Watch (구조 지문 라이브 감시)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -237,7 +237,7 @@
       "last_fail": null
     },
     {
-      "name": "Struct Fingerprint Watch (구조 지문 라이브 감시)",
+      "name": "Gangnamjuliananight Keyword Watch (강남줄리아나나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -661,7 +661,7 @@
       "last_fail": null
     },
     {
-      "name": "Clubs Keyword Watch (/clubs 클럽 단일 키워드 24h)",
+      "name": "Gangnamclub Laputa Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -669,7 +669,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Laputa Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Clubs Keyword Watch (/clubs 클럽 단일 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -1022,6 +1022,14 @@
     },
     {
       "name": "Security Daily Report",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Workflow Failure Monitor (24h 집계 메일)",
       "total": 1,
       "success": 1,
       "failure": 0,
