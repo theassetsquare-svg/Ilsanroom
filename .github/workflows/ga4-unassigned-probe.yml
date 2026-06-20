@@ -1,0 +1,21 @@
+name: GA4 Unassigned Probe (read-only)
+
+# 정체불명 트래픽(Unassigned/unknown landing)을 source/host/browser/event 로 분해(읽기전용, 변경 0).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: GA4 unassigned probe (read-only)
+        run: node scripts/ga4-unassigned-probe.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
