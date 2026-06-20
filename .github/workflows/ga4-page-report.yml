@@ -1,0 +1,22 @@
+name: GA4 Page Report (read-only)
+
+# GA4 전 페이지 현황을 Admin/Data API 로 ★읽기만 해서 콘솔에 표로 덤프(변경 0).
+# 온디맨드 수동 실행. SA = analytics.readonly → runReport 만 가능.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: GA4 per-page report (read-only)
+        run: node scripts/ga4-page-report.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
