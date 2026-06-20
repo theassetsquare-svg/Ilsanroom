@@ -525,6 +525,7 @@ function generateVenueDirectAnswer(v) {
     const st = v.nearbyStation.match(/([^\s]+역)/)?.[1] || v.nearbyStation.split(' ')[0];
     opBits.push(`${escHtml(st)}에서 ${pk(['가깝다', '도보로 가깝다', '가까운 거리다'], 3)}`);
   }
+  if (v.address) opBits.push(`주소는 ${escHtml(v.address)}에 있다`);
   if (v.openHours) opBits.push(`영업시간은 ${escHtml(v.openHours)}이다`);
   if (v.ageGroup) opBits.push(`입장 기준은 ${escHtml(v.ageGroup)}이다`);
   if (opBits.length) sents.push(opBits.join(', ') + '.');
