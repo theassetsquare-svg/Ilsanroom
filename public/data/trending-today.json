@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-06-19T18:27:26.691Z",
+  "generated_at": "2026-06-20T06:53:19.959Z",
   "window_hours": 24,
   "items": [
     {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
+      "path": "/clubs/cheongju/cheongju-supermoon",
+      "title": "청주클럽 슈퍼문",
+      "category": "club",
+      "region": "청주",
       "views_24h": 6
     },
     {
@@ -17,31 +17,24 @@
       "views_24h": 5
     },
     {
-      "path": "/clubs/cheongju/cheongju-supermoon",
-      "title": "청주클럽 슈퍼문",
-      "category": "club",
-      "region": "청주",
-      "views_24h": 4
-    },
-    {
       "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
       "title": "일산명월관요정",
       "category": "yojeong",
       "region": "일산",
-      "views_24h": 4
+      "views_24h": 5
     },
     {
-      "path": "/nights/cheonanstardomnight",
-      "title": "천안스타돔나이트",
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
       "category": "night",
-      "region": "천안",
+      "region": "강서",
       "views_24h": 3
     },
     {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
       "views_24h": 3
     },
     {
@@ -49,7 +42,7 @@
       "title": "안산히트나이트",
       "category": "night",
       "region": "안산",
-      "views_24h": 2
+      "views_24h": 3
     },
     {
       "path": "/nights/daejeononenight",
@@ -59,11 +52,25 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
+      "path": "/nights/seongnamshampoonight",
+      "title": "성남샴푸나이트",
       "category": "night",
-      "region": "강서",
-      "views_24h": 2
+      "region": "성남",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/daejeonhangukgwannight",
+      "title": "대전한국관나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 1
     },
     {
       "path": "/nights/incheonarabiannight",
@@ -98,13 +105,6 @@
       "title": "압구정이디엇라운지",
       "category": "lounge",
       "region": "압구정",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/bucheongoraenight",
-      "title": "부천고래나이트",
-      "category": "night",
-      "region": "부천",
       "views_24h": 1
     }
   ]
