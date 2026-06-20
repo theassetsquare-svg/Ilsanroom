@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-20T06:53:19.959Z",
+  "generated_at": "2026-06-20T15:02:37.159Z",
   "window_hours": 24,
   "items": [
     {
@@ -17,94 +17,94 @@
       "views_24h": 5
     },
     {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
+      "category": "night",
+      "region": "오산",
       "views_24h": 5
     },
     {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
+      "path": "/nights/ulsanchampionnight",
+      "title": "울산챔피언나이트",
       "category": "night",
-      "region": "강서",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/ansanhitnight",
-      "title": "안산히트나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/seongnamshampoonight",
-      "title": "성남샴푸나이트",
-      "category": "night",
-      "region": "성남",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/incheonarabiannight",
-      "title": "인천아라비안나이트",
-      "category": "night",
-      "region": "인천",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gimpohobaknight",
-      "title": "김포호박나이트",
-      "category": "night",
-      "region": "김포",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/yeongdeungpoterminalnight",
-      "title": "영등포터미널나이트",
-      "category": "night",
-      "region": "영등포",
-      "views_24h": 1
+      "region": "울산",
+      "views_24h": 5
     },
     {
       "path": "/nights/ilsan-hwajung-tunnel",
       "title": "일산화정터널나이트",
       "category": "night",
       "region": "일산",
+      "views_24h": 3
+    },
+    {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/ansanhitnight",
+      "title": "안산히트나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 2
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/cheongjuhobaknight",
+      "title": "청주호박나이트",
+      "category": "night",
+      "region": "청주",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/cheongdamh2onight",
+      "title": "청담H2O나이트",
+      "category": "night",
+      "region": "청담",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/gimpohobaknight",
+      "title": "김포호박나이트",
+      "category": "night",
+      "region": "김포",
+      "views_24h": 2
+    },
+    {
+      "path": "/clubs/itaewon/itaewonclub-maid",
+      "title": "이태원클럽 메이드",
+      "category": "club",
+      "region": "이태원",
       "views_24h": 1
     },
     {
-      "path": "/lounges/apgujeongidiotlounge",
-      "title": "압구정이디엇라운지",
-      "category": "lounge",
-      "region": "압구정",
+      "path": "/nights/gildongchancenight",
+      "title": "길동찬스나이트",
+      "category": "night",
+      "region": "길동",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/pyeongtaekhobaknight",
+      "title": "평택호박나이트",
+      "category": "night",
+      "region": "평택",
       "views_24h": 1
     }
   ]
