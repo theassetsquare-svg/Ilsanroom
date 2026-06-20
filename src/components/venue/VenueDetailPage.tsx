@@ -116,6 +116,26 @@ export default function VenueDetailPage({
         <VenueLivePulse slug={venue.slug} isPremium={venue.isPremium} initialViewing={viewingNow} />
       </div>
 
+      {/* ═══ 4. 한눈 요약 — 모바일 첫 화면에서 "왜 이 가게인가" 즉시 전달 (첫인상 이탈 방지) ═══ */}
+      {(venue.features.length > 0 || venue.shortDescription) && (
+        <section className="mx-auto max-w-[1200px] px-4 pt-4 sm:px-6">
+          {venue.features.length > 0 && (
+            <div className="mb-3 flex flex-wrap gap-2">
+              {venue.features.slice(0, 4).map((f) => (
+                <span key={f} className="inline-flex items-center rounded-full border border-[#E9E5FF] bg-[#F3F0FF] px-3 py-1.5 text-sm font-bold text-[#7C3AED]">
+                  {f}
+                </span>
+              ))}
+            </div>
+          )}
+          {venue.shortDescription && (
+            <p className="text-[15px] leading-relaxed text-neon-text">
+              {venue.shortDescription}
+            </p>
+          )}
+        </section>
+      )}
+
 
       {/* Top Content — 히어로 바로 아래 */}
       {topContent && (
