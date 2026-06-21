@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-21T15:10:41.549Z",
+  "generated_at": "2026-06-21T18:13:53.748Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,27 +7,27 @@
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 10
+      "views_24h": 9
+    },
+    {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
+      "category": "night",
+      "region": "강서",
+      "views_24h": 4
     },
     {
       "path": "/nights/daejeonbongmyeongnight",
       "title": "대전봉명나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 5
+      "views_24h": 4
     },
     {
       "path": "/nights/cheongdamh2onight",
       "title": "청담H2O나이트",
       "category": "night",
       "region": "청담",
-      "views_24h": 5
-    },
-    {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
       "views_24h": 4
     },
     {
@@ -38,18 +38,25 @@
       "views_24h": 4
     },
     {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
+      "path": "/nights/gurihobaknight",
+      "title": "구리호박나이트",
       "category": "night",
-      "region": "강서",
+      "region": "구리",
       "views_24h": 3
     },
     {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
       "views_24h": 3
+    },
+    {
+      "path": "/nights/daejeonsevennight",
+      "title": "대전세븐나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
     },
     {
       "path": "/nights/bundangpongpongnight",
@@ -66,10 +73,10 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/gurihobaknight",
-      "title": "구리호박나이트",
-      "category": "night",
-      "region": "구리",
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
       "views_24h": 2
     },
     {
@@ -77,13 +84,6 @@
       "title": "신림그랑프리나이트",
       "category": "night",
       "region": "신림",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daejeonsevennight",
-      "title": "대전세븐나이트",
-      "category": "night",
-      "region": "대전",
       "views_24h": 2
     },
     {
