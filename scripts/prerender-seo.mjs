@@ -14,6 +14,13 @@ const DIST = path.resolve('dist');
 const BASE_URL = 'https://nolcool.com';
 const OG_IMAGE = `${BASE_URL}/og/nolcool-og.jpg`;
 
+// 전화 노출 억제 — staffPhone 필드는 동결(데이터 유지)하되 이 slug의 페이지에는
+//   tel: 링크·schema telephone을 노출하지 않는다 (호객성 전화 노출 정화, 2026.3 스팸 업데이트 대응).
+//   React 측은 StickyPhoneBar.HIDE_STICKY_VENUES가 1:1로 대응.
+const PHONE_HIDDEN_SLUGS = new Set([
+  'haeundaehoppa-kkantappiya',
+]);
+
 // ★ lastmod 정직화 — 페이지별 "의미 콘텐츠" 해시를 직전 빌드와 비교해, 실제로 바뀐 URL만
 //   lastmod를 갱신한다. 안 바뀐 페이지는 이전 lastmod 그대로 유지 → 매일 today 도배 방지.
 const LASTMOD_MANIFEST_PATH = path.resolve('scripts/.seo-lastmod.json');
@@ -554,7 +561,7 @@ function generateVenueSsrBody(v, allVenues) {
   // ★ 상단 직답 — h1 바로 아래 첫 문단(p:first-of-type). 구글 스니펫 + AI 인용 + speakable 타깃.
   html += generateVenueDirectAnswer(v);
   // ★ SSR PhoneBar / 운영정보 — 검색엔진·AI 색인 + 클라이언트 hydration 전 노출 (시즌82)
-  if (v.staffPhone) {
+  if (v.staffPhone && !PHONE_HIDDEN_SLUGS.has(v.slug)) {
     const telDigits = v.staffPhone.replace(/-/g, '');
     const staffLabel = v.staffNickname ? `${escHtml(v.staffNickname)} ` : '';
     html += `<p class="ssr-phone"><a href="tel:${telDigits}" itemprop="telephone">📞 ${staffLabel}${escHtml(v.staffPhone)}</a></p>`;
@@ -1782,7 +1789,7 @@ for (const v of venues) {
     address: { '@type': 'PostalAddress', streetAddress: v.address || `${v.regionKo} ${v.nameKo}`, addressLocality: localityOf(v.regionKo), addressRegion: provinceOf(v.regionKo) || v.regionKo, addressCountry: 'KR' },
     url: `${BASE_URL}${routePath}/`,
     image: getVenueImageList(v.slug),
-    telephone: v.staffPhone || undefined,
+    telephone: (v.staffPhone && !PHONE_HIDDEN_SLUGS.has(v.slug)) ? v.staffPhone : undefined,
     openingHoursSpecification: [{
       '@type': 'OpeningHoursSpecification',
       dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],

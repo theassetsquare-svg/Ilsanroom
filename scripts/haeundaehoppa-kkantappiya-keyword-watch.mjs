@@ -17,7 +17,7 @@
  *   8) "해운대호빠" 밀도 ≤3.5%
  *   9) "부산호빠" body 등장 ≥3회
  *  10) 후킹 5축 ≥1축 (title 또는 desc)
- *  +) 디테일 토큰 (구남로/광안대교/오션뷰/수빈/해피아워) 모두 등장
+ *  +) 디테일 토큰 (구남로/해리단길/광안대교/오션뷰/해운대해수욕장) 모두 등장 — 합법 사실정보(위치·공간) 기반
  *
  * 환경:
  *   RESEND_API_KEY     필수
@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/hoppa/haeundaehoppa-kkantappiya/';
 const PRIMARY = '해운대호빠';
 const SECONDARY = '부산호빠';
-const DETAIL_TOKENS = ['구남로', '광안대교', '오션뷰', '수빈', '해피아워'];
+const DETAIL_TOKENS = ['구남로', '해리단길', '광안대교', '오션뷰', '해운대해수욕장'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

@@ -18,9 +18,12 @@ const ALLOWED_PHONES = [
   '010-3854-6887', // 짱구 (창원룰루랄라나이트)
 ];
 
-/** 하단 고정 전화바를 사용하지 않는 업소 (본문에 전화 버튼이 이미 있음) */
+/** 하단 고정 전화바를 사용하지 않는 업소 (본문에 전화 버튼이 이미 있거나 전화 노출 억제) */
 const HIDE_STICKY_VENUES = new Set([
   '답십리돈텔마마나이트',
+  // 전화 노출 억제 — staffPhone 필드는 동결(유지)하되 페이지에 전화 노출 안 함.
+  //   프리렌더 PHONE_HIDDEN_SLUGS와 1:1 대응 (정화, 2026.3 스팸 업데이트 대응).
+  '해운대호빠 깐따삐야',
 ]);
 
 export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPhoneBarProps) {
