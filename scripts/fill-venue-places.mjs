@@ -44,6 +44,7 @@ function parseBlocks(text) {
       regionKo: fld('regionKo'), region: fld('region'),
       category: (body.match(/category: '([^']+)'/) || [])[1] || '',
       address: fld('address'), openHours: fld('openHours'), nearbyStation: fld('nearbyStation'),
+      lat: (body.match(/\n {4}lat: ([\d.]+)/) || [])[1] || null,
     });
   }
   return out;
@@ -103,9 +104,12 @@ async function placesLookup(v) {
     openHours: (cand.regularOpeningHours?.weekdayDescriptions || []).join(' / '),
     nearbyStation: '',
   };
-  // 가까운 지하철역(검증 가능). location 있으면 searchNearby.
+  // 좌표(GeoCoordinates) — place_id로 검증된 실좌표만 채택. 지어내지 않음.
   if (cand.location) {
     const { latitude, longitude } = cand.location;
+    res.lat = latitude;
+    res.lng = longitude;
+    // 가까운 지하철역(검증 가능). location 있으면 searchNearby.
     const nb = await fetch('https://places.googleapis.com/v1/places:searchNearby', {
       method: 'POST',
       headers: {
@@ -141,12 +145,13 @@ if (!MODE_MOCK && !KEY) {
 for (const b of blocks) {
   if (processed >= LIMIT) break;
   const need = FIELDS.filter((f) => !b[f]);
-  if (!need.length) continue;
+  const needGeo = !b.lat; // 좌표가 아직 없으면 geo 보강 대상
+  if (!need.length && !needGeo) continue;
   processed++;
 
   let data;
   if (MODE_MOCK) {
-    data = { place_id: `MOCK_${b.slug}`, name: b.nameKo, address: `[MOCK] ${b.regionKo} 테스트로${b.id}`, openHours: '월~일 18:00–02:00', nearbyStation: `${b.regionKo}역` };
+    data = { place_id: `MOCK_${b.slug}`, name: b.nameKo, address: `[MOCK] ${b.regionKo} 테스트로${b.id}`, openHours: '월~일 18:00–02:00', nearbyStation: `${b.regionKo}역`, lat: 37.123456, lng: 127.123456 };
   } else {
     if (!KEY) { console.error('❌ GOOGLE_PLACES_API_KEY 없음'); process.exit(1); }
     try { data = await placesLookup(b); } catch (e) { data = { skip: `error ${e.message}` }; }
@@ -161,6 +166,11 @@ for (const b of blocks) {
       newBody = newBody.replace(`    ${f}: ''`, `    ${f}: '${escTs(data[f])}'`);
       got.push(f);
     }
+  }
+  // 좌표는 숫자 필드(빈 placeholder 줄 없음) → slug 줄 뒤에 lat/lng 삽입
+  if (needGeo && typeof data.lat === 'number' && typeof data.lng === 'number') {
+    newBody = newBody.replace(/(\n {4}slug: '[^']*',)/, `$1\n    lat: ${data.lat},\n    lng: ${data.lng},`);
+    got.push('geo');
   }
   if (!got.length) { skipped.push(`${b.nameKo}(${b.slug}): Places결과에 빈 필드 데이터 없음`); continue; }
 

@@ -27,6 +27,7 @@ const blocks = [];
     const fld = (k) => { const mm = body.match(new RegExp(`(?:^|\\n) {4}${k}: '((?:[^'\\\\]|\\\\.)*)'`)); return mm ? mm[1] : null; };
     const o = { slug: fld('slug'), nameKo: fld('nameKo') };
     for (const f of FIELDS) o[f] = fld(f);
+    o.lat = (body.match(/\n {4}lat: ([\d.]+)/) || [])[1] || null;
     blocks.push(o);
   }
 }
@@ -41,6 +42,14 @@ for (const b of blocks) {
       if (p.source !== 'google_places' || !p.place_id) errors.push(`${b.nameKo}(${b.slug}).${f} — provenance source/place_id 불완전`);
       else if (Array.isArray(p.fields) && !p.fields.includes(f)) errors.push(`${b.nameKo}(${b.slug}).${f} — provenance에 ${f} 출처 미기재`);
     }
+  }
+  // 좌표(geo)도 출처 증명된 실좌표만 — 추정·날조 금지
+  if (b.lat) {
+    const p = prov[b.slug];
+    if (!p) errors.push(`${b.nameKo}(${b.slug}).geo=${b.lat} — provenance 없음(출처 없는 좌표 입력 금지)`);
+    else if (p.source === 'manual') { /* 게이트 도입 전 기존입력 grandfather */ }
+    else if (p.source !== 'google_places' || !p.place_id) errors.push(`${b.nameKo}(${b.slug}).geo — provenance source/place_id 불완전`);
+    else if (Array.isArray(p.fields) && !p.fields.includes('geo')) errors.push(`${b.nameKo}(${b.slug}).geo — provenance에 geo 출처 미기재`);
   }
 }
 // 별점·리뷰가 provenance로 새어들지 않게
