@@ -43,12 +43,10 @@ for (const b of blocks) {
       else if (Array.isArray(p.fields) && !p.fields.includes(f)) errors.push(`${b.nameKo}(${b.slug}).${f} — provenance에 ${f} 출처 미기재`);
     }
   }
-  // 좌표(geo)도 출처 증명된 실좌표만 — 추정·날조 금지
+  // 좌표(geo)는 신규 핵심 데이터 → manual grandfather 없이 항상 엄격: place_id + geo 출처 필수(추정·날조 금지)
   if (b.lat) {
     const p = prov[b.slug];
-    if (!p) errors.push(`${b.nameKo}(${b.slug}).geo=${b.lat} — provenance 없음(출처 없는 좌표 입력 금지)`);
-    else if (p.source === 'manual') { /* 게이트 도입 전 기존입력 grandfather */ }
-    else if (p.source !== 'google_places' || !p.place_id) errors.push(`${b.nameKo}(${b.slug}).geo — provenance source/place_id 불완전`);
+    if (!p || !p.place_id) errors.push(`${b.nameKo}(${b.slug}).geo=${b.lat} — place_id 출처 없음(좌표는 Places 검증값만, 지어내기 금지)`);
     else if (Array.isArray(p.fields) && !p.fields.includes('geo')) errors.push(`${b.nameKo}(${b.slug}).geo — provenance에 geo 출처 미기재`);
   }
 }

@@ -176,7 +176,14 @@ for (const b of blocks) {
 
   const newFull = `\n  {\n${newBody}\n  },`;
   text = text.split(b.full).join(newFull);
-  prov[b.slug] = { source: 'google_places', place_id: data.place_id, matchedName: data.name, fields: got, fetchedAt: new Date().toISOString().slice(0, 10) };
+  // provenance 병합: 기존 manual(광고주/도입전) 출처는 source·note 보존하고 새로 채운 필드(geo 등)만 추가.
+  //   덮어쓰면 기존 manual 필드 커버리지가 사라져 게이트가 "출처 미기재"로 막는다(값은 진짜 → 커버리지만 유지).
+  const prev = prov[b.slug];
+  const prevFields = (prev && Array.isArray(prev.fields)) ? prev.fields : [];
+  const mergedFields = [...new Set([...prevFields, ...got])];
+  prov[b.slug] = (prev && prev.source === 'manual')
+    ? { ...prev, place_id: data.place_id, matchedName: data.name, fields: mergedFields, fetchedAt: new Date().toISOString().slice(0, 10) }
+    : { source: 'google_places', place_id: data.place_id, matchedName: data.name, fields: mergedFields, fetchedAt: new Date().toISOString().slice(0, 10) };
   filledCount++;
   console.log(`  ✓ ${b.nameKo}: ${got.join('+')} 채움`);
 }
