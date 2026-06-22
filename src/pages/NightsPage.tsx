@@ -18,7 +18,7 @@ const regions = [
 ];
 
 export default function NightsPage() {
-  useDocumentMeta('나이트 부킹 한 번도 못 잡고 집 간 적? 10년 웨이터가 거를 곳 알려줘요', '부킹 안 잡히는 나이트 가면 1차로 끝나요. 10년 짠밥 웨이터가 홀·부스·물·진행 다 풀어드립니다. 합석 시간·매너·드레스코드까지 121곳 갈 곳 vs 거를 곳 한 줄로 정리 →');
+  useDocumentMeta('나이트 부킹 한 번도 못 잡고 집 간 적? 10년 웨이터가 거를 곳 알려줘요', '부킹 안 잡히는 나이트 가면 1차로 끝나요. 10년 짠밥 웨이터가 홀·부스·물·진행 다 풀어드립니다. 방문 시간·매너·드레스코드까지 121곳 갈 곳 vs 거를 곳 한 줄로 정리 →');
   const venues = getVenuesByCategory('night');
   const featured = venues.find(v => v.isPremium) || venues[0];
 
