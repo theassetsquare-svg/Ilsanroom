@@ -3,15 +3,25 @@
     "source": "manual",
     "note": "게이트 도입 전 기존 입력",
     "fields": [
-      "nearbyStation"
-    ]
+      "nearbyStation",
+      "address",
+      "geo"
+    ],
+    "place_id": "ChIJN1s8t2RfezUR3JTDnaXGb-w",
+    "matchedName": "인덕원국빈관나이트",
+    "fetchedAt": "2026-06-22"
   },
   "daejeononenight": {
     "source": "manual",
     "note": "게이트 도입 전 기존 입력",
     "fields": [
-      "openHours"
-    ]
+      "openHours",
+      "address",
+      "geo"
+    ],
+    "place_id": "ChIJBSCruRhJZTUR5CWtNEUH_sk",
+    "matchedName": "대전원나이트",
+    "fetchedAt": "2026-06-22"
   },
   "gangnam-hoppa-again": {
     "source": "manual",
@@ -55,8 +65,12 @@
     "fields": [
       "address",
       "openHours",
-      "nearbyStation"
-    ]
+      "nearbyStation",
+      "geo"
+    ],
+    "place_id": "ChIJEz6f0nmdfDURhr1YQIhaeMQ",
+    "matchedName": "강서호박나이트",
+    "fetchedAt": "2026-06-22"
   },
   "ilsan-hwajung-tunnel": {
     "source": "manual",
@@ -64,8 +78,12 @@
     "fields": [
       "address",
       "openHours",
-      "nearbyStation"
-    ]
+      "nearbyStation",
+      "geo"
+    ],
+    "place_id": "ChIJE3uix2aafDURRUEXdeM4K3I",
+    "matchedName": "화정터널나이트",
+    "fetchedAt": "2026-06-22"
   },
   "ilsan-mul-night": {
     "source": "manual",
@@ -90,14 +108,640 @@
     "note": "게이트 도입 전 기존 입력",
     "fields": [
       "openHours",
-      "nearbyStation"
-    ]
+      "nearbyStation",
+      "address",
+      "geo"
+    ],
+    "place_id": "ChIJeVqG-ZHNaDURlXaQLTtNyI0",
+    "matchedName": "창원룰루랄라나이트",
+    "fetchedAt": "2026-06-22"
   },
   "daegubabambanight": {
     "source": "manual",
     "note": "광고주 제공 주소",
     "fields": [
-      "address"
-    ]
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "place_id": "ChIJ48ELGTHjZTURMEiDK08TV_k",
+    "matchedName": "바밤바",
+    "fetchedAt": "2026-06-22"
+  },
+  "ilsanroom": {
+    "source": "google_places",
+    "place_id": "ChIJEV0TCKCbfDUROzVCvnrKxV8",
+    "matchedName": "일산룸클럽",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "ilsanmyeongwolgwanyojeong": {
+    "source": "google_places",
+    "place_id": "ChIJadmNZQCbfDURZTz4qfOCC-M",
+    "matchedName": "일산-명월관",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "sangbonghangukgwannight": {
+    "source": "google_places",
+    "place_id": "ChIJc98x5Wu7fDURXXvWKwgxs7o",
+    "matchedName": "상봉동한국관 나이트 WT쌍둥이",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "suyushampoonight": {
+    "source": "google_places",
+    "place_id": "ChIJB_1Fz3-9fDUReX7Gfhn4kv4",
+    "matchedName": "수유 샴푸나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "doksangukbingwannight": {
+    "source": "google_places",
+    "place_id": "ChIJzZovNdthezUR-fpyia4iGQk",
+    "matchedName": "국빈관",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "dapsimnidontellmamanight": {
+    "source": "google_places",
+    "place_id": "ChIJr5ysXwClfDURerscH8zHpG8",
+    "matchedName": "돈텔마마",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "yeongdeungpoterminalnight": {
+    "source": "google_places",
+    "place_id": "ChIJlYoSrvyefDURxK4rSOMQjN8",
+    "matchedName": "영등포터미널나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "nowonhobaknight": {
+    "source": "google_places",
+    "place_id": "ChIJTaw6QvW5fDURp4MXW06erjo",
+    "matchedName": "노원호박나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "gildongchancenight": {
+    "source": "google_places",
+    "place_id": "ChIJX9DsBQSwfDURBgxjtxrmyjI",
+    "matchedName": "찬스나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "ilsanshampoonight": {
+    "source": "google_places",
+    "place_id": "ChIJu3MAhw2FfDURO3Pvo_EEDBs",
+    "matchedName": "일산샴푸나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "pajuyadangskydomenight": {
+    "source": "google_places",
+    "place_id": "ChIJU5vyn-mPfDURxcxvdOQm8CU",
+    "matchedName": "파주야당스카이돔나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "gimpohobaknight": {
+    "source": "google_places",
+    "place_id": "ChIJKYy1zO6BfDUR_EwruNg6IIc",
+    "matchedName": "김포호박나이트클럽",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "gimposomenight": {
+    "source": "google_places",
+    "place_id": "ChIJSfKNqeCBfDURUTki0zFMGnA",
+    "matchedName": "썸나이트",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "uijeongbuhangukgwannight": {
+    "source": "google_places",
+    "place_id": "ChIJP-e2TsjHfDURdJIcyAF4mU0",
+    "matchedName": "한국관나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "suwonchancenight": {
+    "source": "google_places",
+    "place_id": "ChIJ5yIBCADjZTURt277Qa8ubhE",
+    "matchedName": "수원찬스돔나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "suwonkoreanight": {
+    "source": "google_places",
+    "place_id": "ChIJJSN-xDlDezUR7zThBCuDXzw",
+    "matchedName": "수원코리아나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "osanhobaknight": {
+    "source": "google_places",
+    "place_id": "ChIJI_mdXSVHezURkBwW02aH2kM",
+    "matchedName": "오산호박나이트클럽",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "seongnamgukbingwannight": {
+    "source": "google_places",
+    "place_id": "ChIJA8H1EQCpfDURv_7feYTZqKU",
+    "matchedName": "성남국빈관나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "seongnamshampoonight": {
+    "source": "google_places",
+    "place_id": "ChIJ07BjdoSofDURD-W36pxaXqM",
+    "matchedName": "샴푸나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "pyeongtaekhobaknight": {
+    "source": "google_places",
+    "place_id": "ChIJKRPrd_46ezURcxuDrSNm-bo",
+    "matchedName": "호박나이트",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "incheonarabiannight": {
+    "source": "google_places",
+    "place_id": "ChIJ9wJJ7u19ezURRR_kXWBzdcA",
+    "matchedName": "인천아라비안나이트 공주",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "bucheonmeritnight": {
+    "source": "google_places",
+    "place_id": "ChIJj--aihR9ezURBwTihubJkNo",
+    "matchedName": "부천메리트나이트 공주",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "ansanhitnight": {
+    "source": "google_places",
+    "place_id": "ChIJ_e20LUNvezURqGljkNCNQ7w",
+    "matchedName": "히트나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "cheonanstardomnight": {
+    "source": "google_places",
+    "place_id": "ChIJAXa7LwgpezURdtBx0eskj9Q",
+    "matchedName": "천안스타돔나이트W.T오빠",
+    "fields": [
+      "address",
+      "openHours",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "cheonankoreanight": {
+    "source": "google_places",
+    "place_id": "ChIJKY2XBp3XejURMBxbIyoB0T8",
+    "matchedName": "천안코리아나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "daejeonsevennight": {
+    "source": "google_places",
+    "place_id": "ChIJp1imIhNPZTUR1yW3-j7hn3o",
+    "matchedName": "대전세븐나이트클럽",
+    "fields": [
+      "address",
+      "openHours",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "daejeonbongmyeongnight": {
+    "source": "google_places",
+    "place_id": "ChIJ-3cUcM9LZTURgAtSYoxZnqQ",
+    "matchedName": "봉명나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "daejeonhangukgwannight": {
+    "source": "google_places",
+    "place_id": "ChIJcf8uagBJZTURhyAjjsfZaLI",
+    "matchedName": "대전한국관",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "cheongjudontellmamanight": {
+    "source": "google_places",
+    "place_id": "ChIJAYLZOcAnZTURXS6FIWiEfKY",
+    "matchedName": "청주돈텔마마나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "cheongjuhobaknight": {
+    "source": "google_places",
+    "place_id": "ChIJdaPCJQAnZTURiCbenPCPj0o",
+    "matchedName": "청주 호박나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "seosanhobaknight": {
+    "source": "google_places",
+    "place_id": "ChIJ7QJuUwD9ejUR4b0AIqP2-1I",
+    "matchedName": "서산호박나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "daeguhangukgwannight": {
+    "source": "google_places",
+    "place_id": "ChIJszted1riZTURXwHoCTNEzD0",
+    "matchedName": "한국관",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "daegutotoganight": {
+    "source": "google_places",
+    "place_id": "ChIJOZcPfQDjZTURDo3J9uuOnK0",
+    "matchedName": "대구토토가나이트",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "busanasiadnight": {
+    "source": "google_places",
+    "place_id": "ChIJhwgRzQ-TaDUREBpECi3LSV0",
+    "matchedName": "부산아시아드나이트 곰",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "busanmulnight": {
+    "source": "google_places",
+    "place_id": "ChIJdZY8mCCTaDURVBkKFtFj3AE",
+    "matchedName": "부산물나이트 번개",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "ulsannewworldnight": {
+    "source": "google_places",
+    "place_id": "ChIJQTO1vhPNZzUR9zXTA7U_zkA",
+    "matchedName": "뉴월드나이트",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "ulsanchampionnight": {
+    "source": "google_places",
+    "place_id": "ChIJqX3hABXNZzURMwBq9Kow7Fg",
+    "matchedName": "울산챔피언나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "gwangjusangmunight": {
+    "source": "google_places",
+    "place_id": "ChIJPQniDQCJcTUR1PvlFQ_KJmM",
+    "matchedName": "상무나이트",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "gwangjutotonight": {
+    "source": "google_places",
+    "place_id": "ChIJ44a1kDqPcTURptL1YBOFSDw",
+    "matchedName": "토토밤",
+    "fields": [
+      "address",
+      "openHours",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "gwangjuallnight": {
+    "source": "google_places",
+    "place_id": "ChIJXQm0NqKJcTURnxCUPO3MWMw",
+    "matchedName": "올나이트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "gangnamclub-peak": {
+    "source": "google_places",
+    "place_id": "ChIJUyCZu3ukfDURlBvoYV_uD-U",
+    "matchedName": "피크",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "apgujeongclub-dbridge": {
+    "source": "google_places",
+    "place_id": "ChIJQcDMQwCjfDUR_Wc1vDR5wv8",
+    "matchedName": "디브릿지",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "apgujeongcodelounge": {
+    "source": "google_places",
+    "place_id": "ChIJo0EypDmjfDURP8wn38GbSDQ",
+    "matchedName": "압구정코드라운지",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "hongdaeclub-bermuda": {
+    "source": "google_places",
+    "place_id": "ChIJvY-QhPyZfDURLap7hGibxLQ",
+    "matchedName": "홍대클럽 버뮤다 - CLUB BERMUDA HONGDAE",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "nowoncheongchunpocha": {
+    "source": "google_places",
+    "place_id": "ChIJ9WkgSPq5fDUR0nSIoBOPUkk",
+    "matchedName": "노원청춘포차",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "uijeongbuarena": {
+    "source": "google_places",
+    "place_id": "ChIJvSYS_QnHfDUR-ZPx9cxeo8k",
+    "matchedName": "의정부아레나오피",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "yonginbyeolbam": {
+    "source": "google_places",
+    "place_id": "ChIJESw4RklRezURuKPL7z27knA",
+    "matchedName": "용인 사거리별밤 90가요리믹스",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "daejeonsugarclub": {
+    "source": "google_places",
+    "place_id": "ChIJGTt53OpLZTURXF6BxdR7TqM",
+    "matchedName": "설탕클럽",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "apgujeongidiotlounge": {
+    "source": "google_places",
+    "place_id": "ChIJvaS3bIijfDURjmqN5R8mL90",
+    "matchedName": "라운지",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "suwonhoppa-beast": {
+    "source": "google_places",
+    "place_id": "ChIJ8xzy4gBDezURTQHRp1ZJQLM",
+    "matchedName": "수원 호빠 비스트",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "busanhoppa-menz": {
+    "source": "google_places",
+    "place_id": "ChIJaYjGoi7taDURkrPeTMQcN3g",
+    "matchedName": "맨즈",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "busanhoppa-aura": {
+    "source": "google_places",
+    "place_id": "ChIJqcJ0KintaDURDjwQiDD6XEY",
+    "matchedName": "아우라",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
+  },
+  "daeguhoppa-perfect": {
+    "source": "google_places",
+    "place_id": "ChIJwRmVBefjZTURBctk5lo52Dk",
+    "matchedName": "퍼펙트",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-22"
   }
 }
