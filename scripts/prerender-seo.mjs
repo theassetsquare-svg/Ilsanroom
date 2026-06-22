@@ -2324,7 +2324,7 @@ for (const v of venues) {
 for (const [st, stVenues] of Object.entries(stationVenues)) {
   const p = `/near/${encodeURIComponent(st)}`;
   // 시즌88 — title 접미부 회전(전 역 동일 접미부 지문 해체)
-  const title = `${st} ${aggPick(st, ['근처 업소', '도보권 업소', '인근 핫스팟'], 5)} ${stVenues.length}곳 — ${aggPick(st, ['역에서 걸어서 갈 수 있는 곳', '도보 5분권 모음', '걸어서 가는 나이트라이프', '역 근처 거리순 정리', '지하철로 바로 닿는 곳', '퇴근길에 들르기 좋은', '한 정거장 안에서 해결', '역세권 거리순으로 모아'], 6)}`;
+  const title = `${st} ${aggPick(st, ['근처 업소', '도보권 업소', '인근 핫스팟'], 5)} ${stVenues.length}곳 — ${aggPick(st, ['역에서 걸어서 갈 수 있는 곳', '도보 5분권 모음', '걸어서 가는 나이트라이프', '역에서 거리순으로 정리', '지하철로 바로 닿는 곳', '퇴근길에 들르기 좋은', '한 정거장 안에서 해결', '역세권 거리순으로 모아'], 6)}`;
   // 시즌172 — 역명이 venue 접두어에 포함되면 suffix만 노출 (밀도 희석)
   const stTopNames = stVenues.slice(0, 3).map(sv => { const p = (sv.nameKo || '').split(/\s+/); return (p.length > 1 && p[0].includes(st.replace(/역$/, ''))) ? p.slice(1).join(' ') : sv.nameKo; }).join(', ');
   // 시즌88 — desc에 실제 멤버 업종만 노출(전체 6업종 나열 X) → 페이지마다 고유, 사파리/희석
