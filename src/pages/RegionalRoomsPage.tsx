@@ -10,6 +10,7 @@ import type { Venue } from '@/types';
 
 import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter, ListMidHook, TopPicksMini } from '@/components/venue/CategoryListingEngagement';
 import { RelatedMagazine } from '@/components/venue/CategoryExtras';
+import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
 
 
 const regionNames: Record<string, string> = {
@@ -180,6 +181,10 @@ export default function RegionalRoomsPage() {
         <BrowseOtherCategories currentPath="/rooms" />
         <BottomFinishCounter baseCount={72} />
       </section>
+
+      {region === 'ilsan' && (
+        <StickyPhoneBar phone="010-3695-4929" staffName="일산명월관 신실장" venueName="일산명월관" />
+      )}
     </div>
   );
 }

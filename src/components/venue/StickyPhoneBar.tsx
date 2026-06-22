@@ -24,6 +24,7 @@ const HIDE_STICKY_VENUES = new Set([
   // 전화 노출 억제 — staffPhone 필드는 동결(유지)하되 페이지에 전화 노출 안 함.
   //   프리렌더 PHONE_HIDDEN_SLUGS와 1:1 대응 (정화, 2026.3 스팸 업데이트 대응).
   '해운대호빠 깐따삐야',
+  '창원룰루랄라나이트',
 ]);
 
 export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPhoneBarProps) {

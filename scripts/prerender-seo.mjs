@@ -19,6 +19,7 @@ const OG_IMAGE = `${BASE_URL}/og/nolcool-og.jpg`;
 //   React 측은 StickyPhoneBar.HIDE_STICKY_VENUES가 1:1로 대응.
 const PHONE_HIDDEN_SLUGS = new Set([
   'haeundaehoppa-kkantappiya',
+  'changwon-lululalala',
 ]);
 
 // ★ lastmod 정직화 — 페이지별 "의미 콘텐츠" 해시를 직전 빌드와 비교해, 실제로 바뀐 URL만
@@ -2152,7 +2153,9 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
   const p = `/region/${encodeURIComponent(regionKo)}`;
   const title = `${regionKo} 나이트라이프 ${regionVenues.length}곳 — ${aggPick(regionKo, ['클럽·라운지·룸·요정 한눈에', '동네 핫스팟 한 페이지 정리', '어디부터 갈지 비교해보기', '가까운 인기 업소 모아보기', '처음 가도 후회 없는 코스', '업종별 분위기 한눈 비교', '회원 후기로 추린 동네 picks', '거리·업종별로 묶어 보기', '오늘 갈 곳 빠르게 고르기', '현지인이 자주 찾는 순서'], 7)}`;
   // 시즌172 — region 접두어 포함 venue는 suffix만 (브랜드 반복 희석)
-  const shortLabelFn = (rv) => { const ps = (rv.nameKo || '').split(/\s+/); return (ps.length > 1 && ps[0].includes(regionKo)) ? ps.slice(1).join(' ') : rv.nameKo; };
+  //   다어절 region("부산 해운대")은 venue명이 마지막 어절("해운대")만 접두 → 마지막 어절도 매칭
+  const regionLastWord = regionKo.split(/\s+/).pop();
+  const shortLabelFn = (rv) => { const ps = (rv.nameKo || '').split(/\s+/); return (ps.length > 1 && (ps[0].includes(regionKo) || ps[0].includes(regionLastWord))) ? ps.slice(1).join(' ') : rv.nameKo; };
   const regionTopNames = regionVenues.slice(0, 3).map(shortLabelFn).join(', ');
   // 업종별 그룹핑 SSR
   const byCat = {};

@@ -17,7 +17,7 @@
  *   8) "창원룰루랄라나이트" 밀도 ≤3.5%
  *   9) "창원나이트" body 등장 ≥3회
  *  10) 후킹 5축 ≥1축 (title 또는 desc)
- *  +) 디테일 토큰 (짱구/로얄살루트/평일/룸/합석) 모두 등장
+ *  +) 디테일 토큰 (발렌타인/로얄살루트/평일/룸/라이브) 모두 등장
  *
  * 환경:
  *   RESEND_API_KEY     필수
@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/changwon-lululalala/';
 const PRIMARY = '창원룰루랄라나이트';
 const SECONDARY = '창원나이트';
-const DETAIL_TOKENS = ['짱구', '로얄살루트', '평일', '룸', '합석'];
+const DETAIL_TOKENS = ['발렌타인', '로얄살루트', '평일', '룸', '라이브'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */
