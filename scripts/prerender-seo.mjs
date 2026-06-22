@@ -14,13 +14,11 @@ const DIST = path.resolve('dist');
 const BASE_URL = 'https://nolcool.com';
 const OG_IMAGE = `${BASE_URL}/og/nolcool-og.jpg`;
 
-// 전화 노출 억제 — staffPhone 필드는 동결(데이터 유지)하되 이 slug의 페이지에는
-//   tel: 링크·schema telephone을 노출하지 않는다 (호객성 전화 노출 정화, 2026.3 스팸 업데이트 대응).
-//   React 측은 StickyPhoneBar.HIDE_STICKY_VENUES가 1:1로 대응.
-const PHONE_HIDDEN_SLUGS = new Set([
-  'haeundaehoppa-kkantappiya',
-  'changwon-lululalala',
-]);
+// 전화 노출 억제 목록 — 비어 있다. 과거 2개 slug를 가렸던 사유는 호객성 카피였고,
+//   카피를 정화(호객·접객 묘사 제거)한 뒤에는 전화(NAP telephone)를 재노출한다.
+//   전화 노출 자체는 엔티티 SEO(NAP 일치)에 플러스 신호이며 호객과 분리된다.
+//   라벨은 중립("예약 문의")으로만 노출하고 호객 카피는 0.
+const PHONE_HIDDEN_SLUGS = new Set([]);
 
 // ★ lastmod 정직화 — 페이지별 "의미 콘텐츠" 해시를 직전 빌드와 비교해, 실제로 바뀐 URL만
 //   lastmod를 갱신한다. 안 바뀐 페이지는 이전 lastmod 그대로 유지 → 매일 today 도배 방지.
@@ -565,7 +563,7 @@ function generateVenueSsrBody(v, allVenues) {
   if (v.staffPhone && !PHONE_HIDDEN_SLUGS.has(v.slug)) {
     const telDigits = v.staffPhone.replace(/-/g, '');
     const staffLabel = v.staffNickname ? `${escHtml(v.staffNickname)} ` : '';
-    html += `<p class="ssr-phone"><a href="tel:${telDigits}" itemprop="telephone">📞 ${staffLabel}${escHtml(v.staffPhone)}</a></p>`;
+    html += `<p class="ssr-phone">📞 예약 문의: <a href="tel:${telDigits}" itemprop="telephone">${staffLabel}${escHtml(v.staffPhone)}</a></p>`;
   }
   if (v.openHours) {
     html += `<p class="ssr-hours" itemprop="openingHours">⏰ 영업시간: ${escHtml(v.openHours)}</p>`;

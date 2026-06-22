@@ -140,9 +140,9 @@ function ChangwonLululalalaHeaderSection() {
       </div>
 
       <div className="w-full max-w-[480px] rounded-xl px-5 py-4" style={{ background: '#FFF7EC', border: '1px solid #FFD9A8' }}>
-        <p style={{ color: '#5C2A0A', fontSize: 14, fontWeight: 700, marginBottom: 6 }}>처음 가는 사람만 보세요</p>
+        <p style={{ color: '#5C2A0A', fontSize: 14, fontWeight: 700, marginBottom: 6 }}>예약 문의</p>
         <p style={{ color: '#7A3A12', fontSize: 13, lineHeight: 1.7 }}>
-          전화할 때 "처음입니다" 한마디만 해라. 짱구가 무대 측면 부스로 빼주고 양주 라인업까지 미리 챙겨둔다. 금토 11시 넘으면 자리 잡기 힘드니까 콜 먼저.
+          창원 시내 한복판에 있고 매일 21:00–05:00 영업한다. 금·토요일 밤은 자리가 빨리 차는 편이니, 방문 전 전화로 예약 상황과 인원을 확인하면 된다.
         </p>
       </div>
     </div>
