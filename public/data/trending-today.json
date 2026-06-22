@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-22T08:46:57.942Z",
+  "generated_at": "2026-06-22T17:40:02.792Z",
   "window_hours": 24,
   "items": [
     {
@@ -21,28 +21,21 @@
       "title": "해운대호빠 깐따삐야",
       "category": "hoppa",
       "region": "부산 해운대",
-      "views_24h": 5
-    },
-    {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 5
-    },
-    {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 3
+      "views_24h": 4
     },
     {
       "path": "/nights/cheongdamh2onight",
       "title": "청담H2O나이트",
       "category": "night",
       "region": "청담",
-      "views_24h": 3
+      "views_24h": 2
+    },
+    {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
+      "views_24h": 2
     },
     {
       "path": "/nights/gildongchancenight",
@@ -59,13 +52,6 @@
       "views_24h": 2
     },
     {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
-      "views_24h": 2
-    },
-    {
       "path": "/hoppa/haeundaehoppa-michelin",
       "title": "해운대호빠 미슐랭",
       "category": "hoppa",
@@ -73,32 +59,46 @@
       "views_24h": 2
     },
     {
+      "path": "/nights/daejeonsevennight",
+      "title": "대전세븐나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 1
+    },
+    {
       "path": "/nights/gurihobaknight",
       "title": "구리호박나이트",
       "category": "night",
       "region": "구리",
-      "views_24h": 2
+      "views_24h": 1
     },
     {
-      "path": "/nights/bundangpongpongnight",
-      "title": "분당퐁퐁나이트",
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
       "category": "night",
-      "region": "분당",
-      "views_24h": 2
+      "region": "오산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/seongnamshampoonight",
+      "title": "성남샴푸나이트",
+      "category": "night",
+      "region": "성남",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/suwonchancenight",
+      "title": "수원찬스돔나이트",
+      "category": "night",
+      "region": "수원",
+      "views_24h": 1
     },
     {
       "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
       "title": "일산명월관요정",
       "category": "yojeong",
       "region": "일산",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/sinlimgrandprixnight",
-      "title": "신림그랑프리나이트",
-      "category": "night",
-      "region": "신림",
-      "views_24h": 2
+      "views_24h": 1
     },
     {
       "path": "/nights/daegubabambanight",
