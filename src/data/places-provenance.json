@@ -743,5 +743,211 @@
       "geo"
     ],
     "fetchedAt": "2026-06-22"
+  },
+  "haeundaegoguryeo": {
+    "source": "google_places",
+    "place_id": "ChIJpbaahE2TaDUR6aZj2lrEETc",
+    "matchedName": "고구려룸",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "gangnamjuliananight": {
+    "source": "google_places",
+    "place_id": "ChIJUZNv_i2jfDURxybd7z5nU3c",
+    "matchedName": "줄리아나나이트 강남",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "sinlimgrandprixnight": {
+    "source": "google_places",
+    "place_id": "ChIJdaaubeqffDURC-7-C4E4Wls",
+    "matchedName": "신림그랑프리클럽",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "bucheongoraenight": {
+    "source": "google_places",
+    "place_id": "ChIJGe81ITZ9ezURwfR5-k4Iuc4",
+    "matchedName": "고래나이트클럽",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "ansandontellmamanight": {
+    "source": "google_places",
+    "place_id": "ChIJ6Z5G_uNvezUR39vHP0GEJes",
+    "matchedName": "돈텔마마슈퍼나이트클럽",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "daeguhobaknight": {
+    "source": "google_places",
+    "place_id": "ChIJt52VHQDnZTURGUpMmyB0AMk",
+    "matchedName": "호박나이트클럽",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "gumihobaknight": {
+    "source": "google_places",
+    "place_id": "ChIJsZiglDLHZTURUFVO4Pu_OG0",
+    "matchedName": "구미 호박관광나이트",
+    "fields": [
+      "address",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "gwangjumgmnight": {
+    "source": "google_places",
+    "place_id": "ChIJaWQajuqIcTURZBclbHcUlIo",
+    "matchedName": "MGM나이트클럽",
+    "fields": [
+      "address",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "gangnamclub-sound": {
+    "source": "google_places",
+    "place_id": "ChIJIaZRpI-jfDURLEMOJ5sf90o",
+    "matchedName": "클럽사운드 - CLUBSOUND",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "gangnamclub-utopia": {
+    "source": "google_places",
+    "place_id": "ChIJ1UTs-DqjfDURNT2YmsWilzE",
+    "matchedName": "유토피아 클럽 UTOPIA SEOUL 강남 클럽",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "cheongdamclub-arju": {
+    "source": "google_places",
+    "place_id": "ChIJvZeTmWalfDURmM8R2LxbfPc",
+    "matchedName": "아르쥬청담",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "yongsandragoncity": {
+    "source": "google_places",
+    "place_id": "ChIJ36pzdCGjfDURq7peKhDgB6U",
+    "matchedName": "서울드래곤시티",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "seoulbanyantree": {
+    "source": "google_places",
+    "place_id": "ChIJGR_sdB-jfDURARlu68lWR8M",
+    "matchedName": "반얀트리 클럽 앤 스파 서울",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "cheongju-supermoon": {
+    "source": "google_places",
+    "place_id": "ChIJrVCKBvHZZDURQl3CQCPj3Jw",
+    "matchedName": "슈퍼문 Supermoon",
+    "fields": [
+      "address",
+      "openHours",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "haeundaehoppa-kkantappiya": {
+    "source": "google_places",
+    "place_id": "ChIJ2XgLgLaNaDURDk7A9lFSoJQ",
+    "matchedName": "깐따삐야 여성전용",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "daejeonhoppa-eclipse": {
+    "source": "google_places",
+    "place_id": "ChIJOcFkgS1LZTUREoO9kEfNiTE",
+    "matchedName": "대전호스트 빠 이클립스 여성전용 클럽",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "gangnamclub-octagon": {
+    "source": "google_places",
+    "place_id": "ChIJsfnfbfCjfDURUaLvUl6xNKc",
+    "matchedName": "옥타곤 클럽 OCTAGON SEOUL",
+    "fields": [
+      "address",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
+  },
+  "itaewonclub-cakeshop": {
+    "source": "google_places",
+    "place_id": "ChIJIZmwyzeifDURkMRlwtxdI-E",
+    "matchedName": "케이크샵 서울",
+    "fields": [
+      "address",
+      "openHours",
+      "nearbyStation",
+      "geo"
+    ],
+    "fetchedAt": "2026-06-23"
   }
 }
