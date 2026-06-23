@@ -17,6 +17,13 @@ jobs:
         with:
           node-version: 20
       - name: GA4 per-page report (read-only)
-        run: node scripts/ga4-page-report.mjs
+        run: node scripts/ga4-page-report.mjs | tee ga4-report.txt
         env:
           GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+      - name: Upload report as downloadable artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ga4-report
+          path: ga4-report.txt
+          retention-days: 14
