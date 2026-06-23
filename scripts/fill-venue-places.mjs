@@ -110,7 +110,7 @@ async function searchText(query) {
     headers: {
       'Content-Type': 'application/json',
       'X-Goog-Api-Key': KEY,
-      'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.regularOpeningHours,places.location',
+      'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.regularOpeningHours,places.location,places.primaryType,places.types',
     },
     body: JSON.stringify({ textQuery: query, languageCode: 'ko', regionCode: 'KR' }),
   }).then((r) => r.json());
@@ -119,37 +119,66 @@ async function searchText(query) {
 }
 
 const dispName = (p) => p.displayName?.text || '';
-// 핵심 상호가 place 이름에 포함되는지(fuzzy). 불포함 = 오매칭 → 채택 금지.
-function nameMatch(p, needle) { const a = norm(dispName(p)), b = norm(needle); return !!b && (a.includes(b) || b.includes(a)); }
+
+// place 이름을 "지역·업종 수식어를 벗긴 핵심부"로 환원. 이게 정확히 핵심 상호와 같아야만 채택.
+//   핵심상호가 단순 포함(substring)이면 통과시키던 옛 방식은 오매칭 양산
+//   (예: '갤러리'⊂'갤러리에이피나인', '벨벳'⊂'레드벨벳', '어게인'⊂'포차어게인') → 정확 일치로 강화.
+const NIGHTTERMS = ['슈퍼나이트', '나이트클럽', '나이트', '호스트빠', '호스트', '호빠', '클럽', '룸살롱', '룸', '라운지', '스파', '관광', '여성전용', '앤'];
+const GEOGEN = ['서울', '경기', '인천', '부산', '대구', '광주', '대전', '울산', '제주', '본점', '지점', '점', '센터'];
+// Places 업종 타입이 명백히 유흥·숙박과 무관하면 거절(치과/피부과/꽃집/아파트/지역명/노래방 등).
+const DENY_TYPES = new Set([
+  'dental_clinic', 'doctor', 'dentist', 'hospital', 'pharmacy', 'drugstore', 'physiotherapist', 'medical_lab', 'skin_care_clinic', 'beauty_salon', 'hair_salon', 'spa_alt',
+  'florist', 'real_estate_agency', 'apartment_complex', 'apartment_building', 'condominium_complex', 'housing_complex', 'premise',
+  'school', 'primary_school', 'secondary_school', 'university', 'bank', 'atm', 'accounting', 'insurance_agency', 'lawyer',
+  'government_office', 'city_hall', 'local_government_office', 'courthouse', 'embassy', 'police',
+  'locality', 'sublocality', 'political', 'administrative_area_level_1', 'administrative_area_level_2', 'neighborhood',
+  'karaoke', 'store', 'supermarket', 'convenience_store', 'clothing_store', 'corporate_office', 'church', 'place_of_worship', 'gym', 'tourist_information_center',
+]);
+function reduceCore(name, core, regs) {
+  let s = norm(name);
+  const koCore = /[가-힣]/.test(core) && !/[A-Za-z]/.test(core);
+  if (koCore) s = s.replace(/[a-z]/g, ''); // 한글 핵심상호면 병기 로마자 제거(옥타곤/octagon 동시표기 처리)
+  s = s.replace(/[0-9]/g, '');
+  for (const r of regs) s = s.split(norm(r)).join('');
+  for (const t of NIGHTTERMS) s = s.split(norm(t)).join('');
+  for (const g of GEOGEN) s = s.split(norm(g)).join('');
+  return s;
+}
+// 채택 검증: 업종타입 거부목록 아님 + 환원한 이름이 핵심상호와 정확 일치 + 주소가 지역과 일치.
+function verify(p, core, regs) {
+  if (!core) return false;
+  const tset = [p.primaryType, ...(p.types || [])].filter(Boolean);
+  if (tset.some((t) => DENY_TYPES.has(t))) return false;
+  if (!(regs.length === 0 || regs.some((r) => (p.formattedAddress || '').includes(r)))) return false;
+  return reduceCore(dispName(p), core, regs) === norm(core);
+}
 
 async function placesLookup(v) {
   const regs = String(v.regionKo || '').split(/\s+/).filter(Boolean);
-  const inRegion = (p) => regs.length === 0 || regs.some((r) => (p.formattedAddress || '').includes(r));
   const core = coreName(v);
 
   let cand = null;
   let matchedVia = '';
-  // 1차: 전체 이름 + 지역 (엄격 — 이름 전체 fuzzy 포함)
+  // 1차: 전체 이름 + 지역. 검증은 핵심상호 기준(환원 정확일치+타입+지역)으로 통일.
   {
     const r = await searchText(`${v.nameKo} ${v.regionKo || ''}`.trim());
     if (r.error) return { skip: `searchText ${r.error}` };
-    cand = r.places.find((p) => nameMatch(p, v.nameKo));
+    cand = r.places.find((p) => verify(p, core, regs));
     if (cand) matchedVia = 'fullname';
   }
   // 2·3차: 핵심 상호 + 지역(업종어 제거). 단 너무 일반적이면 생략(오매칭 방지).
-  //   검증 = place 이름이 핵심상호 포함 AND 주소가 지역과 일치(동명 타지역 오매칭 차단). 둘 다여야 채택.
   if (!cand && distinctive(core)) {
     const queries = [`${core} ${v.regionKo || ''}`.trim()];
     if (regs.length) queries.push(`${core} ${regs[0]}`.trim()); // 광역(시) bias
     for (const q of queries) {
       const r = await searchText(q);
       if (r.error) continue;
-      cand = r.places.find((p) => nameMatch(p, core) && inRegion(p));
+      cand = r.places.find((p) => verify(p, core, regs));
       if (cand) { matchedVia = `core:${core}`; break; }
       await sleep(120);
     }
   }
-  if (!cand) return { skip: distinctive(core) ? `매칭없음(core='${core}')` : `일반상호·생략(core='${core || '∅'}')` };
+  if (!cand) return { skip: distinctive(core) ? `매칭없음·검증불통과(core='${core}')` : `일반상호·생략(core='${core || '∅'}')` };
 
   const res = {
     place_id: cand.id,
