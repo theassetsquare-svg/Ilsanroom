@@ -21,6 +21,7 @@ const NICKNAME_MAP = {
   'ulsanchampionnight': '춘자',
   'gangnamjuliananight': '태양',
   'daejeonsevennight': '4인1조 w.t원숭이',
+  'daejeononenight': '까치 010-3918-9414',
 };
 
 function findImage(slug) {
