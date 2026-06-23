@@ -79,8 +79,32 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const norm = (s) => String(s || '').replace(/[\s·\-_/()]/g, '').toLowerCase();
 
 // Places API (New) — 신규 GCP 키는 기본적으로 이 v1 엔드포인트만 활성(레거시=REQUEST_DENIED).
-async function placesLookup(v) {
-  const query = `${v.nameKo} ${v.regionKo || ''}`.trim();
+const BIZ = ['나이트클럽', '나이트', '클럽', '룸살롱', '룸', '라운지', '요정', '호빠'];
+// 단독 검색 시 동명 타업소가 흔한 일반 상호(오매칭 위험) — 느슨한 검색 금지.
+const GENERIC = new Set(['스타', '로얄', '물', '도', '킹', '퀸', '베스트', '클럽', '나이트', '호빠', '룸', '라운지', '요정']);
+
+// venue 이름에서 핵심 상호만 추출(지역·업종 수식어 제거).
+//   공백 있으면 = "<지역+업종> <브랜드>" 구조 → 첫 공백 뒤 전체가 브랜드(예: '강남청담클럽 레이스'→'레이스').
+//   공백 없으면 = 지역 접두 + 업종어 제거 후 남는 토큰(예: '용산드래곤시티'→'드래곤시티').
+function coreName(v) {
+  const s = String(v.nameKo || '').trim();
+  if (/\s/.test(s)) { const a = s.slice(s.indexOf(' ') + 1).trim(); if (a) return a; }
+  let t = s;
+  for (const r of String(v.regionKo || '').split(/\s+/).filter(Boolean)) if (t.startsWith(r)) t = t.slice(r.length);
+  for (const b of BIZ) { const i = t.indexOf(b); if (i >= 0) { t = t.slice(0, i) + t.slice(i + b.length); break; } }
+  return t.trim();
+}
+// 너무 일반적인 상호(빈값·단일 일반명사·짧은 로마자 약어)는 느슨한 검색 생략(오매칭보다 SKIP이 안전).
+function distinctive(core) {
+  const c = String(core || '').trim();
+  if (!c || GENERIC.has(c)) return false;
+  const n = c.replace(/\s/g, '');
+  const ko = (n.match(/[가-힣]/g) || []).length;
+  const latin = (n.match(/[A-Za-z]/g) || []).length;
+  return ko >= 2 || latin >= 3;
+}
+
+async function searchText(query) {
   const ts = await fetch('https://places.googleapis.com/v1/places:searchText', {
     method: 'POST',
     headers: {
@@ -90,16 +114,47 @@ async function placesLookup(v) {
     },
     body: JSON.stringify({ textQuery: query, languageCode: 'ko', regionCode: 'KR' }),
   }).then((r) => r.json());
-  if (ts.error) return { skip: `searchText ${ts.error.status || ts.error.code}` };
-  const results = ts.places || [];
-  if (!results.length) return { skip: 'searchText 결과 0' };
-  // 이름 확실 일치만 채택(부분 포함, 불확실=skip)
-  const nm = (p) => p.displayName?.text || '';
-  const cand = results.find((p) => { const a = norm(nm(p)), b = norm(v.nameKo); return a.includes(b) || b.includes(a); });
-  if (!cand) return { skip: `이름 불일치(top='${nm(results[0])}')` };
+  if (ts.error) return { error: ts.error.status || ts.error.code };
+  return { places: ts.places || [] };
+}
+
+const dispName = (p) => p.displayName?.text || '';
+// 핵심 상호가 place 이름에 포함되는지(fuzzy). 불포함 = 오매칭 → 채택 금지.
+function nameMatch(p, needle) { const a = norm(dispName(p)), b = norm(needle); return !!b && (a.includes(b) || b.includes(a)); }
+
+async function placesLookup(v) {
+  const regs = String(v.regionKo || '').split(/\s+/).filter(Boolean);
+  const inRegion = (p) => regs.length === 0 || regs.some((r) => (p.formattedAddress || '').includes(r));
+  const core = coreName(v);
+
+  let cand = null;
+  let matchedVia = '';
+  // 1차: 전체 이름 + 지역 (엄격 — 이름 전체 fuzzy 포함)
+  {
+    const r = await searchText(`${v.nameKo} ${v.regionKo || ''}`.trim());
+    if (r.error) return { skip: `searchText ${r.error}` };
+    cand = r.places.find((p) => nameMatch(p, v.nameKo));
+    if (cand) matchedVia = 'fullname';
+  }
+  // 2·3차: 핵심 상호 + 지역(업종어 제거). 단 너무 일반적이면 생략(오매칭 방지).
+  //   검증 = place 이름이 핵심상호 포함 AND 주소가 지역과 일치(동명 타지역 오매칭 차단). 둘 다여야 채택.
+  if (!cand && distinctive(core)) {
+    const queries = [`${core} ${v.regionKo || ''}`.trim()];
+    if (regs.length) queries.push(`${core} ${regs[0]}`.trim()); // 광역(시) bias
+    for (const q of queries) {
+      const r = await searchText(q);
+      if (r.error) continue;
+      cand = r.places.find((p) => nameMatch(p, core) && inRegion(p));
+      if (cand) { matchedVia = `core:${core}`; break; }
+      await sleep(120);
+    }
+  }
+  if (!cand) return { skip: distinctive(core) ? `매칭없음(core='${core}')` : `일반상호·생략(core='${core || '∅'}')` };
+
   const res = {
     place_id: cand.id,
-    name: nm(cand),
+    name: dispName(cand),
+    matchedVia,
     address: cand.formattedAddress || '',
     openHours: (cand.regularOpeningHours?.weekdayDescriptions || []).join(' / '),
     nearbyStation: '',
@@ -185,7 +240,7 @@ for (const b of blocks) {
     ? { ...prev, place_id: data.place_id, matchedName: data.name, fields: mergedFields, fetchedAt: new Date().toISOString().slice(0, 10) }
     : { source: 'google_places', place_id: data.place_id, matchedName: data.name, fields: mergedFields, fetchedAt: new Date().toISOString().slice(0, 10) };
   filledCount++;
-  console.log(`  ✓ ${b.nameKo}: ${got.join('+')} 채움`);
+  console.log(`  ✓ ${b.nameKo}: ${got.join('+')} 채움${data.matchedVia ? ` [${data.matchedVia} → ${data.name}]` : ''}`);
 }
 
 if (filledCount) {
