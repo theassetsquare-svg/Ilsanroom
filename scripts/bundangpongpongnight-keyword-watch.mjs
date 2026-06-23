@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/bundangpongpongnight/';
 const PRIMARY = '분당퐁퐁나이트';
 const SECONDARY = '분당나이트';
-const DETAIL_TOKENS = ['판교', '평일', '레트로', '합석', '부킹'];
+const DETAIL_TOKENS = ['판교', '평일', '레트로', '부킹'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

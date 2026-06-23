@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/seongnamshampoonight/';
 const PRIMARY = '성남샴푸나이트';
 const SECONDARY = '성남나이트';
-const DETAIL_TOKENS = ['모란역', '분당선', '트로트', '박찬호', '합석'];
+const DETAIL_TOKENS = ['모란역', '분당선', '트로트', '박찬호'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

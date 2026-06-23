@@ -42,6 +42,11 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# 로컬 GA4 SA 키 (방법B) — 절대 커밋 금지. JSON은 .env*에 안 잡히므로 명시 차단.
+.ga-sa.json
+gsc-sa*.json
+*-sa-key.json
+
 # vercel
 .vercel
 

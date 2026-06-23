@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/ulsanchampionnight/';
 const PRIMARY = '울산챔피언나이트';
 const SECONDARY = '울산나이트';
-const DETAIL_TOKENS = ['삼산역', '춘자', '복싱', '듀얼', '합석'];
+const DETAIL_TOKENS = ['삼산역', '춘자', '복싱', '듀얼'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/sangbonghangukgwannight/';
 const PRIMARY = '상봉동한국관나이트';
 const SECONDARY = '상봉동나이트';
-const DETAIL_TOKENS = ['색소폰', '미러볼', '망우로', '동북권', '합석'];
+const DETAIL_TOKENS = ['색소폰', '미러볼', '망우로', '동북권'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

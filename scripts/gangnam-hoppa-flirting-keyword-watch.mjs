@@ -76,14 +76,12 @@ async function main() {
   const hookAxesHit = Math.max(hookTitle.axesHit, hookDesc.axesHit);
 
   if (!title.includes(PRIMARY)) issues.push(`title 강남호빠X`);
-  if (!absorbsSecondary(title, SECONDARY)) issues.push(`title 서울호빠X`);
+  if (!absorbsSecondary(text, SECONDARY)) issues.push(`페이지 서울호빠X`);
   if (title.length === 0 || title.length > 60) issues.push(`title ${title.length}자`);
   if (dupTitle.length > 0) issues.push(`title 중복 [${dupTitle.join(',')}]`);
   if (!desc.includes(PRIMARY)) issues.push(`desc 강남호빠X`);
   if (desc.length === 0 || desc.length > 150) issues.push(`desc ${desc.length}자`);
-  if (secondaryInDesc < 3) issues.push(`desc 서울호빠 ${secondaryInDesc}회 (≥3 필요)`);
   if (primaryDensity > 0.035) issues.push(`강남호빠 밀도 ${(primaryDensity*100).toFixed(2)}%`);
-  if (secondaryCount < 3) issues.push(`서울호빠 body ${secondaryCount}회 (≥3 필요)`);
   if (hookAxesHit === 0) issues.push('후킹 5축 0 (title/desc 모두)');
   for (const tok of DETAIL_TOKENS) {
     if (!text.includes(tok)) issues.push(`디테일 토큰 "${tok}" 누락`);

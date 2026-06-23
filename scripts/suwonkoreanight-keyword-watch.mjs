@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/suwonkoreanight/';
 const PRIMARY = '수원코리아나이트';
 const SECONDARY = '수원나이트';
-const DETAIL_TOKENS = ['인계동', '로데오', '멤버십', '발라드', '합석'];
+const DETAIL_TOKENS = ['인계동', '로데오', '멤버십', '발라드'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

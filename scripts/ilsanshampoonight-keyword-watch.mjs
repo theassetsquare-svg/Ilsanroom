@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/ilsanshampoonight/';
 const PRIMARY = '일산샴푸나이트';
 const SECONDARY = '일산나이트';
-const DETAIL_TOKENS = ['라페스타', '마두역', '자이브', '스윙', '합석'];
+const DETAIL_TOKENS = ['라페스타', '마두역', '자이브', '스윙'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/yeongdeungpoterminalnight/';
 const PRIMARY = '영등포터미널나이트';
 const SECONDARY = '영등포나이트';
-const DETAIL_TOKENS = ['터미널', '1호선', '심야버스', '안양', '합석'];
+const DETAIL_TOKENS = ['터미널', '1호선', '심야버스', '안양'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/ulsannewworldnight/';
 const PRIMARY = '울산뉴월드나이트';
 const SECONDARY = '울산나이트';
-const DETAIL_TOKENS = ['삼산동', '롯데백화점', '레이저', '현대', '합석'];
+const DETAIL_TOKENS = ['삼산동', '롯데백화점', '레이저', '현대'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

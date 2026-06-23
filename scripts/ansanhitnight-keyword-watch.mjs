@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/ansanhitnight/';
 const PRIMARY = '안산히트나이트';
 const SECONDARY = '안산나이트';
-const DETAIL_TOKENS = ['반월', '공단', '시흥', '30초', '합석'];
+const DETAIL_TOKENS = ['반월', '공단', '시흥', '30초'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

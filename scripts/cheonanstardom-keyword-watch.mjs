@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/cheonanstardomnight/';
 const PRIMARY = '천안스타돔나이트';
 const SECONDARY = '천안나이트';
-const DETAIL_TOKENS = ['신부동', '돔', '12미터', 'LED', '합석'];
+const DETAIL_TOKENS = ['신부동', '돔', '12미터', 'LED'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

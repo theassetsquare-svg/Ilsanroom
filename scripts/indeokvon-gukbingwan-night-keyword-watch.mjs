@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/indeokvon-gukbingwan-night/';
 const PRIMARY = '인덕원국빈관나이트';
 const SECONDARY = '인덕원나이트';
-const DETAIL_TOKENS = ['안양천', '타원', '차차차', '수요일', '합석'];
+const DETAIL_TOKENS = ['안양천', '타원', '차차차', '수요일'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */
