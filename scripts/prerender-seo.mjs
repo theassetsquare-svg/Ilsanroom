@@ -2072,11 +2072,21 @@ const BEST_DESC_BY_CAT = {
   yojeong: (n) => `요정 ${n}곳 처음이라 격 떨어질까 걱정? 한정식 코스·접대 매너·실장 응대를 회원이 정리했습니다. 사장님 모시는 자리, 놓치면 다음은 없으니까요.`,
   hoppa: (n) => `호빠 ${n}곳 중 진짜 케어되는 곳이 어디? 강남·홍대 외모·진행·매너를 다녀온 회원이 솔직히 비교했어요. 첫방문 30분 어색함, 미리 보고 가야 안 놓칩니다.`,
 };
+// 후미 5어절 unique 절대규칙 — aggPick 해시 모듈로는 6카테고리에서 접미사 충돌(club·night / yojeong·hoppa 동일)
+// → 카테고리당 고유 접미사 1:1 고정 매핑(6개 전부 unique 보장).
+const BEST_TITLE_SUFFIX_BY_CAT = {
+  club: '발길 끊이지 않는 곳들',
+  night: '왜 다들 여기로 몰릴까',
+  lounge: '주말마다 북적이는 상위권',
+  room: '회원들이 가장 많이 찾는다',
+  yojeong: '두 번 세 번 다시 가는 곳',
+  hoppa: '한 번 가면 또 찾는 단골집',
+};
 for (const [catKey, catInfo] of Object.entries(catMap)) {
   const catVenues = venues.filter(vv => vv.cat === catKey);
   if (catVenues.length === 0) continue;
   const p = `/best/${catInfo.path}`;
-  const title = `${catInfo.labelKo} 인기 TOP ${catVenues.length} — ${aggPick('best-' + catKey, ['회원들이 가장 많이 찾는다', '왜 다들 여기로 몰릴까', '한 번 가면 또 찾는 단골집', '주말마다 북적이는 상위권', '두 번 세 번 다시 가는 곳', '발길 끊이지 않는 곳들'], 7)}`;
+  const title = `${catInfo.labelKo} 인기 TOP ${catVenues.length} — ${BEST_TITLE_SUFFIX_BY_CAT[catKey]}`;
   const topNames = catVenues.slice(0, 3).map(vv => vv.nameKo).join(', ');
   const desc = BEST_DESC_BY_CAT[catKey] ? BEST_DESC_BY_CAT[catKey](catVenues.length) : `전국 ${catInfo.labelKo} TOP ${catVenues.length}곳 비교 가이드 — ${topNames} 등 인기 ${catInfo.labelKo} 분위기, 매니저 평판, 드레스코드, 전화번호, 예약 팁까지 정리. 매일 자동 갱신되는 ${catInfo.labelKo} 추천 리스트.`;
   // 시즌88 — 동일 템플릿 문단 제거 → 멤버 실데이터 본문 + 허브-메시(막다른길 0)
