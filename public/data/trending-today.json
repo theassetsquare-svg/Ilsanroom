@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-06-24T15:32:55.892Z",
+  "generated_at": "2026-06-24T18:25:49.477Z",
   "window_hours": 24,
   "items": [
-    {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 8
-    },
     {
       "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
       "title": "일산명월관요정",
       "category": "yojeong",
       "region": "일산",
-      "views_24h": 7
+      "views_24h": 9
     },
     {
       "path": "/rooms/ilsan/ilsanroom",
       "title": "일산룸",
       "category": "room",
       "region": "일산",
+      "views_24h": 8
+    },
+    {
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
+      "category": "night",
+      "region": "대전",
       "views_24h": 7
     },
     {
@@ -101,10 +101,10 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
+      "path": "/nights/seongnamshampoonight",
+      "title": "성남샴푸나이트",
       "category": "night",
-      "region": "안산",
+      "region": "성남",
       "views_24h": 1
     }
   ]
