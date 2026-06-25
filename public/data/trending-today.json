@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T06:38:18.636Z",
+  "generated_at": "2026-06-25T15:42:39.636Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,14 +7,28 @@
       "title": "일산명월관요정",
       "category": "yojeong",
       "region": "일산",
-      "views_24h": 13
+      "views_24h": 7
+    },
+    {
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 7
+    },
+    {
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
+      "category": "night",
+      "region": "부산",
+      "views_24h": 5
     },
     {
       "path": "/rooms/ilsan/ilsanroom",
       "title": "일산룸",
       "category": "room",
       "region": "일산",
-      "views_24h": 8
+      "views_24h": 5
     },
     {
       "path": "/nights/daejeononenight",
@@ -24,18 +38,18 @@
       "views_24h": 5
     },
     {
-      "path": "/nights/pyeongtaekhobaknight",
-      "title": "평택호박나이트",
+      "path": "/nights/daejeonsevennight",
+      "title": "대전세븐나이트",
       "category": "night",
-      "region": "평택",
-      "views_24h": 4
+      "region": "대전",
+      "views_24h": 3
     },
     {
-      "path": "/nights/ilsanshampoonight",
-      "title": "일산샴푸나이트",
+      "path": "/nights/seongnamshampoonight",
+      "title": "성남샴푸나이트",
       "category": "night",
-      "region": "일산",
-      "views_24h": 3
+      "region": "성남",
+      "views_24h": 2
     },
     {
       "path": "/nights/ulsannewworldnight",
@@ -45,8 +59,29 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
+      "path": "/hoppa/daejeonhoppa-eclipse",
+      "title": "대전호빠 이클립스",
+      "category": "hoppa",
+      "region": "대전",
+      "views_24h": 2
+    },
+    {
+      "path": "/clubs/cheongju/cheongju-supermoon",
+      "title": "청주클럽 슈퍼문",
+      "category": "club",
+      "region": "청주",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
+      "category": "night",
+      "region": "오산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/daejeonhangukgwannight",
+      "title": "대전한국관나이트",
       "category": "night",
       "region": "대전",
       "views_24h": 2
@@ -59,43 +94,8 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
-      "category": "night",
-      "region": "부산",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/cheongjuhobaknight",
-      "title": "청주호박나이트",
-      "category": "night",
-      "region": "청주",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
-      "category": "night",
-      "region": "오산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/cheonanstardomnight",
-      "title": "천안스타돔나이트",
-      "category": "night",
-      "region": "천안",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/seongnamshampoonight",
-      "title": "성남샴푸나이트",
+      "path": "/nights/seongnamgukbingwannight",
+      "title": "성남국빈관나이트",
       "category": "night",
       "region": "성남",
       "views_24h": 1
