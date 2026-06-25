@@ -1,27 +1,13 @@
 {
-  "generated_at": "2026-06-25T15:42:39.636Z",
+  "generated_at": "2026-06-25T19:02:36.495Z",
   "window_hours": 24,
   "items": [
-    {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 7
-    },
     {
       "path": "/nights/daejeonbongmyeongnight",
       "title": "대전봉명나이트",
       "category": "night",
       "region": "대전",
       "views_24h": 7
-    },
-    {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
-      "category": "night",
-      "region": "부산",
-      "views_24h": 5
     },
     {
       "path": "/rooms/ilsan/ilsanroom",
@@ -31,11 +17,25 @@
       "views_24h": 5
     },
     {
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
+      "category": "night",
+      "region": "부산",
+      "views_24h": 5
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 5
+    },
+    {
       "path": "/nights/daejeononenight",
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 5
+      "views_24h": 4
     },
     {
       "path": "/nights/daejeonsevennight",
@@ -43,13 +43,6 @@
       "category": "night",
       "region": "대전",
       "views_24h": 3
-    },
-    {
-      "path": "/nights/seongnamshampoonight",
-      "title": "성남샴푸나이트",
-      "category": "night",
-      "region": "성남",
-      "views_24h": 2
     },
     {
       "path": "/nights/ulsannewworldnight",
@@ -87,11 +80,18 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/gildongchancenight",
-      "title": "길동찬스나이트",
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
       "category": "night",
-      "region": "길동",
-      "views_24h": 2
+      "region": "강서",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/seongnamshampoonight",
+      "title": "성남샴푸나이트",
+      "category": "night",
+      "region": "성남",
+      "views_24h": 1
     },
     {
       "path": "/nights/seongnamgukbingwannight",
