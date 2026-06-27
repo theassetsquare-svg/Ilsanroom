@@ -13,9 +13,9 @@
  *   4) title ≤60자
  *   5) title 중복단어 없음
  *   6) desc 150자 이내 + "부산호빠" 포함
- *   7) desc에 "해운대호빠" ≥3회
+ *   7) desc가 "해운대호빠" 검색 의도 흡수 (직접 포함 또는 해운대+호빠 토큰 동시 — ≥N회 강제 삭제, 스터핑 금지룰 정렬)
  *   8) "부산호빠" body 밀도 ≤3.5%
- *   9) "해운대호빠" body 등장 ≥3회
+ *   9) body가 "해운대호빠" 검색 의도 흡수 (페이지 전체 토큰 흡수 — ≥N회 강제 삭제)
  *  10) 후킹 5축 ≥1축 (title 또는 desc)
  *  +) 디테일 토큰 (센텀시티역/벡스코/신세계백화점/통유리/해무) 모두 등장
  *
@@ -81,9 +81,9 @@ async function main() {
   if (dupTitle.length > 0) issues.push(`title 중복 [${dupTitle.join(',')}]`);
   if (!desc.includes(PRIMARY)) issues.push(`desc 부산호빠X`);
   if (desc.length === 0 || desc.length > 150) issues.push(`desc ${desc.length}자`);
-  if (secondaryInDesc < 3) issues.push(`desc 해운대호빠 ${secondaryInDesc}회 (≥3 필요)`);
+  if (!absorbsSecondary(desc, SECONDARY)) issues.push(`desc 해운대호빠 검색의도 미흡수 (해운대+호빠 토큰 부재)`);
   if (primaryDensity > 0.035) issues.push(`부산호빠 밀도 ${(primaryDensity*100).toFixed(2)}%`);
-  if (secondaryCount < 3) issues.push(`해운대호빠 body ${secondaryCount}회 (≥3 필요)`);
+  if (!absorbsSecondary(text, SECONDARY)) issues.push(`해운대호빠 body 검색의도 미흡수 (해운대+호빠 토큰 부재)`);
   if (hookAxesHit === 0) issues.push('후킹 5축 0 (title/desc 모두)');
   for (const tok of DETAIL_TOKENS) {
     if (!text.includes(tok)) issues.push(`디테일 토큰 "${tok}" 누락`);
