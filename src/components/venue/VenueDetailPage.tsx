@@ -14,6 +14,7 @@ import LiveStats from '@/components/live/LiveStats';
 import VenueLivePulse from '@/components/venue/VenueLivePulse';
 import type { Venue } from '@/types';
 import { useRecentVenues } from '@/hooks/useRecentVenues';
+import { useFavorites } from '@/hooks/useFavorites';
 
 const VenueSeoContent = lazy(() => import('@/components/venue/VenueSeoContent'));
 const VenueReportModal = lazy(() => import('@/components/venue/VenueReportModal'));
@@ -68,6 +69,10 @@ export default function VenueDetailPage({
       slug: venue.slug,
     });
   }, [detailPath, venue.nameKo, venue.category, venue.regionKo, venue.slug, pushRecent]);
+
+  // 찜 — 상세페이지에서 저장 → SavedVenuesBar로 사이트 전역 재노출(재방문 동선). localStorage·0 PII.
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const saved = isFavorite(venue.id);
 
   // "지금 N명 보는 중" — 시드 기반 가짜 카운터 제거 (놀쿨 신뢰 규칙).
   // VenueLivePulse 자체가 null 컴포넌트라 0을 넘겨도 무시됨.
@@ -133,6 +138,23 @@ export default function VenueDetailPage({
               {venue.shortDescription}
             </p>
           )}
+          <button
+            type="button"
+            onClick={() => toggleFavorite(venue.id)}
+            aria-pressed={saved}
+            aria-label={saved ? `${venue.nameKo} 찜 해제` : `${venue.nameKo} 찜하기`}
+            className={`mt-3 inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-bold transition ${
+              saved
+                ? 'border-[#DC2626] bg-[#FEF2F2] text-[#DC2626]'
+                : 'border-[#E9E5FF] bg-white text-[#7C3AED] active:bg-[#F3F0FF]'
+            }`}
+            style={{ minHeight: 44 }}
+          >
+            <svg className="h-4 w-4" fill={saved ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+            {saved ? '찜한 곳 — 나중에 다시 보기' : '찜하기'}
+          </button>
         </section>
       )}
 
