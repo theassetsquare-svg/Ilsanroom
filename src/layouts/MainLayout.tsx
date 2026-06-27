@@ -5,6 +5,7 @@ import Footer from '@/components/layout/Footer';
 import MobileBottomNav from '@/components/layout/MobileBottomNav';
 import BackToTop from '@/components/layout/BackToTop';
 import ScrollProgress from '@/components/layout/ScrollProgress';
+import SavedVenuesBar from '@/components/venue/SavedVenuesBar';
 import RecentVenuesBar from '@/components/venue/RecentVenuesBar';
 import CompareBar from '@/components/venue/CompareBar';
 import Toast from '@/components/ui/Toast';
@@ -78,6 +79,8 @@ export default function MainLayout() {
       <main id="main-content" className="flex-1 pt-[92px] md:pt-[56px] pb-[72px] md:pb-6">
         <Outlet />
       </main>
+      {/* 찜한 업소 재노출 바 (찜 > 0일 때만 표시) — 의도적 저장이라 최근 본 위에 */}
+      <SavedVenuesBar />
       {/* 시즌157A — 최근 본 venue 영구 바 (items > 0일 때만 자동 표시) */}
       <RecentVenuesBar />
       <div className="border-t border-neon-border bg-neon-surface">
