@@ -1,0 +1,26 @@
+name: Verify venue Places (read-only, no write)
+
+# 읽기전용 — 검증된 place_id로 공식 주소·가까운역을 다시 조회해 로그로만 출력.
+# venues.ts 를 절대 변경/커밋하지 않는다. 위치충돌 16곳 본문 정합 ground-truth 용.
+on:
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: '검증할 slug(공백 구분)'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Verify from Google Places (read-only)
+        env:
+          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY || secrets.CRUX_API_KEY }}
+        run: node scripts/verify-places-details.mjs ${{ github.event.inputs.slugs }}
