@@ -224,6 +224,28 @@ export default function VenueDetailPage({
         <RelatedMagazineForVenue venue={venue} />
       </section>
 
+      {/* ═══ 10-c. 다음 읽을거리 — 커뮤니티 (재방문 레버: 후기·Q&A 내부링크, fetch 0·가짜 0) ═══ */}
+      <section className="mx-auto max-w-[1200px] px-4 pt-6 sm:px-6">
+        <div className="rounded-2xl border border-[#E9E5FF] bg-gradient-to-r from-[#F7F5FF] to-white p-4">
+          <p className="text-sm font-bold text-neon-text">{venue.nameKo} 다녀온 사람들 이야기</p>
+          <p className="mt-0.5 text-xs text-neon-text-muted mb-3">가기 전에 후기 먼저 보고, 궁금한 건 물어보고</p>
+          <div className="grid grid-cols-3 gap-2">
+            <Link to="/community/reviews" className="flex flex-col items-center gap-1 rounded-xl border border-[#E9E5FF] bg-white py-3 text-center active:scale-[0.97] transition" style={{ minHeight: 64 }}>
+              <span className="text-lg">{'\uD83D\uDCDD'}</span>
+              <span className="text-[11px] font-bold text-neon-text leading-tight">후기 보기</span>
+            </Link>
+            <Link to="/community/qna" className="flex flex-col items-center gap-1 rounded-xl border border-[#E9E5FF] bg-white py-3 text-center active:scale-[0.97] transition" style={{ minHeight: 64 }}>
+              <span className="text-lg">{'\u2753'}</span>
+              <span className="text-[11px] font-bold text-neon-text leading-tight">처음인데 물어보기</span>
+            </Link>
+            <Link to="/community" className="flex flex-col items-center gap-1 rounded-xl border border-[#E9E5FF] bg-white py-3 text-center active:scale-[0.97] transition" style={{ minHeight: 64 }}>
+              <span className="text-lg">{'\uD83D\uDCAC'}</span>
+              <span className="text-[11px] font-bold text-neon-text leading-tight">지금 올라온 글</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ 11. 30개 추천 카드 (비교 늪) ═══ */}
       <RelatedVenues30 venue={venue} />
 

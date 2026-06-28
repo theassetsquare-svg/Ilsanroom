@@ -478,8 +478,11 @@ export default function HomePage() {
     return trendingKeywords[dow];
   }, []);
 
-  // === Magazine teasers (최신 3개) ===
-  const magazineTeasers = useMemo(() => magazineArticles.slice(0, 3), []);
+  // === Magazine teasers (실제 발행일 최신순 3개) — 배열순 대신 date 정렬로 신선 콘텐츠 노출 ===
+  const magazineTeasers = useMemo(
+    () => [...magazineArticles].sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 3),
+    [],
+  );
 
   // === 오늘의 추천 업소 (큰 카드) ===
   const featuredVenue = useMemo(() => {
@@ -1019,13 +1022,19 @@ export default function HomePage() {
           {magazineTeasers.map(article => (
             <Link key={article.id} to={`/magazine/${article.id}`} className="flex-shrink-0" style={{ width: 240 }}>
               <div className="rounded-2xl border border-gray-100 bg-white overflow-hidden shadow-sm active:scale-[0.98] transition-transform">
-                <div className="bg-gradient-to-br from-[#1a0533] to-[#2d1b69] px-4 py-3">
+                <div className="bg-gradient-to-br from-[#1a0533] to-[#2d1b69] px-4 py-3 flex items-center justify-between">
                   <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold text-white">{article.tag}</span>
+                  {(Date.now() - new Date(article.date).getTime()) < 14 * 86400000 && (
+                    <span className="rounded-full bg-rose-500 px-2 py-0.5 text-[9px] font-black text-white">NEW</span>
+                  )}
                 </div>
                 <div className="p-3">
                   <p className="text-[13px] font-bold text-[#111] leading-snug line-clamp-2 mb-1">{article.title}</p>
                   <p className="text-[11px] text-[#555] line-clamp-2 leading-relaxed">{article.excerpt.slice(0, 60)}...</p>
-                  <span className="text-[11px] font-bold text-[#8B5CF6] mt-1.5 inline-block">읽어보기 →</span>
+                  <div className="flex items-center justify-between mt-1.5">
+                    <span className="text-[11px] font-bold text-[#8B5CF6] inline-block">읽어보기 →</span>
+                    <time dateTime={article.date} className="text-[10px] text-[#999]">{article.date.replace(/-/g, '.')}</time>
+                  </div>
                 </div>
               </div>
             </Link>
