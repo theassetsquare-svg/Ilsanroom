@@ -1762,6 +1762,15 @@ for (const v of venues) {
     }
   }
   if (!descBase || descBase.length < 30) descBase = v.description.slice(0, 130);
+  // 머리 중복 제거 — nameKo가 이미 '지역+업종'을 포함하므로 descBase 머리의 동일 접두는
+  // SERP 지역 중복 스터핑 → 저CTR. ^ 앵커만 사용해 문장 중간 토큰은 보존(꼬리 깨짐 방지).
+  {
+    const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const CAT_WORD = '(나이트|클럽|룸|라운지|호빠|요정)';
+    descBase = descBase.replace(new RegExp('^' + escRe(v.nameKo) + '(는|은|이|가|도)?\\s*'), '');
+    if (v.regionKo) descBase = descBase.replace(new RegExp('^' + escRe(v.regionKo) + CAT_WORD + '\\s*'), '');
+    descBase = descBase.replace(/^[\s—·,–-]+/, '').trim();
+  }
   const hookPrefix = pickHookPrefix(v);
   const desc = truncateDesc(`${v.nameKo} — ${hookPrefix} ${descBase}`, 150);
 

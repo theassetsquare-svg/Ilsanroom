@@ -174,6 +174,13 @@ export function getHookingDescription(venue: Venue): string {
     base = venue.description.slice(0, 130);
   }
 
+  // 머리(^) 중복 제거 — nameKo가 이미 '지역+업종'을 포함하므로 base 머리의 동일 접두는
+  // SERP 지역 중복 → 저CTR. ^ 앵커만 사용해 문장 중간 토큰은 보존(꼬리 깨짐 방지). SSR(prerender)과 동일 로직.
+  const escRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const CAT_WORD = '(나이트|클럽|룸|라운지|호빠|요정)';
+  base = base.replace(new RegExp('^' + escRe(venue.nameKo) + '(는|은|이|가|도)?\\s*'), '');
+  if (venue.regionKo) base = base.replace(new RegExp('^' + escRe(venue.regionKo) + CAT_WORD + '\\s*'), '');
+
   // 이름 속 한글 단어가 설명에 있으면 첫 등장만 제거 (지역 중복 방지)
   const nameWords = venue.nameKo.match(/[가-힣]{2,}/g) || [];
   for (const nw of nameWords) {
