@@ -1,7 +1,8 @@
 name: GA4+GSC Full Dump (read-only)
 
-# GA4 전 차원·전 지표 + GSC 전 URL·전 검색어·색인커버리지를 API로 ★읽기만 덤프(변경 0).
-# 온디맨드 수동 실행. sitemap 재제출·indexing publish·메일 0. RESEND 미주입.
+# GA4 전 차원·전 지표 + GSC 전 URL·전 검색어 + 색인커버리지를 API로 ★읽기만 덤프(변경 0).
+# 색인검사(URL Inspection ~2s/URL)는 느려 별 job 으로 분리 — 검색분석/GA4 로그를 즉시 회수.
+# sitemap 재제출·indexing publish·메일 0. RESEND 미주입.
 on:
   workflow_dispatch:
 
@@ -9,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  dump:
+  analytics:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,16 +21,36 @@ jobs:
         run: node scripts/ga4-full-dump.mjs | tee ga4-full.txt
         env:
           GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
-      - name: GSC full data + index coverage (read-only)
-        run: node scripts/gsc-full-dump.mjs | tee gsc-full.txt
+      - name: GSC search analytics full (read-only, no index)
+        run: node scripts/gsc-full-dump.mjs --no-index | tee gsc-search.txt
         env:
           GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
-      - name: Upload dumps as artifacts
+      - name: Upload analytics dumps
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ga4-gsc-full-dump
+          name: ga4-gsc-analytics
           path: |
             ga4-full.txt
-            gsc-full.txt
+            gsc-search.txt
+          retention-days: 14
+
+  indexcoverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: GSC index coverage via URL Inspection (read-only)
+        run: node scripts/gsc-full-dump.mjs --only-index | tee gsc-index.txt
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+      - name: Upload index coverage dump
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gsc-index-coverage
+          path: gsc-index.txt
           retention-days: 14

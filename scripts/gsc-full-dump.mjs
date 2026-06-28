@@ -13,6 +13,9 @@ const SITEMAP = 'https://nolcool.com/sitemap.xml';
 const MAX_INSPECT = Number(process.env.MAX_INSPECT || 650);
 const THROTTLE_MS = 200;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+// 색인검사(URL Inspection)는 ~2s/URL로 느려 별 job 분리: --no-index(검색분석만) / --only-index(색인만)
+const NO_INDEX = process.argv.includes('--no-index');
+const ONLY_INDEX = process.argv.includes('--only-index');
 
 if (!hasGscCredentials()) { console.log('⏭️ GSC 인증정보 미설정 (GSC_SA_JSON) — 스킵'); process.exit(0); }
 
@@ -44,6 +47,7 @@ async function inspect(token, url) {
   if (!token) { console.error('❌ GSC 토큰 발급 실패'); process.exit(1); }
 
   // ── 검색분석 전수 ──
+  if (!ONLY_INDEX) {
   const page = await gscQuery(token, { dimensions: ['page'], rowLimit: 1000 });
   const query = await gscQuery(token, { dimensions: ['query'], rowLimit: 1000 });
   const device = await gscQuery(token, { dimensions: ['device'], rowLimit: 10 });
@@ -55,6 +59,9 @@ async function inspect(token, url) {
   table('② 전 검색어', query.rows);
   table('③ 기기', device.rows);
   table('④ 국가', country.rows);
+  }
+
+  if (NO_INDEX) { console.log('\n(색인검사 생략 — --no-index)'); console.log('\n※ 검색분석 읽기전용 완료.'); return; }
 
   // ── 색인 커버리지 (URL Inspection, 읽기전용) ──
   console.log(`\n══════ ⑤ 색인 커버리지 (URL Inspection · 읽기전용 · 최대 ${MAX_INSPECT}) ══════`);
