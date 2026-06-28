@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-28T14:47:50.476Z",
+  "generated_at": "2026-06-28T17:57:34.833Z",
   "window_hours": 24,
   "items": [
     {
@@ -31,13 +31,6 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/gwangjucheomdanempanight",
-      "title": "광주첨단엠파나이트",
-      "category": "night",
-      "region": "광주",
-      "views_24h": 3
-    },
-    {
       "path": "/nights/gwangjumgmnight",
       "title": "광주MGM나이트",
       "category": "night",
@@ -45,24 +38,31 @@
       "views_24h": 3
     },
     {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 3
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
+      "category": "night",
+      "region": "부산",
+      "views_24h": 2
     },
     {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
-      "views_24h": 3
+      "path": "/nights/gwangjucheomdanempanight",
+      "title": "광주첨단엠파나이트",
+      "category": "night",
+      "region": "광주",
+      "views_24h": 2
     },
     {
       "path": "/nights/gwangjuallnight",
       "title": "광주올나이트",
       "category": "night",
       "region": "광주",
+      "views_24h": 2
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
       "views_24h": 2
     },
     {
@@ -80,6 +80,20 @@
       "views_24h": 2
     },
     {
+      "path": "/clubs/gangnam/gangnamclub-race",
+      "title": "강남청담클럽 레이스",
+      "category": "club",
+      "region": "강남",
+      "views_24h": 1
+    },
+    {
+      "path": "/clubs/gangnam/gangnamclub-utopia",
+      "title": "강남청담클럽 유토피아",
+      "category": "club",
+      "region": "강남",
+      "views_24h": 1
+    },
+    {
       "path": "/nights/incheonarabiannight",
       "title": "인천아라비안나이트",
       "category": "night",
@@ -89,20 +103,6 @@
     {
       "path": "/nights/cheongjudontellmamanight",
       "title": "청주돈텔마마나이트",
-      "category": "night",
-      "region": "청주",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gurihobaknight",
-      "title": "구리호박나이트",
-      "category": "night",
-      "region": "구리",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/cheongjuhobaknight",
-      "title": "청주호박나이트",
       "category": "night",
       "region": "청주",
       "views_24h": 1
