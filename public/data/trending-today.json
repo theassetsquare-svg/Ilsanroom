@@ -1,14 +1,7 @@
 {
-  "generated_at": "2026-06-29T16:38:13.121Z",
+  "generated_at": "2026-06-29T18:56:35.823Z",
   "window_hours": 24,
   "items": [
-    {
-      "path": "/nights/doksangukbingwannight",
-      "title": "독산동국빈관나이트",
-      "category": "night",
-      "region": "독산",
-      "views_24h": 4
-    },
     {
       "path": "/rooms/ilsan/ilsanroom",
       "title": "일산룸",
@@ -28,6 +21,13 @@
       "title": "오산호박나이트",
       "category": "night",
       "region": "오산",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/doksangukbingwannight",
+      "title": "독산동국빈관나이트",
+      "category": "night",
+      "region": "독산",
       "views_24h": 3
     },
     {
@@ -66,11 +66,11 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/ilsan-hwajung-tunnel",
-      "title": "일산화정터널나이트",
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
       "category": "night",
-      "region": "일산",
-      "views_24h": 2
+      "region": "강서",
+      "views_24h": 1
     },
     {
       "path": "/nights/daeguhobaknight",
