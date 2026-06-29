@@ -1,12 +1,19 @@
 {
-  "generated_at": "2026-06-29T07:20:03.177Z",
+  "generated_at": "2026-06-29T16:38:13.121Z",
   "window_hours": 24,
   "items": [
     {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
+      "path": "/nights/doksangukbingwannight",
+      "title": "독산동국빈관나이트",
       "category": "night",
-      "region": "대전",
+      "region": "독산",
+      "views_24h": 4
+    },
+    {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
       "views_24h": 4
     },
     {
@@ -17,17 +24,17 @@
       "views_24h": 4
     },
     {
-      "path": "/nights/cheongdamh2onight",
-      "title": "청담H2O나이트",
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
       "category": "night",
-      "region": "청담",
+      "region": "오산",
       "views_24h": 3
     },
     {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
+      "category": "night",
+      "region": "대전",
       "views_24h": 3
     },
     {
@@ -38,32 +45,25 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/doksangukbingwannight",
-      "title": "독산동국빈관나이트",
+      "path": "/nights/pajuyadangskydomenight",
+      "title": "파주야당스카이돔나이트",
       "category": "night",
-      "region": "독산",
-      "views_24h": 3
+      "region": "파주",
+      "views_24h": 2
     },
     {
-      "path": "/nights/ansanhitnight",
-      "title": "안산히트나이트",
+      "path": "/nights/cheongdamh2onight",
+      "title": "청담H2O나이트",
       "category": "night",
-      "region": "안산",
-      "views_24h": 3
+      "region": "청담",
+      "views_24h": 2
     },
     {
-      "path": "/nights/gwangjutotonight",
-      "title": "광주토토밤나이트",
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
       "category": "night",
-      "region": "광주",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/gwangjumgmnight",
-      "title": "광주MGM나이트",
-      "category": "night",
-      "region": "광주",
-      "views_24h": 3
+      "region": "대전",
+      "views_24h": 2
     },
     {
       "path": "/nights/ilsan-hwajung-tunnel",
@@ -73,38 +73,38 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/gwangjusangmunight",
-      "title": "광주상무나이트",
+      "path": "/nights/daeguhobaknight",
+      "title": "대구호박나이트",
       "category": "night",
-      "region": "광주",
-      "views_24h": 2
+      "region": "대구",
+      "views_24h": 1
     },
     {
-      "path": "/nights/gwangjucheomdanempanight",
-      "title": "광주첨단엠파나이트",
+      "path": "/nights/pyeongtaekhobaknight",
+      "title": "평택호박나이트",
       "category": "night",
-      "region": "광주",
-      "views_24h": 2
+      "region": "평택",
+      "views_24h": 1
     },
     {
-      "path": "/nights/gwangjuallnight",
-      "title": "광주올나이트",
-      "category": "night",
-      "region": "광주",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daejeonsevennight",
-      "title": "대전세븐나이트",
-      "category": "night",
+      "path": "/hoppa/daejeonhoppa-eclipse",
+      "title": "대전호빠 이클립스",
+      "category": "hoppa",
       "region": "대전",
       "views_24h": 1
     },
     {
-      "path": "/nights/gangnamjuliananight",
-      "title": "강남줄리아나나이트",
+      "path": "/nights/bucheongoraenight",
+      "title": "부천고래나이트",
       "category": "night",
-      "region": "강남",
+      "region": "부천",
+      "views_24h": 1
+    },
+    {
+      "path": "/clubs/daejeon/daejeonsugarclub",
+      "title": "대전설탕클럽",
+      "category": "club",
+      "region": "대전",
       "views_24h": 1
     }
   ]
