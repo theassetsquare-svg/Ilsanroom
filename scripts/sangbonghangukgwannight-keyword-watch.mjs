@@ -80,7 +80,7 @@ async function main() {
   if (dupTitle.length > 0) issues.push(`title 중복 [${dupTitle.join(',')}]`);
   if (!desc.includes(PRIMARY)) issues.push(`desc 상봉동한국관나이트X`);
   if (desc.length === 0 || desc.length > 150) issues.push(`desc ${desc.length}자`);
-  if (!desc.includes(SECONDARY)) issues.push(`desc 상봉동나이트X`);
+  if (!absorbsSecondary(desc, SECONDARY)) issues.push(`desc 상봉동나이트X`);
   if (primaryDensity > 0.035) issues.push(`상봉동한국관나이트 밀도 ${(primaryDensity*100).toFixed(2)}%`);
   if (secondaryCount < 3) issues.push(`상봉동나이트 body ${secondaryCount}회 (≥3 필요)`);
   if (hookAxesHit === 0) issues.push('후킹 5축 0 (title/desc 모두)');
