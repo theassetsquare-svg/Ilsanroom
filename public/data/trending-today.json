@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30T15:27:11.333Z",
+  "generated_at": "2026-06-30T18:27:02.633Z",
   "window_hours": 24,
   "items": [
     {
@@ -17,10 +17,10 @@
       "views_24h": 8
     },
     {
-      "path": "/nights/pyeongtaekhobaknight",
-      "title": "평택호박나이트",
-      "category": "night",
-      "region": "평택",
+      "path": "/hoppa/daejeonhoppa-eclipse",
+      "title": "대전호빠 이클립스",
+      "category": "hoppa",
+      "region": "대전",
       "views_24h": 3
     },
     {
@@ -31,10 +31,10 @@
       "views_24h": 3
     },
     {
-      "path": "/hoppa/daejeonhoppa-eclipse",
-      "title": "대전호빠 이클립스",
-      "category": "hoppa",
-      "region": "대전",
+      "path": "/nights/pyeongtaekhobaknight",
+      "title": "평택호박나이트",
+      "category": "night",
+      "region": "평택",
       "views_24h": 2
     },
     {
