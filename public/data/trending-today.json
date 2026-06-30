@@ -1,33 +1,19 @@
 {
-  "generated_at": "2026-06-29T18:56:35.823Z",
+  "generated_at": "2026-06-30T06:43:56.133Z",
   "window_hours": 24,
   "items": [
     {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
-      "views_24h": 4
-    },
-    {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 4
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 3
     },
     {
       "path": "/nights/osanhobaknight",
       "title": "오산호박나이트",
       "category": "night",
       "region": "오산",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/doksangukbingwannight",
-      "title": "독산동국빈관나이트",
-      "category": "night",
-      "region": "독산",
       "views_24h": 3
     },
     {
@@ -38,11 +24,18 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/sangbonghangukgwannight",
-      "title": "상봉동한국관나이트",
-      "category": "night",
-      "region": "상봉동",
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
       "views_24h": 3
+    },
+    {
+      "path": "/hoppa/daejeonhoppa-eclipse",
+      "title": "대전호빠 이클립스",
+      "category": "hoppa",
+      "region": "대전",
+      "views_24h": 2
     },
     {
       "path": "/nights/pajuyadangskydomenight",
@@ -52,18 +45,25 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/cheongdamh2onight",
-      "title": "청담H2O나이트",
+      "path": "/nights/doksangukbingwannight",
+      "title": "독산동국빈관나이트",
       "category": "night",
-      "region": "청담",
+      "region": "독산",
       "views_24h": 2
     },
     {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
+      "path": "/nights/busanasiadnight",
+      "title": "부산아시아드나이트",
       "category": "night",
-      "region": "대전",
-      "views_24h": 2
+      "region": "부산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/sangbonghangukgwannight",
+      "title": "상봉동한국관나이트",
+      "category": "night",
+      "region": "상봉동",
+      "views_24h": 1
     },
     {
       "path": "/nights/gangseo-hobak",
@@ -87,13 +87,6 @@
       "views_24h": 1
     },
     {
-      "path": "/hoppa/daejeonhoppa-eclipse",
-      "title": "대전호빠 이클립스",
-      "category": "hoppa",
-      "region": "대전",
-      "views_24h": 1
-    },
-    {
       "path": "/nights/bucheongoraenight",
       "title": "부천고래나이트",
       "category": "night",
@@ -105,6 +98,13 @@
       "title": "대전설탕클럽",
       "category": "club",
       "region": "대전",
+      "views_24h": 1
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
       "views_24h": 1
     }
   ]
