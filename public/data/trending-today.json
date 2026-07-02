@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-02T06:28:20.682Z",
+  "generated_at": "2026-07-02T15:14:20.594Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,27 +7,13 @@
       "title": "대구바밤바나이트",
       "category": "night",
       "region": "대구",
-      "views_24h": 10
+      "views_24h": 7
     },
     {
-      "path": "/nights/ansanhitnight",
-      "title": "안산히트나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 4
-    },
-    {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 4
-    },
-    {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
-      "category": "night",
-      "region": "오산",
       "views_24h": 4
     },
     {
@@ -38,8 +24,64 @@
       "views_24h": 3
     },
     {
+      "path": "/nights/daejeonhangukgwannight",
+      "title": "대전한국관나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/seosanhobaknight",
+      "title": "서산호박나이트",
+      "category": "night",
+      "region": "서산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
+      "category": "night",
+      "region": "오산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/cheongjuhobaknight",
+      "title": "청주호박나이트",
+      "category": "night",
+      "region": "청주",
+      "views_24h": 2
+    },
+    {
       "path": "/nights/ansandontellmamanight",
       "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/doksangukbingwannight",
+      "title": "독산동국빈관나이트",
+      "category": "night",
+      "region": "독산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/bucheongoraenight",
+      "title": "부천고래나이트",
+      "category": "night",
+      "region": "부천",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/bucheonmeritnight",
+      "title": "부천메리트나이트",
+      "category": "night",
+      "region": "부천",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/ansanhitnight",
+      "title": "안산히트나이트",
       "category": "night",
       "region": "안산",
       "views_24h": 2
@@ -59,52 +101,10 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 2
-    },
-    {
-      "path": "/clubs/nowon/nowoncheongchunpocha",
-      "title": "노원청춘포차",
-      "category": "club",
-      "region": "노원",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daegutotoganight",
-      "title": "대구토토가나이트",
-      "category": "night",
-      "region": "대구",
-      "views_24h": 2
-    },
-    {
       "path": "/nights/gangseonight",
       "title": "강서나이트",
       "category": "night",
       "region": "강서",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/ilsanshampoonight",
-      "title": "일산샴푸나이트",
-      "category": "night",
-      "region": "일산",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daejeonsevennight",
-      "title": "대전세븐나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
-      "category": "night",
-      "region": "대전",
       "views_24h": 2
     }
   ]
