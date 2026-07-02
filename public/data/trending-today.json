@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-02T15:14:20.594Z",
+  "generated_at": "2026-07-02T18:21:47.914Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,7 +7,7 @@
       "title": "대구바밤바나이트",
       "category": "night",
       "region": "대구",
-      "views_24h": 7
+      "views_24h": 6
     },
     {
       "path": "/nights/daejeononenight",
@@ -15,6 +15,20 @@
       "category": "night",
       "region": "대전",
       "views_24h": 4
+    },
+    {
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
+      "category": "night",
+      "region": "오산",
+      "views_24h": 3
     },
     {
       "path": "/nights/suwonkoreanight",
@@ -38,24 +52,10 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
-      "category": "night",
-      "region": "오산",
-      "views_24h": 2
-    },
-    {
       "path": "/nights/cheongjuhobaknight",
       "title": "청주호박나이트",
       "category": "night",
       "region": "청주",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
       "views_24h": 2
     },
     {
@@ -101,11 +101,11 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/gangseonight",
-      "title": "강서나이트",
+      "path": "/nights/suyushampoonight",
+      "title": "수유샴푸나이트",
       "category": "night",
-      "region": "강서",
-      "views_24h": 2
+      "region": "수유",
+      "views_24h": 1
     }
   ]
 }
