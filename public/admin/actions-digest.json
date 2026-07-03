@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-02T02:11:13.055Z",
+  "generated_at": "2026-07-03T01:55:02.915Z",
   "window_hours": 24,
-  "total_runs": 178,
+  "total_runs": 186,
   "total_fail": 13,
   "workflows": [
     {
@@ -11,8 +11,8 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-07-02T01:27:28Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28558984160"
+        "created_at": "2026-07-03T01:06:37Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28631645603"
       }
     },
     {
@@ -22,8 +22,8 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-07-02T00:17:41Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28556531041"
+        "created_at": "2026-07-03T00:16:30Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28629866519"
       }
     },
     {
@@ -33,8 +33,8 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-07-02T00:17:13Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28556513203"
+        "created_at": "2026-07-03T00:15:35Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28629834019"
       }
     },
     {
@@ -44,8 +44,8 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-07-01T23:57:58Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28555753850"
+        "created_at": "2026-07-02T23:47:43Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28628793156"
       }
     },
     {
@@ -55,8 +55,8 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-07-01T07:59:16Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28502649166"
+        "created_at": "2026-07-02T06:56:53Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28571509370"
       }
     },
     {
@@ -66,8 +66,8 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-07-01T07:55:02Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28502429917"
+        "created_at": "2026-07-02T06:55:04Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28571422011"
       }
     },
     {
@@ -77,8 +77,8 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-07-01T06:50:07Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28499181096"
+        "created_at": "2026-07-02T06:14:08Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28569565418"
       }
     },
     {
@@ -88,8 +88,8 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-07-01T06:49:10Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28499139456"
+        "created_at": "2026-07-02T06:12:58Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28569515297"
       }
     },
     {
@@ -99,8 +99,8 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-07-01T06:47:26Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28499062714"
+        "created_at": "2026-07-02T06:12:10Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28569478212"
       }
     },
     {
@@ -110,8 +110,8 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-07-01T06:43:21Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28498872721"
+        "created_at": "2026-07-02T06:08:44Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28569334355"
       }
     },
     {
@@ -121,8 +121,8 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-07-01T06:42:04Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28498813435"
+        "created_at": "2026-07-02T06:07:28Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28569283455"
       }
     },
     {
@@ -132,8 +132,8 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-07-01T06:08:11Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28497324185"
+        "created_at": "2026-07-02T05:39:32Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28568108348"
       }
     },
     {
@@ -143,14 +143,38 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-07-01T04:54:23Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28494462767"
+        "created_at": "2026-07-02T04:31:22Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/28565539395"
       }
     },
     {
       "name": "24h Site Monitoring",
-      "total": 10,
-      "success": 10,
+      "total": 13,
+      "success": 13,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Activity Alert (15min)",
+      "total": 11,
+      "success": 11,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Auto Content v2 (Time-based)",
+      "total": 11,
+      "success": 11,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Security Audit Hourly",
+      "total": 9,
+      "success": 9,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -159,30 +183,6 @@
       "name": "Venue Reports Daily",
       "total": 9,
       "success": 9,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Activity Alert (15min)",
-      "total": 9,
-      "success": 9,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Auto Content v2 (Time-based)",
-      "total": 9,
-      "success": 9,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Security Audit Hourly",
-      "total": 8,
-      "success": 8,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -212,6 +212,14 @@
       "last_fail": null
     },
     {
+      "name": "Sinlimgrandprixnight Keyword Watch (신림그랑프리나이트 2 키워드 24h)",
+      "total": 2,
+      "success": 2,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
       "name": "24h Auto Build + SEO Notify",
       "total": 2,
       "success": 2,
@@ -223,14 +231,6 @@
       "name": "Browser Audit (PC + Mobile)",
       "total": 2,
       "success": 2,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Sinlimgrandprixnight Keyword Watch (신림그랑프리나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 1,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -332,14 +332,6 @@
       "last_fail": null
     },
     {
-      "name": "Monthly Billing Report",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Daejeononenight Keyword Watch (대전원나이트 SEO + 정책 24h)",
       "total": 1,
       "success": 1,
@@ -364,7 +356,7 @@
       "last_fail": null
     },
     {
-      "name": "Title Uniqueness Audit (사이트 전체 후미 + HOOK 분포)",
+      "name": "Dwell Content Audit (체류 10분 보장 본문 분량)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -380,7 +372,7 @@
       "last_fail": null
     },
     {
-      "name": "Dwell Content Audit (체류 10분 보장 본문 분량)",
+      "name": "Title Uniqueness Audit (사이트 전체 후미 + HOOK 분포)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -534,7 +526,7 @@
     {
       "name": "All Pages Quality Watch (5축 — anchor 200/img alt/H1/lang+viewport/canonical)",
       "total": 1,
-      "success": 1,
+      "success": 0,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -708,7 +700,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -716,7 +708,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -764,7 +756,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Laputa Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Clubs Keyword Watch (/clubs 클럽 단일 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -772,7 +764,7 @@
       "last_fail": null
     },
     {
-      "name": "Clubs Keyword Watch (/clubs 클럽 단일 키워드 24h)",
+      "name": "Gangnamclub Laputa Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -812,7 +804,7 @@
       "last_fail": null
     },
     {
-      "name": "Haeundaehoppa Michelin Keyword Watch (해운대호빠 2 키워드 24h)",
+      "name": "Haeundaehoppa Velvet Keyword Watch (해운대호빠 벨벳 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -820,7 +812,7 @@
       "last_fail": null
     },
     {
-      "name": "Haeundaehoppa Velvet Keyword Watch (해운대호빠 벨벳 2 키워드 24h)",
+      "name": "Haeundaehoppa Michelin Keyword Watch (해운대호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
