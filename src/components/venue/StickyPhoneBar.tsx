@@ -33,11 +33,11 @@ export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPh
       <div data-sticky-phone="true" className="fixed bottom-[72px] right-4 z-[80] md:bottom-6 md:right-6">
         <a
           href={`tel:${phone.replace(/-/g, '')}`}
-          className="flex items-center gap-2 rounded-full bg-[#15803D] px-5 py-3.5 min-h-[44px] text-sm font-bold text-white shadow-2xl ring-2 ring-white/80 transition hover:bg-[#166534] active:scale-95"
+          className="flex items-center gap-2 rounded-full bg-[#15803D] px-5 py-3.5 min-h-[44px] max-w-[calc(100vw-2rem)] text-sm font-bold leading-tight text-white shadow-2xl ring-2 ring-white/80 transition hover:bg-[#166534] active:scale-95"
           aria-label={`${venueName} 전화걸기 ${phone}`}
         >
-          <span>📞</span>
-          <span>{staffName ? `${staffName} ${phone}` : phone}</span>
+          <span className="shrink-0">📞</span>
+          <span>{[venueName, staffName, phone].filter(Boolean).join(' ')}</span>
         </a>
       </div>
     );
