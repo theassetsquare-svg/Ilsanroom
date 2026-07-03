@@ -2,6 +2,12 @@ import { useParams } from 'react-router-dom';
 import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues } from '@/data/venues';
+import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
+
+// 지역×업종 하단 고정 전화바 — 광고주 대표번호가 이 지역 대표 업소일 때만.
+const REGION_CAT_PHONE: Record<string, { phone: string; staffName: string; venueName: string }> = {
+  '대전|night': { phone: '010-3918-9414', staffName: '까치', venueName: '대전원나이트' },
+};
 
 const catPathMap: Record<string, string> = { club: 'clubs', night: 'nights', lounge: 'lounges', room: 'rooms', yojeong: 'yojeong', hoppa: 'hoppa' };
 const catLabelMap: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
@@ -107,6 +113,10 @@ export default function RegionCategoryPage() {
           </section>
         );
       })()}
+
+      {REGION_CAT_PHONE[`${decodedRegion}|${catKey}`] && (
+        <StickyPhoneBar {...REGION_CAT_PHONE[`${decodedRegion}|${catKey}`]} />
+      )}
     </div>
   );
 }
