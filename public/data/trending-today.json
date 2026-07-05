@@ -1,7 +1,14 @@
 {
-  "generated_at": "2026-07-05T06:28:08.483Z",
+  "generated_at": "2026-07-05T14:42:19.340Z",
   "window_hours": 24,
   "items": [
+    {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
+      "views_24h": 5
+    },
     {
       "path": "/nights/gangseo-hobak",
       "title": "강서호박나이트",
@@ -10,25 +17,25 @@
       "views_24h": 4
     },
     {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
-      "views_24h": 3
-    },
-    {
       "path": "/nights/daejeononenight",
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
+      "views_24h": 4
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
       "views_24h": 3
     },
     {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
+      "path": "/nights/ulsannewworldnight",
+      "title": "울산뉴월드나이트",
       "category": "night",
-      "region": "오산",
-      "views_24h": 3
+      "region": "울산",
+      "views_24h": 2
     },
     {
       "path": "/nights/daeguhangukgwannight",
@@ -38,25 +45,46 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
       "category": "night",
-      "region": "대전",
+      "region": "오산",
       "views_24h": 2
     },
     {
-      "path": "/nights/cheongjuhobaknight",
-      "title": "청주호박나이트",
+      "path": "/nights/ilsan-mul-night",
+      "title": "일산물나이트",
       "category": "night",
-      "region": "청주",
-      "views_24h": 2
+      "region": "일산",
+      "views_24h": 1
     },
     {
-      "path": "/nights/seosanhobaknight",
-      "title": "서산호박나이트",
+      "path": "/hoppa/busanhoppa-menz",
+      "title": "부산호빠 맨즈",
+      "category": "hoppa",
+      "region": "부산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
       "category": "night",
-      "region": "서산",
-      "views_24h": 2
+      "region": "부산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/ulsanchampionnight",
+      "title": "울산챔피언나이트",
+      "category": "night",
+      "region": "울산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/bucheongoraenight",
+      "title": "부천고래나이트",
+      "category": "night",
+      "region": "부천",
+      "views_24h": 1
     },
     {
       "path": "/nights/dapsimnidontellmamanight",
@@ -77,34 +105,6 @@
       "title": "해운대호빠 벨벳",
       "category": "hoppa",
       "region": "해운대",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/bundangpongpongnight",
-      "title": "분당퐁퐁나이트",
-      "category": "night",
-      "region": "분당",
-      "views_24h": 1
-    },
-    {
-      "path": "/hoppa/daejeonhoppa-eclipse",
-      "title": "대전호빠 이클립스",
-      "category": "hoppa",
-      "region": "대전",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/ansanhitnight",
-      "title": "안산히트나이트",
-      "category": "night",
-      "region": "안산",
       "views_24h": 1
     }
   ]
