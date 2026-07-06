@@ -1,7 +1,14 @@
 {
-  "generated_at": "2026-07-06T16:20:05.228Z",
+  "generated_at": "2026-07-06T18:49:01.245Z",
   "window_hours": 24,
   "items": [
+    {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
+      "category": "night",
+      "region": "강서",
+      "views_24h": 5
+    },
     {
       "path": "/nights/ansandontellmamanight",
       "title": "안산돈텔마마나이트",
@@ -10,10 +17,10 @@
       "views_24h": 4
     },
     {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
       "category": "night",
-      "region": "강서",
+      "region": "대전",
       "views_24h": 3
     },
     {
@@ -52,6 +59,27 @@
       "views_24h": 2
     },
     {
+      "path": "/nights/cheongjudontellmamanight",
+      "title": "청주돈텔마마나이트",
+      "category": "night",
+      "region": "청주",
+      "views_24h": 1
+    },
+    {
+      "path": "/clubs/daejeon/daejeonsugarclub",
+      "title": "대전설탕클럽",
+      "category": "club",
+      "region": "대전",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
+      "category": "night",
+      "region": "부산",
+      "views_24h": 1
+    },
+    {
       "path": "/clubs/hongdae/hongdaeclub-bermuda",
       "title": "홍대클럽 버뮤다",
       "category": "club",
@@ -77,34 +105,6 @@
       "title": "부산연산동물나이트",
       "category": "night",
       "region": "부산 연산동",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
-      "category": "night",
-      "region": "오산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/bucheongoraenight",
-      "title": "부천고래나이트",
-      "category": "night",
-      "region": "부천",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gimpohobaknight",
-      "title": "김포호박나이트",
-      "category": "night",
-      "region": "김포",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/pyeongtaekhobaknight",
-      "title": "평택호박나이트",
-      "category": "night",
-      "region": "평택",
       "views_24h": 1
     }
   ]
