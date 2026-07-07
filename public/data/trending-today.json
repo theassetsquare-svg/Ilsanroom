@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-07T06:34:42.169Z",
+  "generated_at": "2026-07-07T15:43:11.714Z",
   "window_hours": 24,
   "items": [
     {
@@ -10,6 +10,20 @@
       "views_24h": 8
     },
     {
+      "path": "/nights/ansanhitnight",
+      "title": "안산히트나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 6
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 5
+    },
+    {
       "path": "/nights/daejeonbongmyeongnight",
       "title": "대전봉명나이트",
       "category": "night",
@@ -17,24 +31,66 @@
       "views_24h": 5
     },
     {
+      "path": "/nights/gimpohobaknight",
+      "title": "김포호박나이트",
+      "category": "night",
+      "region": "김포",
+      "views_24h": 4
+    },
+    {
       "path": "/nights/bundangpongpongnight",
       "title": "분당퐁퐁나이트",
       "category": "night",
       "region": "분당",
+      "views_24h": 4
+    },
+    {
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
+      "category": "night",
+      "region": "부산",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/gildongchancenight",
+      "title": "길동찬스나이트",
+      "category": "night",
+      "region": "길동",
       "views_24h": 2
     },
     {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
+      "path": "/nights/bucheongoraenight",
+      "title": "부천고래나이트",
+      "category": "night",
+      "region": "부천",
       "views_24h": 2
     },
     {
-      "path": "/hoppa/daejeonhoppa-eclipse",
-      "title": "대전호빠 이클립스",
-      "category": "hoppa",
+      "path": "/clubs/daejeon/daejeonsugarclub",
+      "title": "대전설탕클럽",
+      "category": "club",
       "region": "대전",
+      "views_24h": 2
+    },
+    {
+      "path": "/clubs/gangnam/gangnamclub-utopia",
+      "title": "강남청담클럽 유토피아",
+      "category": "club",
+      "region": "강남",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/ilsan-mul-night",
+      "title": "일산물나이트",
+      "category": "night",
+      "region": "일산",
       "views_24h": 2
     },
     {
@@ -50,62 +106,6 @@
       "category": "night",
       "region": "부산",
       "views_24h": 2
-    },
-    {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
-      "category": "night",
-      "region": "부산",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/gildongchancenight",
-      "title": "길동찬스나이트",
-      "category": "night",
-      "region": "길동",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/seosanhobaknight",
-      "title": "서산호박나이트",
-      "category": "night",
-      "region": "서산",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/bucheongoraenight",
-      "title": "부천고래나이트",
-      "category": "night",
-      "region": "부천",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/indeokvon-gukbingwan-night",
-      "title": "인덕원국빈관나이트",
-      "category": "night",
-      "region": "인덕원",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gimpohobaknight",
-      "title": "김포호박나이트",
-      "category": "night",
-      "region": "김포",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gangseonight",
-      "title": "강서나이트",
-      "category": "night",
-      "region": "강서",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daegubabambanight",
-      "title": "대구바밤바나이트",
-      "category": "night",
-      "region": "대구",
-      "views_24h": 1
     }
   ]
 }
