@@ -1,14 +1,7 @@
 {
-  "generated_at": "2026-07-07T15:43:11.714Z",
+  "generated_at": "2026-07-07T18:53:04.392Z",
   "window_hours": 24,
   "items": [
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
-      "views_24h": 8
-    },
     {
       "path": "/nights/ansanhitnight",
       "title": "안산히트나이트",
@@ -24,11 +17,11 @@
       "views_24h": 5
     },
     {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
+      "path": "/nights/nowonhobaknight",
+      "title": "노원호박나이트",
       "category": "night",
-      "region": "대전",
-      "views_24h": 5
+      "region": "노원",
+      "views_24h": 4
     },
     {
       "path": "/nights/gimpohobaknight",
@@ -45,6 +38,13 @@
       "views_24h": 4
     },
     {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
+      "category": "night",
+      "region": "강서",
+      "views_24h": 4
+    },
+    {
       "path": "/nights/ansandontellmamanight",
       "title": "안산돈텔마마나이트",
       "category": "night",
@@ -52,31 +52,10 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
-      "category": "night",
-      "region": "부산",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/gildongchancenight",
-      "title": "길동찬스나이트",
-      "category": "night",
-      "region": "길동",
-      "views_24h": 2
-    },
-    {
       "path": "/nights/bucheongoraenight",
       "title": "부천고래나이트",
       "category": "night",
       "region": "부천",
-      "views_24h": 2
-    },
-    {
-      "path": "/clubs/daejeon/daejeonsugarclub",
-      "title": "대전설탕클럽",
-      "category": "club",
-      "region": "대전",
       "views_24h": 2
     },
     {
@@ -94,6 +73,20 @@
       "views_24h": 2
     },
     {
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
+      "category": "night",
+      "region": "부산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
+    },
+    {
       "path": "/nights/ilsanshampoonight",
       "title": "일산샴푸나이트",
       "category": "night",
@@ -106,6 +99,13 @@
       "category": "night",
       "region": "부산",
       "views_24h": 2
+    },
+    {
+      "path": "/nights/gwangjumgmnight",
+      "title": "광주MGM나이트",
+      "category": "night",
+      "region": "광주",
+      "views_24h": 1
     }
   ]
 }
