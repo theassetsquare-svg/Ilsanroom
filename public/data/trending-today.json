@@ -1,48 +1,48 @@
 {
-  "generated_at": "2026-07-08T05:40:12.521Z",
+  "generated_at": "2026-07-08T15:21:13.067Z",
   "window_hours": 24,
   "items": [
-    {
-      "path": "/nights/ansanhitnight",
-      "title": "안산히트나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 7
-    },
-    {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 5
-    },
     {
       "path": "/nights/nowonhobaknight",
       "title": "노원호박나이트",
       "category": "night",
       "region": "노원",
-      "views_24h": 4
-    },
-    {
-      "path": "/nights/gimpohobaknight",
-      "title": "김포호박나이트",
-      "category": "night",
-      "region": "김포",
       "views_24h": 3
     },
     {
-      "path": "/nights/bundangpongpongnight",
-      "title": "분당퐁퐁나이트",
+      "path": "/nights/daejeonhangukgwannight",
+      "title": "대전한국관나이트",
       "category": "night",
-      "region": "분당",
-      "views_24h": 3
+      "region": "대전",
+      "views_24h": 2
     },
     {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
       "category": "night",
-      "region": "안산",
-      "views_24h": 3
+      "region": "부산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/pyeongtaekhobaknight",
+      "title": "평택호박나이트",
+      "category": "night",
+      "region": "평택",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/ilsan-hwajung-tunnel",
+      "title": "일산화정터널나이트",
+      "category": "night",
+      "region": "일산",
+      "views_24h": 2
+    },
+    {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
+      "views_24h": 2
     },
     {
       "path": "/nights/osanhobaknight",
@@ -52,59 +52,59 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/gildongchancenight",
-      "title": "길동찬스나이트",
+      "path": "/nights/doksangukbingwannight",
+      "title": "독산동국빈관나이트",
       "category": "night",
-      "region": "길동",
-      "views_24h": 2
+      "region": "독산",
+      "views_24h": 1
     },
     {
-      "path": "/clubs/gangnam/gangnamclub-utopia",
-      "title": "강남청담클럽 유토피아",
-      "category": "club",
-      "region": "강남",
-      "views_24h": 2
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 1
     },
     {
-      "path": "/nights/ilsan-mul-night",
-      "title": "일산물나이트",
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
       "category": "night",
-      "region": "일산",
-      "views_24h": 2
+      "region": "강서",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/daejeonsevennight",
+      "title": "대전세븐나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/seongnamgukbingwannight",
+      "title": "성남국빈관나이트",
+      "category": "night",
+      "region": "성남",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/ansanhitnight",
+      "title": "안산히트나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 1
     },
     {
       "path": "/nights/cheonanstardomnight",
       "title": "천안스타돔나이트",
       "category": "night",
       "region": "천안",
-      "views_24h": 1
-    },
-    {
-      "path": "/clubs/hongdae/hongdaeclub-maid",
-      "title": "홍대클럽 메이드",
-      "category": "club",
-      "region": "홍대",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gwangjumgmnight",
-      "title": "광주MGM나이트",
-      "category": "night",
-      "region": "광주",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/pyeongtaekhobaknight",
-      "title": "평택호박나이트",
-      "category": "night",
-      "region": "평택",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/dapsimnidontellmamanight",
-      "title": "답십리돈텔마마나이트",
-      "category": "night",
-      "region": "답십리",
       "views_24h": 1
     }
   ]
