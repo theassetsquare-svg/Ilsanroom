@@ -122,6 +122,19 @@ for (const f of files) {
     if (re.test(body) && !allow.includes(w)) add('ERR', `본문 위험단어 "${w}" (불법 연관·SEO 페널티)`);
   }
 
+  // ★ 출처 없는 랭킹 근거 게이트 (2026-07-08) — 후기·재방문·조회수 데이터 0인데
+  //   "매일 자동 갱신 / 재방문 데이터·기준 / 조회수 기준" 주장 = 신뢰규칙 위반 → 배포 차단.
+  //   "실시간 랭킹"은 실투표(venue_votes) 기반 /ranking 페이지에서만 허용.
+  const FAKE_BASIS = [
+    { w: '매일 자동 갱신', re: /매일\s?자동\s?갱신/ },
+    { w: '재방문 데이터/기준', re: /재방문\s?(데이터|기준)/ },
+    { w: '조회수 기준', re: /조회수\s?기준/ },
+  ];
+  for (const { w, re } of FAKE_BASIS) {
+    if (re.test(body)) add('ERR', `출처 없는 랭킹 근거 "${w}" (가짜 신선도·통계 주장)`);
+  }
+  if (/실시간\s?랭킹/.test(body) && !/^\/ranking\/?$/.test(url)) add('ERR', '출처 없는 "실시간 랭킹" 주장 (/ranking 외 금지)');
+
   if (!isHome) {
     const cnt = (body.match(/\ub180\ucfe8/g) || []).length;
     if (cnt >= 12) add('WARN', `\ubcf8\ubb38 "\ub180\ucfe8" ${cnt}\ud68c`);

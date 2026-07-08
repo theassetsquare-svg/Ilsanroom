@@ -2097,12 +2097,13 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   const p = `/best/${catInfo.path}`;
   const title = `${catInfo.labelKo} 인기 TOP ${catVenues.length} — ${BEST_TITLE_SUFFIX_BY_CAT[catKey]}`;
   const topNames = catVenues.slice(0, 3).map(vv => vv.nameKo).join(', ');
-  const desc = BEST_DESC_BY_CAT[catKey] ? BEST_DESC_BY_CAT[catKey](catVenues.length) : `전국 ${catInfo.labelKo} TOP ${catVenues.length}곳 비교 가이드 — ${topNames} 등 인기 ${catInfo.labelKo} 분위기, 매니저 평판, 드레스코드, 전화번호, 예약 팁까지 정리. 매일 자동 갱신되는 ${catInfo.labelKo} 추천 리스트.`;
+  const desc = BEST_DESC_BY_CAT[catKey] ? BEST_DESC_BY_CAT[catKey](catVenues.length) : `전국 ${catInfo.labelKo} TOP ${catVenues.length}곳 비교 가이드 — ${topNames} 등 인기 ${catInfo.labelKo} 분위기, 매니저 평판, 드레스코드, 전화번호, 예약 팁까지 정리. 영업 확인을 거친 ${catInfo.labelKo} 추천 리스트.`;
   // 시즌88 — 동일 템플릿 문단 제거 → 멤버 실데이터 본문 + 허브-메시(막다른길 0)
   const bestRegionList = [...new Set(catVenues.map(vv => vv.regionKo))].slice(0, 8);
   const bestRegionStr = bestRegionList.slice(0, 4).map(escHtml).join(', ');
   let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
-  ssrBody += `<p>회원 검색·재방문 데이터로 ${aggPick('best-' + catKey, ['뽑은', '추린', '집계한'], 0)} ${escHtml(catInfo.labelKo)} ${catVenues.length}곳은 ${bestRegionStr}${bestRegionList.length > 4 ? ' 등' : ''} 지역에 ${aggPick('best-' + catKey, ['퍼져 있습니다', '분포합니다', '자리합니다'], 1)}. 랭킹은 매일 자동 갱신됩니다.</p>`;
+  // 2026-07-08 정직화 — 후기·재방문 데이터 0인데 "회원 데이터로 집계/매일 자동 갱신" 주장 = 출처 없는 통계(신뢰규칙 위반) → 사실만 서술.
+  ssrBody += `<p>지금 영업이 확인된 ${escHtml(catInfo.labelKo)} ${catVenues.length}곳을 ${aggPick('best-' + catKey, ['한 페이지에 모았습니다', '한눈에 정리했습니다', '한 줄씩 비교해 두었습니다'], 0)}. ${bestRegionStr}${bestRegionList.length > 4 ? ' 등' : ''} 지역에 ${aggPick('best-' + catKey, ['퍼져 있습니다', '분포합니다', '자리합니다'], 1)}. 새 업소는 영업 확인을 거쳐 목록에 올라갑니다.</p>`;
   ssrBody += `<h2>${escHtml(catInfo.labelKo)} 인기 TOP ${catVenues.length} 랭킹</h2>`;
   ssrBody += `<ol>`;
   catVenues.forEach((vv, idx) => { ssrBody += `<li>${idx + 1}. <a href="${venueHref(vv)}">${escHtml(vv.nameKo)}</a> — ${escHtml(vv.regionKo)}</li>`; });
@@ -2117,7 +2118,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   ssrBody += aggHubMesh(catVenues, 'best', catKey);
   // FAQ — 화면 dl + FAQPage JSON-LD 단일 배열 소스(화면↔스키마 100% 일치)
   const bestFaqPairs = [
-    { q: `${catInfo.labelKo} 어디가 제일 인기 있나요?`, a: `현재 회원 검색·재방문 기준 TOP은 ${topNames} 입니다. ${bestRegionStr} 지역에 주로 있으니 가까운 곳부터 확인하세요.` },
+    { q: `${catInfo.labelKo} 어디가 제일 인기 있나요?`, a: `목록 맨 위의 ${topNames}부터 보면 빠릅니다. ${bestRegionStr} 지역에 주로 있으니 가까운 곳부터 확인하세요.` },
     { q: `예약은 어떻게 하나요?`, a: `각 업소 상세 페이지에 직통 번호가 있고, 평일 저녁이면 당일 통화로도 가능합니다. 주말은 미리 확인하세요.` },
   ];
   ssrBody += faqPairsDl('자주 묻는 질문', bestFaqPairs);
@@ -2250,7 +2251,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     cSsr += aggInlineCta('rc-' + regionKo + '-' + catKey, crossVenues);
     // FAQ — 화면 dl + FAQPage JSON-LD 단일 배열 소스(화면↔스키마 100% 일치)
     const crossFaqPairs = [
-      { q: `${regionKo}에서 어디가 인기 있나요?`, a: `${crossNames} 등이 회원 검색·재방문 기준으로 자주 언급됩니다.` },
+      { q: `${regionKo}에서 어디가 인기 있나요?`, a: `${crossNames} 등이 ${regionKo} 대표 업소로 올라와 있습니다. 상세 페이지에서 분위기부터 확인해 보세요.` },
       { q: `예약은 어떻게 하나요?`, a: `각 업소 상세 페이지에서 직통 전화로 예약 가능 시간과 룸 사이즈를 미리 확인하세요. 주말은 일찍 마감되는 곳이 많습니다.` },
     ];
     cSsr += faqPairsDl('자주 묻는 질문', crossFaqPairs);

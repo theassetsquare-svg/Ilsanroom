@@ -5,6 +5,15 @@ import { venues, categories } from '@/data/venues';
 
 const catPathMap: Record<string, string> = { club: 'clubs', night: 'nights', lounge: 'lounges', room: 'rooms', yojeong: 'yojeong', hoppa: 'hoppa' };
 const catLabelMap: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
+// prerender-seo.mjs BEST_TITLE_SUFFIX_BY_CAT 1:1 미러 — 하이드레이션 후 title이 SSR과 달라지는 드리프트 방지.
+const titleSuffixMap: Record<string, string> = {
+  club: '발길 끊이지 않는 곳들',
+  night: '왜 다들 여기로 몰릴까',
+  lounge: '주말마다 북적이는 상위권',
+  room: '회원들이 가장 많이 찾는다',
+  yojeong: '두 번 세 번 다시 가는 곳',
+  hoppa: '한 번 가면 또 찾는 단골집',
+};
 
 // 업종별 인기순 안내 — 해당 키가 있는 페이지만 본문 렌더(공유 템플릿 스터핑 방지).
 // 랭킹이 뭘 기준으로 도는지, 그래서 어떻게 읽으면 되는지 자기완결 답변.
@@ -30,9 +39,10 @@ export default function BestCategoryPage() {
   const catKo = catLabelMap[catKey] || catKey;
   const filtered = venues.filter(v => v.category === catKey && v.status !== 'closed_or_unclear');
 
+  // 2026-07-08 정직화 — 조회수·후기 데이터 없이 "실시간 랭킹" 주장 금지(신뢰규칙). 사실(영업 확인·지역 비교)만.
   useDocumentMeta(
-    `${catKo} 인기 TOP ${filtered.length} — 후기·조회수 기준 실시간 랭킹`,
-    `전국 ${catKo} 인기순 ${filtered.length}곳 비교. 조회수·후기 기준 실시간 랭킹. 지금 가장 핫한 ${catKo}를 확인하세요.`,
+    `${catKo} 인기 TOP ${filtered.length} — ${titleSuffixMap[catKey] || '오늘 갈 곳 여기서 결정'}`,
+    `전국 ${catKo} ${filtered.length}곳을 지역·분위기로 비교. 지금 영업 확인된 곳만 모았으니 오늘 갈 ${catKo} 고르기가 5분이면 끝납니다.`,
     undefined,
     `${catKo} 인기, ${catKo} 추천, ${catKo} 랭킹, ${catKo} TOP, 인기 ${catKo}`
   );
@@ -40,7 +50,7 @@ export default function BestCategoryPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       <h1 className="mb-6 text-2xl font-bold">{catKo} 인기 TOP {filtered.length}</h1>
-      <p className="mb-8 text-gray-600">조회수·후기 기준으로 지금 가장 많이 찾는 {catKo} {filtered.length}곳을 모았습니다.</p>
+      <p className="mb-8 text-gray-600">지금 영업이 확인된 전국 {catKo} {filtered.length}곳입니다. 각 줄의 동네와 한 줄 소개를 보고 끌리는 곳부터 눌러보세요.</p>
       <div className="space-y-4">
         {filtered.map((v, i) => (
           <Link key={v.id} to={getHref(v)} className="flex items-start gap-4 rounded-xl bg-white p-4 shadow-sm transition hover:shadow-md">
