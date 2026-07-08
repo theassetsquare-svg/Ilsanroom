@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/incheonarabiannight/';
 const PRIMARY = '인천아라비안나이트';
 const SECONDARY = '인천나이트';
-const DETAIL_TOKENS = ['구월동', '모자이크', '바차타', '차이나타운', '케밥'];
+const DETAIL_TOKENS = ['작전역', '아치형', '중동풍', '모자이크', '라틴'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

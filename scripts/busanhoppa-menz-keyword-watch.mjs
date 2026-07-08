@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/hoppa/busanhoppa-menz/';
 const PRIMARY = '부산호빠';
 const SECONDARY = '해운대호빠';
-const DETAIL_TOKENS = ['광안리역', '광안리해변', '전신거울', '암막', '부산사투리'];
+const DETAIL_TOKENS = ['금련산역', '광안리해변', '전신거울', '암막', '부산사투리'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

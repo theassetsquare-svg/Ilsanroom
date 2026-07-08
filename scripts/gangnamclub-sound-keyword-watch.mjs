@@ -34,7 +34,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/clubs/gangnam/gangnamclub-sound/';
 const PRIMARY = '강남클럽';
 const SECONDARY = '청담클럽';
-const DETAIL_TOKENS = ['학동역', 'Funktion-One', '서브우퍼 6대', '사운드 엔지니어 상주', '토요 새벽 2시 피크'];
+const DETAIL_TOKENS = ['신사역', 'Funktion-One', '서브우퍼 6대', '사운드 엔지니어 상주', '토요 새벽 2시 피크'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

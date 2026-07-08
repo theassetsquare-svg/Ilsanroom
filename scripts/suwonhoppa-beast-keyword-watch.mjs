@@ -12,11 +12,11 @@
  *   4) title 중복단어 없음
  *   5) desc에 "수원호빠" 포함
  *   6) desc ≤150자
- *   7) desc에 "수원호빠" ≥2회
+ *   7) desc에 "수원호빠" ≥1회 (시즌: shortDesc 지역접두사 제거 정책으로 2회→1회)
  *   8) "수원호빠" body 등장 ≥5회
  *   9) "수원호빠" body 밀도 1.0%~3.5%
  *  10) 후킹 5축 ≥1축 (title 또는 desc)
- *  11) 디테일 토큰 (인계동·매교역·수원역·화성행궁·광교호수공원) 모두 등장
+ *  11) 디테일 토큰 (인계동·수원시청역·수원역·화성행궁·광교호수공원) 모두 등장
  *
  * 환경:
  *   RESEND_API_KEY     필수
@@ -29,7 +29,7 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/hoppa/suwonhoppa-beast/';
 const KEYWORD = '수원호빠';
-const DETAIL_TOKENS = ['인계동', '매교역', '수원역', '화성행궁', '광교호수공원'];
+const DETAIL_TOKENS = ['인계동', '수원시청역', '수원역', '화성행궁', '광교호수공원'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */
@@ -76,7 +76,7 @@ async function main() {
   if (dupTitle.length > 0) issues.push(`title 중복 [${dupTitle.join(',')}]`);
   if (!desc.includes(KEYWORD)) issues.push(`desc 수원호빠X`);
   if (desc.length === 0 || desc.length > 150) issues.push(`desc ${desc.length}자`);
-  if (descCount < 2) issues.push(`desc 수원호빠 ${descCount}회 (≥2 필요)`);
+  if (descCount < 1) issues.push(`desc 수원호빠 ${descCount}회 (≥1 필요)`);
   if (bodyCount < 5) issues.push(`수원호빠 body ${bodyCount}회 (≥5 필요)`);
   if (density < 0.01 || density > 0.035) issues.push(`수원호빠 밀도 ${(density*100).toFixed(2)}% (1.0~3.5% 필요)`);
   if (hookAxesHit === 0) issues.push('후킹 5축 0 (title/desc 모두)');

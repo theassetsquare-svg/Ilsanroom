@@ -12,7 +12,7 @@
  *   4) title 중복단어 없음
  *   5) desc에 "수원호빠" 포함
  *   6) desc ≤150자
- *   7) desc에 "수원호빠" ≥2회
+ *   7) desc에 "수원호빠" ≥1회 (shortDesc 지역접두사 제거 정책으로 2회→1회)
  *   8) "수원호빠" body 등장 ≥5회
  *   9) "수원호빠" body 밀도 1.0%~3.5%
  *  10) 후킹 5축 ≥1축 (title 또는 desc)
@@ -77,7 +77,7 @@ async function main() {
   if (dupTitle.length > 0) issues.push(`title 중복 [${dupTitle.join(',')}]`);
   if (!desc.includes(KEYWORD)) issues.push(`desc 수원호빠X`);
   if (desc.length === 0 || desc.length > 150) issues.push(`desc ${desc.length}자`);
-  if (descCount < 2) issues.push(`desc 수원호빠 ${descCount}회 (≥2 필요)`);
+  if (descCount < 1) issues.push(`desc 수원호빠 ${descCount}회 (≥1 필요)`);
   if (bodyCount < 5) issues.push(`수원호빠 body ${bodyCount}회 (≥5 필요)`);
   if (density < 0.01 || density > 0.035) issues.push(`수원호빠 밀도 ${(density*100).toFixed(2)}% (1.0~3.5% 필요)`);
   if (hookAxesHit === 0) issues.push('후킹 5축 0 (title/desc 모두)');

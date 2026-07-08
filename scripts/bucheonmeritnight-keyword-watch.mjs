@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/bucheonmeritnight/';
 const PRIMARY = '부천메리트나이트';
 const SECONDARY = '부천나이트';
-const DETAIL_TOKENS = ['부천역', '7호선', '인천', '김포'];
+const DETAIL_TOKENS = ['상동역', '7호선', '인천', '김포'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

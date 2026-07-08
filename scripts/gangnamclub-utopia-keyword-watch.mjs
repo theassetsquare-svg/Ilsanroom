@@ -29,7 +29,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/clubs/gangnam/gangnamclub-utopia/';
 const PRIMARY = '강남클럽';
 const SECONDARY = '청담클럽';
-const DETAIL_TOKENS = ['학동사거리', '아이보리 대리석', '보컬 트랜스', '수요일 레이디스 프로모션', '반원형 라운지석'];
+const DETAIL_TOKENS = ['신사역', '아이보리 대리석', '보컬 트랜스', '수요일 레이디스 프로모션', '반원형 라운지석'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/busanmulnight/';
 const PRIMARY = '부산물나이트';
 const SECONDARY = '부산나이트';
-const DETAIL_TOKENS = ['서면역', '토박이', '토요일', '발렌타인', '따봉'];
+const DETAIL_TOKENS = ['연산역', '토박이', '토요일', '발렌타인', '따봉'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */
