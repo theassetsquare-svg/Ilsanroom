@@ -336,10 +336,18 @@ if (isSrc && /(fixed\s+(?:bottom-0|inset-x-0\s+bottom-0))/.test(text)) {
 
 // 21) 위험단어(불법 연관·SEO 페널티) 재유입 차단 — src 콘텐츠 한정.
 //     매핑: 밤문화/유흥→나이트라이프 · 노래방→가라오케 · 룸살롱/룸싸롱→프라이빗룸 · 초이스→셀렉션
-const DANGEROUS = ['밤문화', '유흥', '룸살롱', '룸싸롱', '노래방', '초이스'];
+// 2026-07-08: '밤 문화' 등 띄어쓰기 변형 우회 차단 — dist-audit DANGEROUS regex와 1:1 미러.
+const DANGEROUS = [
+  { w: '밤문화', re: /밤\s?문화/ },
+  { w: '유흥', re: /유흥/ },
+  { w: '룸살롱', re: /룸\s?살롱/ },
+  { w: '룸싸롱', re: /룸\s?싸롱/ },
+  { w: '노래방', re: /노래\s?방(?!송)/ },
+  { w: '초이스', re: /초이스/ },
+];
 if (isSrc) {
-  for (const w of DANGEROUS) {
-    if (text.includes(w)) violations.push(`⛔ 위험단어 "${w}" 금지 (불법 연관·SEO 페널티) → 나이트라이프/가라오케/프라이빗룸/셀렉션`);
+  for (const { w, re } of DANGEROUS) {
+    if (re.test(text)) violations.push(`⛔ 위험단어 "${w}" 금지 (불법 연관·SEO 페널티) → 나이트라이프/가라오케/프라이빗룸/셀렉션`);
   }
 }
 

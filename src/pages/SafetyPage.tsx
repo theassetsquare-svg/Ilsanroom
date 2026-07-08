@@ -13,7 +13,7 @@ export default function SafetyPage() {
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 space-y-8">
       <div className="text-center">
         <h1 className="text-3xl font-extrabold text-neon-text mb-2">안전 가이드</h1>
-        <p className="text-neon-text-muted">안전한 밤 문화를 위한 필수 도구와 정보</p>
+        <p className="text-neon-text-muted">안전한 나이트라이프를 위한 필수 도구와 정보</p>
       </div>
 
       {/* 긴급 연락처 */}

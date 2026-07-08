@@ -71,8 +71,9 @@ async function main() {
 
   // 2) 핵심 이벤트 — 이미 발생한 것만 (없는 건 GA가 만들지도 거부)
   //    search = state-audit 28일 실발생 확인됨(진짜 검색행동) → 정직 지정 가능.
-  //    search_no_result/post_create/share/invite_open = 아직 미발생 → 발생 후 추가(가짜 지정 금지).
-  const want = ['scroll_100', 'sign_up', 'login', 'search'];
+  //    post_create = 2026-07-08 state-audit 28일 실발생 확인(진짜 글 작성) → 정직 지정 추가.
+  //    search_no_result/share/invite_open = 아직 미발생 → 발생 후 추가(가짜 지정 금지).
+  const want = ['scroll_100', 'sign_up', 'login', 'search', 'post_create'];
   const existing = await api('GET', `properties/${PID}/keyEvents`);
   const have = existing.ok ? (existing.body.keyEvents || []).map((k) => k.eventName) : [];
   for (const ev of want) {

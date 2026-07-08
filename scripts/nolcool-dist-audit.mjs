@@ -27,7 +27,15 @@ console.log(`📂 ${ROOT} HTML ${files.length}개 감사 시작…`);
 
 // ★ 위험단어(불법 연관·SEO 페널티) — dist 본문/타이틀 전수 차단 (재발 방지 게이트).
 //   매핑 가이드: 밤문화/유흥→나이트라이프 · 노래방→가라오케 · 룸살롱/룸싸롱→프라이빗룸 · 초이스→셀렉션
-const DANGEROUS = ['밤문화', '유흥', '룸살롱', '룸싸롱', '노래방', '초이스'];
+// 2026-07-08: '밤 문화' 등 띄어쓰기 변형이 includes() 게이트를 우회해 라이브 유입 → regex로 전환.
+const DANGEROUS = [
+  { w: '밤문화', re: /밤\s?문화/ },
+  { w: '유흥', re: /유흥/ },
+  { w: '룸살롱', re: /룸\s?살롱/ },
+  { w: '룸싸롱', re: /룸\s?싸롱/ },
+  { w: '노래방', re: /노래\s?방(?!송)/ },
+  { w: '초이스', re: /초이스/ },
+];
 // owner 승인 예외: { '/some/url/': ['초이스'] } 형태로 URL별 허용 단어 등록 (기본 0건 — dist는 깨끗해야 함).
 const DANGEROUS_EXCEPTIONS = {};
 
@@ -110,8 +118,8 @@ for (const f of files) {
 
   // ★ 위험단어 게이트 — owner 예외 외 1건이라도 dist 본문/타이틀에 있으면 배포 차단
   const allow = DANGEROUS_EXCEPTIONS[url] || [];
-  for (const w of DANGEROUS) {
-    if (body.includes(w) && !allow.includes(w)) add('ERR', `본문 위험단어 "${w}" (불법 연관·SEO 페널티)`);
+  for (const { w, re } of DANGEROUS) {
+    if (re.test(body) && !allow.includes(w)) add('ERR', `본문 위험단어 "${w}" (불법 연관·SEO 페널티)`);
   }
 
   if (!isHome) {
