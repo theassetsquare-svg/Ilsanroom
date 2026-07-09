@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-07-09T15:55:58.839Z",
+  "generated_at": "2026-07-09T18:45:01.969Z",
   "window_hours": 24,
   "items": [
     {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
+      "category": "night",
+      "region": "부산",
       "views_24h": 6
     },
     {
@@ -17,17 +17,10 @@
       "views_24h": 6
     },
     {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
-      "category": "night",
-      "region": "부산",
-      "views_24h": 5
-    },
-    {
-      "path": "/nights/suyushampoonight",
-      "title": "수유샴푸나이트",
-      "category": "night",
-      "region": "수유",
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
       "views_24h": 5
     },
     {
@@ -43,6 +36,13 @@
       "category": "night",
       "region": "강서",
       "views_24h": 3
+    },
+    {
+      "path": "/lounges/apgujeonglounge-dm",
+      "title": "압구정라운지 디엠",
+      "category": "lounge",
+      "region": "압구정",
+      "views_24h": 2
     },
     {
       "path": "/nights/daejeononenight",
@@ -66,17 +66,24 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/hwajeonghangukgwannight",
-      "title": "화정한국관나이트",
-      "category": "night",
-      "region": "화정",
-      "views_24h": 2
+      "path": "/clubs/cheongju/cheongju-supermoon",
+      "title": "청주클럽 슈퍼문",
+      "category": "club",
+      "region": "청주",
+      "views_24h": 1
     },
     {
-      "path": "/lounges/apgujeonglounge-dm",
-      "title": "압구정라운지 디엠",
+      "path": "/lounges/apgujeongcodelounge",
+      "title": "압구정코드라운지",
       "category": "lounge",
       "region": "압구정",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/bucheongoraenight",
+      "title": "부천고래나이트",
+      "category": "night",
+      "region": "부천",
       "views_24h": 1
     },
     {
@@ -98,13 +105,6 @@
       "title": "울산챔피언나이트",
       "category": "night",
       "region": "울산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gwangjumgmnight",
-      "title": "광주MGM나이트",
-      "category": "night",
-      "region": "광주",
       "views_24h": 1
     }
   ]
