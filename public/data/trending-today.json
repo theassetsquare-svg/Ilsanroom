@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-09T06:37:34.970Z",
+  "generated_at": "2026-07-09T15:55:58.839Z",
   "window_hours": 24,
   "items": [
     {
@@ -14,6 +14,13 @@
       "title": "일산명월관요정",
       "category": "yojeong",
       "region": "일산",
+      "views_24h": 6
+    },
+    {
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
+      "category": "night",
+      "region": "부산",
       "views_24h": 5
     },
     {
@@ -24,31 +31,17 @@
       "views_24h": 5
     },
     {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
-      "category": "night",
-      "region": "부산",
-      "views_24h": 4
-    },
-    {
       "path": "/nights/daejeonbongmyeongnight",
       "title": "대전봉명나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 3
+      "views_24h": 4
     },
     {
-      "path": "/nights/daejeonsevennight",
-      "title": "대전세븐나이트",
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
       "category": "night",
-      "region": "대전",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
-      "category": "night",
-      "region": "대전",
+      "region": "강서",
       "views_24h": 3
     },
     {
@@ -59,6 +52,20 @@
       "views_24h": 2
     },
     {
+      "path": "/nights/daejeonsevennight",
+      "title": "대전세븐나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
+    },
+    {
+      "path": "/lounges/apgujeongidiotlounge",
+      "title": "압구정이디엇라운지",
+      "category": "lounge",
+      "region": "압구정",
+      "views_24h": 2
+    },
+    {
       "path": "/nights/hwajeonghangukgwannight",
       "title": "화정한국관나이트",
       "category": "night",
@@ -66,45 +73,38 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/ilsan-hwajung-tunnel",
-      "title": "일산화정터널나이트",
-      "category": "night",
-      "region": "일산",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 1
-    },
-    {
-      "path": "/lounges/apgujeongidiotlounge",
-      "title": "압구정이디엇라운지",
+      "path": "/lounges/apgujeonglounge-dm",
+      "title": "압구정라운지 디엠",
       "category": "lounge",
       "region": "압구정",
       "views_24h": 1
     },
     {
-      "path": "/clubs/gangnam/gangnamclub-peak",
-      "title": "강남청담클럽 피크",
-      "category": "club",
-      "region": "강남",
+      "path": "/nights/cheongjuhobaknight",
+      "title": "청주호박나이트",
+      "category": "night",
+      "region": "청주",
       "views_24h": 1
     },
     {
-      "path": "/nights/ansanhitnight",
-      "title": "안산히트나이트",
+      "path": "/nights/gurihobaknight",
+      "title": "구리호박나이트",
       "category": "night",
-      "region": "안산",
+      "region": "구리",
       "views_24h": 1
     },
     {
-      "path": "/nights/cheonanstardomnight",
-      "title": "천안스타돔나이트",
+      "path": "/nights/ulsanchampionnight",
+      "title": "울산챔피언나이트",
       "category": "night",
-      "region": "천안",
+      "region": "울산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gwangjumgmnight",
+      "title": "광주MGM나이트",
+      "category": "night",
+      "region": "광주",
       "views_24h": 1
     }
   ]
