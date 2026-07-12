@@ -12,10 +12,15 @@
  *   1) GSC page 28d 전수 — venues.ts 123개 slug 페이지 실측 순위 (거짓 노출0 방지: page dimension)
  *   2) 타깃 8 키워드 query 28d 순위 (일산룸/일산명월관/일산요정/해운대고구려/강남호빠/장안동호빠/수원호빠/건대호빠)
  *   3) GA4 28d — 세션·페이지뷰·페이지/세션·이탈률·평균체류 (북극성 추적)
+ *   4) GA4 Admin 설정 — 데이터 보관 14개월 + 핵심이벤트 존재 (읽기전용 GET)
+ *   5) GSC sitemap 상태 — 등록/오류/경고 (errors>0 시 자동 재제출)
+ *   6) GA4 랜딩페이지별 세션깊이 — 페이지/세션 최저 페이지 처방 (목표: 어느 페이지로 들어와도 10+ PV)
  *
  * 자동 해결 (실행한 것만 메일에 기록):
  *   - 노출0/순위 20위권 밖 venue URL → IndexNow 재크롤 핑
  *   - 노출0 존재 시 sitemap 재제출
+ *   - sitemap errors>0 시 재제출
+ *   - 설정 이상(보관기간/핵심이벤트)은 자동수정 불가(SA 뷰어=안전선) → 행동필요 신호로만 메일 포함
  *
  * 환경: GSC_SA_JSON(필수) / INDEXNOW_KEY / RESEND_API_KEY / NOTIFICATION_EMAIL
  */
@@ -146,6 +151,72 @@ async function main() {
     } else console.warn(`⚠️ GA4 실패 — ${gaErrorReason(r.status, r.body)}`);
   } else console.warn('⚠️ GA4 토큰 실패 — GSC만 진행');
 
+  /* 3.5) GA4 Admin 설정 점검 — 읽기전용 GET (보관 14개월 · 핵심이벤트) */
+  const settingsIssues = [];
+  if (gaToken) {
+    const adminGet = async (path) => {
+      const r = await fetch(`https://analyticsadmin.googleapis.com/v1beta/properties/540830544/${path}`, {
+        headers: { Authorization: `Bearer ${gaToken}`, 'x-goog-user-project': process.env.GA_QUOTA_PROJECT || 'theassetsquare-search-console' },
+      }).catch(() => null);
+      return r && r.ok ? r.json() : null;
+    };
+    const retention = await adminGet('dataRetentionSettings');
+    if (retention) {
+      const ok = retention.eventDataRetention === 'FOURTEEN_MONTHS';
+      console.log(`⚙️ GA4 보관기간: ${retention.eventDataRetention} ${ok ? '✅' : '❌'}`);
+      if (!ok) settingsIssues.push(`GA4 데이터 보관기간이 ${retention.eventDataRetention} (14개월 아님) — ga4-admin-apply.yml로 정정 필요`);
+    }
+    const ke = await adminGet('keyEvents');
+    if (ke) {
+      const names = (ke.keyEvents || []).map((k) => k.eventName);
+      console.log(`⚙️ GA4 핵심이벤트 ${names.length}개: ${names.join(', ') || '없음'}`);
+      if (!names.length) settingsIssues.push('GA4 핵심이벤트 0개 — 전환 측정 불가, ga4-admin-apply.yml로 등록 필요');
+    }
+  }
+
+  /* 3.6) GSC sitemap 상태 점검 */
+  let sitemapErrors = 0;
+  {
+    const r = await fetch(`https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(SITE_PROPERTY)}/sitemaps`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }).catch(() => null);
+    if (r && r.ok) {
+      const list = (await r.json()).sitemap || [];
+      for (const sm of list) {
+        const errs = (sm.contents || []).reduce((a, c) => a + Number(c.errors || 0), 0) + Number(sm.errors || 0);
+        const warns = (sm.contents || []).reduce((a, c) => a + Number(c.warnings || 0), 0) + Number(sm.warnings || 0);
+        sitemapErrors += errs;
+        console.log(`🗺️ sitemap ${sm.path}: 오류 ${errs} · 경고 ${warns} · pending ${sm.isPending ? 'Y' : 'N'}`);
+      }
+      if (!list.length) { sitemapErrors = 1; console.warn('🗺️ 등록된 sitemap 없음!'); }
+    }
+  }
+
+  /* 3.7) GA4 랜딩페이지별 세션깊이 — 목표 10+ PV/세션, 최저 페이지 처방 (측정만, 조작 0) */
+  let shallow = [];
+  if (gaToken) {
+    const r = await runReport(gaToken, {
+      dateRanges: [{ startDate: '28daysAgo', endDate: 'yesterday' }],
+      dimensions: [{ name: 'landingPagePlusQueryString' }],
+      metrics: [{ name: 'sessions' }, { name: 'screenPageViews' }],
+      limit: 10000,
+    });
+    if (r.ok && r.body.rows?.length) {
+      const pages = r.body.rows
+        .map((row) => {
+          const path = row.dimensionValues[0].value.split('?')[0];
+          const sessions = Number(row.metricValues[0].value);
+          const pv = Number(row.metricValues[1].value);
+          return { path, sessions, pps: sessions ? pv / sessions : 0 };
+        })
+        .filter((p) => p.sessions >= 5 && p.path.startsWith('/'));
+      shallow = pages.filter((p) => p.pps < 10).sort((a, b) => a.pps - b.pps).slice(0, 10);
+      const deep = pages.filter((p) => p.pps >= 10).length;
+      console.log(`🔗 랜딩페이지 세션깊이 (세션≥5인 ${pages.length}p): 10+PV 달성 ${deep}p / 미달 ${pages.length - deep}p`);
+      for (const p of shallow) console.log(`   📉 ${p.path} — ${p.pps.toFixed(1)} PV/세션 (세션 ${p.sessions})`);
+    }
+  }
+
   /* 4) 자동 해결 — 무해한 재크롤 신호만 (콘텐츠/설정 변경 0) */
   const resolved = [];
   const problemUrls = [
@@ -172,9 +243,12 @@ async function main() {
   } else {
     console.log('✅ 노출0/약순위 페이지 없음 — 해결할 문제 없음');
   }
+  if (sitemapErrors > 0 && !zero.length && await resubmitSitemap(token)) {
+    resolved.push(`sitemap 오류 ${sitemapErrors}건 감지 → 재제출로 재처리 유도`);
+  }
 
-  /* 5) 메일 — 해결한 것이 있을 때만 1통. 없으면 완전 침묵. */
-  if (!resolved.length) { console.log('✅ 해결 조치 0건 — 메일 침묵 (사장님 정책)'); return; }
+  /* 5) 메일 — 해결한 것 또는 사장님 행동필요 설정이상이 있을 때만 1통. 없으면 완전 침묵. */
+  if (!resolved.length && !settingsIssues.length) { console.log('✅ 해결 조치 0건 · 설정 이상 0건 — 메일 침묵 (사장님 정책)'); return; }
   if (!RESEND_API_KEY) { console.log('RESEND_API_KEY 없음 — 메일 스킵'); return; }
 
   const kwTable = kwResult.map((k) => `<tr>
@@ -186,8 +260,16 @@ async function main() {
   const html = `<div style="font-family:sans-serif;max-width:720px;margin:0 auto;padding:20px;color:#222">
     <h2 style="color:#059669">✅ [놀쿨] 월간 전수점검 — 문제 자동 해결 보고</h2>
     <p style="color:#666;font-size:13px">측정: ${kstNow()} · GSC/GA4 API 28일 전수 (venue ${venues.length}곳)</p>
-    <h3>🛠️ 이번 달 자동 해결한 것</h3>
-    <ul>${resolved.map((s) => `<li style="margin:6px 0">${esc(s)}</li>`).join('')}</ul>
+    ${resolved.length ? `<h3>🛠️ 이번 달 자동 해결한 것</h3>
+    <ul>${resolved.map((s) => `<li style="margin:6px 0">${esc(s)}</li>`).join('')}</ul>` : ''}
+    ${settingsIssues.length ? `<h3 style="color:#DC2626">⚙️ 사장님 행동 필요 — 설정 이상 (자동수정 불가·SA 뷰어 안전선)</h3>
+    <ul>${settingsIssues.map((s) => `<li style="margin:6px 0">${esc(s)}</li>`).join('')}</ul>` : ''}
+    ${shallow.length ? `<h3>🔗 세션깊이 최저 페이지 (목표 10+ PV/세션 미달 하위 ${shallow.length}곳)</h3>
+    <table style="border-collapse:collapse;width:100%">
+      <thead><tr style="background:#F3F4F6"><th align="left" style="border:1px solid #E5E7EB;padding:8px;font-size:13px">랜딩페이지</th><th style="border:1px solid #E5E7EB;padding:8px;font-size:13px">PV/세션</th><th style="border:1px solid #E5E7EB;padding:8px;font-size:13px">세션</th></tr></thead>
+      <tbody>${shallow.map((p) => `<tr><td style="border:1px solid #E5E7EB;padding:8px;font-size:13px">${esc(p.path)}</td><td style="border:1px solid #E5E7EB;padding:8px;font-size:13px;text-align:center;color:#D97706;font-weight:bold">${p.pps.toFixed(1)}</td><td style="border:1px solid #E5E7EB;padding:8px;font-size:13px;text-align:center">${p.sessions}</td></tr>`).join('')}</tbody>
+    </table>
+    <p style="color:#666;font-size:12px">처방: 이 페이지들의 다음글·관련링크·허브 동선을 사람 손으로 보강 (합성·조작 절대 없음)</p>` : ''}
     <h3>📊 현황 요약</h3>
     <p style="font-size:14px">가게이름 페이지 실측: 🟢 10위내 <b>${strong.length}</b> · 🟡 20위밖 <b>${weak.length}</b> · 🚫 노출0 <b>${zero.length}</b> / ${venues.length}곳</p>
     ${ga ? `<p style="font-size:14px">GA4 28일: 세션 <b>${ga.sessions}</b> · 페이지/세션 <b>${ga.pps.toFixed(2)}</b> · 이탈 <b>${(ga.bounce * 100).toFixed(1)}%</b> · 평균체류 <b>${Math.round(ga.dur)}초</b></p>` : ''}
@@ -205,7 +287,7 @@ async function main() {
     body: JSON.stringify({
       from: 'NOLCOOL 월간점검 <onboarding@resend.dev>',
       to: [TO],
-      subject: `[놀쿨] ✅ 월간 전수점검 — 자동 해결 ${resolved.length}건 (노출0 ${zero.length}곳 재크롤)`,
+      subject: `[놀쿨] ✅ 월간 전수점검 — 자동 해결 ${resolved.length}건${settingsIssues.length ? ` · ⚙️ 행동필요 ${settingsIssues.length}건` : ''} (노출0 ${zero.length}곳)`,
       html,
     }),
   });
