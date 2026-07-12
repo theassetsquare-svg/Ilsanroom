@@ -21,7 +21,7 @@ const DEFAULT_TARGETS = [
 
 const targets = process.argv.slice(2).length ? process.argv.slice(2) : DEFAULT_TARGETS;
 const DAYS = Number(process.env.GSC_DAYS || 28);
-const norm = (s) => (s || '').replace(/\s+/g, '');
+const norm = (s) => (s || '').replace(/\s+/g, '').toLowerCase();
 
 if (!hasGscCredentials()) {
   console.log('⏭️  GSC 인증정보 미설정 (GSC_SA_JSON) — 스킵 (로컬엔 키 없음, Actions에서 실행)');
@@ -58,4 +58,34 @@ if (!hasGscCredentials()) {
     );
   }
   console.log('\n참고: 평균순위는 노출가중. 노출 0 = 해당 검색어에서 아직 색인/노출 안 됨(또는 2일 지연 미반영).');
+
+  // ── 페이지 단위 실측 (검색어 풀네임 매칭 왜곡 보정) ──
+  // 검색어 매칭은 "질의가 풀네임을 포함"해야 잡히므로 복합상호(클럽/호빠)는 거짓 0이 남.
+  // 각 venue 상세 URL이 실제로 받은 노출·클릭·순위를 slug로 집계해 진짜 노출 여부를 판정.
+  try {
+    const { readFileSync } = await import('node:fs');
+    const src = readFileSync(new URL('../src/data/venues.ts', import.meta.url), 'utf8');
+    const venues = [];
+    const re = /slug:\s*['"]([^'"]+)['"][\s\S]*?nameKo:\s*['"]([^'"]+)['"]/g;
+    for (let m; (m = re.exec(src)); ) venues.push({ slug: m[1], nameKo: m[2] });
+    const { rows: pageRows } = await gscQuery(token, { dimensions: ['page'], rowLimit: 25000, days: DAYS });
+    console.log(`\n📄 페이지 단위 실측 — venue ${venues.length}개 · GSC page 행 ${pageRows.length}`);
+    const zero = [];
+    for (const v of venues) {
+      const matched = pageRows.filter((r) => {
+        const p = r.keys?.[0] || '';
+        return p.includes(`/${v.slug}/`) || p.endsWith(`/${v.slug}`);
+      });
+      if (!matched.length) { zero.push(v); continue; }
+      let imp = 0, clicks = 0, posW = 0;
+      for (const r of matched) { const i = r.impressions || 0; imp += i; clicks += r.clicks || 0; posW += (r.position || 0) * i; }
+      const pos = imp ? posW / imp : 0;
+      console.log(`📄 ${v.nameKo} (${v.slug}): ${pos.toFixed(1)}위 · 노출 ${imp} · 클릭 ${clicks}`);
+    }
+    if (zero.length) {
+      console.log(`\n🚫 페이지 노출 0 (${zero.length}개): ${zero.map((v) => `${v.nameKo}(${v.slug})`).join(' · ')}`);
+    }
+  } catch (e) {
+    console.log('⏭️  페이지 단위 실측 스킵:', e.message);
+  }
 })().catch((e) => { console.error('❌ 실패:', e); process.exit(1); });
