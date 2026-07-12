@@ -184,13 +184,14 @@ async function main() {
         console.log(`📊 ${label}: ${sweep[label].slice(0, 5).map((x) => `${x.k}=${x.v[0]}`).join(' · ')}`);
       } else if (!r.ok) console.warn(`⚠️ GA4 ${label} 실패 — ${gaErrorReason(r.status, r.body)}`);
     }
-    // 사용자·유지(리텐션)·참여 총괄 지표 (한 요청 최대 10 metric)
-    const uMet = ['totalUsers', 'newUsers', 'active7DayUsers', 'active28DayUsers', 'dauPerMau', 'wauPerMau', 'engagementRate', 'engagedSessions', 'eventsPerSession', 'sessionsPerUser'];
+    // 사용자·참여 총괄 지표 — rolling 지표(activeNDayUsers/dauPerMau)는 날짜 dimension 없이
+    // 기간 합산하면 불가능 수치(7일활성>총사용자·참여율>100%)가 나와 제외 (정직 규칙)
+    const uMet = ['totalUsers', 'newUsers', 'engagementRate', 'engagedSessions', 'eventsPerSession', 'sessionsPerUser'];
     const ru = await runReport(gaToken, { dateRanges: RANGE, metrics: uMet.map((name) => ({ name })) });
     if (ru.ok && ru.body.rows?.length) {
       const m = ru.body.rows[0].metricValues.map((x) => Number(x.value));
       sweep['사용자/유지'] = uMet.map((k, i) => ({ k, v: [m[i]] }));
-      console.log(`📊 사용자/유지: 총 ${m[0]} · 신규 ${m[1]} · 7일활성 ${m[2]} · 28일활성 ${m[3]} · DAU/MAU ${(m[4] * 100).toFixed(1)}% · 참여율 ${(m[6] * 100).toFixed(1)}% · 세션/사용자 ${m[9].toFixed(2)}`);
+      console.log(`📊 사용자/참여: 총 ${m[0]} · 신규 ${m[1]} · 참여율 ${(m[2] * 100).toFixed(1)}% · 참여세션 ${m[3]} · 이벤트/세션 ${m[4].toFixed(1)} · 세션/사용자 ${m[5].toFixed(2)}`);
     }
     // 실시간 접속
     const rt = await runRealtimeReport(gaToken, { metrics: [{ name: 'activeUsers' }] });
