@@ -10,6 +10,7 @@ import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { ReadTimeEstimate, MidContentHook, ReadFinishCount, ReadCompletionReward, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
 import RelatedVenuesForMagazine from '@/components/magazine/RelatedVenuesForMagazine';
 import { sanitizeHtml } from '@/lib/sanitize-html';
+import { splitHtmlParagraphs } from '@/lib/text-format';
 
 export default function MagazineDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -68,7 +69,7 @@ export default function MagazineDetailPage() {
         <div
           className="rich-content text-base leading-relaxed mb-8"
           style={{ color: '#333', lineHeight: '1.9' }}
-          dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content) }}
+          dangerouslySetInnerHTML={{ __html: splitHtmlParagraphs(sanitizeHtml(article.content)) }}
         />
 
         {/* 중간 훅 */}

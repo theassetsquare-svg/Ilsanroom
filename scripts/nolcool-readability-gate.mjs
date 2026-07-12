@@ -12,7 +12,7 @@
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import { splitParagraphs } from '../src/lib/text-format.mjs';
+import { splitParagraphs, splitHtmlParagraphs } from '../src/lib/text-format.mjs';
 
 const MAX_PARA = 300; // <p> 한 단락 허용 상한
 const fails = [];
@@ -107,6 +107,31 @@ if (fakeHits.length) {
   fails.push(`[죽은 가짜 통계] prop 잔존 ${fakeHits.length}곳 → ${fakeHits.slice(0, 6).join(', ')}`);
 }
 
+// ── 5. 매거진·커뮤니티 HTML 문단 벽 검사 ──
+// 렌더 계약: rich-content HTML은 splitHtmlParagraphs를 거쳐야 하고,
+// 실제 매거진 전 글 content를 계약대로 쪼갠 최장 <p>가 300자 이하여야 한다.
+const magPageSrc = readFileSync('src/pages/MagazineDetailPage.tsx', 'utf8');
+const postPageSrc = readFileSync('src/pages/community/PostDetailPage.tsx', 'utf8');
+if (!/splitHtmlParagraphs\(sanitizeHtml\(/.test(magPageSrc)) {
+  fails.push('[HTML 문단 벽] MagazineDetailPage가 splitHtmlParagraphs 없이 본문 렌더 — 모바일 텍스트 벽 재발');
+}
+if (!/splitHtmlParagraphs\(sanitizeHtml\(/.test(postPageSrc)) {
+  fails.push('[HTML 문단 벽] PostDetailPage가 splitHtmlParagraphs 없이 본문 렌더 — 모바일 텍스트 벽 재발');
+}
+const magSrc = readFileSync('src/data/magazine-articles.ts', 'utf8');
+const stripTags = (s) => s.replace(/<[^>]+>/g, '');
+let magWorst = { title: '', len: 0 };
+for (const m of magSrc.matchAll(/title:\s*'((?:[^'\\]|\\.)*)'[\s\S]*?content:\s*`([\s\S]*?)`/g)) {
+  const split = splitHtmlParagraphs(m[2]);
+  for (const p of split.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)) {
+    const len = stripTags(p[1]).trim().length;
+    if (len > magWorst.len) magWorst = { title: m[1].slice(0, 20), len };
+  }
+}
+if (magWorst.len > MAX_PARA) {
+  fails.push(`[HTML 문단 벽] 매거진 분할 후 최장 <p> ${magWorst.len}자(${magWorst.title}…) > ${MAX_PARA}`);
+}
+
 // ── 결과 ──
 if (fails.length) {
   console.error('\n❌ 가독성 게이트 FAIL:');
@@ -114,4 +139,4 @@ if (fails.length) {
   console.error('');
   process.exit(1);
 }
-console.log(`✅ 가독성 게이트 PASS — 최장 <p> ${worst.len}자(${worst.name}), 조사 placeholder 0, 중복 렌더 0, 죽은 통계 0`);
+console.log(`✅ 가독성 게이트 PASS — venue 최장 <p> ${worst.len}자(${worst.name}), 매거진 최장 <p> ${magWorst.len}자, 조사 placeholder 0, 중복 렌더 0, 죽은 통계 0`);

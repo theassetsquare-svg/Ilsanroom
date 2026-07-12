@@ -57,6 +57,71 @@ export function splitParagraphs(text, max = 280) {
 }
 
 /**
+ * HTML 본문(매거진·커뮤니티)의 긴 <p> 문단 벽을 문장 단위 여러 <p>로 표시 분할.
+ * - 플레인텍스트 길이 ≤ max인 <p>는 그대로 (상위노출 페이지 무손대 원칙 — 텍스트 100% 불변, 표시만 분할)
+ * - <a>·<strong> 등 인라인 태그 내부(depth>0)에서는 절대 자르지 않는다
+ * - 원래 <p>의 속성은 분할된 모든 <p>에 그대로 승계
+ */
+export function splitHtmlParagraphs(html, max = 280) {
+  const src = html || '';
+  if (!src) return src;
+  const stripTags = (s) => s.replace(/<[^>]+>/g, '');
+  const VOID_TAG = /^<(br|img|hr|input|wbr|source|embed)\b/i;
+  return src.replace(/<p(\s[^>]*)?>([\s\S]*?)<\/p>/gi, (whole, attrs, inner) => {
+    if (stripTags(inner).length <= max) return whole;
+    // 태그/텍스트 토큰화
+    const tokens = [];
+    let last = 0;
+    for (const m of inner.matchAll(/<[^>]+>/g)) {
+      if (m.index > last) tokens.push({ tag: false, v: inner.slice(last, m.index) });
+      tokens.push({ tag: true, v: m[0] });
+      last = m.index + m[0].length;
+    }
+    if (last < inner.length) tokens.push({ tag: false, v: inner.slice(last) });
+    // depth 0 텍스트에서만 문장 경계로 조각 생성
+    const parts = [];
+    let depth = 0;
+    let buf = '';
+    for (const tok of tokens) {
+      if (tok.tag) {
+        if (/^<\//.test(tok.v)) depth = Math.max(0, depth - 1);
+        else if (!/\/>$/.test(tok.v) && !VOID_TAG.test(tok.v)) depth += 1;
+        buf += tok.v;
+        continue;
+      }
+      if (depth > 0) { buf += tok.v; continue; }
+      const pieces = tok.v.split(SENT_BOUNDARY);
+      for (let i = 0; i < pieces.length; i += 1) {
+        buf += pieces[i];
+        if (i < pieces.length - 1) { parts.push(buf); buf = ''; }
+      }
+    }
+    if (buf.trim()) parts.push(buf);
+    // 조각을 max 이하·최대 3문장 리듬으로 묶어 <p> 재조립
+    const paras = [];
+    let cur = '';
+    let curLen = 0;
+    let count = 0;
+    for (const part of parts) {
+      const len = stripTags(part).length;
+      if (cur && (curLen + len > max || count >= 3)) {
+        paras.push(cur);
+        cur = part;
+        curLen = len;
+        count = 1;
+      } else {
+        cur = cur ? `${cur} ${part}` : part;
+        curLen += len;
+        count += 1;
+      }
+    }
+    if (cur.trim()) paras.push(cur);
+    const open = `<p${attrs || ''}>`;
+    return paras.map((p) => `${open}${p.trim()}</p>`).join('\n');
+  });
+}
+
+/**
  * 한국어 조사 받침 처리. word 마지막 글자의 받침 유무로 올바른 조사를 붙여 반환.
  * type: '이/가' | '을/를' | '은/는' | '과/와' | '으로/로' | '이/가' 형태 문자열.
  */
