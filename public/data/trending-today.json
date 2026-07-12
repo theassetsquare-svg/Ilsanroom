@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-07-12T14:25:37.538Z",
+  "generated_at": "2026-07-12T17:48:19.649Z",
   "window_hours": 24,
   "items": [
+    {
+      "path": "/nights/ansanhitnight",
+      "title": "안산히트나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 7
+    },
+    {
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
+      "category": "night",
+      "region": "부산",
+      "views_24h": 5
+    },
     {
       "path": "/nights/daejeononenight",
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 7
-    },
-    {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 5
-    },
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
       "views_24h": 4
     },
     {
@@ -38,17 +38,10 @@
       "views_24h": 4
     },
     {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
       "category": "night",
-      "region": "부산",
-      "views_24h": 4
-    },
-    {
-      "path": "/nights/gwangjusangmunight",
-      "title": "광주상무나이트",
-      "category": "night",
-      "region": "광주",
+      "region": "강서",
       "views_24h": 3
     },
     {
@@ -59,11 +52,18 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
       "category": "night",
-      "region": "대전",
-      "views_24h": 3
+      "region": "안산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/cheongjuhobaknight",
+      "title": "청주호박나이트",
+      "category": "night",
+      "region": "청주",
+      "views_24h": 2
     },
     {
       "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
@@ -73,38 +73,38 @@
       "views_24h": 2
     },
     {
+      "path": "/nights/daegubabambanight",
+      "title": "대구바밤바나이트",
+      "category": "night",
+      "region": "대구",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gwangjusangmunight",
+      "title": "광주상무나이트",
+      "category": "night",
+      "region": "광주",
+      "views_24h": 1
+    },
+    {
       "path": "/nights/suwonchancenight",
       "title": "수원찬스돔나이트",
       "category": "night",
       "region": "수원",
-      "views_24h": 2
+      "views_24h": 1
     },
     {
-      "path": "/nights/gwangjutotonight",
-      "title": "광주토토밤나이트",
-      "category": "night",
-      "region": "광주",
-      "views_24h": 2
+      "path": "/clubs/cheongju/cheongju-supermoon",
+      "title": "청주클럽 슈퍼문",
+      "category": "club",
+      "region": "청주",
+      "views_24h": 1
     },
     {
-      "path": "/nights/gwangjuallnight",
-      "title": "광주올나이트",
+      "path": "/nights/suyushampoonight",
+      "title": "수유샴푸나이트",
       "category": "night",
-      "region": "광주",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
-      "category": "night",
-      "region": "오산",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/ansanhitnight",
-      "title": "안산히트나이트",
-      "category": "night",
-      "region": "안산",
+      "region": "수유",
       "views_24h": 1
     }
   ]

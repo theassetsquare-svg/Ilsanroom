@@ -1,4 +1,33 @@
 {
-  "generated_at": "2026-07-12T14:25:38.563Z",
-  "items": []
+  "generated_at": "2026-07-12T17:48:20.747Z",
+  "items": [
+    {
+      "path": "/nights/pyeongtaekhobaknight",
+      "title": "평택호박나이트",
+      "category": "night",
+      "region": "평택",
+      "updated_at": "2026-07-12T17:40:15.874913+00:00"
+    },
+    {
+      "path": "/hoppa/busanhoppa-aura",
+      "title": "부산호빠 아우라",
+      "category": "hoppa",
+      "region": "부산",
+      "updated_at": "2026-07-12T17:40:15.874913+00:00"
+    },
+    {
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
+      "category": "night",
+      "region": "부산",
+      "updated_at": "2026-07-12T17:13:04.223392+00:00"
+    },
+    {
+      "path": "/nights/busanyeonsandongmulnight",
+      "title": "부산연산동물나이트",
+      "category": "night",
+      "region": "부산 연산동",
+      "updated_at": "2026-07-12T17:13:04.223392+00:00"
+    }
+  ]
 }
