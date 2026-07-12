@@ -1809,10 +1809,16 @@ for (const v of venues) {
   };
   if (v.lat && v.lng) venueJsonLd.geo = { '@type': 'GeoCoordinates', latitude: v.lat, longitude: v.lng };
   if (v.staffNickname) venueJsonLd.employee = { '@type': 'Person', name: v.staffNickname };
-  /* alternateName — Google/AI 검색 동의어 매핑 (예: "일산요정" 검색 시 명월관 매칭) */
-  if (Array.isArray(v.aliases) && v.aliases.length > 0) {
-    venueJsonLd.alternateName = v.aliases;
-  }
+  /* alternateName — Google/AI 검색 동의어 매핑 (예: "일산요정" 검색 시 명월관 매칭)
+     + 이름 띄어쓰기 표기 변형 자동 파생(같은 이름의 표기 차이만, 날조 0):
+     "건대호빠 W" → "건대호빠W" / "건대 호빠 W" (사용자 검색 변형 ↔ 엔티티 결합) */
+  const nameVariants = new Set(Array.isArray(v.aliases) ? v.aliases : []);
+  const noSpace = v.nameKo.replace(/\s+/g, '');
+  if (noSpace !== v.nameKo) nameVariants.add(noSpace);
+  const catSpaced = v.nameKo.replace(/([가-힣])(호빠|나이트|클럽|라운지|요정)/, '$1 $2').replace(/\s+/g, ' ').trim();
+  if (catSpaced !== v.nameKo) nameVariants.add(catSpaced);
+  nameVariants.delete(v.nameKo);
+  if (nameVariants.size > 0) venueJsonLd.alternateName = [...nameVariants];
   // 시즌29 — Speakable schema (Google Assistant 음성 검색 답변 채택)
   // 시즌91 — 상단 직답(.ssr-answer)을 음성 답변 타깃으로: 전화번호 문단 대신 사실 요약을 읽도록.
   venueJsonLd.speakable = {
