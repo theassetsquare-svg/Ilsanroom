@@ -17,7 +17,7 @@
  *   8) "부산연산동물나이트" 밀도 ≤3.5%
  *   9) "연산동나이트" body 등장 ≥3회
  *  10) 후킹 5축 ≥1축 (title 또는 desc)
- *  +) 디테일 토큰 (연산역/따봉/라이브/합석/부킹) 모두 등장
+ *  +) 디테일 토큰 (연산역/라이브) 모두 등장
  *
  * 환경:
  *   RESEND_API_KEY     필수
@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/busanyeonsandongmulnight/';
 const PRIMARY = '부산연산동물나이트';
 const SECONDARY = '연산동나이트';
-const DETAIL_TOKENS = ['연산역', '따봉', '라이브'];
+const DETAIL_TOKENS = ['연산역', '라이브'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

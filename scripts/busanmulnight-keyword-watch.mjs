@@ -17,7 +17,7 @@
  *   8) "부산물나이트" 밀도 ≤3.5%
  *   9) "부산나이트" body 등장 ≥3회
  *  10) 후킹 5축 ≥1축 (title 또는 desc)
- *  +) 디테일 토큰 (서면역/토박이/토요일/발렌타인/따봉) 모두 등장
+ *  +) 디테일 토큰 (연산역/토박이/토요일/발렌타인) 모두 등장
  *
  * 환경:
  *   RESEND_API_KEY     필수
@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/busanmulnight/';
 const PRIMARY = '부산물나이트';
 const SECONDARY = '부산나이트';
-const DETAIL_TOKENS = ['연산역', '토박이', '토요일', '발렌타인', '따봉'];
+const DETAIL_TOKENS = ['연산역', '토박이', '토요일', '발렌타인'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

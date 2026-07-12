@@ -11,8 +11,6 @@ const HEIGHT = 630;
 const NICKNAME_MAP = {
   'ilsanmyeongwolgwanyojeong': '신실장',
   'ilsanroom': '신실장',
-  'busanyeonsandongmulnight': '따봉',
-  'busanmulnight': '따봉',
   'seongnamshampoonight': '박찬호',
   'suwonchancenight': '강호동',
   'sinlimgrandprixnight': '태양',
