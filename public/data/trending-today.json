@@ -1,7 +1,14 @@
 {
-  "generated_at": "2026-07-11T17:44:22.222Z",
+  "generated_at": "2026-07-12T05:46:08.625Z",
   "window_hours": 24,
   "items": [
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 7
+    },
     {
       "path": "/nights/daejeonbongmyeongnight",
       "title": "대전봉명나이트",
@@ -17,17 +24,10 @@
       "views_24h": 6
     },
     {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
       "region": "일산",
-      "views_24h": 6
-    },
-    {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
       "views_24h": 5
     },
     {
@@ -38,31 +38,24 @@
       "views_24h": 5
     },
     {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
       "category": "night",
-      "region": "오산",
+      "region": "대전",
       "views_24h": 4
     },
     {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
-      "views_24h": 4
+      "path": "/nights/gildongchancenight",
+      "title": "길동찬스나이트",
+      "category": "night",
+      "region": "길동",
+      "views_24h": 3
     },
     {
       "path": "/nights/daejeonhangukgwannight",
       "title": "대전한국관나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
       "views_24h": 3
     },
     {
@@ -73,17 +66,10 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/suyushampoonight",
-      "title": "수유샴푸나이트",
+      "path": "/nights/cheongjuhobaknight",
+      "title": "청주호박나이트",
       "category": "night",
-      "region": "수유",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/suwonchancenight",
-      "title": "수원찬스돔나이트",
-      "category": "night",
-      "region": "수원",
+      "region": "청주",
       "views_24h": 2
     },
     {
@@ -105,6 +91,20 @@
       "title": "광주상무나이트",
       "category": "night",
       "region": "광주",
+      "views_24h": 2
+    },
+    {
+      "path": "/clubs/daejeon/daejeonsugarclub",
+      "title": "대전설탕클럽",
+      "category": "club",
+      "region": "대전",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
       "views_24h": 2
     }
   ]
