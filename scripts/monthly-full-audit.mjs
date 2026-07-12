@@ -133,6 +133,29 @@ async function main() {
   console.log('🎯 타깃 8 키워드:');
   for (const k of kwResult) console.log(`   ${k.kw}: ${k.pos ? k.pos.toFixed(1) + '위' : '노출0'} (노출 ${k.imp}/클릭 ${k.clicks})`);
 
+  /* 2.5) GSC 종합 스윕 — 기기/국가/서치어피어런스/일별추이/쿼리×페이지 + 전기간 대비 (읽기전용, 로그 전용) */
+  {
+    const GSC_DIMS = [['기기', 'device'], ['국가', 'country'], ['서치 어피어런스', 'searchAppearance'], ['일별 추이', 'date']];
+    for (const [label, dim] of GSC_DIMS) {
+      const rows = await gscQuery(token, { ...range, dimensions: [dim], rowLimit: dim === 'date' ? 40 : 10 });
+      if (rows.length) console.log(`🔎 GSC ${label}: ${rows.slice(0, 7).map((r) => `${r.keys[0]}=클릭${r.clicks}/노출${r.impressions}`).join(' · ')}`);
+    }
+    const topCombo = await gscQuery(token, { ...range, dimensions: ['query', 'page'], rowLimit: 15 });
+    for (const r of topCombo.slice(0, 10)) console.log(`🔎 GSC 쿼리×페이지: "${r.keys[0]}" → ${r.keys[1].replace(BASE, '')} (클릭${r.clicks}/노출${r.impressions}/${r.position.toFixed(1)}위)`);
+    // 전 28일 대비 총계 — 급락 감지(로그 전용, 하락 URL은 아래 자동 재크롤이 커버)
+    const prevEnd = new Date(new Date(range.startDate).getTime() - 86400000);
+    const prevStart = new Date(prevEnd.getTime() - 28 * 86400000);
+    const d = (x) => x.toISOString().slice(0, 10);
+    const [cur, prev] = await Promise.all([
+      gscQuery(token, { ...range, dimensions: [], rowLimit: 1 }),
+      gscQuery(token, { startDate: d(prevStart), endDate: d(prevEnd), dimensions: [], rowLimit: 1 }),
+    ]);
+    if (cur[0] && prev[0]) {
+      const pct = (a, b) => (b ? (((a - b) / b) * 100).toFixed(0) + '%' : 'n/a');
+      console.log(`🔎 GSC 28d vs 전28d: 클릭 ${cur[0].clicks} (${pct(cur[0].clicks, prev[0].clicks)}) · 노출 ${cur[0].impressions} (${pct(cur[0].impressions, prev[0].impressions)})`);
+    }
+  }
+
   /* 3) GA4 28d 북극성 */
   let ga = null;
   const gaToken = await getGaToken();
@@ -168,8 +191,20 @@ async function main() {
       ['이벤트', 'eventName', ['eventCount', 'totalUsers']],
       ['핵심이벤트 전환', 'eventName', ['keyEvents']],
       ['인기페이지', 'pagePath', ['screenPageViews']],
+      ['페이지 체류/참여', 'pagePath', ['userEngagementDuration', 'screenPageViews']],
+      ['랜딩페이지 이탈', 'landingPage', ['sessions', 'bounceRate']],
       ['시간대(0-23시)', 'hour', ['sessions']],
       ['요일(일=0)', 'dayOfWeek', ['sessions']],
+      ['캠페인', 'sessionCampaignName', ['sessions']],
+      ['첫유입 채널', 'firstUserDefaultChannelGroup', ['totalUsers', 'newUsers']],
+      ['첫유입 소스/매체', 'firstUserSourceMedium', ['totalUsers']],
+      ['언어', 'language', ['sessions']],
+      ['화면 해상도', 'screenResolution', ['sessions']],
+      ['모바일 기기모델', 'mobileDeviceModel', ['sessions']],
+      ['외부 리퍼러', 'pageReferrer', ['sessions']],
+      ['지역(시/도)', 'region', ['sessions']],
+      ['플랫폼', 'platform', ['sessions']],
+      ['날짜별 추이', 'date', ['sessions', 'totalUsers']],
     ];
     for (const [label, dim, mets] of DIM_REPORTS) {
       const r = await runReport(gaToken, {
