@@ -1817,6 +1817,13 @@ for (const v of venues) {
   if (noSpace !== v.nameKo) nameVariants.add(noSpace);
   const catSpaced = v.nameKo.replace(/([가-힣])(호빠|나이트|클럽|라운지|요정)/, '$1 $2').replace(/\s+/g, ' ').trim();
   if (catSpaced !== v.nameKo) nameVariants.add(catSpaced);
+  // 지역어절 분리 변형: "해운대고구려" → "해운대 고구려" (regionKo 토큰이 이름 머리일 때만)
+  for (const t of (v.regionKo || '').split(/\s+/)) {
+    if (t && noSpace.startsWith(t) && noSpace.length > t.length) {
+      const regionSpaced = `${t} ${noSpace.slice(t.length)}`;
+      if (regionSpaced !== v.nameKo) nameVariants.add(regionSpaced);
+    }
+  }
   nameVariants.delete(v.nameKo);
   if (nameVariants.size > 0) venueJsonLd.alternateName = [...nameVariants];
   // 시즌29 — Speakable schema (Google Assistant 음성 검색 답변 채택)
