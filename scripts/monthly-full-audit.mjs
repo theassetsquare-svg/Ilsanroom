@@ -26,7 +26,7 @@
  */
 import fs from 'node:fs';
 import { getAccessToken, hasGscCredentials } from './lib/gsc-auth.mjs';
-import { getGaToken, runReport, gaErrorReason } from './lib/ga-auth.mjs';
+import { getGaToken, runReport, runRealtimeReport, gaErrorReason } from './lib/ga-auth.mjs';
 
 const SITE = 'nolcool.com';
 const BASE = 'https://nolcool.com';
@@ -151,6 +151,55 @@ async function main() {
     } else console.warn(`⚠️ GA4 실패 — ${gaErrorReason(r.status, r.body)}`);
   } else console.warn('⚠️ GA4 토큰 실패 — GSC만 진행');
 
+  /* 3.2) GA4 종합 스윕 — 획득/이벤트/기기/지역/시간패턴/신규재방문/유지/실시간 전 축 (읽기전용)
+   *      목적: 사람들이 어디서 와서 · 뭘 하고 · 언제 오고 · 다시 오는지 → 고칠 곳 지도 */
+  const sweep = {}; // { label: [{k, v: [..]}] }
+  if (gaToken) {
+    const RANGE = [{ startDate: '28daysAgo', endDate: 'yesterday' }];
+    const DIM_REPORTS = [
+      ['채널', 'sessionDefaultChannelGroup', ['sessions', 'totalUsers', 'engagementRate']],
+      ['소스/매체', 'sessionSourceMedium', ['sessions', 'totalUsers']],
+      ['기기', 'deviceCategory', ['sessions', 'engagementRate', 'averageSessionDuration']],
+      ['OS', 'operatingSystem', ['sessions']],
+      ['브라우저', 'browser', ['sessions']],
+      ['국가', 'country', ['sessions']],
+      ['도시', 'city', ['sessions']],
+      ['신규/재방문', 'newVsReturning', ['sessions', 'totalUsers']],
+      ['이벤트', 'eventName', ['eventCount', 'totalUsers']],
+      ['핵심이벤트 전환', 'eventName', ['keyEvents']],
+      ['인기페이지', 'pagePath', ['screenPageViews']],
+      ['시간대(0-23시)', 'hour', ['sessions']],
+      ['요일(일=0)', 'dayOfWeek', ['sessions']],
+    ];
+    for (const [label, dim, mets] of DIM_REPORTS) {
+      const r = await runReport(gaToken, {
+        dateRanges: RANGE,
+        dimensions: [{ name: dim }],
+        metrics: mets.map((name) => ({ name })),
+        orderBys: [{ metric: { metricName: mets[0] }, desc: true }],
+        limit: 10,
+      });
+      if (r.ok && r.body.rows?.length) {
+        sweep[label] = r.body.rows.map((row) => ({ k: row.dimensionValues[0].value, v: row.metricValues.map((x) => Number(x.value)) }));
+        console.log(`📊 ${label}: ${sweep[label].slice(0, 5).map((x) => `${x.k}=${x.v[0]}`).join(' · ')}`);
+      } else if (!r.ok) console.warn(`⚠️ GA4 ${label} 실패 — ${gaErrorReason(r.status, r.body)}`);
+    }
+    // 사용자·유지(리텐션)·참여 총괄 지표 (한 요청 최대 10 metric)
+    const uMet = ['totalUsers', 'newUsers', 'active7DayUsers', 'active28DayUsers', 'dauPerMau', 'wauPerMau', 'engagementRate', 'engagedSessions', 'eventsPerSession', 'sessionsPerUser'];
+    const ru = await runReport(gaToken, { dateRanges: RANGE, metrics: uMet.map((name) => ({ name })) });
+    if (ru.ok && ru.body.rows?.length) {
+      const m = ru.body.rows[0].metricValues.map((x) => Number(x.value));
+      sweep['사용자/유지'] = uMet.map((k, i) => ({ k, v: [m[i]] }));
+      console.log(`📊 사용자/유지: 총 ${m[0]} · 신규 ${m[1]} · 7일활성 ${m[2]} · 28일활성 ${m[3]} · DAU/MAU ${(m[4] * 100).toFixed(1)}% · 참여율 ${(m[6] * 100).toFixed(1)}% · 세션/사용자 ${m[9].toFixed(2)}`);
+    }
+    // 실시간 접속
+    const rt = await runRealtimeReport(gaToken, { metrics: [{ name: 'activeUsers' }] });
+    if (rt.ok && rt.body.rows?.length) {
+      sweep['실시간'] = [{ k: 'activeUsers', v: [Number(rt.body.rows[0].metricValues[0].value)] }];
+      console.log(`📊 실시간 접속자: ${sweep['실시간'][0].v[0]}명`);
+    }
+  }
+
   /* 3.5) GA4 Admin 설정 점검 — 읽기전용 GET (보관 14개월 · 핵심이벤트) */
   const settingsIssues = [];
   if (gaToken) {
@@ -247,38 +296,21 @@ async function main() {
     resolved.push(`sitemap 오류 ${sitemapErrors}건 감지 → 재제출로 재처리 유도`);
   }
 
-  /* 5) 메일 — 해결한 것 또는 사장님 행동필요 설정이상이 있을 때만 1통. 없으면 완전 침묵. */
-  if (!resolved.length && !settingsIssues.length) { console.log('✅ 해결 조치 0건 · 설정 이상 0건 — 메일 침묵 (사장님 정책)'); return; }
-  if (!RESEND_API_KEY) { console.log('RESEND_API_KEY 없음 — 메일 스킵'); return; }
+  /* 진단 데이터(8키워드·GA4 종합·세션깊이·설정)는 런 로그 전용 — 메일에 넣지 않는다 (사장님 정책 2026-07-12).
+   * 설정 이상도 로그만 남기고 침묵 — 메일은 오직 "해결한 것"만. */
+  if (settingsIssues.length) for (const s of settingsIssues) console.warn(`⚙️ 설정 이상(로그만): ${s}`);
+  void kwResult; void shallow; void ga; void strong;
 
-  const kwTable = kwResult.map((k) => `<tr>
-    <td style="border:1px solid #E5E7EB;padding:8px;font-size:13px">${esc(k.kw)}</td>
-    <td style="border:1px solid #E5E7EB;padding:8px;font-size:13px;text-align:center;font-weight:bold;color:${k.pos && k.pos <= 10 ? '#059669' : k.pos ? '#D97706' : '#DC2626'}">${k.pos ? k.pos.toFixed(1) + '위' : '노출0'}</td>
-    <td style="border:1px solid #E5E7EB;padding:8px;font-size:13px;text-align:center">${k.imp} / ${k.clicks}</td>
-  </tr>`).join('');
+  /* 5) 메일 — 문제를 해결한 것이 있을 때만 1통. 없으면 완전 침묵. */
+  if (!resolved.length) { console.log('✅ 해결 조치 0건 — 메일 침묵 (사장님 정책)'); return; }
+  if (!RESEND_API_KEY) { console.log('RESEND_API_KEY 없음 — 메일 스킵'); return; }
 
   const html = `<div style="font-family:sans-serif;max-width:720px;margin:0 auto;padding:20px;color:#222">
     <h2 style="color:#059669">✅ [놀쿨] 월간 전수점검 — 문제 자동 해결 보고</h2>
-    <p style="color:#666;font-size:13px">측정: ${kstNow()} · GSC/GA4 API 28일 전수 (venue ${venues.length}곳)</p>
-    ${resolved.length ? `<h3>🛠️ 이번 달 자동 해결한 것</h3>
-    <ul>${resolved.map((s) => `<li style="margin:6px 0">${esc(s)}</li>`).join('')}</ul>` : ''}
-    ${settingsIssues.length ? `<h3 style="color:#DC2626">⚙️ 사장님 행동 필요 — 설정 이상 (자동수정 불가·SA 뷰어 안전선)</h3>
-    <ul>${settingsIssues.map((s) => `<li style="margin:6px 0">${esc(s)}</li>`).join('')}</ul>` : ''}
-    ${shallow.length ? `<h3>🔗 세션깊이 최저 페이지 (목표 10+ PV/세션 미달 하위 ${shallow.length}곳)</h3>
-    <table style="border-collapse:collapse;width:100%">
-      <thead><tr style="background:#F3F4F6"><th align="left" style="border:1px solid #E5E7EB;padding:8px;font-size:13px">랜딩페이지</th><th style="border:1px solid #E5E7EB;padding:8px;font-size:13px">PV/세션</th><th style="border:1px solid #E5E7EB;padding:8px;font-size:13px">세션</th></tr></thead>
-      <tbody>${shallow.map((p) => `<tr><td style="border:1px solid #E5E7EB;padding:8px;font-size:13px">${esc(p.path)}</td><td style="border:1px solid #E5E7EB;padding:8px;font-size:13px;text-align:center;color:#D97706;font-weight:bold">${p.pps.toFixed(1)}</td><td style="border:1px solid #E5E7EB;padding:8px;font-size:13px;text-align:center">${p.sessions}</td></tr>`).join('')}</tbody>
-    </table>
-    <p style="color:#666;font-size:12px">처방: 이 페이지들의 다음글·관련링크·허브 동선을 사람 손으로 보강 (합성·조작 절대 없음)</p>` : ''}
-    <h3>📊 현황 요약</h3>
-    <p style="font-size:14px">가게이름 페이지 실측: 🟢 10위내 <b>${strong.length}</b> · 🟡 20위밖 <b>${weak.length}</b> · 🚫 노출0 <b>${zero.length}</b> / ${venues.length}곳</p>
-    ${ga ? `<p style="font-size:14px">GA4 28일: 세션 <b>${ga.sessions}</b> · 페이지/세션 <b>${ga.pps.toFixed(2)}</b> · 이탈 <b>${(ga.bounce * 100).toFixed(1)}%</b> · 평균체류 <b>${Math.round(ga.dur)}초</b></p>` : ''}
-    <h3>🎯 타깃 8 키워드 순위</h3>
-    <table style="border-collapse:collapse;width:100%">
-      <thead><tr style="background:#F3F4F6"><th align="left" style="border:1px solid #E5E7EB;padding:8px;font-size:13px">키워드</th><th style="border:1px solid #E5E7EB;padding:8px;font-size:13px">평균순위</th><th style="border:1px solid #E5E7EB;padding:8px;font-size:13px">노출/클릭</th></tr></thead>
-      <tbody>${kwTable}</tbody>
-    </table>
-    <p style="color:#9CA3AF;font-size:11px;margin-top:20px">매달 30일 KST 07:00 자동 — monthly-full-audit.mjs. 해결한 문제가 있을 때만 발송, 없으면 침묵. 콘텐츠·설정 자동 변경 없음(재크롤 신호만).</p>
+    <p style="color:#666;font-size:13px">${kstNow()} · GSC/GA4 API 28일 전수 (venue ${venues.length}곳)</p>
+    <h3>🛠️ 이번 달 자동 해결한 것</h3>
+    <ul>${resolved.map((s) => `<li style="margin:6px 0">${esc(s)}</li>`).join('')}</ul>
+    <p style="color:#9CA3AF;font-size:11px;margin-top:20px">매달 30일 KST 07:00 자동. 해결한 문제가 있을 때만 발송, 없으면 침묵.</p>
   </div>`;
 
   const r = await fetch('https://api.resend.com/emails', {
@@ -287,7 +319,7 @@ async function main() {
     body: JSON.stringify({
       from: 'NOLCOOL 월간점검 <onboarding@resend.dev>',
       to: [TO],
-      subject: `[놀쿨] ✅ 월간 전수점검 — 자동 해결 ${resolved.length}건${settingsIssues.length ? ` · ⚙️ 행동필요 ${settingsIssues.length}건` : ''} (노출0 ${zero.length}곳)`,
+      subject: `[놀쿨] ✅ 월간 전수점검 — 문제 자동 해결 ${resolved.length}건`,
       html,
     }),
   });
