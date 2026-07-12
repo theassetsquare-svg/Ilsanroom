@@ -8,10 +8,13 @@
  *   - 사이트 피해 0: 읽기전용 API + 무해한 재크롤 신호(sitemap 재제출·IndexNow)만.
  *     콘텐츠/코드/설정 자동 변경 절대 없음 — 수치 조작·합성 이벤트 0 (정직 불변식).
  *
- * 확인 범위 (GSC/GA4 API 직접):
+ * 확인 범위 (GSC/GA4 API 직접, 200+ 데이터축 — 사장님 지시 2026-07-12):
  *   1) GSC page 28d 전수 — venues.ts 123개 slug 페이지 실측 순위 (거짓 노출0 방지: page dimension)
  *   2) 타깃 8 키워드 query 28d 순위 (일산룸/일산명월관/일산요정/해운대고구려/강남호빠/장안동호빠/수원호빠/건대호빠)
+ *   2.5) GSC 스윕 — 기기/국가/어피어런스/일별 + 2축 콤보 5종 + 카테고리 집계 + CTR 기회(4~10위·CTR<2%) + 전28d 대비
  *   3) GA4 28d — 세션·페이지뷰·페이지/세션·이탈률·평균체류 (북극성 추적)
+ *   3.2) GA4 종합 스윕 — 획득10·기술11·지역6·행동10·시간5·유지1 + 2축 콤보 7종 + 사용자총괄10 + 실시간
+ *        (사람들이 어디서 와서 · 뭘 하고 · 언제 오고 · 어디서 나가는지 → 고칠 곳 지도. 축수는 런 로그 🧮에 집계)
  *   4) GA4 Admin 설정 — 데이터 보관 14개월 + 핵심이벤트 존재 (읽기전용 GET)
  *   5) GSC sitemap 상태 — 등록/오류/경고 (errors>0 시 자동 재제출)
  *   6) GA4 랜딩페이지별 세션깊이 — 페이지/세션 최저 페이지 처방 (목표: 어느 페이지로 들어와도 10+ PV)
@@ -133,15 +136,46 @@ async function main() {
   console.log('🎯 타깃 8 키워드:');
   for (const k of kwResult) console.log(`   ${k.kw}: ${k.pos ? k.pos.toFixed(1) + '위' : '노출0'} (노출 ${k.imp}/클릭 ${k.clicks})`);
 
-  /* 2.5) GSC 종합 스윕 — 기기/국가/서치어피어런스/일별추이/쿼리×페이지 + 전기간 대비 (읽기전용, 로그 전용) */
+  /* 2.5) GSC 종합 스윕 — 단일축 5 + 2축 콤보 5 + 카테고리 집계 + CTR 기회 + 전기간 대비 (읽기전용, 로그 전용) */
+  let axisCount = venues.length * 3 /* venue별 노출·클릭·순위 */ + TARGET_KEYWORDS.length * 3;
   {
     const GSC_DIMS = [['기기', 'device'], ['국가', 'country'], ['서치 어피어런스', 'searchAppearance'], ['일별 추이', 'date']];
     for (const [label, dim] of GSC_DIMS) {
       const rows = await gscQuery(token, { ...range, dimensions: [dim], rowLimit: dim === 'date' ? 40 : 10 });
+      axisCount += 4;
       if (rows.length) console.log(`🔎 GSC ${label}: ${rows.slice(0, 7).map((r) => `${r.keys[0]}=클릭${r.clicks}/노출${r.impressions}`).join(' · ')}`);
     }
-    const topCombo = await gscQuery(token, { ...range, dimensions: ['query', 'page'], rowLimit: 15 });
-    for (const r of topCombo.slice(0, 10)) console.log(`🔎 GSC 쿼리×페이지: "${r.keys[0]}" → ${r.keys[1].replace(BASE, '')} (클릭${r.clicks}/노출${r.impressions}/${r.position.toFixed(1)}위)`);
+    const GSC_COMBOS = [
+      ['쿼리×페이지', ['query', 'page']],
+      ['페이지×기기', ['page', 'device']],
+      ['쿼리×기기', ['query', 'device']],
+      ['일별×기기', ['date', 'device']],
+      ['페이지×국가', ['page', 'country']],
+    ];
+    for (const [label, dims] of GSC_COMBOS) {
+      const rows = await gscQuery(token, { ...range, dimensions: dims, rowLimit: 15 });
+      axisCount += 8; /* 2축 × 4지표 */
+      for (const r of rows.slice(0, label === '쿼리×페이지' ? 10 : 5)) {
+        console.log(`🔎 GSC ${label}: ${r.keys.map((k) => String(k).replace(BASE, '')).join(' → ')} (클릭${r.clicks}/노출${r.impressions}/${r.position.toFixed(1)}위)`);
+      }
+    }
+    // 카테고리(경로 1단계)별 집계 — 어느 섹션이 검색 유입을 끄는지
+    const catAgg = {};
+    for (const r of pageRows) {
+      const seg = (r.keys[0].replace(BASE, '').split('/')[1] || '(홈)');
+      const c = (catAgg[seg] ||= { clicks: 0, imp: 0, posW: 0 });
+      c.clicks += r.clicks; c.imp += r.impressions; c.posW += r.position * r.impressions;
+    }
+    const cats = Object.entries(catAgg).sort((a, b) => b[1].clicks - a[1].clicks);
+    axisCount += cats.length * 4;
+    console.log(`🔎 GSC 카테고리별 (${cats.length}섹션): ${cats.slice(0, 12).map(([k, c]) => `${k}=클릭${c.clicks}/노출${c.imp}/${c.imp ? (c.posW / c.imp).toFixed(1) : '-'}위`).join(' · ')}`);
+    // CTR 기회 — 4~10위인데 CTR<2% (클릭 직전 페이지, 로그 전용: title/desc 개선 대상)
+    const ctrOpp = pageRows
+      .map((r) => ({ p: r.keys[0].replace(BASE, ''), clicks: r.clicks, imp: r.impressions, pos: r.position, ctr: r.ctr || 0 }))
+      .filter((r) => r.imp >= 50 && r.pos >= 4 && r.pos <= 10 && r.ctr < 0.02)
+      .sort((a, b) => b.imp - a.imp).slice(0, 10);
+    axisCount += 2;
+    for (const r of ctrOpp) console.log(`🔎 CTR 기회(4~10위·CTR<2%): ${r.p} — ${r.pos.toFixed(1)}위 노출${r.imp} CTR ${(r.ctr * 100).toFixed(1)}%`);
     // 전 28일 대비 총계 — 급락 감지(로그 전용, 하락 URL은 아래 자동 재크롤이 커버)
     const prevEnd = new Date(new Date(range.startDate).getTime() - 86400000);
     const prevStart = new Date(prevEnd.getTime() - 28 * 86400000);
@@ -180,56 +214,91 @@ async function main() {
   if (gaToken) {
     const RANGE = [{ startDate: '28daysAgo', endDate: 'yesterday' }];
     const DIM_REPORTS = [
-      ['채널', 'sessionDefaultChannelGroup', ['sessions', 'totalUsers', 'engagementRate']],
-      ['소스/매체', 'sessionSourceMedium', ['sessions', 'totalUsers']],
-      ['기기', 'deviceCategory', ['sessions', 'engagementRate', 'averageSessionDuration']],
-      ['OS', 'operatingSystem', ['sessions']],
-      ['브라우저', 'browser', ['sessions']],
-      ['국가', 'country', ['sessions']],
-      ['도시', 'city', ['sessions']],
-      ['신규/재방문', 'newVsReturning', ['sessions', 'totalUsers']],
-      ['이벤트', 'eventName', ['eventCount', 'totalUsers']],
-      ['핵심이벤트 전환', 'eventName', ['keyEvents']],
-      ['인기페이지', 'pagePath', ['screenPageViews']],
-      ['페이지 체류/참여', 'pagePath', ['userEngagementDuration', 'screenPageViews']],
-      ['랜딩페이지 이탈', 'landingPage', ['sessions', 'bounceRate']],
-      ['시간대(0-23시)', 'hour', ['sessions']],
-      ['요일(일=0)', 'dayOfWeek', ['sessions']],
-      ['캠페인', 'sessionCampaignName', ['sessions']],
-      ['첫유입 채널', 'firstUserDefaultChannelGroup', ['totalUsers', 'newUsers']],
-      ['첫유입 소스/매체', 'firstUserSourceMedium', ['totalUsers']],
-      ['언어', 'language', ['sessions']],
-      ['화면 해상도', 'screenResolution', ['sessions']],
-      ['모바일 기기모델', 'mobileDeviceModel', ['sessions']],
-      ['외부 리퍼러', 'pageReferrer', ['sessions']],
-      ['지역(시/도)', 'region', ['sessions']],
-      ['플랫폼', 'platform', ['sessions']],
-      ['날짜별 추이', 'date', ['sessions', 'totalUsers']],
+      // ── 획득 ──
+      ['채널', ['sessionDefaultChannelGroup'], ['sessions', 'totalUsers', 'engagementRate']],
+      ['소스/매체', ['sessionSourceMedium'], ['sessions', 'totalUsers']],
+      ['소스', ['sessionSource'], ['sessions', 'engagedSessions']],
+      ['매체', ['sessionMedium'], ['sessions']],
+      ['캠페인', ['sessionCampaignName'], ['sessions']],
+      ['첫유입 채널', ['firstUserDefaultChannelGroup'], ['totalUsers', 'newUsers']],
+      ['첫유입 소스/매체', ['firstUserSourceMedium'], ['totalUsers']],
+      ['첫유입 소스', ['firstUserSource'], ['totalUsers', 'newUsers']],
+      ['첫유입 캠페인', ['firstUserCampaignName'], ['totalUsers']],
+      ['외부 리퍼러', ['pageReferrer'], ['sessions']],
+      // ── 기술/환경 ──
+      ['기기', ['deviceCategory'], ['sessions', 'engagementRate', 'averageSessionDuration', 'bounceRate']],
+      ['OS', ['operatingSystem'], ['sessions']],
+      ['OS 버전', ['operatingSystemVersion'], ['sessions']],
+      ['브라우저', ['browser'], ['sessions', 'engagementRate']],
+      ['화면 해상도', ['screenResolution'], ['sessions']],
+      ['모바일 기기모델', ['mobileDeviceModel'], ['sessions']],
+      ['기기 브랜드', ['mobileDeviceBranding'], ['sessions']],
+      ['플랫폼', ['platform'], ['sessions']],
+      ['플랫폼×기기', ['platformDeviceCategory'], ['sessions']],
+      ['호스트네임', ['hostName'], ['sessions']],
+      ['스트림', ['streamName'], ['eventCount']],
+      // ── 지역/인구 ──
+      ['국가', ['country'], ['sessions']],
+      ['지역(시/도)', ['region'], ['sessions', 'engagementRate']],
+      ['도시', ['city'], ['sessions', 'averageSessionDuration']],
+      ['언어', ['language'], ['sessions']],
+      ['연령대', ['userAgeBracket'], ['totalUsers']],
+      ['성별', ['userGender'], ['totalUsers']],
+      // ── 행동/콘텐츠 ──
+      ['이벤트', ['eventName'], ['eventCount', 'totalUsers', 'eventCountPerUser']],
+      ['핵심이벤트 전환', ['eventName'], ['keyEvents']],
+      ['인기페이지', ['pagePath'], ['screenPageViews', 'totalUsers']],
+      ['페이지 체류/참여', ['pagePath'], ['userEngagementDuration', 'screenPageViews']],
+      ['페이지 타이틀', ['pageTitle'], ['screenPageViews', 'userEngagementDuration']],
+      ['랜딩페이지 이탈', ['landingPage'], ['sessions', 'bounceRate', 'averageSessionDuration']],
+      ['스크롤 깊이', ['percentScrolled'], ['eventCount']],
+      ['사이트내 검색어', ['searchTerm'], ['eventCount']],
+      ['아웃바운드 도메인', ['linkDomain'], ['eventCount']],
+      ['콘텐츠 그룹', ['contentGroup'], ['screenPageViews']],
+      // ── 시간 패턴 ──
+      ['시간대(0-23시)', ['hour'], ['sessions', 'engagementRate']],
+      ['요일(일=0)', ['dayOfWeek'], ['sessions']],
+      ['날짜별 추이', ['date'], ['sessions', 'totalUsers', 'bounceRate']],
+      ['주별 추이', ['yearWeek'], ['sessions', 'totalUsers']],
+      ['월별 추이', ['yearMonth'], ['sessions', 'screenPageViews']],
+      // ── 유지 ──
+      ['신규/재방문', ['newVsReturning'], ['sessions', 'totalUsers', 'engagementRate', 'averageSessionDuration']],
+      // ── 2축 콤보 (어디서 와서 × 어디로/무엇을) ──
+      ['페이지×기기', ['pagePath', 'deviceCategory'], ['screenPageViews']],
+      ['랜딩×채널', ['landingPage', 'sessionDefaultChannelGroup'], ['sessions', 'bounceRate']],
+      ['이벤트×페이지', ['eventName', 'pagePath'], ['eventCount']],
+      ['시간×요일', ['hour', 'dayOfWeek'], ['sessions']],
+      ['도시×신규재방문', ['city', 'newVsReturning'], ['sessions']],
+      ['국가×기기', ['country', 'deviceCategory'], ['sessions']],
+      ['채널×기기', ['sessionDefaultChannelGroup', 'deviceCategory'], ['sessions', 'engagementRate']],
     ];
-    for (const [label, dim, mets] of DIM_REPORTS) {
+    for (const [label, dims, mets] of DIM_REPORTS) {
       const r = await runReport(gaToken, {
         dateRanges: RANGE,
-        dimensions: [{ name: dim }],
+        dimensions: dims.map((name) => ({ name })),
         metrics: mets.map((name) => ({ name })),
         orderBys: [{ metric: { metricName: mets[0] }, desc: true }],
         limit: 10,
       });
+      axisCount += dims.length * mets.length;
       if (r.ok && r.body.rows?.length) {
-        sweep[label] = r.body.rows.map((row) => ({ k: row.dimensionValues[0].value, v: row.metricValues.map((x) => Number(x.value)) }));
+        sweep[label] = r.body.rows.map((row) => ({ k: row.dimensionValues.map((d) => d.value).join('·'), v: row.metricValues.map((x) => Number(x.value)) }));
         console.log(`📊 ${label}: ${sweep[label].slice(0, 5).map((x) => `${x.k}=${x.v[0]}`).join(' · ')}`);
       } else if (!r.ok) console.warn(`⚠️ GA4 ${label} 실패 — ${gaErrorReason(r.status, r.body)}`);
     }
     // 사용자·참여 총괄 지표 — rolling 지표(activeNDayUsers/dauPerMau)는 날짜 dimension 없이
     // 기간 합산하면 불가능 수치(7일활성>총사용자·참여율>100%)가 나와 제외 (정직 규칙)
-    const uMet = ['totalUsers', 'newUsers', 'engagementRate', 'engagedSessions', 'eventsPerSession', 'sessionsPerUser'];
+    const uMet = ['totalUsers', 'newUsers', 'engagementRate', 'engagedSessions', 'eventsPerSession', 'sessionsPerUser', 'screenPageViewsPerUser', 'userEngagementDuration', 'scrolledUsers', 'eventCount'];
     const ru = await runReport(gaToken, { dateRanges: RANGE, metrics: uMet.map((name) => ({ name })) });
+    axisCount += uMet.length;
     if (ru.ok && ru.body.rows?.length) {
       const m = ru.body.rows[0].metricValues.map((x) => Number(x.value));
       sweep['사용자/유지'] = uMet.map((k, i) => ({ k, v: [m[i]] }));
-      console.log(`📊 사용자/참여: 총 ${m[0]} · 신규 ${m[1]} · 참여율 ${(m[2] * 100).toFixed(1)}% · 참여세션 ${m[3]} · 이벤트/세션 ${m[4].toFixed(1)} · 세션/사용자 ${m[5].toFixed(2)}`);
+      console.log(`📊 사용자/참여: 총 ${m[0]} · 신규 ${m[1]} · 참여율 ${(m[2] * 100).toFixed(1)}% · 참여세션 ${m[3]} · 이벤트/세션 ${m[4].toFixed(1)} · 세션/사용자 ${m[5].toFixed(2)} · PV/사용자 ${m[6].toFixed(1)} · 총참여 ${Math.round(m[7])}초 · 스크롤사용자 ${m[8]} · 총이벤트 ${m[9]}`);
     }
     // 실시간 접속
     const rt = await runRealtimeReport(gaToken, { metrics: [{ name: 'activeUsers' }] });
+    axisCount += 1;
     if (rt.ok && rt.body.rows?.length) {
       sweep['실시간'] = [{ k: 'activeUsers', v: [Number(rt.body.rows[0].metricValues[0].value)] }];
       console.log(`📊 실시간 접속자: ${sweep['실시간'][0].v[0]}명`);
@@ -335,6 +404,8 @@ async function main() {
   /* 진단 데이터(8키워드·GA4 종합·세션깊이·설정)는 런 로그 전용 — 메일에 넣지 않는다 (사장님 정책 2026-07-12).
    * 설정 이상도 로그만 남기고 침묵 — 메일은 오직 "해결한 것"만. */
   if (settingsIssues.length) for (const s of settingsIssues) console.warn(`⚙️ 설정 이상(로그만): ${s}`);
+  axisCount += 2 /* Admin 보관·핵심이벤트 */ + 1 /* sitemap */ + 2 /* 랜딩 세션깊이 */ + 5 /* 북극성 28d */ + 4 /* 전28d 대비 */;
+  console.log(`🧮 이번 달 전수 스윕 축: ${axisCount}개 (GA4+GSC API 읽기전용)`);
   void kwResult; void shallow; void ga; void strong;
 
   /* 5) 메일 — 문제를 해결한 것이 있을 때만 1통. 없으면 완전 침묵. */
