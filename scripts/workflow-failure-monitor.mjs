@@ -77,6 +77,8 @@ async function main() {
   }
 
   /* 메일 발송 */
+  // 2026-07-12 사장님 지시: daily-regression-digest 와 동일 실패 이중 발송 — 이쪽은 콘솔만(중복 제거). FORCE_EMAIL=1 만 발송.
+  if (process.env.FORCE_EMAIL !== '1') { console.log('ℹ️ 회귀 다이제스트가 메일 담당 — 이쪽은 콘솔만'); return; }
   if (!RESEND_API_KEY) { console.log('RESEND_API_KEY 없음 — 메일 skip'); return; }
 
   const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

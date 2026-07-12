@@ -224,6 +224,8 @@ function unavailableNote(parts) {
 }
 
 async function send(subject, html) {
+  // 2026-07-12 사장님 지시: 정보성 진단 메일 금지 — 런로그만. 온디맨드 FORCE_EMAIL=1 만 발송.
+  if (process.env.FORCE_EMAIL !== '1') { console.log('ℹ️ 정보성 진단 — 메일 opt-in 아님, 콘솔만'); return -1; }
   if (!RESEND_API_KEY) { console.log('RESEND_API_KEY 없음 — 메일 skip'); return -1; }
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',

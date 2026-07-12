@@ -96,6 +96,20 @@ async function fetchLiveCanonical(url) {
   } catch { return null; }
 }
 
+/** 라이브 페이지에 robots noindex가 실재하는지 확인 (Google stale 색인 false-positive 재검증용).
+ *  true = 진짜 noindex 있음(코드 버그) / false = 라이브 정상(index) / null = 확인 불가 */
+async function fetchLiveNoindex(url) {
+  try {
+    const r = await fetch(url, { headers: { 'User-Agent': 'NolcoolIssueMonitor/1.0', 'Cache-Control': 'no-cache' } });
+    if (!r.ok) return null;
+    const xRobots = r.headers.get('x-robots-tag') || '';
+    if (/noindex/i.test(xRobots)) return true;
+    const html = await r.text();
+    const metas = html.match(/<meta[^>]+name=["']robots["'][^>]*>/gi) || [];
+    return metas.some(m => /noindex/i.test(m));
+  } catch { return null; }
+}
+
 async function resubmitSitemap(token) {
   const url = `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(SITE_PROPERTY)}/sitemaps/${encodeURIComponent(SITEMAP_URL)}`;
   const r = await fetch(url, { method: 'PUT', headers: { Authorization: `Bearer ${token}` } });
@@ -243,6 +257,16 @@ async function main() {
       // Google이 선택한 canonical(= 보통 정답 trailing-slash)과 라이브가 이미 일치하면 코드 정상.
       if (live && c._gcanon && live === c._gcanon) {
         console.log(`   ↺ ${c.url} — 라이브 canonical 이미 정상(${live}) = Google 캐시 지연 → 메일 생략, 재크롤만`);
+        lagResolved.push(c);
+        continue;
+      }
+    }
+    if (c.reason === 'noindex 메타 태그') {
+      // Google이 마지막 크롤 때 본 noindex가 stale일 수 있다(예: /tag/* 정책 변경 후 재크롤 전).
+      // 라이브에 noindex가 실재할 때만 진짜 코드 버그 — 없으면 캐시 지연으로 강등, 재크롤만.
+      const liveNoindex = await fetchLiveNoindex(c.url);
+      if (liveNoindex === false) {
+        console.log(`   ↺ ${c.url} — 라이브는 index(noindex 없음) = Google stale 색인 → 메일 생략, 재크롤만`);
         lagResolved.push(c);
         continue;
       }

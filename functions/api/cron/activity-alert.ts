@@ -178,8 +178,9 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
     const total = reports.length + posts.length + comments.length + reviews.length + clips.length + members.length;
 
-    // 활동 있을 때만 이메일 — 정상=침묵(빈 알림 노이즈 제거)
-    if (total > 0) {
+    // ★ 2026-07-12 사장님 지시: 정보성 활동(글/댓글/후기/클립/회원)은 메일 X — 행동 필요한 🚨신고 있을 때만 발송.
+    //   활동 집계는 응답 JSON/일일통계로 남고, 모더레이션은 /admin/moderation에서 확인.
+    if (reports.length > 0) {
       const kst = new Date(Date.now() + 9 * 3600000).toLocaleString('ko-KR');
       const subject = reports.length > 0
         ? `[놀쿨] 🚨 신고 ${reports.length}건 포함 활동 ${total}건`

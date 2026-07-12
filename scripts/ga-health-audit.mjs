@@ -177,6 +177,8 @@ function channelTable(channels) {
 }
 
 async function sendReport({ cur, prevScore, score, ppsCur, rtActive, siteFail, leakPages, lowEngage, shortDwell, channels }) {
+  // 2026-07-12 사장님 지시: 정보성 리포트 메일 금지 (북극성 1통이 3대 지표 커버). 온디맨드 FORCE_EMAIL=1 만 발송.
+  if (process.env.FORCE_EMAIL !== '1') { console.log('ℹ️ 정보성 리포트 — 메일 opt-in 아님, 콘솔만 (북극성 메일이 커버)'); return; }
   if (!RESEND_API_KEY) { console.log('RESEND_API_KEY 없음 — 메일 skip'); return; }
   const trend = prevScore != null ? ` · 직전주 ${prevScore} (${score - prevScore >= 0 ? '+' : ''}${score - prevScore})` : '';
   const issueCount = leakPages.length + lowEngage.length + shortDwell.length;

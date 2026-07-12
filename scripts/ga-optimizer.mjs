@@ -181,6 +181,8 @@ function card(p, i) {
 }
 
 async function sendMail({ score, trend, site, cand }) {
+  // 2026-07-12 사장님 지시: 처방 리포트 메일 금지 — 런로그/아티팩트만(에이전트가 온디맨드 회수). FORCE_EMAIL=1 만 발송.
+  if (process.env.FORCE_EMAIL !== '1') { console.log('ℹ️ 처방 리포트 — 메일 opt-in 아님, 콘솔만'); return; }
   if (!RESEND_API_KEY) { console.log('RESEND_API_KEY 없음 — 메일 skip'); return; }
   const html = `<div style="font-family:sans-serif;max-width:760px;margin:0 auto;padding:20px;color:#111">
     <h2 style="color:#7C3AED">[놀쿨 GA4 옵티마이저] 점수 ${score}/100 — 올릴 페이지 ${cand.length}곳 처방</h2>

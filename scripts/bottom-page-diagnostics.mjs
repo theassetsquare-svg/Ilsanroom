@@ -200,6 +200,8 @@ async function main() {
     <p style="color:#9CA3AF;font-size:11px;margin-top:20px">매일 KST 06:45 자동 — bottom-page-diagnostics.mjs<br>처방: HTML &lt;8KB = 콘텐츠 증량 / 이미지 &lt;2 = 비주얼 추가 / 첫 문단 &lt;80자 = 후킹 보강 / JSON-LD 0 = SEO 회귀 즉시 수정</p>
   </div>`;
 
+  // 2026-07-12 사장님 지시: 정보성 리포트 메일 금지 — 콘솔/런로그만. 온디맨드 FORCE_EMAIL=1 만 발송.
+  if (process.env.FORCE_EMAIL !== '1') { console.log('ℹ️ 정보성 리포트 — 메일 opt-in 아님, 콘솔만'); return; }
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },

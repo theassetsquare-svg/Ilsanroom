@@ -307,6 +307,8 @@ function buildEmail(a) {
 }
 
 async function sendEmail(html, subject) {
+  // 2026-07-12 사장님 지시: 정보성 리포트 메일 금지 (북극성 ② 체류가 커버). 온디맨드 FORCE_EMAIL=1 만 발송.
+  if (process.env.FORCE_EMAIL !== '1') { console.log('ℹ️ 정보성 리포트 — 메일 opt-in 아님, 콘솔만 (북극성 메일이 커버)'); return false; }
   if (!RESEND_API_KEY) { console.warn('::warning::RESEND_API_KEY 미설정 — 이메일 스킵'); return false; }
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
