@@ -4,7 +4,7 @@
  *
  * 측정 키워드:
  *   ① "부산호빠"   — venue 지역+업종 (PRIMARY)
- *   ② "해운대호빠" — 인접 광역 (SECONDARY, 사용자 직접 명시, 광안대교→센텀 차로 15분 코스 동선)
+ *   ② "해운대호빠" — 인접 광역 (SECONDARY, 사용자 직접 명시, 광안대교 야경 코스 동선)
  *
  * 10지표 + 디테일 토큰:
  *   1) HTTP 200
@@ -17,7 +17,7 @@
  *   8) "부산호빠" body 밀도 ≤3.5%
  *   9) body가 "해운대호빠" 검색 의도 흡수 (페이지 전체 토큰 흡수 — ≥N회 강제 삭제)
  *  10) 후킹 5축 ≥1축 (title 또는 desc)
- *  +) 디테일 토큰 (센텀시티역/벡스코/신세계백화점/통유리/해무) 모두 등장
+ *  +) 디테일 토큰 (광안역/광안동/광안대교/통유리/해무) 모두 등장
  *
  * 환경:
  *   RESEND_API_KEY     필수
@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/hoppa/busanhoppa-aura/';
 const PRIMARY = '부산호빠';
 const SECONDARY = '해운대호빠';
-const DETAIL_TOKENS = ['센텀시티역', '벡스코', '신세계백화점', '통유리', '해무'];
+const DETAIL_TOKENS = ['광안역', '광안동', '광안대교', '통유리', '해무'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */
