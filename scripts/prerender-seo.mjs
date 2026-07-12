@@ -1229,9 +1229,10 @@ for (const pg of staticPages) {
     for (const [rg, names] of Object.entries(regionGroups)) {
       // catVenue 첫 항목으로 region slug 가져오기
       const sample = catVenues.find(vv => vv.regionKo === rg);
+      // 지역×업종 허브로 딥링크 — 헤드 키워드(예: 건대호빠) 관련성 신호를 허브에 직접 전달
       const regionHref = hasCatRegionPath && sample
         ? `/${catInfo.path}/${sample.region}/`
-        : `/region/${encodeURIComponent(rg)}/`;
+        : `/region/${encodeURIComponent(rg)}/${catInfo.path}/`;
       ssrBody += `<h3><a href="${regionHref}">${escHtml(rg)}</a></h3>`;
       ssrBody += `<p>${escHtml(rg)} 인기 매장 ${names.length}곳. 실시간 후기와 비교는 각 업소 페이지에서 확인하세요.</p>`;
     }
@@ -1244,7 +1245,8 @@ for (const pg of staticPages) {
     const allRegionsForCat = [...new Set(catVenues.map(vv => vv.regionKo))];
     if (allRegionsForCat.length > 0) {
       ssrBody += `<h3>지역별 ${catKo}</h3><ul>`;
-      allRegionsForCat.forEach(rk => { ssrBody += `<li><a href="/region/${encodeURIComponent(rk)}/">${escHtml(rk)}</a></li>`; });
+      // nights는 지역 수가 많아 catKo 앵커 시 밀도 밴드(≤3.0%) 초과 → href 딥링크만
+      allRegionsForCat.forEach(rk => { ssrBody += `<li><a href="/region/${encodeURIComponent(rk)}/${catInfo.path}/">${escHtml(rk)}${catKey === 'night' ? '' : ` ${catKo}`}</a></li>`; });
       ssrBody += `</ul>`;
     }
     // ★ Evergreen 가이드 — 업소 수와 무관하게 SEO 본문 풍부
