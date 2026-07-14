@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14T14:49:53.839Z",
+  "generated_at": "2026-07-14T17:55:10.066Z",
   "window_hours": 24,
   "items": [
     {
@@ -8,6 +8,20 @@
       "category": "yojeong",
       "region": "일산",
       "views_24h": 3
+    },
+    {
+      "path": "/nights/busanyeonsandongmulnight",
+      "title": "부산연산동물나이트",
+      "category": "night",
+      "region": "부산 연산동",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/busanasiadnight",
+      "title": "부산아시아드나이트",
+      "category": "night",
+      "region": "부산",
+      "views_24h": 2
     },
     {
       "path": "/nights/daejeononenight",
@@ -91,20 +105,6 @@
       "title": "파주야당스카이돔나이트",
       "category": "night",
       "region": "파주",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/suwonkoreanight",
-      "title": "수원코리아나이트",
-      "category": "night",
-      "region": "수원",
-      "views_24h": 1
-    },
-    {
-      "path": "/clubs/gangnam/gangnamclub-laputa",
-      "title": "강남청담클럽 라퓨타",
-      "category": "club",
-      "region": "강남",
       "views_24h": 1
     }
   ]
