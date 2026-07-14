@@ -98,76 +98,6 @@ function DaejeonSevenHeaderSection() {
   );
 }
 
-/* 창원룰루랄라나이트 헤더 — 짱구 케어 강조, 따뜻한 톤 */
-function ChangwonLululalalaHeaderSection() {
-  return (
-    <div className="flex flex-col items-center gap-6">
-      <div
-        className="w-full max-w-[480px] rounded-2xl overflow-hidden shadow-xl"
-        style={{
-          background: 'linear-gradient(135deg, #2A0A0A 0%, #5C1A1A 50%, #1a0505 100%)',
-          border: '2px solid rgba(255, 180, 80, 0.35)',
-        }}
-      >
-        <div className="flex flex-col items-center justify-center px-6 py-12 text-center" style={{ minHeight: 440 }}>
-          <p style={{ color: '#FFFFFF', fontSize: 26, fontWeight: 900, letterSpacing: '-0.02em', marginBottom: 12 }}>
-            창원룰루랄라나이트
-          </p>
-          <p style={{ color: '#FFB450', fontSize: 84, fontWeight: 900, letterSpacing: '0.02em', lineHeight: 1.1, marginBottom: 16 }}>
-            짱구
-          </p>
-          <p style={{ color: 'rgba(255,255,255,0.78)', fontSize: 16, fontWeight: 600, marginBottom: 6 }}>
-            한번 가면 단골 된다
-          </p>
-          <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 13, fontWeight: 500 }}>
-            창원 시내 한복판 · 매일 21:00–05:00
-          </p>
-        </div>
-      </div>
-
-      <div className="w-full max-w-[480px] text-center">
-        <a
-          href="tel:01038546887"
-          className="flex flex-col items-center gap-3 rounded-2xl px-8 py-6 shadow-lg transition hover:shadow-xl active:scale-[0.98]"
-          style={{ background: 'linear-gradient(to right, #5C1A1A, #2A0A0A)' }}
-        >
-          <span style={{ color: '#FFB450', fontSize: 18, fontWeight: 700 }}>창원룰루랄라나이트 담당 짱구</span>
-          <span style={{ color: '#FFFFFF', fontSize: 28, fontWeight: 900, letterSpacing: '0.05em' }}>
-            010-3854-6887
-          </span>
-          <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: 14 }}>터치하면 바로 전화 연결</span>
-        </a>
-      </div>
-
-      <div className="w-full max-w-[480px] rounded-xl px-5 py-4" style={{ background: '#FFF7EC', border: '1px solid #FFD9A8' }}>
-        <p style={{ color: '#5C2A0A', fontSize: 14, fontWeight: 700, marginBottom: 6 }}>예약 문의</p>
-        <p style={{ color: '#7A3A12', fontSize: 13, lineHeight: 1.7 }}>
-          창원 시내 한복판에 있고 매일 21:00–05:00 영업한다. 금·토요일 밤은 자리가 빨리 차는 편이니, 방문 전 전화로 예약 상황과 인원을 확인하면 된다.
-        </p>
-      </div>
-    </div>
-  );
-}
-
-/* 창원룰루랄라나이트 고정 하단 전화 바 */
-function ChangwonLululalalaFixedBar() {
-  return (
-    <div className="fixed left-0 right-0 z-40" style={{ bottom: 56 }}>
-      <a
-        href="tel:01038546887"
-        className="flex items-center justify-center gap-3 px-6 py-4"
-        style={{
-          background: 'linear-gradient(to right, #5C1A1A, #2A0A0A)',
-          minHeight: 52,
-          boxShadow: '0 -4px 20px rgba(0,0,0,0.4)',
-        }}
-      >
-        <span style={{ color: '#FFB450', fontSize: 16, fontWeight: 700 }}>창원 짱구 직통</span>
-        <span style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 900, letterSpacing: '0.05em' }}>010-3854-6887</span>
-      </a>
-    </div>
-  );
-}
 
 /* 대전세븐나이트 고정 하단 전화 바 — MobileBottomNav(56px) 바로 위에 위치
    Tailwind 임의값 대신 inline style로 색상 100% 보장 */
@@ -255,23 +185,20 @@ export default function NightDetailPage() {
 
   const isDapsimnri = slug === 'dapsimnidontellmamanight';
   const isDaejeonSeven = slug === 'daejeonsevennight';
-  const isChangwonLulu = slug === 'changwon-lululalala';
   const isDaeguBabamba = slug === 'daegubabambanight';
 
   const topContent = isDapsimnri
     ? <DapsimnriCheonSaSection venue={venue} />
     : isDaejeonSeven
       ? <DaejeonSevenHeaderSection />
-      : isChangwonLulu
-        ? <ChangwonLululalalaHeaderSection />
-        : isDaeguBabamba
-          ? <DaeguBabambaSection venue={venue} />
-          : undefined;
+      : isDaeguBabamba
+        ? <DaeguBabambaSection venue={venue} />
+        : undefined;
 
   return (
     <>
       {/* 고정 전화바 venue: 하단 여백 추가 */}
-      {(isDaejeonSeven || isChangwonLulu || isDaeguBabamba) && <style>{`body { padding-bottom: 120px !important; }`}</style>}
+      {(isDaejeonSeven || isDaeguBabamba) && <style>{`body { padding-bottom: 120px !important; }`}</style>}
       <VenueDetailPage
         venue={venue}
         categoryLabel="나이트"
@@ -285,7 +212,6 @@ export default function NightDetailPage() {
         topContent={topContent}
       />
       {isDaejeonSeven && <DaejeonSevenFixedBar />}
-      {isChangwonLulu && <ChangwonLululalalaFixedBar />}
       {isDaeguBabamba && <DaeguBabambaFixedBar />}
     </>
   );

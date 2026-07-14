@@ -15,15 +15,11 @@ const ALLOWED_PHONES = [
   '010-3918-9414', // 까치 (대전원나이트)
   '010-5653-0069', // 춘자 (울산챔피언나이트)
   '010-6773-6222', // 수빈 (해운대호빠 깐따삐야)
-  '010-3854-6887', // 짱구 (창원룰루랄라나이트)
 ];
 
 /** 하단 고정 전화바를 사용하지 않는 업소 (본문에 전용 전화 섹션/바가 이미 있어 중복 방지) */
 const HIDE_STICKY_VENUES = new Set([
   '답십리돈텔마마나이트',
-  // 창원룰루랄라나이트는 전용 헤더 전화바(ChangwonLululalalaFixedBar)가 있어 제네릭 바 중복만 차단.
-  //   전화 자체는 노출(NAP). 해운대호빠는 전용 바가 없어 제네릭 바로 전화 재노출.
-  '창원룰루랄라나이트',
 ]);
 
 export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPhoneBarProps) {
