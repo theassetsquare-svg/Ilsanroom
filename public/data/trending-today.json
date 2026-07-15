@@ -1,13 +1,27 @@
 {
-  "generated_at": "2026-07-14T17:55:10.066Z",
+  "generated_at": "2026-07-15T05:20:48.510Z",
   "window_hours": 24,
   "items": [
+    {
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/daegutotoganight",
+      "title": "대구토토가나이트",
+      "category": "night",
+      "region": "대구",
+      "views_24h": 2
+    },
     {
       "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
       "title": "일산명월관요정",
       "category": "yojeong",
       "region": "일산",
-      "views_24h": 3
+      "views_24h": 2
     },
     {
       "path": "/nights/busanyeonsandongmulnight",
@@ -24,20 +38,6 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 2
-    },
-    {
       "path": "/nights/daejeonbongmyeongnight",
       "title": "대전봉명나이트",
       "category": "night",
@@ -45,11 +45,39 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/bundangpongpongnight",
-      "title": "분당퐁퐁나이트",
+      "path": "/nights/daeguhobaknight",
+      "title": "대구호박나이트",
       "category": "night",
-      "region": "분당",
-      "views_24h": 2
+      "region": "대구",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/daegubabambanight",
+      "title": "대구바밤바나이트",
+      "category": "night",
+      "region": "대구",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/ansanhitnight",
+      "title": "안산히트나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/nowonstarnight",
+      "title": "노원스타나이트",
+      "category": "night",
+      "region": "노원",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
+      "category": "night",
+      "region": "부산",
+      "views_24h": 1
     },
     {
       "path": "/nights/cheongdamh2onight",
@@ -77,34 +105,6 @@
       "title": "천안코리아나이트",
       "category": "night",
       "region": "천안",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/cheonanstardomnight",
-      "title": "천안스타돔나이트",
-      "category": "night",
-      "region": "천안",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/suwonchancenight",
-      "title": "수원찬스돔나이트",
-      "category": "night",
-      "region": "수원",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gumihobaknight",
-      "title": "구미호박나이트",
-      "category": "night",
-      "region": "구미",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/pajuyadangskydomenight",
-      "title": "파주야당스카이돔나이트",
-      "category": "night",
-      "region": "파주",
       "views_24h": 1
     }
   ]
