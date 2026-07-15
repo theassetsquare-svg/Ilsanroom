@@ -1,13 +1,27 @@
 {
-  "generated_at": "2026-07-15T14:49:39.288Z",
+  "generated_at": "2026-07-15T18:00:03.849Z",
   "window_hours": 24,
   "items": [
     {
-      "path": "/nights/busanyeonsandongmulnight",
-      "title": "부산연산동물나이트",
+      "path": "/nights/cheongjuhobaknight",
+      "title": "청주호박나이트",
       "category": "night",
-      "region": "부산 연산동",
+      "region": "청주",
       "views_24h": 3
+    },
+    {
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/doksangukbingwannight",
+      "title": "독산동국빈관나이트",
+      "category": "night",
+      "region": "독산",
+      "views_24h": 2
     },
     {
       "path": "/hoppa/busanhoppa-menz",
@@ -87,24 +101,10 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/busanasiadnight",
-      "title": "부산아시아드나이트",
-      "category": "night",
-      "region": "부산",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/gumihobaknight",
-      "title": "구미호박나이트",
-      "category": "night",
-      "region": "구미",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/doksangukbingwannight",
-      "title": "독산동국빈관나이트",
-      "category": "night",
-      "region": "독산",
+      "path": "/clubs/cheongju/cheongju-supermoon",
+      "title": "청주클럽 슈퍼문",
+      "category": "club",
+      "region": "청주",
       "views_24h": 1
     }
   ]
