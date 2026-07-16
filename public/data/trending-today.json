@@ -1,13 +1,20 @@
 {
-  "generated_at": "2026-07-16T15:01:04.902Z",
+  "generated_at": "2026-07-16T17:58:11.635Z",
   "window_hours": 24,
   "items": [
     {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
       "category": "night",
-      "region": "대전",
-      "views_24h": 6
+      "region": "강서",
+      "views_24h": 5
+    },
+    {
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
+      "category": "night",
+      "region": "오산",
+      "views_24h": 4
     },
     {
       "path": "/nights/daejeonsevennight",
@@ -17,17 +24,10 @@
       "views_24h": 4
     },
     {
-      "path": "/nights/cheongjuhobaknight",
-      "title": "청주호박나이트",
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
       "category": "night",
-      "region": "청주",
-      "views_24h": 4
-    },
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
+      "region": "대전",
       "views_24h": 4
     },
     {
@@ -36,6 +36,13 @@
       "category": "night",
       "region": "강서",
       "views_24h": 4
+    },
+    {
+      "path": "/nights/cheongjuhobaknight",
+      "title": "청주호박나이트",
+      "category": "night",
+      "region": "청주",
+      "views_24h": 3
     },
     {
       "path": "/nights/gimpohobaknight",
@@ -52,11 +59,18 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
+      "path": "/nights/daegubabambanight",
+      "title": "대구바밤바나이트",
       "category": "night",
-      "region": "오산",
-      "views_24h": 3
+      "region": "대구",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
     },
     {
       "path": "/hoppa/suwonhoppa-beast",
@@ -73,38 +87,24 @@
       "views_24h": 2
     },
     {
+      "path": "/clubs/hongdae/hongdaeclub-dokkaebi",
+      "title": "홍대클럽 도깨비",
+      "category": "club",
+      "region": "홍대",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gwangjumgmnight",
+      "title": "광주MGM나이트",
+      "category": "night",
+      "region": "광주",
+      "views_24h": 1
+    },
+    {
       "path": "/nights/pyeongtaekhobaknight",
       "title": "평택호박나이트",
       "category": "night",
       "region": "평택",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/cheongjudontellmamanight",
-      "title": "청주돈텔마마나이트",
-      "category": "night",
-      "region": "청주",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/seongnamshampoonight",
-      "title": "성남샴푸나이트",
-      "category": "night",
-      "region": "성남",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/bundangpongpongnight",
-      "title": "분당퐁퐁나이트",
-      "category": "night",
-      "region": "분당",
       "views_24h": 1
     }
   ]
