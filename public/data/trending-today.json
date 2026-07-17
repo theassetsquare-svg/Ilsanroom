@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T14:43:11.514Z",
+  "generated_at": "2026-07-17T17:55:25.731Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,28 +7,42 @@
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 8
-    },
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
-      "views_24h": 5
+      "views_24h": 7
     },
     {
       "path": "/nights/osanhobaknight",
       "title": "오산호박나이트",
       "category": "night",
       "region": "오산",
-      "views_24h": 4
+      "views_24h": 6
     },
     {
       "path": "/nights/daejeonbongmyeongnight",
       "title": "대전봉명나이트",
       "category": "night",
       "region": "대전",
+      "views_24h": 5
+    },
+    {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
+      "category": "night",
+      "region": "강서",
       "views_24h": 4
+    },
+    {
+      "path": "/nights/daegubabambanight",
+      "title": "대구바밤바나이트",
+      "category": "night",
+      "region": "대구",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 3
     },
     {
       "path": "/nights/cheongjuhobaknight",
@@ -59,52 +73,38 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/gurihobaknight",
-      "title": "구리호박나이트",
+      "path": "/nights/cheongjudontellmamanight",
+      "title": "청주돈텔마마나이트",
       "category": "night",
-      "region": "구리",
+      "region": "청주",
       "views_24h": 2
     },
     {
-      "path": "/nights/gwangjumgmnight",
-      "title": "광주MGM나이트",
+      "path": "/nights/busanyeonsandongmulnight",
+      "title": "부산연산동물나이트",
       "category": "night",
-      "region": "광주",
+      "region": "부산 연산동",
       "views_24h": 2
     },
     {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 2
-    },
-    {
-      "path": "/clubs/gangnam/gangnamclub-race",
-      "title": "강남청담클럽 레이스",
+      "path": "/clubs/cheongju/cheongju-supermoon",
+      "title": "청주클럽 슈퍼문",
       "category": "club",
-      "region": "강남",
+      "region": "청주",
       "views_24h": 2
     },
     {
-      "path": "/rooms/busan-haeundae/haeundaegoguryeo",
-      "title": "해운대고구려",
-      "category": "room",
-      "region": "부산 해운대",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daegubabambanight",
-      "title": "대구바밤바나이트",
+      "path": "/nights/suwonchancenight",
+      "title": "수원찬스돔나이트",
       "category": "night",
-      "region": "대구",
+      "region": "수원",
       "views_24h": 2
     },
     {
-      "path": "/nights/pyeongtaekhobaknight",
-      "title": "평택호박나이트",
+      "path": "/nights/gumihobaknight",
+      "title": "구미호박나이트",
       "category": "night",
-      "region": "평택",
+      "region": "구미",
       "views_24h": 2
     }
   ]
