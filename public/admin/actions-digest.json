@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-16T01:41:39.689Z",
+  "generated_at": "2026-07-17T01:44:37.004Z",
   "window_hours": 24,
-  "total_runs": 198,
+  "total_runs": 196,
   "total_fail": 1,
   "workflows": [
     {
@@ -11,22 +11,14 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-07-15T06:37:05Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/29394736945"
+        "created_at": "2026-07-16T07:02:48Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/29478604746"
       }
     },
     {
       "name": "24h Site Monitoring",
-      "total": 16,
-      "success": 16,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Activity Alert (15min)",
-      "total": 14,
-      "success": 14,
+      "total": 15,
+      "success": 15,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -35,6 +27,14 @@
       "name": "Auto Content v2 (Time-based)",
       "total": 14,
       "success": 14,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Activity Alert (15min)",
+      "total": 13,
+      "success": 13,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -426,7 +426,7 @@
     {
       "name": "All Pages Quality Watch (5축 — anchor 200/img alt/H1/lang+viewport/canonical)",
       "total": 1,
-      "success": 1,
+      "success": 0,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -544,7 +544,7 @@
       "last_fail": null
     },
     {
-      "name": "Itaewonclub Utopia Keyword Watch (이태원클럽 단일 키워드 24h)",
+      "name": "Itaewonclub Prism Keyword Watch (이태원클럽 단일 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -552,7 +552,7 @@
       "last_fail": null
     },
     {
-      "name": "Itaewonclub Prism Keyword Watch (이태원클럽 단일 키워드 24h)",
+      "name": "Itaewonclub Utopia Keyword Watch (이태원클럽 단일 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -592,7 +592,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -600,7 +600,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -664,7 +664,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Laputa Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Clubs Keyword Watch (/clubs 클럽 단일 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -672,7 +672,7 @@
       "last_fail": null
     },
     {
-      "name": "Clubs Keyword Watch (/clubs 클럽 단일 키워드 24h)",
+      "name": "Gangnamclub Laputa Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
