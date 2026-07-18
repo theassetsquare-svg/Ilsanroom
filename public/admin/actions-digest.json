@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-17T01:44:37.004Z",
+  "generated_at": "2026-07-18T01:25:46.832Z",
   "window_hours": 24,
-  "total_runs": 196,
+  "total_runs": 204,
   "total_fail": 1,
   "workflows": [
     {
@@ -11,12 +11,20 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-07-16T07:02:48Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/29478604746"
+        "created_at": "2026-07-17T06:40:20Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/29560707601"
       }
     },
     {
       "name": "24h Site Monitoring",
+      "total": 17,
+      "success": 17,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Activity Alert (15min)",
       "total": 15,
       "success": 15,
       "failure": 0,
@@ -25,14 +33,14 @@
     },
     {
       "name": "Auto Content v2 (Time-based)",
-      "total": 14,
-      "success": 14,
+      "total": 15,
+      "success": 15,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
-      "name": "Activity Alert (15min)",
+      "name": "Venue Reports Daily",
       "total": 13,
       "success": 13,
       "failure": 0,
@@ -40,17 +48,9 @@
       "last_fail": null
     },
     {
-      "name": "Venue Reports Daily",
+      "name": "Security Audit Hourly",
       "total": 12,
       "success": 12,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Security Audit Hourly",
-      "total": 11,
-      "success": 11,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -72,6 +72,14 @@
       "last_fail": null
     },
     {
+      "name": "Daily Regression Digest (KST 09:00)",
+      "total": 2,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 1,
+      "last_fail": null
+    },
+    {
       "name": "24h Auto Build + SEO Notify",
       "total": 2,
       "success": 2,
@@ -85,14 +93,6 @@
       "success": 2,
       "failure": 0,
       "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Daily Regression Digest (KST 09:00)",
-      "total": 1,
-      "success": 0,
-      "failure": 0,
-      "in_progress": 1,
       "last_fail": null
     },
     {
@@ -426,7 +426,7 @@
     {
       "name": "All Pages Quality Watch (5축 — anchor 200/img alt/H1/lang+viewport/canonical)",
       "total": 1,
-      "success": 0,
+      "success": 1,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -592,7 +592,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -600,7 +600,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -664,7 +664,7 @@
       "last_fail": null
     },
     {
-      "name": "Clubs Keyword Watch (/clubs 클럽 단일 키워드 24h)",
+      "name": "Gangnamclub Laputa Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -672,7 +672,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Laputa Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Clubs Keyword Watch (/clubs 클럽 단일 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -784,7 +784,7 @@
       "last_fail": null
     },
     {
-      "name": "Busanhoppa Menz Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
+      "name": "Daejeonhoppa Eclipse Keyword Watch (대전호빠+충청호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -792,7 +792,7 @@
       "last_fail": null
     },
     {
-      "name": "Daejeonhoppa Eclipse Keyword Watch (대전호빠+충청호빠 2 키워드 24h)",
+      "name": "Busanhoppa Menz Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
