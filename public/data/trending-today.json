@@ -1,14 +1,7 @@
 {
-  "generated_at": "2026-07-18T17:44:48.191Z",
+  "generated_at": "2026-07-19T05:40:38.691Z",
   "window_hours": 24,
   "items": [
-    {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 7
-    },
     {
       "path": "/nights/daegubabambanight",
       "title": "대구바밤바나이트",
@@ -21,6 +14,20 @@
       "title": "일산룸",
       "category": "room",
       "region": "일산",
+      "views_24h": 4
+    },
+    {
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 4
+    },
+    {
+      "path": "/nights/gwangjuallnight",
+      "title": "광주올나이트",
+      "category": "night",
+      "region": "광주",
       "views_24h": 3
     },
     {
@@ -45,11 +52,25 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/busanyeonsandongmulnight",
-      "title": "부산연산동물나이트",
+      "path": "/nights/cheongdamh2onight",
+      "title": "청담H2O나이트",
       "category": "night",
-      "region": "부산 연산동",
-      "views_24h": 3
+      "region": "청담",
+      "views_24h": 2
+    },
+    {
+      "path": "/hoppa/busanhoppa-menz",
+      "title": "부산호빠 맨즈",
+      "category": "hoppa",
+      "region": "부산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/gurihobaknight",
+      "title": "구리호박나이트",
+      "category": "night",
+      "region": "구리",
+      "views_24h": 2
     },
     {
       "path": "/nights/indeokvon-gukbingwan-night",
@@ -84,27 +105,6 @@
       "title": "강서호박나이트",
       "category": "night",
       "region": "강서",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/gildongchancenight",
-      "title": "길동찬스나이트",
-      "category": "night",
-      "region": "길동",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/cheongjudontellmamanight",
-      "title": "청주돈텔마마나이트",
-      "category": "night",
-      "region": "청주",
       "views_24h": 2
     }
   ]
