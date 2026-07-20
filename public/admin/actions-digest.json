@@ -1,20 +1,9 @@
 {
-  "generated_at": "2026-07-19T01:42:25.108Z",
+  "generated_at": "2026-07-20T01:58:16.267Z",
   "window_hours": 24,
-  "total_runs": 214,
-  "total_fail": 2,
+  "total_runs": 210,
+  "total_fail": 1,
   "workflows": [
-    {
-      "name": "Sunday Deep Audit (Sitemap Fullcheck)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-07-18T18:53:53Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/29656752835"
-      }
-    },
     {
       "name": "Cheongju Supermoon Keyword Watch (청주클럽 단일 키워드 24h)",
       "total": 1,
@@ -22,17 +11,9 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-07-18T06:29:12Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/29634072703"
+        "created_at": "2026-07-19T07:06:53Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/29677555724"
       }
-    },
-    {
-      "name": "Auto Content v2 (Time-based)",
-      "total": 18,
-      "success": 18,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
     },
     {
       "name": "24h Site Monitoring",
@@ -51,9 +32,17 @@
       "last_fail": null
     },
     {
+      "name": "Auto Content v2 (Time-based)",
+      "total": 16,
+      "success": 16,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
       "name": "Venue Reports Daily",
-      "total": 15,
-      "success": 15,
+      "total": 14,
+      "success": 14,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -68,8 +57,8 @@
     },
     {
       "name": "Scheduled Cron Jobs",
-      "total": 5,
-      "success": 5,
+      "total": 4,
+      "success": 4,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -437,7 +426,7 @@
     {
       "name": "All Pages Quality Watch (5축 — anchor 200/img alt/H1/lang+viewport/canonical)",
       "total": 1,
-      "success": 1,
+      "success": 0,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -500,6 +489,14 @@
     },
     {
       "name": "Security Audit Nightly",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "GSC Demand Gap (weekly)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -579,7 +576,7 @@
       "last_fail": null
     },
     {
-      "name": "Itaewonclub Maid Keyword Watch (이태원클럽 단일 키워드 24h)",
+      "name": "Nowoncheongchunpocha Keyword Watch (노원청춘포차 단일 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -587,7 +584,7 @@
       "last_fail": null
     },
     {
-      "name": "Nowoncheongchunpocha Keyword Watch (노원청춘포차 단일 키워드 24h)",
+      "name": "Itaewonclub Maid Keyword Watch (이태원클럽 단일 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -723,7 +720,7 @@
       "last_fail": null
     },
     {
-      "name": "Haeundaehoppa Velvet Keyword Watch (해운대호빠 벨벳 2 키워드 24h)",
+      "name": "Haeundaehoppa Michelin Keyword Watch (해운대호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -731,7 +728,7 @@
       "last_fail": null
     },
     {
-      "name": "Haeundaehoppa Michelin Keyword Watch (해운대호빠 2 키워드 24h)",
+      "name": "Haeundaehoppa Velvet Keyword Watch (해운대호빠 벨벳 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -795,7 +792,7 @@
       "last_fail": null
     },
     {
-      "name": "Busanhoppa Menz Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
+      "name": "Daejeonhoppa Eclipse Keyword Watch (대전호빠+충청호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -803,7 +800,7 @@
       "last_fail": null
     },
     {
-      "name": "Daejeonhoppa Eclipse Keyword Watch (대전호빠+충청호빠 2 키워드 24h)",
+      "name": "Busanhoppa Menz Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -891,7 +888,7 @@
       "last_fail": null
     },
     {
-      "name": "Changwon Lululalala Keyword Watch (창원룰루랄라나이트 + 창원나이트 2 키워드 24h)",
+      "name": "Cheonan Stardom Keyword Watch (천안스타돔나이트 + 천안나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -899,7 +896,7 @@
       "last_fail": null
     },
     {
-      "name": "Cheonan Stardom Keyword Watch (천안스타돔나이트 + 천안나이트 2 키워드 24h)",
+      "name": "Changwon Lululalala Keyword Watch (창원룰루랄라나이트 + 창원나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
