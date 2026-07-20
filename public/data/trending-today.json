@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-20T15:10:40.869Z",
+  "generated_at": "2026-07-20T18:47:28.749Z",
   "window_hours": 24,
   "items": [
     {
@@ -8,6 +8,34 @@
       "category": "yojeong",
       "region": "일산",
       "views_24h": 10
+    },
+    {
+      "path": "/clubs/cheongju/cheongju-supermoon",
+      "title": "청주클럽 슈퍼문",
+      "category": "club",
+      "region": "청주",
+      "views_24h": 4
+    },
+    {
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 4
+    },
+    {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
+      "category": "night",
+      "region": "강서",
+      "views_24h": 4
+    },
+    {
+      "path": "/nights/pyeongtaekhobaknight",
+      "title": "평택호박나이트",
+      "category": "night",
+      "region": "평택",
+      "views_24h": 4
     },
     {
       "path": "/nights/gangnamjuliananight",
@@ -24,32 +52,11 @@
       "views_24h": 4
     },
     {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
+      "path": "/hoppa/daejeonhoppa-eclipse",
+      "title": "대전호빠 이클립스",
+      "category": "hoppa",
+      "region": "대전",
       "views_24h": 3
-    },
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/pyeongtaekhobaknight",
-      "title": "평택호박나이트",
-      "category": "night",
-      "region": "평택",
-      "views_24h": 3
-    },
-    {
-      "path": "/clubs/cheongju/cheongju-supermoon",
-      "title": "청주클럽 슈퍼문",
-      "category": "club",
-      "region": "청주",
-      "views_24h": 2
     },
     {
       "path": "/clubs/gangnam/gangnamclub-race",
@@ -62,13 +69,6 @@
       "path": "/nights/daejeononenight",
       "title": "대전원나이트",
       "category": "night",
-      "region": "대전",
-      "views_24h": 2
-    },
-    {
-      "path": "/hoppa/daejeonhoppa-eclipse",
-      "title": "대전호빠 이클립스",
-      "category": "hoppa",
       "region": "대전",
       "views_24h": 2
     },
@@ -87,11 +87,11 @@
       "views_24h": 2
     },
     {
-      "path": "/hoppa/busanhoppa-aura",
-      "title": "부산호빠 아우라",
-      "category": "hoppa",
-      "region": "부산",
-      "views_24h": 2
+      "path": "/nights/gwangjutotonight",
+      "title": "광주토토밤나이트",
+      "category": "night",
+      "region": "광주",
+      "views_24h": 1
     },
     {
       "path": "/nights/cheongjudontellmamanight",
