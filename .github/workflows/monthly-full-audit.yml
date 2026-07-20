@@ -1,4 +1,4 @@
-name: Monthly Full Audit (매달 30일 전수점검·자동해결·해결보고 1통)
+name: Monthly Full Audit (매달 30일 GA4+GSC+Clarity 200축 전수점검·자동해결·해결보고)
 
 on:
   schedule:
@@ -11,10 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: GSC+GA4 전수 확인 + 자동해결(재크롤 신호만) + 해결시만 메일 1통
+      - name: GSC+GA4+Clarity 전수 확인 + 자동해결(재크롤 신호만) + 해결시만 메일 1통
         run: node scripts/monthly-full-audit.mjs
         env:
           GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
           INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+          CLARITY_API_TOKEN: ${{ secrets.CLARITY_API_TOKEN }}
+          CLARITY_PROJECT_ID: ${{ secrets.CLARITY_PROJECT_ID }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
