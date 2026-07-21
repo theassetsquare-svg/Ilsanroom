@@ -1,0 +1,24 @@
+name: Clarity Daily Watch (매일 21:00 KST — 측정·판정만, 코드수정·메일은 21:20 루틴)
+
+on:
+  schedule:
+    # UTC 12:00 = KST 21:00. UTC 29일은 스크립트가 자체 2콜 축소(월간 5콜과 합 7/10)
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+    inputs:
+      budget:
+        description: 'Clarity 콜 예산 (1~4, 기본 4 / UTC29일 2)'
+        required: false
+        default: ''
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Clarity 전 행동지표 수집 + 착시컷 판정 + FINDINGS 로그 (읽기전용·메일 0)
+        run: node scripts/clarity-daily-watch.mjs
+        env:
+          CLARITY_API_TOKEN: ${{ secrets.CLARITY_API_TOKEN }}
+          CLARITY_PROJECT_ID: ${{ secrets.CLARITY_PROJECT_ID }}
+          CLARITY_BUDGET: ${{ github.event.inputs.budget }}
