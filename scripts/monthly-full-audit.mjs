@@ -18,8 +18,12 @@
  *   4) GA4 Admin 설정 — 데이터 보관 14개월 + 핵심이벤트 존재 (읽기전용 GET)
  *   5) GSC sitemap 상태 — 등록/오류/경고 (errors>0 시 자동 재제출)
  *   6) GA4 랜딩페이지별 세션깊이 — 페이지/세션 최저 페이지 처방 (목표: 어느 페이지로 들어와도 10+ PV)
- *   7) Microsoft Clarity 30d — 세션·페이지뷰·스크롤깊이·rage click·dead click·quick back·
- *      과도한스크롤·페이지별 체류·디바이스별 세션·JS오류·이미지미로드·리사이즈이벤트 등 UX 전수
+ *   3.3) ★리텐션 — 주간 코호트(8주) 평탄화 지점 % (cohortSpec, 소표본 제외)
+ *   3.4) ★아하 모먼트 — 재방문자 과대표집(1.5x+) 이벤트·페이지 역추적
+ *   7) Microsoft Clarity — project-live-insights 실API (최대 3일·10req/day 중 5콜):
+ *      Traffic(봇 제외)·체류·스크롤·rage/dead/quickback·JS오류 + URL/Device/OS/Source 분해
+ *      + ★놀쿨 프로젝트 분리검증(응답 URL 전부 nolcool.com 확인)
+ *   PMF 기록 — 매달 메일에 동일 지표 스냅샷(재방문비중·코호트커브·아하후보) = 메일 히스토리가 추이
  *
  * 자동 해결 (실행한 것만 메일에 기록):
  *   - 노출0/순위 20위권 밖 venue URL → IndexNow 재크롤 핑
@@ -313,6 +317,95 @@ async function main() {
     }
   }
 
+  /* 3.3) ★리텐션 — 주간 코호트 평탄화 지점 (GA4 cohortSpec, 읽기전용)
+   *      최근 8주 주간 코호트 × 0~5주차 재방문율 → 주차별 평균 커브 → 낙폭<1pp 되는 지점 = 평탄화 % */
+  let retention = null;
+  if (gaToken) {
+    const wk = 7 * 86400000;
+    const monday = (d) => { const x = new Date(d); x.setUTCDate(x.getUTCDate() - ((x.getUTCDay() + 6) % 7)); return x; };
+    const iso = (x) => x.toISOString().slice(0, 10);
+    const lastMon = monday(new Date(Date.now() - wk)); // 마지막 완결 주
+    const cohorts = Array.from({ length: 8 }, (_, i) => {
+      const s = new Date(lastMon.getTime() - (7 - i) * wk);
+      return { name: `w${iso(s)}`, dimension: 'firstSessionDate', dateRange: { startDate: iso(s), endDate: iso(new Date(s.getTime() + 6 * 86400000)) } };
+    });
+    const r = await runReport(gaToken, {
+      dimensions: [{ name: 'cohort' }, { name: 'cohortNthWeek' }],
+      metrics: [{ name: 'cohortActiveUsers' }],
+      cohortSpec: { cohorts, cohortsRange: { granularity: 'WEEKLY', startOffset: 0, endOffset: 5 } },
+      limit: 200,
+    });
+    axisCount += cohorts.length * 6;
+    if (r.ok && r.body.rows?.length) {
+      const grid = {}; // {cohort: {week: users}}
+      for (const row of r.body.rows) {
+        const [c, w] = row.dimensionValues.map((d) => d.value);
+        (grid[c] ||= {})[Number(w)] = Number(row.metricValues[0].value);
+      }
+      const curve = []; // 주차별 평균 재방문율 (코호트 규모≥10만, 소표본 착시 제외)
+      for (let w = 0; w <= 5; w++) {
+        const vals = Object.values(grid).filter((g) => (g[0] || 0) >= 10 && g[w] != null && w <= 5).map((g) => (g[w] / g[0]) * 100);
+        curve.push(vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null);
+      }
+      let flatWeek = null;
+      for (let w = 2; w <= 5; w++) {
+        if (curve[w] != null && curve[w - 1] != null && curve[w - 1] - curve[w] < 1) { flatWeek = w; break; }
+      }
+      retention = { curve, flatWeek, flatPct: flatWeek != null ? curve[flatWeek] : curve.filter((v) => v != null).at(-1) };
+      console.log(`📈 리텐션 코호트(8주·규모≥10): 주차별 ${curve.map((v, i) => `W${i}=${v == null ? '-' : v.toFixed(1) + '%'}`).join(' · ')}`);
+      console.log(`📈 평탄화 지점: ${flatWeek != null ? `W${flatWeek}부터 ≈${retention.flatPct.toFixed(1)}%` : `미평탄(마지막 ${retention.flatPct?.toFixed(1) ?? '-'}%)`}`);
+    } else if (!r.ok) console.warn(`⚠️ GA4 코호트 실패 — ${gaErrorReason(r.status, r.body)}`);
+  }
+
+  /* 3.4) ★아하 모먼트 — 재방문자가 신규 대비 과도하게 하는 행동 역추적 (읽기전용)
+   *      returning 비중이 전체 평균의 1.5배 이상인 이벤트·페이지 = 재방문을 만드는 행동 후보 */
+  let aha = [];
+  let baseRet = null; // 전체 재방문 사용자 비중 (PMF 기록에도 사용)
+  if (gaToken) {
+    const RANGE = [{ startDate: '28daysAgo', endDate: 'yesterday' }];
+    {
+      const r = await runReport(gaToken, { dateRanges: RANGE, dimensions: [{ name: 'newVsReturning' }], metrics: [{ name: 'totalUsers' }] });
+      if (r.ok && r.body.rows?.length) {
+        let neu = 0, ret = 0;
+        for (const row of r.body.rows) {
+          const k = row.dimensionValues[0].value, v = Number(row.metricValues[0].value);
+          if (k === 'returning') ret += v; else if (k === 'new') neu += v;
+        }
+        baseRet = ret + neu ? ret / (ret + neu) : null;
+      }
+    }
+    if (baseRet) {
+      for (const [label, dim] of [['이벤트', 'eventName'], ['페이지', 'pagePath']]) {
+        const r = await runReport(gaToken, {
+          dateRanges: RANGE,
+          dimensions: [{ name: dim }, { name: 'newVsReturning' }],
+          metrics: [{ name: 'totalUsers' }],
+          limit: 500,
+        });
+        axisCount += 2;
+        if (!r.ok || !r.body.rows?.length) continue;
+        const agg = {};
+        for (const row of r.body.rows) {
+          const [k, nvr] = row.dimensionValues.map((d) => d.value);
+          const v = Number(row.metricValues[0].value);
+          const a = (agg[k] ||= { new: 0, ret: 0 });
+          if (nvr === 'returning') a.ret += v; else if (nvr === 'new') a.new += v;
+        }
+        for (const [k, a] of Object.entries(agg)) {
+          const tot = a.new + a.ret;
+          if (tot < 20) continue; // 소표본 착시 제외
+          const share = a.ret / tot;
+          if (share >= baseRet * 1.5) aha.push({ type: label, key: k, share, over: share / baseRet, users: tot });
+        }
+      }
+      aha.sort((a, b) => b.over - a.over);
+      aha = aha.slice(0, 8);
+      console.log(`💡 아하 모먼트 후보 (전체 재방문비중 ${(baseRet * 100).toFixed(1)}% 대비 1.5x+·사용자≥20):`);
+      for (const a of aha) console.log(`   ${a.type} ${a.key} — 재방문비중 ${(a.share * 100).toFixed(1)}% (${a.over.toFixed(1)}x · 사용자 ${a.users})`);
+      if (!aha.length) console.log('   후보 없음 (재방문 표본 부족)');
+    }
+  }
+
   /* 3.5) GA4 Admin 설정 점검 — 읽기전용 GET (보관 14개월 · 핵심이벤트) */
   const settingsIssues = [];
   if (gaToken) {
@@ -379,161 +472,80 @@ async function main() {
     }
   }
 
-  /* 7) Microsoft Clarity 30d — UX 행동 데이터 전수 (읽기전용 Data Export API)
-   *    rage click / dead click / quick back / 과도한스크롤 / JS오류 등 UX 문제 지도
-   *    API: https://www.clarity.ms/export-data/api/v1/{projectId}  Bearer JWT */
+  /* 7) Microsoft Clarity — UX 행동 데이터 (읽기전용 Data Export API, 실제 스펙)
+   *    실API: GET https://www.clarity.ms/export-data/api/v1/project-live-insights
+   *           ?numOfDays=1~3 (최대 3일) &dimension1..3 · Bearer 토큰(프로젝트 내장)
+   *    제한: 프로젝트당 10 성공요청/일 → 5콜만 사용 (예산 절반)
+   *    metricName: Traffic/EngagementTime/ScrollDepth/RageClickCount/DeadClickCount/
+   *                ExcessiveScroll/QuickbackClick/ScriptErrorCount/ErrorClickCount 등 */
   const clarity = {};
   if (CLARITY_TOKEN) {
-    console.log('🔍 Clarity 30d UX 스윕 시작...');
-    const clarityFetch = async (endpoint, params = {}) => {
-      const qs = new URLSearchParams(params).toString();
-      const url = `https://www.clarity.ms/export-data/api/v1/${CLARITY_PROJECT}/${endpoint}${qs ? '?' + qs : ''}`;
-      const r = await fetch(url, {
+    console.log(`🔍 Clarity UX 스윕 시작 (최근 3일 · 프로젝트 ${CLARITY_PROJECT})...`);
+    const clarityFetch = async (label, params = {}) => {
+      const qs = new URLSearchParams({ numOfDays: '3', ...params }).toString();
+      const r = await fetch(`https://www.clarity.ms/export-data/api/v1/project-live-insights?${qs}`, {
         headers: { Authorization: `Bearer ${CLARITY_TOKEN}`, Accept: 'application/json' },
       }).catch(() => null);
       if (!r || !r.ok) {
-        const txt = r ? await r.text().catch(() => '') : 'network error';
-        console.warn(`⚠️ Clarity ${endpoint}: ${r ? r.status : 'ERR'} ${txt.slice(0, 200)}`);
+        console.warn(`⚠️ Clarity ${label}: ${r ? r.status : 'ERR'} ${r ? (await r.text().catch(() => '')).slice(0, 150) : ''}`);
         return null;
       }
       return r.json().catch(() => null);
     };
+    const num = (v) => Number(v || 0);
 
-    // 날짜 범위: 최근 30일
-    const cEnd = new Date(); const cStart = new Date(cEnd.getTime() - 30 * 86400000);
-    const cDateRange = { start: cStart.toISOString().slice(0, 10), end: cEnd.toISOString().slice(0, 10) };
-
-    // 7.1) 프로젝트 개요 — 총 세션/PV/사용자
-    const overview = await clarityFetch('metrics', cDateRange);
-    if (overview) {
-      clarity.overview = overview;
-      axisCount += 10;
-      console.log(`🔍 Clarity 개요: ${JSON.stringify(overview).slice(0, 300)}`);
+    // 7.1) 전체 메트릭 (dimension 없음) — Traffic/체류/스크롤/rage/dead/quickback/JS오류 총괄
+    const totals = await clarityFetch('totals');
+    if (Array.isArray(totals)) {
+      clarity.totals = totals;
+      for (const m of totals) {
+        const info = m.information?.[0] || {};
+        axisCount += Object.keys(info).length || 1;
+        if (m.metricName === 'Traffic') {
+          const real = num(info.totalSessionCount) - num(info.totalBotSessionCount);
+          console.log(`🔍 Clarity Traffic(3d): 실세션 ${real} (봇 ${num(info.totalBotSessionCount)} 제외) · 사용자 ${info.distinctUserCount ?? info.distantUserCount ?? '?'} · PV ${info.pagesViews ?? info.PagesViews ?? '?'}`);
+        } else {
+          console.log(`🔍 Clarity ${m.metricName}: ${JSON.stringify(info).slice(0, 160)}`);
+        }
+      }
     }
 
-    // 7.2) 페이지별 메트릭 — URL별 세션/체류/스크롤깊이/rage click
-    const pages = await clarityFetch('pages', cDateRange);
-    if (pages && Array.isArray(pages)) {
-      clarity.pages = pages;
-      axisCount += pages.length * 6;
-      const top5 = pages.slice(0, 5);
-      console.log(`🔍 Clarity 페이지 ${pages.length}개:`);
-      for (const p of top5) console.log(`   ${p.url || p.page || '?'} — 세션 ${p.sessions || p.totalSessions || '?'} · rage ${p.rageClicks || p.rage_clicks || 0}`);
+    // 7.2) URL별 — rage/dead/quickback이 어느 페이지에서 나는지 + ★놀쿨 프로젝트 분리 검증
+    const byUrl = await clarityFetch('URL별', { dimension1: 'URL' });
+    if (Array.isArray(byUrl)) {
+      clarity.byUrl = byUrl;
+      const urls = new Set();
+      for (const m of byUrl) {
+        const rows = m.information || [];
+        axisCount += rows.length;
+        for (const row of rows) if (row.URL || row.Url || row.url) urls.add(row.URL || row.Url || row.url);
+        if (/RageClick|DeadClick|Quickback|ScriptError|ErrorClick|ExcessiveScroll/i.test(m.metricName)) {
+          const top = rows.slice().sort((a, b) => num(b.sessionsCount ?? b.subTotal) - num(a.sessionsCount ?? a.subTotal)).slice(0, 5);
+          for (const t of top) console.log(`🔍 Clarity ${m.metricName}: ${t.URL || t.Url || t.url || '?'} — 세션 ${t.sessionsCount ?? t.subTotal ?? '?'}`);
+          const pick = (keys, obj) => { for (const k of keys) if (obj[k] != null) return obj[k]; };
+          clarity[m.metricName] = rows.map((r2) => ({ url: r2.URL || r2.Url || r2.url, n: num(pick(['sessionsCount', 'subTotal'], r2)) }));
+        }
+      }
+      // ★분리 검증 — 응답 URL이 전부 nolcool.com이어야 함 (theassetsquare 교차 0)
+      const foreign = [...urls].filter((u) => !String(u).includes('nolcool.com') && String(u).startsWith('http'));
+      clarity.separationOk = urls.size > 0 && foreign.length === 0;
+      console.log(`🔍 Clarity 프로젝트 분리검증: URL ${urls.size}개 중 놀쿨 외 도메인 ${foreign.length}개 ${clarity.separationOk ? '✅ 놀쿨 전용' : urls.size ? '❌ 교차 의심!' : '(URL 데이터 없음)'}`);
+      if (foreign.length) console.warn(`❌ 놀쿨 외 URL 발견: ${foreign.slice(0, 3).join(', ')}`);
     }
 
-    // 7.3) Rage clicks — 사용자 불만 지점
-    const rage = await clarityFetch('rage-clicks', cDateRange);
-    if (rage && Array.isArray(rage)) {
-      clarity.rageClicks = rage;
-      axisCount += rage.length * 3;
-      console.log(`🔍 Clarity rage click ${rage.length}건:`);
-      for (const r of rage.slice(0, 10)) console.log(`   ${r.url || r.page || '?'} — ${r.selector || r.element || '?'} (${r.count || r.clicks || '?'}회)`);
+    // 7.3~7.5) Device / OS / Source 별 (각 1콜, 총 5콜 = 예산 10의 절반)
+    for (const [label, dim] of [['Device', 'Device'], ['OS', 'OS'], ['Source', 'Source']]) {
+      const data = await clarityFetch(label, { dimension1: dim });
+      if (Array.isArray(data)) {
+        clarity[`by${label}`] = data;
+        const traffic = data.find((m) => m.metricName === 'Traffic');
+        const rows = traffic?.information || [];
+        axisCount += data.reduce((s, m) => s + (m.information?.length || 0), 0);
+        console.log(`🔍 Clarity ${label}별: ${rows.slice(0, 5).map((r2) => `${r2[dim] || '?'}=${r2.totalSessionCount ?? '?'}`).join(' · ')}`);
+      }
     }
-
-    // 7.4) Dead clicks — 반응 없는 요소 클릭
-    const dead = await clarityFetch('dead-clicks', cDateRange);
-    if (dead && Array.isArray(dead)) {
-      clarity.deadClicks = dead;
-      axisCount += dead.length * 3;
-      console.log(`🔍 Clarity dead click ${dead.length}건:`);
-      for (const d of dead.slice(0, 10)) console.log(`   ${d.url || d.page || '?'} — ${d.selector || d.element || '?'} (${d.count || d.clicks || '?'}회)`);
-    }
-
-    // 7.5) Quick backs — 빠른 이탈
-    const qb = await clarityFetch('quick-backs', cDateRange);
-    if (qb && Array.isArray(qb)) {
-      clarity.quickBacks = qb;
-      axisCount += qb.length * 2;
-      console.log(`🔍 Clarity quick back ${qb.length}건:`);
-      for (const q of qb.slice(0, 10)) console.log(`   ${q.url || q.page || '?'} — ${q.count || q.sessions || '?'}회`);
-    }
-
-    // 7.6) Excessive scrolling — 과도한 스크롤 (정보 못 찾음)
-    const es = await clarityFetch('excessive-scrolling', cDateRange);
-    if (es && Array.isArray(es)) {
-      clarity.excessiveScroll = es;
-      axisCount += es.length * 2;
-      console.log(`🔍 Clarity 과도한 스크롤 ${es.length}건:`);
-      for (const e of es.slice(0, 10)) console.log(`   ${e.url || e.page || '?'} — ${e.count || e.sessions || '?'}회`);
-    }
-
-    // 7.7) JavaScript errors — JS 오류
-    const jsErr = await clarityFetch('javascript-errors', cDateRange);
-    if (jsErr && Array.isArray(jsErr)) {
-      clarity.jsErrors = jsErr;
-      axisCount += jsErr.length * 3;
-      console.log(`🔍 Clarity JS 오류 ${jsErr.length}건:`);
-      for (const e of jsErr.slice(0, 10)) console.log(`   ${e.message || e.error || '?'} — ${e.count || e.sessions || '?'}회 @ ${e.url || e.page || '?'}`);
-    }
-
-    // 7.8) 디바이스별 세션 분석
-    const devices = await clarityFetch('devices', cDateRange);
-    if (devices && Array.isArray(devices)) {
-      clarity.devices = devices;
-      axisCount += devices.length * 4;
-      console.log(`🔍 Clarity 디바이스: ${devices.map((d) => `${d.device || d.name || '?'}=${d.sessions || d.totalSessions || '?'}`).join(' · ')}`);
-    }
-
-    // 7.9) 브라우저별 세션
-    const browsers = await clarityFetch('browsers', cDateRange);
-    if (browsers && Array.isArray(browsers)) {
-      clarity.browsers = browsers;
-      axisCount += browsers.length * 3;
-      console.log(`🔍 Clarity 브라우저: ${browsers.slice(0, 5).map((b) => `${b.browser || b.name || '?'}=${b.sessions || '?'}`).join(' · ')}`);
-    }
-
-    // 7.10) OS별 세션
-    const os = await clarityFetch('operating-systems', cDateRange);
-    if (os && Array.isArray(os)) {
-      clarity.os = os;
-      axisCount += os.length * 3;
-      console.log(`🔍 Clarity OS: ${os.slice(0, 5).map((o) => `${o.os || o.name || '?'}=${o.sessions || '?'}`).join(' · ')}`);
-    }
-
-    // 7.11) 국가별 세션
-    const countries = await clarityFetch('countries', cDateRange);
-    if (countries && Array.isArray(countries)) {
-      clarity.countries = countries;
-      axisCount += countries.length * 3;
-      console.log(`🔍 Clarity 국가: ${countries.slice(0, 5).map((c) => `${c.country || c.name || '?'}=${c.sessions || '?'}`).join(' · ')}`);
-    }
-
-    // 7.12) 스크롤 깊이 분포
-    const scrollDepth = await clarityFetch('scroll-depth', cDateRange);
-    if (scrollDepth) {
-      clarity.scrollDepth = scrollDepth;
-      axisCount += 5;
-      console.log(`🔍 Clarity 스크롤 깊이: ${JSON.stringify(scrollDepth).slice(0, 200)}`);
-    }
-
-    // 7.13) 세션 재생 요약 — 녹화 수/평균 길이
-    const recordings = await clarityFetch('recordings', { ...cDateRange, size: 10 });
-    if (recordings) {
-      clarity.recordings = recordings;
-      axisCount += 5;
-      console.log(`🔍 Clarity 녹화: ${JSON.stringify(recordings).slice(0, 200)}`);
-    }
-
-    // 7.14) 사용자 행동 흐름 요약
-    const funnel = await clarityFetch('popular-pages', cDateRange);
-    if (funnel && Array.isArray(funnel)) {
-      clarity.popularPages = funnel;
-      axisCount += funnel.length * 2;
-      console.log(`🔍 Clarity 인기 페이지 ${funnel.length}개: ${funnel.slice(0, 5).map((f) => f.url || f.page || '?').join(' · ')}`);
-    }
-
-    // 7.15) 리퍼러 분석
-    const referrers = await clarityFetch('referrers', cDateRange);
-    if (referrers && Array.isArray(referrers)) {
-      clarity.referrers = referrers;
-      axisCount += referrers.length * 3;
-      console.log(`🔍 Clarity 리퍼러: ${referrers.slice(0, 5).map((r) => `${r.referrer || r.source || '?'}=${r.sessions || '?'}`).join(' · ')}`);
-    }
-
-    const clarityAxes = Object.values(clarity).reduce((sum, v) => sum + (Array.isArray(v) ? v.length : 1), 0);
-    console.log(`🔍 Clarity 총 데이터 포인트: ${clarityAxes}개`);
   } else {
-    console.log('⏭️ CLARITY_API_TOKEN 없음 — Clarity 스윕 스킵');
+    console.log('⏭️ CLARITY_API_TOKEN 없음 — Clarity 스윕 스킵 (Clarity 놀쿨 프로젝트 Settings→Data Export→토큰 생성 후 GH Secret CLARITY_API_TOKEN 등록)');
   }
 
   /* 8) 모델 자동 업그레이드 체크 — Anthropic API로 최신 최고등급 모델 감지
@@ -616,23 +628,34 @@ async function main() {
   if (!resolved.length) { console.log('✅ 해결 조치 0건 — 메일 침묵 (사장님 정책)'); return; }
   if (!RESEND_API_KEY) { console.log('RESEND_API_KEY 없음 — 메일 스킵'); return; }
 
-  // Clarity UX 문제 요약 (rage click/dead click/JS오류 등 실수치가 있으면 메일에 첨부)
+  // Clarity UX 문제 요약 (rage/dead/quickback/JS오류 실수치가 있으면 메일에 첨부)
   let clarityHtml = '';
-  if (clarity.rageClicks?.length || clarity.deadClicks?.length || clarity.jsErrors?.length || clarity.quickBacks?.length) {
+  {
     const sections = [];
-    if (clarity.rageClicks?.length) sections.push(`<b>Rage Click</b> ${clarity.rageClicks.length}건 — ${clarity.rageClicks.slice(0, 3).map((r) => esc(r.url || r.page || '?')).join(', ')}`);
-    if (clarity.deadClicks?.length) sections.push(`<b>Dead Click</b> ${clarity.deadClicks.length}건 — ${clarity.deadClicks.slice(0, 3).map((d) => esc(d.url || d.page || '?')).join(', ')}`);
-    if (clarity.jsErrors?.length) sections.push(`<b>JS Error</b> ${clarity.jsErrors.length}건 — ${clarity.jsErrors.slice(0, 3).map((e) => esc(e.message || e.error || '?')).join(', ')}`);
-    if (clarity.quickBacks?.length) sections.push(`<b>Quick Back</b> ${clarity.quickBacks.length}건 — ${clarity.quickBacks.slice(0, 3).map((q) => esc(q.url || q.page || '?')).join(', ')}`);
-    if (clarity.excessiveScroll?.length) sections.push(`<b>Excessive Scroll</b> ${clarity.excessiveScroll.length}건`);
-    clarityHtml = `<h3>🔍 Clarity UX 행동 분석 (30일)</h3><ul>${sections.map((s) => `<li style="margin:6px 0">${s}</li>`).join('')}</ul>`;
+    const CL = [['RageClickCount', 'Rage Click'], ['DeadClickCount', 'Dead Click'], ['QuickbackClick', 'Quick Back'], ['ScriptErrorCount', 'JS Error'], ['ExcessiveScroll', 'Excessive Scroll']];
+    for (const [key, label] of CL) {
+      const rows = (clarity[key] || []).filter((r2) => r2.n > 0);
+      if (rows.length) sections.push(`<b>${label}</b> 세션 ${rows.reduce((s, r2) => s + r2.n, 0)} — ${rows.slice(0, 3).map((r2) => esc(String(r2.url || '?').replace(BASE, ''))).join(', ')}`);
+    }
+    if (sections.length) clarityHtml = `<h3>🔍 Clarity UX 행동 (최근 3일)</h3><ul>${sections.map((s) => `<li style="margin:6px 0">${s}</li>`).join('')}</ul>`;
   }
+
+  // ★PMF 기록 — 매달 메일에 같은 지표를 남겨 메일 히스토리 자체가 월별 PMF 추이가 되게 함
+  const pmfRows = [];
+  if (ga) pmfRows.push(`페이지/세션 ${ga.pps.toFixed(2)} · 이탈 ${(ga.bounce * 100).toFixed(1)}% · 평균체류 ${Math.round(ga.dur)}초 (세션 ${ga.sessions})`);
+  if (baseRet != null) pmfRows.push(`재방문 사용자 비중 ${(baseRet * 100).toFixed(1)}%`);
+  if (retention) pmfRows.push(`주간 코호트 리텐션: ${retention.curve.map((v, i) => `W${i} ${v == null ? '-' : v.toFixed(1) + '%'}`).join(' → ')} · 평탄화 ${retention.flatWeek != null ? `W${retention.flatWeek}≈${retention.flatPct.toFixed(1)}%` : '미도달'}`);
+  if (aha.length) pmfRows.push(`아하 모먼트 후보: ${aha.slice(0, 3).map((a) => `${a.key}(재방문 ${(a.share * 100).toFixed(0)}%·${a.over.toFixed(1)}x)`).join(' · ')}`);
+  const pmfHtml = pmfRows.length
+    ? `<h3>📈 PMF 기록 (월별 히스토리)</h3><ul>${pmfRows.map((s) => `<li style="margin:6px 0">${esc(s)}</li>`).join('')}</ul>`
+    : '';
 
   const html = `<div style="font-family:sans-serif;max-width:720px;margin:0 auto;padding:20px;color:#222">
     <h2 style="color:#059669">✅ [놀쿨] 월간 전수점검 — 문제 자동 해결 보고</h2>
     <p style="color:#666;font-size:13px">${kstNow()} · GSC/GA4/Clarity API 28~30일 전수 (venue ${venues.length}곳 · ${axisCount}축 분석)</p>
     <h3>🛠️ 이번 달 자동 해결한 것</h3>
     <ul>${resolved.map((s) => `<li style="margin:6px 0">${esc(s)}</li>`).join('')}</ul>
+    ${pmfHtml}
     ${clarityHtml}
     <p style="color:#9CA3AF;font-size:11px;margin-top:20px">매달 30일 KST 07:00 자동. 해결한 문제가 있을 때만 발송, 없으면 침묵. ${axisCount}축 GA4+GSC+Clarity 전수.</p>
   </div>`;

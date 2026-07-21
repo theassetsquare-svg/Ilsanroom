@@ -1,0 +1,14 @@
+name: Clarity Smoke (dispatch 전용 — 토큰·놀쿨 분리 1콜 확인, 메일 0)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Clarity Data Export 1콜 + 놀쿨 프로젝트 분리 검증
+        run: node scripts/clarity-smoke.mjs
+        env:
+          CLARITY_API_TOKEN: ${{ secrets.CLARITY_API_TOKEN }}
