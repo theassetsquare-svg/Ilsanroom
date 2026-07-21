@@ -140,6 +140,7 @@ async function main() {
 
   if (site.sessions < MIN_TOTAL_SESSIONS) {
     console.log(`⏳ 데이터 축적중 (세션 ${site.sessions} < ${MIN_TOTAL_SESSIONS}) — 처방 보류, 메일 미발송`);
+    console.log('[GA4_DWELL_FINDINGS_JSON] ' + JSON.stringify({ ts: new Date().toISOString(), score, sessions: site.sessions, findings: [] }));
     return;
   }
 
@@ -163,6 +164,18 @@ async function main() {
     .sort((a, b) => b.lift - a.lift);
 
   console.log(`🔧 처방 대상 페이지 ${cand.length} · 1순위 ${cand[0]?.path || '-'}`);
+
+  // 21:20 루틴(trig_01V2wZ) 회수용 기계판독 1줄 — 읽기전용 유지(로그 출력만).
+  console.log('[GA4_DWELL_FINDINGS_JSON] ' + JSON.stringify({
+    ts: new Date().toISOString(),
+    score, prevScore: site.prevScore, sessions: site.sessions,
+    bounce: Number((site.bounce * 100).toFixed(1)), engage: Number((site.engage * 100).toFixed(1)),
+    findings: cand.slice(0, 10).map((p) => ({
+      path: p.path, sessions: p.sessions, bounce: Number((p.bounce * 100).toFixed(0)),
+      engage: Number((p.engage * 100).toFixed(0)), dwellSec: Number(p.dwell.toFixed(0)),
+      scrollPct: Number((p.scrollRate * 100).toFixed(0)), lift: Number(p.lift.toFixed(1)), rx: p.rx,
+    })),
+  }));
 
   const siteFail = score < TARGET_SCORE;
   if (!siteFail && cand.length === 0) {
