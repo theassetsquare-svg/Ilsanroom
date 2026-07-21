@@ -36,6 +36,8 @@ function isSquareSlot(slug: string, n: number): boolean {
 export default function VenueGallery({ slug, name }: VenueGalleryProps) {
   const [failed, setFailed] = useState<Set<number>>(new Set());
   const [activeIdx, setActiveIdx] = useState(0);
+  /* 데드클릭 근절(Clarity 실측: 사진 탭 무반응) — 사진 탭 = 전체화면 확대 */
+  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
   const scrollerRef = useRef<HTMLDivElement | null>(null);
 
   // 시즌29 — 이미지 없는 venue는 갤러리 자체를 skip. 있는 venue는 manifest 슬롯만 렌더.
@@ -77,12 +79,90 @@ export default function VenueGallery({ slug, name }: VenueGalleryProps) {
     if (slide) slide.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
   };
 
+  /* 라이트박스 열린 동안 ESC 닫기 + 배경 스크롤 잠금 (cleanup 필수) */
+  useEffect(() => {
+    if (lightboxIdx === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setLightboxIdx(null);
+    };
+    window.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [lightboxIdx]);
+
+  const lightbox = lightboxIdx !== null && renderSlots[lightboxIdx] !== undefined && (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${name} 사진 크게 보기`}
+      onClick={() => setLightboxIdx(null)}
+    >
+      <img
+        src={getSrc(slug, renderSlots[lightboxIdx])}
+        alt={`${name} 매장 사진 ${renderSlots[lightboxIdx]} 확대`}
+        className="max-h-[92vh] max-w-[96vw] object-contain"
+        onClick={(e) => e.stopPropagation()}
+      />
+      <button
+        type="button"
+        aria-label="닫기"
+        onClick={() => setLightboxIdx(null)}
+        className="absolute right-3 top-3 z-10 flex items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/30"
+        style={{ width: 44, height: 44 }}
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+      {renderSlots.length > 1 && (
+        <>
+          <button
+            type="button"
+            aria-label="이전 사진"
+            onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx - 1 + renderSlots.length) % renderSlots.length); }}
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/30"
+            style={{ width: 44, height: 44 }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            aria-label="다음 사진"
+            onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx + 1) % renderSlots.length); }}
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/30"
+            style={{ width: 44, height: 44 }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-white/15 px-3 py-1 text-[12px] font-bold text-white">
+            {lightboxIdx + 1} / {renderSlots.length}
+          </div>
+        </>
+      )}
+    </div>
+  );
+
   if (!isCarousel) {
     return (
-      <div className="my-8">
+      <div className="my-8" id="venue-gallery">
         <div className="grid gap-3 sm:grid-cols-2">
-          {renderSlots.map((n) => (
-            <div key={n} className="overflow-hidden rounded-xl">
+          {renderSlots.map((n, i) => (
+            <button
+              key={n}
+              type="button"
+              aria-label={`${name} 매장 사진 ${n} 크게 보기`}
+              onClick={() => setLightboxIdx(i)}
+              className="block w-full cursor-zoom-in overflow-hidden rounded-xl p-0 text-left"
+            >
               <img
                 src={getSrc(slug, n)}
                 alt={`${name} 매장 사진 ${n}`}
@@ -93,15 +173,16 @@ export default function VenueGallery({ slug, name }: VenueGalleryProps) {
                 className="w-full object-cover"
                 style={{ aspectRatio: isSquareSlot(slug, n) ? '1/1' : '3/2' }}
               />
-            </div>
+            </button>
           ))}
         </div>
+        {lightbox}
       </div>
     );
   }
 
   return (
-    <div className="my-8" data-testid="venue-photo-carousel">
+    <div className="my-8" id="venue-gallery" data-testid="venue-photo-carousel">
       {/* 가로 스크롤 carousel — CSS scroll-snap, 모바일 swipe 자동 지원 */}
       <div className="relative">
         <div
@@ -112,10 +193,13 @@ export default function VenueGallery({ slug, name }: VenueGalleryProps) {
           aria-label={`${name} 매장 사진 ${renderSlots.length}장`}
         >
           {renderSlots.map((n, i) => (
-            <div
+            <button
               key={n}
+              type="button"
               data-slide-idx={i}
-              className="shrink-0 w-full snap-start overflow-hidden rounded-xl"
+              aria-label={`${name} 매장 사진 ${n} 크게 보기`}
+              onClick={() => setLightboxIdx(i)}
+              className="block shrink-0 w-full snap-start cursor-zoom-in overflow-hidden rounded-xl p-0 text-left"
             >
               <img
                 src={getSrc(slug, n)}
@@ -127,7 +211,7 @@ export default function VenueGallery({ slug, name }: VenueGalleryProps) {
                 className="w-full object-cover"
                 style={{ aspectRatio: isSquareSlot(slug, n) ? '1/1' : '3/2' }}
               />
-            </div>
+            </button>
           ))}
         </div>
 
@@ -181,6 +265,7 @@ export default function VenueGallery({ slug, name }: VenueGalleryProps) {
           {activeIdx + 1} / {renderSlots.length}
         </div>
       </div>
+      {lightbox}
     </div>
   );
 }

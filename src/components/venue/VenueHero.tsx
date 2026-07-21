@@ -65,7 +65,9 @@ export default function VenueHero({
           fetchPriority="high"
           decoding="async"
           onError={handleImageError}
-          className="absolute inset-0 h-full w-full object-cover"
+          /* 데드클릭 근절 — 히어로 사진 탭 = 아래 갤러리로 스크롤 (탭 무반응 0) */
+          onClick={() => document.getElementById('venue-gallery')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
+          className="absolute inset-0 h-full w-full cursor-pointer object-cover"
         />
       )}
       {/* Gradient overlay — always shown, heavier when image exists */}
