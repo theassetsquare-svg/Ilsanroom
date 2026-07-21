@@ -520,10 +520,12 @@ async function main() {
         axisCount += rows.length;
         for (const row of rows) if (row.URL || row.Url || row.url) urls.add(row.URL || row.Url || row.url);
         if (/RageClick|DeadClick|Quickback|ScriptError|ErrorClick|ExcessiveScroll/i.test(m.metricName)) {
-          const top = rows.slice().sort((a, b) => num(b.sessionsCount ?? b.subTotal) - num(a.sessionsCount ?? a.subTotal)).slice(0, 5);
-          for (const t of top) console.log(`🔍 Clarity ${m.metricName}: ${t.URL || t.Url || t.url || '?'} — 세션 ${t.sessionsCount ?? t.subTotal ?? '?'}`);
-          const pick = (keys, obj) => { for (const k of keys) if (obj[k] != null) return obj[k]; };
-          clarity[m.metricName] = rows.map((r2) => ({ url: r2.URL || r2.Url || r2.url, n: num(pick(['sessionsCount', 'subTotal'], r2)) }));
+          // ★필드 실측 스펙 (2026-07-22 거짓양성 근본수정): sessionsCount=그 URL 총세션(문제수 아님!),
+          //   문제세션 = round(sessionsCount × sessionsWithMetricPercentage/100), 문제 이벤트수 = subTotal.
+          const probN = (r2) => { const pct = num(r2.sessionsWithMetricPercentage); return pct > 0 ? Math.max(1, Math.round((num(r2.sessionsCount) * pct) / 100)) : num(r2.subTotal) > 0 ? 1 : 0; };
+          const top = rows.slice().sort((a, b) => probN(b) - probN(a)).filter((r2) => probN(r2) > 0).slice(0, 5);
+          for (const t of top) console.log(`🔍 Clarity ${m.metricName}: ${t.URL || t.Url || t.url || '?'} — 문제세션 ${probN(t)} (이벤트 ${t.subTotal ?? '?'} / 총세션 ${t.sessionsCount ?? '?'})`);
+          clarity[m.metricName] = rows.map((r2) => ({ url: r2.URL || r2.Url || r2.url, n: probN(r2) }));
         }
       }
       // ★분리 검증 — 응답 URL이 전부 nolcool.com이어야 함 (theassetsquare 교차 0)

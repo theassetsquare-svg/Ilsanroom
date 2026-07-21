@@ -34,7 +34,6 @@ if (!TOKEN) { console.log('⏭️ CLARITY_API_TOKEN 없음 — 스킵'); process
 const kstNow = () => new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 19) + ' KST';
 const num = (v) => Number(v || 0);
 const urlOf = (row) => row.URL || row.Url || row.url || '';
-const cnt = (row) => num(row.sessionsCount ?? row.subTotal ?? row.totalSessionCount);
 
 // UTC 29일 = 월간 스윕(5콜)과 같은 쿼터일 → 일일은 2콜로 축소
 const utcDay = new Date().getUTCDate();
@@ -59,10 +58,23 @@ async function clarityFetch(label, days, params = {}) {
 
 const PROBLEM_METRICS = /RageClick|DeadClick|ErrorClick|Quickback|ScriptError|ExcessiveScroll/i;
 
-/** URL별 응답 → { pageSessions: Map<url,n>, problems: Map<metric, Map<url,n>> } + 분리검증 URL 집합 */
+/** ★필드 실측 스펙 (2026-07-22 거짓양성 근본수정 — sessionsCount는 문제수가 아님!):
+ *  문제 메트릭 row = { URL, sessionsCount(그 URL 총세션), sessionsWithMetricPercentage(문제세션 비율%), subTotal(문제 이벤트수) }
+ *  → 문제세션 = round(sessionsCount × pct/100), 문제 이벤트 = subTotal. sessionsCount를 그대로 쓰면
+ *    "트래픽 많은 페이지 = 문제 페이지" 거짓양성 (totals의 ScriptError subTotal=0인데 URL별 7건 검출됐던 사고). */
+function problemOf(row) {
+  const total = num(row.sessionsCount ?? row.totalSessionCount);
+  const pct = num(row.sessionsWithMetricPercentage);
+  const events = num(row.subTotal);
+  const sessions = pct > 0 ? Math.max(1, Math.round((total * pct) / 100)) : 0;
+  return { sessions, events, total };
+}
+
+/** URL별 응답 → { pageSessions: Map<url,n>, problems: Map<metric, Map<url,{sessions,events}>> } + 분리검증 URL 집합 */
 function parseByUrl(data, allUrls) {
   const pageSessions = new Map();
   const problems = new Map();
+  const rawSample = new Map();
   for (const m of data) {
     for (const row of m.information || []) {
       const u = urlOf(row);
@@ -71,7 +83,12 @@ function parseByUrl(data, allUrls) {
       if (m.metricName === 'Traffic') pageSessions.set(u, num(row.totalSessionCount) - num(row.totalBotSessionCount));
       else if (PROBLEM_METRICS.test(m.metricName)) {
         if (!problems.has(m.metricName)) problems.set(m.metricName, new Map());
-        if (cnt(row) > 0) problems.get(m.metricName).set(u, cnt(row));
+        const p = problemOf(row);
+        if (p.sessions > 0 || p.events > 0) {
+          problems.get(m.metricName).set(u, p);
+          // 필드 검증용 원시 row 1개 로그 (거짓양성 재발 시 즉시 판별)
+          if (!rawSample.has(m.metricName)) { rawSample.set(m.metricName, 1); console.log(`🧾 raw ${m.metricName}: ${JSON.stringify(row).slice(0, 200)}`); }
+        }
       }
     }
   }
@@ -127,8 +144,9 @@ async function main() {
   // 문제 판정 (착시 컷)
   if (today) {
     for (const [metric, byUrl] of today.problems) {
-      for (const [u, n] of byUrl) {
-        const ps = today.pageSessions.get(u) ?? 0;
+      for (const [u, p] of byUrl) {
+        const ps = today.pageSessions.get(u) ?? p.total ?? 0;
+        const n = p.sessions; // ★문제세션 (pct 기반) — 총세션 아님
         const isScript = /ScriptError/i.test(metric);
         const pass =
           (isScript && n >= 2 && ps >= 5) ||
@@ -136,13 +154,13 @@ async function main() {
           (/ExcessiveScroll/i.test(metric) && n >= 5 && ps >= 10) ||
           (/RageClick|DeadClick|ErrorClick/i.test(metric) && n >= 3 && ps >= 10);
         if (!pass) continue;
-        const baseN = base?.problems.get(metric)?.get(u) ?? null;
-        const surge = baseN != null && n > (baseN / 3) * 2 && n >= 3;
-        findings.push({ metric, url: u, sessions: n, pageSessions: ps, surge });
+        const baseP = base?.problems.get(metric)?.get(u) ?? null;
+        const surge = baseP != null && n > (baseP.sessions / 3) * 2 && n >= 3;
+        findings.push({ metric, url: u, sessions: n, events: p.events, pageSessions: ps, surge });
       }
     }
     findings.sort((a, b) => b.sessions - a.sessions);
-    for (const f of findings) console.log(`🚨 ${f.metric}: ${f.url} — 문제세션 ${f.sessions}/${f.pageSessions}${f.surge ? ' ⚡급증(3d평균 2배↑)' : ''}`);
+    for (const f of findings) console.log(`🚨 ${f.metric}: ${f.url} — 문제세션 ${f.sessions}/${f.pageSessions} (이벤트 ${f.events})${f.surge ? ' ⚡급증(3d평균 2배↑)' : ''}`);
     if (!findings.length) console.log('✅ 착시 컷 통과 문제 0건 — 루틴 침묵 예정 (메일 0)');
   } else {
     console.log('⏭️ URL별 데이터 없음 — 판정 스킵');
