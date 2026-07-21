@@ -15,7 +15,7 @@
  *   7) "청주클럽" body 밀도 ≤3.5%
  *   8) "청주클럽" body 등장 ≥5회
  *   9) 후킹 5축 ≥1축 (title 또는 desc)
- *  10) 디테일 토큰 (중앙공원 북문로 2분·직경 2미터 미러볼·충북대 버스 4정거장·홍대 DJ 격주·저먼 테크노) 모두 등장
+ *  10) 디테일 토큰 (중앙공원 분수대 북문로 2분·직경 2미터 미러볼·충북대 버스 4정거장·홍대 DJ 격주·저먼 테크노) 모두 등장
  *  11) "청주" + "클럽" 동시 흡수 (검색 분리어 보조)
  *     — 청주 region 첫 클럽 venue (시즌149)
  */
@@ -26,7 +26,8 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/clubs/cheongju/cheongju-supermoon/';
 const KEYWORD = '청주클럽';
-const DETAIL_TOKENS = ['중앙공원 북문로 2분', '직경 2미터 미러볼', '충북대 버스 4정거장', '홍대 DJ 격주', '저먼 테크노'];
+/* 시즌178 — 5c4cec74 CTR 처방으로 title이 "북문로 2분"으로 바뀜(중앙공원은 desc "중앙공원 분수대"에 유지). 토큰을 라이브 실문구에 정렬 */
+const DETAIL_TOKENS = ['중앙공원 분수대 북문로 2분', '직경 2미터 미러볼', '충북대 버스 4정거장', '홍대 DJ 격주', '저먼 테크노'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */
