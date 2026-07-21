@@ -1,7 +1,21 @@
 {
-  "generated_at": "2026-07-21T15:03:10.766Z",
+  "generated_at": "2026-07-21T18:06:54.779Z",
   "window_hours": 24,
   "items": [
+    {
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
+      "category": "night",
+      "region": "부산",
+      "views_24h": 3
+    },
     {
       "path": "/nights/daejeononenight",
       "title": "대전원나이트",
@@ -10,10 +24,10 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
+      "path": "/nights/cheongjuhobaknight",
+      "title": "청주호박나이트",
       "category": "night",
-      "region": "대전",
+      "region": "청주",
       "views_24h": 2
     },
     {
@@ -24,24 +38,10 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
-      "views_24h": 2
-    },
-    {
       "path": "/nights/bundangpongpongnight",
       "title": "분당퐁퐁나이트",
       "category": "night",
       "region": "분당",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
-      "category": "night",
-      "region": "부산",
       "views_24h": 2
     },
     {
@@ -59,13 +59,6 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/cheongjuhobaknight",
-      "title": "청주호박나이트",
-      "category": "night",
-      "region": "청주",
-      "views_24h": 1
-    },
-    {
       "path": "/nights/gwangjumgmnight",
       "title": "광주MGM나이트",
       "category": "night",
@@ -77,6 +70,13 @@
       "title": "강남줄리아나나이트",
       "category": "night",
       "region": "강남",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
+      "category": "night",
+      "region": "강서",
       "views_24h": 1
     },
     {
