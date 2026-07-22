@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-21T18:06:54.779Z",
+  "generated_at": "2026-07-22T05:38:24.636Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,6 +7,34 @@
       "title": "대전봉명나이트",
       "category": "night",
       "region": "대전",
+      "views_24h": 4
+    },
+    {
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 4
+    },
+    {
+      "path": "/nights/cheongjuhobaknight",
+      "title": "청주호박나이트",
+      "category": "night",
+      "region": "청주",
+      "views_24h": 4
+    },
+    {
+      "path": "/nights/gangnamjuliananight",
+      "title": "강남줄리아나나이트",
+      "category": "night",
+      "region": "강남",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/bundangpongpongnight",
+      "title": "분당퐁퐁나이트",
+      "category": "night",
+      "region": "분당",
       "views_24h": 3
     },
     {
@@ -17,20 +45,6 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/cheongjuhobaknight",
-      "title": "청주호박나이트",
-      "category": "night",
-      "region": "청주",
-      "views_24h": 2
-    },
-    {
       "path": "/nights/daejeonhangukgwannight",
       "title": "대전한국관나이트",
       "category": "night",
@@ -38,73 +52,59 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/bundangpongpongnight",
-      "title": "분당퐁퐁나이트",
-      "category": "night",
-      "region": "분당",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/cheongdamh2onight",
-      "title": "청담H2O나이트",
-      "category": "night",
-      "region": "청담",
-      "views_24h": 2
-    },
-    {
-      "path": "/clubs/cheongju/cheongju-supermoon",
-      "title": "청주클럽 슈퍼문",
-      "category": "club",
-      "region": "청주",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/gwangjumgmnight",
-      "title": "광주MGM나이트",
-      "category": "night",
-      "region": "광주",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gangnamjuliananight",
-      "title": "강남줄리아나나이트",
-      "category": "night",
-      "region": "강남",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/seongnamgukbingwannight",
-      "title": "성남국빈관나이트",
-      "category": "night",
-      "region": "성남",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/busanyeonsandongmulnight",
-      "title": "부산연산동물나이트",
-      "category": "night",
-      "region": "부산 연산동",
-      "views_24h": 1
-    },
-    {
       "path": "/nights/gildongchancenight",
       "title": "길동찬스나이트",
       "category": "night",
       "region": "길동",
+      "views_24h": 2
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/nowonhobaknight",
+      "title": "노원호박나이트",
+      "category": "night",
+      "region": "노원",
       "views_24h": 1
     },
     {
-      "path": "/nights/seongnamshampoonight",
-      "title": "성남샴푸나이트",
+      "path": "/nights/daejeonsevennight",
+      "title": "대전세븐나이트",
       "category": "night",
-      "region": "성남",
+      "region": "대전",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/daegubabambanight",
+      "title": "대구바밤바나이트",
+      "category": "night",
+      "region": "대구",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/daeguhobaknight",
+      "title": "대구호박나이트",
+      "category": "night",
+      "region": "대구",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/sinlimgrandprixnight",
+      "title": "신림그랑프리나이트",
+      "category": "night",
+      "region": "신림",
+      "views_24h": 1
+    },
+    {
+      "path": "/hoppa/busanhoppa-menz",
+      "title": "부산호빠 맨즈",
+      "category": "hoppa",
+      "region": "부산",
       "views_24h": 1
     }
   ]
