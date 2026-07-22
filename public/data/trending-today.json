@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-22T15:03:47.314Z",
+  "generated_at": "2026-07-22T18:00:15.464Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,7 +7,7 @@
       "title": "대전봉명나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 6
+      "views_24h": 5
     },
     {
       "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
@@ -17,18 +17,18 @@
       "views_24h": 5
     },
     {
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 4
+    },
+    {
       "path": "/nights/cheongjuhobaknight",
       "title": "청주호박나이트",
       "category": "night",
       "region": "청주",
-      "views_24h": 5
-    },
-    {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
-      "category": "night",
-      "region": "부산",
-      "views_24h": 3
+      "views_24h": 4
     },
     {
       "path": "/nights/gangnamjuliananight",
@@ -59,6 +59,13 @@
       "views_24h": 3
     },
     {
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
+      "category": "night",
+      "region": "부산",
+      "views_24h": 2
+    },
+    {
       "path": "/clubs/bucheon/bucheonclub-paragon",
       "title": "부천클럽 파라곤",
       "category": "club",
@@ -70,13 +77,6 @@
       "title": "독산동국빈관나이트",
       "category": "night",
       "region": "독산",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
       "views_24h": 2
     },
     {
