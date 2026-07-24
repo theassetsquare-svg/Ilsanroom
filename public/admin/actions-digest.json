@@ -1,13 +1,32 @@
 {
-  "generated_at": "2026-07-23T01:49:20.063Z",
+  "generated_at": "2026-07-24T01:45:08.289Z",
   "window_hours": 24,
-  "total_runs": 192,
-  "total_fail": 0,
+  "total_runs": 195,
+  "total_fail": 1,
   "workflows": [
+    {
+      "name": "Nightly Full Audit",
+      "total": 1,
+      "success": 0,
+      "failure": 1,
+      "in_progress": 0,
+      "last_fail": {
+        "created_at": "2026-07-23T19:53:35Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/30039827815"
+      }
+    },
     {
       "name": "24h Site Monitoring",
       "total": 14,
       "success": 14,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Activity Alert (15min)",
+      "total": 13,
+      "success": 13,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -21,17 +40,9 @@
       "last_fail": null
     },
     {
-      "name": "Activity Alert (15min)",
+      "name": "Venue Reports Daily",
       "total": 12,
       "success": 12,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Venue Reports Daily",
-      "total": 11,
-      "success": 11,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -61,6 +72,14 @@
       "last_fail": null
     },
     {
+      "name": "Daily Regression Digest (KST 09:00)",
+      "total": 2,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 1,
+      "last_fail": null
+    },
+    {
       "name": "24h Auto Build + SEO Notify",
       "total": 2,
       "success": 2,
@@ -74,14 +93,6 @@
       "success": 2,
       "failure": 0,
       "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Daily Regression Digest (KST 09:00)",
-      "total": 1,
-      "success": 0,
-      "failure": 0,
-      "in_progress": 1,
       "last_fail": null
     },
     {
@@ -245,7 +256,7 @@
       "last_fail": null
     },
     {
-      "name": "Daejeonsevennight Keyword Watch (대전세븐나이트 2 키워드 24h)",
+      "name": "Dwell Content Audit (체류 10분 보장 본문 분량)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -253,7 +264,7 @@
       "last_fail": null
     },
     {
-      "name": "Dwell Content Audit (체류 10분 보장 본문 분량)",
+      "name": "Daejeonsevennight Keyword Watch (대전세븐나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -415,7 +426,7 @@
     {
       "name": "All Pages Quality Watch (5축 — anchor 200/img alt/H1/lang+viewport/canonical)",
       "total": 1,
-      "success": 1,
+      "success": 0,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -454,14 +465,6 @@
     },
     {
       "name": "Lighthouse Daily (PC + Mobile)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Nightly Full Audit",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -573,7 +576,7 @@
       "last_fail": null
     },
     {
-      "name": "Itaewonclub Maid Keyword Watch (이태원클럽 단일 키워드 24h)",
+      "name": "Nowoncheongchunpocha Keyword Watch (노원청춘포차 단일 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -581,7 +584,7 @@
       "last_fail": null
     },
     {
-      "name": "Nowoncheongchunpocha Keyword Watch (노원청춘포차 단일 키워드 24h)",
+      "name": "Itaewonclub Maid Keyword Watch (이태원클럽 단일 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -789,7 +792,7 @@
       "last_fail": null
     },
     {
-      "name": "Busanhoppa Menz Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
+      "name": "Daejeonhoppa Eclipse Keyword Watch (대전호빠+충청호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -797,7 +800,7 @@
       "last_fail": null
     },
     {
-      "name": "Daejeonhoppa Eclipse Keyword Watch (대전호빠+충청호빠 2 키워드 24h)",
+      "name": "Busanhoppa Menz Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
