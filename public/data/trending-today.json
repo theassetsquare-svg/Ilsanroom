@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-24T05:39:08.846Z",
+  "generated_at": "2026-07-24T14:53:17.949Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,20 +7,34 @@
       "title": "일산명월관요정",
       "category": "yojeong",
       "region": "일산",
-      "views_24h": 6
-    },
-    {
-      "path": "/hoppa/daejeonhoppa-eclipse",
-      "title": "대전호빠 이클립스",
-      "category": "hoppa",
-      "region": "대전",
-      "views_24h": 4
+      "views_24h": 11
     },
     {
       "path": "/nights/pyeongtaekhobaknight",
       "title": "평택호박나이트",
       "category": "night",
       "region": "평택",
+      "views_24h": 4
+    },
+    {
+      "path": "/rooms/busan-haeundae/haeundaegoguryeo",
+      "title": "해운대고구려",
+      "category": "room",
+      "region": "부산 해운대",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 3
+    },
+    {
+      "path": "/clubs/itaewon/itaewonclub-utopia",
+      "title": "이태원클럽 유토피아",
+      "category": "club",
+      "region": "이태원",
       "views_24h": 3
     },
     {
@@ -31,10 +45,10 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/seosanhobaknight",
-      "title": "서산호박나이트",
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
       "category": "night",
-      "region": "서산",
+      "region": "대전",
       "views_24h": 3
     },
     {
@@ -45,52 +59,17 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/daejeonsevennight",
-      "title": "대전세븐나이트",
+      "path": "/nights/yeongdeungpoterminalnight",
+      "title": "영등포터미널나이트",
       "category": "night",
-      "region": "대전",
+      "region": "영등포",
       "views_24h": 3
     },
     {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
+      "path": "/nights/cheongjuhobaknight",
+      "title": "청주호박나이트",
       "category": "night",
-      "region": "대전",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 2
-    },
-    {
-      "path": "/clubs/itaewon/itaewonclub-utopia",
-      "title": "이태원클럽 유토피아",
-      "category": "club",
-      "region": "이태원",
-      "views_24h": 2
-    },
-    {
-      "path": "/rooms/busan-haeundae/haeundaegoguryeo",
-      "title": "해운대고구려",
-      "category": "room",
-      "region": "부산 해운대",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/gurihobaknight",
-      "title": "구리호박나이트",
-      "category": "night",
-      "region": "구리",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/bundangpongpongnight",
-      "title": "분당퐁퐁나이트",
-      "category": "night",
-      "region": "분당",
+      "region": "청주",
       "views_24h": 2
     },
     {
@@ -101,10 +80,31 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/hwajeonghangukgwannight",
-      "title": "화정한국관나이트",
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
       "category": "night",
-      "region": "화정",
+      "region": "강서",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/seongnamshampoonight",
+      "title": "성남샴푸나이트",
+      "category": "night",
+      "region": "성남",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/seongnamgukbingwannight",
+      "title": "성남국빈관나이트",
+      "category": "night",
+      "region": "성남",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/seosanhobaknight",
+      "title": "서산호박나이트",
+      "category": "night",
+      "region": "서산",
       "views_24h": 2
     }
   ]
