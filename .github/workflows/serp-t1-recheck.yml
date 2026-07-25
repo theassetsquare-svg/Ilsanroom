@@ -1,0 +1,42 @@
+name: SERP T1 Recheck (노출0 색인의심 주간 재확인)
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 매주 월 KST 10:15 (UTC 01:15) — 빈 슬롯, serp-loop(10:45) 직전. 감시 목록 비면 즉시 종료.
+    - cron: '15 1 * * 1'
+
+jobs:
+  recheck:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: T1 색인 재확인 → 색인되면 목록 제거+해결메일 / 미색인이면 IndexNow 재핑
+        run: node scripts/serp-t1-recheck.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+      - name: 감시 목록 변경 시 커밋 (해결된 URL 제거 반영)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add scripts/.serp-t1-watch.json
+          if git diff --cached --quiet; then
+            echo "감시 목록 변경 없음"
+            exit 0
+          fi
+          git commit -m "chore(serp): T1 색인 해결분 감시 목록 자동 제거"
+          for i in 1 2 3; do
+            if git push; then exit 0; fi
+            echo "push 실패 ($i/3) — rebase 후 재시도"
+            git pull --rebase origin main || true
+            sleep 5
+          done
+          echo "::warning::watch push 3회 실패 — 다음 주 재시도"
+          exit 0
