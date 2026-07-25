@@ -2,9 +2,6 @@
   "note": "SERP 노출0 T1(페이지깜깜) 색인 재확인 감시 목록 — serp-t1-recheck.mjs가 매주 월 색인 확인, 색인되면 자동 제거+해결메일. 비면 즉시 종료(자기수렴).",
   "addedAt": "2026-07-25",
   "urls": [
-    "https://nolcool.com/clubs/apgujeong/apgujeongclub-candyman/",
-    "https://nolcool.com/clubs/uijeongbu/uijeongbuarena/",
-    "https://nolcool.com/hoppa/suwonhoppa-aura/",
     "https://nolcool.com/hoppa/haeundaehoppa-velvet/"
   ]
 }
