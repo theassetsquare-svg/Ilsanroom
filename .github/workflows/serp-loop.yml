@@ -1,0 +1,21 @@
+name: SERP Loop (검색어 상위노출 주간 루프)
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 매주 월요일 KST 10:45 (UTC 01:45) — 빈 슬롯. 기존 월요일 주간 사이클
+    # (09:00 report / 09:30 trend / 09:45 rank-drop / 11:00 ga-demand / 11:30 sc-opportunity)과 충돌 0.
+    - cron: '45 1 * * 1'
+
+jobs:
+  loop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: A 가게이름 + B 지역×업종 전수 분류 → 미달 진단 → 재크롤 → 메일
+        run: node scripts/serp-loop.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
