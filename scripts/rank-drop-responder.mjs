@@ -60,7 +60,7 @@ function parseVenues() {
   return out;
 }
 
-const norm = (s) => (s || '').replace(/\s+/g, '');
+const norm = (s) => (s || '').replace(/\s+/g, '').toLowerCase();
 
 /** 검색어 행들을 가게이름별로 묶어 노출가중 대표순위 산출. */
 function aggregateByVenue(venues, rows) {

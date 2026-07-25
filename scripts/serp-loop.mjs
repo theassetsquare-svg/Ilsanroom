@@ -50,7 +50,7 @@ const REGIONED = new Set(['club', 'room', 'yojeong']);
 
 if (!hasGscCredentials()) { console.log('⏭️  GSC_SA_JSON 미설정 — 스킵'); process.exit(0); }
 
-const norm = (s) => (s || '').replace(/\s+/g, '');
+const norm = (s) => (s || '').replace(/\s+/g, '').toLowerCase();
 
 /* ─── venues.ts 파싱 (prerender-seo.mjs 블록 패턴) ─── */
 function parseVenues() {
