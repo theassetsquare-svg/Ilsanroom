@@ -1,0 +1,14 @@
+name: SERP Zero Analysis (노출0 가게이름 원인분석 — 온디맨드)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 노출0 venue 90일 유형분류 (T1 색인의심 / T2 수요0 / T3 간헐수요)
+        run: node scripts/serp-zero-analysis.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
