@@ -196,7 +196,7 @@ const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, r
               {venue.rating > 0 && <span className="text-[10px] text-yellow-300 mt-0.5">★ {venue.rating.toFixed(1)}</span>}
             </div>
             {rank && (
-              <span className={`absolute top-2 left-2 z-[2] flex h-6 w-6 items-center justify-center rounded-full text-xs font-black text-white ${rank <= 3 ? 'bg-[#8B5CF6]' : 'bg-black/50'}`}>
+              <span className={`absolute top-2 left-2 z-[2] flex h-6 w-6 items-center justify-center rounded-full text-xs font-black text-white ${rank <= 3 ? 'bg-[#7C3AED]' : 'bg-black/50'}`}>
                 {rank}
               </span>
             )}
@@ -212,7 +212,7 @@ const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, r
       </Link>
       <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(venue.id); }}
         className="absolute top-2 right-2 z-[3] flex h-11 w-11 items-center justify-center rounded-full bg-black/30 backdrop-blur-sm" aria-label="찜하기">
-        <svg className={`h-4 w-4 ${isFavorite ? 'text-red-500 fill-red-500' : 'text-white'}`} fill={isFavorite ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+        <svg className={`h-4 w-4 ${isFavorite ? 'text-red-600 fill-red-600' : 'text-white'}`} fill={isFavorite ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
         </svg>
       </button>
@@ -587,7 +587,7 @@ export default function HomePage() {
       {/* ═══ 1.35 v25 큐레이션 4가지 — 시점·상황·예산 진입점 ═══ */}
       <section className="px-4 pt-2 pb-1 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto" aria-label="큐레이션 빠른 진입">
         <div className="grid grid-cols-4 gap-2">
-          <Link to="/roulette" className="flex flex-col items-center justify-center gap-1 rounded-xl bg-gradient-to-br from-[#8B5CF6]/10 to-white border border-[#8B5CF6]/20 py-2.5 active:scale-[0.97] transition">
+          <Link to="/roulette" className="flex flex-col items-center justify-center gap-1 rounded-xl bg-gradient-to-br from-[#8B5CF6]/10 to-white border border-[#7C3AED]/20 py-2.5 active:scale-[0.97] transition">
             <span className="text-xl">🎲</span>
             <span className="text-[11px] font-bold text-[#111] leading-tight">룰렛 추천</span>
           </Link>
@@ -646,10 +646,10 @@ export default function HomePage() {
             <p className="text-[11px] text-white/60 mt-1">터치 한 번이면 끝 →</p>
           </button>
         ) : quizStep < miniQuizQuestions.length ? (
-          <div className="rounded-2xl border border-[#8B5CF6]/20 bg-gradient-to-br from-[#FAFAFE] to-[#F5F3FF] p-4 animate-fade-in">
+          <div className="rounded-2xl border border-[#7C3AED]/20 bg-gradient-to-br from-[#FAFAFE] to-[#F5F3FF] p-4 animate-fade-in">
             <div className="flex items-center justify-between mb-3">
               <p className="text-sm font-bold text-[#111]">{miniQuizQuestions[quizStep].q}</p>
-              <span className="text-[11px] text-[#8B5CF6] font-bold">{quizStep + 1}/{miniQuizQuestions.length}</span>
+              <span className="text-[11px] text-[#7C3AED] font-bold">{quizStep + 1}/{miniQuizQuestions.length}</span>
             </div>
             <div className="space-y-2">
               {miniQuizQuestions[quizStep].opts.map(opt => (
@@ -658,7 +658,7 @@ export default function HomePage() {
                   setQuizAnswers(newAnswers);
                   setQuizStep(quizStep + 1);
                 }}
-                  className="w-full flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-left transition-all active:scale-[0.98] active:border-[#8B5CF6]"
+                  className="w-full flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-left transition-all active:scale-[0.98] active:border-[#7C3AED]"
                   style={{ minHeight: 48 }}>
                   <span className="text-xl">{opt.emoji}</span>
                   <span className="text-sm font-medium text-[#111]">{opt.label}</span>
@@ -667,8 +667,8 @@ export default function HomePage() {
             </div>
           </div>
         ) : (
-          <div className="rounded-2xl border border-[#8B5CF6]/20 bg-gradient-to-br from-[#F5F3FF] to-[#FDF2F8] p-4 animate-fade-in">
-            <p className="text-sm font-bold text-[#8B5CF6] mb-1">당신의 오늘 밤 추천</p>
+          <div className="rounded-2xl border border-[#7C3AED]/20 bg-gradient-to-br from-[#F5F3FF] to-[#FDF2F8] p-4 animate-fade-in">
+            <p className="text-sm font-bold text-[#7C3AED] mb-1">당신의 오늘 밤 추천</p>
             {(() => {
               const counts: Record<string, number> = {};
               quizAnswers.forEach(a => { counts[a] = (counts[a] || 0) + 1; });
@@ -686,14 +686,14 @@ export default function HomePage() {
                         <p className="text-sm font-bold text-[#111] truncate">{topVenue.nameKo}</p>
                         <p className="text-[11px] text-[#555]">{topVenue.regionKo} · {catLabel[topCat]}</p>
                       </div>
-                      <span className="text-[#8B5CF6] font-bold text-sm">→</span>
+                      <span className="text-[#7C3AED] font-bold text-sm">→</span>
                     </Link>
                   )}
                   <div className="flex gap-2">
-                    <Link to={catHrefs[topCat] || '/clubs'} className="flex-1 rounded-xl bg-[#8B5CF6] py-2.5 text-center text-sm font-bold text-white active:scale-[0.98]" style={{ minHeight: 40 }}>
+                    <Link to={catHrefs[topCat] || '/clubs'} className="flex-1 rounded-xl bg-[#7C3AED] py-2.5 text-center text-sm font-bold text-white active:scale-[0.98]" style={{ minHeight: 40 }}>
                       {copy?.cta || '더보기'}
                     </Link>
-                    <Link to="/quiz" className="flex-1 rounded-xl border border-[#8B5CF6] py-2.5 text-center text-sm font-bold text-[#8B5CF6] active:scale-[0.98]" style={{ minHeight: 40 }}>
+                    <Link to="/quiz" className="flex-1 rounded-xl border border-[#7C3AED] py-2.5 text-center text-sm font-bold text-[#7C3AED] active:scale-[0.98]" style={{ minHeight: 40 }}>
                       정밀 분석 받기
                     </Link>
                   </div>
@@ -714,7 +714,7 @@ export default function HomePage() {
               <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
             </span>
             <span className="text-xs font-bold text-[#111]">지금 활동 중</span>
-            <span className="text-[10px] text-gray-400 ml-auto">실시간</span>
+            <span className="text-[10px] text-gray-500 ml-auto">실시간</span>
           </div>
           <Suspense fallback={<div className="h-24" aria-hidden="true" />}>
             <LiveActivityFeed maxItems={4} interval={5000} />
@@ -736,15 +736,15 @@ export default function HomePage() {
       <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <Link to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="block rounded-2xl border border-purple-100 bg-gradient-to-r from-[#F5F3FF] to-white p-4 active:bg-purple-50 transition">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#8B5CF6]/10">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#7C3AED]/10">
               <span className="text-lg">✏️</span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm text-gray-400">오늘 밤 어땠어? 한마디 남겨봐</p>
+              <p className="text-sm text-gray-500">오늘 밤 어땠어? 한마디 남겨봐</p>
             </div>
-            <span className="shrink-0 rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white">글쓰기</span>
+            <span className="shrink-0 rounded-full bg-[#7C3AED] px-3 py-1.5 text-xs font-bold text-white">글쓰기</span>
           </div>
-          <div className="flex items-center gap-3 mt-2 text-[10px] text-gray-400">
+          <div className="flex items-center gap-3 mt-2 text-[10px] text-gray-500">
             <span>📝 후기 한 줄도 OK</span>
             <span>·</span>
             <span>💬 다녀온 사람만 아는 디테일</span>
@@ -761,20 +761,20 @@ export default function HomePage() {
           const aPct = 50;
           const bPct = 50;
           return (
-            <div className="rounded-2xl border border-[#8B5CF6]/20 bg-gradient-to-br from-[#FAFAFE] to-[#F5F3FF] p-4 shadow-sm">
+            <div className="rounded-2xl border border-[#7C3AED]/20 bg-gradient-to-br from-[#FAFAFE] to-[#F5F3FF] p-4 shadow-sm">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-sm font-bold text-[#111]">{poll.q}</p>
-                <Link to="/vs" className="text-[11px] text-[#8B5CF6] font-medium shrink-0 ml-2 inline-block py-1.5 -my-1.5">더보기</Link>
+                <Link to="/vs" className="text-[11px] text-[#7C3AED] font-medium shrink-0 ml-2 inline-block py-1.5 -my-1.5">더보기</Link>
               </div>
               <div className="grid grid-cols-2 gap-2.5">
                 <button onClick={() => handleVsVote(0, poll.a)} disabled={!!voted}
                   className={`relative rounded-xl overflow-hidden transition-all duration-300 ${voted === poll.a ? 'ring-2 ring-[#8B5CF6] scale-[1.02]' : voted ? 'opacity-60' : 'hover:shadow-md active:scale-95'}`}
                   style={{ minHeight: 60 }}>
-                  {voted && <div className="absolute inset-0 bg-[#8B5CF6]/10 rounded-xl"><div className="absolute bottom-0 left-0 right-0 bg-[#8B5CF6]/20 transition-all duration-700 rounded-b-xl" style={{ height: `${aPct}%` }} /></div>}
+                  {voted && <div className="absolute inset-0 bg-[#7C3AED]/10 rounded-xl"><div className="absolute bottom-0 left-0 right-0 bg-[#7C3AED]/20 transition-all duration-700 rounded-b-xl" style={{ height: `${aPct}%` }} /></div>}
                   <div className="relative z-10 flex flex-col items-center justify-center h-full py-2">
                     <span className="text-xl">{poll.aEmoji}</span>
                     <span className="text-sm font-bold text-[#111]">{poll.a}</span>
-                    {voted && <span className="text-base font-black text-[#8B5CF6]">{aPct}%</span>}
+                    {voted && <span className="text-base font-black text-[#7C3AED]">{aPct}%</span>}
                   </div>
                 </button>
                 <button onClick={() => handleVsVote(0, poll.b)} disabled={!!voted}
@@ -798,7 +798,7 @@ export default function HomePage() {
       <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-base font-bold text-[#111]">지금 핫한 곳</h2>
-          <Link to="/ranking" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">전체 순위 →</Link>
+          <Link to="/ranking" className="text-xs text-[#7C3AED] font-medium inline-block py-1.5 -my-1.5">전체 순위 →</Link>
         </div>
         <div className="grid grid-cols-2 gap-2.5">
           {popularVenues.slice(0, 4).map((v, i) => (
@@ -811,7 +811,7 @@ export default function HomePage() {
       <section className="px-4 py-3 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-base font-bold text-[#111]">게시판 바로가기</h2>
-          <Link to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="inline-flex items-center rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 44 }}>글쓰기</Link>
+          <Link to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="inline-flex items-center rounded-full bg-[#7C3AED] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 44 }}>글쓰기</Link>
         </div>
         <div className="flex gap-2 overflow-x-auto scrollbar-hide">
           {[
@@ -833,9 +833,9 @@ export default function HomePage() {
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <h2 className="text-base font-bold text-[#111]">뜨거운 토론</h2>
-            <span className="rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-bold text-white">HOT</span>
+            <span className="rounded-full bg-red-600 px-1.5 py-0.5 text-[9px] font-bold text-white">HOT</span>
           </div>
-          <Link to="/community/free" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">참여하기 →</Link>
+          <Link to="/community/free" className="text-xs text-[#7C3AED] font-medium inline-block py-1.5 -my-1.5">참여하기 →</Link>
         </div>
         <div className="space-y-2">
           {seedDebates.slice(0, 3).map(debate => (
@@ -844,11 +844,11 @@ export default function HomePage() {
               <div className="flex items-center gap-2">
                 <div className="flex gap-1.5 flex-1">
                   {debate.side.map((s, i) => (
-                    <span key={i} className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${i === 0 ? 'bg-[#8B5CF6]/10 text-[#8B5CF6]' : 'bg-pink-100 text-pink-600'}`}>"{s}"</span>
+                    <span key={i} className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${i === 0 ? 'bg-[#7C3AED]/10 text-[#7C3AED]' : 'bg-pink-100 text-pink-600'}`}>"{s}"</span>
                   ))}
                 </div>
                 <span className="text-[10px] text-[#666]">💬 {debate.comments}</span>
-                <span className="text-[10px] text-red-500 font-bold">{debate.heat}°</span>
+                <span className="text-[10px] text-red-600 font-bold">{debate.heat}°</span>
               </div>
             </Link>
           ))}
@@ -860,9 +860,9 @@ export default function HomePage() {
         <div ref={searchWrapperRef} className="relative mx-auto" style={{ maxWidth: 520 }}>
           <form onSubmit={handleSearchSubmit} className="relative">
             <div className={`flex items-center rounded-2xl border bg-white px-4 transition-all ${
-              searchFocused ? 'border-[#8B5CF6] shadow-lg shadow-[#8B5CF6]/10' : 'border-gray-200 shadow-sm'
+              searchFocused ? 'border-[#7C3AED] shadow-lg shadow-[#8B5CF6]/10' : 'border-gray-200 shadow-sm'
             }`}>
-              <svg className="h-5 w-5 text-[#8B5CF6] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-5 w-5 text-[#7C3AED] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <input ref={searchInputRef} type="search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
@@ -870,7 +870,7 @@ export default function HomePage() {
                 className="h-11 w-full bg-transparent px-3 text-[14px] text-[#111] outline-none placeholder-gray-400 [&::-webkit-search-cancel-button]:hidden"
                 autoComplete="off" autoCorrect="off" spellCheck={false} />
               {searchQuery && (
-                <button type="button" onClick={() => { setSearchQuery(''); searchInputRef.current?.focus(); }} className="shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-600">
+                <button type="button" onClick={() => { setSearchQuery(''); searchInputRef.current?.focus(); }} className="shrink-0 rounded-full p-1 text-gray-500 hover:text-gray-600">
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               )}
@@ -880,34 +880,34 @@ export default function HomePage() {
             <div className="absolute left-0 right-0 top-full z-[80] mt-2 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl animate-fade-in" style={{ maxHeight: 400, overflowY: 'auto' }}>
               {searchQuery.trim() && searchResults.length > 0 ? (
                 <div className="py-2">
-                  <p className="px-4 py-1.5 text-[11px] font-bold text-[#8B5CF6] tracking-wider">검색 결과</p>
+                  <p className="px-4 py-1.5 text-[11px] font-bold text-[#7C3AED] tracking-wider">검색 결과</p>
                   {searchResults.map((v) => (
                     <Link key={v.id || v.slug} to={getCategoryHref(v.category, v.slug, v.region)}
                       onClick={() => { setSearchFocused(false); setSearchQuery(''); }}
                       className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors">
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#F3F0FF] text-sm font-bold text-[#8B5CF6]">{v.nameKo.charAt(0)}</div>
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#F3F0FF] text-sm font-bold text-[#7C3AED]">{v.nameKo.charAt(0)}</div>
                       <div className="min-w-0 flex-1 text-left">
                         <p className="text-sm font-medium text-[#111] truncate">{v.nameKo}</p>
                         <p className="text-xs text-[#555] truncate">{v.regionKo} · {catLabel[v.category]}</p>
                       </div>
                     </Link>
                   ))}
-                  <button onClick={handleSearchSubmit} className="w-full border-t border-gray-100 py-3 text-center text-sm font-medium text-[#8B5CF6] hover:bg-gray-50 transition">
+                  <button onClick={handleSearchSubmit} className="w-full border-t border-gray-100 py-3 text-center text-sm font-medium text-[#7C3AED] hover:bg-gray-50 transition">
                     "{searchQuery}" 전체 검색 결과 보기
                   </button>
                 </div>
               ) : searchQuery.trim() && searchResults.length === 0 ? (
                 <div className="px-4 py-6 text-center">
                   <p className="text-sm text-[#555]">"{searchQuery}" 결과가 없습니다</p>
-                  <p className="mt-1 text-xs text-gray-400">다른 키워드로 검색해 보세요</p>
+                  <p className="mt-1 text-xs text-gray-500">다른 키워드로 검색해 보세요</p>
                 </div>
               ) : (
                 <div className="py-3">
-                  <p className="px-4 py-1.5 text-[11px] font-bold text-[#8B5CF6] tracking-wider">인기 검색어</p>
+                  <p className="px-4 py-1.5 text-[11px] font-bold text-[#7C3AED] tracking-wider">인기 검색어</p>
                   {['강남클럽', '홍대나이트', '일산룸', '강남호빠', '해운대', '압구정라운지', '일산요정', '부산나이트'].map((term, i) => (
                     <button key={term} onClick={() => { setSearchQuery(term); searchInputRef.current?.focus(); }}
                       className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-gray-50 transition-colors">
-                      <span className={`flex h-6 w-6 items-center justify-center rounded text-xs font-bold ${i < 3 ? 'bg-[#8B5CF6] text-white' : 'bg-gray-100 text-gray-500'}`}>{i + 1}</span>
+                      <span className={`flex h-6 w-6 items-center justify-center rounded text-xs font-bold ${i < 3 ? 'bg-[#7C3AED] text-white' : 'bg-gray-100 text-gray-600'}`}>{i + 1}</span>
                       <span className="text-sm text-[#111]">{term}</span>
                     </button>
                   ))}
@@ -923,11 +923,11 @@ export default function HomePage() {
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <h2 className="text-base font-bold text-[#111]">조각모임</h2>
-            <span className="rounded-full bg-orange-600 px-1.5 py-0.5 text-[9px] font-bold text-white">모집중</span>
+            <span className="rounded-full bg-orange-700 px-1.5 py-0.5 text-[9px] font-bold text-white">모집중</span>
           </div>
           <div className="flex items-center gap-2">
-            <Link to={user ? '/community/jogak?write=true' : '/login?redirect=/community/jogak?write=true'} className="inline-flex items-center rounded-full bg-[#8B5CF6] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 44 }}>모임만들기</Link>
-            <Link to="/community/jogak" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">전체 →</Link>
+            <Link to={user ? '/community/jogak?write=true' : '/login?redirect=/community/jogak?write=true'} className="inline-flex items-center rounded-full bg-[#7C3AED] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 44 }}>모임만들기</Link>
+            <Link to="/community/jogak" className="text-xs text-[#7C3AED] font-medium inline-block py-1.5 -my-1.5">전체 →</Link>
           </div>
         </div>
         <div className="space-y-2">
@@ -938,11 +938,11 @@ export default function HomePage() {
               <Link key={j.id} to="/community/jogak" className={`block rounded-xl border bg-white p-3 active:bg-gray-50 transition ${isAlmostFull ? 'border-red-200 bg-red-50/30' : 'border-gray-100'}`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 flex-1 min-w-0">
-                    {isAlmostFull && <span className="shrink-0 rounded bg-red-500 px-1.5 py-0.5 text-[9px] font-bold text-white">마감임박</span>}
-                    {idx === 0 && !isAlmostFull && <span className="shrink-0 rounded bg-[#8B5CF6] px-1.5 py-0.5 text-[9px] font-bold text-white">HOT</span>}
+                    {isAlmostFull && <span className="shrink-0 rounded bg-red-600 px-1.5 py-0.5 text-[9px] font-bold text-white">마감임박</span>}
+                    {idx === 0 && !isAlmostFull && <span className="shrink-0 rounded bg-[#7C3AED] px-1.5 py-0.5 text-[9px] font-bold text-white">HOT</span>}
                     <p className="text-sm font-medium text-[#111] truncate">{j.title}</p>
                   </div>
-                  <span className={`ml-2 flex-shrink-0 rounded-full px-3 py-1 text-[11px] font-bold text-white ${isAlmostFull ? 'bg-red-500' : 'bg-[#8B5CF6]'}`}>참여</span>
+                  <span className={`ml-2 flex-shrink-0 rounded-full px-3 py-1 text-[11px] font-bold text-white ${isAlmostFull ? 'bg-red-600' : 'bg-[#7C3AED]'}`}>참여</span>
                 </div>
                 <div className="flex items-center gap-3 mt-1.5">
                   {j.region && <span className="text-[11px] text-[#555]">📍{j.region}</span>}
@@ -950,9 +950,9 @@ export default function HomePage() {
                   {j.time && <span className="text-[11px] text-[#555]">🕐{j.time}</span>}
                   <div className="flex-1 flex items-center gap-1.5">
                     <div className="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden">
-                      <div className={`h-full rounded-full transition-all ${isAlmostFull ? 'bg-red-500' : 'bg-[#8B5CF6]'}`} style={{ width: `${fillRate * 100}%` }} />
+                      <div className={`h-full rounded-full transition-all ${isAlmostFull ? 'bg-red-600' : 'bg-[#7C3AED]'}`} style={{ width: `${fillRate * 100}%` }} />
                     </div>
-                    <span className={`text-[11px] font-bold ${isAlmostFull ? 'text-red-500' : 'text-[#111]'}`}>{j.current}/{j.max}</span>
+                    <span className={`text-[11px] font-bold ${isAlmostFull ? 'text-red-600' : 'text-[#111]'}`}>{j.current}/{j.max}</span>
                   </div>
                 </div>
               </Link>
@@ -985,7 +985,7 @@ export default function HomePage() {
               <span className="text-2xl">{fortune.emoji}</span>
               <div className="flex-1">
                 <p className="text-base font-black text-[#111]">{fortune.title}</p>
-                <p className="text-[11px] text-[#8B5CF6] font-bold">밤 에너지 {fortuneScore}점</p>
+                <p className="text-[11px] text-[#7C3AED] font-bold">밤 에너지 {fortuneScore}점</p>
               </div>
             </div>
             <p className="text-sm font-bold text-[#111] leading-relaxed mb-3 bg-white/60 rounded-xl p-3">{fortune.text}</p>
@@ -1000,11 +1000,11 @@ export default function HomePage() {
               </div>
               <div className="rounded-lg bg-white/80 p-2 text-center">
                 <p className="text-[9px] text-[#666]">행운 숫자</p>
-                <p className="text-xs font-bold text-[#8B5CF6]">{fortune.luckyNum}</p>
+                <p className="text-xs font-bold text-[#7C3AED]">{fortune.luckyNum}</p>
               </div>
             </div>
-            <div className="rounded-lg bg-[#8B5CF6]/5 border border-[#8B5CF6]/10 p-2.5">
-              <p className="text-[11px] font-bold text-[#8B5CF6] mb-0.5">꿀팁</p>
+            <div className="rounded-lg bg-[#7C3AED]/5 border border-[#7C3AED]/10 p-2.5">
+              <p className="text-[11px] font-bold text-[#7C3AED] mb-0.5">꿀팁</p>
               <p className="text-[13px] text-[#333] leading-relaxed">{fortune.tip}</p>
             </div>
             <button onClick={() => setFortuneRevealed(false)} className="mt-2 w-full text-center text-[11px] text-[#666] py-1.5">카드 다시 덮기</button>
@@ -1016,7 +1016,7 @@ export default function HomePage() {
       <section className="py-3 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between px-4 mb-2">
           <h2 className="text-base font-bold text-[#111]">놀쿨 매거진</h2>
-          <Link to="/magazine" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">전체 →</Link>
+          <Link to="/magazine" className="text-xs text-[#7C3AED] font-medium inline-block py-1.5 -my-1.5">전체 →</Link>
         </div>
         <div className="flex gap-3 px-4 overflow-x-auto scrollbar-hide pb-1" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
           {magazineTeasers.map(article => (
@@ -1032,8 +1032,8 @@ export default function HomePage() {
                   <p className="text-[13px] font-bold text-[#111] leading-snug line-clamp-2 mb-1">{article.title}</p>
                   <p className="text-[11px] text-[#555] line-clamp-2 leading-relaxed">{article.excerpt.slice(0, 60)}...</p>
                   <div className="flex items-center justify-between mt-1.5">
-                    <span className="text-[11px] font-bold text-[#8B5CF6] inline-block">읽어보기 →</span>
-                    <time dateTime={article.date} className="text-[10px] text-[#999]">{article.date.replace(/-/g, '.')}</time>
+                    <span className="text-[11px] font-bold text-[#7C3AED] inline-block">읽어보기 →</span>
+                    <time dateTime={article.date} className="text-[10px] text-[#6b7280]">{article.date.replace(/-/g, '.')}</time>
                   </div>
                 </div>
               </div>
@@ -1057,16 +1057,16 @@ export default function HomePage() {
                     <span className="text-lg">{catEmoji[cat]}</span>
                     <div>
                       <p className="text-sm font-bold text-[#111]">{catLabel[cat]}</p>
-                      <p className="text-[10px] text-[#8B5CF6] font-medium">{copy?.painPoint}</p>
+                      <p className="text-[10px] text-[#7C3AED] font-medium">{copy?.painPoint}</p>
                     </div>
                   </div>
-                  <Link to={catHrefs[cat]} className="text-[11px] text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">{copy?.cta} →</Link>
+                  <Link to={catHrefs[cat]} className="text-[11px] text-[#7C3AED] font-medium inline-block py-1.5 -my-1.5">{copy?.cta} →</Link>
                 </div>
                 <div className="space-y-1.5">
                   {top.map((v, i) => (
                     <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)}
                       className="flex items-center gap-2.5 py-1.5 active:bg-gray-50 rounded-lg px-1 transition">
-                      <span className={`flex h-5 w-5 items-center justify-center rounded text-[10px] font-black text-white ${i === 0 ? 'bg-[#8B5CF6]' : i === 1 ? 'bg-violet-400' : 'bg-gray-400'}`}>{i + 1}</span>
+                      <span className={`flex h-5 w-5 items-center justify-center rounded text-[10px] font-black text-white ${i === 0 ? 'bg-[#7C3AED]' : i === 1 ? 'bg-violet-600' : 'bg-gray-600'}`}>{i + 1}</span>
                       <span className="text-[13px] font-medium text-[#111] truncate flex-1">{v.nameKo}</span>
                       <span className="text-[11px] text-[#555]">{v.regionKo}</span>
                       {v.rating > 0 && <span className="text-[11px] text-yellow-500 font-bold">★{v.rating.toFixed(1)}</span>}
@@ -1083,16 +1083,16 @@ export default function HomePage() {
       <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-base font-bold text-[#111]">지금 뜨는 검색어</h2>
-          <Link to="/search" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">검색 →</Link>
+          <Link to="/search" className="text-xs text-[#7C3AED] font-medium inline-block py-1.5 -my-1.5">검색 →</Link>
         </div>
         <div className="flex flex-wrap gap-2">
           {todayTrending.map((kw, i) => (
             <Link key={kw} to={`/search?q=${encodeURIComponent(kw)}`}
               className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 py-1.5 active:bg-gray-50 transition"
               style={{ minHeight: 44 }}>
-              <span className={`text-[10px] font-black ${i < 3 ? 'text-[#8B5CF6]' : 'text-[#666]'}`}>{i + 1}</span>
+              <span className={`text-[10px] font-black ${i < 3 ? 'text-[#7C3AED]' : 'text-[#666]'}`}>{i + 1}</span>
               <span className="text-[13px] font-medium text-[#111]">{kw}</span>
-              {i < 2 && <span className="text-[9px] text-red-500 font-bold">HOT</span>}
+              {i < 2 && <span className="text-[9px] text-red-600 font-bold">HOT</span>}
             </Link>
           ))}
         </div>
@@ -1116,7 +1116,7 @@ export default function HomePage() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-[2]" />
               <div className="relative z-[3] flex flex-col justify-end h-full p-4" style={{ minHeight: 130 }}>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="rounded-full bg-[#8B5CF6] px-2 py-0.5 text-[10px] font-bold text-white">1위</span>
+                  <span className="rounded-full bg-[#7C3AED] px-2 py-0.5 text-[10px] font-bold text-white">1위</span>
                   <span className="text-[11px] text-white/80">{catLabel[featuredVenue.category]} · {featuredVenue.regionKo}</span>
                 </div>
                 <h3 className="text-lg font-black text-white leading-tight">{featuredVenue.nameKo}</h3>
@@ -1130,7 +1130,7 @@ export default function HomePage() {
       <section className="py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between px-4 mb-2">
           <h2 className="text-base font-bold text-[#111]">TOP 8</h2>
-          <Link to="/ranking" className="text-xs text-[#8B5CF6] font-medium inline-block py-1.5 -my-1.5">전체보기 →</Link>
+          <Link to="/ranking" className="text-xs text-[#7C3AED] font-medium inline-block py-1.5 -my-1.5">전체보기 →</Link>
         </div>
         <div className="flex gap-2.5 px-4 overflow-x-auto scrollbar-hide pb-1">
           {popularVenues.slice(0, 8).map((v, i) => (
@@ -1150,7 +1150,7 @@ export default function HomePage() {
                   <span className="text-2xl">{catEmoji[v.category] || '🎵'}</span>
                   <span className="mt-0.5 text-[11px] font-bold text-white/80">{v.nameKo.slice(0, 4)}</span>
                 </div>
-                <span className={`absolute top-1.5 left-1.5 z-[2] flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black text-white ${i < 3 ? 'bg-[#8B5CF6]' : 'bg-black/50'}`}>{i + 1}</span>
+                <span className={`absolute top-1.5 left-1.5 z-[2] flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black text-white ${i < 3 ? 'bg-[#7C3AED]' : 'bg-black/50'}`}>{i + 1}</span>
                 <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2 py-1.5">
                   <p className="text-[11px] font-bold text-white truncate">{v.nameKo}</p>
                   <p className="text-[9px] text-white/80 truncate">{catLabel[v.category]} · {v.regionKo}</p>
@@ -1170,12 +1170,12 @@ export default function HomePage() {
               key={tab}
               onClick={() => { setActiveTab(i); if (i !== 3) setActiveRegion('all'); }}
               className={`flex-1 py-2.5 text-center text-sm font-medium transition-all relative ${
-                activeTab === i ? 'text-[#8B5CF6] font-bold' : 'text-[#555]'
+                activeTab === i ? 'text-[#7C3AED] font-bold' : 'text-[#555]'
               }`}
               style={{ minHeight: 40 }}
             >
               {tab}
-              {activeTab === i && <span className="absolute bottom-0 left-1/4 right-1/4 h-[2px] rounded-full bg-[#8B5CF6]" />}
+              {activeTab === i && <span className="absolute bottom-0 left-1/4 right-1/4 h-[2px] rounded-full bg-[#7C3AED]" />}
             </button>
           ))}
         </div>
@@ -1192,7 +1192,7 @@ export default function HomePage() {
                   onClick={() => setActiveRegion(r === '전체' ? 'all' : r)}
                   className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-all whitespace-nowrap flex-shrink-0 ${
                     (r === '전체' && activeRegion === 'all') || (r !== '전체' && activeRegion === r)
-                      ? 'bg-[#8B5CF6] text-white shadow-sm'
+                      ? 'bg-[#7C3AED] text-white shadow-sm'
                       : 'bg-white text-[#555] border border-gray-200'
                   }`}
                   style={{ minHeight: 44 }}
@@ -1208,10 +1208,10 @@ export default function HomePage() {
       {/* ═══ VENUE FEED — 2 Column Cards ═══ */}
       <section className="px-4 py-4 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         {/* 탭 라벨 */}
-        {activeTab === 0 && <p className="text-xs font-medium text-[#8B5CF6] mb-3">평점 + 리뷰 수 기반 실시간 인기순</p>}
-        {activeTab === 1 && <p className="text-xs font-medium text-[#8B5CF6] mb-3">최근 등록된 업소 순</p>}
-        {activeTab === 2 && <p className="text-xs font-medium text-[#8B5CF6] mb-3">프리미엄 + 평점 높은 순 추천</p>}
-        {activeTab === 3 && <p className="text-xs font-medium text-[#8B5CF6] mb-3">지역별로 한눈에 보기</p>}
+        {activeTab === 0 && <p className="text-xs font-medium text-[#7C3AED] mb-3">평점 + 리뷰 수 기반 실시간 인기순</p>}
+        {activeTab === 1 && <p className="text-xs font-medium text-[#7C3AED] mb-3">최근 등록된 업소 순</p>}
+        {activeTab === 2 && <p className="text-xs font-medium text-[#7C3AED] mb-3">프리미엄 + 평점 높은 순 추천</p>}
+        {activeTab === 3 && <p className="text-xs font-medium text-[#7C3AED] mb-3">지역별로 한눈에 보기</p>}
 
         {/* 지역별 탭 — 지역 그룹 레이아웃 */}
         {activeTab === 3 && regionGroupedVenues ? (
@@ -1251,7 +1251,7 @@ export default function HomePage() {
               if (idx + 1 === 8) {
                 cards.push(
                   <Link key={`cta-${idx}`} to="/community" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#F3F0FF] to-white border border-purple-100 p-3 active:bg-gray-50 transition text-center">
-                    <p className="text-sm font-bold text-[#8B5CF6]">💬 커뮤니티에서 후기·꿀팁·조각모임 확인하기 →</p>
+                    <p className="text-sm font-bold text-[#7C3AED]">💬 커뮤니티에서 후기·꿀팁·조각모임 확인하기 →</p>
                   </Link>
                 );
               }
@@ -1260,11 +1260,11 @@ export default function HomePage() {
               if (idx + 1 === 12) {
                 cards.push(
                   <div key={`top5-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-violet-50 to-white p-4">
-                    <p className="text-xs font-bold text-[#8B5CF6] mb-2">🏆 이번주 TOP 5</p>
+                    <p className="text-xs font-bold text-[#7C3AED] mb-2">🏆 이번주 TOP 5</p>
                     <div className="space-y-1">
                       {popularVenues.slice(0, 5).map((v, i) => (
                         <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} className="flex items-center gap-2 py-1">
-                          <span className={`flex h-5 w-5 items-center justify-center rounded text-xs font-bold ${i < 3 ? 'bg-[#8B5CF6] text-white' : 'bg-gray-200 text-gray-600'}`}>{i + 1}</span>
+                          <span className={`flex h-5 w-5 items-center justify-center rounded text-xs font-bold ${i < 3 ? 'bg-[#7C3AED] text-white' : 'bg-gray-200 text-gray-600'}`}>{i + 1}</span>
                           <span className="text-sm text-[#111] truncate">{v.nameKo}</span>
                           <span className="ml-auto text-xs text-[#555]">{v.regionKo}</span>
                         </Link>
@@ -1287,7 +1287,7 @@ export default function HomePage() {
               if (idx + 1 === 20) {
                 cards.push(
                   <Link key={`vs-cta-${idx}`} to="/vs" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-pink-50 to-violet-50 border border-pink-100 p-3 active:bg-gray-50 transition text-center">
-                    <p className="text-sm font-bold text-[#8B5CF6]">🆚 투표로 결정하자 — VS 배틀 참여하기 →</p>
+                    <p className="text-sm font-bold text-[#7C3AED]">🆚 투표로 결정하자 — VS 배틀 참여하기 →</p>
                   </Link>
                 );
               }
@@ -1298,8 +1298,8 @@ export default function HomePage() {
                 cards.push(
                   <Link key={`debate-cta-${idx}`} to="/community/free" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl border border-orange-100 bg-orange-50/50 p-3 active:bg-orange-50 transition">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="rounded bg-red-500 px-1.5 py-0.5 text-[9px] font-bold text-white">HOT</span>
-                      <span className="text-[11px] text-red-500 font-bold">{debate.heat}° 뜨거운 토론</span>
+                      <span className="rounded bg-red-600 px-1.5 py-0.5 text-[9px] font-bold text-white">HOT</span>
+                      <span className="text-[11px] text-red-600 font-bold">{debate.heat}° 뜨거운 토론</span>
                     </div>
                     <p className="text-sm font-bold text-[#111]">💬 {debate.topic}</p>
                   </Link>
@@ -1359,7 +1359,7 @@ export default function HomePage() {
 
         {/* 카테고리 전체 바로가기 */}
         <div className="rounded-2xl border border-gray-100 bg-[#FAFAFE] p-3">
-          <p className="text-[11px] font-bold text-[#8B5CF6] mb-2">카테고리 바로가기</p>
+          <p className="text-[11px] font-bold text-[#7C3AED] mb-2">카테고리 바로가기</p>
           <div className="grid grid-cols-3 gap-2">
             {[
               { emoji: '🎵', label: '클럽', href: '/clubs' },
@@ -1373,7 +1373,7 @@ export default function HomePage() {
                 className="flex items-center gap-1.5 rounded-lg bg-white border border-gray-100 px-2.5 py-2 active:bg-gray-50 transition" style={{ minHeight: 36 }}>
                 <span>{cat.emoji}</span>
                 <span className="text-[13px] font-medium text-[#111]">{cat.label}</span>
-                <span className="ml-auto text-[11px] text-[#8B5CF6]">→</span>
+                <span className="ml-auto text-[11px] text-[#7C3AED]">→</span>
               </Link>
             ))}
           </div>
@@ -1381,7 +1381,7 @@ export default function HomePage() {
 
         <div className="rounded-2xl bg-violet-50 border border-violet-200 px-5 py-3 text-center">
           <p className="text-sm font-bold text-[#111]">
-            구글 · ChatGPT · Gemini에서 <span className="text-lg text-[#8B5CF6]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>"놀쿨"</span> 검색하세요
+            구글 · ChatGPT · Gemini에서 <span className="text-lg text-[#7C3AED]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>"놀쿨"</span> 검색하세요
           </p>
         </div>
 

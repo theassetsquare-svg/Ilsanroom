@@ -32,8 +32,18 @@ const TARGET_PAGES = [
   '/lounges/',
   '/community/',
   '/magazine/',
-  '/best/clubs/',
+  '/rooms/', // 2026-07-26: /best/clubs/ 삭제(301)로 교체
 ];
+
+// 카테고리별 목표 점수 — 미달 시 failing 집계 + (CI) 메일.
+// a11y/bp/seo 는 결정적(코드로 100 유지 가능) → 100.
+// perf 는 Lighthouse 공식이 "추정치·변동"이라 러너 편차 존재 → 모바일 90/데스크톱 95 목표선.
+const GOALS = {
+  perf: { mobile: 90, desktop: 95 },
+  a11y: { mobile: 100, desktop: 100 },
+  bp:   { mobile: 100, desktop: 100 },
+  seo:  { mobile: 100, desktop: 100 },
+};
 
 function findChromium() {
   if (process.env.CHROMIUM_PATH && existsSync(process.env.CHROMIUM_PATH)) return process.env.CHROMIUM_PATH;
@@ -78,7 +88,22 @@ async function measure(browser, url, formFactor) {
   const cat = lhr.categories;
   const audit = (id) => lhr.audits[id]?.numericValue;
 
+  // 감점 audit 상세(가중치>0 & score<1) — 미달 메일에서 "뭘 고치면 되는지" 바로 보이게
+  const failedAudits = {};
+  const CAT_KEY = { performance: 'perf', accessibility: 'a11y', 'best-practices': 'bp', seo: 'seo' };
+  for (const [cid, c] of Object.entries(cat)) {
+    const fails = [];
+    for (const ref of c.auditRefs) {
+      const a = lhr.audits[ref.id];
+      if (ref.weight > 0 && a && a.score !== null && a.score < 1) {
+        fails.push(`${ref.id}(${a.score}) ${a.displayValue || ''}`.trim());
+      }
+    }
+    if (fails.length) failedAudits[CAT_KEY[cid] || cid] = fails;
+  }
+
   return {
+    failedAudits,
     url: url.replace(BASE, '') || '/',
     formFactor,
     perf: Math.round(cat.performance.score * 100),
@@ -109,7 +134,9 @@ async function main() {
   const browser = await puppeteer.launch({
     executablePath: CHROME,
     headless: 'new',
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--remote-debugging-port=0'],
+    // --test-third-party-cookie-phaseout: 서드파티 쿠키 차단(크롬 기본 방향·PSI 판정과 정렬)
+    //   — Clarity 쿠키가 CI에서만 bp 감점 내는 거짓경보 차단. 측정 전용, 사이트 무영향.
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--remote-debugging-port=0', '--test-third-party-cookie-phaseout'],
   });
 
   const results = [];
@@ -131,8 +158,8 @@ async function main() {
 
   await browser.close();
 
-  // Aggregate
-  console.log('\n📊 집계 (90 미만 = ⚠️):');
+  // Aggregate — GOALS 미달 집계 (a11y/bp/seo=100, perf=90/95)
+  console.log('\n📊 집계 (목표 미달 = ⚠️ / a11y·bp·seo 목표 100):');
   const failing = [];
   for (const ff of factors) {
     const rs = results.filter(r => r.formFactor === ff && !r.error);
@@ -141,10 +168,11 @@ async function main() {
     console.log(`\n  [${ff}] ${rs.length} pages`);
     console.log(`    perf avg ${avg('perf')}  / a11y avg ${avg('a11y')}  / bp avg ${avg('bp')}  / seo avg ${avg('seo')}`);
     for (const cat of ['perf', 'a11y', 'bp', 'seo']) {
-      const fails = rs.filter(r => r[cat] < 90);
+      const goal = GOALS[cat][ff];
+      const fails = rs.filter(r => r[cat] < goal);
       if (fails.length) {
-        console.log(`    ⚠️  ${cat} < 90 (${fails.length}/${rs.length}): ${fails.map(f => `${f.url}:${f[cat]}`).join(', ')}`);
-        fails.forEach(f => failing.push({ ff, url: f.url, cat, score: f[cat] }));
+        console.log(`    ⚠️  ${cat} < ${goal} (${fails.length}/${rs.length}): ${fails.map(f => `${f.url}:${f[cat]}`).join(', ')}`);
+        fails.forEach(f => failing.push({ ff, url: f.url, cat, score: f[cat], goal, audits: (f.failedAudits || {})[cat] || [] }));
       }
     }
   }
@@ -163,7 +191,7 @@ async function main() {
     console.log(`\n💾 저장: ${SAVE}`);
   }
 
-  console.log(`\n${failing.length === 0 ? '✅ 모든 카테고리 90+' : `⚠️  ${failing.length}건 90 미만`}`);
+  console.log(`\n${failing.length === 0 ? '✅ 전 카테고리 목표 달성 (a11y·bp·seo 100 / perf 90·95)' : `⚠️  ${failing.length}건 목표 미달`}`);
   // CI는 실패시 알림용으로 exit 0 유지 (artifact + 콘솔로 충분)
   process.exit(0);
 }

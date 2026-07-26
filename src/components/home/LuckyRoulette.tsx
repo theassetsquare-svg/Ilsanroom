@@ -44,7 +44,7 @@ export default function LuckyRoulette({ openVenues }: { openVenues: Venue[] }) {
           className={`inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-bold transition-all ${
             spinning
               ? 'bg-violet-100 text-[#555] animate-pulse'
-              : 'bg-[#8B5CF6] text-white hover:bg-[#7C3AED] active:scale-95 shadow-lg'
+              : 'bg-[#7C3AED] text-white hover:bg-[#6D28D9] active:scale-95 shadow-lg'
           }`}
           style={{ minHeight: 48 }}
         >

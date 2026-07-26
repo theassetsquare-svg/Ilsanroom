@@ -118,7 +118,7 @@ export default function FreshPostsZone() {
                     </span>
                   )}
                   {!isHot && (
-                    <span className="shrink-0 text-[10px] text-[#999]">
+                    <span className="shrink-0 text-[10px] text-[#6b7280]">
                       {timeAgo(p.created_at)}
                     </span>
                   )}

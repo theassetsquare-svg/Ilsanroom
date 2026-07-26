@@ -137,7 +137,7 @@ export function HomeFeed() {
         style={{
           fontSize: 18,
           fontWeight: 800,
-          color: COLOR.text.primary,
+          color: COLOR.text.inverse,
           margin: '8px 4px 12px',
           letterSpacing: '-0.01em',
         }}
@@ -186,7 +186,7 @@ export function HomeFeed() {
                 alignItems: 'center',
                 gap: 8,
                 fontSize: 11,
-                color: COLOR.text.tertiary,
+                color: COLOR.text.secondary,
                 marginBottom: 6,
               }}
             >
@@ -246,7 +246,7 @@ export function HomeFeed() {
                 display: 'flex',
                 gap: 14,
                 fontSize: 12,
-                color: COLOR.text.tertiary,
+                color: COLOR.text.secondary,
                 fontWeight: 600,
               }}
             >

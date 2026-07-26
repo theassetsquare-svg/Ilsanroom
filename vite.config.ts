@@ -28,20 +28,20 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (!id.includes('node_modules')) return;
-          if (/[\\/]react[\\/]|[\\/]react-dom[\\/]/.test(id) && !id.includes('react-router') && !id.includes('react-helmet') && !id.includes('react-icons')) return 'vendor-react';
+          // ★ @tiptap/react 경로의 "/react/" 세그먼트가 이 정규식에 걸리면 prosemirror 전체가
+          //   vendor-react(전 페이지 즉시 로드)로 딸려 들어간다 — 반드시 제외.
+          if (/[\\/]react[\\/]|[\\/]react-dom[\\/]/.test(id) && !id.includes('react-router') && !id.includes('react-helmet') && !id.includes('react-icons') && !id.includes('@tiptap')) return 'vendor-react';
           if (id.includes('react-router')) return 'vendor-router';
           if (id.includes('react-helmet-async')) return 'vendor-helmet';
           if (id.includes('@supabase')) return 'vendor-supabase';
           if (id.includes('lucide-react') || id.includes('react-icons')) return 'vendor-icons';
           if (id.includes('framer-motion')) return 'vendor-framer';
-          if (id.includes('@tiptap') || id.includes('prosemirror')) return 'vendor-tiptap';
+          // ★ tiptap/prosemirror는 manualChunks에 넣지 않는다 — 강제 청크 지정 시
+          // rollup이 vendor-react↔vendor-tiptap 청크 사이클을 만들어 메인 엔트리가
+          // vendor-tiptap(117KB, 홈에서 93% 미사용)을 정적 import하게 됨(Lighthouse 실측).
+          // 미지정 시 유일한 사용처인 RichEditor lazy 청크에 자연 포함 → /admin/magazine에서만 로드.
         },
       },
-    },
-    // ★ 시즌74 — admin-only 거대 chunk (vendor-tiptap 365KB)는 일반 페이지에서 modulepreload 제거
-    // 홈 FCP 1660ms → ↓ 기대 (vendor-tiptap은 /admin/magazine 진입시에만 lazy 로드)
-    modulePreload: {
-      resolveDependencies: (_filename, deps) => deps.filter(d => !/vendor-tiptap/.test(d)),
     },
     chunkSizeWarningLimit: 600,
   },

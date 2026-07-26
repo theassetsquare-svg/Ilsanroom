@@ -55,7 +55,7 @@ export default function SecretModeToast() {
           onClick={dismiss}
           className="shrink-0 rounded-full bg-emerald-700 px-2.5 py-1 text-[11px] font-bold text-white hover:bg-emerald-800 transition"
         >
-          자세히
+          시크릿 모드 안내
         </Link>
         <button
           onClick={dismiss}

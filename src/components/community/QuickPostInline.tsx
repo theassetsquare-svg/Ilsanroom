@@ -169,7 +169,7 @@ export function QuickPostInline({ onPosted }: Props) {
           alignItems: 'center',
           marginTop: 6,
           fontSize: 11,
-          color: COLOR.text.tertiary,
+          color: COLOR.text.secondary,
           minHeight: 16,
         }}
       >

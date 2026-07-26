@@ -58,6 +58,14 @@ jobs:
             /tmp/lighthouse.txt
           retention-days: 30
 
+      # 목표 미달 시에만 메일 1통 (전부 달성 = 침묵 = 자기수렴)
+      - name: Email if below goals
+        if: always()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+        run: node scripts/lighthouse-report-mail.mjs /tmp/lighthouse.json
+
       - name: Annotate failures
         if: always()
         run: |
