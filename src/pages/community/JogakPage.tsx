@@ -538,7 +538,7 @@ export default function JogakPage() {
                     {isClosed && <span className="rounded px-2 py-0.5 text-[10px] font-bold"
                       style={{ backgroundColor: '#F3F4F6', color: '#9CA3AF' }}>마감</span>}
                     {isAlmostFull && !isClosed && <span className="rounded px-2 py-0.5 text-[10px] font-bold"
-                      style={{ backgroundColor: '#FEF3C7', color: '#D97706' }}>마감임박</span>}
+                      style={{ backgroundColor: '#FEF3C7', color: '#92400E' }}>마감임박</span>}
                   </div>
                 )}
 

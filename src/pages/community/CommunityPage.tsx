@@ -174,7 +174,8 @@ export default function CommunityPage() {
             <div className="flex items-center gap-2 mb-5">
               <span className="text-lg">💬</span>
               <h2 className="text-xl font-black" style={{ color: '#111' }}>댓글 폭발 중</h2>
-              <span className="text-xs rounded-full px-2 py-0.5 font-bold animate-pulse"
+              {/* animate-pulse 제거 — 반투명 순간 대비 4.5:1 미달로 Lighthouse color-contrast 감점 */}
+              <span className="text-xs rounded-full px-2 py-0.5 font-bold"
                 style={{ backgroundColor: '#FEF3C7', color: '#92400E' }}>HOT</span>
             </div>
             <div className="space-y-2">
