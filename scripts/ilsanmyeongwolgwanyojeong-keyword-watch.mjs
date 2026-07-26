@@ -86,8 +86,10 @@ async function main() {
   const stemDup = [...stemMap.entries()].filter(([s, c]) => c >= 2 && !/[0-9a-zA-Z]/.test(s));
   if (stemDup.length > 0) issues.push(`title 의미중복 stem [${stemDup.map(([s,c])=>s+'×'+c).join(',')}]`);
   if (desc.length === 0 || desc.length > 150) issues.push(`desc ${desc.length}자`);
-  if (priDesc < 3) issues.push(`desc ${PRIMARY} ${priDesc}회 (≥3 필요)`);
-  if (secDesc < 3) issues.push(`desc ${SECONDARY} ${secDesc}회 (≥3 필요)`);
+  // 2026-08 월간 사이클: desc 키워드 3+3은 스터핑 문장(저CTR 원인)이라 자연문 2+2로 완화.
+  // 노출 1029·CTR 4.4% 개선 레버 — body 임계(≥5/≥3)는 그대로 유지.
+  if (priDesc < 2) issues.push(`desc ${PRIMARY} ${priDesc}회 (≥2 필요)`);
+  if (secDesc < 2) issues.push(`desc ${SECONDARY} ${secDesc}회 (≥2 필요)`);
   if (priDensity > 0.035) issues.push(`${PRIMARY} 밀도 ${(priDensity*100).toFixed(2)}% (≤3.5%)`);
   if (priBody < 5) issues.push(`${PRIMARY} body ${priBody}회 (≥5 필요)`);
   if (secBody < 3) issues.push(`${SECONDARY} body ${secBody}회 (≥3 필요)`);

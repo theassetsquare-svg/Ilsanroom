@@ -98,19 +98,28 @@ export function ReadingMilestone({ containerRef }: { containerRef: React.RefObje
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
   }, [progress, shownMilestones]);
 
-  if (!activeMilestone) return null;
-
   return (
-    <div
-      data-reading-milestone="true"
-      className="fixed left-1/2 -translate-x-1/2 z-[45] animate-fade-in"
-      style={{ bottom: 'calc(140px + env(safe-area-inset-bottom))' }}
-    >
-      <div className="flex items-center gap-2 rounded-full bg-[#111]/90 px-5 py-2.5 text-white shadow-xl backdrop-blur-sm">
-        <span className="text-lg">{activeMilestone.emoji}</span>
-        <span className="text-sm font-bold">{activeMilestone.text}</span>
+    <>
+      {/* 읽기 진행바 — 얼마나 남았는지 보이면 완독률이 오른다 (scroll_100 레버) */}
+      <div className="fixed left-0 top-0 z-[60] h-[3px] w-full bg-transparent" aria-hidden="true">
+        <div
+          className="h-full bg-[#8B5CF6] transition-[width] duration-150"
+          style={{ width: `${progress}%` }}
+        />
       </div>
-    </div>
+      {activeMilestone && (
+        <div
+          data-reading-milestone="true"
+          className="fixed left-1/2 -translate-x-1/2 z-[45] animate-fade-in"
+          style={{ bottom: 'calc(140px + env(safe-area-inset-bottom))' }}
+        >
+          <div className="flex items-center gap-2 rounded-full bg-[#111]/90 px-5 py-2.5 text-white shadow-xl backdrop-blur-sm">
+            <span className="text-lg">{activeMilestone.emoji}</span>
+            <span className="text-sm font-bold">{activeMilestone.text}</span>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

@@ -37,6 +37,20 @@ export default function MagazineDetailPage() {
   const relatedArticles = articles.filter(a => a.id !== article.id).slice(0, 3);
   const contentLength = (article.content || '').length + (article.excerpt || '').length;
 
+  /* 완독 레버 — 본문 H2에서 목차 자동 생성 + 앵커 id 주입 (새 문장 창작 0).
+     섹션 개수·제목이 미리 보이면 "얼마나 남았는지" 알게 돼 끝까지 읽는다. */
+  const sectionTitles: string[] = [];
+  const contentWithIds = (article.content || '').replace(/<h2>([\s\S]*?)<\/h2>/g, (_m, inner: string) => {
+    sectionTitles.push(inner.replace(/<[^>]+>/g, '').trim());
+    return `<h2 id="sec-${sectionTitles.length}">${inner}</h2>`;
+  });
+  const showToc = sectionTitles.length >= 3;
+  const jumpTo = (i: number) => {
+    const el = document.getElementById(`sec-${i + 1}`);
+    if (!el) return;
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72, behavior: 'smooth' });
+  };
+
   return (
     <div ref={containerRef}>
       {/* ═══ HERO ═══ */}
@@ -65,11 +79,33 @@ export default function MagazineDetailPage() {
 
       {/* ═══ BODY ═══ */}
       <div className="mx-auto max-w-3xl px-4 py-8">
+        {/* 목차 — 섹션 3개 이상 글만 (완독 레버) */}
+        {showToc && (
+          <nav aria-label="목차" className="mb-8 rounded-2xl border p-4 sm:p-5" style={{ borderColor: '#E9E4FF', background: '#FAF9FF' }}>
+            <p className="text-xs font-bold mb-3" style={{ color: '#8B5CF6' }}>이 글의 순서 · {sectionTitles.length}개 섹션</p>
+            <ol className="space-y-1">
+              {sectionTitles.map((t, i) => (
+                <li key={i}>
+                  <button
+                    type="button"
+                    onClick={() => jumpTo(i)}
+                    className="flex w-full items-baseline gap-2 rounded-lg px-2 py-1.5 text-left text-sm transition hover:bg-[#F3F0FF]"
+                    style={{ color: '#333', minHeight: 36 }}
+                  >
+                    <span className="shrink-0 text-xs font-bold" style={{ color: '#8B5CF6' }}>{i + 1}</span>
+                    <span className="font-medium">{t}</span>
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )}
+
         {/* 본문 */}
         <div
           className="rich-content text-base leading-relaxed mb-8"
           style={{ color: '#333', lineHeight: '1.9' }}
-          dangerouslySetInnerHTML={{ __html: splitHtmlParagraphs(sanitizeHtml(article.content)) }}
+          dangerouslySetInnerHTML={{ __html: splitHtmlParagraphs(sanitizeHtml(contentWithIds)) }}
         />
 
         {/* 중간 훅 */}

@@ -79,6 +79,12 @@ export default function ClubsPage() {
         <p className="text-base leading-relaxed text-neon-text-muted">
           동네마다 색이 다릅니다. 강남·압구정·청담에는 규모가 큰 베뉴가 모여 있고, 홍대는 중소형 공간에 인디·얼터너티브가 섞입니다. 이태원은 외국인이 많은 동네라 다국적 파티 분위기가 강한 편입니다.
         </p>
+        <p className="text-base leading-relaxed text-neon-text-muted">
+          이름을 대면 이렇습니다. 강남·청담 라인은 옥타곤을 필두로 레이스·사운드·피크·미로·유토피아가 몰려 있고, 압구정은 하입·인트로·컬러·디브릿지·캔디맨이 각자 다른 색으로 돕니다. 이태원엔 케이크샵·세비지·프리즘·메이드, 홍대엔 버뮤다·퍼시픽·도깨비가 밤을 나눠 갖고 있죠.
+        </p>
+        <p className="text-base leading-relaxed text-neon-text-muted">
+          서울 밖에서는 일산 CJ와 부천 파라곤, 의정부아레나, 인천파라다이스씨티가 수도권 축을 이루고, 지방은 청주 슈퍼문과 대전설탕클럽이 각 도시의 밤을 지킵니다.
+        </p>
         <h3 className="text-base font-bold text-neon-text pt-1">오늘 클럽 어디부터 고를까?</h3>
         <p className="text-base leading-relaxed text-neon-text-muted">
           고민될 땐 음악부터 정하면 빠릅니다. EDM·하우스로 크게 놀고 싶으면 강남·압구정의 대형 클럽, 힙합·R&B에 가까운 밤이면 홍대 중소형, 국적 안 가리고 섞이고 싶으면 이태원이 답이죠. 인원도 변수입니다. 둘셋이면 바 카운터에서 시작해 플로어에 합류하는 게 편하고, 단체면 테이블 예약이 사실상 필수예요.
