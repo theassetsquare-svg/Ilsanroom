@@ -94,6 +94,7 @@ const MediaLibraryPage = lazyRetry(() => import('./pages/admin/MediaLibraryPage'
 const SeoOverridesPage = lazyRetry(() => import('./pages/admin/SeoOverridesPage'));
 const PageBlocksPage = lazyRetry(() => import('./pages/admin/PageBlocksPage'));
 const ModerationPage = lazyRetry(() => import('./pages/admin/ModerationPage'));
+const MembersPage = lazyRetry(() => import('./pages/admin/MembersPage'));
 const StatsPage = lazyRetry(() => import('./pages/admin/StatsPage'));
 const VisitorAnalyticsPage = lazyRetry(() => import('./pages/admin/VisitorAnalyticsPage'));
 const AuditReportPage = lazyRetry(() => import('./pages/admin/AuditReportPage'));
@@ -244,6 +245,7 @@ export default function App() {
           <Route path="seo" element={<SeoOverridesPage />} />
           <Route path="blocks" element={<PageBlocksPage />} />
           <Route path="moderation" element={<ModerationPage />} />
+          <Route path="members" element={<MembersPage />} />
           <Route path="stats" element={<StatsPage />} />
           <Route path="visitors" element={<VisitorAnalyticsPage />} />
           <Route path="audit" element={<AuditReportPage />} />

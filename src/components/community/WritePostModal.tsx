@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Link } from '../ui/SafeLink';
+import { useAuth } from '@/hooks/useAuth';
 import { createPost, type PostCategory } from '@/lib/community-api';
 import { checkContent, checkTitle } from '@/lib/content-filter';
 
@@ -18,6 +20,7 @@ interface Props {
 }
 
 export default function WritePostModal({ open, onClose, defaultCategory = 'free', onSuccess }: Props) {
+  const { user } = useAuth();
   const [category, setCategory] = useState<PostCategory>(defaultCategory);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -27,6 +30,27 @@ export default function WritePostModal({ open, onClose, defaultCategory = 'free'
   const [error, setError] = useState('');
 
   if (!open) return null;
+
+  // 비회원 — 부드러운 로그인 안내 (읽기는 자유, 쓰기만 회원)
+  if (!user) {
+    return (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 px-4" onClick={onClose}>
+        <div className="w-full max-w-sm rounded-2xl bg-white p-8 text-center shadow-xl" style={{ color: '#111' }} onClick={(e) => e.stopPropagation()}>
+          <div className="mb-3 text-3xl">✍️</div>
+          <h2 className="mb-2 text-lg font-bold">글쓰기는 회원만 가능해요</h2>
+          <p className="mb-6 text-sm text-gray-500">읽는 건 자유! 글을 남기려면 로그인 한 번이면 됩니다</p>
+          <div className="flex gap-3">
+            <button onClick={onClose} className="flex-1 rounded-xl border border-gray-200 py-3 text-sm font-medium text-gray-500 transition hover:bg-gray-50" style={{ minHeight: 48 }}>
+              나중에
+            </button>
+            <Link to="/login" className="flex-1 rounded-xl bg-neon-primary py-3 text-sm font-bold text-white transition hover:bg-neon-primary-light" style={{ minHeight: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              로그인하기
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleSubmit = async () => {
     if (!title.trim() || !content.trim()) {

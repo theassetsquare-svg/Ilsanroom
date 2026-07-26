@@ -4,16 +4,28 @@ import { createClient } from '@/lib/supabase';
 import { COLOR, SHADOW, RADIUS, TYPO, TOUCH } from '@/lib/design-tokens';
 import { TemperatureBar } from '@/components/community/TemperatureBadge';
 import { fetchUserTempProfile, markAttendance, getTemperatureLevel } from '@/lib/temperature';
+import { getViewedVenues } from '@/lib/community-api';
+import { fetchNotifications, markAsRead } from '@/lib/notification-api';
 
-type TabKey = 'posts' | 'comments' | 'favorites' | 'titles' | 'missions';
+type TabKey = 'posts' | 'comments' | 'favorites' | 'recent' | 'alerts' | 'titles' | 'missions';
 
 const TABS: { key: TabKey; label: string; icon: string }[] = [
   { key: 'posts',     label: '내 글',   icon: '✍️' },
   { key: 'comments',  label: '댓글',    icon: '💬' },
   { key: 'favorites', label: '찜',      icon: '❤️' },
+  { key: 'recent',    label: '최근 본', icon: '👀' },
+  { key: 'alerts',    label: '알림',    icon: '🔔' },
   { key: 'titles',    label: '칭호',    icon: '🏆' },
   { key: 'missions',  label: '시즌',    icon: '📅' },
 ];
+
+// PII 최소 — 이메일 마스킹 (본인 확인용 표시만)
+function maskEmail(email: string | undefined | null): string {
+  if (!email || !email.includes('@')) return '';
+  const [local, domain] = email.split('@');
+  const maskedLocal = local.length <= 2 ? `${local.charAt(0)}*` : `${local.slice(0, 2)}${'*'.repeat(Math.min(local.length - 2, 5))}`;
+  return `${maskedLocal}@${domain}`;
+}
 
 function timeAgo(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -70,8 +82,11 @@ export default function ProfileClient() {
   const [myPosts, setMyPosts] = useState<any[]>([]);
   const [myComments, setMyComments] = useState<any[]>([]);
   const [myFavorites, setMyFavorites] = useState<any[]>([]);
+  const [recentVenues, setRecentVenues] = useState<string[]>([]);
+  const [myAlerts, setMyAlerts] = useState<any[]>([]);
   const [stats, setStats] = useState({ posts: 0, comments: 0, favorites: 0 });
   const [tabLoading, setTabLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
@@ -102,11 +117,21 @@ export default function ProfileClient() {
 
   const fetchTabData = useCallback(async (tab: TabKey, userId: string) => {
     if (tab === 'titles' || tab === 'missions') return;
+    if (tab === 'recent') {
+      setRecentVenues(getViewedVenues(userId).slice(0, 20));
+      return;
+    }
     const supabase = createClient();
     if (!supabase) return;
     setTabLoading(true);
 
     try {
+      if (tab === 'alerts') {
+        const rows = await fetchNotifications(20);
+        setMyAlerts(rows || []);
+        setTabLoading(false);
+        return;
+      }
       if (tab === 'posts') {
         const { data, count } = await supabase
           .from('posts')
@@ -170,6 +195,37 @@ export default function ProfileClient() {
     if (!supabase) return;
     await supabase.auth.signOut();
     window.location.href = '/';
+  };
+
+  // 계정 탈퇴 — 서버(service_role) 경유 삭제, 2단 확인
+  const handleDeleteAccount = async () => {
+    if (deleting) return;
+    if (!window.confirm('정말 탈퇴하시겠어요? 계정과 활동 기록이 삭제되며 되돌릴 수 없습니다.')) return;
+    if (!window.confirm('마지막 확인입니다. 탈퇴를 진행할까요?')) return;
+    const supabase = createClient();
+    if (!supabase) return;
+    setDeleting(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) { setDeleting(false); return; }
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete-account', token }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok || (body as any).error) {
+        alert((body as any).error || '탈퇴 처리에 실패했습니다. 잠시 후 다시 시도해주세요.');
+        setDeleting(false);
+        return;
+      }
+      await supabase.auth.signOut();
+      window.location.href = '/';
+    } catch {
+      alert('탈퇴 처리에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      setDeleting(false);
+    }
   };
 
   const handleNickSave = async () => {
@@ -334,6 +390,7 @@ export default function ProfileClient() {
                   </span>
                 )}
                 {joinDate && <span>· 가입 {joinDate}</span>}
+                {maskEmail(user.email) && <span>· {maskEmail(user.email)}</span>}
               </div>
             </div>
           </div>
@@ -429,6 +486,54 @@ export default function ProfileClient() {
             ) : (
               <EmptyState text="아직 작성한 글이 없어요" ctaText="글 쓰러 가기" ctaTo="/community/free" />
             )
+          ) : activeTab === 'recent' ? (
+            recentVenues.length > 0 ? (
+              <div>
+                {recentVenues.map((slug, i) => (
+                  <Link key={slug} to={`/search?q=${slug}`} style={{
+                    display: 'flex', alignItems: 'center', padding: '14px 16px',
+                    borderBottom: i !== recentVenues.length - 1 ? `1px solid ${COLOR.bg.border}` : 'none',
+                    minHeight: TOUCH.min, textDecoration: 'none',
+                  }}>
+                    <span style={{ ...TYPO.body, color: COLOR.text.primary, fontWeight: 600 }}>
+                      👀 {slug}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <EmptyState text="아직 둘러본 업소가 없어요" ctaText="업소 둘러보기" ctaTo="/clubs" />
+            )
+          ) : activeTab === 'alerts' ? (
+            myAlerts.length > 0 ? (
+              <div>
+                {myAlerts.map((n, i) => (
+                  <Link
+                    key={n.id}
+                    to={n.link || '/community'}
+                    onClick={() => { if (!n.is_read) markAsRead(n.id); }}
+                    style={{
+                      display: 'block', padding: '14px 16px',
+                      borderBottom: i !== myAlerts.length - 1 ? `1px solid ${COLOR.bg.border}` : 'none',
+                      minHeight: TOUCH.min, textDecoration: 'none',
+                      backgroundColor: n.is_read ? 'transparent' : `${COLOR.neon.pink}0D`,
+                    }}
+                  >
+                    <p style={{ ...TYPO.h3, color: COLOR.text.primary, margin: 0 }}>
+                      {n.is_read ? '' : '🔴 '}{n.title}
+                    </p>
+                    {n.message && (
+                      <p style={{ ...TYPO.small, color: COLOR.text.secondary, margin: '4px 0 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as const, overflow: 'hidden' }}>
+                        {n.message}
+                      </p>
+                    )}
+                    <p style={{ ...TYPO.meta, color: COLOR.text.tertiary, margin: '4px 0 0' }}>{timeAgo(n.created_at)}</p>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <EmptyState text="새 알림이 없어요" />
+            )
           ) : activeTab === 'comments' ? (
             myComments.length > 0 ? (
               <div>
@@ -498,6 +603,15 @@ export default function ProfileClient() {
           border: `1px solid ${COLOR.bg.border}`, cursor: 'pointer', minHeight: TOUCH.comfortable,
         }}>
           로그아웃
+        </button>
+
+        <button onClick={handleDeleteAccount} disabled={deleting} style={{
+          width: '100%', marginTop: 10, padding: '14px', borderRadius: RADIUS.md, fontSize: 12,
+          backgroundColor: 'transparent', color: COLOR.text.tertiary,
+          border: 'none', cursor: 'pointer', minHeight: TOUCH.comfortable,
+          textDecoration: 'underline', opacity: deleting ? 0.5 : 1,
+        }}>
+          {deleting ? '탈퇴 처리 중...' : '회원 탈퇴'}
         </button>
       </div>
 

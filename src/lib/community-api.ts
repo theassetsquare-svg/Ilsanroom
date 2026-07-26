@@ -42,6 +42,7 @@ export async function fetchPosts(category: PostCategory, limit = 20, offset = 0)
       .from('posts')
       .select('*, users!left(nickname, avatar_url)', { count: 'exact' })
       .eq('category', category)
+      .or('is_hidden.is.null,is_hidden.eq.false')
       .order('is_pinned', { ascending: false })
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
@@ -52,6 +53,7 @@ export async function fetchPosts(category: PostCategory, limit = 20, offset = 0)
         .from('posts')
         .select('*', { count: 'exact' })
         .eq('category', category)
+        .or('is_hidden.is.null,is_hidden.eq.false')
         .order('is_pinned', { ascending: false })
         .order('created_at', { ascending: false })
         .range(offset, offset + limit - 1);
@@ -110,6 +112,7 @@ export async function fetchComments(postId: string) {
       .from('comments')
       .select('*, users!left(nickname, avatar_url)')
       .eq('post_id', postId)
+      .or('is_hidden.is.null,is_hidden.eq.false')
       .order('created_at', { ascending: true });
 
     if (!error && data) return data as unknown as Comment[];

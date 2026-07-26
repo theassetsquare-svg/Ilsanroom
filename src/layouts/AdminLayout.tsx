@@ -18,6 +18,7 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { to: '/admin', label: '모더레이션', icon: '🛡', group: '운영' },
+  { to: '/admin/members', label: '회원 관리', icon: '👤', group: '운영' },
   { to: '/admin/venues', label: '업소 관리', icon: '🏢', group: 'CMS' },
   { to: '/admin/magazine', label: '매거진', icon: '📰', group: 'CMS' },
   { to: '/admin/media', label: '미디어 라이브러리', icon: '🖼', group: 'CMS' },

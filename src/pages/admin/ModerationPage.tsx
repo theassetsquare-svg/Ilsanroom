@@ -5,7 +5,19 @@ import { createClient } from '@/lib/supabase';
 
 const ADMIN_EMAILS = ['qotjsdnr123@naver.com', 'theassetsquare@gmail.com'];
 
-type Tab = 'reports' | 'hidden' | 'users' | 'venues';
+type Tab = 'reports' | 'queue' | 'hidden' | 'users' | 'venues';
+
+// 자동 모더레이션이 "애매하다"고 판단해 경고 없이 쌓아둔 검토 대기 항목
+interface QueueItem {
+  id: string;
+  user_id: string | null;
+  target_type: string;
+  target_id: string;
+  excerpt: string | null;
+  reason: string | null;
+  status: 'open' | 'approved' | 'dismissed';
+  created_at: string;
+}
 
 interface VenueReport {
   id: number;
@@ -75,6 +87,7 @@ export default function ModerationPage() {
 
   const [tab, setTab] = useState<Tab>('reports');
   const [reports, setReports] = useState<Report[]>([]);
+  const [queueItems, setQueueItems] = useState<QueueItem[]>([]);
   const [hiddenPosts, setHiddenPosts] = useState<Post[]>([]);
   const [users, setUsers] = useState<UserRow[]>([]);
   const [venueReports, setVenueReports] = useState<VenueReport[]>([]);
@@ -91,18 +104,44 @@ export default function ModerationPage() {
     setLoading(true);
     const supabase = createClient();
     if (!supabase) { setLoading(false); return; }
-    const [r, h, u, vr] = await Promise.all([
+    const [r, h, u, vr, q] = await Promise.all([
       supabase.from('reports').select('*').order('created_at', { ascending: false }).limit(200),
       supabase.from('posts').select('id,user_id,category,title,content,is_hidden,report_count,created_at').eq('is_hidden', true).order('created_at', { ascending: false }).limit(100),
       supabase.from('user_profiles').select('user_id,nickname,level,points,is_banned,ban_reason,banned_at').order('points', { ascending: false }).limit(200),
       supabase.from('venue_reports').select('id,venue_slug,reason,evidence_url,memo,reporter_ip,reporter_fingerprint,status,admin_note,created_at').order('created_at', { ascending: false }).limit(300),
+      supabase.from('moderation_queue').select('*').order('created_at', { ascending: false }).limit(200),
     ]);
     if (r.error) setMsg({ type: 'err', text: `신고 로드 실패: ${r.error.message}` });
     setReports((r.data || []) as Report[]);
     setHiddenPosts((h.data || []) as Post[]);
     setUsers((u.data || []) as UserRow[]);
     setVenueReports((vr.data || []) as VenueReport[]);
+    setQueueItems((q.data || []) as QueueItem[]);
     setLoading(false);
+  }
+
+  // 검토 큐 처리 — 승인(위반 확정)=숨김+수동 경고 / 기각(문제없음)=아무 조치 0
+  async function resolveQueueItem(item: QueueItem, action: 'approved' | 'dismissed') {
+    const supabase = createClient();
+    if (!supabase) return;
+    if (action === 'approved') {
+      const table = item.target_type === 'posts' ? 'posts' : item.target_type === 'comments' ? 'comments' : 'reviews';
+      const { error: hideErr } = await supabase.from(table).update({ is_hidden: true }).eq('id', item.target_id);
+      if (hideErr) { setMsg({ type: 'err', text: `숨김 실패: ${hideErr.message}` }); return; }
+      if (item.user_id) {
+        const { error: warnErr } = await supabase.rpc('admin_warn_user', {
+          target: item.user_id,
+          warn_reason: item.reason || '스팸/광고성 게시 확인',
+        });
+        if (warnErr) { setMsg({ type: 'err', text: `경고 실패: ${warnErr.message}` }); return; }
+      }
+    }
+    const { error } = await supabase.from('moderation_queue')
+      .update({ status: action, resolved_at: new Date().toISOString(), resolved_by: user?.id || null })
+      .eq('id', item.id);
+    if (error) { setMsg({ type: 'err', text: error.message }); return; }
+    setMsg({ type: 'ok', text: action === 'approved' ? '위반 확정 — 숨김 + 경고 1회' : '문제없음 — 기각 (조치 0)' });
+    loadAll();
   }
 
   // 시즌64 — venue 신고 처리 (verified=폐업 확정 / rejected=무고)
@@ -182,29 +221,21 @@ export default function ModerationPage() {
     loadAll();
   }
 
-  // 유저 ban
+  // 유저 ban — 서버 RPC 경유 (정지 + 이메일 재가입 차단 목록까지 함께 처리)
   async function toggleBan(u: UserRow) {
     const supabase = createClient();
     if (!supabase) return;
     if (!u.is_banned) {
       const reason = prompt(`${u.nickname || u.user_id.slice(0, 8)} 차단 사유:`);
       if (reason === null) return;
-      const { error } = await supabase.from('user_profiles').update({
-        is_banned: true,
-        ban_reason: reason || '사유 없음',
-        banned_at: new Date().toISOString(),
-      }).eq('user_id', u.user_id);
+      const { error } = await supabase.rpc('admin_ban_user', { target: u.user_id, why: reason || '사유 없음' });
       if (error) { setMsg({ type: 'err', text: error.message }); return; }
-      setMsg({ type: 'ok', text: '차단 완료' });
+      setMsg({ type: 'ok', text: '차단 완료 (동일 이메일 재가입 차단 등재)' });
     } else {
       if (!confirm(`${u.nickname || u.user_id.slice(0, 8)} 차단 해제?`)) return;
-      const { error } = await supabase.from('user_profiles').update({
-        is_banned: false,
-        ban_reason: null,
-        banned_at: null,
-      }).eq('user_id', u.user_id);
+      const { error } = await supabase.rpc('admin_unban_user', { target: u.user_id });
       if (error) { setMsg({ type: 'err', text: error.message }); return; }
-      setMsg({ type: 'ok', text: '차단 해제' });
+      setMsg({ type: 'ok', text: '차단 해제 (이메일 차단도 해제)' });
     }
     loadAll();
   }
@@ -239,6 +270,7 @@ export default function ModerationPage() {
       <div className="mb-4 flex gap-1 border-b border-neon-border">
         {([
           { k: 'reports', label: `신고 큐${pendingCount > 0 ? ` (${pendingCount})` : ''}` },
+          { k: 'queue', label: `검토 대기${queueItems.filter(x => x.status === 'open').length > 0 ? ` (${queueItems.filter(x => x.status === 'open').length})` : ''}` },
           { k: 'venues', label: `업소 신고${venuePendingCount > 0 ? ` (${venuePendingCount})` : ''}` },
           { k: 'hidden', label: `숨김 컨텐츠 (${hiddenPosts.length})` },
           { k: 'users', label: `유저 (${users.length})` },
@@ -323,6 +355,48 @@ export default function ModerationPage() {
                       </button>
                     </div>
                   )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 검토 대기 큐 — 자동 모더레이션이 애매하다고 판단한 것 (자동 경고 0, admin 판단만) */}
+      {tab === 'queue' && !loading && (
+        <div>
+          <p className="mb-3 text-xs text-gray-500">
+            스팸 의심(링크·연락처·광고문구) 자동 감지분. 글은 정상 발행 상태이며 경고도 없음 — 여기서 admin이 확정할 때만 조치됩니다.
+          </p>
+          {queueItems.filter(x => x.status === 'open').length === 0 ? (
+            <div className="py-12 text-center text-sm text-neon-text-muted">검토 대기 없음 🎉</div>
+          ) : (
+            <div className="space-y-2">
+              {queueItems.filter(x => x.status === 'open').map(item => (
+                <div key={item.id} className="rounded-lg border border-neon-border bg-neon-bg p-3">
+                  <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
+                    <span className="rounded-full bg-orange-500/20 px-2 py-0.5 font-bold text-orange-300">{item.target_type}</span>
+                    <span className="rounded-full bg-yellow-500/20 px-2 py-0.5 font-bold text-yellow-300">{item.reason || '자동 감지'}</span>
+                    <span className="ml-auto text-neon-text-muted">{new Date(item.created_at).toLocaleString('ko-KR')}</span>
+                  </div>
+                  <p className="mb-1 font-mono text-xs text-neon-text-muted">target_id: {item.target_id} · user: {item.user_id?.slice(0, 8) || '-'}</p>
+                  {item.excerpt && <p className="mb-2 text-sm text-neon-text">{item.excerpt}</p>}
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => { if (confirm('위반 확정? 글 숨김 + 작성자 경고 1회가 기록됩니다.')) resolveQueueItem(item, 'approved'); }}
+                      className="rounded-lg bg-red-500/20 px-3 py-1.5 text-xs font-bold text-red-300 hover:bg-red-500/30"
+                    >
+                      위반 확정 (숨김+경고)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => resolveQueueItem(item, 'dismissed')}
+                      className="rounded-lg bg-green-500/20 px-3 py-1.5 text-xs font-bold text-green-300 hover:bg-green-500/30"
+                    >
+                      문제없음 (기각)
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
