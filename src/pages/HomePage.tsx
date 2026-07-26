@@ -587,9 +587,9 @@ export default function HomePage() {
       {/* ═══ 1.35 v25 큐레이션 4가지 — 시점·상황·예산 진입점 ═══ */}
       <section className="px-4 pt-2 pb-1 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto" aria-label="큐레이션 빠른 진입">
         <div className="grid grid-cols-4 gap-2">
-          <Link to="/tonight" className="flex flex-col items-center justify-center gap-1 rounded-xl bg-gradient-to-br from-[#8B5CF6]/10 to-white border border-[#8B5CF6]/20 py-2.5 active:scale-[0.97] transition">
-            <span className="text-xl">🌙</span>
-            <span className="text-[11px] font-bold text-[#111] leading-tight">오늘 밤</span>
+          <Link to="/roulette" className="flex flex-col items-center justify-center gap-1 rounded-xl bg-gradient-to-br from-[#8B5CF6]/10 to-white border border-[#8B5CF6]/20 py-2.5 active:scale-[0.97] transition">
+            <span className="text-xl">🎲</span>
+            <span className="text-[11px] font-bold text-[#111] leading-tight">룰렛 추천</span>
           </Link>
           <Link to="/weekend" className="flex flex-col items-center justify-center gap-1 rounded-xl bg-gradient-to-br from-[#EC4899]/10 to-white border border-[#EC4899]/20 py-2.5 active:scale-[0.97] transition">
             <span className="text-xl">📅</span>

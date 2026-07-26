@@ -213,8 +213,8 @@ export default function ComparePage() {
         <nav className="mt-8 rounded-2xl border border-gray-200 bg-white p-5" aria-label="시점별 큐레이션">
           <h2 className="text-base font-bold text-[#111] mb-3">비교 끝났다면 코스도 정해볼까</h2>
           <div className="grid grid-cols-2 gap-2">
-            <Link to="/tonight" className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-3 text-sm font-bold text-[#111] active:bg-gray-100">
-              🌙 오늘 밤 24곳 →
+            <Link to="/ranking" className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-3 text-sm font-bold text-[#111] active:bg-gray-100">
+              🏆 실시간 인기 랭킹 →
             </Link>
             <Link to="/weekend" className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-3 text-sm font-bold text-[#111] active:bg-gray-100">
               📅 이번 주말 30곳 →

@@ -10,7 +10,6 @@ const categoryLinks = [
 ];
 
 const communityLinks = [
-  { href: '/tonight', label: '오늘 밤' },
   { href: '/weekend', label: '이번 주말' },
   { href: '/occasion', label: '상황별' },
   { href: '/budget', label: '예산별' },

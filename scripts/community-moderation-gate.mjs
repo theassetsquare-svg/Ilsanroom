@@ -79,8 +79,8 @@ for (const fn of ['createPost', 'createComment', 'createReview']) {
 }
 
 // --- 3) 작성 UI 배선 ---
+// 2026-07 월간 사이클: WritePostModal은 미사용 죽은 코드로 삭제됨(실글쓰기=게시판 페이지+community-api 경유)
 for (const ui of [
-  'src/components/community/WritePostModal.tsx',
   'src/components/community/QuickPostInline.tsx',
 ]) {
   const s = read(ui);

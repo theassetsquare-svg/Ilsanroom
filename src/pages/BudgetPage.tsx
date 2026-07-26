@@ -87,8 +87,8 @@ export default function BudgetPage() {
         <nav className="mt-6 p-5 bg-neon-surface border border-neon-border rounded-xl" aria-label="다른 큐레이션">
           <h2 className="text-base font-bold text-neon-text mb-3">상황 말고 시점으로 골라볼래?</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-            <Link to="/tonight" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
-              🌙 오늘 밤 추천 24곳 →
+            <Link to="/ranking" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
+              🏆 실시간 인기 랭킹 →
             </Link>
             <Link to="/weekend" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
               📅 이번 주말 30곳 →

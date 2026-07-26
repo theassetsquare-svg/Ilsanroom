@@ -298,7 +298,7 @@ function venueHref(v) {
 const SKIP_TO_CONTENT = `<a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:0;z-index:9999;background:#000;color:#fff;padding:8px 12px;text-decoration:none;font-weight:600" onfocus="this.style.left='8px'" onblur="this.style.left='-9999px'">본문 바로가기</a>`;
 const SITE_NAV_ANCHORS = `${SKIP_TO_CONTENT}<nav aria-label="카테고리"><ul><li><a href="/clubs/">클럽</a></li><li><a href="/nights/">나이트</a></li><li><a href="/lounges/">라운지</a></li><li><a href="/rooms/">룸</a></li><li><a href="/yojeong/">요정</a></li><li><a href="/hoppa/">호빠</a></li><li><a href="/community/">커뮤니티</a></li><li><a href="/magazine/">매거진</a></li><li><a href="/search/">검색</a></li></ul></nav>`;
 // 시즌22 — 사이트 footer SSR 내부링크 (정적 유틸/lounge/lead 페이지 reachable)
-const SITE_FOOTER_ANCHORS = `<footer aria-label="사이트맵"><h2>전체 메뉴</h2><nav aria-label="사이트맵 링크"><ul><li><a href="/tonight/">오늘 밤</a></li><li><a href="/weekend/">이번 주말</a></li><li><a href="/occasion/">상황별</a></li><li><a href="/budget/">예산별</a></li><li><a href="/guide/">입문 가이드</a></li><li><a href="/safety/">안전 가이드</a></li><li><a href="/help/">자주 묻는 질문</a></li><li><a href="/venue-info/">양주·부스·룸 안내</a></li><li><a href="/events/">이벤트 일정</a></li><li><a href="/gallery/">매장 사진</a></li><li><a href="/ranking/">인기 랭킹</a></li><li><a href="/quiz/">스타일 퀴즈</a></li><li><a href="/roulette/">룰렛 추천</a></li><li><a href="/vs/">VS 매치업</a></li><li><a href="/compare/">업소 비교</a></li><li><a href="/hidden/">숨은 명소</a></li><li><a href="/welcome/">놀쿨 소개</a></li><li><a href="/login/">로그인</a></li><li><a href="/profile/">내 프로필</a></li><li><a href="/referral/">친구 초대</a></li><li><a href="/onboarding/">업소 입점</a></li><li><a href="/pricing/">요금제</a></li><li><a href="/dashboard/">매장 대시보드</a></li><li><a href="/analytics/">분석 리포트</a></li><li><a href="/billing/">결제 관리</a></li><li><a href="/launch/">오픈 체크</a></li><li><a href="/demo/">업주 데모</a></li><li><a href="/case-studies/">운영 사례</a></li><li><a href="/testimonials/">업주 인터뷰</a></li><li><a href="/status/">서비스 상태</a></li><li><a href="/privacy-promise/">프라이버시 정책</a></li><li><a href="/disclaimer/">고지 사항</a></li><li><a href="/legal/">법적 준수 안내</a></li><li><a href="/terms/">이용 약관</a></li><li><a href="/privacy/">개인정보 처리</a></li><li><a href="/venue-terms/">업주 약관</a></li><li><a href="/lounge/">업종별 라운지</a></li><li><a href="/lounge/club/">클럽 게시판</a></li><li><a href="/lounge/night/">나이트 게시판</a></li><li><a href="/lounge/room/">룸 게시판</a></li><li><a href="/lounge/lounge/">라운지바 게시판</a></li><li><a href="/lounge/yojung/">요정 게시판</a></li><li><a href="/lounge/hoppa/">호빠 게시판</a></li><li><a href="/lounge/free/">자유 게시판</a></li><li><a href="/lounge/qna/">Q&A 게시판</a></li><li><a href="/lead/nightlife-guide/">나이트라이프 가이드</a></li><li><a href="/lead/quiz/">스타일 진단</a></li><li><a href="/lead/weekly-hot/">주간 핫스팟</a></li></ul></nav><nav aria-label="최근 업데이트"><h2>다시 오면 새로 보이는 것</h2><ul><li><a href="/new/clubs/">이번에 새로 들어온 곳</a></li><li><a href="/magazine/">이번 주 매거진 글</a></li><li><a href="/tonight/">오늘 밤 갈 만한 곳</a></li></ul><p>콘텐츠 최근 갱신 ${BUILD_DATE_KST} 기준</p></nav></footer>`;
+const SITE_FOOTER_ANCHORS = `<footer aria-label="사이트맵"><h2>전체 메뉴</h2><nav aria-label="사이트맵 링크"><ul><li><a href="/weekend/">이번 주말</a></li><li><a href="/occasion/">상황별</a></li><li><a href="/budget/">예산별</a></li><li><a href="/guide/">입문 가이드</a></li><li><a href="/safety/">안전 가이드</a></li><li><a href="/help/">자주 묻는 질문</a></li><li><a href="/venue-info/">양주·부스·룸 안내</a></li><li><a href="/events/">이벤트 일정</a></li><li><a href="/gallery/">매장 사진</a></li><li><a href="/ranking/">인기 랭킹</a></li><li><a href="/quiz/">스타일 퀴즈</a></li><li><a href="/roulette/">룰렛 추천</a></li><li><a href="/vs/">VS 매치업</a></li><li><a href="/compare/">업소 비교</a></li><li><a href="/hidden/">숨은 명소</a></li><li><a href="/welcome/">놀쿨 소개</a></li><li><a href="/login/">로그인</a></li><li><a href="/profile/">내 프로필</a></li><li><a href="/referral/">친구 초대</a></li><li><a href="/onboarding/">업소 입점</a></li><li><a href="/pricing/">요금제</a></li><li><a href="/dashboard/">매장 대시보드</a></li><li><a href="/analytics/">분석 리포트</a></li><li><a href="/billing/">결제 관리</a></li><li><a href="/launch/">오픈 체크</a></li><li><a href="/demo/">업주 데모</a></li><li><a href="/case-studies/">운영 사례</a></li><li><a href="/testimonials/">업주 인터뷰</a></li><li><a href="/status/">서비스 상태</a></li><li><a href="/privacy-promise/">프라이버시 정책</a></li><li><a href="/disclaimer/">고지 사항</a></li><li><a href="/legal/">법적 준수 안내</a></li><li><a href="/terms/">이용 약관</a></li><li><a href="/privacy/">개인정보 처리</a></li><li><a href="/venue-terms/">업주 약관</a></li><li><a href="/lounge/">업종별 라운지</a></li><li><a href="/lounge/club/">클럽 게시판</a></li><li><a href="/lounge/night/">나이트 게시판</a></li><li><a href="/lounge/room/">룸 게시판</a></li><li><a href="/lounge/lounge/">라운지바 게시판</a></li><li><a href="/lounge/yojung/">요정 게시판</a></li><li><a href="/lounge/free/">자유 게시판</a></li><li><a href="/lounge/qna/">Q&A 게시판</a></li><li><a href="/lead/nightlife-guide/">나이트라이프 가이드</a></li><li><a href="/lead/quiz/">스타일 진단</a></li><li><a href="/lead/weekly-hot/">주간 핫스팟</a></li></ul></nav><nav aria-label="최근 업데이트"><h2>다시 오면 새로 보이는 것</h2><ul><li><a href="/new/clubs/">이번에 새로 들어온 곳</a></li><li><a href="/magazine/">이번 주 매거진 글</a></li></ul><p>콘텐츠 최근 갱신 ${BUILD_DATE_KST} 기준</p></nav></footer>`;
 
 // 시즌89 — 가시 브레드크럼: jsonLdList의 BreadcrumbList(이미 페이지별 정확한 이름·URL)에서 생성.
 // 전 페이지 유형 공통(venue/매거진/집계/정적). 상위 단계는 같은 탭 내부링크(퍼널 상향 동선),
@@ -932,7 +932,6 @@ const staticPages = [
   { path: '/lounge/club', title: '클럽 라운지 — 다녀온 사람들의 진짜 후기', desc: '강남 홍대 이태원 일산 클럽 어디가 진짜야? EDM 힙합 테크노 4개 장르별 추천, 입장 줄 짧은 시간대, 친구와 가는 코스까지 클럽 다니는 사람들 솔직 정보 바로 확인.' },
   { path: '/lounge/room', title: '룸 라운지 — 단체석·인원별 인사이더 정보가 있다', desc: '몇 명이서 가야 룸이 딱 맞을까? 4인 소형부터 30인 단체석까지 인원별 룸 구성, 양주 라인업 4종, 매니저 평판, 예약 팁 한 페이지에서 바로 확인.' },
   { path: '/lounge/yojung', title: '요정 라운지 — 정찬 코스와 비즈니스 만찬 후기다', desc: '거래처 모실 자리 어디로? 전통 요정 정찬 15첩 코스, 국악 라이브, 비즈니스 만찬 후기 5건. 일산명월관·종로요정·강남요정 코스 구성·드레스코드 바로 확인.' },
-  { path: '/lounge/hoppa', title: '호빠 라운지 — 여자 혼자 가본 사람들의 안전 후기다', desc: '여자 혼자 가도 안전한 데 어디 있어? 강남 종로 영등포 해운대 대구 5개 지역 호빠 분위기·마담 인증·매니저 평판·첫방문 동선·안전 정보 바로 확인.' },
   { path: '/lounge/lounge', title: '라운지바 게시판 — 칵테일·위스키 데이트 후기다', desc: '데이트 어디로 가지? 강남 홍대 이태원 일산 부산 5개 지역 라운지바 칵테일·위스키 추천, 야경 좋은 루프탑·호텔 라운지 후기 바로 확인.' },
   { path: '/lounge/free', title: '라운지 자유게시판 — 뭐든 자유롭게 풀어놓는 곳이다', desc: '오늘 뭐 떠들고 싶어? 업종 상관없이 자유롭게 대화하는 라운지. 잡담·질문·황당썰·후기·추천 5가지 다 OK. 강남 홍대 이태원 일산 부산 회원들의 광장, 익명으로 바로 입장.' },
   { path: '/lounge/qna', title: '라운지 질문답변 — 뭐든 물어봐도 된다', desc: '뭐든 물어봐도 돼? 첫방문 매너·강남 홍대 이태원 일산 부산 5개 지역 분위기 비교·업소 추천·안전 팁·드레스코드까지 단골 회원들이 바로 답변하는 실시간 Q&A.' },
@@ -963,7 +962,6 @@ const staticPages = [
   { path: '/lead/weekly-hot', title: '이번 주 핫플 큐레이션 — 지금 준비 중이다', desc: '이번 주 진짜 핫한 곳 어디지? 커뮤니티 후기·검색 추이 종합한 주간 큐레이션 준비 중. 검증된 결과만 회원에게 바로 공유.' },
 
   // v25 — 상황·시점별 큐레이션 (라이트 테마 + 후킹 5원칙)
-  { path: '/tonight', title: '오늘 밤 어디 갈까 — 지금 가도 안 후회할 24곳', desc: '퇴근하고 나왔는데 어디 갈지 망설이는 사람? 오늘 밤 갈만한 곳 6업종에서 평점 4.0 이상만 추렸다. 클럽·나이트·라운지·룸 한 페이지에서 바로 확인.' },
   { path: '/weekend', title: '이번 주말 어디 갈래 — 금토일 갈만한 핫플 30곳', desc: '주말은 시간 아까운 거 알지? 금토일 사람 몰리는 핫플과 평일보다 더 좋은 숨은 코스 한 번에 모았다. 6업종 평점 4.2 이상만, 바로 확인.' },
   { path: '/budget', title: '어떤 자리를 찾고 있나 — 상황별 코스 4가지로 정리했다', desc: '편한 자리? 단체? 접대? 데이트? 상황별로 분위기·구성 맞는 곳 4가지 코스로 정리. 처음이라 어디부터 봐야 할지 모르면 바로 확인.' },
   { path: '/occasion', title: '어떤 자리야 — 6가지 상황별 핫플 정리했다', desc: '나이트라이프 첫 방문? 거래처 접대? 친구 생일? 데이트? 6가지 상황별로 맞는 곳 큐레이션 — 처음 가는 사람도 헛걸음 0번 만들자.' },
@@ -1246,7 +1244,7 @@ for (const pg of staticPages) {
     }
     // 시즌22 — 카테고리 페이지 footer: best/new/region 전체 anchor
     ssrBody += `<h3>${catKo} 더 둘러보기</h3><ul>`;
-    ssrBody += `<li><a href="/best/${catInfo.path}/">${catKo} 인기 TOP</a></li>`;
+    if (catKey !== 'club') ssrBody += `<li><a href="/best/${catInfo.path}/">${catKo} 인기 TOP</a></li>`; // /best/clubs 제거됨
     ssrBody += `<li><a href="/new/${catInfo.path}/">새로 입점한 ${catKo}</a></li>`;
     ssrBody += `</ul>`;
     // 모든 region 페이지 anchor (/region/{ko}/)
@@ -2076,7 +2074,7 @@ function aggHubMesh(members, selfKind, selfKey) {
   }
   if (cats.length) {
     html += `<h2>업종으로 둘러보기</h2><ul>`;
-    for (const c of cats) { const ci = catMap[c]; if (!ci) continue; html += `<li><a href="/best/${ci.path}/">${escHtml(ci.labelKo)} 인기 TOP</a> · <a href="/new/${ci.path}/">새로 입점한 ${escHtml(ci.labelKo)}</a></li>`; }
+    for (const c of cats) { const ci = catMap[c]; if (!ci) continue; const bestPart = c === 'club' ? '' : `<a href="/best/${ci.path}/">${escHtml(ci.labelKo)} 인기 TOP</a> · `; html += `<li>${bestPart}<a href="/new/${ci.path}/">새로 입점한 ${escHtml(ci.labelKo)}</a></li>`; }
     html += `</ul>`;
   }
   if (stations.length) {
@@ -2115,6 +2113,7 @@ const BEST_TITLE_SUFFIX_BY_CAT = {
   hoppa: '한 번 가면 또 찾는 단골집',
 };
 for (const [catKey, catInfo] of Object.entries(catMap)) {
+  if (catKey === 'club') continue; // 2026-07 월간 사이클 — /best/clubs 기여 0 제거(301 → /clubs/)
   const catVenues = venues.filter(vv => vv.cat === catKey);
   if (catVenues.length === 0) continue;
   const p = `/best/${catInfo.path}`;
@@ -2509,6 +2508,14 @@ const redirectsContent = `# Auto-generated by prerender-seo.mjs
 /for-business  /pricing  301
 /for-business/  /pricing  301
 
+# 제거 페이지 301 (2026-07 월간 사이클 — 기여 0 섹션 제거, PageRank 승계)
+/tonight  /ranking/  301
+/tonight/  /ranking/  301
+/lounge/hoppa  /lounge/  301
+/lounge/hoppa/  /lounge/  301
+/best/clubs  /clubs/  301
+/best/clubs/  /clubs/  301
+
 # 짧은 URL → 정식 URL 301 (검색결과/카톡/옛 즐겨찾기 호환, SEO PageRank 합산)
 ${redirectLines.join('\n')}
 
@@ -2572,7 +2579,6 @@ let llmsTxt = `# 놀쿨 (NOLCOOL)
 - [클럽 라운지](${BASE_URL}/lounge/club)
 - [룸 라운지](${BASE_URL}/lounge/room)
 - [요정 라운지](${BASE_URL}/lounge/yojung)
-- [호빠 라운지](${BASE_URL}/lounge/hoppa)
 - [라운지바 라운지](${BASE_URL}/lounge/lounge)
 - [자유게시판](${BASE_URL}/lounge/free)
 - [질문답변](${BASE_URL}/lounge/qna)
@@ -2608,8 +2614,8 @@ for (const regionKo of Object.keys(allRegions)) {
 }
 
 llmsTxt += `\n## 인기순·신규\n`;
-for (const [, catInfo] of Object.entries(catMap)) {
-  llmsTxt += `- [${catInfo.labelKo} 인기 TOP](${BASE_URL}/best/${catInfo.path})\n`;
+for (const [catKey2, catInfo] of Object.entries(catMap)) {
+  if (catKey2 !== 'club') llmsTxt += `- [${catInfo.labelKo} 인기 TOP](${BASE_URL}/best/${catInfo.path})\n`;
   llmsTxt += `- [신규 ${catInfo.labelKo}](${BASE_URL}/new/${catInfo.path})\n`;
 }
 

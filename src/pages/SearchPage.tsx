@@ -448,8 +448,8 @@ export default function SearchPage() {
             <h3 className="text-lg font-bold text-gray-900">"{queryParam}" 결과가 없네</h3>
             <p className="mt-1 text-sm text-gray-500">못 찾으면 큐레이션부터 둘러봐 — 4가지 추천</p>
             <div className="mt-6 grid grid-cols-2 gap-2 max-w-md mx-auto">
-              <Link to="/tonight" className="flex items-center justify-center gap-2 rounded-xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 px-3 py-3 text-sm font-bold text-[#111] active:scale-95">
-                🌙 오늘 밤
+              <Link to="/ranking" className="flex items-center justify-center gap-2 rounded-xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 px-3 py-3 text-sm font-bold text-[#111] active:scale-95">
+                🏆 인기 랭킹
               </Link>
               <Link to="/weekend" className="flex items-center justify-center gap-2 rounded-xl bg-[#EC4899]/10 border border-[#EC4899]/20 px-3 py-3 text-sm font-bold text-[#111] active:scale-95">
                 📅 이번 주말

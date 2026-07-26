@@ -44,7 +44,6 @@ const RankingPage = lazyRetry(() => import('./pages/RankingPage'));
 const PricePage = lazyRetry(() => import('./pages/PricePage'));
 const ComparePage = lazyRetry(() => import('./pages/ComparePage'));
 const SearchPage = lazyRetry(() => import('./pages/SearchPage'));
-const TonightPage = lazyRetry(() => import('./pages/TonightPage'));
 const WeekendPage = lazyRetry(() => import('./pages/WeekendPage'));
 const BudgetPage = lazyRetry(() => import('./pages/BudgetPage'));
 const OccasionPage = lazyRetry(() => import('./pages/OccasionPage'));
@@ -162,7 +161,6 @@ export default function App() {
           <Route path="/price" element={<Navigate to="/venue-info" replace />} />
           <Route path="/compare" element={<ComparePage />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/tonight" element={<TonightPage />} />
           <Route path="/weekend" element={<WeekendPage />} />
           <Route path="/budget" element={<BudgetPage />} />
           <Route path="/occasion" element={<OccasionPage />} />
