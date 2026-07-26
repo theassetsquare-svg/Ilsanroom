@@ -36,6 +36,10 @@
         var s=function(){t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);};
         l.readyState==="complete"?s():c.addEventListener("load",s);
+        // 광고(bing 동기화) 쿠키만 차단, 분석 세션은 1st-party 쿠키로 유지.
+        // MUID/CLID/SM/MR/ANONCHK 서드파티 쿠키 제거 → Lighthouse 권장사항 감점 + Issues 로그 해소.
+        // 세션 레코딩·히트맵·일일 인사이트 루틴은 analytics granted라 그대로 동작.
+        c[a]('consentv2',{ad_Storage:"denied",analytics_Storage:"granted"});
       })(window, document, "clarity", "script", "xp3oiz8heq");
     </script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">

@@ -358,12 +358,12 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
 
           {/* 무한 스크롤 sentinel — 부동산 정점 #9 */}
           {hasMore && (
-            <div ref={sentinelRef} data-testid="venue-sentinel" className="py-8 text-center text-xs text-[#888]">
+            <div ref={sentinelRef} data-testid="venue-sentinel" className="py-8 text-center text-xs text-[#666]">
               <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-violet-300 border-t-transparent align-middle" /> 더 불러오는 중…
             </div>
           )}
           {!hasMore && filtered.length > PAGE_SIZE && (
-            <div className="py-8 text-center text-xs text-[#888]">— 마지막 업소입니다 ({filtered.length}곳 표시) —</div>
+            <div className="py-8 text-center text-xs text-[#666]">— 마지막 업소입니다 ({filtered.length}곳 표시) —</div>
           )}
         </>
       ) : (

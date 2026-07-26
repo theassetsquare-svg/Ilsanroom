@@ -112,7 +112,7 @@ export default function CommunityPage() {
         {/* ══════ 운영팀 공식 안내 — 가짜 회원 사칭 아님, 운영자 1인칭 명시 / 실데이터만 ══════ */}
         <div className="mb-8 rounded-2xl border p-5 sm:p-6" style={{ borderColor: 'rgba(139,92,246,0.35)', background: 'linear-gradient(135deg, rgba(139,92,246,0.06), rgba(16,185,129,0.04))' }}>
           <div className="flex items-center gap-2 mb-3">
-            <span className="rounded-full px-2.5 py-0.5 text-[10px] font-black" style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF' }}>놀쿨 운영팀 공식</span>
+            <span className="rounded-full px-2.5 py-0.5 text-[10px] font-black" style={{ backgroundColor: '#7C3AED', color: '#FFFFFF' }}>놀쿨 운영팀 공식</span>
             <span className="text-xs" style={{ color: '#595959' }}>운영자가 직접 남기는 안내입니다</span>
           </div>
           <p className="text-base font-bold mb-1.5" style={{ color: '#111' }}>
@@ -122,7 +122,7 @@ export default function CommunityPage() {
             여기 글·후기·댓글은 전부 실제 회원이 직접 씁니다. 자동으로 만들어 넣는 가짜 글은 한 건도 없어요. 다녀온 업소가 있다면 솔직한 한 줄이 다음 사람에게 가장 큰 도움이 됩니다.
           </p>
           <div className="flex flex-wrap gap-2">
-            <Link to="/community/reviews" className="rounded-xl px-4 py-2.5 text-sm font-bold text-white transition" style={{ backgroundColor: '#8B5CF6', minHeight: 44 }}>
+            <Link to="/community/reviews" className="rounded-xl px-4 py-2.5 text-sm font-bold text-white transition" style={{ backgroundColor: '#7C3AED', minHeight: 44 }}>
               후기 남기러 가기
             </Link>
             <Link to="/clubs" className="rounded-xl border px-4 py-2.5 text-sm font-bold transition" style={{ borderColor: '#E5E7EB', color: '#555', minHeight: 44 }}>
@@ -175,7 +175,7 @@ export default function CommunityPage() {
               <span className="text-lg">💬</span>
               <h2 className="text-xl font-black" style={{ color: '#111' }}>댓글 폭발 중</h2>
               <span className="text-xs rounded-full px-2 py-0.5 font-bold animate-pulse"
-                style={{ backgroundColor: '#FEF3C7', color: '#D97706' }}>HOT</span>
+                style={{ backgroundColor: '#FEF3C7', color: '#92400E' }}>HOT</span>
             </div>
             <div className="space-y-2">
               {hotCommentPosts.map((post) => (
@@ -193,7 +193,7 @@ export default function CommunityPage() {
                     <span className="text-sm font-medium truncate" style={{ color: '#111' }}>{post.title}</span>
                   </div>
                   <span className="shrink-0 ml-3 rounded-full px-3 py-1 text-xs font-bold"
-                    style={{ backgroundColor: '#FEE2E2', color: '#DC2626' }}>
+                    style={{ backgroundColor: '#FEE2E2', color: '#B91C1C' }}>
                     💬 {post.comment_count || 0}
                   </span>
                 </Link>
