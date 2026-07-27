@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-27T15:41:27.273Z",
+  "generated_at": "2026-07-27T18:17:15.099Z",
   "window_hours": 24,
   "items": [
     {
@@ -31,6 +31,27 @@
       "views_24h": 4
     },
     {
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 3
+    },
+    {
+      "path": "/clubs/daejeon/daejeonsugarclub",
+      "title": "대전설탕클럽",
+      "category": "club",
+      "region": "대전",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/gurihobaknight",
+      "title": "구리호박나이트",
+      "category": "night",
+      "region": "구리",
+      "views_24h": 2
+    },
+    {
       "path": "/nights/daegubabambanight",
       "title": "대구바밤바나이트",
       "category": "night",
@@ -52,6 +73,20 @@
       "views_24h": 2
     },
     {
+      "path": "/clubs/hongdae/hongdaeclub-bermuda",
+      "title": "홍대클럽 버뮤다",
+      "category": "club",
+      "region": "홍대",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/seongnamshampoonight",
+      "title": "성남샴푸나이트",
+      "category": "night",
+      "region": "성남",
+      "views_24h": 1
+    },
+    {
       "path": "/nights/daejeonsevennight",
       "title": "대전세븐나이트",
       "category": "night",
@@ -70,41 +105,6 @@
       "title": "부산물나이트",
       "category": "night",
       "region": "부산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/cheongdamh2onight",
-      "title": "청담H2O나이트",
-      "category": "night",
-      "region": "청담",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/yeongdeungpoterminalnight",
-      "title": "영등포터미널나이트",
-      "category": "night",
-      "region": "영등포",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/pyeongtaekhobaknight",
-      "title": "평택호박나이트",
-      "category": "night",
-      "region": "평택",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/cheongjuhobaknight",
-      "title": "청주호박나이트",
-      "category": "night",
-      "region": "청주",
       "views_24h": 1
     }
   ]
