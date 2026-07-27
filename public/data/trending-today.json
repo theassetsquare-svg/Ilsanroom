@@ -1,27 +1,13 @@
 {
-  "generated_at": "2026-07-26T17:51:58.139Z",
+  "generated_at": "2026-07-27T06:16:36.083Z",
   "window_hours": 24,
   "items": [
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
-      "views_24h": 4
-    },
-    {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
-      "category": "night",
-      "region": "부산",
-      "views_24h": 4
-    },
     {
       "path": "/rooms/ilsan/ilsanroom",
       "title": "일산룸",
       "category": "room",
       "region": "일산",
-      "views_24h": 4
+      "views_24h": 3
     },
     {
       "path": "/hoppa/daeguhoppa-perfect",
@@ -31,10 +17,24 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/dapsimnidontellmamanight",
-      "title": "답십리돈텔마마나이트",
+      "path": "/nights/daegubabambanight",
+      "title": "대구바밤바나이트",
       "category": "night",
-      "region": "답십리",
+      "region": "대구",
+      "views_24h": 2
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
       "views_24h": 2
     },
     {
@@ -43,6 +43,48 @@
       "category": "night",
       "region": "대전",
       "views_24h": 2
+    },
+    {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
+      "category": "night",
+      "region": "강서",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/dapsimnidontellmamanight",
+      "title": "답십리돈텔마마나이트",
+      "category": "night",
+      "region": "답십리",
+      "views_24h": 2
+    },
+    {
+      "path": "/clubs/uijeongbu/uijeongbuarena",
+      "title": "의정부아레나",
+      "category": "club",
+      "region": "의정부",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gurihobaknight",
+      "title": "구리호박나이트",
+      "category": "night",
+      "region": "구리",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gimpohobaknight",
+      "title": "김포호박나이트",
+      "category": "night",
+      "region": "김포",
+      "views_24h": 1
+    },
+    {
+      "path": "/clubs/gangnam/gangnamclub-laputa",
+      "title": "강남청담클럽 라퓨타",
+      "category": "club",
+      "region": "강남",
+      "views_24h": 1
     },
     {
       "path": "/nights/sangbonghangukgwannight",
@@ -59,52 +101,10 @@
       "views_24h": 1
     },
     {
-      "path": "/nights/daegubabambanight",
-      "title": "대구바밤바나이트",
-      "category": "night",
-      "region": "대구",
-      "views_24h": 1
-    },
-    {
       "path": "/nights/ilsan-hwajung-tunnel",
       "title": "일산화정터널나이트",
       "category": "night",
       "region": "일산",
-      "views_24h": 1
-    },
-    {
-      "path": "/clubs/gangnam/gangnamclub-race",
-      "title": "강남청담클럽 레이스",
-      "category": "club",
-      "region": "강남",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/pyeongtaekhobaknight",
-      "title": "평택호박나이트",
-      "category": "night",
-      "region": "평택",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
-      "category": "night",
-      "region": "오산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
       "views_24h": 1
     }
   ]
