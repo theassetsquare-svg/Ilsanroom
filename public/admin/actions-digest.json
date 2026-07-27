@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-26T01:48:08.552Z",
+  "generated_at": "2026-07-27T01:55:32.808Z",
   "window_hours": 24,
-  "total_runs": 260,
+  "total_runs": 216,
   "total_fail": 0,
   "workflows": [
     {
@@ -14,14 +14,6 @@
     },
     {
       "name": "Auto Content v2 (Time-based)",
-      "total": 16,
-      "success": 16,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Activity Alert (15min)",
       "total": 15,
       "success": 15,
       "failure": 0,
@@ -30,14 +22,6 @@
     },
     {
       "name": "Venue Reports Daily",
-      "total": 15,
-      "success": 15,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "24h Auto Build + SEO Notify",
       "total": 14,
       "success": 14,
       "failure": 0,
@@ -45,41 +29,49 @@
       "last_fail": null
     },
     {
-      "name": "Audit PR (guard + dist)",
-      "total": 12,
-      "success": 12,
+      "name": "Activity Alert (15min)",
+      "total": 14,
+      "success": 14,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
       "name": "Security Audit Hourly",
-      "total": 12,
-      "success": 12,
+      "total": 10,
+      "success": 10,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
-      "name": "Gate Bypass Audit (양방향 우회검증)",
-      "total": 11,
-      "success": 11,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Google Re-Index (Sitemap + Inspect)",
-      "total": 8,
-      "success": 8,
+      "name": "24h Auto Build + SEO Notify",
+      "total": 6,
+      "success": 6,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
       "name": "Scheduled Cron Jobs",
-      "total": 5,
-      "success": 5,
+      "total": 4,
+      "success": 4,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gate Bypass Audit (양방향 우회검증)",
+      "total": 4,
+      "success": 4,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Audit PR (guard + dist)",
+      "total": 4,
+      "success": 4,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -93,15 +85,7 @@
       "last_fail": null
     },
     {
-      "name": "Auto SQL Migrations",
-      "total": 2,
-      "success": 2,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "SERP Zero Analysis (노출0 가게이름 원인분석 — 온디맨드)",
+      "name": "Google Re-Index (Sitemap + Inspect)",
       "total": 2,
       "success": 2,
       "failure": 0,
@@ -125,31 +109,7 @@
       "last_fail": null
     },
     {
-      "name": "Monthly Growth Cycle Report (manual)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Sinlimgrandprixnight Keyword Watch (신림그랑프리나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Search Console Report (키워드/클릭)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "GA4 Page Report (read-only)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -509,23 +469,7 @@
       "last_fail": null
     },
     {
-      "name": "SERP T1 Recheck (노출0 색인의심 주간 재확인)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Lighthouse Daily (PC + Mobile)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "SERP Loop (검색어 상위노출 주간 루프)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -557,7 +501,7 @@
       "last_fail": null
     },
     {
-      "name": "Sunday Deep Audit (Sitemap Fullcheck)",
+      "name": "GSC Demand Gap (weekly)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -797,7 +741,7 @@
       "last_fail": null
     },
     {
-      "name": "Haeundaehoppa Velvet Keyword Watch (해운대호빠 벨벳 2 키워드 24h)",
+      "name": "Haeundaehoppa Michelin Keyword Watch (해운대호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -805,7 +749,7 @@
       "last_fail": null
     },
     {
-      "name": "Haeundaehoppa Michelin Keyword Watch (해운대호빠 2 키워드 24h)",
+      "name": "Haeundaehoppa Velvet Keyword Watch (해운대호빠 벨벳 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -869,7 +813,7 @@
       "last_fail": null
     },
     {
-      "name": "Busanhoppa Menz Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
+      "name": "Daejeonhoppa Eclipse Keyword Watch (대전호빠+충청호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -877,7 +821,7 @@
       "last_fail": null
     },
     {
-      "name": "Daejeonhoppa Eclipse Keyword Watch (대전호빠+충청호빠 2 키워드 24h)",
+      "name": "Busanhoppa Menz Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -965,7 +909,7 @@
       "last_fail": null
     },
     {
-      "name": "Cheonan Stardom Keyword Watch (천안스타돔나이트 + 천안나이트 2 키워드 24h)",
+      "name": "Changwon Lululalala Keyword Watch (창원룰루랄라나이트 + 창원나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -973,7 +917,7 @@
       "last_fail": null
     },
     {
-      "name": "Changwon Lululalala Keyword Watch (창원룰루랄라나이트 + 창원나이트 2 키워드 24h)",
+      "name": "Cheonan Stardom Keyword Watch (천안스타돔나이트 + 천안나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -1126,15 +1070,15 @@
     }
   ],
   "deploy_sync": {
-    "n": 5,
-    "avg_ms": 42200,
-    "p50_ms": 50000,
-    "p95_ms": 56000,
-    "max_ms": 56000,
+    "n": 1,
+    "avg_ms": 55000,
+    "p50_ms": 55000,
+    "p95_ms": 55000,
+    "max_ms": 55000,
     "max_sample": {
-      "ms": 56000,
+      "ms": 55000,
       "workflow": "Google Re-Index (Sitemap + Inspect)",
-      "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/30174521879"
+      "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/30183762878"
     }
   }
 }
