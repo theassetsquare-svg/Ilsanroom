@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-28T15:19:54.469Z",
+  "generated_at": "2026-07-28T18:06:09.380Z",
   "window_hours": 24,
   "items": [
     {
@@ -17,20 +17,6 @@
       "views_24h": 4
     },
     {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 4
-    },
-    {
-      "path": "/nights/gurihobaknight",
-      "title": "구리호박나이트",
-      "category": "night",
-      "region": "구리",
-      "views_24h": 3
-    },
-    {
       "path": "/nights/daejeononenight",
       "title": "대전원나이트",
       "category": "night",
@@ -38,10 +24,31 @@
       "views_24h": 3
     },
     {
+      "path": "/nights/gildongchancenight",
+      "title": "길동찬스나이트",
+      "category": "night",
+      "region": "길동",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
+      "category": "night",
+      "region": "부산",
+      "views_24h": 2
+    },
+    {
       "path": "/nights/pajuyadangskydomenight",
       "title": "파주야당스카이돔나이트",
       "category": "night",
       "region": "파주",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/gurihobaknight",
+      "title": "구리호박나이트",
+      "category": "night",
+      "region": "구리",
       "views_24h": 2
     },
     {
@@ -66,6 +73,13 @@
       "views_24h": 2
     },
     {
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
+    },
+    {
       "path": "/nights/daejeonhangukgwannight",
       "title": "대전한국관나이트",
       "category": "night",
@@ -78,20 +92,6 @@
       "category": "night",
       "region": "청주",
       "views_24h": 2
-    },
-    {
-      "path": "/clubs/daejeon/daejeonsugarclub",
-      "title": "대전설탕클럽",
-      "category": "club",
-      "region": "대전",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/gildongchancenight",
-      "title": "길동찬스나이트",
-      "category": "night",
-      "region": "길동",
-      "views_24h": 1
     },
     {
       "path": "/clubs/gangnam/gangnamclub-race",
