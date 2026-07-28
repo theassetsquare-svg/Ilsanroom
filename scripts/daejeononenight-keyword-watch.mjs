@@ -7,7 +7,7 @@
  *   ② "대전나이트"   — 일반 키워드 (지역 + 카테고리 검색)
  *
  * 추가 검증 (시즌82 신규):
- *   ⓐ 까치 010-3918-9414 PhoneBar tel: 링크 존재
+ *   ⓐ PhoneBar tel: 링크 제거됨 (닉네임·전화번호 삭제)
  *   ⓑ 38세 / 22시 / 3만원 / 차비 핵심 정책 토큰 모두 등장
  *   ⓒ openHours "02:30" + "03:30" 모두 등장
  *
@@ -24,7 +24,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/daejeononenight/';
 const PRIMARY = '대전원나이트';
 const SECONDARY = '대전나이트';
-const PHONE = '010-3918-9414';
+const PHONE = ''; // 삭제됨
 // 대전원나이트는 사장님이 직접 넣은 광고주 정책 — "차비 3만원" 등 가격단어 의도적 허용(단일 예외).
 const POLICY_TOKENS = ['38세', '22시', '3만원', '차비', '맥주', '02:30', '03:30'];
 
@@ -81,7 +81,7 @@ async function main() {
   if (hookAxesHit === 0) issues.push('후킹 5축 0 (title/desc 모두)');
 
   // 시즌82 신규 — PhoneBar / 운영정책 / 영업시간 검증
-  if (!html.includes(`tel:${PHONE.replace(/-/g, '')}`)) issues.push(`PhoneBar tel:${PHONE} 누락`);
+  if (PHONE && !html.includes(`tel:${PHONE.replace(/-/g, '')}`)) issues.push(`PhoneBar tel:${PHONE} 누락`);
   for (const tok of POLICY_TOKENS) {
     if (!text.includes(tok)) issues.push(`정책 토큰 "${tok}" 누락`);
   }
@@ -90,7 +90,7 @@ async function main() {
     title, desc, primaryCount, secondaryCount,
     primaryDensity: (primaryDensity*100).toFixed(2)+'%',
     hookCount: hookAxesHit, textLen: text.length,
-    phoneOk: html.includes(`tel:${PHONE.replace(/-/g, '')}`),
+    phoneOk: !PHONE || html.includes(`tel:${PHONE.replace(/-/g, '')}`),
     policyOk: POLICY_TOKENS.filter(t => text.includes(t)).length + '/' + POLICY_TOKENS.length,
     hookSamples: [...hookTitle.axes, ...hookDesc.axes].filter(a => a.hits > 0).map(a => `${a.axis}:${a.samples.join('|')}`).join(' / '),
   };
