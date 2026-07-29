@@ -1,7 +1,14 @@
 {
-  "generated_at": "2026-07-29T15:07:43.053Z",
+  "generated_at": "2026-07-29T18:00:28.412Z",
   "window_hours": 24,
   "items": [
+    {
+      "path": "/nights/daeguhobaknight",
+      "title": "대구호박나이트",
+      "category": "night",
+      "region": "대구",
+      "views_24h": 4
+    },
     {
       "path": "/nights/daegubabambanight",
       "title": "대구바밤바나이트",
@@ -17,17 +24,17 @@
       "views_24h": 4
     },
     {
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
+      "category": "night",
+      "region": "오산",
+      "views_24h": 3
+    },
+    {
       "path": "/nights/daejeonbongmyeongnight",
       "title": "대전봉명나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/daeguhobaknight",
-      "title": "대구호박나이트",
-      "category": "night",
-      "region": "대구",
       "views_24h": 3
     },
     {
@@ -59,13 +66,6 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
-      "category": "night",
-      "region": "오산",
-      "views_24h": 2
-    },
-    {
       "path": "/nights/ulsanchampionnight",
       "title": "울산챔피언나이트",
       "category": "night",
@@ -73,11 +73,11 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
+      "path": "/nights/daeguhangukgwannight",
+      "title": "대구한국관나이트",
       "category": "night",
-      "region": "부산",
-      "views_24h": 2
+      "region": "대구",
+      "views_24h": 1
     },
     {
       "path": "/nights/suyushampoonight",
