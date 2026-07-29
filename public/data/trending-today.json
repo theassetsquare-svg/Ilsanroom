@@ -1,82 +1,54 @@
 {
-  "generated_at": "2026-07-29T05:40:37.851Z",
+  "generated_at": "2026-07-29T15:07:43.053Z",
   "window_hours": 24,
   "items": [
+    {
+      "path": "/nights/daegubabambanight",
+      "title": "대구바밤바나이트",
+      "category": "night",
+      "region": "대구",
+      "views_24h": 4
+    },
     {
       "path": "/nights/gangnamjuliananight",
       "title": "강남줄리아나나이트",
       "category": "night",
       "region": "강남",
-      "views_24h": 6
-    },
-    {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 6
-    },
-    {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
       "views_24h": 4
-    },
-    {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
-      "category": "night",
-      "region": "부산",
-      "views_24h": 3
-    },
-    {
-      "path": "/clubs/gangnam/gangnamclub-race",
-      "title": "강남청담클럽 레이스",
-      "category": "club",
-      "region": "강남",
-      "views_24h": 2
     },
     {
       "path": "/nights/daejeonbongmyeongnight",
       "title": "대전봉명나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 2
+      "views_24h": 3
     },
     {
-      "path": "/nights/gildongchancenight",
-      "title": "길동찬스나이트",
+      "path": "/nights/daeguhobaknight",
+      "title": "대구호박나이트",
       "category": "night",
-      "region": "길동",
-      "views_24h": 2
+      "region": "대구",
+      "views_24h": 3
     },
     {
-      "path": "/nights/pajuyadangskydomenight",
-      "title": "파주야당스카이돔나이트",
-      "category": "night",
-      "region": "파주",
-      "views_24h": 2
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
+      "views_24h": 3
     },
     {
-      "path": "/nights/gurihobaknight",
-      "title": "구리호박나이트",
-      "category": "night",
-      "region": "구리",
-      "views_24h": 2
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 3
     },
     {
-      "path": "/nights/indeokvon-gukbingwan-night",
-      "title": "인덕원국빈관나이트",
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
       "category": "night",
-      "region": "인덕원",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
+      "region": "안산",
       "views_24h": 2
     },
     {
@@ -84,27 +56,55 @@
       "title": "대전설탕클럽",
       "category": "club",
       "region": "대전",
-      "views_24h": 1
+      "views_24h": 2
     },
     {
-      "path": "/nights/daeguhobaknight",
-      "title": "대구호박나이트",
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
       "category": "night",
-      "region": "대구",
-      "views_24h": 1
+      "region": "오산",
+      "views_24h": 2
     },
     {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
+      "path": "/nights/ulsanchampionnight",
+      "title": "울산챔피언나이트",
       "category": "night",
-      "region": "대전",
+      "region": "울산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
+      "category": "night",
+      "region": "부산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/suyushampoonight",
+      "title": "수유샴푸나이트",
+      "category": "night",
+      "region": "수유",
       "views_24h": 1
     },
     {
-      "path": "/hoppa/haeundaehoppa-michelin",
-      "title": "해운대호빠 미슐랭",
-      "category": "hoppa",
-      "region": "부산 해운대",
+      "path": "/nights/ansanhitnight",
+      "title": "안산히트나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gwangjusangmunight",
+      "title": "광주상무나이트",
+      "category": "night",
+      "region": "광주",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gurihobaknight",
+      "title": "구리호박나이트",
+      "category": "night",
+      "region": "구리",
       "views_24h": 1
     }
   ]
