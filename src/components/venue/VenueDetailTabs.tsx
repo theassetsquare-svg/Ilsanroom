@@ -63,6 +63,7 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
                 // 업소별 공식 백링크 (첫 등장 가게이름 1회만 앵커)
                 const backlinks: Record<string, string> = {
                   ilsanmyeongwolgwanyojeong: 'https://sunwook4.mycafe24.com/',
+                  ilsanroom: 'https://qotjsdnr12397.wixsite.com/sunwook',
                 };
                 const url = backlinks[venue.slug];
                 // 가독성 — 길이 독립적으로 의미(문장) 단위 2~4문장 단락 분할 (단락당 ≤300자, 텍스트 그대로)
