@@ -60,27 +60,33 @@ export default function VenueDetailTabs({ venue, faqs, categoryLabel }: VenueDet
                 const full = venue.description.slice(0, 100).includes(venue.nameKo)
                   ? venue.description
                   : `${venue.nameKo} — ${venue.description}`;
-                // 업소별 공식 백링크 (첫 등장 가게이름 1회만 앵커)
-                const backlinks: Record<string, string> = {
-                  ilsanmyeongwolgwanyojeong: 'https://sunwook4.mycafe24.com/',
+                // 업소별 공식 백링크 (첫 등장 1회만 앵커). 값=URL 문자열(앵커=가게이름) 또는 {url, anchor}(앵커 텍스트 지정)
+                const backlinks: Record<string, string | { url: string; anchor?: string }> = {
+                  ilsanmyeongwolgwanyojeong: { url: 'https://sunwook07670.wixsite.com/sunwook8/blank', anchor: '일산명월관' },
                   ilsanroom: 'https://qotjsdnr12397.wixsite.com/sunwook',
                 };
-                const url = backlinks[venue.slug];
+                const bl = backlinks[venue.slug];
+                const url = typeof bl === 'string' ? bl : bl?.url;
+                const anchorText = bl && typeof bl === 'object' && bl.anchor ? bl.anchor : venue.nameKo;
                 // 가독성 — 길이 독립적으로 의미(문장) 단위 2~4문장 단락 분할 (단락당 ≤300자, 텍스트 그대로)
                 const paras = splitParagraphs(full, 280);
                 let anchored = false;
                 return paras.map((para, pi) => {
                   if (url && !anchored) {
-                    const idx = para.indexOf(venue.nameKo);
+                    let idx = para.indexOf(anchorText);
+                    // 앵커가 전체 상호명(예: 일산명월관요정) 접두사의 부분일치면 본문 실제 등장 위치로 이동
+                    if (idx !== -1 && anchorText !== venue.nameKo && para.slice(idx, idx + venue.nameKo.length) === venue.nameKo) {
+                      idx = para.indexOf(anchorText, idx + venue.nameKo.length);
+                    }
                     if (idx !== -1) {
                       anchored = true;
                       return (
                         <p key={pi} className="mb-4 leading-relaxed text-neon-text-muted">
                           {para.slice(0, idx)}
                           <a href={url} target="_blank" rel="noopener noreferrer" className="text-neon-primary underline hover:text-neon-primary-light">
-                            {venue.nameKo}
+                            {anchorText}
                           </a>
-                          {para.slice(idx + venue.nameKo.length)}
+                          {para.slice(idx + anchorText.length)}
                         </p>
                       );
                     }

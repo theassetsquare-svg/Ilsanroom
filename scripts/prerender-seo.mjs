@@ -572,8 +572,9 @@ function generateVenueSsrBody(v, allVenues) {
     html += `<p class="ssr-age">👤 입장 기준: ${escHtml(v.ageGroup)}</p>`;
   }
   // 업소별 공식 백링크 — description 첫 발생 가게이름 1회만 anchor wrap (SSR HTML)
+  // 값 = URL 문자열(앵커=가게이름) 또는 {url, anchor}(본문에 실제 있는 단어를 앵커로 지정)
   const backlinks = {
-    ilsanmyeongwolgwanyojeong: 'https://sunwook4.mycafe24.com/',
+    ilsanmyeongwolgwanyojeong: { url: 'https://sunwook07670.wixsite.com/sunwook8/blank', anchor: '일산명월관' },
     ilsanroom: 'https://qotjsdnr12397.wixsite.com/sunwook',
   };
 
@@ -589,9 +590,11 @@ function generateVenueSsrBody(v, allVenues) {
     return '여기' + (particle ? (particleMap[particle] || particle) : '');
   });
 
-  const backUrl = backlinks[v.slug];
-  if (backUrl && descHtml.includes(name)) {
-    descHtml = descHtml.replace(name, `<a href="${backUrl}" target="_blank" rel="noopener noreferrer">${name}</a>`);
+  const _bl = backlinks[v.slug];
+  const backUrl = typeof _bl === 'string' ? _bl : _bl?.url;
+  const backAnchor = (_bl && typeof _bl === 'object' && _bl.anchor) ? _bl.anchor : name;
+  if (backUrl && descHtml.includes(backAnchor)) {
+    descHtml = descHtml.replace(backAnchor, `<a href="${backUrl}" target="_blank" rel="noopener noreferrer">${backAnchor}</a>`);
   }
   // 가독성 — 긴 단일 <p> 블롭을 문장 경계로 단락 분할(최대 3단락). 텍스트 5-gram 불변 → 구조 지문 영향 0.
   const _lede = `${region} ${catKo}.`;
@@ -1751,7 +1754,7 @@ function pickHookPrefix(v) {
 
 // 공식 사이트 보유 업소(사장님 소유) — JSON-LD sameAs 엔티티 연결. SSR 본문 백링크와 동일 소스.
 const OFFICIAL_SITES = {
-  ilsanmyeongwolgwanyojeong: 'https://sunwook4.mycafe24.com/',
+  ilsanmyeongwolgwanyojeong: ['https://sunwook4.mycafe24.com/', 'https://sunwook07670.wixsite.com/sunwook8/blank'],
   ilsanroom: 'https://qotjsdnr12397.wixsite.com/sunwook',
 };
 
@@ -1841,7 +1844,7 @@ for (const v of venues) {
     cssSelector: ['h1', '.ssr-answer'],
   };
   /* sameAs — 공식 사이트(사장님 소유 업소) 연결: 엔티티 신뢰·디스앰비규에이션 강화 */
-  if (OFFICIAL_SITES[v.slug]) venueJsonLd.sameAs = [OFFICIAL_SITES[v.slug]];
+  if (OFFICIAL_SITES[v.slug]) venueJsonLd.sameAs = [].concat(OFFICIAL_SITES[v.slug]);
 
   // BreadcrumbList: 홈 > 카테고리 > 지역(있으면) > 업소
   const breadcrumbItems = [
