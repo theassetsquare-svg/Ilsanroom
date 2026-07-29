@@ -574,6 +574,7 @@ function generateVenueSsrBody(v, allVenues) {
   // 업소별 공식 백링크 — description 첫 발생 가게이름 1회만 anchor wrap (SSR HTML)
   const backlinks = {
     ilsanmyeongwolgwanyojeong: 'https://sunwook4.mycafe24.com/',
+    ilsanroom: 'https://qotjsdnr12397.wixsite.com/sunwook',
   };
 
   // 키워드 스터핑 회피 — 본문 2번째+ 가게이름은 '여기' + 받침 무관 모음형 조사로 치환.
@@ -1751,6 +1752,7 @@ function pickHookPrefix(v) {
 // 공식 사이트 보유 업소(사장님 소유) — JSON-LD sameAs 엔티티 연결. SSR 본문 백링크와 동일 소스.
 const OFFICIAL_SITES = {
   ilsanmyeongwolgwanyojeong: 'https://sunwook4.mycafe24.com/',
+  ilsanroom: 'https://qotjsdnr12397.wixsite.com/sunwook',
 };
 
 let venueCount = 0;
