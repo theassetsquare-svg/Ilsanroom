@@ -3,6 +3,7 @@ import { lazy, Suspense, useEffect, useState, useMemo } from 'react';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueHero from '@/components/venue/VenueHero';
 import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
+import IlsanMyeongwolgwanCallBar from '@/components/venue/IlsanMyeongwolgwanCallBar';
 import VenueDetailTabs from '@/components/venue/VenueDetailTabs';
 import VenueGallery from '@/components/venue/VenueGallery';
 import Card from '@/components/ui/Card';
@@ -281,6 +282,21 @@ export default function VenueDetailPage({
           </button>
         </div>
       </section>
+
+      {/* 일산명월관요정 — 일산요정 정보 가이드로 역방향 내부링크 (양방향 연결) + 전용 하단 고정 전화 바 */}
+      {venue.slug === 'ilsanmyeongwolgwanyojeong' && (
+        <>
+          <section className="mx-auto max-w-[1200px] px-4 pb-8 sm:px-6">
+            <Link to="/guide/ilsan-yojeong" className="block rounded-2xl border border-neon-border bg-neon-surface p-5 transition hover:border-neon-primary/50 card-hover">
+              <p className="text-sm font-bold text-neon-text">일산요정 처음이라면 — 유래·위치·예약 가이드</p>
+              <p className="mt-1 text-xs text-neon-text-muted">전통 한정식 정찬과 국악 접객 문화, 마두역 인근 위치와 예약 방법을 한 페이지에 정리했다</p>
+            </Link>
+          </section>
+          {/* 하단 고정 바에 마지막 콘텐츠가 가려지지 않도록 모바일 전용 여백 */}
+          <div aria-hidden className="md:hidden" style={{ height: 'calc(60px + env(safe-area-inset-bottom))' }} />
+          <IlsanMyeongwolgwanCallBar />
+        </>
+      )}
 
       {/* ═══ 14. Sticky Phone Bar ═══ */}
       <StickyPhoneBar

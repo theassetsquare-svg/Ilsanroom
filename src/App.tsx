@@ -37,6 +37,7 @@ const YojeongDetailPage = lazyRetry(() => import('./pages/YojeongDetailPage'));
 const HoppaPage = lazyRetry(() => import('./pages/HoppaPage'));
 const HoppaDetailPage = lazyRetry(() => import('./pages/HoppaDetailPage'));
 const GuidePage = lazyRetry(() => import('./pages/GuidePage'));
+const IlsanYojeongGuidePage = lazyRetry(() => import('./pages/IlsanYojeongGuidePage'));
 const QuizPage = lazyRetry(() => import('./pages/QuizPage'));
 const RoulettePage = lazyRetry(() => import('./pages/RoulettePage'));
 const VSPage = lazyRetry(() => import('./pages/VSPage'));
@@ -153,6 +154,7 @@ export default function App() {
           <Route path="/hoppa/:slug" element={<ErrorBoundary resetKey={location.pathname}><HoppaDetailPage /></ErrorBoundary>} />
           {/* Interactive */}
           <Route path="/guide" element={<GuidePage />} />
+          <Route path="/guide/ilsan-yojeong" element={<IlsanYojeongGuidePage />} />
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/roulette" element={<RoulettePage />} />
           <Route path="/vs" element={<VSPage />} />

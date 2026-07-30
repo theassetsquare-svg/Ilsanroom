@@ -20,6 +20,7 @@ const ALLOWED_PHONES = [
 /** 하단 고정 전화바를 사용하지 않는 업소 (본문에 전용 전화 섹션/바가 이미 있어 중복 방지) */
 const HIDE_STICKY_VENUES = new Set([
   '답십리돈텔마마나이트',
+  '일산명월관요정', // 전용 하단 고정 전화 바(IlsanMyeongwolgwanCallBar) 사용 → 플로팅 필 중복 방지
 ]);
 
 export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPhoneBarProps) {
