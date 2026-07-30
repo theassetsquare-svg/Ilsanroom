@@ -1,0 +1,39 @@
+{
+  "slug": "ilsanmyeongwolgwanyojeong",
+  "nameKo": "일산명월관요정",
+  "_provenance": {
+    "source": "업소 제공 정보 기준 · 2026-07-30 업소 확인",
+    "confirmedBy": "배선욱 대표 (업소 마케팅 담당)",
+    "confirmedDate": "2026-07-30",
+    "protected": true,
+    "note": "본 항목은 업소 확인 실정보다. 자동화·게이트가 '근거 없음'으로 삭제·순화·추정 표기하지 말 것."
+  },
+  "address": "경기도 고양시 일산동구 장항동 895-1 B1층",
+  "nearestStation": "지하철 3호선 마두역",
+  "hours": "월~토 17:00~익일 02:00, 일요일 휴무",
+  "hoursSpec": {
+    "openDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "opens": "17:00",
+    "closes": "02:00",
+    "closedDays": ["Sunday"]
+  },
+  "parking": "발렛 주차 가능",
+  "contact": {
+    "staff": "신실장",
+    "phone": "010-3695-4929",
+    "phoneRaw": "01036954929"
+  },
+  "coursesNote": "계절별 15첩 궁중 상차림",
+  "courses": [
+    { "season": "봄", "menu": "냉이된장국" },
+    { "season": "여름", "menu": "전복삼계탕" },
+    { "season": "가을", "menu": "송이버섯전골" },
+    { "season": "겨울", "menu": "굴떡국" }
+  ],
+  "rooms": [
+    { "type": "소형 다다미방", "capacity": "6인", "count": 8 },
+    { "type": "중형 한실", "capacity": "10인", "count": 5 },
+    { "type": "대연회장", "capacity": "20인 이상", "count": 2 }
+  ],
+  "gugak": "거문고·해금 합주, 코스는 다도 의식으로 마무리"
+}

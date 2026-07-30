@@ -16,7 +16,7 @@ export default function IlsanMyeongwolgwanCallBar() {
         className="flex items-center justify-center gap-2 px-4"
         style={{
           background: 'linear-gradient(to right, #14532D, #166534)',
-          minHeight: 52,
+          height: 56,
           boxShadow: '0 -4px 20px rgba(0,0,0,0.35)',
         }}
       >

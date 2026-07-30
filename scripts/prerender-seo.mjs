@@ -378,6 +378,8 @@ function writePage(routePath, meta) {
 }
 
 // ── 업소 데이터 파싱 ──
+// 일산명월관요정 업소 확인 실데이터(단일 소스) — React 페이지·SSR·JSON-LD 공통 참조
+const ILSAN_CONFIRMED = JSON.parse(fs.readFileSync('src/data/ilsanmyeongwolgwan-confirmed.json', 'utf8'));
 const venuesSrc = fs.readFileSync('src/data/venues.ts', 'utf8');
 const seoHooksSrc = fs.readFileSync('src/lib/seo-hooks.ts', 'utf8');
 
@@ -1180,7 +1182,7 @@ const INTERACTIVE_PAGE_BLURBS = {
   '/vs': () => `<h1>어디가 더 낫냐고? 투표로 결판내자</h1><p>업소 두 곳을 나란히 놓고 한 표 던지면 결과를 바로 확인할 수 있습니다. 회원이 직접 만든 매치업으로 토론을 이어가세요.</p><h2>VS 매치업 종류</h2><ul><li>같은 지역 같은 업종 비교</li><li>지역 간 대표 업소 비교</li><li>업종 간 콘셉트 비교 (예: 라운지 vs 룸)</li></ul><h2>VS 투표 참여 방법</h2><ul><li>투표는 회원만 가능, 1매치당 1표</li><li>회원이 매치업 직접 제안 가능</li><li>마감 후 결과 페이지로 전환</li><li>댓글로 선택 이유 공유</li></ul><h2>VS 결과 활용</h2><p>결과 댓글에서 왜 그곳을 선택했는지 토론이 이어집니다. 실제 방문을 고민하는 사람들이 가장 많이 참고하는 페이지 중 하나이며, 회원 의견을 통해 분위기·후기·접근성을 객관적으로 비교할 수 있습니다.</p>`,
   '/login': () => `<h1>카카오 한 번에 로그인</h1><p>가입하면 후기 작성, 찜하기, 1줄 글쓰기, VS 투표 전부 가능합니다. 카카오·네이버·구글 OAuth로 탭 한 번이면 됩니다.</p><h2>로그인하면 뭐가 달라지나</h2><ul><li>1줄 글쓰기 — 한 줄로 다녀온 곳 자랑</li><li>찜하기 — 가고 싶은 곳 모아두기</li><li>후기 작성</li><li>VS 투표 참여</li><li>퀴즈·룰렛 결과 저장</li></ul><h2>가입 안내</h2><ul><li>가입은 무료, 본명·주민번호 입력 없음</li><li>닉네임만 정하면 끝</li><li>탈퇴 1클릭 가능</li></ul><h2>개인정보 보호</h2><p>닉네임만 공개되고 본명·연락처는 공개되지 않습니다. 채팅·댓글에서도 익명이 보장되며, 탈퇴 시 모든 데이터가 즉시 삭제됩니다.</p>`,
   '/guide': () => `<h1>처음이라 긴장된다고? 이거 읽고 가면 프로다</h1><p>드레스코드, 분위기, 혼자 가도 되는지까지. 업종별 입문 핵심만 정리했습니다. 5분이면 다 읽을 수 있습니다.</p><h2>업종별 입문 가이드</h2><ul><li>클럽 — 입장 시간, 드레스코드, 부킹</li><li>나이트 — 부스 잡는 법, 양주 라인업</li><li>라운지 — 칵테일 추천, 데이트 코스</li><li>룸 — 인원별 사이즈, 양주 구성</li><li>요정 — 한정식 코스, 예약 필수</li><li>호빠 — 첫 방문, 안전 매너</li></ul><h2>상황별 추천 코스</h2><ul><li>가벼운 한 잔 — 라운지바 칵테일</li><li>댄스플로어 입문 — 클럽 입장 + 한 잔</li><li>4인 모임 — 룸 양주 1병 N빵</li><li>여성 사교 — 호빠 기본 세트</li><li>비즈니스 만찬 — 요정 정찬 + 룸</li></ul><h2>처음 가는 사람을 위한 5계명</h2><p>1) 평일 저녁이 가장 안전합니다. 2) 첫 잔은 천천히 마시고 분위기 파악하세요. 3) 신용카드 결제 가능한 곳이 안전합니다. 4) 일행과 연락 자주 하고 위치 공유 켜두세요. 5) 술 강요·과도한 매출 압박이 있으면 즉시 자리 이동하세요.</p>`,
-  '/guide/ilsan-yojeong': () => `<h1>일산요정 첫 방문 가이드 — 전통 한정식 정찬과 국악 접객, 예약까지 한눈에</h1><p>일산에서 요정 정찬 자리를 알아보는 분들이 실제로 궁금해하는 사실만 모았다. 요정이라는 업태의 유래와 접객 문화, 위치와 교통, 예약 방법, 방문 전 확인할 점을 순서대로 정리했다.</p><h2>요정이란 — 전통 한정식 정찬과 접객 문화</h2><p>요정은 전통 한정식 정찬을 격식 있게 대접하는 접객 공간에서 이어져 온 업태다. 근대 요릿집 전통의 연장선에서, 한복을 갖춘 접객원이 상을 차리고 국악 연주가 곁들여지는 정찬 문화가 자리 잡았다. 여러 첩으로 구성된 한정식 코스, 좌식 한실, 가야금·거문고·해금 같은 국악 라이브가 요정을 일반 음식점과 구분 짓는 요소다.</p><h2>일산에서 요정을 찾는다면 — 위치와 교통</h2><p>일산에서 요정 정찬 자리로 대표적으로 꼽히는 곳이 <a href="/yojeong/ilsan/ilsanmyeongwolgwanyojeong/">일산명월관요정</a>이다. 주소는 경기도 고양시 일산동구 장항동 895-1 B1층이며, 지하철 3호선 마두역이 가장 가까운 역이다. 정발산 근린공원과 일산호수공원 사이 장항동에 자리해, 식사 전후로 호수공원 산책 코스를 엮기 좋다. 자가용으로 오면 발렛 주차가 가능하다.</p><h2>상차림과 국악 — 계절 코스와 다도 마무리</h2><p>계절마다 식재료를 바꾸는 15첩 궁중 상차림을 낸다. 봄에는 냉이된장국, 여름에는 전복삼계탕, 가을에는 송이버섯전골, 겨울에는 굴떡국으로 첫 상이 바뀐다. 식사 중간중간 거문고와 해금 합주가 이어지고, 코스는 다도 의식으로 마무리한다.</p><h2>룸 구성과 인원</h2><p>객실은 6인 소형 다다미방 8개, 10인 중형 한실 5개, 20인 이상을 수용하는 대연회장 2개로 구성된다. 전 객실에 대나무 정원을 바라보는 창이 나 있고, 한실 바닥에는 전통 온돌이 깔려 있다.</p><h2>예약·문의와 방문 전 확인</h2><p>예약·문의는 신실장 전화 010-3695-4929로 하면 된다. 영업시간은 월요일부터 토요일까지 오후 5시부터 익일 오전 2시까지이며, 일요일은 휴무다. 전통 정찬 자리인 만큼 단정한 차림이 무난하다.</p><h2>자주 묻는 질문</h2><dl><dt>일산요정은 어떤 곳인가요?</dt><dd>전통 한정식 정찬을 격식 있게 즐기는 접객 공간에서 유래한 업태로, 여러 첩의 한정식 코스와 좌식 한실, 국악 연주가 곁들여집니다. 일산에서는 일산명월관요정이 대표적으로 꼽힙니다.</dd><dt>일산명월관요정은 어디에 있고 어떻게 가나요?</dt><dd>경기도 고양시 일산동구 장항동 895-1 B1층에 있으며, 지하철 3호선 마두역이 가장 가깝고 발렛 주차가 가능합니다.</dd><dt>예약과 문의는 어떻게 하나요?</dt><dd>신실장 전화 010-3695-4929로 예약·문의하면 됩니다. 영업은 월요일부터 토요일 오후 5시부터 익일 오전 2시까지, 일요일은 휴무입니다.</dd></dl><h2>더 자세히 보기</h2><ul><li><a href="/yojeong/ilsan/ilsanmyeongwolgwanyojeong/">일산명월관요정 상세 안내</a></li><li><a href="/yojeong/">전국 요정 모아보기</a></li><li><a href="/guide/">업종별 첫 방문 입문 가이드</a></li></ul><p>본 정보는 만 19세 이상 성인을 대상으로 한 업소 안내입니다.</p>`,
+  '/guide/ilsan-yojeong': () => `<h1>일산요정 첫 방문 가이드 — 전통 한정식 정찬과 국악 접객, 예약까지 한눈에</h1><h2>핵심 요약</h2><table><tbody><tr><th>위치</th><td>${escHtml(ILSAN_CONFIRMED.address)}</td></tr><tr><th>가장 가까운 역</th><td>${escHtml(ILSAN_CONFIRMED.nearestStation)}</td></tr><tr><th>영업시간</th><td>${escHtml(ILSAN_CONFIRMED.hours)}</td></tr><tr><th>예약·문의</th><td>${escHtml(ILSAN_CONFIRMED.contact.staff)} ${escHtml(ILSAN_CONFIRMED.contact.phone)}</td></tr><tr><th>주차</th><td>${escHtml(ILSAN_CONFIRMED.parking)}</td></tr></tbody></table><h2>요정이란 — 전통 한정식 정찬과 접객 문화</h2><p>요정은 전통 한정식 정찬을 격식 있게 대접하는 접객 공간이다. 근대 요릿집 전통의 연장선에서 자리 잡았다. 한복을 갖춘 접객원이 상을 차리고 국악 연주가 곁들여진다. 여러 첩의 한정식 코스, 좌식 한실, 가야금·거문고·해금 라이브가 일반 음식점과 구분 짓는 요소다.</p><h2>위치와 교통 — 마두역이 가장 가깝다</h2><p><a href="/yojeong/ilsan/ilsanmyeongwolgwanyojeong/">일산명월관요정</a>은 ${escHtml(ILSAN_CONFIRMED.nearestStation)}이 가장 가깝다. 주소는 ${escHtml(ILSAN_CONFIRMED.address)}이다. 정발산 근린공원과 일산호수공원 사이 장항동에 있다. 자가용은 ${escHtml(ILSAN_CONFIRMED.parking)}하다.</p><h2>상차림과 국악 — 계절 15첩 정찬</h2><p>계절마다 바뀌는 ${escHtml(ILSAN_CONFIRMED.coursesNote)}을 낸다. 봄에는 냉이된장국, 여름에는 전복삼계탕, 가을에는 송이버섯전골, 겨울에는 굴떡국으로 첫 상이 바뀐다. 식사 중간 거문고·해금 합주가 이어진다. 코스는 다도 의식으로 마무리한다. 전통주로는 백세주와 법주 등을 기본으로 낸다.</p><h2>룸 구성과 인원 — 6인부터 대연회장까지</h2><p>객실은 6인·10인·20인 이상 세 종류로 나뉜다. ${ILSAN_CONFIRMED.rooms.map(r => `${escHtml(r.capacity)} ${escHtml(r.type)} ${r.count}개`).join(', ')}다. 전 객실에 대나무 정원 조망 창이 있다. 한실 바닥에는 전통 온돌이 깔려 있고, 좌식과 입식을 선택할 수 있다. 대연회장에는 거문고·해금 합주가 가능한 전용 무대가 설치돼 있다. 인원과 목적에 맞는 방은 예약할 때 함께 정하면 된다.</p><h2>예약·문의와 방문 전 확인</h2><p>예약과 문의는 ${escHtml(ILSAN_CONFIRMED.contact.staff)} 전화 ${escHtml(ILSAN_CONFIRMED.contact.phone)}로 하면 된다. 영업시간은 ${escHtml(ILSAN_CONFIRMED.hours)}이다. 전통 정찬 자리인 만큼 단정한 차림이 무난하다.</p><h2>자주 묻는 질문</h2><dl><dt>일산요정은 어떤 곳인가요?</dt><dd>요정은 전통 한정식 정찬을 격식 있게 대접하는 접객 공간에서 유래한 업태로, 여러 첩의 한정식 코스와 좌식 한실, 국악 연주가 곁들여집니다. 일산에서는 일산명월관요정이 대표적으로 꼽힙니다.</dd><dt>일산명월관요정은 어디에 있고 어떻게 가나요?</dt><dd>${escHtml(ILSAN_CONFIRMED.address)}에 있으며, ${escHtml(ILSAN_CONFIRMED.nearestStation)}이 가장 가깝고 ${escHtml(ILSAN_CONFIRMED.parking)}합니다.</dd><dt>예약과 문의는 어떻게 하나요?</dt><dd>${escHtml(ILSAN_CONFIRMED.contact.staff)} 전화 ${escHtml(ILSAN_CONFIRMED.contact.phone)}로 예약·문의하면 됩니다. 영업은 ${escHtml(ILSAN_CONFIRMED.hours)}입니다.</dd></dl><h2>함께 보기</h2><ul><li><a href="/yojeong/ilsan/ilsanmyeongwolgwanyojeong/">일산명월관요정 상세 안내</a></li><li><a href="/yojeong/">전국 요정 모아보기</a></li><li><a href="/guide/">업종별 첫 방문 입문 가이드</a></li></ul><p>${escHtml(ILSAN_CONFIRMED._provenance.source)}. 본 정보는 만 19세 이상 성인을 대상으로 한 업소 안내입니다.</p>`,
   '/search': () => `<h1>이름만 치면 바로 나온다, 통합 검색</h1><p>지역·업종·업소명 아무거나 입력하면 등록된 업소 중에서 일치하는 곳을 찾아드립니다.</p><h2>검색 가능 항목</h2><ul><li>업소명 — "레이스" "찬스돔" 등</li><li>지역명 — "강남" "홍대" "일산"</li><li>업종 — "클럽" "룸" "호빠"</li><li>분위기 — "조용한" "단체" "데이트"</li><li>콘셉트 — "라이브" "EDM" "정찬"</li></ul><h2>검색 잘 하는 팁</h2><ul><li>지역+업종 조합이 정확도 높음</li><li>최근 검색 기록 저장</li><li>필터로 추가 좁히기</li></ul><h2>검색 결과 활용</h2><p>검색 결과에서 업소 카드를 누르면 상세 페이지로 이동합니다. 지역+업종+인원 키워드 조합이 결과를 좁히는 데 가장 효과적이며, 결과 화면에서 추가 필터를 적용해 분위기·콘셉트로 다시 정렬할 수 있습니다.</p>`,
   '/profile': () => `<h1>내 찜 목록·후기·활동 기록 모아보기</h1><p>내가 찜한 업소, 작성한 후기, 포인트 내역을 한 곳에 모았습니다.</p><h2>프로필 메뉴</h2><ul><li>찜 목록 — 가고 싶은 곳 모음</li><li>내 후기 — 작성한 후기 관리</li><li>포인트 내역 — 적립·사용 기록</li><li>등급 현황</li><li>알림 설정 — 새 글·답글 알림</li></ul><h2>활동 안내</h2><p>찜·후기·VS 투표·퀴즈 등 활동에 따라 포인트가 적립되며, 자세한 적립 기준과 등급 정책은 운영 정책 페이지에서 확인하세요. 닉네임만 노출되고 본명·연락처는 공개되지 않습니다.</p>`,
   '/dashboard': () => `<h1>내 매장 현황판</h1><p>등록 업소의 페이지뷰·전화 클릭·찜·후기 지표를 사장님 전용으로 확인할 수 있는 페이지입니다.</p><h2>대시보드 주요 지표</h2><ul><li>페이지뷰</li><li>전화번호 클릭 수</li><li>찜하기 추가 수</li><li>후기 작성 수</li><li>유입 지역 분포</li></ul><h2>매장 운영 인사이트</h2><ul><li>요일별 방문자 추이</li><li>시간대별 클릭 분포</li><li>리뷰 평점 추이</li></ul><h2>대시보드 활용 팁</h2><p>지표가 정체되면 사진·메뉴를 업데이트해보세요. 부정 후기에는 가능한 한 빠르게 답변할수록 좋습니다. 데이터는 모바일에서도 동일하게 확인할 수 있습니다.</p>`,
@@ -1429,26 +1431,27 @@ for (const pg of staticPages) {
   // 일산요정 정보 가이드 — FAQPage + Restaurant(LocalBusiness) 실데이터 스키마
   // (SSR dl 문구와 동일 소스, 창작 0. 평점 없음 = venue-rating-source-gate 준수)
   if (pg.path === '/guide/ilsan-yojeong') {
+    const cf = ILSAN_CONFIRMED;
     jsonLdList.push(faqPairsJsonLd([
-      { q: '일산요정은 어떤 곳인가요?', a: '전통 한정식 정찬을 격식 있게 즐기는 접객 공간에서 유래한 업태로, 여러 첩의 한정식 코스와 좌식 한실, 국악 연주가 곁들여집니다. 일산에서는 일산명월관요정이 대표적으로 꼽힙니다.' },
-      { q: '일산명월관요정은 어디에 있고 어떻게 가나요?', a: '경기도 고양시 일산동구 장항동 895-1 B1층에 있으며, 지하철 3호선 마두역이 가장 가깝고 발렛 주차가 가능합니다.' },
-      { q: '예약과 문의는 어떻게 하나요?', a: '신실장 전화 010-3695-4929로 예약·문의하면 됩니다. 영업은 월요일부터 토요일 오후 5시부터 익일 오전 2시까지, 일요일은 휴무입니다.' },
+      { q: '일산요정은 어떤 곳인가요?', a: '요정은 전통 한정식 정찬을 격식 있게 대접하는 접객 공간에서 유래한 업태로, 여러 첩의 한정식 코스와 좌식 한실, 국악 연주가 곁들여집니다. 일산에서는 일산명월관요정이 대표적으로 꼽힙니다.' },
+      { q: '일산명월관요정은 어디에 있고 어떻게 가나요?', a: `${cf.address}에 있으며, ${cf.nearestStation}이 가장 가깝고 ${cf.parking}합니다.` },
+      { q: '예약과 문의는 어떻게 하나요?', a: `${cf.contact.staff} 전화 ${cf.contact.phone}로 예약·문의하면 됩니다. 영업은 ${cf.hours}입니다.` },
     ]));
     const mv = venues.find(v => v.slug === 'ilsanmyeongwolgwanyojeong');
-    if (mv) {
-      jsonLdList.push({
-        '@context': 'https://schema.org',
-        '@type': 'Restaurant',
-        '@id': `${BASE_URL}/yojeong/ilsan/ilsanmyeongwolgwanyojeong/#business`,
-        name: mv.nameKo,
-        url: `${BASE_URL}/yojeong/ilsan/ilsanmyeongwolgwanyojeong/`,
-        servesCuisine: '한정식',
-        telephone: '+82-10-3695-4929',
-        address: { '@type': 'PostalAddress', streetAddress: mv.address, addressLocality: '고양시', addressRegion: '경기도', addressCountry: 'KR' },
-        geo: { '@type': 'GeoCoordinates', latitude: mv.lat, longitude: mv.lng },
-        openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '17:00', closes: '02:00' }],
-      });
-    }
+    // Restaurant(LocalBusiness) — 업소 확인 실데이터만. 평점·리뷰 필드 절대 없음(가짜 0).
+    jsonLdList.push({
+      '@context': 'https://schema.org',
+      '@type': 'Restaurant',
+      '@id': `${BASE_URL}/yojeong/ilsan/ilsanmyeongwolgwanyojeong/#business`,
+      name: cf.nameKo,
+      url: `${BASE_URL}/yojeong/ilsan/ilsanmyeongwolgwanyojeong/`,
+      description: `${cf.nearestStation}이 가장 가까운 전통 한정식 요정. ${cf.parking}. ${cf._provenance.source}.`,
+      servesCuisine: '한정식',
+      telephone: `+82-${cf.contact.phone.replace(/^0/, '')}`,
+      address: { '@type': 'PostalAddress', streetAddress: cf.address, addressLocality: '고양시', addressRegion: '경기도', addressCountry: 'KR' },
+      ...(mv ? { geo: { '@type': 'GeoCoordinates', latitude: mv.lat, longitude: mv.lng } } : {}),
+      openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: cf.hoursSpec.openDays, opens: cf.hoursSpec.opens, closes: cf.hoursSpec.closes }],
+    });
   }
 
   // ★ 카테고리 페이지 og:image — /og/{slug}.jpg 1200² 매핑 (clubs/nights/lounges/rooms/yojeong/hoppa)
