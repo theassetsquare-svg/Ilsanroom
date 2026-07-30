@@ -122,7 +122,7 @@ export default function RegionCategoryPage() {
       {/* 대전 나이트 — 예약문의 하단 고정 전화 바 (모바일 전용) */}
       {decodedRegion === '대전' && catKey === 'night' && (
         <>
-          <div aria-hidden className="md:hidden" style={{ height: 'calc(60px + env(safe-area-inset-bottom))' }} />
+          <div aria-hidden style={{ height: 'calc(60px + env(safe-area-inset-bottom))' }} />
           <DaejeonNightsCallBar />
         </>
       )}
