@@ -6,6 +6,7 @@ import { articles as localArticles } from '@/data/magazine-articles';
 import { useArticle, useArticles } from '@/hooks/useMagazine';
 import ShareButton from '@/components/ui/ShareButton';
 import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
+import DaejeonNightsCallBar from '@/components/venue/DaejeonNightsCallBar';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { ReadTimeEstimate, MidContentHook, ReadFinishCount, ReadCompletionReward, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
 import RelatedVenuesForMagazine from '@/components/magazine/RelatedVenuesForMagazine';
@@ -237,6 +238,14 @@ export default function MagazineDetailPage() {
         staffName={(article as { staffName?: string }).staffName}
         venueName={(article as { venueName?: string }).venueName || article.title}
       />
+
+      {/* 대전 나이트 가이드 — 예약문의 하단 고정 전화 바 (모바일 전용) */}
+      {id === 'daejeon-night-guide' && (
+        <>
+          <div aria-hidden className="md:hidden" style={{ height: 'calc(60px + env(safe-area-inset-bottom))' }} />
+          <DaejeonNightsCallBar />
+        </>
+      )}
     </div>
   );
 }
