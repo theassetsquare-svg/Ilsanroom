@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-30T15:09:47.816Z",
+  "generated_at": "2026-07-30T18:07:56.016Z",
   "window_hours": 24,
   "items": [
     {
@@ -10,18 +10,18 @@
       "views_24h": 7
     },
     {
+      "path": "/nights/daegubabambanight",
+      "title": "대구바밤바나이트",
+      "category": "night",
+      "region": "대구",
+      "views_24h": 5
+    },
+    {
       "path": "/rooms/ilsan/ilsanroom",
       "title": "일산룸",
       "category": "room",
       "region": "일산",
       "views_24h": 4
-    },
-    {
-      "path": "/nights/daegubabambanight",
-      "title": "대구바밤바나이트",
-      "category": "night",
-      "region": "대구",
-      "views_24h": 3
     },
     {
       "path": "/nights/gwangjumgmnight",
@@ -52,13 +52,6 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
-      "category": "night",
-      "region": "오산",
-      "views_24h": 3
-    },
-    {
       "path": "/nights/gwangjusangmunight",
       "title": "광주상무나이트",
       "category": "night",
@@ -70,6 +63,13 @@
       "title": "수원찬스돔나이트",
       "category": "night",
       "region": "수원",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
+      "category": "night",
+      "region": "오산",
       "views_24h": 2
     },
     {
