@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-31T15:18:46.397Z",
+  "generated_at": "2026-07-31T18:14:08.549Z",
   "window_hours": 24,
   "items": [
     {
@@ -8,6 +8,13 @@
       "category": "night",
       "region": "청주",
       "views_24h": 5
+    },
+    {
+      "path": "/nights/seongnamgukbingwannight",
+      "title": "성남국빈관나이트",
+      "category": "night",
+      "region": "성남",
+      "views_24h": 3
     },
     {
       "path": "/nights/daejeonhangukgwannight",
@@ -59,6 +66,20 @@
       "views_24h": 3
     },
     {
+      "path": "/nights/pyeongtaekhobaknight",
+      "title": "평택호박나이트",
+      "category": "night",
+      "region": "평택",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/bundangpongpongnight",
+      "title": "분당퐁퐁나이트",
+      "category": "night",
+      "region": "분당",
+      "views_24h": 2
+    },
+    {
       "path": "/clubs/gangnam/gangnamclub-race",
       "title": "강남청담클럽 레이스",
       "category": "club",
@@ -80,31 +101,10 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/seongnamgukbingwannight",
-      "title": "성남국빈관나이트",
-      "category": "night",
-      "region": "성남",
-      "views_24h": 2
-    },
-    {
       "path": "/nights/ansandontellmamanight",
       "title": "안산돈텔마마나이트",
       "category": "night",
       "region": "안산",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/gangnamjuliananight",
-      "title": "강남줄리아나나이트",
-      "category": "night",
-      "region": "강남",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/suyushampoonight",
-      "title": "수유샴푸나이트",
-      "category": "night",
-      "region": "수유",
       "views_24h": 2
     }
   ]
