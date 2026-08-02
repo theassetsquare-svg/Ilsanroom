@@ -6,6 +6,7 @@ import type { Venue } from '@/types';
 import { VenueCardStats } from '@/components/ui/LiveStats';
 import { ListMidHook, TopPicksMini } from '@/components/venue/CategoryListingEngagement';
 import { hasVenueImage } from '@/data/venue-image-manifest';
+import { heroVer } from '@/lib/venue-file-ver';
 import { useBookmarks } from '@/hooks/useBookmarks';
 import { useCompareList } from '@/hooks/useCompareList';
 
@@ -314,7 +315,7 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
                       <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
                         {hasVenueImage(venue.slug) && (
                           <img
-                            src={`/venues/${venue.slug}-1.webp?v3`}
+                            src={`/venues/${venue.slug}-1${heroVer(venue.slug)}.webp?v3`}
                             alt={venue.nameKo}
                             width={300}
                             height={300}

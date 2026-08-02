@@ -11,6 +11,7 @@ import { trackEvent } from '@/lib/visitor-tracker';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { ReadFinishCount } from '@/components/engagement/ReadingEngagement';
 import { hasVenueImage } from '@/data/venue-image-manifest';
+import { heroVer } from '@/lib/venue-file-ver';
 
 /* ── 카테고리 설정 ── */
 const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
@@ -420,7 +421,7 @@ export default function SearchPage() {
                 <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
                   <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
                     {hasVenueImage(venue.slug) && (
-                      <img src={`/venues/${venue.slug}-1.webp?v3`} alt={venue.nameKo} loading="lazy"
+                      <img src={`/venues/${venue.slug}-1${heroVer(venue.slug)}.webp?v3`} alt={venue.nameKo} loading="lazy"
                         className="absolute inset-0 w-full h-full object-cover z-[1]"
                         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                     )}

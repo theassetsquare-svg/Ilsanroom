@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from '../ui/SafeLink';
 import type { Venue } from '@/types';
+import { heroVer } from '@/lib/venue-file-ver';
 
 const RECOMMEND_BATCH = 6;
 
@@ -92,7 +93,7 @@ export default function InfiniteRecommendLoop({ venues, popularVenues }: { venue
                     v.category === 'yojeong' ? 'from-emerald-500 to-teal-700' :
                     'from-pink-500 to-rose-700'
                   }`} style={{ aspectRatio: '4/3' }}>
-                    <img src={`/venues/${v.slug}-1.webp`} alt={v.nameKo} loading="lazy" width={300} height={225}
+                    <img src={`/venues/${v.slug}-1${heroVer(v.slug)}.webp`} alt={v.nameKo} loading="lazy" width={300} height={225}
                       onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                       className="absolute inset-0 w-full h-full object-cover z-[1]" />
                     <div className="absolute inset-0 flex flex-col items-center justify-center">

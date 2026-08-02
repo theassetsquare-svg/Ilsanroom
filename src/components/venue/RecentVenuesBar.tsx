@@ -6,6 +6,7 @@
 import { useRecentVenues } from '@/hooks/useRecentVenues';
 import { Link } from '@/components/ui/SafeLink';
 import { hasVenueImage } from '@/data/venue-image-manifest';
+import { heroVer } from '@/lib/venue-file-ver';
 
 const catEmoji: Record<string, string> = { club: '🎵', night: '🌙', lounge: '🍸', room: '🚪', yojeong: '🏮', hoppa: '🥂' };
 const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
@@ -50,7 +51,7 @@ export default function RecentVenuesBar() {
                   <div className="relative aspect-square bg-gradient-to-br from-violet-200 to-violet-400">
                     {hasVenueImage(v.slug) && (
                       <img
-                        src={`/venues/${v.slug}-1.webp?v3`}
+                        src={`/venues/${v.slug}-1${heroVer(v.slug)}.webp?v3`}
                         alt={v.nameKo}
                         width={140}
                         height={140}

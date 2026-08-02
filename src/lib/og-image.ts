@@ -4,6 +4,8 @@
  * 이미지 없는 업소는 기본 OG 이미지 폴백.
  */
 
+import { heroVer, ogVer } from '@/lib/venue-file-ver';
+
 const SITE_URL = 'https://nolcool.com';
 
 /** 닉네임 오버레이 OG 이미지가 있는 가게 목록 */
@@ -51,16 +53,16 @@ export function getVenueOgImageBySlug(slug: string): string {
   if (JPG_OG_SLUGS.has(slug)) {
     return `${SITE_URL}/og/${slug}.jpg`;
   }
-  // 닉네임 오버레이 OG JPG
+  // 닉네임 오버레이 OG JPG (파일명 버전 적용 — 엣지 캐시 무관 즉시 반영)
   if (NICKNAME_OG_SLUGS.has(slug)) {
-    return `${SITE_URL}/og/${slug}.jpg`;
+    return `${SITE_URL}/og/${slug}${ogVer(slug)}.jpg`;
   }
   // 이미지 없는 업소 — 기본 OG 이미지로 폴백
   if (NO_IMAGE_SLUGS.has(slug)) {
     return `${SITE_URL}/og/nolcool-og.jpg`;
   }
   // 기본: 실제 가게 사진 JPG (SVG 대신 JPG 사용)
-  return `${SITE_URL}/venues/${slug}-1.jpg?v3`;
+  return `${SITE_URL}/venues/${slug}-1${heroVer(slug)}.jpg?v3`;
 }
 
 /** 업소 상세 OG image (이름 기반 — API 폴백) */

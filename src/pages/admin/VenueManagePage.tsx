@@ -3,6 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { createClient } from '@/lib/supabase';
 import type { DbVenue, VenueCategory, VenueStatus } from '@/types/database';
+import { heroVer } from '@/lib/venue-file-ver';
 
 const ADMIN_EMAILS = ['qotjsdnr123@naver.com', 'theassetsquare@gmail.com'];
 const CATEGORIES: { key: VenueCategory; label: string }[] = [
@@ -379,7 +380,7 @@ export default function VenueManagePage() {
               </Field>
               {editing.slug && (
                 <div className="mt-3 overflow-hidden rounded-lg border border-neon-border" style={{ aspectRatio: '1/1' }}>
-                  <img src={editing.image_url || `/venues/${editing.slug}-1.webp`} alt="" className="h-full w-full object-cover"
+                  <img src={editing.image_url || `/venues/${editing.slug}-1${heroVer(editing.slug)}.webp`} alt="" className="h-full w-full object-cover"
                     onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                 </div>
               )}

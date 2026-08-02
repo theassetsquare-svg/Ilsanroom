@@ -4,6 +4,8 @@
  * If no real image exists, returns null so the UI can show a fallback.
  */
 
+import { heroVer } from '@/lib/venue-file-ver';
+
 const EXTENSIONS = ['jpg', 'webp', 'png'] as const;
 
 /** Known venue images — populated at build time by scanning /public/venues/ */
@@ -27,7 +29,7 @@ export function getVenueImages(slug: string): string[] {
   const paths: string[] = [];
   for (let i = 1; i <= 4; i++) {
     for (const ext of EXTENSIONS) {
-      paths.push(`/venues/${slug}-${i}.${ext}`);
+      paths.push(`/venues/${slug}-${i}${i === 1 ? heroVer(slug) : ''}.${ext}`);
     }
   }
   return paths;
@@ -35,7 +37,7 @@ export function getVenueImages(slug: string): string[] {
 
 /** Get the primary image for a venue (for OG/hero) */
 export function getVenueHeroImage(slug: string): string {
-  return `/venues/${slug}-1.jpg`;
+  return `/venues/${slug}-1${heroVer(slug)}.jpg`;
 }
 
 /** Get body images (2-4) for inline content */
@@ -57,8 +59,8 @@ export function getVenueImageCandidates(slug: string): {
   heroFallbacks: string[];
 } {
   return {
-    hero: `/venues/${slug}-1.jpg`,
-    heroFallbacks: [`/venues/${slug}-1.webp`, `/venues/${slug}-1.png`],
+    hero: `/venues/${slug}-1${heroVer(slug)}.jpg`,
+    heroFallbacks: [`/venues/${slug}-1${heroVer(slug)}.webp`, `/venues/${slug}-1${heroVer(slug)}.png`],
     body: [
       `/venues/${slug}-2.jpg`,
       `/venues/${slug}-2.webp`,

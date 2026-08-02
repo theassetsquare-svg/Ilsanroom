@@ -9,6 +9,7 @@ import path from 'path';
 import crypto from 'crypto';
 import { execSync } from 'child_process';
 import { provinceOf, localityOf } from './lib/region-admin.mjs';
+import { heroVer, ogVer } from '../src/lib/venue-file-ver.mjs';
 
 const DIST = path.resolve('dist');
 const BASE_URL = 'https://nolcool.com';
@@ -1725,10 +1726,10 @@ const NICKNAME_OG_SLUGS = new Set([
 ]);
 function getVenueOgImage(slug) {
   if (JPG_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}.jpg`;
-  if (NICKNAME_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}.jpg`;
+  if (NICKNAME_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}${ogVer(slug)}.jpg`;
   // 실제 업소 사진 우선 (SEO·공유 최적)
-  const venueImg = path.join(DIST, 'venues', `${slug}-1.jpg`);
-  if (fs.existsSync(venueImg)) return `${BASE_URL}/venues/${slug}-1.jpg`;
+  const venueImg = path.join(DIST, 'venues', `${slug}-1${heroVer(slug)}.jpg`);
+  if (fs.existsSync(venueImg)) return `${BASE_URL}/venues/${slug}-1${heroVer(slug)}.jpg`;
   // 사진 없으면 생성된 1:1 네이밍/닉네임 OG 썸네일 (venue 121곳 전수 보유)
   const ogThumb = path.join(DIST, 'og', `${slug}.jpg`);
   if (fs.existsSync(ogThumb)) return `${BASE_URL}/og/${slug}.jpg`;
@@ -1740,8 +1741,9 @@ function getVenueOgImage(slug) {
 function getVenueImageList(slug) {
   const list = [];
   for (let i = 1; i <= 4; i++) {
-    const p = path.join(DIST, 'venues', `${slug}-${i}.jpg`);
-    if (fs.existsSync(p)) list.push(`${BASE_URL}/venues/${slug}-${i}.jpg`);
+    const ver = i === 1 ? heroVer(slug) : '';
+    const p = path.join(DIST, 'venues', `${slug}-${i}${ver}.jpg`);
+    if (fs.existsSync(p)) list.push(`${BASE_URL}/venues/${slug}-${i}${ver}.jpg`);
   }
   if (list.length === 0) return getVenueOgImage(slug);
   return list.length === 1 ? list[0] : list;
@@ -1913,8 +1915,8 @@ for (const v of venues) {
     `${v.regionKo} 나이트라이프`,
   ].join(', ');
   // 시즌29-F — 실재하는 hero webp만 preload (404 0건 유지)
-  const heroWebp = path.join('public', 'venues', `${v.slug}-1.webp`);
-  const preloadImage = fs.existsSync(heroWebp) ? `/venues/${v.slug}-1.webp?v3` : undefined;
+  const heroWebp = path.join('public', 'venues', `${v.slug}-1${heroVer(v.slug)}.webp`);
+  const preloadImage = fs.existsSync(heroWebp) ? `/venues/${v.slug}-1${heroVer(v.slug)}.webp?v3` : undefined;
   writePage(routePath, {
     title: hookTitle,
     description: desc,

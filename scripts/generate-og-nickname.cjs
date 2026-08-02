@@ -10,9 +10,12 @@ const HEIGHT = 630;
 
 // 수동 합성 og 보호 목록 — 여기 있는 slug는 이 스크립트가 절대 덮어쓰지 않는다.
 // (전화번호 등 별도 오버레이가 합성된 og. 재생성하면 합성 내용이 유실됨)
+// 파일명 버전(-v2 등)이 붙은 변형도 같은 기준 slug로 판정해 함께 보호한다.
 const MANUAL_OG_SLUGS = new Set([
-  'ilsanroom', // 2026-08-01 전화번호(010 3695 4929) 합성본 — backup/venue-images/20260801-ilsanroom-phone
+  'ilsanroom', // 2026-08-01 전화번호(010 3695 4929) 합성본, 현행 파일=og/ilsanroom-v2.jpg — backup/venue-images/20260801-ilsanroom-phone
 ]);
+// slug 뒤 -v숫자 접미사를 떼고 보호 여부 판정 (예: 'ilsanroom-v2' → 'ilsanroom')
+const isProtectedSlug = (slug) => MANUAL_OG_SLUGS.has(slug.replace(/-v\d+$/, ''));
 
 const NICKNAME_MAP = {
   'ilsanmyeongwolgwanyojeong': '신실장',
@@ -37,7 +40,7 @@ function findImage(slug) {
 }
 
 async function generateOg(slug, nickname) {
-  if (MANUAL_OG_SLUGS.has(slug)) { console.log(`SKIP ${slug}: manual og (보호 목록)`); return; }
+  if (isProtectedSlug(slug)) { console.log(`SKIP ${slug}: manual og (보호 목록)`); return; }
   const imgPath = findImage(slug);
   if (!imgPath) { console.log(`SKIP ${slug}: no image`); return; }
   const outPath = path.join(OG_DIR, `${slug}.jpg`);

@@ -10,6 +10,7 @@ import type { Venue } from '@/types';
 import { createClient } from '@/lib/supabase';
 import JsonLd from '@/components/seo/JsonLd';
 import { useFavorites as useFavoritesHook } from '@/hooks/useFavorites';
+import { heroVer } from '@/lib/venue-file-ver';
 // 아래로 접힌 무거운 위젯들은 lazy — TBT(메인 스레드 블로킹) 감소가 목적.
 // 모두 above-the-fold 아래에 위치 → LCP/FCP 영향 0.
 const HomeFeed = lazy(() => import('@/components/community/HomeFeed').then(m => ({ default: m.HomeFeed })));
@@ -176,7 +177,7 @@ const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, r
         <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
           <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
             {/* R4-2 — TOP 4 첫 카드는 LCP 후보 → eager + fetchPriority high */}
-            <img src={`/venues/${venue.slug}-1.webp`} alt={venue.nameKo}
+            <img src={`/venues/${venue.slug}-1${heroVer(venue.slug)}.webp`} alt={venue.nameKo}
               loading={priority ? 'eager' : 'lazy'}
               {...(priority ? { fetchPriority: 'high' as const } : {})}
               width={300} height={300}
@@ -1110,7 +1111,7 @@ export default function HomePage() {
               featuredVenue.category === 'yojeong' ? 'from-emerald-600 to-teal-800' :
               'from-pink-600 to-rose-800'
             }`} style={{ minHeight: 130 }}>
-              <img src={`/venues/${featuredVenue.slug}-1.webp`} alt={featuredVenue.nameKo} width={600} height={300} loading="lazy"
+              <img src={`/venues/${featuredVenue.slug}-1${heroVer(featuredVenue.slug)}.webp`} alt={featuredVenue.nameKo} width={600} height={300} loading="lazy"
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                 className="absolute inset-0 w-full h-full object-cover z-[1] opacity-60" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-[2]" />
@@ -1136,7 +1137,7 @@ export default function HomePage() {
           {popularVenues.slice(0, 8).map((v, i) => (
             <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} className="flex-shrink-0" style={{ width: 120 }}>
               <div className="relative rounded-xl overflow-hidden" style={{ width: 120, height: 120 }}>
-                <img src={`/venues/${v.slug}-1.webp`} alt={v.nameKo} width={120} height={120} loading="lazy"
+                <img src={`/venues/${v.slug}-1${heroVer(v.slug)}.webp`} alt={v.nameKo} width={120} height={120} loading="lazy"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   className="absolute inset-0 w-full h-full object-cover z-[1]" />
                 <div className={`absolute inset-0 flex flex-col items-center justify-center ${
