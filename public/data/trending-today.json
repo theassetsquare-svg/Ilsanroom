@@ -1,13 +1,34 @@
 {
-  "generated_at": "2026-08-01T17:49:32.387Z",
+  "generated_at": "2026-08-02T05:45:27.457Z",
   "window_hours": 24,
   "items": [
+    {
+      "path": "/nights/suyushampoonight",
+      "title": "수유샴푸나이트",
+      "category": "night",
+      "region": "수유",
+      "views_24h": 5
+    },
     {
       "path": "/nights/bucheongoraenight",
       "title": "부천고래나이트",
       "category": "night",
       "region": "부천",
       "views_24h": 5
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 4
+    },
+    {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
+      "views_24h": 4
     },
     {
       "path": "/nights/cheongjudontellmamanight",
@@ -17,11 +38,11 @@
       "views_24h": 4
     },
     {
-      "path": "/clubs/itaewon/itaewonclub-utopia",
-      "title": "이태원클럽 유토피아",
-      "category": "club",
-      "region": "이태원",
-      "views_24h": 4
+      "path": "/nights/daejeonsevennight",
+      "title": "대전세븐나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 3
     },
     {
       "path": "/nights/suwonchancenight",
@@ -45,20 +66,6 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/gimpohobaknight",
-      "title": "김포호박나이트",
-      "category": "night",
-      "region": "김포",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
-      "category": "night",
-      "region": "부산",
-      "views_24h": 3
-    },
-    {
       "path": "/clubs/hongdae/hongdaeclub-bermuda",
       "title": "홍대클럽 버뮤다",
       "category": "club",
@@ -66,24 +73,17 @@
       "views_24h": 2
     },
     {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daejeonsevennight",
-      "title": "대전세븐나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 2
-    },
-    {
       "path": "/nights/daejeonbongmyeongnight",
       "title": "대전봉명나이트",
       "category": "night",
       "region": "대전",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/gimpohobaknight",
+      "title": "김포호박나이트",
+      "category": "night",
+      "region": "김포",
       "views_24h": 2
     },
     {
