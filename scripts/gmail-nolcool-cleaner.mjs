@@ -8,7 +8,9 @@
  *   ③ 에이전트는 출력의 trash 목록만 휴지통(TRASH) 이동. 그 외 조작 금지.
  *
  * ★불가침 3중 자물쇠 (CLAUDE.md 📧 섹션과 1:1 — 코드로 강제):
- *   1) 제목이 "[놀쿨"로 시작하지 않으면 어떤 액션도 내지 않는다 (skipped로 분류).
+ *   1) 놀쿨 메일 판별 = 2중 조건: (제목에 "[놀쿨" 포함 또는 Gmail "놀쿨" 라벨 보유) AND
+ *      발신 onboarding@resend.dev. 2026-08-02 보강 — "제목이 [놀쿨로 시작"만으로는
+ *      이모지 접두("✅ [놀쿨…", "🚨 놀쿨…") 놀쿨 경보 2통을 놓쳤다. 불일치 = skipped 분류.
  *   2) noreply@theassetsquare.com (더에셋스퀘어) 발신은 무조건 제외 — tasProtected 카운트만.
  *   3) 액션은 "TRASH"(휴지통 이동) 단 하나. 영구삭제/라벨변경/발송 액션은 존재하지 않는다.
  *
@@ -17,12 +19,15 @@
  *   - 해결 완료 보고(✅) 메일은 보존 기간 14일 — 그 후 TRASH.
  *   - 알 수 없는 [놀쿨 유형은 보수적으로 전부 보존.
  *
- * 입력 JSON 형식: [{ "id": "...", "subject": "...", "sender": "...", "date": "ISO8601" }]
+ * 입력 JSON 형식: [{ "id": "...", "subject": "...", "sender": "...", "date": "ISO8601", "labelIds": ["..."] }]
+ *   (labelIds는 선택 — 없으면 제목 조건만으로 판별)
  * 출력: JSON { trash: [...], keep: [...], stats } — 사람이 먼저 검토할 수 있게 목록 전문 출력.
  */
 import { readFileSync } from 'node:fs';
 
 const TAS_SENDER = 'noreply@theassetsquare.com'; // 자물쇠 ② — 절대 접촉 금지
+const NOLCOOL_SENDER = 'onboarding@resend.dev';  // 놀쿨 경보 발신 단일 주소 (reference_resend_sender)
+const NOLCOOL_LABEL = 'Label_5833945061753990192'; // Gmail 사용자 라벨 "놀쿨" (list_labels 실측 ID)
 const RESOLVED_KEEP_DAYS = 14;
 
 // 유형 시그니처 — 제목에서 첫 매칭으로 분류 (새 경보 유형은 UNKNOWN → 전부 보존)
@@ -62,8 +67,10 @@ const byType = new Map();
 for (const t of threads) {
   const sender = (t.sender || '').toLowerCase();
   const subject = t.subject || '';
-  if (sender.includes(TAS_SENDER)) { stats.tasProtected++; continue; }      // 자물쇠 ②
-  if (!/^✅?\s*\[놀쿨/.test(subject)) { stats.skippedNonNolcool++; continue; } // 자물쇠 ①
+  if (sender.includes(TAS_SENDER)) { stats.tasProtected++; continue; }      // 자물쇠 ② — 무조건 최우선
+  const isNolcool = (subject.includes('[놀쿨') || (t.labelIds || []).includes(NOLCOOL_LABEL))
+    && sender.includes(NOLCOOL_SENDER);                                     // 자물쇠 ① — 2중 조건
+  if (!isNolcool) { stats.skippedNonNolcool++; continue; }
   const type = classify(subject);
   if (!byType.has(type)) byType.set(type, []);
   byType.get(type).push(t);
