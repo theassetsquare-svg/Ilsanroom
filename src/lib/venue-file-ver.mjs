@@ -9,11 +9,13 @@
 /** slot 1(히어로/썸네일) 파일명 버전 */
 export const HERO_FILE_VER = {
   ilsanroom: '-v2', // 2026-08-01 전화번호 합성본 (backup/venue-images/20260801-ilsanroom-phone)
+  ilsanmyeongwolgwanyojeong: '-v2', // 2026-08-02 전화번호 합성본 (backup/venue-images/20260802-ilsanmyeongwolgwan-phone)
 };
 
 /** /og/{slug}.jpg 파일명 버전 */
 export const OG_FILE_VER = {
   ilsanroom: '-v2', // 동일 건
+  ilsanmyeongwolgwanyojeong: '-v2', // 동일 건
 };
 
 export const heroVer = (slug) => HERO_FILE_VER[slug] || '';
