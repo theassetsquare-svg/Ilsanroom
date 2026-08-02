@@ -1,5 +1,6 @@
 name: Clarity Smoke (dispatch 전용 — 토큰·놀쿨 분리 1콜 확인, 메일 0)
 
+# ★임시 브랜치 전용 오버라이드: 월간 성장 사이클 갭 계열 읽기 덤프 (main의 이 파일은 무변경)
 on:
   workflow_dispatch:
 
@@ -8,7 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Clarity Data Export 1콜 + 놀쿨 프로젝트 분리 검증
-        run: node scripts/clarity-smoke.mjs
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Gap dump (read-only)
+        run: node scripts/monthly-growth-gap-dump.mjs
         env:
-          CLARITY_API_TOKEN: ${{ secrets.CLARITY_API_TOKEN }}
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
