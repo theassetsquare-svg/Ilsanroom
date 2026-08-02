@@ -13,7 +13,8 @@
  */
 import { getGaToken, gaErrorReason, runReport, GA_PROPERTY } from './lib/ga-auth.mjs';
 
-const DR = [{ startDate: '28daysAgo', endDate: 'today' }];
+// 기본 28d. dispatch 입력으로 임의 구간 지정 가능(예: 7daysAgo~today, 14daysAgo~8daysAgo) — 읽기전용 동일.
+const DR = [{ startDate: process.env.GA4_START || '28daysAgo', endDate: process.env.GA4_END || 'today' }];
 let token;
 
 async function dump(label, dims, mets, opts = {}) {

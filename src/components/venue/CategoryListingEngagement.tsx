@@ -49,9 +49,9 @@ export function FeaturedVenueCard({ venue, href, accentColor, categoryLabel }: F
   const accentMap: Record<string, { bg: string; border: string; text: string; badge: string }> = {
     violet: { bg: 'bg-violet-50', border: 'border-violet-200', text: 'text-violet-700', badge: 'bg-violet-600' },
     blue: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700', badge: 'bg-blue-600' },
-    amber: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700', badge: 'bg-amber-600' },
+    amber: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700', badge: 'bg-amber-700' }, // badge 600은 white 텍스트 3.19:1 — WCAG 4.5:1 미달
     rose: { bg: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-700', badge: 'bg-rose-600' },
-    emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-700', badge: 'bg-emerald-600' },
+    emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-700', badge: 'bg-emerald-700' }, // badge 600은 3.77:1 미달
     pink: { bg: 'bg-pink-50', border: 'border-pink-200', text: 'text-pink-700', badge: 'bg-pink-600' },
   };
   const colors = accentMap[accentColor] || accentMap.violet;
@@ -64,7 +64,7 @@ export function FeaturedVenueCard({ venue, href, accentColor, categoryLabel }: F
             {categoryLabel} 1위
           </span>
           {venue.isPremium && (
-            <span className="bg-amber-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">PREMIUM</span>
+            <span className="bg-amber-700 text-white text-xs font-bold px-2.5 py-1 rounded-full">PREMIUM</span>
           )}
         </div>
         <h2 className={`text-xl sm:text-2xl font-extrabold ${colors.text} mb-2 group-hover:underline`}>

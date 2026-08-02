@@ -5,6 +5,15 @@ name: GA4+GSC Full Dump (read-only)
 # sitemap 재제출·indexing publish·메일 0. RESEND 미주입.
 on:
   workflow_dispatch:
+    inputs:
+      ga4_start:
+        description: 'GA4 startDate (기본 28daysAgo — 예: 7daysAgo, 14daysAgo)'
+        required: false
+        default: ''
+      ga4_end:
+        description: 'GA4 endDate (기본 today — 예: 8daysAgo)'
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -21,6 +30,8 @@ jobs:
         run: node scripts/ga4-full-dump.mjs | tee ga4-full.txt
         env:
           GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          GA4_START: ${{ inputs.ga4_start }}
+          GA4_END: ${{ inputs.ga4_end }}
       - name: GSC search analytics full (read-only, no index)
         run: node scripts/gsc-full-dump.mjs --no-index | tee gsc-search.txt
         env:

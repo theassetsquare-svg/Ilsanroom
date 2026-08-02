@@ -140,9 +140,9 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
   const accentBg: Record<string, string> = {
     violet: 'bg-violet-600 border-violet-600',
     blue: 'bg-blue-600 border-blue-600',
-    amber: 'bg-amber-600 border-amber-600',
+    amber: 'bg-amber-700 border-amber-700', // 600은 white 텍스트 3.19:1 — WCAG 4.5:1 미달 (Lighthouse color-contrast)
     rose: 'bg-rose-600 border-rose-600',
-    emerald: 'bg-emerald-600 border-emerald-600',
+    emerald: 'bg-emerald-700 border-emerald-700', // 600은 white 텍스트 3.77:1 미달
     pink: 'bg-pink-600 border-pink-600',
   };
   const activeChip = accentBg[accentColor] || accentBg.violet;
@@ -170,7 +170,7 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
               style={{ minHeight: 36 }}
             >
               전체
-              <span className={`inline-block min-w-[18px] rounded-full text-[10px] px-1 ${regionFilter === 'all' ? 'bg-white/20 text-white' : 'bg-gray-100 text-[#666]'}`}>{regionCounts.all}</span>
+              <span className={`inline-block min-w-[18px] rounded-full text-[10px] px-1 ${regionFilter === 'all' ? 'bg-white text-[#333]' : 'bg-gray-100 text-[#666]'}`}>{regionCounts.all}</span>
             </button>
             {regions.map((r) => {
               const cnt = regionCounts[r.key] || 0;
@@ -189,7 +189,7 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
                   style={{ minHeight: 36 }}
                 >
                   {r.label}
-                  <span className={`inline-block min-w-[18px] rounded-full text-[10px] px-1 ${active ? 'bg-white/20 text-white' : 'bg-gray-100 text-[#666]'}`}>{cnt}</span>
+                  <span className={`inline-block min-w-[18px] rounded-full text-[10px] px-1 ${active ? 'bg-white text-[#333]' : 'bg-gray-100 text-[#666]'}`}>{cnt}</span>
                 </button>
               );
             })}

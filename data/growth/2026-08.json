@@ -55,6 +55,28 @@
     "재방문 장치(주말·이벤트·새 업소 위젯) 피크 시간대 노출 점검",
     "회원 상태 커스텀 디멘션 설치 검토 (㉓ 회원/비회원 분해)"
   ],
+  "gmailSweepDeferred_20260802": {
+    "note": "08-02 지메일 전수 스윕에서 발견됐으나 9월 채점 오염 방지를 위해 이월/기록만 한 항목 (수정 0)",
+    "deferred": [
+      {
+        "item": "Lighthouse 모바일 성능 7페이지 미달 (/ 67 · /clubs/ 69 · /nights/ 70 · /magazine/ 71 · /lounges/ 75 · /rooms/ 76 · /community/ 80, 목표 90)",
+        "reason": "LCP 4.1~6.8s·TBT 230~430ms 개선은 번들·이미지·렌더 경로 대개편 = 레버급 변경 — 8월 기준선(H1~H3) 오염 방지 위해 9월 사이클로 이월. nextMonthCandidates 6번과 동일 항목",
+        "evidence": "lighthouse-daily 2026-08-01 런 아티팩트 실측"
+      }
+    ],
+    "recorded": [
+      {
+        "item": "북극성 ② 끝까지읽기 12.9% (목표 30%) — 유일 미달 지표",
+        "cause": "완독 레버(진행바+TOC) 적용 페이지에서 +2.6pp 상승 추세(8.3→12.9%). 미적용 매거진·venue 상세가 잔여 격차 — nextMonthCandidates 3번(완독 레버 확대)이 대응 레버. CTR 6.0%·이탈률 55.0%는 목표 내",
+        "action": "측정 결과이므로 콘텐츠 수정 없음 — 자기수렴 대기"
+      },
+      {
+        "item": "Nightly Full Audit 07-24 1회 실패 · Cheongju Supermoon watch 07-22 1회 실패",
+        "cause": "일시 장애 — 이후 매일 1/1 성공(08-02 다이제스트 실측), 청주는 07-21 토큰 동기화로 기해결",
+        "action": "재발 없음 확인만"
+      }
+    ]
+  },
   "hypotheses": [
     {
       "id": "H1-desc-prefix",

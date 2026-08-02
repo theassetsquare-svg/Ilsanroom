@@ -99,6 +99,9 @@ async function auditOne(browser, url, vpName) {
       const t = m.text();
       // ignore noise: 404 favicon, third-party tracker blocks
       if (/favicon|chrome-extension|net::ERR_BLOCKED_BY_CLIENT/.test(t)) return;
+      // 2026-08-02: clarity.ms/tag 4xx = Clarity가 CI 러너(데이터센터 IP) 다빈도 요청을 봇 스로틀한 것.
+      // 사이트측은 정상 실측(주입 1회·ID xp3oiz8heq 불변·직접 GET 200) → 허위경보라 리소스 로드 실패 콘솔만 제외.
+      if (/clarity\.ms/.test(m.location()?.url || '')) return;
       // 2026-06-06: magazine_articles 401 silencer 제거. is_admin() anon EXECUTE 재부여로
       // 근본수정 완료 → 이 클래스의 Supabase 401이 재발하면 감사가 잡아내도록 더 이상 가리지 않는다.
       issues.push({ sev: 'CONSOLE', msg: t.slice(0, 200) });
@@ -111,6 +114,9 @@ async function auditOne(browser, url, vpName) {
       const u = r.url();
       // ignore: external trackers, GA, etc
       if (/google-analytics|googletagmanager|googleads|doubleclick|gstatic|fonts\.googleapis/.test(u)) return;
+      // 2026-08-02: www.clarity.ms 4xx = CI 러너 IP 봇 스로틀(사이트 결함 아님) — 07-29/07-30 풀크롤 741·57건
+      // 전부 이 한 원인. 사이트측 주입은 1회·직접 GET 200 실측. 1st-party 요청이 아니므로 회귀 신호에서 제외.
+      if (/\bclarity\.ms\//.test(u)) return;
       // 2026-06-06: magazine_articles 401 네트워크 silencer 제거(콘솔과 대칭). 근본수정 후
       // Supabase REST 401은 진짜 회귀이므로 NET 이슈로 정상 보고한다.
       issues.push({ sev: 'NET', msg: `${s} ${u.slice(0, 120)}` });
