@@ -1,0 +1,56 @@
+{
+  "cycle": "2026-08",
+  "createdAt": "2026-08-02",
+  "sources": {
+    "ga4": "GA4 Data API 540830544 (ga4-gsc-full-dump 2026-08-02 + monthly-full-audit 2026-07-29 런로그)",
+    "gsc": "GSC https://nolcool.com/ (같은 덤프, 28일)",
+    "clarity": "clarity-daily-watch 축적 런로그 3일(07-30~08-01) + monthly-full-audit 3d 스윕 — 이번 사이클 신규 API 콜 0회",
+    "lighthouse": "lighthouse-daily 2026-08-01 런로그 (신규 크롤 0)"
+  },
+  "baseline": {
+    "ga4_28d": { "sessions": 1738, "pageviews": 4918, "pagesPerSession": 2.83, "bounceRate": 43.4, "avgSessionSec": 97, "engagementRate": 56.6, "sessionsPerUser": 1.13 },
+    "northstar_0802": { "ctr": 6.0, "scrollComplete": 12.9, "bounce7d": 55.0 },
+    "gsc_28d": { "clicks": 1476, "impressions": 27467, "ctr": 5.37 },
+    "retention": { "returningShare": 6.2, "cohortW1": 1.3, "cohortW2": 0.7, "dauPerMau": 1.106, "wauPerMau": 7.60 },
+    "scroll100PerPv": 6.7,
+    "phoneClicks": null,
+    "imageSearch": { "clicks": 59, "impressions": 5082, "ctr": 1.16, "avgPos": 21.6 },
+    "categoryCtr": { "nights": 3.93, "magazine": 11.76, "clubs": 1.55, "yojeong": 3.60, "rooms": 6.94, "hoppa": 7.11 },
+    "fixTargets": {
+      "daejeonsevennight": { "pos": 7.8, "imp": 895, "ctr": 0.6 },
+      "ilsanshampoonight": { "pos": 9.8, "imp": 588, "ctr": 0.2 },
+      "suyushampoonight": { "pos": 11.4, "imp": 504, "ctr": 0.6 },
+      "cheongju-supermoon": { "pos": 7.2, "imp": 427, "ctr": 1.2 },
+      "itaewonclub-utopia": { "pos": 8.9, "imp": 323, "ctr": 0.9 },
+      "dapsimnidontellmamanight": { "pos": 9.1, "imp": 307, "ctr": 1.0 },
+      "bounceVenues": { "gangnamjuliananight": 74.3, "suyushampoonight_view": null, "dapsimni_view": null, "ilsanshampoo_view": null }
+    }
+  },
+  "lastMonthVerdicts": {
+    "clubsCtr": { "hypothesis": "clubs 허브 실명문단 이식으로 CTR 1.5% 상승", "before": 1.5, "after": 1.55, "verdict": "불충분", "lesson": "허브 본문 보강만으로 카테고리 CTR은 안 움직인다 — 노출 1997의 대부분이 개별 클럽 SERP라 venue 단위 title/desc가 레버" },
+    "clubsHubBounce": { "hypothesis": "clubs 허브 이탈 36.1% 하락", "before": 36.1, "after": 28.8, "verdict": "성공", "lesson": "실명 문단(지역권 나열)은 허브 이탈을 -7.3pp 내렸다 — 다른 허브에도 적용 가치" },
+    "mwgCtr": { "hypothesis": "명월관 desc 자연문 재작성으로 CTR 4.4% 상승", "before": 4.4, "after": 3.5, "verdict": "실패(노출 급증 희석)", "lesson": "노출 745→1416로 87% 급증하며 하위 순위 쿼리 유입 — CTR 단독 지표는 노출 성장기에 왜곡, 클릭 절대수(36→50)로 봐야 한다" },
+    "scrollComplete": { "hypothesis": "완독 레버(진행바+TOC)로 끝까지읽기 10.3% 회복", "before": 10.3, "after": 12.9, "verdict": "성공", "lesson": "읽기 진행바+H2 TOC는 완독 +2.6pp — 완독 하위 매거진에 확대 적용 가치" },
+    "magazineDwell": { "hypothesis": "매거진 체류 상승", "verdict": "불충분(기준선 미기록)", "lesson": "가설엔 반드시 수치 기준선을 JSON에 박아야 판정 가능 — 이번 달부터 전 가설 수치화" }
+  },
+  "hypotheses": [
+    {
+      "id": "H1-desc-prefix",
+      "statement": "venue desc 공용 훅 프리픽스 제거(123 venue 스니펫 고유화) + CTR 미달 6곳 검색의도(후기·경험·시간) title 재작성으로, 다음 달 1일 GSC 28d에서 6곳 합산 CTR 0.66%(31클릭/4,702노출) → 2.0%+ 및 nights 카테고리 CTR 3.93% → 4.5%+",
+      "metric": "GSC page CTR (6 slug 합산) · nights 카테고리 CTR",
+      "baseline": { "sixTargetClicks": 31, "sixTargetImp": 4702, "sixTargetCtr": 0.66, "nightsCtr": 3.93 }
+    },
+    {
+      "id": "H2-phone-click",
+      "statement": "tel: 전 링크 phone_click GA4 이벤트 설치로 전환 사슬(랜딩→아하→전화)이 처음 계측된다. 다음 달 1일 phone_click ≥ 30회/28d 수집되고, 전화 클릭 상위 페이지가 대전원나이트·일산룸·명월관 축으로 확인된다",
+      "metric": "GA4 eventName=phone_click eventCount + 페이지 분해",
+      "baseline": { "phoneClicks": 0, "note": "이전엔 이벤트 자체가 없음 — 첫 계측" }
+    },
+    {
+      "id": "H3-aha-path",
+      "statement": "재방문 상관 상위 페이지(/best/nights/ 재방문비중 18.5%, /rooms/ilsan/ilsanroom/ 20%)로 가는 '인기 TOP' 버튼을 전 venue 상세(클럽 제외)에 1클릭 배치 + features 첫인상 보강 4곳으로, 다음 달 1일 세션당 페이지 2.83 → 3.1+ 및 고이탈 4 venue(줄리아나 74.3%·평택호박 58.1%·광주region 52.9%·강서호박 50.0%) 평균 이탈 -5pp",
+      "metric": "GA4 screenPageViewsPerSession · 해당 4페이지 bounceRate",
+      "baseline": { "pagesPerSession": 2.83, "bounceAvg4": 58.8 }
+    }
+  ]
+}

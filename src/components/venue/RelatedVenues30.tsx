@@ -4,6 +4,8 @@ import type { Venue, VenueCategory } from '@/types';
 import { venues as allVenues } from '@/data/venues';
 
 const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
+// /best/{path}/ 인기 허브 — club은 /best/clubs 폐지(→/clubs/ 301)라 제외
+const bestHubPath: Record<string, string> = { night: 'nights', lounge: 'lounges', room: 'rooms', yojeong: 'yojeong', hoppa: 'hoppa' };
 const catEmoji: Record<string, string> = { club: '🎵', night: '🌙', lounge: '🍸', room: '🚪', yojeong: '🏮', hoppa: '🥂' };
 
 function getHref(v: Venue): string {
@@ -92,6 +94,15 @@ export default function RelatedVenues30({ venue }: Props) {
         <p className="text-xs mt-1" style={{ color: '#888' }}>
           {totalCards}개 업소 비교하고 딱 맞는 곳 찾기
         </p>
+        {bestHubPath[venue.category] && (
+          <Link
+            to={`/best/${bestHubPath[venue.category]}/`}
+            className="inline-block mt-3 rounded-full border px-4 py-2 text-xs font-bold transition hover:shadow-md"
+            style={{ borderColor: '#8B5CF6', color: '#8B5CF6' }}
+          >
+            {catLabel[venue.category]} 인기 TOP 한눈에 보기 →
+          </Link>
+        )}
       </div>
 
       {visibleSections.map((section, si) => (

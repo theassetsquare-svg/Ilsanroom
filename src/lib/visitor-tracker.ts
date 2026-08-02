@@ -10,7 +10,7 @@ type EventType =
   | 'view' | 'scroll_25' | 'scroll_50' | 'scroll_75' | 'scroll_100'
   | 'time_10s' | 'time_30s' | 'time_60s' | 'time_180s' | 'exit'
   | 'signup' | 'login' | 'share_click' | 'post_create' | 'invite_open'
-  | 'search' | 'search_no_result';
+  | 'search' | 'search_no_result' | 'phone_click';
 
 /* ── GA4(gtag) 전달 대상 이벤트 → GA4 권장 이벤트명 매핑 ──
  * 의미 있는 행동만 GA4로도 보냄(스크롤/체류/뷰는 GA4 향상측정이 이미 수집).
@@ -19,6 +19,7 @@ const GA4_EVENT_NAME: Partial<Record<EventType, string>> = {
   signup: 'sign_up', login: 'login', share_click: 'share',
   post_create: 'post_create', invite_open: 'invite_open',
   search: 'search', search_no_result: 'search_no_result',
+  phone_click: 'phone_click',
 };
 
 /* ── page_path 정규화 — /clubs 와 /clubs/ 를 한 형태로 통합 ──
@@ -285,4 +286,11 @@ export function installVisitorTracker() {
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('beforeunload', onExit);
   window.addEventListener('pagehide', onExit);
+  // ── 전화 클릭 전환 — 모든 tel: 링크 공통 (번호 자체는 페이로드에 안 실음: PII 0)
+  document.addEventListener('click', (e) => {
+    const t = e.target as Element | null;
+    if (t?.closest?.('a[href^="tel:"]')) {
+      send('phone_click', { meta: { page: currentPath || normalizePath(window.location.pathname) }, once: false });
+    }
+  }, true);
 }
