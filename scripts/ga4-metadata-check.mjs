@@ -7,7 +7,7 @@
  * 스키마에 없는 이름은 ⚠️로 보고서에 표기한다.
  * 인증: GH Secret GSC_SA_JSON. workflow_dispatch 수동.
  */
-import { getGaToken, gaErrorReason, GA_PROPERTY } from './lib/ga-auth.mjs';
+import { getGaToken, gaErrorReason, GA_PROPERTY, GA_QUOTA_PROJECT } from './lib/ga-auth.mjs';
 
 // v3 46계열이 덤프 스크립트에서 실제 사용하는 이름 (계열번호 주석)
 const V3_METRICS = [
@@ -33,7 +33,8 @@ const V3_WANTED_MISSING_OK = ['exitPage' /* ⑫ 종료페이지: GA4 미제공�
 
 const token = await getGaToken();
 const res = await fetch(`https://analyticsdata.googleapis.com/v1beta/${GA_PROPERTY}/metadata`, {
-  headers: { Authorization: `Bearer ${token}` },
+  // quota project 헤더 필수 — 없으면 SA 자체 프로젝트(API 비활성)로 귀속돼 403
+  headers: { Authorization: `Bearer ${token}`, 'x-goog-user-project': GA_QUOTA_PROJECT },
 });
 const body = await res.json();
 if (!res.ok) {
