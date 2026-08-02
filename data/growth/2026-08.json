@@ -33,6 +33,28 @@
     "scrollComplete": { "hypothesis": "완독 레버(진행바+TOC)로 끝까지읽기 10.3% 회복", "before": 10.3, "after": 12.9, "verdict": "성공", "lesson": "읽기 진행바+H2 TOC는 완독 +2.6pp — 완독 하위 매거진에 확대 적용 가치" },
     "magazineDwell": { "hypothesis": "매거진 체류 상승", "verdict": "불충분(기준선 미기록)", "lesson": "가설엔 반드시 수치 기준선을 JSON에 박아야 판정 가능 — 이번 달부터 전 가설 수치화" }
   },
+  "firstCycleRule": {
+    "note": "1회차 한정 — 수정 상위 10건만 적용(기준선 오염 방지), 나머지는 nextMonthCandidates로 이월",
+    "applied10": [
+      "1. 공용 desc 훅프리픽스 폐기(123 venue 스니펫 고유화)",
+      "2~7. CTR 미달 6곳 title 재작성(대전세븐·일산샴푸·수유샴푸·청주슈퍼문·이태원유토피아·답십리)",
+      "8. tel: 전 링크 phone_click GA4 이벤트 첫 계측",
+      "9. venue 상세→/best 인기 TOP 1클릭 버튼",
+      "10. 고이탈 4곳 features 첫인상 보강(줄리아나·수유샴푸·답십리·일산샴푸)"
+    ]
+  },
+  "nextMonthCandidates": [
+    "강남줄리아나 본문 콘텐츠 축 보강 — features 외 레버 (이탈 74.3%, H3 판정 후)",
+    "clubs 카테고리 venue 단위 title/desc 확대 (CTR 1.55%, 7월 교훈: 허브 아닌 venue가 레버)",
+    "완독 레버(진행바+TOC) 완독 하위 매거진 확대 적용 (7월 성공 +2.6pp 복제)",
+    "미색인 페이지 원인 조치 + 색인 요청 목록화 (⑧ 최우선 유형 — 이번 달 미수행)",
+    "quickback 상위 페이지 제목·도입부 사실 기반 교정",
+    "모바일 격차·LCP/CLS 악성 페이지 안전 범위 성능 수정",
+    "dead-end 종료 상위 페이지 '다음 볼거리' 추천 블록 페이지별 최적화",
+    "search_no_result 검색어 대응 (손님이 찾는데 못 찾는 것)",
+    "재방문 장치(주말·이벤트·새 업소 위젯) 피크 시간대 노출 점검",
+    "회원 상태 커스텀 디멘션 설치 검토 (㉓ 회원/비회원 분해)"
+  ],
   "hypotheses": [
     {
       "id": "H1-desc-prefix",

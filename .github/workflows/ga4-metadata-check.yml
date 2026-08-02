@@ -1,0 +1,22 @@
+name: GA4 Metadata Check (read-only)
+
+# 월간 성장 사이클 v3 — 수집 전 지표명 자기검증. properties.getMetadata GET 1회만(변경 0).
+# 온디맨드 수동 실행 전용(스케줄 없음 — 기존 자동화 불변).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: GA4 metadata vs v3 metric names (read-only)
+        run: node scripts/ga4-metadata-check.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
