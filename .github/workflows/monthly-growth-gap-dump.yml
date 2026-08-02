@@ -1,0 +1,21 @@
+name: Monthly Growth Gap Dump (read-only)
+
+# 월간 성장 사이클 보조 — ga4-full-dump 미커버 계열만 읽기 덤프(변경 0). 수동 전용.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Gap dump (read-only)
+        run: node scripts/monthly-growth-gap-dump.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
