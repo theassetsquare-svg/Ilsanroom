@@ -1,7 +1,14 @@
 {
-  "generated_at": "2026-08-03T15:42:01.569Z",
+  "generated_at": "2026-08-03T18:30:19.887Z",
   "window_hours": 24,
   "items": [
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 4
+    },
     {
       "path": "/nights/daejeonhangukgwannight",
       "title": "대전한국관나이트",
@@ -24,11 +31,11 @@
       "views_24h": 3
     },
     {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 3
+      "path": "/clubs/gangnam/gangnamclub-race",
+      "title": "강남청담클럽 레이스",
+      "category": "club",
+      "region": "강남",
+      "views_24h": 2
     },
     {
       "path": "/nights/ansandontellmamanight",
@@ -77,13 +84,6 @@
       "title": "독산동국빈관나이트",
       "category": "night",
       "region": "독산",
-      "views_24h": 2
-    },
-    {
-      "path": "/hoppa/busanhoppa-menz",
-      "title": "부산호빠 맨즈",
-      "category": "hoppa",
-      "region": "부산",
       "views_24h": 2
     },
     {
