@@ -1,18 +1,40 @@
 {
-  "generated_at": "2026-08-02T01:47:10.058Z",
+  "generated_at": "2026-08-03T01:49:43.861Z",
   "window_hours": 24,
-  "total_runs": 225,
-  "total_fail": 1,
+  "total_runs": 231,
+  "total_fail": 3,
   "workflows": [
     {
       "name": "Region Cross Title Watch (지역×업종 교차 후킹 title 24h)",
+      "total": 2,
+      "success": 1,
+      "failure": 1,
+      "in_progress": 0,
+      "last_fail": {
+        "created_at": "2026-08-02T02:46:40Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/30729452806"
+      }
+    },
+    {
+      "name": "GA4 Metadata Check (read-only)",
+      "total": 2,
+      "success": 1,
+      "failure": 1,
+      "in_progress": 0,
+      "last_fail": {
+        "created_at": "2026-08-02T05:15:22Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/30733797639"
+      }
+    },
+    {
+      "name": "Deep Audit (Daily Link + Freshness)",
       "total": 1,
       "success": 0,
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-08-01T02:47:29Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/30680703942"
+        "created_at": "2026-08-02T04:02:18Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/30731659112"
       }
     },
     {
@@ -41,22 +63,30 @@
     },
     {
       "name": "Venue Reports Daily",
-      "total": 14,
-      "success": 14,
+      "total": 13,
+      "success": 13,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
       "name": "Security Audit Hourly",
-      "total": 12,
-      "success": 12,
+      "total": 11,
+      "success": 11,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
       "name": "24h Auto Build + SEO Notify",
+      "total": 8,
+      "success": 8,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Audit PR (guard + dist)",
       "total": 6,
       "success": 6,
       "failure": 0,
@@ -64,15 +94,15 @@
       "last_fail": null
     },
     {
-      "name": "Scheduled Cron Jobs",
-      "total": 5,
-      "success": 5,
+      "name": "Gate Bypass Audit (양방향 우회검증)",
+      "total": 6,
+      "success": 6,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
-      "name": "Audit PR (guard + dist)",
+      "name": "Google Re-Index (Sitemap + Inspect)",
       "total": 4,
       "success": 4,
       "failure": 0,
@@ -80,9 +110,9 @@
       "last_fail": null
     },
     {
-      "name": "Gate Bypass Audit (양방향 우회검증)",
-      "total": 3,
-      "success": 3,
+      "name": "Scheduled Cron Jobs",
+      "total": 4,
+      "success": 4,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -96,30 +126,6 @@
       "last_fail": null
     },
     {
-      "name": "Daily Regression Digest (KST 09:00)",
-      "total": 2,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 1,
-      "last_fail": null
-    },
-    {
-      "name": "GA4+GSC Full Dump (read-only)",
-      "total": 2,
-      "success": 0,
-      "failure": 0,
-      "in_progress": 2,
-      "last_fail": null
-    },
-    {
-      "name": "Google Re-Index (Sitemap + Inspect)",
-      "total": 2,
-      "success": 2,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Browser Audit (PC + Mobile)",
       "total": 2,
       "success": 2,
@@ -128,11 +134,19 @@
       "last_fail": null
     },
     {
-      "name": "Clarity Smoke (dispatch 전용 — 토큰·놀쿨 분리 1콜 확인, 메일 0)",
-      "total": 1,
-      "success": 1,
+      "name": "GA4+GSC Full Dump (read-only)",
+      "total": 2,
+      "success": 2,
       "failure": 0,
       "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Daily Regression Digest (KST 09:00)",
+      "total": 1,
+      "success": 0,
+      "failure": 0,
+      "in_progress": 1,
       "last_fail": null
     },
     {
@@ -144,7 +158,7 @@
       "last_fail": null
     },
     {
-      "name": "Suyushampoonight Keyword Watch (수유샴푸나이트 2 키워드 24h)",
+      "name": "Suwonkoreanight Keyword Watch (수원코리아나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -152,7 +166,7 @@
       "last_fail": null
     },
     {
-      "name": "Suwonkoreanight Keyword Watch (수원코리아나이트 2 키워드 24h)",
+      "name": "Suyushampoonight Keyword Watch (수유샴푸나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -257,14 +271,6 @@
     },
     {
       "name": "Doksangukbingwannight Keyword Watch (독산동국빈관나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Monthly Billing Report",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -432,7 +438,7 @@
       "last_fail": null
     },
     {
-      "name": "JSON-LD Semantic Watch (Schema.org 의미 유효성)",
+      "name": "Dwell Time Monitor (체류시간 24h 자동 리포트)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -440,7 +446,7 @@
       "last_fail": null
     },
     {
-      "name": "Dwell Time Monitor (체류시간 24h 자동 리포트)",
+      "name": "JSON-LD Semantic Watch (Schema.org 의미 유효성)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -536,7 +542,7 @@
       "last_fail": null
     },
     {
-      "name": "Sunday Deep Audit (Sitemap Fullcheck)",
+      "name": "GSC Demand Gap (weekly)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -776,7 +782,7 @@
       "last_fail": null
     },
     {
-      "name": "Haeundaehoppa Velvet Keyword Watch (해운대호빠 벨벳 2 키워드 24h)",
+      "name": "Haeundaehoppa Michelin Keyword Watch (해운대호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -784,7 +790,7 @@
       "last_fail": null
     },
     {
-      "name": "Haeundaehoppa Michelin Keyword Watch (해운대호빠 2 키워드 24h)",
+      "name": "Haeundaehoppa Velvet Keyword Watch (해운대호빠 벨벳 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -968,14 +974,6 @@
       "last_fail": null
     },
     {
-      "name": "Deep Audit (Daily Link + Freshness)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Indeokvon-gukbingwan-night Keyword Watch (인덕원국빈관나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
@@ -1097,15 +1095,15 @@
     }
   ],
   "deploy_sync": {
-    "n": 1,
+    "n": 3,
     "avg_ms": 61000,
-    "p50_ms": 61000,
-    "p95_ms": 61000,
-    "max_ms": 61000,
+    "p50_ms": 55000,
+    "p95_ms": 79000,
+    "max_ms": 79000,
     "max_sample": {
-      "ms": 61000,
+      "ms": 79000,
       "workflow": "Google Re-Index (Sitemap + Inspect)",
-      "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/30725510570"
+      "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/30733375973"
     }
   }
 }
