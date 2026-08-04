@@ -293,8 +293,8 @@ export default function VenueDetailPage({
               <p className="mt-1 text-xs text-neon-text-muted">전통 한정식 정찬과 국악 접객 문화, 마두역 인근 위치와 예약 방법을 한 페이지에 정리했다</p>
             </Link>
           </section>
-          {/* 하단 고정 바에 마지막 콘텐츠가 가려지지 않도록 모바일 전용 여백 */}
-          <div aria-hidden className="md:hidden" style={{ height: 'calc(60px + env(safe-area-inset-bottom))' }} />
+          {/* 하단 고정 바에 마지막 콘텐츠가 가려지지 않도록 여백 (모바일+PC 공통 — PC도 전화바 표시) */}
+          <div aria-hidden style={{ height: 'calc(60px + env(safe-area-inset-bottom))' }} />
           <IlsanMyeongwolgwanCallBar />
         </>
       )}

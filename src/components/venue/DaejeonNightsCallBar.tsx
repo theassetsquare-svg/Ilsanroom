@@ -8,6 +8,7 @@
 export default function DaejeonNightsCallBar() {
   return (
     <div
+      data-fixed-phonebar="true"
       className="fixed left-0 right-0 z-40 print:hidden bottom-[calc(56px_+_env(safe-area-inset-bottom))] md:bottom-0"
     >
       <a
