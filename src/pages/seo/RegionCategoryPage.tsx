@@ -3,7 +3,6 @@ import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues } from '@/data/venues';
 import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
-import DaejeonNightsCallBar from '@/components/venue/DaejeonNightsCallBar';
 
 // 지역×업종 하단 고정 전화바 — 광고주 대표번호가 이 지역 대표 업소일 때만.
 const REGION_CAT_PHONE: Record<string, { phone: string; staffName: string; venueName: string }> = {
@@ -117,14 +116,6 @@ export default function RegionCategoryPage() {
 
       {REGION_CAT_PHONE[`${decodedRegion}|${catKey}`] && (
         <StickyPhoneBar {...REGION_CAT_PHONE[`${decodedRegion}|${catKey}`]} />
-      )}
-
-      {/* 대전 나이트 — 예약문의 하단 고정 전화 바 (모바일 전용) */}
-      {decodedRegion === '대전' && catKey === 'night' && (
-        <>
-          <div aria-hidden style={{ height: 'calc(60px + env(safe-area-inset-bottom))' }} />
-          <DaejeonNightsCallBar />
-        </>
       )}
     </div>
   );

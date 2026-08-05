@@ -4,7 +4,6 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueHero from '@/components/venue/VenueHero';
 import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
 import IlsanMyeongwolgwanCallBar from '@/components/venue/IlsanMyeongwolgwanCallBar';
-import DaejeonNightsCallBar from '@/components/venue/DaejeonNightsCallBar';
 import VenueDetailTabs from '@/components/venue/VenueDetailTabs';
 import VenueGallery from '@/components/venue/VenueGallery';
 import Card from '@/components/ui/Card';
@@ -296,15 +295,6 @@ export default function VenueDetailPage({
           {/* 하단 고정 바에 마지막 콘텐츠가 가려지지 않도록 여백 (모바일+PC 공통 — PC도 전화바 표시) */}
           <div aria-hidden style={{ height: 'calc(60px + env(safe-area-inset-bottom))' }} />
           <IlsanMyeongwolgwanCallBar />
-        </>
-      )}
-
-      {/* 대전원나이트 — 예약문의 하단 고정 전화 바 (모바일 전용) */}
-      {venue.slug === 'daejeononenight' && (
-        <>
-          {/* 하단 고정 바에 마지막 콘텐츠가 가려지지 않도록 여백 (모바일+PC) */}
-          <div aria-hidden style={{ height: 'calc(60px + env(safe-area-inset-bottom))' }} />
-          <DaejeonNightsCallBar />
         </>
       )}
 
