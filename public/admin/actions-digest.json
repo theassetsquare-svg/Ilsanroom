@@ -1,13 +1,21 @@
 {
-  "generated_at": "2026-08-05T01:38:56.632Z",
+  "generated_at": "2026-08-06T01:28:03.268Z",
   "window_hours": 24,
-  "total_runs": 190,
+  "total_runs": 193,
   "total_fail": 0,
   "workflows": [
     {
       "name": "24h Site Monitoring",
       "total": 13,
       "success": 13,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Activity Alert (15min)",
+      "total": 12,
+      "success": 12,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -21,9 +29,9 @@
       "last_fail": null
     },
     {
-      "name": "Activity Alert (15min)",
-      "total": 11,
-      "success": 11,
+      "name": "Security Audit Hourly",
+      "total": 10,
+      "success": 10,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -32,14 +40,6 @@
       "name": "Venue Reports Daily",
       "total": 10,
       "success": 10,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Security Audit Hourly",
-      "total": 9,
-      "success": 9,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -69,19 +69,19 @@
       "last_fail": null
     },
     {
+      "name": "Daily Regression Digest (KST 09:00)",
+      "total": 2,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 1,
+      "last_fail": null
+    },
+    {
       "name": "Browser Audit (PC + Mobile)",
       "total": 2,
       "success": 2,
       "failure": 0,
       "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Daily Regression Digest (KST 09:00)",
-      "total": 1,
-      "success": 0,
-      "failure": 0,
-      "in_progress": 1,
       "last_fail": null
     },
     {
@@ -415,7 +415,7 @@
     {
       "name": "All Pages Quality Watch (5축 — anchor 200/img alt/H1/lang+viewport/canonical)",
       "total": 1,
-      "success": 0,
+      "success": 1,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -445,7 +445,7 @@
       "last_fail": null
     },
     {
-      "name": "Audit PR (guard + dist)",
+      "name": "CrUX Daily (실사용자 Core Web Vitals)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -461,7 +461,7 @@
       "last_fail": null
     },
     {
-      "name": "CrUX Daily (실사용자 Core Web Vitals)",
+      "name": "Audit PR (guard + dist)",
       "total": 1,
       "success": 1,
       "failure": 0,
