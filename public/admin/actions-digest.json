@@ -1,79 +1,92 @@
 {
-  "generated_at": "2026-08-06T01:28:03.268Z",
+  "generated_at": "2026-08-07T02:05:16.338Z",
   "window_hours": 24,
-  "total_runs": 193,
-  "total_fail": 0,
+  "total_runs": 171,
+  "total_fail": 9,
   "workflows": [
     {
-      "name": "24h Site Monitoring",
-      "total": 13,
-      "success": 13,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Activity Alert (15min)",
-      "total": 12,
-      "success": 12,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Auto Content v2 (Time-based)",
-      "total": 12,
-      "success": 12,
-      "failure": 0,
+      "total": 9,
+      "success": 7,
+      "failure": 2,
       "in_progress": 0,
-      "last_fail": null
+      "last_fail": {
+        "created_at": "2026-08-06T18:48:11Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/31126390517"
+      }
     },
     {
-      "name": "Security Audit Hourly",
-      "total": 10,
-      "success": 10,
-      "failure": 0,
+      "name": "24h Site Monitoring",
+      "total": 9,
+      "success": 7,
+      "failure": 2,
       "in_progress": 0,
-      "last_fail": null
+      "last_fail": {
+        "created_at": "2026-08-06T18:46:39Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/31126357408"
+      }
     },
     {
       "name": "Venue Reports Daily",
-      "total": 10,
-      "success": 10,
-      "failure": 0,
+      "total": 8,
+      "success": 7,
+      "failure": 1,
       "in_progress": 0,
-      "last_fail": null
+      "last_fail": {
+        "created_at": "2026-08-06T17:59:45Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/31124744478"
+      }
+    },
+    {
+      "name": "Activity Alert (15min)",
+      "total": 8,
+      "success": 7,
+      "failure": 1,
+      "in_progress": 0,
+      "last_fail": {
+        "created_at": "2026-08-06T17:55:11Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/31124522209"
+      }
+    },
+    {
+      "name": "Security Audit Hourly",
+      "total": 7,
+      "success": 6,
+      "failure": 1,
+      "in_progress": 0,
+      "last_fail": {
+        "created_at": "2026-08-06T17:49:20Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/31124236528"
+      }
     },
     {
       "name": "Scheduled Cron Jobs",
       "total": 4,
-      "success": 4,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "24h Auto Build + SEO Notify",
-      "total": 3,
       "success": 3,
-      "failure": 0,
+      "failure": 1,
       "in_progress": 0,
-      "last_fail": null
+      "last_fail": {
+        "created_at": "2026-08-06T17:39:28Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/31123757538"
+      }
     },
     {
       "name": "Daily Magazine + Widgets",
       "total": 3,
-      "success": 3,
-      "failure": 0,
+      "success": 2,
+      "failure": 1,
       "in_progress": 0,
-      "last_fail": null
+      "last_fail": {
+        "created_at": "2026-08-06T18:18:46Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/31125696665"
+      }
     },
     {
-      "name": "Daily Regression Digest (KST 09:00)",
+      "name": "24h Auto Build + SEO Notify",
       "total": 2,
-      "success": 1,
+      "success": 2,
       "failure": 0,
-      "in_progress": 1,
+      "in_progress": 0,
       "last_fail": null
     },
     {
@@ -82,6 +95,14 @@
       "success": 2,
       "failure": 0,
       "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Daily Regression Digest (KST 09:00)",
+      "total": 1,
+      "success": 0,
+      "failure": 0,
+      "in_progress": 1,
       "last_fail": null
     },
     {
@@ -245,14 +266,6 @@
       "last_fail": null
     },
     {
-      "name": "Dwell Content Audit (체류 10분 보장 본문 분량)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Daejeonsevennight Keyword Watch (대전세븐나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
@@ -261,7 +274,7 @@
       "last_fail": null
     },
     {
-      "name": "Title Uniqueness Audit (사이트 전체 후미 + HOOK 분포)",
+      "name": "Dwell Content Audit (체류 10분 보장 본문 분량)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -270,6 +283,14 @@
     },
     {
       "name": "Nowonhobaknight Keyword Watch (노원호박나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Title Uniqueness Audit (사이트 전체 후미 + HOOK 분포)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -415,7 +436,7 @@
     {
       "name": "All Pages Quality Watch (5축 — anchor 200/img alt/H1/lang+viewport/canonical)",
       "total": 1,
-      "success": 1,
+      "success": 0,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -446,22 +467,6 @@
     },
     {
       "name": "CrUX Daily (실사용자 Core Web Vitals)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Gate Bypass Audit (양방향 우회검증)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Audit PR (guard + dist)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -613,7 +618,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -621,7 +626,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -1038,22 +1043,6 @@
     },
     {
       "name": "Live Site Audit (Daily)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Security Daily Report",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Workflow Failure Monitor (24h 집계 메일)",
       "total": 1,
       "success": 1,
       "failure": 0,
