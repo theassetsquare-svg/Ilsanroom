@@ -1,13 +1,20 @@
 {
-  "generated_at": "2026-08-07T14:12:07.600Z",
+  "generated_at": "2026-08-07T17:38:18.884Z",
   "window_hours": 24,
   "items": [
+    {
+      "path": "/nights/cheongjuhobaknight",
+      "title": "청주호박나이트",
+      "category": "night",
+      "region": "청주",
+      "views_24h": 7
+    },
     {
       "path": "/nights/daejeononenight",
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 7
+      "views_24h": 6
     },
     {
       "path": "/nights/ansanhitnight",
@@ -17,11 +24,46 @@
       "views_24h": 4
     },
     {
-      "path": "/nights/cheongjuhobaknight",
-      "title": "청주호박나이트",
-      "category": "night",
-      "region": "청주",
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
       "views_24h": 3
+    },
+    {
+      "path": "/nights/daejeonsevennight",
+      "title": "대전세븐나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/suwonkoreanight",
+      "title": "수원코리아나이트",
+      "category": "night",
+      "region": "수원",
+      "views_24h": 2
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 2
+    },
+    {
+      "path": "/clubs/itaewon/itaewonclub-utopia",
+      "title": "이태원클럽 유토피아",
+      "category": "club",
+      "region": "이태원",
+      "views_24h": 2
     },
     {
       "path": "/nights/gumihobaknight",
@@ -64,48 +106,6 @@
       "category": "hoppa",
       "region": "대전",
       "views_24h": 2
-    },
-    {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daejeonsevennight",
-      "title": "대전세븐나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 2
-    },
-    {
-      "path": "/clubs/gangnam/gangnamclub-arte",
-      "title": "강남청담클럽 아르떼",
-      "category": "club",
-      "region": "강남",
-      "views_24h": 1
-    },
-    {
-      "path": "/clubs/gangnam/gangnamclub-race",
-      "title": "강남청담클럽 레이스",
-      "category": "club",
-      "region": "강남",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
-      "category": "night",
-      "region": "오산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/pajuyadangskydomenight",
-      "title": "파주야당스카이돔나이트",
-      "category": "night",
-      "region": "파주",
-      "views_24h": 1
     }
   ]
 }
