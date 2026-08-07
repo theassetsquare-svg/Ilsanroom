@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-07T04:45:29.166Z",
+  "generated_at": "2026-08-07T14:12:07.600Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,14 +7,7 @@
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 6
-    },
-    {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 6
+      "views_24h": 7
     },
     {
       "path": "/nights/ansanhitnight",
@@ -24,31 +17,52 @@
       "views_24h": 4
     },
     {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
+      "path": "/nights/cheongjuhobaknight",
+      "title": "청주호박나이트",
       "category": "night",
-      "region": "안산",
+      "region": "청주",
       "views_24h": 3
     },
     {
-      "path": "/clubs/gangnam/gangnamclub-race",
-      "title": "강남청담클럽 레이스",
+      "path": "/nights/gumihobaknight",
+      "title": "구미호박나이트",
+      "category": "night",
+      "region": "구미",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/gimpohobaknight",
+      "title": "김포호박나이트",
+      "category": "night",
+      "region": "김포",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/bucheongoraenight",
+      "title": "부천고래나이트",
+      "category": "night",
+      "region": "부천",
+      "views_24h": 2
+    },
+    {
+      "path": "/clubs/daejeon/daejeonsugarclub",
+      "title": "대전설탕클럽",
       "category": "club",
-      "region": "강남",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
-      "category": "night",
       "region": "대전",
-      "views_24h": 3
+      "views_24h": 2
     },
     {
-      "path": "/nights/bundangpongpongnight",
-      "title": "분당퐁퐁나이트",
+      "path": "/nights/indeokvon-gukbingwan-night",
+      "title": "인덕원국빈관나이트",
       "category": "night",
-      "region": "분당",
+      "region": "인덕원",
+      "views_24h": 2
+    },
+    {
+      "path": "/hoppa/daejeonhoppa-eclipse",
+      "title": "대전호빠 이클립스",
+      "category": "hoppa",
+      "region": "대전",
       "views_24h": 2
     },
     {
@@ -66,45 +80,31 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/bucheongoraenight",
-      "title": "부천고래나이트",
-      "category": "night",
-      "region": "부천",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/ilsan-hwajung-tunnel",
-      "title": "일산화정터널나이트",
-      "category": "night",
-      "region": "일산",
-      "views_24h": 1
-    },
-    {
-      "path": "/clubs/itaewon/itaewonclub-utopia",
-      "title": "이태원클럽 유토피아",
+      "path": "/clubs/gangnam/gangnamclub-arte",
+      "title": "강남청담클럽 아르떼",
       "category": "club",
-      "region": "이태원",
+      "region": "강남",
       "views_24h": 1
     },
     {
-      "path": "/nights/suwonkoreanight",
-      "title": "수원코리아나이트",
-      "category": "night",
-      "region": "수원",
+      "path": "/clubs/gangnam/gangnamclub-race",
+      "title": "강남청담클럽 레이스",
+      "category": "club",
+      "region": "강남",
       "views_24h": 1
     },
     {
-      "path": "/nights/ilsanshampoonight",
-      "title": "일산샴푸나이트",
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
       "category": "night",
-      "region": "일산",
+      "region": "오산",
       "views_24h": 1
     },
     {
-      "path": "/nights/pyeongtaekhobaknight",
-      "title": "평택호박나이트",
+      "path": "/nights/pajuyadangskydomenight",
+      "title": "파주야당스카이돔나이트",
       "category": "night",
-      "region": "평택",
+      "region": "파주",
       "views_24h": 1
     }
   ]
