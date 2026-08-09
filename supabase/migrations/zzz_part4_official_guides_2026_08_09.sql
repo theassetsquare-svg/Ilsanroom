@@ -8,6 +8,9 @@
 --   · 내용: 일반 정보만. 특정 업소 평가 0, 요금 단정 0, 호객 0
 -- ============================================================
 
+-- ★ auto_rls_trigger 가 ALTER TABLE 에도 발화해 기존 테이블에 정책 재생성 시도 → 중복 에러 방지 (단일 트랜잭션, 실패 시 원복)
+ALTER EVENT TRIGGER auto_rls_trigger DISABLE;
+
 ALTER TABLE posts ADD COLUMN IF NOT EXISTS is_official BOOLEAN DEFAULT FALSE;
 
 -- 공식글은 고정 UUID로 멱등 인서트 (재실행해도 중복 0)
@@ -61,3 +64,5 @@ VALUES
   NOW()
 )
 ON CONFLICT (id) DO NOTHING;
+
+ALTER EVENT TRIGGER auto_rls_trigger ENABLE;

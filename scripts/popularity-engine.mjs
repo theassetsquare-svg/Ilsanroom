@@ -85,8 +85,8 @@ async function ga4PhoneClicks(token) {
 
 async function gscPageClicks() {
   const token = await getGscToken();
-  const rows = await gscQuery(token, { dimensions: ['page'], rowLimit: 5000, days: WINDOW_DAYS });
-  return (rows || []).map((x) => ({
+  const res = await gscQuery(token, { dimensions: ['page'], rowLimit: 5000, days: WINDOW_DAYS });
+  return (res.rows || []).map((x) => ({
     path: String(x.keys?.[0] || '').replace(/^https?:\/\/[^/]+/, ''),
     clicks: Number(x.clicks || 0),
   }));
