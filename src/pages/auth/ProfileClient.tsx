@@ -86,6 +86,7 @@ export default function ProfileClient() {
   const [recentVenues, setRecentVenues] = useState<string[]>([]);
   const [myAlerts, setMyAlerts] = useState<any[]>([]);
   const [stats, setStats] = useState({ posts: 0, comments: 0, favorites: 0 });
+  const [foundingNo, setFoundingNo] = useState<number | null>(null);
   const [tabLoading, setTabLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -182,6 +183,11 @@ export default function ProfileClient() {
         favorites: favs.count || 0,
       });
     }).catch(() => {});
+
+    // 창립멤버 번호 — 읽기 전용(있으면 표시). ★claim RPC 호출 금지: 미기여자에게 번호가 새로 발급됨.
+    (supabase.from('founding_members') as any)
+      .select('member_no').eq('user_id', uid).maybeSingle()
+      .then(({ data }: { data: { member_no: number } | null }) => { if (data) setFoundingNo(data.member_no); }, () => {});
 
     fetchTabData('posts', uid);
   }, [user, fetchTabData]);
@@ -378,6 +384,14 @@ export default function ProfileClient() {
                       border: `1px solid ${COLOR.neon.gold}40`,
                     }}>
                       {activeTitle.emoji} {activeTitle.name}
+                    </span>
+                  )}
+                  {foundingNo != null && (
+                    <span style={{
+                      fontSize: 11, fontWeight: 800, padding: '3px 8px', borderRadius: RADIUS.pill,
+                      background: 'linear-gradient(90deg, #7C3AED, #4F46E5)', color: '#FFF',
+                    }} title="첫 기여로 받은 창립멤버 번호">
+                      🛡️ 창립멤버 {foundingNo.toLocaleString()}번
                     </span>
                   )}
                   <button onClick={() => { setEditingNick(true); setNickInput(nickname); }} style={{
