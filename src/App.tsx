@@ -105,6 +105,7 @@ const WeeklyHotPage = lazyRetry(() => import('./pages/lead/WeeklyHotPage'));
 const WaitlistPage = lazyRetry(() => import('./pages/WaitlistPage'));
 const MyReferralsPage = lazyRetry(() => import('./pages/my/MyReferralsPage'));
 const MyCustomizePage = lazyRetry(() => import('./pages/my/MyCustomizePage'));
+const MyFavoritesPage = lazyRetry(() => import('./pages/my/MyFavoritesPage'));
 const MessagesPage = lazyRetry(() => import('./pages/MessagesPage'));
 const NotFoundPage = lazyRetry(() => import('./pages/NotFoundPage'));
 /* ── Lounge Pages ── */
@@ -210,6 +211,7 @@ export default function App() {
           <Route path="/waitlist" element={<WaitlistPage />} />
           <Route path="/my/referrals" element={<MyReferralsPage />} />
           <Route path="/my/customize" element={<MyCustomizePage />} />
+          <Route path="/my/favorites" element={<MyFavoritesPage />} />
           <Route path="/hidden" element={<HiddenPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/events" element={<EventsPage />} />

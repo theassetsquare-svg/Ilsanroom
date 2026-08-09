@@ -47,6 +47,18 @@
     ],
     "honesty_note": "파트2.5 가짜0 상태 유지 확인(posts 16 실글·comments 0·reviews 0). H1a 6곳·줄리아나 무개입. 게이트 전체 PASS. 이월 항목은 미확인/미시행을 ✅로 쓰지 않고 ⚠️로 정직 표기."
   },
+  "part4_intervention": {
+    "date": "2026-08-09",
+    "source": "한국1위 파트4/5 — 진짜 데이터 순위 엔진·회원 자석 본체·운영팀 가이드+매거진 직답·역전 문구",
+    "scope": [
+      "S1 순위=실측만: popularity-engine.mjs(28일 GA4 조회×1·사용자×2·phone_click×30·GSC클릭×3 가중 합산, MIN_VIEWS 10 침묵원칙) + popularity-recompute.yml 주1회(월 KST 05:20 빈 슬롯) 점수 JSON 커밋 — src/data/popularity-scores.json(번들)·public/data/popularity.json(공개 검증)·data/popularity/history/(근거 보존). 잔재 소탕: /ranking TOP20 결정적해시+프리미엄부스트(100000) 제거 · /best 배열순→실측+침묵구간 분리 · 홈 TOP4/TOP8/탭0인기/카테고리TOP3/HotWidget/RelatedVenues30 주간해시→실측 · 카테고리 대표카드 '{업종} 1위'(광고 우선 선정이었음)→실측 site-top일 때만 1위, 그 외 '추천' · 홈 피처드 '1위'→'오늘의 추천'. 투명 라벨(RankingBasisNote/Inline) 전 순위 지점 + 미축적='최신 등록순' 정직 폴백. 표본부족(라운지3·룸2·요정1)=순위 준비 중 상태",
+      "S2 회원 자석: InlineJoinCard(카카오 1순위 + '익명 닉네임 자동·본명 노출 X' 1줄, 팝업 0) — ①룰렛 결과 ②/best 하단 ③상세 ⭐클릭. /my/favorites 단골 목록 신설 + 주말 알림 신청(weekend_alert_optins, '준비 중' 정직 카피). 글쓰기 사다리: WeeklyVoteWidget(주제=실측 조회 top2 자동 생성·창작 0, 1인1표, 집계는 get_poll_counts RPC) 자유게시판+운영팀 글 하단 · 한줄후기 템플릿 2종(지시서의 두 번째 슬롯 단어는 사이트 전역 금지어 게이트와 충돌 → '응대'로 정밀화, feedback_rules_serve_intent) · 글감 프롬프트 3종 · 첫 글 감지 DB 트리거→ops_alerts 큐(답글 자동작성 0, 사람 몫)",
+      "S3a 운영팀 가이드 3편: posts.is_official 컬럼 + 고정 UUID 멱등 인서트(양주 첫 주문 순서·드레스코드 기준·나이트 부킹 시스템 — 일반 정보만, 특정 업소 평가·요금 단정·호객 0). 가짜와 구분 명문화: is_official=TRUE + 🛡️놀쿨 운영팀 명찰(1차 근거=DB 플래그, 닉네임 매칭은 보조) + 마이그레이션 주석으로 향후 스윕 삭제 금지 못박음. 각 글 하단 원터치 투표 1개(WeeklyVoteWidget)",
+      "S3b 매거진 직답: 59장 전수(실제 59장 — 지시서 '60장'은 오기, 정직 기록) answer 필드 + React '⚡30초 핵심 답' 블록 + SSR .ssr-answer. 각 글 본문 발췌·요약만(창작 0)·40~70어절 전수 검증·금지어 0·첫 어절 59개 전수 unique. 매거진 구조지문 평균 0.1%·최대 3.2% 유지",
+      "S4 역전 문구: 홈 신뢰 스트립 + 소개(/welcome) '정직 운영 원칙' 4카드 + /ranking 공정성 안내 — '가짜 후기 0 전부 삭제'(파트2.5 사실)·'광고비로 순위 못 삽니다'(프리미엄 부스트 제거로 사실화)·'6개 업종 한곳'·'업소 정보 매일 자동 점검'(all-venues-seo-watch 매일 07:15 실존). 경쟁사 실명 0·과장 0"
+    ],
+    "honesty_note": "점수 JSON 초기값 generatedAt=null(데이터 0을 그대로 노출) — 전 순위 지점이 '최신 등록순·데이터 수집 중' 라벨로 정직 폴백, 푸시 직후 popularity-recompute 첫 dispatch로 실측 점수 자동 커밋. 주말 알림은 신청만 받고 발송은 '준비 중' 명시(약속 과장 0). 회원 전 동선 실브라우저 왕복 중 카카오 실로그인 단계는 외부 OAuth라 미실행(⚠️ — 로그인 게이트 앞까지만 검증)."
+  },
   "sources": {
     "ga4": "GA4 Data API 540830544 (ga4-gsc-full-dump 2026-08-02 + monthly-full-audit 2026-07-29 런로그)",
     "gsc": "GSC https://nolcool.com/ (같은 덤프, 28일)",

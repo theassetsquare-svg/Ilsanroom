@@ -2,6 +2,9 @@ import { useParams } from 'react-router-dom';
 import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues, categories } from '@/data/venues';
+import { splitByPopularity } from '@/lib/popularity';
+import RankingBasisNote from '@/components/ui/RankingBasisNote';
+import InlineJoinCard from '@/components/auth/InlineJoinCard';
 
 const catPathMap: Record<string, string> = { club: 'clubs', night: 'nights', lounge: 'lounges', room: 'rooms', yojeong: 'yojeong', hoppa: 'hoppa' };
 const catLabelMap: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
@@ -47,14 +50,32 @@ export default function BestCategoryPage() {
     `${catKo} 인기, ${catKo} 추천, ${catKo} 랭킹, ${catKo} TOP, 인기 ${catKo}`
   );
 
+  // 파트4 S1 — 순위 = 실측만. 표본 부족(업소 1~3곳) 카테고리는 순위 자체를 열지 않는다(침묵 원칙).
+  const { ranked, recent } = splitByPopularity(filtered);
+  const smallSample = filtered.length <= 3;
+  const showRanks = !smallSample && ranked.length > 0;
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold">{catKo} 인기 TOP {filtered.length}</h1>
+      <h1 className="mb-4 text-2xl font-bold">{catKo} 인기 TOP {filtered.length}</h1>
+      <div className="mb-4"><RankingBasisNote /></div>
       <p className="mb-8 text-gray-600">지금 영업이 확인된 전국 {catKo} {filtered.length}곳입니다. 각 줄의 동네와 한 줄 소개를 보고 끌리는 곳부터 눌러보세요.</p>
+      {!showRanks && (
+        <div className="mb-4 rounded-xl bg-gray-50 px-4 py-3 text-center">
+          <p className="text-sm font-bold text-gray-900">순위 준비 중 · 데이터 쌓이는 중</p>
+          <p className="mt-0.5 text-xs text-gray-500">
+            {smallSample
+              ? `${catKo}는 등록 업소가 적어 순위 대신 최신 등록순으로 보여드려요.`
+              : '28일 조회 표본이 모이면 실측 순위가 열립니다. 지금은 최신 등록순입니다.'}
+          </p>
+        </div>
+      )}
       <div className="space-y-4">
-        {filtered.map((v, i) => (
+        {(showRanks ? ranked : [...filtered].reverse()).map((v, i) => (
           <Link key={v.id} to={getHref(v)} className="flex items-start gap-4 rounded-xl bg-white p-4 shadow-sm transition hover:shadow-md">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-sm font-bold text-white">{i + 1}</span>
+            {showRanks && (
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-sm font-bold text-white">{i + 1}</span>
+            )}
             <div>
               <h2 className="font-semibold">{v.nameKo}</h2>
               <p className="mt-1 text-sm text-gray-500">{v.regionKo} {catKo} · {v.shortDescription.slice(0, 60)}</p>
@@ -62,6 +83,21 @@ export default function BestCategoryPage() {
           </Link>
         ))}
       </div>
+      {showRanks && recent.length > 0 && (
+        <div className="mt-8">
+          <p className="mb-3 text-xs font-bold text-gray-400">최신 등록순 — 조회 데이터가 쌓이는 중이라 순위 없이 보여드려요</p>
+          <div className="space-y-4">
+            {recent.map((v) => (
+              <Link key={v.id} to={getHref(v)} className="flex items-start gap-4 rounded-xl bg-white p-4 shadow-sm transition hover:shadow-md">
+                <div>
+                  <h2 className="font-semibold">{v.nameKo}</h2>
+                  <p className="mt-1 text-sm text-gray-500">{v.regionKo} {catKo} · {v.shortDescription.slice(0, 60)}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {BEST_BODY[catKey] && (
         <section className="mt-10 rounded-2xl border border-gray-200 bg-gray-50 p-6 space-y-3">
@@ -72,6 +108,10 @@ export default function BestCategoryPage() {
           ))}
         </section>
       )}
+
+      <div className="mt-10">
+        <InlineJoinCard context="best" />
+      </div>
     </div>
   );
 }

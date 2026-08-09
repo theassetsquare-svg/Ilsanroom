@@ -1,0 +1,45 @@
+name: Popularity Recompute (인기 점수 주간 재계산)
+
+# 한국1위 파트4 S1 — 업소 인기 점수(최근 28일 GA4 조회·사용자·phone_click + GSC 클릭 가중 합산)를
+# 주 1회 재계산해 점수 JSON을 커밋. ★API 읽기전용, 사이트 크롤 0, 메일 0 (실패는 workflow-failure-monitor가 잡음).
+# 커밋 → CF Pages 자동 배포 → /best·/ranking·홈 인기 위젯이 실측 순위로 갱신.
+on:
+  workflow_dispatch:
+  schedule:
+    # 매주 월 KST 05:20 (UTC 일 20:20) — 기존 크론과 무충돌 빈 슬롯(20:20 사용처 0).
+    - cron: '20 20 * * 0'
+
+jobs:
+  recompute:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: 인기 점수 재계산 (GA4+GSC 읽기전용)
+        run: node scripts/popularity-engine.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+      - name: 점수 JSON 변경 시 커밋
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/popularity-scores.json public/data/popularity.json data/popularity/history/
+          if git diff --cached --quiet; then
+            echo "점수 변경 없음"
+            exit 0
+          fi
+          git commit -m "chore(popularity): 주간 인기 점수 재계산 (28일 GA4+GSC 실측)"
+          for i in 1 2 3; do
+            if git push; then exit 0; fi
+            echo "push 실패 ($i/3) — rebase 후 재시도"
+            git pull --rebase origin main || true
+            sleep 5
+          done
+          echo "::error::popularity push 3회 실패"
+          exit 1

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import ShareButtons from './ShareButtons';
 import { venues } from '@/data/venues';
+import InlineJoinCard from '@/components/auth/InlineJoinCard';
 
 export default function Roulette() {
   const [spinning, setSpinning] = useState(false);
@@ -82,6 +83,13 @@ export default function Roulette() {
       )}
 
       {result && !spinning && <ShareButtons title={`오늘의 행운 업소: ${result}`} />}
+
+      {/* 파트4 S2a① — 룰렛 결과 뒤 인라인 가입 카드 (팝업 아님, 비로그인만 렌더) */}
+      {result && !spinning && (
+        <div className="mt-5 text-left">
+          <InlineJoinCard context="roulette" />
+        </div>
+      )}
     </div>
   );
 }

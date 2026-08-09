@@ -79,6 +79,13 @@ export default function MagazineDetailPage() {
 
       {/* ═══ BODY ═══ */}
       <div className="mx-auto max-w-3xl px-4 py-8">
+        {/* 파트4 S3b — 직답 블록: 본문 발췌·요약(창작 0), AI 검색이 그대로 인용할 수 있는 자기완결 답 */}
+        {article.answer && (
+          <div className="mb-8 rounded-2xl border-l-4 p-4 sm:p-5" style={{ borderColor: '#8B5CF6', backgroundColor: '#F8F6FF' }}>
+            <p className="text-[11px] font-bold mb-1.5" style={{ color: '#8B5CF6' }}>⚡ 30초 핵심 답</p>
+            <p className="text-[15px] font-medium" style={{ color: '#222', lineHeight: '1.8' }}>{article.answer}</p>
+          </div>
+        )}
         {/* 목차 — 섹션 3개 이상 글만 (완독 레버) */}
         {showToc && (
           <nav aria-label="목차" className="mb-8 rounded-2xl border p-4 sm:p-5" style={{ borderColor: '#E9E4FF', background: '#FAF9FF' }}>

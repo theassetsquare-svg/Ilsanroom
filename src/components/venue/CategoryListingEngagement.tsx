@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Link } from '../ui/SafeLink';
 import type { Venue } from '@/types';
+import { popularity, isRanked, popScore, hasPopularityData } from '@/lib/popularity';
 
 // ── Category Hero ──
 interface CategoryHeroProps {
@@ -61,7 +62,11 @@ export function FeaturedVenueCard({ venue, href, accentColor, categoryLabel }: F
       <div className={`rounded-2xl border-2 ${colors.border} ${colors.bg} p-5 sm:p-6 transition-all hover:shadow-lg hover:scale-[1.01]`}>
         <div className="flex items-center gap-2 mb-3">
           <span className={`${colors.badge} text-white text-xs font-bold px-2.5 py-1 rounded-full`}>
-            {categoryLabel} 1위
+            {/* 파트4 S1e — "1위"는 28일 실측 점수가 실제 카테고리 최고일 때만. 그 외(광고 포함)는 "추천"으로 정직 표기. */}
+            {hasPopularityData() && isRanked(venue.slug) &&
+             !Object.entries(popularity.venues).some(([slug, e]) => e.ranked && slug !== venue.slug && e.score > popScore(venue.slug))
+              ? `${categoryLabel} 1위`
+              : `${categoryLabel} 추천`}
           </span>
           {venue.isPremium && (
             <span className="bg-amber-700 text-white text-xs font-bold px-2.5 py-1 rounded-full">PREMIUM</span>

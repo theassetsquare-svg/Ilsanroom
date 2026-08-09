@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Link } from '../ui/SafeLink';
 import type { Venue, VenueCategory } from '@/types';
 import { venues as allVenues } from '@/data/venues';
+import { isRanked, popScore } from '@/lib/popularity';
 
 const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
 // /best/{path}/ 인기 허브 — club은 /best/clubs 폐지(→/clubs/ 301)라 제외
@@ -60,16 +61,11 @@ export default function RelatedVenues30({ venue }: Props) {
     const usedIds2 = new Set([...Array.from(usedIds), ...otherCategory.map(v => v.id)]);
     const premium = active.filter(v => v.isPremium && !usedIds2.has(v.id)).slice(0, 5);
 
-    // 6. 이번 주 인기 (slug 해시 기반 시드로 매주 다르게)
-    const weekSeed = Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000));
+    // 6. 이번 주 인기 — 파트4 S1: 결정적 해시 폐기, 28일 실측 점수 상위만 (미축적이면 섹션 자체 미노출)
     const usedIds3 = new Set([...Array.from(usedIds2), ...premium.map(v => v.id)]);
     const weeklyHot = active
-      .filter(v => !usedIds3.has(v.id))
-      .sort((a, b) => {
-        const ha = a.slug.split('').reduce((s, c) => s + c.charCodeAt(0), weekSeed);
-        const hb = b.slug.split('').reduce((s, c) => s + c.charCodeAt(0), weekSeed);
-        return (hb % 100) - (ha % 100);
-      })
+      .filter(v => !usedIds3.has(v.id) && isRanked(v.slug))
+      .sort((a, b) => popScore(b.slug) - popScore(a.slug))
       .slice(0, 5);
 
     return [
@@ -78,7 +74,7 @@ export default function RelatedVenues30({ venue }: Props) {
       { title: '비슷한 분위기', emoji: '✨', items: similarVibe },
       { title: '다른 업종도 둘러보기', emoji: '🔄', items: otherCategory },
       { title: '프리미엄 추천', emoji: '💎', items: premium },
-      { title: '이번 주 인기', emoji: '🔥', items: weeklyHot },
+      { title: '이번 주 인기 — 28일 실측 조회순', emoji: '🔥', items: weeklyHot },
     ].filter(s => s.items.length > 0);
   }, [venue.id]);
 

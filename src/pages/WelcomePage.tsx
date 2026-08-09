@@ -105,6 +105,25 @@ export default function WelcomePage() {
         </Link>
       </section>
 
+      {/* 파트4 S4 — 정직 운영 원칙: 전부 실제 상태와 일치하는 사실 서술 (경쟁사 실명 0) */}
+      <section className="mx-auto max-w-3xl px-4 py-6 sm:px-6 border-t border-neutral-100">
+        <p className="text-[11px] font-black text-violet-600 uppercase tracking-[0.15em] mb-2">정직 운영 원칙</p>
+        <h2 className="text-xl font-black text-[#111] mb-4">여기는 이렇게 운영합니다</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {[
+            { icon: '🧹', text: '가짜 후기 0 — 출처 없는 글은 전부 삭제했습니다. 비어 있어도 진짜만 남깁니다.' },
+            { icon: '🚫', text: '광고비로 순위를 살 수 없습니다. 순위는 최근 28일 실제 조회·문의·검색 데이터로만, 광고 업소는 AD 표기.' },
+            { icon: '🗂️', text: '클럽·나이트·라운지·룸·요정·호빠 — 6개 업종을 한곳에서 비교합니다.' },
+            { icon: '🔄', text: '업소 정보는 자동 점검이 매일 확인합니다. 이상이 잡히면 바로 고칩니다.' },
+          ].map((p) => (
+            <div key={p.icon} className="rounded-xl border border-violet-100 bg-violet-50/40 px-3 py-3">
+              <div className="text-2xl mb-1">{p.icon}</div>
+              <p className="text-[12px] text-[#333] font-medium leading-snug">{p.text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* CATEGORIES */}
       <section className="mx-auto max-w-3xl px-4 py-6 sm:px-6 border-t border-neutral-100">
         <p className="text-[11px] font-black text-violet-600 uppercase tracking-[0.15em] mb-2">전국 120곳</p>

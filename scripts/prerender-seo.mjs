@@ -1965,9 +1965,12 @@ function parseMagazineArticles() {
     const excerpt = block.match(/excerpt:\s*'([^']+)'/)?.[1];
     const tag = block.match(/tag:\s*'([^']+)'/)?.[1];
     const date = block.match(/date:\s*'([^']+)'/)?.[1];
+    // 파트4 S3b — 직답(answer). \' 이스케이프 허용 매칭 후 원문 복원
+    const answerRaw = block.match(/answer:\s*'((?:[^'\\]|\\.)*)'/)?.[1];
+    const answer = answerRaw ? answerRaw.replace(/\\'/g, "'").replace(/\\\\/g, '\\') : '';
     const contentMatch = block.match(/content:\s*`([\s\S]*?)`,?\s*\n  \},?/);
     const content = contentMatch ? contentMatch[1] : '';
-    if (id && title && content) result.push({ id, title, excerpt: excerpt || '', tag: tag || '매거진', date: date || BUILD_DATE_KST, content });
+    if (id && title && content) result.push({ id, title, excerpt: excerpt || '', tag: tag || '매거진', date: date || BUILD_DATE_KST, content, answer });
   }
   return result;
 }
@@ -1993,10 +1996,12 @@ for (const a of magazineArticles) {
   //   = Google "Discovered/Crawled - not indexed" 56개 매거진 미색인 근본원인. 제거 후 평균 0.1%.
   //   CLAUDE.md #5(고유성>패딩) 준수. 실제 체류는 React 본문이 만들고 SSR은 크롤러 프록시이므로
   //   체류엔 영향 없음. 재발은 struct-fingerprint-audit.mjs 매거진 블록이 빌드차단.
+  // 파트4 S3b — 상단 직답 블록: 각 글 본문에서 발췌·요약한 40~70어절 자기완결 답(창작 0)
+  const answerBlock = a.answer ? `<div class="ssr-answer"><p>${escHtml(a.answer)}</p></div>\n` : '';
   const ssrBody = `<article>
 <h1>${escHtml(a.title)}</h1>
 <p><strong>${escHtml(a.tag)}</strong> · <time datetime="${escHtml(a.date)}">${escHtml(a.date)}</time></p>
-${a.content}
+${answerBlock}${a.content}
 ${_relNav}
 <p><a href="${BASE_URL}/magazine/">← 매거진 전체 보기</a></p>
 </article>`;
@@ -2169,9 +2174,24 @@ const BEST_TITLE_SUFFIX_BY_CAT = {
   yojeong: '두 번 세 번 다시 가는 곳',
   hoppa: '한 번 가면 또 찾는 단골집',
 };
+// 파트4 S1 — /best 순위 = 실측만(popularity-scores.json, 28일 GA4+GSC 가중 점수). 미축적 구간은 최신 등록순 + 정직 라벨.
+let POP_SCORES = { generatedAt: null, venues: {} };
+try { POP_SCORES = JSON.parse(fs.readFileSync('src/data/popularity-scores.json', 'utf8')); } catch { /* 초기 상태 — 폴백 */ }
+function popRankOrder(list) {
+  if (!POP_SCORES.generatedAt) return [...list].reverse(); // 최신 등록순 정직 폴백
+  const rankedPart = list
+    .filter(vv => POP_SCORES.venues[vv.slug]?.ranked)
+    .sort((a, b) => (POP_SCORES.venues[b.slug]?.score || 0) - (POP_SCORES.venues[a.slug]?.score || 0));
+  const rankedSet = new Set(rankedPart);
+  return [...rankedPart, ...list.filter(vv => !rankedSet.has(vv)).reverse()];
+}
+const POP_BASIS_LINE = POP_SCORES.generatedAt
+  ? `순위 기준: 최근 28일 실제 조회·전화 문의·검색 유입, 매주 자동 갱신(마지막 갱신 ${POP_SCORES.generatedAt}). 광고비로 순위를 살 수 없습니다.`
+  : `지금은 최신 등록순 정렬입니다. 실제 조회 데이터가 쌓이는 대로 매주 자동 갱신되는 실측 순위로 전환됩니다. 광고비로 순위를 살 수 없습니다.`;
+
 for (const [catKey, catInfo] of Object.entries(catMap)) {
   if (catKey === 'club') continue; // 2026-07 월간 사이클 — /best/clubs 기여 0 제거(301 → /clubs/)
-  const catVenues = venues.filter(vv => vv.cat === catKey);
+  const catVenues = popRankOrder(venues.filter(vv => vv.cat === catKey));
   if (catVenues.length === 0) continue;
   const p = `/best/${catInfo.path}`;
   const title = `${catInfo.labelKo} 인기 TOP ${catVenues.length} — ${BEST_TITLE_SUFFIX_BY_CAT[catKey]}`;
@@ -2180,7 +2200,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   // 시즌88 — 동일 템플릿 문단 제거 → 멤버 실데이터 본문 + 허브-메시(막다른길 0)
   const bestRegionList = [...new Set(catVenues.map(vv => vv.regionKo))].slice(0, 8);
   const bestRegionStr = bestRegionList.slice(0, 4).map(escHtml).join(', ');
-  let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
+  let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(POP_BASIS_LINE)}</p><p>${escHtml(desc)}</p>`;
   // 2026-07-08 정직화 — 후기·재방문 데이터 0인데 "회원 데이터로 집계/매일 자동 갱신" 주장 = 출처 없는 통계(신뢰규칙 위반) → 사실만 서술.
   ssrBody += `<p>지금 영업이 확인된 ${escHtml(catInfo.labelKo)} ${catVenues.length}곳을 ${aggPick('best-' + catKey, ['한 페이지에 모았습니다', '한눈에 정리했습니다', '한 줄씩 비교해 두었습니다'], 0)}. ${bestRegionStr}${bestRegionList.length > 4 ? ' 등' : ''} 지역에 ${aggPick('best-' + catKey, ['퍼져 있습니다', '분포합니다', '자리합니다'], 1)}. 새 업소는 영업 확인을 거쳐 목록에 올라갑니다.</p>`;
   ssrBody += `<h2>${escHtml(catInfo.labelKo)} 인기 TOP ${catVenues.length} 랭킹</h2>`;

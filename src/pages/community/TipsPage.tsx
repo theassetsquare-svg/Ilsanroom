@@ -42,7 +42,7 @@ function postToTip(post: Post): TipCard {
     title: post.title,
     category: "입문",
     difficulty: "보통",
-    author: post.users?.nickname || "익명",
+    author: (post as any).is_official ? "🛡️ 놀쿨 운영팀" : post.users?.nickname || "익명",
     bookmarks: post.likes,
     summary: post.content.length > 100 ? post.content.slice(0, 100) + "…" : post.content,
   };

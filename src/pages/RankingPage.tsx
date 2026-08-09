@@ -5,6 +5,8 @@ import { venues } from '@/data/venues';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { MidContentHook, MidContentQuiz, ReadFinishCount, ReadCompletionReward, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
 import { createClient } from '@/lib/supabase';
+import { splitByPopularity, hasPopularityData, POPULARITY_UPDATED_AT } from '@/lib/popularity';
+import RankingBasisNote from '@/components/ui/RankingBasisNote';
 
 /* ── 카테고리 ── */
 const categories = [
@@ -41,15 +43,8 @@ function getCategoryHref(category: string, slug: string, region: string) {
   return map[category] || `/${category}/${slug}`;
 }
 
-// 점수·등락 표시는 정확한 1차 데이터가 확보되기 전까지 사용하지 않습니다.
-// 정렬은 결정적 우선순위(프리미엄 → 카테고리 → slug)로만 수행합니다.
-function getOrderKey(v: { isPremium?: boolean; category: string; slug: string }, period: string): number {
-  // 결정적이고 시기 기반으로 회전: 날짜+슬러그+기간 해시. 가짜 점수 노출 X.
-  const periodSeed = period === 'daily' ? new Date().getDate() : period === 'weekly' ? Math.floor(new Date().getDate() / 7) : new Date().getMonth();
-  const slugHash = v.slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-  const premiumBoost = v.isPremium ? 100000 : 0;
-  return premiumBoost + ((slugHash + periodSeed * 31) % 10000);
-}
+// 파트4 S1 — 순위 = 실측만. 28일 GA4 조회·사용자·phone_click + GSC 클릭 가중 점수(popularity.ts).
+// 프리미엄(광고) 부스트 0 — 광고비로 순위를 살 수 없다. 점수 미달분은 최신 등록순 정직 표기.
 
 /* ═══ 시즌 투표 시스템 ═══ */
 function getCurrentSeason(): string {
@@ -424,17 +419,16 @@ export default function RankingPage() {
   useDocumentMeta('인기 랭킹 TOP 20 — 회원이 직접 투표한 카테고리별 1위', '회원 직접 투표 기반 카테고리·지역별 랭킹. 강남 홍대 이태원 일산 부산 클럽·나이트·룸·요정·라운지·호빠 1위 업소를 매월 1일 시즌 초기화로 확인.');
   const [category, setCategory] = useState('all');
   const [region, setRegion] = useState('all');
-  const [period, setPeriod] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const ranked = useMemo(() => {
+  // 실측 순위(점수순) + 순위 미부여분(최신 등록순) 분리 — 침묵 원칙
+  const { ranked, recent } = useMemo(() => {
     let list = venues.filter((v) => v.status !== 'closed_or_unclear');
     if (category !== 'all') list = list.filter((v) => v.category === category);
     if (region !== 'all') list = list.filter((v) => v.regionKo.includes(region));
-    return [...list].sort((a, b) => getOrderKey(b, period) - getOrderKey(a, period)).slice(0, 20);
-  }, [category, region, period]);
-
-  const periodLabel = period === 'daily' ? '오늘 기준' : period === 'weekly' ? '이번 주 기준' : '이번 달 기준';
+    const split = splitByPopularity(list);
+    return { ranked: split.ranked.slice(0, 20), recent: split.recent.slice(0, 10) };
+  }, [category, region]);
 
   const scrollToVote = () => {
     document.getElementById('vote-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -496,23 +490,13 @@ export default function RankingPage() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex rounded-xl border border-gray-200 overflow-hidden">
-            {(['daily', 'weekly', 'monthly'] as const).map((p) => (
-              <button key={p} onClick={() => setPeriod(p)}
-                className={`px-4 py-2.5 text-sm font-medium transition-all ${
-                  period === p ? 'bg-[#8B5CF6] text-white' : 'bg-white text-[#555] hover:bg-gray-50'
-                }`} style={{ minHeight: 40 }}>
-                {p === 'daily' ? '일간' : p === 'weekly' ? '주간' : '월간'}
-              </button>
-            ))}
-          </div>
-          <span className="text-xs font-medium" style={{ color: '#8B5CF6' }}>{periodLabel}</span>
+        <div className="mb-6 space-y-2">
+          <RankingBasisNote />
         </div>
 
         <MidContentHook seed="ranking-mid" variant={0} />
 
-        {/* 순위 리스트 — 점수·등락 표시는 정확한 1차 데이터 확보 전까지 비노출 */}
+        {/* 실측 순위 리스트 — 28일 점수 미달 업소는 아래 최신 등록순 구간(순위 숫자 없음) */}
         <div className="space-y-2">
           {ranked.map((v, i) => {
             const cc = catColors[v.category] || '#8B5CF6';
@@ -538,10 +522,45 @@ export default function RankingPage() {
           })}
         </div>
 
-        {ranked.length === 0 && (
+        {ranked.length === 0 && recent.length === 0 && (
           <div className="py-16 text-center">
             <p className="text-base font-bold mb-2" style={{ color: '#111' }}>해당 조건의 결과가 없습니다</p>
             <p className="text-sm" style={{ color: '#555' }}>다른 카테고리나 지역을 선택해보세요</p>
+          </div>
+        )}
+
+        {ranked.length === 0 && recent.length > 0 && (
+          <div className="mb-3 rounded-xl bg-gray-50 px-4 py-3 text-center">
+            <p className="text-sm font-bold" style={{ color: '#111' }}>이 구간은 순위 준비 중 · 데이터 쌓이는 중</p>
+            <p className="text-xs mt-0.5" style={{ color: '#777' }}>28일 조회 표본이 모이면 실측 순위가 열립니다. 아래는 최신 등록순입니다.</p>
+          </div>
+        )}
+
+        {/* 순위 미부여 구간 — 최신 등록순 (순위 숫자 없음, 침묵 원칙) */}
+        {recent.length > 0 && (
+          <div className="mt-4">
+            <p className="text-xs font-bold mb-2" style={{ color: '#999' }}>최신 등록순 — 조회 데이터가 쌓이는 중이라 순위 없이 보여드려요</p>
+            <div className="space-y-2">
+              {recent.map((v) => {
+                const cc = catColors[v.category] || '#8B5CF6';
+                return (
+                  <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)}
+                    className="flex items-center gap-3 sm:gap-4 rounded-xl border bg-white px-4 py-3 transition hover:shadow-md hover:border-[#8B5CF6]/30"
+                    style={{ borderColor: '#F3F4F6', minHeight: 64 }}>
+                    <span className="h-8 w-8 shrink-0 rounded-lg flex items-center justify-center text-sm" style={{ backgroundColor: cc + '15' }}>
+                      {categories.find(c => c.key === v.category)?.emoji || '🎵'}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <h3 className="truncate text-sm font-bold" style={{ color: '#111' }}>{v.nameKo}</h3>
+                        {v.isPremium && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: '#8B5CF6', backgroundColor: '#F3F0FF' }}>AD</span>}
+                      </div>
+                      <p className="text-xs" style={{ color: '#999' }}>{v.regionKo} · {catLabel[v.category] || v.category}</p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         )}
 
@@ -560,9 +579,9 @@ export default function RankingPage() {
         <div className="mt-8 rounded-xl bg-gray-50 p-4">
           <p className="text-xs font-bold mb-1" style={{ color: '#8B5CF6' }}>랭킹·투표 기준 안내</p>
           <ul className="text-xs space-y-1" style={{ color: '#555' }}>
-            <li><strong>리스트 정렬:</strong> 프리미엄·카테고리 기반 결정적 순서. 정확한 점수 데이터 확보 전까지 점수·등락은 비표시.</li>
+            <li><strong>리스트 정렬:</strong> 최근 28일 실제 조회·전화 문의·검색 유입 가중 점수{hasPopularityData() ? ` (마지막 갱신 ${POPULARITY_UPDATED_AT}, 매주 자동 재계산)` : ' — 데이터가 쌓이는 대로 자동 전환, 그 전까지는 최신 등록순'}. 표본 미달 업소는 순위 없이 최신 등록순으로만 표시.</li>
             <li><strong>투표 랭킹:</strong> 회원 직접 투표. 카테고리별 월 1표. 매월 1일 시즌 초기화.</li>
-            <li><strong>공정성:</strong> 1인 1계정, 카테고리당 월 1회. 변경·취소 불가.</li>
+            <li><strong>공정성:</strong> 광고비로 순위를 살 수 없습니다(광고 업소는 AD 표기만). 가짜 후기 0 — 전부 삭제했습니다. 1인 1계정, 카테고리당 월 1회.</li>
           </ul>
         </div>
 

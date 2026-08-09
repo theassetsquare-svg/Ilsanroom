@@ -8,6 +8,7 @@ import ShareButton from '@/components/ui/ShareButton';
 import ReportButton from '@/components/moderation/ReportButton';
 import { NextPostInline } from '@/components/community/NextPostInline';
 import AuthorBadge from '@/components/community/AuthorBadge';
+import WeeklyVoteWidget from '@/components/community/WeeklyVoteWidget';
 import { sanitizeHtml } from '@/lib/sanitize-html';
 import { splitHtmlParagraphs } from '@/lib/text-format';
 
@@ -291,8 +292,8 @@ export default function PostDetailPage() {
       {/* 작성자 + 날짜 + 삭제 */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2 text-xs" style={{ color: '#999' }}>
-          <span style={{ color: '#555' }}>{(post.users as any)?.nickname || '익명'}</span>
-          <AuthorBadge nickname={(post.users as any)?.nickname} />
+          <span style={{ color: '#555' }}>{(post as any).is_official ? '놀쿨 운영팀' : (post.users as any)?.nickname || '익명'}</span>
+          <AuthorBadge nickname={(post.users as any)?.nickname} isOfficial={!!(post as any).is_official} />
           <span>·</span>
           <span>{post.created_at?.slice(0, 10)}</span>
           <span className="rounded-full px-2 py-0.5" style={{ backgroundColor: '#F3F0FF', color: '#8B5CF6' }}>{post.category}</span>
@@ -331,6 +332,13 @@ export default function PostDetailPage() {
               {post.content}
             </p>
           )}
+        </div>
+      )}
+
+      {/* 파트4 S3a — 운영팀 공식 가이드 하단 원터치 투표 1개 */}
+      {(post as any).is_official && (
+        <div className="mb-4">
+          <WeeklyVoteWidget />
         </div>
       )}
 

@@ -9,8 +9,9 @@ export function isOfficialTeam(nickname?: string | null): boolean {
   return !!nickname && OFFICIAL_TEAM_NICKNAMES.includes(nickname.trim());
 }
 
-export default function AuthorBadge({ nickname }: { nickname?: string | null }) {
-  if (!isOfficialTeam(nickname)) return null;
+/* isOfficial: posts.is_official 플래그 (파트4 S3a — 운영팀 공식 가이드는 DB 플래그가 1차 근거, 닉네임 매칭은 보조). */
+export default function AuthorBadge({ nickname, isOfficial }: { nickname?: string | null; isOfficial?: boolean }) {
+  if (!isOfficial && !isOfficialTeam(nickname)) return null;
   return (
     <span
       className="inline-flex items-center gap-0.5 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 px-1.5 py-0.5 text-[9px] font-black text-white align-middle"

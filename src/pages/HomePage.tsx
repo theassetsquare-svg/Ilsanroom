@@ -29,6 +29,8 @@ const LuckyRoulette = lazy(() => import('@/components/home/LuckyRoulette'));
 import { articles as magazineArticles } from '@/data/magazine-articles';
 import { useAuth } from '@/hooks/useAuth';
 import { useCommunityActive } from '@/hooks/useCommunityActive';
+import { popularityOrder } from '@/lib/popularity';
+import { RankingBasisInline } from '@/components/ui/RankingBasisNote';
 
 /* ── Helpers ── */
 function getCategoryHref(category: string, slug: string, region: string) {
@@ -396,8 +398,8 @@ export default function HomePage() {
   }, [openVenues, activeRegion, activeTab]);
 
   const feedVenues = useMemo(() => {
-    // 인기: rating + reviewCount 기반 실제 인기순
-    if (activeTab === 0) return [...filteredVenues].sort((a, b) => (b.rating * 10 + b.reviewCount) - (a.rating * 10 + a.reviewCount)).slice(0, 30);
+    // 인기: 28일 GA4+GSC 실측 점수순 (미축적분은 최신 등록순 — popularity.ts 침묵 원칙)
+    if (activeTab === 0) return popularityOrder(filteredVenues).slice(0, 30);
     // 신규: 최근 등록순 (배열 뒤쪽 = 최신)
     if (activeTab === 1) return [...filteredVenues].reverse().slice(0, 30);
     // 추천: 프리미엄 + 평점 높은 순
@@ -468,10 +470,7 @@ export default function HomePage() {
     const cats = ['club', 'night', 'lounge', 'room', 'yojeong', 'hoppa'] as const;
     const result: Record<string, Venue[]> = {};
     cats.forEach(cat => {
-      result[cat] = openVenues
-        .filter(v => v.category === cat)
-        .sort((a, b) => (b.rating * 10 + b.reviewCount) - (a.rating * 10 + a.reviewCount))
-        .slice(0, 3);
+      result[cat] = popularityOrder(openVenues.filter(v => v.category === cat)).slice(0, 3);
     });
     return result;
   }, [openVenues]);
@@ -823,12 +822,22 @@ export default function HomePage() {
         })()}
       </section>
 
+      {/* ═══ 파트4 S4 — 역전 문구: 전부 실제 상태와 일치하는 사실 서술만 (경쟁사 실명 0, 과장 0) ═══ */}
+      <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
+        <div className="flex flex-wrap gap-x-3 gap-y-1 rounded-xl border border-gray-100 bg-gray-50 px-3.5 py-2.5">
+          {['가짜 후기 0 — 전부 삭제했습니다', '광고비로 순위 못 삽니다', '6개 업종을 한곳에서', '업소 정보 매일 자동 점검'].map(t => (
+            <span key={t} className="text-[11px] font-medium text-[#555]">✓ {t}</span>
+          ))}
+        </div>
+      </section>
+
       {/* ═══ 4. 실시간 TOP 4 — 핵심 업소 즉시 노출 ═══ */}
       <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-1">
           <h2 className="text-base font-bold text-[#111]">지금 핫한 곳</h2>
           <Link to="/ranking" className="text-xs text-[#7C3AED] font-medium inline-block py-1.5 -my-1.5">전체 순위 →</Link>
         </div>
+        <div className="mb-2"><RankingBasisInline /></div>
         <div className="grid grid-cols-2 gap-2.5">
           {popularVenues.slice(0, 4).map((v, i) => (
             <VenueCard key={v.id} venue={v} isFavorite={favorites.has(v.id)} toggleFavorite={toggleFavorite} rank={i + 1} priority={i === 0} />
@@ -1073,7 +1082,8 @@ export default function HomePage() {
 
       {/* ═══ 10. 카테고리별 TOP 3 — 드림고객 카피로 클릭 유도 ═══ */}
       <section className="px-4 py-3 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
-        <h2 className="text-base font-bold text-[#111] mb-3">카테고리별 인기 TOP 3</h2>
+        <h2 className="text-base font-bold text-[#111] mb-0.5">카테고리별 인기 TOP 3</h2>
+        <div className="mb-3"><RankingBasisInline /></div>
         <div className="space-y-4">
           {(['club', 'night', 'room', 'lounge', 'yojeong', 'hoppa'] as const).map(cat => {
             const top = categoryTop3[cat];
@@ -1145,7 +1155,7 @@ export default function HomePage() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-[2]" />
               <div className="relative z-[3] flex flex-col justify-end h-full p-4" style={{ minHeight: 130 }}>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="rounded-full bg-[#7C3AED] px-2 py-0.5 text-[10px] font-bold text-white">1위</span>
+                  <span className="rounded-full bg-[#7C3AED] px-2 py-0.5 text-[10px] font-bold text-white">오늘의 추천</span>
                   <span className="text-[11px] text-white/80">{catLabel[featuredVenue.category]} · {featuredVenue.regionKo}</span>
                 </div>
                 <h3 className="text-lg font-black text-white leading-tight">{featuredVenue.nameKo}</h3>
@@ -1157,10 +1167,11 @@ export default function HomePage() {
       )}
 
       <section className="py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
-        <div className="flex items-center justify-between px-4 mb-2">
+        <div className="flex items-center justify-between px-4 mb-1">
           <h2 className="text-base font-bold text-[#111]">TOP 8</h2>
           <Link to="/ranking" className="text-xs text-[#7C3AED] font-medium inline-block py-1.5 -my-1.5">전체보기 →</Link>
         </div>
+        <div className="px-4 mb-2"><RankingBasisInline /></div>
         <div className="flex gap-2.5 px-4 overflow-x-auto scrollbar-hide pb-1">
           {popularVenues.slice(0, 8).map((v, i) => (
             <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} className="flex-shrink-0" style={{ width: 120 }}>
@@ -1289,7 +1300,8 @@ export default function HomePage() {
               if (idx + 1 === 12) {
                 cards.push(
                   <div key={`top5-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-violet-50 to-white p-4">
-                    <p className="text-xs font-bold text-[#7C3AED] mb-2">🏆 이번주 TOP 5</p>
+                    <p className="text-xs font-bold text-[#7C3AED] mb-0.5">🏆 이번주 TOP 5</p>
+                    <p className="mb-2"><RankingBasisInline /></p>
                     <div className="space-y-1">
                       {popularVenues.slice(0, 5).map((v, i) => (
                         <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} className="flex items-center gap-2 py-1">

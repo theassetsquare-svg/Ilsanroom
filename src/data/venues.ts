@@ -1,4 +1,5 @@
 import type { Venue, VenueCategory, CategoryInfo } from '@/types';
+import { popularityOrder } from '@/lib/popularity';
 
 export const categories: CategoryInfo[] = [
   { key: 'club', label: 'Clubs', labelKo: '클럽', path: '/clubs', icon: '🎵', color: '#7c3aed', description: '전국 클럽 정보. EDM, 힙합, 테크노 등 장르가 끝이 없다.' },
@@ -10,7 +11,8 @@ export const categories: CategoryInfo[] = [
 ];
 
 export function getPopularVenues(count = 10): Venue[] {
-  return venues.filter(v => v.status !== 'closed_or_unclear').slice(0, count);
+  // 실측 인기순(28일 GA4+GSC 가중 점수) — 데이터 미축적분은 최신 등록순 (popularity.ts 침묵 원칙)
+  return popularityOrder(venues.filter(v => v.status !== 'closed_or_unclear')).slice(0, count);
 }
 
 export function getVenueBySlug(slug: string): Venue | undefined {

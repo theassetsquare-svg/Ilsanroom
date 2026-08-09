@@ -1,0 +1,7 @@
+{
+  "generatedAt": null,
+  "windowDays": 28,
+  "minViews28d": 10,
+  "weights": { "view": 1, "user": 2, "phoneClick": 30, "gscClick": 3 },
+  "venues": {}
+}

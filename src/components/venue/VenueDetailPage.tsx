@@ -10,6 +10,7 @@ import Card from '@/components/ui/Card';
 import ShareButtons from '@/components/interactive/ShareButtons';
 import { MidContentHook } from '@/components/engagement/ReadingEngagement';
 import RelatedVenues30 from '@/components/venue/RelatedVenues30';
+import InlineJoinCard from '@/components/auth/InlineJoinCard';
 import RelatedMagazineForVenue from '@/components/venue/RelatedMagazineForVenue';
 import LiveStats from '@/components/live/LiveStats';
 import VenueLivePulse from '@/components/venue/VenueLivePulse';
@@ -74,6 +75,8 @@ export default function VenueDetailPage({
   // 찜 — 상세페이지에서 저장 → SavedVenuesBar로 사이트 전역 재노출(재방문 동선). localStorage·0 PII.
   const { isFavorite, toggleFavorite } = useFavorites();
   const saved = isFavorite(venue.id);
+  // 파트4 S2a③ — ⭐ 클릭 순간에만 인라인 가입 카드 노출 (팝업 아님, 로그인 상태면 카드 자체가 null)
+  const [favTouched, setFavTouched] = useState(false);
 
   // "지금 N명 보는 중" — 시드 기반 가짜 카운터 제거 (놀쿨 신뢰 규칙).
   // VenueLivePulse 자체가 null 컴포넌트라 0을 넘겨도 무시됨.
@@ -143,7 +146,7 @@ export default function VenueDetailPage({
           )}
           <button
             type="button"
-            onClick={() => toggleFavorite(venue.id)}
+            onClick={() => { toggleFavorite(venue.id); setFavTouched(true); }}
             aria-pressed={saved}
             aria-label={saved ? `${venue.nameKo} 찜 해제` : `${venue.nameKo} 찜하기`}
             className={`mt-3 inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-bold transition ${
@@ -158,6 +161,16 @@ export default function VenueDetailPage({
             </svg>
             {saved ? '찜한 곳 — 나중에 다시 보기' : '찜하기'}
           </button>
+          {saved && (
+            <Link to="/my/favorites" className="mt-2 ml-2 inline-flex items-center text-xs font-bold text-[#7C3AED]" style={{ minHeight: 44 }}>
+              ⭐ 내 단골 목록 보기 →
+            </Link>
+          )}
+          {favTouched && (
+            <div className="mt-3">
+              <InlineJoinCard context="favorite" />
+            </div>
+          )}
         </section>
       )}
 

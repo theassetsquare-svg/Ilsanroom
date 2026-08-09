@@ -33,7 +33,7 @@ const exempt = new Set([
   '/auth/callback', '/auth/naver-callback',
   '/dashboard', '/onboarding', '/launch', '/billing', '/analytics',
   '/welcome', '/waitlist', '/hidden', '/print', '/referral',
-  '/my/referrals', '/my/customize',
+  '/my/referrals', '/my/customize', '/my/favorites',
   // noindex 내부 검색 페이지 (sitemap 제외 의도적)
   '/search',
   // Navigate 리디렉트 (실제 페이지 없음)

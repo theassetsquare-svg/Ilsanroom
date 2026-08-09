@@ -12,6 +12,7 @@ import { PostListSkeleton } from '@/components/ui/Skeleton';
 
 const RichTextEditor = lazy(() => import('@/components/community/RichTextEditor'));
 import WriteHeader from '@/components/community/WriteHeader';
+import WeeklyVoteWidget from '@/components/community/WeeklyVoteWidget';
 
 interface SimplePost {
   id: string;
@@ -29,7 +30,7 @@ function postToSimple(post: Post): SimplePost {
     id: post.id,
     title: post.title,
     content: post.content || '',
-    author: u?.nickname || '익명',
+    author: (post as any).is_official ? '🛡️ 놀쿨 운영팀' : u?.nickname || '익명',
     date: post.created_at.slice(0, 10),
     comments: post.comment_count || 0,
     likes: post.likes || 0,
@@ -125,6 +126,11 @@ export default function FreeBoardPage() {
           </div>
           <button onClick={handleWriteClick} className="rounded-xl px-5 py-2.5 text-sm font-bold transition"
             style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>글쓰기</button>
+        </div>
+
+        {/* 파트4 S2c — 주간 원터치 투표 (주제 = 실측 인기 데이터 자동 생성, 창작 0) */}
+        <div className="mb-6">
+          <WeeklyVoteWidget />
         </div>
 
         {/* 이 게시판에서 지금 뜨는 글 */}
@@ -234,6 +240,18 @@ export default function FreeBoardPage() {
           <div className="fixed inset-0 z-[100] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
             <WriteHeader onCancel={() => setShowWriteModal(false)} title="자유게시판 글쓰기" />
             <div className="flex-1 overflow-y-auto px-4 py-4 pb-24 max-w-2xl mx-auto w-full">
+              {/* 파트4 S2c — 글감 프롬프트: 빈 화면 공포 제거용 시작 질문 (원터치로 제목 채움) */}
+              {!writeTitle.trim() && (
+                <div className="mb-2 flex flex-wrap gap-1.5">
+                  {['이번 주말 어디 갈지 같이 정해줘', '어젯밤 갔던 곳 짧게 풀어본다', '처음 가보는데 뭐부터 알아야 해?'].map(p => (
+                    <button key={p} type="button" onClick={() => setWriteTitle(p)}
+                      className="rounded-full border px-3 py-1.5 text-xs font-medium"
+                      style={{ borderColor: '#DDD6FE', color: '#7C3AED', backgroundColor: '#FAF9FF', minHeight: 44 }}>
+                      💡 {p}
+                    </button>
+                  ))}
+                </div>
+              )}
               <input value={writeTitle} onChange={(e) => setWriteTitle(e.target.value)} placeholder="제목을 입력하세요"
                 className="w-full rounded-lg border px-4 py-3 text-sm outline-none mb-3"
                 style={{ borderColor: '#E5E7EB', color: '#111', minHeight: 48 }} />

@@ -314,6 +314,23 @@ export default function ReviewsPage() {
               </div>
               <div className="mb-4">
                 <label className="mb-1 block text-xs" style={{ color: '#555' }}>내용</label>
+                {/* 파트4 S2c — 한 줄 후기 템플릿: 빈칸 3개만 채우면 첫 후기 완성 (글쓰기 사다리 1단) */}
+                {!writeContent.trim() && (
+                  <div className="mb-2 flex flex-wrap gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setWriteContent('분위기: \n응대: \n다음 사람을 위한 팁: ')}
+                      className="rounded-full border px-3 py-1.5 text-xs font-medium"
+                      style={{ borderColor: '#DDD6FE', color: '#7C3AED', backgroundColor: '#FAF9FF', minHeight: 44 }}
+                    >✍️ 한 줄 후기 틀 채우기 (분위기 · 응대 · 팁)</button>
+                    <button
+                      type="button"
+                      onClick={() => setWriteContent('오늘 다녀온 시간대: \n웨이팅/입장: \n기억에 남는 순간: ')}
+                      className="rounded-full border px-3 py-1.5 text-xs font-medium"
+                      style={{ borderColor: '#E5E7EB', color: '#555', backgroundColor: '#FAFAFA', minHeight: 44 }}
+                    >🕐 방문 기록형으로 쓰기</button>
+                  </div>
+                )}
                 <Suspense fallback={<div className="py-8 text-center text-sm" style={{ color: '#999' }}>에디터 로딩 중...</div>}>
                   <RichTextEditor value={writeContent} onChange={setWriteContent} placeholder="솔직한 후기를 작성해주세요. 사진/동영상 첨부 가능!" minHeight={300} />
                 </Suspense>

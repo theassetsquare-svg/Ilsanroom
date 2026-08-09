@@ -10,41 +10,43 @@ export type VenueTop4 = {
   category: string;
   rating: number;
 };
+// basis: 'popularity' = 28일 실측 점수순 / 'recent' = 최신 등록순 폴백 (데이터 미축적)
+export const VENUES_TOP4_BASIS = 'recent';
 export const VENUES_TOP4: VenueTop4[] = [
   {
-    "id": "v-001",
-    "slug": "ilsanroom",
-    "nameKo": "일산룸",
-    "regionKo": "일산",
-    "region": "ilsan",
-    "category": "room",
+    "id": "v-142",
+    "slug": "itaewonclub-cakeshop",
+    "nameKo": "이태원클럽 케이크샵",
+    "regionKo": "이태원",
+    "region": "itaewon",
+    "category": "club",
     "rating": 0
   },
   {
-    "id": "v-002",
-    "slug": "haeundaegoguryeo",
-    "nameKo": "해운대고구려",
-    "regionKo": "부산 해운대",
-    "region": "busan-haeundae",
-    "category": "room",
+    "id": "v-141",
+    "slug": "gangnamclub-octagon",
+    "nameKo": "강남클럽 옥타곤",
+    "regionKo": "강남",
+    "region": "gangnam",
+    "category": "club",
     "rating": 0
   },
   {
-    "id": "v-003",
-    "slug": "ilsanmyeongwolgwanyojeong",
-    "nameKo": "일산명월관요정",
-    "regionKo": "일산",
-    "region": "ilsan",
-    "category": "yojeong",
-    "rating": 0
-  },
-  {
-    "id": "v-004",
-    "slug": "cheongdamh2onight",
-    "nameKo": "청담H2O나이트",
-    "regionKo": "청담",
-    "region": "cheongdam",
+    "id": "v-140",
+    "slug": "changwon-lululalala",
+    "nameKo": "창원룰루랄라나이트",
+    "regionKo": "창원",
+    "region": "changwon",
     "category": "night",
+    "rating": 0
+  },
+  {
+    "id": "v-139",
+    "slug": "itaewon-savage",
+    "nameKo": "이태원클럽 세비지",
+    "regionKo": "이태원",
+    "region": "itaewon",
+    "category": "club",
     "rating": 0
   }
 ];
