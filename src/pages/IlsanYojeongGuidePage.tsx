@@ -78,7 +78,7 @@ export default function IlsanYojeongGuidePage() {
         {/* 앵커 목차 */}
         <nav aria-label="목차" className="mt-4 flex flex-wrap gap-2">
           {TOC.map((t) => (
-            <a key={t.id} href={`#${t.id}`} className="rounded-full border border-neon-border bg-neon-surface px-3 py-1.5 text-[13px] text-neon-text transition hover:border-neon-primary" style={{ minHeight: 36 }}>
+            <a key={t.id} href={`#${t.id}`} className="rounded-full border border-neon-border bg-neon-surface px-3 py-1.5 text-[13px] text-neon-text transition hover:border-neon-primary" style={{ minHeight: 44 }}>
               {t.label}
             </a>
           ))}
@@ -158,13 +158,13 @@ export default function IlsanYojeongGuidePage() {
             <h2 className="mb-3 text-lg font-bold text-neon-text">함께 보기</h2>
             <ul className="space-y-2 text-[15px]">
               <li>
-                <Link to={VENUE_PATH} className="text-neon-primary underline underline-offset-2">일산명월관요정 상세 안내</Link>
+                <Link to={VENUE_PATH} className="inline-flex min-h-[44px] items-center text-neon-primary underline underline-offset-2">일산명월관요정 상세 안내</Link>
               </li>
               <li>
-                <Link to="/yojeong" className="text-neon-primary underline underline-offset-2">전국 요정 모아보기</Link>
+                <Link to="/yojeong" className="inline-flex min-h-[44px] items-center text-neon-primary underline underline-offset-2">전국 요정 모아보기</Link>
               </li>
               <li>
-                <Link to="/guide" className="text-neon-primary underline underline-offset-2">업종별 첫 방문 입문 가이드</Link>
+                <Link to="/guide" className="inline-flex min-h-[44px] items-center text-neon-primary underline underline-offset-2">업종별 첫 방문 입문 가이드</Link>
               </li>
             </ul>
           </section>

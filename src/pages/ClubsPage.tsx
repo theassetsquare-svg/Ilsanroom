@@ -1,5 +1,6 @@
 
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
+import { Link } from '@/components/ui/SafeLink';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
@@ -20,14 +21,37 @@ export default function ClubsPage() {
   useDocumentMeta('클럽 줄 서다 입장컷 당하기 싫죠? 10년 MD가 들어갈 곳만 알려줌', '클럽 줄 컷이면 그날 끝. 10년 MD가 강남·홍대 클럽 Funktion-One·드레스코드·해외 게스트 DJ·새벽 3시 피크·VIP 부킹까지 클럽 121곳, 갈 곳만 추렸으니 줄 서기 전에 바로 확인 →');
   const venues = getVenuesByCategory('club');
   const featured = venues.find(v => v.isPremium) || venues[0];
-  const byRegion = venues.reduce<Record<string, number>>((m, v) => { m[v.regionKo] = (m[v.regionKo] || 0) + 1; return m; }, {});
-  const topRegions = Object.entries(byRegion).sort((a, b) => b[1] - a[1]).slice(0, 4);
-  const topRegionText = topRegions.map(([r, n]) => `${r} ${n}곳`).join(', ');
+  const byRegion = venues.reduce<Record<string, { n: number; key: string }>>((m, v) => {
+    const cur = m[v.regionKo] || { n: 0, key: v.region };
+    cur.n += 1; m[v.regionKo] = cur; return m;
+  }, {});
+  const topRegions = Object.entries(byRegion).sort((a, b) => b[1].n - a[1].n).slice(0, 4);
+  const topRegionText = topRegions.map(([r, { n }]) => `${r} ${n}곳`).join(', ');
+  const regionChips = Object.entries(byRegion).sort((a, b) => b[1].n - a[1].n).slice(0, 6);
 
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
       <div>
         <Breadcrumb items={[{ label: '클럽' }]} />
+
+        {/* 파트2 — GA4 랜딩 참여율 4.3% 실측 → 첫 화면 직답 블록 (보유 실데이터만, 창작 0) */}
+        <section className="mt-4 rounded-2xl border border-violet-500/30 bg-violet-500/5 p-4">
+          <h2 className="text-lg font-bold text-neon-text">지금 볼 수 있는 클럽 {venues.length}곳</h2>
+          <p className="mt-2 text-base leading-relaxed text-neon-text-muted">
+            {topRegionText} 순으로 몰려 있다. 대형 EDM 무대는 강남·청담, 인디·힙합 무드는 홍대, 다국적 파티는 이태원이 기준 — 동네를 먼저 고르면 오늘 갈 곳이 바로 좁혀진다. 영업 여부가 확인된 곳만 올려두고, 없는 정보는 비워 둔다.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {regionChips.map(([ko, { n, key }]) => (
+              <Link
+                key={key}
+                to={`/clubs/${key}`}
+                className="inline-flex min-h-[44px] items-center rounded-full border border-violet-500/40 bg-neon-surface/50 px-4 text-base text-neon-text transition hover:border-violet-400"
+              >
+                {ko} {n}곳
+              </Link>
+            ))}
+          </div>
+        </section>
 
         {/* Category Hero */}
         <div className="mt-6">

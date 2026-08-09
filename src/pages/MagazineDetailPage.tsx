@@ -101,10 +101,19 @@ export default function MagazineDetailPage() {
           </nav>
         )}
 
-        {/* 본문 */}
+        {/* 본문 — 파트2: 원시 <a> 내부 링크가 SPA 라우터를 안 타 풀 리로드(모바일 5s+ 무반응 = rage click 실측)
+            → 위임 핸들러 1개로 내부 링크만 클라이언트 라우팅 (외부/tel/앵커는 기본 동작 유지) */}
         <div
           className="rich-content text-base leading-relaxed mb-8"
           style={{ color: '#333', lineHeight: '1.9' }}
+          onClick={(e) => {
+            const a = (e.target as HTMLElement).closest('a');
+            if (!a) return;
+            const href = a.getAttribute('href') || '';
+            if (!href.startsWith('/') || a.target === '_blank') return;
+            e.preventDefault();
+            navigate(href);
+          }}
           dangerouslySetInnerHTML={{ __html: splitHtmlParagraphs(sanitizeHtml(contentWithIds)) }}
         />
 

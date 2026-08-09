@@ -22,7 +22,10 @@ export default function ShareButtons({ title, url, description }: ShareButtonsPr
         await navigator.clipboard.writeText(shareUrl);
         setCopied(true);
         timerRef.current = setTimeout(() => setCopied(false), 2000);
-      } catch {}
+      } catch {
+        // 파트2 — 클립보드 거부 시 무피드백(dead click 실측) → 주소 선택 복사 폴백
+        window.prompt('아래 주소를 길게 눌러 복사하세요', shareUrl);
+      }
     }
   };
 

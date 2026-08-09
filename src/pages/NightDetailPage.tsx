@@ -1,4 +1,5 @@
 import { useParams , Navigate } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import VenueDetailPage from '@/components/venue/VenueDetailPage';
 import { getHookingTitle, getHookingDescription } from '@/lib/seo-hooks';
@@ -82,40 +83,78 @@ function DaejeonSevenHeaderSection() {
 
       {/* 전화번호 CTA */}
       <div className="w-full max-w-[480px] text-center">
-        <a
-          href="tel:01032421504"
+        <TelCopyFallback
+          phone="010-3242-1504"
           className="flex flex-col items-center gap-3 rounded-2xl px-8 py-6 shadow-lg transition hover:shadow-xl active:scale-[0.98]"
           style={{ background: 'linear-gradient(to right, #1E3A5F, #0F2744)' }}
+          toastClassName="mt-2 text-center text-sm font-bold text-[#FFD700]"
         >
           <span style={{ color: '#FFD700', fontSize: 18, fontWeight: 700 }}>대전세븐나이트 담당 원숭이</span>
           <span style={{ color: '#FFFFFF', fontSize: 28, fontWeight: 900, letterSpacing: '0.05em' }}>
             010-3242-1504
           </span>
           <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>터치하면 바로 전화 연결</span>
-        </a>
+        </TelCopyFallback>
       </div>
     </div>
   );
 }
 
 
+/* 파트2 — tel: 링크가 다이얼러 없는 환경(PC 등)에서 무반응 = Clarity dead click 실측
+   → 탭 후 800ms 내 화면 이탈이 없으면(=다이얼러 안 열림) 번호 복사 + 안내 토스트. GA4 phone_click 계측은 그대로 발화. */
+function TelCopyFallback({ phone, className, style, toastClassName, children }: {
+  phone: string; className?: string; style?: React.CSSProperties; toastClassName: string; children: React.ReactNode;
+}) {
+  const [copied, setCopied] = useState(false);
+  const detectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => {
+    if (detectTimer.current) clearTimeout(detectTimer.current);
+    if (hideTimer.current) clearTimeout(hideTimer.current);
+  }, []);
+  return (
+    <>
+      <a
+        href={`tel:${phone.replace(/-/g, '')}`}
+        className={className}
+        style={style}
+        onClick={() => {
+          if (detectTimer.current) clearTimeout(detectTimer.current);
+          detectTimer.current = setTimeout(() => {
+            if (document.visibilityState !== 'visible') return; // 다이얼러 열림 = 정상 동작
+            navigator.clipboard?.writeText(phone).catch(() => {});
+            setCopied(true);
+            if (hideTimer.current) clearTimeout(hideTimer.current);
+            hideTimer.current = setTimeout(() => setCopied(false), 2200);
+          }, 800);
+        }}
+      >
+        {children}
+      </a>
+      {copied && <p className={toastClassName}>번호가 복사됐어요 — {phone}</p>}
+    </>
+  );
+}
+
 /* 대전세븐나이트 고정 하단 전화 바 — MobileBottomNav(56px) 바로 위에 위치
    Tailwind 임의값 대신 inline style로 색상 100% 보장 */
 function DaejeonSevenFixedBar() {
   return (
     <div className="fixed left-0 right-0 z-40" style={{ bottom: 56 }}>
-      <a
-        href="tel:01032421504"
+      <TelCopyFallback
+        phone="010-3242-1504"
         className="flex items-center justify-center gap-3 px-6 py-4"
         style={{
           background: 'linear-gradient(to right, #1E3A5F, #0F2744)',
           minHeight: 52,
           boxShadow: '0 -4px 20px rgba(0,0,0,0.4)',
         }}
+        toastClassName="absolute -top-9 left-0 right-0 bg-[#111]/90 py-1.5 text-center text-sm font-bold text-white"
       >
         <span style={{ color: '#FFD700', fontSize: 16, fontWeight: 700 }}>4인1조 w.t원숭이</span>
         <span style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 900, letterSpacing: '0.05em' }}>010-3242-1504</span>
-      </a>
+      </TelCopyFallback>
     </div>
   );
 }

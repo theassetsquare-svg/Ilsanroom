@@ -22,9 +22,17 @@ export default function NearStationPage() {
     )
   );
 
-  useDocumentMeta(
+  // 파트2 — SSR(prerender NEAR_COPY_OVERRIDE)과 동일 카피로 정합 (CTR 0% 실측 신사만)
+  const nearOverride: Record<string, [string, string]> = {
+    '신사': ['신사역 도보 5분권 — 강남청담클럽 사운드 위치·후기·전화번호 바로 정리', '신사에서 걸어가는 밤 코스는 강남청담클럽 사운드가 기준점 — 위치·후기·전화번호를 거리순으로 정리했다. 오늘 갈 곳을 먼저 확인하고 움직이자.'],
+  };
+  const [nearTitle, nearDesc] = nearOverride[decodedStation] || [
     `${decodedStation} 근처 업소 ${filtered.length}곳 — 역에서 걸어서 갈 수 있는 곳`,
     `${decodedStation} 근처 클럽·나이트·라운지·룸 ${filtered.length}곳. 가까운 역에서 도보로 갈 수 있는 나이트라이프 장소를 찾아보세요.`,
+  ];
+  useDocumentMeta(
+    nearTitle,
+    nearDesc,
     undefined,
     `${decodedStation} 근처, ${decodedStation} 나이트라이프, ${decodedStation} 클럽, ${decodedStation} 나이트`
   );

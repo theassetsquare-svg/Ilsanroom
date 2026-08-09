@@ -1,6 +1,21 @@
 {
   "cycle": "2026-08",
   "createdAt": "2026-08-02",
+  "part2_intervention": {
+    "date": "2026-08-09",
+    "source": "reports/audit/2026-08-korea1.md 실측 기반 처방 (한국1위 파트2/5)",
+    "scope": [
+      "A: CTR 미달 카피 재작성 8곳 — daejeononenight(title+desc)·busanasiadnight·suwonchancenight·sangbonghangukgwannight·magazine/gangnam-octagon-guide·/clubs/daejeon/·/clubs/cheongju/·/near/신사/ (H1a 6곳 재수정 0건·줄리아나 무개입 유지)",
+      "A4: 대전세븐·대전가이드 dead/rage 요소 수술 — 투표 재선택 허용·매거진 본문 내부링크 SPA 라우팅·마일스톤 토스트 클릭차단 해제·tel 복사 폴백·features 칩 버튼외형 제거·완독카드 탭 공개",
+      "B: /clubs 첫 화면 직답 블록 + 지역 1클릭 칩 (랜딩 참여율 4.3% 대응)",
+      "C: 홈 첫 뷰 인기 TOP(/ranking) 1클릭 칩 (quickback 3일 연속 대응)",
+      "D: 모바일 LCP — 기존 시즌29-F preload(venue 상세 hero webp·fetchpriority=high) 인프라 확인·유지 + E의 히어로 리드 폰트 최적화가 렌더에 기여. 웹폰트 없음(시스템 스택)=display:swap N/A. gtag async·Clarity 비동기 확인. ⚠️ 허브 페이지(/·/clubs 등 lab 68~74) LCP 요소 preload는 레이아웃 동결 원칙상 신규 개입 보류 → 파트3에서 페이지별 LCP 요소 특정 후 처리. 라이브 lab 재측정은 04:00 lighthouse-daily 자동 런.",
+      "E: 히어로 리드 15px→16px 전 페이지·12/13px 플로어 승격·터치 44px 보강",
+      "F: 색인 미달 28곳 조치 — noindex 5곳·canonical 쌍둥이 통합 10곳 (sitemap 472→457)",
+      "G: 매거진 gangnam-edm-clubs-2026 운영정보 실데이터 갱신 (나머지 5편 갱신 근거 없음=무변경)"
+    ],
+    "judgment_note": "9/1 판정은 방향성 판정으로 전환 — H1a 6곳 title 자체는 불변이지만 H1b(nights CTR)·H2(phone_click)·H3a(세션당 페이지)는 8/2 레버와 8/9 파트2 개입의 합산 효과를 본다. H3b 줄리아나(84.4%)는 파트2에서도 무개입(관찰 기록만)."
+  },
   "sources": {
     "ga4": "GA4 Data API 540830544 (ga4-gsc-full-dump 2026-08-02 + monthly-full-audit 2026-07-29 런로그)",
     "gsc": "GSC https://nolcool.com/ (같은 덤프, 28일)",

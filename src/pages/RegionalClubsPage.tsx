@@ -48,7 +48,13 @@ function ClubCard({ venue, href }: { venue: Venue; href: string }) {
 export default function RegionalClubsPage() {
   const { region = '' } = useParams<{ region: string }>();
   const regionKo = regionNames[region] || region;
-  useDocumentMeta(`${regionKo} 클럽 — 분위기·드레스코드·영업시간 한눈에`, `${regionKo} EDM·힙합·테크노 클럽 전체 리스트. 분위기 드레스코드 영업시간 비교. 첫방문 코스, 게스트 라인업, 부킹 문화까지 ${regionKo} 나이트라이프 정리.`);
+  // 파트2 — SSR(prerender REGIONAL_COPY_OVERRIDE)과 동일 카피로 정합 (CTR 0% 실측 허브 2곳만)
+  const metaOverride: Record<string, [string, string]> = {
+    daejeon: ['월평동 대전설탕클럽 — 미러볼 12개 도는 지하, 이태원 출신 DJ가 새벽까지 끌어올린다', '월평동 지하 대전설탕클럽 — 게스트 라인업·드레스코드·첫방문 매너를 실측 정보로만 한 페이지에 정리했다. 미러볼 12개 아래, 헛걸음 전에 확인하고 출발하자.'],
+    cheongju: ['성안길 청주클럽 슈퍼문 — 드롭 순간 직경 2미터 미러볼이 홀을 뒤덮는다', '성안길 청주클럽 슈퍼문 — 게스트 라인업·드레스코드·부킹 문화·첫방문 매너까지 실측 정보만 모았다. 홍대 DJ 격주 셋에 맞춰 오늘 밤 동선 여기서 정하자.'],
+  };
+  const [metaTitle, metaDesc] = metaOverride[region] || [`${regionKo} 클럽 — 분위기·드레스코드·영업시간 한눈에`, `${regionKo} EDM·힙합·테크노 클럽 전체 리스트. 분위기 드레스코드 영업시간 비교. 첫방문 코스, 게스트 라인업, 부킹 문화까지 ${regionKo} 나이트라이프 정리.`];
+  useDocumentMeta(metaTitle, metaDesc);
   const clubs = getVenuesByCategoryAndRegion('club', region);
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
   const featured = clubs.find(v => v.isPremium) || clubs[0];

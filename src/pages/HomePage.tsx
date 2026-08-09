@@ -539,6 +539,10 @@ export default function HomePage() {
           {/* 지역 퀵셀렉터 — 터치 한 번으로 "내 동네 있다" 확인 */}
           <div className="flex items-center gap-1.5 mb-2 overflow-x-auto scrollbar-hide pb-0.5" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
             <span className="text-[10px] text-white/40 shrink-0 mr-0.5">전국 {VENUES_TOTAL_OPEN}곳</span>
+            {/* 파트2 — 홈 quickback 3일 연속 실측 → 첫 뷰에서 1클릭으로 갈 목적지(인기 랭킹) 추가 */}
+            <Link to="/ranking" className="shrink-0 rounded-full border border-pink-400/40 bg-gradient-to-r from-pink-500/25 to-purple-500/25 px-3 py-1.5 text-[10px] font-bold text-white active:bg-white/20 transition" style={{ minHeight: 44 }}>
+              🔥 인기 TOP
+            </Link>
             {['강남', '홍대', '부산', '일산', '대구', '대전', '수원', '인천', '광주', '울산', '제주'].map(r => (
               <button key={r} onClick={() => { setActiveTab(3); setActiveRegion(r); document.getElementById('feed-section')?.scrollIntoView({ behavior: 'smooth' }); }}
                 className="shrink-0 rounded-full bg-white/10 px-3 py-1.5 text-[10px] text-white/70 font-medium active:bg-white/20 transition" style={{ minHeight: 44, minWidth: 44 }}>

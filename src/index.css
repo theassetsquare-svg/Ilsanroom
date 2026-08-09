@@ -65,6 +65,17 @@ body { font-size: 16px; }
 .text-xs { font-size: 0.875rem; } /* 14px */
 .text-\[10px\] { font-size: 0.875rem; } /* 14px로 강제 */
 .text-\[11px\] { font-size: 0.875rem; } /* 14px로 강제 */
+/* 파트2 — 잔존 소형 룰 승격: 12~13px(클라이언트 37회 사용)→14px, 15px 본문(가이드 등)→16px */
+.text-\[12px\] { font-size: 0.875rem; } /* 14px로 강제 */
+.text-\[13px\] { font-size: 0.875rem; } /* 14px로 강제 */
+.text-\[15px\] { font-size: 1rem; } /* 16px — 본문 최소선 */
+
+/* 파트2 — 본문 인라인 링크 터치 타깃 확대 (패딩+상쇄 마진 = 시각 레이아웃 불변) */
+.rich-content a {
+  display: inline-block;
+  padding: 0.625rem 0.125rem;
+  margin: -0.5rem -0.125rem;
+}
 
 /* Smooth scrolling */
 html {

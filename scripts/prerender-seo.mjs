@@ -276,7 +276,7 @@ function renderPage({ title, description, canonical, ogImage, ogImageAlt, ssrBod
     const heroImgTag = heroImgSrc
       ? `<img src="${escHtml(heroImgSrc)}" alt="${escHtml(ogImageAlt || title || '')}" ${preloadImage ? 'fetchpriority="high"' : 'loading="lazy" fetchpriority="low"'} decoding="async" style="display:block;width:100%;height:auto;max-height:280px;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#0a0a0a">`
       : '';
-    const heroBlock = `<div class="ssr-hero" style="max-width:1200px;margin:0 auto;padding:88px 16px 24px;min-height:240px">${heroImgTag}<h1 style="margin:0 0 10px;font-size:24px;font-weight:800;color:#111;line-height:1.25;letter-spacing:-0.02em">${heroTitle}</h1><p style="margin:0;color:#444;font-size:15px;line-height:1.65;max-width:720px">${heroDesc}</p></div>`;
+    const heroBlock = `<div class="ssr-hero" style="max-width:1200px;margin:0 auto;padding:88px 16px 24px;min-height:240px">${heroImgTag}<h1 style="margin:0 0 10px;font-size:24px;font-weight:800;color:#111;line-height:1.25;letter-spacing:-0.02em">${heroTitle}</h1><p style="margin:0;color:#444;font-size:16px;line-height:1.65;max-width:720px">${heroDesc}</p></div>`;
     // 시즌173 — ssr-hero가 visible H1을 제공하므로 ssrBody 첫 번째 H1은 H2로 강등 (페이지당 H1 정확히 1개 보장)
     const ssrBodyNoH1 = ssrBody.replace(/<h1\b([^>]*)>([\s\S]*?)<\/h1>/, '<h2$1>$2</h2>');
     html = html.replace(
@@ -289,6 +289,18 @@ function renderPage({ title, description, canonical, ogImage, ogImageAlt, ssrBod
 }
 
 const noIndexPathsSet = new Set(['/login', '/profile', '/dashboard', '/analytics', '/billing', '/onboarding', '/launch', '/admin', '/admin/venues', '/admin/magazine', '/admin/media', '/admin/seo', '/admin/blocks', '/admin/moderation', '/admin/stats', '/admin/visitors', '/admin/audit', '/my/customize', '/search']);
+
+// ── 파트2(2026-08-09) 색인 미달 28곳 조치 — 근거: reports/audit/2026-08-korea1.md 색인 전수(08-03) ──
+// ① 품질 근거 없는 5곳: noindex + sitemap 제외 (단일 업소 랭킹 / 전량 중복 '신규' 리스트 / 완전 중복 태그 / 고아 near 2곳)
+for (const p of ['/best/yojeong', '/new/lounges', `/tag/${encodeURIComponent('강남청담클럽')}`, `/near/${encodeURIComponent('의정부중앙')}`, `/near/${encodeURIComponent('중앙')}`]) noIndexPathsSet.add(p);
+// ② /region 한글×업종 쌍둥이(영문 허브와 같은 리스트·같은 title head — GSC 실측상 영문 쪽만 색인됨):
+//    canonical을 색인된 영문 허브로 통합 + sitemap 제외. 페이지 자체는 유지(내부 링크 막다른길 0).
+const CANONICAL_MERGE_TO = {};
+for (const [ko, en] of [['일산', 'ilsan'], ['강남', 'gangnam'], ['노원', 'nowon'], ['의정부', 'uijeongbu'], ['부천', 'bucheon'], ['이태원', 'itaewon'], ['용산', 'yongsan'], ['서울', 'seoul']]) {
+  CANONICAL_MERGE_TO[`/region/${encodeURIComponent(ko)}/clubs`] = `/clubs/${en}`;
+}
+CANONICAL_MERGE_TO[`/region/${encodeURIComponent('일산')}/rooms`] = '/rooms/ilsan';
+CANONICAL_MERGE_TO[`/region/${encodeURIComponent('일산')}/yojeong`] = '/yojeong/ilsan';
 
 // 시즌21 — SSR 내부링크: JS 미실행 봇(Yeti/Daum)도 anchor depth 1로 카테고리 도달
 function venueHref(v) {
@@ -374,7 +386,7 @@ function writePage(routePath, meta) {
       ssrBody = ssrBody.replace('<main id="main-content">', `<main id="main-content">${crumb}`);
     }
   }
-  const html = renderPage({ ...meta, ssrBody, canonical: routePath, noindex: noIndexPathsSet.has(routePath) });
+  const html = renderPage({ ...meta, ssrBody, canonical: CANONICAL_MERGE_TO[routePath] || routePath, noindex: noIndexPathsSet.has(routePath) });
   fs.writeFileSync(path.join(dir, 'index.html'), html);
 }
 
@@ -1593,7 +1605,20 @@ const CROSS_SIG = {
     '압구정': { tail: '로데오 칵테일바 조용한 만남 자리',     sig: '로데오 칵테일바에서 조용한 만남이 가능한 자리' },
   },
 };
+// 파트2 — GSC 실측 CTR 0% 허브만 직답형 개별 카피 (대전 클럽 102imp·청주 클럽 162imp, 나머지 허브는 기존 템플릿 유지)
+const REGIONAL_COPY_OVERRIDE = {
+  'club:대전': {
+    title: '월평동 대전설탕클럽 — 미러볼 12개 도는 지하, 이태원 출신 DJ가 새벽까지 끌어올린다',
+    desc: '월평동 지하 대전설탕클럽 — 게스트 라인업·드레스코드·첫방문 매너를 실측 정보로만 한 페이지에 정리했다. 미러볼 12개 아래, 헛걸음 전에 확인하고 출발하자.',
+  },
+  'club:청주': {
+    title: '성안길 청주클럽 슈퍼문 — 드롭 순간 직경 2미터 미러볼이 홀을 뒤덮는다',
+    desc: '성안길 청주클럽 슈퍼문 — 게스트 라인업·드레스코드·부킹 문화·첫방문 매너까지 실측 정보만 모았다. 홍대 DJ 격주 셋에 맞춰 오늘 밤 동선 여기서 정하자.',
+  },
+};
 function regionalTitleDesc(cat, region, regionKo, count, allNames) {
+  const ov = REGIONAL_COPY_OVERRIDE[`${cat}:${regionKo}`];
+  if (ov) return ov;
   const m = (REGIONAL_SIG[cat] || {})[region];
   if (cat === 'club') {
     const tail = m ? m.tail : `${count}곳 비교 한눈에 정리되는 핫스팟`;
@@ -2368,16 +2393,24 @@ for (const v of venues) {
   if (!stationVenues[stName]) stationVenues[stName] = [];
   stationVenues[stName].push(v);
 }
+// 파트2 — GSC 실측 노출 176·CTR 0%인 신사만 직답형 개별 카피 (나머지 역은 회전 템플릿 유지)
+const NEAR_COPY_OVERRIDE = {
+  '신사': {
+    title: '신사역 걸어서 5분, 오늘 갈 곳 — 위치·후기·전화번호 거리순으로 바로 정리',
+    desc: '신사에서 도보로 닿는 밤 코스를 거리순으로 모았다. 위치·후기·전화번호를 한눈에 비교하고, 헛걸음 없이 오늘 갈 곳을 먼저 정하자.',
+  },
+};
 for (const [st, stVenues] of Object.entries(stationVenues)) {
   const p = `/near/${encodeURIComponent(st)}`;
+  const nearOv = NEAR_COPY_OVERRIDE[st];
   // 시즌88 — title 접미부 회전(전 역 동일 접미부 지문 해체)
-  const title = `${st} ${aggPick(st, ['근처 업소', '도보권 업소', '인근 핫스팟'], 5)} ${stVenues.length}곳 — ${aggPick(st, ['역에서 걸어서 갈 수 있는 곳', '도보 5분권 모음', '걸어서 가는 나이트라이프', '역에서 거리순으로 정리', '지하철로 바로 닿는 곳', '퇴근길에 들르기 좋은', '한 정거장 안에서 해결', '역세권 거리순으로 모아'], 6)}`;
+  const title = nearOv ? nearOv.title : `${st} ${aggPick(st, ['근처 업소', '도보권 업소', '인근 핫스팟'], 5)} ${stVenues.length}곳 — ${aggPick(st, ['역에서 걸어서 갈 수 있는 곳', '도보 5분권 모음', '걸어서 가는 나이트라이프', '역에서 거리순으로 정리', '지하철로 바로 닿는 곳', '퇴근길에 들르기 좋은', '한 정거장 안에서 해결', '역세권 거리순으로 모아'], 6)}`;
   // 시즌172 — 역명이 venue 접두어에 포함되면 suffix만 노출 (밀도 희석)
   const stTopNames = stVenues.slice(0, 3).map(sv => { const p = (sv.nameKo || '').split(/\s+/); return (p.length > 1 && p[0].includes(st.replace(/역$/, ''))) ? p.slice(1).join(' ') : sv.nameKo; }).join(', ');
   // 시즌88 — desc에 실제 멤버 업종만 노출(전체 6업종 나열 X) → 페이지마다 고유, 사파리/희석
   const stDescCats = [...new Set(stVenues.map(sv => catLabelMap[sv.cat] || sv.cat))].join('·');
   const stDescRegion = [...new Set(stVenues.map(sv => sv.regionKo))].filter(Boolean).slice(0, 2).join(', ');
-  const desc = `${st} 도보 5분권 ${stDescCats} ${stVenues.length}곳${stDescRegion ? ` (${stDescRegion})` : ''} — ${stTopNames} 등 위치·후기·전화번호를 거리순으로 정리. ${aggPick(st, ['술 한잔하기 좋은 곳', '오늘 갈 곳', '가까운 핫스팟'], 3)}부터 확인하세요.`;
+  const desc = nearOv ? nearOv.desc : `${st} 도보 5분권 ${stDescCats} ${stVenues.length}곳${stDescRegion ? ` (${stDescRegion})` : ''} — ${stTopNames} 등 위치·후기·전화번호를 거리순으로 정리. ${aggPick(st, ['술 한잔하기 좋은 곳', '오늘 갈 곳', '가까운 핫스팟'], 3)}부터 확인하세요.`;
   let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
   ssrBody += `<h2>도보권 업소 ${stVenues.length}곳</h2><ul>`;
   stVenues.forEach(sv => {
@@ -2459,7 +2492,9 @@ for (const a of magazineArticles) {
   sitemapXml += `  <url><loc>${BASE_URL}/magazine/${a.id}/</loc><lastmod>${lastmodFor(`/magazine/${a.id}`)}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>\n`;
 }
 // Dynamic SEO pages (best, new, region, tag, near)
+// 파트2 — noindex 지정·canonical 통합 페이지는 sitemap 제외 (색인 신호 일관성)
 for (const dp of dynamicPages) {
+  if (noIndexPathsSet.has(dp) || CANONICAL_MERGE_TO[dp]) continue;
   sitemapXml += `  <url><loc>${BASE_URL}${dp}/</loc><lastmod>${lastmodFor(dp)}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>\n`;
 }
 sitemapXml += `</urlset>`;

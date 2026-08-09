@@ -126,9 +126,11 @@ export default function VenueDetailPage({
       {(venue.features.length > 0 || venue.shortDescription) && (
         <section className="mx-auto max-w-[1200px] px-4 pt-4 sm:px-6">
           {venue.features.length > 0 && (
-            <div className="mb-3 flex flex-wrap gap-2">
-              {venue.features.slice(0, 4).map((f) => (
-                <span key={f} className="inline-flex items-center rounded-full border border-[#E9E5FF] bg-[#F3F0FF] px-3 py-1.5 text-sm font-bold text-[#7C3AED]">
+            /* 파트2 — 칩(버튼 외형)이 dead click을 유발(Clarity 실측) → 정보는 유지하고 버튼 모양만 제거 */
+            <div className="mb-3 flex flex-wrap items-center gap-x-2 gap-y-1">
+              {venue.features.slice(0, 4).map((f, i) => (
+                <span key={f} className="inline-flex items-center text-sm font-bold text-[#7C3AED]">
+                  {i > 0 && <span className="mr-2 text-[#C9BFF5]" aria-hidden="true">·</span>}
                   {f}
                 </span>
               ))}

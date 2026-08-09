@@ -48,7 +48,7 @@ export function MidContentHook({ seed, variant }: { seed?: string; variant?: num
   return (
     <div className="my-6 flex items-center gap-3">
       <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#8B5CF6]/20 to-transparent" />
-      <span className="flex items-center gap-1.5 rounded-full bg-[#8B5CF6]/5 border border-[#8B5CF6]/10 px-4 py-1.5 text-xs font-bold text-[#8B5CF6] whitespace-nowrap">
+      <span className="flex items-center gap-1.5 px-2 text-xs font-bold text-[#8B5CF6] whitespace-nowrap">
         {hook.emoji} {hook.text}
       </span>
       <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#8B5CF6]/20 to-transparent" />
@@ -110,7 +110,7 @@ export function ReadingMilestone({ containerRef }: { containerRef: React.RefObje
       {activeMilestone && (
         <div
           data-reading-milestone="true"
-          className="fixed left-1/2 -translate-x-1/2 z-[45] animate-fade-in"
+          className="pointer-events-none fixed left-1/2 -translate-x-1/2 z-[45] animate-fade-in"
           style={{ bottom: 'calc(140px + env(safe-area-inset-bottom))' }}
         >
           <div className="flex items-center gap-2 rounded-full bg-[#111]/90 px-5 py-2.5 text-white shadow-xl backdrop-blur-sm">
@@ -153,7 +153,10 @@ export function ReadCompletionReward({
   return (
     <div ref={ref} className="my-8">
       {!revealed ? (
-        <div className="rounded-2xl border-2 border-dashed border-[#8B5CF6]/30 bg-gradient-to-br from-[#F3F0FF] to-white p-6 text-center">
+        <div
+          onClick={() => setRevealed(true)}
+          className="cursor-pointer rounded-2xl border-2 border-dashed border-[#8B5CF6]/30 bg-gradient-to-br from-[#F3F0FF] to-white p-6 text-center"
+        >
           <span className="text-3xl block mb-2">🔒</span>
           <p className="text-sm font-bold text-[#111] mb-1">
             {teaser || '끝까지 읽은 사람만 보는 숨겨진 정보'}
@@ -204,10 +207,9 @@ export function MidContentQuiz({
           <button
             key={i}
             onClick={() => setSelected(i)}
-            disabled={selected !== null}
             className={`relative w-full rounded-xl overflow-hidden text-left transition-all ${
               selected === i ? 'ring-2 ring-[#8B5CF6] bg-[#8B5CF6]/5' :
-              selected !== null ? 'opacity-60' : 'hover:bg-gray-50 active:scale-[0.98]'
+              selected !== null ? 'opacity-60 hover:opacity-90 active:scale-[0.98]' : 'hover:bg-gray-50 active:scale-[0.98]'
             }`}
             style={{ minHeight: 44 }}
           >
