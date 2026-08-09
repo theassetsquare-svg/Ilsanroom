@@ -8,8 +8,9 @@ on:
     - cron: '20 23 * * *'
   workflow_dispatch:
 
+# 계기판 주간 스냅샷(data/northstar/*.json) 이력 커밋을 위해 write 필요(월요일에만 파일 변화 → 커밋).
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   northstar:
@@ -19,7 +20,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Northstar 3-metric audit
+      - name: Northstar 3-metric audit (+ 월요일 주간 계기판)
         run: node scripts/northstar-audit.mjs
         env:
           GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
@@ -27,3 +28,16 @@ jobs:
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+      - name: Persist weekly northstar snapshot (월요일만 파일 변화)
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain data/northstar)" ]; then
+            git config user.name "nolcool-bot"
+            git config user.email "bot@nolcool.com"
+            git add data/northstar
+            git commit -m "chore(northstar): 주간 계기판 스냅샷 $(date -u +%Y-%m-%d)"
+            git pull --rebase --autostash origin main || true
+            git push || echo "push skip(경쟁 커밋) — 다음 주 재시도"
+          else
+            echo "계기판 스냅샷 변화 없음(계기판일 아님) — 커밋 skip"
+          fi

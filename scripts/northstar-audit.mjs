@@ -26,6 +26,7 @@
 import https from 'node:https';
 import { getGaToken, gaErrorReason, runReport } from './lib/ga-auth.mjs';
 import { getAccessToken as getGscToken, gscQuery, hasGscCredentials } from './lib/gsc-auth.mjs';
+import { runWeekly } from './northstar-dashboard.mjs';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://rkqnblbajhnehmxfnvri.supabase.co';
 const SUPABASE_SECRET_KEY = process.env.SUPABASE_SECRET_KEY || '';
@@ -49,6 +50,8 @@ const TARGET_SESSION_SEC = 600;   // 세션 누적 체류 10분(600초) 이상. 
 const TARGET_BOUNCE_MAX = 0.55;
 
 const kst = () => new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 19) + ' KST';
+// 주간 계기판 발행 앵커 = KST 월요일(주 1회). 이 스크립트는 매일 08:20 실행되므로 월요일만 계기판 산출.
+const isKstMonday = () => new Date(Date.now() + 9 * 3600 * 1000).getUTCDay() === 1;
 const pct = (n) => (n * 100).toFixed(1);
 const ymd = (d) => new Date(d).toISOString().slice(0, 10);
 
@@ -233,15 +236,22 @@ function oppTable(opp) {
     <th style="border:1px solid #E5E7EB;padding:6px;font-size:11px">평균순위</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
-async function sendMail({ ctr, rd, bo, fails }) {
+async function sendMail({ ctr, rd, bo, fails, weekly }) {
   if (!RESEND_API_KEY) { console.log('RESEND_API_KEY 없음 — 메일 skip'); return; }
+  // 주간(월요일) 계기판이 있으면 제목에 반영 — 새 메일 신설 아님, 같은 [놀쿨][🌟북극성] 1통에 통합.
+  const crossings = weekly?.crossings || [];
+  const subject = crossings.length
+    ? `[놀쿨][🌟북극성] 🎉 새 마일스톤 ${crossings.length}건 돌파 + 주간 계기판 (${kst().slice(0, 10)})`
+    : weekly
+      ? `[놀쿨][🌟북극성] 주간 계기판${fails ? ` + 3대 지표 ${fails}건 미달` : ''} (${kst().slice(0, 10)})`
+      : `[놀쿨][🌟북극성] 3대 지표 ${fails}건 목표 미달 (${kst().slice(0, 10)})`;
   const ctrOk = !ctr.ok || ctr.imp < MIN_GSC_IMPRESSIONS || ctr.ctr >= TARGET_CTR;
   const readOk = !rd.ok || rd.sessions < MIN_SESSIONS || rd.readEndRate >= TARGET_READ_END;
   const dwellOk = !rd.ok || rd.measured < MIN_SESSIONS || rd.avgSessionSec >= TARGET_SESSION_SEC;
   const bounceOk = !bo.ok || bo.sessions < MIN_SESSIONS || bo.bounce <= TARGET_BOUNCE_MAX;
 
   const html = `<div style="font-family:sans-serif;max-width:760px;margin:0 auto;padding:20px">
-    <h2 style="color:#DC2626">[놀쿨 북극성] 3대 지표 ${fails}건 목표 미달 (${kst().slice(0, 10)})</h2>
+    <h2 style="color:${fails ? '#DC2626' : '#7C3AED'}">[놀쿨 북극성] ${fails ? `3대 지표 ${fails}건 목표 미달` : '주간 요약'} (${kst().slice(0, 10)})</h2>
     <p style="color:#6B7280;font-size:12px">사장님이 못박은 3가지를 매일 한 통에 자동 측정 — 목표 미달시만 발송(자기수렴). 모든 수치 읽기전용·진짜 방문자 기준.</p>
 
     <h3>① 클릭률 (CTR) — GSC 최근 28일 <span style="color:#9CA3AF;font-size:12px">(전 대비 = 직전 28일)</span></h3>
@@ -269,13 +279,14 @@ async function sendMail({ ctr, rd, bo, fails }) {
     <p style="background:#FEF2F2;border-left:3px solid #DC2626;padding:10px 12px;margin:16px 0;font-size:12px;color:#7F1D1D">
       ⚠️ 이탈률 literal 0%·참여율 100%는 합성하면 Google 페널티(활동조작). 이 알림은 측정만 — 개선은 콘텐츠·동선·재미로 진짜 방문자를 붙잡는 화이트햇만.</p>
     <p style="color:#9CA3AF;font-size:11px;margin-top:16px">매일 KST 08:20 자동 — northstar-audit.mjs (읽기전용, 사이트 크롤 0). 3개 전부 목표 도달 시 메일 자동 중단(자기수렴).</p>
+    ${weekly?.html || ''}
   </div>`;
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       from: 'NOLCOOL auto <onboarding@resend.dev>', to: [TO],
-      subject: `[놀쿨][🌟북극성] 3대 지표 ${fails}건 목표 미달 (${kst().slice(0, 10)})`,
+      subject,
       html,
     }),
   });
@@ -297,11 +308,24 @@ async function main() {
   console.log(`③ 이탈률: ${bo.ok ? pct(bo.bounce) + '% ' + trendText(bo.bounce, bo.prevBounce, 'down', (n) => pct(n) + '%p') : bo.reason}${bounceFail ? ' 🛑' : ''}`);
 
   const fails = [ctrFail, readFail, dwellFail, bounceFail].filter(Boolean).length;
-  if (fails === 0) {
-    console.log('✅ 3대 지표 전부 목표 도달(또는 데이터 보류) — 메일 미발송(자기수렴)');
+
+  // ── 주간 계기판(KST 월요일만) — 산출 실패해도 3대 지표 메일 흐름은 절대 안 깨지게 격리 ──
+  let weekly = null;
+  if (isKstMonday()) {
+    try {
+      weekly = await runWeekly({ write: true });
+      console.log(`🌟 주간 계기판 산출 완료(${weekly.snapshot.week}) · 마일스톤 교차 ${weekly.crossings.length}건`);
+    } catch (e) {
+      console.error('주간 계기판 산출 실패(무시하고 3대 지표만 진행):', e.message);
+    }
+  }
+
+  // 주간 요약(월요일)은 3대 지표가 전부 양호해도 계기판 1블록을 실어 보낸다(주간 리포트 = 사장님 요청).
+  if (fails === 0 && !weekly) {
+    console.log('✅ 3대 지표 전부 목표 도달(또는 데이터 보류) · 계기판일 아님 — 메일 미발송(자기수렴)');
     return;
   }
-  await sendMail({ ctr, rd, bo, fails });
+  await sendMail({ ctr, rd, bo, fails, weekly });
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
