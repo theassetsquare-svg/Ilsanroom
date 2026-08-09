@@ -179,6 +179,10 @@ export function QuickPostInline({ onPosted }: Props) {
         </span>
         <span>{text.length}/280</span>
       </div>
+      {/* 파트3 S2e — 명예훼손 안전 안내(1줄). 특정 업소·개인 비방 리스크 사전 고지 */}
+      <p style={{ marginTop: 6, fontSize: 11, lineHeight: 1.5, color: COLOR.text.tertiary }}>
+        사실이어도 특정 업소·개인을 겨냥한 비방은 법적 문제가 될 수 있어요. 익명이 보장되니 경험은 편하게, 비난은 빼고 남겨주세요.
+      </p>
     </div>
   );
 }

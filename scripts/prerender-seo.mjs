@@ -1644,6 +1644,31 @@ function regionalTitleDesc(cat, region, regionKo, count, allNames) {
   }
 }
 
+// ── 파트3 S1 — 집계층 상단 직답 블록(.ssr-answer) ──
+// AI 인용 타깃: 페이지 실 venue 데이터로 40~60어절 자기완결 답 + 구체 디테일 1+.
+// 결정적 시드(seedKey)로 연결어 변주 → 집계 지문 회귀 방지. 창작 0(데이터 없으면 항목 생략).
+function aggAnswerBlock(vlist, label, seedKey) {
+  if (!vlist || !vlist.length) return '';
+  let _h = 0; for (let i = 0; i < seedKey.length; i++) _h = (_h * 31 + seedKey.charCodeAt(i)) >>> 0;
+  const pk = (arr, off) => { let x = (_h ^ Math.imul(off + 1, 0x9e3779b9)) >>> 0; x = Math.imul(x ^ (x >>> 16), 0x45d9f3b) >>> 0; x = Math.imul(x ^ (x >>> 16), 0x45d9f3b) >>> 0; x = (x ^ (x >>> 16)) >>> 0; return arr[x % arr.length]; };
+  const suffix = (nm) => { const p = (nm || '').split(/\s+/); return p.length > 1 ? p.slice(1).join(' ') : nm; };
+  // 구체 디테일: shortDesc에서 '숫자+단위' 첫 어구(AI가 인용하는 디테일 유형). 없으면 features[0].
+  const detailOf = (v) => {
+    const src = String(v.shortDescription || v.shortDesc || '');
+    const m = src.match(/[^,.·—]*?\d+\s*(?:분|평|세|층|명|호선|번)[^,.·—]*/);
+    if (m && m[0].trim().length <= 18) return m[0].trim().replace(/^[\s—-]+/, '');
+    return (v.features && v.features[0]) ? String(v.features[0]).slice(0, 16) : '';
+  };
+  const top = vlist.slice(0, Math.min(3, vlist.length));
+  const named = top.map(v => { const d = detailOf(v); return d ? `${suffix(v.nameKo)}(${d})` : suffix(v.nameKo); });
+  const regs = [...new Set(vlist.map(v => v.regionKo).filter(Boolean))].slice(0, 3);
+  const lead = `${label} ${pk(['지금 볼 수 있는 곳은', '현재 확인된 곳은', '등록된 곳은'], 1)} ${vlist.length}곳이다.`;
+  const mid = `${pk(['대표적으로', '먼저 눈에 띄는 곳은', '자주 꼽히는 곳은'], 2)} ${named.join(', ')}${pk([' 등이 있다.', ' 등을 먼저 본다.', ' 순으로 둘러보면 된다.'], 3)}`;
+  const area = regs.length ? ` ${pk(['주로', '대부분', '권역은'], 6)} ${regs.join('·')} ${pk(['일대에 몰려 있다.', '쪽에 분포한다.', '권에 자리한다.'], 7)}` : '';
+  const tail = ` ${pk(['영업이 확인된 곳만 싣고', '실광고주 정보만 올리고', '없는 정보는 비워 두고'], 4)} ${pk(['위치·후기·전화번호는 각 업소에서 바로 확인할 수 있다.', '마감 시간은 요일별로 달라 직통 통화가 정확하다.', '동선은 지역·역별로 좁혀 비교할 수 있다.'], 5)}`;
+  return `<p class="ssr-answer">${escHtml(lead + ' ' + mid + area + tail)}</p>`;
+}
+
 let regionalCount = 0;
 for (const [cat, regions] of Object.entries(regionsByCategory)) {
   const cm = catMap[cat];
@@ -1656,7 +1681,9 @@ for (const [cat, regions] of Object.entries(regionsByCategory)) {
       const allNames = regionVenues.slice(0, 3).map(vv => vv.nameKo).join(', ');
       const { title, desc } = regionalTitleDesc(cat, region, regionKo, regionVenues.length, allNames);
       // SSR: 해당 지역 업소 이름 + 상세 설명 전부 포함
-      let regSsr = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
+      let regSsr = `<h1>${escHtml(title)}</h1>`;
+      regSsr += aggAnswerBlock(regionVenues, `${regionKo} ${catLabelMap[cat]}`, `/${cm.path}/${region}`);
+      regSsr += `<p>${escHtml(desc)}</p>`;
       regSsr += `<h2>${escHtml(regionKo)} ${catLabelMap[cat]} ${regionVenues.length}곳</h2><ul>`;
       regionVenues.forEach((vv, idx) => {
         // 시즌172 — 모든 venue suffix만 노출 (브랜드 접두어 반복 차단). 상위 3곳만 shortDesc.
@@ -2233,7 +2260,9 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
   // 시즌88 — desc도 실제 멤버 업종만 노출(전체 6업종 나열 X) → 지역마다 고유
   const regionDescCats = Object.keys(byCat).join('·');
   const desc = `${regionKo} ${regionDescCats} ${regionVenues.length}곳 통합 정리. ${regionTopNames} 등 인기 업소 후기·분위기·전화번호를 한눈에 비교. 처음 가는 사람도 후회 없이 고르는 ${regionKo} 가이드.`;
-  let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
+  let ssrBody = `<h1>${escHtml(title)}</h1>`;
+  ssrBody += aggAnswerBlock(regionVenues, regionKo, p);
+  ssrBody += `<p>${escHtml(desc)}</p>`;
   for (const [ck, rvs] of Object.entries(byCat)) {
     ssrBody += `<h2>${escHtml(ck)} (${rvs.length}곳)</h2><ul>`;
     rvs.forEach((rv, idx) => {
@@ -2284,7 +2313,9 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     const cd = xs
       ? `${regionKo}에서 ${catInfo.labelKo} 어디가 진짜야? ${xs.sig}. ${crossNames} 등 ${crossVenues.length}곳 분위기·후기·매니저·드레스코드·전화번호·예약 팁까지 한 페이지에서 바로 확인. 헛걸음 전에 비교하고 가자.`
       : `${regionKo}에서 ${catInfo.labelKo} 어디가 진짜야? ${crossNames} 등 ${crossVenues.length}곳 분위기·후기·평점·매니저·드레스코드·전화번호·영업시간·예약 팁까지 한 페이지에서 바로 확인. 헛걸음 전에 비교하고 가자.`;
-    let cSsr = `<h1>${escHtml(ct)}</h1><p>${escHtml(cd)}</p>`;
+    let cSsr = `<h1>${escHtml(ct)}</h1>`;
+    cSsr += aggAnswerBlock(crossVenues, `${regionKo} ${catInfo.labelKo}`, ct);
+    cSsr += `<p>${escHtml(cd)}</p>`;
     cSsr += `<h2>${escHtml(regionKo)} 업소 ${crossVenues.length}곳 리스트</h2><ul>`;
     crossVenues.forEach((cv, idx) => {
       // 시즌172 — 상위 5곳만 shortDesc, 그 외는 suffix 라벨만
@@ -2411,7 +2442,9 @@ for (const [st, stVenues] of Object.entries(stationVenues)) {
   const stDescCats = [...new Set(stVenues.map(sv => catLabelMap[sv.cat] || sv.cat))].join('·');
   const stDescRegion = [...new Set(stVenues.map(sv => sv.regionKo))].filter(Boolean).slice(0, 2).join(', ');
   const desc = nearOv ? nearOv.desc : `${st} 도보 5분권 ${stDescCats} ${stVenues.length}곳${stDescRegion ? ` (${stDescRegion})` : ''} — ${stTopNames} 등 위치·후기·전화번호를 거리순으로 정리. ${aggPick(st, ['술 한잔하기 좋은 곳', '오늘 갈 곳', '가까운 핫스팟'], 3)}부터 확인하세요.`;
-  let ssrBody = `<h1>${escHtml(title)}</h1><p>${escHtml(desc)}</p>`;
+  let ssrBody = `<h1>${escHtml(title)}</h1>`;
+  ssrBody += aggAnswerBlock(stVenues, `이 역 도보권에`, p);
+  ssrBody += `<p>${escHtml(desc)}</p>`;
   ssrBody += `<h2>도보권 업소 ${stVenues.length}곳</h2><ul>`;
   stVenues.forEach(sv => {
     const parts = (sv.nameKo || '').split(/\s+/);
