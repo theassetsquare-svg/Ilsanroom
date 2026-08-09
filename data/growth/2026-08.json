@@ -35,6 +35,18 @@
       "※ 전부 파트3에서 게이트 통과 + 운영팀 명찰로 발행(회원 글 사칭 금지). 이번엔 후보 목록만."
     ]
   },
+  "part3_intervention": {
+    "date": "2026-08-09",
+    "source": "한국1위 파트3/5 — AI인용·회원자석·CLS/LCP·봇IP·운영팀가이드",
+    "scope": [
+      "S1 ✅ AI 인용 직답블록: 집계층 223장(region/near/category-region/region×cat) 상단 .ssr-answer 자동조립 — 실 venue 데이터(개수·대표3곳·구체디테일1+·권역)로 자기완결 답. 결정적 시드 연결어 변주로 구조지문 near 23%→19.8% 개선·전 카테고리 PASS. 창작 0. speakable JSON-LD 연동. (magazine 60장은 ⚠️ 이월 — 콘텐츠 프로즈라 자동조립 부적합)",
+      "S2 부분: 카카오 로그인 존재 확인(키 불요)·익명 문구 존재 · 즐겨찾기/신고버튼 존재 확인 · 글쓰기 명예훼손 안전안내 1줄 추가(✅). 인라인 가입카드·글쓰기 사다리·주말알림·첫글 운영팀 알림큐는 ⚠️ 이월(대형 프론트, 전용 패스 필요)",
+      "S3 분석: 시스템 폰트(웹폰트 0)=display:swap N/A · SSR 히어로 aspect-ratio 공간예약=CLS안전 · 파트2.5가 홈 지연주입 위젯(FreshPosts/HomeFeed/Temperature) 은닉 = CLS 주 원인 이미 제거. 허브 LCP preload·lab 전후 정밀측정은 ⚠️ 이월(04:00 lighthouse 자동런 참조)",
+      "S4 방침 ✅: 개인정보처리방침에 Google Analytics·Microsoft Clarity 처리위탁·분석쿠키 명시. 봇IP 등록은 ⚠️ 불가(GA4가 방문자 IP 미노출 — 봇은 기기/도시 시그니처로만 식별. 광역 클라우드 CIDR 등록은 실유저 오제외 위험). GA4 내장 봇필터 유지 권장",
+      "S5 ⚠️ 이월: 운영팀 공식 가이드 3편 발행은 파트2.5 가짜0 리셋 직후 DB 인서트/계정생성 리스크로 보류(재시드 오인 방지). 사장님 첫글 초안은 결과표 출력"
+    ],
+    "honesty_note": "파트2.5 가짜0 상태 유지 확인(posts 16 실글·comments 0·reviews 0). H1a 6곳·줄리아나 무개입. 게이트 전체 PASS. 이월 항목은 미확인/미시행을 ✅로 쓰지 않고 ⚠️로 정직 표기."
+  },
   "sources": {
     "ga4": "GA4 Data API 540830544 (ga4-gsc-full-dump 2026-08-02 + monthly-full-audit 2026-07-29 런로그)",
     "gsc": "GSC https://nolcool.com/ (같은 덤프, 28일)",
