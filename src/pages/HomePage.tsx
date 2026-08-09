@@ -31,6 +31,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useCommunityActive } from '@/hooks/useCommunityActive';
 import { popularityOrder } from '@/lib/popularity';
 import { RankingBasisInline } from '@/components/ui/RankingBasisNote';
+import WeeklyVoteWidget from '@/components/community/WeeklyVoteWidget';
 
 /* ── Helpers ── */
 function getCategoryHref(category: string, slug: string, region: string) {
@@ -617,6 +618,11 @@ export default function HomePage() {
       <Suspense fallback={null}>
         <InviteFriendBox />
       </Suspense>
+
+      {/* ═══ 1.38 이번 주 원터치 투표 — 실측 상위 2곳, 손가락 한 번 참여 (파트4.5) ═══ */}
+      <section className="px-4 pt-2 pb-1 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto" aria-label="이번 주 원터치 투표">
+        <WeeklyVoteWidget />
+      </section>
 
       {/* ═══ 1.4 커뮤니티 섹션 — 파트2.5 정직화: 실제 7일 회원 글 임계값 이상일 때만 노출.
               미만이면 은닉(가짜로 채우지 않음). 아래 실데이터 위젯이 그 자리를 대신한다. ═══ */}

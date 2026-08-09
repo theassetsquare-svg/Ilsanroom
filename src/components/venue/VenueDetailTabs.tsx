@@ -7,6 +7,8 @@ import type { Venue } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
 import { getVenueEvent } from '@/data/venue-events';
 import { fetchReviews, submitReview, type Review as DBReview } from '@/lib/review-api';
+import TapReviewCard from '@/components/venue/TapReviewCard';
+import FoundingMemberReward from '@/components/community/FoundingMemberReward';
 
 interface FAQ {
   question: string;
@@ -332,6 +334,11 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
   const [text, setText] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [showReward, setShowReward] = useState(false);
+
+  const loadReviews = () => {
+    fetchReviews(venue.slug, 30).then(({ data }) => setReviews(data.map(dbToLocal)));
+  };
 
   useEffect(() => {
     let alive = true;
@@ -365,6 +372,7 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
     setText('');
     setRating(0);
     setShowWrite(false);
+    setShowReward(true);
   };
 
   const avg = reviews.length > 0 ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : '0.0';
@@ -391,6 +399,9 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
           </Link>
         )}
       </div>
+
+      {/* 탭 후기 — 타이핑 0 기여 (파트4.5) */}
+      <TapReviewCard venue={venue} onSubmitted={loadReviews} />
 
       {/* 평균 별점 */}
       {reviews.length > 0 && (
@@ -475,6 +486,8 @@ function VenueReviewSection({ venue }: { venue: Venue }) {
           <p className="text-sm" style={{ color: '#999' }}>아직 리뷰가 없습니다. 첫 번째 리뷰를 남겨보세요!</p>
         </div>
       )}
+
+      <FoundingMemberReward show={showReward} onClose={() => setShowReward(false)} />
     </div>
   );
 }

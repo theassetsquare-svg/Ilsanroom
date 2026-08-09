@@ -1,0 +1,22 @@
+name: Ops Weekly Question
+
+# 운영팀 주간 질문 자동 발행 (파트4.5) — is_official=TRUE, 실측 지역 기반, 멱등.
+# 매주 목요일 KST 11:00 (UTC 02:00) — 기존 스케줄과 무충돌 슬롯.
+on:
+  schedule:
+    - cron: '0 2 * * 4'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Publish weekly ops question
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: node scripts/ops-weekly-question.mjs

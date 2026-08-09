@@ -7,6 +7,7 @@ import { MidContentHook, MidContentQuiz, ReadFinishCount, ReadCompletionReward, 
 import { createClient } from '@/lib/supabase';
 import { splitByPopularity, hasPopularityData, POPULARITY_UPDATED_AT } from '@/lib/popularity';
 import RankingBasisNote from '@/components/ui/RankingBasisNote';
+import WeeklyVoteWidget from '@/components/community/WeeklyVoteWidget';
 
 /* ── 카테고리 ── */
 const categories = [
@@ -492,6 +493,11 @@ export default function RankingPage() {
 
         <div className="mb-6 space-y-2">
           <RankingBasisNote />
+        </div>
+
+        {/* 여러분의 픽은? — 순위 페이지 원터치 투표 (파트4.5) */}
+        <div className="mb-6">
+          <WeeklyVoteWidget />
         </div>
 
         <MidContentHook seed="ranking-mid" variant={0} />

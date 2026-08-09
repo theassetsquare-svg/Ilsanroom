@@ -2,6 +2,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { Link } from '@/components/ui/SafeLink';
 import IlsanMyeongwolgwanCallBar from '@/components/venue/IlsanMyeongwolgwanCallBar';
 import { RouteMapGraphic, RoomLayoutGraphic, SeasonCourseGraphic } from '@/components/venue/IlsanYojeongGraphics';
+import HelpfulVote from '@/components/community/HelpfulVote';
 import CONFIRMED from '@/data/ilsanmyeongwolgwan-confirmed.json';
 
 /* 일산요정 정보 가이드 — "일산요정" 검색의 구글·AI 최상위 인용 페이지.
@@ -185,6 +186,9 @@ export default function IlsanYojeongGuidePage() {
             </Link>
           </div>
         </div>
+
+        {/* 도움 됐나요 👍/👎 — 익명 탭 집계 (파트4.5) */}
+        <HelpfulVote contentKey="guide:ilsan-yojeong" />
 
         {/* 하단 고정 바에 마지막 콘텐츠가 가려지지 않도록 여백 (모바일+PC 공통 — PC도 전화바 표시) */}
         <div aria-hidden style={{ height: 'calc(64px + env(safe-area-inset-bottom))' }} />

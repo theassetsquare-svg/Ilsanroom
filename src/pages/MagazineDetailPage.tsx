@@ -9,6 +9,8 @@ import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { ReadTimeEstimate, MidContentHook, ReadFinishCount, ReadCompletionReward, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
 import RelatedVenuesForMagazine from '@/components/magazine/RelatedVenuesForMagazine';
+import HelpfulVote from '@/components/community/HelpfulVote';
+import WeeklyVoteWidget from '@/components/community/WeeklyVoteWidget';
 import { sanitizeHtml } from '@/lib/sanitize-html';
 import { splitHtmlParagraphs } from '@/lib/text-format';
 
@@ -127,10 +129,18 @@ export default function MagazineDetailPage() {
         {/* 중간 훅 */}
         <MidContentHook seed={article.id} />
 
+        {/* 도움 됐나요 👍/👎 — 익명 탭 집계 (파트4.5) */}
+        <HelpfulVote contentKey={`magazine:${article.id}`} />
+
         {/* 공유 */}
         <div className="flex items-center gap-3 mb-8 pt-4 border-t" style={{ borderColor: '#E5E7EB' }}>
           <ShareButton title={article.title} text={article.excerpt} />
           <span className="text-xs" style={{ color: '#999' }}>이 글이 유용했다면 공유해주세요</span>
+        </div>
+
+        {/* 이번 주 원터치 투표 — 매거진 하단 접점 확대 (파트4.5) */}
+        <div className="mb-8">
+          <WeeklyVoteWidget />
         </div>
 
         {/* ═══ 글 하단 전화 CTA (담당자 폰 있는 글만) ═══ */}

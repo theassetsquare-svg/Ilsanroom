@@ -94,7 +94,13 @@ export default function WeeklyVoteWidget() {
           투표는 회원만 (1인 1표) — <Link to="/login" className="font-bold" style={{ color: '#8B5CF6' }}>3초 로그인 →</Link>
         </p>
       )}
-      {myChoice && <p className="mt-2 text-[11px] font-medium" style={{ color: '#8B5CF6' }}>투표 완료! 결과는 실제 표 수 그대로 보여드려요.</p>}
+      {total > 0 && <p className="mt-2 text-[11px] font-medium" style={{ color: '#8B5CF6' }}>지금까지 {total}명 참여</p>}
+      {myChoice && (
+        <div className="mt-2 flex items-center justify-between">
+          <p className="text-[11px] font-medium" style={{ color: '#8B5CF6' }}>투표 완료! 결과는 실제 표 수 그대로예요.</p>
+          <Link to="/community/reviews" className="text-[11px] font-bold" style={{ color: '#8B5CF6' }}>✍️ 한 줄 보태기 →</Link>
+        </div>
+      )}
       {!myChoice && user && total === 0 && <p className="mt-2 text-[11px]" style={{ color: '#BBB' }}>아직 첫 표를 기다리는 중 — 첫 표의 주인공이 되어보세요.</p>}
     </div>
   );

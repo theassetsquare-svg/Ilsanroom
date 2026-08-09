@@ -11,9 +11,10 @@ const CONTEXT_COPY: Record<string, { title: string; sub: string }> = {
   roulette: { title: '뽑힌 곳, 다음에도 기억할래?', sub: '가입하면 룰렛 결과를 ⭐단골 목록에 담아둘 수 있어요.' },
   best: { title: '지금 본 순위, 다음 주엔 바뀔 수 있어요', sub: '가입하면 ⭐단골 목록·월 1표 순위 투표까지 바로 열려요.' },
   favorite: { title: '⭐ 담아두려면 3초면 돼요', sub: '가입하면 이 가게가 내 단골 목록에 저장되고 어디서든 다시 열려요.' },
+  tapreview: { title: '탭 몇 번이면 후기 끝 — 타이핑 0', sub: '가입하면 방금 고른 걸 내 후기로 남기고, 창립멤버 번호도 바로 받아요.' },
 };
 
-export default function InlineJoinCard({ context }: { context: 'roulette' | 'best' | 'favorite' }) {
+export default function InlineJoinCard({ context }: { context: 'roulette' | 'best' | 'favorite' | 'tapreview' }) {
   const { user } = useAuth();
   const [starting, setStarting] = useState(false);
   if (user) return null;

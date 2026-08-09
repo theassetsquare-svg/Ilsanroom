@@ -5,6 +5,7 @@ import { Link } from '../components/ui/SafeLink';
 import { PageLiveCounter, GuideReadCount } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import { MidContentHook, ReadFinishCount, ReadCompletionReward, NextSectionTeaser, MidContentQuiz, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
+import HelpfulVote from '@/components/community/HelpfulVote';
 
 const guides = [
   {
@@ -201,6 +202,9 @@ export default function GuidePage() {
             </ul>
           </div>
         </ReadCompletionReward>
+
+        {/* 도움 됐나요 👍/👎 — 익명 탭 집계 (파트4.5) */}
+        <HelpfulVote contentKey="guide:first-visit" />
 
         {/* 완독자 수 + CTA */}
         <div className="mt-6 text-center space-y-4">
