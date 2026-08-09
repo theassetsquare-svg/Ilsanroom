@@ -28,6 +28,7 @@ const InfiniteRecommendLoop = lazy(() => import('@/components/home/InfiniteRecom
 const LuckyRoulette = lazy(() => import('@/components/home/LuckyRoulette'));
 import { articles as magazineArticles } from '@/data/magazine-articles';
 import { useAuth } from '@/hooks/useAuth';
+import { useCommunityActive } from '@/hooks/useCommunityActive';
 
 /* ── Helpers ── */
 function getCategoryHref(category: string, slug: string, region: string) {
@@ -229,6 +230,8 @@ export default function HomePage() {
   useDocumentMeta('놀쿨 — 오늘 어디 갈지 못 정했죠? 20년 굴러본 사람이 골라드림', `놀쿨 — 오늘 어디 갈지 못 정했죠? 거를 곳 천지예요. 놀쿨은 클럽·나이트·룸·요정·라운지·호빠 6업종 ${VENUES_TOTAL_OPEN}+ 업소를 20년 굴러본 사람이 1줄로 정리. 주말 망치기 전 놀쿨부터 켜요.`);
   const navigate = useNavigate();
   const { user } = useAuth();
+  // 파트2.5 정직화 — 홈 커뮤니티 섹션 자동 스위치(실제 7일 회원 글 임계값 이상일 때만 노출)
+  const { active: communityActive } = useCommunityActive();
 
   // 단계 5 — 관리자가 /admin/blocks에서 덮어쓸 수 있는 블록들
   const heroH1Override = usePageBlock('home', 'hero_h1', '');
@@ -616,29 +619,50 @@ export default function HomePage() {
         <InviteFriendBox />
       </Suspense>
 
-      {/* ═══ 1.4 방금 올라온 글 보호 영역 — #1 커뮤니티 재미. 30분 내 글 최상단 노출 ═══ */}
-      <Suspense fallback={null}>
-        <FreshPostsZone />
-      </Suspense>
-
-      {/* ═══ 1.45 단골 뱃지 — #4 매일 중독. 방문 연속일 표시 ═══ */}
-      <section className="px-4 pt-2 pb-1 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
+      {/* ═══ 1.4 커뮤니티 섹션 — 파트2.5 정직화: 실제 7일 회원 글 임계값 이상일 때만 노출.
+              미만이면 은닉(가짜로 채우지 않음). 아래 실데이터 위젯이 그 자리를 대신한다. ═══ */}
+      {communityActive && (
         <Suspense fallback={null}>
-          <StreakBadge />
+          <FreshPostsZone />
         </Suspense>
-      </section>
+      )}
 
-      {/* ═══ 1.5 실시간 밤의 온도 TOP 10 — 명예욕 자극, 회원 활동 유도 ═══ */}
-      <section className="px-4 py-3 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
-        <Suspense fallback={<div className="h-32" aria-hidden="true" />}>
-          <TemperatureRanking limit={5} />
+      {/* ═══ 1.45 단골 뱃지 — 로그인 회원에게만(비로그인 홈에서 제거). #4 매일 중독 ═══ */}
+      {user && (
+        <section className="px-4 pt-2 pb-1 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
+          <Suspense fallback={null}>
+            <StreakBadge />
+          </Suspense>
+        </section>
+      )}
+
+      {/* ═══ 1.5 실시간 밤의 온도 — 실제 회원 활동이 있을 때만(빈 랭킹 '데이터 없음' 노출 방지) ═══ */}
+      {communityActive && (
+        <section className="px-4 py-3 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
+          <Suspense fallback={<div className="h-32" aria-hidden="true" />}>
+            <TemperatureRanking limit={5} />
+          </Suspense>
+        </section>
+      )}
+
+      {/* ═══ 1.7 커뮤니티 피드 — 활동 있으면 무한피드, 없으면 정직한 시작 안내(가짜 0) ═══ */}
+      {communityActive ? (
+        <Suspense fallback={<div className="h-96" aria-hidden="true" />}>
+          <HomeFeed />
         </Suspense>
-      </section>
-
-      {/* ═══ 1.7 무한피드 — 1초 이탈 방지 + 페이지뷰 ↑↑ (TikTok/IG 스타일) ═══ */}
-      <Suspense fallback={<div className="h-96" aria-hidden="true" />}>
-        <HomeFeed />
-      </Suspense>
+      ) : (
+        <section className="px-4 pt-2 pb-4 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
+          <Link
+            to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'}
+            className="block rounded-2xl border border-purple-100 bg-gradient-to-br from-[#F5F3FF] to-white p-5 active:bg-purple-50 transition"
+          >
+            <p className="text-[13px] font-bold text-[#7C3AED]">커뮤니티를 시작하는 중입니다</p>
+            <p className="mt-1 text-lg font-black leading-tight text-[#111]">첫 글의 주인공, 창립멤버가 되어주세요</p>
+            <p className="mt-1.5 text-[13px] text-[#555] leading-relaxed">지금은 진짜 후기가 쌓이는 단계예요. 오늘 밤 다녀온 곳 한 줄이면 충분합니다 — 먼저 남긴 분께는 1~100번 영구 뱃지.</p>
+            <span className="mt-3 inline-flex items-center rounded-full bg-[#7C3AED] px-4 text-base font-bold text-white" style={{ minHeight: 44 }}>첫 글 남기기 →</span>
+          </Link>
+        </section>
+      )}
 
       {/* ═══ 2. 미니 성향테스트 — "3초 만에 오늘 밤 결정" (→ /quiz 유도) ═══ */}
       <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">

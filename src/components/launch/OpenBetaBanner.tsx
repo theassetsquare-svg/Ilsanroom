@@ -26,7 +26,7 @@ export default function OpenBetaBanner() {
               <div className="flex items-center gap-2 mb-0.5 flex-wrap">
                 <span className="text-[10px] font-black uppercase tracking-[0.15em] text-rose-700">OPEN BETA</span>
                 <span className="text-[10px] text-rose-700">·</span>
-                <span className="text-[11px] font-bold text-amber-800">놀쿨 방금 오픈</span>
+                <span className="text-[11px] font-bold text-amber-800">커뮤니티 시작 단계</span>
               </div>
               <p className="text-[13px] text-[#222] leading-snug">
                 {showRemaining ? (

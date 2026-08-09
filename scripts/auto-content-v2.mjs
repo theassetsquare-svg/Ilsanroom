@@ -12,6 +12,12 @@
  *  - 글마다 추가될 댓글 개수 랜덤 (1~12개), 시간 지나면서 차차 달림
  */
 
+// ── 하드 가드: 가짜 UGC 자동 생성 영구 금지 (2026-08-09 정직화). 커뮤니티는 진짜 회원 글만.
+//    사이트 #1 규칙 "가짜 0" + 표시광고법 리스크. 되살리려면 이 블록을 지워야 하고
+//    community-no-fake-seed-gate가 그것을 감지해 빌드를 막는다. ──
+console.error('❌ auto-content-v2.mjs는 2026-08-09 정직화로 영구 비활성화됨 (가짜 콘텐츠 생성 금지).');
+process.exit(1);
+
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_KEY || process.env.SUPABASE_SERVICE_KEY;
 

@@ -6,6 +6,7 @@ import { CommunityPulse } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import DailyPrompt from '@/components/community/DailyPrompt';
 import { venues } from '@/data/venues';
+import { useCommunityActive } from '@/hooks/useCommunityActive';
 
 // 놀쿨에 실제 등록된(영업확인) 업소 수 — venues.ts 1차 데이터 그대로, 가공·창작 0
 const REGISTERED_VENUE_COUNT = venues.filter(v => v.status !== 'closed_or_unclear').length;
@@ -62,10 +63,25 @@ export default function CommunityPage() {
   }, []);
 
   const catLabel: Record<string, string> = { reviews: '후기', discussion: 'Q&A', party: '모집', tips: '꿀팁', free: '자유' };
+  const { active: communityActive } = useCommunityActive();
 
   return (
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-5xl px-4 py-10 sm:py-16">
+
+        {/* 파트2.5 정직화 — 커뮤니티 시작 단계 정직 배너(실제 활동 임계 미만일 때만). 과장 0. */}
+        {!communityActive && (
+          <div className="mb-6 rounded-2xl border border-purple-500/30 bg-purple-500/5 p-4">
+            <p className="text-sm font-bold text-neon-primary">지금 커뮤니티를 시작하는 중입니다</p>
+            <p className="mt-1 text-base leading-relaxed text-neon-text">
+              놀쿨은 가짜 후기·가짜 회원으로 채우지 않습니다. 진짜 방문 후기가 한 줄씩 쌓이는 단계예요.
+              먼저 남겨주시는 창립멤버 1~100번께는 영구 뱃지를 드립니다.
+            </p>
+            <Link to="/community/free?write=true" className="mt-3 inline-flex items-center rounded-full bg-neon-primary px-4 text-base font-bold text-white" style={{ minHeight: 44 }}>
+              첫 글 남기기 →
+            </Link>
+          </div>
+        )}
 
         {/* ══════ HERO: 살아있는 사이트 느낌 ══════ */}
         <div className="mb-10 rounded-2xl border border-neon-primary/30 p-6 sm:p-8 text-center"

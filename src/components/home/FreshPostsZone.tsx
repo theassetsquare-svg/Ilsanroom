@@ -48,8 +48,9 @@ export default function FreshPostsZone() {
         const fresh = all.filter(
           (p) => now - new Date(p.created_at).getTime() < FRESH_WINDOW_MS
         );
-        // 30분 내 글이 없으면 가장 최근 5개로 fallback (홈은 절대 비우지 않는다)
-        setPosts(fresh.length >= 3 ? fresh.slice(0, 5) : all.slice(0, 5));
+        // 파트2.5 정직화 — 진짜 30분 내 글만 노출. 없으면 비운다(return null).
+        // 이전 fallback(all.slice)이 최근 글을 다시 보여줘 HomeFeed와 중복 노출 + 가짜 신선도를 유발했음.
+        setPosts(fresh.slice(0, 5));
       } catch {
         /* ignore */
       }

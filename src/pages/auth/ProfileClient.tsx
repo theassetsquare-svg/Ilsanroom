@@ -6,6 +6,7 @@ import { TemperatureBar } from '@/components/community/TemperatureBadge';
 import { fetchUserTempProfile, markAttendance, getTemperatureLevel } from '@/lib/temperature';
 import { getViewedVenues } from '@/lib/community-api';
 import { fetchNotifications, markAsRead } from '@/lib/notification-api';
+import { isOfficialTeam } from '@/components/community/AuthorBadge';
 
 type TabKey = 'posts' | 'comments' | 'favorites' | 'recent' | 'alerts' | 'titles' | 'missions';
 
@@ -232,6 +233,11 @@ export default function ProfileClient() {
     const trimmed = nickInput.trim();
     if (trimmed.length < 2 || trimmed.length > 12) {
       setNickError('닉네임은 2~12자로 입력해주세요');
+      return;
+    }
+    // 운영팀 사칭 방지 — 공식 명찰 닉네임은 예약어
+    if (isOfficialTeam(trimmed)) {
+      setNickError('사용할 수 없는 닉네임입니다');
       return;
     }
     setNickSaving(true);

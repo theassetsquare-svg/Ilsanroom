@@ -61,6 +61,19 @@ for (const dead of ['src/lib/fake-users.ts', 'src/lib/community-data.ts']) {
   }
 }
 
+// ── 파트2.5(2026-08-09): 서버측 가짜 UGC 생성기 재활성화 차단 ──
+// auto-content 워크플로에 schedule/cron 재유입 금지 + 생성 스크립트 하드 가드 유지 검증.
+for (const wf of ['.github/workflows/auto-content-v2.yml', '.github/workflows/auto-content.yml']) {
+  if (fs.existsSync(wf) && /^\s*schedule:/m.test(read(wf))) {
+    errors.push(`${wf}: 가짜 콘텐츠 생성기에 schedule(cron) 재유입 — 커뮤니티 가짜 글 자동 생성 영구 금지`);
+  }
+}
+for (const gen of ['scripts/auto-content.mjs', 'scripts/auto-content-v2.mjs']) {
+  if (fs.existsSync(gen) && !/2026-08-09 정직화로 영구 비활성화됨/.test(read(gen))) {
+    errors.push(`${gen}: 가짜 콘텐츠 생성 스크립트의 하드 가드가 제거됨 — 되살리기 금지`);
+  }
+}
+
 if (errors.length) {
   console.error(`\n❌ [화이트햇/F] 커뮤니티 가짜 시드 게이트 FAIL (${errors.length}건)`);
   for (const e of errors) console.error(`   - ${e}`);

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { createClient } from '@/lib/supabase';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
+import { isOfficialTeam } from '@/components/community/AuthorBadge';
 
 function isWebView(): boolean {
   const ua = navigator.userAgent || '';
@@ -84,6 +85,12 @@ export default function LoginPage() {
       }
       if (nickname.trim().length < 2 || nickname.trim().length > 12) {
         setEmailError('닉네임은 2~12자로 입력해주세요');
+        setLoading(null);
+        return;
+      }
+      // 운영팀 사칭 방지 — 공식 명찰 닉네임은 예약어(가입 불가)
+      if (isOfficialTeam(nickname)) {
+        setEmailError('사용할 수 없는 닉네임입니다');
         setLoading(null);
         return;
       }

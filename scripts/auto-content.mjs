@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 /**
- * 24시간 자동 콘텐츠 생성 스크립트
- * GitHub Actions에서 매 시간 실행
- * 글 1개 + 댓글 3~5개 자동 생성 + 최근 글에 자동 댓글
+ * [영구 비활성화 2026-08-09] 자동 콘텐츠 생성 스크립트 — 가짜 회원 글 생성.
+ * 사이트 #1 규칙 "가짜 0" + 표시광고법 리스크로 영구 중단. 커뮤니티는 진짜 회원 글만.
  */
+
+// ── 하드 가드: 가짜 UGC 자동 생성 영구 금지. 되살리려면 이 블록을 지워야 하고
+//    community-no-fake-seed-gate가 그것을 감지해 빌드를 막는다. ──
+console.error('❌ auto-content.mjs는 2026-08-09 정직화로 영구 비활성화됨 (가짜 콘텐츠 생성 금지).');
+process.exit(1);
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_KEY || process.env.SUPABASE_SERVICE_KEY;
