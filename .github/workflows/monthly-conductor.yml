@@ -1,0 +1,49 @@
+name: Monthly Conductor (월간 무인 지휘자 — 수집·진단·안전수정·보고)
+
+# 매월 30일(2월은 28일) KST 10:50 = UTC 01:50. monthly-full-audit(KST 30일 07:00) 이후 슬롯 → 그 산출을 소비.
+# 무충돌: UTC '50 1 30 * *' / Feb '50 1 28 2 *' — UTC 1시대 분(0/5/10/15/20/25/30/35/40/45) 전부 회피(50 미사용), dom-지정 크론은 billing 1일·full-audit 29일뿐 → 겹침 0.
+on:
+  schedule:
+    - cron: '50 1 30 * *'
+    - cron: '50 1 28 2 *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '드라이런(수정 0·발송 0)'
+        type: boolean
+        default: false
+
+# data/growth 가설·중복방지 플래그 커밋을 위해 write.
+permissions:
+  contents: write
+
+jobs:
+  conductor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run monthly conductor
+        run: node scripts/monthly-conductor.mjs ${{ (github.event_name == 'workflow_dispatch' && inputs.dry_run) && '--dry-run' || '' }}
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          CLARITY_API_TOKEN: ${{ secrets.CLARITY_API_TOKEN }}
+          CLARITY_PROJECT_ID: ${{ secrets.CLARITY_PROJECT_ID }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+      - name: Persist hypotheses / sent-flag
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain data/growth)" ]; then
+            git config user.name "nolcool-bot"
+            git config user.email "bot@nolcool.com"
+            git add data/growth
+            git commit -m "chore(conductor): 월간 가설·플래그 $(date -u +%Y-%m)"
+            git pull --rebase --autostash origin main || true
+            git push || echo "push skip(경쟁 커밋) — 다음 달 재시도"
+          fi
