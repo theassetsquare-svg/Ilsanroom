@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-10T17:41:28.868Z",
+  "generated_at": "2026-08-11T04:09:45.502Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,27 +7,27 @@
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 9
+      "views_24h": 6
     },
     {
       "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
       "title": "일산명월관요정",
       "category": "yojeong",
       "region": "일산",
-      "views_24h": 4
+      "views_24h": 3
     },
     {
       "path": "/rooms/ilsan/ilsanroom",
       "title": "일산룸",
       "category": "room",
       "region": "일산",
-      "views_24h": 4
+      "views_24h": 3
     },
     {
-      "path": "/nights/ulsannewworldnight",
-      "title": "울산뉴월드나이트",
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
       "category": "night",
-      "region": "울산",
+      "region": "강서",
       "views_24h": 3
     },
     {
@@ -45,10 +45,24 @@
       "views_24h": 3
     },
     {
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
+      "category": "night",
+      "region": "오산",
+      "views_24h": 2
+    },
+    {
       "path": "/nights/cheongjuhobaknight",
       "title": "청주호박나이트",
       "category": "night",
       "region": "청주",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/ulsannewworldnight",
+      "title": "울산뉴월드나이트",
+      "category": "night",
+      "region": "울산",
       "views_24h": 2
     },
     {
@@ -59,20 +73,6 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
-      "views_24h": 2
-    },
-    {
       "path": "/nights/ansandontellmamanight",
       "title": "안산돈텔마마나이트",
       "category": "night",
@@ -80,31 +80,31 @@
       "views_24h": 2
     },
     {
-      "path": "/rooms/busan-haeundae/haeundaegoguryeo",
-      "title": "해운대고구려",
-      "category": "room",
-      "region": "부산 해운대",
+      "path": "/clubs/itaewon/itaewonclub-maid",
+      "title": "이태원클럽 메이드",
+      "category": "club",
+      "region": "이태원",
       "views_24h": 1
     },
     {
-      "path": "/hoppa/daejeonhoppa-eclipse",
-      "title": "대전호빠 이클립스",
-      "category": "hoppa",
+      "path": "/clubs/daejeon/daejeonsugarclub",
+      "title": "대전설탕클럽",
+      "category": "club",
       "region": "대전",
       "views_24h": 1
     },
     {
-      "path": "/nights/suyushampoonight",
-      "title": "수유샴푸나이트",
+      "path": "/nights/gildongchancenight",
+      "title": "길동찬스나이트",
       "category": "night",
-      "region": "수유",
+      "region": "길동",
       "views_24h": 1
     },
     {
-      "path": "/nights/cheongjudontellmamanight",
-      "title": "청주돈텔마마나이트",
-      "category": "night",
-      "region": "청주",
+      "path": "/rooms/busan-haeundae/haeundaegoguryeo",
+      "title": "해운대고구려",
+      "category": "room",
+      "region": "부산 해운대",
       "views_24h": 1
     }
   ]
