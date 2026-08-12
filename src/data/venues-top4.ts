@@ -11,42 +11,42 @@ export type VenueTop4 = {
   rating: number;
 };
 // basis: 'popularity' = 28일 실측 점수순 / 'recent' = 최신 등록순 폴백 (데이터 미축적)
-export const VENUES_TOP4_BASIS = 'recent';
+export const VENUES_TOP4_BASIS = 'popularity';
 export const VENUES_TOP4: VenueTop4[] = [
   {
-    "id": "v-142",
-    "slug": "itaewonclub-cakeshop",
-    "nameKo": "이태원클럽 케이크샵",
-    "regionKo": "이태원",
-    "region": "itaewon",
-    "category": "club",
-    "rating": 0
-  },
-  {
-    "id": "v-141",
-    "slug": "gangnamclub-octagon",
-    "nameKo": "강남클럽 옥타곤",
-    "regionKo": "강남",
-    "region": "gangnam",
-    "category": "club",
-    "rating": 0
-  },
-  {
-    "id": "v-140",
-    "slug": "changwon-lululalala",
-    "nameKo": "창원룰루랄라나이트",
-    "regionKo": "창원",
-    "region": "changwon",
+    "id": "v-040",
+    "slug": "daejeononenight",
+    "nameKo": "대전원나이트",
+    "regionKo": "대전",
+    "region": "daejeon",
     "category": "night",
     "rating": 0
   },
   {
-    "id": "v-139",
-    "slug": "itaewon-savage",
-    "nameKo": "이태원클럽 세비지",
-    "regionKo": "이태원",
-    "region": "itaewon",
-    "category": "club",
+    "id": "v-003",
+    "slug": "ilsanmyeongwolgwanyojeong",
+    "nameKo": "일산명월관요정",
+    "regionKo": "일산",
+    "region": "ilsan",
+    "category": "yojeong",
+    "rating": 0
+  },
+  {
+    "id": "v-048",
+    "slug": "daegubabambanight",
+    "nameKo": "대구바밤바나이트",
+    "regionKo": "대구",
+    "region": "daegu",
+    "category": "night",
+    "rating": 0
+  },
+  {
+    "id": "v-041",
+    "slug": "daejeonbongmyeongnight",
+    "nameKo": "대전봉명나이트",
+    "regionKo": "대전",
+    "region": "daejeon",
+    "category": "night",
     "rating": 0
   }
 ];

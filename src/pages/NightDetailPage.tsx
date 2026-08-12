@@ -5,6 +5,7 @@ import VenueDetailPage from '@/components/venue/VenueDetailPage';
 import { getHookingTitle, getHookingDescription } from '@/lib/seo-hooks';
 import { getVenueOgImageBySlug } from '@/lib/og-image';
 import { getVenueBySlug, getRelatedVenues } from '@/data/venues';
+import ChangwonLullalalaCallBar from '@/components/venue/ChangwonLullalalaCallBar';
 
 const defaultFaqs = (name: string) => [
   { question: `소셜 댄스 초보자도 ${name}에 갈 수 있나요?`, answer: `물론입니다. 나이트클럽에는 초보자를 위한 간단한 스텝을 알려주는 분위기가 자연스럽게 형성되어 있습니다. 지르박·부르스 같은 기본 스텝만 알아도 충분히 즐길 수 있으며, 현장에서 배우는 분도 많습니다.` },
@@ -225,6 +226,7 @@ export default function NightDetailPage() {
   const isDapsimnri = slug === 'dapsimnidontellmamanight';
   const isDaejeonSeven = slug === 'daejeonsevennight';
   const isDaeguBabamba = slug === 'daegubabambanight';
+  const isChangwonLullalala = slug === 'changwon-lululalala';
 
   const topContent = isDapsimnri
     ? <DapsimnriCheonSaSection venue={venue} />
@@ -237,7 +239,7 @@ export default function NightDetailPage() {
   return (
     <>
       {/* 고정 전화바 venue: 하단 여백 추가 */}
-      {(isDaejeonSeven || isDaeguBabamba) && <style>{`body { padding-bottom: 120px !important; }`}</style>}
+      {(isDaejeonSeven || isDaeguBabamba || isChangwonLullalala) && <style>{`body { padding-bottom: 120px !important; }`}</style>}
       <VenueDetailPage
         venue={venue}
         categoryLabel="나이트"
@@ -252,6 +254,7 @@ export default function NightDetailPage() {
       />
       {isDaejeonSeven && <DaejeonSevenFixedBar />}
       {isDaeguBabamba && <DaeguBabambaFixedBar />}
+      {isChangwonLullalala && <ChangwonLullalalaCallBar />}
     </>
   );
 }
