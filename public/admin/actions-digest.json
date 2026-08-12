@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-11T00:55:12.015Z",
+  "generated_at": "2026-08-12T01:01:43.227Z",
   "window_hours": 24,
-  "total_runs": 216,
+  "total_runs": 209,
   "total_fail": 19,
   "workflows": [
     {
@@ -11,8 +11,8 @@
       "failure": 16,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-08-10T23:35:30Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/31442927270"
+        "created_at": "2026-08-11T23:40:46Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/31547390154"
       }
     },
     {
@@ -22,8 +22,8 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-08-10T19:28:40Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/31424278217"
+        "created_at": "2026-08-11T19:32:48Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/31528398464"
       }
     },
     {
@@ -33,19 +33,19 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-08-10T19:03:14Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/31422176976"
+        "created_at": "2026-08-11T19:08:22Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/31526332542"
       }
     },
     {
-      "name": "Seed Content Quality Gate (weekly)",
+      "name": "Deep Audit (Daily Link + Freshness)",
       "total": 1,
       "success": 0,
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-08-10T04:18:01Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/31355042042"
+        "created_at": "2026-08-11T02:33:26Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/31452730430"
       }
     },
     {
@@ -58,16 +58,16 @@
     },
     {
       "name": "Activity Alert (15min)",
-      "total": 19,
-      "success": 19,
+      "total": 20,
+      "success": 20,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
       "name": "Venue Reports Daily",
-      "total": 16,
-      "success": 16,
+      "total": 18,
+      "success": 18,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -89,14 +89,6 @@
       "last_fail": null
     },
     {
-      "name": "Daily Regression Digest (KST 09:00)",
-      "total": 2,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 1,
-      "last_fail": null
-    },
-    {
       "name": "24h Auto Build + SEO Notify",
       "total": 2,
       "success": 2,
@@ -110,6 +102,14 @@
       "success": 2,
       "failure": 0,
       "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Daily Regression Digest (KST 09:00)",
+      "total": 1,
+      "success": 0,
+      "failure": 0,
+      "in_progress": 1,
       "last_fail": null
     },
     {
@@ -273,7 +273,7 @@
       "last_fail": null
     },
     {
-      "name": "Dwell Content Audit (체류 10분 보장 본문 분량)",
+      "name": "Daejeonsevennight Keyword Watch (대전세븐나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -281,7 +281,7 @@
       "last_fail": null
     },
     {
-      "name": "Daejeonsevennight Keyword Watch (대전세븐나이트 2 키워드 24h)",
+      "name": "Dwell Content Audit (체류 10분 보장 본문 분량)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -443,7 +443,7 @@
     {
       "name": "All Pages Quality Watch (5축 — anchor 200/img alt/H1/lang+viewport/canonical)",
       "total": 1,
-      "success": 1,
+      "success": 0,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -745,14 +745,6 @@
       "last_fail": null
     },
     {
-      "name": "GSC Growth Opportunity (weekly)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Jeonju Hoppa Gallery Keyword Watch (전주호빠 단일 키워드 24h)",
       "total": 1,
       "success": 1,
@@ -801,23 +793,7 @@
       "last_fail": null
     },
     {
-      "name": "GA4 Demand Insight (weekly)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Busanhoppa Star Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "SERP Loop (검색어 상위노출 주간 루프)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -873,14 +849,6 @@
       "last_fail": null
     },
     {
-      "name": "SERP T1 Recheck (노출0 색인의심 주간 재확인)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Gangnam Hoppa Royal Keyword Watch (강남호빠+서울호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
@@ -906,14 +874,6 @@
     },
     {
       "name": "Paju Yadang Skydome Keyword Watch (파주야당스카이돔나이트 + 파주나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Rank Drop Responder (순위 하락 자동 대응)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -954,22 +914,6 @@
     },
     {
       "name": "Jejunight Keyword Watch (제주나이트 + 제주도나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Venue Rank Trend (가게이름 순위 추이 주간)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Deep Audit (Daily Link + Freshness)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -1057,23 +1001,7 @@
       "last_fail": null
     },
     {
-      "name": "Search Console Report (키워드/클릭)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Ansanhitnight Keyword Watch (안산히트나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Google Index Coverage (전수 색인 점검)",
       "total": 1,
       "success": 1,
       "failure": 0,
