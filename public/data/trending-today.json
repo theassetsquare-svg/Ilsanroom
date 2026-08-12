@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-12T14:19:36.535Z",
+  "generated_at": "2026-08-12T17:48:23.494Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,7 +7,28 @@
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 9
+      "views_24h": 10
+    },
+    {
+      "path": "/clubs/gangnam/gangnamclub-laputa",
+      "title": "강남청담클럽 라퓨타",
+      "category": "club",
+      "region": "강남",
+      "views_24h": 3
+    },
+    {
+      "path": "/hoppa/daejeonhoppa-eclipse",
+      "title": "대전호빠 이클립스",
+      "category": "hoppa",
+      "region": "대전",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
     },
     {
       "path": "/hoppa/hongdae-hoppa",
@@ -38,13 +59,6 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 2
-    },
-    {
       "path": "/rooms/busan-haeundae/haeundaegoguryeo",
       "title": "해운대고구려",
       "category": "room",
@@ -59,52 +73,38 @@
       "views_24h": 2
     },
     {
-      "path": "/clubs/gangnam/gangnamclub-race",
-      "title": "강남청담클럽 레이스",
+      "path": "/nights/daeguhobaknight",
+      "title": "대구호박나이트",
+      "category": "night",
+      "region": "대구",
+      "views_24h": 1
+    },
+    {
+      "path": "/clubs/hongdae/hongdaeclub-dokkaebi",
+      "title": "홍대클럽 도깨비",
       "category": "club",
-      "region": "강남",
-      "views_24h": 2
+      "region": "홍대",
+      "views_24h": 1
+    },
+    {
+      "path": "/clubs/hongdae/hongdaeclub-bermuda",
+      "title": "홍대클럽 버뮤다",
+      "category": "club",
+      "region": "홍대",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gwangjumgmnight",
+      "title": "광주MGM나이트",
+      "category": "night",
+      "region": "광주",
+      "views_24h": 1
     },
     {
       "path": "/nights/gangseo-hobak",
       "title": "강서호박나이트",
       "category": "night",
       "region": "강서",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/seongnamshampoonight",
-      "title": "성남샴푸나이트",
-      "category": "night",
-      "region": "성남",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daegubabambanight",
-      "title": "대구바밤바나이트",
-      "category": "night",
-      "region": "대구",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/sinlimgrandprixnight",
-      "title": "신림그랑프리나이트",
-      "category": "night",
-      "region": "신림",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gangseonight",
-      "title": "강서나이트",
-      "category": "night",
-      "region": "강서",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/cheongdamh2onight",
-      "title": "청담H2O나이트",
-      "category": "night",
-      "region": "청담",
       "views_24h": 1
     }
   ]
