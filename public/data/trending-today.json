@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-12T17:48:23.494Z",
+  "generated_at": "2026-08-13T04:43:05.671Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,27 +7,41 @@
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 10
+      "views_24h": 9
     },
     {
       "path": "/clubs/gangnam/gangnamclub-laputa",
       "title": "강남청담클럽 라퓨타",
       "category": "club",
       "region": "강남",
-      "views_24h": 3
+      "views_24h": 4
     },
     {
       "path": "/hoppa/daejeonhoppa-eclipse",
       "title": "대전호빠 이클립스",
       "category": "hoppa",
       "region": "대전",
-      "views_24h": 2
+      "views_24h": 4
     },
     {
       "path": "/nights/daejeonbongmyeongnight",
       "title": "대전봉명나이트",
       "category": "night",
       "region": "대전",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/gwangjumgmnight",
+      "title": "광주MGM나이트",
+      "category": "night",
+      "region": "광주",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/gwangjutotonight",
+      "title": "광주토토밤나이트",
+      "category": "night",
+      "region": "광주",
       "views_24h": 2
     },
     {
@@ -35,13 +49,6 @@
       "title": "홍대호빠",
       "category": "hoppa",
       "region": "홍대",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/gimpohobaknight",
-      "title": "김포호박나이트",
-      "category": "night",
-      "region": "김포",
       "views_24h": 2
     },
     {
@@ -59,52 +66,45 @@
       "views_24h": 2
     },
     {
-      "path": "/rooms/busan-haeundae/haeundaegoguryeo",
-      "title": "해운대고구려",
-      "category": "room",
-      "region": "부산 해운대",
-      "views_24h": 2
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 1
     },
     {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
+      "path": "/nights/gangnamjuliananight",
+      "title": "강남줄리아나나이트",
       "category": "night",
-      "region": "부산",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daeguhobaknight",
-      "title": "대구호박나이트",
-      "category": "night",
-      "region": "대구",
+      "region": "강남",
       "views_24h": 1
     },
     {
-      "path": "/clubs/hongdae/hongdaeclub-dokkaebi",
-      "title": "홍대클럽 도깨비",
+      "path": "/clubs/apgujeong/apgujeongclub-color",
+      "title": "압구정클럽 컬러",
       "category": "club",
-      "region": "홍대",
+      "region": "압구정",
       "views_24h": 1
     },
     {
-      "path": "/clubs/hongdae/hongdaeclub-bermuda",
-      "title": "홍대클럽 버뮤다",
+      "path": "/clubs/apgujeong/apgujeongclub-dbridge",
+      "title": "압구정클럽 디브릿지",
       "category": "club",
-      "region": "홍대",
+      "region": "압구정",
       "views_24h": 1
     },
     {
-      "path": "/nights/gwangjumgmnight",
-      "title": "광주MGM나이트",
+      "path": "/clubs/seoul/seoulbanyantree",
+      "title": "서울반얀트리",
+      "category": "club",
+      "region": "서울",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gwangjuallnight",
+      "title": "광주올나이트",
       "category": "night",
       "region": "광주",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
       "views_24h": 1
     }
   ]
