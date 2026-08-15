@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-14T17:42:54.742Z",
+  "generated_at": "2026-08-15T03:32:44.219Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,35 +7,35 @@
       "title": "강서호박나이트",
       "category": "night",
       "region": "강서",
-      "views_24h": 6
+      "views_24h": 7
     },
     {
       "path": "/nights/daejeononenight",
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 5
+      "views_24h": 4
+    },
+    {
+      "path": "/nights/ilsan-mul-night",
+      "title": "일산물나이트",
+      "category": "night",
+      "region": "일산",
+      "views_24h": 4
+    },
+    {
+      "path": "/nights/cheongjuhobaknight",
+      "title": "청주호박나이트",
+      "category": "night",
+      "region": "청주",
+      "views_24h": 4
     },
     {
       "path": "/nights/ansandontellmamanight",
       "title": "안산돈텔마마나이트",
       "category": "night",
       "region": "안산",
-      "views_24h": 5
-    },
-    {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
-      "category": "night",
-      "region": "부산",
-      "views_24h": 5
-    },
-    {
-      "path": "/nights/dapsimnidontellmamanight",
-      "title": "답십리돈텔마마나이트",
-      "category": "night",
-      "region": "답십리",
-      "views_24h": 4
+      "views_24h": 3
     },
     {
       "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
@@ -59,24 +59,10 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/cheongjuhobaknight",
-      "title": "청주호박나이트",
-      "category": "night",
-      "region": "청주",
-      "views_24h": 2
-    },
-    {
       "path": "/clubs/daejeon/daejeonsugarclub",
       "title": "대전설탕클럽",
       "category": "club",
       "region": "대전",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/busanasiadnight",
-      "title": "부산아시아드나이트",
-      "category": "night",
-      "region": "부산",
       "views_24h": 2
     },
     {
@@ -87,24 +73,38 @@
       "views_24h": 2
     },
     {
+      "path": "/nights/dapsimnidontellmamanight",
+      "title": "답십리돈텔마마나이트",
+      "category": "night",
+      "region": "답십리",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/gurihobaknight",
+      "title": "구리호박나이트",
+      "category": "night",
+      "region": "구리",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gimpohobaknight",
+      "title": "김포호박나이트",
+      "category": "night",
+      "region": "김포",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/cheongjudontellmamanight",
+      "title": "청주돈텔마마나이트",
+      "category": "night",
+      "region": "청주",
+      "views_24h": 1
+    },
+    {
       "path": "/nights/ulsannewworldnight",
       "title": "울산뉴월드나이트",
       "category": "night",
       "region": "울산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gwangjucheomdanempanight",
-      "title": "광주첨단엠파나이트",
-      "category": "night",
-      "region": "광주",
-      "views_24h": 1
-    },
-    {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
       "views_24h": 1
     }
   ]
