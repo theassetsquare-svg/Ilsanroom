@@ -1,0 +1,40 @@
+name: Wish Engine Weekly Loop
+
+# 🌠 가게이름 상위노출 소원 엔진 — 매주 월요일 KST 12:00 (UTC 03:00)
+# 월요일 기존 슬롯(09:00 색인 · 09:30 추이 · 09:45 하락 · 10:45 검색어 · 11:00 GA4 · 11:30 기회)과 무충돌.
+# 읽기전용 측정 + IndexNow 재크롤(상한 30)만 — 콘텐츠 자동 창작 0 · 메일 0(30일 1통 정책).
+on:
+  schedule:
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write # 주간 스냅샷 + monthly-inbox 커밋
+
+jobs:
+  loop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: 소원 엔진 주간 루프 (측정·분류·기계처방·실험판정)
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+        run: node scripts/wish-engine-loop.mjs
+      - name: Persist snapshots + monthly inbox
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain data/wish-engine data/monthly-inbox)" ]; then
+            git config user.name "nolcool-bot"
+            git config user.email "bot@nolcool.com"
+            git add data/wish-engine data/monthly-inbox
+            git commit -m "chore(wish-engine): 주간 스냅샷 $(date -u +%Y-%m-%d)"
+            git pull --rebase --autostash origin main || true
+            git push || echo "push skip(경쟁 커밋) — 다음 주 재시도"
+          else
+            echo "변화 없음 — 커밋 skip"
+          fi

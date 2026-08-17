@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write # 30일1통: 인박스 커밋 필요
 
 jobs:
   demand-gap:
@@ -27,3 +27,18 @@ jobs:
           GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+
+      # 30일 1통 정책(2026-08-17): 즉시 발송 대신 축적된 월간 인박스를 저장 — 매월 30일 지휘자 보고서가 소비
+      - name: Archive monthly inbox (30일 1통 정책)
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain data/monthly-inbox)" ]; then
+            git config user.name "nolcool-bot"
+            git config user.email "bot@nolcool.com"
+            git add data/monthly-inbox
+            git commit -m "chore(mail): monthly-inbox 축적 $(date -u +%Y-%m-%dT%H:%MZ)"
+            git pull --rebase --autostash origin main || true
+            git push || echo "push skip(경쟁 커밋) — 다음 실행 재시도"
+          else
+            echo "인박스 변화 없음 — 커밋 skip"
+          fi

@@ -162,6 +162,13 @@ async function sendMail({ range, totalImp, venueGap, regionGap, otherGap, pageGa
       otherGap, qcols)}
     <p style="color:#9CA3AF;font-size:11px;margin-top:24px">매주 월 KST 03:00 자동 — search-console-demand-gap.mjs · GSC 약 2일 지연 · 읽기 전용(사이트 부하·변경·자동발행 0). 갭 있을 때만 발송.</p>
   </div>`;
+  // 30일 1통 정책(2026-08-17): 즉시 발송 정지 — 월간 지휘자 보고서로 통합 (data/monthly-inbox)
+  const MONTHLY_DIGEST_ONLY = true;
+  if (MONTHLY_DIGEST_ONLY) {
+    const { archiveInsteadOfSend } = await import('./lib/monthly-inbox.mjs');
+    archiveInsteadOfSend('demand-gap', `[놀쿨][🕳️] 수요 갭 ${venueGap.length + regionGap.length + otherGap.length}건 (${kst()})`, html);
+    return;
+  }
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },

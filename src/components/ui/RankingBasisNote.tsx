@@ -7,7 +7,7 @@ import { hasPopularityData, POPULARITY_UPDATED_AT } from '@/lib/popularity';
 /** 위젯 헤딩 옆 컴팩트 버전 — 홈 TOP4/TOP8/카테고리 TOP3 등 좁은 지점용 동일 라벨. */
 export function RankingBasisInline({ className = '' }: { className?: string }) {
   return (
-    <span className={`text-[10px] ${className}`} style={{ color: '#9CA3AF' }}>
+    <span className={`text-[10px] ${className}`} style={{ color: '#6B7280' }}>
       {hasPopularityData()
         ? `28일 실측 조회·문의·검색 기준 · ${POPULARITY_UPDATED_AT} 갱신 · 광고비 반영 0`
         : '최신 등록순 · 실측 데이터 수집 중 · 광고비 반영 0'}

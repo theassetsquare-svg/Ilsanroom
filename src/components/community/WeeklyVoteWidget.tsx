@@ -63,11 +63,11 @@ export default function WeeklyVoteWidget() {
 
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-5">
-      <p className="text-xs font-bold" style={{ color: '#8B5CF6' }}>🗳 이번 주 원터치 투표</p>
+      <p className="text-xs font-bold" style={{ color: '#7C3AED' }}>🗳 이번 주 원터치 투표</p>
       <p className="mt-1 text-sm font-bold" style={{ color: '#111', lineHeight: '1.5' }}>
         이번 주 실제 조회 1·2위, 먼저 가보고 싶은 곳은?
       </p>
-      <p className="mt-0.5 text-[10px]" style={{ color: '#AAA' }}>후보 = 최근 28일 실측 조회 상위 2곳 ({POPULARITY_UPDATED_AT} 기준) · 표는 회원 실투표만</p>
+      <p className="mt-0.5 text-[10px]" style={{ color: '#767676' }}>후보 = 최근 28일 실측 조회 상위 2곳 ({POPULARITY_UPDATED_AT} 기준) · 표는 회원 실투표만</p>
       <div className="mt-3 grid grid-cols-2 gap-2">
         {top2.map(v => {
           const n = counts[v.slug] || 0;
@@ -81,27 +81,27 @@ export default function WeeklyVoteWidget() {
               style={{ minHeight: 64 }}
             >
               <p className="truncate text-sm font-bold" style={{ color: '#111' }}>{v.nameKo}</p>
-              <p className="text-xs" style={{ color: '#999' }}>{v.regionKo}</p>
+              <p className="text-xs" style={{ color: '#767676' }}>{v.regionKo}</p>
               {(myChoice || total > 0) && (
-                <p className="mt-1 text-xs font-bold" style={{ color: '#8B5CF6' }}>{n}표{total > 0 ? ` · ${Math.round((n / total) * 100)}%` : ''}</p>
+                <p className="mt-1 text-xs font-bold" style={{ color: '#7C3AED' }}>{n}표{total > 0 ? ` · ${Math.round((n / total) * 100)}%` : ''}</p>
               )}
             </button>
           );
         })}
       </div>
       {!user && (
-        <p className="mt-2 text-[11px]" style={{ color: '#999' }}>
-          투표는 회원만 (1인 1표) — <Link to="/login" className="font-bold" style={{ color: '#8B5CF6' }}>3초 로그인 →</Link>
+        <p className="mt-2 text-[11px]" style={{ color: '#767676' }}>
+          투표는 회원만 (1인 1표) — <Link to="/login" className="font-bold" style={{ color: '#7C3AED' }}>3초 로그인 →</Link>
         </p>
       )}
-      {total > 0 && <p className="mt-2 text-[11px] font-medium" style={{ color: '#8B5CF6' }}>지금까지 {total}명 참여</p>}
+      {total > 0 && <p className="mt-2 text-[11px] font-medium" style={{ color: '#7C3AED' }}>지금까지 {total}명 참여</p>}
       {myChoice && (
         <div className="mt-2 flex items-center justify-between">
-          <p className="text-[11px] font-medium" style={{ color: '#8B5CF6' }}>투표 완료! 결과는 실제 표 수 그대로예요.</p>
-          <Link to="/community/reviews" className="text-[11px] font-bold" style={{ color: '#8B5CF6' }}>✍️ 한 줄 보태기 →</Link>
+          <p className="text-[11px] font-medium" style={{ color: '#7C3AED' }}>투표 완료! 결과는 실제 표 수 그대로예요.</p>
+          <Link to="/community/reviews" className="text-[11px] font-bold" style={{ color: '#7C3AED' }}>✍️ 한 줄 보태기 →</Link>
         </div>
       )}
-      {!myChoice && user && total === 0 && <p className="mt-2 text-[11px]" style={{ color: '#BBB' }}>아직 첫 표를 기다리는 중 — 첫 표의 주인공이 되어보세요.</p>}
+      {!myChoice && user && total === 0 && <p className="mt-2 text-[11px]" style={{ color: '#767676' }}>아직 첫 표를 기다리는 중 — 첫 표의 주인공이 되어보세요.</p>}
     </div>
   );
 }

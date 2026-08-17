@@ -138,6 +138,7 @@ async function main() {
 }
 
 async function sendMail({ total, banned, hookFails, hookPassRate, overused, issues }) {
+  // 30일 1통 정책(2026-08-17)이 아래 fetch 직전에 즉시 발송을 가로챈다 — 본문 생성은 그대로(인박스 축적용).
   if (!RESEND_API_KEY) { console.log('RESEND_API_KEY 없음 — 메일 skip'); return; }
   const list = (title, items) => items.length
     ? `<h3 style="margin:18px 0 6px">${title}</h3><ul style="font-size:13px;color:#374151">${items.map((x) => `<li>${x}</li>`).join('')}</ul>` : '';
@@ -150,6 +151,13 @@ async function sendMail({ total, banned, hookFails, hookPassRate, overused, issu
     ${list('♻️ 양산 지문 — 재탕 표현 (골격 다양화 필요)', overused.slice(0, 20).map((o) => `"${o.phrase}" — ${o.count}회`))}
     <p style="color:#9CA3AF;font-size:11px;margin-top:22px">seed-content-quality-gate.mjs · 신규 시드 풀 글은 이 검문 통과분만 발행 권장. 금지어=하드 FAIL.</p>
   </div>`;
+  // 30일 1통 정책(2026-08-17): 즉시 발송 정지 — 월간 지휘자 보고서로 통합 (data/monthly-inbox)
+  const MONTHLY_DIGEST_ONLY = true;
+  if (MONTHLY_DIGEST_ONLY) {
+    const { archiveInsteadOfSend } = await import('./lib/monthly-inbox.mjs');
+    archiveInsteadOfSend('seed-quality-gate', `[놀쿨][🛡️] 시드 품질 검문 ${banned.length ? 'FAIL' : '경고'} (${kst()})`, html);
+    return;
+  }
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },

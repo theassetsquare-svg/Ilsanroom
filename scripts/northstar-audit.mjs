@@ -237,6 +237,7 @@ function oppTable(opp) {
 }
 
 async function sendMail({ ctr, rd, bo, fails, weekly }) {
+  // 30일 1통 정책(2026-08-17)이 아래 fetch 직전에 즉시 발송을 가로챈다 — 본문 생성은 그대로(인박스 축적용).
   if (!RESEND_API_KEY) { console.log('RESEND_API_KEY 없음 — 메일 skip'); return; }
   // 주간(월요일) 계기판이 있으면 제목에 반영 — 새 메일 신설 아님, 같은 [놀쿨][🌟북극성] 1통에 통합.
   const crossings = weekly?.crossings || [];
@@ -281,6 +282,13 @@ async function sendMail({ ctr, rd, bo, fails, weekly }) {
     <p style="color:#9CA3AF;font-size:11px;margin-top:16px">매일 KST 08:20 자동 — northstar-audit.mjs (읽기전용, 사이트 크롤 0). 3개 전부 목표 도달 시 메일 자동 중단(자기수렴).</p>
     ${weekly?.html || ''}
   </div>`;
+  // 30일 1통 정책(2026-08-17): 즉시 발송 정지 — 월간 지휘자 보고서로 통합 (data/monthly-inbox)
+  const MONTHLY_DIGEST_ONLY = true;
+  if (MONTHLY_DIGEST_ONLY) {
+    const { archiveInsteadOfSend } = await import('./lib/monthly-inbox.mjs');
+    archiveInsteadOfSend('northstar-daily', subject, html);
+    return;
+  }
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },

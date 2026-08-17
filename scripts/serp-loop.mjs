@@ -231,6 +231,13 @@ async function pingIndexNow(urls) {
 }
 
 async function sendMail(html, subject) {
+  // 30일 1통 정책(2026-08-17): 즉시 발송 정지 — 월간 지휘자 보고서로 통합 (data/monthly-inbox)
+  const MONTHLY_DIGEST_ONLY = true;
+  if (MONTHLY_DIGEST_ONLY) {
+    const { archiveInsteadOfSend } = await import('./lib/monthly-inbox.mjs');
+    archiveInsteadOfSend('serp-loop', subject, html);
+    return false;
+  }
   if (!RESEND_API_KEY) { console.log('⏭️  RESEND_API_KEY 없음 — 콘솔만'); return false; }
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',

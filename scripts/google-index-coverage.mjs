@@ -156,6 +156,13 @@ async function sendReport({ total, inspected, notIndexed, errors, byState, sitem
     </ul>
     <p style="color:#9CA3AF;font-size:11px;margin-top:16px">색인 여부는 Google이 최종 결정. 본 점검은 정직한 레버(sitemap 재제출·크롤 가능성·보고)만 당깁니다. "Discovered/Crawled - not indexed"는 대개 시간이 지나면 색인되며, 반복되면 콘텐츠 고유성·내부링크 보강이 정답입니다.</p>
   </div>`;
+  // 30일 1통 정책(2026-08-17): 즉시 발송 정지 — 월간 지휘자 보고서로 통합 (data/monthly-inbox)
+  const MONTHLY_DIGEST_ONLY = true;
+  if (MONTHLY_DIGEST_ONLY) {
+    const { archiveInsteadOfSend } = await import('./lib/monthly-inbox.mjs');
+    archiveInsteadOfSend('google-index-coverage', `[놀쿨][🔍] Google 색인 안 된 페이지 ${notIndexed.length}개`, html);
+    return;
+  }
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },

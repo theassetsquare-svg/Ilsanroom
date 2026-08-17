@@ -1,0 +1,85 @@
+{
+  "policy": {
+    "createdAt": "2026-08-18",
+    "minImpressionsForVerdict": 50,
+    "rule": "28일 노출 < 50 이면 판정 보류·제목 유지(널뛰기 방지). 판정은 wish-engine-loop가 주간 기록, 실제 교체/롤백은 대화형 세션에서 게이트 통과 후 적용.",
+    "excluded": [
+      "H1a 6곳(2026-08-02 title 재작성, 9/1 판정 대기): daejeononenight·busanasiadnight·suwonchancenight·sangbonghangukgwannight·suyushampoonight·dapsimnidontellmamanight",
+      "part2(08-09) 재작성분: magazine/gangnam-octagon-guide·/clubs/daejeon/·/clubs/cheongju/·/near/신사/",
+      "gangnamjuliananight(줄리아나 무개입)",
+      "홈(놀쿨 title 규칙 별도)"
+    ]
+  },
+  "experiments": [
+    {
+      "slug": "ilsanmyeongwolgwanyojeong",
+      "pagePath": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong/",
+      "status": "active",
+      "appliedAt": "2026-08-18",
+      "baselineWindow": "2026-07-18~2026-08-15",
+      "baselineImp": 1638,
+      "baselineCtr": 3.5,
+      "baselinePos": 8.7,
+      "baselineTitle": "일산명월관요정 — 정발산 정원 거문고 선율 한정식 15첩에 다도까지 잠긴다",
+      "variantTitle": "일산명월관요정 — 거문고 흐르는 정발산 정원, 15첩 다도상은 봐야 믿는다",
+      "hypothesis": "선율/잠긴다(시적)보다 '봐야 믿는다'(FOMO)가 클릭 유인 — 팩트 동일 재구성",
+      "history": []
+    },
+    {
+      "slug": "ilsanshampoonight",
+      "pagePath": "/nights/ilsanshampoonight/",
+      "status": "active",
+      "appliedAt": "2026-08-18",
+      "baselineWindow": "2026-07-18~2026-08-15",
+      "baselineImp": 660,
+      "baselineCtr": 1.1,
+      "baselinePos": 10.0,
+      "baselineTitle": "일산샴푸나이트 — 시그니처 타임에 조명이 다 꺼진다, 금요일 만석인 이유를 직접 봤다",
+      "variantTitle": "일산샴푸나이트 — 라페스타 한복판, 시그니처 타임엔 조명이 왜 다 꺼질까",
+      "hypothesis": "서술 2문장보다 지역 앵커(라페스타)+의문형 1문장이 저CTR(1.1%) 개선 — 팩트 동일",
+      "history": []
+    },
+    {
+      "slug": "daegubabambanight",
+      "pagePath": "/nights/daegubabambanight/",
+      "status": "active",
+      "appliedAt": "2026-08-18",
+      "baselineWindow": "2026-07-18~2026-08-15",
+      "baselineImp": 703,
+      "baselineCtr": 3.1,
+      "baselinePos": 10.9,
+      "baselineTitle": "대구바밤바나이트 — 동성로 5분 100평, 트로트가 올드팝으로 틀 없이 튄다",
+      "variantTitle": "대구바밤바나이트 — 동성로 5분 100평, 트로트에서 올드팝 넘어가는 순간이 백미더라",
+      "hypothesis": "'틀 없이 튄다'(추상)보다 1인칭 경험 종결(백미더라)이 클릭 유인 — 팩트 동일",
+      "history": []
+    },
+    {
+      "slug": "itaewonclub-utopia",
+      "pagePath": "/clubs/itaewon/itaewonclub-utopia/",
+      "status": "active",
+      "appliedAt": "2026-08-18",
+      "baselineWindow": "2026-07-18~2026-08-15",
+      "baselineImp": 423,
+      "baselineCtr": 1.4,
+      "baselinePos": 9.3,
+      "baselineTitle": "이태원클럽 유토피아 — 손님의 절반이 외국인인 밤, 레게톤이 새벽 1시 반을 채운다",
+      "variantTitle": "이태원클럽 유토피아 — 새벽 1시 반 레게톤, 플로어 절반이 외국인이라 놀랐다",
+      "hypothesis": "구체 시간 선행 + 1인칭 감정(놀랐다)이 저CTR(1.4%) 개선 — 팩트 동일",
+      "history": []
+    },
+    {
+      "slug": "bundangpongpongnight",
+      "pagePath": "/nights/bundangpongpongnight/",
+      "status": "active",
+      "appliedAt": "2026-08-18",
+      "baselineWindow": "2026-07-18~2026-08-15",
+      "baselineImp": 443,
+      "baselineCtr": 2.5,
+      "baselinePos": 7.1,
+      "baselineTitle": "분당퐁퐁나이트 — 판교역 7분, IT 직장인이 퇴근 후 왜 평일에도 모일까",
+      "variantTitle": "분당퐁퐁나이트 — 판교역 7분, 평일 밤은 IT 직장인들 차지더라",
+      "hypothesis": "의문형 유지 대비 단정+1인칭 관찰(차지더라)이 pos 7.1 대비 낮은 CTR 개선 — 팩트 동일",
+      "history": []
+    }
+  ]
+}

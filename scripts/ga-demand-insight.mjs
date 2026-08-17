@@ -168,6 +168,13 @@ async function sendInsight({ totalSessions, totalViews, pageCount, demand, loved
       { h: '검색어', f: (x) => x.term }, { h: '검색 횟수', f: (x) => x.count }])}
     <p style="color:#9CA3AF;font-size:11px;margin-top:22px">매주 월 KST 11:00 자동 — ga-demand-insight.mjs (속성 540830544). 사용자가 원하는 사이트 = #1 커뮤니티 재미 → 자발적 추천(바이럴).</p>
   </div>`;
+  // 30일 1통 정책(2026-08-17): 즉시 발송 정지 — 월간 지휘자 보고서로 통합 (data/monthly-inbox)
+  const MONTHLY_DIGEST_ONLY = true;
+  if (MONTHLY_DIGEST_ONLY) {
+    const { archiveInsteadOfSend } = await import('./lib/monthly-inbox.mjs');
+    archiveInsteadOfSend('ga-demand-insight', `[놀쿨][GA4] 사용자 수요 인사이트 (${kst()})`, html);
+    return;
+  }
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },

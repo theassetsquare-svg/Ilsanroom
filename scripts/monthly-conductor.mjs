@@ -183,6 +183,34 @@ function step5(growth) {
 }
 
 /* ══ STEP 6 — Gmail 월간 보고(1통·중복방지·초보자 문체) ══ */
+
+// 30일 1통 정책(2026-08-17): 즉시 발송이 정지된 12종 리포트의 월간 인박스(data/monthly-inbox)를
+// 종류별로 요약해 보고서 섹션 하나로 통합. 인박스가 비면 "이번 달 경보 0"이 정직한 값.
+const INBOX_LABELS = {
+  'security-daily': '보안 일일 상태', 'daily-regression-digest': '24h 회귀 다이제스트',
+  'lighthouse-daily': 'Lighthouse 목표 미달', 'northstar-daily': '북극성 3대 지표',
+  'venue-rank-trend': '가게이름 순위 추이', 'serp-loop': '검색어 루프',
+  'rank-drop-responder': '순위하락 대응', 'google-index-coverage': '색인 점검',
+  'sc-opportunity': '성장 기회', 'demand-gap': '수요 갭',
+  'ga-demand-insight': 'GA4 수요 인사이트', 'seed-quality-gate': '시드 품질 검문',
+  'wish-engine': '가게이름 소원 루프',
+};
+function buildInboxSection() {
+  const dir = `data/monthly-inbox/${monthKey()}`;
+  if (!existsSync(dir)) return '<li>이번 달 축적된 리포트 없음 (전 지표 정상 = 침묵)</li>';
+  const items = [];
+  for (const f of readdirSync(dir).filter((x) => x.endsWith('.json')).sort()) {
+    try {
+      const entries = JSON.parse(readFileSync(`${dir}/${f}`, 'utf8'));
+      if (!entries.length) continue;
+      const kind = f.replace(/\.json$/, '');
+      const last = entries[entries.length - 1];
+      items.push(`<li><b>${INBOX_LABELS[kind] || kind}</b> — ${entries.length}회 기록 · 최신(${last.date}): ${last.subject}<br><span style="color:#6B7280;font-size:12px">${(last.summary || '').slice(0, 300)}</span></li>`);
+    } catch { items.push(`<li>⚠️ ${f} 파싱 실패</li>`); }
+  }
+  return items.join('') || '<li>이번 달 축적된 리포트 없음 (전 지표 정상 = 침묵)</li>';
+}
+
 function buildReport({ s1, s2, diag, s4, s5 }) {
   const applied = s4.applied.map(a => `<li>[${a.fix}] ${a.label} — ${a.result}</li>`).join('') || '<li>이번 달 자동 적용 없음(안전 범위 내 조치 없음)</li>';
   const proposals = s4.proposed.map(p => `<li>${p.label} → ${p.fixLabel} <b>(처방 검토 필요)</b></li>`).join('') || '<li>(없음)</li>';
@@ -195,6 +223,7 @@ function buildReport({ s1, s2, diag, s4, s5 }) {
     <h3>2) 북극성 사다리 현재 위치 <span style="color:#9CA3AF;font-size:12px">(사이트가 얼마나 잘 크고 있나)</span></h3><ul style="font-size:13px;line-height:1.7">${north}</ul>
     <h3>3) 이번 달 가설(가설 = 이렇게 하면 좋아질 것이라는 예측)</h3><ul style="font-size:13px;line-height:1.7">${hyps}</ul>
     <h3>4) 처방 필요 (사람이 봐야 할 것 — 자동 수정 범위 밖)</h3><ul style="font-size:13px;line-height:1.7">${proposals}</ul>
+    <h3>5) 한 달치 감시 리포트 모음 <span style="color:#9CA3AF;font-size:12px">(즉시 메일 대신 여기 1통으로 통합 — 30일 1통 정책)</span></h3><ul style="font-size:13px;line-height:1.7">${buildInboxSection()}</ul>
     <h3>⚠️ 정직 부록</h3><ul style="font-size:12px;color:#B45309;line-height:1.7">
       <li>지메일 판독(STEP2): ${s2.skipped ? '이번 자동 실행은 대화형 점검으로 이월(청소기는 대화형 Claude 전용)' : `보존 ${s2.keep}·휴지통 ${s2.trash}`}</li>
       <li>46계열 실측 수치는 monthly-full-audit(30일 07:00) 런 로그가 단일 소스 — 방식 다른 지표 교차비교 금지</li>

@@ -44,6 +44,14 @@ ${rows}
 <p style="font-size:12px;color:#374151;margin-top:14px">목표: 접근성·권장사항·검색엔진 100 / 성능 모바일 90·PC 95. 전부 달성하면 이 메일은 자동으로 멈춥니다.</p>
 </div>`;
 
+// 30일 1통 정책(2026-08-17): 즉시 발송 정지 — 월간 지휘자 보고서로 통합 (data/monthly-inbox)
+const MONTHLY_DIGEST_ONLY = true;
+if (MONTHLY_DIGEST_ONLY) {
+  const { archiveInsteadOfSend } = await import('./lib/monthly-inbox.mjs');
+  archiveInsteadOfSend('lighthouse-daily', `[놀쿨][⚠️] Lighthouse 목표 미달 ${failing.length}건 — 감점 audit 상세 포함`, html);
+  process.exit(0);
+}
+
 const r = await fetch('https://api.resend.com/emails', {
   method: 'POST',
   headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },

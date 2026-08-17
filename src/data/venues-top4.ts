@@ -32,20 +32,20 @@ export const VENUES_TOP4: VenueTop4[] = [
     "rating": 0
   },
   {
+    "id": "v-001",
+    "slug": "ilsanroom",
+    "nameKo": "일산룸",
+    "regionKo": "일산",
+    "region": "ilsan",
+    "category": "room",
+    "rating": 0
+  },
+  {
     "id": "v-048",
     "slug": "daegubabambanight",
     "nameKo": "대구바밤바나이트",
     "regionKo": "대구",
     "region": "daegu",
-    "category": "night",
-    "rating": 0
-  },
-  {
-    "id": "v-041",
-    "slug": "daejeonbongmyeongnight",
-    "nameKo": "대전봉명나이트",
-    "regionKo": "대전",
-    "region": "daejeon",
     "category": "night",
     "rating": 0
   }

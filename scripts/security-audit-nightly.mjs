@@ -53,7 +53,7 @@ async function selectDiag() {
 const BASELINE = {
   search_path_missing: 0,
   always_true: 25,        // 익명 INSERT 3 (page_events/leads/waitlist) + 공개 SELECT 22
-  secdef_public: 1,       // is_admin() 만 (RLS 평가 필요)
+  secdef_public: 0,       // 2026-08-17 트리거 함수 2건(notify_first_post/fn_update_reporter_trust) PUBLIC 회수 완료 — 0 유지
   rls_no_policy: 0,
   rls_disabled_count: 0,
 };
@@ -152,6 +152,35 @@ async function main() {
   // 3) 메일 (회귀 있을 때만)
   // Cleanup — advisor에 잡히지 않도록 즉시 DROP
   try { await execSql(`DROP TABLE IF EXISTS public._diag_sec_audit;`); } catch {}
+
+  // 데둡(2026-08-17, 30일 1통 체계의 즉시메일 유지 4종 중 ②보안 "변화" 시 1통):
+  // 동일 회귀 상태가 매시간 반복돼도 메일은 상태가 "바뀔 때" 1통만.
+  // 상태 시그니처를 DB 플래그에 저장 — 정상 복귀 시 'ok'로 리셋(복귀 메일은 없음, 정상=침묵).
+  const stateSig = regressions.length
+    ? regressions.map((r) => `${r.k}:${r.cur}`).sort().join('|')
+    : 'ok';
+  let lastSig = null;
+  try {
+    await execSql(`
+      CREATE TABLE IF NOT EXISTS public._ops_mail_flags (k text PRIMARY KEY, v text NOT NULL, updated_at timestamptz DEFAULT now());
+      REVOKE ALL ON TABLE public._ops_mail_flags FROM PUBLIC, anon, authenticated;
+      NOTIFY pgrst, 'reload schema';
+    `);
+    const fr = await fetch(`${SUPABASE_URL}/rest/v1/_ops_mail_flags?k=eq.security_state&select=v`, { headers });
+    if (fr.ok) { const rows2 = await fr.json(); lastSig = rows2[0]?.v ?? null; }
+  } catch (e) { console.log(`⚠️ 데둡 플래그 조회 실패(안전측=발송 진행): ${e.message}`); }
+  const sigChanged = lastSig !== stateSig;
+  try {
+    await execSql(`
+      INSERT INTO public._ops_mail_flags (k, v, updated_at) VALUES ('security_state', '${stateSig.replace(/'/g, "''")}', now())
+      ON CONFLICT (k) DO UPDATE SET v = EXCLUDED.v, updated_at = now();
+    `);
+  } catch (e) { console.log(`⚠️ 데둡 플래그 저장 실패: ${e.message}`); }
+
+  if (regressions.length && !sigChanged) {
+    console.log(`\n🔇 동일 보안 상태 반복 (${stateSig}) — 데둡: 메일 스킵, 워크플로 실패 상태만 유지`);
+    process.exit(1);
+  }
 
   if (regressions.length) {
     const today = new Date().toISOString().slice(0, 10);

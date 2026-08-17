@@ -23,7 +23,7 @@ if (!SUPABASE_KEY || !RESEND_API_KEY || !NOTIFY_EMAIL) {
 const BASELINE = {
   search_path_missing: 0,
   always_true: 25,
-  secdef_public: 1,
+  secdef_public: 0, // 2026-08-17 트리거 함수 2건 PUBLIC 회수 완료 — 0 유지
   rls_no_policy: 0,
   rls_disabled_count: 0,
 };
@@ -152,6 +152,14 @@ async function main() {
         관리자: <a href="https://nolcool.com/admin">nolcool.com/admin</a>
       </p>
     </div>`;
+
+  // 30일 1통 정책(2026-08-17): 즉시 발송 정지 — 월간 지휘자 보고서로 통합 (data/monthly-inbox)
+  const MONTHLY_DIGEST_ONLY = true;
+  if (MONTHLY_DIGEST_ONLY) {
+    const { archiveInsteadOfSend } = await import('./lib/monthly-inbox.mjs');
+    archiveInsteadOfSend('security-daily', `${allGreen ? '✅' : '🛑'} ${today} 놀쿨 보안 일일 상태`, html);
+    return;
+  }
 
   const emailBody = JSON.stringify({
     from: '놀쿨 보안일일봇 <onboarding@resend.dev>',

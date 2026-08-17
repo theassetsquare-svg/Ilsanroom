@@ -141,6 +141,13 @@ async function sendMail({ range, totalImp, totalClk, strike, lowctr, pageStrike 
       { h: '클릭', f: (x) => x.clicks }, { h: '평균순위', f: (x) => x.pos.toFixed(1) }])}
     <p style="color:#9CA3AF;font-size:11px;margin-top:24px">매주 월 KST 11:30 자동 — search-console-opportunity.mjs · GSC 데이터 약 2일 지연 · 읽기 전용(사이트 부하·변경 0). 기회 있을 때만 발송.</p>
   </div>`;
+  // 30일 1통 정책(2026-08-17): 즉시 발송 정지 — 월간 지휘자 보고서로 통합 (data/monthly-inbox)
+  const MONTHLY_DIGEST_ONLY = true;
+  if (MONTHLY_DIGEST_ONLY) {
+    const { archiveInsteadOfSend } = await import('./lib/monthly-inbox.mjs');
+    archiveInsteadOfSend('sc-opportunity', `[놀쿨][🎯] 트래픽 성장 기회 ${strike.length + lowctr.length}건 (${kst()})`, html);
+    return;
+  }
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
