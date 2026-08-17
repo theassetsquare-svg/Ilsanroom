@@ -35,6 +35,7 @@ const INDEXNOW_KEY = process.env.INDEXNOW_KEY;
 
 const PING_CAP = 30;               // 주당 IndexNow 재크롤 상한 (스팸 방지)
 const MIN_IMP_FOR_VERDICT = 50;    // ★제목 실험 표본 안전핀 — 28d 노출 미만이면 판정 보류
+const MIN_DAYS_FOR_VERDICT = 14;   // ★숙성 안전핀 — 적용 후 14일 미만이면 판정 보류(GSC 28d 창이 적용 전 데이터로 오염되는 오판 방지)
 const MIN_DESC_DEPTH = 1700;       // venue 상세 본문 깊이 기준 (CLAUDE.md detail ≥1700자)
 const MAX_NAME_ANCHORS_PER_PAGE = 12; // 내부 앵커 과최적화 방지 상한 (처방 적용 시 준수)
 const STALE_DAYS = 45;             // sitemap lastmod 이보다 오래되면 신선도 미달
@@ -120,7 +121,10 @@ function judgeExperiments(pageRows28) {
     const ctr = imp ? (clicks / imp) * 100 : 0;
     const entry = { date: kstDate(), imp, clicks, ctr: +ctr.toFixed(2) };
     exp.history = [...(exp.history || []), entry];
-    if (imp < MIN_IMP_FOR_VERDICT) {
+    const daysSinceApply = Math.floor((Date.parse(kstDate()) - Date.parse(exp.appliedAt)) / 86400e3);
+    if (daysSinceApply < MIN_DAYS_FOR_VERDICT) {
+      entry.verdict = `warming-up(적용 ${daysSinceApply}일차 < ${MIN_DAYS_FOR_VERDICT} — 28d 창이 적용 전 데이터 포함, 판정 보류)`;
+    } else if (imp < MIN_IMP_FOR_VERDICT) {
       entry.verdict = `hold(표본부족 ${imp}<${MIN_IMP_FOR_VERDICT} — 제목 유지)`;
     } else if (ctr >= exp.baselineCtr) {
       entry.verdict = `winner-so-far(변형 CTR ${ctr.toFixed(2)}% ≥ 기준 ${exp.baselineCtr}%)`;

@@ -29,7 +29,7 @@
           "imp": 1638,
           "clicks": 57,
           "ctr": 3.48,
-          "verdict": "rollback-candidate(변형 CTR 3.48% < 기준 3.5% — 대화형 세션에서 원복)"
+          "verdict": "warming-up(적용 0일차 — 이 측정은 적용 전 28d 데이터=기준선 재확인용, 판정 아님)"
         }
       ]
     },
@@ -51,7 +51,7 @@
           "imp": 660,
           "clicks": 7,
           "ctr": 1.06,
-          "verdict": "rollback-candidate(변형 CTR 1.06% < 기준 1.1% — 대화형 세션에서 원복)"
+          "verdict": "warming-up(적용 0일차 — 이 측정은 적용 전 28d 데이터=기준선 재확인용, 판정 아님)"
         }
       ]
     },
@@ -73,7 +73,7 @@
           "imp": 703,
           "clicks": 22,
           "ctr": 3.13,
-          "verdict": "winner-so-far(변형 CTR 3.13% ≥ 기준 3.1%)"
+          "verdict": "warming-up(적용 0일차 — 이 측정은 적용 전 28d 데이터=기준선 재확인용, 판정 아님)"
         }
       ]
     },
@@ -95,7 +95,7 @@
           "imp": 423,
           "clicks": 6,
           "ctr": 1.42,
-          "verdict": "winner-so-far(변형 CTR 1.42% ≥ 기준 1.4%)"
+          "verdict": "warming-up(적용 0일차 — 이 측정은 적용 전 28d 데이터=기준선 재확인용, 판정 아님)"
         }
       ]
     },
@@ -117,7 +117,7 @@
           "imp": 443,
           "clicks": 11,
           "ctr": 2.48,
-          "verdict": "rollback-candidate(변형 CTR 2.48% < 기준 2.5% — 대화형 세션에서 원복)"
+          "verdict": "warming-up(적용 0일차 — 이 측정은 적용 전 28d 데이터=기준선 재확인용, 판정 아님)"
         }
       ]
     }
