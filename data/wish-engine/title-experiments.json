@@ -23,7 +23,15 @@
       "baselineTitle": "일산명월관요정 — 정발산 정원 거문고 선율 한정식 15첩에 다도까지 잠긴다",
       "variantTitle": "일산명월관요정 — 거문고 흐르는 정발산 정원, 15첩 다도상은 봐야 믿는다",
       "hypothesis": "선율/잠긴다(시적)보다 '봐야 믿는다'(FOMO)가 클릭 유인 — 팩트 동일 재구성",
-      "history": []
+      "history": [
+        {
+          "date": "2026-08-18",
+          "imp": 1638,
+          "clicks": 57,
+          "ctr": 3.48,
+          "verdict": "rollback-candidate(변형 CTR 3.48% < 기준 3.5% — 대화형 세션에서 원복)"
+        }
+      ]
     },
     {
       "slug": "ilsanshampoonight",
@@ -33,11 +41,19 @@
       "baselineWindow": "2026-07-18~2026-08-15",
       "baselineImp": 660,
       "baselineCtr": 1.1,
-      "baselinePos": 10.0,
+      "baselinePos": 10,
       "baselineTitle": "일산샴푸나이트 — 시그니처 타임에 조명이 다 꺼진다, 금요일 만석인 이유를 직접 봤다",
       "variantTitle": "일산샴푸나이트 — 라페스타 한복판, 시그니처 타임엔 조명이 왜 다 꺼질까",
       "hypothesis": "서술 2문장보다 지역 앵커(라페스타)+의문형 1문장이 저CTR(1.1%) 개선 — 팩트 동일",
-      "history": []
+      "history": [
+        {
+          "date": "2026-08-18",
+          "imp": 660,
+          "clicks": 7,
+          "ctr": 1.06,
+          "verdict": "rollback-candidate(변형 CTR 1.06% < 기준 1.1% — 대화형 세션에서 원복)"
+        }
+      ]
     },
     {
       "slug": "daegubabambanight",
@@ -51,7 +67,15 @@
       "baselineTitle": "대구바밤바나이트 — 동성로 5분 100평, 트로트가 올드팝으로 틀 없이 튄다",
       "variantTitle": "대구바밤바나이트 — 동성로 5분 100평, 트로트에서 올드팝 넘어가는 순간이 백미더라",
       "hypothesis": "'틀 없이 튄다'(추상)보다 1인칭 경험 종결(백미더라)이 클릭 유인 — 팩트 동일",
-      "history": []
+      "history": [
+        {
+          "date": "2026-08-18",
+          "imp": 703,
+          "clicks": 22,
+          "ctr": 3.13,
+          "verdict": "winner-so-far(변형 CTR 3.13% ≥ 기준 3.1%)"
+        }
+      ]
     },
     {
       "slug": "itaewonclub-utopia",
@@ -65,7 +89,15 @@
       "baselineTitle": "이태원클럽 유토피아 — 손님의 절반이 외국인인 밤, 레게톤이 새벽 1시 반을 채운다",
       "variantTitle": "이태원클럽 유토피아 — 새벽 1시 반 레게톤, 플로어 절반이 외국인이라 놀랐다",
       "hypothesis": "구체 시간 선행 + 1인칭 감정(놀랐다)이 저CTR(1.4%) 개선 — 팩트 동일",
-      "history": []
+      "history": [
+        {
+          "date": "2026-08-18",
+          "imp": 423,
+          "clicks": 6,
+          "ctr": 1.42,
+          "verdict": "winner-so-far(변형 CTR 1.42% ≥ 기준 1.4%)"
+        }
+      ]
     },
     {
       "slug": "bundangpongpongnight",
@@ -79,7 +111,15 @@
       "baselineTitle": "분당퐁퐁나이트 — 판교역 7분, IT 직장인이 퇴근 후 왜 평일에도 모일까",
       "variantTitle": "분당퐁퐁나이트 — 판교역 7분, 평일 밤은 IT 직장인들 차지더라",
       "hypothesis": "의문형 유지 대비 단정+1인칭 관찰(차지더라)이 pos 7.1 대비 낮은 CTR 개선 — 팩트 동일",
-      "history": []
+      "history": [
+        {
+          "date": "2026-08-18",
+          "imp": 443,
+          "clicks": 11,
+          "ctr": 2.48,
+          "verdict": "rollback-candidate(변형 CTR 2.48% < 기준 2.5% — 대화형 세션에서 원복)"
+        }
+      ]
     }
   ]
 }

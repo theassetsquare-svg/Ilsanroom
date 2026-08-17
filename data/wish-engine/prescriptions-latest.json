@@ -1,0 +1,981 @@
+{
+  "date": "2026-08-18",
+  "prescriptions": [
+    {
+      "slug": "haeundaegoguryeo",
+      "nameKo": "해운대고구려",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 892자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "ilsanmyeongwolgwanyojeong",
+      "nameKo": "일산명월관요정",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1173자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "cheongdamh2onight",
+      "nameKo": "청담H2O나이트",
+      "tier": "striking",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "anchor(매거진/이벤트 언급 0 — 구조 링크만 존재)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gangnamjuliananight",
+      "nameKo": "강남줄리아나나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1087자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "sinlimgrandprixnight",
+      "nameKo": "신림그랑프리나이트",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "sangbonghangukgwannight",
+      "nameKo": "상봉동한국관나이트",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1266자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "suyushampoonight",
+      "nameKo": "수유샴푸나이트",
+      "tier": "striking",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1267자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "doksangukbingwannight",
+      "nameKo": "독산동국빈관나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1184자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "dapsimnidontellmamanight",
+      "nameKo": "답십리돈텔마마나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1101자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "yeongdeungpoterminalnight",
+      "nameKo": "영등포터미널나이트",
+      "tier": "striking",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1414자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "nowonhobaknight",
+      "nameKo": "노원호박나이트",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1036자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gildongchancenight",
+      "nameKo": "길동찬스나이트",
+      "tier": "striking",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 934자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "ilsanshampoonight",
+      "nameKo": "일산샴푸나이트",
+      "tier": "striking",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1451자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "pajuyadangskydomenight",
+      "nameKo": "파주야당스카이돔나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "hwajeonghangukgwannight",
+      "nameKo": "화정한국관나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 976자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gimposomenight",
+      "nameKo": "김포썸나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1106자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "uijeongbuhangukgwannight",
+      "nameKo": "의정부한국관나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "suwonchancenight",
+      "nameKo": "수원찬스돔나이트",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1259자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "seongnamgukbingwannight",
+      "nameKo": "성남국빈관나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1373자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "seongnamshampoonight",
+      "nameKo": "성남샴푸나이트",
+      "tier": "striking",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1234자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "bundangpongpongnight",
+      "nameKo": "분당퐁퐁나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1395자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "pyeongtaekhobaknight",
+      "nameKo": "평택호박나이트",
+      "tier": "striking",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1002자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "bucheonmeritnight",
+      "nameKo": "부천메리트나이트",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1491자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "bucheongoraenight",
+      "nameKo": "부천고래나이트",
+      "tier": "striking",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1315자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "ansandontellmamanight",
+      "nameKo": "안산돈텔마마나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1236자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "cheonanstardomnight",
+      "nameKo": "천안스타돔나이트",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1240자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "cheonankoreanight",
+      "nameKo": "천안코리아나이트",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1314자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "daejeonsevennight",
+      "nameKo": "대전세븐나이트",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1215자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "daeguhobaknight",
+      "nameKo": "대구호박나이트",
+      "tier": "striking",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 980자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "daegubabambanight",
+      "nameKo": "대구바밤바나이트",
+      "tier": "striking",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1031자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "daegutotoganight",
+      "nameKo": "대구토토가나이트",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1034자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gumihobaknight",
+      "nameKo": "구미호박나이트",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 950자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "busanyeonsandongmulnight",
+      "nameKo": "부산연산동물나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1270자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "busanasiadnight",
+      "nameKo": "부산아시아드나이트",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "ulsannewworldnight",
+      "nameKo": "울산뉴월드나이트",
+      "tier": "striking",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1174자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "ulsanchampionnight",
+      "nameKo": "울산챔피언나이트",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1143자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gwangjusangmunight",
+      "nameKo": "광주상무나이트",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1066자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gwangjutotonight",
+      "nameKo": "광주토토밤나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1035자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gwangjucheomdanempanight",
+      "nameKo": "광주첨단엠파나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1077자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gwangjuallnight",
+      "nameKo": "광주올나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1061자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gangnamclub-race",
+      "nameKo": "강남청담클럽 레이스",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1189자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gangnamclub-sound",
+      "nameKo": "강남청담클럽 사운드",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1500자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gangnamclub-jack",
+      "nameKo": "강남청담클럽 Jack",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1593자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gangnamclub-peak",
+      "nameKo": "강남청담클럽 피크",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 912자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gangnamclub-miro",
+      "nameKo": "강남청담클럽 미로",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 960자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gangnamclub-utopia",
+      "nameKo": "강남청담클럽 유토피아",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1552자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gangnamclub-laputa",
+      "nameKo": "강남청담클럽 라퓨타",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1557자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gangnamclub-face",
+      "nameKo": "강남청담클럽 페이스",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1541자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gangnamclub-bamnbam",
+      "nameKo": "강남청담클럽 밤앤밤",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1578자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gangnamclub-arte",
+      "nameKo": "강남청담클럽 아르떼",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 929자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "apgujeongclub-hype",
+      "nameKo": "압구정클럽 하입",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 857자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "apgujeongclub-intro",
+      "nameKo": "압구정클럽 인트로",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 914자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "apgujeongclub-color",
+      "nameKo": "압구정클럽 컬러",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 856자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "apgujeongclub-dbridge",
+      "nameKo": "압구정클럽 디브릿지",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 842자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "apgujeongclub-candyman",
+      "nameKo": "압구정클럽 캔디맨",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 934자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "apgujeongclub-muin",
+      "nameKo": "압구정클럽 무인",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1023자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "apgujeongcodelounge",
+      "nameKo": "압구정코드라운지",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 904자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "cheongdamclub-arju",
+      "nameKo": "강남청담클럽 아르쥬",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 966자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "itaewonclub-utopia",
+      "nameKo": "이태원클럽 유토피아",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1609자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "itaewonclub-maid",
+      "nameKo": "이태원클럽 메이드",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 931자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "itaewonclub-prism",
+      "nameKo": "이태원클럽 프리즘",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1545자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "itaewongaepanpocha",
+      "nameKo": "이태원개판포차",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 796자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "hongdaeclub-pacific",
+      "nameKo": "홍대클럽 퍼시픽",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 849자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "hongdaeclub-maid",
+      "nameKo": "홍대클럽 메이드",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 903자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "hongdaeclub-dokkaebi",
+      "nameKo": "홍대클럽 도깨비",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 896자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "yongsandragoncity",
+      "nameKo": "용산드래곤시티",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 912자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "seoulbanyantree",
+      "nameKo": "서울반얀트리",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 809자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "ilsanclub-cj",
+      "nameKo": "일산클럽 CJ",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 757자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "uijeongbuarena",
+      "nameKo": "의정부아레나",
+      "tier": "zero",
+      "causes": [
+        "no_reach(90일 페이지 노출 0 — 색인/도달 의심)",
+        "depth(본문 1080자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "yonginbyeolbam",
+      "nameKo": "용인사거리별밤",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 752자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "bucheonclub-paragon",
+      "nameKo": "부천클럽 파라곤",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 827자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "incheonparadisecity",
+      "nameKo": "인천파라다이스씨티",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 940자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "cheongju-supermoon",
+      "nameKo": "청주클럽 슈퍼문",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 892자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "apgujeonglounge-dm",
+      "nameKo": "압구정라운지 디엠",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 868자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "apgujeongidiotlounge",
+      "nameKo": "압구정이디엇라운지",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 972자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gangnamhoppa-royal",
+      "nameKo": "강남호빠 로얄",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 975자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "busanhoppa-star",
+      "nameKo": "부산호빠 스타",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 979자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "jangandonghoppa-bbangbbang",
+      "nameKo": "장안동호빠 빵빵",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1166자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "geondaehoppa-w",
+      "nameKo": "건대호빠 W",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 926자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "suwonhoppa-beast",
+      "nameKo": "수원호빠 비스트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 999자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "haeundaehoppa-kkantappiya",
+      "nameKo": "해운대호빠 깐따삐야",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1140자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "haeundaehoppa-michelin",
+      "nameKo": "해운대호빠 미슐랭",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 779자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "daejeonhoppa-eclipse",
+      "nameKo": "대전호빠 이클립스",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 904자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "suwonhoppa-aura",
+      "nameKo": "수원호빠 아우라",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1182자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "busanhoppa-menz",
+      "nameKo": "부산호빠 맨즈",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1062자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "busanhoppa-aura",
+      "nameKo": "부산호빠 아우라",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 743자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "haeundaehoppa-velvet",
+      "nameKo": "해운대호빠 벨벳",
+      "tier": "zero",
+      "causes": [
+        "no_reach(90일 페이지 노출 0 — 색인/도달 의심)",
+        "depth(본문 891자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "daeguhoppa-perfect",
+      "nameKo": "대구호빠 퍼펙트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 789자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gangnam-hoppa-again",
+      "nameKo": "강남호빠 어게인",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1085자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gangnam-hoppa-flirting",
+      "nameKo": "강남호빠 플러팅",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1173자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "jangandong-hoppa-flex",
+      "nameKo": "장안동호빠 플렉스",
+      "tier": "zero",
+      "causes": [
+        "no_reach(90일 페이지 노출 0 — 색인/도달 의심)",
+        "depth(본문 1070자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "jeonju-hoppa-gallery",
+      "nameKo": "전주호빠 갤러리",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1075자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "hongdae-hoppa",
+      "nameKo": "홍대호빠",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 935자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "ilsan-hwajung-tunnel",
+      "nameKo": "일산화정터널나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1624자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "ilsan-mul-night",
+      "nameKo": "일산물나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1005자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "itaewon-savage",
+      "nameKo": "이태원클럽 세비지",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 986자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "gangnamclub-octagon",
+      "nameKo": "강남클럽 옥타곤",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1110자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "itaewonclub-cakeshop",
+      "nameKo": "이태원클럽 케이크샵",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 936자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    }
+  ]
+}
