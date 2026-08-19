@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-18T17:16:13.530Z",
+  "generated_at": "2026-08-19T03:36:15.249Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,14 +7,7 @@
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 12
-    },
-    {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 9
+      "views_24h": 11
     },
     {
       "path": "/nights/daejeonsevennight",
@@ -45,11 +38,39 @@
       "views_24h": 4
     },
     {
-      "path": "/nights/suwonchancenight",
-      "title": "수원찬스돔나이트",
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
       "category": "night",
-      "region": "수원",
-      "views_24h": 4
+      "region": "강서",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/daejeonhangukgwannight",
+      "title": "대전한국관나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/suyushampoonight",
+      "title": "수유샴푸나이트",
+      "category": "night",
+      "region": "수유",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/busanmulnight",
+      "title": "부산물나이트",
+      "category": "night",
+      "region": "부산",
+      "views_24h": 2
     },
     {
       "path": "/rooms/busan-haeundae/haeundaegoguryeo",
@@ -66,13 +87,6 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/cheongjudontellmamanight",
-      "title": "청주돈텔마마나이트",
-      "category": "night",
-      "region": "청주",
-      "views_24h": 2
-    },
-    {
       "path": "/nights/daegubabambanight",
       "title": "대구바밤바나이트",
       "category": "night",
@@ -80,24 +94,10 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
+      "path": "/nights/seongnamshampoonight",
+      "title": "성남샴푸나이트",
       "category": "night",
-      "region": "부산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/suyushampoonight",
-      "title": "수유샴푸나이트",
-      "category": "night",
-      "region": "수유",
+      "region": "성남",
       "views_24h": 1
     },
     {
