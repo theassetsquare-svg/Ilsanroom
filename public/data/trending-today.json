@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T13:42:06.935Z",
+  "generated_at": "2026-08-19T17:15:55.370Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,7 +7,7 @@
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 8
+      "views_24h": 10
     },
     {
       "path": "/nights/suyushampoonight",
@@ -24,31 +24,38 @@
       "views_24h": 5
     },
     {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 3
-    },
-    {
       "path": "/nights/daejeonbongmyeongnight",
       "title": "대전봉명나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/bucheongoraenight",
-      "title": "부천고래나이트",
-      "category": "night",
-      "region": "부천",
-      "views_24h": 2
+      "views_24h": 4
     },
     {
       "path": "/rooms/ilsan/ilsanroom",
       "title": "일산룸",
       "category": "room",
       "region": "일산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/daejeonhangukgwannight",
+      "title": "대전한국관나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/bucheongoraenight",
+      "title": "부천고래나이트",
+      "category": "night",
+      "region": "부천",
       "views_24h": 2
     },
     {
@@ -73,38 +80,31 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/cheongjuhobaknight",
-      "title": "청주호박나이트",
+      "path": "/nights/daeguhangukgwannight",
+      "title": "대구한국관나이트",
       "category": "night",
-      "region": "청주",
-      "views_24h": 1
-    },
-    {
-      "path": "/hoppa/daeguhoppa-perfect",
-      "title": "대구호빠 퍼펙트",
-      "category": "hoppa",
       "region": "대구",
       "views_24h": 1
     },
     {
-      "path": "/nights/gangseonight",
-      "title": "강서나이트",
+      "path": "/nights/sinlimgrandprixnight",
+      "title": "신림그랑프리나이트",
       "category": "night",
-      "region": "강서",
+      "region": "신림",
       "views_24h": 1
     },
     {
-      "path": "/nights/pyeongtaekhobaknight",
-      "title": "평택호박나이트",
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
       "category": "night",
-      "region": "평택",
+      "region": "오산",
       "views_24h": 1
     },
     {
-      "path": "/nights/ilsanshampoonight",
-      "title": "일산샴푸나이트",
+      "path": "/nights/ansanhitnight",
+      "title": "안산히트나이트",
       "category": "night",
-      "region": "일산",
+      "region": "안산",
       "views_24h": 1
     }
   ]
