@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-20T13:45:00.813Z",
+  "generated_at": "2026-08-20T17:17:35.137Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,7 +7,14 @@
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 9
+      "views_24h": 8
+    },
+    {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
+      "category": "night",
+      "region": "강서",
+      "views_24h": 6
     },
     {
       "path": "/nights/cheongjuhobaknight",
@@ -15,13 +22,6 @@
       "category": "night",
       "region": "청주",
       "views_24h": 5
-    },
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
-      "views_24h": 4
     },
     {
       "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
@@ -45,10 +45,10 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
+      "path": "/nights/bundangpongpongnight",
+      "title": "분당퐁퐁나이트",
       "category": "night",
-      "region": "오산",
+      "region": "분당",
       "views_24h": 2
     },
     {
@@ -73,11 +73,25 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
+      "path": "/nights/gwangjumgmnight",
+      "title": "광주MGM나이트",
       "category": "night",
-      "region": "대전",
-      "views_24h": 2
+      "region": "광주",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/bucheongoraenight",
+      "title": "부천고래나이트",
+      "category": "night",
+      "region": "부천",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
+      "category": "night",
+      "region": "오산",
+      "views_24h": 1
     },
     {
       "path": "/nights/suyushampoonight",
@@ -91,20 +105,6 @@
       "title": "대전호빠 이클립스",
       "category": "hoppa",
       "region": "대전",
-      "views_24h": 1
-    },
-    {
-      "path": "/clubs/yongin/yonginbyeolbam",
-      "title": "용인사거리별밤",
-      "category": "club",
-      "region": "용인",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/seongnamshampoonight",
-      "title": "성남샴푸나이트",
-      "category": "night",
-      "region": "성남",
       "views_24h": 1
     }
   ]
