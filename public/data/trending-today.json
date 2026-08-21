@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-21T13:43:22.559Z",
+  "generated_at": "2026-08-21T17:17:42.238Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,7 +7,14 @@
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 6
+      "views_24h": 5
+    },
+    {
+      "path": "/nights/gimpohobaknight",
+      "title": "김포호박나이트",
+      "category": "night",
+      "region": "김포",
+      "views_24h": 4
     },
     {
       "path": "/clubs/itaewon/itaewonclub-utopia",
@@ -17,18 +24,46 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/gimpohobaknight",
-      "title": "김포호박나이트",
+      "path": "/nights/gildongchancenight",
+      "title": "길동찬스나이트",
       "category": "night",
-      "region": "김포",
-      "views_24h": 3
+      "region": "길동",
+      "views_24h": 2
     },
     {
       "path": "/nights/gangseo-hobak",
       "title": "강서호박나이트",
       "category": "night",
       "region": "강서",
-      "views_24h": 3
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/yeongdeungpoterminalnight",
+      "title": "영등포터미널나이트",
+      "category": "night",
+      "region": "영등포",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
+      "category": "night",
+      "region": "오산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/seongnamshampoonight",
+      "title": "성남샴푸나이트",
+      "category": "night",
+      "region": "성남",
+      "views_24h": 2
     },
     {
       "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
@@ -42,13 +77,6 @@
       "title": "수원찬스돔나이트",
       "category": "night",
       "region": "수원",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/bucheongoraenight",
-      "title": "부천고래나이트",
-      "category": "night",
-      "region": "부천",
       "views_24h": 2
     },
     {
@@ -78,34 +106,6 @@
       "category": "night",
       "region": "서산",
       "views_24h": 2
-    },
-    {
-      "path": "/nights/gurihobaknight",
-      "title": "구리호박나이트",
-      "category": "night",
-      "region": "구리",
-      "views_24h": 2
-    },
-    {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/bundangpongpongnight",
-      "title": "분당퐁퐁나이트",
-      "category": "night",
-      "region": "분당",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/gwangjucheomdanempanight",
-      "title": "광주첨단엠파나이트",
-      "category": "night",
-      "region": "광주",
-      "views_24h": 1
     }
   ]
 }
