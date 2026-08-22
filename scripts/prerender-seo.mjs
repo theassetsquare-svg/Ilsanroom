@@ -782,12 +782,12 @@ function generateVenueSsrBody(v, allVenues) {
   }
   html += `</section>`;
 
-  // 답십리 나이트 상호 링크 (대표 지시 2026-08-22): 돈텔마마 ↔ 미라클 양방향, 두 페이지 카피는 서로 다르게(지문 방지)
+  // 답십리 나이트 상호 링크 (대표 지시 2026-08-22): 돈텔마마 ↔ 미라클 양방향 + 재오픈 관계 명시, 두 페이지 카피는 서로 다르게(지문 방지)
   if (v.slug === 'dapsimnidontellmamanight') {
-    html += `<section><h2>답십리 나이트 같이 보기</h2><p>같은 답십리 생활권에 <a href="/nights/dapsimnimiraclenight/">답십리미라클나이트</a>가 2026년 8월 13일 고미술로 99에 새로 문을 열었다. 새 시설 홀이 궁금하면 함께 비교해보면 된다.</p></section>`;
+    html += `<section><h2>답십리 나이트 같이 보기</h2><p>이 홀은 잠시 영업을 쉰 뒤 <a href="/nights/dapsimnimiraclenight/">답십리미라클나이트</a>라는 새 이름으로 2026년 8월 13일 고미술로 99에서 재오픈했다. 새 간판의 최신 소식과 예약 안내는 미라클 페이지에서 확인하면 된다.</p></section>`;
   }
   if (v.slug === 'dapsimnimiraclenight') {
-    html += `<section><h2>답십리 나이트 비교 안내</h2><p>답십리역 천호대로 방면에는 오래 자리를 지켜온 <a href="/nights/dapsimnidontellmamanight/">답십리돈텔마마나이트</a>도 있다. 두 홀의 결이 달라 취향대로 고르면 된다.</p></section>`;
+    html += `<section><h2>답십리 나이트 비교 안내</h2><p>여기는 예전 <a href="/nights/dapsimnidontellmamanight/">답십리돈텔마마나이트</a>가 미라클이라는 새 이름으로 다시 문을 연 곳이다. 옛 이름 시절 이야기가 궁금하면 돈텔마마 페이지도 같이 보면 된다.</p></section>`;
   }
 
   // 일산명월관요정 → 일산요정 정보 가이드 역방향 내부링크 (양방향 연결, 고립 페이지 방지)

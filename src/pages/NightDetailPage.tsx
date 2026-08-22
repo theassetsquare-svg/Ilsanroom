@@ -271,8 +271,8 @@ export default function NightDetailPage() {
         <DapsimnriCheonSaSection venue={venue} />
         <DapsimniCrossLinkCard
           to="/nights/dapsimnimiraclenight"
-          title="답십리미라클나이트 — 같은 답십리에 새로 연 홀"
-          desc="2026년 8월 13일 고미술로 99에 문을 열었다. 새 시설 홀이 궁금하면 비교해보고 골라도 된다"
+          title="답십리미라클나이트로 재오픈 — 새 소식은 여기서"
+          desc="잠시 영업을 쉰 뒤 미라클이라는 새 이름으로 2026년 8월 13일 고미술로 99에서 다시 문을 열었다"
         />
       </>
     )
@@ -280,8 +280,8 @@ export default function NightDetailPage() {
       ? (
         <DapsimniCrossLinkCard
           to="/nights/dapsimnidontellmamanight"
-          title="답십리돈텔마마나이트 — 답십리역 쪽 오래된 홀"
-          desc="천호대로 방면에서 오래 자리를 지켜온 홀. 두 곳의 결이 달라 취향대로 고르면 된다"
+          title="예전 이름은 답십리돈텔마마나이트"
+          desc="돈텔마마가 잠시 쉬었다가 미라클이라는 새 이름으로 재오픈했다. 옛 이름 시절 이야기는 돈텔마마 페이지에서"
         />
       )
       : isDaejeonSeven
