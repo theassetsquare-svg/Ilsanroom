@@ -782,6 +782,14 @@ function generateVenueSsrBody(v, allVenues) {
   }
   html += `</section>`;
 
+  // 답십리 나이트 상호 링크 (대표 지시 2026-08-22): 돈텔마마 ↔ 미라클 양방향, 두 페이지 카피는 서로 다르게(지문 방지)
+  if (v.slug === 'dapsimnidontellmamanight') {
+    html += `<section><h2>답십리 나이트 같이 보기</h2><p>같은 답십리 생활권에 <a href="/nights/dapsimnimiraclenight/">답십리미라클나이트</a>가 2026년 8월 13일 고미술로 99에 새로 문을 열었다. 새 시설 홀이 궁금하면 함께 비교해보면 된다.</p></section>`;
+  }
+  if (v.slug === 'dapsimnimiraclenight') {
+    html += `<section><h2>답십리 나이트 비교 안내</h2><p>답십리역 천호대로 방면에는 오래 자리를 지켜온 <a href="/nights/dapsimnidontellmamanight/">답십리돈텔마마나이트</a>도 있다. 두 홀의 결이 달라 취향대로 고르면 된다.</p></section>`;
+  }
+
   // 일산명월관요정 → 일산요정 정보 가이드 역방향 내부링크 (양방향 연결, 고립 페이지 방지)
   if (v.slug === 'ilsanmyeongwolgwanyojeong') {
     html += `<section><h2>일산요정 정보</h2><p><a href="/guide/ilsan-yojeong/">일산요정 유래·위치·예약 가이드</a>에서 전통 한정식 정찬과 국악 접객 문화, 마두역 인근 위치와 예약 방법을 확인할 수 있다.</p></section>`;

@@ -6,6 +6,7 @@ import { getHookingTitle, getHookingDescription } from '@/lib/seo-hooks';
 import { getVenueOgImageBySlug } from '@/lib/og-image';
 import { getVenueBySlug, getRelatedVenues } from '@/data/venues';
 import ChangwonLullalalaCallBar from '@/components/venue/ChangwonLullalalaCallBar';
+import { Link } from '@/components/ui/SafeLink';
 
 const defaultFaqs = (name: string) => [
   { question: `소셜 댄스 초보자도 ${name}에 갈 수 있나요?`, answer: `물론입니다. 나이트클럽에는 초보자를 위한 간단한 스텝을 알려주는 분위기가 자연스럽게 형성되어 있습니다. 지르박·부르스 같은 기본 스텝만 알아도 충분히 즐길 수 있으며, 현장에서 배우는 분도 많습니다.` },
@@ -160,6 +161,19 @@ function DaejeonSevenFixedBar() {
   );
 }
 
+/* 답십리 나이트 상호 링크 카드 (대표 지시 2026-08-22): 돈텔마마 ↔ 미라클 양방향, 내부 링크 = 같은 탭 */
+function DapsimniCrossLinkCard({ to, title, desc }: { to: string; title: string; desc: string }) {
+  return (
+    <Link
+      to={to}
+      className="block w-full max-w-[480px] mx-auto rounded-2xl border border-neon-border bg-neon-surface p-5 transition hover:border-neon-primary/50"
+    >
+      <p className="text-sm font-bold text-neon-text">{title}</p>
+      <p className="mt-1 text-xs text-neon-text-muted">{desc}</p>
+    </Link>
+  );
+}
+
 /* 답십리미라클나이트 고정 하단 전화 바 — 대전세븐 바와 동일 규격
    (모바일: MobileBottomNav 위 / PC: bottom 0, 56px+, 전체 tel:, 시크릿 토스트 억제) */
 function DapsimnriMiracleFixedBar() {
@@ -252,12 +266,29 @@ export default function NightDetailPage() {
   const isDapsimnriMiracle = slug === 'dapsimnimiraclenight';
 
   const topContent = isDapsimnri
-    ? <DapsimnriCheonSaSection venue={venue} />
-    : isDaejeonSeven
-      ? <DaejeonSevenHeaderSection />
-      : isDaeguBabamba
-        ? <DaeguBabambaSection venue={venue} />
-        : undefined;
+    ? (
+      <>
+        <DapsimnriCheonSaSection venue={venue} />
+        <DapsimniCrossLinkCard
+          to="/nights/dapsimnimiraclenight"
+          title="답십리미라클나이트 — 같은 답십리에 새로 연 홀"
+          desc="2026년 8월 13일 고미술로 99에 문을 열었다. 새 시설 홀이 궁금하면 비교해보고 골라도 된다"
+        />
+      </>
+    )
+    : isDapsimnriMiracle
+      ? (
+        <DapsimniCrossLinkCard
+          to="/nights/dapsimnidontellmamanight"
+          title="답십리돈텔마마나이트 — 답십리역 쪽 오래된 홀"
+          desc="천호대로 방면에서 오래 자리를 지켜온 홀. 두 곳의 결이 달라 취향대로 고르면 된다"
+        />
+      )
+      : isDaejeonSeven
+        ? <DaejeonSevenHeaderSection />
+        : isDaeguBabamba
+          ? <DaeguBabambaSection venue={venue} />
+          : undefined;
 
   return (
     <>
