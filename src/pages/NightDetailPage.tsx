@@ -160,6 +160,28 @@ function DaejeonSevenFixedBar() {
   );
 }
 
+/* 답십리미라클나이트 고정 하단 전화 바 — 대전세븐 바와 동일 규격
+   (모바일: MobileBottomNav 위 / PC: bottom 0, 56px+, 전체 tel:, 시크릿 토스트 억제) */
+function DapsimnriMiracleFixedBar() {
+  return (
+    <div data-fixed-phonebar="true" className="fixed left-0 right-0 z-40 print:hidden bottom-[calc(56px_+_env(safe-area-inset-bottom))] md:bottom-0">
+      <TelCopyFallback
+        phone="010-8156-6558"
+        className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 px-4 py-3.5"
+        style={{
+          background: 'linear-gradient(to right, #4C1D95, #2E1065)',
+          minHeight: 56,
+          boxShadow: '0 -4px 20px rgba(0,0,0,0.4)',
+        }}
+        toastClassName="absolute -top-9 left-0 right-0 bg-[#111]/90 py-1.5 text-center text-sm font-bold text-white"
+      >
+        <span className="whitespace-nowrap" style={{ color: '#FCD34D', fontSize: 'clamp(17px,4.4vw,18px)', fontWeight: 700 }}>답십리미라클나이트 유재석</span>
+        <span className="whitespace-nowrap" style={{ color: '#FFFFFF', fontSize: 'clamp(17px,4.6vw,20px)', fontWeight: 900, letterSpacing: '0.04em' }}>010 8156 6558</span>
+      </TelCopyFallback>
+    </div>
+  );
+}
+
 /* 대구바밤바나이트 — 1:1 썸네일(이름+둘리+번호) 이미지 + 둘리 전화 CTA */
 function DaeguBabambaSection({ venue }: { venue: { staffPhone?: string } }) {
   return (
@@ -227,6 +249,7 @@ export default function NightDetailPage() {
   const isDaejeonSeven = slug === 'daejeonsevennight';
   const isDaeguBabamba = slug === 'daegubabambanight';
   const isChangwonLullalala = slug === 'changwon-lululalala';
+  const isDapsimnriMiracle = slug === 'dapsimnimiraclenight';
 
   const topContent = isDapsimnri
     ? <DapsimnriCheonSaSection venue={venue} />
@@ -239,7 +262,7 @@ export default function NightDetailPage() {
   return (
     <>
       {/* 고정 전화바 venue: 하단 여백 추가 */}
-      {(isDaejeonSeven || isDaeguBabamba || isChangwonLullalala) && <style>{`body { padding-bottom: 120px !important; }`}</style>}
+      {(isDaejeonSeven || isDaeguBabamba || isChangwonLullalala || isDapsimnriMiracle) && <style>{`body { padding-bottom: 120px !important; }`}</style>}
       <VenueDetailPage
         venue={venue}
         categoryLabel="나이트"
@@ -255,6 +278,7 @@ export default function NightDetailPage() {
       {isDaejeonSeven && <DaejeonSevenFixedBar />}
       {isDaeguBabamba && <DaeguBabambaFixedBar />}
       {isChangwonLullalala && <ChangwonLullalalaCallBar />}
+      {isDapsimnriMiracle && <DapsimnriMiracleFixedBar />}
     </>
   );
 }

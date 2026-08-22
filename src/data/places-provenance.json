@@ -953,22 +953,34 @@
   },
   "bulgwangdonghobaknight": {
     "source": "manual",
-    "note": "2026-08-22 웹 2+소스 실증(대표 지시 신규 등록): 114.co.kr comp_id=3017175(서울 은평구 불광동 281-92/통일로 730)·localmap.co.kr 카바레 등재(1973-05-07 인허가·141.8평 468㎡)·인스타그램 릴(불광역 통일로 730 지하). Places API 키 미보유로 manual.",
+    "note": "2026-08-22 웹 2+소스 실증(대표 지시 신규 등록): 114.co.kr comp_id=3017175(서울 은평구 불광동 281-92/통일로 730)·localmap.co.kr 카바레 등재(1973-05-07 인허가·141.8평 468㎡)·인스타그램 릴(불광역 통일로 730 지하). Places API 키 미보유로 manual. 영업시간 19:00~05:00 = 대표(운영자) 직접 제공(2026-08-22).",
     "fields": [
       "address",
-      "nearbyStation"
+      "nearbyStation",
+      "openHours"
     ],
     "matchedName": "호박성인나이트",
     "fetchedAt": "2026-08-22"
   },
   "uijeongbubaekakgwannight": {
     "source": "manual",
-    "note": "2026-08-22 웹 2+소스 실증(대표 지시 신규 등록): bizno.net/article/5624600923·fqf.purpleo.kr/article/270(경기 의정부시 태평로 104 경복빌딩=의정부동 26-4, 2023-01-05 개업·597.06㎡, 인접 의정부중앙역)·localmap.co.kr 등재. Places API 키 미보유로 manual.",
+    "note": "2026-08-22 웹 2+소스 실증(대표 지시 신규 등록): bizno.net/article/5624600923·fqf.purpleo.kr/article/270(경기 의정부시 태평로 104 경복빌딩=의정부동 26-4, 2023-01-05 개업·597.06㎡, 인접 의정부중앙역)·localmap.co.kr 등재. Places API 키 미보유로 manual. 영업시간 19:00~05:00 = 대표(운영자) 직접 제공(2026-08-22).",
     "fields": [
       "address",
-      "nearbyStation"
+      "nearbyStation",
+      "openHours"
     ],
     "matchedName": "백악관나이트",
+    "fetchedAt": "2026-08-22"
+  },
+  "dapsimnimiraclenight": {
+    "source": "manual",
+    "note": "2026-08-22 실증: 네이버 플레이스(미라클 나이트클럽·동대문구 답십리동·05:00 영업종료)+간판시공 업체 네이버 블로그(고미술로 99 LED 채널간판·경관조명 시공)+오픈(2026-08-13) 예고·방문 후기 블로그 다수. 영업시간 19:00~05:00 및 담당 유재석 010-8156-6558 = 대표(운영자) 직접 제공.",
+    "fields": [
+      "address",
+      "openHours"
+    ],
+    "matchedName": "미라클 나이트클럽",
     "fetchedAt": "2026-08-22"
   }
 }
