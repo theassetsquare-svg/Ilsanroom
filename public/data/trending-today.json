@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-22T13:30:19.431Z",
+  "generated_at": "2026-08-22T17:10:10.218Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,20 +7,20 @@
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 8
+      "views_24h": 11
     },
     {
       "path": "/nights/busanasiadnight",
       "title": "부산아시아드나이트",
       "category": "night",
       "region": "부산",
-      "views_24h": 5
+      "views_24h": 6
     },
     {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
-      "category": "night",
-      "region": "대전",
+      "path": "/clubs/gangnam/gangnamclub-race",
+      "title": "강남청담클럽 레이스",
+      "category": "club",
+      "region": "강남",
       "views_24h": 4
     },
     {
@@ -29,6 +29,13 @@
       "category": "night",
       "region": "길동",
       "views_24h": 4
+    },
+    {
+      "path": "/nights/daegubabambanight",
+      "title": "대구바밤바나이트",
+      "category": "night",
+      "region": "대구",
+      "views_24h": 3
     },
     {
       "path": "/clubs/uijeongbu/uijeongbuarena",
@@ -59,17 +66,17 @@
       "views_24h": 3
     },
     {
-      "path": "/clubs/gangnam/gangnamclub-race",
-      "title": "강남청담클럽 레이스",
-      "category": "club",
-      "region": "강남",
-      "views_24h": 2
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 3
     },
     {
-      "path": "/nights/gimpohobaknight",
-      "title": "김포호박나이트",
+      "path": "/nights/daegutotoganight",
+      "title": "대구토토가나이트",
       "category": "night",
-      "region": "김포",
+      "region": "대구",
       "views_24h": 2
     },
     {
@@ -98,13 +105,6 @@
       "title": "분당퐁퐁나이트",
       "category": "night",
       "region": "분당",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daegubabambanight",
-      "title": "대구바밤바나이트",
-      "category": "night",
-      "region": "대구",
       "views_24h": 2
     }
   ]
