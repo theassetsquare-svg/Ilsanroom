@@ -142,10 +142,10 @@ function TelCopyFallback({ phone, className, style, toastClassName, children }: 
    Tailwind 임의값 대신 inline style로 색상 100% 보장 */
 function DaejeonSevenFixedBar() {
   return (
-    <div className="fixed left-0 right-0 z-40 print:hidden bottom-[calc(56px_+_env(safe-area-inset-bottom))] md:bottom-0">
+    <div data-fixed-phonebar="true" className="fixed left-0 right-0 z-40 print:hidden bottom-[calc(56px_+_env(safe-area-inset-bottom))] md:bottom-0">
       <TelCopyFallback
         phone="010-7770-0869"
-        className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 px-4 py-3"
+        className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 px-4 py-3.5"
         style={{
           background: 'linear-gradient(to right, #1E3A5F, #0F2744)',
           minHeight: 56,
