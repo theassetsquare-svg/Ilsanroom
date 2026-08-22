@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-21T17:17:42.238Z",
+  "generated_at": "2026-08-22T03:32:15.467Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,14 +7,28 @@
       "title": "대전원나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 5
+      "views_24h": 7
+    },
+    {
+      "path": "/nights/gildongchancenight",
+      "title": "길동찬스나이트",
+      "category": "night",
+      "region": "길동",
+      "views_24h": 3
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 3
     },
     {
       "path": "/nights/gimpohobaknight",
       "title": "김포호박나이트",
       "category": "night",
       "region": "김포",
-      "views_24h": 4
+      "views_24h": 3
     },
     {
       "path": "/clubs/itaewon/itaewonclub-utopia",
@@ -24,17 +38,24 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/gildongchancenight",
-      "title": "길동찬스나이트",
+      "path": "/nights/bundangpongpongnight",
+      "title": "분당퐁퐁나이트",
       "category": "night",
-      "region": "길동",
+      "region": "분당",
       "views_24h": 2
     },
     {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
+      "path": "/nights/daegutotoganight",
+      "title": "대구토토가나이트",
       "category": "night",
-      "region": "강서",
+      "region": "대구",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/daegubabambanight",
+      "title": "대구바밤바나이트",
+      "category": "night",
+      "region": "대구",
       "views_24h": 2
     },
     {
@@ -66,13 +87,6 @@
       "views_24h": 2
     },
     {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 2
-    },
-    {
       "path": "/nights/suwonchancenight",
       "title": "수원찬스돔나이트",
       "category": "night",
@@ -91,20 +105,6 @@
       "title": "대전한국관나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/busanyeonsandongmulnight",
-      "title": "부산연산동물나이트",
-      "category": "night",
-      "region": "부산 연산동",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/seosanhobaknight",
-      "title": "서산호박나이트",
-      "category": "night",
-      "region": "서산",
       "views_24h": 2
     }
   ]
