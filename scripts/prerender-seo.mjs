@@ -1542,6 +1542,7 @@ const CROSS_SIG = {
     '강남':   { tail: '역삼 새벽 부킹 가장 센 거점',           sig: '역삼 일대 새벽 부킹 회전이 가장 센 거점' },
     '신림':   { tail: '순환 라인 솔로도 합석 붙는 자리',       sig: '순환 라인에서 솔로 입장도 합석이 붙는 자리' },
     '수유':   { tail: '북한산 산행 끝에 합석 푸는 거점',       sig: '북한산 산행 마치고 합석으로 푸는 단골 거점' },
+    '불광':   { tail: '통일로 지하에서 서북권 합석 붙는 자리',   sig: '3호선·6호선 환승 동선 끝 통일로 지하에서 서북권 합석이 붙는 자리' },
     '독산':   { tail: '가산 야근족 퇴근하고 합석 붙는 라인',   sig: '가산 디지털단지 야근족이 퇴근하고 합석 붙는 라인' },
     '강서':   { tail: '발산역 토박이 합석 척척 붙는 코스',     sig: '발산역 토박이 합석이 척척 붙는 단골 코스' },
     '길동':   { tail: '천호 라인 합석 빠르게 도는 거점',       sig: '천호 라인 합석이 빠르게 도는 거점' },
@@ -1768,24 +1769,12 @@ console.log(`✅ 지역별 페이지 ${regionalCount}개 생성`);
 // ══════════════════════════════════════════
 // 4. 업소 상세 페이지 (116개)
 // ══════════════════════════════════════════
-/** JPG 1:1 커스텀 OG (카톡/밴드 호환) */
-const JPG_OG_SLUGS = new Set(['haeundaehoppa-kkantappiya']);
-/** JPG 닉네임 OG가 있는 업소 */
-const NICKNAME_OG_SLUGS = new Set([
-  'ilsanmyeongwolgwanyojeong','ilsanroom','busanyeonsandongmulnight','busanmulnight',
-  'seongnamshampoonight','suwonchancenight','sinlimgrandprixnight','cheongdamh2onight',
-  'pajuyadangskydomenight','ulsanchampionnight','gangnamjuliananight','dapsimnidontellmamanight',
-  'daejeonsevennight','daegubabambanight','daejeononenight',
-]);
+/** 2026-08-22 전 업소 "가게이름" 1:1 og 썸네일(generate-og-name11.mjs) 단일 배선.
+ *  수동 합성본 2곳(OG_FILE_VER -v2)은 등록된 버전 파일 그대로, 나머지는 -v3 이름 썸네일.
+ *  파일 부재 시에만 브랜드 og 폴백 (배선-자산 불일치 안전핀). */
 function getVenueOgImage(slug) {
-  if (JPG_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}.jpg`;
-  if (NICKNAME_OG_SLUGS.has(slug)) return `${BASE_URL}/og/${slug}${ogVer(slug)}.jpg`;
-  // 실제 업소 사진 우선 (SEO·공유 최적)
-  const venueImg = path.join(DIST, 'venues', `${slug}-1${heroVer(slug)}.jpg`);
-  if (fs.existsSync(venueImg)) return `${BASE_URL}/venues/${slug}-1${heroVer(slug)}.jpg`;
-  // 사진 없으면 생성된 1:1 네이밍/닉네임 OG 썸네일 (venue 121곳 전수 보유)
-  const ogThumb = path.join(DIST, 'og', `${slug}.jpg`);
-  if (fs.existsSync(ogThumb)) return `${BASE_URL}/og/${slug}.jpg`;
+  const ogThumb = path.join('public', 'og', `${slug}${ogVer(slug)}.jpg`);
+  if (fs.existsSync(ogThumb)) return `${BASE_URL}/og/${slug}${ogVer(slug)}.jpg`;
   return `${BASE_URL}/og/nolcool-og.jpg`;
 }
 

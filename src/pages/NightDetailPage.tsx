@@ -71,13 +71,13 @@ function DaejeonSevenHeaderSection() {
           <p style={{ color: '#FFFFFF', fontSize: 28, fontWeight: 900, letterSpacing: '-0.02em', marginBottom: 12 }}>
             대전세븐나이트
           </p>
-          {/* 원숭이 닉네임 — 크게 */}
+          {/* 영탁 닉네임 — 크게 */}
           <p style={{ color: '#FFD700', fontSize: 80, fontWeight: 900, letterSpacing: '0.02em', lineHeight: 1.1, marginBottom: 16 }}>
-            원숭이
+            영탁
           </p>
           {/* 부제 */}
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 16, fontWeight: 600 }}>
-            둔산동 중심, 격이 다른 댄스홀
+            유천동 먹자골목, 격이 다른 댄스홀
           </p>
         </div>
       </div>
@@ -85,14 +85,14 @@ function DaejeonSevenHeaderSection() {
       {/* 전화번호 CTA */}
       <div className="w-full max-w-[480px] text-center">
         <TelCopyFallback
-          phone="010-3242-1504"
+          phone="010-7770-0869"
           className="flex flex-col items-center gap-3 rounded-2xl px-8 py-6 shadow-lg transition hover:shadow-xl active:scale-[0.98]"
           style={{ background: 'linear-gradient(to right, #1E3A5F, #0F2744)' }}
           toastClassName="mt-2 text-center text-sm font-bold text-[#FFD700]"
         >
-          <span style={{ color: '#FFD700', fontSize: 18, fontWeight: 700 }}>대전세븐나이트 담당 원숭이</span>
+          <span style={{ color: '#FFD700', fontSize: 18, fontWeight: 700 }}>대전세븐나이트 담당 영탁</span>
           <span style={{ color: '#FFFFFF', fontSize: 28, fontWeight: 900, letterSpacing: '0.05em' }}>
-            010-3242-1504
+            010 7770 0869
           </span>
           <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>터치하면 바로 전화 연결</span>
         </TelCopyFallback>
@@ -142,19 +142,19 @@ function TelCopyFallback({ phone, className, style, toastClassName, children }: 
    Tailwind 임의값 대신 inline style로 색상 100% 보장 */
 function DaejeonSevenFixedBar() {
   return (
-    <div className="fixed left-0 right-0 z-40" style={{ bottom: 56 }}>
+    <div className="fixed left-0 right-0 z-40 print:hidden bottom-[calc(56px_+_env(safe-area-inset-bottom))] md:bottom-0">
       <TelCopyFallback
-        phone="010-3242-1504"
-        className="flex items-center justify-center gap-3 px-6 py-4"
+        phone="010-7770-0869"
+        className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 px-4 py-3"
         style={{
           background: 'linear-gradient(to right, #1E3A5F, #0F2744)',
-          minHeight: 52,
+          minHeight: 56,
           boxShadow: '0 -4px 20px rgba(0,0,0,0.4)',
         }}
         toastClassName="absolute -top-9 left-0 right-0 bg-[#111]/90 py-1.5 text-center text-sm font-bold text-white"
       >
-        <span style={{ color: '#FFD700', fontSize: 16, fontWeight: 700 }}>4인1조 w.t원숭이</span>
-        <span style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 900, letterSpacing: '0.05em' }}>010-3242-1504</span>
+        <span className="whitespace-nowrap" style={{ color: '#FFD700', fontSize: 'clamp(17px,4.4vw,18px)', fontWeight: 700 }}>대전세븐나이트 영탁</span>
+        <span className="whitespace-nowrap" style={{ color: '#FFFFFF', fontSize: 'clamp(17px,4.6vw,20px)', fontWeight: 900, letterSpacing: '0.04em' }}>010 7770 0869</span>
       </TelCopyFallback>
     </div>
   );

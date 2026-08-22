@@ -950,5 +950,25 @@
       "geo"
     ],
     "fetchedAt": "2026-06-23"
+  },
+  "bulgwangdonghobaknight": {
+    "source": "manual",
+    "note": "2026-08-22 웹 2+소스 실증(대표 지시 신규 등록): 114.co.kr comp_id=3017175(서울 은평구 불광동 281-92/통일로 730)·localmap.co.kr 카바레 등재(1973-05-07 인허가·141.8평 468㎡)·인스타그램 릴(불광역 통일로 730 지하). Places API 키 미보유로 manual.",
+    "fields": [
+      "address",
+      "nearbyStation"
+    ],
+    "matchedName": "호박성인나이트",
+    "fetchedAt": "2026-08-22"
+  },
+  "uijeongbubaekakgwannight": {
+    "source": "manual",
+    "note": "2026-08-22 웹 2+소스 실증(대표 지시 신규 등록): bizno.net/article/5624600923·fqf.purpleo.kr/article/270(경기 의정부시 태평로 104 경복빌딩=의정부동 26-4, 2023-01-05 개업·597.06㎡, 인접 의정부중앙역)·localmap.co.kr 등재. Places API 키 미보유로 manual.",
+    "fields": [
+      "address",
+      "nearbyStation"
+    ],
+    "matchedName": "백악관나이트",
+    "fetchedAt": "2026-08-22"
   }
 }

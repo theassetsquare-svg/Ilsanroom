@@ -23,9 +23,9 @@ export default function ChangwonLullalalaCallBar() {
           boxShadow: '0 -4px 20px rgba(0,0,0,0.35)',
         }}
       >
-        <span className="whitespace-nowrap" style={{ color: '#FFFFFF', fontSize: 'clamp(13px,4.2vw,17px)', fontWeight: 600 }}>
+        <span className="whitespace-nowrap" style={{ color: '#FFFFFF', fontSize: 'clamp(17px,4.4vw,18px)', fontWeight: 600 }}>
           창원룰루랄라나이트 로또{' '}
-          <strong style={{ color: '#FFD700', fontWeight: 900, letterSpacing: '0.02em' }}>010-7528-4936</strong>
+          <strong style={{ color: '#FFD700', fontWeight: 900, letterSpacing: '0.02em' }}>010 7528 4936</strong>
         </span>
         <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: 'clamp(11px,3vw,13px)', fontWeight: 500 }}>
           27세 이상 출입 가능 · 터치하면 바로 전화

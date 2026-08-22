@@ -18,5 +18,9 @@ export const OG_FILE_VER = {
   ilsanmyeongwolgwanyojeong: '-v2', // 동일 건
 };
 
+/** 2026-08-22 전 업소 "가게이름" 1:1 og 썸네일 전환(generate-og-name11.mjs).
+ *  수동 합성본(OG_FILE_VER 등록 2곳)만 -v2 유지, 나머지 전 슬러그 -v3 파일 참조. */
+export const OG_DEFAULT_VER = '-v3';
+
 export const heroVer = (slug) => HERO_FILE_VER[slug] || '';
-export const ogVer = (slug) => OG_FILE_VER[slug] || '';
+export const ogVer = (slug) => OG_FILE_VER[slug] || OG_DEFAULT_VER;
