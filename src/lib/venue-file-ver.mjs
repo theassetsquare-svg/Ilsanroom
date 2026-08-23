@@ -16,6 +16,7 @@ export const HERO_FILE_VER = {
 export const OG_FILE_VER = {
   ilsanroom: '-v2', // 동일 건
   ilsanmyeongwolgwanyojeong: '-v2', // 동일 건
+  gwangjucheomdanempanight: '-v4', // 2026-08-23 정식명 교정(엠파→엠파이어) 재생성 — 엣지 캐시 무효화 버전업
 };
 
 /** 2026-08-22 전 업소 "가게이름" 1:1 og 썸네일 전환(generate-og-name11.mjs).
