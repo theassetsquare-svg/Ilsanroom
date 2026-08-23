@@ -440,6 +440,46 @@
     "/yojeong/ilsan/|mobile": {
       "ema": 2334,
       "n": 3
+    },
+    "/analytics/|mobile": {
+      "ema": 2833,
+      "n": 1
+    },
+    "/analytics/|pc": {
+      "ema": 2174,
+      "n": 1
+    },
+    "/budget/|mobile": {
+      "ema": 2182,
+      "n": 1
+    },
+    "/budget/|pc": {
+      "ema": 2203,
+      "n": 1
+    },
+    "/clubs/apgujeong/apgujeongclub-hype/|mobile": {
+      "ema": 2317,
+      "n": 1
+    },
+    "/clubs/apgujeong/apgujeongclub-hype/|pc": {
+      "ema": 2117,
+      "n": 1
+    },
+    "/clubs/cheongju/|mobile": {
+      "ema": 2272,
+      "n": 1
+    },
+    "/clubs/cheongju/|pc": {
+      "ema": 2250,
+      "n": 1
+    },
+    "/clubs/gangnam/gangnamclub-face/|mobile": {
+      "ema": 2220,
+      "n": 1
+    },
+    "/clubs/gangnam/gangnamclub-face/|pc": {
+      "ema": 2199,
+      "n": 1
     }
   }
 }
