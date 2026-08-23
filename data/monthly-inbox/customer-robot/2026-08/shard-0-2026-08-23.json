@@ -9,15 +9,15 @@
   "baselineMode": "collecting(~14일)",
   "pcSampled": 15,
   "totals": {
-    "broken": 0,
+    "broken": 28,
     "dead": 0,
     "slow": 0,
     "blocked": 0,
-    "mobileGap": 0
+    "mobileGap": 1
   },
-  "problemPages": 0,
-  "blockedAnalytics": 236,
-  "blockedWrites": 282,
+  "problemPages": 1,
+  "blockedAnalytics": 234,
+  "blockedWrites": 284,
   "riskSkips": [],
   "riskSkipTotal": 0,
   "criticals": [],
@@ -30,7 +30,38 @@
     "글쓰기 화면 도달 ok(제출 0)",
     "커뮤니티 진입 ok"
   ],
-  "problems": [],
+  "problems": [
+    {
+      "route": "/",
+      "grades": {
+        "broken": 28,
+        "dead": 0,
+        "slow": 0,
+        "blocked": 0,
+        "mobileGap": 1
+      },
+      "issues": {
+        "dead": [],
+        "console": [
+          "Failed to load resource: the server responded with a status of 404 ()",
+          "Failed to load resource: the server responded with a status of 404 ()",
+          "Failed to load resource: the server responded with a status of 404 ()",
+          "Failed to load resource: the server responded with a status of 404 ()"
+        ],
+        "external": [],
+        "journey": {
+          "bottomCovered": "COVERED",
+          "nextContent": "ok",
+          "search": "ok",
+          "contribGate": "n/a",
+          "back": "ok"
+        },
+        "shots": [
+          "/tmp/robot-shots/_-mobile.png"
+        ]
+      }
+    }
+  ],
   "externalLinksAll": [],
   "redirectLinksAll": [
     {
