@@ -1,0 +1,57 @@
+{
+  "date": "2026-08-23",
+  "shard": 0,
+  "pagesPatrolled": 95,
+  "queued": 95,
+  "carryover": 0,
+  "partial": false,
+  "manifestTotal": 660,
+  "baselineMode": "collecting(~14일)",
+  "pcSampled": 15,
+  "totals": {
+    "broken": 0,
+    "dead": 0,
+    "slow": 0,
+    "blocked": 0,
+    "mobileGap": 0
+  },
+  "problemPages": 0,
+  "blockedAnalytics": 236,
+  "blockedWrites": 282,
+  "riskSkips": [],
+  "riskSkipTotal": 0,
+  "criticals": [],
+  "revisit": [
+    "홈 진입 ok",
+    "venue 상세 ok (/nights/daejeononenight)",
+    "뒤로가기 ok",
+    "로그인 ok(기존 테스트 계정)",
+    "즐겨찾기 화면 도달 ok",
+    "글쓰기 화면 도달 ok(제출 0)",
+    "커뮤니티 진입 ok"
+  ],
+  "problems": [],
+  "externalLinksAll": [],
+  "redirectLinksAll": [
+    {
+      "page": "/magazine/hongdae-club-guide/",
+      "text": "홍대클럽 버뮤다",
+      "href": "/clubs/hongdaeclub-bermuda/"
+    },
+    {
+      "page": "/magazine/hongdae-club-guide/",
+      "text": "홍대클럽 도깨비",
+      "href": "/clubs/hongdaeclub-dokkaebi/"
+    },
+    {
+      "page": "/magazine/hongdae-club-guide/",
+      "text": "홍대클럽 메이드",
+      "href": "/clubs/hongdaeclub-maid/"
+    },
+    {
+      "page": "/magazine/hongdae-club-guide/",
+      "text": "홍대클럽 퍼시픽",
+      "href": "/clubs/hongdaeclub-pacific/"
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+name: Customer Robot Patrol (손님 로봇)
+
+# 매일 KST 15:10 (UTC 06:10) — 전 크론표 대조: UTC 06시대 유일 점유(무충돌).
+# 빌드 명부를 7조각으로 나눠 매일 1조각 = 주 1바퀴 전 페이지 완주.
+# 월요일(KST): npm run build → 명부 갱신 후 순찰(매주 자동 갱신).
+# 30일 1통 정책: 결과는 data/monthly-inbox/customer-robot/ 축적만, 즉시 메일=치명 4종+데둡.
+on:
+  schedule:
+    - cron: '10 6 * * *'
+  workflow_dispatch:
+    inputs:
+      shard:
+        description: '조각 번호 (0=일 ~ 6=토, 빈 값=오늘 KST 요일)'
+        required: false
+        default: ''
+      limit:
+        description: '페이지 상한 (0=전체)'
+        required: false
+        default: '0'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: customer-robot
+  cancel-in-progress: false
+
+jobs:
+  patrol:
+    runs-on: ubuntu-latest
+    timeout-minutes: 220
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Chrome
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Refresh manifest (월요일 KST = 빌드 명부 매주 갱신)
+        run: |
+          DOW=$(TZ=Asia/Seoul date +%u)   # 1=월
+          if [ "$DOW" = "1" ] || [ ! -f data/customer-robot/manifest.json ]; then
+            npm run build
+            node scripts/customer-robot.mjs --refresh-manifest
+          else
+            echo "명부 갱신일 아님(월요일 KST만) — 기존 명부 사용"
+          fi
+
+      - name: Run patrol (오늘 조각, 예산 180분+체크포인트)
+        env:
+          CHROMIUM_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          ROBOT_TEST_EMAIL: ${{ secrets.ROBOT_TEST_EMAIL }}
+          ROBOT_TEST_PASSWORD: ${{ secrets.ROBOT_TEST_PASSWORD }}
+        run: |
+          export CHROMIUM_PATH=$(which chrome || which google-chrome || which chromium)
+          SHARD="${{ github.event.inputs.shard }}"
+          LIMIT="${{ github.event.inputs.limit }}"
+          ARGS=""
+          [ -n "$SHARD" ] && ARGS="$ARGS --shard $SHARD"
+          [ -n "$LIMIT" ] && [ "$LIMIT" != "0" ] && ARGS="$ARGS --limit $LIMIT"
+          node scripts/customer-robot.mjs $ARGS
+
+      - name: Upload issue screenshots (저장소 밖 채증 → artifact 14일)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: robot-shots-${{ github.run_id }}
+          path: /tmp/robot-shots/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Commit results (monthly-inbox 축적 + 명부/기준선/체크포인트)
+        if: always()
+        run: |
+          git config user.name "nolcool-bot"
+          git config user.email "bot@nolcool.com"
+          if [ -n "$(git status --porcelain data/monthly-inbox/customer-robot data/customer-robot)" ]; then
+            git add data/monthly-inbox/customer-robot data/customer-robot
+            git commit -m "chore(robot): 손님 로봇 순찰 축적 $(date -u +%Y-%m-%dT%H:%MZ)"
+            git pull --rebase --autostash origin main || true
+            git push || echo "push skip(경쟁 커밋) — 다음 실행 재시도"
+          else
+            echo "순찰 결과 변화 없음 — 커밋 skip"
+          fi
