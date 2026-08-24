@@ -1,0 +1,271 @@
+{
+  "date": "2026-08-24",
+  "shard": 1,
+  "pagesPatrolled": 95,
+  "queued": 95,
+  "carryover": 0,
+  "partial": false,
+  "manifestTotal": 660,
+  "baselineMode": "collecting(~14일)",
+  "pcSampled": 14,
+  "totals": {
+    "broken": 0,
+    "dead": 30,
+    "slow": 0,
+    "blocked": 2,
+    "mobileGap": 1
+  },
+  "problemPages": 5,
+  "blockedAnalytics": 232,
+  "blockedWrites": 280,
+  "riskSkips": [],
+  "riskSkipTotal": 0,
+  "criticals": [
+    {
+      "key": "phonebar:/nights/dapsimnidontellmamanight/",
+      "detail": "전화바 소실"
+    }
+  ],
+  "revisit": [
+    "홈 진입 ok",
+    "venue 상세 ok (/nights/gurihobaknight)",
+    "뒤로가기 ok",
+    "로그인 ok(기존 테스트 계정)",
+    "즐겨찾기 화면 도달 ok",
+    "글쓰기 화면 도달 ok(제출 0)",
+    "커뮤니티 진입 ok"
+  ],
+  "problems": [
+    {
+      "route": "/community/",
+      "grades": {
+        "broken": 0,
+        "dead": 5,
+        "slow": 0,
+        "blocked": 0,
+        "mobileGap": 0
+      },
+      "issues": {
+        "dead": [
+          {
+            "kind": "link-404",
+            "text": "1꿀팁클럽·라운지 입구에서 안 막히는 옷차림 — 운영팀 드레스코드 정리♥",
+            "href": "/community/post/a0000000-0000-4000-8000-000000000002",
+            "status": 404
+          },
+          {
+            "kind": "link-404",
+            "text": "2꿀팁나이트 처음 가면 뭐가 어떻게 돌아가나 — 부킹 시스템 3분 해설♥",
+            "href": "/community/post/a0000000-0000-4000-8000-000000000003",
+            "status": 404
+          },
+          {
+            "kind": "link-404",
+            "text": "3자유부산 연산동 물나이트♥ 0💬 0",
+            "href": "/community/post/4626623e-96d8-473d-934a-94b18e25a621",
+            "status": 404
+          },
+          {
+            "kind": "link-404",
+            "text": "4자유이번 주 조회 1위 동네는 대전 — 주말에 나가실 분?♥ 0💬 0",
+            "href": "/community/post/a1000000-0000-4000-8000-202608100000",
+            "status": 404
+          },
+          {
+            "kind": "link-404",
+            "text": "5꿀팁양주 고르기, 업종마다 기준이 다릅니다 — 운영팀이 정리한 첫 주문",
+            "href": "/community/post/a0000000-0000-4000-8000-000000000001",
+            "status": 404
+          }
+        ],
+        "console": [],
+        "external": [],
+        "journey": {
+          "bottomCovered": "ok",
+          "nextContent": "none",
+          "contribGate": "n/a",
+          "back": "ok"
+        },
+        "shots": [
+          "/tmp/robot-shots/_community_-mobile.png"
+        ]
+      }
+    },
+    {
+      "route": "/community/reviews/",
+      "grades": {
+        "broken": 0,
+        "dead": 0,
+        "slow": 0,
+        "blocked": 1,
+        "mobileGap": 0
+      },
+      "issues": {
+        "dead": [],
+        "console": [],
+        "external": [],
+        "journey": {
+          "bottomCovered": "ok",
+          "nextContent": "none",
+          "contribGate": "NO-CARD",
+          "back": "ok"
+        },
+        "shots": []
+      }
+    },
+    {
+      "route": "/gallery/",
+      "grades": {
+        "broken": 0,
+        "dead": 25,
+        "slow": 0,
+        "blocked": 0,
+        "mobileGap": 0
+      },
+      "issues": {
+        "dead": [
+          {
+            "kind": "no-handler",
+            "text": "#부산물나이트",
+            "tag": "SPAN.pointer"
+          },
+          {
+            "kind": "no-handler",
+            "text": "#목화물나이트",
+            "tag": "SPAN.pointer"
+          },
+          {
+            "kind": "no-handler",
+            "text": "#연산동물나이트",
+            "tag": "SPAN.pointer"
+          },
+          {
+            "kind": "no-handler",
+            "text": "#부산목화물나이트",
+            "tag": "SPAN.pointer"
+          },
+          {
+            "kind": "no-handler",
+            "text": "#부산연산동물나이트",
+            "tag": "SPAN.pointer"
+          },
+          {
+            "kind": "no-handler",
+            "text": "#부물산나이트",
+            "tag": "SPAN.pointer"
+          },
+          {
+            "kind": "no-handler",
+            "text": "#부산연산동물나이트",
+            "tag": "SPAN.pointer"
+          },
+          {
+            "kind": "no-handler",
+            "text": "#부산목화물나이트",
+            "tag": "SPAN.pointer"
+          }
+        ],
+        "console": [],
+        "external": [],
+        "journey": {
+          "bottomCovered": "ok",
+          "nextContent": "ok",
+          "contribGate": "n/a",
+          "back": "ok"
+        },
+        "shots": [
+          "/tmp/robot-shots/_gallery_-mobile.png"
+        ]
+      }
+    },
+    {
+      "route": "/nights/dapsimnidontellmamanight/",
+      "grades": {
+        "broken": 0,
+        "dead": 0,
+        "slow": 0,
+        "blocked": 1,
+        "mobileGap": 0
+      },
+      "issues": {
+        "dead": [],
+        "console": [],
+        "external": [],
+        "journey": {
+          "bottomCovered": "ok",
+          "phoneBar": "MISSING",
+          "nextContent": "none",
+          "contribGate": "n/a",
+          "back": "ok"
+        },
+        "shots": [
+          "/tmp/robot-shots/_nights_dapsimnidontellmamanight_-mobile.png"
+        ]
+      }
+    },
+    {
+      "route": "/status/",
+      "grades": {
+        "broken": 0,
+        "dead": 0,
+        "slow": 0,
+        "blocked": 0,
+        "mobileGap": 1
+      },
+      "issues": {
+        "dead": [],
+        "console": [],
+        "external": [],
+        "journey": {
+          "bottomCovered": "ok",
+          "nextContent": "none",
+          "contribGate": "n/a",
+          "back": "ok"
+        },
+        "shots": [
+          "/tmp/robot-shots/_status_-mobile.png"
+        ]
+      }
+    }
+  ],
+  "externalLinksAll": [
+    "https://sunwook07670.wixsite.com/sunwook8/blank"
+  ],
+  "redirectLinksAll": [
+    {
+      "page": "/magazine/busan-nightlife-roundup/",
+      "text": "해운대고구려",
+      "href": "/rooms/haeundaegoguryeo/"
+    },
+    {
+      "page": "/magazine/gangnam-octagon-guide/",
+      "text": "강남클럽 옥타곤",
+      "href": "/clubs/gangnamclub-octagon/"
+    },
+    {
+      "page": "/magazine/gangnam-octagon-guide/",
+      "text": "강남청담클럽 사운드",
+      "href": "/clubs/gangnamclub-sound/"
+    },
+    {
+      "page": "/magazine/gangnam-octagon-guide/",
+      "text": "강남청담클럽 아르쥬",
+      "href": "/clubs/cheongdamclub-arju/"
+    },
+    {
+      "page": "/magazine/itaewon-cakeshop-guide/",
+      "text": "이태원클럽 케이크샵",
+      "href": "/clubs/itaewonclub-cakeshop/"
+    },
+    {
+      "page": "/magazine/itaewon-cakeshop-guide/",
+      "text": "이태원클럽 메이드",
+      "href": "/clubs/itaewonclub-maid/"
+    },
+    {
+      "page": "/magazine/itaewon-cakeshop-guide/",
+      "text": "이태원클럽 프리즘",
+      "href": "/clubs/itaewonclub-prism/"
+    }
+  ]
+}
