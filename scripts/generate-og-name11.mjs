@@ -11,6 +11,7 @@ import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { ogVer } from '../src/lib/venue-file-ver.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -104,9 +105,14 @@ const outDir = path.join(ROOT, 'public/og');
 fs.mkdirSync(outDir, { recursive: true });
 let adCount = 0;
 for (const v of targets) {
-  const jpgPath = path.join(outDir, `${v.slug}-v3.jpg`);
+  /* ★ 2026-08-25 — 파일 이름을 -v3 로 못박아 두면 안 된다.
+     그림을 다시 그려도 이름이 같으면 엣지 캐시(30일)가 옛 그림을 계속 내보낸다.
+     판 번호표(src/lib/venue-file-ver.mjs)가 유일한 기준이므로 거기서 읽는다.
+     광고주가 새로 붙은 가게는 그 표에 -v4 처럼 올려 두면 여기서 따라온다. */
+  const ver = ogVer(v.slug);
+  const jpgPath = path.join(outDir, `${v.slug}${ver}.jpg`);
   await sharp(Buffer.from(buildSvg(v))).jpeg({ quality: 88 }).toFile(jpgPath);
   if (v.nick && v.phone) adCount++;
-  console.log(`✅ ${v.slug}-v3.jpg — ${v.nameKo}${v.nick && v.phone ? ` / ${v.nick} ${v.phone}` : ''}`);
+  console.log(`✅ ${v.slug}${ver}.jpg — ${v.nameKo}${v.nick && v.phone ? ` / ${v.nick} ${v.phone}` : ''}`);
 }
 console.log(`\n총 ${targets.length}개 (광고주 오버레이 ${adCount}곳, 수동 보호 ${MANUAL_OG_SLUGS.size}곳 제외)`);

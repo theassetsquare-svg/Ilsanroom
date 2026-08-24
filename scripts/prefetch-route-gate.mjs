@@ -18,7 +18,7 @@
  * 본 게이트는 "내부 링크가 죽지 않았는가(prefetch 404 0)".
  */
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, sep } from 'node:path';
 
 const DIST = 'dist';
 const SAFELINK = 'src/components/ui/SafeLink.tsx';
@@ -51,7 +51,10 @@ function walk(dir, out = []) {
   return out;
 }
 function fileToPath(f) {
-  let p = f.replace(/^dist/, '').replace(/\/index\.html$/, '');
+  /* ★ 2026-08-25 — 경로 구분자를 슬래시로 통일한다.
+     윈도우에서는 join() 이 역슬래시를 주므로 아래 변환이 전부 어긋나
+     멀쩡한 링크가 위반으로 잡힌다. 리눅스에서만 통과해 원인을 찾기 어렵다. */
+  let p = f.split(sep).join('/').replace(/^dist/, '').replace(/\/index\.html$/, '');
   if (p === '') p = '/';
   try { p = decodeURIComponent(p); } catch {}
   return p;

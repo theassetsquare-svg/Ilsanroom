@@ -2,7 +2,7 @@
 // 놀쿨 dist HTML 감사 — vite build + prerender-seo 직후 실행
 // 위반 시 exit 1로 빌드/배포 중단.
 import { readdirSync, readFileSync, statSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { join, relative, sep } from 'node:path';
 
 const ROOT = process.argv[2] || 'dist';
 const stripHtml = (h) => h.replace(/<script[\s\S]*?<\/script>/gi, '')
@@ -44,7 +44,12 @@ const titleMap = new Map();
 
 for (const f of files) {
   const html = readFileSync(f, 'utf8');
-  const rel = relative('.', f);
+  /* ★ 2026-08-25 — 경로 구분자를 슬래시로 통일한다.
+     윈도우에서는 relative() 가 "dist\index.html" 처럼 역슬래시를 준다.
+     그러면 아래 isHome·is404 판정과 url 계산이 전부 어긋나,
+     홈과 404 를 예외로 두는 규칙이 안 먹어 **정상인 페이지가 위반으로 잡힌다**.
+     리눅스(배포 서버)에서는 통과하고 윈도우에서만 실패해 원인을 찾기 어렵다. */
+  const rel = relative('.', f).split(sep).join('/');
   const isHome = rel === `${ROOT}/index.html` || rel === 'dist/index.html';
   const is404 = /\/404\.html$/.test(rel);
   const url = rel.replace(/^dist\//, '/').replace(/\/index\.html$/, '/').replace(/^\//, '/');

@@ -1708,6 +1708,8 @@ export const venues: Venue[] = [
     lng: 129.08224120000003,
     name: '부산아시아드나이트',
     nameKo: '부산아시아드나이트',
+    staffNickname: '새우깡',
+    staffPhone: '010-3614-1056',
     category: 'night' as VenueCategory,
     region: 'busan',
     regionKo: '부산',

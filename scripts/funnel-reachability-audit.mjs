@@ -4,7 +4,7 @@
 //          (2) 홈에서 클릭 깊이 ≤3 도달 (3) 본문(<main>)에 다음단계 내부링크 ≥2 (막다른길 0)
 //          를 만족하는지 dist 링크 그래프로 검증. 위반 시 exit 1 → 배포 차단.
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, sep } from 'node:path';
 
 const DIST = 'dist';
 const SITEMAP = 'dist/sitemap.xml';
@@ -24,7 +24,12 @@ function walk(dir, out = []) {
 }
 // dist 파일경로 → URL 경로(디코드, trailing slash 제거, 홈='/')
 function fileToPath(f) {
-  let p = f.replace(/^dist/, '').replace(/\/index\.html$/, '');
+  /* ★ 2026-08-25 — 경로 구분자를 슬래시로 통일한다.
+     윈도우에서는 join() 이 "dist\nights\x\index.html" 처럼 역슬래시를 준다.
+     그러면 아래 변환이 전부 어긋나 **모든 페이지가 "홈에서 도달 불가"로 잡힌다**
+     (2026-08-25 실측 464건 전부 오탐). 리눅스에서는 통과하고 윈도우에서만 실패해
+     원인을 찾기 어렵다. */
+  let p = f.split(sep).join('/').replace(/^dist/, '').replace(/\/index\.html$/, '');
   if (p === '') p = '/';
   try { p = decodeURIComponent(p); } catch {}
   return p;
