@@ -1,0 +1,2254 @@
+{
+  "date": "2026-08-24",
+  "window": "2026-07-25~2026-08-22",
+  "tally": {
+    "page1": 20,
+    "striking": 16,
+    "below": 18,
+    "zero": 72
+  },
+  "ping": {
+    "sent": 5,
+    "dropped": 0,
+    "status": "indexnow:200 bing:200"
+  },
+  "effects": {
+    "comparedTo": "2026-08-18",
+    "tierMoves": [
+      {
+        "slug": "cheongdamh2onight",
+        "from": "striking",
+        "to": "page1"
+      },
+      {
+        "slug": "yeongdeungpoterminalnight",
+        "from": "striking",
+        "to": "below"
+      },
+      {
+        "slug": "gurihobaknight",
+        "from": "page1",
+        "to": "striking"
+      },
+      {
+        "slug": "suwonkoreanight",
+        "from": "page1",
+        "to": "striking"
+      },
+      {
+        "slug": "seongnamgukbingwannight",
+        "from": "zero",
+        "to": "striking"
+      },
+      {
+        "slug": "pyeongtaekhobaknight",
+        "from": "striking",
+        "to": "below"
+      },
+      {
+        "slug": "incheonarabiannight",
+        "from": "page1",
+        "to": "below"
+      },
+      {
+        "slug": "ansanhitnight",
+        "from": "page1",
+        "to": "striking"
+      },
+      {
+        "slug": "cheongjudontellmamanight",
+        "from": "page1",
+        "to": "zero"
+      },
+      {
+        "slug": "daegutotoganight",
+        "from": "below",
+        "to": "striking"
+      },
+      {
+        "slug": "cheongju-supermoon",
+        "from": "zero",
+        "to": "striking"
+      },
+      {
+        "slug": "changwon-lululalala",
+        "from": "page1",
+        "to": "striking"
+      }
+    ],
+    "prevTally": {
+      "page1": 25,
+      "striking": 11,
+      "below": 16,
+      "zero": 71
+    }
+  },
+  "experiments": {
+    "active": 5,
+    "judged": [
+      {
+        "slug": "ilsanmyeongwolgwanyojeong",
+        "date": "2026-08-24",
+        "imp": 1697,
+        "clicks": 55,
+        "ctr": 3.24,
+        "verdict": "warming-up(적용 6일차 < 14 — 28d 창이 적용 전 데이터 포함, 판정 보류)"
+      },
+      {
+        "slug": "ilsanshampoonight",
+        "date": "2026-08-24",
+        "imp": 697,
+        "clicks": 8,
+        "ctr": 1.15,
+        "verdict": "warming-up(적용 6일차 < 14 — 28d 창이 적용 전 데이터 포함, 판정 보류)"
+      },
+      {
+        "slug": "daegubabambanight",
+        "date": "2026-08-24",
+        "imp": 557,
+        "clicks": 15,
+        "ctr": 2.69,
+        "verdict": "warming-up(적용 6일차 < 14 — 28d 창이 적용 전 데이터 포함, 판정 보류)"
+      },
+      {
+        "slug": "itaewonclub-utopia",
+        "date": "2026-08-24",
+        "imp": 389,
+        "clicks": 3,
+        "ctr": 0.77,
+        "verdict": "warming-up(적용 6일차 < 14 — 28d 창이 적용 전 데이터 포함, 판정 보류)"
+      },
+      {
+        "slug": "bundangpongpongnight",
+        "date": "2026-08-24",
+        "imp": 395,
+        "clicks": 12,
+        "ctr": 3.04,
+        "verdict": "warming-up(적용 6일차 < 14 — 28d 창이 적용 전 데이터 포함, 판정 보류)"
+      }
+    ]
+  },
+  "prescriptionsQueued": 106,
+  "rows": [
+    {
+      "slug": "ilsanroom",
+      "nameKo": "일산룸",
+      "tier": "page1",
+      "pos": 6.1,
+      "nameImp28": 447,
+      "nameClicks28": 44,
+      "pageImp28": 572,
+      "pageImp90": 1975,
+      "staleDays": 22,
+      "causes": [
+        "depth(본문 861자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/rooms/ilsan/ilsanroom/"
+    },
+    {
+      "slug": "haeundaegoguryeo",
+      "nameKo": "해운대고구려",
+      "tier": "below",
+      "pos": 55.3,
+      "nameImp28": 7,
+      "nameClicks28": 0,
+      "pageImp28": 26,
+      "pageImp90": 82,
+      "staleDays": 22,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 892자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/rooms/busan-haeundae/haeundaegoguryeo/"
+    },
+    {
+      "slug": "ilsanmyeongwolgwanyojeong",
+      "nameKo": "일산명월관요정",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 1697,
+      "pageImp90": 3354,
+      "staleDays": 7,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1173자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/yojeong/ilsan/ilsanmyeongwolgwanyojeong/"
+    },
+    {
+      "slug": "cheongdamh2onight",
+      "nameKo": "청담H2O나이트",
+      "tier": "page1",
+      "pos": 10,
+      "nameImp28": 13,
+      "nameClicks28": 0,
+      "pageImp28": 136,
+      "pageImp90": 334,
+      "staleDays": 2,
+      "causes": [
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/cheongdamh2onight/"
+    },
+    {
+      "slug": "gangnamjuliananight",
+      "nameKo": "강남줄리아나나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 32,
+      "pageImp90": 77,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1087자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/gangnamjuliananight/"
+    },
+    {
+      "slug": "sinlimgrandprixnight",
+      "nameKo": "신림그랑프리나이트",
+      "tier": "below",
+      "pos": 43.8,
+      "nameImp28": 5,
+      "nameClicks28": 0,
+      "pageImp28": 57,
+      "pageImp90": 160,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/sinlimgrandprixnight/"
+    },
+    {
+      "slug": "sangbonghangukgwannight",
+      "nameKo": "상봉동한국관나이트",
+      "tier": "below",
+      "pos": 19.2,
+      "nameImp28": 21,
+      "nameClicks28": 0,
+      "pageImp28": 192,
+      "pageImp90": 813,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1266자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/sangbonghangukgwannight/"
+    },
+    {
+      "slug": "suyushampoonight",
+      "nameKo": "수유샴푸나이트",
+      "tier": "striking",
+      "pos": 12.6,
+      "nameImp28": 634,
+      "nameClicks28": 1,
+      "pageImp28": 888,
+      "pageImp90": 1349,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1267자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/suyushampoonight/"
+    },
+    {
+      "slug": "doksangukbingwannight",
+      "nameKo": "독산동국빈관나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 191,
+      "pageImp90": 456,
+      "staleDays": 2,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1184자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/doksangukbingwannight/"
+    },
+    {
+      "slug": "dapsimnidontellmamanight",
+      "nameKo": "답십리돈텔마마나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 479,
+      "pageImp90": 988,
+      "staleDays": 2,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1101자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/dapsimnidontellmamanight/"
+    },
+    {
+      "slug": "gangseonight",
+      "nameKo": "강서나이트",
+      "tier": "page1",
+      "pos": 9.3,
+      "nameImp28": 24,
+      "nameClicks28": 2,
+      "pageImp28": 49,
+      "pageImp90": 118,
+      "staleDays": 2,
+      "causes": [
+        "depth(본문 924자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/gangseonight/"
+    },
+    {
+      "slug": "yeongdeungpoterminalnight",
+      "nameKo": "영등포터미널나이트",
+      "tier": "below",
+      "pos": 17.2,
+      "nameImp28": 29,
+      "nameClicks28": 0,
+      "pageImp28": 216,
+      "pageImp90": 653,
+      "staleDays": 1,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1414자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/yeongdeungpoterminalnight/"
+    },
+    {
+      "slug": "nowonhobaknight",
+      "nameKo": "노원호박나이트",
+      "tier": "below",
+      "pos": 27.4,
+      "nameImp28": 10,
+      "nameClicks28": 1,
+      "pageImp28": 73,
+      "pageImp90": 278,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1036자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/nowonhobaknight/"
+    },
+    {
+      "slug": "nowonstarnight",
+      "nameKo": "노원스타나이트",
+      "tier": "page1",
+      "pos": 8.4,
+      "nameImp28": 27,
+      "nameClicks28": 0,
+      "pageImp28": 88,
+      "pageImp90": 289,
+      "staleDays": 2,
+      "causes": [
+        "depth(본문 1006자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/nowonstarnight/"
+    },
+    {
+      "slug": "gildongchancenight",
+      "nameKo": "길동찬스나이트",
+      "tier": "striking",
+      "pos": 11.6,
+      "nameImp28": 129,
+      "nameClicks28": 5,
+      "pageImp28": 441,
+      "pageImp90": 966,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 934자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/gildongchancenight/"
+    },
+    {
+      "slug": "ilsanshampoonight",
+      "nameKo": "일산샴푸나이트",
+      "tier": "striking",
+      "pos": 10.4,
+      "nameImp28": 339,
+      "nameClicks28": 2,
+      "pageImp28": 697,
+      "pageImp90": 1534,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1451자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/ilsanshampoonight/"
+    },
+    {
+      "slug": "pajuyadangskydomenight",
+      "nameKo": "파주야당스카이돔나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 342,
+      "pageImp90": 689,
+      "staleDays": 2,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/pajuyadangskydomenight/"
+    },
+    {
+      "slug": "hwajeonghangukgwannight",
+      "nameKo": "화정한국관나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 118,
+      "pageImp90": 369,
+      "staleDays": 2,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 976자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/hwajeonghangukgwannight/"
+    },
+    {
+      "slug": "gimpohobaknight",
+      "nameKo": "김포호박나이트",
+      "tier": "page1",
+      "pos": 4.6,
+      "nameImp28": 73,
+      "nameClicks28": 8,
+      "pageImp28": 292,
+      "pageImp90": 664,
+      "staleDays": 2,
+      "causes": [
+        "depth(본문 1168자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/gimpohobaknight/"
+    },
+    {
+      "slug": "gimposomenight",
+      "nameKo": "김포썸나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 23,
+      "pageImp90": 92,
+      "staleDays": 2,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1106자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/gimposomenight/"
+    },
+    {
+      "slug": "gurihobaknight",
+      "nameKo": "구리호박나이트",
+      "tier": "striking",
+      "pos": 11.4,
+      "nameImp28": 28,
+      "nameClicks28": 3,
+      "pageImp28": 151,
+      "pageImp90": 385,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 993자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/gurihobaknight/"
+    },
+    {
+      "slug": "uijeongbuhangukgwannight",
+      "nameKo": "의정부한국관나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 35,
+      "pageImp90": 135,
+      "staleDays": 2,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/uijeongbuhangukgwannight/"
+    },
+    {
+      "slug": "suwonchancenight",
+      "nameKo": "수원찬스돔나이트",
+      "tier": "below",
+      "pos": 28.8,
+      "nameImp28": 6,
+      "nameClicks28": 0,
+      "pageImp28": 284,
+      "pageImp90": 653,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1259자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/suwonchancenight/"
+    },
+    {
+      "slug": "suwonkoreanight",
+      "nameKo": "수원코리아나이트",
+      "tier": "striking",
+      "pos": 10.6,
+      "nameImp28": 96,
+      "nameClicks28": 6,
+      "pageImp28": 190,
+      "pageImp90": 300,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1285자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/suwonkoreanight/"
+    },
+    {
+      "slug": "osanhobaknight",
+      "nameKo": "오산호박나이트",
+      "tier": "page1",
+      "pos": 2.6,
+      "nameImp28": 86,
+      "nameClicks28": 9,
+      "pageImp28": 285,
+      "pageImp90": 783,
+      "staleDays": 2,
+      "causes": [
+        "depth(본문 989자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/osanhobaknight/"
+    },
+    {
+      "slug": "seongnamgukbingwannight",
+      "nameKo": "성남국빈관나이트",
+      "tier": "striking",
+      "pos": 11,
+      "nameImp28": 1,
+      "nameClicks28": 0,
+      "pageImp28": 107,
+      "pageImp90": 499,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1373자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/seongnamgukbingwannight/"
+    },
+    {
+      "slug": "indeokvon-gukbingwan-night",
+      "nameKo": "인덕원국빈관나이트",
+      "tier": "page1",
+      "pos": 9.5,
+      "nameImp28": 4,
+      "nameClicks28": 1,
+      "pageImp28": 318,
+      "pageImp90": 777,
+      "staleDays": 2,
+      "causes": [
+        "depth(본문 1240자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/indeokvon-gukbingwan-night/"
+    },
+    {
+      "slug": "seongnamshampoonight",
+      "nameKo": "성남샴푸나이트",
+      "tier": "striking",
+      "pos": 14.5,
+      "nameImp28": 49,
+      "nameClicks28": 1,
+      "pageImp28": 136,
+      "pageImp90": 372,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1234자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/seongnamshampoonight/"
+    },
+    {
+      "slug": "bundangpongpongnight",
+      "nameKo": "분당퐁퐁나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 395,
+      "pageImp90": 1077,
+      "staleDays": 2,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1395자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/bundangpongpongnight/"
+    },
+    {
+      "slug": "pyeongtaekhobaknight",
+      "nameKo": "평택호박나이트",
+      "tier": "below",
+      "pos": 17.4,
+      "nameImp28": 74,
+      "nameClicks28": 1,
+      "pageImp28": 273,
+      "pageImp90": 1180,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1002자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/pyeongtaekhobaknight/"
+    },
+    {
+      "slug": "incheonarabiannight",
+      "nameKo": "인천아라비안나이트",
+      "tier": "below",
+      "pos": 16.1,
+      "nameImp28": 15,
+      "nameClicks28": 0,
+      "pageImp28": 172,
+      "pageImp90": 259,
+      "staleDays": 1,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1356자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/incheonarabiannight/"
+    },
+    {
+      "slug": "bucheonmeritnight",
+      "nameKo": "부천메리트나이트",
+      "tier": "below",
+      "pos": 18.7,
+      "nameImp28": 3,
+      "nameClicks28": 0,
+      "pageImp28": 48,
+      "pageImp90": 103,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1491자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/bucheonmeritnight/"
+    },
+    {
+      "slug": "bucheongoraenight",
+      "nameKo": "부천고래나이트",
+      "tier": "striking",
+      "pos": 12.3,
+      "nameImp28": 59,
+      "nameClicks28": 0,
+      "pageImp28": 332,
+      "pageImp90": 869,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1315자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/bucheongoraenight/"
+    },
+    {
+      "slug": "ansanhitnight",
+      "nameKo": "안산히트나이트",
+      "tier": "striking",
+      "pos": 10.6,
+      "nameImp28": 83,
+      "nameClicks28": 5,
+      "pageImp28": 271,
+      "pageImp90": 841,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1211자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/ansanhitnight/"
+    },
+    {
+      "slug": "ansandontellmamanight",
+      "nameKo": "안산돈텔마마나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 383,
+      "pageImp90": 1272,
+      "staleDays": 2,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1236자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/ansandontellmamanight/"
+    },
+    {
+      "slug": "cheonanstardomnight",
+      "nameKo": "천안스타돔나이트",
+      "tier": "below",
+      "pos": 30.1,
+      "nameImp28": 7,
+      "nameClicks28": 0,
+      "pageImp28": 148,
+      "pageImp90": 308,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1240자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/cheonanstardomnight/"
+    },
+    {
+      "slug": "cheonankoreanight",
+      "nameKo": "천안코리아나이트",
+      "tier": "below",
+      "pos": 87,
+      "nameImp28": 1,
+      "nameClicks28": 0,
+      "pageImp28": 5,
+      "pageImp90": 8,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1314자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/cheonankoreanight/"
+    },
+    {
+      "slug": "daejeonsevennight",
+      "nameKo": "대전세븐나이트",
+      "tier": "below",
+      "pos": 22.8,
+      "nameImp28": 36,
+      "nameClicks28": 2,
+      "pageImp28": 833,
+      "pageImp90": 2975,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1215자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/daejeonsevennight/"
+    },
+    {
+      "slug": "daejeononenight",
+      "nameKo": "대전원나이트",
+      "tier": "page1",
+      "pos": 3,
+      "nameImp28": 313,
+      "nameClicks28": 53,
+      "pageImp28": 1471,
+      "pageImp90": 3810,
+      "staleDays": 2,
+      "causes": [
+        "depth(본문 1208자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/daejeononenight/"
+    },
+    {
+      "slug": "daejeonbongmyeongnight",
+      "nameKo": "대전봉명나이트",
+      "tier": "page1",
+      "pos": 3.5,
+      "nameImp28": 22,
+      "nameClicks28": 3,
+      "pageImp28": 182,
+      "pageImp90": 615,
+      "staleDays": 2,
+      "causes": [
+        "depth(본문 974자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/daejeonbongmyeongnight/"
+    },
+    {
+      "slug": "daejeonhangukgwannight",
+      "nameKo": "대전한국관나이트",
+      "tier": "page1",
+      "pos": 3,
+      "nameImp28": 2,
+      "nameClicks28": 1,
+      "pageImp28": 176,
+      "pageImp90": 371,
+      "staleDays": 2,
+      "causes": [
+        "depth(본문 1006자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/daejeonhangukgwannight/"
+    },
+    {
+      "slug": "cheongjudontellmamanight",
+      "nameKo": "청주돈텔마마나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 204,
+      "pageImp90": 430,
+      "staleDays": 2,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1000자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/cheongjudontellmamanight/"
+    },
+    {
+      "slug": "cheongjuhobaknight",
+      "nameKo": "청주호박나이트",
+      "tier": "page1",
+      "pos": 3.5,
+      "nameImp28": 213,
+      "nameClicks28": 26,
+      "pageImp28": 520,
+      "pageImp90": 1226,
+      "staleDays": 2,
+      "causes": [
+        "depth(본문 992자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/cheongjuhobaknight/"
+    },
+    {
+      "slug": "seosanhobaknight",
+      "nameKo": "서산호박나이트",
+      "tier": "page1",
+      "pos": 7.8,
+      "nameImp28": 51,
+      "nameClicks28": 5,
+      "pageImp28": 166,
+      "pageImp90": 424,
+      "staleDays": 2,
+      "causes": [
+        "depth(본문 1038자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/seosanhobaknight/"
+    },
+    {
+      "slug": "daeguhangukgwannight",
+      "nameKo": "대구한국관나이트",
+      "tier": "page1",
+      "pos": 8.3,
+      "nameImp28": 8,
+      "nameClicks28": 0,
+      "pageImp28": 193,
+      "pageImp90": 445,
+      "staleDays": 2,
+      "causes": [
+        "depth(본문 1117자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/daeguhangukgwannight/"
+    },
+    {
+      "slug": "daeguhobaknight",
+      "nameKo": "대구호박나이트",
+      "tier": "striking",
+      "pos": 14.3,
+      "nameImp28": 9,
+      "nameClicks28": 0,
+      "pageImp28": 24,
+      "pageImp90": 38,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 980자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/daeguhobaknight/"
+    },
+    {
+      "slug": "daegubabambanight",
+      "nameKo": "대구바밤바나이트",
+      "tier": "striking",
+      "pos": 13.8,
+      "nameImp28": 61,
+      "nameClicks28": 3,
+      "pageImp28": 557,
+      "pageImp90": 1404,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1031자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/daegubabambanight/"
+    },
+    {
+      "slug": "daegutotoganight",
+      "nameKo": "대구토토가나이트",
+      "tier": "striking",
+      "pos": 13.5,
+      "nameImp28": 4,
+      "nameClicks28": 0,
+      "pageImp28": 8,
+      "pageImp90": 9,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1034자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/daegutotoganight/"
+    },
+    {
+      "slug": "gumihobaknight",
+      "nameKo": "구미호박나이트",
+      "tier": "below",
+      "pos": 18.1,
+      "nameImp28": 36,
+      "nameClicks28": 3,
+      "pageImp28": 124,
+      "pageImp90": 288,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 950자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/gumihobaknight/"
+    },
+    {
+      "slug": "busanyeonsandongmulnight",
+      "nameKo": "부산연산동물나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 476,
+      "pageImp90": 963,
+      "staleDays": 2,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1270자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/busanyeonsandongmulnight/"
+    },
+    {
+      "slug": "busanasiadnight",
+      "nameKo": "부산아시아드나이트",
+      "tier": "below",
+      "pos": 16.9,
+      "nameImp28": 75,
+      "nameClicks28": 0,
+      "pageImp28": 287,
+      "pageImp90": 662,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/busanasiadnight/"
+    },
+    {
+      "slug": "busanmulnight",
+      "nameKo": "부산물나이트",
+      "tier": "page1",
+      "pos": 5,
+      "nameImp28": 304,
+      "nameClicks28": 25,
+      "pageImp28": 499,
+      "pageImp90": 1405,
+      "staleDays": 2,
+      "causes": [
+        "depth(본문 1082자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/busanmulnight/"
+    },
+    {
+      "slug": "ulsannewworldnight",
+      "nameKo": "울산뉴월드나이트",
+      "tier": "striking",
+      "pos": 11.8,
+      "nameImp28": 52,
+      "nameClicks28": 3,
+      "pageImp28": 196,
+      "pageImp90": 589,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1174자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/ulsannewworldnight/"
+    },
+    {
+      "slug": "ulsanchampionnight",
+      "nameKo": "울산챔피언나이트",
+      "tier": "below",
+      "pos": 23.1,
+      "nameImp28": 21,
+      "nameClicks28": 0,
+      "pageImp28": 146,
+      "pageImp90": 215,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1143자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/ulsanchampionnight/"
+    },
+    {
+      "slug": "gwangjusangmunight",
+      "nameKo": "광주상무나이트",
+      "tier": "below",
+      "pos": 22.5,
+      "nameImp28": 4,
+      "nameClicks28": 1,
+      "pageImp28": 30,
+      "pageImp90": 71,
+      "staleDays": 1,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1066자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/gwangjusangmunight/"
+    },
+    {
+      "slug": "gwangjutotonight",
+      "nameKo": "광주토토밤나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 118,
+      "pageImp90": 268,
+      "staleDays": 1,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1035자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/gwangjutotonight/"
+    },
+    {
+      "slug": "gwangjucheomdanempanight",
+      "nameKo": "광주첨단엠파이어나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 24,
+      "pageImp90": 103,
+      "staleDays": 1,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1072자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/gwangjucheomdanempanight/"
+    },
+    {
+      "slug": "gwangjumgmnight",
+      "nameKo": "광주MGM나이트",
+      "tier": "page1",
+      "pos": 5.6,
+      "nameImp28": 14,
+      "nameClicks28": 2,
+      "pageImp28": 137,
+      "pageImp90": 497,
+      "staleDays": 1,
+      "causes": [
+        "depth(본문 1048자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/gwangjumgmnight/"
+    },
+    {
+      "slug": "gwangjuallnight",
+      "nameKo": "광주올나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 20,
+      "pageImp90": 49,
+      "staleDays": 1,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1061자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/gwangjuallnight/"
+    },
+    {
+      "slug": "jejunight",
+      "nameKo": "제주도나이트",
+      "tier": "page1",
+      "pos": 5.9,
+      "nameImp28": 86,
+      "nameClicks28": 0,
+      "pageImp28": 104,
+      "pageImp90": 127,
+      "staleDays": 2,
+      "causes": [
+        "depth(본문 1291자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/jejunight/"
+    },
+    {
+      "slug": "gangnamclub-race",
+      "nameKo": "강남청담클럽 레이스",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 17,
+      "pageImp90": 85,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1189자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/gangnam/gangnamclub-race/"
+    },
+    {
+      "slug": "gangnamclub-sound",
+      "nameKo": "강남청담클럽 사운드",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 65,
+      "pageImp90": 117,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1500자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/gangnam/gangnamclub-sound/"
+    },
+    {
+      "slug": "gangnamclub-jack",
+      "nameKo": "강남청담클럽 Jack",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 18,
+      "pageImp90": 71,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1593자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/gangnam/gangnamclub-jack/"
+    },
+    {
+      "slug": "gangnamclub-peak",
+      "nameKo": "강남청담클럽 피크",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 25,
+      "pageImp90": 74,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 912자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/gangnam/gangnamclub-peak/"
+    },
+    {
+      "slug": "gangnamclub-miro",
+      "nameKo": "강남청담클럽 미로",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 6,
+      "pageImp90": 19,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 960자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/gangnam/gangnamclub-miro/"
+    },
+    {
+      "slug": "gangnamclub-utopia",
+      "nameKo": "강남청담클럽 유토피아",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 14,
+      "pageImp90": 34,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1552자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/gangnam/gangnamclub-utopia/"
+    },
+    {
+      "slug": "gangnamclub-laputa",
+      "nameKo": "강남청담클럽 라퓨타",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 16,
+      "pageImp90": 25,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1557자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/gangnam/gangnamclub-laputa/"
+    },
+    {
+      "slug": "gangnamclub-face",
+      "nameKo": "강남청담클럽 페이스",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 4,
+      "pageImp90": 34,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1541자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/gangnam/gangnamclub-face/"
+    },
+    {
+      "slug": "gangnamclub-bamnbam",
+      "nameKo": "강남청담클럽 밤앤밤",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 1,
+      "pageImp90": 2,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1578자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/gangnam/gangnamclub-bamnbam/"
+    },
+    {
+      "slug": "gangnamclub-arte",
+      "nameKo": "강남청담클럽 아르떼",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 2,
+      "pageImp90": 3,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 929자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/gangnam/gangnamclub-arte/"
+    },
+    {
+      "slug": "apgujeongclub-hype",
+      "nameKo": "압구정클럽 하입",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 13,
+      "pageImp90": 15,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 857자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/apgujeong/apgujeongclub-hype/"
+    },
+    {
+      "slug": "apgujeongclub-intro",
+      "nameKo": "압구정클럽 인트로",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 4,
+      "pageImp90": 7,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 914자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/apgujeong/apgujeongclub-intro/"
+    },
+    {
+      "slug": "apgujeongclub-color",
+      "nameKo": "압구정클럽 컬러",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 13,
+      "pageImp90": 14,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 856자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/apgujeong/apgujeongclub-color/"
+    },
+    {
+      "slug": "apgujeongclub-dbridge",
+      "nameKo": "압구정클럽 디브릿지",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 4,
+      "pageImp90": 9,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 842자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/apgujeong/apgujeongclub-dbridge/"
+    },
+    {
+      "slug": "apgujeongclub-candyman",
+      "nameKo": "압구정클럽 캔디맨",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 2,
+      "pageImp90": 2,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 934자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/apgujeong/apgujeongclub-candyman/"
+    },
+    {
+      "slug": "apgujeongclub-muin",
+      "nameKo": "압구정클럽 무인",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 1,
+      "pageImp90": 9,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1023자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/apgujeong/apgujeongclub-muin/"
+    },
+    {
+      "slug": "apgujeongcodelounge",
+      "nameKo": "압구정코드라운지",
+      "tier": "below",
+      "pos": 23,
+      "nameImp28": 4,
+      "nameClicks28": 0,
+      "pageImp28": 17,
+      "pageImp90": 64,
+      "staleDays": 22,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 904자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/lounges/apgujeongcodelounge/"
+    },
+    {
+      "slug": "cheongdamclub-arju",
+      "nameKo": "강남청담클럽 아르쥬",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 3,
+      "pageImp90": 10,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 966자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/cheongdam/cheongdamclub-arju/"
+    },
+    {
+      "slug": "itaewonclub-utopia",
+      "nameKo": "이태원클럽 유토피아",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 389,
+      "pageImp90": 729,
+      "staleDays": 7,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1609자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/itaewon/itaewonclub-utopia/"
+    },
+    {
+      "slug": "itaewonclub-maid",
+      "nameKo": "이태원클럽 메이드",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 107,
+      "pageImp90": 111,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 931자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/itaewon/itaewonclub-maid/"
+    },
+    {
+      "slug": "itaewonclub-prism",
+      "nameKo": "이태원클럽 프리즘",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 20,
+      "pageImp90": 58,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1545자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/itaewon/itaewonclub-prism/"
+    },
+    {
+      "slug": "itaewongaepanpocha",
+      "nameKo": "이태원개판포차",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 0,
+      "pageImp90": 9,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 796자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/itaewon/itaewongaepanpocha/"
+    },
+    {
+      "slug": "hongdaeclub-bermuda",
+      "nameKo": "홍대클럽 버뮤다",
+      "tier": "page1",
+      "pos": 6,
+      "nameImp28": 2,
+      "nameClicks28": 0,
+      "pageImp28": 83,
+      "pageImp90": 166,
+      "staleDays": 22,
+      "causes": [
+        "depth(본문 911자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/hongdae/hongdaeclub-bermuda/"
+    },
+    {
+      "slug": "hongdaeclub-pacific",
+      "nameKo": "홍대클럽 퍼시픽",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 20,
+      "pageImp90": 41,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 849자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/hongdae/hongdaeclub-pacific/"
+    },
+    {
+      "slug": "hongdaeclub-maid",
+      "nameKo": "홍대클럽 메이드",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 37,
+      "pageImp90": 61,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 903자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/hongdae/hongdaeclub-maid/"
+    },
+    {
+      "slug": "hongdaeclub-dokkaebi",
+      "nameKo": "홍대클럽 도깨비",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 18,
+      "pageImp90": 26,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 896자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/hongdae/hongdaeclub-dokkaebi/"
+    },
+    {
+      "slug": "nowoncheongchunpocha",
+      "nameKo": "노원청춘포차",
+      "tier": "page1",
+      "pos": 5.4,
+      "nameImp28": 21,
+      "nameClicks28": 1,
+      "pageImp28": 82,
+      "pageImp90": 142,
+      "staleDays": 22,
+      "causes": [
+        "depth(본문 786자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/nowon/nowoncheongchunpocha/"
+    },
+    {
+      "slug": "yongsandragoncity",
+      "nameKo": "용산드래곤시티",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 3,
+      "pageImp90": 5,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 912자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/yongsan/yongsandragoncity/"
+    },
+    {
+      "slug": "seoulbanyantree",
+      "nameKo": "서울반얀트리",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 2,
+      "pageImp90": 3,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 809자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/seoul/seoulbanyantree/"
+    },
+    {
+      "slug": "ilsanclub-cj",
+      "nameKo": "일산클럽 CJ",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 10,
+      "pageImp90": 40,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 757자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/ilsan/ilsanclub-cj/"
+    },
+    {
+      "slug": "uijeongbuarena",
+      "nameKo": "의정부아레나",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 0,
+      "pageImp90": 0,
+      "staleDays": 2,
+      "causes": [
+        "no_reach(90일 페이지 노출 0 — 색인/도달 의심)",
+        "depth(본문 1080자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/uijeongbu/uijeongbuarena/"
+    },
+    {
+      "slug": "yonginbyeolbam",
+      "nameKo": "용인사거리별밤",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 19,
+      "pageImp90": 37,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 752자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/yongin/yonginbyeolbam/"
+    },
+    {
+      "slug": "bucheonclub-paragon",
+      "nameKo": "부천클럽 파라곤",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 11,
+      "pageImp90": 42,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 827자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/bucheon/bucheonclub-paragon/"
+    },
+    {
+      "slug": "incheonparadisecity",
+      "nameKo": "인천파라다이스씨티",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 9,
+      "pageImp90": 11,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 940자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/incheon/incheonparadisecity/"
+    },
+    {
+      "slug": "cheongju-supermoon",
+      "nameKo": "청주클럽 슈퍼문",
+      "tier": "striking",
+      "pos": 11,
+      "nameImp28": 1,
+      "nameClicks28": 0,
+      "pageImp28": 339,
+      "pageImp90": 935,
+      "staleDays": 22,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 892자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/cheongju/cheongju-supermoon/"
+    },
+    {
+      "slug": "daejeonsugarclub",
+      "nameKo": "대전설탕클럽",
+      "tier": "page1",
+      "pos": 3.4,
+      "nameImp28": 25,
+      "nameClicks28": 4,
+      "pageImp28": 72,
+      "pageImp90": 157,
+      "staleDays": 22,
+      "causes": [
+        "depth(본문 809자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/daejeon/daejeonsugarclub/"
+    },
+    {
+      "slug": "apgujeonglounge-dm",
+      "nameKo": "압구정라운지 디엠",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 124,
+      "pageImp90": 282,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 868자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/lounges/apgujeonglounge-dm/"
+    },
+    {
+      "slug": "apgujeongidiotlounge",
+      "nameKo": "압구정이디엇라운지",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 7,
+      "pageImp90": 18,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 972자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/lounges/apgujeongidiotlounge/"
+    },
+    {
+      "slug": "gangnamhoppa-royal",
+      "nameKo": "강남호빠 로얄",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 3,
+      "pageImp90": 14,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 975자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/gangnamhoppa-royal/"
+    },
+    {
+      "slug": "busanhoppa-star",
+      "nameKo": "부산호빠 스타",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 2,
+      "pageImp90": 5,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 979자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/busanhoppa-star/"
+    },
+    {
+      "slug": "jangandonghoppa-bbangbbang",
+      "nameKo": "장안동호빠 빵빵",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 17,
+      "pageImp90": 129,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1166자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/jangandonghoppa-bbangbbang/"
+    },
+    {
+      "slug": "geondaehoppa-w",
+      "nameKo": "건대호빠 W",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 6,
+      "pageImp90": 9,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 926자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/geondaehoppa-w/"
+    },
+    {
+      "slug": "suwonhoppa-beast",
+      "nameKo": "수원호빠 비스트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 56,
+      "pageImp90": 135,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 999자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/suwonhoppa-beast/"
+    },
+    {
+      "slug": "haeundaehoppa-kkantappiya",
+      "nameKo": "해운대호빠 깐따삐야",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 15,
+      "pageImp90": 19,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1140자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/haeundaehoppa-kkantappiya/"
+    },
+    {
+      "slug": "haeundaehoppa-michelin",
+      "nameKo": "해운대호빠 미슐랭",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 5,
+      "pageImp90": 25,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 779자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/haeundaehoppa-michelin/"
+    },
+    {
+      "slug": "daejeonhoppa-eclipse",
+      "nameKo": "대전호빠 이클립스",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 247,
+      "pageImp90": 758,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 904자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/daejeonhoppa-eclipse/"
+    },
+    {
+      "slug": "suwonhoppa-aura",
+      "nameKo": "수원호빠 아우라",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 5,
+      "pageImp90": 5,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1182자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/suwonhoppa-aura/"
+    },
+    {
+      "slug": "busanhoppa-menz",
+      "nameKo": "부산호빠 맨즈",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 138,
+      "pageImp90": 276,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1062자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/busanhoppa-menz/"
+    },
+    {
+      "slug": "busanhoppa-aura",
+      "nameKo": "부산호빠 아우라",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 63,
+      "pageImp90": 148,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 743자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/busanhoppa-aura/"
+    },
+    {
+      "slug": "haeundaehoppa-velvet",
+      "nameKo": "해운대호빠 벨벳",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 0,
+      "pageImp90": 0,
+      "staleDays": 22,
+      "causes": [
+        "no_reach(90일 페이지 노출 0 — 색인/도달 의심)",
+        "depth(본문 891자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/haeundaehoppa-velvet/"
+    },
+    {
+      "slug": "daeguhoppa-perfect",
+      "nameKo": "대구호빠 퍼펙트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 10,
+      "pageImp90": 40,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 789자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/daeguhoppa-perfect/"
+    },
+    {
+      "slug": "gangnam-hoppa-again",
+      "nameKo": "강남호빠 어게인",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 20,
+      "pageImp90": 35,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1085자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/gangnam-hoppa-again/"
+    },
+    {
+      "slug": "gangnam-hoppa-flirting",
+      "nameKo": "강남호빠 플러팅",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 37,
+      "pageImp90": 50,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1173자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/gangnam-hoppa-flirting/"
+    },
+    {
+      "slug": "jangandong-hoppa-flex",
+      "nameKo": "장안동호빠 플렉스",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 0,
+      "pageImp90": 0,
+      "staleDays": 22,
+      "causes": [
+        "no_reach(90일 페이지 노출 0 — 색인/도달 의심)",
+        "depth(본문 1070자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/jangandong-hoppa-flex/"
+    },
+    {
+      "slug": "jeonju-hoppa-gallery",
+      "nameKo": "전주호빠 갤러리",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 5,
+      "pageImp90": 9,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1075자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/jeonju-hoppa-gallery/"
+    },
+    {
+      "slug": "hongdae-hoppa",
+      "nameKo": "홍대호빠",
+      "tier": "below",
+      "pos": 45.5,
+      "nameImp28": 32,
+      "nameClicks28": 1,
+      "pageImp28": 28,
+      "pageImp90": 35,
+      "staleDays": 22,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 935자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/hoppa/hongdae-hoppa/"
+    },
+    {
+      "slug": "gangseo-hobak",
+      "nameKo": "강서호박나이트",
+      "tier": "page1",
+      "pos": 3.4,
+      "nameImp28": 144,
+      "nameClicks28": 15,
+      "pageImp28": 570,
+      "pageImp90": 1483,
+      "staleDays": 2,
+      "causes": [
+        "depth(본문 1026자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/gangseo-hobak/"
+    },
+    {
+      "slug": "ilsan-hwajung-tunnel",
+      "nameKo": "일산화정터널나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 46,
+      "pageImp90": 226,
+      "staleDays": 2,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1624자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/ilsan-hwajung-tunnel/"
+    },
+    {
+      "slug": "ilsan-mul-night",
+      "nameKo": "일산물나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 8,
+      "pageImp90": 57,
+      "staleDays": 2,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1005자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/ilsan-mul-night/"
+    },
+    {
+      "slug": "itaewon-savage",
+      "nameKo": "이태원클럽 세비지",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 1,
+      "pageImp90": 104,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 986자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/itaewon/itaewon-savage/"
+    },
+    {
+      "slug": "changwon-lululalala",
+      "nameKo": "창원룰루랄라나이트",
+      "tier": "striking",
+      "pos": 11.2,
+      "nameImp28": 14,
+      "nameClicks28": 6,
+      "pageImp28": 47,
+      "pageImp90": 180,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1209자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/changwon-lululalala/"
+    },
+    {
+      "slug": "gangnamclub-octagon",
+      "nameKo": "강남클럽 옥타곤",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 84,
+      "pageImp90": 157,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1110자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/gangnam/gangnamclub-octagon/"
+    },
+    {
+      "slug": "itaewonclub-cakeshop",
+      "nameKo": "이태원클럽 케이크샵",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 0,
+      "pageImp90": 28,
+      "staleDays": 22,
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 936자 < 1700)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/clubs/itaewon/itaewonclub-cakeshop/"
+    },
+    {
+      "slug": "bulgwangdonghobaknight",
+      "nameKo": "불광동호박나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 0,
+      "pageImp90": 0,
+      "staleDays": 2,
+      "causes": [
+        "no_reach(90일 페이지 노출 0 — 색인/도달 의심)",
+        "depth(본문 849자 < 1700)",
+        "anchor(매거진/이벤트 언급 0 — 구조 링크만 존재)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/bulgwangdonghobaknight/"
+    },
+    {
+      "slug": "uijeongbubaekakgwannight",
+      "nameKo": "의정부백악관나이트",
+      "tier": "zero",
+      "pos": null,
+      "nameImp28": 0,
+      "nameClicks28": 0,
+      "pageImp28": 0,
+      "pageImp90": 0,
+      "staleDays": 2,
+      "causes": [
+        "no_reach(90일 페이지 노출 0 — 색인/도달 의심)",
+        "depth(본문 922자 < 1700)",
+        "anchor(매거진/이벤트 언급 0 — 구조 링크만 존재)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/uijeongbubaekakgwannight/"
+    },
+    {
+      "slug": "dapsimnimiraclenight",
+      "nameKo": "답십리미라클나이트",
+      "tier": "striking",
+      "pos": 10.4,
+      "nameImp28": 16,
+      "nameClicks28": 0,
+      "pageImp28": 0,
+      "pageImp90": 0,
+      "staleDays": 2,
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 891자 < 1700)",
+        "anchor(매거진/이벤트 언급 0 — 구조 링크만 존재)",
+        "competition:⚠️미측정(SERP 크롤 없이 판정 불가)"
+      ],
+      "pageUrl": "https://nolcool.com/nights/dapsimnimiraclenight/"
+    }
+  ]
+}

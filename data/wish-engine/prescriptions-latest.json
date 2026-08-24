@@ -1,5 +1,5 @@
 {
-  "date": "2026-08-18",
+  "date": "2026-08-24",
   "prescriptions": [
     {
       "slug": "haeundaegoguryeo",
@@ -18,16 +18,6 @@
       "causes": [
         "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
         "depth(본문 1173자 < 1700)"
-      ],
-      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
-    },
-    {
-      "slug": "cheongdamh2onight",
-      "nameKo": "청담H2O나이트",
-      "tier": "striking",
-      "causes": [
-        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
-        "anchor(매거진/이벤트 언급 0 — 구조 링크만 존재)"
       ],
       "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
     },
@@ -93,7 +83,7 @@
     {
       "slug": "yeongdeungpoterminalnight",
       "nameKo": "영등포터미널나이트",
-      "tier": "striking",
+      "tier": "below",
       "causes": [
         "authority(순위 미달 — 내부앵커/본문 보강 대상)",
         "depth(본문 1414자 < 1700)"
@@ -160,6 +150,16 @@
       "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
     },
     {
+      "slug": "gurihobaknight",
+      "nameKo": "구리호박나이트",
+      "tier": "striking",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 993자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
       "slug": "uijeongbuhangukgwannight",
       "nameKo": "의정부한국관나이트",
       "tier": "zero",
@@ -179,11 +179,21 @@
       "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
     },
     {
+      "slug": "suwonkoreanight",
+      "nameKo": "수원코리아나이트",
+      "tier": "striking",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1285자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
       "slug": "seongnamgukbingwannight",
       "nameKo": "성남국빈관나이트",
-      "tier": "zero",
+      "tier": "striking",
       "causes": [
-        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
         "depth(본문 1373자 < 1700)"
       ],
       "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
@@ -211,10 +221,20 @@
     {
       "slug": "pyeongtaekhobaknight",
       "nameKo": "평택호박나이트",
-      "tier": "striking",
+      "tier": "below",
       "causes": [
         "authority(순위 미달 — 내부앵커/본문 보강 대상)",
         "depth(본문 1002자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "incheonarabiannight",
+      "nameKo": "인천아라비안나이트",
+      "tier": "below",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1356자 < 1700)"
       ],
       "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
     },
@@ -235,6 +255,16 @@
       "causes": [
         "authority(순위 미달 — 내부앵커/본문 보강 대상)",
         "depth(본문 1315자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "ansanhitnight",
+      "nameKo": "안산히트나이트",
+      "tier": "striking",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1211자 < 1700)"
       ],
       "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
     },
@@ -279,6 +309,16 @@
       "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
     },
     {
+      "slug": "cheongjudontellmamanight",
+      "nameKo": "청주돈텔마마나이트",
+      "tier": "zero",
+      "causes": [
+        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "depth(본문 1000자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
       "slug": "daeguhobaknight",
       "nameKo": "대구호박나이트",
       "tier": "striking",
@@ -301,7 +341,7 @@
     {
       "slug": "daegutotoganight",
       "nameKo": "대구토토가나이트",
-      "tier": "below",
+      "tier": "striking",
       "causes": [
         "authority(순위 미달 — 내부앵커/본문 보강 대상)",
         "depth(본문 1034자 < 1700)"
@@ -379,11 +419,11 @@
     },
     {
       "slug": "gwangjucheomdanempanight",
-      "nameKo": "광주첨단엠파나이트",
+      "nameKo": "광주첨단엠파이어나이트",
       "tier": "zero",
       "causes": [
         "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
-        "depth(본문 1077자 < 1700)"
+        "depth(본문 1072자 < 1700)"
       ],
       "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
     },
@@ -720,9 +760,9 @@
     {
       "slug": "cheongju-supermoon",
       "nameKo": "청주클럽 슈퍼문",
-      "tier": "zero",
+      "tier": "striking",
       "causes": [
-        "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
         "depth(본문 892자 < 1700)"
       ],
       "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
@@ -958,6 +998,16 @@
       "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
     },
     {
+      "slug": "changwon-lululalala",
+      "nameKo": "창원룰루랄라나이트",
+      "tier": "striking",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 1209자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
       "slug": "gangnamclub-octagon",
       "nameKo": "강남클럽 옥타곤",
       "tier": "zero",
@@ -974,6 +1024,39 @@
       "causes": [
         "name_demand_or_snippet(페이지는 노출되나 이름 검색 미노출 — 직답/FAQ 보강 대상)",
         "depth(본문 936자 < 1700)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "bulgwangdonghobaknight",
+      "nameKo": "불광동호박나이트",
+      "tier": "zero",
+      "causes": [
+        "no_reach(90일 페이지 노출 0 — 색인/도달 의심)",
+        "depth(본문 849자 < 1700)",
+        "anchor(매거진/이벤트 언급 0 — 구조 링크만 존재)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "uijeongbubaekakgwannight",
+      "nameKo": "의정부백악관나이트",
+      "tier": "zero",
+      "causes": [
+        "no_reach(90일 페이지 노출 0 — 색인/도달 의심)",
+        "depth(본문 922자 < 1700)",
+        "anchor(매거진/이벤트 언급 0 — 구조 링크만 존재)"
+      ],
+      "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
+    },
+    {
+      "slug": "dapsimnimiraclenight",
+      "nameKo": "답십리미라클나이트",
+      "tier": "striking",
+      "causes": [
+        "authority(순위 미달 — 내부앵커/본문 보강 대상)",
+        "depth(본문 891자 < 1700)",
+        "anchor(매거진/이벤트 언급 0 — 구조 링크만 존재)"
       ],
       "whitelist": "직답/FAQ 보강·내부앵커 추가(페이지당 ≤12)·본문 실데이터 보강"
     }
