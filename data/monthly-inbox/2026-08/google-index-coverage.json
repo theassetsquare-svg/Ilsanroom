@@ -1,0 +1,7 @@
+[
+  {
+    "date": "2026-08-24",
+    "subject": "[놀쿨][🔍] Google 색인 안 된 페이지 13개",
+    "summary": "[🔍 Google 색인 커버리지] 색인 안 된 페이지 13개 측정 시각: 2026-08-24 11:12:27 KST · 검사 465/465 sitemap 총 URL 465 검사 완료 465 색인됨(PASS) 452 색인 안 됨 13 사유별 분포 발견됨 - 현재 색인이 생성되지 않음 9 Google에는 아직 알려지지 않은 URL입니다. 2 ‘NOINDEX’ 태그에 의해 제외되었습니다. 1 크롤링됨 - 현재 색인이 생성되지 않음 1 색인 안 된 페이지 (최대 200) /yojeong/ilsan/ — 발견됨 - 현재 색인이 생성되지 않음 /region/%EC%83%81%EB%B4%89%EB%8F%99/nights/ — 발견됨 - 현재 색인이 생성되지 않음 /region/%EB%8F%85%EC%82%B0/nights/ — 발견됨 - 현재 색인이 생성되지 않음 /region/%EB%8B%B5%EC%8B%AD%EB%A6%AC/nights/ — 발견됨 - 현재 색인이 생성되지 않음 /region/%EC%9D%B8%EB%8D%95%EC%9B%90/nights/ — 발견됨 - 현재 색인이 생성되지 않음 /region/%EB%B6%88%EA%B4%91/nights/ — 발견됨 - 현재 색인이 생성되지 않음 /tag/%EB%A7%88%EB%A6%B0%EC%8B%9C%ED%8B%B0/ — ‘NOINDEX’ 태그에 의해 제외되었습니다. /tag/%EB%8B%B5%EC%8B%AD%EB%A6%AC%EB%82%98%EC%9D%B4%ED%8A%B8/ — 크롤링됨 - 현재 색인이 생성되지 않음 /tag/%EC%9D%98%EC%A0%95%EB%B6%80%EB%82%98%EC%9D%B4%ED%8A%B8/ — 발견됨 - 현재 색인이 생성되지 않음 /tag/%EB%A9%94%EC%9D%B4%EB%93%9C/ — 발견됨 - 현재 색인이 생성되지 않음 /near/%EB%A7%88%EB%91%90/ — Google에는 아직 알려지지 않은 URL입니다. /near/%EA%B5%AC%EB%9E%98/ — 발견됨 - 현재 색인이 생성되지 않음 /near/%EB%B6%88%EA%B4%91%EC%97%AD/ — Google에는 아직 알려지지 않은 URL입니다. 취한 조치 Sitemap 재제출 → Search Console: ✅ 성공 Indexing API publish: 미사용 (sitemap 재제출만 — 일반 페이지 정책 안전) 색인 여부는 Google이 최종 결정. 본 점검은 정직한 레버(sitemap 재제출·크롤 가능성·보고)만 당깁니다. \"Discovered/Crawled - not indexed\"는 대개 시간이 지나면 색인되며, 반복되면 콘텐츠 고유성·내부링크 보강이 정답입니다."
+  }
+]
