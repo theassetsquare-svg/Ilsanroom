@@ -1,19 +1,47 @@
 {
-  "generated_at": "2026-08-23T17:10:39.676Z",
+  "generated_at": "2026-08-24T03:42:41.956Z",
   "window_hours": 24,
   "items": [
-    {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
-      "views_24h": 2
-    },
     {
       "path": "/nights/gurihobaknight",
       "title": "구리호박나이트",
       "category": "night",
       "region": "구리",
+      "views_24h": 5
+    },
+    {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/bundangpongpongnight",
+      "title": "분당퐁퐁나이트",
+      "category": "night",
+      "region": "분당",
+      "views_24h": 2
+    },
+    {
+      "path": "/hoppa/busanhoppa-menz",
+      "title": "부산호빠 맨즈",
+      "category": "hoppa",
+      "region": "부산",
+      "views_24h": 2
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/seongnamgukbingwannight",
+      "title": "성남국빈관나이트",
+      "category": "night",
+      "region": "성남",
       "views_24h": 2
     },
     {
@@ -24,18 +52,25 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 2
+      "path": "/hoppa/haeundaehoppa-michelin",
+      "title": "해운대호빠 미슐랭",
+      "category": "hoppa",
+      "region": "부산 해운대",
+      "views_24h": 1
     },
     {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
       "category": "night",
-      "region": "대전",
-      "views_24h": 2
+      "region": "강서",
+      "views_24h": 1
+    },
+    {
+      "path": "/hoppa/suwonhoppa-beast",
+      "title": "수원호빠 비스트",
+      "category": "hoppa",
+      "region": "수원",
+      "views_24h": 1
     },
     {
       "path": "/nights/busanasiadnight",
@@ -59,20 +94,6 @@
       "views_24h": 1
     },
     {
-      "path": "/nights/bundangpongpongnight",
-      "title": "분당퐁퐁나이트",
-      "category": "night",
-      "region": "분당",
-      "views_24h": 1
-    },
-    {
-      "path": "/hoppa/busanhoppa-menz",
-      "title": "부산호빠 맨즈",
-      "category": "hoppa",
-      "region": "부산",
-      "views_24h": 1
-    },
-    {
       "path": "/nights/busanmulnight",
       "title": "부산물나이트",
       "category": "night",
@@ -84,27 +105,6 @@
       "title": "강남청담클럽 레이스",
       "category": "club",
       "region": "강남",
-      "views_24h": 1
-    },
-    {
-      "path": "/hoppa/busanhoppa-aura",
-      "title": "부산호빠 아우라",
-      "category": "hoppa",
-      "region": "부산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/suwonchancenight",
-      "title": "수원찬스돔나이트",
-      "category": "night",
-      "region": "수원",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/suyushampoonight",
-      "title": "수유샴푸나이트",
-      "category": "night",
-      "region": "수유",
       "views_24h": 1
     }
   ]
