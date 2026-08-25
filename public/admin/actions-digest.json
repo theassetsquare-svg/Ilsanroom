@@ -1,37 +1,37 @@
 {
-  "generated_at": "2026-08-24T00:38:57.069Z",
+  "generated_at": "2026-08-25T00:38:22.888Z",
   "window_hours": 24,
-  "total_runs": 280,
+  "total_runs": 258,
   "total_fail": 0,
   "workflows": [
     {
       "name": "24h Site Monitoring",
-      "total": 53,
-      "success": 53,
+      "total": 36,
+      "success": 36,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
       "name": "Activity Alert (15min)",
-      "total": 38,
-      "success": 38,
+      "total": 28,
+      "success": 28,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
       "name": "Venue Reports Daily",
-      "total": 23,
-      "success": 23,
+      "total": 22,
+      "success": 22,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
       "name": "Security Audit Hourly",
-      "total": 22,
-      "success": 22,
+      "total": 21,
+      "success": 21,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -77,22 +77,6 @@
       "last_fail": null
     },
     {
-      "name": "Browser Audit (PC + Mobile)",
-      "total": 2,
-      "success": 2,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Customer Robot Patrol (손님 로봇)",
-      "total": 2,
-      "success": 2,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Audit PR (guard + dist)",
       "total": 2,
       "success": 2,
@@ -102,6 +86,14 @@
     },
     {
       "name": "Gate Bypass Audit (양방향 우회검증)",
+      "total": 2,
+      "success": 2,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Browser Audit (PC + Mobile)",
       "total": 2,
       "success": 2,
       "failure": 0,
@@ -285,7 +277,7 @@
       "last_fail": null
     },
     {
-      "name": "Nowonhobaknight Keyword Watch (노원호박나이트 2 키워드 24h)",
+      "name": "Title Uniqueness Audit (사이트 전체 후미 + HOOK 분포)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -293,7 +285,7 @@
       "last_fail": null
     },
     {
-      "name": "Title Uniqueness Audit (사이트 전체 후미 + HOOK 분포)",
+      "name": "Nowonhobaknight Keyword Watch (노원호박나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -431,7 +423,7 @@
     {
       "name": "All Pages Quality Watch (5축 — anchor 200/img alt/H1/lang+viewport/canonical)",
       "total": 1,
-      "success": 1,
+      "success": 0,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -454,14 +446,6 @@
     },
     {
       "name": "Keyword SEO Monitor (일산명월관 / 일산요정)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Popularity Recompute (인기 점수 주간 재계산)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -509,7 +493,7 @@
       "last_fail": null
     },
     {
-      "name": "GSC Demand Gap (weekly)",
+      "name": "Clarity Daily Watch (매일 21:00 KST — 측정·판정만, 코드수정·메일은 21:20 루틴)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -517,7 +501,7 @@
       "last_fail": null
     },
     {
-      "name": "Clarity Daily Watch (매일 21:00 KST — 측정·판정만, 코드수정·메일은 21:20 루틴)",
+      "name": "Customer Robot Patrol (손님 로봇)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -629,7 +613,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -637,7 +621,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -701,6 +685,14 @@
       "last_fail": null
     },
     {
+      "name": "Gangnamclub Laputa Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
       "name": "Clubs Keyword Watch (/clubs 클럽 단일 키워드 24h)",
       "total": 1,
       "success": 1,
@@ -709,7 +701,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Laputa Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Wish Engine Weekly Loop",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -741,6 +733,14 @@
       "last_fail": null
     },
     {
+      "name": "Seed Content Quality Gate (weekly)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
       "name": "Hongdae Hoppa Keyword Watch (홍대호빠 단일 키워드 24h)",
       "total": 1,
       "success": 1,
@@ -758,6 +758,14 @@
     },
     {
       "name": "Haeundaehoppa Velvet Keyword Watch (해운대호빠 벨벳 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "GSC Growth Opportunity (weekly)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -813,6 +821,14 @@
       "last_fail": null
     },
     {
+      "name": "GA4 Demand Insight (weekly)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
       "name": "Busanhoppa Star Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
@@ -821,7 +837,7 @@
       "last_fail": null
     },
     {
-      "name": "Busanhoppa Menz Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
+      "name": "SERP Loop (검색어 상위노출 주간 루프)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -830,6 +846,14 @@
     },
     {
       "name": "Daejeonhoppa Eclipse Keyword Watch (대전호빠+충청호빠 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Busanhoppa Menz Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -869,6 +893,14 @@
       "last_fail": null
     },
     {
+      "name": "SERP T1 Recheck (노출0 색인의심 주간 재확인)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
       "name": "Gangnam Hoppa Royal Keyword Watch (강남호빠+서울호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
@@ -901,6 +933,14 @@
       "last_fail": null
     },
     {
+      "name": "Rank Drop Responder (순위 하락 자동 대응)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
       "name": "Cheonan Korea Keyword Watch (천안코리아나이트 + 천안나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
@@ -917,14 +957,6 @@
       "last_fail": null
     },
     {
-      "name": "Changwon Lululalala Keyword Watch (창원룰루랄라나이트 + 창원나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Cheonan Stardom Keyword Watch (천안스타돔나이트 + 천안나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
@@ -933,7 +965,23 @@
       "last_fail": null
     },
     {
+      "name": "Changwon Lululalala Keyword Watch (창원룰루랄라나이트 + 창원나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
       "name": "Jejunight Keyword Watch (제주나이트 + 제주도나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Venue Rank Trend (가게이름 순위 추이 주간)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -1029,7 +1077,23 @@
       "last_fail": null
     },
     {
+      "name": "Search Console Report (키워드/클릭)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
       "name": "Ansanhitnight Keyword Watch (안산히트나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Google Index Coverage (전수 색인 점검)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -1079,14 +1143,14 @@
   ],
   "deploy_sync": {
     "n": 1,
-    "avg_ms": 63000,
-    "p50_ms": 63000,
-    "p95_ms": 63000,
-    "max_ms": 63000,
+    "avg_ms": 80000,
+    "p50_ms": 80000,
+    "p95_ms": 80000,
+    "max_ms": 80000,
     "max_sample": {
-      "ms": 63000,
+      "ms": 80000,
       "workflow": "Google Re-Index (Sitemap + Inspect)",
-      "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/32614831756"
+      "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/32764417338"
     }
   }
 }
