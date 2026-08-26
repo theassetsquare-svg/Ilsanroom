@@ -1,0 +1,120 @@
+{
+  "date": "2026-08-26",
+  "shard": 3,
+  "pagesPatrolled": 94,
+  "queued": 94,
+  "carryover": 0,
+  "partial": false,
+  "manifestTotal": 660,
+  "baselineMode": "collecting(~14일)",
+  "pcSampled": 15,
+  "totals": {
+    "broken": 0,
+    "dead": 0,
+    "slow": 0,
+    "blocked": 1,
+    "mobileGap": 0
+  },
+  "problemPages": 1,
+  "blockedAnalytics": 232,
+  "blockedWrites": 284,
+  "riskSkips": [],
+  "riskSkipTotal": 0,
+  "criticals": [],
+  "revisit": [
+    "홈 진입 ok",
+    "venue 상세 ok (/nights/busanyeonsandongmulnight)",
+    "뒤로가기 ok",
+    "로그인 ok(기존 테스트 계정)",
+    "즐겨찾기 화면 도달 ok",
+    "글쓰기 화면 도달 ok(제출 0)",
+    "커뮤니티 진입 ok"
+  ],
+  "problems": [
+    {
+      "route": "/compare/",
+      "grades": {
+        "broken": 0,
+        "dead": 0,
+        "slow": 0,
+        "blocked": 1,
+        "mobileGap": 0
+      },
+      "issues": {
+        "dead": [],
+        "console": [],
+        "external": [],
+        "journey": {
+          "bottomCovered": "ok",
+          "nextContent": "none",
+          "contribGate": "NO-CARD",
+          "back": "ok"
+        },
+        "shots": []
+      }
+    }
+  ],
+  "externalLinksAll": [],
+  "redirectLinksAll": [
+    {
+      "page": "/magazine/apgujeong-club-six-guide/",
+      "text": "압구정클럽 하입",
+      "href": "/clubs/apgujeongclub-hype/"
+    },
+    {
+      "page": "/magazine/apgujeong-club-six-guide/",
+      "text": "압구정클럽 인트로",
+      "href": "/clubs/apgujeongclub-intro/"
+    },
+    {
+      "page": "/magazine/apgujeong-club-six-guide/",
+      "text": "압구정클럽 컬러",
+      "href": "/clubs/apgujeongclub-color/"
+    },
+    {
+      "page": "/magazine/apgujeong-club-six-guide/",
+      "text": "압구정클럽 디브릿지",
+      "href": "/clubs/apgujeongclub-dbridge/"
+    },
+    {
+      "page": "/magazine/apgujeong-club-six-guide/",
+      "text": "압구정클럽 캔디맨",
+      "href": "/clubs/apgujeongclub-candyman/"
+    },
+    {
+      "page": "/magazine/apgujeong-club-six-guide/",
+      "text": "압구정클럽 무인",
+      "href": "/clubs/apgujeongclub-muin/"
+    },
+    {
+      "page": "/magazine/hotel-resort-landmark-clubs-3/",
+      "text": "용산드래곤시티",
+      "href": "/clubs/yongsandragoncity/"
+    },
+    {
+      "page": "/magazine/hotel-resort-landmark-clubs-3/",
+      "text": "서울반얀트리",
+      "href": "/clubs/seoulbanyantree/"
+    },
+    {
+      "page": "/magazine/hotel-resort-landmark-clubs-3/",
+      "text": "인천파라다이스씨티",
+      "href": "/clubs/incheonparadisecity/"
+    },
+    {
+      "page": "/magazine/itaewon-club-three-guide/",
+      "text": "이태원클럽 유토피아",
+      "href": "/clubs/itaewonclub-utopia/"
+    },
+    {
+      "page": "/magazine/itaewon-club-three-guide/",
+      "text": "이태원클럽 메이드",
+      "href": "/clubs/itaewonclub-maid/"
+    },
+    {
+      "page": "/magazine/itaewon-club-three-guide/",
+      "text": "이태원클럽 프리즘",
+      "href": "/clubs/itaewonclub-prism/"
+    }
+  ]
+}
