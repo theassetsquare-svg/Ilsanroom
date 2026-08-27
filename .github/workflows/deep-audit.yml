@@ -28,7 +28,7 @@ jobs:
           path: |
             /tmp/link.json
             /tmp/link.txt
-          retention-days: 14
+          retention-days: 7
 
       - name: Fail if broken > 0
         run: |
@@ -57,4 +57,4 @@ jobs:
         with:
           name: freshness-${{ github.run_id }}
           path: /tmp/freshness.txt
-          retention-days: 14
+          retention-days: 7

@@ -90,7 +90,7 @@ jobs:
           path: |
             /tmp/browser-audit.json
             /tmp/browser-audit.txt
-          retention-days: 30
+          retention-days: 7
 
       - name: Send email alert (이슈 발견 시)
         if: always()

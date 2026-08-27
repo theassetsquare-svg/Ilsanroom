@@ -2,8 +2,8 @@ name: 24h Site Monitoring
 
 on:
   schedule:
-    # 15분마다 헬스체크
-    - cron: '*/15 * * * *'
+    # 30분마다 헬스체크 (연료 절감: 15→30분, 다운 감지 최대 30분 — 월 1440분 절약)
+    - cron: '*/30 * * * *'
   workflow_dispatch:
 
 jobs:

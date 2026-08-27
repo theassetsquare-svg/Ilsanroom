@@ -2,8 +2,8 @@ name: Activity Alert (15min)
 
 on:
   schedule:
-    # 15분마다 활동 감지 → 이메일
-    - cron: '*/15 * * * *'
+    # 30분마다 활동 감지 → 이메일 (연료 절감: 15→30분, 알림 최대 30분 지연 — 월 1440분 절약)
+    - cron: '*/30 * * * *'
   workflow_dispatch:
 
 jobs:

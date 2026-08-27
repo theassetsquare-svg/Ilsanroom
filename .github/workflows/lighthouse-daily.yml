@@ -59,7 +59,7 @@ jobs:
           path: |
             /tmp/lighthouse.json
             /tmp/lighthouse.txt
-          retention-days: 30
+          retention-days: 7
 
       # 목표 미달 시에만 메일 1통 (전부 달성 = 침묵 = 자기수렴)
       - name: Email if below goals

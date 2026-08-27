@@ -44,7 +44,7 @@ jobs:
           path: |
             ga4-full.txt
             gsc-search.txt
-          retention-days: 14
+          retention-days: 7
 
   indexcoverage:
     runs-on: ubuntu-latest
@@ -64,4 +64,4 @@ jobs:
         with:
           name: gsc-index-coverage
           path: gsc-index.txt
-          retention-days: 14
+          retention-days: 7

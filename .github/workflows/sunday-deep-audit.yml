@@ -53,7 +53,7 @@ jobs:
             audit-reports/venue-seo-audit-*.md
             /tmp/sitemap-fullcheck.txt
             /tmp/venue-seo.txt
-          retention-days: 30
+          retention-days: 7
 
       - name: Send email alert on failure
         if: steps.fullcheck.outcome == 'failure' || steps.venueseo.outcome == 'failure'

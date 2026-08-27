@@ -26,4 +26,4 @@ jobs:
         with:
           name: ga4-report
           path: ga4-report.txt
-          retention-days: 14
+          retention-days: 7

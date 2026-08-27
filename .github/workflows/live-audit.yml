@@ -30,7 +30,7 @@ jobs:
           path: |
             /tmp/audit.json
             /tmp/audit.txt
-          retention-days: 14
+          retention-days: 7
 
       - name: Fail if ERR > 0
         run: |

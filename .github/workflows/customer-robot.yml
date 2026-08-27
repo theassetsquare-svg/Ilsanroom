@@ -28,7 +28,7 @@ concurrency:
 jobs:
   patrol:
     runs-on: ubuntu-latest
-    timeout-minutes: 220
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v4
 
@@ -56,7 +56,7 @@ jobs:
             echo "명부 갱신일 아님(월요일 KST만) — 기존 명부 사용"
           fi
 
-      - name: Run patrol (오늘 조각, 예산 180분+체크포인트)
+      - name: Run patrol (오늘 조각, 예산 40분+체크포인트 — 예산초과분은 다음날 이어받음)
         env:
           CHROMIUM_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -67,7 +67,7 @@ jobs:
           export CHROMIUM_PATH=$(which chrome || which google-chrome || which chromium)
           SHARD="${{ github.event.inputs.shard }}"
           LIMIT="${{ github.event.inputs.limit }}"
-          ARGS=""
+          ARGS="--budget-min 40"
           [ -n "$SHARD" ] && ARGS="$ARGS --shard $SHARD"
           [ -n "$LIMIT" ] && [ "$LIMIT" != "0" ] && ARGS="$ARGS --limit $LIMIT"
           node scripts/customer-robot.mjs $ARGS
@@ -79,7 +79,7 @@ jobs:
           name: robot-shots-${{ github.run_id }}
           path: /tmp/robot-shots/
           if-no-files-found: ignore
-          retention-days: 14
+          retention-days: 7
 
       - name: Commit results (monthly-inbox 축적 + 명부/기준선/체크포인트)
         if: always()

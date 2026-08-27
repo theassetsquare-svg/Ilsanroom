@@ -36,4 +36,4 @@ jobs:
         with:
           name: gate-bypass-${{ github.run_id }}
           path: /tmp/gate-bypass.txt
-          retention-days: 14
+          retention-days: 7
