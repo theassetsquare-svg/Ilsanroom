@@ -18,6 +18,7 @@ export const OG_FILE_VER = {
   ilsanmyeongwolgwanyojeong: '-v2', // 동일 건
   gwangjucheomdanempanight: '-v4', // 2026-08-23 정식명 교정(엠파→엠파이어) 재생성 — 엣지 캐시 무효화 버전업
   busanasiadnight: '-v4', // 2026-08-25 광고주 등록(새우깡 010-3614-1056) 재생성 — 엣지 캐시 무효화 버전업
+  pajuyadangskydomenight: '-v4', // 2026-09-02 광고주 교체(막내 → 딸기 010-3447-0963) 재생성 — 엣지 캐시 무효화 버전업
 };
 
 /** 2026-08-22 전 업소 "가게이름" 1:1 og 썸네일 전환(generate-og-name11.mjs).
