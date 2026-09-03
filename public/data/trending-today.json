@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-03T16:56:18.277Z",
+  "generated_at": "2026-09-03T19:29:15.176Z",
   "window_hours": 24,
   "items": [
     {
@@ -7,14 +7,28 @@
       "title": "일산명월관요정",
       "category": "yojeong",
       "region": "일산",
-      "views_24h": 4
+      "views_24h": 5
     },
     {
-      "path": "/nights/yeongdeungpoterminalnight",
-      "title": "영등포터미널나이트",
+      "path": "/clubs/ilsan/ilsanclub-cj",
+      "title": "일산클럽 CJ",
+      "category": "club",
+      "region": "일산",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/pajuyadangskydomenight",
+      "title": "파주야당스카이돔나이트",
       "category": "night",
-      "region": "영등포",
-      "views_24h": 4
+      "region": "파주",
+      "views_24h": 3
+    },
+    {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
+      "category": "night",
+      "region": "강서",
+      "views_24h": 3
     },
     {
       "path": "/nights/daejeonbongmyeongnight",
@@ -24,17 +38,24 @@
       "views_24h": 3
     },
     {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
+      "path": "/nights/ilsan-hwajung-tunnel",
+      "title": "일산화정터널나이트",
+      "category": "night",
       "region": "일산",
       "views_24h": 2
     },
     {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
+      "path": "/nights/ilsanshampoonight",
+      "title": "일산샴푸나이트",
       "category": "night",
-      "region": "강서",
+      "region": "일산",
+      "views_24h": 2
+    },
+    {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
       "views_24h": 2
     },
     {
@@ -59,6 +80,13 @@
       "views_24h": 2
     },
     {
+      "path": "/clubs/uijeongbu/uijeongbuarena",
+      "title": "의정부아레나",
+      "category": "club",
+      "region": "의정부",
+      "views_24h": 1
+    },
+    {
       "path": "/nights/jejunight",
       "title": "제주나이트",
       "category": "night",
@@ -77,34 +105,6 @@
       "title": "강남줄리아나나이트",
       "category": "night",
       "region": "강남",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/bundangpongpongnight",
-      "title": "분당퐁퐁나이트",
-      "category": "night",
-      "region": "분당",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 1
-    },
-    {
-      "path": "/clubs/cheongju/cheongju-supermoon",
-      "title": "청주클럽 슈퍼문",
-      "category": "club",
-      "region": "청주",
       "views_24h": 1
     }
   ]
