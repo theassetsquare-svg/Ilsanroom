@@ -1,0 +1,114 @@
+{
+  "date": "2026-09-03",
+  "shard": 4,
+  "pagesPatrolled": 94,
+  "queued": 94,
+  "carryover": 0,
+  "partial": false,
+  "manifestTotal": 660,
+  "baselineMode": "collecting(~14일)",
+  "pcSampled": 14,
+  "totals": {
+    "broken": 28,
+    "dead": 0,
+    "slow": 0,
+    "blocked": 0,
+    "mobileGap": 1
+  },
+  "problemPages": 1,
+  "blockedAnalytics": 230,
+  "blockedWrites": 280,
+  "riskSkips": [],
+  "riskSkipTotal": 0,
+  "criticals": [],
+  "revisit": [
+    "홈 진입 ok",
+    "venue 상세 ok (/nights/yeongdeungpoterminalnight)",
+    "뒤로가기 ok",
+    "로그인 ok(기존 테스트 계정)",
+    "즐겨찾기 화면 도달 ok",
+    "글쓰기 화면 도달 ok(제출 0)",
+    "커뮤니티 진입 ok"
+  ],
+  "problems": [
+    {
+      "route": "/dashboard/",
+      "grades": {
+        "broken": 28,
+        "dead": 0,
+        "slow": 0,
+        "blocked": 0,
+        "mobileGap": 1
+      },
+      "issues": {
+        "dead": [],
+        "console": [
+          "Failed to load resource: the server responded with a status of 404 ()",
+          "Failed to load resource: the server responded with a status of 404 ()",
+          "Failed to load resource: the server responded with a status of 404 ()",
+          "Failed to load resource: the server responded with a status of 404 ()"
+        ],
+        "external": [],
+        "journey": {
+          "bottomCovered": "COVERED",
+          "nextContent": "ok",
+          "contribGate": "n/a",
+          "back": "ok"
+        },
+        "shots": [
+          "/tmp/robot-shots/_dashboard_-mobile.png"
+        ]
+      }
+    }
+  ],
+  "externalLinksAll": [
+    "https://qotjsdnr12397.wixsite.com/sunwook"
+  ],
+  "redirectLinksAll": [
+    {
+      "page": "/magazine/cheongdam-arju-guide/",
+      "text": "강남청담클럽 아르쥬",
+      "href": "/clubs/cheongdamclub-arju/"
+    },
+    {
+      "page": "/magazine/gangnam-club-five-guide-1/",
+      "text": "강남청담클럽 레이스",
+      "href": "/clubs/gangnamclub-race/"
+    },
+    {
+      "page": "/magazine/gangnam-club-five-guide-1/",
+      "text": "강남청담클럽 사운드",
+      "href": "/clubs/gangnamclub-sound/"
+    },
+    {
+      "page": "/magazine/gangnam-club-five-guide-1/",
+      "text": "강남청담클럽 Jack",
+      "href": "/clubs/gangnamclub-jack/"
+    },
+    {
+      "page": "/magazine/gangnam-club-five-guide-1/",
+      "text": "강남청담클럽 피크",
+      "href": "/clubs/gangnamclub-peak/"
+    },
+    {
+      "page": "/magazine/gangnam-club-five-guide-1/",
+      "text": "강남청담클럽 미로",
+      "href": "/clubs/gangnamclub-miro/"
+    },
+    {
+      "page": "/magazine/itaewon-night-pair-guide/",
+      "text": "이태원개판포차",
+      "href": "/clubs/itaewongaepanpocha/"
+    },
+    {
+      "page": "/magazine/itaewon-night-pair-guide/",
+      "text": "이태원클럽 세비지",
+      "href": "/clubs/itaewon-savage/"
+    },
+    {
+      "page": "/magazine/nowon-cheongchun-pocha-guide/",
+      "text": "노원청춘포차",
+      "href": "/clubs/nowoncheongchunpocha/"
+    }
+  ]
+}
