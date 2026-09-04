@@ -1,0 +1,85 @@
+{
+  "date": "2026-09-04",
+  "shard": 5,
+  "pagesPatrolled": 94,
+  "queued": 94,
+  "carryover": 0,
+  "partial": false,
+  "manifestTotal": 660,
+  "baselineMode": "collecting(~14일)",
+  "pcSampled": 14,
+  "totals": {
+    "broken": 0,
+    "dead": 0,
+    "slow": 0,
+    "blocked": 1,
+    "mobileGap": 0
+  },
+  "problemPages": 1,
+  "blockedAnalytics": 230,
+  "blockedWrites": 279,
+  "riskSkips": [],
+  "riskSkipTotal": 0,
+  "criticals": [],
+  "revisit": [
+    "홈 진입 ok",
+    "venue 상세 ok (/nights/daejeononenight)",
+    "뒤로가기 ok",
+    "로그인 ok(기존 테스트 계정)",
+    "즐겨찾기 화면 도달 ok",
+    "글쓰기 화면 도달 ok(제출 0)",
+    "커뮤니티 진입 ok"
+  ],
+  "problems": [
+    {
+      "route": "/hidden/",
+      "grades": {
+        "broken": 0,
+        "dead": 0,
+        "slow": 0,
+        "blocked": 1,
+        "mobileGap": 0
+      },
+      "issues": {
+        "dead": [],
+        "console": [],
+        "external": [],
+        "journey": {
+          "bottomCovered": "ok",
+          "nextContent": "none",
+          "contribGate": "NO-CARD",
+          "back": "ok"
+        },
+        "shots": []
+      }
+    }
+  ],
+  "externalLinksAll": [],
+  "redirectLinksAll": [
+    {
+      "page": "/magazine/gangnam-club-five-guide-2/",
+      "text": "강남청담클럽 유토피아",
+      "href": "/clubs/gangnamclub-utopia/"
+    },
+    {
+      "page": "/magazine/gangnam-club-five-guide-2/",
+      "text": "강남청담클럽 라퓨타",
+      "href": "/clubs/gangnamclub-laputa/"
+    },
+    {
+      "page": "/magazine/gangnam-club-five-guide-2/",
+      "text": "강남청담클럽 페이스",
+      "href": "/clubs/gangnamclub-face/"
+    },
+    {
+      "page": "/magazine/gangnam-club-five-guide-2/",
+      "text": "강남청담클럽 밤앤밤",
+      "href": "/clubs/gangnamclub-bamnbam/"
+    },
+    {
+      "page": "/magazine/gangnam-club-five-guide-2/",
+      "text": "강남청담클럽 아르떼",
+      "href": "/clubs/gangnamclub-arte/"
+    }
+  ]
+}
