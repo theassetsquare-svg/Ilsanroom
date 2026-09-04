@@ -17,6 +17,7 @@ export const OG_FILE_VER = {
   ilsanroom: '-v2', // 동일 건
   ilsanmyeongwolgwanyojeong: '-v2', // 동일 건
   gwangjucheomdanempanight: '-v4', // 2026-08-23 정식명 교정(엠파→엠파이어) 재생성 — 엣지 캐시 무효화 버전업
+  seongnamshampoonight: '-v2', // 2026-09-04 광고주 등록(이쁜이 010-3432-4758) 재생성
   busanasiadnight: '-v4', // 2026-08-25 광고주 등록(새우깡 010-3614-1056) 재생성 — 엣지 캐시 무효화 버전업
   pajuyadangskydomenight: '-v4', // 2026-09-02 광고주 교체(막내 → 딸기 010-3447-0963) 재생성 — 엣지 캐시 무효화 버전업
 };

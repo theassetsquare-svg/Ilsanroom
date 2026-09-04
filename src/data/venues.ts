@@ -941,6 +941,8 @@ export const venues: Venue[] = [
     lng: 127.1313994,
     name: '성남샴푸나이트',
     nameKo: '성남샴푸나이트',
+    staffNickname: '이쁜이',
+    staffPhone: '010-3432-4758',
     category: 'night' as VenueCategory,
     region: 'seongnam',
     regionKo: '성남',
