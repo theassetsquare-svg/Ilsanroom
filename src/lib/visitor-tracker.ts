@@ -10,7 +10,7 @@ type EventType =
   | 'view' | 'scroll_25' | 'scroll_50' | 'scroll_75' | 'scroll_100'
   | 'time_10s' | 'time_30s' | 'time_60s' | 'time_180s' | 'exit'
   | 'signup' | 'login' | 'share_click' | 'post_create' | 'invite_open'
-  | 'search' | 'search_no_result' | 'phone_click';
+  | 'search' | 'search_no_result' | 'phone_click' | 'cafe_click';
 
 /* ── GA4(gtag) 전달 대상 이벤트 → GA4 권장 이벤트명 매핑 ──
  * 의미 있는 행동만 GA4로도 보냄(스크롤/체류/뷰는 GA4 향상측정이 이미 수집).
@@ -19,7 +19,7 @@ const GA4_EVENT_NAME: Partial<Record<EventType, string>> = {
   signup: 'sign_up', login: 'login', share_click: 'share',
   post_create: 'post_create', invite_open: 'invite_open',
   search: 'search', search_no_result: 'search_no_result',
-  phone_click: 'phone_click',
+  phone_click: 'phone_click', cafe_click: 'cafe_click',
 };
 
 /* ── page_path 정규화 — /clubs 와 /clubs/ 를 한 형태로 통합 ──
@@ -180,6 +180,20 @@ function loadOrInitAttr(): SessionAttr {
 }
 
 const attr = loadOrInitAttr();
+
+/* ── 유입 UTM 읽기(/cafe 단추 등 전환 이벤트용) ──
+ * 현재 주소의 utm_* 이 있으면 그것(위성·유튜브·광고 → /cafe 직행), 없으면 세션 진입 시 잡아둔 값
+ * (홈으로 들어와 /cafe 로 이동한 경우). 없는 키는 아예 넣지 않아 GA4 파라미터가 비지 않게 한다. */
+export function getIncomingUtm(): { utm_source?: string; utm_medium?: string; utm_campaign?: string } {
+  const out: { utm_source?: string; utm_medium?: string; utm_campaign?: string } = {};
+  if (typeof window === 'undefined') return out;
+  const params = new URLSearchParams(window.location.search);
+  for (const k of ['utm_source', 'utm_medium', 'utm_campaign'] as const) {
+    const v = params.get(k) || attr[k];
+    if (v) out[k] = v.slice(0, 100);
+  }
+  return out;
+}
 
 let currentPath = '';
 let pageEnterTime = 0;
