@@ -1,917 +1,87 @@
 {
-  "generated_at": "2026-09-03T02:00:26.179Z",
+  "generated_at": "2026-09-04T01:55:47.376Z",
   "window_hours": 24,
-  "total_runs": 162,
-  "total_fail": 95,
+  "total_runs": 163,
+  "total_fail": 0,
   "workflows": [
     {
-      "name": "Activity Alert (15min)",
+      "name": "24h Site Monitoring",
       "total": 7,
-      "success": 3,
-      "failure": 4,
+      "success": 7,
+      "failure": 0,
       "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T17:49:46Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33663480243"
-      }
+      "last_fail": null
     },
     {
       "name": "Venue Reports Daily",
       "total": 7,
-      "success": 3,
-      "failure": 4,
+      "success": 7,
+      "failure": 0,
       "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T14:29:02Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33642338940"
-      }
+      "last_fail": null
     },
     {
-      "name": "24h Site Monitoring",
-      "total": 7,
-      "success": 4,
-      "failure": 3,
+      "name": "Activity Alert (15min)",
+      "total": 6,
+      "success": 6,
+      "failure": 0,
       "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T15:30:48Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33649025525"
-      }
-    },
-    {
-      "name": "Security Audit Hourly",
-      "total": 4,
-      "success": 1,
-      "failure": 3,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T15:42:59Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33650344353"
-      }
+      "last_fail": null
     },
     {
       "name": "Scheduled Cron Jobs",
       "total": 4,
-      "success": 2,
-      "failure": 2,
+      "success": 4,
+      "failure": 0,
       "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T13:01:16Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33633238970"
-      }
+      "last_fail": null
+    },
+    {
+      "name": "Security Audit Hourly",
+      "total": 4,
+      "success": 4,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
     },
     {
       "name": "24h Auto Build + SEO Notify",
       "total": 3,
-      "success": 1,
-      "failure": 2,
+      "success": 3,
+      "failure": 0,
       "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T13:12:29Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33634345279"
-      }
+      "last_fail": null
     },
     {
       "name": "Daily Magazine + Widgets",
       "total": 3,
-      "success": 1,
-      "failure": 2,
+      "success": 3,
+      "failure": 0,
       "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T17:00:20Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33658379679"
-      }
+      "last_fail": null
+    },
+    {
+      "name": "Daily Regression Digest (KST 09:00)",
+      "total": 2,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 1,
+      "last_fail": null
     },
     {
       "name": "Google Re-Index (Sitemap + Inspect)",
       "total": 2,
-      "success": 1,
-      "failure": 1,
+      "success": 2,
+      "failure": 0,
       "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T05:31:36Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33595021909"
-      }
+      "last_fail": null
     },
     {
       "name": "Browser Audit (PC + Mobile)",
       "total": 2,
-      "success": 1,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T05:32:54Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33595114250"
-      }
-    },
-    {
-      "name": "Clarity Daily Watch (매일 21:00 KST — 측정·판정만, 코드수정·메일은 21:20 루틴)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T15:40:59Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33650129395"
-      }
-    },
-    {
-      "name": "Customer Robot Patrol (손님 로봇)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T11:13:40Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33623501434"
-      }
-    },
-    {
-      "name": "Venue List UI Watch (카테고리 부동산급 UI 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T09:25:05Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33613994071"
-      }
-    },
-    {
-      "name": "Home Nolcool Keyword Watch (홈 놀쿨 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T09:16:35Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33613214952"
-      }
-    },
-    {
-      "name": "Hongdae Pacific Keyword Watch (홍대클럽 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T09:06:14Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33612277536"
-      }
-    },
-    {
-      "name": "Hongdae Bermuda Keyword Watch (홍대클럽 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T09:04:05Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33612083576"
-      }
-    },
-    {
-      "name": "Hongdae Maid Keyword Watch (홍대클럽 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T09:01:41Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33611865812"
-      }
-    },
-    {
-      "name": "Hongdae Dokkaebi Keyword Watch (홍대클럽 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T08:58:31Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33611579616"
-      }
-    },
-    {
-      "name": "Cheongju Supermoon Keyword Watch (청주클럽 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T08:57:46Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33611514384"
-      }
-    },
-    {
-      "name": "Itaewonclub Prism Keyword Watch (이태원클럽 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T08:52:40Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33611062962"
-      }
-    },
-    {
-      "name": "Itaewonclub Utopia Keyword Watch (이태원클럽 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T08:52:28Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33611045262"
-      }
-    },
-    {
-      "name": "Itaewon Savage Keyword Watch (이태원클럽 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T08:50:43Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33610889182"
-      }
-    },
-    {
-      "name": "Itaewonclub Maid Keyword Watch (이태원클럽 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T08:45:19Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33610402979"
-      }
-    },
-    {
-      "name": "Nowoncheongchunpocha Keyword Watch (노원청춘포차 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T08:44:58Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33610370310"
-      }
-    },
-    {
-      "name": "Gangnamclub Jack Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T08:40:08Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33609938270"
-      }
-    },
-    {
-      "name": "Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T08:11:09Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33607370122"
-      }
-    },
-    {
-      "name": "Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T08:11:09Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33607369767"
-      }
-    },
-    {
-      "name": "Gangnamclub Utopia Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T08:08:54Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33607177159"
-      }
-    },
-    {
-      "name": "Cheongdamclub Arju Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T08:08:00Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33607100619"
-      }
-    },
-    {
-      "name": "Gangnamclub Arte Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T08:07:16Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33607037391"
-      }
-    },
-    {
-      "name": "Gangnamclub Sound Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T08:05:20Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33606867674"
-      }
-    },
-    {
-      "name": "Gangnamclub Bamnbam Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T08:03:19Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33606687414"
-      }
-    },
-    {
-      "name": "Gangnamclub Miro Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T07:59:57Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33606382174"
-      }
-    },
-    {
-      "name": "Gangnamclub Race Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T07:59:19Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33606332744"
-      }
-    },
-    {
-      "name": "Clubs Keyword Watch (/clubs 클럽 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T07:51:07Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33605652452"
-      }
-    },
-    {
-      "name": "Gangnamclub Laputa Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T07:51:04Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33605647927"
-      }
-    },
-    {
-      "name": "SEO Deep Audit Watch (전수 7축 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T07:34:34Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33604260639"
-      }
-    },
-    {
-      "name": "Ilsanmyeongwolgwanyojeong Keyword Watch (일산명월관·일산요정 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T07:19:51Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33603022428"
-      }
-    },
-    {
-      "name": "Yojeong Keyword Watch (요정 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T07:19:31Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33602995659"
-      }
-    },
-    {
-      "name": "Hongdae Hoppa Keyword Watch (홍대호빠 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T07:18:50Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33602941905"
-      }
-    },
-    {
-      "name": "Haeundaehoppa Velvet Keyword Watch (해운대호빠 벨벳 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T07:17:41Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33602850235"
-      }
-    },
-    {
-      "name": "Haeundaehoppa Michelin Keyword Watch (해운대호빠 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T07:17:32Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33602838029"
-      }
-    },
-    {
-      "name": "Jeonju Hoppa Gallery Keyword Watch (전주호빠 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T07:13:46Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33602529183"
-      }
-    },
-    {
-      "name": "Jangandong Hoppa Flex Keyword Watch (장안동호빠 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T07:11:00Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33602308979"
-      }
-    },
-    {
-      "name": "Jangandonghoppa Bbangbbang Keyword Watch (장안동호빠 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T07:09:40Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33602201556"
-      }
-    },
-    {
-      "name": "Suwonhoppa Aura Keyword Watch (수원호빠 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T07:04:34Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33601791264"
-      }
-    },
-    {
-      "name": "Suwonhoppa Beast Keyword Watch (수원호빠 단일 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T07:03:05Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33601669234"
-      }
-    },
-    {
-      "name": "Busanhoppa Aura Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T07:02:34Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33601628162"
-      }
-    },
-    {
-      "name": "Busanhoppa Star Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T06:40:43Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33599923287"
-      }
-    },
-    {
-      "name": "Busanhoppa Menz Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T06:22:14Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33598534941"
-      }
-    },
-    {
-      "name": "Daejeonhoppa Eclipse Keyword Watch (대전호빠+충청호빠 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T06:22:06Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33598524490"
-      }
-    },
-    {
-      "name": "Daeguhoppa Perfect Keyword Watch (대구호빠+동성로호빠 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T06:08:42Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33597589514"
-      }
-    },
-    {
-      "name": "Geondaehoppa W Keyword Watch (건대호빠+서울호빠 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T05:57:01Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33596758000"
-      }
-    },
-    {
-      "name": "Gangnam Hoppa Flirting Keyword Watch (강남호빠+서울호빠 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T05:52:00Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33596417102"
-      }
-    },
-    {
-      "name": "Gangnam Hoppa Again Keyword Watch (강남호빠+서울호빠 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T05:47:51Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33596132838"
-      }
-    },
-    {
-      "name": "Gangnam Hoppa Royal Keyword Watch (강남호빠+서울호빠 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T05:46:44Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33596056387"
-      }
-    },
-    {
-      "name": "Haeundae Hoppa Kkantappiya Keyword Watch (해운대호빠+부산호빠 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T05:41:51Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33595720104"
-      }
-    },
-    {
-      "name": "Hoppa Keyword Watch (/hoppa 호빠 단일 키워드 상위노출 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T05:34:44Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33595240045"
-      }
-    },
-    {
-      "name": "Audit PR (guard + dist)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T05:31:36Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33595021902"
-      }
-    },
-    {
-      "name": "Gate Bypass Audit (양방향 우회검증)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T05:31:36Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33595021898"
-      }
-    },
-    {
-      "name": "Paju Yadang Skydome Keyword Watch (파주야당스카이돔나이트 + 파주나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T05:08:50Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33593521500"
-      }
-    },
-    {
-      "name": "Cheonan Korea Keyword Watch (천안코리아나이트 + 천안나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T05:06:35Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33593371523"
-      }
-    },
-    {
-      "name": "SEO Weakness Diagnosis (daily)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T05:03:56Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33593192689"
-      }
-    },
-    {
-      "name": "Changwon Lululalala Keyword Watch (창원룰루랄라나이트 + 창원나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T05:02:49Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33593119812"
-      }
-    },
-    {
-      "name": "Cheonan Stardom Keyword Watch (천안스타돔나이트 + 천안나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T05:02:42Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33593112164"
-      }
-    },
-    {
-      "name": "Jejunight Keyword Watch (제주나이트 + 제주도나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T05:00:37Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33592975796"
-      }
-    },
-    {
-      "name": "Deep Audit (Daily Link + Freshness)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T04:51:45Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33592421069"
-      }
-    },
-    {
-      "name": "Indeokvon-gukbingwan-night Keyword Watch (인덕원국빈관나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T04:48:54Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33592239510"
-      }
-    },
-    {
-      "name": "Ilsanshampoonight Keyword Watch (일산샴푸나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T04:48:34Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33592217941"
-      }
-    },
-    {
-      "name": "Dapsimnidontellmamanight Keyword Watch (답십리돈텔마마나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T04:45:48Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33592043024"
-      }
-    },
-    {
-      "name": "Gwangjutotonight Keyword Watch (광주토토밤나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T04:44:41Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33591970274"
-      }
-    },
-    {
-      "name": "Gwangjusangmunight Keyword Watch (광주상무나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T04:38:41Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33591590526"
-      }
-    },
-    {
-      "name": "Ulsanchampionnight Keyword Watch (울산챔피언나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T04:36:12Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33591433350"
-      }
-    },
-    {
-      "name": "Uijeongbuhangukgwannight Keyword Watch (의정부한국관나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T04:34:39Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33591333006"
-      }
-    },
-    {
-      "name": "Ulsannewworldnight Keyword Watch (울산뉴월드나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T04:28:11Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33590916275"
-      }
-    },
-    {
-      "name": "Search Console Cannibalization (카니발리제이션 진단)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T04:24:03Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33590662142"
-      }
-    },
-    {
-      "name": "GA4 Optimizer (daily)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T04:20:44Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33590450271"
-      }
-    },
-    {
-      "name": "Ansanhitnight Keyword Watch (안산히트나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T03:45:11Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33588226011"
-      }
-    },
-    {
-      "name": "Yeongdeungpoterminalnight Keyword Watch (영등포터미널나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T03:13:59Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33586248495"
-      }
-    },
-    {
-      "name": "Region Cross Title Watch (지역×업종 교차 후킹 title 24h)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T03:11:35Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33586096580"
-      }
-    },
-    {
-      "name": "Live Site Audit (Daily)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T03:09:30Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33585958578"
-      }
-    },
-    {
-      "name": "Security Daily Report",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T02:27:21Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33583275284"
-      }
-    },
-    {
-      "name": "Workflow Failure Monitor (24h 집계 메일)",
-      "total": 1,
-      "success": 0,
-      "failure": 1,
-      "in_progress": 0,
-      "last_fail": {
-        "created_at": "2026-09-02T02:15:32Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33582552471"
-      }
-    },
-    {
-      "name": "Daily Regression Digest (KST 09:00)",
-      "total": 1,
-      "success": 0,
+      "success": 2,
       "failure": 0,
-      "in_progress": 1,
+      "in_progress": 0,
       "last_fail": null
     },
     {
@@ -1068,6 +238,22 @@
     },
     {
       "name": "Gangnamjuliananight Keyword Watch (강남줄리아나나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gate Bypass Audit (양방향 우회검증)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Audit PR (guard + dist)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -1237,7 +423,7 @@
     {
       "name": "All Pages Quality Watch (5축 — anchor 200/img alt/H1/lang+viewport/canonical)",
       "total": 1,
-      "success": 0,
+      "success": 1,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -1305,7 +491,594 @@
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
+    },
+    {
+      "name": "Clarity Daily Watch (매일 21:00 KST — 측정·판정만, 코드수정·메일은 21:20 루틴)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Customer Robot Patrol (손님 로봇)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Venue List UI Watch (카테고리 부동산급 UI 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Home Nolcool Keyword Watch (홈 놀쿨 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Hongdae Pacific Keyword Watch (홍대클럽 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Hongdae Bermuda Keyword Watch (홍대클럽 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Hongdae Maid Keyword Watch (홍대클럽 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Hongdae Dokkaebi Keyword Watch (홍대클럽 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Cheongju Supermoon Keyword Watch (청주클럽 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Itaewonclub Prism Keyword Watch (이태원클럽 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Itaewonclub Utopia Keyword Watch (이태원클럽 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Itaewon Savage Keyword Watch (이태원클럽 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Itaewonclub Maid Keyword Watch (이태원클럽 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Nowoncheongchunpocha Keyword Watch (노원청춘포차 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gangnamclub Jack Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gangnamclub Utopia Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Cheongdamclub Arju Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gangnamclub Arte Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gangnamclub Sound Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gangnamclub Bamnbam Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gangnamclub Miro Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gangnamclub Race Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gangnamclub Laputa Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Clubs Keyword Watch (/clubs 클럽 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "SEO Deep Audit Watch (전수 7축 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Ilsanmyeongwolgwanyojeong Keyword Watch (일산명월관·일산요정 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Yojeong Keyword Watch (요정 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Hongdae Hoppa Keyword Watch (홍대호빠 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Haeundaehoppa Michelin Keyword Watch (해운대호빠 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Haeundaehoppa Velvet Keyword Watch (해운대호빠 벨벳 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Jeonju Hoppa Gallery Keyword Watch (전주호빠 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Jangandong Hoppa Flex Keyword Watch (장안동호빠 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Jangandonghoppa Bbangbbang Keyword Watch (장안동호빠 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Suwonhoppa Aura Keyword Watch (수원호빠 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Suwonhoppa Beast Keyword Watch (수원호빠 단일 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Busanhoppa Aura Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Busanhoppa Star Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Ops Weekly Question",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Busanhoppa Menz Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Daejeonhoppa Eclipse Keyword Watch (대전호빠+충청호빠 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Daeguhoppa Perfect Keyword Watch (대구호빠+동성로호빠 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Geondaehoppa W Keyword Watch (건대호빠+서울호빠 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gangnam Hoppa Flirting Keyword Watch (강남호빠+서울호빠 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gangnam Hoppa Again Keyword Watch (강남호빠+서울호빠 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gangnam Hoppa Royal Keyword Watch (강남호빠+서울호빠 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Haeundae Hoppa Kkantappiya Keyword Watch (해운대호빠+부산호빠 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Hoppa Keyword Watch (/hoppa 호빠 단일 키워드 상위노출 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Paju Yadang Skydome Keyword Watch (파주야당스카이돔나이트 + 파주나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Cheonan Korea Keyword Watch (천안코리아나이트 + 천안나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "SEO Weakness Diagnosis (daily)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Changwon Lululalala Keyword Watch (창원룰루랄라나이트 + 창원나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Cheonan Stardom Keyword Watch (천안스타돔나이트 + 천안나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Jejunight Keyword Watch (제주나이트 + 제주도나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Deep Audit (Daily Link + Freshness)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Indeokvon-gukbingwan-night Keyword Watch (인덕원국빈관나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Ilsanshampoonight Keyword Watch (일산샴푸나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Dapsimnidontellmamanight Keyword Watch (답십리돈텔마마나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gwangjutotonight Keyword Watch (광주토토밤나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Gwangjusangmunight Keyword Watch (광주상무나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Ulsanchampionnight Keyword Watch (울산챔피언나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Uijeongbuhangukgwannight Keyword Watch (의정부한국관나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Ulsannewworldnight Keyword Watch (울산뉴월드나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Search Console Cannibalization (카니발리제이션 진단)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "GA4 Optimizer (daily)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Ansanhitnight Keyword Watch (안산히트나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Yeongdeungpoterminalnight Keyword Watch (영등포터미널나이트 2 키워드 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Region Cross Title Watch (지역×업종 교차 후킹 title 24h)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Live Site Audit (Daily)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Security Daily Report",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Workflow Failure Monitor (24h 집계 메일)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
     }
   ],
-  "deploy_sync": null
+  "deploy_sync": {
+    "n": 1,
+    "avg_ms": 182000,
+    "p50_ms": 182000,
+    "p95_ms": 182000,
+    "max_ms": 182000,
+    "max_sample": {
+      "ms": 182000,
+      "workflow": "Google Re-Index (Sitemap + Inspect)",
+      "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33821374388"
+    }
+  }
 }
