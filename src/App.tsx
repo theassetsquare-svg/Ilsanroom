@@ -39,6 +39,7 @@ const HoppaDetailPage = lazyRetry(() => import('./pages/HoppaDetailPage'));
 const GuidePage = lazyRetry(() => import('./pages/GuidePage'));
 const IlsanYojeongGuidePage = lazyRetry(() => import('./pages/IlsanYojeongGuidePage'));
 const QuizPage = lazyRetry(() => import('./pages/QuizPage'));
+const CafePage = lazyRetry(() => import('./pages/CafePage'));
 const RoulettePage = lazyRetry(() => import('./pages/RoulettePage'));
 const VSPage = lazyRetry(() => import('./pages/VSPage'));
 const RankingPage = lazyRetry(() => import('./pages/RankingPage'));
@@ -157,6 +158,7 @@ export default function App() {
           <Route path="/guide" element={<GuidePage />} />
           <Route path="/guide/ilsan-yojeong" element={<IlsanYojeongGuidePage />} />
           <Route path="/quiz" element={<QuizPage />} />
+          <Route path="/cafe" element={<CafePage />} />
           <Route path="/roulette" element={<RoulettePage />} />
           <Route path="/vs" element={<VSPage />} />
           <Route path="/ranking" element={<RankingPage />} />

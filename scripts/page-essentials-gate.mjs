@@ -55,7 +55,7 @@ const KNOWN_SEGMENTS = new Set([
   // 콘텐츠
   'magazine', 'community', 'guide',
   // 랜딩/유틸/리드
-  'quiz', 'roulette', 'vs', 'ranking', 'venue-info', 'compare', 'welcome',
+  'quiz', 'cafe', 'roulette', 'vs', 'ranking', 'venue-info', 'compare', 'welcome',
   'tonight', 'weekend', 'budget', 'occasion', 'status', 'referral', 'hidden',
   'gallery', 'events', 'lead', 'testimonials', 'pricing', 'demo', 'case-studies',
   // 법무/정책
