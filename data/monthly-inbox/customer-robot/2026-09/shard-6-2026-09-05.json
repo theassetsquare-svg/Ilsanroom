@@ -1,0 +1,118 @@
+{
+  "date": "2026-09-05",
+  "shard": 6,
+  "pagesPatrolled": 94,
+  "queued": 94,
+  "carryover": 0,
+  "partial": false,
+  "manifestTotal": 660,
+  "baselineMode": "collecting(~14일)",
+  "pcSampled": 15,
+  "totals": {
+    "broken": 2,
+    "dead": 2,
+    "slow": 0,
+    "blocked": 0,
+    "mobileGap": 0
+  },
+  "problemPages": 2,
+  "blockedAnalytics": 232,
+  "blockedWrites": 281,
+  "riskSkips": [],
+  "riskSkipTotal": 0,
+  "criticals": [],
+  "revisit": [
+    "홈 진입 ok",
+    "venue 상세 ok (/nights/gangseo-hobak)",
+    "뒤로가기 ok",
+    "로그인 ok(기존 테스트 계정)",
+    "즐겨찾기 화면 도달 ok",
+    "글쓰기 화면 도달 ok(제출 0)",
+    "커뮤니티 진입 ok"
+  ],
+  "problems": [
+    {
+      "route": "/community/party/",
+      "grades": {
+        "broken": 0,
+        "dead": 1,
+        "slow": 0,
+        "blocked": 0,
+        "mobileGap": 0
+      },
+      "issues": {
+        "dead": [
+          {
+            "kind": "no-handler",
+            "text": "합류 신청",
+            "tag": "BUTTON"
+          }
+        ],
+        "console": [],
+        "external": [],
+        "journey": {
+          "bottomCovered": "ok",
+          "nextContent": "none",
+          "contribGate": "n/a",
+          "back": "ok"
+        },
+        "shots": [
+          "/tmp/robot-shots/_community_party_-mobile.png"
+        ]
+      }
+    },
+    {
+      "route": "/magazine/ilsan-room-guide/",
+      "grades": {
+        "broken": 2,
+        "dead": 1,
+        "slow": 0,
+        "blocked": 0,
+        "mobileGap": 0
+      },
+      "issues": {
+        "dead": [
+          {
+            "kind": "link-404",
+            "text": "일산룸 상세 페이지 →",
+            "href": "/yojeong/ilsan/ilsanroom/",
+            "status": 404
+          }
+        ],
+        "console": [
+          "Failed to load resource: the server responded with a status of 404 ()"
+        ],
+        "external": [],
+        "journey": {
+          "bottomCovered": "ok",
+          "nextContent": "none",
+          "contribGate": "n/a",
+          "back": "ok"
+        },
+        "shots": [
+          "/tmp/robot-shots/_magazine_ilsan_room_guide_-mobile.png"
+        ]
+      }
+    }
+  ],
+  "externalLinksAll": [
+    "https://map.kakao.com/?q=해장국"
+  ],
+  "redirectLinksAll": [
+    {
+      "page": "/magazine/chungcheong-club-guide/",
+      "text": "대전설탕클럽",
+      "href": "/clubs/daejeonsugarclub/"
+    },
+    {
+      "page": "/magazine/chungcheong-club-guide/",
+      "text": "청주클럽 슈퍼문",
+      "href": "/clubs/cheongju-supermoon/"
+    },
+    {
+      "page": "/magazine/ilsan-room-guide/",
+      "text": "일산룸",
+      "href": "/rooms/ilsanroom/"
+    }
+  ]
+}
