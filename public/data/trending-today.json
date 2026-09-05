@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-04T19:11:48.564Z",
+  "generated_at": "2026-09-05T07:10:10.015Z",
   "window_hours": 24,
   "items": [
     {
@@ -10,31 +10,17 @@
       "views_24h": 8
     },
     {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 7
-    },
-    {
       "path": "/nights/daejeonsevennight",
       "title": "대전세븐나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 5
+      "views_24h": 7
     },
     {
       "path": "/nights/daejeonbongmyeongnight",
       "title": "대전봉명나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 5
-    },
-    {
-      "path": "/nights/cheonankoreanight",
-      "title": "천안코리아나이트",
-      "category": "night",
-      "region": "천안",
       "views_24h": 5
     },
     {
@@ -45,8 +31,22 @@
       "views_24h": 5
     },
     {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
+      "views_24h": 4
+    },
+    {
       "path": "/nights/daejeonhangukgwannight",
       "title": "대전한국관나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 4
+    },
+    {
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
       "category": "night",
       "region": "대전",
       "views_24h": 4
@@ -59,32 +59,39 @@
       "views_24h": 4
     },
     {
-      "path": "/nights/daegubabambanight",
-      "title": "대구바밤바나이트",
-      "category": "night",
-      "region": "대구",
-      "views_24h": 4
-    },
-    {
-      "path": "/nights/seongnamshampoonight",
-      "title": "성남샴푸나이트",
-      "category": "night",
-      "region": "성남",
-      "views_24h": 3
-    },
-    {
-      "path": "/hoppa/haeundaehoppa-kkantappiya",
-      "title": "해운대호빠 깐따삐야",
-      "category": "hoppa",
-      "region": "부산 해운대",
-      "views_24h": 3
-    },
-    {
       "path": "/nights/ansanhitnight",
       "title": "안산히트나이트",
       "category": "night",
       "region": "안산",
       "views_24h": 3
+    },
+    {
+      "path": "/nights/suwonchancenight",
+      "title": "수원찬스돔나이트",
+      "category": "night",
+      "region": "수원",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/bundangpongpongnight",
+      "title": "분당퐁퐁나이트",
+      "category": "night",
+      "region": "분당",
+      "views_24h": 2
+    },
+    {
+      "path": "/clubs/hongdae/hongdaeclub-bermuda",
+      "title": "홍대클럽 버뮤다",
+      "category": "club",
+      "region": "홍대",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/busanyeonsandongmulnight",
+      "title": "부산연산동물나이트",
+      "category": "night",
+      "region": "부산 연산동",
+      "views_24h": 2
     },
     {
       "path": "/nights/cheongjudontellmamanight",
@@ -94,17 +101,10 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/cheongdamh2onight",
-      "title": "청담H2O나이트",
+      "path": "/nights/seongnamshampoonight",
+      "title": "성남샴푸나이트",
       "category": "night",
-      "region": "청담",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
-      "category": "night",
-      "region": "부산",
+      "region": "성남",
       "views_24h": 2
     }
   ]
