@@ -2,444 +2,444 @@
   "startedAt": "2026-08-23",
   "routes": {
     "/|mobile": {
-      "ema": 4249,
-      "n": 4
+      "ema": 4145,
+      "n": 5
     },
     "/|pc": {
-      "ema": 3119,
-      "n": 4
+      "ema": 2836,
+      "n": 5
     },
     "/billing/|mobile": {
-      "ema": 2598,
-      "n": 4
+      "ema": 2513,
+      "n": 5
     },
     "/billing/|pc": {
-      "ema": 2638,
-      "n": 4
+      "ema": 2507,
+      "n": 5
     },
     "/clubs/apgujeong/apgujeongclub-dbridge/|mobile": {
-      "ema": 2347,
-      "n": 4
+      "ema": 2318,
+      "n": 5
     },
     "/clubs/apgujeong/apgujeongclub-dbridge/|pc": {
-      "ema": 2161,
-      "n": 4
+      "ema": 2148,
+      "n": 5
     },
     "/clubs/cheongdam/cheongdamclub-arju/|mobile": {
-      "ema": 2273,
-      "n": 4
+      "ema": 2070,
+      "n": 5
     },
     "/clubs/cheongdam/cheongdamclub-arju/|pc": {
-      "ema": 2209,
-      "n": 4
+      "ema": 2181,
+      "n": 5
     },
     "/clubs/gangnam/gangnamclub-bamnbam/|mobile": {
-      "ema": 2291,
-      "n": 4
+      "ema": 2253,
+      "n": 5
     },
     "/clubs/gangnam/gangnamclub-bamnbam/|pc": {
-      "ema": 2154,
-      "n": 4
+      "ema": 2142,
+      "n": 5
     },
     "/clubs/gangnam/gangnamclub-race/|mobile": {
-      "ema": 2208,
-      "n": 4
+      "ema": 2201,
+      "n": 5
     },
     "/clubs/hongdae/hongdaeclub-pacific/|mobile": {
-      "ema": 2173,
-      "n": 4
+      "ema": 2183,
+      "n": 5
     },
     "/clubs/itaewon/itaewonclub-cakeshop/|mobile": {
-      "ema": 2345,
-      "n": 4
+      "ema": 2328,
+      "n": 5
     },
     "/clubs/seoul/|mobile": {
-      "ema": 2346,
-      "n": 4
+      "ema": 2303,
+      "n": 5
     },
     "/clubs/yongsan/yongsandragoncity/|mobile": {
-      "ema": 2360,
-      "n": 4
+      "ema": 2303,
+      "n": 5
     },
     "/community/qna/|mobile": {
-      "ema": 2206,
-      "n": 4
+      "ema": 2202,
+      "n": 5
     },
     "/community/qna/|pc": {
-      "ema": 2188,
-      "n": 4
+      "ema": 2185,
+      "n": 5
     },
     "/events/|mobile": {
-      "ema": 2226,
-      "n": 4
+      "ema": 2221,
+      "n": 5
     },
     "/events/|pc": {
-      "ema": 2233,
-      "n": 4
+      "ema": 2219,
+      "n": 5
     },
     "/hoppa/busanhoppa-aura/|mobile": {
-      "ema": 2311,
-      "n": 4
+      "ema": 2298,
+      "n": 5
     },
     "/hoppa/gangnamhoppa-royal/|mobile": {
-      "ema": 2180,
-      "n": 4
+      "ema": 2178,
+      "n": 5
     },
     "/hoppa/jangandonghoppa-bbangbbang/|mobile": {
-      "ema": 2143,
-      "n": 4
+      "ema": 2149,
+      "n": 5
     },
     "/lead/weekly-hot/|mobile": {
-      "ema": 2994,
-      "n": 4
+      "ema": 2785,
+      "n": 5
     },
     "/lead/weekly-hot/|pc": {
-      "ema": 3028,
-      "n": 4
+      "ema": 2866,
+      "n": 5
     },
     "/lounge/night/|mobile": {
-      "ema": 2992,
-      "n": 4
+      "ema": 2750,
+      "n": 5
     },
     "/lounge/night/|pc": {
-      "ema": 3001,
-      "n": 4
+      "ema": 2839,
+      "n": 5
     },
     "/lounges/apgujeonglounge-dm/|mobile": {
-      "ema": 2266,
-      "n": 4
+      "ema": 2236,
+      "n": 5
     },
     "/magazine/busan-night-guide/|mobile": {
       "ema": 2274,
       "n": 4
     },
     "/magazine/busan-night-guide/|pc": {
-      "ema": 2206,
-      "n": 4
+      "ema": 2198,
+      "n": 5
     },
     "/magazine/daegu-night-guide/|mobile": {
-      "ema": 2275,
-      "n": 4
+      "ema": 2043,
+      "n": 5
     },
     "/magazine/daegu-night-guide/|pc": {
-      "ema": 2210,
-      "n": 4
+      "ema": 2201,
+      "n": 5
     },
     "/magazine/gangnam-hoppa-guide/|mobile": {
-      "ema": 2189,
-      "n": 4
+      "ema": 2184,
+      "n": 5
     },
     "/magazine/gangnam-hoppa-guide/|pc": {
-      "ema": 2223,
-      "n": 4
+      "ema": 2215,
+      "n": 5
     },
     "/magazine/hongdae-club-guide/|mobile": {
-      "ema": 2216,
-      "n": 4
+      "ema": 2204,
+      "n": 5
     },
     "/magazine/incheon-bucheon-night-guide/|mobile": {
       "ema": 2294,
       "n": 4
     },
     "/magazine/local-metro-hoppa-guide/|mobile": {
-      "ema": 2284,
-      "n": 4
+      "ema": 2258,
+      "n": 5
     },
     "/magazine/regional-nights-roundup/|mobile": {
-      "ema": 2313,
-      "n": 4
+      "ema": 2303,
+      "n": 5
     },
     "/magazine/suwon-ingyedong-guide/|mobile": {
-      "ema": 2196,
-      "n": 4
+      "ema": 2187,
+      "n": 5
     },
     "/near/구래/|mobile": {
-      "ema": 2984,
-      "n": 4
+      "ema": 2780,
+      "n": 5
     },
     "/near/구래/|pc": {
-      "ema": 3366,
-      "n": 4
+      "ema": 3011,
+      "n": 5
     },
     "/near/독산/|mobile": {
-      "ema": 3037,
-      "n": 4
+      "ema": 2809,
+      "n": 5
     },
     "/near/상록수/|mobile": {
-      "ema": 2268,
-      "n": 4
+      "ema": 2267,
+      "n": 5
     },
     "/near/수진/|mobile": {
-      "ema": 2288,
-      "n": 4
+      "ema": 2286,
+      "n": 5
     },
     "/near/압구정로데오/|mobile": {
-      "ema": 3010,
-      "n": 4
+      "ema": 2790,
+      "n": 5
     },
     "/near/온천장역/|mobile": {
-      "ema": 2299,
-      "n": 4
+      "ema": 2305,
+      "n": 5
     },
     "/near/이태원역/|mobile": {
-      "ema": 2257,
-      "n": 4
+      "ema": 2259,
+      "n": 5
     },
     "/near/태화강/|mobile": {
-      "ema": 2136,
-      "n": 4
+      "ema": 2180,
+      "n": 5
     },
     "/new/hoppa/|mobile": {
-      "ema": 2286,
-      "n": 4
+      "ema": 2289,
+      "n": 5
     },
     "/nights/ansanhitnight/|mobile": {
-      "ema": 1885,
-      "n": 4
+      "ema": 1973,
+      "n": 5
     },
     "/nights/busanyeonsandongmulnight/|mobile": {
-      "ema": 2165,
-      "n": 4
+      "ema": 2175,
+      "n": 5
     },
     "/nights/daegubabambanight/|mobile": {
-      "ema": 1901,
-      "n": 4
+      "ema": 1983,
+      "n": 5
     },
     "/nights/daejeonsevennight/|mobile": {
-      "ema": 2260,
-      "n": 4
+      "ema": 2225,
+      "n": 5
     },
     "/nights/gildongchancenight/|mobile": {
-      "ema": 2168,
-      "n": 4
+      "ema": 2167,
+      "n": 5
     },
     "/nights/gwangjumgmnight/|mobile": {
-      "ema": 2308,
-      "n": 4
+      "ema": 2265,
+      "n": 5
     },
     "/nights/incheonarabiannight/|mobile": {
       "ema": 2163,
-      "n": 4
+      "n": 5
     },
     "/nights/pyeongtaekhobaknight/|mobile": {
-      "ema": 2205,
-      "n": 4
+      "ema": 2210,
+      "n": 5
     },
     "/nights/suwonkoreanight/|mobile": {
-      "ema": 2042,
-      "n": 4
+      "ema": 2080,
+      "n": 5
     },
     "/occasion/|mobile": {
-      "ema": 2208,
-      "n": 4
+      "ema": 2198,
+      "n": 5
     },
     "/occasion/|pc": {
-      "ema": 2208,
-      "n": 4
+      "ema": 2200,
+      "n": 5
     },
     "/ranking/|mobile": {
-      "ema": 2221,
-      "n": 4
+      "ema": 2304,
+      "n": 5
     },
     "/region/강서/nights/|mobile": {
-      "ema": 2979,
-      "n": 4
+      "ema": 2743,
+      "n": 5
     },
     "/region/구미/|mobile": {
-      "ema": 3024,
-      "n": 4
+      "ema": 2778,
+      "n": 5
     },
     "/region/노원/clubs/|mobile": {
-      "ema": 2280,
-      "n": 4
+      "ema": 2297,
+      "n": 5
     },
     "/region/대전/|mobile": {
-      "ema": 2296,
-      "n": 4
+      "ema": 2274,
+      "n": 5
     },
     "/region/부산 연산동/nights/|mobile": {
-      "ema": 2327,
-      "n": 4
+      "ema": 2337,
+      "n": 5
     },
     "/region/부천/|mobile": {
-      "ema": 3097,
-      "n": 4
+      "ema": 2832,
+      "n": 5
     },
     "/region/상봉동/|mobile": {
-      "ema": 2263,
-      "n": 4
+      "ema": 2262,
+      "n": 5
     },
     "/region/성남/nights/|mobile": {
-      "ema": 2197,
-      "n": 4
+      "ema": 2187,
+      "n": 5
     },
     "/region/신림/nights/|mobile": {
-      "ema": 2191,
-      "n": 4
+      "ema": 2180,
+      "n": 5
     },
     "/region/영등포/nights/|mobile": {
-      "ema": 2288,
-      "n": 4
+      "ema": 2280,
+      "n": 5
     },
     "/region/울산/|mobile": {
-      "ema": 2273,
-      "n": 4
+      "ema": 2276,
+      "n": 5
     },
     "/region/인덕원/|mobile": {
-      "ema": 2297,
-      "n": 4
+      "ema": 2272,
+      "n": 5
     },
     "/region/일산/nights/|mobile": {
-      "ema": 2307,
-      "n": 4
+      "ema": 2277,
+      "n": 5
     },
     "/region/제주/|mobile": {
-      "ema": 2266,
-      "n": 4
+      "ema": 2250,
+      "n": 5
     },
     "/region/청담/clubs/|mobile": {
-      "ema": 2298,
-      "n": 4
+      "ema": 2295,
+      "n": 5
     },
     "/region/평택/|mobile": {
-      "ema": 2266,
-      "n": 4
+      "ema": 2241,
+      "n": 5
     },
     "/rooms/|mobile": {
-      "ema": 2357,
-      "n": 4
+      "ema": 2309,
+      "n": 5
     },
     "/rooms/|pc": {
-      "ema": 2213,
-      "n": 4
+      "ema": 2212,
+      "n": 5
     },
     "/search/|mobile": {
-      "ema": 3044,
-      "n": 4
+      "ema": 2872,
+      "n": 5
     },
     "/tag/VIP/|mobile": {
-      "ema": 2382,
-      "n": 4
+      "ema": 2360,
+      "n": 5
     },
     "/tag/강서나이트/|mobile": {
-      "ema": 2346,
-      "n": 4
+      "ema": 2225,
+      "n": 5
     },
     "/tag/건대호빠/|mobile": {
-      "ema": 2372,
-      "n": 4
+      "ema": 2318,
+      "n": 5
     },
     "/tag/광안리호빠/|mobile": {
-      "ema": 3900,
-      "n": 4
+      "ema": 3380,
+      "n": 5
     },
     "/tag/김포나이트/|mobile": {
-      "ema": 2284,
-      "n": 4
+      "ema": 2297,
+      "n": 5
     },
     "/tag/답십리역/|mobile": {
       "ema": 3052,
       "n": 4
     },
     "/tag/더베이101/|mobile": {
-      "ema": 2319,
-      "n": 4
+      "ema": 2303,
+      "n": 5
     },
     "/tag/디엠/|mobile": {
-      "ema": 2335,
-      "n": 4
+      "ema": 2319,
+      "n": 5
     },
     "/tag/루프탑/|mobile": {
-      "ema": 2299,
-      "n": 4
+      "ema": 2301,
+      "n": 5
     },
     "/tag/물나이트/|mobile": {
-      "ema": 2342,
-      "n": 4
+      "ema": 2330,
+      "n": 5
     },
     "/tag/버뮤다/|mobile": {
-      "ema": 2296,
-      "n": 4
+      "ema": 2292,
+      "n": 5
     },
     "/tag/부산호빠/|mobile": {
-      "ema": 2272,
-      "n": 4
+      "ema": 2270,
+      "n": 5
     },
     "/tag/비즈니스접대/|mobile": {
-      "ema": 2320,
-      "n": 4
+      "ema": 2310,
+      "n": 5
     },
     "/tag/서산나이트/|mobile": {
-      "ema": 2328,
-      "n": 4
+      "ema": 2316,
+      "n": 5
     },
     "/tag/수원시청역/|mobile": {
-      "ema": 2384,
-      "n": 4
+      "ema": 2345,
+      "n": 5
     },
     "/tag/아레나/|mobile": {
-      "ema": 2313,
-      "n": 4
+      "ema": 2305,
+      "n": 5
     },
     "/tag/어게인/|mobile": {
-      "ema": 2376,
-      "n": 4
+      "ema": 2347,
+      "n": 5
     },
     "/tag/오산나이트/|mobile": {
-      "ema": 2286,
-      "n": 4
+      "ema": 2285,
+      "n": 5
     },
     "/tag/월드뮤직/|mobile": {
-      "ema": 2300,
-      "n": 4
+      "ema": 2295,
+      "n": 5
     },
     "/tag/이태원클럽/|mobile": {
-      "ema": 2280,
-      "n": 4
+      "ema": 2285,
+      "n": 5
     },
     "/tag/인트로/|mobile": {
-      "ema": 2328,
-      "n": 4
+      "ema": 2307,
+      "n": 5
     },
     "/tag/일산클럽/|mobile": {
-      "ema": 2327,
-      "n": 4
+      "ema": 2308,
+      "n": 5
     },
     "/tag/전주호빠/|mobile": {
-      "ema": 2289,
-      "n": 4
+      "ema": 2288,
+      "n": 5
     },
     "/tag/청사포/|mobile": {
-      "ema": 2318,
-      "n": 4
+      "ema": 2309,
+      "n": 5
     },
     "/tag/컬러/|mobile": {
-      "ema": 3008,
-      "n": 4
+      "ema": 2790,
+      "n": 5
     },
     "/tag/파주나이트/|mobile": {
-      "ema": 2356,
-      "n": 4
+      "ema": 2343,
+      "n": 5
     },
     "/tag/프라이빗룸/|mobile": {
-      "ema": 2313,
-      "n": 4
+      "ema": 2324,
+      "n": 5
     },
     "/tag/한옥마을/|mobile": {
-      "ema": 2321,
-      "n": 4
+      "ema": 2301,
+      "n": 5
     },
     "/tag/홍대입구역/|mobile": {
-      "ema": 2329,
-      "n": 4
+      "ema": 2310,
+      "n": 5
     },
     "/testimonials/|mobile": {
-      "ema": 2300,
-      "n": 4
+      "ema": 2312,
+      "n": 5
     },
     "/yojeong/ilsan/|mobile": {
-      "ema": 2283,
-      "n": 4
+      "ema": 2075,
+      "n": 5
     },
     "/analytics/|mobile": {
       "ema": 2769,
