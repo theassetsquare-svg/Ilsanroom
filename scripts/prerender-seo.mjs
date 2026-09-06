@@ -57,6 +57,9 @@ const BUILD_SHA = (process.env.GITHUB_SHA || (() => {
 const _baseRaw = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8');
 const baseHtml = _baseRaw.replace('</head>', `    <meta name="build-sha" content="${BUILD_SHA}">\n  </head>`);
 
+import { transformSsr, pageTokens } from './uniq-variant.mjs';
+import { applyProse, PROSE_STATS } from './uniq-prose.mjs';
+
 function escHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
@@ -276,7 +279,10 @@ function renderPage({ title, description, canonical, ogImage, ogImageAlt, ssrBod
     const heroImgTag = heroImgSrc
       ? `<img src="${escHtml(heroImgSrc)}" alt="${escHtml(ogImageAlt || title || '')}" ${preloadImage ? 'fetchpriority="high"' : 'loading="lazy" fetchpriority="low"'} decoding="async" style="display:block;width:100%;height:auto;max-height:280px;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#0a0a0a">`
       : '';
-    const heroBlock = `<div class="ssr-hero" style="max-width:1200px;margin:0 auto;padding:88px 16px 24px;min-height:240px">${heroImgTag}<h1 style="margin:0 0 10px;font-size:24px;font-weight:800;color:#111;line-height:1.25;letter-spacing:-0.02em">${heroTitle}</h1><p style="margin:0;color:#444;font-size:16px;line-height:1.65;max-width:720px">${heroDesc}</p></div>`;
+    const _pt = pageTokens(canonical || title || '');
+    html = html.replace('</head>', `    ${_pt.style}\n  </head>`);
+    const _h1 = `<h1 style="margin:0 0 10px;font-size:24px;font-weight:800;color:#111;line-height:1.25;letter-spacing:-0.02em">${heroTitle}</h1>`;
+    const heroBlock = `<div class="${_pt.heroClass} ssr-hero" data-r="${_pt.heroVariant}" style="max-width:1200px;margin:0 auto;padding:88px 16px 24px;min-height:240px">${_pt.heroVariant === 'title-top' ? _h1 + heroImgTag : heroImgTag + _h1}<p style="margin:0;color:#444;font-size:16px;line-height:1.65;max-width:720px">${heroDesc}</p></div>`;
     // 시즌173 — ssr-hero가 visible H1을 제공하므로 ssrBody 첫 번째 H1은 H2로 강등 (페이지당 H1 정확히 1개 보장)
     const ssrBodyNoH1 = ssrBody.replace(/<h1\b([^>]*)>([\s\S]*?)<\/h1>/, '<h2$1>$2</h2>');
     html = html.replace(
@@ -331,6 +337,8 @@ function visibleBreadcrumb(meta) {
 }
 
 function writePage(routePath, meta) {
+  // ★ 플랫폼 트랙 P — 페이지 고유 문장(src/data/uniq-prose.json) 먼저 적용(해시·변형보다 앞: 글이 바뀌면 lastmod 도 바뀌어야 한다)
+  if (meta && meta.ssrBody) meta = { ...meta, ssrBody: applyProse(meta.ssrBody, routePath) };
   // ★ lastmod 정직화 — 의미 콘텐츠(제목+설명+SSR본문)만 해시. 전역 chrome(카테고리 nav·사이트맵
   //   footer)·빌드날짜/ISO타임스탬프는 입력에서 제거 → 푸터 한 줄/오늘 빌드가 lastmod를 흔들지 않게.
   {
@@ -346,7 +354,8 @@ function writePage(routePath, meta) {
   const dir = path.join(DIST, decodedPath);
   fs.mkdirSync(dir, { recursive: true });
   // 시즌26 — landmark 자동 보강: enrichSsr 거치지 않은 동적 페이지에도 <nav>+<footer> 보장
-  let ssrBody = meta.ssrBody;
+  // ★ 플랫폼 트랙 P(설계도 14장) — 페이지 고유 레이아웃 변형(섹션 순서·요소 형태·클래스 토큰). 글은 불변, 브랜드 껍데기(nav·footer)는 이 뒤에 붙는다.
+  let ssrBody = meta.ssrBody ? transformSsr(meta.ssrBody, routePath) : meta.ssrBody;
   if (ssrBody) {
     if (!ssrBody.includes('aria-label="카테고리"')) ssrBody = SITE_NAV_ANCHORS + ssrBody;
     if (!ssrBody.includes('aria-label="사이트맵"')) ssrBody = ssrBody + SITE_FOOTER_ANCHORS;
@@ -647,20 +656,20 @@ function generateVenueSsrBody(v, allVenues) {
   if (v.shortDesc && !desc.includes(v.shortDesc.slice(0, 20))) {
     let sd = escHtml(v.shortDesc), sdOcc = 0;
     sd = sd.replace(nameRe, (match, particle) => { sdOcc++; if (sdOcc <= 1) return match; const pm = { '은': '는', '이': '가', '을': '를', '으로': '로' }; return '여기' + (particle ? (pm[particle] || particle) : ''); });
-    const lead = pickN(['한 줄로 정리하면 이렇다.', '간단히 말하면 이렇다.', '핵심만 추리면 이렇다.', '먼저 한 줄 요약.'], 3);
+    const lead = pickN(['한 줄로 정리하면 이렇다.', '간단히 말하면 이렇다.', '핵심만 추리면 이렇다.', '먼저 한 줄 요약.', '요점부터 말하면 이렇다.', '결론만 먼저 적는다.', '짧게 줄이면 이 한 줄이다.', '한마디로 하면 이렇다.', '먼저 큰 그림부터.', '핵심 한 줄은 이것이다.', '요약하면 이렇게 된다.', '먼저 전체 인상부터 적는다.'], 3);
     sections.push({ w: v.shortDesc.length + 700, html: `<h2>${pickN(['한눈에', '요약', '먼저 보기', '한 줄 소개'], 5)}</h2><p>${lead} ${sd}</p>` });
   }
 
   if (v.liquorInfo) {
-    const lead = pickN(['주류 구성부터 보자.', '양주 라인업은 이렇다.', '술은 이렇게 갖춰져 있다.', '주종 구성을 짚자.'], 51);
+    const lead = pickN(['주류 구성부터 보자.', '양주 라인업은 이렇다.', '술은 이렇게 갖춰져 있다.', '주종 구성을 짚자.', '술 이야기부터 시작한다.', '양주 셀렉션은 아래와 같다.', '주류부터 확인해 두자.', '어떤 술이 나오는지 보자.', '주류 라인은 이렇게 잡혀 있다.', '술 구성은 다음과 같다.', '양주 쪽을 먼저 본다.', '주류 구성을 한 번 훑어보자.'], 51);
     sections.push({ w: v.liquorInfo.length + 600, html: `<h2>양주·주류</h2><p>${lead} ${escHtml(v.liquorInfo)}</p>` });
   }
   if (v.roomInfo) {
-    const lead = pickN(['자리 구성은 이렇게 나뉜다.', '공간은 이렇게 짜여 있다.', '룸 구성부터 짚자.', '좌석 구성을 보자.'], 53);
+    const lead = pickN(['자리 구성은 이렇게 나뉜다.', '공간은 이렇게 짜여 있다.', '룸 구성부터 짚자.', '좌석 구성을 보자.', '자리 배치는 다음과 같다.', '홀과 룸이 어떻게 나뉘는지 본다.', '공간 구성을 정리하면 이렇다.', '앉을 자리부터 살펴보자.', '룸과 좌석은 이렇게 갖춰져 있다.', '테이블 구성을 짚어 둔다.', '공간부터 확인해 두자.', '좌석 배치는 이렇게 돼 있다.'], 53);
     sections.push({ w: v.roomInfo.length + 500, html: `<h2>공간·룸 구성</h2><p>${lead} ${escHtml(v.roomInfo)}</p>` });
   }
   if (features) {
-    const lead = pickN(['짚어둘 특징은 이렇다.', '한눈에 정리하면 이렇다.', '먼저 볼 포인트는 이것이다.', '특징을 추리면 이렇다.'], 59);
+    const lead = pickN(['짚어둘 특징은 이렇다.', '한눈에 정리하면 이렇다.', '먼저 볼 포인트는 이것이다.', '특징을 추리면 이렇다.', '눈에 띄는 점을 모아 봤다.', '기억해 둘 포인트는 다음과 같다.', '다른 곳과 갈리는 지점은 이것이다.', '특징을 목록으로 정리한다.', '체크해 둘 항목은 이렇다.', '이 가게만의 포인트를 꼽으면 이렇다.', '살펴볼 만한 점은 아래와 같다.', '특징만 따로 뽑으면 이렇다.'], 59);
     const fl = v.features.map(f => `<li>${escHtml(f)}</li>`).join('');
     sections.push({ w: v.features.length * 40 + 120, html: `<h2>특징</h2><p>${lead}</p><ul>${fl}</ul>` });
   }
@@ -681,14 +690,14 @@ function generateVenueSsrBody(v, allVenues) {
   // FAQ — 답을 이 가게 데이터에서 생성 (페이지마다 답 내용이 고유)
   // 질문 stem도 offset pick으로 decorrelate — 얇은 페이지(데이터 적음)의 공유 골격 지문 제거
   html += `<section><h2>${pickN(['자주 묻는 질문', '궁금한 점들', '미리 알아두면 좋은 것', '방문 전 체크'], 7)}</h2><dl>`;
-  html += `<dt>${pickN(['어디에 있나요?', '위치가 어디예요?', '어디쯤인가요?', '찾아가는 길은요?'], 1)}</dt><dd>${region}에 있다.${v.nearbyStation ? ' ' + escHtml(v.nearbyStation) + '에서 가깝다.' : ''}${v.address ? ' 주소는 ' + escHtml(v.address) + '.' : ''}</dd>`;
-  if (v.liquorInfo) html += `<dt>${pickN(['양주는 어떤가요?', '주류 구성이 궁금해요', '술은 뭐가 있나요?', '주종은요?'], 2)}</dt><dd>${escHtml(v.liquorInfo.slice(0, 180))}</dd>`;
-  if (v.roomInfo) html += `<dt>${pickN(['자리·룸 구성은요?', '룸은 어떻게 돼 있나요?', '좌석 구성이 궁금해요', '공간은 어떤가요?'], 3)}</dt><dd>${escHtml(v.roomInfo.slice(0, 180))}</dd>`;
-  html += `<dt>${pickN(['예약은요?', '예약은 어떻게 하나요?', '문의는 어디로 하나요?', '예약 방법이 궁금해요'], 5)}</dt><dd>${pickN(['담당자에게 직접 문의하면 된다.', '담당자에게 바로 연락하면 된다.', '담당자 연락처로 문의하면 된다.', '담당자에게 전화로 확인하면 된다.'], 9)}${staff ? ' 담당: ' + staff + '.' : ''}</dd>`;
+  html += `<dt>${pickN(['어디에 있나요?', '위치가 어디예요?', '어디쯤인가요?', '찾아가는 길은요?', '주소가 어떻게 되나요?', '어느 동네에 있나요?', '가는 방법이 궁금해요', '위치를 알려 주세요', '어디로 가면 되나요?', '역에서 가까운가요?', '찾아가기 쉬운가요?', '위치 안내 부탁드려요'], 1)}</dt><dd>${region}에 있다.${v.nearbyStation ? ' ' + escHtml(v.nearbyStation) + '에서 가깝다.' : ''}${v.address ? ' 주소는 ' + escHtml(v.address) + '.' : ''}</dd>`;
+  if (v.liquorInfo) html += `<dt>${pickN(['양주는 어떤가요?', '주류 구성이 궁금해요', '술은 뭐가 있나요?', '주종은요?', '어떤 양주가 나오나요?', '주류 라인업이 어떻게 되나요?', '술 종류를 알고 싶어요', '양주 셀렉션은 어떤가요?', '주류는 어떻게 갖춰져 있나요?', '마실 수 있는 술은요?', '양주 구성이 어떤지 궁금해요', '술 라인은 어떤가요?'], 2)}</dt><dd>${escHtml(v.liquorInfo.slice(0, 180))}</dd>`;
+  if (v.roomInfo) html += `<dt>${pickN(['자리·룸 구성은요?', '룸은 어떻게 돼 있나요?', '좌석 구성이 궁금해요', '공간은 어떤가요?', '자리는 어떻게 나뉘나요?', '룸이 몇 개나 있나요?', '홀과 룸 구성이 궁금해요', '테이블 배치는 어떤가요?', '앉을 자리는 어떻게 되나요?', '공간 구성을 알려 주세요', '룸 규모가 어떻게 되나요?', '좌석은 어떤 식인가요?'], 3)}</dt><dd>${escHtml(v.roomInfo.slice(0, 180))}</dd>`;
+  html += `<dt>${pickN(['예약은요?', '예약은 어떻게 하나요?', '문의는 어디로 하나요?', '예약 방법이 궁금해요', '자리를 미리 잡을 수 있나요?', '예약 문의는 누구에게 하나요?', '전화로 예약되나요?', '예약 절차가 어떻게 되나요?', '방문 전 연락은 어디로 하나요?', '예약 없이 가도 되나요?', '예약 접수는 어떻게 하나요?', '문의 창구가 어디예요?'], 5)}</dt><dd>${pickN(['담당자에게 직접 문의하면 된다.', '담당자에게 바로 연락하면 된다.', '담당자 연락처로 문의하면 된다.', '담당자에게 전화로 확인하면 된다.', '담당자와 통화해 자리를 잡으면 된다.', '담당자 번호로 연락해 확인하면 된다.', '담당자에게 미리 문의해 두면 된다.', '담당자 연락처로 예약을 넣으면 된다.', '담당자에게 물어보면 바로 안내받는다.', '담당자 쪽으로 문의하면 정리된다.', '담당자에게 연락해 두는 편이 편하다.', '담당자와 사전에 확인하면 된다.'], 9)}${staff ? ' 담당: ' + staff + '.' : ''}</dd>`;
   html += `</dl></section>`;
 
   // 후기 — 가공 후기 미게시(신뢰 규칙), 회원 글 링크만 (짧게·변형, offset decorrelate)
-  html += `<p>${pickN(['방문 후기는', '실제 후기는', '다녀온 후기는', '솔직 후기는'], 11)} <a href="/community/reviews/">커뮤니티 후기 게시판</a>에서 회원 글만 모읍니다.</p>`;
+  html += `<p>${pickN(['방문 후기는', '실제 후기는', '다녀온 후기는', '솔직 후기는', '회원들의 후기는', '직접 가 본 이야기는', '최근 방문담은', '경험담은', '이용 후기는', '현장 분위기 후기는', '다녀온 사람들의 글은', '생생한 방문기는'], 11)} <a href="/community/reviews/">커뮤니티 후기 게시판</a>에서 회원 글만 모읍니다.</p>`;
 
   // 총정리 — primary 키워드(name) 노출, 짧게·변형 (offset decorrelate)
   const _tail = pickN([
@@ -696,6 +705,14 @@ function generateVenueSsrBody(v, allVenues) {
     `방문 전 최신 정보부터 확인하세요.`,
     `자세한 안내는 이 페이지에서 확인하세요.`,
     `예약 전 이 페이지 정보를 먼저 보세요.`,
+    `가기 전에 위 안내를 한 번 더 훑어보세요.`,
+    `최신 운영 정보는 여기서 갱신됩니다.`,
+    `방문 계획은 이 정리를 기준으로 잡으면 됩니다.`,
+    `궁금한 점은 위 문답에서 먼저 찾아보세요.`,
+    `출발 전 이 페이지를 다시 확인해 두세요.`,
+    `예약 전 확인할 내용은 위에 모아 두었습니다.`,
+    `자세한 사항은 이 페이지 안내를 참고하세요.`,
+    `방문 전 체크는 이 페이지 하나로 충분합니다.`,
   ], 13);
   // 총정리 — H2에만 풀네임(primary SEO), 문장은 '여기'로 — 키워드 밀도 stuffing(>3%) 방지 + 지문 감소
   html += `<h2>${name} ${pickN(['총정리', '한눈에 보기', '정리', '핵심 요약'], 17)}</h2><p>${region} ${catKo} ${pickN(['여기', '이곳', '여기는', '이 가게는'], 19)} — ${_tail}</p>`;
@@ -771,7 +788,7 @@ function generateVenueSsrBody(v, allVenues) {
   const secondary = `${escHtml(lastRegion)}${catKo}`;
   html += `<section><h2>${secondary} ${pickN(['검색하고 오시는 분들께', '찾아 오신 분들께', '알아보는 분들께', '검색으로 오셨다면'], 29)}</h2>`;
   // secondary 키워드는 위 H2에 이미 노출 → 단락은 지시어로 받아 밀도 stuffing 방지
-  html += `<p>${pickN(['여기', '이곳', '이 가게', '이 페이지'], 30)}${pickN([' 찾으신다면 양주·자리 구성부터 보세요.', ' 검색으로 오셨다면 위 구성과 예약 안내를 참고하세요.', ' 정보를 찾는 중이라면 이 페이지에 정리돼 있습니다.', ' 알아보고 계신다면 위 안내가 도움이 됩니다.'], 31)} ${pickN(['직접 확인하려면 담당자에게 문의하면 된다.', '자세한 건 담당자에게 문의하면 된다.', '예약은 담당자에게 바로 문의하면 된다.', '궁금한 점은 담당자에게 물어보면 된다.'], 33)}</p>`;
+  html += `<p>${pickN(['여기', '이곳', '이 가게', '이 페이지'], 30)}${pickN([' 찾으신다면 양주·자리 구성부터 보세요.', ' 검색으로 오셨다면 위 구성과 예약 안내를 참고하세요.', ' 정보를 찾는 중이라면 이 페이지에 정리돼 있습니다.', ' 알아보고 계신다면 위 안내가 도움이 됩니다.', ' 고르는 중이라면 특징과 자리 구성을 먼저 비교하세요.', ' 처음 검색하셨다면 위치와 예약 안내부터 보세요.', ' 비교 중이라면 주류 구성과 룸 규모를 기준으로 보세요.', ' 정보가 필요하다면 위 문답에 핵심이 있습니다.', ' 어디로 갈지 정하는 중이라면 위 정리가 기준이 됩니다.', ' 궁금하셨다면 특징 목록부터 읽어 보세요.', ' 방문을 고민 중이라면 자리 구성과 예약 방법을 확인하세요.', ' 검색으로 들어오셨다면 이 페이지의 정리가 답입니다.'], 31)} ${pickN(['직접 확인하려면 담당자에게 문의하면 된다.', '자세한 건 담당자에게 문의하면 된다.', '예약은 담당자에게 바로 문의하면 된다.', '궁금한 점은 담당자에게 물어보면 된다.', '세부 사항은 담당자와 통화하면 정리된다.', '남은 궁금증은 담당자에게 확인하면 된다.', '방문 전 담당자에게 연락해 두면 편하다.', '자리 여부는 담당자에게 물어보면 된다.', '추가 문의는 담당자 번호로 하면 된다.', '자세한 안내는 담당자가 해 준다.', '확실한 정보는 담당자에게 직접 듣는 편이 좋다.', '예약 관련은 담당자 쪽에서 안내한다.'], 33)}</p>`;
   // ★ SERP 루프(2026-07-25) — venue→지역허브 역링크. 허브는 venue를 이미 링크하는데 역방향이 0이라
   // "{지역}{업종}" 검색에서 어느 쪽이 랭크되든 서로 못 밀었다. 정확앵커 1개(팩트 내비게이션, 패딩 0).
   {
@@ -823,7 +840,7 @@ function generateVenueSsrBody(v, allVenues) {
   const _bodyWords = _bodyText.split(/\s+/).filter(Boolean).length;
   const _nameOcc = (_bodyText.match(new RegExp(escRe(name), 'g')) || []).length;
   if (_nameOcc / Math.max(_bodyWords, 1) < 0.006) {
-    html += `<p>${pickN(['직접 가보면', '한 번 방문하면', '와서 보면', '겪어보면'], 51)} ${name}${pickN(['만의 분위기를 알 수 있다.', '의 결을 바로 느낀다.', '이 왜 단골을 만드는지 안다.', '의 진짜 매력이 보인다.'], 53)}</p>`;
+    html += `<p>${pickN(['직접 가보면', '한 번 방문하면', '와서 보면', '겪어보면', '실제로 앉아 보면', '현장에서 보면', '한 번 다녀오면', '직접 경험하면', '자리를 잡고 보면', '들어가 보면', '가서 느껴 보면', '하룻밤 보내 보면'], 51)} ${name}${pickN(['만의 분위기를 알 수 있다.', '의 결을 바로 느낀다.', '이 왜 단골을 만드는지 안다.', '의 진짜 매력이 보인다.', '의 색깔이 분명해진다.', '가 어떤 곳인지 감이 온다.', '의 강점이 바로 드러난다.', '가 왜 오래 가는지 알게 된다.', '의 분위기가 몸으로 느껴진다.', '의 진가를 알아보게 된다.', '의 결이 어떤지 바로 잡힌다.', '만의 리듬이 보인다.'], 53)}</p>`;
   }
 
   // 백링크는 description 첫 발생 가게이름에 통합 (중복 anchor 제거)

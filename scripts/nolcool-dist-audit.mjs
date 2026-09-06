@@ -202,7 +202,7 @@ for (const f of files) {
     const LB = ['NightClub', 'BarOrPub', 'Restaurant', 'EntertainmentBusiness'];
     if (!LB.some(t => rootTypeCounts[t])) add('ERR', 'venue LocalBusiness 스키마 누락 (NightClub/BarOrPub/Restaurant/EntertainmentBusiness)');
     if (!rootTypeCounts['FAQPage']) add('ERR', 'venue FAQPage 스키마 누락');
-    if (!/class=["']ssr-answer["']/.test(html)) add('ERR', 'venue 상단 직답 블록(.ssr-answer) 누락');
+    if (!/class=["'][^"']*\bssr-answer\b[^"']*["']/.test(html)) add('ERR', 'venue 상단 직답 블록(.ssr-answer) 누락');
   }
 
   // ★ [D] 스키마↔화면 일치 게이트 (STEP 1) — 화면에 보이는 Q&A(visible <dl><dt><dd>)가 있으면
