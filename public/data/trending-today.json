@@ -1,55 +1,20 @@
 {
-  "generated_at": "2026-09-06T07:22:24.146Z",
+  "generated_at": "2026-09-06T15:59:05.569Z",
   "window_hours": 24,
   "items": [
-    {
-      "path": "/nights/seongnamshampoonight",
-      "title": "성남샴푸나이트",
-      "category": "night",
-      "region": "성남",
-      "views_24h": 10
-    },
-    {
-      "path": "/nights/busanyeonsandongmulnight",
-      "title": "부산연산동물나이트",
-      "category": "night",
-      "region": "부산 연산동",
-      "views_24h": 6
-    },
-    {
-      "path": "/nights/daejeonbongmyeongnight",
-      "title": "대전봉명나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 6
-    },
     {
       "path": "/nights/gangseo-hobak",
       "title": "강서호박나이트",
       "category": "night",
       "region": "강서",
-      "views_24h": 5
+      "views_24h": 9
     },
     {
-      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
-      "title": "일산명월관요정",
-      "category": "yojeong",
-      "region": "일산",
-      "views_24h": 5
-    },
-    {
-      "path": "/nights/busanmulnight",
-      "title": "부산물나이트",
+      "path": "/nights/seongnamshampoonight",
+      "title": "성남샴푸나이트",
       "category": "night",
-      "region": "부산",
-      "views_24h": 3
-    },
-    {
-      "path": "/nights/osanhobaknight",
-      "title": "오산호박나이트",
-      "category": "night",
-      "region": "오산",
-      "views_24h": 3
+      "region": "성남",
+      "views_24h": 9
     },
     {
       "path": "/nights/daejeononenight",
@@ -59,6 +24,48 @@
       "views_24h": 3
     },
     {
+      "path": "/nights/gimpohobaknight",
+      "title": "김포호박나이트",
+      "category": "night",
+      "region": "김포",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/daejeonbongmyeongnight",
+      "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 2
+    },
+    {
+      "path": "/hoppa/haeundaehoppa-velvet",
+      "title": "해운대호빠 벨벳",
+      "category": "hoppa",
+      "region": "해운대",
+      "views_24h": 2
+    },
+    {
+      "path": "/hoppa/haeundaehoppa-michelin",
+      "title": "해운대호빠 미슐랭",
+      "category": "hoppa",
+      "region": "부산 해운대",
+      "views_24h": 2
+    },
+    {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/osanhobaknight",
+      "title": "오산호박나이트",
+      "category": "night",
+      "region": "오산",
+      "views_24h": 2
+    },
+    {
       "path": "/nights/gurihobaknight",
       "title": "구리호박나이트",
       "category": "night",
@@ -66,45 +73,38 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/bundangpongpongnight",
-      "title": "분당퐁퐁나이트",
+      "path": "/nights/doksangukbingwannight",
+      "title": "독산동국빈관나이트",
       "category": "night",
-      "region": "분당",
-      "views_24h": 2
-    },
-    {
-      "path": "/clubs/itaewon/itaewonclub-utopia",
-      "title": "이태원클럽 유토피아",
-      "category": "club",
-      "region": "이태원",
-      "views_24h": 2
-    },
-    {
-      "path": "/nights/daejeonhangukgwannight",
-      "title": "대전한국관나이트",
-      "category": "night",
-      "region": "대전",
+      "region": "독산",
       "views_24h": 1
     },
     {
-      "path": "/hoppa/busanhoppa-aura",
-      "title": "부산호빠 아우라",
+      "path": "/nights/gwangjutotonight",
+      "title": "광주토토밤나이트",
+      "category": "night",
+      "region": "광주",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/pajuyadangskydomenight",
+      "title": "파주야당스카이돔나이트",
+      "category": "night",
+      "region": "파주",
+      "views_24h": 1
+    },
+    {
+      "path": "/hoppa/haeundaehoppa-kkantappiya",
+      "title": "해운대호빠 깐따삐야",
       "category": "hoppa",
-      "region": "부산",
+      "region": "부산 해운대",
       "views_24h": 1
     },
     {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/pyeongtaekhobaknight",
-      "title": "평택호박나이트",
-      "category": "night",
-      "region": "평택",
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
       "views_24h": 1
     }
   ]
