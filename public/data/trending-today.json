@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-09-06T15:59:05.569Z",
+  "generated_at": "2026-09-06T18:42:35.115Z",
   "window_hours": 24,
   "items": [
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
-      "views_24h": 9
-    },
     {
       "path": "/nights/seongnamshampoonight",
       "title": "성남샴푸나이트",
       "category": "night",
       "region": "성남",
       "views_24h": 9
+    },
+    {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
+      "category": "night",
+      "region": "강서",
+      "views_24h": 5
     },
     {
       "path": "/nights/daejeononenight",
@@ -66,11 +66,11 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/gurihobaknight",
-      "title": "구리호박나이트",
-      "category": "night",
-      "region": "구리",
-      "views_24h": 2
+      "path": "/rooms/busan-haeundae/haeundaegoguryeo",
+      "title": "해운대고구려",
+      "category": "room",
+      "region": "부산 해운대",
+      "views_24h": 1
     },
     {
       "path": "/nights/doksangukbingwannight",
