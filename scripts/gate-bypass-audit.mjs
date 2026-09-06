@@ -244,6 +244,11 @@ const REGISTRY = {
     label: 'dist 홈에 404 내부 링크(prefetch 대상) 주입',
     mutate: insertBeforeBody(() => 'dist/index.html', '<a href="/zzz-nonexistent-xyz/">x</a>'),
   },
+  'scripts/uniq-structure-gate.mjs': {
+    phase: 'dist',
+    label: '페이지별 style(data-page) 제거 — 구조 고유성 위반 주입',
+    mutate: lazy(() => 'dist/nights/seongnamshampoonight/index.html', (h) => h.replace(/<style data-page="[^"]*">[\s\S]*?<\/style>/, '')),
+  },
   'scripts/og-asset-gate.mjs': {
     phase: 'dist',
     label: '카테고리 og JPG(public/og/clubs.jpg) 제거',

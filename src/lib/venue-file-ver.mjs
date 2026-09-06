@@ -14,17 +14,12 @@ export const HERO_FILE_VER = {
 
 /** /og/{slug}.jpg 파일명 버전 */
 export const OG_FILE_VER = {
-  ilsanroom: '-v2', // 동일 건
-  ilsanmyeongwolgwanyojeong: '-v2', // 동일 건
-  gwangjucheomdanempanight: '-v4', // 2026-08-23 정식명 교정(엠파→엠파이어) 재생성 — 엣지 캐시 무효화 버전업
-  seongnamshampoonight: '-v4', // 2026-09-06 광고주 카드 표준(어두운 배경·4줄: 가게이름/이쁜이/010-3432-4758/광고문의 카톡 besta12)으로 재생성 — 엣지 캐시 무효화 버전업
-  busanasiadnight: '-v4', // 2026-08-25 광고주 등록(새우깡 010-3614-1056) 재생성 — 엣지 캐시 무효화 버전업
-  pajuyadangskydomenight: '-v4', // 2026-09-02 광고주 교체(막내 → 딸기 010-3447-0963) 재생성 — 엣지 캐시 무효화 버전업
+  // [P2 · 설계도 14-4] 2026-09-06 전 업소 표준 글자 카드(-v5)로 통일 — 광고주 4줄·비광고주 3줄, 예외 없음
 };
 
 /** 2026-08-22 전 업소 "가게이름" 1:1 og 썸네일 전환(generate-og-name11.mjs).
  *  수동 합성본(OG_FILE_VER 등록 2곳)만 -v2 유지, 나머지 전 슬러그 -v3 파일 참조. */
-export const OG_DEFAULT_VER = '-v3';
+export const OG_DEFAULT_VER = '-v5';
 
 export const heroVer = (slug) => HERO_FILE_VER[slug] || '';
 export const ogVer = (slug) => OG_FILE_VER[slug] || OG_DEFAULT_VER;

@@ -587,6 +587,8 @@ function generateVenueSsrBody(v, allVenues) {
   if (v.staffPhone && !PHONE_HIDDEN_SLUGS.has(v.slug)) {
     const telDigits = v.staffPhone.replace(/-/g, '');
     const staffLabel = v.staffNickname ? `${escHtml(v.staffNickname)} ` : '';
+    // [P2 · 14-5 광고 표시] 광고주(담당 연락처) 페이지는 「광고」 표시 + 업소 제공 정보 고지
+    html += `<p class="ssr-adlabel">광고 · 아래 연락처는 업소 담당자가 제공한 광고 정보입니다.</p>`;
     html += `<p class="ssr-phone">📞 예약 문의: <a href="tel:${telDigits}" itemprop="telephone">${staffLabel}${escHtml(v.staffPhone)}</a></p>`;
   }
   if (v.openHours) {
@@ -2737,6 +2739,22 @@ llmsTxt += `경상: 대구, 울산, 구미\n`;
 llmsTxt += `전라: 광주, 전주\n`;
 llmsTxt += `제주: 제주\n`;
 
+// [P2 · 설계도 14-4] llms.txt 전 쪽 — 사이트맵의 모든 공개 주소를 유형별로 덧붙인다(이미 적힌 주소는 제외, 글 불변)
+{
+  const _all = [...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  const _have = new Set([...llmsTxt.matchAll(/https?:\/\/nolcool\.com\/[^\s)]*/g)].map((m) => m[0].replace(/\/?$/, '/')));
+  const _groups = {};
+  for (const u of _all) { const t = u.replace(/^https?:\/\/[^/]+\//, '').split('/')[0] || 'home'; (_groups[t] ||= []).push(u); }
+  const _label = { region: '지역별', nights: '나이트', clubs: '클럽', near: '역 근처', magazine: '매거진', tag: '태그', hoppa: '호빠', community: '커뮤니티', lounge: '라운지 정보', lounges: '라운지', rooms: '룸', yojeong: '요정', new: '신규', best: '인기' };
+  let _n = 0, _add = '\n\n## 전체 페이지 (사이트맵 기준)\n> 사이트맵의 모든 공개 페이지. 업소 정보는 확인일 기준, 광고주 페이지는 「광고」 표시.\n';
+  for (const [t, arr] of Object.entries(_groups).sort((x, y) => y[1].length - x[1].length)) {
+    const rest = arr.filter((u) => !_have.has(u.replace(/\/?$/, '/')));
+    if (!rest.length) continue;
+    _add += '\n### ' + (_label[t] || t) + ' (' + arr.length + '쪽)\n' + rest.map((u) => '- ' + u).join('\n') + '\n'; _n += rest.length;
+  }
+  if (_n) llmsTxt = llmsTxt.trimEnd() + _add;
+  console.log('   llms.txt 전체 페이지 절 +' + _n + ' (사이트맵 ' + _all.length + ')');
+}
 fs.writeFileSync(path.join(DIST, 'llms.txt'), llmsTxt);
 console.log(`✅ llms.txt 자동 생성 (${venues.length}개 업소, 가게이름 포함)`);
 

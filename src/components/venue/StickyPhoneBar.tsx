@@ -43,6 +43,8 @@ export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPh
           aria-label={`${venueName} 전화걸기 ${phone}`}
         >
           <span className="shrink-0">📞</span>
+          {/* [P2 · 14-5 광고 표시] 담당 연락처는 업소 제공 광고 정보 — 화면에도 「광고」 표시 */}
+          <span className="shrink-0 rounded bg-white/20 px-1.5 py-0.5 text-[11px] font-semibold">광고</span>
           <span>{[venueName, staffName, phone].filter(Boolean).join(' ')}</span>
         </a>
       </div>
