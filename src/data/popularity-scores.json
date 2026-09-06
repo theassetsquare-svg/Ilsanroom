@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-24",
+  "generatedAt": "2026-09-07",
   "windowDays": 28,
   "minViews28d": 10,
   "weights": {
@@ -10,422 +10,414 @@
   },
   "venues": {
     "daejeononenight": {
-      "views": 120,
-      "users": 90,
+      "views": 111,
+      "users": 87,
       "phoneClicks": 0,
-      "gscClicks": 78,
-      "score": 534,
-      "ranked": true
-    },
-    "ilsanroom": {
-      "views": 77,
-      "users": 37,
-      "phoneClicks": 2,
-      "gscClicks": 51,
-      "score": 364,
-      "ranked": true
-    },
-    "ilsanmyeongwolgwanyojeong": {
-      "views": 84,
-      "users": 57,
-      "phoneClicks": 0,
-      "gscClicks": 58,
-      "score": 372,
+      "gscClicks": 85,
+      "score": 540,
       "ranked": true
     },
     "gangseo-hobak": {
-      "views": 68,
-      "users": 56,
+      "views": 90,
+      "users": 73,
       "phoneClicks": 0,
-      "gscClicks": 59,
-      "score": 357,
+      "gscClicks": 63,
+      "score": 425,
+      "ranked": true
+    },
+    "ilsanmyeongwolgwanyojeong": {
+      "views": 106,
+      "users": 66,
+      "phoneClicks": 0,
+      "gscClicks": 48,
+      "score": 382,
+      "ranked": true
+    },
+    "ilsanroom": {
+      "views": 86,
+      "users": 44,
+      "phoneClicks": 2,
+      "gscClicks": 48,
+      "score": 378,
+      "ranked": true
+    },
+    "dapsimnimiraclenight": {
+      "views": 75,
+      "users": 57,
+      "phoneClicks": 1,
+      "gscClicks": 51,
+      "score": 372,
       "ranked": true
     },
     "daejeonbongmyeongnight": {
-      "views": 80,
-      "users": 60,
+      "views": 69,
+      "users": 48,
       "phoneClicks": 0,
-      "gscClicks": 23,
-      "score": 269,
-      "ranked": true
-    },
-    "cheongjuhobaknight": {
-      "views": 58,
-      "users": 47,
-      "phoneClicks": 0,
-      "gscClicks": 45,
-      "score": 287,
-      "ranked": true
-    },
-    "ansandontellmamanight": {
-      "views": 56,
-      "users": 49,
-      "phoneClicks": 0,
-      "gscClicks": 38,
-      "score": 268,
-      "ranked": true
-    },
-    "daejeonhangukgwannight": {
-      "views": 59,
-      "users": 49,
-      "phoneClicks": 0,
-      "gscClicks": 17,
-      "score": 208,
+      "gscClicks": 16,
+      "score": 213,
       "ranked": true
     },
     "daejeonsevennight": {
-      "views": 61,
-      "users": 50,
+      "views": 67,
+      "users": 48,
       "phoneClicks": 0,
-      "gscClicks": 6,
-      "score": 179,
-      "ranked": true
-    },
-    "busanmulnight": {
-      "views": 37,
-      "users": 17,
-      "phoneClicks": 2,
-      "gscClicks": 28,
-      "score": 215,
-      "ranked": true
-    },
-    "daegubabambanight": {
-      "views": 39,
-      "users": 29,
-      "phoneClicks": 5,
-      "gscClicks": 15,
-      "score": 292,
-      "ranked": true
-    },
-    "osanhobaknight": {
-      "views": 29,
-      "users": 28,
-      "phoneClicks": 0,
-      "gscClicks": 29,
-      "score": 172,
-      "ranked": true
-    },
-    "gimpohobaknight": {
-      "views": 27,
-      "users": 23,
-      "phoneClicks": 0,
-      "gscClicks": 19,
-      "score": 130,
-      "ranked": true
-    },
-    "suyushampoonight": {
-      "views": 28,
-      "users": 25,
-      "phoneClicks": 1,
-      "gscClicks": 1,
-      "score": 111,
-      "ranked": true
-    },
-    "gangnamclub-race": {
-      "views": 36,
-      "users": 29,
-      "phoneClicks": 0,
-      "gscClicks": 1,
-      "score": 97,
-      "ranked": true
-    },
-    "bucheongoraenight": {
-      "views": 29,
-      "users": 23,
-      "phoneClicks": 0,
-      "gscClicks": 14,
-      "score": 117,
+      "gscClicks": 16,
+      "score": 211,
       "ranked": true
     },
     "busanyeonsandongmulnight": {
-      "views": 24,
-      "users": 12,
-      "phoneClicks": 0,
-      "gscClicks": 17,
-      "score": 99,
+      "views": 53,
+      "users": 20,
+      "phoneClicks": 3,
+      "gscClicks": 31,
+      "score": 276,
       "ranked": true
     },
-    "cheongjudontellmamanight": {
-      "views": 33,
-      "users": 23,
+    "cheongjuhobaknight": {
+      "views": 49,
+      "users": 40,
       "phoneClicks": 0,
-      "gscClicks": 7,
-      "score": 100,
+      "gscClicks": 45,
+      "score": 264,
       "ranked": true
     },
-    "itaewonclub-utopia": {
-      "views": 21,
-      "users": 17,
+    "ansandontellmamanight": {
+      "views": 42,
+      "users": 35,
       "phoneClicks": 0,
-      "gscClicks": 4,
-      "score": 67,
+      "gscClicks": 31,
+      "score": 205,
       "ranked": true
     },
-    "gangnamjuliananight": {
-      "views": 23,
-      "users": 25,
-      "phoneClicks": 0,
-      "gscClicks": 1,
-      "score": 76,
+    "busanmulnight": {
+      "views": 48,
+      "users": 24,
+      "phoneClicks": 2,
+      "gscClicks": 22,
+      "score": 222,
       "ranked": true
     },
-    "ansanhitnight": {
-      "views": 21,
-      "users": 14,
+    "osanhobaknight": {
+      "views": 36,
+      "users": 28,
       "phoneClicks": 0,
-      "gscClicks": 12,
-      "score": 85,
+      "gscClicks": 30,
+      "score": 182,
       "ranked": true
     },
     "bundangpongpongnight": {
-      "views": 18,
-      "users": 16,
+      "views": 31,
+      "users": 24,
+      "phoneClicks": 0,
+      "gscClicks": 20,
+      "score": 139,
+      "ranked": true
+    },
+    "daejeonhangukgwannight": {
+      "views": 38,
+      "users": 32,
       "phoneClicks": 0,
       "gscClicks": 12,
-      "score": 86,
+      "score": 138,
       "ranked": true
     },
     "busanasiadnight": {
-      "views": 22,
-      "users": 14,
+      "views": 38,
+      "users": 18,
       "phoneClicks": 0,
       "gscClicks": 1,
-      "score": 53,
+      "score": 77,
       "ranked": true
     },
-    "suwonchancenight": {
-      "views": 25,
-      "users": 17,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 59,
-      "ranked": true
-    },
-    "gurihobaknight": {
-      "views": 19,
-      "users": 13,
-      "phoneClicks": 0,
-      "gscClicks": 10,
-      "score": 75,
-      "ranked": true
-    },
-    "seongnamgukbingwannight": {
-      "views": 22,
-      "users": 15,
-      "phoneClicks": 0,
-      "gscClicks": 1,
-      "score": 55,
-      "ranked": true
-    },
-    "haeundaegoguryeo": {
-      "views": 27,
-      "users": 21,
-      "phoneClicks": 0,
-      "gscClicks": 1,
-      "score": 72,
-      "ranked": true
-    },
-    "gwangjumgmnight": {
-      "views": 17,
-      "users": 12,
-      "phoneClicks": 0,
-      "gscClicks": 6,
-      "score": 59,
-      "ranked": true
-    },
-    "daejeonsugarclub": {
-      "views": 21,
-      "users": 19,
-      "phoneClicks": 0,
-      "gscClicks": 4,
-      "score": 71,
-      "ranked": true
-    },
-    "dapsimnidontellmamanight": {
-      "views": 14,
-      "users": 12,
+    "seongnamshampoonight": {
+      "views": 35,
+      "users": 26,
       "phoneClicks": 0,
       "gscClicks": 7,
-      "score": 59,
+      "score": 108,
       "ranked": true
     },
-    "ilsanshampoonight": {
-      "views": 15,
-      "users": 14,
+    "daegubabambanight": {
+      "views": 35,
+      "users": 30,
       "phoneClicks": 0,
       "gscClicks": 8,
-      "score": 67,
+      "score": 119,
       "ranked": true
     },
-    "cheongju-supermoon": {
-      "views": 14,
-      "users": 10,
+    "gimpohobaknight": {
+      "views": 28,
+      "users": 23,
       "phoneClicks": 0,
-      "gscClicks": 10,
-      "score": 64,
-      "ranked": true
-    },
-    "busanhoppa-menz": {
-      "views": 12,
-      "users": 6,
-      "phoneClicks": 0,
-      "gscClicks": 9,
-      "score": 51,
+      "gscClicks": 16,
+      "score": 122,
       "ranked": true
     },
     "daegutotoganight": {
-      "views": 19,
-      "users": 19,
+      "views": 37,
+      "users": 30,
+      "phoneClicks": 0,
+      "gscClicks": 1,
+      "score": 100,
+      "ranked": true
+    },
+    "bucheongoraenight": {
+      "views": 30,
+      "users": 20,
+      "phoneClicks": 0,
+      "gscClicks": 12,
+      "score": 106,
+      "ranked": true
+    },
+    "cheongdamh2onight": {
+      "views": 33,
+      "users": 25,
+      "phoneClicks": 1,
+      "gscClicks": 3,
+      "score": 122,
+      "ranked": true
+    },
+    "gurihobaknight": {
+      "views": 23,
+      "users": 16,
+      "phoneClicks": 0,
+      "gscClicks": 8,
+      "score": 79,
+      "ranked": true
+    },
+    "ansanhitnight": {
+      "views": 23,
+      "users": 15,
+      "phoneClicks": 0,
+      "gscClicks": 7,
+      "score": 74,
+      "ranked": true
+    },
+    "dapsimnidontellmamanight": {
+      "views": 21,
+      "users": 17,
+      "phoneClicks": 0,
+      "gscClicks": 13,
+      "score": 94,
+      "ranked": true
+    },
+    "seongnamgukbingwannight": {
+      "views": 24,
+      "users": 15,
+      "phoneClicks": 0,
+      "gscClicks": 1,
+      "score": 57,
+      "ranked": true
+    },
+    "suyushampoonight": {
+      "views": 21,
+      "users": 18,
       "phoneClicks": 0,
       "gscClicks": 2,
       "score": 63,
       "ranked": true
     },
-    "gildongchancenight": {
-      "views": 12,
-      "users": 12,
+    "ulsannewworldnight": {
+      "views": 23,
+      "users": 22,
       "phoneClicks": 0,
-      "gscClicks": 12,
-      "score": 72,
+      "gscClicks": 6,
+      "score": 85,
       "ranked": true
     },
-    "pajuyadangskydomenight": {
-      "views": 14,
-      "users": 13,
+    "ilsanshampoonight": {
+      "views": 23,
+      "users": 23,
       "phoneClicks": 0,
-      "gscClicks": 9,
-      "score": 67,
+      "gscClicks": 6,
+      "score": 87,
       "ranked": true
     },
-    "daeguhobaknight": {
-      "views": 18,
-      "users": 18,
+    "suwonchancenight": {
+      "views": 21,
+      "users": 14,
+      "phoneClicks": 0,
+      "gscClicks": 2,
+      "score": 55,
+      "ranked": true
+    },
+    "gangnamclub-race": {
+      "views": 26,
+      "users": 21,
       "phoneClicks": 0,
       "gscClicks": 0,
-      "score": 54,
+      "score": 68,
       "ranked": true
     },
-    "indeokvon-gukbingwan-night": {
-      "views": 11,
-      "users": 9,
+    "busanhoppa-menz": {
+      "views": 19,
+      "users": 15,
       "phoneClicks": 0,
-      "gscClicks": 8,
-      "score": 53,
+      "gscClicks": 7,
+      "score": 70,
       "ranked": true
     },
-    "suwonkoreanight": {
-      "views": 17,
-      "users": 17,
+    "cheongjudontellmamanight": {
+      "views": 22,
+      "users": 16,
       "phoneClicks": 0,
       "gscClicks": 5,
-      "score": 66,
+      "score": 69,
       "ranked": true
     },
-    "ulsannewworldnight": {
-      "views": 14,
+    "gildongchancenight": {
+      "views": 15,
       "users": 13,
       "phoneClicks": 0,
-      "gscClicks": 11,
-      "score": 73,
+      "gscClicks": 13,
+      "score": 80,
       "ranked": true
     },
     "pyeongtaekhobaknight": {
-      "views": 11,
-      "users": 11,
+      "views": 17,
+      "users": 15,
       "phoneClicks": 0,
-      "gscClicks": 8,
-      "score": 57,
+      "gscClicks": 7,
+      "score": 68,
       "ranked": true
     },
-    "gangnamclub-octagon": {
-      "views": 10,
-      "users": 7,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 24,
-      "ranked": true
-    },
-    "daejeonhoppa-eclipse": {
-      "views": 10,
-      "users": 9,
-      "phoneClicks": 0,
-      "gscClicks": 5,
-      "score": 43,
-      "ranked": true
-    },
-    "gangseonight": {
-      "views": 13,
-      "users": 12,
+    "itaewonclub-utopia": {
+      "views": 15,
+      "users": 13,
       "phoneClicks": 0,
       "gscClicks": 2,
-      "score": 43,
-      "ranked": true
-    },
-    "hongdaeclub-bermuda": {
-      "views": 12,
-      "users": 11,
-      "phoneClicks": 0,
-      "gscClicks": 1,
-      "score": 37,
-      "ranked": true
-    },
-    "gwangjuallnight": {
-      "views": 13,
-      "users": 9,
-      "phoneClicks": 0,
-      "gscClicks": 1,
-      "score": 34,
-      "ranked": true
-    },
-    "seongnamshampoonight": {
-      "views": 11,
-      "users": 11,
-      "phoneClicks": 0,
-      "gscClicks": 6,
-      "score": 51,
+      "score": 47,
       "ranked": true
     },
     "haeundaehoppa-kkantappiya": {
-      "views": 10,
-      "users": 7,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 24,
-      "ranked": true
-    },
-    "cheongdamh2onight": {
-      "views": 12,
-      "users": 12,
-      "phoneClicks": 0,
-      "gscClicks": 2,
-      "score": 42,
-      "ranked": true
-    },
-    "daeguhangukgwannight": {
-      "views": 12,
-      "users": 12,
+      "views": 23,
+      "users": 19,
       "phoneClicks": 0,
       "gscClicks": 1,
-      "score": 39,
+      "score": 64,
+      "ranked": true
+    },
+    "haeundaehoppa-michelin": {
+      "views": 15,
+      "users": 10,
+      "phoneClicks": 0,
+      "gscClicks": 5,
+      "score": 50,
       "ranked": true
     },
     "hwajeonghangukgwannight": {
-      "views": 7,
-      "users": 6,
+      "views": 14,
+      "users": 7,
+      "phoneClicks": 0,
+      "gscClicks": 7,
+      "score": 49,
+      "ranked": true
+    },
+    "pajuyadangskydomenight": {
+      "views": 17,
+      "users": 15,
+      "phoneClicks": 0,
+      "gscClicks": 8,
+      "score": 71,
+      "ranked": true
+    },
+    "haeundaegoguryeo": {
+      "views": 28,
+      "users": 21,
+      "phoneClicks": 0,
+      "gscClicks": 1,
+      "score": 73,
+      "ranked": true
+    },
+    "seosanhobaknight": {
+      "views": 13,
+      "users": 13,
+      "phoneClicks": 0,
+      "gscClicks": 10,
+      "score": 69,
+      "ranked": true
+    },
+    "daeguhangukgwannight": {
+      "views": 18,
+      "users": 17,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 52,
+      "ranked": true
+    },
+    "daeguhobaknight": {
+      "views": 19,
+      "users": 18,
+      "phoneClicks": 0,
+      "gscClicks": 2,
+      "score": 61,
+      "ranked": true
+    },
+    "ulsanchampionnight": {
+      "views": 14,
+      "users": 14,
+      "phoneClicks": 0,
+      "gscClicks": 2,
+      "score": 48,
+      "ranked": true
+    },
+    "daejeonsugarclub": {
+      "views": 16,
+      "users": 15,
       "phoneClicks": 0,
       "gscClicks": 5,
-      "score": 34,
-      "ranked": false
+      "score": 61,
+      "ranked": true
     },
-    "ilsan-hwajung-tunnel": {
-      "views": 8,
-      "users": 5,
+    "gangnamjuliananight": {
+      "views": 20,
+      "users": 19,
       "phoneClicks": 0,
-      "gscClicks": 4,
-      "score": 30,
+      "gscClicks": 0,
+      "score": 58,
+      "ranked": true
+    },
+    "daejeonhoppa-eclipse": {
+      "views": 11,
+      "users": 11,
+      "phoneClicks": 0,
+      "gscClicks": 3,
+      "score": 42,
+      "ranked": true
+    },
+    "suwonkoreanight": {
+      "views": 12,
+      "users": 13,
+      "phoneClicks": 0,
+      "gscClicks": 6,
+      "score": 56,
+      "ranked": true
+    },
+    "cheongju-supermoon": {
+      "views": 10,
+      "users": 9,
+      "phoneClicks": 0,
+      "gscClicks": 6,
+      "score": 46,
+      "ranked": true
+    },
+    "gangnamclub-laputa": {
+      "views": 15,
+      "users": 14,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 43,
+      "ranked": true
+    },
+    "gangnamclub-octagon": {
+      "views": 9,
+      "users": 6,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 21,
       "ranked": false
     },
-    "incheonarabiannight": {
+    "hongdaeclub-bermuda": {
       "views": 11,
       "users": 10,
       "phoneClicks": 0,
@@ -433,53 +425,93 @@
       "score": 34,
       "ranked": true
     },
-    "seosanhobaknight": {
-      "views": 7,
-      "users": 7,
-      "phoneClicks": 0,
-      "gscClicks": 7,
-      "score": 42,
-      "ranked": false
-    },
-    "ulsanchampionnight": {
+    "suwonhoppa-beast": {
       "views": 10,
       "users": 10,
       "phoneClicks": 0,
-      "gscClicks": 3,
-      "score": 39,
+      "gscClicks": 6,
+      "score": 48,
       "ranked": true
     },
-    "gangnamclub-laputa": {
+    "bulgwangdonghobaknight": {
+      "views": 9,
+      "users": 8,
+      "phoneClicks": 0,
+      "gscClicks": 7,
+      "score": 46,
+      "ranked": false
+    },
+    "gangseonight": {
       "views": 11,
       "users": 10,
       "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 31,
+      "gscClicks": 3,
+      "score": 40,
       "ranked": true
     },
-    "bucheonmeritnight": {
+    "gwangjumgmnight": {
+      "views": 9,
+      "users": 8,
+      "phoneClicks": 0,
+      "gscClicks": 8,
+      "score": 49,
+      "ranked": false
+    },
+    "apgujeongcodelounge": {
+      "views": 11,
+      "users": 5,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 21,
+      "ranked": true
+    },
+    "gwangjuallnight": {
+      "views": 12,
+      "users": 10,
+      "phoneClicks": 0,
+      "gscClicks": 1,
+      "score": 35,
+      "ranked": true
+    },
+    "yeongdeungpoterminalnight": {
       "views": 8,
+      "users": 6,
+      "phoneClicks": 0,
+      "gscClicks": 1,
+      "score": 23,
+      "ranked": false
+    },
+    "itaewonclub-cakeshop": {
+      "views": 9,
+      "users": 4,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 17,
+      "ranked": false
+    },
+    "gangnam-hoppa-again": {
+      "views": 11,
       "users": 7,
       "phoneClicks": 0,
       "gscClicks": 0,
-      "score": 22,
-      "ranked": false
+      "score": 25,
+      "ranked": true
     },
-    "gumihobaknight": {
-      "views": 7,
-      "users": 7,
+    "cheonankoreanight": {
+      "views": 8,
+      "users": 3,
       "phoneClicks": 0,
-      "gscClicks": 3,
-      "score": 30,
+      "gscClicks": 0,
+      "score": 14,
       "ranked": false
     },
-    "gwangjusangmunight": {
-      "views": 11,
+    "cheonanstardomnight": {
+      "views": 8,
       "users": 8,
       "phoneClicks": 0,
       "gscClicks": 0,
-      "score": 27,
-      "ranked": true
+      "score": 24,
+      "ranked": false
     },
     "ilsan-mul-night": {
       "views": 9,
@@ -489,20 +521,100 @@
       "score": 21,
       "ranked": false
     },
-    "sangbonghangukgwannight": {
-      "views": 8,
+    "nowonhobaknight": {
+      "views": 6,
+      "users": 5,
+      "phoneClicks": 0,
+      "gscClicks": 2,
+      "score": 22,
+      "ranked": false
+    },
+    "gangnamhoppa-royal": {
+      "views": 10,
       "users": 8,
       "phoneClicks": 0,
       "gscClicks": 0,
+      "score": 26,
+      "ranked": true
+    },
+    "hongdae-hoppa": {
+      "views": 6,
+      "users": 4,
+      "phoneClicks": 0,
+      "gscClicks": 2,
+      "score": 20,
+      "ranked": false
+    },
+    "changwon-lululalala": {
+      "views": 8,
+      "users": 5,
+      "phoneClicks": 0,
+      "gscClicks": 3,
+      "score": 27,
+      "ranked": false
+    },
+    "gwangjusangmunight": {
+      "views": 9,
+      "users": 8,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 25,
+      "ranked": false
+    },
+    "incheonarabiannight": {
+      "views": 8,
+      "users": 8,
+      "phoneClicks": 0,
+      "gscClicks": 2,
+      "score": 30,
+      "ranked": false
+    },
+    "indeokvon-gukbingwan-night": {
+      "views": 5,
+      "users": 4,
+      "phoneClicks": 0,
+      "gscClicks": 5,
+      "score": 28,
+      "ranked": false
+    },
+    "sangbonghangukgwannight": {
+      "views": 7,
+      "users": 7,
+      "phoneClicks": 0,
+      "gscClicks": 1,
       "score": 24,
       "ranked": false
     },
-    "yeongdeungpoterminalnight": {
-      "views": 7,
-      "users": 6,
+    "apgujeongclub-color": {
+      "views": 5,
+      "users": 4,
       "phoneClicks": 0,
-      "gscClicks": 3,
-      "score": 28,
+      "gscClicks": 0,
+      "score": 13,
+      "ranked": false
+    },
+    "gangnamclub-sound": {
+      "views": 7,
+      "users": 5,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 17,
+      "ranked": false
+    },
+    "ilsanclub-cj": {
+      "views": 6,
+      "users": 2,
+      "phoneClicks": 0,
+      "gscClicks": 1,
+      "score": 13,
+      "ranked": false
+    },
+    "itaewonclub-maid": {
+      "views": 5,
+      "users": 5,
+      "phoneClicks": 0,
+      "gscClicks": 1,
+      "score": 18,
       "ranked": false
     },
     "uijeongbuarena": {
@@ -513,51 +625,51 @@
       "score": 11,
       "ranked": false
     },
-    "cheonanstardomnight": {
-      "views": 7,
-      "users": 7,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 21,
-      "ranked": false
-    },
-    "doksangukbingwannight": {
-      "views": 6,
-      "users": 6,
-      "phoneClicks": 0,
-      "gscClicks": 2,
-      "score": 24,
-      "ranked": false
-    },
-    "apgujeongclub-color": {
+    "busanhoppa-aura": {
       "views": 6,
       "users": 5,
       "phoneClicks": 0,
+      "gscClicks": 3,
+      "score": 25,
+      "ranked": false
+    },
+    "geondaehoppa-w": {
+      "views": 5,
+      "users": 3,
+      "phoneClicks": 0,
       "gscClicks": 0,
-      "score": 16,
+      "score": 11,
       "ranked": false
     },
-    "changwon-lululalala": {
-      "views": 8,
-      "users": 7,
+    "haeundaehoppa-velvet": {
+      "views": 7,
+      "users": 6,
       "phoneClicks": 0,
-      "gscClicks": 2,
-      "score": 28,
+      "gscClicks": 0,
+      "score": 19,
       "ranked": false
     },
-    "gwangjucheomdanempanight": {
-      "views": 8,
-      "users": 8,
-      "phoneClicks": 0,
-      "gscClicks": 1,
-      "score": 27,
-      "ranked": false
-    },
-    "gwangjutotonight": {
+    "apgujeonglounge-dm": {
       "views": 6,
       "users": 6,
       "phoneClicks": 0,
-      "gscClicks": 1,
+      "gscClicks": 0,
+      "score": 18,
+      "ranked": false
+    },
+    "bucheonmeritnight": {
+      "views": 5,
+      "users": 4,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 13,
+      "ranked": false
+    },
+    "doksangukbingwannight": {
+      "views": 4,
+      "users": 4,
+      "phoneClicks": 0,
+      "gscClicks": 3,
       "score": 21,
       "ranked": false
     },
@@ -569,71 +681,55 @@
       "score": 21,
       "ranked": false
     },
-    "gangnamclub-sound": {
-      "views": 6,
+    "gangnamclub-utopia": {
+      "views": 4,
       "users": 4,
       "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 14,
+      "gscClicks": 1,
+      "score": 15,
       "ranked": false
     },
-    "gangnamhoppa-royal": {
+    "gimposomenight": {
+      "views": 6,
+      "users": 6,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 18,
+      "ranked": false
+    },
+    "gwangjucheomdanempanight": {
+      "views": 6,
+      "users": 6,
+      "phoneClicks": 0,
+      "gscClicks": 1,
+      "score": 21,
+      "ranked": false
+    },
+    "gwangjutotonight": {
+      "views": 5,
+      "users": 6,
+      "phoneClicks": 0,
+      "gscClicks": 1,
+      "score": 20,
+      "ranked": false
+    },
+    "ilsan-hwajung-tunnel": {
       "views": 5,
       "users": 5,
       "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 15,
-      "ranked": false
-    },
-    "geondaehoppa-w": {
-      "views": 3,
-      "users": 1,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 5,
-      "ranked": false
-    },
-    "haeundaehoppa-michelin": {
-      "views": 3,
-      "users": 2,
-      "phoneClicks": 0,
-      "gscClicks": 2,
-      "score": 13,
-      "ranked": false
-    },
-    "hongdae-hoppa": {
-      "views": 4,
-      "users": 3,
-      "phoneClicks": 0,
       "gscClicks": 1,
-      "score": 13,
+      "score": 18,
       "ranked": false
     },
-    "nowonhobaknight": {
-      "views": 3,
-      "users": 2,
-      "phoneClicks": 0,
-      "gscClicks": 2,
-      "score": 13,
-      "ranked": false
-    },
-    "bucheonclub-paragon": {
-      "views": 3,
-      "users": 3,
-      "phoneClicks": 0,
-      "gscClicks": 2,
-      "score": 15,
-      "ranked": false
-    },
-    "gangnamclub-face": {
+    "apgujeongclub-hype": {
       "views": 2,
       "users": 2,
       "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 6,
+      "gscClicks": 2,
+      "score": 12,
       "ranked": false
     },
-    "hongdaeclub-dokkaebi": {
+    "cheongdamclub-arju": {
       "views": 4,
       "users": 4,
       "phoneClicks": 0,
@@ -641,95 +737,7 @@
       "score": 12,
       "ranked": false
     },
-    "itaewon-savage": {
-      "views": 3,
-      "users": 3,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 9,
-      "ranked": false
-    },
-    "itaewonclub-maid": {
-      "views": 3,
-      "users": 3,
-      "phoneClicks": 0,
-      "gscClicks": 1,
-      "score": 12,
-      "ranked": false
-    },
-    "itaewongaepanpocha": {
-      "views": 3,
-      "users": 3,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 9,
-      "ranked": false
-    },
-    "yonginbyeolbam": {
-      "views": 4,
-      "users": 5,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 14,
-      "ranked": false
-    },
-    "haeundaehoppa-velvet": {
-      "views": 4,
-      "users": 5,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 14,
-      "ranked": false
-    },
-    "suwonhoppa-beast": {
-      "views": 3,
-      "users": 3,
-      "phoneClicks": 0,
-      "gscClicks": 1,
-      "score": 12,
-      "ranked": false
-    },
-    "apgujeongcodelounge": {
-      "views": 2,
-      "users": 1,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 4,
-      "ranked": false
-    },
-    "nowonstarnight": {
-      "views": 2,
-      "users": 2,
-      "phoneClicks": 0,
-      "gscClicks": 1,
-      "score": 9,
-      "ranked": false
-    },
-    "apgujeongclub-dbridge": {
-      "views": 2,
-      "users": 2,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 6,
-      "ranked": false
-    },
-    "apgujeongclub-hype": {
-      "views": 1,
-      "users": 1,
-      "phoneClicks": 0,
-      "gscClicks": 1,
-      "score": 6,
-      "ranked": false
-    },
-    "apgujeongclub-intro": {
-      "views": 1,
-      "users": 1,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 3,
-      "ranked": false
-    },
-    "cheongdamclub-arju": {
+    "gangnamclub-face": {
       "views": 2,
       "users": 2,
       "phoneClicks": 0,
@@ -745,7 +753,63 @@
       "score": 6,
       "ranked": false
     },
-    "ilsanclub-cj": {
+    "itaewongaepanpocha": {
+      "views": 3,
+      "users": 3,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 9,
+      "ranked": false
+    },
+    "gangnam-hoppa-flirting": {
+      "views": 3,
+      "users": 3,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 9,
+      "ranked": false
+    },
+    "suwonhoppa-aura": {
+      "views": 4,
+      "users": 4,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 12,
+      "ranked": false
+    },
+    "apgujeongidiotlounge": {
+      "views": 3,
+      "users": 3,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 9,
+      "ranked": false
+    },
+    "gumihobaknight": {
+      "views": 2,
+      "users": 2,
+      "phoneClicks": 0,
+      "gscClicks": 3,
+      "score": 15,
+      "ranked": false
+    },
+    "jejunight": {
+      "views": 3,
+      "users": 4,
+      "phoneClicks": 0,
+      "gscClicks": 1,
+      "score": 14,
+      "ranked": false
+    },
+    "nowonstarnight": {
+      "views": 3,
+      "users": 3,
+      "phoneClicks": 0,
+      "gscClicks": 1,
+      "score": 12,
+      "ranked": false
+    },
+    "apgujeongclub-candyman": {
       "views": 2,
       "users": 2,
       "phoneClicks": 0,
@@ -753,7 +817,63 @@
       "score": 6,
       "ranked": false
     },
-    "itaewonclub-cakeshop": {
+    "apgujeongclub-dbridge": {
+      "views": 2,
+      "users": 2,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 6,
+      "ranked": false
+    },
+    "apgujeongclub-intro": {
+      "views": 1,
+      "users": 1,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 3,
+      "ranked": false
+    },
+    "gangnamclub-bamnbam": {
+      "views": 2,
+      "users": 2,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 6,
+      "ranked": false
+    },
+    "gangnamclub-miro": {
+      "views": 1,
+      "users": 1,
+      "phoneClicks": 0,
+      "gscClicks": 1,
+      "score": 6,
+      "ranked": false
+    },
+    "hongdaeclub-dokkaebi": {
+      "views": 2,
+      "users": 2,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 6,
+      "ranked": false
+    },
+    "incheonparadisecity": {
+      "views": 1,
+      "users": 1,
+      "phoneClicks": 0,
+      "gscClicks": 1,
+      "score": 6,
+      "ranked": false
+    },
+    "itaewon-savage": {
+      "views": 1,
+      "users": 1,
+      "phoneClicks": 0,
+      "gscClicks": 0,
+      "score": 3,
+      "ranked": false
+    },
+    "nowoncheongchunpocha": {
       "views": 2,
       "users": 2,
       "phoneClicks": 0,
@@ -769,31 +889,23 @@
       "score": 6,
       "ranked": false
     },
-    "busanhoppa-aura": {
-      "views": 1,
-      "users": 1,
+    "yonginbyeolbam": {
+      "views": 2,
+      "users": 3,
       "phoneClicks": 0,
-      "gscClicks": 3,
-      "score": 12,
+      "gscClicks": 0,
+      "score": 8,
       "ranked": false
     },
     "busanhoppa-star": {
-      "views": 1,
-      "users": 1,
+      "views": 2,
+      "users": 2,
       "phoneClicks": 0,
-      "gscClicks": 1,
+      "gscClicks": 0,
       "score": 6,
       "ranked": false
     },
     "daeguhoppa-perfect": {
-      "views": 2,
-      "users": 2,
-      "phoneClicks": 0,
-      "gscClicks": 1,
-      "score": 9,
-      "ranked": false
-    },
-    "gangnam-hoppa-again": {
       "views": 2,
       "users": 2,
       "phoneClicks": 0,
@@ -805,59 +917,11 @@
       "views": 1,
       "users": 1,
       "phoneClicks": 0,
-      "gscClicks": 1,
-      "score": 6,
+      "gscClicks": 3,
+      "score": 12,
       "ranked": false
     },
-    "suwonhoppa-aura": {
-      "views": 2,
-      "users": 2,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 6,
-      "ranked": false
-    },
-    "apgujeonglounge-dm": {
-      "views": 2,
-      "users": 2,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 6,
-      "ranked": false
-    },
-    "bulgwangdonghobaknight": {
-      "views": 1,
-      "users": 1,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 3,
-      "ranked": false
-    },
-    "dapsimnimiraclenight": {
-      "views": 1,
-      "users": 1,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 3,
-      "ranked": false
-    },
-    "gimposomenight": {
-      "views": 2,
-      "users": 2,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 6,
-      "ranked": false
-    },
-    "jejunight": {
-      "views": 2,
-      "users": 3,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 8,
-      "ranked": false
-    },
-    "uijeongbuhangukgwannight": {
+    "uijeongbubaekakgwannight": {
       "views": 1,
       "users": 1,
       "phoneClicks": 0,
@@ -865,7 +929,7 @@
       "score": 6,
       "ranked": false
     },
-    "apgujeongclub-muin": {
+    "gangnamclub-jack": {
       "views": 0,
       "users": 1,
       "phoneClicks": 0,
@@ -873,23 +937,15 @@
       "score": 2,
       "ranked": false
     },
-    "jangandonghoppa-bbangbbang": {
-      "views": 0,
-      "users": 2,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 4,
-      "ranked": false
-    },
-    "gangnamclub-peak": {
+    "apgujeongclub-muin": {
       "views": 0,
       "users": 0,
       "phoneClicks": 0,
-      "gscClicks": 1,
-      "score": 3,
+      "gscClicks": 0,
+      "score": 0,
       "ranked": false
     },
-    "apgujeongclub-candyman": {
+    "bucheonclub-paragon": {
       "views": 0,
       "users": 0,
       "phoneClicks": 0,
@@ -905,31 +961,7 @@
       "score": 0,
       "ranked": false
     },
-    "gangnamclub-bamnbam": {
-      "views": 0,
-      "users": 0,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 0,
-      "ranked": false
-    },
-    "gangnamclub-jack": {
-      "views": 0,
-      "users": 0,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 0,
-      "ranked": false
-    },
-    "gangnamclub-miro": {
-      "views": 0,
-      "users": 0,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 0,
-      "ranked": false
-    },
-    "gangnamclub-utopia": {
+    "gangnamclub-peak": {
       "views": 0,
       "users": 0,
       "phoneClicks": 0,
@@ -945,23 +977,7 @@
       "score": 0,
       "ranked": false
     },
-    "incheonparadisecity": {
-      "views": 0,
-      "users": 0,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 0,
-      "ranked": false
-    },
     "itaewonclub-prism": {
-      "views": 0,
-      "users": 0,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 0,
-      "ranked": false
-    },
-    "nowoncheongchunpocha": {
       "views": 0,
       "users": 0,
       "phoneClicks": 0,
@@ -977,7 +993,7 @@
       "score": 0,
       "ranked": false
     },
-    "gangnam-hoppa-flirting": {
+    "jangandonghoppa-bbangbbang": {
       "views": 0,
       "users": 0,
       "phoneClicks": 0,
@@ -985,15 +1001,7 @@
       "score": 0,
       "ranked": false
     },
-    "apgujeongidiotlounge": {
-      "views": 0,
-      "users": 0,
-      "phoneClicks": 0,
-      "gscClicks": 0,
-      "score": 0,
-      "ranked": false
-    },
-    "cheonankoreanight": {
+    "uijeongbuhangukgwannight": {
       "views": 0,
       "users": 0,
       "phoneClicks": 0,
