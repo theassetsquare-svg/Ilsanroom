@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-07T18:06:36.383Z",
+  "generated_at": "2026-09-07T20:14:12.647Z",
   "window_hours": 24,
   "items": [
     {
@@ -14,13 +14,6 @@
       "title": "일산룸",
       "category": "room",
       "region": "일산",
-      "views_24h": 4
-    },
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
       "views_24h": 4
     },
     {
@@ -77,6 +70,13 @@
       "title": "대전설탕클럽",
       "category": "club",
       "region": "대전",
+      "views_24h": 2
+    },
+    {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
+      "category": "night",
+      "region": "강서",
       "views_24h": 2
     },
     {
