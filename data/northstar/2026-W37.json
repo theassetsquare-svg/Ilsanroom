@@ -1,0 +1,23 @@
+{
+  "week": "2026-W37",
+  "generatedAt": "2026-09-07",
+  "source": "live(GA4 540830544 + GSC nolcool.com + Supabase)",
+  "members": 10,
+  "pagesPerVisit": 2.74,
+  "readEndRate": 6.2,
+  "dwellSec": 96,
+  "revisitPct": 10.1,
+  "phoneClick": 12,
+  "sharePct": 42.1,
+  "top3Queries": 87,
+  "totalQueries": 903,
+  "categoryPage1": {
+    "night": 203,
+    "club": 74,
+    "room": 2,
+    "yojeong": 8,
+    "hoppa": 1,
+    "lounge": 0
+  },
+  "_errors": []
+}
