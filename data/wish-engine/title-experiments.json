@@ -37,6 +37,13 @@
           "clicks": 55,
           "ctr": 3.24,
           "verdict": "warming-up(적용 6일차 < 14 — 28d 창이 적용 전 데이터 포함, 판정 보류)"
+        },
+        {
+          "date": "2026-09-07",
+          "imp": 1720,
+          "clicks": 49,
+          "ctr": 2.85,
+          "verdict": "rollback-candidate(변형 CTR 2.85% < 기준 3.5% — 대화형 세션에서 원복)"
         }
       ]
     },
@@ -66,6 +73,13 @@
           "clicks": 8,
           "ctr": 1.15,
           "verdict": "warming-up(적용 6일차 < 14 — 28d 창이 적용 전 데이터 포함, 판정 보류)"
+        },
+        {
+          "date": "2026-09-07",
+          "imp": 770,
+          "clicks": 6,
+          "ctr": 0.78,
+          "verdict": "rollback-candidate(변형 CTR 0.78% < 기준 1.1% — 대화형 세션에서 원복)"
         }
       ]
     },
@@ -95,6 +109,13 @@
           "clicks": 15,
           "ctr": 2.69,
           "verdict": "warming-up(적용 6일차 < 14 — 28d 창이 적용 전 데이터 포함, 판정 보류)"
+        },
+        {
+          "date": "2026-09-07",
+          "imp": 381,
+          "clicks": 9,
+          "ctr": 2.36,
+          "verdict": "rollback-candidate(변형 CTR 2.36% < 기준 3.1% — 대화형 세션에서 원복)"
         }
       ]
     },
@@ -124,6 +145,13 @@
           "clicks": 3,
           "ctr": 0.77,
           "verdict": "warming-up(적용 6일차 < 14 — 28d 창이 적용 전 데이터 포함, 판정 보류)"
+        },
+        {
+          "date": "2026-09-07",
+          "imp": 335,
+          "clicks": 2,
+          "ctr": 0.6,
+          "verdict": "rollback-candidate(변형 CTR 0.60% < 기준 1.4% — 대화형 세션에서 원복)"
         }
       ]
     },
@@ -153,6 +181,13 @@
           "clicks": 12,
           "ctr": 3.04,
           "verdict": "warming-up(적용 6일차 < 14 — 28d 창이 적용 전 데이터 포함, 판정 보류)"
+        },
+        {
+          "date": "2026-09-07",
+          "imp": 324,
+          "clicks": 22,
+          "ctr": 6.79,
+          "verdict": "winner-so-far(변형 CTR 6.79% ≥ 기준 2.5%)"
         }
       ]
     }
