@@ -1,9 +1,31 @@
 {
-  "generated_at": "2026-09-06T01:50:56.726Z",
+  "generated_at": "2026-09-07T01:48:16.170Z",
   "window_hours": 24,
-  "total_runs": 176,
-  "total_fail": 1,
+  "total_runs": 170,
+  "total_fail": 4,
   "workflows": [
+    {
+      "name": "Gate Bypass Audit (양방향 우회검증)",
+      "total": 2,
+      "success": 1,
+      "failure": 1,
+      "in_progress": 0,
+      "last_fail": {
+        "created_at": "2026-09-06T02:27:36Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/34006534495"
+      }
+    },
+    {
+      "name": "Audit PR (guard + dist)",
+      "total": 2,
+      "success": 1,
+      "failure": 1,
+      "in_progress": 0,
+      "last_fail": {
+        "created_at": "2026-09-06T02:27:36Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/34006534464"
+      }
+    },
     {
       "name": "Seongnamshampoonight Keyword Watch (성남샴푸나이트 2 키워드 24h)",
       "total": 1,
@@ -11,25 +33,20 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-09-06T01:17:57Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/34003528472"
+        "created_at": "2026-09-07T01:16:42Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/34072506951"
       }
     },
     {
-      "name": "Venue Reports Daily",
-      "total": 9,
-      "success": 9,
-      "failure": 0,
+      "name": "Hoppa Keyword Watch (/hoppa 호빠 단일 키워드 상위노출 24h)",
+      "total": 1,
+      "success": 0,
+      "failure": 1,
       "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Activity Alert (15min)",
-      "total": 8,
-      "success": 8,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
+      "last_fail": {
+        "created_at": "2026-09-06T05:42:14Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/34014640606"
+      }
     },
     {
       "name": "24h Site Monitoring",
@@ -40,17 +57,33 @@
       "last_fail": null
     },
     {
-      "name": "24h Auto Build + SEO Notify",
-      "total": 5,
-      "success": 5,
+      "name": "Venue Reports Daily",
+      "total": 8,
+      "success": 8,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Activity Alert (15min)",
+      "total": 7,
+      "success": 7,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
       "name": "Scheduled Cron Jobs",
-      "total": 5,
-      "success": 5,
+      "total": 4,
+      "success": 4,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "24h Auto Build + SEO Notify",
+      "total": 4,
+      "success": 4,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -59,30 +92,6 @@
       "name": "Security Audit Hourly",
       "total": 4,
       "success": 4,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Google Re-Index (Sitemap + Inspect)",
-      "total": 3,
-      "success": 3,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Gate Bypass Audit (양방향 우회검증)",
-      "total": 3,
-      "success": 3,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Audit PR (guard + dist)",
-      "total": 3,
-      "success": 3,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -101,6 +110,14 @@
       "success": 1,
       "failure": 0,
       "in_progress": 1,
+      "last_fail": null
+    },
+    {
+      "name": "Google Re-Index (Sitemap + Inspect)",
+      "total": 2,
+      "success": 2,
+      "failure": 0,
+      "in_progress": 0,
       "last_fail": null
     },
     {
@@ -248,7 +265,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamjuliananight Keyword Watch (강남줄리아나나이트 2 키워드 24h)",
+      "name": "Struct Fingerprint Watch (구조 지문 라이브 감시)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -256,7 +273,7 @@
       "last_fail": null
     },
     {
-      "name": "Struct Fingerprint Watch (구조 지문 라이브 감시)",
+      "name": "Gangnamjuliananight Keyword Watch (강남줄리아나나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -456,6 +473,14 @@
       "last_fail": null
     },
     {
+      "name": "Popularity Recompute (인기 점수 주간 재계산)",
+      "total": 1,
+      "success": 1,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
       "name": "CrUX Daily (실사용자 Core Web Vitals)",
       "total": 1,
       "success": 1,
@@ -496,7 +521,7 @@
       "last_fail": null
     },
     {
-      "name": "Sunday Deep Audit (Sitemap Fullcheck)",
+      "name": "GSC Demand Gap (weekly)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -576,7 +601,7 @@
       "last_fail": null
     },
     {
-      "name": "Itaewonclub Prism Keyword Watch (이태원클럽 단일 키워드 24h)",
+      "name": "Itaewonclub Utopia Keyword Watch (이태원클럽 단일 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -584,7 +609,7 @@
       "last_fail": null
     },
     {
-      "name": "Itaewonclub Utopia Keyword Watch (이태원클럽 단일 키워드 24h)",
+      "name": "Itaewonclub Prism Keyword Watch (이태원클럽 단일 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -624,7 +649,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -632,7 +657,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Face Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Gangnamclub Peak Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -696,7 +721,7 @@
       "last_fail": null
     },
     {
-      "name": "Clubs Keyword Watch (/clubs 클럽 단일 키워드 24h)",
+      "name": "Gangnamclub Laputa Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -704,7 +729,7 @@
       "last_fail": null
     },
     {
-      "name": "Gangnamclub Laputa Keyword Watch (강남클럽·청담클럽 2 키워드 24h)",
+      "name": "Clubs Keyword Watch (/clubs 클럽 단일 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -873,14 +898,6 @@
     },
     {
       "name": "Haeundae Hoppa Kkantappiya Keyword Watch (해운대호빠+부산호빠 2 키워드 24h)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Hoppa Keyword Watch (/hoppa 호빠 단일 키워드 상위노출 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -1073,15 +1090,15 @@
     }
   ],
   "deploy_sync": {
-    "n": 2,
-    "avg_ms": 125500,
-    "p50_ms": 182000,
-    "p95_ms": 182000,
-    "max_ms": 182000,
+    "n": 1,
+    "avg_ms": 56000,
+    "p50_ms": 56000,
+    "p95_ms": 56000,
+    "max_ms": 56000,
     "max_sample": {
-      "ms": 182000,
+      "ms": 56000,
       "workflow": "Google Re-Index (Sitemap + Inspect)",
-      "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/33999309412"
+      "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/34006250941"
     }
   }
 }
