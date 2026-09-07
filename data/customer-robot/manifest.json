@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-24",
-  "total": 660,
+  "generatedAt": "2026-09-07",
+  "total": 661,
   "excludedAdmin": 10,
   "routes": [
     "/",
@@ -12,6 +12,7 @@
     "/best/yojeong/",
     "/billing/",
     "/budget/",
+    "/cafe/",
     "/case-studies/",
     "/clubs/",
     "/clubs/apgujeong/",
