@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-08T17:04:47.404Z",
+  "generated_at": "2026-09-08T19:38:19.592Z",
   "window_hours": 24,
   "items": [
     {
@@ -17,11 +17,11 @@
       "views_24h": 4
     },
     {
-      "path": "/lounges/apgujeongidiotlounge",
-      "title": "압구정이디엇라운지",
-      "category": "lounge",
-      "region": "압구정",
-      "views_24h": 4
+      "path": "/nights/busanyeonsandongmulnight",
+      "title": "부산연산동물나이트",
+      "category": "night",
+      "region": "부산 연산동",
+      "views_24h": 3
     },
     {
       "path": "/nights/daegutotoganight",
@@ -38,11 +38,11 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/ansandontellmamanight",
-      "title": "안산돈텔마마나이트",
-      "category": "night",
-      "region": "안산",
-      "views_24h": 2
+      "path": "/lounges/apgujeongidiotlounge",
+      "title": "압구정이디엇라운지",
+      "category": "lounge",
+      "region": "압구정",
+      "views_24h": 3
     },
     {
       "path": "/nights/yeongdeungpoterminalnight",
@@ -87,24 +87,24 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/busanyeonsandongmulnight",
-      "title": "부산연산동물나이트",
+      "path": "/nights/daegubabambanight",
+      "title": "대구바밤바나이트",
       "category": "night",
-      "region": "부산 연산동",
-      "views_24h": 2
+      "region": "대구",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/ansandontellmamanight",
+      "title": "안산돈텔마마나이트",
+      "category": "night",
+      "region": "안산",
+      "views_24h": 1
     },
     {
       "path": "/hoppa/suwonhoppa-beast",
       "title": "수원호빠 비스트",
       "category": "hoppa",
       "region": "수원",
-      "views_24h": 1
-    },
-    {
-      "path": "/nights/incheonarabiannight",
-      "title": "인천아라비안나이트",
-      "category": "night",
-      "region": "인천",
       "views_24h": 1
     }
   ]
