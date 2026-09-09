@@ -1,17 +1,24 @@
 {
-  "generated_at": "2026-09-09T07:37:51.222Z",
+  "generated_at": "2026-09-09T17:02:09.156Z",
   "window_hours": 24,
   "items": [
     {
-      "path": "/nights/daejeononenight",
-      "title": "대전원나이트",
-      "category": "night",
-      "region": "대전",
-      "views_24h": 5
-    },
-    {
       "path": "/nights/daejeonbongmyeongnight",
       "title": "대전봉명나이트",
+      "category": "night",
+      "region": "대전",
+      "views_24h": 7
+    },
+    {
+      "path": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong",
+      "title": "일산명월관요정",
+      "category": "yojeong",
+      "region": "일산",
+      "views_24h": 7
+    },
+    {
+      "path": "/nights/daejeononenight",
+      "title": "대전원나이트",
       "category": "night",
       "region": "대전",
       "views_24h": 5
@@ -21,27 +28,20 @@
       "title": "대전세븐나이트",
       "category": "night",
       "region": "대전",
-      "views_24h": 4
-    },
-    {
-      "path": "/nights/gangseo-hobak",
-      "title": "강서호박나이트",
-      "category": "night",
-      "region": "강서",
-      "views_24h": 4
-    },
-    {
-      "path": "/nights/seongnamshampoonight",
-      "title": "성남샴푸나이트",
-      "category": "night",
-      "region": "성남",
-      "views_24h": 3
+      "views_24h": 5
     },
     {
       "path": "/nights/daejeonhangukgwannight",
       "title": "대전한국관나이트",
       "category": "night",
       "region": "대전",
+      "views_24h": 3
+    },
+    {
+      "path": "/rooms/ilsan/ilsanroom",
+      "title": "일산룸",
+      "category": "room",
+      "region": "일산",
       "views_24h": 3
     },
     {
@@ -52,24 +52,24 @@
       "views_24h": 3
     },
     {
-      "path": "/nights/daegutotoganight",
-      "title": "대구토토가나이트",
+      "path": "/nights/seongnamgukbingwannight",
+      "title": "성남국빈관나이트",
       "category": "night",
-      "region": "대구",
-      "views_24h": 3
+      "region": "성남",
+      "views_24h": 2
     },
     {
-      "path": "/nights/cheongjuhobaknight",
-      "title": "청주호박나이트",
-      "category": "night",
-      "region": "청주",
-      "views_24h": 3
+      "path": "/hoppa/busanhoppa-menz",
+      "title": "부산호빠 맨즈",
+      "category": "hoppa",
+      "region": "부산",
+      "views_24h": 2
     },
     {
-      "path": "/rooms/ilsan/ilsanroom",
-      "title": "일산룸",
-      "category": "room",
-      "region": "일산",
+      "path": "/nights/bucheongoraenight",
+      "title": "부천고래나이트",
+      "category": "night",
+      "region": "부천",
       "views_24h": 2
     },
     {
@@ -80,31 +80,31 @@
       "views_24h": 2
     },
     {
-      "path": "/nights/doksangukbingwannight",
-      "title": "독산동국빈관나이트",
+      "path": "/nights/pyeongtaekhobaknight",
+      "title": "평택호박나이트",
       "category": "night",
-      "region": "독산",
-      "views_24h": 2
-    },
-    {
-      "path": "/hoppa/busanhoppa-menz",
-      "title": "부산호빠 맨즈",
-      "category": "hoppa",
-      "region": "부산",
+      "region": "평택",
       "views_24h": 1
     },
     {
-      "path": "/rooms/haeundaegoguryeo",
-      "title": "해운대고구려",
-      "category": "room",
-      "region": "부산 해운대",
+      "path": "/nights/gimposomenight",
+      "title": "김포썸나이트",
+      "category": "night",
+      "region": "김포",
       "views_24h": 1
     },
     {
-      "path": "/nights/sinlimgrandprixnight",
-      "title": "신림그랑프리나이트",
+      "path": "/clubs/daejeon/daejeonsugarclub",
+      "title": "대전설탕클럽",
+      "category": "club",
+      "region": "대전",
+      "views_24h": 1
+    },
+    {
+      "path": "/nights/gangseo-hobak",
+      "title": "강서호박나이트",
       "category": "night",
-      "region": "신림",
+      "region": "강서",
       "views_24h": 1
     }
   ]
