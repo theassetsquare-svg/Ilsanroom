@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-08T01:59:33.547Z",
+  "generated_at": "2026-09-09T02:04:30.840Z",
   "window_hours": 24,
-  "total_runs": 165,
+  "total_runs": 157,
   "total_fail": 2,
   "workflows": [
     {
@@ -11,8 +11,8 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-09-08T01:21:16Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/34176360785"
+        "created_at": "2026-09-09T01:28:54Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/34299358044"
       }
     },
     {
@@ -22,28 +22,28 @@
       "failure": 1,
       "in_progress": 0,
       "last_fail": {
-        "created_at": "2026-09-07T05:51:59Z",
-        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/34088434736"
+        "created_at": "2026-09-08T05:45:10Z",
+        "url": "https://github.com/theassetsquare-svg/Ilsanroom/actions/runs/34191832331"
       }
     },
     {
-      "name": "Activity Alert (15min)",
-      "total": 6,
-      "success": 6,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "24h Site Monitoring",
-      "total": 6,
-      "success": 6,
+      "total": 7,
+      "success": 7,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
     },
     {
       "name": "Venue Reports Daily",
+      "total": 7,
+      "success": 7,
+      "failure": 0,
+      "in_progress": 0,
+      "last_fail": null
+    },
+    {
+      "name": "Activity Alert (15min)",
       "total": 6,
       "success": 6,
       "failure": 0,
@@ -251,7 +251,7 @@
       "last_fail": null
     },
     {
-      "name": "Daejeonsevennight Keyword Watch (대전세븐나이트 2 키워드 24h)",
+      "name": "Dwell Content Audit (체류 10분 보장 본문 분량)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -259,7 +259,7 @@
       "last_fail": null
     },
     {
-      "name": "Dwell Content Audit (체류 10분 보장 본문 분량)",
+      "name": "Daejeonsevennight Keyword Watch (대전세븐나이트 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -421,7 +421,7 @@
     {
       "name": "All Pages Quality Watch (5축 — anchor 200/img alt/H1/lang+viewport/canonical)",
       "total": 1,
-      "success": 0,
+      "success": 1,
       "failure": 0,
       "in_progress": 0,
       "last_fail": null
@@ -699,14 +699,6 @@
       "last_fail": null
     },
     {
-      "name": "Wish Engine Weekly Loop",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "SEO Deep Audit Watch (전수 7축 24h)",
       "total": 1,
       "success": 1,
@@ -731,23 +723,7 @@
       "last_fail": null
     },
     {
-      "name": "Seed Content Quality Gate (weekly)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Hongdae Hoppa Keyword Watch (홍대호빠 단일 키워드 24h)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Haeundaehoppa Michelin Keyword Watch (해운대호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -763,7 +739,7 @@
       "last_fail": null
     },
     {
-      "name": "GSC Growth Opportunity (weekly)",
+      "name": "Haeundaehoppa Michelin Keyword Watch (해운대호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -819,14 +795,6 @@
       "last_fail": null
     },
     {
-      "name": "GA4 Demand Insight (weekly)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Busanhoppa Star Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
@@ -835,7 +803,7 @@
       "last_fail": null
     },
     {
-      "name": "SERP Loop (검색어 상위노출 주간 루프)",
+      "name": "Busanhoppa Menz Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -844,14 +812,6 @@
     },
     {
       "name": "Daejeonhoppa Eclipse Keyword Watch (대전호빠+충청호빠 2 키워드 24h)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Busanhoppa Menz Keyword Watch (부산호빠+해운대호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -891,14 +851,6 @@
       "last_fail": null
     },
     {
-      "name": "SERP T1 Recheck (노출0 색인의심 주간 재확인)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Gangnam Hoppa Royal Keyword Watch (강남호빠+서울호빠 2 키워드 24h)",
       "total": 1,
       "success": 1,
@@ -916,14 +868,6 @@
     },
     {
       "name": "Paju Yadang Skydome Keyword Watch (파주야당스카이돔나이트 + 파주나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Rank Drop Responder (순위 하락 자동 대응)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -964,14 +908,6 @@
     },
     {
       "name": "Jejunight Keyword Watch (제주나이트 + 제주도나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Venue Rank Trend (가게이름 순위 추이 주간)",
       "total": 1,
       "success": 1,
       "failure": 0,
@@ -1067,23 +1003,7 @@
       "last_fail": null
     },
     {
-      "name": "Search Console Report (키워드/클릭)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
       "name": "Ansanhitnight Keyword Watch (안산히트나이트 2 키워드 24h)",
-      "total": 1,
-      "success": 1,
-      "failure": 0,
-      "in_progress": 0,
-      "last_fail": null
-    },
-    {
-      "name": "Google Index Coverage (전수 색인 점검)",
       "total": 1,
       "success": 1,
       "failure": 0,
