@@ -34,7 +34,7 @@ INSERT INTO posts (id, user_id, category, title, content, likes, views, is_pinne
 -- ============================================================
 INSERT INTO posts (id, user_id, category, title, content, venue_slug, rating, likes, views, is_pinned, created_at) VALUES
 
-(gen_random_uuid(), NULL, 'reviews', '일산룸 신실장님 진짜 센스있음', '예약할때부터 느낌이 좋았는데 도착해서도 직접 나와서 안내해주시고 필요한거 미리미리 챙겨주심. 룸도 넓고 깔끔하고 방음도 잘돼서 편하게 있다감. 초이스도 다양하고 수준이 좋았음. 다음 모임때도 여기로 할예정', 'ilsanroom', 5, 9, 67, false, NOW() - INTERVAL '10 days'),
+(gen_random_uuid(), NULL, 'reviews', '일산룸 총책임자님 진짜 센스있음', '예약할때부터 느낌이 좋았는데 도착해서도 직접 나와서 안내해주시고 필요한거 미리미리 챙겨주심. 룸도 넓고 깔끔하고 방음도 잘돼서 편하게 있다감. 초이스도 다양하고 수준이 좋았음. 다음 모임때도 여기로 할예정', 'ilsanroom', 5, 9, 67, false, NOW() - INTERVAL '10 days'),
 
 (gen_random_uuid(), NULL, 'reviews', '해운대고구려 정찰제라 편함', '부산 출장가서 거래처 접대로 갔는데 정찰제라 계산 스트레스가 없어서 너무 좋았어요. 룸이 진짜 많아서 대기없이 바로 들어갔고 창밖으로 마린시티 야경 보이는데 거래처분이 감탄하시더라구요. 양주 라인업도 괜찮았음', 'haeundaegoguryeo', 4, 7, 52, false, NOW() - INTERVAL '8 days'),
 

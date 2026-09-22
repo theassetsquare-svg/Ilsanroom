@@ -1,5 +1,5 @@
 // One-shot generator for /yojeong/ilsan/ilsanmyeongwolgwanyojeong/ first image.
-// Produces 1200x1200 jpg + webp with "일산명월관 신실장" title for Google image SEO.
+// Produces 1200x1200 jpg + webp with "일산룸 총책임자" title for Google image SEO.
 import sharp from 'sharp';
 import { writeFileSync } from 'node:fs';
 
@@ -96,7 +96,7 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
       fill="#8a1a2a" stroke="#c9a655" stroke-width="2"/>
     <text x="0" y="20" text-anchor="middle"
       font-family="'Noto Serif KR','Nanum Myeongjo','Apple SD Gothic Neo',serif"
-      font-size="84" font-weight="700" fill="#ffe7a8" letter-spacing="20">신 실 장</text>
+      font-size="84" font-weight="700" fill="#ffe7a8" letter-spacing="20">총 책 임 자</text>
   </g>
 
   <!-- Tagline -->

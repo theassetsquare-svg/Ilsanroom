@@ -12,15 +12,15 @@ const HEIGHT = 630;
 // (전화번호 등 별도 오버레이가 합성된 og. 재생성하면 합성 내용이 유실됨)
 // 파일명 버전(-v2 등)이 붙은 변형도 같은 기준 slug로 판정해 함께 보호한다.
 const MANUAL_OG_SLUGS = new Set([
-  'ilsanroom', // 2026-08-01 전화번호(010 3695 4929) 합성본, 현행 파일=og/ilsanroom-v2.jpg — backup/venue-images/20260801-ilsanroom-phone
-  'ilsanmyeongwolgwanyojeong', // 2026-08-02 전화번호(010 3695 4929) 합성본, 현행 파일=og/ilsanmyeongwolgwanyojeong-v2.jpg — backup/venue-images/20260802-ilsanmyeongwolgwan-phone
+  'ilsanroom', // 2026-08-01 전화번호(010 4117 5556) 합성본, 현행 파일=og/ilsanroom-v2.jpg — backup/venue-images/20260801-ilsanroom-phone
+  'ilsanmyeongwolgwanyojeong', // 2026-08-02 전화번호(010 4117 5556) 합성본, 현행 파일=og/ilsanmyeongwolgwanyojeong-v2.jpg — backup/venue-images/20260802-ilsanmyeongwolgwan-phone
 ]);
 // slug 뒤 -v숫자 접미사를 떼고 보호 여부 판정 (예: 'ilsanroom-v2' → 'ilsanroom')
 const isProtectedSlug = (slug) => MANUAL_OG_SLUGS.has(slug.replace(/-v\d+$/, ''));
 
 const NICKNAME_MAP = {
-  'ilsanmyeongwolgwanyojeong': '신실장',
-  'ilsanroom': '신실장',
+  'ilsanmyeongwolgwanyojeong': '일산룸 총책임자',
+  'ilsanroom': '일산룸 총책임자',
   'seongnamshampoonight': '박찬호',
   'suwonchancenight': '강호동',
   'sinlimgrandprixnight': '태양',

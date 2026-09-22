@@ -1,5 +1,5 @@
 // One-shot generator for /rooms/ilsan/ilsanroom/ first image.
-// 1200x1200 jpg + webp with "일산룸 신실장" title — deep blue + gold (room category).
+// 1200x1200 jpg + webp with "일산룸 총책임자" title — deep blue + gold (room category).
 import sharp from 'sharp';
 
 const W = 1200;
@@ -79,7 +79,7 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
       fill="#1a3a6a" stroke="#d6b25a" stroke-width="2"/>
     <text x="0" y="22" text-anchor="middle"
       font-family="'Noto Serif KR','Nanum Myeongjo',serif"
-      font-size="92" font-weight="700" fill="#ffe7a8" letter-spacing="22">신 실 장</text>
+      font-size="92" font-weight="700" fill="#ffe7a8" letter-spacing="22">총 책 임 자</text>
   </g>
 
   <!-- Tagline -->

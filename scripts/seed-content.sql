@@ -4,7 +4,7 @@
 
 
 -- ── 일산룸 (일산 룸) ──
-INSERT INTO posts (category, title, content, venue_slug, rating, likes, views, is_pinned, created_at, updated_at) VALUES ('reviews', '일산룸에서 모임했는데 만족', '회사 동료들이랑 일산룸에서 모임했는데 룸 크기가 딱 좋았음. 음향 시설도 괜찮고 서비스도 빠름. 신실장이 세팅 잘 해줘서 불편한 거 없이 잘 놀았음. 일산에서 프라이빗하게 놀기 좋은 곳.', 'ilsanroom', 5, 16, 79, false, '2026-04-04T06:46:25.427Z', '2026-04-04T06:46:25.427Z');
+INSERT INTO posts (category, title, content, venue_slug, rating, likes, views, is_pinned, created_at, updated_at) VALUES ('reviews', '일산룸에서 모임했는데 만족', '회사 동료들이랑 일산룸에서 모임했는데 룸 크기가 딱 좋았음. 음향 시설도 괜찮고 서비스도 빠름. 일산룸 총책임자이 세팅 잘 해줘서 불편한 거 없이 잘 놀았음. 일산에서 프라이빗하게 놀기 좋은 곳.', 'ilsanroom', 5, 16, 79, false, '2026-04-04T06:46:25.427Z', '2026-04-04T06:46:25.427Z');
 INSERT INTO posts (category, title, content, venue_slug, rating, likes, views, is_pinned, created_at, updated_at) VALUES ('reviews', '일산 룸 여기 추천', '몇 군데 비교해봤는데 일산룸이 시설 면에서 가장 나았음. 룸 종류도 다양하고 인원수에 맞게 추천해줌. 양주 라인업도 괜찮고. 프라이빗한 공간이 필요하면 여기 가면 됨.', 'ilsanroom', 4, 31, 218, false, '2026-04-06T03:59:22.639Z', '2026-04-06T03:59:22.639Z');
 INSERT INTO posts (category, title, content, venue_slug, rating, likes, views, is_pinned, created_at, updated_at) VALUES ('tips', '일산룸 처음 가는 분들 팁', '일산룸 몇 번 가봤는데 알게 된 것들 공유함.
 
@@ -30,7 +30,7 @@ INSERT INTO posts (category, title, content, venue_slug, rating, likes, views, i
 INSERT INTO posts (category, title, content, venue_slug, rating, likes, views, is_pinned, created_at, updated_at) VALUES ('discussion', '해운대고구려 가보신 분?', '부산 해운대에서 룸 가보려고 하는데 해운대고구려 어떤지 아시는 분 계신가요? 처음이라 좀 긴장되는데 혼자 가도 괜찮을까요? 분위기랑 사람들 매너 어떤지 알려주시면 감사하겠습니다.', NULL, NULL, 20, 149, false, '2026-04-02T15:14:49.655Z', '2026-04-02T15:14:49.655Z');
 
 -- ── 일산명월관요정 (일산 요정) ──
-INSERT INTO posts (category, title, content, venue_slug, rating, likes, views, is_pinned, created_at, updated_at) VALUES ('reviews', '일산명월관요정 접대로 이용해봤는데', '거래처 접대 자리로 일산명월관요정 이용했는데 상대방이 굉장히 만족하셨음. 한정식 코스가 퀄리티 높고 국악 라이브도 격식 있어서 분위기 잡기 좋았음. 신실장이 전체 진행을 잘 해줘서 편하게 진행함.', 'ilsanmyeongwolgwanyojeong', 5, 25, 178, false, '2026-03-31T13:54:59.180Z', '2026-03-31T13:54:59.180Z');
+INSERT INTO posts (category, title, content, venue_slug, rating, likes, views, is_pinned, created_at, updated_at) VALUES ('reviews', '일산명월관요정 접대로 이용해봤는데', '거래처 접대 자리로 일산명월관요정 이용했는데 상대방이 굉장히 만족하셨음. 한정식 코스가 퀄리티 높고 국악 라이브도 격식 있어서 분위기 잡기 좋았음. 일산룸 총책임자이 전체 진행을 잘 해줘서 편하게 진행함.', 'ilsanmyeongwolgwanyojeong', 5, 25, 178, false, '2026-03-31T13:54:59.180Z', '2026-03-31T13:54:59.180Z');
 INSERT INTO posts (category, title, content, venue_slug, rating, likes, views, is_pinned, created_at, updated_at) VALUES ('tips', '일산명월관요정 처음 가는 분들 팁', '일산명월관요정 몇 번 가봤는데 알게 된 것들 공유함.
 
 1. 주말은 10시 이후가 피크

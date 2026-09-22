@@ -183,7 +183,7 @@ export default function RegionalRoomsPage() {
       </section>
 
       {region === 'ilsan' && (
-        <StickyPhoneBar phone="010-3695-4929" staffName="일산명월관 신실장" venueName="일산명월관" />
+        <StickyPhoneBar phone="010-4117-5556" staffName="일산룸 총책임자" venueName="일산명월관" />
       )}
     </div>
   );

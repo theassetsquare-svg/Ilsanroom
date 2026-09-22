@@ -406,11 +406,11 @@ INSERT INTO comments (id, post_id, user_id, content, created_at) VALUES
 INSERT INTO comments (id, post_id, user_id, content, created_at) VALUES
 (gen_random_uuid(), (SELECT id FROM posts WHERE title = '나이트 부킹 성공률 높이는 법 공유함' LIMIT 1), NULL, '그냥 리듬만 타도 됨 잘추는것보다 즐기는게 중요', NOW() - INTERVAL '1 day 2 hours');
 
--- 일산룸 신실장님 진짜 센스있음
+-- 일산룸 총책임자님 진짜 센스있음
 INSERT INTO comments (id, post_id, user_id, content, created_at) VALUES
-(gen_random_uuid(), (SELECT id FROM posts WHERE title = '일산룸 신실장님 진짜 센스있음' LIMIT 1), NULL, '동의!! 나도 여기 단골인데 신실장님 진짜 좋아요', NOW() - INTERVAL '9 days 12 hours');
+(gen_random_uuid(), (SELECT id FROM posts WHERE title = '일산룸 총책임자님 진짜 센스있음' LIMIT 1), NULL, '동의!! 나도 여기 단골인데 일산룸 총책임자님 진짜 좋아요', NOW() - INTERVAL '9 days 12 hours');
 INSERT INTO comments (id, post_id, user_id, content, created_at) VALUES
-(gen_random_uuid(), (SELECT id FROM posts WHERE title = '일산룸 신실장님 진짜 센스있음' LIMIT 1), NULL, '예약 전화하면 친절하게 잘 설명해주시더라', NOW() - INTERVAL '9 days 6 hours');
+(gen_random_uuid(), (SELECT id FROM posts WHERE title = '일산룸 총책임자님 진짜 센스있음' LIMIT 1), NULL, '예약 전화하면 친절하게 잘 설명해주시더라', NOW() - INTERVAL '9 days 6 hours');
 
 -- 명월관요정 코스요리 수준이 호텔급
 INSERT INTO comments (id, post_id, user_id, content, created_at) VALUES

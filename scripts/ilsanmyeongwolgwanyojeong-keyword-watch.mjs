@@ -17,7 +17,7 @@
  *   8) "일산명월관" body 밀도 ≤3.5%
  *   9) "일산요정" body 등장 ≥3회
  *  10) 후킹 5축 ≥1축 (title 또는 desc)
- *  11) 디테일 토큰 (정발산·호수공원·거문고·다도·신실장) 모두 등장
+ *  11) 디테일 토큰 (정발산·호수공원·거문고·다도·일산룸 총책임자) 모두 등장
  *     — 일산 요정 검색 의도(전통 정찬·정발산 인근·국악·차별 응대) 직격
  *  12) "일산명월관" body 등장 ≥5회
  *
@@ -33,7 +33,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/yojeong/ilsan/ilsanmyeongwolgwanyojeong/';
 const PRIMARY = '일산명월관';
 const SECONDARY = '일산요정';
-const DETAIL_TOKENS = ['정발산', '호수공원', '거문고', '다도', '신실장'];
+const DETAIL_TOKENS = ['정발산', '호수공원', '거문고', '다도', '일산룸 총책임자'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */
