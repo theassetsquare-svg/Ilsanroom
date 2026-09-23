@@ -249,6 +249,11 @@ const REGISTRY = {
     label: '페이지별 style(data-page) 제거 — 구조 고유성 위반 주입',
     mutate: lazy(() => 'dist/nights/seongnamshampoonight/index.html', (h) => h.replace(/<style data-page="[^"]*">[\s\S]*?<\/style>/, '')),
   },
+  'scripts/page-gate.mjs': {
+    phase: 'dist',
+    label: '[놀쿨11-2] 완독 뼈대 조각 표식(data-skel="answer") 제거 — 뼈대 위반 주입',
+    mutate: lazy(() => 'dist/nights/seongnamshampoonight/index.html', (h) => h.replace('data-skel="answer"', 'data-skel="removed"')),
+  },
   'scripts/og-asset-gate.mjs': {
     phase: 'dist',
     label: '카테고리 og JPG(public/og/clubs.jpg) 제거',

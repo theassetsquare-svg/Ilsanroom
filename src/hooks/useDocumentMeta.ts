@@ -8,6 +8,13 @@ import { useEffect } from 'react';
  */
 export function useDocumentMeta(title: string, description: string, ogImage?: string, keywords?: string) {
   useEffect(() => {
+    // [놀쿨11-2] 제목 자리 하나 — 프리렌더(제목 창고)가 이 주소에 만든 제목·설명이 있으면 그것을 쓴다(첫 로드 __NC_META · SPA 이동은 SsrArticle 이 받은 값)
+    {
+      const w = window as unknown as { __NC_META?: { path: string; title: string; desc: string }; __NC_META_CACHE?: Record<string, { title: string; desc: string }> };
+      const cur = window.location.pathname.endsWith('/') ? window.location.pathname : `${window.location.pathname}/`;
+      const pm = (w.__NC_META && w.__NC_META.path === cur) ? w.__NC_META : (w.__NC_META_CACHE || {})[cur];
+      if (pm && pm.title) { title = pm.title; if (pm.desc) description = pm.desc; }
+    }
     // 브라우저 탭 제목 — Stealth 모드에서 위장됨 (StealthMode 컴포넌트가 처리)
     if (!document.documentElement.hasAttribute('data-stealth')) {
       document.title = title;

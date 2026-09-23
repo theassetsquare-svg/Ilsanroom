@@ -593,3 +593,22 @@ input[type="text"]::-ms-reveal {
 .admin-shell input::placeholder, .admin-shell textarea::placeholder { color: #9CA3AF; }
 /* 컴포넌트가 모두 라이트로 직접 작성됐으므로 추가 강제 반전 룰은 두지 않음.
    의도된 흰 글씨(보라/주황 버튼 위)와 충돌을 피하기 위함. */
+
+/* [놀쿨11-2] 완독 뼈대 본문(프리렌더 article 을 React 가 끌어안은 뒤) */
+.nc-ssr-adopted{max-width:1200px;margin:0 auto;padding:8px 16px 32px}
+.nc-ssr-adopted .nc-skel{max-width:760px;font-size:16px;line-height:1.75}
+.nc-ssr-adopted .nc-skel h2{font-size:20px;margin:28px 0 10px;font-weight:700}
+.nc-ssr-adopted .nc-skel h3{font-size:17px;margin:20px 0 8px}
+.nc-ssr-adopted .nc-skel p{margin:0 0 12px}
+.nc-ssr-adopted .nc-skel ul,.nc-ssr-adopted .nc-skel ol{padding-left:20px;margin:0 0 12px}
+.nc-ssr-adopted .nc-facts-table{border-collapse:collapse;width:100%;margin:0 0 12px}
+.nc-ssr-adopted .nc-facts-table th{text-align:left;width:34%;padding:8px 10px;border-bottom:1px solid rgba(128,128,128,.3);font-weight:600}
+.nc-ssr-adopted .nc-facts-table td{padding:8px 10px;border-bottom:1px solid rgba(128,128,128,.3)}
+.nc-ssr-adopted .nc-faq dt{font-weight:700;margin-top:12px}
+.nc-ssr-adopted .nc-faq dd{margin:4px 0 0}
+.nc-ssr-adopted .nc-summary{border-left:4px solid rgba(128,128,128,.6);padding-left:12px}
+.nc-ssr-adopted .nc-next ul{list-style:none;padding:0}
+.nc-ssr-adopted .nc-meta{opacity:.7;font-size:14px}
+.nc-ssr-adopted .nc-rank{display:inline-block;margin-left:6px;padding:0 6px;border:1px solid rgba(128,128,128,.5);border-radius:10px;font-size:12px}
+.nc-ssr-adopted .nc-rank-note{font-size:13px;opacity:.7}
+.nc-ssr-adopted .ssr-breadcrumb ol{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px;font-size:14px}

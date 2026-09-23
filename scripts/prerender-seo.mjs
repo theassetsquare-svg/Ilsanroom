@@ -59,6 +59,9 @@ const baseHtml = _baseRaw.replace('</head>', `    <meta name="build-sha" content
 
 import { transformSsr, pageTokens } from './uniq-variant.mjs';
 import { applyProse, PROSE_STATS } from './uniq-prose.mjs';
+// [놀쿨11-2] 제목 창고(소원 엔진 제목 자리 하나) · 완독 뼈대 엔진
+import { makeTitle, makeH1, registerFixed, report as titleBankReport } from './lib/title-bank.mjs';
+import { applySkeleton, skelTypeOf } from './skeleton/index.mjs';
 
 function escHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -102,7 +105,7 @@ function truncateDesc(text, maxLen = 150) {
 /**
  * HTML의 head 메타 태그를 교체
  */
-function renderPage({ title, description, canonical, ogImage, ogImageAlt, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords, preloadImage, diluteName }) {
+function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords, preloadImage, diluteName }) {
   let html = baseHtml;
   const desc = truncateDesc(description || '', 150);
   // canonical은 sitemap loc과 동일 형식이어야 함 (trailing slash 일치).
@@ -260,40 +263,45 @@ function renderPage({ title, description, canonical, ogImage, ogImageAlt, ssrBod
     html = html.replace('</head>', `    ${jsonLdHtml}\n  </head>`);
   }
 
-  // SSR body content — inject inside root div for crawlers (React replaces on hydration)
-  // 정규식으로 root div 속성 변동 허용 (style 등)
-  // 시즌57 — visible SSR hero block 추가: 빈 화면 0초 (LCP/체류 ↑)
-  // ssr-seo는 1px clip 유지 (봇용), ssr-hero는 화면에 보임 (React mount 전 첫 paint)
+  // [놀쿨11-2] SSR 본문 배치 — 숨김(1px clip) 0. #root 에는 hero + 브랜드 껍데기(카테고리 nav)만 두고 React 가 갈아끼운다.
+  //   본문 <main id="main-content">(완독 뼈대 <article id="nc-article">)과 사이트맵 footer 는 #root 밖 #nc-ssr 에 보이게 둔다.
+  //   → 크롤러(JS 없음)와 사람이 같은 본문을 본다. React 는 SsrArticle 이 마운트 뒤 #nc-ssr 의 본문을 끌어안고 #nc-ssr 을 지운다(id 중복 0).
   if (ssrBody) {
-    const heroTitle = escHtml(title || '');
+    const heroTitle = escHtml(h1 || title || '');
     let heroDesc = escHtml(desc || description || '');
-    // 바로 위 H1(heroTitle)이 가게이름을 이미 노출 → visible hero 단락의 가게이름은 전부 '여기'로
-    // (meta description은 별도 desc 그대로 유지, SEO 영향 없음). 키워드 밀도 stuffing(>3%) 방지.
     if (diluteName) {
       const dn = escHtml(diluteName);
       heroDesc = heroDesc.replace(new RegExp(dn.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), '여기');
     }
-    // preloadImage 있으면 hero img(eager + high priority), 없으면 og 이미지를 hero로 (lazy + low)
-    // 모든 페이지가 첫 paint에 이미지 1개 이상 보임 → 시각자극 0초
+    // 첫 그림 = LCP 후보 → eager + high (11-1 연구 webdev-lazy-lcp: LCP 그림은 지연 로드하지 않는다)
     const heroImgSrc = preloadImage || ogImg;
     const heroImgTag = heroImgSrc
-      ? `<img src="${escHtml(heroImgSrc)}" alt="${escHtml(ogImageAlt || title || '')}" ${preloadImage ? 'fetchpriority="high"' : 'loading="lazy" fetchpriority="low"'} decoding="async" style="display:block;width:100%;height:auto;max-height:280px;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#0a0a0a">`
+      ? `<img src="${escHtml(heroImgSrc)}" alt="${escHtml(ogImageAlt || title || '')}" width="1200" height="675" fetchpriority="high" decoding="async" style="display:block;width:100%;height:auto;max-height:280px;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#0a0a0a">`
       : '';
     const _pt = pageTokens(canonical || title || '');
-    html = html.replace('</head>', `    ${_pt.style}\n  </head>`);
+    html = html.replace('</head>', `    ${_pt.style}\n    ${NC_SKEL_STYLE}\n    <script>window.__NC_META=${JSON.stringify({ path: canonicalWithSlash, title: title || '', h1: h1 || '', desc: desc || '' }).replace(/</g, '\\u003c')}</script>\n  </head>`);
     const _h1 = `<h1 style="margin:0 0 10px;font-size:24px;font-weight:800;color:#111;line-height:1.25;letter-spacing:-0.02em">${heroTitle}</h1>`;
     const heroBlock = `<div class="${_pt.heroClass} ssr-hero" data-r="${_pt.heroVariant}" style="max-width:1200px;margin:0 auto;padding:88px 16px 24px;min-height:240px">${_pt.heroVariant === 'title-top' ? _h1 + heroImgTag : heroImgTag + _h1}<p style="margin:0;color:#444;font-size:16px;line-height:1.65;max-width:720px">${heroDesc}</p></div>`;
-    // 시즌173 — ssr-hero가 visible H1을 제공하므로 ssrBody 첫 번째 H1은 H2로 강등 (페이지당 H1 정확히 1개 보장)
-    const ssrBodyNoH1 = ssrBody.replace(/<h1\b([^>]*)>([\s\S]*?)<\/h1>/, '<h2$1>$2</h2>');
+    // 본문 안 h1 은 hero 가 맡으므로 h2 로 낮춘다(쪽당 H1 1개)
+    const bodyNoH1 = ssrBody.replace(/<h1\b([^>]*)>([\s\S]*?)<\/h1>/g, '<h2$1>$2</h2>');
+    const mainStart = bodyNoH1.indexOf('<main id="main-content">');
+    const mainEnd = bodyNoH1.lastIndexOf('</main>');
+    let shellHead = bodyNoH1, mainPart = '', shellFoot = '';
+    if (mainStart >= 0 && mainEnd > mainStart) {
+      shellHead = bodyNoH1.slice(0, mainStart);
+      mainPart = bodyNoH1.slice(mainStart, mainEnd + 7);
+      shellFoot = bodyNoH1.slice(mainEnd + 7);
+    }
     html = html.replace(
       /<div id="root"([^>]*)><\/div>/,
-      `<div id="root"$1>${heroBlock}<div class="ssr-seo" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">${ssrBodyNoH1}</div></div>`
+      `<div id="root"$1>${heroBlock}${shellHead}</div><div id="nc-ssr" class="nc-ssr">${mainPart}${shellFoot}</div>`
     );
   }
 
   return html;
 }
 
+const NC_SKEL_STYLE = `<style data-nc-skel>.nc-ssr{max-width:1200px;margin:0 auto;padding:0 16px 32px}.nc-skel{max-width:760px;font-size:16px;line-height:1.75;color:#222}.nc-skel h2{font-size:20px;margin:28px 0 10px;font-weight:700}.nc-skel h3{font-size:17px;margin:20px 0 8px}.nc-skel p{margin:0 0 12px}.nc-skel ul,.nc-skel ol{padding-left:20px;margin:0 0 12px}.nc-skel li{margin:4px 0}.nc-facts-table{border-collapse:collapse;width:100%;margin:0 0 12px}.nc-facts-table th{text-align:left;width:34%;padding:8px 10px;border-bottom:1px solid #e5e5e5;font-weight:600;color:#333}.nc-facts-table td{padding:8px 10px;border-bottom:1px solid #e5e5e5}.nc-faq dt{font-weight:700;margin-top:12px}.nc-faq dd{margin:4px 0 0}.nc-summary{border-left:4px solid #999;padding-left:12px}.nc-next ul{list-style:none;padding:0}.nc-meta{color:#666;font-size:14px}.nc-rank{display:inline-block;margin-left:6px;padding:0 6px;border:1px solid #ccc;border-radius:10px;font-size:12px;color:#444}.nc-rank-note{font-size:13px;color:#666}.nc-ssr .ssr-breadcrumb ol{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px;font-size:14px}</style>`;
 const noIndexPathsSet = new Set(['/login', '/profile', '/dashboard', '/analytics', '/billing', '/onboarding', '/launch', '/admin', '/admin/venues', '/admin/magazine', '/admin/media', '/admin/seo', '/admin/blocks', '/admin/moderation', '/admin/stats', '/admin/visitors', '/admin/audit', '/my/customize', '/search']);
 
 // ── 파트2(2026-08-09) 색인 미달 28곳 조치 — 근거: reports/audit/2026-08-korea1.md 색인 전수(08-03) ──
@@ -339,6 +347,31 @@ function visibleBreadcrumb(meta) {
 function writePage(routePath, meta) {
   // ★ 플랫폼 트랙 P — 페이지 고유 문장(src/data/uniq-prose.json) 먼저 적용(해시·변형보다 앞: 글이 바뀌면 lastmod 도 바뀌어야 한다)
   if (meta && meta.ssrBody) meta = { ...meta, ssrBody: applyProse(meta.ssrBody, routePath) };
+  // [놀쿨11-2] ① 제목 레지스트리(창고가 만든 제목은 이미 등록됨) ② H1 은 제목과 다른 문구 ③ 완독 뼈대
+  {
+    const sk = meta.skel || {};
+    if (!sk.generated) registerFixed(routePath, meta.title || '');
+    const type = sk.type || skelTypeOf(routePath);
+    const h1Type = sk.h1Type || ({ venue: 'venue', magazine: 'magazine', community: 'community', guide: 'guide', list: 'list', hub: 'hub' })[type] || 'static';
+    const head = String(meta.title || '').split(/\s[—|]\s/)[0].trim();
+    const h1Facts = { head, n: sk.facts?.n, name: sk.facts?.name, region: sk.facts?.region, cat: sk.facts?.cat, station: sk.facts?.station, place: sk.facts?.place, tag: sk.facts?.tag, ...(sk.h1Facts || {}) };
+    const h1 = meta.h1 || makeH1(h1Type === 'hub' ? (sk.h1Type || 'region') : h1Type, routePath, h1Facts, meta.title || '');
+    const faqPairs = sk.faqPairs || (meta.jsonLdList || []).filter((j) => j && j['@type'] === 'FAQPage').flatMap((j) => (j.mainEntity || []).map((q) => ({ q: q.name, a: q.acceptedAnswer?.text || '' })));
+    meta = { ...meta, h1, ssrBody: meta.ssrBody ? applySkeleton(type, meta.ssrBody, { ...sk, answer: sk.answer || meta.description || '', faqPairs, catLabel: catLabelMap, venueHref, popRank: POP_RANK }) : meta.ssrBody };
+    // FAQPage JSON-LD = 화면 문답(dl) — 생성기 회전 질문과 LD 질문이 다르면 LD 를 화면 쪽으로 맞춘다(구글 「보이지 않는 콘텐츠 마크업 금지」)
+    if (meta.ssrBody && Array.isArray(meta.jsonLdList)) {
+      const faqBlock = (meta.ssrBody.match(/data-skel="faq"[\s\S]*?(?=<section data-skel="summary"|<nav data-skel="next"|<\/article>)/) || [''])[0];
+      const unesc = (x) => x.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/\s+/g, ' ').trim();
+      const vis = [...faqBlock.matchAll(/<dt[^>]*>([\s\S]*?)<\/dt>\s*<dd[^>]*>([\s\S]*?)<\/dd>/g)].map((m) => ({ q: unesc(m[1]), a: unesc(m[2]) })).filter((x) => x.q && x.a);
+      const idx = meta.jsonLdList.findIndex((j) => j && j['@type'] === 'FAQPage');
+      if (idx >= 0 && vis.length) {
+        const ldQ = (meta.jsonLdList[idx].mainEntity || []).map((q) => String(q.name || '').replace(/\s+/g, ''));
+        const visQ = new Set(vis.map((x) => x.q.replace(/\s+/g, '')));
+        if (!ldQ.every((q) => visQ.has(q))) { const list = meta.jsonLdList.slice(); list[idx] = faqPairsJsonLd(vis); meta = { ...meta, jsonLdList: list }; NC_FAQ_SYNCED.push(routePath); }
+      }
+    }
+    NC_PAGE_LOG.push({ route: routePath, type, title: meta.title, h1 });
+  }
   // ★ lastmod 정직화 — 의미 콘텐츠(제목+설명+SSR본문)만 해시. 전역 chrome(카테고리 nav·사이트맵
   //   footer)·빌드날짜/ISO타임스탬프는 입력에서 제거 → 푸터 한 줄/오늘 빌드가 lastmod를 흔들지 않게.
   {
@@ -473,6 +506,30 @@ function parseVenues() {
 }
 
 const catLabelMap = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
+// [놀쿨11-2] 인기 순위(진짜 값만 · popularity-scores.json ranked=true 를 점수순) + 뼈대 ctx 헬퍼 + 쪽 기록
+const POP_RANK = (() => {
+  const m = new Map();
+  try {
+    const ps = JSON.parse(fs.readFileSync('src/data/popularity-scores.json', 'utf8'));
+    const ranked = Object.entries(ps.venues || {}).filter(([, v]) => v && v.ranked).sort((a, b) => (b[1].score || 0) - (a[1].score || 0));
+    ranked.forEach(([slug], i) => m.set(slug, i + 1));
+  } catch { /* 없으면 순위 표시 0 */ }
+  return m;
+})();
+const NC_PAGE_LOG = [];
+const NC_FAQ_SYNCED = [];
+function hubSkel(type, members, facts, faqPairs, summary, h1Type) {
+  const cats = [...new Set(members.map((v) => catLabelMap[v.cat] || v.cat))];
+  const regions = [...new Set(members.map((v) => v.regionKo).filter(Boolean))];
+  const stations = [...new Set(members.map((v) => (v.nearbyStation || '').match(/([^\s]+역)/)?.[1]).filter(Boolean))];
+  return { type, h1Type, members, faqPairs, summary, facts: { n: members.length, cats: cats.join('·'), regions: regions.slice(0, 6).join(', ') + (regions.length > 6 ? ' 등' : ''), stations: stations.slice(0, 6).join(', ') + (stations.length > 6 ? ' 등' : ''), top: members[0] ? members[0].nameKo : '', ...facts } };
+}
+function venueSkel(v) {
+  const catKo = catLabelMap[v.cat] || v.cat;
+  const station = (v.nearbyStation || '').match(/([^\s]+역)/)?.[1] || v.nearbyStation || '';
+  const summary = `${v.nameKo}${hasJongseong(v.nameKo) ? '은' : '는'} ${v.regionKo} ${catKo}${station ? `이고 ${station} 근처에 있다` : '이다'}. ${(v.shortDesc || '').trim()}`.trim();
+  return { type: 'venue', h1Type: 'venue', facts: { name: v.nameKo, region: v.regionKo, cat: catKo, station, hours: v.openHours, ageGroup: v.ageGroup, dressCode: v.dressCode, bestTime: v.bestTime, parking: v.parking, features: v.features, staffNickname: v.staffNickname, staffPhone: v.staffPhone, factsHeading: `${v.nameKo} 기본 정보` }, summary };
+}
 
 /**
  * BreadcrumbList JSON-LD — 구글 SERP 경로 표시 + 사이트 구조 인식
@@ -1110,6 +1167,7 @@ const HOME_FAQ_JSONLD = {
   })),
 };
 writePage('/', {
+  skel: { type: 'guide', h1Type: 'home', facts: { n: venues.length } },
   title: '놀쿨 — 오늘 어디 갈지 못 정했죠? 20년 굴러본 사람이 골라드림',
   description: `놀쿨 — 오늘 어디 갈지 못 정했죠? 거를 곳 천지예요. 놀쿨은 클럽·나이트·룸·요정·라운지·호빠 6업종 ${venues.length}+ 업소를 20년 굴러본 사람이 1줄로 정리. 주말 망치기 전 놀쿨부터 켜요.`,
   jsonLdList: [WEBSITE_JSONLD, ORG_JSONLD, HOME_FAQ_JSONLD],
@@ -1503,7 +1561,9 @@ for (const pg of staticPages) {
     const ogSlug = pg.path.replace(/^\//, '');
     pageOgImage = `${BASE_URL}/og/${ogSlug}.jpg`;
   }
-  writePage(pg.path, { title: pg.title, description: pg.desc, ssrBody, jsonLdList: jsonLdList.length > 0 ? jsonLdList : undefined, ogImage: pageOgImage });
+  const _catKeyOfPath = Object.entries(catMap).find(([, ci]) => '/' + ci.path === pg.path)?.[0];
+  const _catMembers = _catKeyOfPath ? venues.filter(vv => vv.cat === _catKeyOfPath) : [];
+  writePage(pg.path, { title: pg.title, description: pg.desc, ssrBody, jsonLdList: jsonLdList.length > 0 ? jsonLdList : undefined, ogImage: pageOgImage, skel: _catKeyOfPath ? hubSkel('list', _catMembers, { cat: catMap[_catKeyOfPath].labelKo, factsHeading: `${catMap[_catKeyOfPath].labelKo} 전체 ${_catMembers.length}곳` }, undefined, `${catMap[_catKeyOfPath].labelKo}는 전국 ${_catMembers.length}곳이 등록돼 있다.`, 'list') : undefined });
   pageCount++;
 }
 console.log(`✅ 정적 페이지 ${staticPages.length}개 생성`);
@@ -1788,7 +1848,7 @@ for (const [cat, regions] of Object.entries(regionsByCategory)) {
         }))
       }, faqPairsJsonLd(regFaqPairs)];
 
-      writePage(`/${cm.path}/${region}`, { title, description: desc, ssrBody: regSsr, jsonLdList: regJsonLd });
+      writePage(`/${cm.path}/${region}`, { title, description: desc, ssrBody: regSsr, jsonLdList: regJsonLd, skel: hubSkel('list', regionVenues, { region: regionKo, cat: catLabelMap[cat], factsHeading: `${regionVenues.length}곳 한 줄씩` }, regFaqPairs, regionVenues.length >= 4 ? `${regionKo} ${catLabelMap[cat]}는 ${regionVenues.length}곳이고, ${allNames} 등이 있다.` : `${regionKo} ${catLabelMap[cat]}는 ${regionVenues.length}곳이다.`, 'region_cat') });
       regionalCount++;
     }
   }
@@ -1956,6 +2016,7 @@ for (const v of venues) {
     ogImage: getVenueOgImage(v.slug),
     ogImageAlt: `${v.nameKo} — ${v.regionKo} ${catLabelMap[v.cat]} 매장 사진`,
     ssrBody: generateVenueSsrBody(v, venues),
+    skel: venueSkel(v),
     jsonLdList: [venueJsonLd, faqJsonLd, breadcrumbJsonLd],
     datePublished,
     dateModified,
@@ -2050,6 +2111,7 @@ ${_relNav}
     title: a.title,
     description: desc,
     ssrBody,
+    skel: { type: 'magazine', h1Type: 'magazine', facts: { tag: a.tag, date: a.date, factsHeading: '글 정보' }, answer: a.answer || '', summary: a.excerpt || '' },
     jsonLdList: [articleJsonLd, breadcrumbJsonLd],
     datePublished: a.date,
     dateModified: BUILD_DATE_KST,
@@ -2239,7 +2301,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
     { q: `예약은 어떻게 하나요?`, a: `각 업소 상세 페이지에 직통 번호가 있고, 평일 저녁이면 당일 통화로도 가능합니다. 주말은 미리 확인하세요.` },
   ];
   ssrBody += faqPairsDl('자주 묻는 질문', bestFaqPairs);
-  writePage(p, { title, description: desc, ssrBody, keywords: `${catInfo.labelKo} 인기, ${catInfo.labelKo} 추천, ${catInfo.labelKo} 랭킹, ${catInfo.labelKo} TOP`, jsonLdList: [...collectionJsonLd(p, title, desc, catVenues, [{ name: '놀쿨', url: BASE_URL }, { name: catInfo.labelKo, url: `${BASE_URL}/${catInfo.path}/` }, { name: '인기 순위', url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(bestFaqPairs)] });
+  writePage(p, { title, description: desc, ssrBody, skel: hubSkel('list', catVenues, { cat: catInfo.labelKo, factsHeading: `${catInfo.labelKo} 인기 순위 ${catVenues.length}곳` }, bestFaqPairs, `${catInfo.labelKo} ${catVenues.length}곳을 최근 28일 실제 조회·전화 문의·검색 유입 순으로 세웠고, 표본이 적은 곳은 등록순이다.`, 'best'), keywords: `${catInfo.labelKo} 인기, ${catInfo.labelKo} 추천, ${catInfo.labelKo} 랭킹, ${catInfo.labelKo} TOP`, jsonLdList: [...collectionJsonLd(p, title, desc, catVenues, [{ name: '놀쿨', url: BASE_URL }, { name: catInfo.labelKo, url: `${BASE_URL}/${catInfo.path}/` }, { name: '인기 순위', url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(bestFaqPairs)] });
   dynamicPages.push(p);
 }
 
@@ -2248,7 +2310,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   const catVenues = venues.filter(vv => vv.cat === catKey);
   if (catVenues.length === 0) continue;
   const p = `/new/${catInfo.path}`;
-  const title = `새로 입점한 ${catInfo.labelKo} ${catVenues.length}곳 — ${aggPick('new-' + catKey, ['아직 안 가본 곳 먼저 발견', '남들보다 한발 먼저 찜', '오픈빨 살아있을 때 가보기', '단골 자리잡기 전이 기회', '손님 적은 지금이 적기', '초기 응대 좋을 때 방문'], 7)}`;
+  const title = makeTitle('new', p, { cat: catInfo.labelKo, n: catVenues.length, top: catVenues[0] ? catVenues[0].nameKo : '' }); // [놀쿨11-2] 창고
   const newNames = catVenues.slice(0, 3).map(vv => vv.nameKo).join(', ');
   const desc = `새로 오픈한 ${catInfo.labelKo} 어디 있지? 최근 신규 입점 ${catVenues.length}곳 — ${newNames} 등 강남 홍대 이태원 일산 부산 수원 신생 핫스팟. 손님 적고 매니저 응대 좋은 오픈 직후 시점 놓치지 말고 바로 확인.`;
   // 시즌88 — 동일 템플릿 문단 제거 → 멤버 실데이터 본문 + 허브-메시(막다른길 0)
@@ -2274,7 +2336,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
     { q: `신규 매장은 손님이 적나요?`, a: `오픈 초기에는 평일 손님이 적은 편이라 분위기를 여유롭게 즐길 수 있고, 주말은 미리 예약하는 게 안전합니다.` },
   ];
   ssrBody += faqPairsDl('자주 묻는 질문', newFaqPairs);
-  writePage(p, { title, description: desc, ssrBody, keywords: `신규 ${catInfo.labelKo}, 새 ${catInfo.labelKo}, ${catInfo.labelKo} 오픈`, jsonLdList: [...collectionJsonLd(p, title, desc, catVenues, [{ name: '놀쿨', url: BASE_URL }, { name: catInfo.labelKo, url: `${BASE_URL}/${catInfo.path}/` }, { name: '신규 입점', url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(newFaqPairs)] });
+  writePage(p, { title, description: desc, ssrBody, skel: hubSkel('list', catVenues, { cat: catInfo.labelKo, factsHeading: `신규 ${catInfo.labelKo} ${catVenues.length}곳` }, newFaqPairs, `새로 들어온 ${catInfo.labelKo}는 ${catVenues.length}곳이고 ${newRegionStr} 지역에 있다.`, 'new'), keywords: `신규 ${catInfo.labelKo}, 새 ${catInfo.labelKo}, ${catInfo.labelKo} 오픈`, jsonLdList: [...collectionJsonLd(p, title, desc, catVenues, [{ name: '놀쿨', url: BASE_URL }, { name: catInfo.labelKo, url: `${BASE_URL}/${catInfo.path}/` }, { name: '신규 입점', url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(newFaqPairs)] });
   dynamicPages.push(p);
 }
 
@@ -2286,7 +2348,8 @@ for (const v of venues) {
 }
 for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
   const p = `/region/${encodeURIComponent(regionKo)}`;
-  const title = `${regionKo} 나이트라이프 ${regionVenues.length}곳 — ${aggPick(regionKo, ['클럽·라운지·룸·요정 한눈에', '동네 핫스팟 한 페이지 정리', '어디부터 갈지 비교해보기', '가까운 인기 업소 모아보기', '처음 가도 후회 없는 코스', '업종별 분위기 한눈 비교', '회원 후기로 추린 동네 picks', '거리·업종별로 묶어 보기', '오늘 갈 곳 빠르게 고르기', '현지인이 자주 찾는 순서'], 7)}`;
+  const _regionCatsT = [...new Set(regionVenues.map(rv => catLabelMap[rv.cat] || rv.cat))].join('·');
+  const title = makeTitle('region', p, { region: regionKo, n: regionVenues.length, cats: _regionCatsT, top: regionVenues[0] ? regionVenues[0].nameKo : '' }); // [놀쿨11-2] 창고
   // 시즌172 — region 접두어 포함 venue는 suffix만 (브랜드 반복 희석)
   //   다어절 region("부산 해운대")은 venue명이 마지막 어절("해운대")만 접두 → 마지막 어절도 매칭
   const regionLastWord = regionKo.split(/\s+/).pop();
@@ -2335,7 +2398,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
   ssrBody += `<h2>${escHtml(regionKo)} 대표 업소 미리보기</h2>${aggHighlights(regionVenues, shortLabelFn)}`;
   ssrBody += aggInlineCta('region-' + regionKo, regionVenues);
   ssrBody += aggHubMesh(regionVenues, 'region', regionKo);
-  writePage(p, { title, description: desc, ssrBody, keywords: `${regionKo} 나이트라이프, ${regionKo} 클럽, ${regionKo} 나이트, ${regionKo} 룸, ${regionKo} 라운지`, jsonLdList: [...collectionJsonLd(p, title, desc, regionVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(regionFaqPairs)] });
+  writePage(p, { title, description: desc, ssrBody, skel: hubSkel('hub', regionVenues, { region: regionKo, factsHeading: `업소 ${regionVenues.length}곳 한 줄씩` }, regionFaqPairs, regionVenues.length >= 4 ? `${regionKo}에는 ${Object.entries(byCat).map(([ck, rvs]) => `${ck} ${rvs.length}곳`).join(' · ')}이 있고, ${regionTopNames} 등이 대표 업소다.` : `${regionKo}에는 ${Object.entries(byCat).map(([ck, rvs]) => `${ck} ${rvs.length}곳`).join(' · ')}이 있다.`, 'region'), keywords: `${regionKo} 나이트라이프, ${regionKo} 클럽, ${regionKo} 나이트, ${regionKo} 룸, ${regionKo} 라운지`, jsonLdList: [...collectionJsonLd(p, title, desc, regionVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(regionFaqPairs)] });
   dynamicPages.push(p);
 
   // ── region/[region]/[category] — 지역+업종 크로스 ──
@@ -2377,7 +2440,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     ];
     cSsr += faqPairsDl('자주 묻는 질문', crossFaqPairs);
     cSsr += aggHubMesh(crossVenues, 'region', regionKo);
-    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: [...collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]), faqPairsJsonLd(crossFaqPairs)] });
+    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, skel: hubSkel('hub', crossVenues, { region: regionKo, cat: catInfo.labelKo, factsHeading: `${crossVenues.length}곳 한 줄씩` }, crossFaqPairs, crossVenues.length >= 4 ? `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이고, ${crossNames} 등이 있다.` : `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이다.`, 'region_cat'), keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: [...collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]), faqPairsJsonLd(crossFaqPairs)] });
     dynamicPages.push(cp);
   }
 }
@@ -2401,7 +2464,11 @@ for (const [tag, tagVenues] of Object.entries(allTags)) {
   const single = tagVenues.length === 1;
   if (single) noIndexPathsSet.add(p);
   // 시즌88 — title 접미부도 key로 회전(전 태그 동일 접미부 지문 해체 + 후미 5어절 차별화)
-  const title = `#${tag} ${aggPick(tag, ['관련 업소', '모음', '큐레이션', '추천 리스트'], 5)} ${tagVenues.length}곳 — ${aggPick(tag, ['태그로 찾는 나이트라이프', '같은 결끼리 모아본 곳', '한번에 비교하는 페이지', '결로 묶은 나이트라이프', '비슷한 분위기끼리 정리', '한 주제로 좁혀 보기', '취향 맞는 곳만 골라', '관심 태그 깊이 파보기'], 6)}`;
+  const _tagCatsT = [...new Set(tagVenues.map(tv => catLabelMap[tv.cat] || tv.cat))].join('·');
+  // [놀쿨11-2] 색인 대상(2곳 이상) 태그만 창고에서 고유 제목. 단일 태그(noindex)는 옛 회전 틀을 그대로 등록만(충돌 셈 제외).
+  const title = single
+    ? registerFixed(p, `#${tag} ${aggPick(tag, ['관련 업소', '모음', '큐레이션', '추천 리스트'], 5)} ${tagVenues.length}곳 — ${aggPick(tag, ['태그로 찾는 나이트라이프', '같은 결끼리 모아본 곳', '한번에 비교하는 페이지', '결로 묶은 나이트라이프', '비슷한 분위기끼리 정리', '한 주제로 좁혀 보기', '취향 맞는 곳만 골라', '관심 태그 깊이 파보기'], 6)}`, { noindex: true })
+    : makeTitle('tag', p, { tag, n: tagVenues.length, cats: _tagCatsT, top: tagVenues[0] ? tagVenues[0].nameKo : '' });
   // 시즌88 — 동일 템플릿 문단 제거 → 멤버 업소 실데이터 고유 본문 + 허브-메시(막다른길 0)
   // 시즌174 — 멤버 라벨 stuffing 해소. 태그어가 이름에 있으면 그 토큰 제거(브랜드 suffix/prefix 태그),
   // 없으면 공유 지역+업종 접두(첫 토큰)를 떼 고유 상호만 노출(설명형 태그의 접두 반복 stuffing 해소). 지역은 줄 끝에 별도 표기.
@@ -2447,7 +2514,7 @@ for (const [tag, tagVenues] of Object.entries(allTags)) {
     { q: `어떤 업종이 포함되나요?`, a: `${tagCatStr} ${tagCats.length}개 업종이 이 결로 묶여 있습니다. 위 업종으로 둘러보기에서 같은 업종 인기·신규 업소를 이어서 볼 수 있습니다.` },
   ];
   ssrBody += faqPairsDl('자주 묻는 질문', tagFaqPairs);
-  writePage(p, { title, description: desc, ssrBody, keywords: `${tag}, ${tag} 추천, 나이트라이프 ${tag}`, jsonLdList: [...collectionJsonLd(p, title, desc, tagVenues, [{ name: '놀쿨', url: BASE_URL }, { name: `#${tag}`, url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(tagFaqPairs)] });
+  writePage(p, { title, description: desc, ssrBody, skel: hubSkel('hub', tagVenues, { tag, factsHeading: `묶인 ${tagVenues.length}곳 한 줄씩` }, tagFaqPairs, `이 결로 묶인 곳은 ${tagCatStr} ${tagVenues.length}곳이며 ${tagRegionStr} 지역에 있다.`, 'tag'), keywords: `${tag}, ${tag} 추천, 나이트라이프 ${tag}`, jsonLdList: [...collectionJsonLd(p, title, desc, tagVenues, [{ name: '놀쿨', url: BASE_URL }, { name: `#${tag}`, url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(tagFaqPairs)] });
   // single-member tag는 sitemap/IndexNow에서 제외(색인 요청 안 함). 파일은 위에서 이미 생성됨.
   if (single) { singleTagNoindexCount++; } else { multiTagIndexCount++; dynamicPages.push(p); }
 }
@@ -2473,13 +2540,14 @@ for (const [st, stVenues] of Object.entries(stationVenues)) {
   const p = `/near/${encodeURIComponent(st)}`;
   const nearOv = NEAR_COPY_OVERRIDE[st];
   // 시즌88 — title 접미부 회전(전 역 동일 접미부 지문 해체)
-  const title = nearOv ? nearOv.title : `${st} ${aggPick(st, ['근처 업소', '도보권 업소', '인근 핫스팟'], 5)} ${stVenues.length}곳 — ${aggPick(st, ['역에서 걸어서 갈 수 있는 곳', '도보 5분권 모음', '걸어서 가는 나이트라이프', '역에서 거리순으로 정리', '지하철로 바로 닿는 곳', '퇴근길에 들르기 좋은', '한 정거장 안에서 해결', '역세권 거리순으로 모아'], 6)}`;
+  let title; // [놀쿨11-2] 창고 제목 — stTopNames·stDescCats 뒤에서 만든다
   // 시즌172 — 역명이 venue 접두어에 포함되면 suffix만 노출 (밀도 희석)
   const stTopNames = stVenues.slice(0, 3).map(sv => { const p = (sv.nameKo || '').split(/\s+/); return (p.length > 1 && p[0].includes(st.replace(/역$/, ''))) ? p.slice(1).join(' ') : sv.nameKo; }).join(', ');
   // 시즌88 — desc에 실제 멤버 업종만 노출(전체 6업종 나열 X) → 페이지마다 고유, 사파리/희석
   const stDescCats = [...new Set(stVenues.map(sv => catLabelMap[sv.cat] || sv.cat))].join('·');
   const stDescRegion = [...new Set(stVenues.map(sv => sv.regionKo))].filter(Boolean).slice(0, 2).join(', ');
   const desc = nearOv ? nearOv.desc : `${st} 도보 5분권 ${stDescCats} ${stVenues.length}곳${stDescRegion ? ` (${stDescRegion})` : ''} — ${stTopNames} 등 위치·후기·전화번호를 거리순으로 정리. ${aggPick(st, ['술 한잔하기 좋은 곳', '오늘 갈 곳', '가까운 핫스팟'], 3)}부터 확인하세요.`;
+  title = nearOv ? registerFixed(p, nearOv.title) : makeTitle('near', p, { place: st, n: stVenues.length, cats: stDescCats, top: stTopNames.split(', ')[0] });
   let ssrBody = `<h1>${escHtml(title)}</h1>`;
   ssrBody += aggAnswerBlock(stVenues, `이 역 도보권에`, p);
   ssrBody += `<p>${escHtml(desc)}</p>`;
@@ -2507,7 +2575,7 @@ for (const [st, stVenues] of Object.entries(stationVenues)) {
     { q: `늦은 시간에도 영업하나요?`, a: `대부분 새벽까지 운영하지만 마감 시간은 업소마다 다릅니다. 직통 통화로 마감 전 입장 가능 여부를 확인하세요.` },
   ];
   ssrBody += faqPairsDl('자주 묻는 질문', stFaqPairs);
-  writePage(p, { title, description: desc, ssrBody, keywords: `${st} 근처, ${st} 나이트라이프, ${st} 클럽, ${st} 나이트`, jsonLdList: [...collectionJsonLd(p, title, desc, stVenues, [{ name: '놀쿨', url: BASE_URL }, { name: st, url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(stFaqPairs)] });
+  writePage(p, { title, description: desc, ssrBody, skel: hubSkel('hub', stVenues, { place: st, factsHeading: `도보권 ${stVenues.length}곳 한 줄씩` }, stFaqPairs, stVenues.length >= 4 ? `이 역 도보권 업소는 ${stDescCats} ${stVenues.length}곳이며, ${stTopNames} 등이 있다.` : `이 역 도보권 업소는 ${stDescCats} ${stVenues.length}곳이다.`, 'near'), keywords: `${st} 근처, ${st} 나이트라이프, ${st} 클럽, ${st} 나이트`, jsonLdList: [...collectionJsonLd(p, title, desc, stVenues, [{ name: '놀쿨', url: BASE_URL }, { name: st, url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(stFaqPairs)] });
   dynamicPages.push(p);
 }
 
@@ -2875,6 +2943,13 @@ console.log(`✅ llms-full.txt 자동 생성 (${venues.length}개 업소 상세 
 // ══════════════════════════════════════════
 const INDEXNOW_KEY = '195ffcff10d3481d896c1151d28e3292';
 
+// [놀쿨11-2] 제목 창고 보고 + 쪽 기록(page-gate·nc11-2-check 가 읽는다)
+{
+  const tb = titleBankReport();
+  fs.writeFileSync(path.join(DIST, 'nc-pages.json'), JSON.stringify({ builtAt: BUILD_ISO_KST, titleBank: tb, faqSynced: NC_FAQ_SYNCED, pages: NC_PAGE_LOG }, null, 1));
+  console.log(`🏷️ 제목 창고: 등록 ${tb.titles} · 창고 생성 ${tb.generated}(대체 ${tb.fallback}) · 명시 ${tb.fixed} · 충돌 ${tb.conflicts.length} · 틀 초과 ${tb.usesOver.length}`);
+  if (tb.conflicts.length) console.log('   충돌:', JSON.stringify(tb.conflicts.slice(0, 5)));
+}
 async function submitIndexNow() {
   const allUrls = [];
   // 홈 + 정적 페이지

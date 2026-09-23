@@ -30,6 +30,8 @@ export function pageId(route) { return 'u' + seedOf(route).toString(36).padStart
 
 /* ── 아주 작은 HTML 트리 (생성기가 만든 정형 HTML 전용) ── */
 const VOID = new Set(['img', 'br', 'hr', 'meta', 'link', 'input', 'source', 'wbr']);
+export function parseHtml(html) { return parse(html); }
+export function serializeHtml(node) { return serialize(node); }
 function parse(html) {
   const root = { tag: '#root', attrs: '', children: [] };
   const stack = [root];
@@ -72,8 +74,14 @@ function firstTextIs(node, re) { return re.test(serialize(node).replace(/<[^>]+>
 function reorder(container, seed) {
   // 껍데기(건너뛰기 링크·카테고리 nav → 맨 앞 / 사이트맵 footer → 맨 뒤)는 자리 고정
   const front = [], back = [], rest = [];
+  // [놀쿨11-2] 완독 뼈대 — data-skel="answer|facts" 는 머리, "faq|summary|next" 는 꼬리로 고정, "body" 조각만 섞는다
+  const skel = (n) => (n.text === undefined && (n.attrs || '').match(/data-skel="(answer|facts|body|faq|summary|next)"/)?.[1]) || '';
   for (const n of container.children) {
-    if (isShell(n)) { (/aria-label="사이트맵"/.test(n.attrs || '') ? back : front).push(n); } else rest.push(n);
+    if (isShell(n)) { (/aria-label="사이트맵"/.test(n.attrs || '') ? back : front).push(n); continue; }
+    const k = skel(n);
+    if (k === 'answer' || k === 'facts') front.push(n);
+    else if (k === 'faq' || k === 'summary' || k === 'next') back.push(n);
+    else rest.push(n);
   }
   const kids = rest;
   const isHead = (n) => n.text !== undefined || /^h[12]$/.test(n.tag) || hasClass(n, 'ssr-answer') || hasClass(n, 'ssr-phone') || hasClass(n, 'ssr-hours') || hasClass(n, 'ssr-age')
