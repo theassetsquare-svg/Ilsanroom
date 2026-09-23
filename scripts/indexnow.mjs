@@ -12,11 +12,15 @@
  * 스냅샷은 GitHub Actions actions/cache로 워크플로 실행 간 영속 (repo 커밋 X)
  */
 
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync } from 'fs';
 import { resolve } from 'path';
 
 const SITE = 'nolcool.com';
-const KEY = process.env.INDEXNOW_KEY;
+// [놀쿨11-3] 키는 위성 indexnow-send.mjs 방식 — public/ 의 키 파일(<32hex>.txt)에서 읽는다. 환경변수는 있을 때만 우선.
+function keyFromFile() {
+  try { const f = readdirSync(resolve('public')).find((x) => /^[0-9a-f]{32}\.txt$/i.test(x)); return f ? f.replace(/\.txt$/i, '') : ''; } catch { return ''; }
+}
+const KEY = process.env.INDEXNOW_KEY || keyFromFile();
 const SNAPSHOT_PATH = resolve('scripts', '.indexnow-last.json');
 
 // dist/sitemap.xml에서 {url: lastmod} 추출 (<url> 블록 단위로 loc·lastmod 페어링)
@@ -56,8 +60,8 @@ async function submitIndexNow(urls) {
     keyLocation: `https://${SITE}/${KEY}.txt`,
     urlList: urls.slice(0, 10000), // IndexNow 최대 10,000개
   };
+  // [놀쿨11-3] 창구는 Bing 하나 — 놀쿨은 구글+AI 노출이 목표(네이버 수집요청 0). IndexNow 규약상 참여 엔진끼리 공유되는 것은 규약의 일이다.
   const endpoints = [
-    'https://api.indexnow.org/indexnow',
     'https://www.bing.com/indexnow',
   ];
   let ok = false;
@@ -77,6 +81,7 @@ async function submitIndexNow(urls) {
   return ok;
 }
 
+const PLAN_ONLY = process.argv.includes('--plan'); // [놀쿨11-3] --plan 이면 무엇을 보낼지만 적고 보내지 않는다(배포 0 · 로컬 시험)
 async function main() {
   const current = readSitemap();
   const total = Object.keys(current).length;
@@ -100,6 +105,7 @@ async function main() {
   changed.slice(0, 8).forEach(u => console.log(`  + ${u}`));
   if (changed.length > 8) console.log(`  ... 외 ${changed.length - 8}개`);
 
+  if (PLAN_ONLY) { console.log('--plan: 여기까지 — 보내지 않고 스냅샷도 갱신하지 않는다'); return; }
   if (!KEY) {
     // 로컬/키 없는 환경: diff만 계산·출력하고 제출 안 함. 스냅샷도 advance 안 함(다음 키 있는 실행이 제출).
     console.log('⚠️  INDEXNOW_KEY 미설정 — 변경분 계산만 (제출·스냅샷 갱신 skip)');

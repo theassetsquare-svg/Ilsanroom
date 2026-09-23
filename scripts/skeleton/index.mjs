@@ -144,7 +144,18 @@ export function applySkeleton(type, ssrBody, ctx = {}) {
   let summaryHtml = summary.length ? `<section data-skel="summary" class="nc-summary">${ser(summary)}</section>` : (ctx.summary ? `<section data-skel="summary" class="nc-summary"><h2>한 줄 정리</h2><p>${esc(ctx.summary)}</p></section>` : '');
   // ⑥ 다음에 볼 곳 — 허브 링크 묶음을 모아 h2→h3 로 낮추고 자리(빈 목록)를 둔다. 11-4 가 채운다.
   const nextInner = ser(next).replace(/<h2\b/g, '<h3').replace(/<\/h2>/g, '</h3>');
-  const nextHtml = `<nav data-skel="next" class="nc-next" aria-label="다음에 볼 곳"><h2>다음에 볼 곳</h2><ul class="nc-next-list" data-nc-next="slot"></ul>${nextInner}</nav>`;
+  // [놀쿨11-3] 허브 링크 — 이 쪽의 지역 허브·업종 허브·인기·신규·역 근처·인기 랭킹(장부 사실에서만 · 자기 자신은 제외) → 모든 쪽이 허브에 2단계 안에 닿고, 11-1 명세 「비교/퀴즈/랭킹 진입 1개」
+  const CATP = { '클럽': 'clubs', '나이트': 'nights', '라운지': 'lounges', '룸': 'rooms', '요정': 'yojeong', '호빠': 'hoppa' };
+  const f = ctx.facts || {}; const hubs = [];
+  const self = (ctx.route || '').replace(/\/$/, '');
+  const push = (href, label) => { if (href.replace(/\/$/, '') !== self && !hubs.some((h) => h[0] === href)) hubs.push([href, label]); };
+  if (f.region) push(`/region/${encodeURIComponent(f.region)}/`, `${f.region} 전체 업소`);
+  // 라벨에 업종어를 되풀이하지 않는다(카테고리 목록 쪽 키워드 밀도 3% 상한) — 앵커 글은 목적지 이름으로 충분하다
+  if (f.cat && CATP[f.cat]) { push(`/${CATP[f.cat]}/`, '업종 전체 목록'); if (f.region) push(`/region/${encodeURIComponent(f.region)}/${CATP[f.cat]}/`, `${f.region} 같은 업종`); if (CATP[f.cat] !== 'clubs') push(`/best/${CATP[f.cat]}/`, '이 업종 인기 순위'); push(`/new/${CATP[f.cat]}/`, '이 업종 신규 입점'); }
+  if (f.place) push(`/near/${encodeURIComponent(String(f.place))}/`, `${f.place} 근처`);
+  push('/ranking/', '인기 랭킹');
+  const hubsHtml = hubs.length ? `<ul class="nc-next-hubs">${hubs.map(([h, l]) => `<li><a href="${esc(h)}">${esc(l)}</a></li>`).join('')}</ul>` : '';
+  const nextHtml = `<nav data-skel="next" class="nc-next" aria-label="다음에 볼 곳"><h2>다음에 볼 곳</h2><ul class="nc-next-list" data-nc-next="slot"></ul>${hubsHtml}${nextInner}</nav>`;
   const h1Html = h1 ? `<h2 class="nc-h1-echo">${textOf(h1) ? esc(textOf(h1)) : ''}</h2>` : '';
   const out = `<article id="nc-article" class="nc-skel nc-skel-${type}" data-skel-type="${type}">` +
     (answerHtml ? `<section data-skel="answer" class="nc-answer">${answerHtml}</section>` : '') +

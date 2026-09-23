@@ -8,6 +8,9 @@
  *     S1 숨김 SSR(1px clip) · S2 완독 뼈대(조각·순서) · S3 FAQ 화면 dl ≠ FAQPage JSON-LD
  *     L1 내부 링크 새 창 · L2 canonical ≠ 주소 · A1 tel 링크 있는데 광고 라벨 없음
  *     W1 금칙어(가격 단어·자리표시) · N1 네이버 수집 코드 0(놀쿨은 구글+AI)
+ *   [놀쿨11-3] J1 JSON-LD 파싱 오류 · J2 유형별 필수 마크업(가게 LocalBusiness류+Breadcrumb · 목록/허브 CollectionPage|ItemList+Breadcrumb · 매거진 Article+Breadcrumb · 홈 WebSite+Organization)
+ *                 J3 사실 일치(가게 name=본문 이름 · telephone ⇒ tel 링크 · openingHours ⇒ 본문 영업시간 · Breadcrumb 마지막 = 이 주소) · J4 가짜 평점·후기 속성 0 · J5 DiscussionForumPosting 은 글 0 인 게시판에 0
+ *                 O1 og:title·og:description·og:image · S4 세이프서치 안전(성적 묘사·성매매·노출 표현 0 · 위험어 미러) · L3 본문 내부 링크 ≥ 10 · L4 허브(지역·업종) 링크 있음
  *   품질(경고만 · exit 0): Q1 제목 40자 초과 · Q2 본문 글자 하한(가게 1,700 · 목록/허브 2,000) · Q3 H2 5개 미만
  *
  *   순수 함수 gatePage(html, ctx) 를 nc11-2-check 가 그대로 쓴다. 파일을 쓰지 않는다(보고 JSON 은 --out=).
@@ -25,6 +28,10 @@ const PRICE_WORDS = ['만원', '입장료', '가성비', '시세', '가격대'].
 const MANWON_PRICE_RE = /(룸비|기본료|보증금|세팅비|입장(?!\s*가능)|메뉴|요금|가격|코스)\s*[\d일이삼사오육칠팔구십백천]*만원|[\d일이삼사오육칠팔구십백천]+\s*만원\s*(부터|이상|이하|선|대|짜리|상당)|만원대(?![가-힣])/;
 const PLACEHOLDER_RE = /\{\{|\bTODO\b|undefined|NaN|\[object Object\]|lorem ipsum/;
 const NAVER_RE = /searchadvisor\.naver|naver\.com\/.*(request|submit)|Yeti.{0,20}Disallow/i;
+// [놀쿨11-3] 세이프서치 안전 — 구글 「선정적인 콘텐츠」 기준(노골적 성적 콘텐츠·과도한 노출·성매매 알선)에 걸릴 표현 + 저장소 위험어(dist-audit DANGEROUS 미러)
+const SAFESEARCH_RE = /성관계|성행위|(?<![가-힣])섹스(?![가-힣])|포르노|음란|야동|알몸|나체|누드|노출\s?사진|성인용품|(?<![가-힣])자위(?![가-힣])|매춘|성매매|출장\s?안마|조건\s?만남|(?<![가-힣])오피(?![가-힣스])|안마방|풀싸롱|텐프로|2차\s*(서비스|모임|콜|가능|가격|비용|진행|연계|약속|장소)|밤\s?문화|유흥|룸\s?살롱|룸\s?싸롱|노래\s?방(?!송)|초이스/;
+const FAKE_PROPS_RE = /"(aggregateRating|review|reviewRating|ratingValue|reviewCount)"\s*:/;
+const HUB_LINK_RE = /href="\/(region|near|tag|best|new)\/|href="\/(clubs|nights|lounges|rooms|yojeong|hoppa)\/?"/;
 const dec = (s) => String(s || '').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ');
 const strip = (h) => dec(h.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
 
@@ -88,6 +95,32 @@ export function gatePage(html, ctx = {}) {
       if (hp.length >= 6 && r.hook === hp) { hookSame.push(r.route); if (hookSame.length >= 3) { block.push(`T4 후킹 부분 동일 4쪽 이상 ↔ ${hookSame.join(',')}`); break; } }
     }
   }
+  // [놀쿨11-3] 구조화 데이터·노출 기반
+  const rawLd = [...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+  if (rawLd.some((x) => { try { JSON.parse(x); return false; } catch { return true; } })) block.push('J1 JSON-LD 파싱 오류');
+  const ldTypes = lds.filter(Boolean).map((x) => String(x['@type']));
+  const need = { venue: [/NightClub|BarOrPub|EntertainmentBusiness|Restaurant|LocalBusiness/, /BreadcrumbList/], list: [/CollectionPage|ItemList/, /BreadcrumbList/], hub: [/CollectionPage|ItemList/, /BreadcrumbList/], magazine: [/Article/, /BreadcrumbList/], community: [/CollectionPage|WebPage/, /BreadcrumbList/], guide: [route === '/' ? /WebSite/ : /WebPage|CollectionPage|FAQPage|Restaurant/, route === '/' ? /Organization/ : /BreadcrumbList/] };
+  for (const re of (need[type] || [])) if (!ldTypes.some((t) => re.test(t))) block.push(`J2 마크업 없음 ${re.source.slice(0, 30)}`);
+  const pageText = strip(html);
+  for (const ld of lds.filter(Boolean)) {
+    if (/NightClub|BarOrPub|EntertainmentBusiness|Restaurant/.test(String(ld['@type']))) {
+      if (ld.name && !pageText.includes(ld.name)) block.push(`J3 LD name 「${ld.name}」 본문에 없음`);
+      if (ld.telephone && !hasTel && !pageText.includes(String(ld.telephone).replace(/^\+82-?/, '0'))) block.push('J3 LD telephone 이 본문(tel 링크·번호 글자)에 없음');
+      if (ld.openingHoursSpecification && !/영업시간|영업 시간|24시간/.test(pageText)) block.push('J3 LD 영업시간 있는데 본문에 영업시간 없음');
+      if (ld.address && ld.address.streetAddress && !pageText.includes(String(ld.address.streetAddress).slice(0, 8))) block.push('J3 LD 주소가 본문에 없음');
+    }
+    if (String(ld['@type']) === 'BreadcrumbList') { const last = (ld.itemListElement || []).slice(-1)[0]; if (last && last.item && decodeURIComponent(String(last.item).replace(/\/$/, '')) !== decodeURIComponent(want.replace(/\/$/, ''))) block.push(`J3 Breadcrumb 마지막 ≠ 주소 (${last.item})`); }
+    if (String(ld['@type']) === 'DiscussionForumPosting' && !/data-nc-posts="[1-9]/.test(html)) block.push('J5 글 0 인 쪽에 DiscussionForumPosting');
+  }
+  if (rawLd.some((x) => FAKE_PROPS_RE.test(x))) block.push('J4 평점·후기 속성(가짜 0 규칙)');
+  for (const k of ['og:title', 'og:description', 'og:image']) if (!new RegExp(`<meta property="${k}" content="[^"]+"`).test(html)) block.push(`O1 ${k} 없음`);
+  if (SAFESEARCH_RE.test(bodyText) || SAFESEARCH_RE.test(title) || SAFESEARCH_RE.test(desc)) block.push(`S4 세이프서치 위험 표현 「${(bodyText.match(SAFESEARCH_RE) || title.match(SAFESEARCH_RE) || desc.match(SAFESEARCH_RE) || [''])[0]}」`);
+  const art = (html.match(/<article id="nc-article"[\s\S]*?<\/article>/) || [''])[0];
+  const artLinks = new Set([...art.matchAll(/href="(\/[^"#?]*)"/g)].map((m) => m[1].replace(/\/$/, '')));
+  // 링크 문턱은 유형별 — 가게·목록·허브 10(막음) · 매거진·커뮤니티·가이드 6(막음) · 허브 링크는 가게·목록·허브에서 막음, 나머지는 품질(「다음에 볼 곳」은 11-4 가 채운다)
+  const linkMin = type === 'venue' ? 10 : 6; // 목록·허브는 업소 1~2곳짜리가 있어 6(「다음에 볼 곳」 채우기는 11-4)
+  if (art && artLinks.size < linkMin) block.push(`L3 본문 내부 링크 ${artLinks.size} < ${linkMin}`);
+  if (art && !HUB_LINK_RE.test(art)) { if (type === 'venue' || type === 'list' || type === 'hub') block.push('L4 허브(지역·업종) 링크 없음'); else quality.push('L4 허브 링크 없음(11-4 다음에 볼 곳)'); }
   // 품질
   if (title.length > 40) quality.push(`Q1 제목 ${title.length}자`);
   const chars = bodyText.replace(/\s/g, '').length;

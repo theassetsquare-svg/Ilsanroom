@@ -1,0 +1,1595 @@
+{
+ "stage": "최종",
+ "checks": 317,
+ "pass": 313,
+ "fails": 0,
+ "na": 1,
+ "skip": 3,
+ "list": [
+  {
+   "name": "30쪽 venue /rooms/ilsan/ilsanroom JSON-LD 파싱",
+   "r": "통과",
+   "note": "EntertainmentBusiness,FAQPage,BreadcrumbList,WebPage"
+  },
+  {
+   "name": "30쪽 venue /rooms/ilsan/ilsanroom 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /rooms/ilsan/ilsanroom 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /rooms/ilsan/ilsanroom 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /rooms/ilsan/ilsanroom canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /rooms/ilsan/ilsanroom 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /rooms/ilsan/ilsanroom 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /rooms/ilsan/ilsanroom 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /rooms/ilsan/ilsanroom 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/seongnamgukbingwannight JSON-LD 파싱",
+   "r": "통과",
+   "note": "NightClub,FAQPage,BreadcrumbList,WebPage"
+  },
+  {
+   "name": "30쪽 venue /nights/seongnamgukbingwannight 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/seongnamgukbingwannight 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/seongnamgukbingwannight 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/seongnamgukbingwannight canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/seongnamgukbingwannight 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/seongnamgukbingwannight 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/seongnamgukbingwannight 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/seongnamgukbingwannight 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/busanasiadnight JSON-LD 파싱",
+   "r": "통과",
+   "note": "NightClub,FAQPage,BreadcrumbList,WebPage"
+  },
+  {
+   "name": "30쪽 venue /nights/busanasiadnight 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/busanasiadnight 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/busanasiadnight 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/busanasiadnight canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/busanasiadnight 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/busanasiadnight 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/busanasiadnight 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/busanasiadnight 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /clubs/apgujeong/apgujeongclub-muin JSON-LD 파싱",
+   "r": "통과",
+   "note": "NightClub,FAQPage,BreadcrumbList,WebPage"
+  },
+  {
+   "name": "30쪽 venue /clubs/apgujeong/apgujeongclub-muin 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /clubs/apgujeong/apgujeongclub-muin 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /clubs/apgujeong/apgujeongclub-muin 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /clubs/apgujeong/apgujeongclub-muin canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /clubs/apgujeong/apgujeongclub-muin 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /clubs/apgujeong/apgujeongclub-muin 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /clubs/apgujeong/apgujeongclub-muin 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /clubs/apgujeong/apgujeongclub-muin 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /hoppa/jangandonghoppa-bbangbbang JSON-LD 파싱",
+   "r": "통과",
+   "note": "BarOrPub,FAQPage,BreadcrumbList,WebPage"
+  },
+  {
+   "name": "30쪽 venue /hoppa/jangandonghoppa-bbangbbang 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /hoppa/jangandonghoppa-bbangbbang 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /hoppa/jangandonghoppa-bbangbbang 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /hoppa/jangandonghoppa-bbangbbang canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /hoppa/jangandonghoppa-bbangbbang 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /hoppa/jangandonghoppa-bbangbbang 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /hoppa/jangandonghoppa-bbangbbang 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /hoppa/jangandonghoppa-bbangbbang 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs JSON-LD 파싱",
+   "r": "통과",
+   "note": "ItemList,FAQPage,CollectionPage,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 list /clubs 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /rooms/ilsan JSON-LD 파싱",
+   "r": "통과",
+   "note": "ItemList,FAQPage,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 list /rooms/ilsan 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /rooms/ilsan 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /rooms/ilsan 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /rooms/ilsan canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /rooms/ilsan 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /rooms/ilsan 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /rooms/ilsan 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /rooms/ilsan 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/itaewon JSON-LD 파싱",
+   "r": "통과",
+   "note": "ItemList,FAQPage,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 list /clubs/itaewon 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/itaewon 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/itaewon 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/itaewon canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/itaewon 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/itaewon 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/itaewon 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/itaewon 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/uijeongbu JSON-LD 파싱",
+   "r": "통과",
+   "note": "ItemList,FAQPage,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 list /clubs/uijeongbu 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/uijeongbu 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/uijeongbu 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/uijeongbu canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/uijeongbu 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/uijeongbu 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/uijeongbu 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/uijeongbu 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /best/nights JSON-LD 파싱",
+   "r": "통과",
+   "note": "CollectionPage,BreadcrumbList,FAQPage"
+  },
+  {
+   "name": "30쪽 list /best/nights 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /best/nights 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /best/nights 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /best/nights canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /best/nights 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /best/nights 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /best/nights 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /best/nights 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/일산 JSON-LD 파싱",
+   "r": "통과",
+   "note": "CollectionPage,BreadcrumbList,FAQPage"
+  },
+  {
+   "name": "30쪽 hub /region/일산 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/일산 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/일산 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/일산 canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/일산 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/일산 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/일산 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/일산 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/수원 JSON-LD 파싱",
+   "r": "통과",
+   "note": "CollectionPage,BreadcrumbList,FAQPage"
+  },
+  {
+   "name": "30쪽 hub /region/수원 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/수원 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/수원 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/수원 canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/수원 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/수원 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/수원 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/수원 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/부산/nights JSON-LD 파싱",
+   "r": "통과",
+   "note": "CollectionPage,BreadcrumbList,FAQPage"
+  },
+  {
+   "name": "30쪽 hub /region/부산/nights 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/부산/nights 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/부산/nights 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/부산/nights canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/부산/nights 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/부산/nights 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/부산/nights 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/부산/nights 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /tag/안산나이트 JSON-LD 파싱",
+   "r": "통과",
+   "note": "CollectionPage,BreadcrumbList,FAQPage"
+  },
+  {
+   "name": "30쪽 hub /tag/안산나이트 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /tag/안산나이트 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /tag/안산나이트 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /tag/안산나이트 canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /tag/안산나이트 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /tag/안산나이트 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /tag/안산나이트 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /tag/안산나이트 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /near/오산 JSON-LD 파싱",
+   "r": "통과",
+   "note": "CollectionPage,BreadcrumbList,FAQPage"
+  },
+  {
+   "name": "30쪽 hub /near/오산 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /near/오산 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /near/오산 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /near/오산 canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /near/오산 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /near/오산 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /near/오산 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /near/오산 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/gangnam-edm-clubs-2026 JSON-LD 파싱",
+   "r": "통과",
+   "note": "Article,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 magazine /magazine/gangnam-edm-clubs-2026 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/gangnam-edm-clubs-2026 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/gangnam-edm-clubs-2026 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/gangnam-edm-clubs-2026 canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/gangnam-edm-clubs-2026 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/gangnam-edm-clubs-2026 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/gangnam-edm-clubs-2026 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/gangnam-edm-clubs-2026 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/incheon-bucheon-night-guide JSON-LD 파싱",
+   "r": "통과",
+   "note": "Article,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 magazine /magazine/incheon-bucheon-night-guide 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/incheon-bucheon-night-guide 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/incheon-bucheon-night-guide 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/incheon-bucheon-night-guide canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/incheon-bucheon-night-guide 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/incheon-bucheon-night-guide 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/incheon-bucheon-night-guide 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/incheon-bucheon-night-guide 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/uijeongbu-night-guide JSON-LD 파싱",
+   "r": "통과",
+   "note": "Article,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 magazine /magazine/uijeongbu-night-guide 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/uijeongbu-night-guide 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/uijeongbu-night-guide 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/uijeongbu-night-guide canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/uijeongbu-night-guide 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/uijeongbu-night-guide 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/uijeongbu-night-guide 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/uijeongbu-night-guide 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/suwon-hoppa-guide JSON-LD 파싱",
+   "r": "통과",
+   "note": "Article,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 magazine /magazine/suwon-hoppa-guide 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/suwon-hoppa-guide 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/suwon-hoppa-guide 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/suwon-hoppa-guide canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/suwon-hoppa-guide 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/suwon-hoppa-guide 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/suwon-hoppa-guide 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/suwon-hoppa-guide 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/hongdae-club-guide JSON-LD 파싱",
+   "r": "통과",
+   "note": "Article,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 magazine /magazine/hongdae-club-guide 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/hongdae-club-guide 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/hongdae-club-guide 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/hongdae-club-guide canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/hongdae-club-guide 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/hongdae-club-guide 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/hongdae-club-guide 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/hongdae-club-guide 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community JSON-LD 파싱",
+   "r": "통과",
+   "note": "CollectionPage,WebPage,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 community /community 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/tips JSON-LD 파싱",
+   "r": "통과",
+   "note": "CollectionPage,WebPage,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 community /community/tips 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/tips 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/tips 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/tips canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/tips 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/tips 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/tips 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/tips 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/fashion JSON-LD 파싱",
+   "r": "통과",
+   "note": "CollectionPage,WebPage,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 community /community/fashion 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/fashion 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/fashion 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/fashion canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/fashion 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/fashion 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/fashion 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/fashion 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/night JSON-LD 파싱",
+   "r": "통과",
+   "note": "WebPage,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 community /lounge/night 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/night 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/night 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/night canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/night 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/night 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/night 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/night 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/yojung JSON-LD 파싱",
+   "r": "통과",
+   "note": "WebPage,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 community /lounge/yojung 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/yojung 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/yojung 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/yojung canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/yojung 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/yojung 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/yojung 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/yojung 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide / JSON-LD 파싱",
+   "r": "통과",
+   "note": "WebSite,Organization,FAQPage"
+  },
+  {
+   "name": "30쪽 guide / 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide / 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide / 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide / canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide / 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide / 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide / 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide / 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /venue-info JSON-LD 파싱",
+   "r": "통과",
+   "note": "WebPage,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 guide /venue-info 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /venue-info 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /venue-info 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /venue-info canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /venue-info 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /venue-info 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /venue-info 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /venue-info 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /privacy JSON-LD 파싱",
+   "r": "통과",
+   "note": "WebPage,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 guide /privacy 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /privacy 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /privacy 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /privacy canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /privacy 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /privacy 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /privacy 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /privacy 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /testimonials JSON-LD 파싱",
+   "r": "통과",
+   "note": "WebPage,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 guide /testimonials 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /testimonials 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /testimonials 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /testimonials canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /testimonials 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /testimonials 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /testimonials 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /testimonials 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /weekend JSON-LD 파싱",
+   "r": "통과",
+   "note": "WebPage,BreadcrumbList"
+  },
+  {
+   "name": "30쪽 guide /weekend 유형 마크업(J2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /weekend 사실 일치(J3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /weekend 가짜 평점 0(J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /weekend canonical·og 3종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /weekend 첫 그림 치수·high·webp",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /weekend 다음에 볼 곳 허브 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /weekend 세이프서치 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /weekend 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 검증기 표본 6쪽",
+   "r": "통과",
+   "note": "7"
+  },
+  {
+   "name": "T2 검증기 /clubs/gangnam/gangnamclub-race/ 오류 0",
+   "r": "통과",
+   "note": "오류 0 · 경고 0 · WebPage(about→NightClub),BreadcrumbList,FAQPage"
+  },
+  {
+   "name": "T2 검증기 /lounges/apgujeongcodelounge/ 오류 0",
+   "r": "통과",
+   "note": "오류 0 · 경고 0 · WebPage(about→BarOrPub · 주소·영업시간·geo),BreadcrumbList,FAQPage"
+  },
+  {
+   "name": "T2 검증기 /nights/ilsanshampoonight/ 오류 0",
+   "r": "통과",
+   "note": "오류 0 · 경고 0 · WebPage(about→NightClub · 주소·영업시간 2묶음·geo),BreadcrumbList,FAQPage"
+  },
+  {
+   "name": "T2 검증기 /region/강남/ 오류 0",
+   "r": "통과",
+   "note": "오류 0 · 경고 0 · CollectionPage(mainEntity ItemList 15),BreadcrumbList,FAQPage"
+  },
+  {
+   "name": "T2 검증기 /magazine/daejeon-night-guide/ 오류 0",
+   "r": "통과",
+   "note": "오류 0 · 경고 0 · Article(author·publisher·datePublished·dateModified),BreadcrumbList"
+  },
+  {
+   "name": "T2 검증기 / 오류 0",
+   "r": "통과",
+   "note": "오류 0 · 경고 0 · WebSite(SearchAction),Organization,FAQPage"
+  },
+  {
+   "name": "T2 검증기 /community/ 오류 0",
+   "r": "통과",
+   "note": "오류 0 · 경고 0 · CollectionPage,WebPage,BreadcrumbList"
+  },
+  {
+   "name": "T2 검증기 도구",
+   "r": "통과",
+   "note": "validator.schema.org (스키마 마크업 검사기 · 코드 스니펫) — 2026-09-24 00:2x~00:4x · Chrome MCP · 빌드 25 dist 의 JSON-LD 원문 + h1 + 직답(.ssr-answer) 만 넣음(인라인 script/style 제외)"
+  },
+  {
+   "name": "0절 배포 0(origin/main 그대로)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "0절 worktree 브랜치에서만(nol11-2)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "0절 주소 불변 — 사이트맵 466",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "0절 네이버 0 — dist 수집요청 코드 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "0절 규칙 지어내지 않음 — 규칙 출처 표 SOURCES 22항목이 연구 문서에",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "0절 「조건 완비 · 결과 보장 아님」 한 줄은 보고서 몫(검사 아님)",
+   "r": "해당 없음",
+   "note": ""
+  },
+  {
+   "name": "1절 겹침 — 있는 것 그대로: robots(있음)·sitemap(있음)·llms(있음)·IndexNow 도구(indexnow.mjs 있음)·AI 인용 구조(FAQ LD 126)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-1 가게 = NightClub/BarOrPub/Restaurant + Breadcrumb + FAQ",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-1 가게 telephone 은 광고주·대표번호 규칙대로(tel 링크 있는 쪽은 광고 라벨 · A1 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-1 목록·허브 = ItemList/CollectionPage + Breadcrumb",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-1 홈 = WebSite(SearchAction) + Organization",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-1 매거진 = Article(author·datePublished·dateModified)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-1 커뮤니티 DiscussionForumPosting 은 진짜 글만",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-1 없는 사실 속성 0 · 가짜 평점 0(J3·J4 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-2 robots 모든 로봇 허용 + AI 봇 명시 + Sitemap",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-2 llms.txt 소개 + 허브 + 466쪽(제목+직답)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-2 sitemap lastmod 실제 값(해시 정직화) · 빌드마다 갱신",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-2 IndexNow(Bing) 도구 · 놀쿨 키 파일",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-2 canonical 자기 절대주소 · og 3종 · hreflang 추가 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-2 세이프서치 안전 게이트 항목(S4) · 466 걸림 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-3 그림 크기 지정 466",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-3 지연 로딩(첫 화면 제외) — 첫 그림 eager · 다음 그림은 React 카드(lazy)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-3 현대 형식 — 첫 그림 webp 466",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-3 글꼴 미리 연결 — 웹폰트 0(시스템 글꼴)이라 해당 없음",
+   "r": "해당 없음",
+   "note": ""
+  },
+  {
+   "name": "2-3 CSS 분리 — 1파일 23KB(gz) · Lighthouse unused-css 통과 → 추가 분리 이득 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-3 번들 분할 — vendor 4묶음 modulepreload + 경로별 chunk",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-3 Cloudflare 캐시 헤더(_headers: assets 1년 immutable · html SWR · og 30일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-3 PSI 공식 API 전/후",
+   "r": "실행 불가",
+   "note": "429 할당량 — Lighthouse CLI 전/후로 대체(디버깅 T4)"
+  },
+  {
+   "name": "2-4 허브↔가게↔매거진↔커뮤니티 · 허브 2단계 · 다음에 볼 곳 자리 · 고아 0 · 새 창 0 → 디버깅 T5",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-5 page-gate: JSON-LD 파싱·사실 일치·없는 속성 0·canonical·og·세이프서치·내부 링크 ≥N",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-5 고아 0 은 nc11-3-check 디버깅 T5(링크 그래프)에서",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "3절 T1~T7 은 디버깅 단계 기록",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "4절 검증 파일 이름 nc11-3-check.mjs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "5절 보고 형식(모델·2-1~2-5·T1~T7·CWV 전/후·유형별 쪽 수·조건 완비 문구·검증 N·대표님만) — 보고서 몫",
+   "r": "해당 없음",
+   "note": ""
+  },
+  {
+   "name": "조건① 색인 허용 — 사이트맵 466 쪽에 noindex 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "조건② 구조 — 뼈대·JSON-LD·Breadcrumb 466",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "조건③ 인용 가능한 사실 — 직답 첫 문장 466(llms.txt 줄마다)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "조건④ 봇 허용 — robots AI 봇 12종 Allow · max-snippet:-1",
+   "r": "통과",
+   "note": ""
+  }
+ ]
+}

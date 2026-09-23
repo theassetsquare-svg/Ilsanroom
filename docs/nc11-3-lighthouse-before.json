@@ -1,0 +1,106 @@
+{
+ "base": "https://nolcool.com",
+ "at": "2026-09-23T14:51:00.217Z",
+ "res": [
+  {
+   "p": "/",
+   "perf": 55,
+   "lcp": 9941,
+   "tbt": 560,
+   "cls": 0.002,
+   "fcp": 2673,
+   "si": 4278,
+   "lcpEl": "<h1 class=\"text-[22px] sm:text-[28px] font-black text-white leading-tight\">"
+  },
+  {
+   "p": "/nights/ilsanshampoonight/",
+   "perf": 56,
+   "lcp": 9370,
+   "tbt": 524,
+   "cls": 0,
+   "fcp": 2702,
+   "si": 3948,
+   "lcpEl": "<img src=\"/venues/ilsanshampoonight-1.webp?v3\" alt=\"일산샴푸나이트\" width=\"1200\" height"
+  },
+  {
+   "p": "/clubs/gangnam/gangnamclub-race/",
+   "perf": 54,
+   "lcp": 7271,
+   "tbt": 747,
+   "cls": 0,
+   "fcp": 2358,
+   "si": 3584,
+   "lcpEl": "<img src=\"/venues/gangnamclub-race-1.webp?v3\" alt=\"강남청담클럽 레이스\" width=\"1200\" heig"
+  },
+  {
+   "p": "/rooms/ilsan/ilsanroom/",
+   "perf": 56,
+   "lcp": 9460,
+   "tbt": 575,
+   "cls": 0,
+   "fcp": 2660,
+   "si": 3144,
+   "lcpEl": "<img src=\"/venues/ilsanroom-1-v3.webp?v3\" alt=\"일산룸\" width=\"1200\" height=\"630\" lo"
+  },
+  {
+   "p": "/clubs/",
+   "perf": 57,
+   "lcp": 10882,
+   "tbt": 486,
+   "cls": 0,
+   "fcp": 2944,
+   "si": 3298,
+   "lcpEl": "<p class=\"mt-2 text-base leading-relaxed text-neon-text-muted\">"
+  },
+  {
+   "p": "/nights/",
+   "perf": 52,
+   "lcp": 6310,
+   "tbt": 886,
+   "cls": 0,
+   "fcp": 2489,
+   "si": 4075,
+   "lcpEl": "<p class=\"text-lg sm:text-xl text-white/90 font-medium mb-4 max-w-2xl leading-re"
+  },
+  {
+   "p": "/region/%EA%B0%95%EB%82%A8/",
+   "perf": 59,
+   "lcp": 8141,
+   "tbt": 503,
+   "cls": 0,
+   "fcp": 2643,
+   "si": 2643,
+   "lcpEl": "<p class=\"mt-1 text-sm text-gray-500\">"
+  },
+  {
+   "p": "/near/%EB%A7%88%EB%91%90/",
+   "perf": 57,
+   "lcp": 8642,
+   "tbt": 565,
+   "cls": 0,
+   "fcp": 2599,
+   "si": 2599,
+   "lcpEl": "<p class=\"mt-1 text-sm text-gray-500\">"
+  },
+  {
+   "p": "/magazine/daejeon-night-guide/",
+   "perf": 49,
+   "lcp": 8816,
+   "tbt": 878,
+   "cls": 0,
+   "fcp": 2790,
+   "si": 3827,
+   "lcpEl": "<p class=\"text-[15px] font-medium\" style=\"color: rgb(34, 34, 34); line-height: 1"
+  },
+  {
+   "p": "/community/",
+   "perf": 56,
+   "lcp": 6881,
+   "tbt": 643,
+   "cls": 0,
+   "fcp": 2430,
+   "si": 3604,
+   "lcpEl": "<p class=\"mt-1 text-base leading-relaxed text-neon-text\">"
+  }
+ ]
+}

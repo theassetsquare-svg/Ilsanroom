@@ -1,0 +1,106 @@
+{
+ "base": "http://127.0.0.1:4173",
+ "at": "2026-09-23T15:31:29.330Z",
+ "res": [
+  {
+   "p": "/",
+   "perf": 70,
+   "lcp": 2016,
+   "tbt": 977,
+   "cls": 0.13,
+   "fcp": 1866,
+   "si": 3635,
+   "lcpEl": "<p class=\"u0bo0mse-pz7\">"
+  },
+  {
+   "p": "/nights/ilsanshampoonight/",
+   "perf": 52,
+   "lcp": 8742,
+   "tbt": 735,
+   "cls": 0.103,
+   "fcp": 1863,
+   "si": 3678,
+   "lcpEl": "<img src=\"/venues/ilsanshampoonight-1.webp?v3\" alt=\"일산샴푸나이트\" width=\"1200\" height"
+  },
+  {
+   "p": "/clubs/gangnam/gangnamclub-race/",
+   "perf": 55,
+   "lcp": 8253,
+   "tbt": 578,
+   "cls": 0.13,
+   "fcp": 1853,
+   "si": 2380,
+   "lcpEl": "<img src=\"/venues/gangnamclub-race-1.webp?v3\" alt=\"강남청담클럽 레이스\" width=\"1200\" heig"
+  },
+  {
+   "p": "/rooms/ilsan/ilsanroom/",
+   "perf": 60,
+   "lcp": 8365,
+   "tbt": 440,
+   "cls": 0.116,
+   "fcp": 1856,
+   "si": 1856,
+   "lcpEl": "<img src=\"/venues/ilsanroom-1-v3.webp?v3\" alt=\"일산룸\" width=\"1200\" height=\"630\" lo"
+  },
+  {
+   "p": "/clubs/",
+   "perf": 55,
+   "lcp": 7397,
+   "tbt": 551,
+   "cls": 0.116,
+   "fcp": 2017,
+   "si": 3933,
+   "lcpEl": "<p class=\"mt-2 text-base leading-relaxed text-neon-text-muted\">"
+  },
+  {
+   "p": "/nights/",
+   "perf": 56,
+   "lcp": 8337,
+   "tbt": 512,
+   "cls": 0.116,
+   "fcp": 2014,
+   "si": 3408,
+   "lcpEl": "<p class=\"text-lg sm:text-xl text-white/90 font-medium mb-4 max-w-2xl leading-re"
+  },
+  {
+   "p": "/region/%EA%B0%95%EB%82%A8/",
+   "perf": 69,
+   "lcp": 4161,
+   "tbt": 483,
+   "cls": 0.116,
+   "fcp": 1865,
+   "si": 1865,
+   "lcpEl": "<p class=\"mt-1 text-sm text-gray-500\">"
+  },
+  {
+   "p": "/near/%EB%A7%88%EB%91%90/",
+   "perf": 65,
+   "lcp": 4757,
+   "tbt": 539,
+   "cls": 0.103,
+   "fcp": 1863,
+   "si": 2294,
+   "lcpEl": "<p class=\"u0e2227i-pz7 ssr-answer\">"
+  },
+  {
+   "p": "/magazine/daejeon-night-guide/",
+   "perf": 57,
+   "lcp": 5033,
+   "tbt": 795,
+   "cls": 0.116,
+   "fcp": 1861,
+   "si": 3047,
+   "lcpEl": "<p class=\"text-[15px] font-medium\" style=\"color: rgb(34, 34, 34); line-height: 1"
+  },
+  {
+   "p": "/community/",
+   "perf": 70,
+   "lcp": 4146,
+   "tbt": 446,
+   "cls": 0.117,
+   "fcp": 1867,
+   "si": 2220,
+   "lcpEl": "<p class=\"mt-1 text-base leading-relaxed text-neon-text\">"
+  }
+ ]
+}

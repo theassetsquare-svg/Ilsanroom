@@ -1,0 +1,750 @@
+{
+ "stage": "스테이징",
+ "checks": 148,
+ "pass": 147,
+ "fails": 0,
+ "na": 0,
+ "skip": 1,
+ "list": [
+  {
+   "name": "파일 scripts/page-gate.mjs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 scripts/prerender-seo.mjs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 scripts/skeleton/index.mjs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 scripts/indexnow.mjs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 public/robots.txt",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 public/_headers",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 scripts/verify/nc11-3-check.mjs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 scripts/lib/title-bank.mjs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/components/seo/SsrArticle.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "IndexNow 키 파일 public/<32hex>.txt",
+   "r": "통과",
+   "note": "195ffcff10d3481d896c1151d28e3292.txt"
+  },
+  {
+   "name": "IndexNow 키 = prerender 상수",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate J1 있음(scripts/page-gate.mjs:100)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate J2 있음(scripts/page-gate.mjs:103)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate J3 있음(scripts/page-gate.mjs:107)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate J4 있음(scripts/page-gate.mjs:115)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate J5 있음(scripts/page-gate.mjs:113)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate O1 있음(scripts/page-gate.mjs:116)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate S4 있음(scripts/page-gate.mjs:117)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate L3 있음(scripts/page-gate.mjs:122)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate L4 있음(scripts/page-gate.mjs:123)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate J2 유형표 6종(venue·list·hub·magazine·community·guide)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate J2 홈 = WebSite + Organization",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate J4 FAKE_PROPS_RE = aggregateRating·review·reviewRating·ratingValue·reviewCount",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「성관계」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「성행위」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「섹스」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「포르노」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「음란」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「야동」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「알몸」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「나체」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「누드」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「노출\\s?사진」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「성인용품」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「자위」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「매춘」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「성매매」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「출장\\s?안마」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「조건\\s?만남」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「오피」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「안마방」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「풀싸롱」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「텐프로」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「2차」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「밤\\s?문화」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「유흥」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「룸\\s?살롱」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 세이프서치 낱말 「초이스」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "S4 는 제목·설명·본문 셋 다 본다",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "J3 name 본문 대조",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "J3 telephone 대조(tel 링크·번호 글자)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "J3 영업시간 대조",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "J3 주소 대조",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "J3 Breadcrumb 마지막 = 주소",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "L3 문턱 가게 10 · 나머지 6",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "L4 허브 링크 정규식(region·near·tag·best·new·업종 뿌리)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "O1 og:title·og:description·og:image",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "J5 DiscussionForumPosting 은 data-nc-posts 있을 때만",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가게 LD 영업시간 파서 parseOpeningHours",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "영업시간 없으면 속성 삭제(없는 사실 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "주소 없으면 streetAddress 삭제",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "BreadcrumbList 자동 보강",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "커뮤니티 게시판 = CollectionPage(글 0 이면 DiscussionForumPosting 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "FAQPage LD = 화면 dl 동기화",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가짜 평점 생성 코드 0(aggregateRating 문자열이 LD 생성부에 없음)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "홈 WebSite + SearchAction",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "홈 Organization",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "매거진 Article datePublished·dateModified",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "llms.txt 전체 쪽 = 제목 + 직답 첫 문장",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "IndexNow 자동 전송은 CI·--indexnow 일 때만(로컬 빌드 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "indexnow.mjs 키 파일 읽기(위성 방식)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "indexnow.mjs 창구 Bing 하나",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "indexnow.mjs --plan(보내지 않기)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "indexnow.mjs 네이버 창구 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "indexnow.mjs 변경분만(스냅샷 diff)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt Googlebot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt Googlebot-Image Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt Google-Extended Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt Bingbot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt GPTBot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt ChatGPT-User Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt OAI-SearchBot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt PerplexityBot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt Perplexity-User Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt ClaudeBot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt Claude-SearchBot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt Claude-User Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt Applebot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt Applebot-Extended Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt CCBot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt Amazonbot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt Meta-ExternalAgent Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt DuckDuckBot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt Yeti Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt 모든 로봇 허용(User-agent: * / Allow: /)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt Disallow 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt Sitemap 줄",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt llms.txt 안내",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "첫 그림 width/height/fetchpriority=high(줄)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "첫 그림 webp 축소판 srcset(og jpg 쪽)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "sharp 로 webp 600·1200",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "LCP preload 태그(가게 쪽)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "lazy+low 주입 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "_headers assets immutable 1년",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "_headers html s-maxage+SWR",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "_headers og 30일",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "_redirects 301/302 0(SPA 200 폴백만)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "번들 분할 manualChunks(vendor)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "글꼴 = 시스템 글꼴(웹폰트 0 → 미리 연결 해당 없음)",
+   "r": "해당 없음",
+   "note": ""
+  },
+  {
+   "name": "다음에 볼 곳 허브 링크 nc-next-hubs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "허브 링크 업종표 클럽",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "허브 링크 업종표 나이트",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "허브 링크 업종표 라운지",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "허브 링크 업종표 룸",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "허브 링크 업종표 요정",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "허브 링크 업종표 호빠",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "허브 링크 자기 자신 제외",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "허브 링크 인기 랭킹",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "허브 링크 라벨에 업종어 되풀이 0(밀도 3% 상한)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "근처 허브 주소 = place 그대로(역 떼지 않음)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "규칙 출처 J2 가게 NightClub/BarOrPub/LocalBusiness → G-sd-localbusiness·Schema-NightClub·Schema-BarOrPub",
+   "r": "통과",
+   "note": "연구 표에 G-sd-localbusiness·Schema-NightClub·Schema-BarOrPub"
+  },
+  {
+   "name": "규칙 출처 J2 Breadcrumb → G-sd-breadcrumb",
+   "r": "통과",
+   "note": "연구 표에 G-sd-breadcrumb"
+  },
+  {
+   "name": "규칙 출처 J2 FAQPage = 화면 → G-sd-faq",
+   "r": "통과",
+   "note": "연구 표에 G-sd-faq"
+  },
+  {
+   "name": "규칙 출처 J2 Article → G-sd-article",
+   "r": "통과",
+   "note": "연구 표에 G-sd-article"
+  },
+  {
+   "name": "규칙 출처 J4 가짜 평점 0 → G-sd-review·G-sd-policies",
+   "r": "통과",
+   "note": "연구 표에 G-sd-review·G-sd-policies"
+  },
+  {
+   "name": "규칙 출처 J3 사실 일치(보이지 않는 마크업 금지) → G-sd-policies",
+   "r": "통과",
+   "note": "연구 표에 G-sd-policies"
+  },
+  {
+   "name": "규칙 출처 O1 og 3종 → G-seo-starter·G-sd-policies",
+   "r": "통과",
+   "note": "연구 표에 G-seo-starter·G-sd-policies"
+  },
+  {
+   "name": "규칙 출처 S4 세이프서치 → G-safesearch",
+   "r": "통과",
+   "note": "연구 표에 G-safesearch"
+  },
+  {
+   "name": "규칙 출처 robots AI 봇 → OpenAI-bots·Anthropic-bots·Perplexity-bots·Apple-bot·G-crawlers",
+   "r": "통과",
+   "note": "연구 표에 OpenAI-bots·Anthropic-bots·Perplexity-bots·Apple-bot·G-crawlers"
+  },
+  {
+   "name": "규칙 출처 llms.txt → llmstxt",
+   "r": "통과",
+   "note": "연구 표에 llmstxt"
+  },
+  {
+   "name": "규칙 출처 sitemap lastmod → G-sitemaps",
+   "r": "통과",
+   "note": "연구 표에 G-sitemaps"
+  },
+  {
+   "name": "규칙 출처 IndexNow → IndexNow-doc·Bing-indexnow",
+   "r": "통과",
+   "note": "연구 표에 IndexNow-doc·Bing-indexnow"
+  },
+  {
+   "name": "규칙 출처 CWV LCP 2.5s → G-cwv·webdev-lcp",
+   "r": "통과",
+   "note": "연구 표에 G-cwv·webdev-lcp"
+  },
+  {
+   "name": "규칙 출처 CWV CLS 0.1 → webdev-cls",
+   "r": "통과",
+   "note": "연구 표에 webdev-cls"
+  },
+  {
+   "name": "규칙 출처 CWV INP 200ms → webdev-inp",
+   "r": "통과",
+   "note": "연구 표에 webdev-inp"
+  },
+  {
+   "name": "규칙 출처 LCP 그림 지연 로드 금지 → webdev-lazy-lcp",
+   "r": "통과",
+   "note": "연구 표에 webdev-lazy-lcp"
+  },
+  {
+   "name": "규칙 출처 fetchpriority high → webdev-fetchpriority",
+   "r": "통과",
+   "note": "연구 표에 webdev-fetchpriority"
+  },
+  {
+   "name": "규칙 출처 preload → MDN-preload·webdev-image",
+   "r": "통과",
+   "note": "연구 표에 MDN-preload·webdev-image"
+  },
+  {
+   "name": "규칙 출처 캐시 헤더 → CF-cache-rules·CF-cache-default·CF-early-hints",
+   "r": "통과",
+   "note": "연구 표에 CF-cache-rules·CF-cache-default·CF-early-hints"
+  },
+  {
+   "name": "규칙 출처 canonical → G-canonical",
+   "r": "통과",
+   "note": "연구 표에 G-canonical"
+  },
+  {
+   "name": "규칙 출처 내부 링크 → G-links·G-seo-starter",
+   "r": "통과",
+   "note": "연구 표에 G-links·G-seo-starter"
+  },
+  {
+   "name": "네이버 호출 0(고친 파일에 naver 주소 요청 없음)",
+   "r": "통과",
+   "note": "page-gate 의 searchadvisor 는 N1 막음 정규식 1곳뿐"
+  },
+  {
+   "name": "주소 변경 코드 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "API 키 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가짜 생성 0(insert·createUser 없음)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "새 창 0(target=_blank 없음)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "Actions 신설 0(.github/workflows 새 파일 없음 — git 추적 밖 파일 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "빌드 체인 끝 page-gate",
+   "r": "통과",
+   "note": ""
+  }
+ ]
+}

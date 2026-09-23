@@ -10,10 +10,44 @@ import crypto from 'crypto';
 import { execSync } from 'child_process';
 import { provinceOf, localityOf } from './lib/region-admin.mjs';
 import { heroVer, ogVer } from '../src/lib/venue-file-ver.mjs';
+import sharp from 'sharp'; // [놀쿨11-3] 첫 화면 그림(og jpg) 의 webp 축소판 생성
 
 const DIST = path.resolve('dist');
 const BASE_URL = 'https://nolcool.com';
 const OG_IMAGE = `${BASE_URL}/og/nolcool-og.jpg`;
+
+// [놀쿨11-3] 2-3 CWV — 첫 화면 그림(hero)은 og jpg(1200×675·~50KB) 를 그대로 쓰고 있었다(Lighthouse modern-image-formats·uses-responsive-images).
+//   og:image 는 jpg 그대로(카카오·페이스북 미리보기 호환) 두고, 화면의 <img> 만 webp 축소판(600w·1200w srcset)을 쓴다.
+//   생성물은 dist/og/<이름>-w600.webp · -w1200.webp — 빌드 산출물이라 저장소에 넣지 않는다. 원본 jpg 가 없으면 만들지 않는다(가짜 0).
+const OG_WEBP = new Set();
+async function buildOgWebp() {
+  const srcDir = path.join('public', 'og'), outDir = path.join(DIST, 'og');
+  if (!fs.existsSync(srcDir)) return;
+  fs.mkdirSync(outDir, { recursive: true });
+  const jpgs = fs.readdirSync(srcDir).filter((f) => /\.jpg$/i.test(f));
+  let made = 0;
+  for (const f of jpgs) {
+    const base = f.replace(/\.jpg$/i, '');
+    for (const w of [600, 1200]) {
+      const out = path.join(outDir, `${base}-w${w}.webp`);
+      try {
+        const st = fs.statSync(path.join(srcDir, f));
+        if (!fs.existsSync(out) || fs.statSync(out).mtimeMs < st.mtimeMs) { await sharp(path.join(srcDir, f)).resize({ width: w, withoutEnlargement: true }).webp({ quality: 78 }).toFile(out); made++; }
+        OG_WEBP.add(`${base}-w${w}`);
+      } catch (e) { console.log(`   og webp 실패 ${f} w${w}: ${e.message}`); }
+    }
+  }
+  console.log(`🖼️ og webp 축소판: 원본 ${jpgs.length} · 새로 만듦 ${made} · 사용 가능 ${OG_WEBP.size}`);
+}
+await buildOgWebp();
+// og jpg 주소 → webp srcset(있을 때만). 없으면 null(원본 jpg 그대로).
+function ogWebpSet(url) {
+  const m = String(url || '').match(/\/og\/([^/?#]+)\.jpg$/i);
+  if (!m) return null;
+  const base = m[1];
+  if (!OG_WEBP.has(`${base}-w600`) || !OG_WEBP.has(`${base}-w1200`)) return null;
+  return { src: `${BASE_URL}/og/${base}-w1200.webp`, srcset: `${BASE_URL}/og/${base}-w600.webp 600w, ${BASE_URL}/og/${base}-w1200.webp 1200w`, sizes: '(max-width: 640px) 100vw, 1200px' };
+}
 
 // 전화 노출 억제 목록 — 비어 있다. 과거 2개 slug를 가렸던 사유는 호객성 카피였고,
 //   카피를 정화(호객·접객 묘사 제거)한 뒤에는 전화(NAP telephone)를 재노출한다.
@@ -275,8 +309,9 @@ function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ss
     }
     // 첫 그림 = LCP 후보 → eager + high (11-1 연구 webdev-lazy-lcp: LCP 그림은 지연 로드하지 않는다)
     const heroImgSrc = preloadImage || ogImg;
+    const heroWebp = preloadImage ? null : ogWebpSet(ogImg); // [놀쿨11-3] og jpg 를 쓰는 쪽은 webp 축소판 srcset(og:image 는 jpg 그대로)
     const heroImgTag = heroImgSrc
-      ? `<img src="${escHtml(heroImgSrc)}" alt="${escHtml(ogImageAlt || title || '')}" width="1200" height="675" fetchpriority="high" decoding="async" style="display:block;width:100%;height:auto;max-height:280px;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#0a0a0a">`
+      ? `<img src="${escHtml(heroWebp ? heroWebp.src : heroImgSrc)}"${heroWebp ? ` srcset="${escHtml(heroWebp.srcset)}" sizes="${heroWebp.sizes}"` : ''} alt="${escHtml(ogImageAlt || title || '')}" width="1200" height="675" fetchpriority="high" decoding="async" style="display:block;width:100%;height:auto;max-height:280px;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#0a0a0a">`
       : '';
     const _pt = pageTokens(canonical || title || '');
     html = html.replace('</head>', `    ${_pt.style}\n    ${NC_SKEL_STYLE}\n    <script>window.__NC_META=${JSON.stringify({ path: canonicalWithSlash, title: title || '', h1: h1 || '', desc: desc || '' }).replace(/</g, '\\u003c')}</script>\n  </head>`);
@@ -357,7 +392,7 @@ function writePage(routePath, meta) {
     const h1Facts = { head, n: sk.facts?.n, name: sk.facts?.name, region: sk.facts?.region, cat: sk.facts?.cat, station: sk.facts?.station, place: sk.facts?.place, tag: sk.facts?.tag, ...(sk.h1Facts || {}) };
     const h1 = meta.h1 || makeH1(h1Type === 'hub' ? (sk.h1Type || 'region') : h1Type, routePath, h1Facts, meta.title || '');
     const faqPairs = sk.faqPairs || (meta.jsonLdList || []).filter((j) => j && j['@type'] === 'FAQPage').flatMap((j) => (j.mainEntity || []).map((q) => ({ q: q.name, a: q.acceptedAnswer?.text || '' })));
-    meta = { ...meta, h1, ssrBody: meta.ssrBody ? applySkeleton(type, meta.ssrBody, { ...sk, answer: sk.answer || meta.description || '', faqPairs, catLabel: catLabelMap, venueHref, popRank: POP_RANK }) : meta.ssrBody };
+    meta = { ...meta, h1, ssrBody: meta.ssrBody ? applySkeleton(type, meta.ssrBody, { ...sk, route: routePath, answer: sk.answer || meta.description || '', faqPairs, catLabel: catLabelMap, venueHref, popRank: POP_RANK }) : meta.ssrBody };
     // FAQPage JSON-LD = 화면 문답(dl) — 생성기 회전 질문과 LD 질문이 다르면 LD 를 화면 쪽으로 맞춘다(구글 「보이지 않는 콘텐츠 마크업 금지」)
     if (meta.ssrBody && Array.isArray(meta.jsonLdList)) {
       const faqBlock = (meta.ssrBody.match(/data-skel="faq"[\s\S]*?(?=<section data-skel="summary"|<nav data-skel="next"|<\/article>)/) || [''])[0];
@@ -370,7 +405,18 @@ function writePage(routePath, meta) {
         if (!ldQ.every((q) => visQ.has(q))) { const list = meta.jsonLdList.slice(); list[idx] = faqPairsJsonLd(vis); meta = { ...meta, jsonLdList: list }; NC_FAQ_SYNCED.push(routePath); }
       }
     }
-    NC_PAGE_LOG.push({ route: routePath, type, title: meta.title, h1 });
+    // [놀쿨11-3] BreadcrumbList 전 쪽(홈 제외) — 없으면 주소 계층으로 만든다(라벨은 업종 한글·게시판 제목)
+    if (routePath !== '/' && Array.isArray(meta.jsonLdList) && !meta.jsonLdList.some((j) => j && j['@type'] === 'BreadcrumbList')) {
+      const segs = routePath.split('/').filter(Boolean);
+      const CATL = { clubs: '클럽', nights: '나이트', lounges: '라운지', rooms: '룸', yojeong: '요정', hoppa: '호빠', community: '커뮤니티', lounge: '업종별 라운지', region: '지역', near: '역 주변', tag: '태그', best: '인기', new: '신규', magazine: '매거진', guide: '가이드' };
+      const items = [{ name: '놀쿨', url: BASE_URL + '/' }];
+      let acc = '';
+      segs.forEach((sg, i) => { acc += '/' + sg; const last = i === segs.length - 1; let label = CATL[sg] || decodeURIComponent(sg); if (last) label = (sk.facts && (sk.facts.region && sk.facts.cat ? `${sk.facts.region} ${sk.facts.cat}` : sk.facts.region || sk.facts.cat)) || String(meta.title || '').split(/\s[—|]\s/)[0].trim() || label; items.push({ name: label, url: BASE_URL + acc + '/' }); });
+      meta = { ...meta, jsonLdList: [...meta.jsonLdList, generateBreadcrumbJsonLd(items)] };
+    }
+    const _ans = ((meta.ssrBody || '').match(/data-skel="answer"[^>]*>([\s\S]*?)<\/section>/) || [])[1] || '';
+    const answer1 = _ans.replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/g, ' ').replace(/\s+/g, ' ').trim().split(/(?<=[.다요])\s/)[0].slice(0, 120);
+    NC_PAGE_LOG.push({ route: routePath, type, title: meta.title, h1, answer1 });
   }
   // ★ lastmod 정직화 — 의미 콘텐츠(제목+설명+SSR본문)만 해시. 전역 chrome(카테고리 nav·사이트맵
   //   footer)·빌드날짜/ISO타임스탬프는 입력에서 제거 → 푸터 한 줄/오늘 빌드가 lastmod를 흔들지 않게.
@@ -962,6 +1008,38 @@ function faqPairsDl(heading, pairs) {
   return s;
 }
 
+/** [놀쿨11-3] 장부 openHours(「월요일: 오후 7:00 ~ 오전 4:00 / … / 일요일: 휴무일」 · 「24시간 영업」 · 「오후 7:00 ~ 오전 5:00」 · 「금~토 20:00~04:00」)를 OpeningHoursSpecification 으로. 못 읽는 꼴은 null. */
+function parseOpeningHours(str) {
+  if (!str || !String(str).trim()) return null;
+  const DAY = { '월': 'Monday', '화': 'Tuesday', '수': 'Wednesday', '목': 'Thursday', '금': 'Friday', '토': 'Saturday', '일': 'Sunday' };
+  const ALL = Object.values(DAY);
+  const toHM = (ampm, h, m) => { let hh = +h; if (ampm === '오후' && hh < 12) hh += 12; if (ampm === '오전' && hh === 12) hh = 0; return `${String(hh).padStart(2, '0')}:${m || '00'}`; };
+  const range = (txt) => {
+    if (/24시간/.test(txt)) return { opens: '00:00', closes: '23:59' };
+    let m = txt.match(/(오전|오후)\s*(\d{1,2}):(\d{2})\s*~\s*(오전|오후)\s*(\d{1,2}):(\d{2})/);
+    if (m) return { opens: toHM(m[1], m[2], m[3]), closes: toHM(m[4], m[5], m[6]) };
+    m = txt.match(/(\d{1,2}):(\d{2})\s*~\s*(\d{1,2}):(\d{2})/);
+    if (m) return { opens: `${m[1].padStart(2, '0')}:${m[2]}`, closes: `${m[3].padStart(2, '0')}:${m[4]}` };
+    return null;
+  };
+  const parts = String(str).split('/').map((x) => x.trim()).filter(Boolean);
+  const out = [];
+  if (parts.length >= 2 && parts.every((p) => /^[월화수목금토일]요일\s*:/.test(p))) {
+    for (const p of parts) {
+      const day = DAY[p[0]]; const body = p.replace(/^[월화수목금토일]요일\s*:\s*/, '');
+      if (/휴무/.test(body)) continue;
+      const r = range(body); if (!r) return null;
+      const same = out.find((o) => o.opens === r.opens && o.closes === r.closes);
+      if (same) same.dayOfWeek.push(day); else out.push({ '@type': 'OpeningHoursSpecification', dayOfWeek: [day], ...r });
+    }
+    return out.length ? out : null;
+  }
+  const m2 = String(str).match(/^([월화수목금토일])\s*~\s*([월화수목금토일])\s+(.+)$/);
+  if (m2) { const r = range(m2[3]); if (!r) return null; const keys = Object.keys(DAY); const a = keys.indexOf(m2[1]), b = keys.indexOf(m2[2]); if (a < 0 || b < a) return null; return [{ '@type': 'OpeningHoursSpecification', dayOfWeek: keys.slice(a, b + 1).map((k) => DAY[k]), ...r }]; }
+  const r = range(String(str)); if (r) return [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ALL, ...r }];
+  return null;
+}
+
 function getHookingTitle(nameKo, venue) {
   // Extract from seo-hooks.ts
   const regex = new RegExp(`'${nameKo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}':\\s*'([^']+)'`);
@@ -1467,14 +1545,15 @@ for (const pg of staticPages) {
   // 커뮤니티 게시판 SSR + WebPage JSON-LD
   else if (COMMUNITY_BOARD_BLURBS[pg.path]) {
     ssrBody = enrichSsr(COMMUNITY_BOARD_BLURBS[pg.path](), pg.path, pg.title);
+    // [놀쿨11-3] 게시판 목록 쪽 = CollectionPage. DiscussionForumPosting 은 실제 회원 글 쪽에만(가짜 datePublished 0 · 구글 토론 포럼 마크업 규칙)
     jsonLdList.push({
       '@context': 'https://schema.org',
-      '@type': 'DiscussionForumPosting',
-      headline: pg.title,
+      '@type': 'CollectionPage',
+      name: pg.title,
       description: pg.desc,
-      url: BASE_URL + pg.path,
-      author: { '@type': 'Organization', name: '놀쿨' },
-      datePublished: new Date().toISOString().split('T')[0],
+      url: BASE_URL + pg.path + '/',
+      isPartOf: { '@type': 'WebSite', name: '놀쿨', url: BASE_URL },
+      inLanguage: 'ko-KR',
     });
     jsonLdList.push({
       '@context': 'https://schema.org',
@@ -1563,7 +1642,7 @@ for (const pg of staticPages) {
   }
   const _catKeyOfPath = Object.entries(catMap).find(([, ci]) => '/' + ci.path === pg.path)?.[0];
   const _catMembers = _catKeyOfPath ? venues.filter(vv => vv.cat === _catKeyOfPath) : [];
-  writePage(pg.path, { title: pg.title, description: pg.desc, ssrBody, jsonLdList: jsonLdList.length > 0 ? jsonLdList : undefined, ogImage: pageOgImage, skel: _catKeyOfPath ? hubSkel('list', _catMembers, { cat: catMap[_catKeyOfPath].labelKo, factsHeading: `${catMap[_catKeyOfPath].labelKo} 전체 ${_catMembers.length}곳` }, undefined, `${catMap[_catKeyOfPath].labelKo}는 전국 ${_catMembers.length}곳이 등록돼 있다.`, 'list') : undefined });
+  writePage(pg.path, { title: pg.title, description: pg.desc, ssrBody, jsonLdList: jsonLdList.length > 0 ? jsonLdList : undefined, ogImage: pageOgImage, skel: _catKeyOfPath ? hubSkel('list', _catMembers, { cat: catMap[_catKeyOfPath].labelKo, factsHeading: `${catMap[_catKeyOfPath].labelKo} 전체 ${_catMembers.length}곳` }, undefined, `${catMap[_catKeyOfPath].labelKo}는 전국 ${_catMembers.length}곳이 등록돼 있다.`, 'list') : (pg.path === '/guide/ilsan-yojeong' ? { type: 'guide', h1Type: 'guide', facts: { region: '일산', cat: '요정', place: '마두' } } : undefined) }); // [놀쿨11-3] 안내 쪽도 장부 사실(지역·업종·역)로 허브 링크를 받는다 → L3 내부 링크 ≥6
   pageCount++;
 }
 console.log(`✅ 정적 페이지 ${staticPages.length}개 생성`);
@@ -1941,13 +2020,12 @@ for (const v of venues) {
     url: `${BASE_URL}${routePath}/`,
     image: getVenueImageList(v.slug),
     telephone: (v.staffPhone && !PHONE_HIDDEN_SLUGS.has(v.slug)) ? v.staffPhone : undefined,
-    openingHoursSpecification: [{
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      opens: '19:00',
-      closes: '05:00',
-    }],
+    // [놀쿨11-3] 영업시간은 장부 openHours 를 요일별로 읽은 값만(구글 구조화 데이터 「보이는 사실만」). 못 읽으면 속성 없음 — 19:00~05:00 일괄 기재(지어낸 값) 제거
+    openingHoursSpecification: parseOpeningHours(v.openHours),
   };
+  if (!venueJsonLd.openingHoursSpecification) delete venueJsonLd.openingHoursSpecification;
+  // 주소: 장부 address 가 없으면 streetAddress 를 지어내지 않는다(지역·시 단위만)
+  if (!v.address) delete venueJsonLd.address.streetAddress;
   if (v.lat && v.lng) venueJsonLd.geo = { '@type': 'GeoCoordinates', latitude: v.lat, longitude: v.lng };
   if (v.staffNickname) venueJsonLd.employee = { '@type': 'Person', name: v.staffNickname };
   /* alternateName — Google/AI 검색 동의어 매핑 (예: "일산요정" 검색 시 명월관 매칭)
@@ -1969,9 +2047,14 @@ for (const v of venues) {
   if (nameVariants.size > 0) venueJsonLd.alternateName = [...nameVariants];
   // 시즌29 — Speakable schema (Google Assistant 음성 검색 답변 채택)
   // 시즌91 — 상단 직답(.ssr-answer)을 음성 답변 타깃으로: 전화번호 문단 대신 사실 요약을 읽도록.
-  venueJsonLd.speakable = {
-    '@type': 'SpeakableSpecification',
-    cssSelector: ['h1', '.ssr-answer'],
+  // [놀쿨11-3] speakable 은 schema.org 에서 Article·WebPage 의 속성이다(validator.schema.org 실측 경고). 가게 노드가 아니라 WebPage 노드에 싣는다.
+  const venueWebPageJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${BASE_URL}${routePath}/#webpage`,
+    url: `${BASE_URL}${routePath}/`,
+    about: { '@id': venueJsonLd['@id'] },
+    speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.ssr-answer'] },
   };
   /* sameAs — 공식 사이트(사장님 소유 업소) 연결: 엔티티 신뢰·디스앰비규에이션 강화 */
   if (OFFICIAL_SITES[v.slug]) venueJsonLd.sameAs = [].concat(OFFICIAL_SITES[v.slug]);
@@ -1987,15 +2070,8 @@ for (const v of venues) {
   breadcrumbItems.push({ name: v.nameKo, url: `${BASE_URL}${routePath}/` });
   const breadcrumbJsonLd = generateBreadcrumbJsonLd(breadcrumbItems);
 
-  // datePublished: 업소별 고유 "등록일" (slug 해시 기반) + dateModified: 오늘
-  const dayOffset = 30 + (v.slug.length * 7 + v.nameKo.length * 3) % 60;
-  const pubDate = new Date();
-  pubDate.setDate(pubDate.getDate() - dayOffset);
-  const datePublished = pubDate.toISOString().slice(0, 10);
-  const dateModified = new Date().toISOString().slice(0, 10);
-  // 시즌23 — venue 스키마에 datePublished/dateModified 직접 주입 (Google freshness 시그널)
-  venueJsonLd.datePublished = datePublished;
-  venueJsonLd.dateModified = dateModified;
+  // [놀쿨11-3] 예전 「등록일 = 슬러그 해시로 30~90일 전 · 수정일 = 오늘」은 실제 날짜가 아니었다(없는 사실). LD 와 article 메타에서 뺐다.
+  //   실제 바뀐 날은 사이트맵 lastmod(콘텐츠 해시 정직화)가 알린다. NightClub/BarOrPub 에는 datePublished 속성 자체가 없다(검증기 경고).
 
   /* aliases도 meta keywords + 본문 검색 매핑에 포함 — 동의어 SEO 강화 */
   const venueKeywords = [
@@ -2017,9 +2093,7 @@ for (const v of venues) {
     ogImageAlt: `${v.nameKo} — ${v.regionKo} ${catLabelMap[v.cat]} 매장 사진`,
     ssrBody: generateVenueSsrBody(v, venues),
     skel: venueSkel(v),
-    jsonLdList: [venueJsonLd, faqJsonLd, breadcrumbJsonLd],
-    datePublished,
-    dateModified,
+    jsonLdList: [venueJsonLd, faqJsonLd, breadcrumbJsonLd, venueWebPageJsonLd],
     keywords: venueKeywords,
     preloadImage,
     diluteName: v.nameKo,
@@ -2816,9 +2890,11 @@ llmsTxt += `제주: 제주\n`;
   const _label = { region: '지역별', nights: '나이트', clubs: '클럽', near: '역 근처', magazine: '매거진', tag: '태그', hoppa: '호빠', community: '커뮤니티', lounge: '라운지 정보', lounges: '라운지', rooms: '룸', yojeong: '요정', new: '신규', best: '인기' };
   let _n = 0, _add = '\n\n## 전체 페이지 (사이트맵 기준)\n> 사이트맵의 모든 공개 페이지. 업소 정보는 확인일 기준, 광고주 페이지는 「광고」 표시.\n';
   for (const [t, arr] of Object.entries(_groups).sort((x, y) => y[1].length - x[1].length)) {
-    const rest = arr.filter((u) => !_have.has(u.replace(/\/?$/, '/')));
+    const rest = arr; // [놀쿨11-3] 위 절에 이미 적힌 주소도 다시 적는다 — 「전체 페이지」 절 하나가 사이트맵 466 = 제목 + 직답 첫 문장(인용 단위)
     if (!rest.length) continue;
-    _add += '\n### ' + (_label[t] || t) + ' (' + arr.length + '쪽)\n' + rest.map((u) => '- ' + u).join('\n') + '\n'; _n += rest.length;
+    // [놀쿨11-3] 주소만이 아니라 「제목 + 직답 첫 문장」(llms.txt 규격의 링크 목록 꼴 · 인용 가능한 사실)
+    const _meta = (u) => { const rp = u.replace(/^https?:\/\/[^/]+/, '').replace(/\/$/, '') || '/'; return NC_PAGE_LOG.find((p) => p.route === rp) || NC_PAGE_LOG.find((p) => decodeURIComponent(p.route) === decodeURIComponent(rp)); };
+    _add += '\n### ' + (_label[t] || t) + ' (' + arr.length + '쪽)\n' + rest.map((u) => { const m = _meta(u); const mu = u.replace(/\(/g, '%28').replace(/\)/g, '%29'); return m ? `- [${m.title}](${mu})${m.answer1 ? ': ' + m.answer1 : ''}` : '- ' + mu; }).join('\n') + '\n'; _n += rest.length;
   }
   if (_n) llmsTxt = llmsTxt.trimEnd() + _add;
   console.log('   llms.txt 전체 페이지 절 +' + _n + ' (사이트맵 ' + _all.length + ')');
@@ -3064,6 +3140,7 @@ console.log(`   총 ${pageCount + regionalCount + venueCount + magazineCount + d
 
 // 빌드 시 자동 인덱싱 제출
 console.log(`\n🔔 검색엔진 인덱싱 제출 중...`);
-await submitIndexNow();
-await pingSitemap();
+// [놀쿨11-3] 색인 알림(IndexNow·Bing 핑)은 배포 빌드(CI)에서만. 로컬 빌드는 밖으로 아무것도 보내지 않는다(배포 0 규칙). 로컬 회차가 보내려면 --indexnow 를 준다.
+if (process.env['CI'] || process.env['GITHUB_ACTIONS'] || process.argv.includes('--indexnow')) { await submitIndexNow(); await pingSitemap(); }
+else console.log('⏭️ IndexNow·사이트맵 핑 건너뜀(로컬 빌드 · --indexnow 없음)');
 console.log(`\n🚀 SEO 프리렌더링 + 인덱싱 제출 완료!`);

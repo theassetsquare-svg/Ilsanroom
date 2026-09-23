@@ -1,0 +1,13 @@
+{
+ "tool": "validator.schema.org (스키마 마크업 검사기 · 코드 스니펫) — 2026-09-24 00:2x~00:4x · Chrome MCP · 빌드 25 dist 의 JSON-LD 원문 + h1 + 직답(.ssr-answer) 만 넣음(인라인 script/style 제외)",
+ "note": "구글 리치 결과 테스트는 공개 주소가 필요해 로컬 dist 에는 실행 불가(배포 0). 첫 시도(LD 만 넣고 본문 0)에서는 speakable 선택자 h1·.ssr-answer 「일치 없음」 오류 2 · NightClub 의 datePublished·dateModified·speakable 미인정 경고 3 → 가게 노드에서 날짜 삭제·speakable 을 WebPage 노드로 옮긴 뒤 재검사 = 오류 0 · 경고 0.",
+ "pages": [
+  { "route": "/clubs/gangnam/gangnamclub-race/", "kind": "가게(클럽)", "types": ["WebPage(about→NightClub)", "BreadcrumbList", "FAQPage"], "errors": 0, "warnings": 0 },
+  { "route": "/lounges/apgujeongcodelounge/", "kind": "가게(라운지)", "types": ["WebPage(about→BarOrPub · 주소·영업시간·geo)", "BreadcrumbList", "FAQPage"], "errors": 0, "warnings": 0 },
+  { "route": "/nights/ilsanshampoonight/", "kind": "가게(나이트)", "types": ["WebPage(about→NightClub · 주소·영업시간 2묶음·geo)", "BreadcrumbList", "FAQPage"], "errors": 0, "warnings": 0 },
+  { "route": "/region/강남/", "kind": "지역 허브", "types": ["CollectionPage(mainEntity ItemList 15)", "BreadcrumbList", "FAQPage"], "errors": 0, "warnings": 0 },
+  { "route": "/magazine/daejeon-night-guide/", "kind": "매거진", "types": ["Article(author·publisher·datePublished·dateModified)", "BreadcrumbList"], "errors": 0, "warnings": 0 },
+  { "route": "/", "kind": "홈", "types": ["WebSite(SearchAction)", "Organization", "FAQPage"], "errors": 0, "warnings": 0 },
+  { "route": "/community/", "kind": "커뮤니티", "types": ["CollectionPage", "WebPage", "BreadcrumbList"], "errors": 0, "warnings": 0 }
+ ]
+}
