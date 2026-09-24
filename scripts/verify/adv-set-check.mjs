@@ -41,7 +41,7 @@ for (const a of list) {
   ck(`${a.shop} 쪽에 다른 광고주 번호 0`, others.length === 0, others.join(' '));
   const og = (h.match(/<meta property="og:image" content="([^"]+)"/) || [])[1] || '';
   ck(`${a.shop} og 카드 = 이 가게 파일(${slug})`, og.includes(`/og/${slug}`), og);
-  for (const fp of FORBID) ck(`${a.shop} 쪽에 금지 번호 ${fp} 0`, !h.includes(fp));
+  FORBID.forEach((fp, i) => ck(`${a.shop} 쪽에 금지 번호 #${i + 1} 0(값은 기록에 남기지 않는다)`, !h.includes(fp)));
 }
 const fails = R.filter((x) => x.r === '실패');
 console.log(`광고주 대조(${LIVE ? '라이브' : 'dist'}): 광고주 ${list.length}명 · 검사 ${R.length} · 실패 ${fails.length}`);
