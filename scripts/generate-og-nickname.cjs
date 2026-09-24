@@ -18,16 +18,16 @@ const MANUAL_OG_SLUGS = new Set([
 // slug 뒤 -v숫자 접미사를 떼고 보호 여부 판정 (예: 'ilsanroom-v2' → 'ilsanroom')
 const isProtectedSlug = (slug) => MANUAL_OG_SLUGS.has(slug.replace(/-v\d+$/, ''));
 
+// [2026-09-24 긴급 수원찬스돔] 값의 유일 기준 = naver-watch/data/advertisers.json. 옛 표의 틀린 값(성남샴푸·수원찬스돔·파주야당)을 고치고,
+//   광고주가 아닌 가게(신림그랑프리·강남줄리아나)는 뺐다 — 비광고주 쪽에 닉네임 카드를 만들지 않는다(썸네일 표준 3줄).
 const NICKNAME_MAP = {
   'ilsanmyeongwolgwanyojeong': '일산룸 총책임자',
   'ilsanroom': '일산룸 총책임자',
-  'seongnamshampoonight': '박찬호',
-  'suwonchancenight': '강호동',
-  'sinlimgrandprixnight': '태양',
+  'seongnamshampoonight': '이쁜이',
+  'suwonchancenight': '박찬호',
   'cheongdamh2onight': '펩시맨',
-  'pajuyadangskydomenight': '막내',
+  'pajuyadangskydomenight': '딸기',
   'ulsanchampionnight': '춘자',
-  'gangnamjuliananight': '태양',
   'daejeonsevennight': '영탁',
   'daejeononenight': '',
 };

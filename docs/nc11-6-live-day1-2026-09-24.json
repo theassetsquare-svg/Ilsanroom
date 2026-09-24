@@ -1,0 +1,679 @@
+{
+ "at": "2026-09-24T02:15:43.290Z",
+ "checks": 134,
+ "pass": 134,
+ "fails": 0,
+ "na": 0,
+ "list": [
+  {
+   "name": "라이브 sitemap.xml 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 사이트맵 466",
+   "r": "통과",
+   "note": "466"
+  },
+  {
+   "name": "주소 빠짐 0(배포 전 → 라이브)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "주소 추가 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 lastmod 전부 날짜",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots.txt 200 · Disallow 0 · Sitemap 줄",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots GPTBot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots OAI-SearchBot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots ClaudeBot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots PerplexityBot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots Google-Extended Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "robots Bingbot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "llms.txt 200 · 전체 페이지 466(제목+직답)",
+   "r": "통과",
+   "note": "466"
+  },
+  {
+   "name": "IndexNow 키 파일 200 · 값 일치",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 / 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 / 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 / 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "놀쿨 — 오늘 어디 갈지 못 정했죠? 20년 굴러본 사람이 골라드림"
+  },
+  {
+   "name": "라이브 / 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /venue-info 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /venue-info 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /venue-info 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "처음 가는 사람용 — 양주·부스·룸 구성을 한눈에 정리했다"
+  },
+  {
+   "name": "라이브 /venue-info 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /privacy 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /privacy 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /privacy 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "개인정보 어디까지 안전한가 — 수집·이용·파기 안내"
+  },
+  {
+   "name": "라이브 /privacy 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /testimonials 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /testimonials 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /testimonials 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "사장님 진짜 인터뷰 모음 — 가공 없이 발화 원문 그대로"
+  },
+  {
+   "name": "라이브 /testimonials 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /weekend 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /weekend 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /weekend 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "이번 주말 어디 갈래 — 금토일 갈만한 핫플 30곳"
+  },
+  {
+   "name": "라이브 /weekend 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /clubs 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /clubs 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /clubs 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "클럽 줄 서다 입장컷 당하기 싫죠? 10년 MD가 들어갈 곳만 알려줌"
+  },
+  {
+   "name": "라이브 /clubs 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /rooms/ilsan 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /rooms/ilsan 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /rooms/ilsan 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "일산 룸 1곳 — 단골이 인원수 미리 일러주는 동선"
+  },
+  {
+   "name": "라이브 /rooms/ilsan 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /clubs/hongdae 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /clubs/hongdae 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /clubs/hongdae 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "홍대 클럽 4곳 — 인디 감성과 EDM 같이 흐른다"
+  },
+  {
+   "name": "라이브 /clubs/hongdae 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /clubs/yongin 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /clubs/yongin 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /clubs/yongin 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "용인 클럽 1곳 — 죽전·수지 단골 30분 동선"
+  },
+  {
+   "name": "라이브 /clubs/yongin 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /best/rooms 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /best/rooms 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /best/rooms 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "룸 인기 TOP 2 — 회원들이 가장 많이 찾는다"
+  },
+  {
+   "name": "라이브 /best/rooms 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /community 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /community 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /community 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "밤 사람들이 모이는 우리 동네 커뮤니티다"
+  },
+  {
+   "name": "라이브 /community 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /community/tips 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /community/tips 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /community/tips 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "고수들이 풀어놓은 밤놀이 실전 꿀팁 모음이다"
+  },
+  {
+   "name": "라이브 /community/tips 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /community/fashion 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /community/fashion 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /community/fashion 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "운동화 신고 가도 돼? 업종별 복장 가이드"
+  },
+  {
+   "name": "라이브 /community/fashion 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /lounge/night 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /lounge/night 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /lounge/night 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "나이트 라운지 — 다녀온 사람들의 진짜 경험담이다"
+  },
+  {
+   "name": "라이브 /lounge/night 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /lounge/yojung 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /lounge/yojung 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /lounge/yojung 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "요정 라운지 — 정찬 코스와 비즈니스 만찬 후기다"
+  },
+  {
+   "name": "라이브 /lounge/yojung 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /rooms/ilsan/ilsanroom 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /rooms/ilsan/ilsanroom 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /rooms/ilsan/ilsanroom 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "일산룸 — 마두역 1번출구 도보 3분, 삼중 차음재 시공 프라이빗 비즈니"
+  },
+  {
+   "name": "라이브 /rooms/ilsan/ilsanroom 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /nights/seongnamgukbingwannight 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /nights/seongnamgukbingwannight 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /nights/seongnamgukbingwannight 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "성남국빈관나이트 — 모란역 화강암 정면, 원형 홀 스프링 마루에 6인 생"
+  },
+  {
+   "name": "라이브 /nights/seongnamgukbingwannight 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /nights/busanasiadnight 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /nights/busanasiadnight 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /nights/busanasiadnight 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "부산아시아드나이트 — 온천장역 5분 발코니에서 내려다보면 토요일 플로어가"
+  },
+  {
+   "name": "라이브 /nights/busanasiadnight 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /clubs/apgujeong/apgujeongclub-muin 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /clubs/apgujeong/apgujeongclub-muin 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /clubs/apgujeong/apgujeongclub-muin 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "압구정클럽 무인 — 셀프 입퇴장, 직원 간섭이 진짜 없다"
+  },
+  {
+   "name": "라이브 /clubs/apgujeong/apgujeongclub-muin 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /hoppa/jangandonghoppa-bbangbbang 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /hoppa/jangandonghoppa-bbangbbang 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /hoppa/jangandonghoppa-bbangbbang 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "장안동호빠 빵빵 — 장한평역 도보 5분 곱창골목 단골이 캐주얼 룸에서 웃"
+  },
+  {
+   "name": "라이브 /hoppa/jangandonghoppa-bbangbbang 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /magazine/gangnam-edm-clubs-2026 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /magazine/gangnam-edm-clubs-2026 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /magazine/gangnam-edm-clubs-2026 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "강남 EDM 클럽 5곳 — 2026 현장 대결"
+  },
+  {
+   "name": "라이브 /magazine/gangnam-edm-clubs-2026 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /magazine/incheon-bucheon-night-guide 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /magazine/incheon-bucheon-night-guide 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /magazine/incheon-bucheon-night-guide 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "인천·부천 나이트 3곳 — 구월동 중동풍이냐 7호선 라인이냐"
+  },
+  {
+   "name": "라이브 /magazine/incheon-bucheon-night-guide 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /magazine/gimpo-night-guide 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /magazine/gimpo-night-guide 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /magazine/gimpo-night-guide 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "김포 나이트 2곳 — 골드라인 호박 정통이냐 풍무동 썸 모던이냐"
+  },
+  {
+   "name": "라이브 /magazine/gimpo-night-guide 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /magazine/seoul-southwest-night-guide 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /magazine/seoul-southwest-night-guide 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /magazine/seoul-southwest-night-guide 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "서울 서남권 나이트 3색 — 산업단지 악단이냐 환승 거점이냐 관악 솔로냐"
+  },
+  {
+   "name": "라이브 /magazine/seoul-southwest-night-guide 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /magazine/apgujeong-club-six-guide 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /magazine/apgujeong-club-six-guide 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /magazine/apgujeong-club-six-guide 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "압구정 클럽 6색 — 하입 헤네시 네온이냐 디브릿지 보행교냐 무인 럼 여"
+  },
+  {
+   "name": "라이브 /magazine/apgujeong-club-six-guide 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /region/일산 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /region/일산 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /region/일산 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "일산 밤 6곳 — 역에서 가까운 순으로 다시 세웠다"
+  },
+  {
+   "name": "라이브 /region/일산 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /region/수원 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /region/수원 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /region/수원 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "수원 밤 4곳 — 늦은 시간 귀갓길까지 함께"
+  },
+  {
+   "name": "라이브 /region/수원 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /region/부산/nights 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /region/부산/nights 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /region/부산/nights 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "부산 나이트 2곳 — 서면 새벽 합석 가장 활발한 거점"
+  },
+  {
+   "name": "라이브 /region/부산/nights 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /tag/안산나이트 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /tag/안산나이트 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /tag/안산나이트 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "#안산나이트 2곳 — 한 주제로 좁히면 고민이 준다"
+  },
+  {
+   "name": "라이브 /tag/안산나이트 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /near/오산 200",
+   "r": "통과",
+   "note": "200"
+  },
+  {
+   "name": "라이브 /near/오산 새 판(첫 화면 표식 · 완독 뼈대)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라이브 /near/오산 제목 = 로컬 결과물",
+   "r": "통과",
+   "note": "오산 도보권 1곳 — 어디가 열려 있는지 먼저 봤다"
+  },
+  {
+   "name": "라이브 /near/오산 쪽 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  }
+ ]
+}

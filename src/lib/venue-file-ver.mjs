@@ -25,6 +25,8 @@ export const OG_FILE_VER = {
   // 파일명을 올려야 Cloudflare 엣지가 옛 번호 카드를 계속 주지 않는다(썸네일 표준 5절 함정 5).
   ilsanroom: '-v6',
   ilsanmyeongwolgwanyojeong: '-v6',
+  // 2026-09-24 긴급 — 수원찬스돔나이트 카드가 명단 밖 옛 닉네임·번호였다 → 광고주 기준 「박찬호 010-7117-5077」로 두 줄만 다시 그림(scripts/redraw-adv-card.mjs).
+  suwonchancenight: '-v6',
 };
 
 /** 2026-08-22 전 업소 "가게이름" 1:1 og 썸네일 전환(generate-og-name11.mjs).

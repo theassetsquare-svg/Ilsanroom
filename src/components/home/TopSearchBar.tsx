@@ -69,7 +69,7 @@ export default function TopSearchBar() {
         <button type="submit" className="rounded-xl bg-pink-500 px-4 py-3 text-[15px] font-bold text-white active:bg-pink-600">검색</button>
       </form>
       {open && sugg.length > 0 && (
-        <ul role="listbox" aria-label="자동완성" className="absolute left-0 right-0 top-full z-30 mt-1 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
+        <ul role="listbox" aria-label="자동완성" className="mt-1 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg" data-nc-suggest>
           {sugg.map((s) => (
             <li key={s} role="option" aria-selected={false}>
               <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => { setQ(s); go(s); }} className="block w-full px-4 py-2.5 text-left text-[15px] text-[#111] hover:bg-gray-50">{s}</button>
