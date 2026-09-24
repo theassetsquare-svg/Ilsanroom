@@ -1,0 +1,785 @@
+{
+ "stage": "디버깅",
+ "checks": 155,
+ "pass": 154,
+ "fails": 0,
+ "na": 1,
+ "skip": 0,
+ "list": [
+  {
+   "name": "T3 service 동의 · KST 0시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 service 동의 · KST 1시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 service 동의 · KST 2시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 service 동의 · KST 3시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 service 동의 · KST 4시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 service 동의 · KST 5시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 service 동의 · KST 6시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 service 동의 · KST 7시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 service 동의 · KST 8시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 service 동의 · KST 9시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 service 동의 · KST 10시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 service 동의 · KST 11시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 service 동의 · KST 12시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 service 동의 · KST 13시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 service 동의 · KST 14시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 service 동의 · KST 15시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 service 동의 · KST 16시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 service 동의 · KST 17시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 service 동의 · KST 18시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 service 동의 · KST 19시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 service 동의 · KST 20시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 service 동의 · KST 21시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 service 동의 · KST 22시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 service 동의 · KST 23시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 service 동의 없음 → 0건",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 ad 동의 · KST 0시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 ad 동의 · KST 1시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 ad 동의 · KST 2시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 ad 동의 · KST 3시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 ad 동의 · KST 4시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 ad 동의 · KST 5시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 ad 동의 · KST 6시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 ad 동의 · KST 7시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 ad 동의 · KST 8시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 ad 동의 · KST 9시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 ad 동의 · KST 10시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 ad 동의 · KST 11시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 ad 동의 · KST 12시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 ad 동의 · KST 13시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 ad 동의 · KST 14시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 ad 동의 · KST 15시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 ad 동의 · KST 16시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 ad 동의 · KST 17시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 ad 동의 · KST 18시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 ad 동의 · KST 19시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 ad 동의 · KST 20시 → 보냄",
+   "r": "통과",
+   "note": "ok"
+  },
+  {
+   "name": "T3 ad 동의 · KST 21시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 ad 동의 · KST 22시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 ad 동의 · KST 23시 → 보내지 않음(야간)",
+   "r": "통과",
+   "note": "night"
+  },
+  {
+   "name": "T3 ad 동의 없음 → 0건",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 서비스 동의만 → 광고성 0건",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 광고성 동의만 → 서비스 0건",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 야간 광고 동의가 있어도 야간 0건",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 상한 주 1번 · 이미 0번 → 보냄",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 상한 주 1번 · 이미 1번 → 막음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 상한 주 1번 · 이미 2번 → 막음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 상한 주 1번 · 이미 3번 → 막음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 상한 주 2번 · 이미 0번 → 보냄",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 상한 주 2번 · 이미 1번 → 보냄",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 상한 주 2번 · 이미 2번 → 막음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 상한 주 2번 · 이미 3번 → 막음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 상한 주 3번 · 이미 0번 → 보냄",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 상한 주 3번 · 이미 1번 → 보냄",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 상한 주 3번 · 이미 2번 → 보냄",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 상한 주 3번 · 이미 3번 → 막음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 상한은 3을 넘지 않음(10 넣어도 3)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 상한 최소 1(0 넣어도 1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 사건 없음 → 보내지 않음(빈 알림 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 관심 지역 강남 → 강남 사건 + 투표 결과만",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 관심 업종 나이트 → 나이트 사건 + 투표 결과만",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 관심 안 고름 → 사건 전부(최대 5)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 최신순",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 야간 묶음 → 보내지 않음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 동의 없는 묶음 → 보내지 않음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 광고성 제목 앞 (광고)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 서비스 알림 제목엔 (광고) 없음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 수신거부 안내 = /my/favorites?notify=off",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 한 번에 해지 → service·ad·night 모두 꺼짐",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 해지 시각 기록",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 해지 뒤 보낼 수 없음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 망가진 설정 값 → 안전 기본(모두 꺼짐)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 필수 동의 {\"age19\":false,\"terms\":false,\"privacy\":false} → 막음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 필수 동의 {\"age19\":true,\"terms\":false,\"privacy\":false} → 막음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 필수 동의 {\"age19\":false,\"terms\":true,\"privacy\":false} → 막음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 필수 동의 {\"age19\":true,\"terms\":true,\"privacy\":false} → 막음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 필수 동의 {\"age19\":false,\"terms\":false,\"privacy\":true} → 막음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 필수 동의 {\"age19\":true,\"terms\":false,\"privacy\":true} → 막음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 필수 동의 {\"age19\":false,\"terms\":true,\"privacy\":true} → 막음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 필수 동의 {\"age19\":true,\"terms\":true,\"privacy\":true} → 가입 가능",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 선택 둘 다 꺼도 가입 가능",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 동의 기록: 판 번호·시각·경로·야간 false",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 OAuth 전 대기 동의 저장",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 재방문 때 필수 칸 미리 채움(givenBefore)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 콜백에서 대기 동의 꺼냄 · 한 번만",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 새 회원: 서비스 알림 켬·광고 꺼짐 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 기존 회원: 이번에 안 켜도 있던 알림을 끄지 않음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 필수 빠진 대기 동의는 버림",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 복귀 주소 \"/clubs/gangnam/gangnamclub-race/\" → /clubs/gangnam/gangnamclub-race/",
+   "r": "통과",
+   "note": "/clubs/gangnam/gangnamclub-race/"
+  },
+  {
+   "name": "T1 복귀 주소 \"/region/강남/?x=1\" → /region/%EA%B0%95%EB%82%A8/?x=1",
+   "r": "통과",
+   "note": "/region/%EA%B0%95%EB%82%A8/?x=1"
+  },
+  {
+   "name": "T1 복귀 주소 \"https://nolcool.com/ranking/\" → /ranking/",
+   "r": "통과",
+   "note": "/ranking/"
+  },
+  {
+   "name": "T1 복귀 주소 \"https://evil.com/x\" → 거절",
+   "r": "통과",
+   "note": "null"
+  },
+  {
+   "name": "T1 복귀 주소 \"//evil.com/x\" → 거절",
+   "r": "통과",
+   "note": "null"
+  },
+  {
+   "name": "T1 복귀 주소 \"javascript:alert(1)\" → 거절",
+   "r": "통과",
+   "note": "null"
+  },
+  {
+   "name": "T1 복귀 주소 \"/login\" → 거절",
+   "r": "통과",
+   "note": "null"
+  },
+  {
+   "name": "T1 복귀 주소 \"/login?redirect=/x\" → 거절",
+   "r": "통과",
+   "note": "null"
+  },
+  {
+   "name": "T1 복귀 주소 \"/auth/callback\" → 거절",
+   "r": "통과",
+   "note": "null"
+  },
+  {
+   "name": "T1 복귀 주소 \"/setup-nickname\" → 거절",
+   "r": "통과",
+   "note": "null"
+  },
+  {
+   "name": "T1 복귀 주소 \"/admin/users\" → 거절",
+   "r": "통과",
+   "note": "null"
+  },
+  {
+   "name": "T1 복귀 주소 \"\" → 거절",
+   "r": "통과",
+   "note": "null"
+  },
+  {
+   "name": "T1 복귀 주소 null → 거절",
+   "r": "통과",
+   "note": "null"
+  },
+  {
+   "name": "T1 복귀 기억 → 꺼냄 → 한 번만",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 30분 지난 복귀는 버림",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 로그인 주소에 지금 쪽을 싣는다",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 홈이면 redirect 없이 /login",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 로그인 쪽 가입 클릭 수 2 ≤ 3",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 가게 쪽 가입 카드 경로 클릭 수 3 ≤ 3",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 소셜 가입 필수 입력칸 0(닉네임 자동)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 저장: 로그인 즉시 DB 저장(user_favorites upsert)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 투표: 로그인 즉시 1인 1표(weekly_poll_votes insert)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 알림 설정: 로그인 즉시 켜고 끔(updateUser notify)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 공유 링크 = 지금 쪽 주소(매개변수 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 추천 링크 = /welcome?utm_source=invite&ref=코드",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 보상 없음 표시 · 보상 약속 문구 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가입 패턴 검사  정상 12건 → 표시 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가입 패턴 검사  같은 IP 3건/20분 → R1 · 보류 3",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가입 패턴 검사  같은 IP 2건 → R1 없음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가입 패턴 검사  같은 IP 3건/140분 → R1 없음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가입 패턴 검사  10분 안 20건 → R2 급증",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가입 패턴 검사  10분 안 19건 → R2 없음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가입 패턴 검사  같은 제공자 1분 안 5건 → R3",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가입 패턴 검사  같은 제공자 1분 안 4건 → R3 없음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가입 패턴 검사  행동 = 표시만(display-only)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가입 패턴 검사  시각 없는 행 무시",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가입 패턴 검사 자체 시험 10건",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T5 번들에 GA4 이벤트 signup_start",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T5 번들에 GA4 이벤트 sign_up",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T5 번들에 GA4 이벤트 save",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T5 번들에 GA4 이벤트 vote",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T5 번들에 GA4 이벤트 notify_optin",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T5 번들에 GA4 이벤트 share",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T5 GA4 디버그 뷰",
+   "r": "실행 불가",
+   "note": "GA4 권한 없음(11-1 실측) · 로컬 미리보기 서버는 메모리로 정지(11-4) — 번들 문자열로 대체"
+  },
+  {
+   "name": "T6 번들 처리방침 「받지 않는 정보」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 번들 처리방침 「동의 기록: 동의를 철회하거나 탈퇴할 때까지」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 번들 처리방침 「Supabase Inc.」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 번들 처리방침 「선택 항목에 동의하지 않아도 가입과 이용에 제한이 없습니다」",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 번들에 neon.com 메일 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 번들 약관 제5조 새 문구",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 번들 로그인 설명문 100P 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 빌드 page-gate 통과",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 빌드 로그 FAIL 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 page-gate CLI exit 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 사이트맵 빠짐 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 사이트맵 추가 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 466 = 466",
+   "r": "통과",
+   "note": "466 → 466"
+  },
+  {
+   "name": "T7 /login·/my 는 사이트맵 밖(noindex)",
+   "r": "통과",
+   "note": ""
+  }
+ ]
+}

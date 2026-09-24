@@ -4,7 +4,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues, categories } from '@/data/venues';
 import { splitByPopularity } from '@/lib/popularity';
 import RankingBasisNote from '@/components/ui/RankingBasisNote';
-import InlineJoinCard from '@/components/auth/InlineJoinCard';
+import InlineJoinCard from '@/components/member/JoinCard'; // [놀쿨11-5] 동의를 거치는 가입 카드
 
 const catPathMap: Record<string, string> = { club: 'clubs', night: 'nights', lounge: 'lounges', room: 'rooms', yojeong: 'yojeong', hoppa: 'hoppa' };
 const catLabelMap: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };

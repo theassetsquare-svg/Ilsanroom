@@ -36,8 +36,9 @@ export default function WelcomePage() {
   // 초대 링크(utm_source=invite)로 /welcome 을 연 진짜 방문자만 invite_open 1회 발송.
   // 내부 배너 클릭(표식 없음)은 집계 제외 = 정확한 입소문 측정.
   useEffect(() => {
-    const src = new URLSearchParams(window.location.search).get('utm_source');
-    if (src === 'invite') trackEvent('invite_open', { channel: 'welcome' });
+    const qs = new URLSearchParams(window.location.search);
+    const src = qs.get('utm_source');
+    if (src === 'invite') trackEvent('invite_open', { channel: qs.get('ref') ? 'referral_link' : 'welcome' }); // [놀쿨11-5] 추천 링크도 같은 이벤트(코드 값은 보내지 않음 — 개인 식별 0)
   }, []);
 
   return (

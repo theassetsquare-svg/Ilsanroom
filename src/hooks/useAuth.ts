@@ -32,10 +32,13 @@ export function useAuth() {
       setTrackerUser(session?.user?.id ?? null, session?.user?.email ?? null);
 
       // 신규 가입자 첫 SIGNED_IN 시 환영 이메일 1회만 발송 (관리자 알림 + 사용자 환영)
+      // [놀쿨11-5] 새 계정 판정 = 계정 생성 10분 안(기기 단위였을 때는 기존 회원이 새 기기에서 로그인해도 「가입」으로 세지고 환영 메일을 또 받았다)
       if (event === 'SIGNED_IN' && session?.user) {
         try {
           const welcomedSet = JSON.parse(localStorage.getItem(WELCOMED_KEY) || '[]') as string[];
-          if (!welcomedSet.includes(session.user.id)) {
+          const created = Date.parse(session.user.created_at || '');
+          const isNewAccount = !!created && Date.now() - created < 10 * 60 * 1000;
+          if (isNewAccount && !welcomedSet.includes(session.user.id)) {
             notify({
               action: 'welcome',
               email: session.user.email || '',
@@ -45,7 +48,9 @@ export function useAuth() {
             localStorage.setItem(WELCOMED_KEY, JSON.stringify(welcomedSet.slice(-50)));
             // 첫 SIGNED_IN = 가입 전환 이벤트로 추적
             trackEvent('signup', { user_id: session.user.id, provider: session.user.app_metadata?.provider || 'email' });
-          } else {
+          } else if (!welcomedSet.includes(session.user.id)) {
+            welcomedSet.push(session.user.id);
+            localStorage.setItem(WELCOMED_KEY, JSON.stringify(welcomedSet.slice(-50)));
             trackEvent('login', { user_id: session.user.id });
           }
         } catch { /* localStorage 실패 무시 */ }

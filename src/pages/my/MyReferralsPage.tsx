@@ -5,12 +5,13 @@ import { getReferralStats } from '@/lib/growth-engine';
 export default function MyReferralsPage() {
   useDocumentMeta(
     '내 추천 링크 — 친구 초대하고 같이 보기',
-    '내 추천 링크를 카카오톡·문자·SNS로 공유. 친구가 같은 페이지에서 후기·랭킹·커뮤니티를 그대로 볼 수 있게 도와줍니다. 별도 보상 정책은 운영진 검토 후 안내됩니다.'
+    '내 추천 링크를 카카오톡·문자·SNS로 공유. 친구가 같은 페이지에서 후기·랭킹·커뮤니티를 그대로 볼 수 있게 도와줍니다. 추천 보상은 없습니다.'
   );
 
   const [copied, setCopied] = useState(false);
   const stats = getReferralStats();
-  const referralUrl = `${window.location.origin}/ref/${stats.code}`;
+  // [놀쿨11-5] 예전 /ref/<코드> 는 라우트가 없어 404 였다 → 있는 /welcome 쪽 + 매개변수(주소를 늘리지 않는다)
+  const referralUrl = `${window.location.origin}/welcome?utm_source=invite&ref=${stats.code}`;
 
   const copyLink = useCallback(() => {
     navigator.clipboard.writeText(referralUrl);
@@ -36,11 +37,11 @@ export default function MyReferralsPage() {
         같이 갈 친구한테 링크 한 번 보내봐
       </p>
 
-      <section className="mb-8 rounded-2xl border border-neon-primary/20 bg-neon-surface p-6 text-center">
-        <p className="text-sm text-neon-muted">현재 누적 추천</p>
-        <p className="mt-1 text-3xl font-bold text-neon-primary">{stats.referredCount}명</p>
+      {/* [놀쿨11-5] 추천 보상 표시(추천·보증 심사지침) — 보상이 없으므로 「없음」을 첫머리에. 늘지 않던 「누적 추천 N명」(브라우저 저장값·집계 없음)은 뺐다 */}
+      <section className="mb-8 rounded-2xl border border-neon-primary/20 bg-neon-surface p-6 text-center" data-nc-reward="none">
+        <p className="text-base font-bold text-neon-primary">추천 보상: 없음</p>
         <p className="mt-2 text-xs text-neon-muted">
-          별도 보상 정책은 운영진 검토 후 안내됩니다. 검증되지 않은 약속은 표시하지 않습니다.
+          링크를 보내도 적립·혜택은 없습니다. 보상이 생기면 조건·기간을 이 자리 첫머리에 먼저 적습니다.
         </p>
       </section>
 

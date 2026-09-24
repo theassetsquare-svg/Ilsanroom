@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import type { Venue } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
 import { fetchReviews, submitReview } from '@/lib/review-api';
-import InlineJoinCard from '@/components/auth/InlineJoinCard';
+import InlineJoinCard from '@/components/member/JoinCard'; // [놀쿨11-5] 동의를 거치는 가입 카드
 import FoundingMemberReward from '@/components/community/FoundingMemberReward';
 
 /**

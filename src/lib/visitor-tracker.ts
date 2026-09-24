@@ -12,7 +12,9 @@ type EventType =
   | 'signup' | 'login' | 'share_click' | 'post_create' | 'invite_open'
   | 'search' | 'search_no_result' | 'phone_click' | 'cafe_click'
   // [놀쿨11-4] 10쪽 루프 측정 — scroll_90(세로 90%) · next_click(다음에 볼 곳 어느 모듈) · compare_open(비교 2곳↑) · search_use(홈 검색창)
-  | 'scroll_90' | 'next_click' | 'compare_open' | 'search_use';
+  | 'scroll_90' | 'next_click' | 'compare_open' | 'search_use'
+  // [놀쿨11-5] 회원 루프 — signup_start(가입 버튼) · signup(=GA4 sign_up · 가입 완료) · save(찜) · vote(주간 투표) · notify_optin(알림 켬) · share_click(=GA4 share)
+  | 'signup_start' | 'save' | 'vote' | 'notify_optin';
 
 /* ── GA4(gtag) 전달 대상 이벤트 → GA4 권장 이벤트명 매핑 ──
  * 의미 있는 행동만 GA4로도 보냄(스크롤/체류/뷰는 GA4 향상측정이 이미 수집).
@@ -24,6 +26,8 @@ const GA4_EVENT_NAME: Partial<Record<EventType, string>> = {
   phone_click: 'phone_click', cafe_click: 'cafe_click',
   // [놀쿨11-4] 페이지당 1회(scroll_90) · 클릭마다(next_click·compare_open·search_use) — 전부 send() 게이트(봇·관리자·내부 제외) 뒤에서만
   scroll_90: 'scroll_90', next_click: 'next_click', compare_open: 'compare_open', search_use: 'search_use',
+  // [놀쿨11-5] 가입 시작·찜·투표·알림 동의 — 전부 send() 게이트 뒤
+  signup_start: 'signup_start', save: 'save', vote: 'vote', notify_optin: 'notify_optin',
 };
 
 /* ── page_path 정규화 — /clubs 와 /clubs/ 를 한 형태로 통합 ──

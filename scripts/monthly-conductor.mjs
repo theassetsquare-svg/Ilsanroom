@@ -211,6 +211,30 @@ function buildInboxSection() {
   return items.join('') || '<li>이번 달 축적된 리포트 없음 (전 지표 정상 = 침묵)</li>';
 }
 
+// [놀쿨11-5] 회원·MAU 루프 — 「100만은 결과 · 우리는 조건과 측정 · 가짜 0」. 값은 GA4·Supabase 실측(CI)에서만 채운다.
+//   data/growth/member-<YYYY-MM>.json { members, mau, revisitPct, pagesPerSession, events:{ signup_start, sign_up, save, vote, notify_optin, share } }
+//   data/growth/signup-anomaly-<YYYY-MM>.json ← scripts/member-signup-anomaly.mjs --out= (표시만 · 차단 0)
+//   시작선(11-1 실측 2026-09-07): 회원 10명 · 월 신규·활성 값 없음(Supabase 관리 토큰 projects_read 권한 없음)
+function buildMemberSection() {
+  const mk = monthKey();
+  const f = `data/growth/member-${mk}.json`;
+  const a = `data/growth/signup-anomaly-${mk}.json`;
+  const rows = [];
+  if (existsSync(f)) {
+    try {
+      const m = JSON.parse(readFileSync(f, 'utf8'));
+      const ev = m.events || {};
+      rows.push(`<li>회원 ${m.members ?? '⚠️ 미측정'} · MAU ${m.mau ?? '⚠️ 미측정'} · 재방문 ${m.revisitPct ?? '⚠️'}% · 세션당 쪽 ${m.pagesPerSession ?? '⚠️'}</li>`);
+      rows.push(`<li>가입 시작 ${ev.signup_start ?? 0} → 가입 완료 ${ev.sign_up ?? 0} · 찜 ${ev.save ?? 0} · 투표 ${ev.vote ?? 0} · 알림 동의 ${ev.notify_optin ?? 0} · 공유 ${ev.share ?? 0}</li>`);
+    } catch { rows.push(`<li>⚠️ ${f} 파싱 실패</li>`); }
+  } else rows.push('<li>⚠️ 이번 달 회원 지표 파일 없음 — GA4·Supabase 실측(CI)이 채운다 · 시작선 회원 10명(2026-09-07)</li>');
+  if (existsSync(a)) {
+    try { const x = JSON.parse(readFileSync(a, 'utf8')); rows.push(`<li>가입 사람 패턴 검사: 가입 ${x.total}건 · 표시 ${x.flags.length}건 · 보류 표시 ${x.holdIds.length}계정 <span style="color:#6B7280">(표시만 · 차단 0)</span></li>`); } catch { rows.push(`<li>⚠️ ${a} 파싱 실패</li>`); }
+  } else rows.push('<li>가입 사람 패턴 검사: 이번 달 입력 없음</li>');
+  rows.push('<li style="color:#6B7280">100만은 결과 · 우리는 조건(가입 쉬움·가입 즉시 혜택·돌아올 까닭·초대할 까닭)과 측정 · 가짜 회원·자동 가입·구매 트래픽 0</li>');
+  return rows.join('');
+}
+
 function buildReport({ s1, s2, diag, s4, s5 }) {
   const applied = s4.applied.map(a => `<li>[${a.fix}] ${a.label} — ${a.result}</li>`).join('') || '<li>이번 달 자동 적용 없음(안전 범위 내 조치 없음)</li>';
   const proposals = s4.proposed.map(p => `<li>${p.label} → ${p.fixLabel} <b>(처방 검토 필요)</b></li>`).join('') || '<li>(없음)</li>';
@@ -224,6 +248,7 @@ function buildReport({ s1, s2, diag, s4, s5 }) {
     <h3>3) 이번 달 가설(가설 = 이렇게 하면 좋아질 것이라는 예측)</h3><ul style="font-size:13px;line-height:1.7">${hyps}</ul>
     <h3>4) 처방 필요 (사람이 봐야 할 것 — 자동 수정 범위 밖)</h3><ul style="font-size:13px;line-height:1.7">${proposals}</ul>
     <h3>5) 한 달치 감시 리포트 모음 <span style="color:#9CA3AF;font-size:12px">(즉시 메일 대신 여기 1통으로 통합 — 30일 1통 정책)</span></h3><ul style="font-size:13px;line-height:1.7">${buildInboxSection()}</ul>
+    <h3>6) 회원·MAU 루프 <span style="color:#9CA3AF;font-size:12px">(시작선 대비 · 매월)</span></h3><ul style="font-size:13px;line-height:1.7">${buildMemberSection()}</ul>
     <h3>⚠️ 정직 부록</h3><ul style="font-size:12px;color:#B45309;line-height:1.7">
       <li>지메일 판독(STEP2): ${s2.skipped ? '이번 자동 실행은 대화형 점검으로 이월(청소기는 대화형 Claude 전용)' : `보존 ${s2.keep}·휴지통 ${s2.trash}`}</li>
       <li>46계열 실측 수치는 monthly-full-audit(30일 07:00) 런 로그가 단일 소스 — 방식 다른 지표 교차비교 금지</li>

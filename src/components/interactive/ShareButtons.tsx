@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { trackEvent } from '@/lib/visitor-tracker';
 
 interface ShareButtonsProps {
   title: string;
@@ -13,6 +14,7 @@ export default function ShareButtons({ title, url, description }: ShareButtonsPr
   const shareUrl = typeof window !== 'undefined' ? (url || window.location.href) : '';
 
   const handleShare = async () => {
+    trackEvent('share_click', { channel: 'share_buttons' }); // [놀쿨11-5] 친구에게 이 가게 보내기(보상 없음)
     if (navigator.share) {
       try {
         await navigator.share({ title, text: description || title, url: shareUrl });

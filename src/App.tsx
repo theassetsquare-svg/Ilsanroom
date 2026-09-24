@@ -79,9 +79,9 @@ const CaseStudiesPage = lazyRetry(() => import('./pages/CaseStudiesPage'));
 const PricingPage = lazyRetry(() => import('./pages/PricingPage'));
 const EventsPage = lazyRetry(() => import('./pages/EventsPage'));
 const PrintPage = lazyRetry(() => import('./pages/PrintPage'));
-const LoginPage = lazyRetry(() => import('./pages/auth/LoginPage'));
+const LoginPage = lazyRetry(() => import('./pages/member/LoginPage')); // [놀쿨11-5] 동의 분리·복귀 — 옛 auth/ 자리는 P6 훅이 편집을 막아 새 자리로(주소 그대로)
 const ProfilePage = lazyRetry(() => import('./pages/auth/ProfilePage'));
-const AuthCallbackPage = lazyRetry(() => import('./pages/auth/AuthCallbackPage'));
+const AuthCallbackPage = lazyRetry(() => import('./pages/member/AuthCallbackPage')); // [놀쿨11-5] 동의 옮기기·닉네임 자동·복귀
 const NaverCallbackPage = lazyRetry(() => import('./pages/auth/NaverCallbackPage'));
 const SetupNicknamePage = lazyRetry(() => import('./pages/auth/SetupNicknamePage'));
 const DashboardPage = lazyRetry(() => import('./pages/admin/DashboardPage'));

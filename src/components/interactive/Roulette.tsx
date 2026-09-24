@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import ShareButtons from './ShareButtons';
 import { venues } from '@/data/venues';
-import InlineJoinCard from '@/components/auth/InlineJoinCard';
+import InlineJoinCard from '@/components/member/JoinCard'; // [놀쿨11-5] 동의를 거치는 가입 카드
 
 export default function Roulette() {
   const [spinning, setSpinning] = useState(false);

@@ -10,7 +10,7 @@ import Card from '@/components/ui/Card';
 import ShareButtons from '@/components/interactive/ShareButtons';
 import { MidContentHook } from '@/components/engagement/ReadingEngagement';
 import RelatedVenues30 from '@/components/venue/RelatedVenues30';
-import InlineJoinCard from '@/components/auth/InlineJoinCard';
+import InlineJoinCard from '@/components/member/JoinCard'; // [놀쿨11-5] 동의를 거치는 가입 카드
 import RelatedMagazineForVenue from '@/components/venue/RelatedMagazineForVenue';
 import LiveStats from '@/components/live/LiveStats';
 import VenueLivePulse from '@/components/venue/VenueLivePulse';

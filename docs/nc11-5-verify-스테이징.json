@@ -1,0 +1,685 @@
+{
+ "stage": "스테이징",
+ "checks": 135,
+ "pass": 135,
+ "fails": 0,
+ "na": 0,
+ "skip": 0,
+ "list": [
+  {
+   "name": "파일 src/pages/member/LoginPage.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/pages/member/AuthCallbackPage.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/components/member/JoinCard.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/components/member/NotifySettings.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/components/member/WelcomeBenefits.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/lib/notify-policy.ts",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/lib/consent.ts",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/lib/auth-return.ts",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/lib/visitor-tracker.ts",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/hooks/useAuth.ts",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/hooks/useFavorites.ts",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/components/community/WeeklyVoteWidget.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/components/interactive/ShareButtons.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/pages/my/MyReferralsPage.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/pages/ReferralPage.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/pages/WelcomePage.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/pages/my/MyFavoritesPage.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/pages/PrivacyPage.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/pages/TermsPage.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/pages/LegalPage.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/layouts/MainLayout.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/App.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 scripts/member-signup-anomaly.mjs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 scripts/monthly-conductor.mjs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "검증 파일 scripts/verify/nc11-5-check.mjs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "/login 라우트 = member/LoginPage(src/App.tsx:82)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "/auth/callback 라우트 = member/AuthCallbackPage(src/App.tsx:84)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "라우트 주소 수 그대로(새 주소 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "/login · /auth/callback 주소 문자열 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "로그인 동의 칸(src/pages/member/LoginPage.tsx:134)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "동의 항목 「만 19세 이상입니다」 필수",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "동의 항목 「이용약관 동의」 필수",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "동의 항목 「개인정보 수집·이용 동의」 필수",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "동의 항목 「서비스 알림 받기」 선택",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "동의 항목 「광고성 정보 받기」 선택",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "전체 동의 칸",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "선택 항목 기본 꺼짐(service·ad false)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "필수 안 되면 가입 막음(gate → setNeedConsent)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "「선택 항목은 동의하지 않아도 가입·이용」 문구",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "간주 동의 문구 0(「동의하는 것으로 간주」)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "설명문 거짓 0 — 「100P」 없음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "설명문 거짓 0 — 없는 「네이버」 로그인 없음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "카카오·구글 두 제공자만(새 제공자 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "필수 입력칸 0(소셜) — 이메일 모드에서만 입력칸",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "방금 보던 쪽 기억(?redirect= · 같은 사이트 이전 쪽)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "이메일 로그인 뒤 복귀",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "signup_start 측정(소셜·이메일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "콜백: 동의 옮기기(takePending → mergeForUser → updateUser)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "콜백: 닉네임 없으면 회원+번호(본명 아님 · 닉네임 쪽 거치지 않음)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "콜백: 복귀(takeReturn · replace)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "콜백: 새 계정 판정 = 생성 10분 안",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가입 카드: OAuth 직행 0(동의를 거침)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "옛 가입 카드 import 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "새 가입 카드 사용 src/components/interactive/Roulette.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "새 가입 카드 사용 src/components/venue/TapReviewCard.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "새 가입 카드 사용 src/components/venue/VenueDetailPage.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "새 가입 카드 사용 src/pages/my/MyFavoritesPage.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "새 가입 카드 사용 src/pages/seo/BestCategoryPage.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "useAuth: 가입 판정 = 계정 생성 10분(기기 단위 아님)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "useAuth: 환영 메일은 새 계정에만",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가입 즉시 혜택 3가지(src/components/member/WelcomeBenefits.tsx:15)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "혜택 = 찜 목록·주간 투표·알림 설정",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "혜택 안내 가짜 0(포인트·숫자 약속 없음)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "혜택 안내는 한 번만(sessionStorage 표 지움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "혜택 안내 닫기 1번 · 강제벽 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "MainLayout 에 혜택 안내",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "회원 전용은 편의만(정보 가림 코드 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "알림 규칙 한 곳(src/lib/notify-policy.ts:37)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "야간 21~08시 전송 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "KST 기준 시각",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "주 상한 최대 3",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "동의 없으면 0건(service·ad 따로)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "빈 알림 0(사건 없으면 send false)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "광고성 제목 (광고)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "전송자·연락처·수신거부 안내 문구",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "한 번에 해지 unsubscribeAll",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "알림 설정 칸(회원) — 저장 목록 쪽 안(새 주소 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "알림 설정: 스위치 2(서비스·광고) role=switch",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "알림 설정: 모든 알림 끄기 1클릭",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "알림 설정: 수신거부 주소 ?notify=off 한 번에",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "알림 설정: 저장 = 사용자 메타데이터(새 표 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "알림 설정: notify_optin 측정(꺼짐→켜짐일 때만)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "알림 설정: 주 횟수 1~3 선택",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "알림 발송 코드 0(이번 단계는 규칙·설정까지 · 채널은 대표님)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "동의 판(consent.ts) 필수 3 · 선택 2 · night false",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "동의 기록 판 번호 CONSENT_VERSION",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "동의 합치기는 켜는 쪽만(있던 설정을 끄지 않음)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "추천 링크 = 있는 /welcome + 매개변수(없는 /ref/ 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "추천 보상 「없음」 첫머리 표시",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "늘지 않던 「누적 추천 N명」 삭제",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "추천 쪽 문구: 보상 없음 · 실적 집계 안 함",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "/welcome ?ref= 도 invite_open(코드 값 전송 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "친구에게 보내기 = 링크 공유 · share 측정",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "GA4 이벤트 signup_start(EventType·GA4 표 둘 다)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "GA4 이벤트 save(EventType·GA4 표 둘 다)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "GA4 이벤트 vote(EventType·GA4 표 둘 다)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "GA4 이벤트 notify_optin(EventType·GA4 표 둘 다)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "GA4 sign_up = 가입 완료(signup → sign_up)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "GA4 share = 공유(share_click → share)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "찜 추가 = save(해제는 안 셈)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "주간 투표 = vote",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "투표 로그인 링크 = 이 쪽으로 복귀",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "새 이벤트는 send() 게이트 뒤(raw gtag 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "월간 보고 6) 회원·MAU 절",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "월간 보고: 값 없으면 ⚠️ 미측정(지어내지 않음)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가입 사람 패턴 검사 = 표시만(차단 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "검사 규칙 R1 같은 IP 3건/60분 · R2 20건/10분 · R3 5건/1분",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "처리방침: 남의 도메인 메일(neon.com) 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "처리방침: 수집 항목 = 소셜 식별번호·이메일·닉네임·동의 기록·찜·투표·알림 설정",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "처리방침: 받지 않는 정보 명시(휴대전화·생년월일·성별·결제)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "처리방침: 목적 — 서비스 알림·광고성(선택 · 야간 0 · (광고))",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "처리방침: 선택 비동의로 제한 없음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "처리방침: 보관 기간(탈퇴 즉시 · 동의 기록 · 접속 기록 3개월)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "처리방침: 없는 결제 기록 보관 문구 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "처리방침: 위탁처 이름(Supabase·Cloudflare·Resend)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "처리방침: 없는 네이버 로그인 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "처리방침: 제목 오타(개인개인자료) 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "약관 제5조: 만 19세·필수 3·선택 알림·실명 요구 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "법 안내: 없는 「본인 확인」 → 자기 확인 칸으로 사실대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "법 출처 광고성 정보 사전 동의·야간·전송자·수신거부·(광고) 표시 → LAW-정보통신망법",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "법 출처 최소 수집·선택 비동의로 서비스 거부 금지 → LAW-개인정보보호법",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "법 출처 만 19세 이상(청소년 유입 장치 0) → LAW-청소년보호법",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "법 출처 추천 보상 표시(경제적 이해관계) → LAW-추천보증심사지침",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "법 출처 거짓·과장 표시 금지(100P·네이버 삭제 근거) → LAW-표시광고법",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가짜 0 — 새 회원 코드에 Math.random 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가짜 0 — 자동 가입·시드 회원 코드 0(signUp 은 이메일 가입 손 입력만)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가짜 0 — 「N명이 가입·저장」 같은 숫자 문구 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "비밀값 0 — 새 코드에 키·토큰 글자 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "API 키 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "네이버 호출 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "열린 리디렉트 0(같은 출처 경로만)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "로그인·콜백·관리 쪽으로는 복귀 안 함",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "새 창 0(새 회원 코드 target=_blank 0 · 옛 구글 웹뷰 외부 열기만)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "Actions 신설 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "옛 auth/ 파일 손대지 않음(P6)",
+   "r": "통과",
+   "note": ""
+  }
+ ]
+}

@@ -5,7 +5,8 @@ import { useFavorites } from '@/hooks/useFavorites';
 import { useAuth } from '@/hooks/useAuth';
 import { venues } from '@/data/venues';
 import { createClient } from '@/lib/supabase';
-import InlineJoinCard from '@/components/auth/InlineJoinCard';
+import InlineJoinCard from '@/components/member/JoinCard'; // [놀쿨11-5] 동의를 거치는 가입 카드
+import NotifySettings from '@/components/member/NotifySettings'; // [놀쿨11-5] 알림 설정(새 주소 0)
 
 const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
 
@@ -23,6 +24,8 @@ export default function MyFavoritesPage() {
   const { user } = useAuth();
   const { favorites, toggleFavorite } = useFavorites();
   const favVenues = venues.filter(v => favorites.has(v.id) || favorites.has(v.slug));
+  // [놀쿨11-5] 알림 관심 지역 후보 — 찜한 가게 지역 먼저, 그다음 가게 수가 많은 지역
+  const regionOrder = (() => { const cnt: Record<string, number> = {}; for (const v of venues) if (v.status !== 'closed_or_unclear' && v.regionKo) cnt[v.regionKo] = (cnt[v.regionKo] || 0) + 1; const fav = [...new Set(favVenues.map(v => v.regionKo))]; return [...fav, ...Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a]).filter(r => !fav.includes(r))]; })();
 
   // 주말 알림 신청 상태 (회원 전용, weekend_alert_optins 테이블)
   const [alertOn, setAlertOn] = useState<boolean | null>(null);
@@ -57,6 +60,9 @@ export default function MyFavoritesPage() {
       <p className="mb-6 text-sm" style={{ color: '#777' }}>
         찜한 곳 {favVenues.length}곳. 업소 상세에서 ⭐찜하기를 누르면 여기에 쌓입니다.
       </p>
+
+      {/* [놀쿨11-5] 알림 설정 — 회원 전용(편의) */}
+      {user && <NotifySettings user={user} regions={regionOrder} />}
 
       {/* 이번 주말 알림 신청 — 회원 전용 */}
       {user ? (

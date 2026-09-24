@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
+import { trackEvent } from '@/lib/visitor-tracker';
 
 const LOCAL_KEY = 'nolcool_favorites';
 
@@ -67,6 +68,7 @@ export function useFavorites() {
       const isRemoving = next.has(slug);
       if (isRemoving) next.delete(slug); else next.add(slug);
       saveLocalFavorites(next);
+      if (!isRemoving) trackEvent('save', { member: user ? 1 : 0 }); // [놀쿨11-5] 찜 추가만(해제는 세지 않음)
 
       if (user) {
         const supabase = createClient();

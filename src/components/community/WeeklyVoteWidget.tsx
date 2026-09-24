@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from '@/components/ui/SafeLink';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase';
+import { trackEvent } from '@/lib/visitor-tracker';
+import { loginHref } from '@/lib/auth-return';
 import { venues } from '@/data/venues';
 import { popularity, isRanked, popScore, hasPopularityData, POPULARITY_UPDATED_AT } from '@/lib/popularity';
 
@@ -53,6 +55,7 @@ export default function WeeklyVoteWidget() {
     setBusy(true);
     const { error } = await (supabase.from('weekly_poll_votes') as any).insert({ poll_key: pollKey, choice: slug, user_id: user.id });
     if (!error) {
+      trackEvent('vote', { poll: pollKey }); // [놀쿨11-5]
       setMyChoice(slug);
       setCounts(prev => ({ ...prev, [slug]: (prev[slug] || 0) + 1 }));
     }
@@ -91,7 +94,7 @@ export default function WeeklyVoteWidget() {
       </div>
       {!user && (
         <p className="mt-2 text-[11px]" style={{ color: '#767676' }}>
-          투표는 회원만 (1인 1표) — <Link to="/login" className="font-bold" style={{ color: '#7C3AED' }}>3초 로그인 →</Link>
+          투표는 회원만 (1인 1표) — <Link to={loginHref()} className="font-bold" style={{ color: '#7C3AED' }}>3초 로그인 →</Link>
         </p>
       )}
       {total > 0 && <p className="mt-2 text-[11px] font-medium" style={{ color: '#7C3AED' }}>지금까지 {total}명 참여</p>}

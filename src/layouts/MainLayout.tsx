@@ -1,5 +1,6 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import SsrArticle from '@/components/seo/SsrArticle';
+import WelcomeBenefits from '@/components/member/WelcomeBenefits'; // [놀쿨11-5] 가입 즉시 혜택 3가지(한 번만)
 import { useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -80,6 +81,7 @@ export default function MainLayout() {
       <main id="main-content" className="flex-1 pt-[92px] md:pt-[56px] pb-[72px] md:pb-6">
         <Outlet />
         {/* [놀쿨11-2] 프리렌더 완독 뼈대 본문을 끌어안는 자리 — 크롤러와 사람이 같은 본문 */}
+        <WelcomeBenefits />
         <SsrArticle />
       </main>
       {/* 찜한 업소 재노출 바 (찜 > 0일 때만 표시) — 의도적 저장이라 최근 본 위에 */}
