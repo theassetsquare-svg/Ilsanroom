@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import { trackEvent } from '@/lib/visitor-tracker';
 
 /**
  * [놀쿨11-2] 프리렌더가 #root 밖 #nc-ssr 에 둔 완독 뼈대 본문(<main id="main-content"> 안 <article id="nc-article">)을
@@ -20,6 +21,37 @@ export function applyPrerenderMeta(html: string, key: string) {
   w.__NC_META_CACHE = { ...(w.__NC_META_CACHE || {}), [key]: meta };
   if (meta.title && !document.documentElement.hasAttribute('data-stealth')) document.title = meta.title;
   if (meta.desc) { const el = document.querySelector('meta[name="description"]'); if (el) el.setAttribute('content', meta.desc); }
+}
+
+/* [놀쿨11-4] 완독 → 다음 행동 — 저장 버튼(비회원 = 로컬 nolcool_favorites · useFavorites 와 같은 키/슬러그 · 회원 동기화는 11-5) · 「다음에 볼 곳」 클릭 = next_click(모듈 이름) */
+const FAV_KEY = 'nolcool_favorites';
+function readFavs(): Set<string> { try { return new Set<string>(JSON.parse(localStorage.getItem(FAV_KEY) || '[]')); } catch { return new Set(); } }
+function markSaved(root: ParentNode) {
+  const favs = readFavs();
+  root.querySelectorAll<HTMLButtonElement>('button[data-nc-save]').forEach((b) => {
+    const on = favs.has(b.dataset.ncSave || '');
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    b.textContent = on ? '★ 저장됨 (내 목록)' : '☆ 이 가게 저장';
+  });
+}
+function onHostClick(e: Event) {
+  const t = e.target as HTMLElement;
+  const btn = t.closest('button[data-nc-save]') as HTMLButtonElement | null;
+  if (btn) {
+    const slug = btn.dataset.ncSave || '';
+    const favs = readFavs();
+    if (favs.has(slug)) favs.delete(slug); else favs.add(slug);
+    try { localStorage.setItem(FAV_KEY, JSON.stringify([...favs])); } catch { /* 저장 공간 없음 */ }
+    markSaved(document);
+    trackEvent('next_click', { module: 'save', on: favs.has(slug) ? 1 : 0 });
+    window.dispatchEvent(new Event('nolcool:favorites'));
+    return;
+  }
+  const link = t.closest('nav[data-skel="next"] a') as HTMLAnchorElement | null;
+  if (link) {
+    const li = link.closest('li[data-nc-module]') as HTMLElement | null;
+    trackEvent('next_click', { module: li?.dataset.ncModule || (link.closest('.nc-next-hubs') ? 'hub' : 'inner'), to: link.getAttribute('href') || '' });
+  }
 }
 
 function normPath(p: string) {
@@ -43,11 +75,13 @@ export default function SsrArticle() {
       if (art) host.appendChild(art);
       cache.set(normPath(pathname), host.innerHTML);
       ssr.remove();
+      markSaved(host);
       return;
     }
     const key = normPath(pathname);
     if (cache.has(key)) {
       host.innerHTML = cache.get(key) || '';
+      markSaved(host);
       const mm = (window as unknown as { __NC_META_CACHE?: Record<string, NcMeta> }).__NC_META_CACHE?.[key];
       if (mm && mm.title && !document.documentElement.hasAttribute('data-stealth')) document.title = mm.title;
       return;
@@ -62,12 +96,19 @@ export default function SsrArticle() {
         const out = (c ? c[0] : '') + (m ? m[0] : '');
         cache.set(key, out);
         host.innerHTML = out;
+        markSaved(host);
         // 제목·설명 = 프리렌더 값(창고가 만든 고유 제목) — React 의 옛 틀 제목이 덮어쓰지 않게 뒤에서 한 번 더 맞춘다
         applyPrerenderMeta(html, key);
       })
       .catch(() => { if (alive) host.innerHTML = ''; });
     return () => { alive = false; };
   }, [pathname]);
+
+  useEffect(() => {
+    const host = ref.current; if (!host) return;
+    host.addEventListener('click', onHostClick);
+    return () => host.removeEventListener('click', onHostClick);
+  }, []);
 
   return <div ref={ref} className="nc-ssr nc-ssr-adopted" data-nc-ssr="adopted" />;
 }

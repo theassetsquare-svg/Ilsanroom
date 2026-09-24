@@ -316,7 +316,18 @@ function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ss
     const _pt = pageTokens(canonical || title || '');
     html = html.replace('</head>', `    ${_pt.style}\n    ${NC_SKEL_STYLE}\n    <script>window.__NC_META=${JSON.stringify({ path: canonicalWithSlash, title: title || '', h1: h1 || '', desc: desc || '' }).replace(/</g, '\\u003c')}</script>\n  </head>`);
     const _h1 = `<h1 style="margin:0 0 10px;font-size:24px;font-weight:800;color:#111;line-height:1.25;letter-spacing:-0.02em">${heroTitle}</h1>`;
-    const heroBlock = `<div class="${_pt.heroClass} ssr-hero" data-r="${_pt.heroVariant}" style="max-width:1200px;margin:0 auto;padding:88px 16px 24px;min-height:240px">${_pt.heroVariant === 'title-top' ? _h1 + heroImgTag : heroImgTag + _h1}<p style="margin:0;color:#444;font-size:16px;line-height:1.65;max-width:720px">${heroDesc}</p></div>`;
+    // [놀쿨11-4] 홈 = 네이버형: 상단 검색창(SSR · 자동완성 = datalist 로컬 색인 · 외부 호출 0) → /search/?q= · 업종 탭 6 · 지역 바로가기(가게 수 순 12)
+    let homeTop = '';
+    if (canonicalWithSlash === '/') { // canonicalWithSlash 는 경로(홈 = '/')
+      const openV = venues.filter((x) => x.status !== 'closed_or_unclear');
+      const regionCount = {}; for (const x of openV) if (x.regionKo) regionCount[x.regionKo] = (regionCount[x.regionKo] || 0) + 1;
+      const regions = Object.entries(regionCount).sort((a, b) => b[1] - a[1]).slice(0, 12).map(([r]) => r);
+      const opts = [...new Set([...openV.map((x) => x.nameKo), ...Object.keys(regionCount), ...Object.values(catLabelMap), ...Object.keys(regionCount).flatMap((r) => Object.values(catLabelMap).map((c) => `${r} ${c}`))])];
+      homeTop = `<form class="nc-search" role="search" action="/search/" method="get" style="display:flex;gap:8px;margin:0 0 12px"><input name="q" list="nc-sugg" placeholder="가게이름 · 지역 · 업종" aria-label="검색어" autocomplete="off" style="flex:1;min-width:0;padding:12px 14px;border:2px solid #111;border-radius:12px;font-size:16px"><button type="submit" style="padding:12px 16px;border:0;border-radius:12px;background:#111;color:#fff;font-weight:700">검색</button></form><datalist id="nc-sugg">${opts.map((o) => `<option value="${escHtml(o)}">`).join('')}</datalist>` +
+        `<nav class="nc-cat-tabs" aria-label="업종" style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px">${Object.entries(catMap).map(([k, c]) => `<a href="/${c.path}/" style="padding:6px 12px;border:1px solid #ddd;border-radius:999px;font-size:14px;color:#111;text-decoration:none">${c.labelKo}</a>`).join('')}</nav>` +
+        `<nav class="nc-region-quick" aria-label="지역 바로가기" style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px;font-size:14px">${regions.map((r) => `<a href="/region/${encodeURIComponent(r)}/" style="color:#333;text-decoration:none">${escHtml(r)}</a>`).join('<span aria-hidden="true">·</span>')}<a href="/new/clubs/" style="color:#333;text-decoration:none">신규 입점</a><span aria-hidden="true">·</span><a href="/vs/" style="color:#333;text-decoration:none">주간 투표</a></nav>`;
+    }
+    const heroBlock = `<div class="${_pt.heroClass} ssr-hero" data-r="${_pt.heroVariant}" style="max-width:1200px;margin:0 auto;padding:88px 16px 24px;min-height:240px">${homeTop}${_pt.heroVariant === 'title-top' ? _h1 + heroImgTag : heroImgTag + _h1}<p style="margin:0;color:#444;font-size:16px;line-height:1.65;max-width:720px">${heroDesc}</p></div>`;
     // 본문 안 h1 은 hero 가 맡으므로 h2 로 낮춘다(쪽당 H1 1개)
     const bodyNoH1 = ssrBody.replace(/<h1\b([^>]*)>([\s\S]*?)<\/h1>/g, '<h2$1>$2</h2>');
     const mainStart = bodyNoH1.indexOf('<main id="main-content">');
@@ -336,7 +347,7 @@ function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ss
   return html;
 }
 
-const NC_SKEL_STYLE = `<style data-nc-skel>.nc-ssr{max-width:1200px;margin:0 auto;padding:0 16px 32px}.nc-skel{max-width:760px;font-size:16px;line-height:1.75;color:#222}.nc-skel h2{font-size:20px;margin:28px 0 10px;font-weight:700}.nc-skel h3{font-size:17px;margin:20px 0 8px}.nc-skel p{margin:0 0 12px}.nc-skel ul,.nc-skel ol{padding-left:20px;margin:0 0 12px}.nc-skel li{margin:4px 0}.nc-facts-table{border-collapse:collapse;width:100%;margin:0 0 12px}.nc-facts-table th{text-align:left;width:34%;padding:8px 10px;border-bottom:1px solid #e5e5e5;font-weight:600;color:#333}.nc-facts-table td{padding:8px 10px;border-bottom:1px solid #e5e5e5}.nc-faq dt{font-weight:700;margin-top:12px}.nc-faq dd{margin:4px 0 0}.nc-summary{border-left:4px solid #999;padding-left:12px}.nc-next ul{list-style:none;padding:0}.nc-meta{color:#666;font-size:14px}.nc-rank{display:inline-block;margin-left:6px;padding:0 6px;border:1px solid #ccc;border-radius:10px;font-size:12px;color:#444}.nc-rank-note{font-size:13px;color:#666}.nc-ssr .ssr-breadcrumb ol{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px;font-size:14px}</style>`;
+const NC_SKEL_STYLE = `<style data-nc-skel>.nc-ssr{max-width:1200px;margin:0 auto;padding:0 16px 32px}.nc-skel{max-width:760px;font-size:16px;line-height:1.75;color:#222}.nc-skel h2{font-size:20px;margin:28px 0 10px;font-weight:700}.nc-skel h3{font-size:17px;margin:20px 0 8px}.nc-skel p{margin:0 0 12px}.nc-skel ul,.nc-skel ol{padding-left:20px;margin:0 0 12px}.nc-skel li{margin:4px 0}.nc-facts-table{border-collapse:collapse;width:100%;margin:0 0 12px}.nc-facts-table th{text-align:left;width:34%;padding:8px 10px;border-bottom:1px solid #e5e5e5;font-weight:600;color:#333}.nc-facts-table td{padding:8px 10px;border-bottom:1px solid #e5e5e5}.nc-faq dt{font-weight:700;margin-top:12px}.nc-faq dd{margin:4px 0 0}.nc-summary{border-left:4px solid #999;padding-left:12px}.nc-next ul{list-style:none;padding:0}.nc-next-list li{padding:8px 0;border-bottom:1px solid #eee}.nc-next-list a{font-weight:600;color:#111}.nc-actions{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}.nc-actions button,.nc-actions a{padding:10px 14px;border:1px solid #111;border-radius:10px;background:#fff;color:#111;font-size:15px;text-decoration:none;cursor:pointer}.nc-actions button[aria-pressed=true]{background:#111;color:#fff}.nc-meta{color:#666;font-size:14px}.nc-rank{display:inline-block;margin-left:6px;padding:0 6px;border:1px solid #ccc;border-radius:10px;font-size:12px;color:#444}.nc-rank-note{font-size:13px;color:#666}.nc-ssr .ssr-breadcrumb ol{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px;font-size:14px}</style>`;
 const noIndexPathsSet = new Set(['/login', '/profile', '/dashboard', '/analytics', '/billing', '/onboarding', '/launch', '/admin', '/admin/venues', '/admin/magazine', '/admin/media', '/admin/seo', '/admin/blocks', '/admin/moderation', '/admin/stats', '/admin/visitors', '/admin/audit', '/my/customize', '/search']);
 
 // ── 파트2(2026-08-09) 색인 미달 28곳 조치 — 근거: reports/audit/2026-08-korea1.md 색인 전수(08-03) ──
@@ -392,7 +403,7 @@ function writePage(routePath, meta) {
     const h1Facts = { head, n: sk.facts?.n, name: sk.facts?.name, region: sk.facts?.region, cat: sk.facts?.cat, station: sk.facts?.station, place: sk.facts?.place, tag: sk.facts?.tag, ...(sk.h1Facts || {}) };
     const h1 = meta.h1 || makeH1(h1Type === 'hub' ? (sk.h1Type || 'region') : h1Type, routePath, h1Facts, meta.title || '');
     const faqPairs = sk.faqPairs || (meta.jsonLdList || []).filter((j) => j && j['@type'] === 'FAQPage').flatMap((j) => (j.mainEntity || []).map((q) => ({ q: q.name, a: q.acceptedAnswer?.text || '' })));
-    meta = { ...meta, h1, ssrBody: meta.ssrBody ? applySkeleton(type, meta.ssrBody, { ...sk, route: routePath, answer: sk.answer || meta.description || '', faqPairs, catLabel: catLabelMap, venueHref, popRank: POP_RANK }) : meta.ssrBody };
+    meta = { ...meta, h1, ssrBody: meta.ssrBody ? applySkeleton(type, meta.ssrBody, { ...sk, route: routePath, answer: sk.answer || meta.description || '', faqPairs, catLabel: catLabelMap, venueHref, popRank: POP_RANK, next: buildNext(type, sk, routePath) }) : meta.ssrBody };
     // FAQPage JSON-LD = 화면 문답(dl) — 생성기 회전 질문과 LD 질문이 다르면 LD 를 화면 쪽으로 맞춘다(구글 「보이지 않는 콘텐츠 마크업 금지」)
     if (meta.ssrBody && Array.isArray(meta.jsonLdList)) {
       const faqBlock = (meta.ssrBody.match(/data-skel="faq"[\s\S]*?(?=<section data-skel="summary"|<nav data-skel="next"|<\/article>)/) || [''])[0];
@@ -490,6 +501,8 @@ function parseVenues() {
   const blocks = venuesSrc.split(/\n  \{/);
   for (const block of blocks) {
     const slug = block.match(/slug:\s*'([^']+)'/)?.[1];
+    const vid = block.match(/\bid:\s*'(v-[^']+)'/)?.[1] || '';
+    const vstatus = block.match(/status:\s*'([^']+)'/)?.[1] || '';
     const cat = block.match(/category:\s*'([^']+)'/)?.[1];
     const region = block.match(/region:\s*'([^']+)'/)?.[1];
     const regionKo = block.match(/regionKo:\s*'([^']+)'/)?.[1];
@@ -527,7 +540,7 @@ function parseVenues() {
     }
     if (slug && cat && region) {
       venues.push({
-        slug, cat, region,
+        slug, cat, region, id: vid, status: vstatus,
         regionKo: regionKo || '',
         nameKo: nameKo || slug,
         shortDesc: shortDesc || (desc || '').slice(0, 120),
@@ -564,6 +577,88 @@ const POP_RANK = (() => {
 })();
 const NC_PAGE_LOG = [];
 const NC_FAQ_SYNCED = [];
+// [놀쿨11-4] 「다음에 볼 곳」 후보 — 인기 엔진 값 순(POP_RANK · 침묵 구간은 등록순) · 장부 사실만 · 자기 자신 제외 · 새 데이터 엔진 0.
+//   가게: 같은 지역 다른 가게(후보 8 → 3) · 같은 업종 다른 지역(후보 6 → 2) · 지역 허브 1 · 관련 매거진 1(점수 0 이면 없음) · 비교 진입 1(같은 지역 고른 2곳과 나란히)
+//   목록·허브: 「이 지역 지금 인기 5」(인기 엔진 순위가 있는 가게만 · 0 이면 절 없음) · 주말 추천 · 퀴즈로 고르기 · 랭킹 보기
+//   매거진: 본문에 나온 가게 · 지역 허브 · 다음 글(같은 태그 우선) · 커뮤니티·안내: 전체 인기 5 · 랭킹·퀴즈·주말
+let _MAG_LITE = null;
+function magLite() {
+  if (_MAG_LITE) return _MAG_LITE;
+  const out = [];
+  try {
+    const src = fs.readFileSync('src/data/magazine-articles.ts', 'utf8');
+    const ids = [...src.matchAll(/\n\s{2,4}id:\s*'([^']+)'/g)];
+    for (let i = 0; i < ids.length; i++) {
+      const block = src.slice(ids[i].index, ids[i + 1] ? ids[i + 1].index : src.length);
+      const title = (block.match(/\n\s+title:\s*'((?:[^'\\]|\\.)*)'/) || [])[1] || '';
+      const excerpt = (block.match(/\n\s+excerpt:\s*'((?:[^'\\]|\\.)*)'/) || [])[1] || '';
+      const tag = (block.match(/\n\s+tag:\s*'([^']*)'/) || [])[1] || '';
+      const date = (block.match(/\n\s+date:\s*'([^']*)'/) || [])[1] || '';
+      const venueSlug = (block.match(/venueSlug:\s*'([^']+)'/) || [])[1] || '';
+      const venueName = (block.match(/venueName:\s*'([^']+)'/) || [])[1] || '';
+      const links = [...block.matchAll(/href=\\?"(\/(?:clubs|nights|lounges|rooms|yojeong|hoppa)\/[^"\\]+)/g)].map((m) => m[1].replace(/\/$/, ''));
+      out.push({ id: ids[i][1], title: title.replace(/\\'/g, "'"), excerpt: excerpt.replace(/\\'/g, "'"), tag, date, venueSlug, venueName, links, text: block });
+    }
+  } catch { /* 매거진 없음 */ }
+  _MAG_LITE = out; return out;
+}
+function buildNext(type, sk, routePath) {
+  const pop = (slug) => POP_RANK.get(slug) || 9999;
+  const byPop = (a, b) => pop(a.slug) - pop(b.slug);
+  const open = venues.filter((x) => x.status !== 'closed_or_unclear');
+  const item = (x, meta) => ({ href: venueHref(x), label: x.nameKo, meta: meta || `${x.regionKo} ${catLabelMap[x.cat] || x.cat}`, slug: x.slug });
+  const rankItem = (x) => item(x, `${x.regionKo} · 인기 ${POP_RANK.get(x.slug)}위`); // 업종어는 되풀이하지 않는다(목록 쪽 밀도 3% 상한)
+  const tools = [{ href: '/weekend/', label: '주말 추천' }, { href: '/quiz/', label: '퀴즈로 고르기' }, { href: '/ranking/', label: '랭킹 보기' }];
+  const overallTop = open.filter((x) => POP_RANK.has(x.slug)).sort(byPop).slice(0, 5).map(rankItem);
+  const out = { type };
+  if (type === 'venue' && sk.venue) {
+    const v = sk.venue;
+    out.sameRegion = open.filter((x) => x.slug !== v.slug && x.regionKo === v.regionKo).sort(byPop).slice(0, 8).map((x) => item(x));
+    out.sameCat = open.filter((x) => x.slug !== v.slug && x.cat === v.cat && x.regionKo !== v.regionKo).sort(byPop).slice(0, 6).map((x) => item(x));
+    out.hub = { href: `/region/${encodeURIComponent(v.regionKo)}/`, label: `${v.regionKo} 전체 보기`, meta: '지역' };
+    // 관련 매거진 — RelatedMagazineForVenue 와 같은 잣대(venueSlug 100 · 본문 링크 100 · venueName 90 · 이름 60 · 지역 20 · 업종 10)
+    let best = null, bestScore = 0;
+    for (const a of magLite()) {
+      let sc = 0;
+      if (a.venueSlug === v.slug) sc += 100;
+      if (a.links.some((l) => l.endsWith('/' + v.slug))) sc += 100;
+      if (a.venueName && a.venueName === v.nameKo) sc += 90;
+      if ((a.title + a.excerpt).includes(v.nameKo)) sc += 60;
+      if (v.regionKo && (a.title + a.excerpt).includes(v.regionKo)) sc += 20;
+      if ((a.title + a.excerpt).includes(catLabelMap[v.cat] || '')) sc += 10;
+      if (sc > bestScore) { bestScore = sc; best = a; }
+    }
+    // 앵커 글에 가게 풀네임을 또 쓰면 가게 쪽 이름 밀도 3% 를 넘길 수 있다(홍대클럽 메이드 실측 3.01%) → 제목 속 가게이름은 「이 가게」로
+    if (best) out.magazine = { href: `/magazine/${best.id}/`, label: best.title.split(v.nameKo).join('이 가게'), meta: '매거진' };
+    // 같은 지역에 다른 가게가 3곳 미만이면 같은 업종 다른 지역 → 전체 인기 순으로 채운다(8칸 유지 · 전부 장부 가게)
+    out.fallback = open.filter((x) => x.slug !== v.slug && x.regionKo !== v.regionKo).sort(byPop).slice(0, 12).map((x) => item(x));
+    out.compare = { base: '/compare/?v=', self: v.slug, label: `${v.regionKo} 가게 나란히 비교`, labelAny: '이 가게와 나란히 비교' };
+    out.actions = { slug: v.slug, id: v.id || '' };
+  } else if (type === 'list' || type === 'hub') {
+    const ms = sk.members || [];
+    // 가게 4곳 이상이면 「이 지역 지금 인기 5」(그 쪽 가게 중 엔진 순위가 있는 곳).
+    // 1~3곳짜리 허브는 같은 이름만 되풀이돼 스터핑에 걸리므로(실측 /near/월평 3.76%), 대신 그 쪽에 없는 전국 인기 5를 채운다 — 값은 같은 엔진, 이름은 서로 다르다.
+    const mine = new Set(ms.map((m) => m.slug));
+    out.popular = ms.length >= 4
+      ? ms.filter((m) => POP_RANK.has(m.slug)).sort(byPop).slice(0, 5).map(rankItem)
+      : open.filter((x) => POP_RANK.has(x.slug) && !mine.has(x.slug)).sort(byPop).slice(0, 5).map(rankItem);
+    out.tools = tools;
+  } else if (type === 'magazine' && sk.article) {
+    const a = sk.article; const lite = magLite().find((x) => x.id === a.id);
+    const linked = lite ? lite.links.map((l) => open.find((x) => venueHref(x).replace(/\/$/, '') === l)).filter(Boolean) : [];
+    const uniq = []; for (const x of linked) if (!uniq.some((u) => u.slug === x.slug)) uniq.push(x);
+    out.venues = uniq.slice(0, 3).map((x) => item(x));
+    const regs = [...new Set(open.map((x) => x.regionKo))].filter((r) => r && (a.title + ' ' + (a.excerpt || '')).includes(r)).sort((x, y) => y.length - x.length);
+    if (regs.length) out.hub = { href: `/region/${encodeURIComponent(regs[0])}/`, label: `${regs[0]} 전체 보기`, meta: '지역' };
+    // 다음 글 후보 — 같은 태그(최근순) → 나머지(최근순). 「이어서 볼 글」에 이미 있는 글은 뼈대가 건너뛰고 다음 후보를 쓴다
+    const all = magLite().filter((x) => x.id !== a.id).sort((x, y) => (y.date || '').localeCompare(x.date || ''));
+    out.nextArticles = [...all.filter((x) => x.tag === a.tag), ...all.filter((x) => x.tag !== a.tag)].slice(0, 12).map((x) => ({ href: `/magazine/${x.id}/`, label: x.title, meta: '다음 글' }));
+    out.tools = [{ href: '/ranking/', label: '랭킹 보기' }, { href: '/magazine/', label: '매거진 전체' }];
+  } else {
+    out.popular = overallTop; out.tools = tools;
+  }
+  return out;
+}
 function hubSkel(type, members, facts, faqPairs, summary, h1Type) {
   const cats = [...new Set(members.map((v) => catLabelMap[v.cat] || v.cat))];
   const regions = [...new Set(members.map((v) => v.regionKo).filter(Boolean))];
@@ -574,7 +669,7 @@ function venueSkel(v) {
   const catKo = catLabelMap[v.cat] || v.cat;
   const station = (v.nearbyStation || '').match(/([^\s]+역)/)?.[1] || v.nearbyStation || '';
   const summary = `${v.nameKo}${hasJongseong(v.nameKo) ? '은' : '는'} ${v.regionKo} ${catKo}${station ? `이고 ${station} 근처에 있다` : '이다'}. ${(v.shortDesc || '').trim()}`.trim();
-  return { type: 'venue', h1Type: 'venue', facts: { name: v.nameKo, region: v.regionKo, cat: catKo, station, hours: v.openHours, ageGroup: v.ageGroup, dressCode: v.dressCode, bestTime: v.bestTime, parking: v.parking, features: v.features, staffNickname: v.staffNickname, staffPhone: v.staffPhone, factsHeading: `${v.nameKo} 기본 정보` }, summary };
+  return { type: 'venue', h1Type: 'venue', venue: v, facts: { name: v.nameKo, region: v.regionKo, cat: catKo, station, hours: v.openHours, ageGroup: v.ageGroup, dressCode: v.dressCode, bestTime: v.bestTime, parking: v.parking, features: v.features, staffNickname: v.staffNickname, staffPhone: v.staffPhone, factsHeading: `${v.nameKo} 기본 정보` }, summary };
 }
 
 /**
@@ -2185,7 +2280,7 @@ ${_relNav}
     title: a.title,
     description: desc,
     ssrBody,
-    skel: { type: 'magazine', h1Type: 'magazine', facts: { tag: a.tag, date: a.date, factsHeading: '글 정보' }, answer: a.answer || '', summary: a.excerpt || '' },
+    skel: { type: 'magazine', h1Type: 'magazine', article: a, facts: { tag: a.tag, date: a.date, factsHeading: '글 정보' }, answer: a.answer || '', summary: a.excerpt || '' },
     jsonLdList: [articleJsonLd, breadcrumbJsonLd],
     datePublished: a.date,
     dateModified: BUILD_DATE_KST,

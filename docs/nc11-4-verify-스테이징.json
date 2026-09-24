@@ -1,0 +1,660 @@
+{
+ "stage": "스테이징",
+ "checks": 130,
+ "pass": 130,
+ "fails": 0,
+ "na": 0,
+ "skip": 0,
+ "list": [
+  {
+   "name": "파일 scripts/prerender-seo.mjs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 scripts/skeleton/index.mjs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 scripts/page-gate.mjs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/lib/visitor-tracker.ts",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/components/seo/SsrArticle.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/pages/ComparePage.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/pages/HomePage.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/components/home/TopSearchBar.tsx",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 src/data/popularity-scores.json",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 scripts/popularity-engine.mjs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "파일 scripts/verify/nc11-4-check.mjs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "prerender buildNext 정의(scripts/prerender-seo.mjs:605)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "buildNext 가게: 같은 지역 후보 8 · 같은 업종 다른 지역 6 · 지역 허브 · 매거진 · 비교 · 저장",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "buildNext 목록·허브: 인기 5(엔진 순위 있는 가게만) + 주말·퀴즈·랭킹",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "buildNext 매거진: 본문 가게 · 지역 허브 · 다음 글",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "인기 엔진 자리 하나 = POP_RANK(popularity-scores.json) · 새 엔진 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "인기 엔진 가중치 = 조회1·사용자2·전화30·검색3(scripts/popularity-engine.mjs)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "매거진 관련도 잣대 = RelatedMagazineForVenue 와 같음(100·100·90·60·20·10)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "비교 진입 = /compare/?v= 검색 매개변수(새 주소 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "parseVenues id·status 읽기",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "venueSkel 이 가게 객체를 넘김",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "매거진 skel 이 글 객체를 넘김",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "applySkeleton 에 next 전달",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "skeleton 모듈 채우기(scripts/skeleton/index.mjs:153)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "skeleton 같은 쪽 링크 건너뛰기(used 집합)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "skeleton 가게 3+2+1+1+비교(같은 지역이 모자라면 같은 업종·전국 인기로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "skeleton 인기 5 는 중복 허용(본문 목록 되풀이가 뜻)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "skeleton 허브 묶음은 모듈과 겹치지 않음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "skeleton 저장 버튼(data-nc-save) · 전화는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "skeleton 새 창 0 · 팝업 0(target=_blank · window.open 없음)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "skeleton 모듈 li 에 data-nc-module",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "prerender 홈 검색창 SSR(form action=/search/ · datalist)(scripts/prerender-seo.mjs:326)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "홈 SSR 자동완성 색인 = 가게이름 + 지역 + 업종 + 지역×업종(로컬)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "홈 SSR 업종 탭 6 · 지역 바로가기 12 · 신규 · 주간 투표",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "홈 SSR 검색창은 홈에서만",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "React TopSearchBar 동적 import(홈 번들에 장부 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "TopSearchBar 외부 호출 0(fetch·http 없음)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "TopSearchBar 제출 → /search?q= · search_use",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "TopSearchBar 자동완성 8개 · 이름·지역·업종·지역×업종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "TopSearchBar 새 창 0 · 팝업 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "HomePage 맨 위에 TopSearchBar",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "WebSite SearchAction 과 짝(urlTemplate /search?q=)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "ComparePage ?v= 읽기(최대 4 · 장부 슬러그만)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "ComparePage compare_open 1회",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "비교 쪽 빈 칸 = 줄 삭제(기존 dl 카드 · 값 없는 항목은 그리지 않음)",
+   "r": "통과",
+   "note": "기존 ComparePage 조건부 렌더"
+  },
+  {
+   "name": "사이트맵에 비교 매개변수 주소 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "SsrArticle 저장 = localStorage nolcool_favorites(useFavorites 와 같은 키 · 슬러그)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "SsrArticle next_click(모듈 이름) · 저장 토글 · 클릭 위임",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "SsrArticle 새 창 0 · 창작 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "tracker EventType 에 scroll_90·next_click·compare_open·search_use",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "tracker GA4 이름 매핑 4개",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "tracker scroll_90 문턱 0.90 · send() 게이트 뒤",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "tracker gtag 호출은 forwardToGa4 안에서만(scroll-honesty)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "새 메일·새 태그 0(GA4 측정 ID 하나 · 대시보드는 월간 보고)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate M1(scripts/page-gate.mjs:130)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate M2(scripts/page-gate.mjs:131)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate M3(scripts/page-gate.mjs:132)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate M4(scripts/page-gate.mjs:133)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate Q4 링크 12~25 품질",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 T1 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 T2 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 T3 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 T4 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 T5 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 H1 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 H2 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 D1 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 S1 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 S2 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 S3 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 L1 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 L2 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 A1 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 W1 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 N1 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 J1 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 J2 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 J3 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 J4 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 J5 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 O1 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 S4 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 L3 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 기존 항목 L4 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "skeleton 업종표 클럽",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "skeleton 업종표 나이트",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "skeleton 업종표 라운지",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "skeleton 업종표 룸",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "skeleton 업종표 요정",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "skeleton 업종표 호빠",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "인기 장부 weights.view = 1",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "인기 장부 weights.user = 2",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "인기 장부 weights.phoneClick = 30",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "인기 장부 weights.gscClick = 3",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "인기 장부 ranked 가게 수(참고)",
+   "r": "통과",
+   "note": "57/125 · 창 28일 · 침묵 10회"
+  },
+  {
+   "name": "인기 장부 generatedAt 있음",
+   "r": "통과",
+   "note": "2026-09-07"
+  },
+  {
+   "name": "tracker 이벤트 scroll_90 는 EventType 와 GA4 표 둘 다에",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "tracker 이벤트 next_click 는 EventType 와 GA4 표 둘 다에",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "tracker 이벤트 compare_open 는 EventType 와 GA4 표 둘 다에",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "tracker 이벤트 search_use 는 EventType 와 GA4 표 둘 다에",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "TopSearchBar role=search form",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "TopSearchBar aria-label 검색어",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "TopSearchBar inputMode=search",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "TopSearchBar 자동완성 listbox/option 역할",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "TopSearchBar 바깥 클릭에 닫힘",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "TopSearchBar 폐업 가게 제외",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "TopSearchBar 검색어 최대 8",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "HomePage 업종 탭 6 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "HomePage 주간 투표 위젯 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "HomePage 매거진 절 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "HomePage 커뮤니티 피드 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "HomePage 실시간 TOP 4(인기 값) 그대로",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "SsrArticle 저장 문구 = 로컬 저장(가짜 숫자 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "SsrArticle 저장 상태 aria-pressed",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "ComparePage 최대 4 그대로(useCompareList MAX 4)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "prerender rankItem 에 업종어 되풀이 0(목록 밀도)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "prerender 인기 절 = 가게 4곳↑ 이 쪽 인기 5 · 1~3곳이면 이 쪽에 없는 전국 인기 5(스터핑 회피)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "prerender 매거진 다음 글 후보 = 같은 태그 최근순 → 나머지",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "prerender 관련 매거진 점수 0 이면 칸 없음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "skeleton 다음 글 1 · 본문 가게 3(중복 허용) · 도구 3",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "skeleton 모듈 항목 = 링크 + 메타(가게이름 앵커 · 설명적 앵커 텍스트)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate M1~M4 는 막음(block.push)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "page-gate 모듈 찾기 = nav + data-nc-module(변형 엔진이 ul→div·li→div 로 바꿔도 안 끊김)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "네이버 0(새 코드에 naver 호출 없음)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "API 키 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가짜 생성 0(insert·createUser 없음)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "주소 변경 0(_redirects 301 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "Actions 신설 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "무한 스크롤 속임·자동 이동 0(새 코드에 setInterval/location.replace 없음)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "클릭 유도 팝업 0(새 코드에 confirm/alert/prompt 없음)",
+   "r": "통과",
+   "note": ""
+  }
+ ]
+}

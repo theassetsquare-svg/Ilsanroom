@@ -148,14 +148,35 @@ export function applySkeleton(type, ssrBody, ctx = {}) {
   const CATP = { '클럽': 'clubs', '나이트': 'nights', '라운지': 'lounges', '룸': 'rooms', '요정': 'yojeong', '호빠': 'hoppa' };
   const f = ctx.facts || {}; const hubs = [];
   const self = (ctx.route || '').replace(/\/$/, '');
-  const push = (href, label) => { if (href.replace(/\/$/, '') !== self && !hubs.some((h) => h[0] === href)) hubs.push([href, label]); };
+  // [놀쿨11-4] 「다음에 볼 곳」 — prerender 가 준 후보(ctx.next)를 채운다. 같은 쪽에 이미 있는 링크(본문·정리·허브)는 건너뛰고 다음 후보를 쓴다(같은 가게 2번 0).
+  //   가게 8칸 = 같은 지역 3 · 같은 업종 다른 지역 2 · 지역 허브 1 · 매거진 1 · 비교 1. 목록·허브 = 인기 5(중복 허용 — 본문 목록의 되풀이가 뜻이다) + 주말·퀴즈·랭킹.
+  const nx = ctx.next || {};
+  const keyOf = (h) => String(h).replace(/[?#].*$/, '').replace(/\/$/, '');
+  const used = new Set([...(answerHtml + factsHtml + bodyHtml + faqHtml + summaryHtml + nextInner).matchAll(/href="([^"#?]+)/g)].map((m) => keyOf(m[1])));
+  used.add(self);
+  const chosen = [];
+  const take = (cands, n, module, allowDup) => { let k = 0; for (const c of cands || []) { if (k >= n) break; const key = keyOf(c.href); if (!allowDup && used.has(key)) continue; if (chosen.some((x) => keyOf(x.href) === key)) continue; used.add(key); chosen.push({ ...c, module }); k++; } };
+  take(nx.sameRegion, 3, 'same-region'); const nSameRegion = chosen.length;
+  take(nx.sameCat, 2 + (3 - nSameRegion), 'same-cat'); // 같은 지역이 모자라면 같은 업종 다른 지역으로 채운다
+  if (nx.sameRegion && chosen.length < 5) take(nx.fallback, 5 - chosen.length, 'popular-any'); // 그래도 모자라면 전체 인기 순
+  take(nx.hub ? [nx.hub] : [], 1, 'hub'); take(nx.magazine ? [nx.magazine] : [], 1, 'magazine');
+  if (nx.compare) { const picks = chosen.filter((x) => x.slug).slice(0, 2).map((x) => x.slug); if (picks.length >= 1) chosen.push({ href: nx.compare.base + [nx.compare.self, ...picks].join(','), label: nSameRegion >= 1 ? nx.compare.label : (nx.compare.labelAny || nx.compare.label), meta: '비교', module: 'compare' }); }
+  take(nx.popular, 5, 'popular', true); take(nx.venues, 3, 'venues', true); take(nx.nextArticles, 1, 'next-article'); take(nx.tools, 3, 'tools'); // 인기 5 · 본문 가게는 되풀이가 뜻(중복 허용) · 다음 글은 「이어서 볼 글」과 겹치지 않는 후보
+  const nextListHtml = chosen.map((c) => `<li data-nc-module="${esc(c.module)}"><a href="${esc(c.href)}">${esc(c.label)}</a>${c.meta ? ` <span class="nc-meta">${esc(c.meta)}</span>` : ''}</li>`).join('');
+  // 완독 → 다음 행동(가게 쪽): 저장(비회원은 로컬 저장 · 회원은 11-5) · 전화는 본문에 이미 있는 광고주 번호일 때만(있는 규칙 그대로)
+  let actionsHtml = '';
+  if (nx.actions && nx.actions.slug) {
+    const tel = (bodyHtml.match(/href="(tel:[^"]+)"/) || [])[1];
+    actionsHtml = `<div class="nc-actions"><button type="button" class="nc-save" data-nc-save="${esc(nx.actions.slug)}" data-nc-id="${esc(nx.actions.id || '')}" aria-pressed="false">☆ 이 가게 저장</button>${tel ? `<a class="nc-call" href="${esc(tel)}">📞 전화 문의</a>` : ''}</div>`;
+  }
+  const push = (href, label) => { if (href.replace(/\/$/, '') !== self && !hubs.some((h) => h[0] === href) && !chosen.some((x) => keyOf(x.href) === keyOf(href))) hubs.push([href, label]); };
   if (f.region) push(`/region/${encodeURIComponent(f.region)}/`, `${f.region} 전체 업소`);
   // 라벨에 업종어를 되풀이하지 않는다(카테고리 목록 쪽 키워드 밀도 3% 상한) — 앵커 글은 목적지 이름으로 충분하다
   if (f.cat && CATP[f.cat]) { push(`/${CATP[f.cat]}/`, '업종 전체 목록'); if (f.region) push(`/region/${encodeURIComponent(f.region)}/${CATP[f.cat]}/`, `${f.region} 같은 업종`); if (CATP[f.cat] !== 'clubs') push(`/best/${CATP[f.cat]}/`, '이 업종 인기 순위'); push(`/new/${CATP[f.cat]}/`, '이 업종 신규 입점'); }
   if (f.place) push(`/near/${encodeURIComponent(String(f.place))}/`, `${f.place} 근처`);
   push('/ranking/', '인기 랭킹');
   const hubsHtml = hubs.length ? `<ul class="nc-next-hubs">${hubs.map(([h, l]) => `<li><a href="${esc(h)}">${esc(l)}</a></li>`).join('')}</ul>` : '';
-  const nextHtml = `<nav data-skel="next" class="nc-next" aria-label="다음에 볼 곳"><h2>다음에 볼 곳</h2><ul class="nc-next-list" data-nc-next="slot"></ul>${hubsHtml}${nextInner}</nav>`;
+  const nextHtml = `<nav data-skel="next" class="nc-next" aria-label="다음에 볼 곳"><h2>다음에 볼 곳</h2>${actionsHtml}<ul class="nc-next-list" data-nc-next="slot">${nextListHtml}</ul>${hubsHtml}${nextInner}</nav>`;
   const h1Html = h1 ? `<h2 class="nc-h1-echo">${textOf(h1) ? esc(textOf(h1)) : ''}</h2>` : '';
   const out = `<article id="nc-article" class="nc-skel nc-skel-${type}" data-skel-type="${type}">` +
     (answerHtml ? `<section data-skel="answer" class="nc-answer">${answerHtml}</section>` : '') +

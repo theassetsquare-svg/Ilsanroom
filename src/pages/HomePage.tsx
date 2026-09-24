@@ -6,6 +6,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { usePageBlock } from '@/hooks/usePageBlock';
 import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 import { VENUES_TOP4 } from '@/data/venues-top4';
+import TopSearchBar from '@/components/home/TopSearchBar'; // [놀쿨11-4] 네이버형 홈 — 상단 검색창(로컬 자동완성 · 외부 호출 0)
 import type { Venue } from '@/types';
 import { createClient } from '@/lib/supabase';
 import JsonLd from '@/components/seo/JsonLd';
@@ -538,6 +539,9 @@ export default function HomePage() {
             )}
             {/* 가짜 라이브 접속자 배지 제거 (놀쿨 신뢰 규칙) */}
           </div>
+
+          {/* [놀쿨11-4] 네이버형 홈 — 검색창을 맨 위에(가게이름·지역·업종 자동완성 → /search) */}
+          <TopSearchBar />
 
           {/* 지역 퀵셀렉터 — 터치 한 번으로 "내 동네 있다" 확인 */}
           <div className="flex items-center gap-1.5 mb-2 overflow-x-auto scrollbar-hide pb-0.5" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>

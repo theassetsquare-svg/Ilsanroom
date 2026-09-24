@@ -1,0 +1,1725 @@
+{
+ "stage": "디버깅",
+ "checks": 343,
+ "pass": 343,
+ "fails": 0,
+ "na": 0,
+ "skip": 0,
+ "list": [
+  {
+   "name": "dist 466쪽",
+   "r": "통과",
+   "note": "466"
+  },
+  {
+   "name": "T1 표본 20쪽",
+   "r": "통과",
+   "note": "20"
+  },
+  {
+   "name": "T1 /rooms/ilsan/ilsanroom 칸 수 ≥7(8) · 가게 5(같은 지역 0 + 같은 업종 0 + 채움 5) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "popular-any,popular-any,popular-any,popular-any,popular-any,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /rooms/ilsan/ilsanroom 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /rooms/ilsan/ilsanroom 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /rooms/ilsan/ilsanroom 같은 지역 0(지역 「일산」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /rooms/ilsan/ilsanroom 같은 업종 다른 지역 0(≥2 또는 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /rooms/ilsan/ilsanroom 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /rooms/ilsan/ilsanroom 지역 허브 = /region/일산/",
+   "r": "통과",
+   "note": "/region/일산/"
+  },
+  {
+   "name": "T1 /rooms/ilsan/ilsanroom 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=ilsanroom,daejeononenight,gangseo-hobak"
+  },
+  {
+   "name": "T1 /rooms/ilsan/ilsanroom 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /rooms/ilsan/ilsanroom 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel true"
+  },
+  {
+   "name": "T1 /nights/sangbonghangukgwannight 칸 수 ≥7(8) · 가게 5(같은 지역 0 + 같은 업종 5 + 채움 0) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /nights/sangbonghangukgwannight 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/sangbonghangukgwannight 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/sangbonghangukgwannight 같은 지역 0(지역 「상봉동」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/sangbonghangukgwannight 같은 업종 다른 지역 5(≥2 또는 채움)",
+   "r": "통과",
+   "note": "daejeononenight gangseo-hobak dapsimnimiraclenight busanyeonsandongmulnight cheongjuhobaknight"
+  },
+  {
+   "name": "T1 /nights/sangbonghangukgwannight 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/sangbonghangukgwannight 지역 허브 = /region/상봉동/",
+   "r": "통과",
+   "note": "/region/상봉동/"
+  },
+  {
+   "name": "T1 /nights/sangbonghangukgwannight 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=sangbonghangukgwannight,daejeononenight,gangseo-hobak"
+  },
+  {
+   "name": "T1 /nights/sangbonghangukgwannight 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/sangbonghangukgwannight 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /nights/nowonhobaknight 칸 수 ≥7(8) · 가게 5(같은 지역 0 + 같은 업종 5 + 채움 0) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /nights/nowonhobaknight 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/nowonhobaknight 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/nowonhobaknight 같은 지역 0(지역 「노원」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/nowonhobaknight 같은 업종 다른 지역 5(≥2 또는 채움)",
+   "r": "통과",
+   "note": "daejeononenight gangseo-hobak dapsimnimiraclenight busanyeonsandongmulnight cheongjuhobaknight"
+  },
+  {
+   "name": "T1 /nights/nowonhobaknight 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/nowonhobaknight 지역 허브 = /region/노원/",
+   "r": "통과",
+   "note": "/region/노원/"
+  },
+  {
+   "name": "T1 /nights/nowonhobaknight 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=nowonhobaknight,daejeononenight,gangseo-hobak"
+  },
+  {
+   "name": "T1 /nights/nowonhobaknight 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/nowonhobaknight 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /nights/gimpohobaknight 칸 수 ≥7(8) · 가게 5(같은 지역 0 + 같은 업종 5 + 채움 0) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /nights/gimpohobaknight 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/gimpohobaknight 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/gimpohobaknight 같은 지역 0(지역 「김포」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/gimpohobaknight 같은 업종 다른 지역 5(≥2 또는 채움)",
+   "r": "통과",
+   "note": "daejeononenight gangseo-hobak dapsimnimiraclenight busanyeonsandongmulnight cheongjuhobaknight"
+  },
+  {
+   "name": "T1 /nights/gimpohobaknight 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/gimpohobaknight 지역 허브 = /region/김포/",
+   "r": "통과",
+   "note": "/region/김포/"
+  },
+  {
+   "name": "T1 /nights/gimpohobaknight 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=gimpohobaknight,daejeononenight,gangseo-hobak"
+  },
+  {
+   "name": "T1 /nights/gimpohobaknight 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/gimpohobaknight 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /nights/osanhobaknight 칸 수 ≥7(8) · 가게 5(같은 지역 0 + 같은 업종 5 + 채움 0) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /nights/osanhobaknight 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/osanhobaknight 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/osanhobaknight 같은 지역 0(지역 「오산」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/osanhobaknight 같은 업종 다른 지역 5(≥2 또는 채움)",
+   "r": "통과",
+   "note": "daejeononenight gangseo-hobak dapsimnimiraclenight busanyeonsandongmulnight cheongjuhobaknight"
+  },
+  {
+   "name": "T1 /nights/osanhobaknight 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/osanhobaknight 지역 허브 = /region/오산/",
+   "r": "통과",
+   "note": "/region/오산/"
+  },
+  {
+   "name": "T1 /nights/osanhobaknight 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=osanhobaknight,daejeononenight,gangseo-hobak"
+  },
+  {
+   "name": "T1 /nights/osanhobaknight 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/osanhobaknight 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /nights/incheonarabiannight 칸 수 ≥7(8) · 가게 5(같은 지역 0 + 같은 업종 5 + 채움 0) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /nights/incheonarabiannight 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/incheonarabiannight 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/incheonarabiannight 같은 지역 0(지역 「인천」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/incheonarabiannight 같은 업종 다른 지역 5(≥2 또는 채움)",
+   "r": "통과",
+   "note": "daejeononenight gangseo-hobak dapsimnimiraclenight busanyeonsandongmulnight cheongjuhobaknight"
+  },
+  {
+   "name": "T1 /nights/incheonarabiannight 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/incheonarabiannight 지역 허브 = /region/인천/",
+   "r": "통과",
+   "note": "/region/인천/"
+  },
+  {
+   "name": "T1 /nights/incheonarabiannight 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=incheonarabiannight,daejeononenight,gangseo-hobak"
+  },
+  {
+   "name": "T1 /nights/incheonarabiannight 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/incheonarabiannight 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /nights/cheonankoreanight 칸 수 ≥7(8) · 가게 5(같은 지역 0 + 같은 업종 5 + 채움 0) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /nights/cheonankoreanight 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/cheonankoreanight 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/cheonankoreanight 같은 지역 0(지역 「천안」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/cheonankoreanight 같은 업종 다른 지역 5(≥2 또는 채움)",
+   "r": "통과",
+   "note": "daejeononenight gangseo-hobak dapsimnimiraclenight busanyeonsandongmulnight cheongjuhobaknight"
+  },
+  {
+   "name": "T1 /nights/cheonankoreanight 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/cheonankoreanight 지역 허브 = /region/천안/",
+   "r": "통과",
+   "note": "/region/천안/"
+  },
+  {
+   "name": "T1 /nights/cheonankoreanight 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=cheonankoreanight,daejeononenight,gangseo-hobak"
+  },
+  {
+   "name": "T1 /nights/cheonankoreanight 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/cheonankoreanight 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /nights/cheongjuhobaknight 칸 수 ≥7(8) · 가게 5(같은 지역 0 + 같은 업종 5 + 채움 0) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /nights/cheongjuhobaknight 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/cheongjuhobaknight 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/cheongjuhobaknight 같은 지역 0(지역 「청주」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/cheongjuhobaknight 같은 업종 다른 지역 5(≥2 또는 채움)",
+   "r": "통과",
+   "note": "daejeononenight gangseo-hobak dapsimnimiraclenight busanyeonsandongmulnight busanmulnight"
+  },
+  {
+   "name": "T1 /nights/cheongjuhobaknight 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/cheongjuhobaknight 지역 허브 = /region/청주/",
+   "r": "통과",
+   "note": "/region/청주/"
+  },
+  {
+   "name": "T1 /nights/cheongjuhobaknight 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=cheongjuhobaknight,daejeononenight,gangseo-hobak"
+  },
+  {
+   "name": "T1 /nights/cheongjuhobaknight 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/cheongjuhobaknight 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /nights/gumihobaknight 칸 수 ≥7(8) · 가게 5(같은 지역 0 + 같은 업종 5 + 채움 0) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /nights/gumihobaknight 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/gumihobaknight 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/gumihobaknight 같은 지역 0(지역 「구미」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/gumihobaknight 같은 업종 다른 지역 5(≥2 또는 채움)",
+   "r": "통과",
+   "note": "daejeononenight gangseo-hobak dapsimnimiraclenight busanyeonsandongmulnight cheongjuhobaknight"
+  },
+  {
+   "name": "T1 /nights/gumihobaknight 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/gumihobaknight 지역 허브 = /region/구미/",
+   "r": "통과",
+   "note": "/region/구미/"
+  },
+  {
+   "name": "T1 /nights/gumihobaknight 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=gumihobaknight,daejeononenight,gangseo-hobak"
+  },
+  {
+   "name": "T1 /nights/gumihobaknight 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/gumihobaknight 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /nights/gwangjusangmunight 칸 수 ≥7(8) · 가게 5(같은 지역 0 + 같은 업종 5 + 채움 0) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /nights/gwangjusangmunight 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/gwangjusangmunight 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/gwangjusangmunight 같은 지역 0(지역 「광주」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/gwangjusangmunight 같은 업종 다른 지역 5(≥2 또는 채움)",
+   "r": "통과",
+   "note": "daejeononenight gangseo-hobak dapsimnimiraclenight busanyeonsandongmulnight cheongjuhobaknight"
+  },
+  {
+   "name": "T1 /nights/gwangjusangmunight 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/gwangjusangmunight 지역 허브 = /region/광주/",
+   "r": "통과",
+   "note": "/region/광주/"
+  },
+  {
+   "name": "T1 /nights/gwangjusangmunight 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=gwangjusangmunight,daejeononenight,gangseo-hobak"
+  },
+  {
+   "name": "T1 /nights/gwangjusangmunight 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /nights/gwangjusangmunight 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-race 칸 수 ≥7(8) · 가게 5(같은 지역 3 + 같은 업종 2 + 채움 0) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-region,same-region,same-region,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-race 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-race 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-race 같은 지역 3(지역 「강남」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": "gangnamjuliananight:39 gangnamhoppa-royal:55 gangnam-hoppa-again:56"
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-race 같은 업종 다른 지역 2(≥2 또는 채움)",
+   "r": "통과",
+   "note": "daejeonsugarclub itaewonclub-utopia"
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-race 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-race 지역 허브 = /region/강남/",
+   "r": "통과",
+   "note": "/region/강남/"
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-race 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=gangnamclub-race,gangnamjuliananight,gangnamhoppa-royal"
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-race 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-race 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-laputa 칸 수 ≥7(8) · 가게 5(같은 지역 3 + 같은 업종 2 + 채움 0) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-region,same-region,same-region,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-laputa 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-laputa 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-laputa 같은 지역 3(지역 「강남」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": "gangnamjuliananight:39 gangnam-hoppa-again:56 gangnamclub-sound:9999"
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-laputa 같은 업종 다른 지역 2(≥2 또는 채움)",
+   "r": "통과",
+   "note": "daejeonsugarclub itaewonclub-utopia"
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-laputa 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-laputa 지역 허브 = /region/강남/",
+   "r": "통과",
+   "note": "/region/강남/"
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-laputa 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=gangnamclub-laputa,gangnamjuliananight,gangnam-hoppa-again"
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-laputa 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/gangnam/gangnamclub-laputa 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /clubs/apgujeong/apgujeongclub-color 칸 수 ≥7(8) · 가게 5(같은 지역 2 + 같은 업종 3 + 채움 0) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-region,same-region,same-cat,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /clubs/apgujeong/apgujeongclub-color 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/apgujeong/apgujeongclub-color 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/apgujeong/apgujeongclub-color 같은 지역 2(지역 「압구정」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": "apgujeongclub-hype:9999 apgujeongclub-candyman:9999"
+  },
+  {
+   "name": "T1 /clubs/apgujeong/apgujeongclub-color 같은 업종 다른 지역 3(≥2 또는 채움)",
+   "r": "통과",
+   "note": "gangnamclub-race daejeonsugarclub itaewonclub-utopia"
+  },
+  {
+   "name": "T1 /clubs/apgujeong/apgujeongclub-color 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/apgujeong/apgujeongclub-color 지역 허브 = /region/압구정/",
+   "r": "통과",
+   "note": "/region/압구정/"
+  },
+  {
+   "name": "T1 /clubs/apgujeong/apgujeongclub-color 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=apgujeongclub-color,apgujeongclub-hype,apgujeongclub-candyman"
+  },
+  {
+   "name": "T1 /clubs/apgujeong/apgujeongclub-color 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/apgujeong/apgujeongclub-color 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /clubs/itaewon/itaewonclub-utopia 칸 수 ≥7(8) · 가게 5(같은 지역 0 + 같은 업종 5 + 채움 0) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /clubs/itaewon/itaewonclub-utopia 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/itaewon/itaewonclub-utopia 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/itaewon/itaewonclub-utopia 같은 지역 0(지역 「이태원」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/itaewon/itaewonclub-utopia 같은 업종 다른 지역 5(≥2 또는 채움)",
+   "r": "통과",
+   "note": "gangnamclub-race daejeonsugarclub cheongju-supermoon hongdaeclub-bermuda gangnamclub-sound"
+  },
+  {
+   "name": "T1 /clubs/itaewon/itaewonclub-utopia 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/itaewon/itaewonclub-utopia 지역 허브 = /region/이태원/",
+   "r": "통과",
+   "note": "/region/이태원/"
+  },
+  {
+   "name": "T1 /clubs/itaewon/itaewonclub-utopia 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=itaewonclub-utopia,gangnamclub-race,daejeonsugarclub"
+  },
+  {
+   "name": "T1 /clubs/itaewon/itaewonclub-utopia 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/itaewon/itaewonclub-utopia 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /clubs/hongdae/hongdaeclub-maid 칸 수 ≥7(8) · 가게 5(같은 지역 0 + 같은 업종 4 + 채움 1) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,popular-any,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /clubs/hongdae/hongdaeclub-maid 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/hongdae/hongdaeclub-maid 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/hongdae/hongdaeclub-maid 같은 지역 0(지역 「홍대」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/hongdae/hongdaeclub-maid 같은 업종 다른 지역 4(≥2 또는 채움)",
+   "r": "통과",
+   "note": "gangnamclub-race daejeonsugarclub itaewonclub-utopia cheongju-supermoon"
+  },
+  {
+   "name": "T1 /clubs/hongdae/hongdaeclub-maid 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/hongdae/hongdaeclub-maid 지역 허브 = /region/홍대/",
+   "r": "통과",
+   "note": "/region/홍대/"
+  },
+  {
+   "name": "T1 /clubs/hongdae/hongdaeclub-maid 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=hongdaeclub-maid,gangnamclub-race,daejeonsugarclub"
+  },
+  {
+   "name": "T1 /clubs/hongdae/hongdaeclub-maid 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/hongdae/hongdaeclub-maid 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /clubs/uijeongbu/uijeongbuarena 칸 수 ≥7(8) · 가게 5(같은 지역 0 + 같은 업종 5 + 채움 0) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /clubs/uijeongbu/uijeongbuarena 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/uijeongbu/uijeongbuarena 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/uijeongbu/uijeongbuarena 같은 지역 0(지역 「의정부」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/uijeongbu/uijeongbuarena 같은 업종 다른 지역 5(≥2 또는 채움)",
+   "r": "통과",
+   "note": "gangnamclub-race daejeonsugarclub itaewonclub-utopia cheongju-supermoon gangnamclub-laputa"
+  },
+  {
+   "name": "T1 /clubs/uijeongbu/uijeongbuarena 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/uijeongbu/uijeongbuarena 지역 허브 = /region/의정부/",
+   "r": "통과",
+   "note": "/region/의정부/"
+  },
+  {
+   "name": "T1 /clubs/uijeongbu/uijeongbuarena 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=uijeongbuarena,gangnamclub-race,daejeonsugarclub"
+  },
+  {
+   "name": "T1 /clubs/uijeongbu/uijeongbuarena 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /clubs/uijeongbu/uijeongbuarena 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /lounges/apgujeonglounge-dm 칸 수 ≥7(8) · 가게 5(같은 지역 2 + 같은 업종 0 + 채움 3) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-region,same-region,popular-any,popular-any,popular-any,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /lounges/apgujeonglounge-dm 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /lounges/apgujeonglounge-dm 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /lounges/apgujeonglounge-dm 같은 지역 2(지역 「압구정」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": "apgujeongclub-hype:9999 apgujeongclub-muin:9999"
+  },
+  {
+   "name": "T1 /lounges/apgujeonglounge-dm 같은 업종 다른 지역 0(≥2 또는 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /lounges/apgujeonglounge-dm 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /lounges/apgujeonglounge-dm 지역 허브 = /region/압구정/",
+   "r": "통과",
+   "note": "/region/압구정/"
+  },
+  {
+   "name": "T1 /lounges/apgujeonglounge-dm 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=apgujeonglounge-dm,apgujeongclub-hype,apgujeongclub-muin"
+  },
+  {
+   "name": "T1 /lounges/apgujeonglounge-dm 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /lounges/apgujeonglounge-dm 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /hoppa/suwonhoppa-beast 칸 수 ≥7(8) · 가게 5(같은 지역 0 + 같은 업종 4 + 채움 1) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,popular-any,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /hoppa/suwonhoppa-beast 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /hoppa/suwonhoppa-beast 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /hoppa/suwonhoppa-beast 같은 지역 0(지역 「수원」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /hoppa/suwonhoppa-beast 같은 업종 다른 지역 4(≥2 또는 채움)",
+   "r": "통과",
+   "note": "busanhoppa-menz haeundaehoppa-kkantappiya gangnamhoppa-royal gangnam-hoppa-again"
+  },
+  {
+   "name": "T1 /hoppa/suwonhoppa-beast 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /hoppa/suwonhoppa-beast 지역 허브 = /region/수원/",
+   "r": "통과",
+   "note": "/region/수원/"
+  },
+  {
+   "name": "T1 /hoppa/suwonhoppa-beast 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=suwonhoppa-beast,busanhoppa-menz,haeundaehoppa-kkantappiya"
+  },
+  {
+   "name": "T1 /hoppa/suwonhoppa-beast 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /hoppa/suwonhoppa-beast 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /hoppa/busanhoppa-aura 칸 수 ≥7(8) · 가게 5(같은 지역 0 + 같은 업종 5 + 채움 0) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /hoppa/busanhoppa-aura 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /hoppa/busanhoppa-aura 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /hoppa/busanhoppa-aura 같은 지역 0(지역 「부산」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /hoppa/busanhoppa-aura 같은 업종 다른 지역 5(≥2 또는 채움)",
+   "r": "통과",
+   "note": "haeundaehoppa-kkantappiya haeundaehoppa-michelin suwonhoppa-beast daejeonhoppa-eclipse gangnamhoppa-royal"
+  },
+  {
+   "name": "T1 /hoppa/busanhoppa-aura 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /hoppa/busanhoppa-aura 지역 허브 = /region/부산/",
+   "r": "통과",
+   "note": "/region/부산/"
+  },
+  {
+   "name": "T1 /hoppa/busanhoppa-aura 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=busanhoppa-aura,haeundaehoppa-kkantappiya,haeundaehoppa-michelin"
+  },
+  {
+   "name": "T1 /hoppa/busanhoppa-aura 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /hoppa/busanhoppa-aura 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 /hoppa/jeonju-hoppa-gallery 칸 수 ≥7(8) · 가게 5(같은 지역 0 + 같은 업종 4 + 채움 1) + 허브 + 매거진 + 비교",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,popular-any,hub,magazine,compare"
+  },
+  {
+   "name": "T1 /hoppa/jeonju-hoppa-gallery 같은 주소 2번 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /hoppa/jeonju-hoppa-gallery 자기 자신 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /hoppa/jeonju-hoppa-gallery 같은 지역 0(지역 「전주」 · 인기 값 순 · 모자라면 같은 업종으로 채움)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /hoppa/jeonju-hoppa-gallery 같은 업종 다른 지역 4(≥2 또는 채움)",
+   "r": "통과",
+   "note": "haeundaehoppa-kkantappiya haeundaehoppa-michelin daejeonhoppa-eclipse gangnamhoppa-royal"
+  },
+  {
+   "name": "T1 /hoppa/jeonju-hoppa-gallery 같은 업종 칸은 전부 같은 업종·다른 지역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /hoppa/jeonju-hoppa-gallery 지역 허브 = /region/전주/",
+   "r": "통과",
+   "note": "/region/전주/"
+  },
+  {
+   "name": "T1 /hoppa/jeonju-hoppa-gallery 비교 진입 = /compare/?v=자기,고른 가게",
+   "r": "통과",
+   "note": "/compare/?v=jeonju-hoppa-gallery,haeundaehoppa-kkantappiya,haeundaehoppa-michelin"
+  },
+  {
+   "name": "T1 /hoppa/jeonju-hoppa-gallery 새 창 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 /hoppa/jeonju-hoppa-gallery 저장 버튼 있음 · 전화 단추는 본문 tel 있을 때만",
+   "r": "통과",
+   "note": "저장 true 전화 false 본문tel false"
+  },
+  {
+   "name": "T1 가게 126 전부 모듈 ≥7(M2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 가게 126 매거진 칸 있는 쪽 수(참고)",
+   "r": "통과",
+   "note": "126/126"
+  },
+  {
+   "name": "T1 가게 126 8칸 쪽 수(참고)",
+   "r": "통과",
+   "note": "126/126"
+  },
+  {
+   "name": "T2 표본 10(인기 5 있는 허브·목록)",
+   "r": "통과",
+   "note": "10"
+  },
+  {
+   "name": "T2 /clubs 인기 5 = 엔진 값 순(이 쪽 가게)",
+   "r": "통과",
+   "note": "gangnamclub-race,daejeonsugarclub,itaewonclub-utopia,cheongju-supermoon,gangnamclub-laputa / gangnamclub-race,daejeonsugarclub,itaewonclub-utopia,cheongju-supermoon,gangnamclub-lap"
+  },
+  {
+   "name": "T2 /clubs 인기 칸 출처 = 이 쪽 가게",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /clubs 순위 글자 = 엔진 순위",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /clubs 주말·퀴즈·랭킹 진입",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /clubs/daejeon 인기 5 = 엔진 값 순(전국)",
+   "r": "통과",
+   "note": "daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight / daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight"
+  },
+  {
+   "name": "T2 /clubs/daejeon 인기 칸 출처 = 이 쪽에 없는 가게",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /clubs/daejeon 순위 글자 = 엔진 순위",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /clubs/daejeon 주말·퀴즈·랭킹 진입",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /region/신림/nights 인기 5 = 엔진 값 순(전국)",
+   "r": "통과",
+   "note": "daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight / daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight"
+  },
+  {
+   "name": "T2 /region/신림/nights 인기 칸 출처 = 이 쪽에 없는 가게",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /region/신림/nights 순위 글자 = 엔진 순위",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /region/신림/nights 주말·퀴즈·랭킹 진입",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /region/김포/nights 인기 5 = 엔진 값 순(전국)",
+   "r": "통과",
+   "note": "daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight / daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight"
+  },
+  {
+   "name": "T2 /region/김포/nights 인기 칸 출처 = 이 쪽에 없는 가게",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /region/김포/nights 순위 글자 = 엔진 순위",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /region/김포/nights 주말·퀴즈·랭킹 진입",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /region/부천/nights 인기 5 = 엔진 값 순(전국)",
+   "r": "통과",
+   "note": "daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight / daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight"
+  },
+  {
+   "name": "T2 /region/부천/nights 인기 칸 출처 = 이 쪽에 없는 가게",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /region/부천/nights 순위 글자 = 엔진 순위",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /region/부천/nights 주말·퀴즈·랭킹 진입",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /region/부산/nights 인기 5 = 엔진 값 순(전국)",
+   "r": "통과",
+   "note": "daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight / daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight"
+  },
+  {
+   "name": "T2 /region/부산/nights 인기 칸 출처 = 이 쪽에 없는 가게",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /region/부산/nights 순위 글자 = 엔진 순위",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /region/부산/nights 주말·퀴즈·랭킹 진입",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /region/전주 인기 5 = 엔진 값 순(전국)",
+   "r": "통과",
+   "note": "daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight / daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight"
+  },
+  {
+   "name": "T2 /region/전주 인기 칸 출처 = 이 쪽에 없는 가게",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /region/전주 순위 글자 = 엔진 순위",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /region/전주 주말·퀴즈·랭킹 진입",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /tag/울산나이트 인기 5 = 엔진 값 순(전국)",
+   "r": "통과",
+   "note": "daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight / daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight"
+  },
+  {
+   "name": "T2 /tag/울산나이트 인기 칸 출처 = 이 쪽에 없는 가게",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /tag/울산나이트 순위 글자 = 엔진 순위",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /tag/울산나이트 주말·퀴즈·랭킹 진입",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /near/상봉 인기 5 = 엔진 값 순(전국)",
+   "r": "통과",
+   "note": "daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight / daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight"
+  },
+  {
+   "name": "T2 /near/상봉 인기 칸 출처 = 이 쪽에 없는 가게",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /near/상봉 순위 글자 = 엔진 순위",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /near/상봉 주말·퀴즈·랭킹 진입",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /near/어린이세상 인기 5 = 엔진 값 순(전국)",
+   "r": "통과",
+   "note": "daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight / daejeononenight,gangseo-hobak,ilsanmyeongwolgwanyojeong,ilsanroom,dapsimnimiraclenight"
+  },
+  {
+   "name": "T2 /near/어린이세상 인기 칸 출처 = 이 쪽에 없는 가게",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /near/어린이세상 순위 글자 = 엔진 순위",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 /near/어린이세상 주말·퀴즈·랭킹 진입",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 인기 칸은 엔진 순위가 있는 가게만(가짜 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T2 인기 5 있는 허브·목록 수(참고)",
+   "r": "통과",
+   "note": "226/229"
+  },
+  {
+   "name": "매거진 59 다음 글 칸",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "매거진 본문 가게 칸 있는 쪽 수(참고)",
+   "r": "통과",
+   "note": "42/59"
+  },
+  {
+   "name": "커뮤니티·안내 전체 인기 5 = 엔진 상위",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 홈 SSR 검색 form(action=/search/ · q)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 홈 자동완성 datalist 항목 ≥ 150(가게 126 + 지역 + 업종 + 지역×업종)",
+   "r": "통과",
+   "note": "475"
+  },
+  {
+   "name": "T3 홈 자동완성에 가게이름·지역·업종",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 홈 업종 탭 6",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 홈 지역 바로가기 12 + 신규 + 주간 투표",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 홈 외부 호출 0(검색 form 이 같은 출처)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 /search/ 쪽 존재(dist)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 React 번들에 TopSearchBar",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 홈 번들에 장부(venues) 통째 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 사이트맵에 /compare/ 1 · 매개변수 주소 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 비교 링크는 장부 슬러그만",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 비교 링크 2~4곳",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 ComparePage 는 값 없는 항목 줄 삭제(코드)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T5 dist 번들에 next_click·compare_open·search_use·scroll_90",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T5 GA4 태그 466 하나(ga4-tag-gate 통과 = 빌드 로그)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 사이트맵 주소 빠짐 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 사이트맵 주소 추가 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 466 = 466",
+   "r": "통과",
+   "note": "466 → 466"
+  },
+  {
+   "name": "T6 page-gate CLI exit 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 게이트 M1 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 게이트 M2 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 게이트 M3 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 게이트 M4 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 게이트 L1 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 게이트 L2 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 게이트 L3 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 게이트 L4 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 게이트 S2 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 게이트 S3 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 게이트 J3 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 게이트 S4 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /quiz",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /community/qna",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /lounge/night",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /privacy",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /demo",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /referral",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /clubs/cheongdam",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /clubs/bucheon",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /nights/sinlimgrandprixnight",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /nights/gildongchancenight",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /nights/suwonkoreanight",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /nights/bucheongoraenight",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /nights/cheongjudontellmamanight",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /nights/busanasiadnight",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /nights/jejunight",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /clubs/gangnam/gangnamclub-bamnbam",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /clubs/cheongdam/cheongdamclub-arju",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /clubs/nowon/nowoncheongchunpocha",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /clubs/daejeon/daejeonsugarclub",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /hoppa/haeundaehoppa-michelin",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /hoppa/jangandong-hoppa-flex",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /clubs/itaewon/itaewonclub-cakeshop",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /magazine/nationwide-dancehall-guide",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /magazine/gwangju-night-guide",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /magazine/gimpo-night-guide",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /magazine/gangnam-hoppa-guide",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /magazine/itaewon-night-pair-guide",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /magazine/hotel-resort-landmark-clubs-3",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /best/nights",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /region/일산",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /region/강남/nights",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /region/독산/nights",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /region/길동",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /region/구리/nights",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /region/성남/nights",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /region/인천/nights",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /region/대전/nights",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /region/대구/hoppa",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /region/울산/nights",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /region/홍대",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /region/건대",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /tag/답십리나이트",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /tag/안산나이트",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /tag/힙합",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /tag/부산호빠",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /near/학동",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /near/야당역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /near/상동",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /near/영대병원",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /near/용산",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 쪽 게이트 /near/화곡역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 번들 크기 전/후(참고)",
+   "r": "통과",
+   "note": "2889100 → 2893554 bytes"
+  },
+  {
+   "name": "T6 번들 증가 ≤ 3%",
+   "r": "통과",
+   "note": "2889100 → 2893554"
+  },
+  {
+   "name": "쪽당 내부 링크 유형별(참고 · 전 = 가게16·목록12·허브9·매거진10·커뮤니티7·안내7)",
+   "r": "통과",
+   "note": "{\"venue\":{\"min\":21,\"med\":22,\"max\":28},\"list\":{\"min\":13,\"med\":19,\"max\":108},\"hub\":{\"min\":11,\"med\":15,\"max\":36},\"magazine\":{\"min\":10,\"med\":13,\"max\":17},\"community\":{\"min\":14,\"med\":14"
+  },
+  {
+   "name": "품질 경고 집계(참고 · Q4 = 12~25 밖)",
+   "r": "통과",
+   "note": "{\"Q4\":34,\"Q1\":100,\"L4\":1,\"Q2\":256}"
+  },
+  {
+   "name": "가게 126 내부 링크 ≥12",
+   "r": "통과",
+   "note": "최소 21"
+  },
+  {
+   "name": "가게 26~28칸 쪽(품질 경고 · 목표 12~25 위)",
+   "r": "통과",
+   "note": "9쪽 · 최대 28"
+  },
+  {
+   "name": "전체 쪽 내부 링크 ≥ 12 쪽 수(참고)",
+   "r": "통과",
+   "note": "457/466"
+  },
+  {
+   "name": "새 창 0(466 · L1 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "뼈대 순서 466(S2 0)",
+   "r": "통과",
+   "note": ""
+  }
+ ]
+}

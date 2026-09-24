@@ -11,7 +11,8 @@
  *   [놀쿨11-3] J1 JSON-LD 파싱 오류 · J2 유형별 필수 마크업(가게 LocalBusiness류+Breadcrumb · 목록/허브 CollectionPage|ItemList+Breadcrumb · 매거진 Article+Breadcrumb · 홈 WebSite+Organization)
  *                 J3 사실 일치(가게 name=본문 이름 · telephone ⇒ tel 링크 · openingHours ⇒ 본문 영업시간 · Breadcrumb 마지막 = 이 주소) · J4 가짜 평점·후기 속성 0 · J5 DiscussionForumPosting 은 글 0 인 게시판에 0
  *                 O1 og:title·og:description·og:image · S4 세이프서치 안전(성적 묘사·성매매·노출 표현 0 · 위험어 미러) · L3 본문 내부 링크 ≥ 10 · L4 허브(지역·업종) 링크 있음
- *   품질(경고만 · exit 0): Q1 제목 40자 초과 · Q2 본문 글자 하한(가게 1,700 · 목록/허브 2,000) · Q3 H2 5개 미만
+ *   [놀쿨11-4] M1 「다음에 볼 곳」 모듈 안 같은 주소 2번 · M2 가게 쪽 모듈 7칸 미만 · M3 모듈 링크 새 창 · M4 저장 버튼 없는 가게 쪽
+ *   품질(경고만 · exit 0): Q1 제목 40자 초과 · Q2 본문 글자 하한(가게 1,700 · 목록/허브 2,000) · Q3 H2 5개 미만 · Q4 본문 내부 링크 12~25 밖(11-4 목표 · 실측 중앙 가게 16·허브 9)
  *
  *   순수 함수 gatePage(html, ctx) 를 nc11-2-check 가 그대로 쓴다. 파일을 쓰지 않는다(보고 JSON 은 --out=).
  */
@@ -121,7 +122,17 @@ export function gatePage(html, ctx = {}) {
   const linkMin = type === 'venue' ? 10 : 6; // 목록·허브는 업소 1~2곳짜리가 있어 6(「다음에 볼 곳」 채우기는 11-4)
   if (art && artLinks.size < linkMin) block.push(`L3 본문 내부 링크 ${artLinks.size} < ${linkMin}`);
   if (art && !HUB_LINK_RE.test(art)) { if (type === 'venue' || type === 'list' || type === 'hub') block.push('L4 허브(지역·업종) 링크 없음'); else quality.push('L4 허브 링크 없음(11-4 다음에 볼 곳)'); }
+  // [놀쿨11-4] 다음에 볼 곳 모듈
+  // 변형 엔진이 ul→ol·li→p·div 로 바꾸므로 닫는 태그로 자르지 않는다 — nav 안의 data-nc-module 항목을 직접 센다
+  const nextNav = (art.match(/<nav[^>]*data-skel="next"[\s\S]*$/) || [''])[0];
+  const modHrefs = [...nextNav.matchAll(/data-nc-module="[^"]*"[^>]*>\s*<a[^>]*href="([^"#]+)"/g)].map((m) => m[1].replace(/\/$/, ''));
+  const nextList = nextNav;
+  if (new Set(modHrefs).size !== modHrefs.length) block.push('M1 다음에 볼 곳 안 같은 주소 2번');
+  if (type === 'venue' && modHrefs.length < 7) block.push(`M2 가게 쪽 다음에 볼 곳 ${modHrefs.length}칸 < 7`);
+  if (/<a\s[^>]*target="_blank"/.test(nextList)) block.push('M3 다음에 볼 곳 새 창');
+  if (type === 'venue' && !/data-nc-save="/.test(art)) block.push('M4 가게 쪽 저장 버튼 없음');
   // 품질
+  if (artLinks.size < 12 || artLinks.size > 25) quality.push(`Q4 본문 내부 링크 ${artLinks.size}(목표 12~25)`);
   if (title.length > 40) quality.push(`Q1 제목 ${title.length}자`);
   const chars = bodyText.replace(/\s/g, '').length;
   const min = type === 'venue' ? 1700 : (type === 'list' || type === 'hub') ? 2000 : 0;

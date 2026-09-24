@@ -1,0 +1,1165 @@
+{
+ "stage": "최종",
+ "checks": 231,
+ "pass": 230,
+ "fails": 0,
+ "na": 1,
+ "skip": 0,
+ "list": [
+  {
+   "name": "30쪽 venue /rooms/ilsan/ilsanroom 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular-any,popular-any,popular-any,popular-any,popular-any,hub,magazine,compare"
+  },
+  {
+   "name": "30쪽 venue /rooms/ilsan/ilsanroom 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /rooms/ilsan/ilsanroom 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /rooms/ilsan/ilsanroom 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /rooms/ilsan/ilsanroom 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /rooms/ilsan/ilsanroom 내부 링크 수",
+   "r": "통과",
+   "note": "25"
+  },
+  {
+   "name": "30쪽 venue /rooms/ilsan/ilsanroom 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/seongnamgukbingwannight 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "30쪽 venue /nights/seongnamgukbingwannight 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/seongnamgukbingwannight 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/seongnamgukbingwannight 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/seongnamgukbingwannight 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/seongnamgukbingwannight 내부 링크 수",
+   "r": "통과",
+   "note": "22"
+  },
+  {
+   "name": "30쪽 venue /nights/seongnamgukbingwannight 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/busanasiadnight 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "30쪽 venue /nights/busanasiadnight 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/busanasiadnight 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/busanasiadnight 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/busanasiadnight 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /nights/busanasiadnight 내부 링크 수",
+   "r": "통과",
+   "note": "22"
+  },
+  {
+   "name": "30쪽 venue /nights/busanasiadnight 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /clubs/apgujeong/apgujeongclub-muin 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "same-region,same-region,same-cat,same-cat,same-cat,hub,magazine,compare"
+  },
+  {
+   "name": "30쪽 venue /clubs/apgujeong/apgujeongclub-muin 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /clubs/apgujeong/apgujeongclub-muin 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /clubs/apgujeong/apgujeongclub-muin 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /clubs/apgujeong/apgujeongclub-muin 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /clubs/apgujeong/apgujeongclub-muin 내부 링크 수",
+   "r": "통과",
+   "note": "22"
+  },
+  {
+   "name": "30쪽 venue /clubs/apgujeong/apgujeongclub-muin 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /hoppa/jangandonghoppa-bbangbbang 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "same-cat,same-cat,same-cat,same-cat,popular-any,hub,magazine,compare"
+  },
+  {
+   "name": "30쪽 venue /hoppa/jangandonghoppa-bbangbbang 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /hoppa/jangandonghoppa-bbangbbang 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /hoppa/jangandonghoppa-bbangbbang 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /hoppa/jangandonghoppa-bbangbbang 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 venue /hoppa/jangandonghoppa-bbangbbang 내부 링크 수",
+   "r": "통과",
+   "note": "25"
+  },
+  {
+   "name": "30쪽 venue /hoppa/jangandonghoppa-bbangbbang 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 list /clubs 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs 내부 링크 수",
+   "r": "통과",
+   "note": "72"
+  },
+  {
+   "name": "30쪽 list /clubs 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /rooms/ilsan 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 list /rooms/ilsan 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /rooms/ilsan 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /rooms/ilsan 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /rooms/ilsan 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /rooms/ilsan 내부 링크 수",
+   "r": "통과",
+   "note": "18"
+  },
+  {
+   "name": "30쪽 list /rooms/ilsan 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/itaewon 다음에 볼 곳 채움(4)",
+   "r": "통과",
+   "note": "popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 list /clubs/itaewon 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/itaewon 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/itaewon 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/itaewon 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/itaewon 내부 링크 수",
+   "r": "통과",
+   "note": "22"
+  },
+  {
+   "name": "30쪽 list /clubs/itaewon 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/uijeongbu 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 list /clubs/uijeongbu 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/uijeongbu 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/uijeongbu 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/uijeongbu 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /clubs/uijeongbu 내부 링크 수",
+   "r": "통과",
+   "note": "15"
+  },
+  {
+   "name": "30쪽 list /clubs/uijeongbu 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /best/nights 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 list /best/nights 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /best/nights 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /best/nights 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /best/nights 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 list /best/nights 내부 링크 수",
+   "r": "통과",
+   "note": "92"
+  },
+  {
+   "name": "30쪽 list /best/nights 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/일산 다음에 볼 곳 채움(6)",
+   "r": "통과",
+   "note": "popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 hub /region/일산 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/일산 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/일산 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/일산 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/일산 내부 링크 수",
+   "r": "통과",
+   "note": "31"
+  },
+  {
+   "name": "30쪽 hub /region/일산 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/수원 다음에 볼 곳 채움(6)",
+   "r": "통과",
+   "note": "popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 hub /region/수원 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/수원 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/수원 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/수원 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/수원 내부 링크 수",
+   "r": "통과",
+   "note": "24"
+  },
+  {
+   "name": "30쪽 hub /region/수원 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/부산/nights 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 hub /region/부산/nights 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/부산/nights 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/부산/nights 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/부산/nights 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /region/부산/nights 내부 링크 수",
+   "r": "통과",
+   "note": "17"
+  },
+  {
+   "name": "30쪽 hub /region/부산/nights 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /tag/안산나이트 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 hub /tag/안산나이트 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /tag/안산나이트 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /tag/안산나이트 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /tag/안산나이트 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /tag/안산나이트 내부 링크 수",
+   "r": "통과",
+   "note": "14"
+  },
+  {
+   "name": "30쪽 hub /tag/안산나이트 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /near/오산 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 hub /near/오산 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /near/오산 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /near/오산 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /near/오산 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 hub /near/오산 내부 링크 수",
+   "r": "통과",
+   "note": "14"
+  },
+  {
+   "name": "30쪽 hub /near/오산 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/gangnam-edm-clubs-2026 다음에 볼 곳 채움(7)",
+   "r": "통과",
+   "note": "hub,venues,venues,venues,next-article,tools,tools"
+  },
+  {
+   "name": "30쪽 magazine /magazine/gangnam-edm-clubs-2026 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/gangnam-edm-clubs-2026 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/gangnam-edm-clubs-2026 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/gangnam-edm-clubs-2026 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/gangnam-edm-clubs-2026 내부 링크 수",
+   "r": "통과",
+   "note": "15"
+  },
+  {
+   "name": "30쪽 magazine /magazine/gangnam-edm-clubs-2026 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/incheon-bucheon-night-guide 다음에 볼 곳 채움(7)",
+   "r": "통과",
+   "note": "hub,venues,venues,venues,next-article,tools,tools"
+  },
+  {
+   "name": "30쪽 magazine /magazine/incheon-bucheon-night-guide 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/incheon-bucheon-night-guide 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/incheon-bucheon-night-guide 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/incheon-bucheon-night-guide 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/incheon-bucheon-night-guide 내부 링크 수",
+   "r": "통과",
+   "note": "13"
+  },
+  {
+   "name": "30쪽 magazine /magazine/incheon-bucheon-night-guide 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/uijeongbu-night-guide 다음에 볼 곳 채움(6)",
+   "r": "통과",
+   "note": "hub,venues,venues,next-article,tools,tools"
+  },
+  {
+   "name": "30쪽 magazine /magazine/uijeongbu-night-guide 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/uijeongbu-night-guide 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/uijeongbu-night-guide 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/uijeongbu-night-guide 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/uijeongbu-night-guide 내부 링크 수",
+   "r": "통과",
+   "note": "12"
+  },
+  {
+   "name": "30쪽 magazine /magazine/uijeongbu-night-guide 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/suwon-hoppa-guide 다음에 볼 곳 채움(6)",
+   "r": "통과",
+   "note": "hub,venues,venues,next-article,tools,tools"
+  },
+  {
+   "name": "30쪽 magazine /magazine/suwon-hoppa-guide 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/suwon-hoppa-guide 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/suwon-hoppa-guide 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/suwon-hoppa-guide 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/suwon-hoppa-guide 내부 링크 수",
+   "r": "통과",
+   "note": "13"
+  },
+  {
+   "name": "30쪽 magazine /magazine/suwon-hoppa-guide 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/hongdae-club-guide 다음에 볼 곳 채움(4)",
+   "r": "통과",
+   "note": "hub,next-article,tools,tools"
+  },
+  {
+   "name": "30쪽 magazine /magazine/hongdae-club-guide 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/hongdae-club-guide 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/hongdae-club-guide 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/hongdae-club-guide 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 magazine /magazine/hongdae-club-guide 내부 링크 수",
+   "r": "통과",
+   "note": "14"
+  },
+  {
+   "name": "30쪽 magazine /magazine/hongdae-club-guide 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 community /community 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community 내부 링크 수",
+   "r": "통과",
+   "note": "22"
+  },
+  {
+   "name": "30쪽 community /community 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/tips 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 community /community/tips 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/tips 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/tips 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/tips 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/tips 내부 링크 수",
+   "r": "통과",
+   "note": "14"
+  },
+  {
+   "name": "30쪽 community /community/tips 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/fashion 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 community /community/fashion 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/fashion 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/fashion 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/fashion 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /community/fashion 내부 링크 수",
+   "r": "통과",
+   "note": "14"
+  },
+  {
+   "name": "30쪽 community /community/fashion 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/night 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 community /lounge/night 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/night 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/night 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/night 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/night 내부 링크 수",
+   "r": "통과",
+   "note": "14"
+  },
+  {
+   "name": "30쪽 community /lounge/night 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/yojung 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 community /lounge/yojung 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/yojung 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/yojung 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/yojung 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 community /lounge/yojung 내부 링크 수",
+   "r": "통과",
+   "note": "14"
+  },
+  {
+   "name": "30쪽 community /lounge/yojung 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide / 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 guide / 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide / 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide / 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide / 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide / 내부 링크 수",
+   "r": "통과",
+   "note": "42"
+  },
+  {
+   "name": "30쪽 guide / 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /venue-info 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 guide /venue-info 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /venue-info 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /venue-info 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /venue-info 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /venue-info 내부 링크 수",
+   "r": "통과",
+   "note": "14"
+  },
+  {
+   "name": "30쪽 guide /venue-info 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /privacy 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 guide /privacy 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /privacy 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /privacy 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /privacy 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /privacy 내부 링크 수",
+   "r": "통과",
+   "note": "14"
+  },
+  {
+   "name": "30쪽 guide /privacy 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /testimonials 다음에 볼 곳 채움(8)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools,tools"
+  },
+  {
+   "name": "30쪽 guide /testimonials 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /testimonials 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /testimonials 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /testimonials 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /testimonials 내부 링크 수",
+   "r": "통과",
+   "note": "14"
+  },
+  {
+   "name": "30쪽 guide /testimonials 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /weekend 다음에 볼 곳 채움(7)",
+   "r": "통과",
+   "note": "popular,popular,popular,popular,popular,tools,tools"
+  },
+  {
+   "name": "30쪽 guide /weekend 모듈 중복 0(M1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /weekend 내부 링크 새 창 0(밖으로 나가는 공식 사이트 링크는 예외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /weekend 뼈대 끝 = 다음에 볼 곳(정리 뒤)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /weekend 게이트 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "30쪽 guide /weekend 내부 링크 수",
+   "r": "통과",
+   "note": "13"
+  },
+  {
+   "name": "30쪽 guide /weekend 뷰포트 메타(모바일)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "브라우저 검사 결과",
+   "r": "실행 불가",
+   "note": "--browser 없음"
+  },
+  {
+   "name": "0절 배포 0(origin/main 그대로)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "0절 주소 불변 — 사이트맵 466",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "0절 가짜 0 — 인기 값은 엔진 순위 있는 가게만(참고 집계는 디버깅)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "0절 자동 새 창·강제 이동·무한 스크롤 속임·팝업 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "1절 겹침 — 인기 엔진·랭킹·퀴즈·주말·매거진·커뮤니티·허브 그대로 잇기(새 엔진 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-1 가게 8칸(3+2+1+1+1) · 인기 순 · 같은 가게 2번 0 · 광고주 표시 그대로(A1 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-1 목록·허브 인기 5·주말·퀴즈·랭킹",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-1 매거진 본문 가게·지역 허브·다음 글",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-1 쪽당 내부 링크 — 가게 126 전부 ≥12(목표 12~25 · 상한 넘는 쪽은 품질 경고)",
+   "r": "통과",
+   "note": "최소 21 · 최대 28"
+  },
+  {
+   "name": "외부 새 창 링크(광고주 공식 사이트 · 11-4 이전부터)",
+   "r": "통과",
+   "note": "/cafe /rooms/ilsan/ilsanroom /yojeong/ilsan/ilsanmyeongwolgwanyojeong"
+  },
+  {
+   "name": "2-2 홈 검색창 상단(SSR + React) · 자동완성 로컬 · /search 결과 · 업종 탭 · 지역 바로가기 · 인기·신규·투표·커뮤니티·매거진",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-2 WebSite+SearchAction 과 짝",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-3 비교 = 기존 /compare/ + 검색 매개변수 · 사이트맵 변화 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-4 쪽 끝 = 다음에 볼 곳 + 저장 + 전화(있는 규칙)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-5 GA4 scroll_90·next_click·compare_open·search_use",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "2-5 새 메일 0(대시보드는 월간 보고에)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "3절 T1~T6 은 디버깅 단계 기록",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "4절 검증 파일 nc11-4-check.mjs",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "원문 「한 번 오면 10쪽 이상」 — 모든 쪽에 다음에 볼 곳 ≥1 + 허브 직접 링크",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "원문 「네이버처럼 홈」 — 상단 검색창 + 업종 탭 + 지역 바로가기 (SSR·React 둘 다)",
+   "r": "통과",
+   "note": ""
+  }
+ ]
+}

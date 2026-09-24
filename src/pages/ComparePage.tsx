@@ -1,6 +1,8 @@
 
 
 import { useState, useMemo, useRef, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { trackEvent } from '@/lib/visitor-tracker';
 import { Link } from '../components/ui/SafeLink';
 import { venues } from '@/data/venues';
 import Badge from '@/components/ui/Badge';
@@ -47,6 +49,15 @@ export default function ComparePage() {
     if (ids.length > 0) setSelected(ids);
   }, [compareItems]);
 
+  /* [놀쿨11-4] 가게 쪽 「나란히 비교」 진입 — /compare/?v=slug1,slug2,slug3 (검색 매개변수 · 새 주소 0 · 사이트맵 변화 0). 장부에 있는 슬러그만, 최대 4 */
+  const [searchParams] = useSearchParams();
+  useEffect(() => {
+    const v = searchParams.get('v');
+    if (!v) return;
+    const ids = v.split(',').map((s) => venues.find((x) => x.slug === s.trim())?.id).filter((x): x is string => !!x).slice(0, 4);
+    if (ids.length) setSelected(ids);
+  }, [searchParams]);
+
   const openVenues = useMemo(() =>
     venues.filter((v) => v.status !== 'closed_or_unclear').sort((a, b) => b.rating - a.rating),
     []
@@ -56,6 +67,12 @@ export default function ComparePage() {
     selected.map((id) => openVenues.find((v) => v.id === id)).filter(Boolean) as Venue[],
     [selected, openVenues]
   );
+
+  /* [놀쿨11-4] compare_open — 2곳 이상이 나란히 놓인 순간 1회(게이트 뒤) */
+  const openedRef = useRef(false);
+  useEffect(() => {
+    if (selectedVenues.length >= 2 && !openedRef.current) { openedRef.current = true; trackEvent('compare_open', { n: selectedVenues.length, from: searchParams.get('v') ? 'venue_page' : 'compare_page' }); }
+  }, [selectedVenues.length, searchParams]);
 
   const toggleSelect = (id: string) => {
     setSelected((prev) =>

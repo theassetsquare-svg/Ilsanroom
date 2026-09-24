@@ -10,7 +10,9 @@ type EventType =
   | 'view' | 'scroll_25' | 'scroll_50' | 'scroll_75' | 'scroll_100'
   | 'time_10s' | 'time_30s' | 'time_60s' | 'time_180s' | 'exit'
   | 'signup' | 'login' | 'share_click' | 'post_create' | 'invite_open'
-  | 'search' | 'search_no_result' | 'phone_click' | 'cafe_click';
+  | 'search' | 'search_no_result' | 'phone_click' | 'cafe_click'
+  // [놀쿨11-4] 10쪽 루프 측정 — scroll_90(세로 90%) · next_click(다음에 볼 곳 어느 모듈) · compare_open(비교 2곳↑) · search_use(홈 검색창)
+  | 'scroll_90' | 'next_click' | 'compare_open' | 'search_use';
 
 /* ── GA4(gtag) 전달 대상 이벤트 → GA4 권장 이벤트명 매핑 ──
  * 의미 있는 행동만 GA4로도 보냄(스크롤/체류/뷰는 GA4 향상측정이 이미 수집).
@@ -20,6 +22,8 @@ const GA4_EVENT_NAME: Partial<Record<EventType, string>> = {
   post_create: 'post_create', invite_open: 'invite_open',
   search: 'search', search_no_result: 'search_no_result',
   phone_click: 'phone_click', cafe_click: 'cafe_click',
+  // [놀쿨11-4] 페이지당 1회(scroll_90) · 클릭마다(next_click·compare_open·search_use) — 전부 send() 게이트(봇·관리자·내부 제외) 뒤에서만
+  scroll_90: 'scroll_90', next_click: 'next_click', compare_open: 'compare_open', search_use: 'search_use',
 };
 
 /* ── page_path 정규화 — /clubs 와 /clubs/ 를 한 형태로 통합 ──
@@ -257,6 +261,7 @@ function onScroll() {
   if (scrolled >= 0.25) send('scroll_25');
   if (scrolled >= 0.50) send('scroll_50');
   if (scrolled >= 0.75) send('scroll_75');
+  if (scrolled >= 0.90) send('scroll_90'); // [놀쿨11-4] GA4 향상측정 scroll(90%) 과 같은 문턱 · 게이트 통과 방문자만 · 페이지당 1회
   if (scrolled >= 0.99) send('scroll_100');
 }
 
