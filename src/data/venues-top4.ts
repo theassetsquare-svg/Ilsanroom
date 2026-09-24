@@ -23,6 +23,15 @@ export const VENUES_TOP4: VenueTop4[] = [
     "rating": 0
   },
   {
+    "id": "v-136",
+    "slug": "gangseo-hobak",
+    "nameKo": "강서호박나이트",
+    "regionKo": "강서",
+    "region": "gangseo",
+    "category": "night",
+    "rating": 0
+  },
+  {
     "id": "v-003",
     "slug": "ilsanmyeongwolgwanyojeong",
     "nameKo": "일산명월관요정",
@@ -38,15 +47,6 @@ export const VENUES_TOP4: VenueTop4[] = [
     "regionKo": "일산",
     "region": "ilsan",
     "category": "room",
-    "rating": 0
-  },
-  {
-    "id": "v-048",
-    "slug": "daegubabambanight",
-    "nameKo": "대구바밤바나이트",
-    "regionKo": "대구",
-    "region": "daegu",
-    "category": "night",
     "rating": 0
   }
 ];

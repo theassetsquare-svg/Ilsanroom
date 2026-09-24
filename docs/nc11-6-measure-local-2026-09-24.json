@@ -1,0 +1,65 @@
+{
+ "at": "2026-09-24T01:39:53.147Z",
+ "res": [
+  {
+   "p": "/",
+   "perf": 53,
+   "lcp": 9790,
+   "cls": 0.002,
+   "tbt": 747,
+   "fcp": 1869,
+   "consoleErrors": 0,
+   "consoleSample": []
+  },
+  {
+   "p": "/nights/ilsanshampoonight/",
+   "perf": 63,
+   "lcp": 8733,
+   "cls": 0,
+   "tbt": 423,
+   "fcp": 1863,
+   "consoleErrors": 0,
+   "consoleSample": []
+  },
+  {
+   "p": "/region/%EA%B0%95%EB%82%A8/",
+   "perf": 75,
+   "lcp": 4488,
+   "cls": 0,
+   "tbt": 364,
+   "fcp": 1862,
+   "consoleErrors": 0,
+   "consoleSample": []
+  },
+  {
+   "p": "/community/",
+   "perf": 75,
+   "lcp": 4207,
+   "cls": 0,
+   "tbt": 385,
+   "fcp": 1862,
+   "consoleErrors": 0,
+   "consoleSample": []
+  },
+  {
+   "p": "/login/",
+   "perf": 76,
+   "lcp": 3922,
+   "cls": 0,
+   "tbt": 445,
+   "fcp": 1854,
+   "consoleErrors": 0,
+   "consoleSample": []
+  },
+  {
+   "p": "/my/favorites/",
+   "perf": 70,
+   "lcp": 4457,
+   "cls": 0,
+   "tbt": 496,
+   "fcp": 1858,
+   "consoleErrors": 0,
+   "consoleSample": []
+  }
+ ]
+}

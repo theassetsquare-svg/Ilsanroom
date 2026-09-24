@@ -340,7 +340,9 @@ function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ss
     }
     html = html.replace(
       /<div id="root"([^>]*)><\/div>/,
-      `<div id="root"$1>${heroBlock}${shellHead}</div><div id="nc-ssr" class="nc-ssr">${mainPart}${shellFoot}</div>`
+      // [놀쿨11-6 앞] CLS — 정적 첫 화면이 짧으면 아래 본문(#nc-ssr)이 첫 화면 안에 보였다가 React 가 #root 를 갈아끼울 때 밀려 내려간다(실측 0.10~0.13).
+      //   #root 가 처음부터 첫 화면 높이(100svh)를 차지하면 본문은 화면 밖에서 시작해 흔들림 계산에 들지 않는다. 숨김 0 · 내용 변화 0.
+      `<div id="root"$1 data-nc-fold style="min-height:100vh;min-height:100svh">${heroBlock}${shellHead}</div><div id="nc-ssr" class="nc-ssr">${mainPart}${shellFoot}</div>`
     );
   }
 
@@ -3157,18 +3159,22 @@ async function submitIndexNow() {
     allUrls.push(`${BASE_URL}${dp}/`);
   }
 
+  // [놀쿨11-6 앞] 바뀐 쪽만 — 이번 빌드에서 lastmod 가 오늘이 된 쪽(콘텐츠 해시가 바뀐 쪽)만 보낸다. 매 빌드 전량 제출 0.
+  const _dec = (x) => { try { return decodeURIComponent(x); } catch { return x; } };
+  const _todayRoutes = new Set(Object.entries(NEW_LASTMOD).filter(([, v]) => v && v.lastmod === today).map(([r]) => _dec(r).replace(/\/$/, '') || '/'));
+  const changedUrls = [...new Set(allUrls)].filter((u) => _todayRoutes.has(_dec(u.replace(BASE_URL, '')).replace(/\/$/, '') || '/'));
+  if (!changedUrls.length) { console.log('   IndexNow: 바뀐 쪽 0 — 보내지 않음'); return; }
   const payload = JSON.stringify({
     host: 'nolcool.com',
     key: INDEXNOW_KEY,
     keyLocation: `${BASE_URL}/${INDEXNOW_KEY}.txt`,
-    urlList: allUrls
+    urlList: changedUrls.slice(0, 10000)
   });
+  console.log(`   IndexNow: 바뀐 쪽 ${changedUrls.length} / 전체 ${allUrls.length}`);
 
-  // IndexNow 제출 (Bing → Naver/Yandex에도 자동 전파)
+  // [놀쿨11-6 앞] 창구는 Bing 하나(11-3 결정 · 지시서 「IndexNow(Bing)」). 참여 엔진끼리 나누는 것은 규약의 일이고 우리가 따로 보내지 않는다.
   const endpoints = [
-    'https://api.indexnow.org/indexnow',
     'https://www.bing.com/indexnow',
-    'https://yandex.com/indexnow',
   ];
 
   for (const endpoint of endpoints) {
