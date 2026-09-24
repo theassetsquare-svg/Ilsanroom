@@ -1,0 +1,105 @@
+{
+ "at": "2026-09-24T02:08:20.684Z",
+ "res": [
+  {
+   "p": "/",
+   "perf": 51,
+   "lcp": 9029,
+   "cls": 0.002,
+   "tbt": 886,
+   "fcp": 1930,
+   "consoleErrors": 0,
+   "consoleSample": []
+  },
+  {
+   "p": "/nights/ilsanshampoonight/",
+   "perf": 63,
+   "lcp": 8433,
+   "cls": 0,
+   "tbt": 417,
+   "fcp": 1932,
+   "consoleErrors": 0,
+   "consoleSample": []
+  },
+  {
+   "p": "/clubs/gangnam/gangnamclub-race/",
+   "perf": 56,
+   "lcp": 6226,
+   "cls": 0,
+   "tbt": 819,
+   "fcp": 1945,
+   "consoleErrors": 0,
+   "consoleSample": []
+  },
+  {
+   "p": "/rooms/ilsan/ilsanroom/",
+   "perf": 57,
+   "lcp": 7613,
+   "cls": 0,
+   "tbt": 702,
+   "fcp": 1908,
+   "consoleErrors": 0,
+   "consoleSample": []
+  },
+  {
+   "p": "/clubs/",
+   "perf": 48,
+   "lcp": 8535,
+   "cls": 0,
+   "tbt": 1219,
+   "fcp": 2091,
+   "consoleErrors": 0,
+   "consoleSample": []
+  },
+  {
+   "p": "/nights/",
+   "perf": 52,
+   "lcp": 7353,
+   "cls": 0,
+   "tbt": 865,
+   "fcp": 2066,
+   "consoleErrors": 0,
+   "consoleSample": []
+  },
+  {
+   "p": "/region/%EA%B0%95%EB%82%A8/",
+   "perf": 59,
+   "lcp": 7179,
+   "cls": 0,
+   "tbt": 609,
+   "fcp": 1939,
+   "consoleErrors": 0,
+   "consoleSample": []
+  },
+  {
+   "p": "/near/%EB%A7%88%EB%91%90/",
+   "perf": 60,
+   "lcp": 6455,
+   "cls": 0,
+   "tbt": 621,
+   "fcp": 1935,
+   "consoleErrors": 0,
+   "consoleSample": []
+  },
+  {
+   "p": "/magazine/daejeon-night-guide/",
+   "perf": 47,
+   "lcp": 8600,
+   "cls": 0,
+   "tbt": 1229,
+   "fcp": 1964,
+   "consoleErrors": 0,
+   "consoleSample": []
+  },
+  {
+   "p": "/community/",
+   "perf": 61,
+   "lcp": 6942,
+   "cls": 0,
+   "tbt": 554,
+   "fcp": 1866,
+   "consoleErrors": 0,
+   "consoleSample": []
+  }
+ ]
+}

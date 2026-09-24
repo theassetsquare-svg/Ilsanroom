@@ -1,0 +1,1235 @@
+{
+ "stage": "디버깅",
+ "checks": 245,
+ "pass": 231,
+ "fails": 5,
+ "na": 1,
+ "skip": 8,
+ "list": [
+  {
+   "name": "dist 466쪽",
+   "r": "통과",
+   "note": "466"
+  },
+  {
+   "name": "T1 클럽 가게 /clubs/gangnam/gangnamclub-race JSON-LD 파싱 4개",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 클럽 가게 유형 마크업",
+   "r": "통과",
+   "note": "NightClub,FAQPage,BreadcrumbList,WebPage"
+  },
+  {
+   "name": "T1 클럽 가게 name 본문 일치",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 클럽 가게 telephone ⇒ 본문",
+   "r": "해당 없음",
+   "note": ""
+  },
+  {
+   "name": "T1 클럽 가게 영업시간 ⇒ 본문",
+   "r": "해당 없음",
+   "note": ""
+  },
+  {
+   "name": "T1 클럽 가게 주소 ⇒ 본문",
+   "r": "해당 없음",
+   "note": ""
+  },
+  {
+   "name": "T1 클럽 가게 image = og",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 클럽 가게 Breadcrumb 마지막 = 주소",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 클럽 가게 가짜 평점·후기 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 클럽 가게 FAQ LD ⊆ 화면",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 라운지 가게 /lounges/apgujeongcodelounge JSON-LD 파싱 4개",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 라운지 가게 유형 마크업",
+   "r": "통과",
+   "note": "BarOrPub,FAQPage,BreadcrumbList,WebPage"
+  },
+  {
+   "name": "T1 라운지 가게 name 본문 일치",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 라운지 가게 telephone ⇒ 본문",
+   "r": "해당 없음",
+   "note": ""
+  },
+  {
+   "name": "T1 라운지 가게 영업시간 ⇒ 본문",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 라운지 가게 주소 ⇒ 본문",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 라운지 가게 image = og",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 라운지 가게 Breadcrumb 마지막 = 주소",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 라운지 가게 가짜 평점·후기 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 라운지 가게 FAQ LD ⊆ 화면",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 나이트 가게 /nights/cheongdamh2onight JSON-LD 파싱 4개",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 나이트 가게 유형 마크업",
+   "r": "통과",
+   "note": "NightClub,FAQPage,BreadcrumbList,WebPage"
+  },
+  {
+   "name": "T1 나이트 가게 name 본문 일치",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 나이트 가게 telephone ⇒ 본문",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 나이트 가게 영업시간 ⇒ 본문",
+   "r": "해당 없음",
+   "note": ""
+  },
+  {
+   "name": "T1 나이트 가게 주소 ⇒ 본문",
+   "r": "해당 없음",
+   "note": ""
+  },
+  {
+   "name": "T1 나이트 가게 image = og",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 나이트 가게 Breadcrumb 마지막 = 주소",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 나이트 가게 가짜 평점·후기 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 나이트 가게 FAQ LD ⊆ 화면",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 업종 목록 /clubs JSON-LD 파싱 4개",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 업종 목록 유형 마크업",
+   "r": "통과",
+   "note": "ItemList,FAQPage,CollectionPage,BreadcrumbList"
+  },
+  {
+   "name": "T1 업종 목록 Breadcrumb 마지막 = 주소",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 업종 목록 가짜 평점·후기 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 업종 목록 FAQ LD ⊆ 화면",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 지역 허브 /region/일산 JSON-LD 파싱 3개",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 지역 허브 유형 마크업",
+   "r": "통과",
+   "note": "CollectionPage,BreadcrumbList,FAQPage"
+  },
+  {
+   "name": "T1 지역 허브 Breadcrumb 마지막 = 주소",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 지역 허브 가짜 평점·후기 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 지역 허브 FAQ LD ⊆ 화면",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 매거진 /magazine/gangnam-edm-clubs-2026 JSON-LD 파싱 2개",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 매거진 유형 마크업",
+   "r": "통과",
+   "note": "Article,BreadcrumbList"
+  },
+  {
+   "name": "T1 매거진 Breadcrumb 마지막 = 주소",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 매거진 가짜 평점·후기 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 매거진 FAQ LD ⊆ 화면",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 홈 / JSON-LD 파싱 3개",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 홈 유형 마크업",
+   "r": "통과",
+   "note": "WebSite,Organization,FAQPage"
+  },
+  {
+   "name": "T1 홈 Breadcrumb 마지막 = 주소",
+   "r": "해당 없음",
+   "note": ""
+  },
+  {
+   "name": "T1 홈 가짜 평점·후기 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 홈 FAQ LD ⊆ 화면",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 커뮤니티 /community JSON-LD 파싱 3개",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 커뮤니티 유형 마크업",
+   "r": "통과",
+   "note": "CollectionPage,WebPage,BreadcrumbList"
+  },
+  {
+   "name": "T1 커뮤니티 Breadcrumb 마지막 = 주소",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 커뮤니티 가짜 평점·후기 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T1 커뮤니티 FAQ LD ⊆ 화면",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "JSON-LD 유형별 쪽 수(참고)",
+   "r": "통과",
+   "note": "{\"WebSite\":1,\"Organization\":1,\"FAQPage\":357,\"ItemList\":24,\"CollectionPage\":220,\"BreadcrumbList\":465,\"WebPage\":177,\"Restaurant\":2,\"EntertainmentBusiness\":2,\"NightClub\":102,\"BarOrPub"
+  },
+  {
+   "name": "가게 126 = NightClub|BarOrPub|Restaurant|EntertainmentBusiness",
+   "r": "통과",
+   "note": "126"
+  },
+  {
+   "name": "가게 openingHoursSpecification 은 장부 영업시간 있는 쪽만",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "BreadcrumbList 466/466(홈 제외)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가게 노드에 datePublished·dateModified·speakable 0(schema.org 미인정 속성 · 검증기 경고 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가게 WebPage 노드 speakable(h1 · .ssr-answer 가 화면에 있음)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "가게 article:published_time 메타 0(가짜 등록일 제거)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "DiscussionForumPosting 은 글 있는 쪽만",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "J1~J5 막음 0(466)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 dist/robots.txt",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 robots Sitemap",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 robots Disallow 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 robots GPTBot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 robots OAI-SearchBot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 robots ChatGPT-User Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 robots ClaudeBot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 robots Claude-SearchBot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 robots Claude-User Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 robots PerplexityBot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 robots Perplexity-User Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 robots Google-Extended Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 robots Applebot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 robots Bingbot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 robots Googlebot Allow",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 dist/llms.txt",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 llms.txt 사이트 소개",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 llms.txt 허브 절",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 llms.txt 전체 페이지 = 466",
+   "r": "통과",
+   "note": "466"
+  },
+  {
+   "name": "T3 llms.txt 전체 페이지 줄마다 직답",
+   "r": "통과",
+   "note": "0 직답 없음"
+  },
+  {
+   "name": "T3 llms.txt 주소 = 사이트맵 주소",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 llms-full.txt",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 sitemap 466",
+   "r": "통과",
+   "note": "466"
+  },
+  {
+   "name": "T3 sitemap lastmod 466 · 날짜 형식",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 sitemap lastmod ≤ 오늘",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 sitemap lastmod 는 해시 정직화(.seo-lastmod.json)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 IndexNow 키 파일 dist 에 있음",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 indexnow.mjs --plan 실행(보내지 않음)",
+   "r": "통과",
+   "note": "📊 sitemap 466개 · 직전 스냅샷 0개 · 변경/신규 466개 (최초 실행 — 전량이 신규)"
+  },
+  {
+   "name": "T3 canonical 466 = 자기 절대주소(L2 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 og 3종 466(O1 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T3 hreflang — ko 단일이라 추가 불필요(기존 자기참조 ko·x-default 는 해가 없어 그대로)",
+   "r": "해당 없음",
+   "note": "자기참조 x-default 466"
+  },
+  {
+   "name": "T4 첫 그림 width/height 466",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 첫 그림 lazy 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 첫 그림 fetchpriority=high 466",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 첫 그림 현대 형식(webp) 466",
+   "r": "통과",
+   "note": "0 아님"
+  },
+  {
+   "name": "T4 og jpg 쪽 srcset 600w/1200w",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 og:image 는 jpg 그대로(미리보기 호환)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 webp 축소판 파일 존재(표본 10)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 뷰포트 메타 466",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 modulepreload(번들 분할·vendor 선적재)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 CSS 1파일(unused-css 통과 · 분리 이득 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 PSI 공식 API",
+   "r": "실행 불가",
+   "note": "429(할당량) — Lighthouse 12 CLI(같은 엔진 · 모바일 · 시뮬레이션 4G)로 대체"
+  },
+  {
+   "name": "T4 Lighthouse 전/후 같은 10쪽",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 / CLS ≤ 0.1(후)",
+   "r": "통과",
+   "note": "0.002 → 0.002"
+  },
+  {
+   "name": "T4 / LCP 후 < 전",
+   "r": "통과",
+   "note": "9941 → 9029ms"
+  },
+  {
+   "name": "T4 / 성능 점수 후 ≥ 전",
+   "r": "실패",
+   "note": "55 → 51"
+  },
+  {
+   "name": "T4 /nights/ilsanshampoonight/ CLS ≤ 0.1(후)",
+   "r": "통과",
+   "note": "0 → 0"
+  },
+  {
+   "name": "T4 /nights/ilsanshampoonight/ LCP 후 < 전",
+   "r": "통과",
+   "note": "9370 → 8433ms"
+  },
+  {
+   "name": "T4 /nights/ilsanshampoonight/ 성능 점수 후 ≥ 전",
+   "r": "통과",
+   "note": "56 → 63"
+  },
+  {
+   "name": "T4 /clubs/gangnam/gangnamclub-race/ CLS ≤ 0.1(후)",
+   "r": "통과",
+   "note": "0 → 0"
+  },
+  {
+   "name": "T4 /clubs/gangnam/gangnamclub-race/ LCP 후 < 전",
+   "r": "통과",
+   "note": "7271 → 6226ms"
+  },
+  {
+   "name": "T4 /clubs/gangnam/gangnamclub-race/ 성능 점수 후 ≥ 전",
+   "r": "통과",
+   "note": "54 → 56"
+  },
+  {
+   "name": "T4 /rooms/ilsan/ilsanroom/ CLS ≤ 0.1(후)",
+   "r": "통과",
+   "note": "0 → 0"
+  },
+  {
+   "name": "T4 /rooms/ilsan/ilsanroom/ LCP 후 < 전",
+   "r": "통과",
+   "note": "9460 → 7613ms"
+  },
+  {
+   "name": "T4 /rooms/ilsan/ilsanroom/ 성능 점수 후 ≥ 전",
+   "r": "통과",
+   "note": "56 → 57"
+  },
+  {
+   "name": "T4 /clubs/ CLS ≤ 0.1(후)",
+   "r": "통과",
+   "note": "0 → 0"
+  },
+  {
+   "name": "T4 /clubs/ LCP 후 < 전",
+   "r": "통과",
+   "note": "10882 → 8535ms"
+  },
+  {
+   "name": "T4 /clubs/ 성능 점수 후 ≥ 전",
+   "r": "실패",
+   "note": "57 → 48"
+  },
+  {
+   "name": "T4 /nights/ CLS ≤ 0.1(후)",
+   "r": "통과",
+   "note": "0 → 0"
+  },
+  {
+   "name": "T4 /nights/ LCP 후 < 전",
+   "r": "실패",
+   "note": "6310 → 7353ms"
+  },
+  {
+   "name": "T4 /nights/ 성능 점수 후 ≥ 전",
+   "r": "통과",
+   "note": "52 → 52"
+  },
+  {
+   "name": "T4 /region/%EA%B0%95%EB%82%A8/ CLS ≤ 0.1(후)",
+   "r": "통과",
+   "note": "0 → 0"
+  },
+  {
+   "name": "T4 /region/%EA%B0%95%EB%82%A8/ LCP 후 < 전",
+   "r": "통과",
+   "note": "8141 → 7179ms"
+  },
+  {
+   "name": "T4 /region/%EA%B0%95%EB%82%A8/ 성능 점수 후 ≥ 전",
+   "r": "통과",
+   "note": "59 → 59"
+  },
+  {
+   "name": "T4 /near/%EB%A7%88%EB%91%90/ CLS ≤ 0.1(후)",
+   "r": "통과",
+   "note": "0 → 0"
+  },
+  {
+   "name": "T4 /near/%EB%A7%88%EB%91%90/ LCP 후 < 전",
+   "r": "통과",
+   "note": "8642 → 6455ms"
+  },
+  {
+   "name": "T4 /near/%EB%A7%88%EB%91%90/ 성능 점수 후 ≥ 전",
+   "r": "통과",
+   "note": "57 → 60"
+  },
+  {
+   "name": "T4 /magazine/daejeon-night-guide/ CLS ≤ 0.1(후)",
+   "r": "통과",
+   "note": "0 → 0"
+  },
+  {
+   "name": "T4 /magazine/daejeon-night-guide/ LCP 후 < 전",
+   "r": "통과",
+   "note": "8816 → 8600ms"
+  },
+  {
+   "name": "T4 /magazine/daejeon-night-guide/ 성능 점수 후 ≥ 전",
+   "r": "실패",
+   "note": "49 → 47"
+  },
+  {
+   "name": "T4 /community/ CLS ≤ 0.1(후)",
+   "r": "통과",
+   "note": "0 → 0"
+  },
+  {
+   "name": "T4 /community/ LCP 후 < 전",
+   "r": "실패",
+   "note": "6881 → 6942ms"
+  },
+  {
+   "name": "T4 /community/ 성능 점수 후 ≥ 전",
+   "r": "통과",
+   "note": "56 → 61"
+  },
+  {
+   "name": "T4 후 LCP 2.5초(2500ms) 이내 쪽 수(참고 · 실험실 시뮬레이션)",
+   "r": "통과",
+   "note": "0/10"
+  },
+  {
+   "name": "T4 후 CLS 0.1 이내 10/10",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T4 후 TBT 중앙값(참고 · INP 대리)",
+   "r": "통과",
+   "note": "819ms"
+  },
+  {
+   "name": "T5 고아 쪽 0(466 전부 다른 쪽에서 링크됨)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T5 링크 그래프 크기(참고)",
+   "r": "통과",
+   "note": "쪽 671 · 링크 48081"
+  },
+  {
+   "name": "T5 홈에서 3단계 안 466",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T5 깊이 분포(참고)",
+   "r": "통과",
+   "note": "[1,94,303,68]"
+  },
+  {
+   "name": "T5 허브 2단계 안 466",
+   "r": "통과",
+   "note": "466/466"
+  },
+  {
+   "name": "T5 허브 직접 링크(1단계) 쪽 수(참고)",
+   "r": "통과",
+   "note": "466/466"
+  },
+  {
+   "name": "T5 다음에 볼 곳 허브 링크(허브 묶음 또는 칸) 400쪽↑",
+   "r": "통과",
+   "note": "466"
+  },
+  {
+   "name": "T5 내부 새 창 0(L1 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T5 본문 내부 링크 문턱(L3 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T5 가게·목록·허브 허브 링크(L4 막음 0)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T5 가게 ↔ 매거진 ↔ 커뮤니티 연결(홈에서 셋 다 3단계 안)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 세이프서치 466 걸림 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 세이프서치 venue 126쪽 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 세이프서치 list 33쪽 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 세이프서치 hub 196쪽 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 세이프서치 magazine 59쪽 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 세이프서치 community 16쪽 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 세이프서치 guide 36쪽 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 rating=adult 메타 0(선정적 쪽 아님)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T6 첫 그림 alt 466(노출 사진 아님 · og 문구 그림)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 사이트맵 주소 빠짐 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 사이트맵 주소 추가 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 466 = 466",
+   "r": "통과",
+   "note": "466 → 466"
+  },
+  {
+   "name": "T7 page-gate CLI exit 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 T1 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 T2 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 T3 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 T4 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 T5 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 H1 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 H2 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 D1 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 S1 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 S2 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 S3 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 L1 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 L2 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 A1 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 W1 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 N1 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 J1 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 J2 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 J3 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 J4 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 J5 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 O1 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 S4 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 L3 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 게이트 L4 막음 0",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /quiz",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /community/qna",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /lounge/night",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /privacy",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /demo",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /referral",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /clubs/cheongdam",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /clubs/bucheon",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /nights/sinlimgrandprixnight",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /nights/gildongchancenight",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /nights/suwonkoreanight",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /nights/bucheongoraenight",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /nights/cheongjudontellmamanight",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /nights/busanasiadnight",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /nights/jejunight",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /clubs/gangnam/gangnamclub-bamnbam",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /clubs/cheongdam/cheongdamclub-arju",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /clubs/nowon/nowoncheongchunpocha",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /clubs/daejeon/daejeonsugarclub",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /hoppa/haeundaehoppa-michelin",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /hoppa/jangandong-hoppa-flex",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /clubs/itaewon/itaewonclub-cakeshop",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /magazine/nationwide-dancehall-guide",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /magazine/gwangju-night-guide",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /magazine/gimpo-night-guide",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /magazine/gangnam-hoppa-guide",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /magazine/itaewon-night-pair-guide",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /magazine/hotel-resort-landmark-clubs-3",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /best/nights",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /region/일산",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /region/강남/nights",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /region/독산/nights",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /region/길동",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /region/구리/nights",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /region/성남/nights",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /region/인천/nights",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /region/대전/nights",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /region/대구/hoppa",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /region/울산/nights",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /region/홍대",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /region/건대",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /tag/답십리나이트",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /tag/안산나이트",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /tag/힙합",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /tag/부산호빠",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /near/학동",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /near/야당역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /near/상동",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /near/영대병원",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /near/용산",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 쪽 게이트 /near/화곡역",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 품질 경고 집계(참고)",
+   "r": "통과",
+   "note": "{\"Q4\":34,\"Q1\":100,\"L4\":1,\"Q2\":256}"
+  },
+  {
+   "name": "T7 네이버 수집 코드 0(N1)",
+   "r": "통과",
+   "note": ""
+  },
+  {
+   "name": "T7 IndexNow 자동 전송 로그 0(로컬 빌드)",
+   "r": "통과",
+   "note": "빌드 로그 대조"
+  }
+ ]
+}

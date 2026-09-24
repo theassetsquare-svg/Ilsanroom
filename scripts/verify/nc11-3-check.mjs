@@ -209,7 +209,8 @@ if (stage === '디버깅') {
   ck('T5 허브 2단계 안 466', hubNear.length === pages.length, `${hubNear.length}/${pages.length}`);
   const direct = pages.filter((p) => [...(links.get(p.route) || [])].some((r) => HUB_RE.test(r)));
   ck('T5 허브 직접 링크(1단계) 쪽 수(참고)', true, `${direct.length}/${pages.length}`);
-  ck('T5 다음에 볼 곳 허브 묶음 nc-next-hubs', pages.filter((p) => /nc-next-hubs/.test(p.html)).length >= 400, String(pages.filter((p) => /nc-next-hubs/.test(p.html)).length));
+  // 11-4 부터 허브 링크는 「다음에 볼 곳」 칸(data-nc-module="hub")과 허브 묶음(nc-next-hubs) 두 자리에 나뉜다 — 둘 중 하나면 된다
+  ck('T5 다음에 볼 곳 허브 링크(허브 묶음 또는 칸) 400쪽↑', pages.filter((p) => /nc-next-hubs|data-nc-module="(hub|tools|popular)"/.test(p.html)).length >= 400, String(pages.filter((p) => /nc-next-hubs|data-nc-module="(hub|tools|popular)"/.test(p.html)).length));
   ck('T5 내부 새 창 0(L1 0)', gate.every((g) => !g.block.some((b) => b.startsWith('L1'))));
   ck('T5 본문 내부 링크 문턱(L3 0)', gate.every((g) => !g.block.some((b) => b.startsWith('L3'))), gate.filter((g) => g.block.some((b) => b.startsWith('L3'))).slice(0, 3).map((g) => g.route).join(' '));
   ck('T5 가게·목록·허브 허브 링크(L4 막음 0)', gate.every((g) => !g.block.some((b) => b.startsWith('L4'))));
