@@ -16,6 +16,8 @@ export default function SecretModeToast() {
   useEffect(() => {
     try {
       if (localStorage.getItem(SEEN_KEY) === '1') return;
+      // [놀쿨16-1] 로그인·콜백 쪽(가입 화면)에서는 띄우지 않는다 — 폰 첫 화면에서 카카오 단추를 가렸다(07:0x 로컬 화면 실측). 다른 쪽에서는 그대로(2초 뒤 · 9초 · 한 번만).
+      if (/^\/(login|auth)(\/|$)/.test(window.location.pathname)) return;
       const t = setTimeout(() => setShow(true), 2000);
       return () => clearTimeout(t);
     } catch {}
