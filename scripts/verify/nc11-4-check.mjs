@@ -266,7 +266,7 @@ if (stage === '최종') {
   ck('2-5 새 메일 0(대시보드는 월간 보고에)', !/mail|smtp/i.test(rd('src/components/home/TopSearchBar.tsx')));
   ck('3절 T1~T6 은 디버깅 단계 기록', true);
   ck('4절 검증 파일 nc11-4-check.mjs', ex('scripts/verify/nc11-4-check.mjs'));
-  ck('원문 「한 번 오면 10쪽 이상」 — 모든 쪽에 다음에 볼 곳 ≥1 + 허브 직접 링크', pages.every((p) => modItems(p.html).length >= 1 || /nc-next-hubs/.test(p.html)));
+  ck('원문 「한 번 오면 10쪽 이상」(2026-09-27 05:05 부터 목표 30쪽 — northstar-eval PAGES_PER_VISIT_GOAL · 놀쿨16-1) — 모든 쪽에 다음에 볼 곳 ≥1 + 허브 직접 링크', pages.every((p) => modItems(p.html).length >= 1 || /nc-next-hubs/.test(p.html)));
   ck('원문 「네이버처럼 홈」 — 상단 검색창 + 업종 탭 + 지역 바로가기 (SSR·React 둘 다)', /<TopSearchBar \/>/.test(rd('src/pages/HomePage.tsx')) && /class="nc-search"/.test((pages.find((p) => p.route === '/') || {}).html || ''));
 }
 
