@@ -30,10 +30,14 @@ const CATS = [
   { slug: 'hoppa',   label: '호빠',   bg: '#DC2626' },
 ];
 
+// [놀쿨16-1] 4 키워드 허브 카드(강남호빠·장안동호빠·건대호빠) — 목록은 data/hub-og-cards.json 한 곳(prerender 도 같은 파일을 읽는다)
+const HUB_CARDS = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/hub-og-cards.json'), 'utf8')).cards.map((c) => ({ slug: c.slug, label: c.label, bg: c.bg, sub: '한눈에 비교' }));
+
 function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 function buildSvg(c) {
-  const labelSize = c.label.length >= 3 ? 300 : 360;
+  // 글자 수에 맞춘 크기 — 카드 안쪽 폭 1080 안에 들어가게(5자 200 · 4자 250 · 3자 300 · 2자 360)
+  const labelSize = c.label.length >= 5 ? 200 : c.label.length >= 4 ? 250 : c.label.length >= 3 ? 300 : 360;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -48,7 +52,7 @@ function buildSvg(c) {
   <rect x="60" y="60" width="1080" height="1080" rx="48" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
   <text x="600" y="320" text-anchor="middle" font-family="KO" font-size="60" font-weight="700" fill="rgba(255,255,255,0.7)" letter-spacing="0.05em">놀쿨</text>
   <text x="600" y="720" text-anchor="middle" font-family="KO" font-size="${labelSize}" font-weight="900" fill="#FFFFFF" letter-spacing="-0.03em">${esc(c.label)}</text>
-  <text x="600" y="900" text-anchor="middle" font-family="KO" font-size="64" font-weight="600" fill="rgba(255,255,255,0.85)">전체보기</text>
+  <text x="600" y="900" text-anchor="middle" font-family="KO" font-size="64" font-weight="600" fill="rgba(255,255,255,0.85)">${esc(c.sub || '전체보기')}</text>
   <text x="600" y="1090" text-anchor="middle" font-family="KO" font-size="42" font-weight="700" fill="rgba(255,255,255,0.55)">nolcool.com</text>
 </svg>`;
 }
@@ -56,7 +60,7 @@ function buildSvg(c) {
 const outDir = path.join(ROOT, 'public/og');
 fs.mkdirSync(outDir, { recursive: true });
 
-for (const c of CATS) {
+for (const c of [...CATS, ...HUB_CARDS]) {
   const svg = buildSvg(c);
   const jpgPath = path.join(outDir, `${c.slug}.jpg`);
   await sharp(Buffer.from(svg)).jpeg({ quality: 88 }).toFile(jpgPath);
@@ -67,4 +71,4 @@ for (const c of CATS) {
   const size = fs.statSync(jpgPath).size;
   console.log(`✅ ${c.slug}.jpg ${meta.width}×${meta.height} (${(size/1024).toFixed(1)}KB) — ${c.label}`);
 }
-console.log(`\n총 ${CATS.length}개 카테고리 1:1 OG JPG 생성 완료 (stale SVG 제거)`);
+console.log(`\n총 ${CATS.length}개 카테고리 + ${HUB_CARDS.length}개 허브 1:1 OG JPG 생성 완료 (stale SVG 제거)`);

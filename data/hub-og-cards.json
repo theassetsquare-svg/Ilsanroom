@@ -1,0 +1,8 @@
+{
+  "_설명": "[놀쿨16-1 2026-09-27] 대표님 4 키워드(강남호빠·장안동호빠·건대호빠·해운대고구려) 가운데 허브 쪽 3곳의 고유 og 카드. 해운대고구려는 가게 쪽이라 가게 카드(-v5)를 이미 쓴다. 그림은 scripts/gen-category-og.mjs 가 빌드 때 public/og/<slug>.jpg 로 만들고, scripts/prerender-seo.mjs 가 route 가 같은 허브 쪽에 og:image 로 싣는다. 글자 카드(사진 0 · 사람 얼굴 0).",
+  "cards": [
+    { "route": "/region/%EA%B0%95%EB%82%A8/hoppa", "slug": "hub-gangnam-hoppa", "label": "강남호빠", "bg": "#DC2626" },
+    { "route": "/region/%EC%9E%A5%EC%95%88%EB%8F%99/hoppa", "slug": "hub-jangandong-hoppa", "label": "장안동호빠", "bg": "#B91C1C" },
+    { "route": "/region/%EA%B1%B4%EB%8C%80/hoppa", "slug": "hub-geondae-hoppa", "label": "건대호빠", "bg": "#991B1B" }
+  ]
+}

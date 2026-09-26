@@ -168,6 +168,10 @@ export function applySkeleton(type, ssrBody, ctx = {}) {
   if (nx.actions && nx.actions.slug) {
     const tel = (bodyHtml.match(/href="(tel:[^"]+)"/) || [])[1];
     actionsHtml = `<div class="nc-actions"><button type="button" class="nc-save" data-nc-save="${esc(nx.actions.slug)}" data-nc-id="${esc(nx.actions.id || '')}" aria-pressed="false">☆ 이 가게 저장</button>${tel ? `<a class="nc-call" href="${esc(tel)}">📞 전화 문의</a>` : ''}</div>`;
+  } else if (type !== 'venue' && !/^\/(login|auth|setup-nickname|admin)(\/|$)/.test(self)) { // 로그인·콜백·닉네임·관리 쪽 자신에게는 0(auth-return.ts 가 거절하는 복귀 주소와 같은 목록)
+    // [놀쿨16-1] 어느 쪽에서든 가입 — 가게 쪽은 React 가입 카드(11-5)가 있고, 나머지 유형(홈·허브·목록·매거진·가이드·커뮤니티)은 SSR 「다음에 볼 곳」 첫머리에 가입 진입 1개.
+    //   로그인 쪽 → 동의 → 카카오 = 3번 안 · 돌아올 곳은 ?redirect= 로 싣는다(auth-return.ts safePath 가 같은 출처 경로만 받는다). 혜택 셋은 11-5 의 진짜 기능(찜·투표·알림)만 · 가짜 0.
+    actionsHtml = `<div class="nc-actions"><a class="nc-join" href="/login/?redirect=${encodeURIComponent((self || '') + '/')}">가입·로그인 → 찜 목록·주간 투표·알림 설정</a></div>`;
   }
   const push = (href, label) => { if (href.replace(/\/$/, '') !== self && !hubs.some((h) => h[0] === href) && !chosen.some((x) => keyOf(x.href) === keyOf(href))) hubs.push([href, label]); };
   if (f.region) push(`/region/${encodeURIComponent(f.region)}/`, `${f.region} 전체 업소`);

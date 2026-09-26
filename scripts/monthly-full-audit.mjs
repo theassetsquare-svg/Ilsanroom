@@ -17,7 +17,7 @@
  *        (사람들이 어디서 와서 · 뭘 하고 · 언제 오고 · 어디서 나가는지 → 고칠 곳 지도. 축수는 런 로그 🧮에 집계)
  *   4) GA4 Admin 설정 — 데이터 보관 14개월 + 핵심이벤트 존재 (읽기전용 GET)
  *   5) GSC sitemap 상태 — 등록/오류/경고 (errors>0 시 자동 재제출)
- *   6) GA4 랜딩페이지별 세션깊이 — 페이지/세션 최저 페이지 처방 (목표: 어느 페이지로 들어와도 10+ PV)
+ *   6) GA4 랜딩페이지별 세션깊이 — 페이지/세션 최저 페이지 처방 (목표: 어느 페이지로 들어와도 PAGES_PER_VISIT_GOAL(30)+ PV · northstar-eval.mjs 한 곳)
  *   3.3) ★리텐션 — 주간 코호트(8주) 평탄화 지점 % (cohortSpec, 소표본 제외)
  *   3.4) ★아하 모먼트 — 재방문자 과대표집(1.5x+) 이벤트·페이지 역추적
  *   7) Microsoft Clarity — project-live-insights 실API (최대 3일·10req/day 중 5콜):
@@ -36,6 +36,7 @@
 import fs from 'node:fs';
 import { getAccessToken, hasGscCredentials } from './lib/gsc-auth.mjs';
 import { getGaToken, runReport, runRealtimeReport, gaErrorReason } from './lib/ga-auth.mjs';
+import { PAGES_PER_VISIT_GOAL } from './lib/northstar-eval.mjs'; // [놀쿨16-1] 방문당 쪽 수 목표(30) — 한 곳
 
 const SITE = 'nolcool.com';
 const BASE = 'https://nolcool.com';
@@ -447,7 +448,7 @@ async function main() {
     }
   }
 
-  /* 3.7) GA4 랜딩페이지별 세션깊이 — 목표 10+ PV/세션, 최저 페이지 처방 (측정만, 조작 0) */
+  /* 3.7) GA4 랜딩페이지별 세션깊이 — 목표 PAGES_PER_VISIT_GOAL(30)+ PV/세션, 최저 페이지 처방 (측정만, 조작 0) */
   let shallow = [];
   if (gaToken) {
     const r = await runReport(gaToken, {
@@ -465,9 +466,9 @@ async function main() {
           return { path, sessions, pps: sessions ? pv / sessions : 0 };
         })
         .filter((p) => p.sessions >= 5 && p.path.startsWith('/'));
-      shallow = pages.filter((p) => p.pps < 10).sort((a, b) => a.pps - b.pps).slice(0, 10);
-      const deep = pages.filter((p) => p.pps >= 10).length;
-      console.log(`🔗 랜딩페이지 세션깊이 (세션≥5인 ${pages.length}p): 10+PV 달성 ${deep}p / 미달 ${pages.length - deep}p`);
+      shallow = pages.filter((p) => p.pps < PAGES_PER_VISIT_GOAL).sort((a, b) => a.pps - b.pps).slice(0, 10);
+      const deep = pages.filter((p) => p.pps >= PAGES_PER_VISIT_GOAL).length;
+      console.log(`🔗 랜딩페이지 세션깊이 (세션≥5인 ${pages.length}p): ${PAGES_PER_VISIT_GOAL}+PV 달성 ${deep}p / 미달 ${pages.length - deep}p`);
       for (const p of shallow) console.log(`   📉 ${p.path} — ${p.pps.toFixed(1)} PV/세션 (세션 ${p.sessions})`);
     }
   }

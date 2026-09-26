@@ -96,6 +96,8 @@ import { applyProse, PROSE_STATS } from './uniq-prose.mjs';
 // [놀쿨11-2] 제목 창고(소원 엔진 제목 자리 하나) · 완독 뼈대 엔진
 import { makeTitle, makeH1, registerFixed, report as titleBankReport } from './lib/title-bank.mjs';
 import { applySkeleton, skelTypeOf } from './skeleton/index.mjs';
+// [놀쿨16-1] 4 키워드 허브(강남호빠·장안동호빠·건대호빠) 고유 og 카드 — 목록 한 곳 data/hub-og-cards.json(그림은 gen-category-og.mjs 가 만든다)
+const HUB_OG_CARDS = JSON.parse(fs.readFileSync('data/hub-og-cards.json', 'utf8')).cards; // 다른 자료와 같이 저장소 뿌리 기준 상대 경로
 
 function escHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -2303,6 +2305,8 @@ function collectionJsonLd(routePath, title, description, items, crumbItems) {
   const collectionLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
+    // [놀쿨16-1] 허브(지역·역·태그) 쪽 AI 인용 블록 — CollectionPage 는 WebPage 의 하위라 speakable 을 실을 수 있다(schema.org). 직답(.nc-answer)이 있는 허브만.
+    ...(/^\/(region|near|tag)\//.test(routePath) ? { speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.nc-answer'] } } : {}),
     name: title,
     description,
     url: `https://nolcool.com${routePath}`,
@@ -2611,7 +2615,8 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     ];
     cSsr += faqPairsDl('자주 묻는 질문', crossFaqPairs);
     cSsr += aggHubMesh(crossVenues, 'region', regionKo);
-    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, skel: hubSkel('hub', crossVenues, { region: regionKo, cat: catInfo.labelKo, factsHeading: `${crossVenues.length}곳 한 줄씩` }, crossFaqPairs, crossVenues.length >= 4 ? `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이고, ${crossNames} 등이 있다.` : `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이다.`, 'region_cat'), keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: [...collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]), faqPairsJsonLd(crossFaqPairs)] });
+    const hubOg = HUB_OG_CARDS.find((c) => c.route === cp); // [놀쿨16-1] 4 키워드 허브만 고유 카드 · 나머지는 그대로
+    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, ogImage: hubOg ? `${BASE_URL}/og/${hubOg.slug}.jpg` : undefined, ogImageAlt: hubOg ? `${hubOg.label} — 놀쿨 ${crossVenues.length}곳 비교 카드` : undefined, skel: hubSkel('hub', crossVenues, { region: regionKo, cat: catInfo.labelKo, factsHeading: `${crossVenues.length}곳 한 줄씩` }, crossFaqPairs, crossVenues.length >= 4 ? `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이고, ${crossNames} 등이 있다.` : `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이다.`, 'region_cat'), keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: [...collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]), faqPairsJsonLd(crossFaqPairs)] });
     dynamicPages.push(cp);
   }
 }

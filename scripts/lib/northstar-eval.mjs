@@ -35,9 +35,12 @@ export const KOREA1_CRITERIA = {
 const SIX = ['night', 'club', 'room', 'yojeong', 'hoppa', 'lounge'];
 const SIX_KO = { night: '나이트', club: '클럽', room: '룸', yojeong: '요정', hoppa: '호빠', lounge: '라운지' };
 
+/** [놀쿨16-1] 방문당 쪽 수 목표 — 한 곳. 대표님 2026-09-27 05:05 「들어오면 30페이지 이상 보고 갈 때까지」(옛 10 → 30). 측정만 · 조작 0. */
+export const PAGES_PER_VISIT_GOAL = 30;
+
 /** 사다리(현재 단계 → 다음 계단) 정의 — 파트5 프롬프트 계단. */
 export const LADDERS = {
-  pagesPerVisit: { label: '방문당 페이지', unit: '', steps: [2.65, 3.1, 4, 6, 10] },
+  pagesPerVisit: { label: '방문당 페이지', unit: '', steps: [2.65, 3.1, 4, 6, 10, PAGES_PER_VISIT_GOAL] },
   readEndRate: { label: '완독률', unit: '%', steps: [12.9, 30, 50] },
   dwellSec: { label: '평균 체류', unit: '초', steps: [97, 180, 300, 600] },
   revisitPct: { label: '재방문 비중', unit: '%', steps: [10.6, 15, 25] },
