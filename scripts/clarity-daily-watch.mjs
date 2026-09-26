@@ -12,9 +12,10 @@
  *   GET https://www.clarity.ms/export-data/api/v1/project-live-insights?numOfDays=1~3&dimension1..3
  *   Bearer 토큰(프로젝트 내장) · 10 성공요청/일/프로젝트 · 봇세션 제외 필드 내장
  *
- * 콜 예산 (월간 30일 사이클과 충돌 0):
+ * 콜 예산 (월간 말일 사이클과 충돌 0):
  *   평일 4콜: ①totals(1d) ②URL별(1d) ③URL별(3d, 추세 기준선) ④Device+Source(1d)
- *   UTC 29일(=KST 30일 07:00 월간 스윕이 5콜 사용) 2콜: ①totals(1d) ②URL별(1d) → 합 7/10
+ *   월간 감사 날(UTC 로 이틀 뒤가 1일 = KST 말일 07:13 월간 스윕이 5콜 사용하는 UTC 날) 2콜: ①totals(1d) ②URL별(1d) → 합 7/10
+ *   ([놀쿨16-2] 대표님 2026-09-27 05:20 「매달 말일」 — 옛 「UTC 29일」 고정 대체)
  *   dispatch 시 CLARITY_BUDGET=2 로 절약 테스트 가능. 429/한도소진은 graceful skip(내일 자동회복).
  *
  * 문제 판정 (착시 컷):
@@ -35,9 +36,8 @@ const kstNow = () => new Date(Date.now() + 9 * 3600 * 1000).toISOString().replac
 const num = (v) => Number(v || 0);
 const urlOf = (row) => row.URL || row.Url || row.url || '';
 
-// UTC 29일 = 월간 스윕(5콜)과 같은 쿼터일 → 일일은 2콜로 축소
-const utcDay = new Date().getUTCDate();
-const monthlyDay = utcDay === 29;
+// 월간 스윕(5콜 · KST 말일 07:13 = UTC 전날 22:13)과 같은 UTC 쿼터일 → 일일은 2콜로 축소. 그 UTC 날은 「이틀 뒤가 1일」인 날.
+const monthlyDay = new Date(Date.now() + 2 * 86400000).getUTCDate() === 1;
 const budget = Math.max(1, Math.min(4, Number(process.env.CLARITY_BUDGET) || (monthlyDay ? 2 : 4)));
 let calls = 0;
 

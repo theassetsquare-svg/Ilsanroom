@@ -23,7 +23,7 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
 
-      # 30일 1통 정책(2026-08-17): 즉시 발송 대신 축적된 월간 인박스를 저장 — 매월 30일 지휘자 보고서가 소비
+      # 30일 1통 정책(2026-08-17): 즉시 발송 대신 축적된 월간 인박스를 저장 — 매월 말일 지휘자 보고서가 소비
       - name: Archive monthly inbox (30일 1통 정책)
         if: always()
         run: |

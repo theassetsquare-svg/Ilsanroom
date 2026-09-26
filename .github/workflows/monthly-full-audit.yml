@@ -1,17 +1,36 @@
-name: Monthly Full Audit (매달 30일 GA4+GSC+Clarity 200축 전수점검·자동해결·해결보고)
+name: Monthly Full Audit (매달 말일 GA4+GSC+Clarity 전 쪽 전수점검·자동해결·해결보고)
 
 on:
   schedule:
-    # UTC 29일 22:00 = KST 30일 07:00 (2월은 30일이 없어 미실행 — 3/30에 2월분 포함 커버)
-    - cron: '0 22 29 * *'
+    # 매달 말일 KST 07:13 — KST 28~31일 07:13(= UTC 27~30일 22:13)에 뜨고 첫 단계 말일 가드가 말일이 아니면 끝낸다
+    # (대표님 2026-09-27 05:20 「매달 말일날에 자동화로」 · 옛 「매달 30일 07:00」(2월 빠짐) 대체 · 정각 아님)
+    # 같은 날 08:11 KST 월간 개선 루틴(trig_01XE2MtB)이 이 런 로그를 읽는다.
+    - cron: '13 22 27,28,29,30 * *'
   workflow_dispatch:
 
 jobs:
   monthly-audit:
     runs-on: ubuntu-latest
     steps:
+      # 말일 가드 — KST 로 내일이 1일일 때만(= 오늘이 말일) 진행 · 수동 실행(workflow_dispatch)은 날짜와 상관없이 진행
+      # GUARD_TODAY(YYYY-MM-DD)는 날짜 흉내 시험용 — 워크플로에서는 비워 둔다
+      - name: 말일 가드 (KST 내일이 1일이 아니면 종료)
+        id: guard
+        env:
+          EVENT: ${{ github.event_name }}
+          GUARD_TODAY: ''
+        run: |
+          TODAY="${GUARD_TODAY:-$(TZ=Asia/Seoul date +%F)}"
+          NEXT="$(date -d "$TODAY +1 day" +%d)"
+          if [ "$EVENT" = "workflow_dispatch" ] || [ "$NEXT" = "01" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"; echo "진행: $TODAY (KST · 내일 ${NEXT}일 · $EVENT)"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"; echo "말일 아님 — 종료: $TODAY (KST · 내일 ${NEXT}일)"
+          fi
       - uses: actions/checkout@v4
-      - name: GSC+GA4+Clarity 전수 확인 + 자동해결(재크롤 신호만) + 해결시만 메일 1통
+        if: steps.guard.outputs.run == 'true'
+      - name: GSC+GA4+Clarity 전수 확인 + 전 쪽 판정([PAGE_DIAG_B64]) + 자동해결(재크롤 신호만) + 해결시만 메일 1통
+        if: steps.guard.outputs.run == 'true'
         run: node scripts/monthly-full-audit.mjs
         env:
           GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}
@@ -21,3 +40,9 @@ jobs:
           CLARITY_API_TOKEN: ${{ secrets.CLARITY_API_TOKEN }}
           CLARITY_PROJECT_ID: ${{ secrets.CLARITY_PROJECT_ID }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      # [놀쿨16-2] 전 쪽 색인 상태(URL 검사 · 사이트맵 전 쪽) — 기준표 GSC-IDX 칸. 메일 키를 넘기지 않아 메일 0(로그로만).
+      - name: GSC 사이트맵 전 쪽 URL 검사(색인 상태 · 기준표 GSC-IDX)
+        if: steps.guard.outputs.run == 'true'
+        run: node scripts/google-index-coverage.mjs
+        env:
+          GSC_SA_JSON: ${{ secrets.GSC_SA_JSON }}

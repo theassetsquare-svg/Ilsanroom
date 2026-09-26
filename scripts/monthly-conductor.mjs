@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * 놀쿨 월간 무인 지휘자 (Monthly Conductor) — 매월 30일(2월 28일) 1회.
+ * 놀쿨 월간 무인 지휘자 (Monthly Conductor) — 매월 말일 1회([놀쿨16-2] 대표님 2026-09-27 05:20 「매달 말일」 · 옛 「매월 30일(2월 28일)」).
  * 이번 시리즈 부품 전부를 "하나의 지휘자"로 조립: 수집 → 지메일 판독 → 진단 → 안전 자동수정 → 가설 → 보고.
  *
  * ★사이트 피해 0: 자동 수정은 아래 화이트리스트만. 각 건은 전체 게이트(npm run build 42종) 통과분만
@@ -9,7 +9,7 @@
  * ★자급자족: 전부 기존 스크립트/시크릿 재사용(GA4 540830544 · GSC nolcool.com · Clarity xp3oiz8heq).
  *
  * 실행:
- *   node scripts/monthly-conductor.mjs            # 라이브(CI, 매월 30일)
+ *   node scripts/monthly-conductor.mjs            # 라이브(CI, 매월 말일)
  *   node scripts/monthly-conductor.mjs --dry-run  # 드라이런: STEP1~3 실행 · STEP4 목록만(수정0) · STEP6 미리보기(발송0)
  *   옵션: --gmail <cleaner-verdict.json>          # STEP2 지메일 판독 결과 주입(대화형 Claude가 청소기로 생성)
  *
@@ -79,7 +79,7 @@ function step1() {
   const growth = latestJson('data/growth');
   const pop = latestJson('data/popularity/history') || latestJson('data/popularity');
   const series = { 'GA4(23)': null, 'GSC(11)': null, 'Clarity(11)': null, '성능(1)': null };
-  // 축적 스냅샷 존재 = 계열 커버(라이브 API 실측은 monthly-full-audit(30일 07:00) + CI에서)
+  // 축적 스냅샷 존재 = 계열 커버(라이브 API 실측은 monthly-full-audit(말일 07:13) + CI에서)
   const summary = {
     northstar: north ? `${north.file.split('/').pop()} (7지표)` : '⚠️ 없음',
     growth: growth ? growth.file.split('/').pop() : '⚠️ 없음',
@@ -90,7 +90,7 @@ function step1() {
   log(`  · 성장 사이클   : ${summary.growth}`);
   log(`  · 인기 점수     : ${summary.popularity}`);
   log(`  · 46계열 라이브 : ${summary.liveApi} (Clarity는 10/day 한도 → 축적 런로그 재사용)`);
-  log(`  ⚠️ 46계열 실측 건수는 monthly-full-audit(30일 07:00)의 런 로그가 단일 소스 — 지휘자는 그 산출을 소비`);
+  log(`  ⚠️ 46계열 실측 건수는 monthly-full-audit(말일 07:13)의 런 로그가 단일 소스 — 지휘자는 그 산출을 소비`);
   return { north: north?.data || null, growth: growth?.data || null, series, summary };
 }
 
@@ -242,7 +242,7 @@ function buildReport({ s1, s2, diag, s4, s5 }) {
   const north = s1.north ? Object.entries({ '방문당 페이지': s1.north.pagesPerVisit, '완독률(%)': s1.north.readEndRate, '평균 체류(초)': s1.north.dwellSec, '재방문(%)': s1.north.revisitPct, '1페이지 점유율(%)': s1.north.sharePct }).map(([k, v]) => `<li>${k}: ${v ?? '⚠️'}</li>`).join('') : '<li>⚠️ 북극성 스냅샷 없음</li>';
   const html = `<div style="font-family:sans-serif;max-width:760px;margin:0 auto;padding:20px">
     <h2 style="color:#7C3AED">[놀쿨] 월간 무인 점검 보고 (${monthKey()})</h2>
-    <p style="color:#6B7280;font-size:12px">매월 30일 지휘자(conductor)가 사람 없이 점검·수정·보고합니다. 어려운 말은 괄호로 풀어드려요.</p>
+    <p style="color:#6B7280;font-size:12px">매월 말일 지휘자(conductor)가 사람 없이 점검·수정·보고합니다. 어려운 말은 괄호로 풀어드려요.</p>
     <h3>1) 해결한 것 (문제 → 수정 → 검증)</h3><ul style="font-size:13px;line-height:1.7">${applied}</ul>
     <h3>2) 북극성 사다리 현재 위치 <span style="color:#9CA3AF;font-size:12px">(사이트가 얼마나 잘 크고 있나)</span></h3><ul style="font-size:13px;line-height:1.7">${north}</ul>
     <h3>3) 이번 달 가설(가설 = 이렇게 하면 좋아질 것이라는 예측)</h3><ul style="font-size:13px;line-height:1.7">${hyps}</ul>
@@ -251,10 +251,10 @@ function buildReport({ s1, s2, diag, s4, s5 }) {
     <h3>6) 회원·MAU 루프 <span style="color:#9CA3AF;font-size:12px">(시작선 대비 · 매월)</span></h3><ul style="font-size:13px;line-height:1.7">${buildMemberSection()}</ul>
     <h3>⚠️ 정직 부록</h3><ul style="font-size:12px;color:#B45309;line-height:1.7">
       <li>지메일 판독(STEP2): ${s2.skipped ? '이번 자동 실행은 대화형 점검으로 이월(청소기는 대화형 Claude 전용)' : `보존 ${s2.keep}·휴지통 ${s2.trash}`}</li>
-      <li>46계열 실측 수치는 monthly-full-audit(30일 07:00) 런 로그가 단일 소스 — 방식 다른 지표 교차비교 금지</li>
+      <li>46계열 실측 수치는 monthly-full-audit(말일 07:13) 런 로그가 단일 소스 — 방식 다른 지표 교차비교 금지</li>
       <li>자동 수정은 화이트리스트+게이트 통과분만. 게이트 실패 시 배포 없음(사이트 피해 0). 회원 흉내 자동 글 0(가짜 0)</li>
     </ul>
-    <p style="color:#9CA3AF;font-size:11px;margin-top:16px">monthly-conductor.mjs · 다음 자동 실행: 매월 30일(2월 28일) KST 10:50</p>
+    <p style="color:#9CA3AF;font-size:11px;margin-top:16px">monthly-conductor.mjs · 다음 자동 실행: 매월 말일 KST 10:50</p>
   </div>`;
   return html;
 }
@@ -289,6 +289,6 @@ async function main() {
   const s5 = step5(s1.growth);
   await step6({ s1, s2, diag, s4, s5 });
   section('완료');
-  log(`다음 자동 실행: 매월 30일(2월 28일) KST 10:50 · 워크플로 monthly-conductor.yml`);
+  log(`다음 자동 실행: 매월 말일 KST 10:50 · 워크플로 monthly-conductor.yml`);
 }
 main().catch(e => { console.error('❌ 지휘자 실패:', e.message); process.exit(1); });

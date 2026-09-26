@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
- * monthly-full-audit — 매달 30일 전 페이지 GSC+GA4+Clarity 전수 확인 + 자동해결 + 해결보고 1통
+ * monthly-full-audit — 매달 말일 전 페이지 GSC+GA4+Clarity 전수 확인 + 자동해결 + 해결보고 1통
+ *   ([놀쿨16-2] 대표님 2026-09-27 05:20 「매달 말일」 — 워크플로가 KST 28~31일 07:13 에 뜨고 말일 가드로 말일에만 이 스크립트를 부른다)
  *
  * 사장님 정책 (2026-07-12, 07-20 확장):
- *   - 문제 메일 X. "문제를 해결한 것"만 매달 30일 지메일 1통.
+ *   - 문제 메일 X. "문제를 해결한 것"만 매달 말일 지메일 1통.
  *   - 해결할 문제가 없으면 메일 발송 안 함 (완전 침묵).
  *   - 사이트 피해 0: 읽기전용 API + 무해한 재크롤 신호(sitemap 재제출·IndexNow)만.
  *     콘텐츠/코드/설정 자동 변경 절대 없음 — 수치 조작·합성 이벤트 0 (정직 불변식).
@@ -24,6 +25,9 @@
  *      Traffic(봇 제외)·체류·스크롤·rage/dead/quickback·JS오류 + URL/Device/OS/Source 분해
  *      + ★놀쿨 프로젝트 분리검증(응답 URL 전부 nolcool.com 확인)
  *   PMF 기록 — 매달 메일에 동일 지표 스냅샷(재방문비중·코호트커브·아하후보) = 메일 히스토리가 추이
+ *   7.9) [놀쿨16-2] 전 쪽 판정 — 사이트맵 전 쪽 × (GSC page 28d · GA4 pagePath 28d · Clarity URL 3d) 를 기준표
+ *        (scripts/lib/northstar-eval.mjs PAGE_CRITERIA · judgePage) 로 판정해 [PAGE_DIAG_B64] 한 줄(base64 JSON)로 남긴다.
+ *        색인 상태(GSC-IDX)는 같은 워크플로 다음 단계 google-index-coverage.mjs 로그가 채운다. 월간 개선 루틴이 이 줄을 읽는다.
  *
  * 자동 해결 (실행한 것만 메일에 기록):
  *   - 노출0/순위 20위권 밖 venue URL → IndexNow 재크롤 핑
@@ -36,7 +40,7 @@
 import fs from 'node:fs';
 import { getAccessToken, hasGscCredentials } from './lib/gsc-auth.mjs';
 import { getGaToken, runReport, runRealtimeReport, gaErrorReason } from './lib/ga-auth.mjs';
-import { PAGES_PER_VISIT_GOAL } from './lib/northstar-eval.mjs'; // [놀쿨16-1] 방문당 쪽 수 목표(30) — 한 곳
+import { PAGES_PER_VISIT_GOAL, diagnosePages } from './lib/northstar-eval.mjs'; // [놀쿨16-1] 방문당 쪽 수 목표(30) — 한 곳 · [놀쿨16-2] 전 쪽 기준표 판정
 
 const SITE = 'nolcool.com';
 const BASE = 'https://nolcool.com';
@@ -551,6 +555,56 @@ async function main() {
     console.log('⏭️ CLARITY_API_TOKEN 없음 — Clarity 스윕 스킵 (Clarity 놀쿨 프로젝트 Settings→Data Export→토큰 생성 후 GH Secret CLARITY_API_TOKEN 등록)');
   }
 
+  /* 7.9) [놀쿨16-2] 전 쪽 판정 — 사이트맵 전 쪽 × 3곳 → 기준표(northstar-eval PAGE_CRITERIA) → [PAGE_DIAG_B64] 한 줄 (측정·판정만 · 조작 0) */
+  try {
+    const normPath = (u) => { let x = String(u || '').replace(BASE, '').split('?')[0].split('#')[0]; try { x = decodeURI(x); } catch { /* 그대로 */ } if (!x.startsWith('/')) x = '/' + x; if (!x.endsWith('/') && !/\.[a-z0-9]+$/i.test(x)) x += '/'; return x; };
+    const smText = await (await fetch(`${BASE}/sitemap.xml`)).text();
+    const smPaths = [...new Set([...smText.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => normPath(m[1])))];
+    const gscMap = new Map(smPaths.map((p) => [p, { imp: 0, clicks: 0, ctr: 0, pos: null }])); // 사이트맵에 있는데 GSC 행이 없으면 28일 노출 0
+    for (const r of pageRows) {
+      const p = normPath(r.keys[0]); if (!gscMap.has(p)) continue;
+      const g = gscMap.get(p); const imp = g.imp + r.impressions, clicks = g.clicks + r.clicks;
+      const pos = ((g.pos || 0) * g.imp + r.position * r.impressions) / (imp || 1);
+      gscMap.set(p, { imp, clicks, ctr: imp ? clicks / imp : 0, pos });
+    }
+    const gaMap = new Map();
+    if (gaToken) {
+      const rr = await runReport(gaToken, {
+        dateRanges: [{ startDate: '28daysAgo', endDate: 'yesterday' }], dimensions: [{ name: 'pagePath' }],
+        metrics: [{ name: 'sessions' }, { name: 'screenPageViews' }, { name: 'bounceRate' }, { name: 'engagementRate' }, { name: 'averageSessionDuration' }], limit: 10000,
+      });
+      const sc = await runReport(gaToken, {
+        dateRanges: [{ startDate: '28daysAgo', endDate: 'yesterday' }], dimensions: [{ name: 'pagePath' }], metrics: [{ name: 'eventCount' }],
+        dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { value: 'scroll_100' } } }, limit: 10000,
+      });
+      const scroll = new Map((sc.ok ? sc.body.rows || [] : []).map((x) => [normPath(x.dimensionValues[0].value), Number(x.metricValues[0].value)]));
+      for (const x of rr.ok ? rr.body.rows || [] : []) {
+        const p = normPath(x.dimensionValues[0].value); const v = x.metricValues.map((m) => Number(m.value));
+        if (gaMap.has(p) && gaMap.get(p).sessions >= v[0]) continue; // 「/a」·「/a/」 두 줄이면 세션 많은 쪽
+        gaMap.set(p, { sessions: v[0], bounce: v[2], engage: v[3], dwell: v[4], scroll: v[1] ? Math.min(1, (scroll.get(p) || 0) / v[1]) : null });
+      }
+    }
+    const clMap = new Map();
+    const clKey = { RageClickCount: 'rage', DeadClickCount: 'dead', ErrorClickCount: 'errclick', QuickbackClick: 'quickback', ScriptErrorCount: 'script', ExcessiveScroll: 'excessive' };
+    for (const m of clarity.byUrl || []) {
+      const key = clKey[m.metricName]; if (!key) continue;
+      for (const r2 of m.information || []) {
+        const p = normPath(r2.URL || r2.Url || r2.url); const n = Number(r2.sessionsCount || 0); const pct = Number(r2.sessionsWithMetricPercentage || 0);
+        clMap.set(p, { ...(clMap.get(p) || {}), pageSessions: Math.max(n, clMap.get(p)?.pageSessions || 0), [key]: pct > 0 ? Math.max(1, Math.round((n * pct) / 100)) : 0 });
+      }
+    }
+    const diag = diagnosePages(smPaths, { gsc: gscMap, ga: gaMap, clarity: clMap });
+    const byCode = {}; for (const d of diag) for (const x of d.problems) byCode[x.code] = (byCode[x.code] || 0) + 1;
+    const problemPages = diag.filter((d) => d.problems.length);
+    console.log(`🧭 전 쪽 판정: 사이트맵 ${smPaths.length}쪽 · 판정 ${diag.length}쪽 · 문제 쪽 ${problemPages.length} · ${Object.entries(byCode).map(([k, v]) => `${k}=${v}`).join(' ') || '문제 0'}`);
+    console.log('[PAGE_DIAG_B64] ' + Buffer.from(JSON.stringify({
+      ts: new Date().toISOString(), sitemapPages: smPaths.length, diagnosed: diag.length, problemPages: problemPages.length, byCode,
+      pages: problemPages.map((d) => ({ path: d.path, have: d.have, problems: d.problems })),
+    })).toString('base64'));
+  } catch (e) {
+    console.warn(`⚠️ 전 쪽 판정 실패(측정만 · 나머지 감사는 계속): ${e.message}`);
+  }
+
   /* 8) 모델 자동 업그레이드 체크 — Anthropic API로 최신 최고등급 모델 감지
    *    ANTHROPIC_API_KEY가 있으면 /v1/models 조회, 없으면 스킵.
    *    새 모델 발견 시 resolved[]에 추가 → 메일 보고 + .model-upgrade.json 마커 생성 */
@@ -660,7 +714,7 @@ async function main() {
     <ul>${resolved.map((s) => `<li style="margin:6px 0">${esc(s)}</li>`).join('')}</ul>
     ${pmfHtml}
     ${clarityHtml}
-    <p style="color:#9CA3AF;font-size:11px;margin-top:20px">매달 30일 KST 07:00 자동. 해결한 문제가 있을 때만 발송, 없으면 침묵. ${axisCount}축 GA4+GSC+Clarity 전수.</p>
+    <p style="color:#9CA3AF;font-size:11px;margin-top:20px">매달 말일 KST 07:13 자동. 해결한 문제가 있을 때만 발송, 없으면 침묵. ${axisCount}축 GA4+GSC+Clarity 전수.</p>
   </div>`;
 
   const r = await fetch('https://api.resend.com/emails', {

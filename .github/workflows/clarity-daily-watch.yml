@@ -2,12 +2,12 @@ name: Clarity Daily Watch (매일 21:00 KST — 측정·판정만, 코드수정�
 
 on:
   schedule:
-    # UTC 12:00 = KST 21:00. UTC 29일은 스크립트가 자체 2콜 축소(월간 5콜과 합 7/10)
+    # UTC 12:00 = KST 21:00. 월간 감사 날(KST 말일 07:13 이 걸린 UTC 날)은 스크립트가 자체 2콜 축소(월간 5콜과 합 7/10)
     - cron: '0 12 * * *'
   workflow_dispatch:
     inputs:
       budget:
-        description: 'Clarity 콜 예산 (1~4, 기본 4 / UTC29일 2)'
+        description: 'Clarity 콜 예산 (1~4, 기본 4 / 월간 감사 날 2)'
         required: false
         default: ''
 
