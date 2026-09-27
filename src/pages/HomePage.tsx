@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef, useMemo, useCallback, memo, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback, memo, lazy, Suspense, startTransition } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -551,7 +551,7 @@ export default function HomePage() {
               🔥 인기 TOP
             </Link>
             {['강남', '홍대', '부산', '일산', '대구', '대전', '수원', '인천', '광주', '울산', '제주'].map(r => (
-              <button key={r} onClick={() => { setActiveTab(3); setActiveRegion(r); document.getElementById('feed-section')?.scrollIntoView({ behavior: 'smooth' }); }}
+              <button key={r} onClick={() => { startTransition(() => { setActiveTab(3); setActiveRegion(r); }); document.getElementById('feed-section')?.scrollIntoView({ behavior: 'smooth' }); }} /* [놀쿨12-2 · INP] 무거운 목록 다시 그리기는 급하지 않은 갱신으로 — 누른 뒤 다음 그림이 먼저 */
                 className="shrink-0 rounded-full bg-white/10 px-3 py-1.5 text-[10px] text-white/70 font-medium active:bg-white/20 transition" style={{ minHeight: 44, minWidth: 44 }}>
                 {r}
               </button>
@@ -1218,7 +1218,7 @@ export default function HomePage() {
           {feedTabs.map((tab, i) => (
             <button
               key={tab}
-              onClick={() => { setActiveTab(i); if (i !== 3) setActiveRegion('all'); }}
+              onClick={() => startTransition(() => { setActiveTab(i); if (i !== 3) setActiveRegion('all'); })}
               className={`flex-1 py-2.5 text-center text-sm font-medium transition-all relative ${
                 activeTab === i ? 'text-[#7C3AED] font-bold' : 'text-[#555]'
               }`}
@@ -1239,7 +1239,7 @@ export default function HomePage() {
               {regionLabels.map(r => (
                 <button
                   key={r}
-                  onClick={() => setActiveRegion(r === '전체' ? 'all' : r)}
+                  onClick={() => startTransition(() => setActiveRegion(r === '전체' ? 'all' : r))}
                   className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-all whitespace-nowrap flex-shrink-0 ${
                     (r === '전체' && activeRegion === 'all') || (r !== '전체' && activeRegion === r)
                       ? 'bg-[#7C3AED] text-white shadow-sm'
