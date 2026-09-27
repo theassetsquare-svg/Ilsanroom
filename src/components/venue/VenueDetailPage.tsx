@@ -1,5 +1,5 @@
 import { Link } from '../ui/SafeLink';
-import { lazy, Suspense, useEffect, useState, useMemo } from 'react';
+import { lazy, Suspense, useEffect, useState, useMemo, startTransition } from 'react';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueHero from '@/components/venue/VenueHero';
 import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
@@ -163,7 +163,7 @@ export default function VenueDetailPage({
           )}
           <button
             type="button"
-            onClick={() => { toggleFavorite(venue.id); setFavTouched(true); }}
+            onClick={() => startTransition(() => { toggleFavorite(venue.id); setFavTouched(true); })} /* [놀쿨12-2 · INP] 찜 뒤 가입 카드·찜 막대 다시 그리기는 급하지 않은 갱신으로 */
             aria-pressed={saved}
             aria-label={saved ? `${venue.nameKo} 찜 해제` : `${venue.nameKo} 찜하기`}
             className={`mt-3 inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-bold transition ${
