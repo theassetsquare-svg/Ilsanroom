@@ -555,7 +555,7 @@ input[type="text"]::-ms-reveal {
   color: #333;
   border-radius: 0 8px 8px 0;
 }
-.rich-editor a { color: #8B5CF6; text-decoration: underline; }
+.rich-editor a { color: #6D28D9; text-decoration: underline; }
 .rich-editor img { max-width: 100%; border-radius: 8px; margin: 8px 0; }
 .rich-editor video { max-width: 100%; border-radius: 8px; margin: 8px 0; }
 
@@ -577,7 +577,7 @@ input[type="text"]::-ms-reveal {
   color: #333;
   border-radius: 0 8px 8px 0;
 }
-.rich-content a { color: #8B5CF6; text-decoration: underline; }
+.rich-content a { color: #6D28D9; text-decoration: underline; }
 .rich-content img { max-width: 100%; border-radius: 8px; margin: 8px 0; }
 .rich-content video { max-width: 100%; border-radius: 8px; margin: 8px 0; }
 .rich-content iframe { max-width: 100%; border-radius: 8px; }
@@ -618,8 +618,8 @@ body[data-sticky-pad] { padding-bottom: calc(72px + env(safe-area-inset-bottom))
 
 /* [놀쿨12-2 · 누르는 자리] 손가락으로 쓰는 화면에서 단추·탭·입력은 48px 이상(구글 모바일 권장 · web.dev/articles/accessible-tap-targets) — 글 속 링크는 그대로 */
 @media (pointer: coarse), (max-width: 1023px) {
-  button, [role="tab"], select, input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]) { min-height: 48px; }
-  button, [role="tab"] { min-width: 48px; }
+  button, [role="tab"], select, input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]) { min-height: 48px !important; }
+  button, [role="tab"] { min-width: 48px !important; }
 }
 
 /* [놀쿨12-2 · P42] 글자 대비 4.5:1(WCAG 1.4.3) — 연보라·회색 보조 글자를 한 곳에서 짙게. 배경색(background-color)은 건드리지 않는다(style 맨 앞 또는 「; color:」 만) */
@@ -630,3 +630,4 @@ body[data-sticky-pad] { padding-bottom: calc(72px + env(safe-area-inset-bottom))
 [style^="color: rgb(217, 119, 6)"], [style*="; color: rgb(217, 119, 6)"], [style^="color: rgb(245, 158, 11)"], [style*="; color: rgb(245, 158, 11)"], [style^="color: rgb(202, 138, 4)"], [style*="; color: rgb(202, 138, 4)"] { color: #92400E !important; }
 .text-\[\#8b5cf6\] { color: #6D28D9 !important; }
 .bg-\[\#8B5CF6\], .bg-\[\#8b5cf6\] { background-color: #6D28D9 !important; }
+[style^="background-color: rgb(139, 92, 246)"], [style*="; background-color: rgb(139, 92, 246)"] { background-color: #6D28D9 !important; }
