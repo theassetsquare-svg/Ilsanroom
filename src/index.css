@@ -631,3 +631,5 @@ body[data-sticky-pad] { padding-bottom: calc(72px + env(safe-area-inset-bottom))
 .text-\[\#8b5cf6\] { color: #6D28D9 !important; }
 .bg-\[\#8B5CF6\], .bg-\[\#8b5cf6\] { background-color: #6D28D9 !important; }
 [style^="background-color: rgb(139, 92, 246)"], [style*="; background-color: rgb(139, 92, 246)"] { background-color: #6D28D9 !important; }
+/* [놀쿨12-2] 「광고」 표시는 어느 바탕에서도 흰 바탕 검은 글자(부모의 text-white !important 에 먹히지 않게) */
+[data-ad-label] { color: #111111 !important; background-color: #FFFFFF !important; }
