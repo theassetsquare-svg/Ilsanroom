@@ -31,7 +31,7 @@ const CATS = [
 ];
 
 // [놀쿨16-1] 4 키워드 허브 카드(강남호빠·장안동호빠·건대호빠) — 목록은 data/hub-og-cards.json 한 곳(prerender 도 같은 파일을 읽는다)
-const HUB_CARDS = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/hub-og-cards.json'), 'utf8')).cards.map((c) => ({ slug: c.slug, label: c.label, bg: c.bg, sub: '한눈에 비교', ad: c.ad || null }));
+const HUB_CARDS = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/hub-og-cards.json'), 'utf8')).cards.filter((c) => !c.committed).map((c) => ({ slug: c.slug, label: c.label, bg: c.bg, sub: '한눈에 비교', ad: c.ad || null })); // [펩시17-2 17:0x] committed 카드(광고주 4줄 · 표준 생성기로 그려 저장소에 넣음)는 건너뛴다 — 빌드 서버 대체 글꼴로 번호가 잘리던 것
 
 function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 

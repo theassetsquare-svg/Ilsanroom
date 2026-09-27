@@ -21,7 +21,7 @@
     },
     {
       "route": "/region/%EA%B0%95%EB%82%A8/nights",
-      "slug": "hub-gangnam-nights-cheongdam",
+      "slug": "hub-gangnam-nights-cheongdam-v2",
       "label": "청담나이트",
       "bg": "#1E293B",
       "ad": {
@@ -31,8 +31,9 @@
         "venueSlug": "cheongdamh2onight",
         "venueHref": "/nights/cheongdamh2onight/",
         "address": "서울 강남구 영동대로 737 호텔 지하 1층"
-      }
+      },
+      "committed": true
     }
   ],
-  "_설명_광고주": "[펩시17-2 2026-09-27] ad 가 있는 카드는 광고주 4줄 카드(가게이름 / 닉네임 / 번호 / 광고문의 카톡 besta12 · 대표님지시_한장 3절)이고, 그 쪽 본문 답 칸(프리렌더 · 사람 화면에서는 목록 카드 바로 아래 · 첫 화면 안)에 같은 그림·전화 단추·주소 한 줄의 광고 카드(「광고」 표시)와 아래 고정 전화바가 붙는다. 값은 naver-watch data/advertisers.json · data/shops/cheongdam.json(verified)과 같아야 한다."
+  "_설명_광고주": "[펩시17-2 2026-09-27] ad 가 있는 카드는 광고주 4줄 카드(가게이름 / 닉네임 / 번호 / 광고문의 카톡 besta12 · 대표님지시_한장 3절)이고, 그 쪽 본문 답 칸(프리렌더 · 사람 화면에서는 목록 카드 바로 아래 · 첫 화면 안)에 같은 그림·전화 단추·주소 한 줄의 광고 카드(「광고」 표시)와 아래 고정 전화바가 붙는다. 값은 naver-watch data/advertisers.json · data/shops/cheongdam.json(verified)과 같아야 한다. [2026-09-27 17:0x] 광고주 카드는 빌드 서버에서 그리지 않는다 — Cloudflare 빌드 서버에는 SVG 에 넣은 글꼴이 먹지 않아 대체 글꼴로 그려져 번호 양 끝이 잘렸다(16:5x 라이브 실측). 가게 카드와 같은 표준 생성기(naver-watch scripts/mwf/make-one-card.py · 광고주 4줄)로 그려 public/og/<slug>.jpg 로 저장소에 넣고(committed: true), gen-category-og 는 이 카드를 건너뛴다. 새로 그리면 파일 이름 판 번호(-v2 → -v3)를 올린다(엣지 캐시)."
 }
