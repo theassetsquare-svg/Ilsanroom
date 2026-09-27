@@ -141,7 +141,7 @@ function truncateDesc(text, maxLen = 150) {
 /**
  * HTML의 head 메타 태그를 교체
  */
-function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords, preloadImage, diluteName }) {
+function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords, preloadImage, diluteName, heroImage }) {
   let html = baseHtml;
   const desc = truncateDesc(description || '', 150);
   // canonical은 sitemap loc과 동일 형식이어야 함 (trailing slash 일치).
@@ -310,10 +310,11 @@ function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ss
       heroDesc = heroDesc.replace(new RegExp(dn.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), '여기');
     }
     // 첫 그림 = LCP 후보 → eager + high (11-1 연구 webdev-lazy-lcp: LCP 그림은 지연 로드하지 않는다)
-    const heroImgSrc = preloadImage || ogImg;
-    const heroWebp = preloadImage ? null : ogWebpSet(ogImg); // [놀쿨11-3] og jpg 를 쓰는 쪽은 webp 축소판 srcset(og:image 는 jpg 그대로)
+    // [펩시17-2 검토] heroImage 를 준 쪽은 그 그림을 첫 그림으로(광고 카드를 og:image 로 쓰는 쪽은 hero 를 공용 그림으로 둔다 — 잘린 광고 카드가 「광고」 표시 없이 한 장 더 뜨지 않게)
+    const heroImgSrc = heroImage || preloadImage || ogImg;
+    const heroWebp = (preloadImage && !heroImage) ? null : ogWebpSet(heroImage || ogImg); // [놀쿨11-3] og jpg 를 쓰는 쪽은 webp 축소판 srcset(og:image 는 jpg 그대로)
     const heroImgTag = heroImgSrc
-      ? `<img src="${escHtml(heroWebp ? heroWebp.src : heroImgSrc)}"${heroWebp ? ` srcset="${escHtml(heroWebp.srcset)}" sizes="${heroWebp.sizes}"` : ''} alt="${escHtml(ogImageAlt || title || '')}" width="1200" height="675" fetchpriority="high" decoding="async" style="display:block;width:100%;height:auto;max-height:280px;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#0a0a0a">`
+      ? `<img src="${escHtml(heroWebp ? heroWebp.src : heroImgSrc)}"${heroWebp ? ` srcset="${escHtml(heroWebp.srcset)}" sizes="${heroWebp.sizes}"` : ''} alt="${escHtml((heroImage ? '' : ogImageAlt) || title || '')}" width="1200" height="675" fetchpriority="high" decoding="async" style="display:block;width:100%;height:auto;max-height:280px;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#0a0a0a">`
       : '';
     const _pt = pageTokens(canonical || title || '');
     html = html.replace('</head>', `    ${_pt.style}\n    ${NC_SKEL_STYLE}\n    <script>window.__NC_META=${JSON.stringify({ path: canonicalWithSlash, title: title || '', h1: h1 || '', desc: desc || '' }).replace(/</g, '\\u003c')}</script>\n  </head>`);
@@ -2623,7 +2624,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     cSsr += faqPairsDl('자주 묻는 질문', crossFaqPairs);
     cSsr += aggHubMesh(crossVenues, 'region', regionKo);
     const hubOg = HUB_OG_CARDS.find((c) => c.route === cp); // [놀쿨16-1] 4 키워드 허브만 고유 카드 · 나머지는 그대로
-    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, ogImage: hubOg ? `${BASE_URL}/og/${hubOg.slug}.jpg` : undefined, ogImageAlt: hubOg ? (hubOg.ad ? `${hubOg.ad.shop} ${hubOg.ad.nick} ${hubOg.ad.phone}` : `${hubOg.label} — 놀쿨 ${crossVenues.length}곳 비교 카드`) : undefined, skel: hubSkel('hub', crossVenues, { region: regionKo, cat: catInfo.labelKo, factsHeading: `${crossVenues.length}곳 한 줄씩` }, crossFaqPairs, crossVenues.length >= 4 ? `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이고, ${crossNames} 등이 있다.` : `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이다.`, 'region_cat'), keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: [...collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]), faqPairsJsonLd(crossFaqPairs)] });
+    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, ogImage: hubOg ? `${BASE_URL}/og/${hubOg.slug}.jpg` : undefined, ogImageAlt: hubOg ? (hubOg.ad ? `${hubOg.ad.shop} ${hubOg.ad.nick} ${hubOg.ad.phone}` : `${hubOg.label} — 놀쿨 ${crossVenues.length}곳 비교 카드`) : undefined, heroImage: hubOg && hubOg.ad ? `${BASE_URL}/og/nolcool-og.jpg` : undefined, skel: hubSkel('hub', crossVenues, { region: regionKo, cat: catInfo.labelKo, factsHeading: `${crossVenues.length}곳 한 줄씩` }, crossFaqPairs, crossVenues.length >= 4 ? `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이고, ${crossNames} 등이 있다.` : `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이다.`, 'region_cat'), keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: [...collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]), faqPairsJsonLd(crossFaqPairs)] });
     dynamicPages.push(cp);
   }
 }
