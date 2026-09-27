@@ -16,6 +16,8 @@ export default function YojeongPage() {
     '요정 — 사장님 모시는 자리, 격 떨어지면 다음은 없죠. 20년 실장이 한정식 12첩·국악 가야금·정찰제 매너 한 줄로 정리. 일산명월관·강남·여의도·종로·부산 진짜 요정만 추렸으니 모시기 전에 먼저 확인 →'
   );
   const venues = getVenuesByCategory('yojeong');
+  // [놀쿨16-1 뒤 R1 고침 · 12-1 실측] VenueListClient 가 regions 를 반드시 받는데 이 쪽만 안 넘겨 목록이 JS 오류로 비었다(운영도 같음) — 장부 값으로만 만든다(지어낸 지역 0)
+  const regions = Array.from(new Map(venues.filter((v) => v.status !== 'closed_or_unclear').map((v) => [v.region, { key: v.region, label: v.regionKo }])).values());
   const featured = venues.find(v => v.isPremium) || venues[0];
 
   return (
@@ -51,7 +53,7 @@ export default function YojeongPage() {
         )}
       </div>
 
-      <VenueListClient venues={venues} hrefPattern="/yojeong/{region}/{slug}" showEngagementHooks accentColor="emerald" />
+      <VenueListClient venues={venues} hrefPattern="/yojeong/{region}/{slug}" regions={regions} showEngagementHooks accentColor="emerald" />
 
       <CategoryVSBattle venueA="일산명월관요정" venueB="강남청담클럽 아르쥬" topic="만찬 장소 대결 — 전통 정찬 vs 모던" />
 
