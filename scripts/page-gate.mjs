@@ -38,13 +38,17 @@ const ALLOWED_PHONES = (() => {
 })();
 const PHONE_RE = /(?<![\d.])(?:01[016789][-. ]?\d{3,4}[-. ]?\d{4}|0(?:2|[3-6][1-5]|70|50\d)[-. )]\d{3,4}[-. ]\d{4}|1[5-8]\d{2}[-. ]\d{4})(?![\d.])/g;
 const FORBIDDEN_WORDS = ['신실장', 'WT창민', 'W.T창민'];
+// [놀쿨12-2 R12] 일산 총책임자 번호는 일산룸·일산명월관 두 가게 쪽에만(naver-watch CLAUDE.md 0순위 7)
+const ILSAN_PHONE = '01041175556';
+const ILSAN_ROUTES = new Set(['/rooms/ilsan/ilsanroom/', '/yojeong/ilsan/ilsanmyeongwolgwanyojeong/']);
 export function contactProblems(html) {
   const noJs = html.replace(/<script(?![^>]*ld\+json)[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ');
   const nums = [...new Set([...noJs.matchAll(PHONE_RE)].map((m) => m[0].replace(/\D/g, '')))];
   const tels = [...new Set([...noJs.matchAll(/href="tel:([^"]+)"/g)].map((m) => m[1].replace(/\D/g, '')))];
   const off = [...new Set([...nums, ...tels])].filter((n) => !ALLOWED_PHONES.has(n));
   const words = FORBIDDEN_WORDS.filter((w) => noJs.includes(w));
-  return { off, words };
+  const ilsan = [...new Set([...nums, ...tels])].includes(ILSAN_PHONE);
+  return { off, words, ilsan };
 }
 const NAVER_RE = /searchadvisor\.naver|naver\.com\/.*(request|submit)|Yeti.{0,20}Disallow/i;
 // [놀쿨11-3] 세이프서치 안전 — 구글 「선정적인 콘텐츠」 기준(노골적 성적 콘텐츠·과도한 노출·성매매 알선)에 걸릴 표현 + 저장소 위험어(dist-audit DANGEROUS 미러)
@@ -100,7 +104,7 @@ export function gatePage(html, ctx = {}) {
   else if (!noindex && decodeURIComponent(canonical) !== decodeURIComponent(want)) block.push(`L2 canonical ${canonical} ≠ ${want}`);
   const hasTel = /href="tel:/.test(html);
   if (hasTel && !/ssr-adlabel|>광고</.test(html)) block.push('A1 tel 링크 있는데 광고 라벨 없음');
-  { const cp = contactProblems(html); if (cp.off.length) block.push(`A2 명단 밖 번호 ${cp.off.join(',')}`); if (cp.words.length) block.push(`A3 금지 낱말 ${cp.words.join(',')}`); }
+  { const cp = contactProblems(html); if (cp.off.length) block.push(`A2 명단 밖 번호 ${cp.off.join(',')}`); if (cp.words.length) block.push(`A3 금지 낱말 ${cp.words.join(',')}`); if (cp.ilsan && !ILSAN_ROUTES.has(route.replace(/\/?$/, '/'))) block.push('A4 일산 총책임자 번호는 일산 두 가게 쪽에만'); }
   const bodyText = strip((html.match(/<article id="nc-article"[\s\S]*?<\/article>/) || [html])[0]);
   for (const w of PRICE_WORDS) { const hit = w === '만원' ? (MANWON_PRICE_RE.test(bodyText) || MANWON_PRICE_RE.test(title)) : (bodyText.includes(w) || title.includes(w)); if (hit) { block.push(`W1 가격 단어 「${w}」`); break; } }
   if (PLACEHOLDER_RE.test(bodyText) || PLACEHOLDER_RE.test(title)) block.push('W1 자리표시 찌꺼기');

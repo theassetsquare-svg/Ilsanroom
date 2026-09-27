@@ -182,9 +182,7 @@ export default function RegionalRoomsPage() {
         <BottomFinishCounter baseCount={72} />
       </section>
 
-      {region === 'ilsan' && (
-        <StickyPhoneBar phone="010-4117-5556" staffName="일산룸 총책임자" venueName="일산명월관" />
-      )}
+      {/* [놀쿨12-2 R12] 일산 총책임자 전화바는 일산룸·일산명월관 두 가게 쪽에만 — 지역 목록 쪽에서는 뺐다 */}
     </div>
   );
 }

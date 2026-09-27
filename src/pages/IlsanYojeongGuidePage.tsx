@@ -1,6 +1,5 @@
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { Link } from '@/components/ui/SafeLink';
-import IlsanMyeongwolgwanCallBar from '@/components/venue/IlsanMyeongwolgwanCallBar';
 import { RouteMapGraphic, RoomLayoutGraphic, SeasonCourseGraphic } from '@/components/venue/IlsanYojeongGraphics';
 import HelpfulVote from '@/components/community/HelpfulVote';
 import CONFIRMED from '@/data/ilsanmyeongwolgwan-confirmed.json';
@@ -18,7 +17,7 @@ const SUMMARY: { label: string; value: string }[] = [
   { label: '위치', value: CONFIRMED.address },
   { label: '가장 가까운 역', value: CONFIRMED.nearestStation },
   { label: '영업시간', value: CONFIRMED.hours },
-  { label: '예약·문의', value: `${CONFIRMED.contact.staff} ${CONFIRMED.contact.phone}` },
+  { label: '예약·문의', value: '일산명월관요정 쪽 연락처' }, // [놀쿨12-2 R12] 번호는 일산 두 가게 쪽에만
   { label: '주차', value: CONFIRMED.parking },
 ];
 
@@ -42,7 +41,7 @@ const FAQS = [
   },
   {
     q: '예약과 문의는 어떻게 하나요?',
-    a: `예약·문의는 ${CONFIRMED.contact.staff}에게 전화(${CONFIRMED.contact.phone})로 하면 됩니다. 영업시간은 ${CONFIRMED.hours}입니다. 프라이빗 룸은 6인·10인·20인 이상으로 구성됩니다.`,
+    a: `예약·문의는 일산명월관요정 쪽에 적힌 연락처로 하면 됩니다. 영업시간은 ${CONFIRMED.hours}입니다. 프라이빗 룸은 6인·10인·20인 이상으로 구성됩니다.`,
   },
 ];
 
@@ -132,7 +131,7 @@ export default function IlsanYojeongGuidePage() {
           <section id="booking" className="scroll-mt-20">
             <h2 className="mb-3 text-lg font-bold text-neon-text">예약·문의와 방문 전 확인 사항</h2>
             <p className="text-[15px] leading-[1.8] text-neon-text-muted">
-              예약과 문의는 {CONFIRMED.contact.staff} 전화 {CONFIRMED.contact.phone}로 하면 된다.
+              예약과 문의는 <Link to="/yojeong/ilsan/ilsanmyeongwolgwanyojeong/" className="underline">일산명월관요정 쪽</Link>에 적힌 연락처로 하면 된다.
             </p>
             <ul className="mt-2 space-y-2 text-[15px] leading-[1.8] text-neon-text-muted">
               <li>· 영업시간: {CONFIRMED.hours}</li>
@@ -194,7 +193,6 @@ export default function IlsanYojeongGuidePage() {
         <div aria-hidden style={{ height: 'calc(64px + env(safe-area-inset-bottom))' }} />
       </main>
 
-      <IlsanMyeongwolgwanCallBar />
     </div>
   );
 }
