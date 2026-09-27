@@ -38,6 +38,8 @@ async function buildOgWebp() {
       } catch (e) { console.log(`   og webp 실패 ${f} w${w}: ${e.message}`); }
     }
   }
+  // [놀쿨12-2 · 느림] 첫 그림 inline 전용 작은 판(360w · q60) — HTML 안에 싣는 크기를 줄여 첫 그리기를 앞당긴다(화면 그림은 React 가 곧 600w 로 갈아끼움)
+  for (const f of jpgs) { const base = f.replace(/\.jpg$/i, ''); const out = path.join(outDir, `${base}-i360.webp`); try { const st = fs.statSync(path.join(srcDir, f)); if (!fs.existsSync(out) || fs.statSync(out).mtimeMs < st.mtimeMs) await sharp(path.join(srcDir, f)).resize({ width: 360, withoutEnlargement: true }).webp({ quality: 60 }).toFile(out); } catch { /* 없으면 600w 로 */ } }
   console.log(`🖼️ og webp 축소판: 원본 ${jpgs.length} · 새로 만듦 ${made} · 사용 가능 ${OG_WEBP.size}`);
 }
 await buildOgWebp();
@@ -48,7 +50,7 @@ function inlineWebp(absW1200) {
   if (!m) return null;
   if (_INLINE_CACHE.has(m[1])) return _INLINE_CACHE.get(m[1]);
   let out = null;
-  try { const b = fs.readFileSync(path.join(DIST, 'og', `${m[1]}-w600.webp`)); if (b.length <= 24 * 1024) out = 'data:image/webp;base64,' + b.toString('base64'); } catch { out = null; }
+  try { const small = path.join(DIST, 'og', `${m[1]}-i360.webp`); const b = fs.readFileSync(fs.existsSync(small) ? small : path.join(DIST, 'og', `${m[1]}-w600.webp`)); if (b.length <= 24 * 1024) out = 'data:image/webp;base64,' + b.toString('base64'); } catch { out = null; }
   _INLINE_CACHE.set(m[1], out);
   return out;
 }
@@ -155,7 +157,7 @@ function truncateDesc(text, maxLen = 150) {
 /**
  * HTML의 head 메타 태그를 교체
  */
-function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords, preloadImage, diluteName, heroImage, heroSquare }) {
+function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords, preloadImage, diluteName, heroImage, heroSquare, preloadCard }) {
   let html = baseHtml;
   const desc = truncateDesc(description || '', 150);
   // canonical은 sitemap loc과 동일 형식이어야 함 (trailing slash 일치).
@@ -287,6 +289,10 @@ function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ss
   html = html.replace('</head>', `    ${lastModMeta}\n  </head>`);
 
   // 시즌29-F — LCP preload: hero 이미지 JS 번들과 병렬 다운로드 시작 (PC LCP 3.5~4.2s → <2.5s)
+  if (preloadCard && OG_WEBP.has(`${preloadCard}-w600`)) {
+    const s1 = `/og/${preloadCard}-w600.webp`, s2 = OG_WEBP.has(`${preloadCard}-w1200`) ? `, /og/${preloadCard}-w1200.webp 1200w` : '';
+    html = html.replace('</head>', `    <link rel="preload" as="image" href="${s1}" imagesrcset="${s1} 600w${s2}" imagesizes="260px" fetchpriority="high" type="image/webp">\n  </head>`);
+  }
   if (preloadImage) {
     const preloadTag = `<link rel="preload" as="image" href="${escHtml(preloadImage)}" fetchpriority="high" type="image/webp">`;
     html = html.replace('</head>', `    ${preloadTag}\n  </head>`);
@@ -2633,7 +2639,7 @@ for (const [regionKo, _regionAll] of Object.entries(allRegions)) {
     if (adCard) {
       const adTel = adCard.phone.replace(/-/g, '');
       const adSlug = (HUB_OG_CARDS.find((c) => c.route === cp) || {}).slug;
-      cSsr += `<section class="nc-ad-card ssr-adlabel" aria-label="광고" style="border:1px solid #d4d4d4;border-radius:14px;padding:14px;margin:0 0 16px;max-width:420px"><p style="margin:0 0 8px;font-size:12px;color:#555"><span style="display:inline-block;padding:1px 6px;border:1px solid #888;border-radius:6px">광고</span> 아래 연락처는 업소 담당자가 제공한 광고 정보입니다.</p><a href="${escHtml(adCard.venueHref)}"><img src="/og/${escHtml(adSlug)}.jpg" alt="${escHtml(adCard.shop)} ${escHtml(adCard.nick)} ${escHtml(adCard.phone)}" width="360" height="360" loading="eager" style="width:100%;max-width:360px;height:auto;border-radius:10px"></a><p style="margin:10px 0 4px;font-weight:700">${escHtml(adCard.shop)} · ${escHtml(adCard.nick)}</p><p style="margin:0 0 8px"><a href="tel:${adTel}" style="display:inline-flex;align-items:center;padding:0 16px;min-height:48px!important;box-sizing:border-box;border-radius:10px;background:#15803D;color:#fff;font-weight:700;text-decoration:none">📞 ${escHtml(adCard.phone)}</a></p><p style="margin:0 0 6px;font-size:14px;color:#333">${escHtml(adCard.address)}</p><p style="margin:0;font-size:14px"><a href="${escHtml(adCard.venueHref)}">${escHtml(adCard.shop)} 자세히 보기</a></p></section>`;
+      cSsr += `<section class="nc-ad-card ssr-adlabel" aria-label="광고" style="border:1px solid #d4d4d4;border-radius:14px;padding:14px;margin:0 0 16px;max-width:420px"><p style="margin:0 0 8px;font-size:12px;color:#555"><span style="display:inline-block;padding:1px 6px;border:1px solid #888;border-radius:6px">광고</span> 아래 연락처는 업소 담당자가 제공한 광고 정보입니다.</p><a href="${escHtml(adCard.venueHref)}"><img src="${OG_WEBP.has(`${adSlug}-w600`) ? `/og/${escHtml(adSlug)}-w600.webp` : `/og/${escHtml(adSlug)}.jpg`}"${OG_WEBP.has(`${adSlug}-w600`) && OG_WEBP.has(`${adSlug}-w1200`) ? ` srcset="/og/${escHtml(adSlug)}-w600.webp 600w, /og/${escHtml(adSlug)}-w1200.webp 1200w" sizes="260px"` : ''} fetchpriority="high" decoding="async" alt="${escHtml(adCard.shop)} ${escHtml(adCard.nick)} ${escHtml(adCard.phone)}" width="360" height="360" loading="eager" style="width:100%;max-width:260px;height:auto;border-radius:10px"></a><p style="margin:10px 0 4px;font-weight:700">${escHtml(adCard.shop)} · ${escHtml(adCard.nick)}</p><p style="margin:0 0 8px"><a href="tel:${adTel}" style="display:inline-flex;align-items:center;padding:0 16px;min-height:48px!important;box-sizing:border-box;border-radius:10px;background:#15803D;color:#fff;font-weight:700;text-decoration:none">📞 ${escHtml(adCard.phone)}</a></p><p style="margin:0 0 6px;font-size:14px;color:#333">${escHtml(adCard.address)}</p><p style="margin:0;font-size:14px"><a href="${escHtml(adCard.venueHref)}">${escHtml(adCard.shop)} 자세히 보기</a></p></section>`;
     }
     cSsr += `<p>${escHtml(cd)}</p>`;
     cSsr += `<h2>${escHtml(regionKo)} 업소 ${crossVenues.length}곳 리스트</h2><ul>`;
@@ -2660,7 +2666,7 @@ for (const [regionKo, _regionAll] of Object.entries(allRegions)) {
     cSsr += faqPairsDl('자주 묻는 질문', crossFaqPairs);
     cSsr += aggHubMesh(crossVenues, 'region', regionKo);
     const hubOg = HUB_OG_CARDS.find((c) => c.route === cp); // [놀쿨16-1] 4 키워드 허브만 고유 카드 · 나머지는 그대로
-    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, ogImage: hubOg ? `${BASE_URL}/og/${hubOg.slug}.jpg` : undefined, ogImageAlt: hubOg ? (hubOg.ad ? `${hubOg.ad.shop} ${hubOg.ad.nick} ${hubOg.ad.phone}` : `${hubOg.label} — 놀쿨 ${crossVenues.length}곳 비교 카드`) : undefined, heroImage: hubOg && hubOg.ad ? `${BASE_URL}/og/nolcool-og.jpg` : undefined, skel: hubSkel('hub', crossVenues, { region: regionKo, cat: catInfo.labelKo, factsHeading: `${crossVenues.length}곳 한 줄씩` }, crossFaqPairs, crossVenues.length >= 4 ? `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이고, ${crossNames} 등이 있다.` : `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이다.`, 'region_cat'), keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: [...collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]), faqPairsJsonLd(crossFaqPairs)] });
+    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, preloadCard: adCard ? (HUB_OG_CARDS.find((c) => c.route === cp) || {}).slug : undefined, ogImage: hubOg ? `${BASE_URL}/og/${hubOg.slug}.jpg` : undefined, ogImageAlt: hubOg ? (hubOg.ad ? `${hubOg.ad.shop} ${hubOg.ad.nick} ${hubOg.ad.phone}` : `${hubOg.label} — 놀쿨 ${crossVenues.length}곳 비교 카드`) : undefined, heroImage: hubOg && hubOg.ad ? `${BASE_URL}/og/nolcool-og.jpg` : undefined, skel: hubSkel('hub', crossVenues, { region: regionKo, cat: catInfo.labelKo, factsHeading: `${crossVenues.length}곳 한 줄씩` }, crossFaqPairs, crossVenues.length >= 4 ? `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이고, ${crossNames} 등이 있다.` : `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이다.`, 'region_cat'), keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: [...collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]), faqPairsJsonLd(crossFaqPairs)] });
     dynamicPages.push(cp);
   }
 }
