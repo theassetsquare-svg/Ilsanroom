@@ -17,7 +17,7 @@
  *   8) "신림그랑프리나이트" 밀도 ≤3.5%
  *   9) "신림나이트" body 등장 ≥3회
  *  10) 후킹 5축 ≥1축 (title 또는 desc)
- *  +) 디테일 토큰 (신림역/관악산/태양/솔로/밴드) 모두 등장
+ *  +) 디테일 토큰 (신림역/관악산/솔로/밴드) 모두 등장
  *
  * 환경:
  *   RESEND_API_KEY     필수
@@ -32,7 +32,7 @@ const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/nights/sinlimgrandprixnight/';
 const PRIMARY = '신림그랑프리나이트';
 const SECONDARY = '신림나이트';
-const DETAIL_TOKENS = ['신림역', '관악산', '태양', '솔로', '밴드'];
+const DETAIL_TOKENS = ['신림역', '관악산', '솔로', '밴드']; // [2026-09-27] 명단 밖 닉네임 토큰 삭제(대표님지시_한장 3절)
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */

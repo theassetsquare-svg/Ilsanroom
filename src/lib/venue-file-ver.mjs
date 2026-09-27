@@ -27,6 +27,13 @@ export const OG_FILE_VER = {
   ilsanmyeongwolgwanyojeong: '-v6',
   // 2026-09-24 긴급 — 수원찬스돔나이트 카드가 명단 밖 옛 닉네임·번호였다 → 광고주 기준 「박찬호 010-7117-5077」로 두 줄만 다시 그림(scripts/redraw-adv-card.mjs).
   suwonchancenight: '-v6',
+  // 2026-09-27 놀쿨12-1 실측 → 즉시 고침 — 명단 밖(광고주 명단 data/advertisers.json 에 없는) 닉네임·번호가 그려진 -v5 카드 6장을 표준 3줄 카드(가게이름 / 광고문의 / 카톡 besta12 · naver-watch make-one-card.py)로 다시 그림. 옛 -v5·-v3 파일은 번호가 그려져 있어 지웠다(명단 밖 번호 0 · 대표님지시_한장 3절).
+  busanmulnight: '-v7',
+  busanyeonsandongmulnight: '-v7',
+  daegubabambanight: '-v7',
+  dapsimnidontellmamanight: '-v7',
+  'haeundaehoppa-kkantappiya': '-v7',
+  sinlimgrandprixnight: '-v7',
 };
 
 /** 2026-08-22 전 업소 "가게이름" 1:1 og 썸네일 전환(generate-og-name11.mjs).

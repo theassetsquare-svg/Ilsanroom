@@ -19,41 +19,6 @@ const defaultFaqs = (name: string) => [
   { question: `막차 이후 귀가 방법은 어떻게 되나요?`, answer: `영업 종료가 새벽 1~2시인 곳이 많아 대중교통 이용이 어려울 수 있습니다. 카카오T 택시·대리운전을 미리 호출하거나, 업소 앞 택시 승강장을 이용하는 것이 일반적입니다.` },
 ];
 
-/* 답십리돈텔마마나이트 천사 이미지 + 전화 섹션 */
-function DapsimnriCheonSaSection({ venue }: { venue: { staffPhone?: string } }) {
-  return (
-    <div className="flex flex-col items-center gap-6">
-      {/* 1:1 천사 이미지 썸네일 */}
-      <div className="w-full max-w-[480px] aspect-square rounded-2xl overflow-hidden shadow-xl border-2 border-[#FFD700]/30">
-        <img
-          src="/og/dapsimnidontellmamanight.svg"
-          alt="답십리돈텔마마 천사"
-          width={480}
-          height={480}
-          className="w-full h-full object-cover"
-          loading="eager"
-        />
-      </div>
-
-      {/* 천사 전화번호 — venue.staffPhone에서 가져옴 */}
-      {venue?.staffPhone && (
-        <div className="w-full max-w-[480px] text-center">
-          <a
-            href={`tel:${venue.staffPhone.replace(/-/g, '')}`}
-            className="flex flex-col items-center gap-3 rounded-2xl bg-gradient-to-r from-[#15803D] to-[#166534] px-8 py-6 shadow-lg transition hover:shadow-xl active:scale-[0.98]"
-          >
-            <span className="text-lg font-bold text-white/80">천사</span>
-            <span className="text-3xl font-black text-white tracking-wide">
-              📞 {venue.staffPhone}
-            </span>
-            <span className="text-sm text-white/70">터치하면 바로 전화 연결</span>
-          </a>
-        </div>
-      )}
-    </div>
-  );
-}
-
 /* 대전세븐나이트 헤더 — 울산챔피언나이트(춘자) 스타일 참고
    SVG <img> 대신 순수 HTML/CSS로 렌더링 (모바일 호환 100%) */
 function DaejeonSevenHeaderSection() {
@@ -196,62 +161,6 @@ function DapsimnriMiracleFixedBar() {
   );
 }
 
-/* 대구바밤바나이트 — 1:1 썸네일(이름+둘리+번호) 이미지 + 둘리 전화 CTA */
-function DaeguBabambaSection({ venue }: { venue: { staffPhone?: string } }) {
-  return (
-    <div className="flex flex-col items-center gap-6">
-      {/* 1:1 썸네일 이미지 (구글 검색 썸네일과 동일) */}
-      <div className="w-full max-w-[480px] aspect-square rounded-2xl overflow-hidden shadow-xl border-2 border-[#FCD34D]/40">
-        <img
-          src="/og/daegubabambanight.jpg"
-          alt="대구바밤바나이트 둘리"
-          width={480}
-          height={480}
-          className="w-full h-full object-cover"
-          loading="eager"
-        />
-      </div>
-
-      {/* 둘리 전화번호 CTA — venue.staffPhone */}
-      {venue?.staffPhone && (
-        <div className="w-full max-w-[480px] text-center">
-          <a
-            href={`tel:${venue.staffPhone.replace(/-/g, '')}`}
-            className="flex flex-col items-center gap-3 rounded-2xl px-8 py-6 shadow-lg transition hover:shadow-xl active:scale-[0.98]"
-            style={{ background: 'linear-gradient(to right, #BE185D, #831843)' }}
-          >
-            <span style={{ color: '#FCD34D', fontSize: 18, fontWeight: 700 }}>대구바밤바나이트 담당 둘리</span>
-            <span style={{ color: '#FFFFFF', fontSize: 28, fontWeight: 900, letterSpacing: '0.05em' }}>
-              📞 {venue.staffPhone}
-            </span>
-            <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: 14 }}>터치하면 바로 전화 연결</span>
-          </a>
-        </div>
-      )}
-    </div>
-  );
-}
-
-/* 대구바밤바나이트 고정 하단 전화 바 — 둘리 직통 */
-function DaeguBabambaFixedBar() {
-  return (
-    <div className="fixed left-0 right-0 z-40" style={{ bottom: 56 }}>
-      <a
-        href="tel:01023877373"
-        className="flex items-center justify-center gap-3 px-6 py-4"
-        style={{
-          background: 'linear-gradient(to right, #BE185D, #831843)',
-          minHeight: 52,
-          boxShadow: '0 -4px 20px rgba(0,0,0,0.4)',
-        }}
-      >
-        <span style={{ color: '#FCD34D', fontSize: 16, fontWeight: 700 }}>대구 w.t둘리 직통</span>
-        <span style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 900, letterSpacing: '0.05em' }}>010-2387-7373</span>
-      </a>
-    </div>
-  );
-}
-
 export default function NightDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const venue = getVenueBySlug(slug!);
@@ -261,20 +170,16 @@ export default function NightDetailPage() {
 
   const isDapsimnri = slug === 'dapsimnidontellmamanight';
   const isDaejeonSeven = slug === 'daejeonsevennight';
-  const isDaeguBabamba = slug === 'daegubabambanight';
   const isChangwonLullalala = slug === 'changwon-lululalala';
   const isDapsimnriMiracle = slug === 'dapsimnimiraclenight';
 
   const topContent = isDapsimnri
     ? (
-      <>
-        <DapsimnriCheonSaSection venue={venue} />
-        <DapsimniCrossLinkCard
-          to="/nights/dapsimnimiraclenight"
-          title="답십리미라클나이트로 재오픈 — 새 소식은 여기서"
-          desc="잠시 영업을 쉰 뒤 미라클이라는 새 이름으로 2026년 8월 13일 고미술로 99에서 다시 문을 열었다"
-        />
-      </>
+      <DapsimniCrossLinkCard
+        to="/nights/dapsimnimiraclenight"
+        title="답십리미라클나이트로 재오픈 — 새 소식은 여기서"
+        desc="잠시 영업을 쉰 뒤 미라클이라는 새 이름으로 2026년 8월 13일 고미술로 99에서 다시 문을 열었다"
+      />
     )
     : isDapsimnriMiracle
       ? (
@@ -286,14 +191,12 @@ export default function NightDetailPage() {
       )
       : isDaejeonSeven
         ? <DaejeonSevenHeaderSection />
-        : isDaeguBabamba
-          ? <DaeguBabambaSection venue={venue} />
-          : undefined;
+        : undefined;
 
   return (
     <>
       {/* 고정 전화바 venue: 하단 여백 추가 */}
-      {(isDaejeonSeven || isDaeguBabamba || isChangwonLullalala || isDapsimnriMiracle) && <style>{`body { padding-bottom: 120px !important; }`}</style>}
+      {(isDaejeonSeven || isChangwonLullalala || isDapsimnriMiracle) && <style>{`body { padding-bottom: 120px !important; }`}</style>}
       <VenueDetailPage
         venue={venue}
         categoryLabel="나이트"
@@ -307,7 +210,6 @@ export default function NightDetailPage() {
         topContent={topContent}
       />
       {isDaejeonSeven && <DaejeonSevenFixedBar />}
-      {isDaeguBabamba && <DaeguBabambaFixedBar />}
       {isChangwonLullalala && <ChangwonLullalalaCallBar />}
       {isDapsimnriMiracle && <DapsimnriMiracleFixedBar />}
     </>
