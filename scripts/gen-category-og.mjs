@@ -31,11 +31,30 @@ const CATS = [
 ];
 
 // [놀쿨16-1] 4 키워드 허브 카드(강남호빠·장안동호빠·건대호빠) — 목록은 data/hub-og-cards.json 한 곳(prerender 도 같은 파일을 읽는다)
-const HUB_CARDS = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/hub-og-cards.json'), 'utf8')).cards.map((c) => ({ slug: c.slug, label: c.label, bg: c.bg, sub: '한눈에 비교' }));
+const HUB_CARDS = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/hub-og-cards.json'), 'utf8')).cards.map((c) => ({ slug: c.slug, label: c.label, bg: c.bg, sub: '한눈에 비교', ad: c.ad || null }));
 
 function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+// [펩시17-2] 광고주 4줄 카드 — 가게이름 / 닉네임 / 번호 / 광고문의 카톡 besta12 (대표님지시_한장 3절 · 가게이름이 가장 크게)
+function buildAdSvg(c) {
+  const nameSize = c.ad.shop.length >= 6 ? 170 : 200;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+  <defs>
+    <style>
+      @font-face { font-family: 'KO'; src: url(data:font/ttf;base64,${FONT_B64}) format('truetype'); }
+    </style>
+  </defs>
+  <rect width="1200" height="1200" fill="${esc(c.bg)}"/>
+  <text x="600" y="330" text-anchor="middle" font-family="KO" font-size="${nameSize}" font-weight="900" fill="#FFFFFF" letter-spacing="-0.03em">${esc(c.ad.shop)}</text>
+  <text x="600" y="560" text-anchor="middle" font-family="KO" font-size="150" font-weight="900" fill="#FDE047">${esc(c.ad.nick)}</text>
+  <text x="600" y="800" text-anchor="middle" font-family="KO" font-size="150" font-weight="900" fill="#FFFFFF" letter-spacing="-0.02em">${esc(c.ad.phone)}</text>
+  <rect x="150" y="880" width="900" height="8" fill="#FDE047"/>
+  <text x="600" y="1030" text-anchor="middle" font-family="KO" font-size="72" font-weight="700" fill="#FFFFFF">광고문의 카톡 besta12</text>
+</svg>`;
+}
+
 function buildSvg(c) {
+  if (c.ad) return buildAdSvg(c);
   // 글자 수에 맞춘 크기 — 카드 안쪽 폭 1080 안에 들어가게(5자 200 · 4자 250 · 3자 300 · 2자 360)
   const labelSize = c.label.length >= 5 ? 200 : c.label.length >= 4 ? 250 : c.label.length >= 3 ? 300 : 360;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">

@@ -2591,6 +2591,13 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
       : `${regionKo}에서 ${catInfo.labelKo} 어디가 진짜야? ${crossNames} 등 ${crossVenues.length}곳 분위기·후기·평점·매니저·드레스코드·전화번호·영업시간·예약 팁까지 한 페이지에서 바로 확인. 헛걸음 전에 비교하고 가자.`;
     let cSsr = `<h1>${escHtml(ct)}</h1>`;
     cSsr += aggAnswerBlock(crossVenues, `${regionKo} ${catInfo.labelKo}`, ct);
+    // [펩시17-2] 광고주 카드 — data/hub-og-cards.json 의 ad 가 있는 쪽만(지금 강남 나이트 = 청담나이트 펩시맨) · 목록 위 · 「광고」 표시 · React(RegionCategoryPage)와 같은 내용
+    const adCard = (HUB_OG_CARDS.find((c) => c.route === cp) || {}).ad;
+    if (adCard) {
+      const adTel = adCard.phone.replace(/-/g, '');
+      const adSlug = (HUB_OG_CARDS.find((c) => c.route === cp) || {}).slug;
+      cSsr += `<section class="nc-ad-card ssr-adlabel" aria-label="광고" style="border:1px solid #d4d4d4;border-radius:14px;padding:14px;margin:0 0 16px;max-width:420px"><p style="margin:0 0 8px;font-size:12px;color:#555"><span style="display:inline-block;padding:1px 6px;border:1px solid #888;border-radius:6px">광고</span> 아래 연락처는 업소 담당자가 제공한 광고 정보입니다.</p><a href="${escHtml(adCard.venueHref)}"><img src="/og/${escHtml(adSlug)}.jpg" alt="${escHtml(adCard.shop)} ${escHtml(adCard.nick)} ${escHtml(adCard.phone)}" width="360" height="360" loading="eager" style="width:100%;max-width:360px;height:auto;border-radius:10px"></a><p style="margin:10px 0 4px;font-weight:700">${escHtml(adCard.shop)} · ${escHtml(adCard.nick)}</p><p style="margin:0 0 8px"><a href="tel:${adTel}" style="display:inline-flex;align-items:center;padding:0 16px;min-height:48px!important;box-sizing:border-box;border-radius:10px;background:#15803D;color:#fff;font-weight:700;text-decoration:none">📞 ${escHtml(adCard.phone)}</a></p><p style="margin:0 0 6px;font-size:14px;color:#333">${escHtml(adCard.address)}</p><p style="margin:0;font-size:14px"><a href="${escHtml(adCard.venueHref)}">${escHtml(adCard.shop)} 자세히 보기</a></p></section>`;
+    }
     cSsr += `<p>${escHtml(cd)}</p>`;
     cSsr += `<h2>${escHtml(regionKo)} 업소 ${crossVenues.length}곳 리스트</h2><ul>`;
     crossVenues.forEach((cv, idx) => {
@@ -2616,7 +2623,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     cSsr += faqPairsDl('자주 묻는 질문', crossFaqPairs);
     cSsr += aggHubMesh(crossVenues, 'region', regionKo);
     const hubOg = HUB_OG_CARDS.find((c) => c.route === cp); // [놀쿨16-1] 4 키워드 허브만 고유 카드 · 나머지는 그대로
-    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, ogImage: hubOg ? `${BASE_URL}/og/${hubOg.slug}.jpg` : undefined, ogImageAlt: hubOg ? `${hubOg.label} — 놀쿨 ${crossVenues.length}곳 비교 카드` : undefined, skel: hubSkel('hub', crossVenues, { region: regionKo, cat: catInfo.labelKo, factsHeading: `${crossVenues.length}곳 한 줄씩` }, crossFaqPairs, crossVenues.length >= 4 ? `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이고, ${crossNames} 등이 있다.` : `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이다.`, 'region_cat'), keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: [...collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]), faqPairsJsonLd(crossFaqPairs)] });
+    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, ogImage: hubOg ? `${BASE_URL}/og/${hubOg.slug}.jpg` : undefined, ogImageAlt: hubOg ? (hubOg.ad ? `${hubOg.ad.shop} ${hubOg.ad.nick} ${hubOg.ad.phone}` : `${hubOg.label} — 놀쿨 ${crossVenues.length}곳 비교 카드`) : undefined, skel: hubSkel('hub', crossVenues, { region: regionKo, cat: catInfo.labelKo, factsHeading: `${crossVenues.length}곳 한 줄씩` }, crossFaqPairs, crossVenues.length >= 4 ? `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이고, ${crossNames} 등이 있다.` : `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이다.`, 'region_cat'), keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: [...collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]), faqPairsJsonLd(crossFaqPairs)] });
     dynamicPages.push(cp);
   }
 }

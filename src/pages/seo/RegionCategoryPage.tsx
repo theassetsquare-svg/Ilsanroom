@@ -3,6 +3,15 @@ import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues } from '@/data/venues';
 import StickyPhoneBar from '@/components/venue/StickyPhoneBar';
+// [펩시17-2] 광고주 카드 자료는 한 곳 — data/hub-og-cards.json(프리렌더·og 생성기와 같은 파일)
+import HUB_OG from '../../../data/hub-og-cards.json';
+
+type HubAd = { shop: string; nick: string; phone: string; venueSlug: string; venueHref: string; address: string };
+const HUB_AD_BY_ROUTE: Record<string, { slug: string; ad: HubAd }> = Object.fromEntries(
+  (HUB_OG.cards as Array<{ route: string; slug: string; ad?: HubAd }>)
+    .filter((c) => c.ad)
+    .map((c) => [c.route, { slug: c.slug, ad: c.ad as HubAd }]),
+);
 
 // 지역×업종 하단 고정 전화바 — 광고주 대표번호가 이 지역 대표 업소일 때만.
 const REGION_CAT_PHONE: Record<string, { phone: string; staffName: string; venueName: string }> = {
@@ -87,9 +96,12 @@ export default function RegionCategoryPage() {
     `${decodedRegion} ${catKo}, ${decodedRegion} ${catKo} 추천, ${decodedRegion} 나이트라이프`
   );
 
+  const hubAd = HUB_AD_BY_ROUTE[`/region/${encodeURIComponent(decodedRegion)}/${category || ''}`];
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       <h1 className="mb-6 text-2xl font-bold">{decodedRegion} {catKo} ({filtered.length}곳)</h1>
+      {/* [펩시17-2] 광고주 카드는 프리렌더(#nc-ssr)가 그린 한 장을 그대로 보여준다 — 여기서 또 그리면 두 장이 된다(16:1x 실측). 여기는 아래 고정 전화바만. */}
       <p className="mb-8 text-gray-600">{decodedRegion} 지역 {catKo}를 비교하고 선택하세요.</p>
       <div className="grid gap-4 sm:grid-cols-2">
         {filtered.map(v => (
@@ -116,6 +128,9 @@ export default function RegionCategoryPage() {
 
       {REGION_CAT_PHONE[`${decodedRegion}|${catKey}`] && (
         <StickyPhoneBar {...REGION_CAT_PHONE[`${decodedRegion}|${catKey}`]} />
+      )}
+      {hubAd && !REGION_CAT_PHONE[`${decodedRegion}|${catKey}`] && (
+        <StickyPhoneBar phone={hubAd.ad.phone} staffName={hubAd.ad.nick} venueName={hubAd.ad.shop} />
       )}
     </div>
   );
