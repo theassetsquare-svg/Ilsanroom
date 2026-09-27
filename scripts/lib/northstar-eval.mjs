@@ -123,9 +123,9 @@ export function milestoneStatus(cur) {
  * 월간 개선 루틴(말일 08:1x)은 그 줄의 code 이름 그대로 고친다. 측정·판정만 — 조작 0.
  */
 export const PAGE_CRITERIA = {
-  gsc: { ctrMinImp: 50, ctrMaxPos: 10, ctrLow: 0.02, farPos: 20 },            // monthly-full-audit CTR 기회(노출≥50·CTR<2%) · 20위밖
+  gsc: { ctrMinImp: 50, ctrMinPos: 4, ctrMaxPos: 10, ctrLow: 0.02, farPos: 20 }, // monthly-full-audit CTR 기회(노출≥50·4~10위·CTR<2%) · 20위밖
   ga: { minSessions: 3, bounceHigh: 0.70, dwellShort: 30, scrollLow: 0.35, engageLow: 0.40 }, // ga-optimizer 처방 임계
-  clarity: { minPage: 10, clickSessions: 3, quickbackSessions: 5, quickbackPct: 0.30, scriptSessions: 2, scriptMinPage: 5, excessiveSessions: 5 }, // clarity-daily-watch 착시 컷
+  clarity: { minPage: 10, clickSessions: 3, quickbackSessions: 5, quickbackPct: 0.30, scriptSessions: 2, scriptMinPage: 5, excessiveSessions: 5 }, // clarity-daily-watch 착시 컷(쪽 세션 = Traffic 실세션(봇 제외) · 문제 세션 = 세션×비율)
   cwv: { perfGoal: 90, lcpMs: 2500, cls: 0.1, tbtMs: 200 },                   // lighthouse-daily 목표 90 · CLAUDE.md CWV(LCP<2.5s·CLS<0.1) · INP 대신 실험실 TBT
 };
 
@@ -134,7 +134,7 @@ export const PAGE_CODES = {
   'GSC-IDX': ['색인 안 됨(URL 검사 verdict≠PASS)', '같은 주소에서 내용·내부 링크·사이트맵·색인 요청(주소 변경 0)'],
   'GSC-NOINDEX-SITEMAP': ['noindex 쪽이 사이트맵에 있음', '사이트맵에서 빼거나 noindex 를 뗀다(쪽 성격대로 하나만)'],
   'GSC-ZERO': ['28일 노출 0', '내부 링크·제목·구조화 데이터'],
-  'GSC-CTR': ['1쪽(≤10위)인데 CTR<2%(노출≥50)', '사실 후킹 제목·설명(제목 고유성 검사 통과)'],
+  'GSC-CTR': ['4~10위인데 CTR<2%(노출≥50)', '사실 후킹 제목·설명(제목 고유성 검사 통과)'],
   'GSC-FAR': ['평균 순위 20위 밖', '내부 링크·본문 구조(가게 자기 사실만)'],
   'GA-BOUNCE': ['이탈 70% 이상', '첫 화면 H1·도입·다음 길(11-4 부품)'],
   'GA-DWELL': ['평균 체류 30초 미만', '읽는 차례·소제목·다음 읽을 것'],
@@ -143,9 +143,9 @@ export const PAGE_CODES = {
   'CL-RAGE': ['Clarity 분노 클릭(문제 세션≥3·쪽 세션≥10)', '실제 UI 원인(반응 없는 요소·겹침)'],
   'CL-DEAD': ['Clarity 죽은 클릭(문제 세션≥3·쪽 세션≥10)', '눌리는 것처럼 보이는데 안 눌리는 요소'],
   'CL-ERRCLICK': ['Clarity 오류 클릭(문제 세션≥3·쪽 세션≥10)', '누른 뒤 JS 오류 원인'],
-  'CL-QUICKBACK': ['Clarity 빠른 되돌아감(문제 세션≥5·30% 이상)', '누른 곳과 도착 쪽 내용 맞추기'],
+  'CL-QUICKBACK': ['Clarity 빠른 되돌아감(문제 세션≥5·쪽 세션≥10·30% 이상)', '누른 곳과 도착 쪽 내용 맞추기'],
   'CL-SCRIPT': ['Clarity 스크립트 오류(문제 세션≥2·쪽 세션≥5)', 'JS 오류 코드 원인'],
-  'CL-EXSCROLL': ['Clarity 지나친 스크롤(문제 세션≥5)', '찾는 것이 늦게 나옴 → 차례·앞자리'],
+  'CL-EXSCROLL': ['Clarity 지나친 스크롤(문제 세션≥5·쪽 세션≥10)', '찾는 것이 늦게 나옴 → 차례·앞자리'],
   'CWV-PERF': ['Lighthouse 성능 90 미만', '코드 원인(무거운 JS·그림)'],
   'CWV-LCP': ['LCP 2.5초 초과', '첫 그림·글자 늦음 → 코드 원인'],
   'CWV-CLS': ['CLS 0.1 초과', '자리 밀림 → 높이 확보'],
@@ -166,7 +166,7 @@ export function judgePage(p) {
   if (p.gsc) {
     const g = p.gsc;
     if (g.imp === 0 && p.noindex !== true) add('GSC-ZERO', 0);
-    if (g.imp >= C.gsc.ctrMinImp && g.pos <= C.gsc.ctrMaxPos && g.ctr < C.gsc.ctrLow) add('GSC-CTR', +(g.ctr * 100).toFixed(1));
+    if (g.imp >= C.gsc.ctrMinImp && g.pos >= C.gsc.ctrMinPos && g.pos <= C.gsc.ctrMaxPos && g.ctr < C.gsc.ctrLow) add('GSC-CTR', +(g.ctr * 100).toFixed(1));
     if (g.imp > 0 && g.pos > C.gsc.farPos) add('GSC-FAR', +g.pos.toFixed(1));
   }
   if (p.ga && p.ga.sessions >= C.ga.minSessions) {
@@ -181,9 +181,9 @@ export function judgePage(p) {
     if (n >= K.minPage && (c.rage || 0) >= K.clickSessions) add('CL-RAGE', c.rage);
     if (n >= K.minPage && (c.dead || 0) >= K.clickSessions) add('CL-DEAD', c.dead);
     if (n >= K.minPage && (c.errclick || 0) >= K.clickSessions) add('CL-ERRCLICK', c.errclick);
-    if ((c.quickback || 0) >= K.quickbackSessions && n > 0 && c.quickback / n >= K.quickbackPct) add('CL-QUICKBACK', c.quickback);
+    if (n >= K.minPage && (c.quickback || 0) >= K.quickbackSessions && c.quickback / n >= K.quickbackPct) add('CL-QUICKBACK', c.quickback);
     if (n >= K.scriptMinPage && (c.script || 0) >= K.scriptSessions) add('CL-SCRIPT', c.script);
-    if ((c.excessive || 0) >= K.excessiveSessions) add('CL-EXSCROLL', c.excessive);
+    if (n >= K.minPage && (c.excessive || 0) >= K.excessiveSessions) add('CL-EXSCROLL', c.excessive);
   }
   if (p.cwv) {
     const w = p.cwv, K = C.cwv;

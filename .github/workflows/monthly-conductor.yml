@@ -32,6 +32,8 @@ jobs:
           NEXT="$(date -d "$TODAY +1 day" +%d)"
           if [ "$EVENT" = "workflow_dispatch" ] || [ "$NEXT" = "01" ]; then
             echo "run=true" >> "$GITHUB_OUTPUT"; echo "진행: $TODAY (KST · 내일 ${NEXT}일 · $EVENT)"
+            # 대표님지시_한장 5절 「모든 자동화 시각 무작위」 — 예약 실행이면 0~14분 무작위로 기다린다(날짜 흉내 시험 GUARD_TODAY 일 때는 안 기다림)
+            if [ "$EVENT" = "schedule" ] && [ -z "$GUARD_TODAY" ]; then W=$((RANDOM % 840)); echo "무작위 대기 ${W}초"; sleep "$W"; fi
           else
             echo "run=false" >> "$GITHUB_OUTPUT"; echo "말일 아님 — 종료: $TODAY (KST · 내일 ${NEXT}일)"
           fi

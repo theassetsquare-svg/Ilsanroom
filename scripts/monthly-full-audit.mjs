@@ -586,11 +586,13 @@ async function main() {
     }
     const clMap = new Map();
     const clKey = { RageClickCount: 'rage', DeadClickCount: 'dead', ErrorClickCount: 'errclick', QuickbackClick: 'quickback', ScriptErrorCount: 'script', ExcessiveScroll: 'excessive' };
+    const realN = new Map(); // clarity-daily-watch 와 같은 잣대: 쪽 세션 = Traffic 실세션(봇 제외) · 없으면 문제 줄의 세션 수 · 문제 세션 = 세션×비율
+    for (const m of clarity.byUrl || []) if (m.metricName === 'Traffic') for (const r2 of m.information || []) realN.set(normPath(r2.URL || r2.Url || r2.url), Number(r2.totalSessionCount || 0) - Number(r2.totalBotSessionCount || 0));
     for (const m of clarity.byUrl || []) {
       const key = clKey[m.metricName]; if (!key) continue;
       for (const r2 of m.information || []) {
         const p = normPath(r2.URL || r2.Url || r2.url); const n = Number(r2.sessionsCount || 0); const pct = Number(r2.sessionsWithMetricPercentage || 0);
-        clMap.set(p, { ...(clMap.get(p) || {}), pageSessions: Math.max(n, clMap.get(p)?.pageSessions || 0), [key]: pct > 0 ? Math.max(1, Math.round((n * pct) / 100)) : 0 });
+        clMap.set(p, { ...(clMap.get(p) || {}), pageSessions: realN.has(p) ? realN.get(p) : Math.max(n, clMap.get(p)?.pageSessions || 0), [key]: pct > 0 ? Math.max(1, Math.round((n * pct) / 100)) : 0 });
       }
     }
     const diag = diagnosePages(smPaths, { gsc: gscMap, ga: gaMap, clarity: clMap });

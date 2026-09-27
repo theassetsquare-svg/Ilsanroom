@@ -96,7 +96,7 @@ function parseByUrl(data, allUrls) {
 }
 
 async function main() {
-  console.log(`📅 clarity-daily-watch ${kstNow()} · 프로젝트 ${PROJECT} · 예산 ${budget}콜${monthlyDay ? ' (UTC29 월간충돌 축소)' : ''}`);
+  console.log(`📅 clarity-daily-watch ${kstNow()} · 프로젝트 ${PROJECT} · 예산 ${budget}콜${monthlyDay ? ' (월간 감사 날 쿼터 축소)' : ''}`);
   const allUrls = new Set();
   const findings = [];
 

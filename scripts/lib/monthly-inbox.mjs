@@ -1,5 +1,5 @@
 // 메일 30일 1통 정책 (2026-08-17) — 일간·주간 리포트 12종 즉시 발송 정지.
-// 발송 대신 여기로 축적 → 매월 30일 monthly-conductor STEP6 보고서 섹션으로 통합.
+// 발송 대신 여기로 축적 → 매월 말일 monthly-conductor STEP6 보고서 섹션으로 통합([놀쿨16-2] 2026-09-27 · 옛 매월 30일).
 // 즉시 메일 유지 4종(사이트 다운/보안 변화/회원 첫 글/서면 상담)은 이 모듈을 쓰지 않는다.
 import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
