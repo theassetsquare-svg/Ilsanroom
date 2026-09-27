@@ -8,6 +8,7 @@ import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import { MidContentHook, ReadFinishCount } from '@/components/engagement/ReadingEngagement';
 import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter } from '@/components/venue/CategoryListingEngagement';
+import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 
 const regions = [
   { key: 'gangnam', label: '강남' }, { key: 'seoul', label: '서울' }, { key: 'ilsan', label: '일산' },
@@ -18,7 +19,7 @@ const regions = [
 ];
 
 export default function NightsPage() {
-  useDocumentMeta('나이트 부킹 한 번도 못 잡고 집 간 적? 10년 웨이터가 거를 곳 알려줘요', '부킹 안 잡히는 나이트 가면 1차로 끝나요. 10년 짠밥 웨이터가 홀·부스·물·진행 다 풀어드립니다. 방문 시간·매너·드레스코드까지 64곳 갈 곳 vs 거를 곳 한 줄로 정리 →');
+  useDocumentMeta('나이트 부킹 한 번도 못 잡고 집 간 적? 10년 웨이터가 거를 곳 알려줘요', '부킹 안 잡히는 나이트 가면 1차로 끝나요. 10년 짠밥 웨이터가 홀·부스·물·진행 다 풀어드립니다. 방문 시간·매너·드레스코드까지 ' + VENUES_BY_CATEGORY.night + '곳 갈 곳 vs 거를 곳 한 줄로 정리 →');
   const venues = getVenuesByCategory('night');
   const featured = venues.find(v => v.isPremium) || venues[0];
 
@@ -75,7 +76,7 @@ export default function NightsPage() {
             시스템은 간단하다. 들어가면 웨이터가 좌석을 안내한다. 양주 한 병 시키고 과일 안주 받으면 준비 끝. 춤추고 싶으면 댄스홀로 나가면 되고, 앉아서 무드만 즐겨도 된다. 부킹은 거절해도 전혀 문제 없다. 강제 아니다.
           </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
-            전국 60곳이 등록되어 있다. 수원찬스돔나이트처럼 돔 구조로 유명한 곳, 부산연산동물나이트처럼 부킹률로 이름난 곳, 각각 개성이 확실하다. 금·토 밤 9시가 절정이고, 365일 매일 여는 곳도 많다.
+            전국 {VENUES_BY_CATEGORY.night}곳이 등록되어 있다. 수원찬스돔나이트처럼 돔 구조로 유명한 곳, 부산연산동물나이트처럼 부킹률로 이름난 곳, 각각 개성이 확실하다. 금·토 밤 9시가 절정이고, 365일 매일 여는 곳도 많다.
           </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
             서울 지역은 강남줄리아나나이트, 청담H2O나이트, 신림그랑프리나이트, 상봉동한국관나이트, 노원호박나이트, 노원스타나이트, 영등포터미널나이트 등이 각 권역을 대표한다. 강남줄리아나나이트는 30년 전통의 사교 명가로, 넓은 홀과 복고·댄스팝이 번갈아 나오는 DJ 선곡이 특징이다. 청담H2O나이트는 워터 테마 인테리어로 유명하고, 펩시맨이라 불리는 담당자가 첫 방문 손님 응대를 잘한다.

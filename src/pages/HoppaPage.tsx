@@ -8,6 +8,7 @@ import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import { MidContentHook, ReadFinishCount } from '@/components/engagement/ReadingEngagement';
 import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter } from '@/components/venue/CategoryListingEngagement';
+import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 
 const regions = [
   { key: 'gangnam', label: '강남' },
@@ -24,7 +25,7 @@ const regions = [
 ];
 
 export default function HoppaPage() {
-  useDocumentMeta('여자 혼자 호빠 가도 돼? 10년 실장이 외모·매너·진행 다 봐주는 18곳', '처음 호빠 가서 어색한 시간 30분이면 끝. 10년 일한 호빠 실장이 외모·매너·진행 다 봐드립니다. 강남·홍대·일산·해운대·대구 호빠 진짜 케어되는 18곳만 골랐으니 첫 방문 전에 먼저 확인 →');
+  useDocumentMeta('여자 혼자 호빠 가도 돼? 10년 실장이 외모·매너·진행 다 봐주는 ' + VENUES_BY_CATEGORY.hoppa + '곳', '처음 호빠 가서 어색한 시간 30분이면 끝. 10년 일한 호빠 실장이 외모·매너·진행 다 봐드립니다. 강남·홍대·일산·해운대·대구 호빠 진짜 케어되는 18곳만 골랐으니 첫 방문 전에 먼저 확인 →');
   const venues = getVenuesByCategory('hoppa');
   const featured = venues.find(v => v.isPremium) || venues[0];
 
@@ -83,7 +84,7 @@ export default function HoppaPage() {
               TC(타임차지) 방식이라 시간 단위로 응대가 진행된다. 음료는 별도 라인업이 있고, 전화할 때 원하는 분위기를 말하면 딱 맞게 안내해준다. 사전 상담이 핵심이다.
             </p>
             <p className="text-base leading-relaxed text-pink-900">
-              친구 생일 서프라이즈, 지인 모임, 스트레스 풀러 솔로로 오는 경우까지 방문 목적이 폭넓다. 1인 방문도 많다. 전국 18곳이 등록되어 있고, 전부 영업 중인지 직접 확인했다.
+              친구 생일 서프라이즈, 지인 모임, 스트레스 풀러 솔로로 오는 경우까지 방문 목적이 폭넓다. 1인 방문도 많다. 전국 {VENUES_BY_CATEGORY.hoppa}곳이 등록되어 있고, 전부 영업 중인지 직접 확인했다.
             </p>
             <p className="text-base leading-relaxed text-pink-900">
               강남호빠 로얄, 강남호빠 어게인, 강남호빠 플러팅은 서울 강남권 대표 호스트바다. 매니저 추천 시스템으로 취향에 맞는 호스트를 배정받을 수 있고, 투명한 응대가 특징이다. 부산권은 부산호빠 스타, 부산호빠 맨즈, 부산호빠 아우라가 있고, 해운대호빠 깐따삐야, 해운대호빠 미슐랭, 해운대호빠 벨벳은 해운대 관광지구에서 운영한다. 장안동호빠 빵빵, 장안동호빠 플렉스는 동북 서울의 캐주얼 무드 명소이고, 건대호빠 W는 트렌디한 감성이 특징이다. 수원호빠 비스트, 수원호빠 아우라는 경기 남부를 대표하고, 대전호빠 이클립스는 충청권에서 운영한다. 대구호빠 퍼펙트, 전주호빠 갤러리, 홍대호빠까지 전국에서 선택할 수 있다.

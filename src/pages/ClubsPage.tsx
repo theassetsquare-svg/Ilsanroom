@@ -9,6 +9,7 @@ import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import { MidContentHook, ReadFinishCount } from '@/components/engagement/ReadingEngagement';
 import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter } from '@/components/venue/CategoryListingEngagement';
+import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 
 const regions = [
   { key: 'gangnam', label: '강남' }, { key: 'hongdae', label: '홍대' }, { key: 'itaewon', label: '이태원' },
@@ -18,7 +19,7 @@ const regions = [
 ];
 
 export default function ClubsPage() {
-  useDocumentMeta('클럽 38곳 — 강남 11곳부터 이태원·압구정·홍대까지, 줄 서기 전에 드레스코드 먼저', '클럽 줄 컷이면 그날 끝. 10년 MD가 강남·홍대 클럽 Funktion-One·드레스코드·해외 게스트 DJ·새벽 3시 피크·VIP 부킹까지 클럽 38곳, 갈 곳만 추렸으니 줄 서기 전에 바로 확인 →');
+  useDocumentMeta('클럽 ' + VENUES_BY_CATEGORY.club + '곳 — 강남 11곳부터 이태원·압구정·홍대까지, 줄 서기 전에 드레스코드 먼저', '클럽 줄 컷이면 그날 끝. 10년 MD가 강남·홍대 클럽 Funktion-One·드레스코드·해외 게스트 DJ·새벽 3시 피크·VIP 부킹까지 클럽 38곳, 갈 곳만 추렸으니 줄 서기 전에 바로 확인 →');
   const venues = getVenuesByCategory('club');
   const featured = venues.find(v => v.isPremium) || venues[0];
   const byRegion = venues.reduce<Record<string, { n: number; key: string }>>((m, v) => {

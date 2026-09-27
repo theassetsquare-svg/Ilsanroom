@@ -12,6 +12,7 @@ import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { ReadFinishCount } from '@/components/engagement/ReadingEngagement';
 import { hasVenueImage } from '@/data/venue-image-manifest';
 import { heroVer } from '@/lib/venue-file-ver';
+import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 
 /* ── 카테고리 설정 ── */
 const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
@@ -226,7 +227,7 @@ export default function SearchPage() {
     queryParam ? `"${queryParam}" 검색 결과 — 지금 뜨는 곳 총정리` : '이름만 치면 바로 나온다, 통합 검색',
     queryParam
       ? `'${queryParam}' 관련 강남 홍대 이태원 일산 부산 핫스팟 검색 결과. 업종·지역·분위기 비교까지 한눈에 확인.`
-      : '지역·업종·이름·분위기 아무거나 입력하면 120곳 중 딱 맞는 곳. 자동완성·오타 보정·인기 검색어 추천까지 통합 검색 엔진.'
+      : '지역·업종·이름·분위기 아무거나 입력하면 ' + VENUES_TOTAL_OPEN + '곳 중 딱 맞는 곳. 자동완성·오타 보정·인기 검색어 추천까지 통합 검색 엔진.'
   );
 
   const { results, total } = useMemo(() => smartSearch(queryParam, categoryParam), [queryParam, categoryParam]);

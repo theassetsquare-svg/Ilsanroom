@@ -3,6 +3,7 @@ import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useFoundingMember } from '@/hooks/useFoundingMember';
 import { trackEvent } from '@/lib/visitor-tracker';
+import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 
 /* /welcome — OPEN BETA 환영 페이지
    첫 방문자/입소문 들어온 사람한테 "놀쿨이 뭐고 왜 지금 가입해야 하는지" 30초 컷 안내.
@@ -127,7 +128,7 @@ export default function WelcomePage() {
 
       {/* CATEGORIES */}
       <section className="mx-auto max-w-3xl px-4 py-6 sm:px-6 border-t border-neutral-100">
-        <p className="text-[11px] font-black text-violet-600 uppercase tracking-[0.15em] mb-2">전국 120곳</p>
+        <p className="text-[11px] font-black text-violet-600 uppercase tracking-[0.15em] mb-2">전국 {VENUES_TOTAL_OPEN}곳</p>
         <h2 className="text-xl font-black text-[#111] mb-4">6종 업소 — 분위기·라인업 한 눈에</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {categories.map((c) => (
