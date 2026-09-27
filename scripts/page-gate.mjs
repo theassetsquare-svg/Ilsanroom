@@ -28,6 +28,24 @@ const PRICE_WORDS = ['만원', '입장료', '가성비', '시세', '가격대'].
 // 「만원」은 저장소 nolcool-guard.mjs 와 같은 잣대 — 가격 노출 문맥(룸비·기본료·입장 N만원 …)만 막고 혜택 문맥(차비·쿠폰)은 둔다
 const MANWON_PRICE_RE = /(룸비|기본료|보증금|세팅비|입장(?!\s*가능)|메뉴|요금|가격|코스)\s*[\d일이삼사오육칠팔구십백천]*만원|[\d일이삼사오육칠팔구십백천]+\s*만원\s*(부터|이상|이하|선|대|짜리|상당)|만원대(?![가-힣])/;
 const PLACEHOLDER_RE = /\{\{|\bTODO\b|undefined|NaN|\[object Object\]|lorem ipsum/;
+// [놀쿨12-2 R10 · 2026-09-27] 연락처 금지 목록 — 쪽에 나오는 전화번호는 가게 자료(src/data/venues.ts)의 staffPhone(= 광고주 명단 · StickyPhoneBar 와 같은 기준)과
+//   일산 총책임자(대표님 지시 · 일산룸·일산명월관)만 허용한다. 번호를 하나씩 막는 대신 허용 밖 번호를 전부 막는다(새 명단 밖 번호도 걸린다).
+//   신실장 · WT창민 같은 옛 닉네임은 번호가 없어도 막는다(대표님지시_한장 3절 「신실장 = 모든 쪽·모든 그림 0」). 흔한 낱말(천사·태양 등)은 막지 않는다.
+const ALLOWED_PHONES = (() => {
+  const set = new Set(['01041175556']);
+  try { for (const m of fs.readFileSync('src/data/venues.ts', 'utf8').matchAll(/staffPhone:\s*'([^']+)'/g)) set.add(m[1].replace(/\D/g, '')); } catch {}
+  return set;
+})();
+const PHONE_RE = /(?<![\d.])(?:01[016789][-. ]?\d{3,4}[-. ]?\d{4}|0(?:2|[3-6][1-5]|70|50\d)[-. )]\d{3,4}[-. ]\d{4}|1[5-8]\d{2}[-. ]\d{4})(?![\d.])/g;
+const FORBIDDEN_WORDS = ['신실장', 'WT창민', 'W.T창민'];
+export function contactProblems(html) {
+  const noJs = html.replace(/<script(?![^>]*ld\+json)[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ');
+  const nums = [...new Set([...noJs.matchAll(PHONE_RE)].map((m) => m[0].replace(/\D/g, '')))];
+  const tels = [...new Set([...noJs.matchAll(/href="tel:([^"]+)"/g)].map((m) => m[1].replace(/\D/g, '')))];
+  const off = [...new Set([...nums, ...tels])].filter((n) => !ALLOWED_PHONES.has(n));
+  const words = FORBIDDEN_WORDS.filter((w) => noJs.includes(w));
+  return { off, words };
+}
 const NAVER_RE = /searchadvisor\.naver|naver\.com\/.*(request|submit)|Yeti.{0,20}Disallow/i;
 // [놀쿨11-3] 세이프서치 안전 — 구글 「선정적인 콘텐츠」 기준(노골적 성적 콘텐츠·과도한 노출·성매매 알선)에 걸릴 표현 + 저장소 위험어(dist-audit DANGEROUS 미러)
 const SAFESEARCH_RE = /성관계|성행위|(?<![가-힣])섹스(?![가-힣])|포르노|음란|야동|알몸|나체|누드|노출\s?사진|성인용품|(?<![가-힣])자위(?![가-힣])|매춘|성매매|출장\s?안마|조건\s?만남|(?<![가-힣])오피(?![가-힣스])|안마방|풀싸롱|텐프로|2차\s*(서비스|모임|콜|가능|가격|비용|진행|연계|약속|장소)|밤\s?문화|유흥|룸\s?살롱|룸\s?싸롱|노래\s?방(?!송)|초이스/;
@@ -82,6 +100,7 @@ export function gatePage(html, ctx = {}) {
   else if (!noindex && decodeURIComponent(canonical) !== decodeURIComponent(want)) block.push(`L2 canonical ${canonical} ≠ ${want}`);
   const hasTel = /href="tel:/.test(html);
   if (hasTel && !/ssr-adlabel|>광고</.test(html)) block.push('A1 tel 링크 있는데 광고 라벨 없음');
+  { const cp = contactProblems(html); if (cp.off.length) block.push(`A2 명단 밖 번호 ${cp.off.join(',')}`); if (cp.words.length) block.push(`A3 금지 낱말 ${cp.words.join(',')}`); }
   const bodyText = strip((html.match(/<article id="nc-article"[\s\S]*?<\/article>/) || [html])[0]);
   for (const w of PRICE_WORDS) { const hit = w === '만원' ? (MANWON_PRICE_RE.test(bodyText) || MANWON_PRICE_RE.test(title)) : (bodyText.includes(w) || title.includes(w)); if (hit) { block.push(`W1 가격 단어 「${w}」`); break; } }
   if (PLACEHOLDER_RE.test(bodyText) || PLACEHOLDER_RE.test(title)) block.push('W1 자리표시 찌꺼기');
