@@ -14,7 +14,8 @@ const files = fs.readdirSync(VENUES_DIR);
 const slugs = new Set();
 const slotsBySlug = new Map(); // slug → Set<number> (1~4)
 for (const f of files) {
-  const m = f.match(/^(.+?)-(\d+)\.(webp|jpg|png)$/);
+  // [2026-09-27] 판 번호 붙은 파일(-1-v3 등 · venue-file-ver.mjs HERO_FILE_VER)도 센다 — 번호 그려진 옛 -1 파일을 지워도 가게 사진이 사라지지 않게
+  const m = f.match(/^(.+?)-(\d+)(?:-v\d+)?\.(webp|jpg|png)$/);
   if (m) {
     const slug = m[1];
     const n = Number(m[2]);
