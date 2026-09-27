@@ -169,7 +169,7 @@ export default function QnAPage() {
         <section>
           <div className="mb-5 flex items-center justify-between">
             <h2 className="text-xl font-bold">오늘어디갈까 게시글</h2>
-            <button onClick={handleWriteClick} className="rounded-xl px-5 py-2.5 text-sm font-bold transition"
+            <button onClick={handleWriteClick} className="shrink-0 whitespace-nowrap rounded-xl px-5 py-2.5 text-sm font-bold transition"
               style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>글쓰기</button>
           </div>
 
@@ -222,7 +222,7 @@ export default function QnAPage() {
             <div className="rounded-2xl border border-neon-border py-14 text-center" style={{ backgroundColor: 'rgba(139,92,246,0.03)' }}>
               <p className="text-base font-bold" style={{ color: '#111' }}>아직 질문이 없어요</p>
               <p className="mt-2 text-sm" style={{ color: '#888' }}>오늘 밤 어디 갈지 고민이면 첫 질문을 남겨보세요. 가본 사람들이 답해줘요.</p>
-              <button onClick={handleWriteClick} className="mt-5 rounded-xl px-6 py-3 text-sm font-bold transition"
+              <button onClick={handleWriteClick} className="shrink-0 whitespace-nowrap mt-5 rounded-xl px-6 py-3 text-sm font-bold transition"
                 style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>첫 질문 올리기</button>
             </div>
           )}

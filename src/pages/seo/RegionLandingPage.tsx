@@ -1,4 +1,6 @@
 import { useParams } from 'react-router-dom';
+import { isAdVenue, isListed, sortVenues } from '@/lib/venue-order';
+import { popularity } from '@/lib/popularity';
 import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues } from '@/data/venues';
@@ -13,7 +15,9 @@ function getHref(v: { category: string; region: string; slug: string }) {
 
 export default function RegionLandingPage() {
   const { region } = useParams<{ region: string }>();
-  const filtered = venues.filter(v => v.regionKo === region && v.status !== 'closed_or_unclear');
+  const all = venues.filter(v => v.regionKo === region && v.status !== 'closed_or_unclear');
+  const onlyListed = all.filter((v) => isListed(v));
+  const filtered = sortVenues(onlyListed.length ? onlyListed : all, 'rec', popularity.venues); // [놀쿨12-2] 추천 순서 · 같은 가게 한 번
   const byCat = filtered.reduce<Record<string, typeof filtered>>((acc, v) => {
     const k = v.category;
     (acc[k] = acc[k] || []).push(v);
@@ -37,7 +41,7 @@ export default function RegionLandingPage() {
           <div className="grid gap-3 sm:grid-cols-2">
             {vList.map(v => (
               <Link key={v.id} to={getHref(v)} className="rounded-xl bg-white p-4 shadow-sm transition hover:shadow-md">
-                <h3 className="font-semibold">{v.nameKo}</h3>
+                <h3 className="font-semibold">{v.nameKo} {isAdVenue(v) && <span className="ml-1 rounded border border-[#111] bg-white px-1.5 py-0.5 text-xs font-bold text-[#111] align-middle" data-ad-label>광고</span>}</h3>
                 <p className="mt-1 text-sm text-[#444] line-clamp-2">{v.shortDescription}</p>
               </Link>
             ))}

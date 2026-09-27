@@ -348,7 +348,7 @@ export default function JogakPage() {
               광고주 전용
             </div>
           ) : (
-            <button onClick={handleWriteClick} className="rounded-xl px-5 py-2.5 text-sm font-bold text-white transition active:scale-[0.97]"
+            <button onClick={handleWriteClick} className="shrink-0 whitespace-nowrap rounded-xl px-5 py-2.5 text-sm font-bold text-white transition active:scale-[0.97]"
               style={{ backgroundColor: '#8B5CF6', minHeight: 44 }}>
               + 조각 올리기
             </button>
@@ -511,7 +511,7 @@ export default function JogakPage() {
               : '다른 카테고리를 확인하거나 조각을 올려보세요!'}
           </p>
           {(activeCategory !== 'partner' || isOwner) && (
-            <button onClick={handleWriteClick} className="rounded-xl px-6 py-3 text-sm font-bold text-white transition active:scale-[0.97]"
+            <button onClick={handleWriteClick} className="shrink-0 whitespace-nowrap rounded-xl px-6 py-3 text-sm font-bold text-white transition active:scale-[0.97]"
               style={{ backgroundColor: '#8B5CF6', minHeight: 44 }}>조각 올리기</button>
           )}
         </div>

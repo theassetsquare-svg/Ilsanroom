@@ -328,7 +328,7 @@ export default function PartyRecruitPage() {
               <div className="rounded-2xl border border-neon-border py-14 text-center" style={{ backgroundColor: 'rgba(139,92,246,0.03)' }}>
                 <p className="text-base font-bold" style={{ color: '#111' }}>아직 모집 중인 모임이 없어요</p>
                 <p className="mt-2 text-sm" style={{ color: '#888' }}>혼자 가기 아쉬운 날, 첫 모집글을 올려 동행을 구해보세요.</p>
-                <button onClick={handleWriteClick} className="mt-5 rounded-xl px-6 py-3 text-sm font-bold transition"
+                <button onClick={handleWriteClick} className="shrink-0 whitespace-nowrap mt-5 rounded-xl px-6 py-3 text-sm font-bold transition"
                   style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>첫 모집글 올리기</button>
               </div>
             )}

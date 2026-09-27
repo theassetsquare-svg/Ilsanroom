@@ -215,7 +215,7 @@ export default function ReviewsPage() {
             도움이 됐어요 순
           </button>
           <div className="ml-auto">
-            <button onClick={handleWriteClick} className="rounded-xl px-5 py-2.5 text-sm font-bold transition"
+            <button onClick={handleWriteClick} className="shrink-0 whitespace-nowrap rounded-xl px-5 py-2.5 text-sm font-bold transition"
               style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>
               후기 남기기
             </button>
@@ -267,7 +267,7 @@ export default function ReviewsPage() {
           <div className="rounded-2xl border border-neon-border py-14 text-center" style={{ backgroundColor: 'rgba(139,92,246,0.03)' }}>
             <p className="text-base font-bold" style={{ color: '#111' }}>아직 후기가 없어요</p>
             <p className="mt-2 text-sm" style={{ color: '#888' }}>직접 가본 곳, 솔직하게 첫 후기를 남겨주세요. 다음 사람에게 큰 도움이 돼요.</p>
-            <button onClick={handleWriteClick} className="mt-5 rounded-xl px-6 py-3 text-sm font-bold transition"
+            <button onClick={handleWriteClick} className="shrink-0 whitespace-nowrap mt-5 rounded-xl px-6 py-3 text-sm font-bold transition"
               style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>첫 후기 남기기</button>
           </div>
         )}

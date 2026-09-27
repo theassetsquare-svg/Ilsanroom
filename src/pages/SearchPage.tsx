@@ -431,7 +431,7 @@ export default function SearchPage() {
                       <span className="mt-1 text-xs font-bold text-white/80">{venue.nameKo.slice(0, 4)}</span>
                     </div>
                     {isAdVenue(venue) && (
-                      <span className="absolute top-2 left-2 z-[2] rounded border border-[#111] bg-white px-1.5 py-0.5 text-xs font-bold text-[#111]" data-ad-label>광고</span>
+                      <span className="absolute bottom-[52px] left-2 z-[2] rounded border border-[#111] bg-white px-1.5 py-0.5 text-xs font-bold text-[#111]" data-ad-label>광고</span>
                     )}
                     <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2.5 py-2">
                       <h3 className="text-sm font-bold text-white leading-tight truncate">{venue.nameKo}</h3>

@@ -121,7 +121,7 @@ export default function TipsPage() {
               </p>
               <div className="mt-2"><PageLiveCounter pageName="꿀팁 읽는 중" baseCount={22} /></div>
             </div>
-            <button onClick={handleWriteClick} className="rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium transition hover:bg-neon-primary-light"
+            <button onClick={handleWriteClick} className="shrink-0 whitespace-nowrap rounded-xl bg-neon-primary px-5 py-2.5 text-sm font-medium text-white transition hover:bg-neon-primary-light"
               style={{ minHeight: 44 }}>글쓰기</button>
           </div>
         </div>

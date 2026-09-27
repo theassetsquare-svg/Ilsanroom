@@ -1,4 +1,6 @@
 import { useParams } from 'react-router-dom';
+import { isAdVenue, isListed, sortVenues } from '@/lib/venue-order';
+import { popularity } from '@/lib/popularity';
 import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { venues } from '@/data/venues';
@@ -85,9 +87,11 @@ export default function RegionCategoryPage() {
   const catKey = reverseCatMap[category || ''] || category || '';
   const catKo = catLabelMap[catKey] || catKey;
   const decodedRegion = decodeURIComponent(region || '');
-  const filtered = venues.filter(v =>
+  const all = venues.filter(v =>
     v.category === catKey && v.regionKo === decodedRegion && v.status !== 'closed_or_unclear'
   );
+  const onlyListed = all.filter((v) => isListed(v));
+  const filtered = sortVenues(onlyListed.length ? onlyListed : all, 'rec', popularity.venues); // [놀쿨12-2] 추천 순서 · 같은 가게 한 번(둘째 쪽만 있는 허브는 그 쪽을 그대로)
 
   useDocumentMeta(
     `${decodedRegion} ${catKo} ${filtered.length}곳 — 한눈에 비교하고 고르기`,
@@ -106,7 +110,7 @@ export default function RegionCategoryPage() {
       <div className="grid gap-4 sm:grid-cols-2">
         {filtered.map(v => (
           <Link key={v.id} to={getHref(v)} className="rounded-xl bg-white p-4 shadow-sm transition hover:shadow-md">
-            <h2 className="font-semibold">{v.nameKo}</h2>
+            <h2 className="font-semibold">{v.nameKo} {isAdVenue(v) && <span className="ml-1 rounded border border-[#111] bg-white px-1.5 py-0.5 text-xs font-bold text-[#111] align-middle" data-ad-label>광고</span>}</h2>
             <p className="mt-1 text-sm text-[#444] line-clamp-2">{v.shortDescription}</p>{/* [놀쿨12-2] 글자 수로 자르면 낱말 가운데서 끊겼다 → 두 줄 말줄임 */}
           </Link>
         ))}

@@ -124,7 +124,7 @@ export default function FreeBoardPage() {
             </p>
             <div className="mt-2"><PageLiveCounter pageName="이 게시판" baseCount={35} /></div>
           </div>
-          <button onClick={handleWriteClick} className="rounded-xl px-5 py-2.5 text-sm font-bold transition"
+          <button onClick={handleWriteClick} className="shrink-0 whitespace-nowrap rounded-xl px-5 py-2.5 text-sm font-bold transition"
             style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>글쓰기</button>
         </div>
 

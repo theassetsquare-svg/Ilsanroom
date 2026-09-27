@@ -108,7 +108,7 @@ export default function FashionPage() {
               </p>
               <div className="mt-2"><PageLiveCounter pageName="스타일 보는 중" baseCount={19} /></div>
             </div>
-            <button onClick={handleWriteClick} className="rounded-xl px-5 py-2.5 text-sm font-bold transition"
+            <button onClick={handleWriteClick} className="shrink-0 whitespace-nowrap rounded-xl px-5 py-2.5 text-sm font-bold transition"
               style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>글쓰기</button>
           </div>
         </div>
@@ -176,7 +176,7 @@ export default function FashionPage() {
           <div className="rounded-2xl border border-neon-border py-14 text-center" style={{ backgroundColor: 'rgba(139,92,246,0.03)' }}>
             <p className="text-base font-bold" style={{ color: '#111' }}>아직 공유된 스타일 글이 없어요</p>
             <p className="mt-2 text-sm" style={{ color: '#888' }}>위 드레스코드 가이드를 참고하고, 나만의 코디 팁을 첫 글로 남겨보세요.</p>
-            <button onClick={handleWriteClick} className="mt-5 rounded-xl px-6 py-3 text-sm font-bold transition"
+            <button onClick={handleWriteClick} className="shrink-0 whitespace-nowrap mt-5 rounded-xl px-6 py-3 text-sm font-bold transition"
               style={{ backgroundColor: '#8B5CF6', color: '#FFFFFF', minHeight: 44 }}>첫 스타일 공유하기</button>
           </div>
         )}
