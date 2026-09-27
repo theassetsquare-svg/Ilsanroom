@@ -198,8 +198,8 @@ export default function VenueListClient({ venues, hrefPattern, showEngagementHoo
 
               elements.push(
                 <div key={venue.id} className="group relative" data-venue-card={venue.slug} data-ad={ad ? '1' : '0'}>
-                  {/* 그림과 같은 정사각 겹침 판 — 단추는 아래 두 귀퉁이(카드 윗줄 가게 이름을 가리지 않게) */}
-                  <div className="pointer-events-none absolute inset-x-0 top-0 z-[3] aspect-square">
+                  {/* 카드 맨 아래 띠(48px) 오른쪽 — 그림(가게 이름)도, 카드 가운데(누르면 가게 쪽)도 가리지 않게 */}
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-12">
                     <button
                       type="button"
                       aria-label={inCompare ? '비교 해제' : '비교에 추가'}
@@ -263,7 +263,7 @@ export default function VenueListClient({ venues, hrefPattern, showEngagementHoo
                           className="absolute inset-0 w-full h-full object-cover"
                         />
                       </div>
-                      <div className="px-2.5 py-2">
+                      <div className="px-2.5 pt-2 pb-12">
                         <h3 className="text-[15px] font-bold text-[#111] leading-snug truncate">{ad && <span className="mr-1 rounded border border-[#111] px-1 text-xs font-bold align-middle" data-ad-label>광고</span>}{venue.nameKo}</h3>
                         <p className="text-xs text-[#444] truncate">{regionOf(venue).label}{rank ? ` · 인기 ${rank}위` : ''}</p>
                         {venue.shortDescription && <p className="mt-0.5 text-xs text-[#333] line-clamp-1">{venue.shortDescription}</p>}
