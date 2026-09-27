@@ -355,7 +355,7 @@ export default function PostDetailPage() {
       {/* 글 내용 (일반 글) */}
       {!jogakData && (
         <div className="rounded-xl p-5 mb-4" style={{ backgroundColor: '#F9FAFB', minHeight: 150 }}>
-          {post.content?.startsWith('<') ? (
+          {/<(div|p|img|br|b|strong|i|em|u|a|ul|ol|li|h[1-6]|span|blockquote)\b[^>]*>/i.test(String(post.content || '')) ? ( /* [놀쿨12-2] 글자로 시작하고 사진을 붙인 글도 HTML 로(날 태그가 글자로 보이던 것) */
             <div className="rich-content text-base leading-relaxed" style={{ color: '#333', lineHeight: '1.8' }}
               dangerouslySetInnerHTML={{ __html: splitHtmlParagraphs(sanitizeHtml(post.content)) }} />
           ) : (

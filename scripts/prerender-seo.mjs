@@ -1341,7 +1341,7 @@ const CAT_GUIDE_BLURBS = {
 // ── 홈페이지: WebSite + Organization JSON-LD ──
 // 홈 SSR 강화: H2×6 카테고리 + 각 카테고리 TOP 5 + 지역 분포
 let homeSsr = `<h1>놀쿨 — 오늘 밤 어디 갈지, 여기서 정해진다</h1>`;
-homeSsr += `<p>놀쿨은 대한민국 전국 클럽·나이트·라운지·룸·요정·호빠 6업종 ${venues.length}+ 업소를 한 곳에 모은 나이트라이프 정보 플랫폼입니다. 놀쿨에서 분위기·라인업·후기를 1줄로 비교하고, 모바일에서 바로 오늘 갈 곳을 정하세요.</p>`;
+homeSsr += `<p>놀쿨은 대한민국 전국 클럽·나이트·라운지·룸·요정·호빠 6업종 ${OPEN_N}+ 업소를 한 곳에 모은 나이트라이프 정보 플랫폼입니다. 놀쿨에서 분위기·라인업·후기를 1줄로 비교하고, 모바일에서 바로 오늘 갈 곳을 정하세요.</p>`;
 homeSsr += `<h2>놀쿨이 처음이신가요?</h2>`;
 homeSsr += `<p>놀쿨은 20년 굴러본 사람이 직접 추려서 거를 곳을 미리 빼냈습니다. 처음 와도 1분 안에 오늘 코스가 정해지게 만들었어요. 놀쿨에서 비교, 클릭, 출발 — 주말 망치기 전 놀쿨부터 켜세요.</p>`;
 const HOME_CATS = [
@@ -1369,7 +1369,7 @@ homeSsr += `<p>서비스 지역: ${homeAllRegions.map(r => escHtml(r)).join(', '
 homeSsr += `<h2>자주 묻는 질문</h2>`;
 homeSsr += `<dl>`;
 const HOME_FAQ_SSR = [
-  { q: '놀쿨이 뭐예요?', a: `놀쿨은 전국 클럽·나이트·라운지·룸·요정·호빠 6업종 ${venues.length}+ 업소를 정리한 정보 플랫폼입니다. 놀쿨 하나면 매장 정보·후기·커뮤니티가 한 곳에서 다 보입니다.` },
+  { q: '놀쿨이 뭐예요?', a: `놀쿨은 전국 클럽·나이트·라운지·룸·요정·호빠 6업종 ${OPEN_N}+ 업소를 정리한 정보 플랫폼입니다. 놀쿨 하나면 매장 정보·후기·커뮤니티가 한 곳에서 다 보입니다.` },
   { q: '나이트랑 클럽이 어떻게 다른가요?', a: '나이트는 부킹·웨이터 시스템 중심, 클럽은 음악·스탠딩 중심입니다.' },
   { q: '룸 매니저 선택은 어떻게 하나요?', a: '매장 측이 안내하는 매니저 중에서 손님이 직접 선택하는 시스템입니다.' },
   { q: '광고 문의는 어떻게 해요?', a: '카톡 ID besta12로 문의하시면 상세 안내드립니다.' },
@@ -1388,9 +1388,9 @@ const HOME_FAQ_JSONLD = {
   })),
 };
 writePage('/', {
-  skel: { type: 'guide', h1Type: 'home', facts: { n: venues.length } },
+  skel: { type: 'guide', h1Type: 'home', facts: { n: OPEN_N } },
   title: '놀쿨 — 오늘 어디 갈지 못 정했죠? 20년 굴러본 사람이 골라드림',
-  description: `놀쿨 — 오늘 어디 갈지 못 정했죠? 거를 곳 천지예요. 놀쿨은 클럽·나이트·룸·요정·라운지·호빠 6업종 ${venues.length}+ 업소를 20년 굴러본 사람이 1줄로 정리. 주말 망치기 전 놀쿨부터 켜요.`,
+  description: `놀쿨 — 오늘 어디 갈지 못 정했죠? 거를 곳 천지예요. 놀쿨은 클럽·나이트·룸·요정·라운지·호빠 6업종 ${OPEN_N}+ 업소를 20년 굴러본 사람이 1줄로 정리. 주말 망치기 전 놀쿨부터 켜요.`,
   jsonLdList: [WEBSITE_JSONLD, ORG_JSONLD, HOME_FAQ_JSONLD],
   ssrBody: homeSsr
 });
@@ -1399,7 +1399,7 @@ writePage('/', {
 const COMMUNITY_BOARD_BLURBS = {
   '/community': () => {
     let s = `<h1>밤 사람들이 모이는 커뮤니티</h1>`;
-    s += `<p>전국 ${venues.length}곳을 다녀본 사람들이 모여 후기, 꿀팁, 추천을 남기는 광장. 광고 없이 진짜 경험만.</p>`;
+    s += `<p>전국 ${OPEN_N}곳을 다녀본 사람들이 모여 후기, 꿀팁, 추천을 남기는 광장. 광고 없이 진짜 경험만.</p>`;
     s += `<h2>커뮤니티 게시판</h2><ul>`;
     s += `<li><a href="/community/qna/">오늘 어디 가냐고? Q&A</a> — 갈 곳 못 정했을 때 추천받는 곳</li>`;
     s += `<li><a href="/community/reviews/">가본 사람만 쓰는 후기</a> — 별점과 한 줄 평</li>`;
@@ -2939,7 +2939,7 @@ console.log(`✅ _redirects 생성 (${redirectLines.length}줄, ${venues.length}
 // 6. llms.txt 자동 생성 — AI 검색엔진용 (가게이름 포함)
 // ══════════════════════════════════════════
 let llmsTxt = `# 놀쿨 (NOLCOOL)
-> 대한민국 전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보 플랫폼. ${venues.length}곳 비교, 직접 가본 후기, 분위기 정보 제공.
+> 대한민국 전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보 플랫폼. ${OPEN_N}곳 비교, 직접 가본 후기, 분위기 정보 제공.
 > 서울·경기·부산·대전·대구·광주·울산·제주 나이트라이프 정보의 모든 것.
 
 - 사이트: ${BASE_URL}/
@@ -2994,7 +2994,7 @@ let llmsTxt = `# 놀쿨 (NOLCOOL)
 - [입점 사례](${BASE_URL}/case-studies)
 - [후기](${BASE_URL}/testimonials)
 
-## 전체 매장 목록 (${venues.length}곳)\n`;
+## 전체 매장 쪽 목록 (${venues.length}쪽 · 같은 가게 두 쪽 ${venues.length - OPEN_N}쌍 포함 · 가게 ${OPEN_N}곳)\n`;
 
 // Group by category
 for (const [catKey, catInfo] of Object.entries(catMap)) {
@@ -3058,14 +3058,14 @@ console.log(`✅ llms.txt 자동 생성 (${venues.length}개 업소, 가게이�
 // 6-B. llms-full.txt — AI 검색엔진 전용 상세 콘텐츠 (전체 매장 설명 포함)
 // ══════════════════════════════════════════
 let llmsFull = `# 놀쿨 (NOLCOOL) — 전국 클럽·나이트·라운지·룸·요정·호빠 정보 플랫폼
-> 대한민국 전국 ${venues.length}곳의 클럽, 나이트, 라운지, 룸, 요정, 호빠 실시간 정보를 제공하는 플랫폼입니다.
+> 대한민국 전국 ${OPEN_N}곳의 클럽, 나이트, 라운지, 룸, 요정, 호빠 실시간 정보를 제공하는 플랫폼입니다.
 > 직접 방문한 후기, 분위기 정보, 업소 비교, 커뮤니티를 운영합니다.
 > 사이트: https://nolcool.com
 > 광고문의: 카카오톡 besta12
 
 ## 놀쿨이란?
 놀쿨(NOLCOOL)은 대한민국 최대 나이트라이프 정보 플랫폼입니다.
-서울, 경기, 부산, 대전, 대구, 광주, 울산, 제주 등 전국 주요 도시의 클럽, 나이트, 라운지, 룸, 요정, 호빠 ${venues.length}곳의 정보를 한곳에 모았습니다.
+서울, 경기, 부산, 대전, 대구, 광주, 울산, 제주 등 전국 주요 도시의 클럽, 나이트, 라운지, 룸, 요정, 호빠 ${OPEN_N}곳의 정보를 한곳에 모았습니다.
 각 업소별 분위기, 특징, 위치, 담당자 정보를 실제 방문 경험을 바탕으로 제공합니다.
 
 ## 서비스 영역
@@ -3086,7 +3086,7 @@ let llmsFull = `# 놀쿨 (NOLCOOL) — 전국 클럽·나이트·라운지·룸�
 - 룰렛 (랜덤 추천)
 - 매거진 (나이트라이프 읽을거리)
 
-## 전체 매장 상세 정보 (${venues.length}곳)\n\n`;
+## 전체 매장 쪽 상세 정보 (${venues.length}쪽 · 가게 ${OPEN_N}곳)\n\n`;
 
 for (const [catKey, catInfo] of Object.entries(catMap)) {
   const catVenues = venues.filter(vv => vv.cat === catKey);
@@ -3137,7 +3137,7 @@ for (const [regionKo, regionVenues] of Object.entries(regionVenueMap)) {
 
 llmsFull += `## 자주 묻는 질문 (FAQ)\n\n`;
 llmsFull += `**Q: 놀쿨은 어떤 사이트인가요?**\n`;
-llmsFull += `A: 놀쿨(nolcool.com)은 대한민국 전국 클럽, 나이트, 라운지, 룸, 요정, 호빠 ${venues.length}곳의 실시간 정보를 제공하는 나이트라이프 플랫폼입니다.\n\n`;
+llmsFull += `A: 놀쿨(nolcool.com)은 대한민국 전국 클럽, 나이트, 라운지, 룸, 요정, 호빠 ${OPEN_N}곳의 실시간 정보를 제공하는 나이트라이프 플랫폼입니다.\n\n`;
 llmsFull += `**Q: 서울에서 유명한 클럽은 어디인가요?**\n`;
 const seoulClubs = venues.filter(v => v.cat === 'club' && (v.regionKo.includes('강남') || v.regionKo.includes('홍대') || v.regionKo.includes('이태원') || v.regionKo.includes('압구정')));
 llmsFull += `A: 서울에서 유명한 클럽은 ${seoulClubs.map(v => v.nameKo).join(', ')} 등이 있습니다. 놀쿨에서 실시간 비교와 후기를 확인하세요.\n\n`;

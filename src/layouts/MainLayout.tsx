@@ -43,7 +43,7 @@ const websiteJsonLd = {
   name: '놀쿨',
   alternateName: 'NOLCOOL',
   url: 'https://nolcool.com',
-  description: '전국 클럽·나이트·라운지·룸·요정·호빠 ' + VENUES_TOTAL_OPEN + '곳 실시간 비교. 지역별 분위기, 후기, 예약 안내.',
+  description: '전국 클럽·나이트·라운지·룸·요정·호빠 ' + VENUES_TOTAL_OPEN + '곳 비교. 지역별 분위기, 후기, 예약 안내.',
   inLanguage: 'ko',
   potentialAction: {
     '@type': 'SearchAction',
