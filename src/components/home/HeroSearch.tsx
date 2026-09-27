@@ -1,6 +1,7 @@
 
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { isAdVenue } from '@/lib/venue-order';
 import { useNavigate } from 'react-router-dom';
 import { Link } from '../ui/SafeLink';
 import type { Venue } from '@/types';
@@ -260,7 +261,7 @@ export default function HeroSearch() {
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
                           <p className="truncate text-[15px] font-medium text-neon-text">{v.nameKo}</p>
-                          {v.isPremium && <span className="rounded bg-neon-gold/10 px-1.5 py-0.5 text-[10px] font-bold text-neon-gold">PREMIUM</span>}
+                          {isAdVenue(v) && <span className="rounded border border-[#111] bg-white px-1.5 py-0.5 text-xs font-bold text-[#111]" data-ad-label>광고</span>}
                         </div>
                         <p className="truncate text-[13px] text-neon-text-muted">
                           {v.regionKo} · {CATEGORY_FILTERS.find(f => f.key === v.category)?.label}

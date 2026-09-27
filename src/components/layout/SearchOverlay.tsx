@@ -1,6 +1,7 @@
 
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { isAdVenue } from '@/lib/venue-order';
 import { Link } from '../ui/SafeLink';
 import { venues as localVenues } from '@/data/venues';
 import type { Venue } from '@/types';
@@ -157,9 +158,7 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
                     {v.regionKo} · {catLabelMap[v.category] || v.category}
                   </p>
                 </div>
-                {v.isPremium && (
-                  <span className="shrink-0 rounded-full bg-neon-gold/10 px-2 py-0.5 text-xs font-bold text-neon-gold">PREMIUM</span>
-                )}
+                {isAdVenue(v) && <span className="rounded border border-[#111] bg-white px-1.5 py-0.5 text-xs font-bold text-[#111]" data-ad-label>광고</span>}
               </Link>
             ))}
           </div>

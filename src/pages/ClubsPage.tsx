@@ -3,6 +3,8 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { Link } from '@/components/ui/SafeLink';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
+import { sortVenues } from '@/lib/venue-order';
+import { popularity } from '@/lib/popularity';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
 import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
@@ -11,17 +13,14 @@ import { MidContentHook, ReadFinishCount } from '@/components/engagement/Reading
 import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter } from '@/components/venue/CategoryListingEngagement';
 import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 
-const regions = [
-  { key: 'gangnam', label: '강남' }, { key: 'hongdae', label: '홍대' }, { key: 'itaewon', label: '이태원' },
-  { key: 'apgujeong', label: '압구정' }, { key: 'sinchon', label: '신촌' }, { key: 'geondae', label: '건대' },
-  { key: 'busan', label: '부산' }, { key: 'daegu', label: '대구' }, { key: 'daejeon', label: '대전' },
-  { key: 'incheon', label: '인천' }, { key: 'suwon', label: '수원' }, { key: 'jeju', label: '제주' },
-];
+
+// [놀쿨12-2 · R4] 제목의 「강남 N곳」도 데이터에서 센다(박힌 숫자 0)
+const CLUB_GANGNAM_N = getVenuesByCategory('club').filter((v) => v.regionKo === '강남').length;
 
 export default function ClubsPage() {
-  useDocumentMeta('클럽 ' + VENUES_BY_CATEGORY.club + '곳 — 강남 11곳부터 이태원·압구정·홍대까지, 줄 서기 전에 드레스코드 먼저', '클럽 줄 컷이면 그날 끝. 10년 MD가 강남·홍대 클럽 Funktion-One·드레스코드·해외 게스트 DJ·새벽 3시 피크·VIP 부킹까지 클럽 38곳, 갈 곳만 추렸으니 줄 서기 전에 바로 확인 →');
+  useDocumentMeta('클럽 ' + VENUES_BY_CATEGORY.club + '곳 — 강남 ' + CLUB_GANGNAM_N + '곳부터 이태원·압구정·홍대까지, 줄 서기 전에 드레스코드 먼저', '클럽 줄 컷이면 그날 끝. 10년 MD가 강남·홍대 클럽 Funktion-One·드레스코드·해외 게스트 DJ·새벽 3시 피크·VIP 부킹까지 클럽 ' + VENUES_BY_CATEGORY.club + '곳, 갈 곳만 추렸으니 줄 서기 전에 바로 확인 →');
   const venues = getVenuesByCategory('club');
-  const featured = venues.find(v => v.isPremium) || venues[0];
+  const featured = sortVenues(venues, 'rec', popularity.venues)[0]; // [놀쿨12-2 · 13:18-2] 목록 추천 순서의 첫 가게(광고면 「광고」 표시)
   const byRegion = venues.reduce<Record<string, { n: number; key: string }>>((m, v) => {
     const cur = m[v.regionKo] || { n: 0, key: v.region };
     cur.n += 1; m[v.regionKo] = cur; return m;
@@ -85,7 +84,7 @@ export default function ClubsPage() {
       </div>
 
       {/* ═══ 업소 목록 — 핵심 콘텐츠 즉시 노출 ═══ */}
-      <VenueListClient venues={venues} hrefPattern="/clubs/{region}/{slug}" regions={regions} showEngagementHooks accentColor="violet" />
+      <VenueListClient venues={venues} hrefPattern="/clubs/{region}/{slug}" showEngagementHooks accentColor="violet" />
 
       {/* 시즌62 — 그리드 직후 인터랙티브 + 본문 즉시 노출 */}
       <CategoryVSBattle venueA="청담 레이스" venueB="압구정 하입" topic="강남 vs 압구정 — EDM 파티 대결" />

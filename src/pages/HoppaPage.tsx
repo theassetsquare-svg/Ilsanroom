@@ -2,6 +2,8 @@
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
+import { sortVenues } from '@/lib/venue-order';
+import { popularity } from '@/lib/popularity';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
 import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
@@ -10,24 +12,11 @@ import { MidContentHook, ReadFinishCount } from '@/components/engagement/Reading
 import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter } from '@/components/venue/CategoryListingEngagement';
 import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 
-const regions = [
-  { key: 'gangnam', label: '강남' },
-  { key: 'hongdae', label: '홍대' },
-  { key: 'geondae', label: '건대' },
-  { key: 'jangan', label: '장안동' },
-  { key: 'jangandong', label: '장안동' },
-  { key: 'suwon', label: '수원' },
-  { key: 'busan-haeundae', label: '해운대' },
-  { key: 'busan', label: '부산' },
-  { key: 'daegu', label: '대구' },
-  { key: 'daejeon', label: '대전' },
-  { key: 'jeonju', label: '전주' },
-];
 
 export default function HoppaPage() {
-  useDocumentMeta('여자 혼자 호빠 가도 돼? 10년 실장이 외모·매너·진행 다 봐주는 ' + VENUES_BY_CATEGORY.hoppa + '곳', '처음 호빠 가서 어색한 시간 30분이면 끝. 10년 일한 호빠 실장이 외모·매너·진행 다 봐드립니다. 강남·홍대·일산·해운대·대구 호빠 진짜 케어되는 18곳만 골랐으니 첫 방문 전에 먼저 확인 →');
+  useDocumentMeta('여자 혼자 호빠 가도 돼? 10년 실장이 외모·매너·진행 다 봐주는 ' + VENUES_BY_CATEGORY.hoppa + '곳', '처음 호빠 가서 어색한 시간 30분이면 끝. 10년 일한 호빠 실장이 외모·매너·진행 다 봐드립니다. 강남·홍대·일산·해운대·대구 호빠 진짜 케어되는 ' + VENUES_BY_CATEGORY.hoppa + '곳만 골랐으니 첫 방문 전에 먼저 확인 →');
   const venues = getVenuesByCategory('hoppa');
-  const featured = venues.find(v => v.isPremium) || venues[0];
+  const featured = sortVenues(venues, 'rec', popularity.venues)[0]; // [놀쿨12-2 · 13:18-2] 목록 추천 순서의 첫 가게(광고면 「광고」 표시)
 
   return (
     <div className="hoppa-theme mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
@@ -62,7 +51,7 @@ export default function HoppaPage() {
         )}
       </div>
 
-      <VenueListClient venues={venues} hrefPattern="/hoppa/{slug}" regions={regions} showEngagementHooks accentColor="pink" />
+      <VenueListClient venues={venues} hrefPattern="/hoppa/{slug}" showEngagementHooks accentColor="pink" />
 
       <CategoryVSBattle venueA="강남 로얄" venueB="강남 어게인" topic="해당 지역 호스트바 최강자는?" />
 

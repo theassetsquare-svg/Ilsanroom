@@ -2,6 +2,8 @@
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
+import { sortVenues } from '@/lib/venue-order';
+import { popularity } from '@/lib/popularity';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
 import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
@@ -13,9 +15,7 @@ import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCou
 export default function RoomsPage() {
   useDocumentMeta('룸 선택 한 번이라도 후회해본 사람만 봐요. 10년 실장이 까드림', '사진이랑 다르면 그 순간 분위기 끝납니다. 10년 일한 룸 실장이 셀렉션·양주 라인·진행 케어까지 매장별로 솔직하게. 후회하기 전에 일단 물어봐요 →');
   const venues = getVenuesByCategory('room');
-  // [놀쿨16-1 뒤 R1 고침 · 12-1 실측] VenueListClient 가 regions 를 반드시 받는데 이 쪽만 안 넘겨 목록이 JS 오류로 비었다(운영도 같음) — 장부 값으로만 만든다(지어낸 지역 0)
-  const regions = Array.from(new Map(venues.filter((v) => v.status !== 'closed_or_unclear').map((v) => [v.region, { key: v.region, label: v.regionKo }])).values());
-  const featured = venues.find(v => v.isPremium) || venues[0];
+  const featured = sortVenues(venues, 'rec', popularity.venues)[0]; // [놀쿨12-2 · 13:18-2] 목록 추천 순서의 첫 가게(광고면 「광고」 표시)
 
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
@@ -50,7 +50,7 @@ export default function RoomsPage() {
         )}
       </div>
 
-      <VenueListClient venues={venues} hrefPattern="/rooms/{region}/{slug}" regions={regions} showEngagementHooks accentColor="rose" />
+      <VenueListClient venues={venues} hrefPattern="/rooms/{region}/{slug}" showEngagementHooks accentColor="rose" />
 
       <CategoryVSBattle venueA="일산룸" venueB="해운대고구려" topic="독립 룸 맞대결" />
 

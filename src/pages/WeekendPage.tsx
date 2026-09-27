@@ -1,4 +1,7 @@
 import { useMemo } from 'react';
+import { WEEKEND_N, WEEKEND_TOP_N } from '@/data/venues-counts';
+import { isListed, sortVenues } from '@/lib/venue-order';
+import { popularity } from '@/lib/popularity';
 import { Link } from '../components/ui/SafeLink';
 import { venues } from '@/data/venues';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -27,14 +30,12 @@ export default function WeekendPage() {
   );
 
   const weekend = useMemo(() => {
-    return venues
-      .filter((v) => v.status !== 'closed_or_unclear')
-      .sort((a, b) => (b.isPremium ? 1 : 0) - (a.isPremium ? 1 : 0))
-      .slice(0, 30);
+    // [놀쿨12-2 · 13:18-2] 목록과 같은 추천 순서(「광고」 먼저 → 인기 엔진 순위 → 가나다) · 같은 가게 한 번
+    return sortVenues(venues.filter((v) => isListed(v)), 'rec', popularity.venues).slice(0, WEEKEND_N);
   }, []);
 
-  const top10 = weekend.slice(0, 10);
-  const rest = weekend.slice(10);
+  const top10 = weekend.slice(0, WEEKEND_TOP_N);
+  const rest = weekend.slice(WEEKEND_TOP_N);
 
   return (
     <div className="min-h-screen bg-neon-bg">
@@ -44,7 +45,7 @@ export default function WeekendPage() {
             📅 이번 주말 큐레이션
           </span>
           <h1 className="text-2xl md:text-4xl font-bold text-neon-text mb-3">
-            금토일 갈만한 30곳 — 어디가 진짜 핫한지 알려준다
+            금토일 갈만한 {WEEKEND_N}곳 — 광고 먼저, 그다음 인기 엔진 순위로 알려준다
           </h1>
           <p className="text-neon-text-muted text-base md:text-lg">
             영업 확인된 곳만 큐레이션. 주말 헛걸음 0번 만들자.
@@ -53,7 +54,7 @@ export default function WeekendPage() {
 
         <section className="mb-10">
           <h2 className="text-xl md:text-2xl font-bold text-neon-text mb-4">
-            이번 주말 먼저 볼 10곳
+            이번 주말 먼저 볼 {WEEKEND_TOP_N}곳
           </h2>
           <ol className="space-y-3">
             {top10.map((v, i) => (

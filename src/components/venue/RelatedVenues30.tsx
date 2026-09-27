@@ -123,7 +123,7 @@ export default function RelatedVenues30({ venue }: Props) {
                 <p className="text-sm font-bold truncate" style={{ color: '#111' }}>{v.nameKo}</p>
                 <p className="text-xs truncate" style={{ color: '#888' }}>{v.regionKo}</p>
                 {v.staffNickname && (
-                  <p className="text-[10px] mt-1 truncate" style={{ color: '#D4A843' }}>{v.staffNickname}</p>
+                  <p className="text-[10px] mt-1 truncate" style={{ color: '#7A5A0E' }}>{v.staffNickname}</p>
                 )}
               </Link>
             ))}

@@ -2,6 +2,8 @@
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
+import { sortVenues } from '@/lib/venue-order';
+import { popularity } from '@/lib/popularity';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
 import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
@@ -10,18 +12,11 @@ import { MidContentHook, ReadFinishCount } from '@/components/engagement/Reading
 import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter } from '@/components/venue/CategoryListingEngagement';
 import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 
-const regions = [
-  { key: 'gangnam', label: '강남' }, { key: 'seoul', label: '서울' }, { key: 'ilsan', label: '일산' },
-  { key: 'suwon', label: '수원' }, { key: 'seongnam', label: '성남' }, { key: 'incheon', label: '인천' },
-  { key: 'busan', label: '부산' }, { key: 'daegu', label: '대구' }, { key: 'daejeon', label: '대전' },
-  { key: 'gwangju', label: '광주' }, { key: 'ulsan', label: '울산' }, { key: 'paju', label: '파주' },
-  { key: 'changwon', label: '창원' }, { key: 'jeonju', label: '전주' }, { key: 'jeju', label: '제주' },
-];
 
 export default function NightsPage() {
   useDocumentMeta('나이트 부킹 한 번도 못 잡고 집 간 적? 10년 웨이터가 거를 곳 알려줘요', '부킹 안 잡히는 나이트 가면 1차로 끝나요. 10년 짠밥 웨이터가 홀·부스·물·진행 다 풀어드립니다. 방문 시간·매너·드레스코드까지 ' + VENUES_BY_CATEGORY.night + '곳 갈 곳 vs 거를 곳 한 줄로 정리 →');
   const venues = getVenuesByCategory('night');
-  const featured = venues.find(v => v.isPremium) || venues[0];
+  const featured = sortVenues(venues, 'rec', popularity.venues)[0]; // [놀쿨12-2 · 13:18-2] 목록 추천 순서의 첫 가게(광고면 「광고」 표시)
 
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
@@ -56,7 +51,7 @@ export default function NightsPage() {
         )}
       </div>
 
-      <VenueListClient venues={venues} hrefPattern="/nights/{slug}" regions={regions} showEngagementHooks accentColor="blue" />
+      <VenueListClient venues={venues} hrefPattern="/nights/{slug}" showEngagementHooks accentColor="blue" />
 
       {/* 시즌62 — 그리드 직후 인터랙티브 + 본문 즉시 노출 (체류 ↑) */}
       <CategoryVSBattle venueA="수원찬스돔나이트" venueB="인천아라비안나이트" topic="경기 소셜댄스홀 최강자는?" />
@@ -79,7 +74,7 @@ export default function NightsPage() {
             전국 {VENUES_BY_CATEGORY.night}곳이 등록되어 있다. 수원찬스돔나이트처럼 돔 구조로 유명한 곳, 부산연산동물나이트처럼 부킹률로 이름난 곳, 각각 개성이 확실하다. 금·토 밤 9시가 절정이고, 365일 매일 여는 곳도 많다.
           </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
-            서울 지역은 강남줄리아나나이트, 청담H2O나이트, 신림그랑프리나이트, 상봉동한국관나이트, 노원호박나이트, 노원스타나이트, 영등포터미널나이트 등이 각 권역을 대표한다. 강남줄리아나나이트는 30년 전통의 사교 명가로, 넓은 홀과 복고·댄스팝이 번갈아 나오는 DJ 선곡이 특징이다. 청담H2O나이트는 워터 테마 인테리어로 유명하고, 펩시맨이라 불리는 담당자가 첫 방문 손님 응대를 잘한다.
+            서울 지역은 강남줄리아나나이트, 청담H2O나이트, 신림그랑프리나이트, 상봉동한국관나이트, 노원호박나이트, 노원스타나이트, 영등포터미널나이트 등이 각 권역을 대표한다. 강남줄리아나나이트는 오래된 사교 명가로, 넓은 홀과 복고·댄스팝이 번갈아 나오는 DJ 선곡이 특징이다. 청담H2O나이트는 워터 테마 인테리어로 유명하고, 펩시맨이라 불리는 담당자가 첫 방문 손님 응대를 잘한다.
           </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
             경기권은 일산샴푸나이트, 파주야당스카이돔나이트, 화정한국관나이트, 김포호박나이트, 수원찬스돔나이트, 수원코리아나이트, 성남국빈관나이트, 분당퐁퐁나이트 등이 있다. 충청권은 대전세븐나이트, 대전봉명나이트, 천안스타돔나이트가, 경상권은 부산연산동물나이트, 부산아시아드나이트, 울산뉴월드나이트, 울산챔피언나이트, 대구한국관나이트가 핵심이다. 전라권은 광주상무나이트, 광주MGM나이트, 광주올나이트가 대표한다.

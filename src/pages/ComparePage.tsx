@@ -1,6 +1,8 @@
 
 
 import { useState, useMemo, useRef, useEffect } from 'react';
+import { WEEKEND_N } from '@/data/venues-counts';
+import { isAdVenue } from '@/lib/venue-order';
 import { useSearchParams } from 'react-router-dom';
 import { trackEvent } from '@/lib/visitor-tracker';
 import { Link } from '../components/ui/SafeLink';
@@ -159,7 +161,7 @@ export default function ComparePage() {
                   <Link to={getCategoryHref(v)}>
                     <h3 className="text-lg font-bold text-[#8B5CF6] hover:text-[#7C3AED] mb-2 transition-colors">{v.nameKo}</h3>
                   </Link>
-                  {v.isPremium && <Badge variant="premium" className="mb-3">PREMIUM</Badge>}
+                  {isAdVenue(v) && <span className="rounded border border-[#111] bg-white px-1.5 py-0.5 text-xs font-bold text-[#111]" data-ad-label>광고</span>}
 
                   <dl className="space-y-2 text-sm">
                     <div><dt className="text-[#999] text-xs">카테고리</dt><dd className="text-[#111] font-medium">{categoryLabels[v.category]}</dd></div>
@@ -234,7 +236,7 @@ export default function ComparePage() {
               🏆 실시간 인기 랭킹 →
             </Link>
             <Link to="/weekend" className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-3 text-sm font-bold text-[#111] active:bg-gray-100">
-              📅 이번 주말 30곳 →
+              📅 이번 주말 {WEEKEND_N}곳 →
             </Link>
             <Link to="/occasion" className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-3 text-sm font-bold text-[#111] active:bg-gray-100">
               🎯 상황별 6가지 →

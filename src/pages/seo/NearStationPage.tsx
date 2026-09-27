@@ -45,7 +45,7 @@ export default function NearStationPage() {
         {filtered.map(v => (
           <Link key={v.id} to={getHref(v)} className="rounded-xl bg-white p-4 shadow-sm transition hover:shadow-md">
             <h2 className="font-semibold">{v.nameKo}</h2>
-            <p className="mt-1 text-sm text-gray-500">{v.regionKo} {catLabelMap[v.category]} · {v.shortDescription.slice(0, 50)}</p>
+            <p className="mt-1 text-sm text-[#444] line-clamp-2">{v.regionKo} {catLabelMap[v.category]} · {v.shortDescription}</p>
           </Link>
         ))}
       </div>

@@ -502,7 +502,7 @@ main img {
   left: 0;
   z-index: 9999;
   padding: 12px 24px;
-  background: #8B5CF6;
+  background: #6D28D9; /* [놀쿨12-2 · P42] #8B5CF6 위 흰 글자 4.2:1 → 7.1:1 */
   color: #FFFFFF;
   font-weight: bold;
   text-decoration: none;
@@ -612,3 +612,16 @@ input[type="text"]::-ms-reveal {
 .nc-ssr-adopted .nc-rank{display:inline-block;margin-left:6px;padding:0 6px;border:1px solid rgba(128,128,128,.5);border-radius:10px;font-size:12px}
 .nc-ssr-adopted .nc-rank-note{font-size:13px;opacity:.7}
 .nc-ssr-adopted .ssr-breadcrumb ol{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px;font-size:14px}
+
+/* [놀쿨12-2 · E2] 떠 있는 전화 알약(StickyPhoneBar) 높이만큼 쪽 끝 여백 — 마지막 글이 가리지 않게 */
+body[data-sticky-pad] { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+
+/* [놀쿨12-2 · 누르는 자리] 손가락으로 쓰는 화면에서 단추·탭·입력은 48px 이상(구글 모바일 권장 · web.dev/articles/accessible-tap-targets) — 글 속 링크는 그대로 */
+@media (pointer: coarse) {
+  button, [role="tab"], select, input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]) { min-height: 48px; }
+  button, [role="tab"] { min-width: 48px; }
+}
+
+/* [놀쿨12-2 · P42] 글자 대비 4.5:1(WCAG 1.4.3) — 연보라·회색 보조 글자를 한 곳에서 짙게. 배경색(background-color)은 건드리지 않는다(style 맨 앞 또는 「; color:」 만) */
+[style^="color: rgb(139, 92, 246)"], [style*="; color: rgb(139, 92, 246)"], .text-\[\#8B5CF6\] { color: #6D28D9 !important; }
+[style^="color: rgb(136, 136, 136)"], [style*="; color: rgb(136, 136, 136)"], [style^="color: rgb(153, 153, 153)"], [style*="; color: rgb(153, 153, 153)"], .text-\[\#999\], .text-\[\#888\] { color: #595959 !important; }

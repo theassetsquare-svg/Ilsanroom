@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { Link } from '../ui/SafeLink';
 import type { Venue } from '@/types';
 import { popularity, isRanked, popScore, hasPopularityData } from '@/lib/popularity';
+import { isAdVenue, isListed, regionOf, sortVenues } from '@/lib/venue-order';
 
 // ── Category Hero ──
 interface CategoryHeroProps {
@@ -68,8 +69,9 @@ export function FeaturedVenueCard({ venue, href, accentColor, categoryLabel }: F
               ? `${categoryLabel} 1위`
               : `${categoryLabel} 추천`}
           </span>
-          {venue.isPremium && (
-            <span className="bg-amber-700 text-white text-xs font-bold px-2.5 py-1 rounded-full">PREMIUM</span>
+          {/* [놀쿨12-2 · 13:18-2] 「PREMIUM」 대신 명단 광고주만 「광고」(표시광고법) */}
+          {isAdVenue(venue) && (
+            <span className="bg-white text-[#111] border border-[#111] text-xs font-bold px-2.5 py-1 rounded-full" data-ad-label>광고</span>
           )}
         </div>
         <h2 className={`text-xl sm:text-2xl font-extrabold ${colors.text} mb-2 group-hover:underline`}>
@@ -79,7 +81,7 @@ export function FeaturedVenueCard({ venue, href, accentColor, categoryLabel }: F
           {venue.shortDescription}
         </p>
         <div className="flex flex-wrap items-center gap-3">
-          <span className="text-sm text-[#555]">{venue.regionKo}</span>
+          <span className="text-sm text-[#444]">{regionOf(venue).label}</span>
           {venue.atmosphere?.slice(0, 3).map((a) => (
             <span key={a} className={`text-xs ${colors.text}`}>#{a}</span>
           ))}
@@ -123,14 +125,8 @@ interface TopPicksProps {
 }
 
 export function TopPicksMini({ venues, hrefPattern, accentColor }: TopPicksProps) {
-  const top3 = useMemo(() => {
-    return [...venues]
-      .sort((a, b) => {
-        if (a.isPremium !== b.isPremium) return a.isPremium ? -1 : 1;
-        return (b.rating || 0) - (a.rating || 0);
-      })
-      .slice(0, 3);
-  }, [venues]);
+  // [놀쿨12-2 · 13:18-2] 목록과 같은 추천 순서(광고 → 인기 → 가나다)의 앞 3곳
+  const top3 = useMemo(() => sortVenues(venues.filter((v) => isListed(v)), 'rec', popularity.venues).slice(0, 3), [venues]);
 
   if (top3.length === 0) return null;
 
@@ -151,7 +147,7 @@ export function TopPicksMini({ venues, hrefPattern, accentColor }: TopPicksProps
   return (
     <div className={`col-span-full rounded-2xl border ${style} p-5 my-2`}>
       <h3 className="text-base font-bold text-[#111] mb-3">
-        프리미엄 추천 TOP 3
+        추천 순서 앞 3곳
       </h3>
       <div className="grid gap-3 sm:grid-cols-3">
         {top3.map((v, i) => (
@@ -160,8 +156,8 @@ export function TopPicksMini({ venues, hrefPattern, accentColor }: TopPicksProps
               {i + 1}
             </span>
             <div className="min-w-0">
-              <p className="text-sm font-bold text-[#111] truncate">{v.nameKo}</p>
-              <p className="text-xs text-[#555] truncate">{v.regionKo}</p>
+              <p className="text-sm font-bold text-[#111] truncate">{v.nameKo}{isAdVenue(v) ? ' · 광고' : ''}</p>
+              <p className="text-xs text-[#444] truncate">{regionOf(v).label}</p>
             </div>
           </Link>
         ))}

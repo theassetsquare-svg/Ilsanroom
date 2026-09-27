@@ -1,19 +1,17 @@
-
-
-import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import { Link } from '../ui/SafeLink';
 import type { Venue } from '@/types';
-import { VenueCardStats } from '@/components/ui/LiveStats';
 import { ListMidHook, TopPicksMini } from '@/components/venue/CategoryListingEngagement';
-import { hasVenueImage } from '@/data/venue-image-manifest';
-import { heroVer } from '@/lib/venue-file-ver';
+import { ogVer } from '@/lib/venue-file-ver';
 import { useBookmarks } from '@/hooks/useBookmarks';
 import { useCompareList } from '@/hooks/useCompareList';
+import { popularity, isRanked } from '@/lib/popularity';
+import { isAdVenue, isListed, regionOf, regionTree, inRegionKey, sortVenues, SORT_KEYS, SORT_LABELS, UNKNOWN_REGION, type SortKey } from '@/lib/venue-order';
 
 interface VenueListClientProps {
   venues: Venue[];
   hrefPattern: string;
-  regions: { key: string; label: string }[];
   showEngagementHooks?: boolean;
   accentColor?: string;
 }
@@ -22,93 +20,78 @@ function buildHref(pattern: string, v: Venue): string {
   return pattern.replace('{region}', v.region).replace('{slug}', v.slug);
 }
 
-function getCategoryLabel(cat: string) {
-  const map: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
-  return map[cat] || cat;
-}
-
-const catEmoji: Record<string, string> = { club: '🎵', night: '🌙', lounge: '🍸', room: '🚪', yojeong: '🏮', hoppa: '🥂' };
-
-const fallbackGradient: Record<string, string> = {
-  club: 'from-violet-500 to-indigo-700',
-  night: 'from-blue-500 to-purple-700',
-  lounge: 'from-amber-500 to-orange-700',
-  room: 'from-rose-500 to-pink-700',
-  yojeong: 'from-emerald-500 to-teal-700',
-  hoppa: 'from-pink-500 to-rose-700',
-};
-
-type SortKey = 'premium' | 'name' | 'reviews' | 'bookmarked';
-
-const SORT_LABEL: Record<SortKey, string> = {
-  premium: '추천순',
-  name: '이름순',
-  reviews: '후기많은순',
-  bookmarked: '즐겨찾기순',
-};
-
 const PAGE_SIZE = 36; // 부동산 정점 패턴 — Zillow·Redfin grid pagination 36
 
-export default function VenueListClient({ venues, hrefPattern, regions, showEngagementHooks = false, accentColor = 'violet' }: VenueListClientProps) {
-  const [regionFilter, setRegionFilter] = useState('all');
-  const [sortKey, setSortKey] = useState<SortKey>('premium');
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-  const [showTop, setShowTop] = useState(false);
+/** 인기 엔진 순위(실측 28일 · ranked 만) — 카드의 「인기 N위」 표시 */
+const POP_RANK: Map<string, number> = (() => {
+  const m = new Map<string, number>();
+  Object.entries(popularity.venues)
+    .filter(([, e]) => e.ranked)
+    .sort((a, b) => b[1].score - a[1].score)
+    .forEach(([slug], i) => m.set(slug, i + 1));
+  return m;
+})();
+
+/**
+ * [놀쿨12-2 · 대표님 13:18-1·2·7·11] 목록 — 네이버처럼
+ *  - 지역 2단: 시·도 → 시·군·구(가게 주소에서 · 주소 없는 곳은 「지역 확인 중」) · 칩 숫자 = 목록 수
+ *  - 정렬 칩: 추천(광고 → 인기 → 가나다) · 인기 · 가나다 · 새로 입점
+ *  - 선택은 같은 주소의 ?region= · ?sort= 로만(새 주소 0 · canonical 은 원래 주소)
+ *  - 카드: 가게 이름이 크게 그려진 표준 카드 그림 + 이름 글자 + 지역 + 한 줄 + 인기 표시 + 「광고」 표시
+ *  - 뒤로 가기로 돌아오면 보던 자리(몇 장까지 펼쳤는지 · 내린 높이)를 되살린다
+ */
+export default function VenueListClient({ venues, hrefPattern, showEngagementHooks = false, accentColor = 'violet' }: VenueListClientProps) {
+  const [params, setParams] = useSearchParams();
+  const location = useLocation();
+  const regionFilter = params.get('region') || 'all';
+  const sortKey: SortKey = (SORT_KEYS as string[]).includes(params.get('sort') || '') ? (params.get('sort') as SortKey) : 'rec';
+  const storeKey = `nc-list:${location.pathname}${location.search}`;
+  const restored = useRef(false);
+  const [visibleCount, setVisibleCount] = useState(() => {
+    try { const s = JSON.parse(sessionStorage.getItem(storeKey) || 'null'); if (s && s.count) return s.count as number; } catch { /* 저장소 막힘 — 첫 장부터 */ }
+    return PAGE_SIZE;
+  });
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const { isBookmarked, toggle: toggleBookmark } = useBookmarks();
   const { isInList: isInCompare, toggle: toggleCompare, isFull: compareFull } = useCompareList();
 
-  /* 폐업·미확인 venue 자동 제외 */
-  const CLOSED = new Set(['closed_or_unclear', 'closed', 'permanently_closed', 'temporarily_closed']);
-  const openVenues = useMemo(() => venues.filter((v) => !CLOSED.has(String(v.status || ''))), [venues]);
+  /* 폐업·미확인 · 같은 가게 둘째 쪽 제외 */
+  const listed = useMemo(() => venues.filter((v) => isListed(v)), [venues]);
+  const tree = useMemo(() => regionTree(listed), [listed]);
+  const activeSido = regionFilter === 'all' || regionFilter === UNKNOWN_REGION ? null : regionFilter.split('-')[0];
+  const sidoNode = activeSido ? tree.sidos.find((s) => s.key === activeSido) || null : null;
 
-  function inRegion(v: Venue, key: string) {
-    if (v.region === key || v.regionKo === key) return true;
-    if (v.region.startsWith(key + '-')) return true;
-    return false;
+  const filtered = useMemo(
+    () => sortVenues(listed.filter((v) => inRegionKey(v, regionFilter)), sortKey, popularity.venues),
+    [listed, regionFilter, sortKey],
+  );
+
+  function setParam(key: 'region' | 'sort', value: string | null) {
+    const next = new URLSearchParams(params);
+    if (!value || (key === 'region' && value === 'all') || (key === 'sort' && value === 'rec')) next.delete(key);
+    else next.set(key, value);
+    setParams(next, { replace: true, preventScrollReset: true });
+    setVisibleCount(PAGE_SIZE);
   }
 
-  const regionCounts = useMemo(() => {
-    const map: Record<string, number> = { all: openVenues.length };
-    for (const r of regions) {
-      map[r.key] = openVenues.filter((v) => inRegion(v, r.key)).length;
-    }
-    return map;
-  }, [openVenues, regions]);
-
-  const filtered = useMemo(() => {
-    let list = openVenues;
-    if (regionFilter !== 'all') {
-      list = list.filter((v) => inRegion(v, regionFilter));
-    }
-    list = [...list].sort((a, b) => {
-      if (sortKey === 'name') return a.nameKo.localeCompare(b.nameKo);
-      if (sortKey === 'reviews') {
-        const ra = a.reviewCount || 0;
-        const rb = b.reviewCount || 0;
-        if (rb !== ra) return rb - ra;
-        return a.nameKo.localeCompare(b.nameKo);
-      }
-      if (sortKey === 'bookmarked') {
-        const ba = isBookmarked(buildHref(hrefPattern, a)) ? 1 : 0;
-        const bb = isBookmarked(buildHref(hrefPattern, b)) ? 1 : 0;
-        if (ba !== bb) return bb - ba;
-        if (a.isPremium !== b.isPremium) return a.isPremium ? -1 : 1;
-        return a.nameKo.localeCompare(b.nameKo);
-      }
-      // premium (default 추천순)
-      if (a.isPremium !== b.isPremium) return a.isPremium ? -1 : 1;
-      return a.nameKo.localeCompare(b.nameKo);
-    });
-    return list;
-  }, [openVenues, regionFilter, sortKey, isBookmarked, hrefPattern]);
-
-  /* 무한 스크롤 — IntersectionObserver로 sentinel 진입 시 +PAGE_SIZE */
+  /* 뒤로 가기 자리 기억 — 가게로 들어가기 직전의 높이·펼친 장 수를 저장했다가 되살린다 */
   useEffect(() => {
-    setVisibleCount(PAGE_SIZE); // 필터/정렬 변경 시 첫 페이지로
-  }, [regionFilter, sortKey]);
+    if (restored.current) return;
+    restored.current = true;
+    let saved: { y?: number } | null = null;
+    try { saved = JSON.parse(sessionStorage.getItem(storeKey) || 'null'); } catch { saved = null; }
+    if (saved && typeof saved.y === 'number' && saved.y > 0) {
+      const y = saved.y;
+      requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, y)));
+    }
+  }, [storeKey]);
+  function rememberSpot() {
+    try { sessionStorage.setItem(storeKey, JSON.stringify({ y: window.scrollY, count: visibleCount })); } catch { /* 저장소 막힘 — 기억 없이 */ }
+  }
 
+  const hasMore = visibleCount < filtered.length;
+  /* 무한 스크롤 — IntersectionObserver로 sentinel 진입 시 +PAGE_SIZE */
   useEffect(() => {
     if (!sentinelRef.current) return;
     const el = sentinelRef.current;
@@ -119,24 +102,9 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
     }, { rootMargin: '600px' });
     io.observe(el);
     return () => io.disconnect();
-  }, [filtered.length]);
+    // [놀쿨12-2] 칩을 바꿔 첫 장으로 돌아가면 「더 불러오기」 자리가 새로 생긴다 — 그때마다 다시 지켜본다(옛 자리를 지켜보다 36곳에서 멈추던 것)
+  }, [filtered.length, hasMore]);
 
-  /* 맨 위로 버튼 — 400px 스크롤 후 노출 */
-  useEffect(() => {
-    function onScroll() {
-      setShowTop(window.scrollY > 400);
-    }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  const scrollTop = useCallback(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
-  const activeRegionLabel = regionFilter === 'all' ? null : (regions.find((r) => r.key === regionFilter)?.label || regionFilter);
-
-  /* 칩 색상 */
   const accentBg: Record<string, string> = {
     violet: 'bg-violet-600 border-violet-600',
     blue: 'bg-blue-600 border-blue-600',
@@ -146,106 +114,77 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
     pink: 'bg-pink-600 border-pink-600',
   };
   const activeChip = accentBg[accentColor] || accentBg.violet;
+  const chip = (active: boolean) =>
+    `inline-flex items-center gap-1.5 rounded-full border px-4 text-sm font-bold transition-colors ${active ? `${activeChip} text-white` : 'bg-white border-gray-300 text-[#222] hover:border-gray-500'}`;
+  const countPill = (active: boolean) => `inline-block min-w-[20px] rounded-full text-xs px-1.5 ${active ? 'bg-white text-[#222]' : 'bg-gray-100 text-[#444]'}`;
 
   const visibleList = filtered.slice(0, visibleCount);
-  const hasMore = visibleCount < filtered.length;
+  const activeLabel = regionFilter === 'all' ? null : regionFilter === UNKNOWN_REGION ? '지역 확인 중' : regionFilter.replace('-', ' ');
 
   return (
     <div data-venue-list-v2>
-      {/* Sticky 필터바 — 부동산 정점 패턴 #1 (Zillow top filter) */}
-      <div
-        className="sticky top-0 z-[40] -mx-4 px-4 sm:mx-0 sm:px-0 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85 border-b border-gray-100 pt-2 pb-2 mb-3"
-      >
-        {/* 지역 칩 (시즌63 유지 + sticky 컨테이너로 격상) */}
+      <div className="sticky top-0 z-[40] -mx-4 px-4 sm:mx-0 sm:px-0 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85 border-b border-gray-100 pt-2 pb-2 mb-3">
+        {/* 1단 — 시·도 */}
         <div className="-mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto">
-          <div className="flex items-center gap-2 pb-1 whitespace-nowrap" role="tablist" aria-label="지역 필터">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={regionFilter === 'all'}
-              onClick={() => setRegionFilter('all')}
-              className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 text-xs font-bold transition-colors ${
-                regionFilter === 'all' ? `${activeChip} text-white` : 'bg-white border-gray-200 text-[#333] hover:border-gray-400'
-              }`}
-              style={{ minHeight: 36 }}
-            >
-              전체
-              <span className={`inline-block min-w-[18px] rounded-full text-[10px] px-1 ${regionFilter === 'all' ? 'bg-white text-[#333]' : 'bg-gray-100 text-[#666]'}`}>{regionCounts.all}</span>
+          <div className="flex items-center gap-2 pb-1 whitespace-nowrap" role="tablist" aria-label="시·도">
+            <button type="button" role="tab" aria-selected={regionFilter === 'all'} onClick={() => setParam('region', 'all')} className={chip(regionFilter === 'all')} style={{ minHeight: 48 }} data-region-chip="all">
+              전체 <span className={countPill(regionFilter === 'all')}>{tree.total}</span>
             </button>
-            {regions.map((r) => {
-              const cnt = regionCounts[r.key] || 0;
-              if (cnt === 0) return null;
-              const active = regionFilter === r.key;
+            {tree.sidos.map((s) => {
+              const active = activeSido === s.key;
               return (
-                <button
-                  key={r.key}
-                  type="button"
-                  role="tab"
-                  aria-selected={active}
-                  onClick={() => setRegionFilter(r.key)}
-                  className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 text-xs font-bold transition-colors ${
-                    active ? `${activeChip} text-white` : 'bg-white border-gray-200 text-[#333] hover:border-gray-400'
-                  }`}
-                  style={{ minHeight: 36 }}
-                >
-                  {r.label}
-                  <span className={`inline-block min-w-[18px] rounded-full text-[10px] px-1 ${active ? 'bg-white text-[#333]' : 'bg-gray-100 text-[#666]'}`}>{cnt}</span>
+                <button key={s.key} type="button" role="tab" aria-selected={active} onClick={() => setParam('region', s.key)} className={chip(active)} style={{ minHeight: 48 }} data-region-chip={s.key}>
+                  {s.label} <span className={countPill(active)}>{s.count}</span>
                 </button>
               );
             })}
+            {tree.unknown > 0 && (
+              <button type="button" role="tab" aria-selected={regionFilter === UNKNOWN_REGION} onClick={() => setParam('region', UNKNOWN_REGION)} className={chip(regionFilter === UNKNOWN_REGION)} style={{ minHeight: 48 }} data-region-chip={UNKNOWN_REGION}>
+                지역 확인 중 <span className={countPill(regionFilter === UNKNOWN_REGION)}>{tree.unknown}</span>
+              </button>
+            )}
           </div>
         </div>
+        {/* 2단 — 시·군·구 (시·도를 고르면 뜬다) */}
+        {sidoNode && (sidoNode.sggs.length > 1 || sidoNode.noSgg > 0) && (
+          <div className="-mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto mt-1">
+            <div className="flex items-center gap-2 pb-1 whitespace-nowrap" role="tablist" aria-label={`${sidoNode.label} 시·군·구`}>
+              <button type="button" role="tab" aria-selected={regionFilter === sidoNode.key} onClick={() => setParam('region', sidoNode.key)} className={chip(regionFilter === sidoNode.key)} style={{ minHeight: 48 }} data-region-chip={sidoNode.key}>
+                {sidoNode.label} 전체 <span className={countPill(regionFilter === sidoNode.key)}>{sidoNode.count}</span>
+              </button>
+              {sidoNode.sggs.map((g) => (
+                <button key={g.key} type="button" role="tab" aria-selected={regionFilter === g.key} onClick={() => setParam('region', g.key)} className={chip(regionFilter === g.key)} style={{ minHeight: 48 }} data-region-chip={g.key}>
+                  {g.label} <span className={countPill(regionFilter === g.key)}>{g.count}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
-        {/* 정렬 + 결과 카운트 + 활성 필터 칩 (부동산 정점 #2·#5·#6) */}
-        <div className="mt-2 flex flex-wrap items-center gap-2">
-          <label className="inline-flex items-center gap-1 text-xs font-bold text-[#555]" htmlFor="venue-sort">
-            정렬
-          </label>
-          <select
-            id="venue-sort"
-            value={sortKey}
-            onChange={(e) => setSortKey(e.target.value as SortKey)}
-            aria-label="정렬 기준"
-            data-testid="venue-sort"
-            className="rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-[#111] outline-none focus:border-[#8B5CF6]"
-            style={{ minHeight: 36 }}
-          >
-            <option value="premium">추천순</option>
-            <option value="name">이름순</option>
-            <option value="reviews">후기많은순</option>
-            <option value="bookmarked">즐겨찾기순</option>
-          </select>
-
-          <span className="text-xs font-bold text-[#111]" data-testid="venue-count">
-            {filtered.length}곳
-            <span className="ml-1 font-normal text-[#666]">· {SORT_LABEL[sortKey]}</span>
-          </span>
-
-          {/* 활성 필터 — 1-tap 해제 (부동산 정점 #6) */}
-          {activeRegionLabel && (
-            <button
-              type="button"
-              onClick={() => setRegionFilter('all')}
-              aria-label={`${activeRegionLabel} 필터 해제`}
-              data-testid="active-filter"
-              className="inline-flex items-center gap-1 rounded-full bg-violet-50 border border-violet-200 px-2.5 py-1 text-[11px] font-bold text-violet-700 hover:bg-violet-100"
-              style={{ minHeight: 32 }}
-            >
-              {activeRegionLabel}
-              <span aria-hidden="true">×</span>
+        {/* 정렬 칩 + 결과 수 */}
+        <div className="mt-2 flex flex-wrap items-center gap-2" role="tablist" aria-label="정렬">
+          {SORT_KEYS.map((k) => (
+            <button key={k} type="button" role="tab" aria-selected={sortKey === k} onClick={() => setParam('sort', k)} className={chip(sortKey === k)} style={{ minHeight: 48 }} data-sort-chip={k}>
+              {SORT_LABELS[k]}
             </button>
-          )}
+          ))}
+          <span className="text-sm font-bold text-[#111]" data-testid="venue-count">
+            {filtered.length}곳
+            {activeLabel && <span className="ml-1 font-normal text-[#444]">· {activeLabel}</span>}
+          </span>
         </div>
+        {sortKey === 'rec' && (
+          <p className="mt-1 text-xs text-[#444]">추천 = 「광고」 가게 먼저 → 인기 순위(최근 28일 실측 · {popularity.generatedAt || '집계 전'} 기준) → 가나다</p>
+        )}
       </div>
 
-      {/* Grid */}
       {filtered.length > 0 ? (
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {visibleList.map((venue, idx) => {
               const elements = [];
               if (showEngagementHooks && idx === 14) {
-                elements.push(<TopPicksMini key={`top-${idx}`} venues={venues} hrefPattern={hrefPattern} accentColor={accentColor} />);
+                elements.push(<TopPicksMini key={`top-${idx}`} venues={listed} hrefPattern={hrefPattern} accentColor={accentColor} />);
               } else if (showEngagementHooks && (idx === 24 || idx === 44)) {
                 elements.push(<ListMidHook key={`hook-${idx}`} index={idx === 24 ? 0 : 1} />);
               }
@@ -253,10 +192,12 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
               const path = buildHref(hrefPattern, venue);
               const bookmarked = isBookmarked(path);
               const inCompare = isInCompare(path);
+              const ad = isAdVenue(venue);
+              const rank = isRanked(venue.slug) ? POP_RANK.get(venue.slug) : undefined;
+              const card = `/og/${venue.slug}${ogVer(venue.slug)}`;
 
               elements.push(
-                <div key={venue.id} className="group relative">
-                  {/* 비교 체크박스 — 부동산 정점 #10 (Redfin/Zillow compare check). 좌측 상단, 카드 클릭과 분리 */}
+                <div key={venue.id} className="group relative" data-venue-card={venue.slug} data-ad={ad ? '1' : '0'}>
                   <button
                     type="button"
                     aria-label={inCompare ? '비교 해제' : '비교에 추가'}
@@ -266,30 +207,23 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      toggleCompare({
-                        path,
-                        nameKo: venue.nameKo,
-                        category: venue.category,
-                        regionKo: venue.regionKo,
-                        slug: venue.slug,
-                      });
+                      toggleCompare({ path, nameKo: venue.nameKo, category: venue.category, regionKo: venue.regionKo, slug: venue.slug });
                     }}
-                    className={`absolute top-2 left-2 z-[3] inline-flex items-center justify-center rounded-md backdrop-blur-sm transition-colors ${
-                      inCompare ? 'bg-violet-600 text-white' : 'bg-white/85 text-[#333] hover:bg-white'
+                    className={`absolute top-1 left-1 z-[3] inline-flex items-center justify-center rounded-lg transition-colors ${
+                      inCompare ? 'bg-violet-600 text-white' : 'bg-white/90 text-[#222] hover:bg-white'
                     } ${!inCompare && compareFull ? 'opacity-40 cursor-not-allowed' : ''}`}
-                    style={{ width: 28, height: 28 }}
+                    style={{ width: 48, height: 48 }}
                     title={!inCompare && compareFull ? '비교 최대 4곳' : (inCompare ? '비교 해제' : '비교에 추가 (최대 4)')}
                   >
                     {inCompare ? (
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                     ) : (
-                      <span aria-hidden="true" className="text-[10px] font-bold leading-none">VS</span>
+                      <span aria-hidden="true" className="text-xs font-bold leading-none">VS</span>
                     )}
                   </button>
 
-                  {/* 즐겨찾기 ♥ — 부동산 정점 #3 (Zillow heart, Redfin save). 카드 우측 상단 absolute */}
                   <button
                     type="button"
                     aria-label={bookmarked ? '즐겨찾기 해제' : '즐겨찾기 추가'}
@@ -300,54 +234,42 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
                       e.stopPropagation();
                       toggleBookmark(path, venue.nameKo);
                     }}
-                    className={`absolute top-2 right-2 z-[3] inline-flex items-center justify-center rounded-full backdrop-blur-sm transition-colors ${
-                      bookmarked ? 'bg-rose-500 text-white' : 'bg-white/85 text-[#333] hover:bg-white'
+                    className={`absolute top-1 right-1 z-[3] inline-flex items-center justify-center rounded-full transition-colors ${
+                      bookmarked ? 'bg-rose-500 text-white' : 'bg-white/90 text-[#222] hover:bg-white'
                     }`}
-                    style={{ width: 36, height: 36 }}
+                    style={{ width: 48, height: 48 }}
                   >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill={bookmarked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill={bookmarked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
                     </svg>
                   </button>
 
-                  <Link to={path} className="block">
-                    <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform group-hover:scale-[1.02] group-hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
-                      <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
-                        {hasVenueImage(venue.slug) && (
-                          <img
-                            src={`/venues/${venue.slug}-1${heroVer(venue.slug)}.webp?v3`}
-                            alt={venue.nameKo}
-                            width={300}
-                            height={300}
-                            loading="lazy"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display = 'none';
-                            }}
-                            className="absolute inset-0 w-full h-full object-cover z-[1]"
-                          />
-                        )}
-                        <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${fallbackGradient[venue.category] || 'from-gray-500 to-gray-700'}`}>
-                          <span className="text-3xl">{catEmoji[venue.category] || '🎵'}</span>
-                          <span className="mt-1 text-xs font-bold text-white/80">{venue.nameKo.slice(0, 4)}</span>
-                        </div>
-                        {venue.isPremium && (
-                          <span className="absolute top-2 left-2 z-[2] rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-amber-400 backdrop-blur-sm">
-                            PREMIUM
+                  <Link to={path} className="block" onClick={rememberSpot}>
+                    <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform group-hover:scale-[1.02]">
+                      <div className="relative w-full overflow-hidden bg-[#111]" style={{ aspectRatio: '1/1' }}>
+                        <img
+                          src={`${card}-w600.webp`}
+                          alt={`${venue.nameKo} 표준 카드`}
+                          width={300}
+                          height={300}
+                          loading={idx < 4 ? 'eager' : 'lazy'}
+                          decoding="async"
+                          onError={(e) => {
+                            const img = e.target as HTMLImageElement;
+                            if (!img.dataset.fb) { img.dataset.fb = '1'; img.src = `${card}.jpg`; }
+                          }}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                        {ad && (
+                          <span className="absolute bottom-1 left-1 z-[2] rounded bg-white px-1.5 py-0.5 text-xs font-bold text-[#111] border border-[#111]" data-ad-label>
+                            광고
                           </span>
                         )}
-
-                        {/* 카드 호버 미리보기 — 부동산 정점 #7 (Zillow hover preview). desktop만, shortDescription 1줄 fade-in */}
-                        <div className="hidden sm:flex absolute inset-0 z-[2] flex-col justify-end bg-gradient-to-t from-black/90 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-3">
-                          <p className="text-[11px] leading-snug text-white line-clamp-3" data-testid="venue-hover-preview">
-                            {venue.shortDescription || `${venue.regionKo} ${getCategoryLabel(venue.category)} ${venue.nameKo}`}
-                          </p>
-                        </div>
-
-                        <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2.5 py-1.5 sm:group-hover:opacity-0 transition-opacity">
-                          <h3 className="text-sm font-bold text-white leading-tight truncate">{venue.nameKo}</h3>
-                          <p className="text-[11px] text-white/90 truncate">{getCategoryLabel(venue.category)} · {venue.regionKo}</p>
-                          <VenueCardStats slug={venue.slug} className="mt-0.5 text-white/60 [&_strong]:text-white/80 [&_.rounded-full]:bg-red-400" />
-                        </div>
+                      </div>
+                      <div className="px-2.5 py-2">
+                        <h3 className="text-[15px] font-bold text-[#111] leading-snug truncate">{venue.nameKo}</h3>
+                        <p className="text-xs text-[#444] truncate">{regionOf(venue).label}{rank ? ` · 인기 ${rank}위` : ''}</p>
+                        {venue.shortDescription && <p className="mt-0.5 text-xs text-[#333] line-clamp-1">{venue.shortDescription}</p>}
                       </div>
                     </div>
                   </Link>
@@ -357,40 +279,22 @@ export default function VenueListClient({ venues, hrefPattern, regions, showEnga
             })}
           </div>
 
-          {/* 무한 스크롤 sentinel — 부동산 정점 #9 */}
           {hasMore && (
-            <div ref={sentinelRef} data-testid="venue-sentinel" className="py-8 text-center text-xs text-[#666]">
+            <div ref={sentinelRef} data-testid="venue-sentinel" className="py-8 text-center text-xs text-[#444]">
               <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-violet-300 border-t-transparent align-middle" /> 더 불러오는 중…
             </div>
           )}
           {!hasMore && filtered.length > PAGE_SIZE && (
-            <div className="py-8 text-center text-xs text-[#666]">— 마지막 업소입니다 ({filtered.length}곳 표시) —</div>
+            <div className="py-8 text-center text-xs text-[#444]">— 마지막 업소입니다 ({filtered.length}곳 표시) —</div>
           )}
         </>
       ) : (
         <div className="py-20 text-center">
-          <p className="text-[#555]">조건에 맞는 업소가 없습니다.</p>
-          <button onClick={() => setRegionFilter('all')} className="mt-3 text-sm text-[#8B5CF6] hover:underline">
+          <p className="text-[#444]">조건에 맞는 업소가 없습니다.</p>
+          <button onClick={() => setParam('region', 'all')} className="mt-3 text-sm text-[#6D28D9] hover:underline" style={{ minHeight: 48 }}>
             필터 초기화
           </button>
         </div>
-      )}
-
-      {/* 맨 위로 버튼 — 부동산 정점 #9 보조 */}
-      {showTop && (
-        <button
-          type="button"
-          aria-label="맨 위로 이동"
-          data-testid="scroll-top"
-          data-back-to-top
-          onClick={scrollTop}
-          className="fixed bottom-24 right-4 z-[50] inline-flex items-center justify-center rounded-full bg-violet-600 text-white shadow-lg hover:bg-violet-700"
-          style={{ width: 44, height: 44 }}
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M18 15l-6-6-6 6" />
-          </svg>
-        </button>
       )}
     </div>
   );

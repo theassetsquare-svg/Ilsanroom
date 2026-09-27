@@ -9,7 +9,8 @@ import path from 'path';
 import crypto from 'crypto';
 import { execSync } from 'child_process';
 import { provinceOf, localityOf } from './lib/region-admin.mjs';
-import { heroVer, ogVer } from '../src/lib/venue-file-ver.mjs';
+import { ogVer } from '../src/lib/venue-file-ver.mjs';
+import { isAdVenue, isListed, regionOf, regionTree, sortVenues } from '../src/lib/venue-order.mjs'; // [놀쿨12-2 · 13:18-1·2·4] React 목록과 같은 한 자리
 import sharp from 'sharp'; // [놀쿨11-3] 첫 화면 그림(og jpg) 의 webp 축소판 생성
 
 const DIST = path.resolve('dist');
@@ -40,6 +41,19 @@ async function buildOgWebp() {
   console.log(`🖼️ og webp 축소판: 원본 ${jpgs.length} · 새로 만듦 ${made} · 사용 가능 ${OG_WEBP.size}`);
 }
 await buildOgWebp();
+// [놀쿨12-2] 첫 그림 inline — dist/og/<이름>-w600.webp 를 data: 주소로(24KB 넘으면 싣지 않고 주소 그대로)
+const _INLINE_CACHE = new Map();
+function inlineWebp(absW1200) {
+  const m = String(absW1200 || '').match(/\/og\/([^/?#]+)-w1200\.webp$/i);
+  if (!m) return null;
+  if (_INLINE_CACHE.has(m[1])) return _INLINE_CACHE.get(m[1]);
+  let out = null;
+  try { const b = fs.readFileSync(path.join(DIST, 'og', `${m[1]}-w600.webp`)); if (b.length <= 24 * 1024) out = 'data:image/webp;base64,' + b.toString('base64'); } catch { out = null; }
+  _INLINE_CACHE.set(m[1], out);
+  return out;
+}
+// [놀쿨12-2] 목록 한 줄 — 글자 수로 자르면 낱말 가운데서 끊겼다 → 띄어쓰기 자리에서 자르고 말줄임표
+function cutAtWord(t, n) { t = String(t || ''); if (t.length <= n) return t; const c = t.slice(0, n); const i = c.lastIndexOf(' '); return (i > n * 0.5 ? c.slice(0, i) : c).replace(/[,·—\s]+$/, '') + '…'; }
 // og jpg 주소 → webp srcset(있을 때만). 없으면 null(원본 jpg 그대로).
 function ogWebpSet(url) {
   const m = String(url || '').match(/\/og\/([^/?#]+)\.jpg$/i);
@@ -141,7 +155,7 @@ function truncateDesc(text, maxLen = 150) {
 /**
  * HTML의 head 메타 태그를 교체
  */
-function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords, preloadImage, diluteName, heroImage }) {
+function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords, preloadImage, diluteName, heroImage, heroSquare }) {
   let html = baseHtml;
   const desc = truncateDesc(description || '', 150);
   // canonical은 sitemap loc과 동일 형식이어야 함 (trailing slash 일치).
@@ -291,7 +305,7 @@ function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ss
     html = html.replace('</head>', `    ${dateMeta}\n  </head>`);
   }
 
-  // ★ JSON-LD 구조화 데이터 삽입 (AI 검색 크롤러용)
+  // ★ JSON-LD 구조화 데이터 삽입 (AI 검색 크롤러용) — [놀쿨12-2 · P4] 머리(head)의 이 블록들은 첫 쪽 것 — 사이트 안에서 다른 쪽으로 옮기면 React(MainLayout SsrPageLdCleaner)가 지운다
   if (jsonLdList && jsonLdList.length > 0) {
     const jsonLdHtml = jsonLdList.map(data =>
       `<script type="application/ld+json">${JSON.stringify(data)}</script>`
@@ -313,8 +327,17 @@ function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ss
     // [펩시17-2 검토] heroImage 를 준 쪽은 그 그림을 첫 그림으로(광고 카드를 og:image 로 쓰는 쪽은 hero 를 공용 그림으로 둔다 — 잘린 광고 카드가 「광고」 표시 없이 한 장 더 뜨지 않게)
     const heroImgSrc = heroImage || preloadImage || ogImg;
     const heroWebp = (preloadImage && !heroImage) ? null : ogWebpSet(heroImage || ogImg); // [놀쿨11-3] og jpg 를 쓰는 쪽은 webp 축소판 srcset(og:image 는 jpg 그대로)
+    // [놀쿨12-2 · 느림] 첫 그림을 HTML 안에(inline webp 600w · 7~20KB) 싣는다 — 따로 받지 않아 첫 그리기와 같은 때 보인다.
+    //   React 가 첫 화면을 다시 그릴 때 이보다 큰 것을 그리지 않으면 LCP 는 이 그림(첫 그리기 때)으로 정해진다(web.dev/articles/optimize-lcp · 「LCP 그림은 HTML 안에서 바로 발견」).
+    //   가게 쪽(heroSquare)은 표준 카드 정사각 · 가로 최대 420px(React VenueHero 와 같은 크기).
+    const inlineHero = heroWebp ? inlineWebp(heroWebp.src) : null;
+    const heroStyle = heroSquare
+      ? 'display:block;width:100%;max-width:420px;height:auto;aspect-ratio:1/1;object-fit:contain;border-radius:12px;margin-bottom:16px;background:#111'
+      : 'display:block;width:100%;height:auto;max-height:280px;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#0a0a0a';
     const heroImgTag = heroImgSrc
-      ? `<img src="${escHtml(heroWebp ? heroWebp.src : heroImgSrc)}"${heroWebp ? ` srcset="${escHtml(heroWebp.srcset)}" sizes="${heroWebp.sizes}"` : ''} alt="${escHtml((heroImage ? '' : ogImageAlt) || title || '')}" width="1200" height="675" fetchpriority="high" decoding="async" style="display:block;width:100%;height:auto;max-height:280px;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#0a0a0a">`
+      ? (inlineHero
+        ? `<img src="${inlineHero}" alt="${escHtml((heroImage ? '' : ogImageAlt) || title || '')}" width="${heroSquare ? 600 : 1200}" height="${heroSquare ? 600 : 675}" decoding="sync" style="${heroStyle}">`
+        : `<img src="${escHtml(heroWebp ? heroWebp.src : heroImgSrc)}"${heroWebp ? ` srcset="${escHtml(heroWebp.srcset)}" sizes="${heroWebp.sizes}"` : ''} alt="${escHtml((heroImage ? '' : ogImageAlt) || title || '')}" width="${heroSquare ? 600 : 1200}" height="${heroSquare ? 600 : 675}" fetchpriority="high" decoding="async" style="${heroStyle}">`)
       : '';
     const _pt = pageTokens(canonical || title || '');
     html = html.replace('</head>', `    ${_pt.style}\n    ${NC_SKEL_STYLE}\n    <script>window.__NC_META=${JSON.stringify({ path: canonicalWithSlash, title: title || '', h1: h1 || '', desc: desc || '' }).replace(/</g, '\\u003c')}</script>\n  </head>`);
@@ -322,7 +345,7 @@ function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ss
     // [놀쿨11-4] 홈 = 네이버형: 상단 검색창(SSR · 자동완성 = datalist 로컬 색인 · 외부 호출 0) → /search/?q= · 업종 탭 6 · 지역 바로가기(가게 수 순 12)
     let homeTop = '';
     if (canonicalWithSlash === '/') { // canonicalWithSlash 는 경로(홈 = '/')
-      const openV = venues.filter((x) => x.status !== 'closed_or_unclear');
+      const openV = LISTED;
       const regionCount = {}; for (const x of openV) if (x.regionKo) regionCount[x.regionKo] = (regionCount[x.regionKo] || 0) + 1;
       const regions = Object.entries(regionCount).sort((a, b) => b[1] - a[1]).slice(0, 12).map(([r]) => r);
       const opts = [...new Set([...openV.map((x) => x.nameKo), ...Object.keys(regionCount), ...Object.values(catLabelMap), ...Object.keys(regionCount).flatMap((r) => Object.values(catLabelMap).map((c) => `${r} ${c}`))])];
@@ -517,6 +540,9 @@ function parseVenues() {
     const staffNickname = block.match(/staffNickname:\s*'([^']+)'/)?.[1];
     const staffPhone = block.match(/staffPhone:\s*'([^']+)'/)?.[1];
     const openHours = block.match(/openHours:\s*'([^']+)'/)?.[1];
+    const sameAs = block.match(/\n\s+sameAs:\s*'([^']+)'/)?.[1] || '';
+    const sameAsNote = block.match(/\n\s+sameAsNote:\s*'((?:[^'\\]|\\.)*)'/)?.[1] || '';
+    const openingDate = block.match(/\n\s+openingDate:\s*'([^']+)'/)?.[1] || '';
     const ageGroup = block.match(/ageGroup:\s*'([^']+)'/)?.[1];
     const address = block.match(/address:\s*'([^']+)'/)?.[1];
     const nearbyStation = block.match(/nearbyStation:\s*'([^']+)'/)?.[1];
@@ -553,6 +579,7 @@ function parseVenues() {
         staffNickname: staffNickname || '',
         staffPhone: staffPhone || '',
         openHours: openHours || '',
+        sameAs, sameAsNote: sameAsNote.replace(/\\'/g, "'"), openingDate,
         ageGroup: ageGroup || '',
         address: address || '',
         nearbyStation: nearbyStation || '',
@@ -610,7 +637,7 @@ function magLite() {
 function buildNext(type, sk, routePath) {
   const pop = (slug) => POP_RANK.get(slug) || 9999;
   const byPop = (a, b) => pop(a.slug) - pop(b.slug);
-  const open = venues.filter((x) => x.status !== 'closed_or_unclear');
+  const open = LISTED;
   const item = (x, meta) => ({ href: venueHref(x), label: x.nameKo, meta: meta || `${x.regionKo} ${catLabelMap[x.cat] || x.cat}`, slug: x.slug });
   const rankItem = (x) => item(x, `${x.regionKo} · 인기 ${POP_RANK.get(x.slug)}위`); // 업종어는 되풀이하지 않는다(목록 쪽 밀도 3% 상한)
   const tools = [{ href: '/weekend/', label: '주말 추천' }, { href: '/quiz/', label: '퀴즈로 고르기' }, { href: '/ranking/', label: '랭킹 보기' }];
@@ -1166,7 +1193,16 @@ function getHookingTitle(nameKo, venue) {
 }
 
 const venues = parseVenues();
-const OPEN_N = venues.filter((x) => x.status !== 'closed_or_unclear').length; // [놀쿨12-2 R4] 글에 박힌 「N곳」 대신 데이터에서 센 수
+// [놀쿨12-2 · 13:18-2·4] 목록에 드는 가게(영업 확인 · 같은 가게 둘째 쪽 제외) · 인기 엔진 점수표 · 목록 순서 한 자리
+const LISTED = venues.filter(isListed);
+const POP_VENUES = (() => { try { return JSON.parse(fs.readFileSync('src/data/popularity-scores.json', 'utf8')).venues || {}; } catch { return {}; } })();
+const recOrder = (arr) => sortVenues(arr, 'rec', POP_VENUES);
+// 주소(쪽)를 만드는 묶음은 그대로 두고 안의 목록만 같은 가게 한 번으로 — 둘째 쪽만 있는 묶음은 그 쪽을 그대로 보인다(쪽이 사라지지 않게)
+const listMembers = (arr) => { const l = arr.filter(isListed); return l.length ? l : arr; };
+const adMark = (v) => (isAdVenue(v) ? ' <span class="nc-ad-mark" style="display:inline-block;border:1px solid #111;border-radius:4px;padding:0 4px;font-size:12px;font-weight:700;color:#111">광고</span>' : '');
+const OPEN_N = LISTED.length; // [놀쿨12-2 R4] 글에 박힌 「N곳」 대신 데이터에서 센 수
+const CAT_N = LISTED.reduce((m, v) => { m[v.cat] = (m[v.cat] || 0) + 1; return m; }, {}); // [놀쿨12-2 R4] 정적 쪽 제목·설명의 업종별 수
+const CLUB_GANGNAM_N = LISTED.filter((v) => v.cat === 'club' && v.regionKo === '강남').length;
 console.log(`🔍 ${venues.length}개 업소 파싱 완료`);
 
 // ── 카테고리 매핑 ──
@@ -1186,12 +1222,12 @@ let pageCount = 0;
 // ══════════════════════════════════════════
 const staticPages = [
   // Category listing pages
-  { path: '/clubs', title: '클럽 38곳 — 강남 11곳부터 이태원·압구정·홍대까지, 줄 서기 전에 드레스코드 먼저', desc: '클럽 줄 컷이면 그날 끝. 10년 MD가 강남·홍대 클럽 Funktion-One·드레스코드·해외 게스트 DJ·새벽 3시 피크·VIP 부킹까지 클럽 38곳, 갈 곳만 추렸으니 줄 서기 전에 바로 확인 →' },
-  { path: '/nights', title: '나이트 부킹 한 번도 못 잡고 집 간 적? 10년 웨이터가 거를 곳 알려줘요', desc: '부킹 안 잡히는 나이트 가면 1차로 끝나요. 10년 짠밥 웨이터가 홀·부스·물·진행 다 풀어드립니다. 합석 시간·매너·드레스코드까지 64곳 갈 곳 vs 거를 곳 한 줄로 정리 →' },
+  { path: '/clubs', title: `클럽 ${CAT_N.club}곳 — 강남 ${CLUB_GANGNAM_N}곳부터 이태원·압구정·홍대까지, 줄 서기 전에 드레스코드 먼저`, desc: `클럽 줄 컷이면 그날 끝. 10년 MD가 강남·홍대 클럽 Funktion-One·드레스코드·해외 게스트 DJ·새벽 3시 피크·VIP 부킹까지 클럽 ${CAT_N.club}곳, 갈 곳만 추렸으니 줄 서기 전에 바로 확인 →` },
+  { path: '/nights', title: '나이트 부킹 한 번도 못 잡고 집 간 적? 10년 웨이터가 거를 곳 알려줘요', desc: `부킹 안 잡히는 나이트 가면 1차로 끝나요. 10년 짠밥 웨이터가 홀·부스·물·진행 다 풀어드립니다. 합석 시간·매너·드레스코드까지 ${CAT_N.night}곳 갈 곳 vs 거를 곳 한 줄로 정리 →` },
   { path: '/lounges', title: '라운지 시끄러워서 데이트 망친 적 한 번이라도? 10년 실장이 거름', desc: '분위기 보고 갔는데 어수선하면 데이트도 망합니다. 10년 본 라운지 실장이 인테리어·시그니처·만남 결까지 다 풀어드립니다. 단골 만들고 조용히 나와요 →' },
   { path: '/rooms', title: '룸 선택 한 번이라도 후회해본 사람만 봐요. 10년 실장이 까드림', desc: '사진이랑 다르면 그 순간 분위기 끝납니다. 10년 일한 룸 실장이 셀렉션·양주 라인·진행 케어까지 매장별로 솔직히. 후회하기 전에 직접 물어봐요 →' },
   { path: '/yojeong', title: '요정 — 거래처 모시는 자리, 한정식 12첩 가야금 선율 위에 격을 갖춘다', desc: '요정 — 사장님 모시는 자리, 격 떨어지면 다음은 없죠. 20년 실장이 한정식 12첩·국악 가야금·정찰제 매너 한 줄로 정리. 일산명월관·강남·여의도·종로·부산 진짜 요정만 추렸으니 모시기 전에 먼저 확인 →' },
-  { path: '/hoppa', title: '여자 혼자 호빠 가도 돼? 10년 실장이 외모·매너·진행 다 봐주는 18곳', desc: '처음 호빠 가서 어색한 시간 30분이면 끝. 10년 일한 호빠 실장이 외모·매너·진행 다 봐드립니다. 강남·홍대·일산·해운대·대구 호빠 진짜 케어되는 18곳만 골랐으니 첫 방문 전에 먼저 확인 →' },
+  { path: '/hoppa', title: `여자 혼자 호빠 가도 돼? 10년 실장이 외모·매너·진행 다 봐주는 ${CAT_N.hoppa}곳`, desc: `처음 호빠 가서 어색한 시간 30분이면 끝. 10년 일한 호빠 실장이 외모·매너·진행 다 봐드립니다. 강남·홍대·일산·해운대·대구 호빠 진짜 케어되는 ${CAT_N.hoppa}곳만 골랐으니 첫 방문 전에 먼저 확인 →` },
 
   // Interactive pages
   { path: '/guide', title: '처음이라 긴장된다고? 이거 읽고 가면 프로다', desc: '클럽·나이트·라운지·룸·요정·호빠 6개 업종별 입문 가이드. 강남 홍대 이태원 일산 부산 드레스코드, 혼자 가도 안전한 곳, 첫방문 매너, 부킹·셀렉션 흐름까지 5분 정독 완성.' },
@@ -1251,7 +1287,7 @@ const staticPages = [
   { path: '/lead/weekly-hot', title: '이번 주 핫플 큐레이션 — 지금 준비 중이다', desc: '이번 주 진짜 핫한 곳 어디지? 커뮤니티 후기·검색 추이 종합한 주간 큐레이션 준비 중. 검증된 결과만 회원에게 바로 공유.' },
 
   // v25 — 상황·시점별 큐레이션 (라이트 테마 + 후킹 5원칙)
-  { path: '/weekend', title: '이번 주말 어디 갈래 — 금토일 갈만한 핫플 30곳', desc: '주말은 시간 아까운 거 알지? 금토일 사람 몰리는 핫플과 평일보다 더 좋은 숨은 코스 한 번에 모았다. 6업종 평점 4.2 이상만, 바로 확인.' },
+  { path: '/weekend', title: `이번 주말 어디 갈래 — 금토일 갈만한 핫플 ${Math.min(30, LISTED.length)}곳`, desc: '주말은 시간 아까운 거 알지? 금토일 사람 몰리는 핫플과 평일보다 더 좋은 숨은 코스 한 번에 모았다. 6업종 영업 확인된 곳만, 바로 확인.' },
   { path: '/budget', title: '어떤 자리를 찾고 있나 — 상황별 코스 4가지로 정리했다', desc: '편한 자리? 단체? 접대? 데이트? 상황별로 분위기·구성 맞는 곳 4가지 코스로 정리. 처음이라 어디부터 봐야 할지 모르면 바로 확인.' },
   { path: '/occasion', title: '어떤 자리야 — 6가지 상황별 핫플 정리했다', desc: '나이트라이프 첫 방문? 거래처 접대? 친구 생일? 데이트? 6가지 상황별로 맞는 곳 큐레이션 — 처음 가는 사람도 헛걸음 0번 만들자.' },
 
@@ -1313,14 +1349,14 @@ const HOME_CATS = [
 // 시즌21 — 홈에서 카테고리·업소 SSR 내부링크 (JS 미실행 봇 anchor depth 1)
 homeSsr += SITE_NAV_ANCHORS;
 HOME_CATS.forEach(c => {
-  const list = venues.filter(vv => vv.cat === c.key);
+  const list = recOrder(LISTED.filter(vv => vv.cat === c.key));
   if (list.length === 0) return;
   homeSsr += `<h2><a href="/${catMap[c.key].path}/">${escHtml(c.ko)}</a> ${list.length}곳 — ${escHtml(c.desc)}</h2>`;
   homeSsr += `<ul>`;
-  list.slice(0, 8).forEach(vv => { homeSsr += `<li><a href="${venueHref(vv)}">${escHtml(vv.regionKo)} ${escHtml(c.ko)} ${escHtml(vv.nameKo)}</a></li>`; });
+  list.slice(0, 8).forEach(vv => { homeSsr += `<li><a href="${venueHref(vv)}">${escHtml(vv.regionKo)} ${escHtml(c.ko)} ${escHtml(vv.nameKo)}</a>${adMark(vv)}</li>`; });
   homeSsr += `</ul>`;
 });
-const homeAllRegions = [...new Set(venues.map(v => v.regionKo))];
+const homeAllRegions = [...new Set(LISTED.map(v => v.regionKo))];
 homeSsr += `<h2>지역별 나이트라이프</h2>`;
 homeSsr += `<p>서비스 지역: ${homeAllRegions.map(r => escHtml(r)).join(', ')}. 각 지역의 클럽·나이트·라운지·룸을 카테고리에서 비교해보세요.</p>`;
 // R2-2 H2 강화 + R2-1 FAQ 본문 노출 (AI Overview 인용 강화)
@@ -1372,7 +1408,7 @@ const COMMUNITY_BOARD_BLURBS = {
     s += `<p>강남 클럽 줄 안 서고 들어가는 시간대, 홍대 클럽 부킹 잘 되는 요일, 룸 처음 가는 사람을 위한 가이드, 호빠 첫 방문 매너, 요정 코스 안내.</p>`;
     s += `<h2>업종별 정보</h2>`;
     HOME_CATS.forEach(c => {
-      const list = venues.filter(vv => vv.cat === c.key);
+      const list = recOrder(LISTED.filter(vv => vv.cat === c.key));
       if (list.length === 0) return;
       s += `<h3>${escHtml(c.ko)} 관련 글 — ${list.length}곳</h3>`;
       s += `<p>${escHtml(c.ko)} 후기와 비교, ${list.slice(0,5).map(vv => escHtml(vv.nameKo)).join(', ')} 이야기.</p>`;
@@ -1509,12 +1545,13 @@ for (const pg of staticPages) {
   // 카테고리 리스팅 페이지: 소속 업소 이름 전부 SSR에 포함 + ItemList JSON-LD
   if (categoryPaths.has(pg.path)) {
     const catKey = pg.path === '/clubs' ? 'club' : pg.path === '/nights' ? 'night' : pg.path === '/lounges' ? 'lounge' : pg.path === '/rooms' ? 'room' : pg.path === '/yojeong' ? 'yojeong' : 'hoppa';
-    const catVenues = venues.filter(vv => vv.cat === catKey);
+    const catVenues = recOrder(LISTED.filter(vv => vv.cat === catKey)); // [놀쿨12-2 · 13:18-2] React 목록과 같은 추천 순서
     const catKo = catLabelMap[catKey];
     const catInfo = catMap[catKey];
+    const catTree = regionTree(catVenues); // [놀쿨12-2 · 13:18-1] 주소 → 시·도 / 시·군·구
     ssrBody = `<h1>${escHtml(pg.title)}</h1><p>${escHtml(pg.desc)}</p>`;
-    ssrBody += `<h2>전국 ${catKo} ${catVenues.length}곳 리스트</h2><ul>`;
-    catVenues.forEach(vv => { ssrBody += `<li><a href="${venueHref(vv)}">${escHtml(vv.nameKo)}</a> · ${escHtml(vv.regionKo)}</li>`; });
+    ssrBody += `<h2>전국 ${catKo} ${catVenues.length}곳 리스트</h2><p>추천 순서 = 「광고」 가게 먼저 → 인기 엔진 순위(최근 28일 실측) → 가나다. 지역은 가게 주소의 시·도 · 시·군·구다(${catTree.sidos.map((x) => `${escHtml(x.label)} ${x.count}`).join(' · ')}${catTree.unknown ? ` · 주소 확인 중 ${catTree.unknown}` : ''}).</p><ul>`;
+    catVenues.forEach(vv => { ssrBody += `<li><a href="${venueHref(vv)}">${escHtml(vv.nameKo)}</a>${adMark(vv)} · ${escHtml(regionOf(vv).label)}</li>`; });
     ssrBody += `</ul>`;
     // ★ 지역별 안내 추가 (AI가 지역+업종 검색 시 인용)
     const regionGroups = {};
@@ -1540,7 +1577,8 @@ for (const pg of staticPages) {
     ssrBody += `<li><a href="/new/${catInfo.path}/">새로 입점한 ${catKo}</a></li>`;
     ssrBody += `</ul>`;
     // 모든 region 페이지 anchor (/region/{ko}/)
-    const allRegionsForCat = [...new Set(catVenues.map(vv => vv.regionKo))];
+    // [놀쿨12-2] 허브 바로가기는 같은 가게 둘째 쪽만 있는 지역 허브(예: 부산 연산동)도 잇는다 — 쪽이 깊이 4 로 밀려나지 않게(주소 그대로 · 막다른 쪽 0)
+    const allRegionsForCat = [...new Set(venues.filter(vv => vv.cat === catKey && vv.status !== 'closed_or_unclear').map(vv => vv.regionKo))];
     if (allRegionsForCat.length > 0) {
       ssrBody += `<h3>지역별 ${catKo}</h3><ul>`;
       // nights는 지역 수가 많아 catKo 앵커 시 밀도 밴드(≤3.0%) 초과 → href 딥링크만
@@ -1578,8 +1616,9 @@ for (const pg of staticPages) {
       })
     });
     // ★ FAQPage JSON-LD — 카테고리 리스팅 페이지용 (5 Q&A, 카테고리별 unique)
-    const topNames = catVenues.slice(0, 5).map(vv => vv.nameKo).join(', ');
-    const regionsForCat = [...new Set(catVenues.map(vv => vv.regionKo))];
+    // [놀쿨12-2 · 13:18-2] 「인기 있는 곳은 …」 문장은 파일 순서가 아니라 목록 추천 순서(광고는 「광고」라고 밝힘)에서
+    const topNames = catVenues.slice(0, 5).map(vv => vv.nameKo + (isAdVenue(vv) ? '(광고)' : '')).join(', ');
+    const regionsForCat = catTree.sidos.map((x) => x.label);
     const regionListText = regionsForCat.slice(0, 6).join(', ');
     // 카테고리별 차별화 Q&A 2개씩 추가
     const CAT_FAQ_EXTRA = {
@@ -1613,8 +1652,8 @@ for (const pg of staticPages) {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
       mainEntity: [
-        { '@type': 'Question', name: `${catKo} 추천은?`, acceptedAnswer: { '@type': 'Answer', text: `전국에서 인기 있는 ${catKo}는 ${topNames} 등 ${catVenues.length}곳이 있습니다. 놀쿨(nolcool.com)에서 비교해보세요.` } },
-        { '@type': 'Question', name: `${catKo} 몇 곳 있나요?`, acceptedAnswer: { '@type': 'Answer', text: `놀쿨에 등록된 ${catKo}는 전국 ${catVenues.length}곳, ${regionsForCat.length}개 지역(${regionListText})에 분포되어 있습니다.` } },
+        { '@type': 'Question', name: `${catKo} 추천은?`, acceptedAnswer: { '@type': 'Answer', text: `놀쿨 ${catKo} 목록은 「광고」 가게를 먼저, 그다음 인기 엔진 순위(최근 28일 실측), 나머지는 가나다 순으로 보여줍니다. 지금 맨 앞은 ${topNames}이고 모두 ${catVenues.length}곳입니다.` } },
+        { '@type': 'Question', name: `${catKo} 몇 곳 있나요?`, acceptedAnswer: { '@type': 'Answer', text: `놀쿨에 등록된 ${catKo}는 전국 ${catVenues.length}곳이고, 가게 주소 기준 ${regionsForCat.length}개 시·도(${regionListText})에 있습니다.${catTree.unknown ? ` 주소를 확인하는 중인 곳이 ${catTree.unknown}곳 있습니다.` : ''}` } },
         { '@type': 'Question', name: `${catKo} 처음인데 어떻게 가나요?`, acceptedAnswer: { '@type': 'Answer', text: `놀쿨 입문 가이드(nolcool.com/guide)에서 ${catKo} 첫 방문 팁을 확인하세요. 드레스코드, 예산, 분위기까지 정리되어 있습니다.` } },
         ...extraFaq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
       ]
@@ -1639,7 +1678,7 @@ for (const pg of staticPages) {
       about: {
         '@type': SCHEMA_TYPE_MAP[catKey] || 'NightClub',
         name: `전국 ${catKo}`,
-        description: `전국 ${catVenues.length}곳의 ${catKo} 정보 (${regionListText} 등 ${regionsForCat.length}개 지역)`,
+        description: `전국 ${catVenues.length}곳의 ${catKo} 정보 (${regionListText} 등 ${regionsForCat.length}개 시·도)`,
       },
     });
   }
@@ -1742,7 +1781,7 @@ for (const pg of staticPages) {
     pageOgImage = `${BASE_URL}/og/${ogSlug}.jpg`;
   }
   const _catKeyOfPath = Object.entries(catMap).find(([, ci]) => '/' + ci.path === pg.path)?.[0];
-  const _catMembers = _catKeyOfPath ? venues.filter(vv => vv.cat === _catKeyOfPath) : [];
+  const _catMembers = _catKeyOfPath ? recOrder(LISTED.filter(vv => vv.cat === _catKeyOfPath)) : [];
   writePage(pg.path, { title: pg.title, description: pg.desc, ssrBody, jsonLdList: jsonLdList.length > 0 ? jsonLdList : undefined, ogImage: pageOgImage, skel: _catKeyOfPath ? hubSkel('list', _catMembers, { cat: catMap[_catKeyOfPath].labelKo, factsHeading: `${catMap[_catKeyOfPath].labelKo} 전체 ${_catMembers.length}곳` }, undefined, `${catMap[_catKeyOfPath].labelKo}는 전국 ${_catMembers.length}곳이 등록돼 있다.`, 'list') : (pg.path === '/guide/ilsan-yojeong' ? { type: 'guide', h1Type: 'guide', facts: { region: '일산', cat: '요정', place: '마두' } } : undefined) }); // [놀쿨11-3] 안내 쪽도 장부 사실(지역·업종·역)로 허브 링크를 받는다 → L3 내부 링크 ≥6
   pageCount++;
 }
@@ -1947,7 +1986,7 @@ for (const [cat, regions] of Object.entries(regionsByCategory)) {
   // clubs/:region, rooms/:region, yojeong/:region
   if (['club', 'room', 'yojeong'].includes(cat)) {
     for (const [region, regionKo] of Object.entries(regions)) {
-      const regionVenues = venues.filter(vv => vv.cat === cat && vv.region === region);
+      const regionVenues = recOrder(listMembers(venues.filter(vv => vv.cat === cat && vv.region === region))); // [놀쿨12-2] 추천 순서 · 같은 가게 한 번
       const allNames = regionVenues.slice(0, 3).map(vv => vv.nameKo).join(', ');
       const { title, desc } = regionalTitleDesc(cat, region, regionKo, regionVenues.length, allNames);
       // SSR: 해당 지역 업소 이름 + 상세 설명 전부 포함
@@ -1960,16 +1999,16 @@ for (const [cat, regions] of Object.entries(regionsByCategory)) {
         const parts = (vv.nameKo || '').split(/\s+/);
         const shortLabel = parts.length > 1 ? parts.slice(1).join(' ') : vv.nameKo;
         if (idx < 3) {
-          regSsr += `<li><a href="${venueHref(vv)}"><strong>${escHtml(shortLabel)}</strong></a> — ${escHtml(vv.shortDesc.slice(0, 50))}</li>`;
+          regSsr += `<li><a href="${venueHref(vv)}"><strong>${escHtml(shortLabel)}</strong></a>${adMark(vv)} — ${escHtml(cutAtWord(vv.shortDesc, 50))}</li>`;
         } else {
-          regSsr += `<li><a href="${venueHref(vv)}">${escHtml(shortLabel)}</a></li>`;
+          regSsr += `<li><a href="${venueHref(vv)}">${escHtml(shortLabel)}</a>${adMark(vv)}</li>`;
         }
       });
       regSsr += `</ul>`;
       // ★ AI 인용용 FAQ — 화면 dl + FAQPage JSON-LD 단일 배열 소스(화면↔스키마 100% 일치)
-      const regTopNamesFaq = regionVenues.slice(0, 5).map(vv => { const p = (vv.nameKo || '').split(/\s+/); return p.length > 1 ? p.slice(1).join(' ') : vv.nameKo; }).join(', ');
+      const regTopNamesFaq = regionVenues.slice(0, 5).map(vv => { const p = (vv.nameKo || '').split(/\s+/); return (p.length > 1 ? p.slice(1).join(' ') : vv.nameKo) + (isAdVenue(vv) ? '(광고)' : ''); }).join(', ');
       const regFaqPairs = [
-        { q: `${regionKo} ${catLabelMap[cat]} 추천은?`, a: `인기 있는 곳은 ${regTopNamesFaq}${regionVenues.length > 5 ? ' 등' : ''}입니다. 놀쿨(nolcool.com)에서 비교해보세요.` },
+        { q: `${regionKo} ${catLabelMap[cat]} 추천은?`, a: `추천 순서(「광고」 먼저 → 인기 엔진 순위 → 가나다) 앞쪽은 ${regTopNamesFaq}${regionVenues.length > 5 ? ' 등' : ''}입니다. 놀쿨(nolcool.com)에서 비교해보세요.` },
         { q: `몇 곳 있나요?`, a: `이 카테고리에는 ${regionVenues.length}곳의 매장이 있습니다.` },
       ];
       regSsr += faqPairsDl(`${regionKo} ${catLabelMap[cat]} 자주 묻는 질문`, regFaqPairs);
@@ -1993,7 +2032,7 @@ for (const [cat, regions] of Object.entries(regionsByCategory)) {
         // 시즌172 — 두 번째 노출은 suffix(브랜드 접두어 제외)로 키워드 반복 희석
         const parts = (vv.nameKo || '').split(/\s+/);
         const shortLabel = parts.length > 1 ? parts.slice(1).join(' ') : vv.nameKo;
-        regSsr += `<li><a href="${venueHref(vv)}">${escHtml(shortLabel)}</a> — ${escHtml(vv.shortDesc.slice(0, 50))}</li>`;
+        regSsr += `<li><a href="${venueHref(vv)}">${escHtml(shortLabel)}</a> — ${escHtml(cutAtWord(vv.shortDesc, 50))}</li>`;
       });
       regSsr += `</ul>`;
       // 시즌159 — 작은 지역(venue 1~2곳) listing 본문 보강
@@ -2050,14 +2089,8 @@ function getVenueOgImage(slug) {
 // 시즌53 v26-day1 — JSON-LD image 배열 (Naver/Google/AI 이미지 검색 시그널 강화)
 // 실제 존재하는 venue 이미지 1~4번까지 모두 수집. 1개뿐이면 단일 URL.
 function getVenueImageList(slug) {
-  const list = [];
-  for (let i = 1; i <= 4; i++) {
-    const ver = i === 1 ? heroVer(slug) : '';
-    const p = path.join(DIST, 'venues', `${slug}-${i}${ver}.jpg`);
-    if (fs.existsSync(p)) list.push(`${BASE_URL}/venues/${slug}-${i}${ver}.jpg`);
-  }
-  if (list.length === 0) return getVenueOgImage(slug);
-  return list.length === 1 ? list[0] : list;
+  // [놀쿨12-2 · R7] 사진 판정표를 넘은 사진 0장 → 구조화 데이터 그림도 표준 카드 하나(사진 주소를 싣지 않는다)
+  return getVenueOgImage(slug);
 }
 
 // 공식 사이트 보유 업소(사장님 소유) — JSON-LD sameAs 엔티티 연결. SSR 본문 백링크와 동일 소스.
@@ -2184,14 +2217,15 @@ for (const v of venues) {
     `${v.regionKo} ${catLabelMap[v.cat]} 추천`,
     `${v.regionKo} 나이트라이프`,
   ].join(', ');
-  // 시즌29-F — 실재하는 hero webp만 preload (404 0건 유지)
-  const heroWebp = path.join('public', 'venues', `${v.slug}-1${heroVer(v.slug)}.webp`);
-  const preloadImage = fs.existsSync(heroWebp) ? `/venues/${v.slug}-1${heroVer(v.slug)}.webp?v3` : undefined;
+  // [놀쿨12-2 · R7] 가게 사진(/venues/*) 참조를 끊었다(사진 판정표 여섯 가지 통과 0) — 첫 그림은 가게 이름이 크게 그려진 표준 카드(og 와 같은 그림 · 정사각)
+  const preloadImage = undefined;
   writePage(routePath, {
     title: hookTitle,
     description: desc,
     ogImage: getVenueOgImage(v.slug),
-    ogImageAlt: `${v.nameKo} — ${v.regionKo} ${catLabelMap[v.cat]} 매장 사진`,
+    ogImageAlt: `${v.nameKo} 표준 카드 — ${v.regionKo} ${catLabelMap[v.cat]}`,
+    heroImage: getVenueOgImage(v.slug),
+    heroSquare: true,
     ssrBody: generateVenueSsrBody(v, venues),
     skel: venueSkel(v),
     jsonLdList: [venueJsonLd, faqJsonLd, breadcrumbJsonLd, venueWebPageJsonLd],
@@ -2364,7 +2398,7 @@ function aggHighlights(members, shortLabel, max = 6, omitCatLabel = null) {
     const label = shortLabel ? shortLabel(v) : v.nameKo;
     let detail = '';
     if (v.features && v.features.length) detail = v.features.slice(0, 2).join('·');
-    else if (v.shortDesc) detail = v.shortDesc.slice(0, 38);
+    else if (v.shortDesc) detail = cutAtWord(v.shortDesc, 38);
     const st = aggStationOf(v);
     const catL = catLabelMap[v.cat] || v.cat;
     const meta = [v.regionKo, (omitCatLabel && catL === omitCatLabel) ? '' : catL, st].filter(Boolean).join(' ');
@@ -2448,7 +2482,7 @@ const POP_BASIS_LINE = POP_SCORES.generatedAt
 
 for (const [catKey, catInfo] of Object.entries(catMap)) {
   if (catKey === 'club') continue; // 2026-07 월간 사이클 — /best/clubs 기여 0 제거(301 → /clubs/)
-  const catVenues = popRankOrder(venues.filter(vv => vv.cat === catKey));
+  const catVenues = popRankOrder(LISTED.filter(vv => vv.cat === catKey));
   if (catVenues.length === 0) continue;
   const p = `/best/${catInfo.path}`;
   const title = `${catInfo.labelKo} 인기 TOP ${catVenues.length} — ${BEST_TITLE_SUFFIX_BY_CAT[catKey]}`;
@@ -2523,7 +2557,8 @@ for (const v of venues) {
   if (!allRegions[v.regionKo]) allRegions[v.regionKo] = [];
   allRegions[v.regionKo].push(v);
 }
-for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
+for (const [regionKo, _regionAll] of Object.entries(allRegions)) {
+  const regionVenues = recOrder(listMembers(_regionAll)); // [놀쿨12-2] 쪽 주소는 그대로 · 안의 목록만 추천 순서 · 같은 가게 한 번
   const p = `/region/${encodeURIComponent(regionKo)}`;
   const _regionCatsT = [...new Set(regionVenues.map(rv => catLabelMap[rv.cat] || rv.cat))].join('·');
   const title = makeTitle('region', p, { region: regionKo, n: regionVenues.length, cats: _regionCatsT, top: regionVenues[0] ? regionVenues[0].nameKo : '' }); // [놀쿨11-2] 창고
@@ -2547,7 +2582,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
       const shortLabel = shortLabelFn(rv);
       // 시즌172 — 상위 3곳만 shortDesc, 그 외는 이름만, 모두 suffix 라벨
       if (idx < 3) {
-        ssrBody += `<li><a href="${venueHref(rv)}">${escHtml(shortLabel)}</a> — ${escHtml(rv.shortDesc.slice(0, 50))}</li>`;
+        ssrBody += `<li><a href="${venueHref(rv)}">${escHtml(shortLabel)}</a> — ${escHtml(cutAtWord(rv.shortDesc, 50))}</li>`;
       } else {
         ssrBody += `<li><a href="${venueHref(rv)}">${escHtml(shortLabel)}</a></li>`;
       }
@@ -2556,7 +2591,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
   }
   // FAQ — 화면 dl + FAQPage JSON-LD 단일 배열 소스(화면↔스키마 100% 일치)
   const regionFaqPairs = [
-    { q: `${regionKo} 추천 업소는?`, a: `인기 있는 곳: ${regionVenues.slice(0, 5).map(shortLabelFn).join(', ')}. 각 업소 페이지에서 비교해보세요.` },
+    { q: `${regionKo} 추천 업소는?`, a: `추천 순서(「광고」 먼저 → 인기 엔진 순위 → 가나다) 앞쪽: ${regionVenues.slice(0, 5).map((rv) => shortLabelFn(rv) + (isAdVenue(rv) ? '(광고)' : '')).join(', ')}. 각 업소 페이지에서 비교해보세요.` },
     { q: `몇 곳 있나요?`, a: `이 지역에는 ${regionVenues.length}곳이 등록되어 있습니다.` },
   ];
   ssrBody += faqPairsDl('자주 묻는 질문', regionFaqPairs);
@@ -2607,9 +2642,9 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
       const parts = (cv.nameKo || '').split(/\s+/);
       const shortLabel = parts.length > 1 ? parts.slice(1).join(' ') : cv.nameKo;
       if (idx < 5) {
-        cSsr += `<li><a href="${venueHref(cv)}">${escHtml(shortLabel)}</a> — ${escHtml(cv.shortDesc.slice(0, 50))}</li>`;
+        cSsr += `<li><a href="${venueHref(cv)}">${escHtml(shortLabel)}</a>${adMark(cv)} — ${escHtml(cutAtWord(cv.shortDesc, 50))}</li>`;
       } else {
-        cSsr += `<li><a href="${venueHref(cv)}">${escHtml(shortLabel)}</a></li>`;
+        cSsr += `<li><a href="${venueHref(cv)}">${escHtml(shortLabel)}</a>${adMark(cv)}</li>`;
       }
     });
     cSsr += `</ul>`;
@@ -2619,7 +2654,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
     cSsr += aggInlineCta('rc-' + regionKo + '-' + catKey, crossVenues);
     // FAQ — 화면 dl + FAQPage JSON-LD 단일 배열 소스(화면↔스키마 100% 일치)
     const crossFaqPairs = [
-      { q: `${regionKo}에서 어디가 인기 있나요?`, a: `${crossNames} 등이 ${regionKo} 대표 업소로 올라와 있습니다. 상세 페이지에서 분위기부터 확인해 보세요.` },
+      { q: `${regionKo}에서 어디부터 보면 되나요?`, a: `추천 순서(「광고」 먼저 → 인기 엔진 순위 → 가나다)로 ${crossNames} 등이 앞에 있습니다. 상세 페이지에서 분위기부터 확인해 보세요.` },
       { q: `예약은 어떻게 하나요?`, a: `각 업소 상세 페이지에서 직통 전화로 예약 가능 시간과 룸 사이즈를 미리 확인하세요. 주말은 일찍 마감되는 곳이 많습니다.` },
     ];
     cSsr += faqPairsDl('자주 묻는 질문', crossFaqPairs);

@@ -17,6 +17,8 @@ import VenueLivePulse from '@/components/venue/VenueLivePulse';
 import type { Venue } from '@/types';
 import { useRecentVenues } from '@/hooks/useRecentVenues';
 import { useFavorites } from '@/hooks/useFavorites';
+import { getVenueBySlug } from '@/data/venues';
+import { isAdVenue, regionOf } from '@/lib/venue-order';
 
 const VenueSeoContent = lazy(() => import('@/components/venue/VenueSeoContent'));
 const VenueReportModal = lazy(() => import('@/components/venue/VenueReportModal'));
@@ -114,11 +116,26 @@ export default function VenueDetailPage({
       <VenueHero
         name={venue.nameKo}
         staffNickname={venue.staffNickname}
-        isPremium={venue.isPremium}
+        isAd={isAdVenue(venue)}
         category={venue.category}
-        regionKo={venue.regionKo}
+        regionLabel={regionOf(venue).label}
         slug={venue.slug}
       />
+
+      {/* [놀쿨12-2 · 13:18-4] 같은 가게 둘째 쪽 — 주소는 그대로 두고 같은 가게임을 밝혀 본 쪽으로 잇는다(목록·숫자에는 본 쪽만) */}
+      {venue.sameAs && !topContent && (() => {
+        const main = getVenueBySlug(venue.sameAs!);
+        if (!main) return null;
+        const mainHref = relatedHrefFn(main);
+        return (
+          <section className="mx-auto max-w-[1200px] px-4 pt-4 sm:px-6" data-same-as={venue.sameAs}>
+            <Link to={mainHref} className="block rounded-2xl border border-[#111] bg-white p-4" style={{ minHeight: 48 }}>
+              <p className="text-sm font-bold text-[#111]">같은 가게 안내 — {main.nameKo} 쪽에서 이어서 보기 →</p>
+              {venue.sameAsNote && <p className="mt-1 text-xs text-[#444]">{venue.sameAsNote}</p>}
+            </Link>
+          </section>
+        );
+      })()}
 
       {/* ═══ 3. 라이브 펄스 — 보는중/조회/찜 회전 메시지 ═══ */}
       <div className="mx-auto max-w-[1200px] px-4 pt-3 sm:px-6">
@@ -154,7 +171,7 @@ export default function VenueDetailPage({
                 ? 'border-[#DC2626] bg-[#FEF2F2] text-[#DC2626]'
                 : 'border-[#E9E5FF] bg-white text-[#7C3AED] active:bg-[#F3F0FF]'
             }`}
-            style={{ minHeight: 44 }}
+            style={{ minHeight: 48 }}
           >
             <svg className="h-4 w-4" fill={saved ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -162,7 +179,7 @@ export default function VenueDetailPage({
             {saved ? '찜한 곳 — 나중에 다시 보기' : '찜하기'}
           </button>
           {saved && (
-            <Link to="/my/favorites" className="mt-2 ml-2 inline-flex items-center text-xs font-bold text-[#7C3AED]" style={{ minHeight: 44 }}>
+            <Link to="/my/favorites" className="mt-2 ml-2 inline-flex items-center text-xs font-bold text-[#6D28D9]" style={{ minHeight: 48 }}>
               ⭐ 내 단골 목록 보기 →
             </Link>
           )}
@@ -174,6 +191,15 @@ export default function VenueDetailPage({
         </section>
       )}
 
+
+      {/* [놀쿨12-2 · 13:18-11 「네이버처럼 가게 쪽 — 찾아가는 길」] 주소·가까운 역을 글자로(지도 넣지 않는 규칙 · 가게 장부 주소) */}
+      {venue.address && (
+        <section className="mx-auto max-w-[1200px] px-4 pt-6 sm:px-6" data-venue-directions>
+          <h2 className="text-lg font-bold text-neon-text">찾아가는 길</h2>
+          <p className="mt-1 text-[15px] text-neon-text">{venue.address}</p>
+          {venue.nearbyStation && <p className="mt-1 text-sm text-[#444]">가까운 역: {venue.nearbyStation.replace(/역$/, '')}역</p>}
+        </section>
+      )}
 
       {/* Top Content — 히어로 바로 아래 */}
       {topContent && (

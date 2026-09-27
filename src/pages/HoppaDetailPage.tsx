@@ -20,8 +20,10 @@ const defaultFaqs = (name: string) => [
 export default function HoppaDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const venue = getVenueBySlug(slug!);
-  if (!venue || venue.category !== 'hoppa') return <Navigate to="/404" replace />;
-  useDocumentMeta(getHookingTitle(venue) + '', getHookingDescription(venue), getVenueOgImageBySlug(venue.slug));
+  // [놀쿨12-2 · P39·P40] 훅은 일찍 돌아가기(Navigate) 전에 — 같은 쪽 틀에서 잘못된 주소 → 맞는 주소로 옮길 때 React 오류 #310(훅 수가 달라짐)이 나던 것
+  const valid = !!venue && venue.category === 'hoppa';
+  useDocumentMeta(valid ? getHookingTitle(venue!) + '' : '', valid ? getHookingDescription(venue!) : '', valid ? getVenueOgImageBySlug(venue!.slug) : undefined);
+  if (!valid || !venue) return <Navigate to="/404" replace />;
 
   const related = getRelatedVenues(venue, 6);
 

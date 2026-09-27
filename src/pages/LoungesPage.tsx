@@ -2,6 +2,8 @@
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
+import { sortVenues } from '@/lib/venue-order';
+import { popularity } from '@/lib/popularity';
 import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
 import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
@@ -9,16 +11,11 @@ import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import { MidContentHook, ReadFinishCount } from '@/components/engagement/ReadingEngagement';
 import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter } from '@/components/venue/CategoryListingEngagement';
 
-const regions = [
-  { key: 'gangnam', label: '강남' }, { key: 'hongdae', label: '홍대' }, { key: 'itaewon', label: '이태원' },
-  { key: 'apgujeong', label: '압구정' }, { key: 'cheongdam', label: '청담' },
-  { key: 'busan', label: '부산' }, { key: 'daejeon', label: '대전' },
-];
 
 export default function LoungesPage() {
   useDocumentMeta('라운지 시끄러워서 데이트 망친 적 한 번이라도? 10년 실장이 거름', '분위기 보고 갔는데 어수선하면 데이트도 망합니다. 10년 본 라운지 실장이 인테리어·시그니처·만남 결까지 다 풀어드립니다. 조용히 가서 조용히 나와요 →');
   const venues = getVenuesByCategory('lounge');
-  const featured = venues.find(v => v.isPremium) || venues[0];
+  const featured = sortVenues(venues, 'rec', popularity.venues)[0]; // [놀쿨12-2 · 13:18-2] 목록 추천 순서의 첫 가게(광고면 「광고」 표시)
 
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 space-y-12">
@@ -53,7 +50,7 @@ export default function LoungesPage() {
         )}
       </div>
 
-      <VenueListClient venues={venues} hrefPattern="/lounges/{slug}" regions={regions} showEngagementHooks accentColor="amber" />
+      <VenueListClient venues={venues} hrefPattern="/lounges/{slug}" showEngagementHooks accentColor="amber" />
 
       <CategoryVSBattle venueA="디엠" venueB="이디엇" topic="해당 동네 감성 바 맞대결" />
 

@@ -1,6 +1,7 @@
 
 
 import { useState, useMemo } from 'react';
+import { isAdVenue } from '@/lib/venue-order';
 import { Link } from '../components/ui/SafeLink';
 import { venues } from '@/data/venues';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -83,7 +84,7 @@ export default function PricePage() {
                     >
                       {v.nameKo}
                     </Link>
-                    {v.isPremium && <span className="ml-2 text-xs text-neon-gold">PREMIUM</span>}
+                    {isAdVenue(v) && <span className="rounded border border-[#111] bg-white px-1.5 py-0.5 text-xs font-bold text-[#111]" data-ad-label>광고</span>}
                   </td>
                   <td className="px-4 py-3 text-neon-text-muted">{v.regionKo}</td>
                   <td className="px-4 py-3 text-neon-text">{v.liquorInfo || '매장 문의'}</td>

@@ -100,6 +100,25 @@ export async function createPost(post: {
   return { data };
 }
 
+// [놀쿨12-2 · P41] 글 고치기 — 본인 글만(user_id 조건) · 새 글과 같은 모더레이션(불법·호객·스팸·욕설)
+export async function updatePost(postId: string, next: { title: string; content: string }) {
+  const supabase = createClient();
+  if (!supabase) return { error: 'Supabase 연결 실패' };
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: '로그인이 필요합니다' };
+  const titleCheck = checkTitle(next.title);
+  if (titleCheck.action === 'block') return { error: titleCheck.reason };
+  const bodyCheck = checkContent(next.content);
+  if (bodyCheck.action === 'block') return { error: bodyCheck.reason };
+  const { error } = await supabase
+    .from('posts')
+    .update({ title: titleCheck.action === 'mask' ? titleCheck.filteredText : next.title, content: bodyCheck.action === 'mask' ? bodyCheck.filteredText : next.content })
+    .eq('id', postId)
+    .eq('user_id', user.id);
+  if (error) return { error: error.message };
+  return { success: true };
+}
+
 // Fetch comments for a post (with user info)
 // parent_id 컬럼이 없을 수 있으므로 단계적 fallback
 export async function fetchComments(postId: string) {

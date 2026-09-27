@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { isAdVenue } from '@/lib/venue-order';
 import { useParams } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
@@ -33,7 +34,7 @@ function RoomCard({ venue, region }: { venue: Venue; region: string }) {
   return (
     <Card href={`/rooms/${region}/${venue.slug}`}>
       <div className="flex flex-wrap gap-2 mb-3">
-        {venue.isPremium && <Badge variant="premium">PREMIUM</Badge>}
+        {isAdVenue(venue) && <span className="rounded border border-[#111] bg-white px-1.5 py-0.5 text-xs font-bold text-[#111]" data-ad-label>광고</span>}
         {hasBooking && (
           <span className="inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
             예약 가능

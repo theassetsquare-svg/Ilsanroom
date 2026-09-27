@@ -1,4 +1,14 @@
+import { useEffect } from 'react';
 import { venues } from '@/data/venues';
+
+/** 전화 알약이 떠 있는 동안 body 아래 여백을 알약 높이만큼 늘린다(쪽 가운데 빈 칸 없이 · 떠나면 되돌림) */
+function BodyBottomPad() {
+  useEffect(() => {
+    document.body.setAttribute('data-sticky-pad', '1');
+    return () => document.body.removeAttribute('data-sticky-pad');
+  }, []);
+  return null;
+}
 
 interface StickyPhoneBarProps {
   phone: string | undefined;
@@ -36,10 +46,13 @@ export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPh
   if (HIDE_STICKY_VENUES.has(venueName)) return null;
   if (phone && REGISTERED_PHONES.has(phone)) {
     return (
+      <>
+      {/* [놀쿨12-2 · E2] 떠 있는 전화 알약 높이만큼 쪽 맨 끝(body 아래 여백)에 빈자리 — 마지막 글이 알약에 가리지 않게(놀쿨 CLAUDE.md 함정 「Bottom bar 겹침」) · 쪽 가운데 빈 공간 0 */}
+      <BodyBottomPad />
       <div data-sticky-phone="true" className="fixed bottom-[72px] right-4 z-[80] md:bottom-6 md:right-6">
         <a
           href={`tel:${phone.replace(/-/g, '')}`}
-          className="flex items-center gap-2 rounded-full bg-[#15803D] px-5 py-3.5 min-h-[44px] max-w-[calc(100vw-2rem)] text-sm font-bold leading-tight text-white shadow-2xl ring-2 ring-white/80 transition hover:bg-[#166534] active:scale-95"
+          className="flex items-center gap-2 rounded-full bg-[#15803D] px-5 py-3.5 min-h-[48px] max-w-[calc(100vw-2rem)] text-sm font-bold leading-tight text-white shadow-2xl ring-2 ring-white/80 transition hover:bg-[#166534] active:scale-95"
           aria-label={`${venueName} 전화걸기 ${phone}`}
         >
           <span className="shrink-0">📞</span>
@@ -48,6 +61,7 @@ export default function StickyPhoneBar({ phone, staffName, venueName }: StickyPh
           <span>{[venueName, staffName, phone].filter(Boolean).join(' ')}</span>
         </a>
       </div>
+      </>
     );
   }
 

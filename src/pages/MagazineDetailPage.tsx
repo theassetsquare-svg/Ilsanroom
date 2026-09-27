@@ -166,9 +166,10 @@ export default function MagazineDetailPage() {
                 {(article as { staffName?: string }).staffName} {(article as { phone?: string }).phone}
               </span>
             </a>
-            {(article as { venueSlug?: string }).venueSlug && (
+            {/* [놀쿨12-2 · P3] 가게 주소를 요정·일산으로 박아 두어 룸 가게(일산룸)가 없는 쪽(404)으로 갔다 — 글에 가게 쪽 주소(venueHref)가 있을 때만 잇는다 */}
+            {(article as { venueHref?: string }).venueHref && (
               <Link
-                to={`/yojeong/ilsan/${(article as { venueSlug?: string }).venueSlug}/`}
+                to={(article as { venueHref?: string }).venueHref!}
                 className="mt-3 inline-flex items-center gap-1 text-sm font-bold"
                 style={{ color: '#15803D' }}
               >

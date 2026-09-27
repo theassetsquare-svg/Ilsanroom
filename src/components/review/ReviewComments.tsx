@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { submitReviewComment, type ReviewComment } from '@/lib/review-api';
+import { submitReviewComment, attachProfiles, type ReviewComment } from '@/lib/review-api';
 import { createClient } from '@/lib/supabase';
 
 interface Props {
@@ -67,14 +67,15 @@ export default function ReviewComments({ reviewId }: Props) {
     if (!supabase) return;
 
     try {
-      const { data } = await supabase
+      const { data: raw } = await supabase
         .from('review_comments')
-        .select('*, user_profiles!left(nickname, avatar_url, level)')
+        .select('*')
         .eq('review_id', reviewId)
         .eq('status', 'active')
         .order('created_at', { ascending: true });
 
-      if (!data) return;
+      if (!raw) return;
+      const data = await attachProfiles(supabase, raw as unknown as ReviewComment[]); // [놀쿨12-2 · P28] 조인 400 대신 따로 읽기
 
       // 트리 구조
       const map = new Map<string, ReviewComment & { children: ReviewComment[] }>();

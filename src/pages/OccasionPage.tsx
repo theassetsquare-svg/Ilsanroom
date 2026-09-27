@@ -1,4 +1,5 @@
 import { Link } from '../components/ui/SafeLink';
+import { WEEKEND_N } from '@/data/venues-counts';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const occasions = [
@@ -95,7 +96,7 @@ export default function OccasionPage() {
               🏆 실시간 인기 랭킹 →
             </Link>
             <Link to="/weekend" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
-              📅 이번 주말 30곳 →
+              📅 이번 주말 {WEEKEND_N}곳 →
             </Link>
             <Link to="/budget" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
               💼 예산별 코스 4개 →

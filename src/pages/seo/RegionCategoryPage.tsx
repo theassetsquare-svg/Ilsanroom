@@ -107,7 +107,7 @@ export default function RegionCategoryPage() {
         {filtered.map(v => (
           <Link key={v.id} to={getHref(v)} className="rounded-xl bg-white p-4 shadow-sm transition hover:shadow-md">
             <h2 className="font-semibold">{v.nameKo}</h2>
-            <p className="mt-1 text-sm text-gray-500">{v.shortDescription.slice(0, 60)}</p>
+            <p className="mt-1 text-sm text-[#444] line-clamp-2">{v.shortDescription}</p>{/* [놀쿨12-2] 글자 수로 자르면 낱말 가운데서 끊겼다 → 두 줄 말줄임 */}
           </Link>
         ))}
       </div>

@@ -4,7 +4,8 @@
 <meta name="google-site-verification" content="PmfRK32sSB__iyGIVTwupgP_R45SPUo7QPPtmYJHXIc" />
     <meta charset="UTF-8" />
     <!-- Google tag (gtag.js) — GA4 measurement (전 페이지 단일 설치, prerender 베이스 상속) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W6VE6KHLLD"></script>
+    <!-- [놀쿨12-2 · 느림] gtag.js(약 170KB)는 창 load 뒤에 붙인다 — 첫 화면 그리기(LCP)와 대역을 다투지 않게. dataLayer 줄은 바로 생겨 그 전 호출도 유실 0(Clarity 와 같은 방식) -->
+    <script>(function(){var s=function(){var t=document.createElement("script");t.async=true;t.src="https://www.googletagmanager.com/gtag/js?id=G-W6VE6KHLLD";document.head.appendChild(t);};document.readyState==="complete"?s():addEventListener("load",s);})();</script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}

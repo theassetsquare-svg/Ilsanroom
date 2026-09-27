@@ -1,4 +1,5 @@
 import { Link } from '../components/ui/SafeLink';
+import { WEEKEND_N } from '@/data/venues-counts';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 /* 가격 노출 금지 (CLAUDE.md). 예산 분류는 "분위기·구성·코스" 기준 큐레이션만 제공 */
@@ -91,7 +92,7 @@ export default function BudgetPage() {
               🏆 실시간 인기 랭킹 →
             </Link>
             <Link to="/weekend" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
-              📅 이번 주말 30곳 →
+              📅 이번 주말 {WEEKEND_N}곳 →
             </Link>
             <Link to="/occasion" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
               🎯 상황별 6가지 →

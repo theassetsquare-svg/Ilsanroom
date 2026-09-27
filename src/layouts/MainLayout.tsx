@@ -1,7 +1,7 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigationType } from 'react-router-dom';
 import SsrArticle from '@/components/seo/SsrArticle';
 import WelcomeBenefits from '@/components/member/WelcomeBenefits'; // [놀쿨11-5] 가입 즉시 혜택 3가지(한 번만)
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import MobileBottomNav from '@/components/layout/MobileBottomNav';
@@ -58,8 +58,21 @@ const websiteJsonLd = {
 
 function ScrollToTop() {
   const { pathname } = useLocation();
+  const navType = useNavigationType();
   useEffect(() => {
+    // [놀쿨12-2 · 13:18-11 「뒤로 가기 자리 기억」] 뒤로·앞으로(POP)는 맨 위로 올리지 않는다 — 목록이 보던 자리를 되살린다(VenueListClient)
+    if (navType === 'POP') return;
     window.scrollTo(0, 0);
+  }, [pathname, navType]);
+  return null;
+}
+
+/** [놀쿨12-2 · P4] 첫 쪽의 프리렌더 JSON-LD(head 안 · React 의 JsonLd 는 body 에 그린다)는 그 쪽 것이다 — 사이트 안에서 다른 쪽으로 옮기면 지운다(앞 가게 전화번호가 다음 쪽 머리에 남던 것) */
+function SsrPageLdCleaner() {
+  const { pathname } = useLocation();
+  const first = useRef(pathname);
+  useEffect(() => {
+    if (pathname !== first.current) document.head.querySelectorAll('script[type="application/ld+json"]').forEach((n) => n.remove());
   }, [pathname]);
   return null;
 }
@@ -74,6 +87,7 @@ export default function MainLayout() {
     <div className="flex min-h-screen flex-col pb-[72px] md:pb-0">
       <a href="#main-content" className="skip-nav">본문으로 건너뛰기</a>
       <ScrollToTop />
+      <SsrPageLdCleaner />
       <SeoOverrideRunner />
       <ScrollProgress />
       <JsonLd data={organizationJsonLd} />

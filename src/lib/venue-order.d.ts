@@ -1,0 +1,20 @@
+type V = { slug: string; nameKo?: string; id?: string; status?: string; staffPhone?: string; address?: string; sameAs?: string };
+type PopMap = Record<string, { ranked?: boolean; score?: number }>;
+export declare const ILSAN_CHIEF_PHONE: string;
+export declare function isAdVenue(v: V | null | undefined): boolean;
+export declare function isListed(v: V | null | undefined): boolean;
+export declare const SIDO_ORDER: string[];
+export declare function adminArea(address: string | undefined): { sido: string; sgg: string | null } | null;
+export declare const UNKNOWN_REGION: string;
+export declare function regionOf(v: V): { sido: string | null; sgg: string | null; label: string; key: string };
+export declare function inRegionKey(v: V, key: string | null | undefined): boolean;
+export declare function regionTree(list: V[]): {
+  total: number;
+  sidos: { key: string; label: string; count: number; sggs: { key: string; label: string; count: number }[]; noSgg: number }[];
+  unknown: number;
+};
+export type SortKey = 'rec' | 'pop' | 'name' | 'new';
+export declare const SORT_KEYS: SortKey[];
+export declare const SORT_LABELS: Record<SortKey, string>;
+export declare function popScoreOf(pop: PopMap, slug: string): number;
+export declare function sortVenues<T extends V>(list: T[], mode: string, pop: PopMap): T[];

@@ -38,7 +38,7 @@ export default function RegionLandingPage() {
             {vList.map(v => (
               <Link key={v.id} to={getHref(v)} className="rounded-xl bg-white p-4 shadow-sm transition hover:shadow-md">
                 <h3 className="font-semibold">{v.nameKo}</h3>
-                <p className="mt-1 text-sm text-gray-500">{v.shortDescription.slice(0, 60)}</p>
+                <p className="mt-1 text-sm text-[#444] line-clamp-2">{v.shortDescription}</p>
               </Link>
             ))}
           </div>

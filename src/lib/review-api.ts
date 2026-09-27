@@ -30,6 +30,19 @@ export interface ReviewComment {
   user_profiles?: { nickname: string | null; avatar_url: string | null; level: string } | null;
 }
 
+/** [놀쿨12-2 · P28] 쓴 사람 닉네임은 user_profiles 에서 따로 읽어 붙인다 — 조인 요청(user_profiles!left)이 400 이 나던 것 */
+export async function attachProfiles<T extends { user_id: string | null }>(supabase: NonNullable<ReturnType<typeof createClient>>, rows: T[]): Promise<(T & { user_profiles: { nickname: string | null; avatar_url: string | null; level: string } | null })[]> {
+  const ids = [...new Set(rows.map((r) => r.user_id).filter(Boolean))] as string[];
+  const byId = new Map<string, { nickname: string | null; avatar_url: string | null; level: string }>();
+  if (ids.length) {
+    try {
+      const { data } = await supabase.from('user_profiles').select('id, nickname, avatar_url, level').in('id', ids);
+      for (const p of (data || []) as { id: string; nickname: string | null; avatar_url: string | null; level: string }[]) byId.set(p.id, { nickname: p.nickname, avatar_url: p.avatar_url, level: p.level });
+    } catch { /* 닉네임 없이 */ }
+  }
+  return rows.map((r) => ({ ...r, user_profiles: (r.user_id && byId.get(r.user_id)) || null }));
+}
+
 // 업소별 후기 목록
 export async function fetchReviews(venueId: string, limit = 20, offset = 0) {
   const supabase = createClient();
@@ -38,23 +51,13 @@ export async function fetchReviews(venueId: string, limit = 20, offset = 0) {
   try {
     const { data, count, error } = await supabase
       .from('reviews')
-      .select('*, user_profiles!left(nickname, avatar_url, level)', { count: 'exact' })
+      .select('*', { count: 'exact' })
       .eq('venue_id', venueId)
       .eq('status', 'active')
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
-
-    if (error) {
-      const { data: fb, count: c2 } = await supabase
-        .from('reviews')
-        .select('*', { count: 'exact' })
-        .eq('venue_id', venueId)
-        .eq('status', 'active')
-        .order('created_at', { ascending: false })
-        .range(offset, offset + limit - 1);
-      return { data: (fb || []) as Review[], count: c2 || 0 };
-    }
-    return { data: (data || []) as unknown as Review[], count: count || 0 };
+    if (error || !data) return { data: [] as Review[], count: 0 };
+    return { data: (await attachProfiles(supabase, data as Review[])) as Review[], count: count || 0 };
   } catch {
     return { data: [] as Review[], count: 0 };
   }

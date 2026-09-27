@@ -1,4 +1,5 @@
 import { lazy, Suspense, useRef } from 'react';
+import { WEEKEND_N } from '@/data/venues-counts';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { MidContentHook, ReadFinishCount, ReadCompletionReward, NextSectionTeaser, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
@@ -148,7 +149,7 @@ export default function QuizPage() {
               🕵️ 숨은 명소 →
             </Link>
             <Link to="/weekend" className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-3 text-sm font-bold text-[#111] active:bg-gray-100">
-              📅 이번 주말 30곳 →
+              📅 이번 주말 {WEEKEND_N}곳 →
             </Link>
             <Link to="/occasion" className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-3 text-sm font-bold text-[#111] active:bg-gray-100">
               🎯 상황별 6가지 →

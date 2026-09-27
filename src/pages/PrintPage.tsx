@@ -1,4 +1,5 @@
 import { useParams , Navigate } from 'react-router-dom';
+import { isAdVenue } from '@/lib/venue-order';
 
 import { getVenueBySlug } from '@/data/venues';
 import PrintButton from '@/components/ui/PrintButton';
@@ -64,9 +65,7 @@ export default function PrintPage() {
                 <span className="text-sm text-neon-text-muted">리뷰 {venue.reviewCount}개</span>
               </>
             )}
-            {venue.isPremium && (
-              <span className="rounded-full border border-amber-500 px-2 py-0.5 text-xs font-bold text-amber-600">PREMIUM</span>
-            )}
+            {isAdVenue(venue) && <span className="rounded border border-[#111] bg-white px-1.5 py-0.5 text-xs font-bold text-[#111]" data-ad-label>광고</span>}
           </div>
         )}
 

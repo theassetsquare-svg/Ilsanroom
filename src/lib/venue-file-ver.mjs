@@ -18,27 +18,17 @@ export const HERO_FILE_VER = {
 
 /** /og/{slug}.jpg 파일명 버전 */
 export const OG_FILE_VER = {
-  // [P2 · 설계도 14-4] 2026-09-06 전 업소 표준 글자 카드(-v5)로 통일 — 광고주 4줄·비광고주 3줄, 예외 없음
-  bulgwangdonghobaknight: '-v6', // 2026-09-07 광고주 등록(손흥민 010-2221-1937) → 4줄 카드로 다시 그림(scripts/make-venue-card.py). 파일명을 올려야 엣지 캐시가 옛 3줄 카드를 안 준다
-  // 2026-09-22 대표님 지시 — 옛 광고주 세트를 일산룸 총책임자(010-4117-5556)로 교체.
-  // -v5 카드의 배경·테두리·가게이름·노란 줄·맨아래 줄은 그대로 두고 닉네임·번호 두 줄만 다시 그렸다.
-  // 파일명을 올려야 Cloudflare 엣지가 옛 번호 카드를 계속 주지 않는다(썸네일 표준 5절 함정 5).
-  ilsanroom: '-v6',
-  ilsanmyeongwolgwanyojeong: '-v6',
-  // 2026-09-24 긴급 — 수원찬스돔나이트 카드가 명단 밖 옛 닉네임·번호였다 → 광고주 기준 「박찬호 010-7117-5077」로 두 줄만 다시 그림(scripts/redraw-adv-card.mjs).
-  suwonchancenight: '-v6',
-  // 2026-09-27 놀쿨12-1 실측 → 즉시 고침 — 명단 밖(광고주 명단 data/advertisers.json 에 없는) 닉네임·번호가 그려진 -v5 카드 6장을 표준 3줄 카드(가게이름 / 광고문의 / 카톡 besta12 · naver-watch make-one-card.py)로 다시 그림. 옛 -v5·-v3 파일은 번호가 그려져 있어 지웠다(명단 밖 번호 0 · 대표님지시_한장 3절).
-  busanmulnight: '-v7',
-  busanyeonsandongmulnight: '-v7',
-  daegubabambanight: '-v7',
-  dapsimnidontellmamanight: '-v7',
-  'haeundaehoppa-kkantappiya': '-v7',
-  sinlimgrandprixnight: '-v7',
+  // [놀쿨12-2 · 2026-09-27] 전 업소 새 판 -v8(가게 이름이 가장 크게 · scripts/generate-og-name11.mjs) 로 통일 — 가게별 옛 판(-v6 · -v7)은 끝.
+  //   옛 판 파일은 지우지 않았다(되돌릴 근거). 앞으로 한 가게만 다시 그리면 여기에 slug: '-v9' 식으로 올린다.
 };
 
 /** 2026-08-22 전 업소 "가게이름" 1:1 og 썸네일 전환(generate-og-name11.mjs).
  *  수동 합성본(OG_FILE_VER 등록 2곳)만 -v2 유지, 나머지 전 슬러그 -v3 파일 참조. */
-export const OG_DEFAULT_VER = '-v5';
+export const OG_DEFAULT_VER = '-v8'; // [놀쿨12-2] 새 판 카드
 
 export const heroVer = (slug) => HERO_FILE_VER[slug] || '';
 export const ogVer = (slug) => OG_FILE_VER[slug] || OG_DEFAULT_VER;
+
+/** [놀쿨12-2 · 13:18-6·7] 화면의 가게 그림 = 표준 카드(가게 이름이 가장 크게)의 webp 축소판(빌드가 dist/og/<이름>-w600.webp 로 만든다).
+ *  가게 사진(/venues/*)은 사진 판정표(docs/NOLCOOL12_사진판정_2026-09-27.md) 여섯 가지를 모두 넘은 것만 쓰는데 지금 0장이라 전부 카드다. */
+export const cardSrc = (slug) => `/og/${slug}${ogVer(slug)}-w600.webp`;

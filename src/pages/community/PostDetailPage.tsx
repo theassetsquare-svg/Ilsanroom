@@ -11,6 +11,7 @@ import AuthorBadge from '@/components/community/AuthorBadge';
 import WeeklyVoteWidget from '@/components/community/WeeklyVoteWidget';
 import { sanitizeHtml } from '@/lib/sanitize-html';
 import { splitHtmlParagraphs } from '@/lib/text-format';
+import { updatePost } from '@/lib/community-api';
 
 interface CommentData {
   id: string;
@@ -48,6 +49,11 @@ export default function PostDetailPage() {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [relatedPosts, setRelatedPosts] = useState<any[]>([]);
+  // [놀쿨12-2 · P41] 글쓴이 수정
+  const [editing, setEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState('');
+  const [editBody, setEditBody] = useState('');
+  const [editError, setEditError] = useState('');
 
   const viewCount = post?.view_count ?? 0;
   const supabase = createClient();
@@ -116,6 +122,15 @@ export default function PostDetailPage() {
     const { error } = await supabase.from('posts').delete().eq('id', id);
     if (error) return;
     navigate('/community');
+  };
+
+  const startEdit = () => { setEditTitle(post?.title || ''); setEditBody(String(post?.content || '').replace(/<[^>]+>/g, '')); setEditError(''); setEditing(true); };
+  const saveEdit = async () => {
+    if (!id) return;
+    const r = await updatePost(id, { title: editTitle.trim(), content: editBody.trim() });
+    if ('error' in r && r.error) { setEditError(r.error); return; }
+    setPost((p: any) => ({ ...p, title: editTitle.trim(), content: editBody.trim() }));
+    setEditing(false);
   };
 
   // 좋아요
@@ -299,9 +314,25 @@ export default function PostDetailPage() {
           <span className="rounded-full px-2 py-0.5" style={{ backgroundColor: '#F3F0FF', color: '#8B5CF6' }}>{post.category}</span>
         </div>
         {user?.id === post.user_id && (
-          <button onClick={handleDelete} className="text-sm font-medium" style={{ color: '#EF4444', minHeight: 44 }}>삭제</button>
+          <div className="flex items-center gap-2">
+            <button onClick={startEdit} className="text-sm font-medium px-2" style={{ color: '#6D28D9', minHeight: 48 }} data-post-edit>수정</button>
+            <button onClick={handleDelete} className="text-sm font-medium px-2" style={{ color: '#B91C1C', minHeight: 48 }}>삭제</button>
+          </div>
         )}
       </div>
+      {editing && (
+        <div className="rounded-xl border p-4 mb-4" style={{ borderColor: '#E5E7EB' }} data-post-edit-form>
+          <label className="block text-xs font-bold mb-1" htmlFor="post-edit-title" style={{ color: '#333' }}>제목</label>
+          <input id="post-edit-title" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} className="w-full rounded-lg border px-3 py-2 mb-3" style={{ fontSize: 16, minHeight: 48 }} />
+          <label className="block text-xs font-bold mb-1" htmlFor="post-edit-body" style={{ color: '#333' }}>내용</label>
+          <textarea id="post-edit-body" value={editBody} onChange={(e) => setEditBody(e.target.value)} rows={6} className="w-full rounded-lg border px-3 py-2" style={{ fontSize: 16 }} />
+          {editError && <p className="mt-2 text-sm" style={{ color: '#B91C1C' }}>{editError}</p>}
+          <div className="mt-3 flex gap-2">
+            <button onClick={saveEdit} className="rounded-lg px-4 text-sm font-bold text-white" style={{ background: '#6D28D9', minHeight: 48 }}>고친 글 저장</button>
+            <button onClick={() => setEditing(false)} className="rounded-lg px-4 text-sm font-bold" style={{ color: '#333', border: '1px solid #D1D5DB', minHeight: 48 }}>취소</button>
+          </div>
+        </div>
+      )}
 
       {/* 조각모임 구조화 정보 */}
       {jogakData && (

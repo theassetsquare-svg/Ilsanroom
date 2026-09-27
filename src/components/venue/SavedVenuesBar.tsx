@@ -7,8 +7,7 @@
 import { useEffect, useState } from 'react';
 import { useFavorites } from '@/hooks/useFavorites';
 import { Link } from '@/components/ui/SafeLink';
-import { hasVenueImage } from '@/data/venue-image-manifest';
-import { heroVer } from '@/lib/venue-file-ver';
+import { cardSrc } from '@/lib/venue-file-ver';
 import type { Venue } from '@/types';
 
 const catEmoji: Record<string, string> = { club: '🎵', night: '🌙', lounge: '🍸', room: '🚪', yojeong: '🏮', hoppa: '🥂' };
@@ -71,9 +70,9 @@ export default function SavedVenuesBar() {
                   className="block rounded-xl overflow-hidden bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.10)] transition-shadow"
                 >
                   <div className="relative aspect-square bg-gradient-to-br from-rose-200 to-rose-400">
-                    {hasVenueImage(v.slug) && (
+                    {(
                       <img
-                        src={`/venues/${v.slug}-1${heroVer(v.slug)}.webp?v3`}
+                        src={cardSrc(v.slug)}
                         alt={v.nameKo}
                         width={140}
                         height={140}

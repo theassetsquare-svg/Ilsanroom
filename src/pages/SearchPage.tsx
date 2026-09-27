@@ -10,8 +10,9 @@ import { escapeHtml } from '@/lib/sanitize-html';
 import { trackEvent } from '@/lib/visitor-tracker';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { ReadFinishCount } from '@/components/engagement/ReadingEngagement';
-import { hasVenueImage } from '@/data/venue-image-manifest';
-import { heroVer } from '@/lib/venue-file-ver';
+import { cardSrc } from '@/lib/venue-file-ver';
+import { isAdVenue, isListed, sortVenues } from '@/lib/venue-order';
+import { popularity } from '@/lib/popularity';
 import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 
 /* ── 카테고리 설정 ── */
@@ -61,8 +62,8 @@ function normalize(text: string): string {
 function smartSearch(query: string, categoryFilter: string): { results: Venue[]; total: number } {
   const q = query.trim();
   if (!q && categoryFilter === 'all') {
-    const sorted = [...allVenues].filter(v => v.status !== 'closed_or_unclear')
-      .sort((a, b) => (b.isPremium ? 50 : 0) + b.rating * 10 - ((a.isPremium ? 50 : 0) + a.rating * 10));
+    // [놀쿨12-2 · 13:18-2] 검색어 없을 때 = 목록과 같은 추천 순서(광고 → 인기 → 가나다)
+    const sorted = sortVenues(allVenues.filter((v) => isListed(v)), 'rec', popularity.venues);
     return { results: sorted, total: sorted.length };
   }
 
@@ -136,8 +137,7 @@ function smartSearch(query: string, categoryFilter: string): { results: Venue[];
       }
     }
 
-    if (v.isPremium) score += 30;
-    score += (v.rating || 0) * 3;
+    // [놀쿨12-2 · E4] 옛 PREMIUM 가산점(+30)을 뺐다 — 검색어와 상관없는 가게가 「검색 결과」로 나오던 뿌리(없는 이름을 쳐도 3곳)
 
     return { venue: v, score };
   });
@@ -421,8 +421,8 @@ export default function SearchPage() {
               <Link key={venue.id || venue.slug} to={getCategoryPath(venue)} className="block">
                 <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
                   <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
-                    {hasVenueImage(venue.slug) && (
-                      <img src={`/venues/${venue.slug}-1${heroVer(venue.slug)}.webp?v3`} alt={venue.nameKo} loading="lazy"
+                    {(
+                      <img src={cardSrc(venue.slug)} alt={venue.nameKo} loading="lazy"
                         className="absolute inset-0 w-full h-full object-cover z-[1]"
                         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                     )}
@@ -430,8 +430,8 @@ export default function SearchPage() {
                       <span className="text-3xl">{catEmoji[venue.category] || '🎵'}</span>
                       <span className="mt-1 text-xs font-bold text-white/80">{venue.nameKo.slice(0, 4)}</span>
                     </div>
-                    {venue.isPremium && (
-                      <span className="absolute top-2 left-2 z-[2] rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-amber-400 backdrop-blur-sm">PREMIUM</span>
+                    {isAdVenue(venue) && (
+                      <span className="absolute top-2 left-2 z-[2] rounded border border-[#111] bg-white px-1.5 py-0.5 text-xs font-bold text-[#111]" data-ad-label>광고</span>
                     )}
                     <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2.5 py-2">
                       <h3 className="text-sm font-bold text-white leading-tight truncate">{venue.nameKo}</h3>

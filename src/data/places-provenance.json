@@ -982,5 +982,110 @@
     ],
     "matchedName": "미라클 나이트클럽",
     "fetchedAt": "2026-08-22"
+  },
+  "cheongdamh2onight": {
+    "source": "manual",
+    "note": "놀쿨12-2(2026-09-27) naver-watch 가게 장부 data/shops/cheongdam.json verified 값 — address: 공개 출처 교차 확인 2026-09-15(NL2) — https://dorojuso.kr/1168010400100530007017901/ · https://gangnamnight.clickn.co.kr/main · 옛 출처: 우리 페이지 JSON-LD streetAddress (파일 32개 일치) / openHours: 네이버 지도 플레이스 (업소 등록 정보) 2026-09-03 — https://pcmap.place.naver.com/place/1619330595/home",
+    "fields": [
+      "address",
+      "openHours"
+    ],
+    "fetchedAt": "2026-09-27"
+  },
+  "gurihobaknight": {
+    "source": "manual",
+    "note": "놀쿨12-2(2026-09-27) naver-watch 가게 장부 data/shops/guri-hobak.json verified 값 — address: 공개 출처 교차 확인 2026-09-15(NL2) — https://fqf.purpleo.kr/256 · 옛 출처: 우리 페이지 JSON-LD streetAddress (파일 11개 일치)",
+    "fields": [
+      "address"
+    ],
+    "fetchedAt": "2026-09-27"
+  },
+  "jejunight": {
+    "source": "manual",
+    "note": "놀쿨12-2(2026-09-27) naver-watch 가게 장부 data/shops/jeju.json verified 값 — address: 공개 출처 교차 확인 2026-09-15(NL2) — https://www.114.co.kr/search/detail?comp_id=15843403&comp_tp_cd=TEL&upjong_cd=853202 · http://localmap.co.kr/web/splus/kmap/view.php?sigun=6500000&gugun=6510000&keyno=189&keyname=%EC%A0%9C%EC%A3%BC%EB%82%98%EC%9D%B4%ED%8A%B8&keylink=6510000-102-2022-00008 · 옛 출처: 우리 페이지 JSON-LD streetAddress (파일 10개 일치)",
+    "fields": [
+      "address"
+    ],
+    "fetchedAt": "2026-09-27"
+  },
+  "gangnamclub-jack": {
+    "source": "manual",
+    "note": "놀쿨12-2(2026-09-27) naver-watch 가게 장부 data/shops/club-39-gangnam-jack.json verified 값 — address: N0 공개 출처 재조사 2026-09-20 — https://www.instagram.com/jack_livin_seoul/ · https://clubjacklivin.co.kr/ · https://www.facebook.com/jacklivin.seoul/",
+    "fields": [
+      "address"
+    ],
+    "fetchedAt": "2026-09-27"
+  },
+  "gangnamclub-arte": {
+    "source": "manual",
+    "note": "놀쿨12-2(2026-09-27) naver-watch 가게 장부 data/shops/club-54-gangnam-club.json verified 값 — address: N0 공개 출처 재조사 2026-09-20 — https://clubarte.co.kr/31 · https://us.trip.com/travel-guide/attraction/seoul/-l-club-arte-seoul-142726512/",
+    "fields": [
+      "address"
+    ],
+    "fetchedAt": "2026-09-27"
+  },
+  "itaewonclub-utopia": {
+    "source": "manual",
+    "note": "놀쿨12-2(2026-09-27) naver-watch 가게 장부 data/shops/club-45-itaewon-club.json verified 값 — address: N0 공개 출처 재조사 2026-09-20 — https://www.tiktok.com/@holycow.co.kr/video/7451273960898972935 · https://www.beatbuddy.world/detail/126 · https://www.threads.com/@dumbs_app/post/DShMncSEjg5",
+    "fields": [
+      "address"
+    ],
+    "fetchedAt": "2026-09-27"
+  },
+  "itaewonclub-prism": {
+    "source": "manual",
+    "note": "놀쿨12-2(2026-09-27) naver-watch 가게 장부 data/shops/club-56-itaewon-club.json verified 값 — address: N0 공개 출처 재조사 2026-09-20 — https://namu.wiki/w/%EC%9D%B4%ED%83%9C%EC%9B%90%EB%8F%99/%ED%81%B4%EB%9F%BD · https://www.yeogi.com/domestic-accommodations/7437 · https://www.instagram.com/club._.prizm/",
+    "fields": [
+      "address"
+    ],
+    "fetchedAt": "2026-09-27"
+  },
+  "hongdaeclub-dokkaebi": {
+    "source": "manual",
+    "note": "놀쿨12-2(2026-09-27) naver-watch 가게 장부 data/shops/club-58-hongdae-club.json verified 값 — address: N0 공개 출처 재조사 2026-09-20 — https://www.instagram.com/club_dokkaebi_official/ · https://shareit.kr/venue/17253 · https://nightflow.kr/clubs/93f1081a-250c-402a-a0d4-9b8a309aff57",
+    "fields": [
+      "address"
+    ],
+    "fetchedAt": "2026-09-27"
+  },
+  "ilsanclub-cj": {
+    "source": "manual",
+    "note": "놀쿨12-2(2026-09-27) naver-watch 가게 장부 data/shops/club-59-ilsan-cj.json verified 값 — address: N0 공개 출처 재조사 2026-09-20 — https://www.instagram.com/p/CwzqowoS3IF/ · https://www.tiktok.com/@holycow.co.kr/video/7294477599760289026 · https://www.youtube.com/@liveclubcj7038",
+    "fields": [
+      "address"
+    ],
+    "fetchedAt": "2026-09-27"
+  },
+  "incheonparadisecity": {
+    "source": "manual",
+    "note": "놀쿨12-2(2026-09-27) naver-watch 가게 장부 data/shops/club-43-incheon-club.json verified 값 — address: N0 공개 출처 재조사 2026-09-20 — https://www.p-city.com/front/chroma/facility?language=KO · https://www.waug.com/ko/activities/136337 · https://leisure-web.yanolja.com/leisure/10078179",
+    "fields": [
+      "address"
+    ],
+    "fetchedAt": "2026-09-27"
+  },
+  "apgujeonglounge-dm": {
+    "source": "manual",
+    "note": "놀쿨12-2(2026-09-27) naver-watch 가게 장부 data/shops/club-34-apgujeong-club.json verified 값 — address: N0 공개 출처 재조사 2026-09-20 — https://www.diningcode.com/profile.php?rid=HKYfEDZUntEu · https://www.spacecloud.kr/space/70843 · https://www.instagram.com/dmseoul/",
+    "fields": [
+      "address"
+    ],
+    "fetchedAt": "2026-09-27"
+  },
+  "bupyeongkissnight": {
+    "source": "manual",
+    "note": "놀쿨12-2(2026-09-27) naver-watch 가게 장부 data/shops/bupyeong-kiss.json verified 값 — address: 사업자등록증(부평세무서 2026-09-04 발급 · 등록 상호 「키스나이트클럽」) — 대표님 제공 2026-09-23 23:1x 캡처 C:\\Users\\admin\\Pictures\\캡처.JPG · 2026-09-24 14:01 채팅 사진으로 재확인",
+    "fields": [
+      "address"
+    ],
+    "fetchedAt": "2026-09-27"
+  },
+  "busanyeonsandongmulnight": {
+    "source": "manual",
+    "fields": [
+      "address"
+    ],
+    "note": "놀쿨12-2(2026-09-27) 부산물나이트와 같은 가게 — 인허가 공개 자료(행정안전부 사업자 인허가 · duli.co.kr keylink 3370000-102-2018-00004 「목화물나이트클럽 주식회사」 부산 연제구 중앙대로 1125) · daangn 목화물나이트 · miromarket.kr",
+    "fetchedAt": "2026-09-27"
   }
 }

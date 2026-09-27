@@ -1,24 +1,23 @@
 /**
- * 전 업소 "가게이름" 1:1 OG 썸네일 (1200×1200) — 2026-08-22 대표 지시.
- * - 가게이름이 주인공: 초대형 텍스트(모바일 300px 축소에도 판독), 2줄 자동 분할.
- * - 광고주(staffNickname+staffPhone 보유 업소)는 닉네임+전화번호를 이름 아래 크게.
- * - MANUAL_OG_SLUGS(일산룸·명월관 수동 합성본)는 절대 건드리지 않는다.
- * - 출력: public/og/{slug}-v3.jpg  (파일명 버전업 = 엣지 캐시 무관 즉시 반영,
- *   참조는 src/lib/venue-file-ver.mjs OG_DEFAULT_VER '-v3' 단일 소스)
+ * 전 업소 "가게이름" 1:1 표준 카드 (1200×1200) — og:image · 목록 썸네일 · 가게 쪽 첫 그림이 모두 이 한 장.
+ * [놀쿨12-2 · 대표님 13:18-7 · 2026-09-24] 새 판(-v8): 가게 이름이 가장 크게(목록 표시 100px 에서도 읽히게 — 원본 글자 높이 140px 이상)
+ *   · 긴 이름은 두세 줄 자동 맞춤 · 어두운 바탕에 밝은 글자(대비 4.5:1 이상) · 쪽마다 고유(이름이 다르고 바탕 색조도 가게마다 다름)
+ *   · 줄 수 = 썸네일 표준: 광고주 4줄(가게 이름 / 닉네임 / 번호 / 광고문의 카톡 besta12) · 그 밖 3줄(가게 이름 / 광고문의 / 카톡 besta12)
+ *   · 광고주 = venues.ts staffNickname+staffPhone(= naver-watch data/advertisers.json 명단) · 일산룸·일산명월관 두 가게는 총책임자 줄(규칙 R12)
+ * - 출력: public/og/{slug}{판}.jpg (판 = src/lib/venue-file-ver.mjs ogVer · 파일 이름을 올려야 엣지 캐시가 옛 그림을 안 준다)
+ * - 옛 판 파일은 지우지 않는다.
  * 사용: node scripts/generate-og-name11.mjs [slug]
  */
 import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import { ogVer } from '../src/lib/venue-file-ver.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const FONT_B64 = fs.readFileSync(path.join(__dirname, 'og-fonts/NotoSansKR-Bold.ttf')).toString('base64');
-
-// 수동 합성 og 보호 목록 (generate-og-nickname.cjs 와 동일 기준)
-const MANUAL_OG_SLUGS = new Set(['ilsanroom', 'ilsanmyeongwolgwanyojeong']);
 
 const venuesContent = fs.readFileSync(path.join(ROOT, 'src/data/venues.ts'), 'utf-8');
 const blocks = venuesContent.split(/\n  \{/);
@@ -29,90 +28,117 @@ for (const block of blocks) {
   const cat = block.match(/category:\s*'([^']+)'/)?.[1];
   const nick = block.match(/staffNickname:\s*'([^']+)'/)?.[1] || '';
   const phone = block.match(/staffPhone:\s*'([^']+)'/)?.[1] || '';
-  const region = block.match(/regionKo:\s*'([^']+)'/)?.[1] || '';
-  if (slug && nameKo && cat) venues.push({ slug, nameKo, cat, nick, phone, region });
+  if (slug && nameKo && cat) venues.push({ slug, nameKo, cat, nick, phone });
 }
 
-const CAT_LABEL = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
-const CAT_COLOR = { club: '#7C3AED', night: '#EC4899', lounge: '#D4AF37', room: '#1E3A5F', yojeong: '#059669', hoppa: '#DC2626' };
-
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+export const KAKAO_LINE = '광고문의 카톡 besta12';
 
-/** 가게이름 2줄 분할 — 8자 초과 시 업종 접미(나이트/클럽/라운지/호빠/요정/룸) 또는 공백/중앙 기준 */
-function splitName(name) {
-  if (name.length <= 8) return [name];
-  const sp = name.lastIndexOf(' ');
-  if (sp >= 2 && sp <= name.length - 2) return [name.slice(0, sp), name.slice(sp + 1)];
-  const m = name.match(/^(.{2,})(나이트|클럽|라운지|호빠|요정|룸)$/);
-  if (m && m[1].length <= 10) return [m[1], m[2]];
-  const mid = Math.ceil(name.length / 2);
-  return [name.slice(0, mid), name.slice(mid)];
+/** 가게 이름 줄 나누기 — 한 줄 최대 글자 수(maxPer) 안에서 띄어쓰기 → 업종 꼬리(나이트·클럽…) → 고르게 */
+export function splitName(name, maxPer) {
+  if (name.length <= maxPer) return [name];
+  // 낱말을 자르지 않는다 — 띄어쓰기로 나누고, 한 낱말이 길면 업종 꼬리(나이트·클럽…) 앞에서, 그래도 길면 반으로
+  const tokens = [];
+  let halved = false;
+  for (const w of name.split(/\s+/).filter(Boolean)) {
+    if (w.length <= maxPer) { tokens.push(w); continue; }
+    const m = w.match(/^(.+?)(나이트|클럽|라운지|호빠|요정|룸)$/);
+    const parts = m ? [m[1], m[2]] : [w];
+    for (const p of parts) {
+      if (p.length <= maxPer) tokens.push(p);
+      else { const h = Math.ceil(p.length / 2); tokens.push(p.slice(0, h), p.slice(h)); halved = true; }
+    }
+  }
+  const lines = [];
+  for (const t of tokens) {
+    const last = lines[lines.length - 1];
+    if (last && (last + ' ' + t).length <= maxPer) lines[lines.length - 1] = last + ' ' + t;
+    else lines.push(t);
+  }
+  lines.halved = halved; // 낱말을 반으로 가른 판(고를 때 덜 좋게 친다)
+  return lines;
+}
+
+/** 가게마다 다른 어두운 바탕 색조(이름 해시) — 글자 대비는 그대로(바탕 밝기 12% 이하) */
+function tint(slug) {
+  const h = crypto.createHash('md5').update(slug).digest();
+  const hue = h[0] * 360 / 256;
+  return { a: `hsl(${hue.toFixed(0)},45%,11%)`, b: `hsl(${((hue + 40) % 360).toFixed(0)},40%,6%)` };
+}
+
+export function layout(v) {
+  const isAd = !!(v.nick && v.phone);
+  // 이름 칸 세로 예산: 광고주는 아래 세 줄, 그 밖은 두 줄 자리를 남긴다
+  const budget = isAd ? 560 : 640;
+  let best = null;
+  for (let maxPer = 4; maxPer <= 8; maxPer++) {
+    const lines = splitName(v.nameKo, maxPer);
+    if (lines.length > 3) continue;
+    const longest = Math.max(...lines.map((l) => l.length));
+    const size = Math.floor(Math.min(260, 1060 / longest, budget / (lines.length * 1.08)));
+    const score = size * (lines.halved ? 0.85 : 1); // 같은 크기면 낱말을 자르지 않은 판
+    if (!best || score > best.score) best = { lines, size, score };
+  }
+  return { isAd, ...best };
 }
 
 function buildSvg(v) {
-  const bg = CAT_COLOR[v.cat] || '#8B5CF6';
-  const label = CAT_LABEL[v.cat] || '';
-  const lines = splitName(v.nameKo);
-  const maxLen = Math.max(...lines.map((l) => l.length));
-  // 캔버스 안전영역 1040px 안에 꽉 차게 — 한글 글리프 폭 ≈ fontSize
-  const nameSize = Math.min(260, Math.floor(1040 / maxLen));
-  const isAd = !!(v.nick && v.phone);
-  const phoneDisp = v.phone.replace(/-/g, ' ');
-  // 세로 배치: 광고주는 이름을 위로 올려 닉네임+번호 공간 확보
-  const nameCenterY = isAd ? (lines.length === 2 ? 430 : 480) : (lines.length === 2 ? 540 : 600);
-  const lineGap = nameSize * 1.12;
+  const { isAd, lines, size } = layout(v);
+  const t = tint(v.slug);
+  const gap = size * 1.08;
+  const top = isAd ? 70 : 110;
+  const nameBlockH = gap * lines.length;
   const nameTexts = lines
-    .map((l, i) => {
-      const y = lines.length === 2 ? nameCenterY + (i === 0 ? -lineGap / 2 : lineGap / 2) : nameCenterY;
-      return `<text x="600" y="${Math.round(y + nameSize * 0.35)}" text-anchor="middle" font-family="KO" font-size="${nameSize}" font-weight="900" fill="#FFFFFF" letter-spacing="-0.03em">${esc(l)}</text>`;
-    })
+    .map((l, i) => `<text x="600" y="${Math.round(top + gap * i + size * 0.92)}" text-anchor="middle" font-family="KO" font-size="${size}" font-weight="900" fill="#FFD54A" letter-spacing="-0.02em">${esc(l)}</text>`)
     .join('\n  ');
-  const nickSize = v.nick.length > 4 ? 120 : 150;
-  const adBlock = isAd
-    ? `<text x="600" y="800" text-anchor="middle" font-family="KO" font-size="${nickSize}" font-weight="900" fill="#FCD34D" letter-spacing="-0.02em">${esc(v.nick)}</text>
-  <rect x="120" y="870" width="960" height="150" rx="75" fill="rgba(0,0,0,0.35)" stroke="rgba(252,211,77,0.7)" stroke-width="4"/>
-  <text x="600" y="972" text-anchor="middle" font-family="KO" font-size="96" font-weight="900" fill="#FFFFFF" letter-spacing="0.01em">${esc(phoneDisp)}</text>`
-    : '';
+  let y = top + nameBlockH + (isAd ? 60 : 90);
+  let rest = '';
+  if (isAd) {
+    const nickSize = Math.min(128, Math.floor(1000 / Math.max(2, v.nick.length)), size - 20);
+    rest += `<text x="600" y="${Math.round(y + nickSize * 0.9)}" text-anchor="middle" font-family="KO" font-size="${nickSize}" font-weight="900" fill="#FFFFFF">${esc(v.nick)}</text>`;
+    y += nickSize * 1.2;
+    const phoneSize = Math.min(110, size - 30);
+    rest += `\n  <text x="600" y="${Math.round(y + phoneSize * 0.9)}" text-anchor="middle" font-family="KO" font-size="${phoneSize}" font-weight="900" fill="#FFFFFF" letter-spacing="0.01em">${esc(v.phone.replace(/-/g, ' '))}</text>`;
+    y += phoneSize * 1.35;
+    rest += `\n  <text x="600" y="${Math.round(Math.min(y + 56, 1150))}" text-anchor="middle" font-family="KO" font-size="58" font-weight="700" fill="#E8F5E9">${esc(KAKAO_LINE)}</text>`;
+  } else {
+    const s2 = Math.min(120, size - 30);
+    rest += `<text x="600" y="${Math.round(y + s2 * 0.9)}" text-anchor="middle" font-family="KO" font-size="${s2}" font-weight="900" fill="#FFFFFF">광고문의</text>`;
+    y += s2 * 1.3;
+    rest += `\n  <text x="600" y="${Math.round(y + s2 * 0.9)}" text-anchor="middle" font-family="KO" font-size="${s2}" font-weight="900" fill="#E8F5E9">카톡 besta12</text>`;
+  }
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:${esc(bg)};stop-opacity:1"/>
-      <stop offset="100%" style="stop-color:#0a0a14;stop-opacity:1"/>
+      <stop offset="0%" style="stop-color:${t.a};stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:${t.b};stop-opacity:1"/>
     </linearGradient>
     <style>@font-face { font-family: 'KO'; src: url(data:font/ttf;base64,${FONT_B64}) format('truetype'); }</style>
   </defs>
   <rect width="1200" height="1200" fill="url(#bg)"/>
-  <rect x="40" y="40" width="1120" height="1120" rx="48" fill="rgba(0,0,0,0.25)" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
-  <rect x="500" y="100" width="200" height="64" rx="32" fill="rgba(255,255,255,0.22)"/>
-  <text x="600" y="146" text-anchor="middle" font-family="KO" font-size="38" font-weight="900" fill="#FFFFFF">${esc(label)}</text>
-  ${v.region ? `<text x="600" y="230" text-anchor="middle" font-family="KO" font-size="44" font-weight="700" fill="rgba(255,255,255,0.85)">${esc(v.region)}</text>` : ''}
+  <rect x="24" y="24" width="1152" height="1152" rx="40" fill="none" stroke="#3a3a46" stroke-width="4"/>
   ${nameTexts}
-  ${adBlock}
-  <text x="600" y="1120" text-anchor="middle" font-family="KO" font-size="40" font-weight="700" fill="rgba(255,255,255,0.6)">nolcool.com</text>
+  ${rest}
 </svg>`;
 }
 
-const targetSlug = process.argv[2];
-const targets = (targetSlug ? venues.filter((v) => v.slug === targetSlug) : venues).filter(
-  (v) => !MANUAL_OG_SLUGS.has(v.slug)
-);
-if (targetSlug && targets.length === 0) {
-  console.error(`❌ slug "${targetSlug}" 없음 (또는 수동 보호 대상)`);
-  process.exit(1);
+if (import.meta.url === `file:///${process.argv[1].replace(/\\/g, '/')}`) {
+  const targetSlug = process.argv[2];
+  const targets = targetSlug ? venues.filter((v) => v.slug === targetSlug) : venues;
+  if (targetSlug && targets.length === 0) {
+    console.error(`❌ slug "${targetSlug}" 없음`);
+    process.exit(1);
+  }
+  const outDir = path.join(ROOT, 'public/og');
+  fs.mkdirSync(outDir, { recursive: true });
+  let adCount = 0;
+  for (const v of targets) {
+    const ver = ogVer(v.slug);
+    const jpgPath = path.join(outDir, `${v.slug}${ver}.jpg`);
+    await sharp(Buffer.from(buildSvg(v))).jpeg({ quality: 86 }).toFile(jpgPath);
+    const L = layout(v);
+    if (L.isAd) adCount++;
+    console.log(`✅ ${v.slug}${ver}.jpg — ${v.nameKo} [${L.lines.join(' / ')} · ${L.size}px]${L.isAd ? ` / ${v.nick} ${v.phone}` : ''}`);
+  }
+  console.log(`\n총 ${targets.length}개 (4줄 ${adCount} · 3줄 ${targets.length - adCount})`);
 }
-
-const outDir = path.join(ROOT, 'public/og');
-fs.mkdirSync(outDir, { recursive: true });
-let adCount = 0;
-for (const v of targets) {
-  /* ★ 2026-08-25 — 파일 이름을 -v3 로 못박아 두면 안 된다.
-     그림을 다시 그려도 이름이 같으면 엣지 캐시(30일)가 옛 그림을 계속 내보낸다.
-     판 번호표(src/lib/venue-file-ver.mjs)가 유일한 기준이므로 거기서 읽는다.
-     광고주가 새로 붙은 가게는 그 표에 -v4 처럼 올려 두면 여기서 따라온다. */
-  const ver = ogVer(v.slug);
-  const jpgPath = path.join(outDir, `${v.slug}${ver}.jpg`);
-  await sharp(Buffer.from(buildSvg(v))).jpeg({ quality: 88 }).toFile(jpgPath);
-  if (v.nick && v.phone) adCount++;
-  console.log(`✅ ${v.slug}${ver}.jpg — ${v.nameKo}${v.nick && v.phone ? ` / ${v.nick} ${v.phone}` : ''}`);
-}
-console.log(`\n총 ${targets.length}개 (광고주 오버레이 ${adCount}곳, 수동 보호 ${MANUAL_OG_SLUGS.size}곳 제외)`);

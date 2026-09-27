@@ -34,6 +34,13 @@ for (const [slug, ns] of Object.entries(OVERRIDE_SLOTS)) {
   for (const n of ns) slotsBySlug.get(slug).add(n);
 }
 
+// [놀쿨12-2 · R7 · 대표님 13:18-6] 가게 사진은 사진 판정표(naver-watch docs/NOLCOOL12_사진판정_2026-09-27.md)의 여섯 가지
+//   ① 그 가게가 맞다 ② 출처·이용 허락 기록 ③ 명단 밖 번호·닉네임·과장 0 ④ 동의 없는 얼굴 0 ⑤ 가게끼리 중복 0 ⑥ 지난 행사 0 을
+//   모두 넘은 것만 목록에 넣는다. 지금 넘은 사진 0장(② 출처 기록이 저장소 어디에도 없음 — 기록은 대표님만) → 화면은 전부 표준 카드(cardSrc).
+//   옛 사진 파일은 지우지 않는다(참조만 끊음). 출처가 확인된 사진은 여기에 slug 를 넣으면 다시 쓰인다.
+const PHOTO_PASS = new Set([]);
+for (const s of [...slugs]) if (!PHOTO_PASS.has(s)) { slugs.delete(s); slotsBySlug.delete(s); }
+
 const sorted = [...slugs].sort();
 const slotEntries = [...slotsBySlug.entries()]
   .filter(([s]) => slugs.has(s) || OVERRIDE_SLOTS[s])

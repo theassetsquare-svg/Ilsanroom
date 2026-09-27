@@ -78,7 +78,7 @@ export default function BestCategoryPage() {
             )}
             <div>
               <h2 className="font-semibold">{v.nameKo}</h2>
-              <p className="mt-1 text-sm text-gray-500">{v.regionKo} {catKo} · {v.shortDescription.slice(0, 60)}</p>
+              <p className="mt-1 text-sm text-[#444] line-clamp-2">{v.regionKo} {catKo} · {v.shortDescription}</p>
             </div>
           </Link>
         ))}
@@ -91,7 +91,7 @@ export default function BestCategoryPage() {
               <Link key={v.id} to={getHref(v)} className="flex items-start gap-4 rounded-xl bg-white p-4 shadow-sm transition hover:shadow-md">
                 <div>
                   <h2 className="font-semibold">{v.nameKo}</h2>
-                  <p className="mt-1 text-sm text-gray-500">{v.regionKo} {catKo} · {v.shortDescription.slice(0, 60)}</p>
+                  <p className="mt-1 text-sm text-[#444] line-clamp-2">{v.regionKo} {catKo} · {v.shortDescription}</p>
                 </div>
               </Link>
             ))}
