@@ -430,11 +430,8 @@ export default function SearchPage() {
                       <span className="text-3xl">{catEmoji[venue.category] || '🎵'}</span>
                       <span className="mt-1 text-xs font-bold text-white/80">{venue.nameKo.slice(0, 4)}</span>
                     </div>
-                    {isAdVenue(venue) && (
-                      <span className="absolute bottom-[52px] left-2 z-[2] rounded border border-[#111] bg-white px-1.5 py-0.5 text-xs font-bold text-[#111]" data-ad-label>광고</span>
-                    )}
                     <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2.5 py-2">
-                      <h3 className="text-sm font-bold text-white leading-tight truncate">{venue.nameKo}</h3>
+                      <h3 className="text-sm font-bold text-white leading-tight truncate">{isAdVenue(venue) && <span className="mr-1 rounded bg-white px-1 text-[11px] font-bold text-[#111] align-middle" data-ad-label>광고</span>}{venue.nameKo}</h3>{/* [놀쿨12-2] 「광고」는 카드 그림 위가 아니라 이름 줄에 — 카드 글자를 가리지 않게 */}
                       <p className="text-[11px] text-white/90 truncate">{catLabel[venue.category] || venue.category} · {venue.regionKo}</p>
                     </div>
                   </div>
