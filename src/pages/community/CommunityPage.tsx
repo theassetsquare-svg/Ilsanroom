@@ -9,14 +9,14 @@ import { venues } from '@/data/venues';
 import { useCommunityActive } from '@/hooks/useCommunityActive';
 
 // 놀쿨에 실제 등록된(영업확인) 업소 수 — venues.ts 1차 데이터 그대로, 가공·창작 0
-const REGISTERED_VENUE_COUNT = venues.filter(v => v.status !== 'closed_or_unclear').length;
+const REGISTERED_VENUE_COUNT = venues.filter(v => v.status !== 'closed_or_unclear' && !v.sameAs).length;
 
 const sectionDefs = [
-  { title: "업소후기", description: "직접 가본 솔직한 방문 후기", href: "/community/reviews", icon: "⭐", category: "reviews", hookLine: "별점 4점 이상만 모아봤더니 공통점이 있었다" },
+  { title: "업소후기", description: "직접 가본 솔직한 방문 후기", href: "/community/reviews", icon: "⭐", category: "reviews", hookLine: "다녀온 곳, 솔직한 첫 후기를 남겨 주세요" },
   { title: "오늘어디갈까", description: "오늘 밤 어디 갈지 같이 고민하는 곳", href: "/community/qna", icon: "🗺️", category: "discussion", hookLine: "강남 vs 홍대, 오늘 밤 정답은?" },
-  { title: "조각모집", description: "같이 놀러갈 사람 구하는 곳", href: "/community/jogak", icon: "🧩", category: "party", hookLine: "모집 마감 임박! 빈자리 3개 남음" },
-  { title: "꿀팁", description: "밤놀이 고수들의 실전 노하우", href: "/community/tips", icon: "💡", category: "tips", hookLine: "줄 안 서고 들어가는 법, 진작 알았으면..." },
-  { title: "자유게시판", description: "자유롭게 이야기 나누는 공간", href: "/community/free", icon: "💬", category: "free", hookLine: "어젯밤 일 아직도 생각나서 씀" },
+  { title: "조각모집", description: "같이 놀러갈 사람 구하는 곳", href: "/community/jogak", icon: "🧩", category: "party", hookLine: "같이 갈 사람, 여기서 직접 모아 보세요" },
+  { title: "꿀팁", description: "밤놀이 고수들의 실전 노하우", href: "/community/tips", icon: "💡", category: "tips", hookLine: "처음 가기 전에 알아 두면 좋은 것을 나눠요" },
+  { title: "자유게시판", description: "자유롭게 이야기 나누는 공간", href: "/community/free", icon: "💬", category: "free", hookLine: "어젯밤 이야기, 여기서 풀어요" },
 ];
 
 export default function CommunityPage() {

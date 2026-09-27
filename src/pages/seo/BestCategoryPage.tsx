@@ -40,7 +40,7 @@ export default function BestCategoryPage() {
   const { category } = useParams<{ category: string }>();
   const catKey = Object.entries(catPathMap).find(([, v]) => v === category)?.[0] || category || '';
   const catKo = catLabelMap[catKey] || catKey;
-  const filtered = venues.filter(v => v.category === catKey && v.status !== 'closed_or_unclear');
+  const filtered = venues.filter(v => v.category === catKey && v.status !== 'closed_or_unclear' && !v.sameAs);
 
   // 2026-07-08 정직화 — 조회수·후기 데이터 없이 "실시간 랭킹" 주장 금지(신뢰규칙). 사실(영업 확인·지역 비교)만.
   useDocumentMeta(

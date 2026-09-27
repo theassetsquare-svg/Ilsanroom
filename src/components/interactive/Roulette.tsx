@@ -10,7 +10,7 @@ export default function Roulette() {
   const [result, setResult] = useState<string | null>(null);
   const [reward, setReward] = useState<string | null>(null);
 
-  const openVenues = venues.filter((v) => v.status !== 'closed_or_unclear');
+  const openVenues = venues.filter((v) => v.status !== 'closed_or_unclear' && !v.sameAs);
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const rewardTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);

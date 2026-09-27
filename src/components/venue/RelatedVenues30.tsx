@@ -33,7 +33,7 @@ interface Props {
 
 export default function RelatedVenues30({ venue }: Props) {
   const [expanded, setExpanded] = useState(false);
-  const active = allVenues.filter(v => v.id !== venue.id && v.status !== 'closed_or_unclear');
+  const active = allVenues.filter(v => v.id !== venue.id && v.status !== 'closed_or_unclear' && !v.sameAs);
 
   const sections = useMemo((): Section[] => {
     // 1. 같은 카테고리

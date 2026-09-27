@@ -60,7 +60,7 @@ export default function PersonalizedPicks() {
       // No history - show popular venues
       setRecommendations(
         venues
-          .filter(v => v.status !== 'closed_or_unclear')
+          .filter(v => v.status !== 'closed_or_unclear' && !v.sameAs)
           .sort((a, b) => b.reviewCount - a.reviewCount)
           .slice(0, 6)
       );
@@ -82,7 +82,7 @@ export default function PersonalizedPicks() {
 
     // Score venues
     const scored = venues
-      .filter(v => v.status !== 'closed_or_unclear' && !recentIds.includes(v.id))
+      .filter(v => v.status !== 'closed_or_unclear' && !v.sameAs && !recentIds.includes(v.id))
       .map(v => {
         let score = v.rating * 10;
         score += (preferredCategories.get(v.category) || 0) * 30;

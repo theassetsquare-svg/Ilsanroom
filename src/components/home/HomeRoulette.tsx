@@ -15,7 +15,7 @@ export default function HomeRoulette() {
   const [spinning, setSpinning] = useState(false);
   const [result, setResult] = useState<typeof venues[0] | null>(null);
   const [spinCount, setSpinCount] = useState(0);
-  const openVenues = venues.filter((v) => v.status !== 'closed_or_unclear');
+  const openVenues = venues.filter((v) => v.status !== 'closed_or_unclear' && !v.sameAs);
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 

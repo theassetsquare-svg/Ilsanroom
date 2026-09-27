@@ -61,7 +61,7 @@ export default function ComparePage() {
   }, [searchParams]);
 
   const openVenues = useMemo(() =>
-    venues.filter((v) => v.status !== 'closed_or_unclear').sort((a, b) => b.rating - a.rating),
+    venues.filter((v) => v.status !== 'closed_or_unclear' && !v.sameAs).sort((a, b) => b.rating - a.rating),
     []
   );
 

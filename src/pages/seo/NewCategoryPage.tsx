@@ -15,7 +15,7 @@ export default function NewCategoryPage() {
   const { category } = useParams<{ category: string }>();
   const catKey = Object.entries(catPathMap).find(([, v]) => v === category)?.[0] || category || '';
   const catKo = catLabelMap[catKey] || catKey;
-  const filtered = venues.filter(v => v.category === catKey && v.status !== 'closed_or_unclear');
+  const filtered = venues.filter(v => v.category === catKey && v.status !== 'closed_or_unclear' && !v.sameAs);
 
   useDocumentMeta(
     `새로 입점한 ${catKo} ${filtered.length}곳 — 아직 안 가본 곳 먼저 발견`,

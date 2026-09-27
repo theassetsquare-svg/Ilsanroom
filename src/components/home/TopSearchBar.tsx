@@ -13,7 +13,7 @@ let IDX: Idx | null = null;
 async function loadIdx(): Promise<Idx> {
   if (IDX) return IDX;
   const mod = await import('@/data/venues');
-  const open = mod.venues.filter((v) => v.status !== 'closed_or_unclear');
+  const open = mod.venues.filter((v) => v.status !== 'closed_or_unclear' && !v.sameAs);
   const names = [...new Set(open.map((v) => v.nameKo))];
   const regions = [...new Set(open.map((v) => v.regionKo).filter(Boolean))];
   const cats = ['클럽', '나이트', '라운지', '룸', '요정', '호빠'];

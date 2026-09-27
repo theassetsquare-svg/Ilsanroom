@@ -260,7 +260,7 @@ export default function HomePage() {
     let cancelled = false;
     const run = () => import('@/data/venues').then(m => {
       if (cancelled) return;
-      const open = m.venues.filter(v => v.status !== 'closed_or_unclear');
+      const open = m.venues.filter(v => v.status !== 'closed_or_unclear' && !v.sameAs);
       setOpenVenues(open);
       setPopularVenues(m.getPopularVenues(20));
     });

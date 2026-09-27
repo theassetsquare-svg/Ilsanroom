@@ -28,7 +28,7 @@ export default function PricePage() {
 
   const filtered = useMemo(() => {
     return venues
-      .filter((v) => v.status !== 'closed_or_unclear')
+      .filter((v) => v.status !== 'closed_or_unclear' && !v.sameAs)
       .filter((v) => category === 'all' || v.category === category)
       .sort((a, b) => {
         if (a.isPremium !== b.isPremium) return a.isPremium ? -1 : 1;

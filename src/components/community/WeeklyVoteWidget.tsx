@@ -21,7 +21,7 @@ export default function WeeklyVoteWidget() {
   // 실측 상위 2곳 — popularity JSON은 주 1회 갱신되므로 poll_key가 자동으로 주간 회전
   const top2 = hasPopularityData()
     ? venues
-        .filter(v => v.status !== 'closed_or_unclear' && isRanked(v.slug))
+        .filter(v => v.status !== 'closed_or_unclear' && !v.sameAs && isRanked(v.slug))
         .sort((a, b) => popScore(b.slug) - popScore(a.slug))
         .slice(0, 2)
     : [];

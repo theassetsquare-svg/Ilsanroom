@@ -25,7 +25,7 @@ export default function MyFavoritesPage() {
   const { favorites, toggleFavorite } = useFavorites();
   const favVenues = venues.filter(v => favorites.has(v.id) || favorites.has(v.slug));
   // [놀쿨11-5] 알림 관심 지역 후보 — 찜한 가게 지역 먼저, 그다음 가게 수가 많은 지역
-  const regionOrder = (() => { const cnt: Record<string, number> = {}; for (const v of venues) if (v.status !== 'closed_or_unclear' && v.regionKo) cnt[v.regionKo] = (cnt[v.regionKo] || 0) + 1; const fav = [...new Set(favVenues.map(v => v.regionKo))]; return [...fav, ...Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a]).filter(r => !fav.includes(r))]; })();
+  const regionOrder = (() => { const cnt: Record<string, number> = {}; for (const v of venues) if (v.status !== 'closed_or_unclear' && !v.sameAs && v.regionKo) cnt[v.regionKo] = (cnt[v.regionKo] || 0) + 1; const fav = [...new Set(favVenues.map(v => v.regionKo))]; return [...fav, ...Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a]).filter(r => !fav.includes(r))]; })();
 
   // 주말 알림 신청 상태 (회원 전용, weekend_alert_optins 테이블)
   const [alertOn, setAlertOn] = useState<boolean | null>(null);

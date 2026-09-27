@@ -95,7 +95,7 @@ interface Props {
 export default function RelatedVenuesForMagazine({ articleTitle, articleExcerpt = '', articleTag = '' }: Props) {
   const matched = useMemo((): Venue[] => {
     const text = `${articleTitle} ${articleExcerpt}`;
-    const active = allVenues.filter(v => v.status !== 'closed_or_unclear');
+    const active = allVenues.filter(v => v.status !== 'closed_or_unclear' && !v.sameAs);
     const scored: { v: Venue; score: number }[] = [];
 
     for (const v of active) {

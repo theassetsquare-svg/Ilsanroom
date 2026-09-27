@@ -16,7 +16,7 @@ export function HotRightNow() {
     setBucket(d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate() + Math.floor(d.getHours() / 4));
   }, []);
 
-  const openVenues = venues.filter((v) => v.status !== 'closed_or_unclear');
+  const openVenues = venues.filter((v) => v.status !== 'closed_or_unclear' && !v.sameAs);
   // 결정적 회전: bucket 기반 인덱스 시작점 + 3칸 슬라이스 (랜덤 X)
   const start = openVenues.length > 0 ? bucket % openVenues.length : 0;
   const top3 = [

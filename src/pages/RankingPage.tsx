@@ -424,7 +424,7 @@ export default function RankingPage() {
 
   // 실측 순위(점수순) + 순위 미부여분(최신 등록순) 분리 — 침묵 원칙
   const { ranked, recent } = useMemo(() => {
-    let list = venues.filter((v) => v.status !== 'closed_or_unclear');
+    let list = venues.filter((v) => v.status !== 'closed_or_unclear' && !v.sameAs);
     if (category !== 'all') list = list.filter((v) => v.category === category);
     if (region !== 'all') list = list.filter((v) => v.regionKo.includes(region));
     const split = splitByPopularity(list);
