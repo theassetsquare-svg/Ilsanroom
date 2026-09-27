@@ -2592,7 +2592,7 @@ for (const [regionKo, regionVenues] of Object.entries(allRegions)) {
       : `${regionKo}에서 ${catInfo.labelKo} 어디가 진짜야? ${crossNames} 등 ${crossVenues.length}곳 분위기·후기·평점·매니저·드레스코드·전화번호·영업시간·예약 팁까지 한 페이지에서 바로 확인. 헛걸음 전에 비교하고 가자.`;
     let cSsr = `<h1>${escHtml(ct)}</h1>`;
     cSsr += aggAnswerBlock(crossVenues, `${regionKo} ${catInfo.labelKo}`, ct);
-    // [펩시17-2] 광고주 카드 — data/hub-og-cards.json 의 ad 가 있는 쪽만(지금 강남 나이트 = 청담나이트 펩시맨) · 목록 위 · 「광고」 표시 · React(RegionCategoryPage)와 같은 내용
+    // [펩시17-2] 광고주 카드 — data/hub-og-cards.json 의 ad 가 있는 쪽만(지금 강남 나이트 = 청담나이트 펩시맨) · 뼈대 답 칸(ssr-adlabel) · 「광고」 표시 · 사람도 이 한 장을 본다(React RegionCategoryPage 는 카드를 그리지 않고 같은 자료로 아래 고정 전화바만)
     const adCard = (HUB_OG_CARDS.find((c) => c.route === cp) || {}).ad;
     if (adCard) {
       const adTel = adCard.phone.replace(/-/g, '');
