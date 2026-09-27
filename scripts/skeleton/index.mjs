@@ -11,6 +11,7 @@
  *   ctx = { facts: {…}, members: [venue…], popRank: Map(slug→n), faqPairs: [{q,a}], summary: '…', catLabel: {…}, venueHref: fn }
  */
 import { parseHtml, serializeHtml } from '../uniq-variant.mjs';
+import { isAdVenue } from '../../src/lib/venue-order.mjs'; // [놀쿨12-2 · 13:18-2] 목록 줄의 「광고」 표시(명단 광고주만)
 
 export const SKEL_TYPES = ['venue', 'list', 'hub', 'magazine', 'community', 'guide'];
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -80,7 +81,7 @@ function memberList(ctx) {
     let kept = toks.length >= 2 ? toks.filter((t) => !keys.some((k) => k && t.includes(k))) : toks;
     if (oneCat && kept.length >= 2 && kept[0].endsWith(cat[v.cat] || '')) kept = kept.slice(1);
     const label = kept.length ? kept.join(' ') : v.nameKo;
-    return `<li><a href="${esc(ctx.venueHref ? ctx.venueHref(v) : '#')}">${esc(label)}</a>${line ? ` — ${esc(line)}` : ''}${meta ? ` <span class="nc-meta">(${esc(meta)})</span>` : ''}${rank ? ` <span class="nc-rank">인기 ${rank}위</span>` : ''}</li>`;
+    return `<li><a href="${esc(ctx.venueHref ? ctx.venueHref(v) : '#')}">${esc(label)}</a>${isAdVenue(v) ? ' <span class="nc-ad-mark">광고</span>' : ''}${line ? ` — ${esc(line)}` : ''}${meta ? ` <span class="nc-meta">(${esc(meta)})</span>` : ''}${rank ? ` <span class="nc-rank">인기 ${rank}위</span>` : ''}</li>`;
   });
   // 순위 설명 줄은 순위가 실제로 표시된 쪽에만(틀 문장 되풀이 최소화 · ⑤ 틀 글자)
   const anyRank = ms.some((v) => ctx.popRank && ctx.popRank.get(v.slug));
