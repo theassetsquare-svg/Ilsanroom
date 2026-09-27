@@ -198,51 +198,53 @@ export default function VenueListClient({ venues, hrefPattern, showEngagementHoo
 
               elements.push(
                 <div key={venue.id} className="group relative" data-venue-card={venue.slug} data-ad={ad ? '1' : '0'}>
-                  <button
-                    type="button"
-                    aria-label={inCompare ? '비교 해제' : '비교에 추가'}
-                    aria-pressed={inCompare}
-                    data-testid="venue-compare-check"
-                    disabled={!inCompare && compareFull}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      toggleCompare({ path, nameKo: venue.nameKo, category: venue.category, regionKo: venue.regionKo, slug: venue.slug });
-                    }}
-                    className={`absolute top-1 left-1 z-[3] inline-flex items-center justify-center rounded-lg transition-colors ${
-                      inCompare ? 'bg-violet-600 text-white' : 'bg-white/90 text-[#222] hover:bg-white'
-                    } ${!inCompare && compareFull ? 'opacity-40 cursor-not-allowed' : ''}`}
-                    style={{ width: 48, height: 48 }}
-                    title={!inCompare && compareFull ? '비교 최대 4곳' : (inCompare ? '비교 해제' : '비교에 추가 (최대 4)')}
-                  >
-                    {inCompare ? (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                    ) : (
-                      <span aria-hidden="true" className="text-xs font-bold leading-none">VS</span>
-                    )}
-                  </button>
-
-                  <button
-                    type="button"
-                    aria-label={bookmarked ? '즐겨찾기 해제' : '즐겨찾기 추가'}
-                    aria-pressed={bookmarked}
-                    data-testid="venue-bookmark"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      toggleBookmark(path, venue.nameKo);
-                    }}
-                    className={`absolute top-1 right-1 z-[3] inline-flex items-center justify-center rounded-full transition-colors ${
-                      bookmarked ? 'bg-rose-500 text-white' : 'bg-white/90 text-[#222] hover:bg-white'
-                    }`}
-                    style={{ width: 48, height: 48 }}
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill={bookmarked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                    </svg>
-                  </button>
+                  {/* 그림과 같은 정사각 겹침 판 — 단추는 아래 두 귀퉁이(카드 윗줄 가게 이름을 가리지 않게) */}
+                  <div className="pointer-events-none absolute inset-x-0 top-0 z-[3] aspect-square">
+                    <button
+                      type="button"
+                      aria-label={inCompare ? '비교 해제' : '비교에 추가'}
+                      aria-pressed={inCompare}
+                      data-testid="venue-compare-check"
+                      disabled={!inCompare && compareFull}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        toggleCompare({ path, nameKo: venue.nameKo, category: venue.category, regionKo: venue.regionKo, slug: venue.slug });
+                      }}
+                      className={`pointer-events-auto absolute bottom-0 right-12 inline-flex items-center justify-center ${!inCompare && compareFull ? 'opacity-40 cursor-not-allowed' : ''}`}
+                      style={{ width: 48, height: 48 }}
+                      title={!inCompare && compareFull ? '비교 최대 4곳' : (inCompare ? '비교 해제' : '비교에 추가 (최대 4)')}
+                    >
+                      <span className={`inline-flex h-[30px] w-[30px] items-center justify-center rounded-full shadow ${inCompare ? 'bg-violet-600 text-white' : 'bg-white/95 text-[#222]'}`}>
+                        {inCompare ? (
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                        ) : (
+                          <span aria-hidden="true" className="text-[11px] font-bold leading-none">VS</span>
+                        )}
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      aria-label={bookmarked ? '즐겨찾기 해제' : '즐겨찾기 추가'}
+                      aria-pressed={bookmarked}
+                      data-testid="venue-bookmark"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        toggleBookmark(path, venue.nameKo);
+                      }}
+                      className="pointer-events-auto absolute bottom-0 right-0 inline-flex items-center justify-center"
+                      style={{ width: 48, height: 48 }}
+                    >
+                      <span className={`inline-flex h-[30px] w-[30px] items-center justify-center rounded-full shadow ${bookmarked ? 'bg-rose-500 text-white' : 'bg-white/95 text-[#222]'}`}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill={bookmarked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                        </svg>
+                      </span>
+                    </button>
+                  </div>
 
                   <Link to={path} className="block" onClick={rememberSpot}>
                     <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform group-hover:scale-[1.02]">
@@ -260,14 +262,9 @@ export default function VenueListClient({ venues, hrefPattern, showEngagementHoo
                           }}
                           className="absolute inset-0 w-full h-full object-cover"
                         />
-                        {ad && (
-                          <span className="absolute bottom-1 left-1 z-[2] rounded bg-white px-1.5 py-0.5 text-xs font-bold text-[#111] border border-[#111]" data-ad-label>
-                            광고
-                          </span>
-                        )}
                       </div>
                       <div className="px-2.5 py-2">
-                        <h3 className="text-[15px] font-bold text-[#111] leading-snug truncate">{venue.nameKo}</h3>
+                        <h3 className="text-[15px] font-bold text-[#111] leading-snug truncate">{ad && <span className="mr-1 rounded border border-[#111] px-1 text-xs font-bold align-middle" data-ad-label>광고</span>}{venue.nameKo}</h3>
                         <p className="text-xs text-[#444] truncate">{regionOf(venue).label}{rank ? ` · 인기 ${rank}위` : ''}</p>
                         {venue.shortDescription && <p className="mt-0.5 text-xs text-[#333] line-clamp-1">{venue.shortDescription}</p>}
                       </div>
