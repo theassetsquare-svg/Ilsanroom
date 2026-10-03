@@ -5,7 +5,7 @@
  *
  * - 지역: 가게 주소(verified — 가게 장부·인허가 공개 자료로 채운 값)에서 시·도 / 시·군·구를 뽑는다. 이름으로 짐작 0.
  *   주소가 없는 가게는 「지역 확인 중」.
- * - 추천순: ① 광고(광고주 명단 = naver-watch data/advertisers.json 11명 · 놀쿨에서는 staffPhone 이 그 번호인 가게 · 「광고」 표시)
+ * - 추천순: ① 광고(광고주 명단 = naver-watch data/advertisers.json · 놀쿨에서는 staffPhone 이 그 번호인 가게 · 「광고」 표시)
  *           ② 인기 엔진 순위(src/data/popularity-scores.json ranked=true 점수순 · 실측값만) ③ 순위 없는 곳 가나다.
  * - 같은 가게 두 쪽: sameAs 가 있는 쪽은 목록·숫자에서 빠진다(쪽 주소는 그대로 · 본 쪽으로 링크).
  */
