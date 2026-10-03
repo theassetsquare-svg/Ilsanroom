@@ -4122,7 +4122,7 @@ export const venues: Venue[] = [
     aliases: ['미라클나이트', '답십리미라클'],
   },
   {
-    // [놀쿨12-2 · 13:18-10] 광고주 명단 11번째(naver-watch data/advertisers.json · 오빠 010-8497-3072) — 사실은 가게 장부 data/shops/bupyeong-kiss.json verified 값만(사업자등록증 · 광고주 등록 정보)
+    // [놀쿨12-2 · 13:18-10] 광고주 명단(naver-watch data/advertisers.json · 오빠 010-8497-3072) — 사실은 가게 장부 data/shops/bupyeong-kiss.json verified 값만(사업자등록증 · 광고주 등록 정보)
     id: 'v-146',
     slug: 'bupyeongkissnight',
     name: '부평키스나이트',

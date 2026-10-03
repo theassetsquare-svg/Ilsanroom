@@ -1,5 +1,5 @@
 {
-  "설명": "놀쿨(nolcool.com) 전용 광고주 명단. 13곳 + 가게 전용 사이트 명단(naver-watch data/advertisers.json 11명)에 더하는 항목만 적는다. 여기 적힌 닉네임·번호는 pages 에 적힌 쪽에서만 쓴다(그 밖의 쪽에 나오면 scripts/page-gate.mjs 가 막는다). 하위 도메인 사이트에는 적용하지 않는다.",
+  "설명": "놀쿨(nolcool.com) 전용 광고주 명단. 13곳 + 가게 전용 사이트 명단(naver-watch data/advertisers.json)에 더하는 항목만 적는다. 여기 적힌 닉네임·번호는 pages 에 적힌 쪽에서만 쓴다(그 밖의 쪽에 나오면 scripts/page-gate.mjs 가 막는다). 하위 도메인 사이트에는 적용하지 않는다.",
   "advertisers": [
     {
       "shop": "부산물나이트",
