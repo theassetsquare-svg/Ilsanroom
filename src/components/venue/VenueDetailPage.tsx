@@ -18,7 +18,7 @@ import type { Venue } from '@/types';
 import { useRecentVenues } from '@/hooks/useRecentVenues';
 import { useFavorites } from '@/hooks/useFavorites';
 import { getVenueBySlug } from '@/data/venues';
-import { isAdVenue, regionOf } from '@/lib/venue-order';
+import { isAdVenue, isPageOnlyAd, regionOf } from '@/lib/venue-order';
 
 const VenueSeoContent = lazy(() => import('@/components/venue/VenueSeoContent'));
 const VenueReportModal = lazy(() => import('@/components/venue/VenueReportModal'));
@@ -116,7 +116,7 @@ export default function VenueDetailPage({
       <VenueHero
         name={venue.nameKo}
         staffNickname={venue.staffNickname}
-        isAd={isAdVenue(venue)}
+        isAd={isAdVenue(venue) || isPageOnlyAd(venue)}
         category={venue.category}
         regionLabel={regionOf(venue).label}
         slug={venue.slug}

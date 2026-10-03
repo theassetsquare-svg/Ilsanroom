@@ -5,13 +5,13 @@
  * prerender-seo.mjs getVenueOgImage 와 같은 규칙 (같은 커밋 동기화 필수).
  */
 
-import { ogVer } from '@/lib/venue-file-ver';
+import { ogOwnVer } from '@/lib/venue-file-ver';
 
 const SITE_URL = 'https://nolcool.com';
 
-/** 업소 상세 OG image (slug 기반) — 가게이름 1:1 JPG 썸네일 */
+/** 업소 상세 OG image (slug 기반) — 가게이름 1:1 JPG 썸네일 · [놀쿨26-1] 자기 쪽 판(ogOwnVer · prerender getVenueOgImage 와 같은 규칙) */
 export function getVenueOgImageBySlug(slug: string): string {
-  return `${SITE_URL}/og/${slug}${ogVer(slug)}.jpg`;
+  return `${SITE_URL}/og/${slug}${ogOwnVer(slug)}.jpg`;
 }
 
 /** 업소 상세 OG image (이름 기반 — API 폴백) */

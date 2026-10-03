@@ -1,4 +1,4 @@
-import { cardSrc } from '@/lib/venue-file-ver';
+import { cardOwnSrc } from '@/lib/venue-file-ver'; // [놀쿨26-1] 가게 자기 쪽 판(놀쿨 명단 가게는 4줄 -v9 · 그 밖은 목록과 같은 판)
 
 interface VenueHeroProps {
   name: string;
@@ -21,7 +21,7 @@ export default function VenueHero({ name, staffNickname, isAd, regionLabel, slug
       <div className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
         {slug && (
           <img
-            src={cardSrc(slug)}
+            src={cardOwnSrc(slug)}
             alt={`${name} 표준 카드`}
             width={600}
             height={600}

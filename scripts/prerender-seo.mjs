@@ -9,7 +9,7 @@ import path from 'path';
 import crypto from 'crypto';
 import { execSync } from 'child_process';
 import { provinceOf, localityOf } from './lib/region-admin.mjs';
-import { ogVer } from '../src/lib/venue-file-ver.mjs';
+import { ogVer, ogOwnVer, MAGAZINE_OG } from '../src/lib/venue-file-ver.mjs';
 import { isAdVenue, isListed, regionOf, regionTree, sortVenues } from '../src/lib/venue-order.mjs'; // [놀쿨12-2 · 13:18-1·2·4] React 목록과 같은 한 자리
 import sharp from 'sharp'; // [놀쿨11-3] 첫 화면 그림(og jpg) 의 webp 축소판 생성
 
@@ -2087,8 +2087,9 @@ console.log(`✅ 지역별 페이지 ${regionalCount}개 생성`);
  *  수동 합성본 2곳(OG_FILE_VER -v2)은 등록된 버전 파일 그대로, 나머지는 -v3 이름 썸네일.
  *  파일 부재 시에만 브랜드 og 폴백 (배선-자산 불일치 안전핀). */
 function getVenueOgImage(slug) {
-  const ogThumb = path.join('public', 'og', `${slug}${ogVer(slug)}.jpg`);
-  if (fs.existsSync(ogThumb)) return `${BASE_URL}/og/${slug}${ogVer(slug)}.jpg`;
+  // [놀쿨26-1] 가게 자기 쪽의 카드 판(ogOwnVer) — 놀쿨 전용 명단 가게(따봉)는 자기 쪽에서만 4줄 판(-v9), 그 밖은 ogVer 와 같다
+  const ogThumb = path.join('public', 'og', `${slug}${ogOwnVer(slug)}.jpg`);
+  if (fs.existsSync(ogThumb)) return `${BASE_URL}/og/${slug}${ogOwnVer(slug)}.jpg`;
   return `${BASE_URL}/og/nolcool-og.jpg`;
 }
 
@@ -2330,6 +2331,8 @@ ${_relNav}
     jsonLdList: [articleJsonLd, breadcrumbJsonLd],
     datePublished: a.date,
     dateModified: BUILD_DATE_KST,
+    // [놀쿨26-1] 놀쿨 전용 명단 광고주(따봉)의 매거진 쪽 — og:image·twitter:image 만 4줄 카드로, 첫 그림은 공용 그림 그대로(허브 광고 카드와 같은 방식 · 펩시17-2)
+    ...(MAGAZINE_OG[a.id] && fs.existsSync(path.join('public', 'og', `${MAGAZINE_OG[a.id]}.jpg`)) ? { ogImage: `${BASE_URL}/og/${MAGAZINE_OG[a.id]}.jpg`, heroImage: OG_IMAGE } : {}),
     keywords: `${a.title}, ${a.tag}, 나이트라이프 매거진, 놀쿨 매거진, 나이트라이프 ${a.tag}`,
   });
   magazineCount++;

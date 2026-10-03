@@ -3,6 +3,7 @@ import { Link } from '../ui/SafeLink';
 import type { Venue, VenueCategory } from '@/types';
 import { venues as allVenues } from '@/data/venues';
 import { isRanked, popScore } from '@/lib/popularity';
+import { isPageOnlyAd } from '@/lib/venue-order';
 
 const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
 // /best/{path}/ 인기 허브 — club은 /best/clubs 폐지(→/clubs/ 301)라 제외
@@ -122,7 +123,7 @@ export default function RelatedVenues30({ venue }: Props) {
                 </div>
                 <p className="text-sm font-bold truncate" style={{ color: '#111' }}>{v.nameKo}</p>
                 <p className="text-xs truncate" style={{ color: '#888' }}>{v.regionKo}</p>
-                {v.staffNickname && (
+                {v.staffNickname && !isPageOnlyAd(v) && (
                   <p className="text-[10px] mt-1 truncate" style={{ color: '#7A5A0E' }}>{v.staffNickname}</p>
                 )}
               </Link>

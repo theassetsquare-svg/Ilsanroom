@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from '../ui/SafeLink';
 import { venues } from '@/data/venues';
+import { isPageOnlyAd } from '@/lib/venue-order';
 import ShareButtons from '@/components/interactive/ShareButtons';
 
 function getCategoryHref(category: string, slug: string, region: string) {
@@ -48,7 +49,7 @@ export default function HomeRoulette() {
           {result ? (
             <div className={`text-center ${spinning ? 'animate-pulse' : ''}`}>
               <p className={`text-2xl font-extrabold ${spinning ? 'text-neon-text-muted' : 'text-neon-accent'}`}>{result.nameKo}</p>
-              {!spinning && <p className="text-xs text-neon-text-muted mt-1">{result.regionKo} · {catLabel[result.category] || result.category}{result.staffNickname ? ` · ${result.staffNickname}` : ''}</p>}
+              {!spinning && <p className="text-xs text-neon-text-muted mt-1">{result.regionKo} · {catLabel[result.category] || result.category}{result.staffNickname && !isPageOnlyAd(result) ? ` · ${result.staffNickname}` : ''}</p>}
             </div>
           ) : (
             <span className="text-neon-text-muted">버튼을 눌러 시작!</span>

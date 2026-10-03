@@ -1,6 +1,8 @@
 type V = { slug: string; nameKo?: string; id?: string; status?: string; staffPhone?: string; address?: string; sameAs?: string };
 type PopMap = Record<string, { ranked?: boolean; score?: number }>;
 export declare const ILSAN_CHIEF_PHONE: string;
+export declare const PAGE_ONLY_AD_SLUGS: Set<string>;
+export declare function isPageOnlyAd(v: V | null | undefined): boolean;
 export declare function isAdVenue(v: V | null | undefined): boolean;
 export declare function isListed(v: V | null | undefined): boolean;
 export declare const SIDO_ORDER: string[];

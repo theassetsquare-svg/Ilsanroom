@@ -32,3 +32,17 @@ export const ogVer = (slug) => OG_FILE_VER[slug] || OG_DEFAULT_VER;
 /** [놀쿨12-2 · 13:18-6·7] 화면의 가게 그림 = 표준 카드(가게 이름이 가장 크게)의 webp 축소판(빌드가 dist/og/<이름>-w600.webp 로 만든다).
  *  가게 사진(/venues/*)은 사진 판정표(docs/NOLCOOL12_사진판정_2026-09-27.md) 여섯 가지를 모두 넘은 것만 쓰는데 지금 0장이라 전부 카드다. */
 export const cardSrc = (slug) => `/og/${slug}${ogVer(slug)}-w600.webp`;
+
+/** [놀쿨26-1 · 대표님 2026-10-04 03:43] 놀쿨 전용 명단(src/data/advertisers.nolcool.json · 따봉)의 4줄 카드 — 명단에 적힌 쪽에서만 쓴다.
+ *  가게 쪽: 자기 쪽의 og:image·첫 그림만 이 판(-v9 · 가게이름 / 닉네임 / 번호 / 광고문의 카톡 besta12). 목록·검색 같은 다른 쪽은 ogVer(3줄 판) 그대로.
+ *  매거진 쪽: og:image 만 MAGAZINE_OG 의 파일(public/og/<값>.jpg). 그림은 scripts/generate-og-name11.mjs 가 그린다. */
+export const OG_OWN_PAGE_VER = {
+  busanmulnight: '-v9',
+  busanyeonsandongmulnight: '-v9',
+};
+export const ogOwnVer = (slug) => OG_OWN_PAGE_VER[slug] || ogVer(slug);
+export const cardOwnSrc = (slug) => `/og/${slug}${ogOwnVer(slug)}-w600.webp`;
+export const MAGAZINE_OG = {
+  'busan-night-guide': 'magazine-busan-night-guide-v1',
+  'busan-nightlife-roundup': 'magazine-busan-nightlife-roundup-v1',
+};

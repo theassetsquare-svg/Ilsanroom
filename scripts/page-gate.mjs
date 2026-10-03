@@ -12,6 +12,7 @@
  *                 J3 사실 일치(가게 name=본문 이름 · telephone ⇒ tel 링크 · openingHours ⇒ 본문 영업시간 · Breadcrumb 마지막 = 이 주소) · J4 가짜 평점·후기 속성 0 · J5 DiscussionForumPosting 은 글 0 인 게시판에 0
  *                 O1 og:title·og:description·og:image · S4 세이프서치 안전(성적 묘사·성매매·노출 표현 0 · 위험어 미러) · L3 본문 내부 링크 ≥ 10 · L4 허브(지역·업종) 링크 있음
  *   [놀쿨12-2] A2 명단 밖 번호 · A3 금지 낱말(신실장·WT창민 · 흔한 낱말 천사·태양·둘리·따봉·수빈은 번호와 붙을 때만) · A4 일산 총책임자 두 쪽만 · A5 그림(판정표 밖 가게 사진 · 금지 그림 해시)
+ *   [놀쿨26-1] 놀쿨 전용 광고주 명단(src/data/advertisers.nolcool.json · 따봉)은 명단에 적힌 쪽에서만 A2·A3 통과 — 그 밖의 쪽에서는 그대로 막음
  *   [놀쿨11-4] M1 「다음에 볼 곳」 모듈 안 같은 주소 2번 · M2 가게 쪽 모듈 7칸 미만 · M3 모듈 링크 새 창 · M4 저장 버튼 없는 가게 쪽
  *   품질(경고만 · exit 0): Q1 제목 40자 초과 · Q2 본문 글자 하한(가게 1,700 · 목록/허브 2,000) · Q3 H2 5개 미만 · Q4 본문 내부 링크 12~25 밖(11-4 목표 · 실측 중앙 가게 16·허브 9)
  *
@@ -44,7 +45,14 @@ const FORBIDDEN_WORDS = ['신실장', 'WT창민', 'W.T창민'];
 const ILSAN_PHONE = '01041175556';
 const ILSAN_ROUTES = new Set(['/rooms/ilsan/ilsanroom/', '/yojeong/ilsan/ilsanmyeongwolgwanyojeong/']);
 // [놀쿨12-2 R10 · 13:18-9] 흔한 낱말(천사·태양·둘리·따봉·수빈)은 번호와 붙어 나올 때만 막는다(명단 밖 옛 닉네임+번호 꼴)
-const NICK_NEAR_NUMBER_RE = /(천사|태양|둘리|따봉|수빈)[\s:·)]{0,4}0\d{1,2}[-. ]?\d{3,4}[-. ]?\d{4}/;
+const NICK_NEAR_NUMBER_RE = /(천사|태양|둘리|따봉|수빈)[\s:·)]{0,4}0\d{1,2}[-. ]?\d{3,4}[-. ]?\d{4}/g;
+// [놀쿨26-1 · 2026-10-04 · 대표님 03:43] 놀쿨 전용 광고주 명단(src/data/advertisers.nolcool.json) — 적힌 쪽(pages)에서만 그 닉네임·번호를 허용한다.
+//   그 밖의 쪽에 그 번호가 나오면 지금처럼 A2 로 막는다(venues.ts staffPhone 에 있어도 쪽 밖이면 막음).
+const PAGE_ONLY = (() => {
+  const map = new Map();
+  try { for (const a of JSON.parse(fs.readFileSync('src/data/advertisers.nolcool.json', 'utf8')).advertisers || []) map.set(String(a.phone).replace(/\D/g, ''), { nick: a.nickname, pages: new Set(a.pages) }); } catch {}
+  return map;
+})();
 // [놀쿨12-2 R7·R10] 그림 — ① 가게 사진(/venues/*)은 사진 판정표 여섯 가지를 넘은 것만(지금 0장 → 참조 0) ② 번호·신실장이 그려진 것으로 확인된 그림(해시 목록 scripts/forbidden-images.json) 참조 0
 const FORBIDDEN_IMG = (() => { try { return JSON.parse(fs.readFileSync('scripts/forbidden-images.json', 'utf8')).sha1 || {}; } catch { return {}; } })();
 const PHOTO_PASS = (() => { try { return new Set([...fs.readFileSync('src/data/venue-image-manifest.ts', 'utf8').matchAll(/^\s+'([^']+)',$/gm)].map((m) => m[1])); } catch { return new Set(); } })();
@@ -63,14 +71,19 @@ export function imageProblems(html, dist = DIST) {
   }
   return { photos, bad };
 }
-export function contactProblems(html) {
+export function contactProblems(html, route = '') {
   const noJs = html.replace(/<script(?![^>]*ld\+json)[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ');
   const nums = [...new Set([...noJs.matchAll(PHONE_RE)].map((m) => m[0].replace(/\D/g, '')))];
   const tels = [...new Set([...noJs.matchAll(/href="tel:([^"]+)"/g)].map((m) => m[1].replace(/\D/g, '')))];
-  const off = [...new Set([...nums, ...tels])].filter((n) => !ALLOWED_PHONES.has(n));
+  const here = String(route).replace(/\/?$/, '/');
+  const pageOnlyOk = (n) => { const p = PAGE_ONLY.get(n); return !!p && p.pages.has(here); }; // [놀쿨26-1] 놀쿨 명단 번호는 적힌 쪽에서만
+  const off = [...new Set([...nums, ...tels])].filter((n) => (PAGE_ONLY.has(n) ? !pageOnlyOk(n) : !ALLOWED_PHONES.has(n)));
   const words = FORBIDDEN_WORDS.filter((w) => noJs.includes(w));
-  const nearNick = (noJs.match(NICK_NEAR_NUMBER_RE) || [])[0];
-  if (nearNick) words.push(nearNick);
+  for (const m of noJs.matchAll(NICK_NEAR_NUMBER_RE)) {
+    const n = m[0].replace(/\D/g, '');
+    if (pageOnlyOk(n) && m[1] === PAGE_ONLY.get(n).nick) continue; // 놀쿨 명단의 닉네임+번호 꼴은 그 쪽에서만 통과
+    words.push(m[0]); break;
+  }
   const ilsan = [...new Set([...nums, ...tels])].includes(ILSAN_PHONE);
   return { off, words, ilsan };
 }
@@ -128,7 +141,7 @@ export function gatePage(html, ctx = {}) {
   else if (!noindex && decodeURIComponent(canonical) !== decodeURIComponent(want)) block.push(`L2 canonical ${canonical} ≠ ${want}`);
   const hasTel = /href="tel:/.test(html);
   if (hasTel && !/ssr-adlabel|>광고</.test(html)) block.push('A1 tel 링크 있는데 광고 라벨 없음');
-  { const cp = contactProblems(html); if (cp.off.length) block.push(`A2 명단 밖 번호 ${cp.off.join(',')}`); if (cp.words.length) block.push(`A3 금지 낱말 ${cp.words.join(',')}`); if (cp.ilsan && !ILSAN_ROUTES.has(route.replace(/\/?$/, '/'))) block.push('A4 일산 총책임자 번호는 일산 두 가게 쪽에만'); }
+  { const cp = contactProblems(html, route); if (cp.off.length) block.push(`A2 명단 밖 번호 ${cp.off.join(',')}`); if (cp.words.length) block.push(`A3 금지 낱말 ${cp.words.join(',')}`); if (cp.ilsan && !ILSAN_ROUTES.has(route.replace(/\/?$/, '/'))) block.push('A4 일산 총책임자 번호는 일산 두 가게 쪽에만'); }
   { const ip = imageProblems(html, ctx.dist || DIST); if (ip.photos.length) block.push(`A5 판정표 밖 가게 사진 ${ip.photos.slice(0, 3).join(',')}`); if (ip.bad.length) block.push(`A5 금지 그림 ${ip.bad.slice(0, 3).join(',')}`); }
   const bodyText = strip((html.match(/<article id="nc-article"[\s\S]*?<\/article>/) || [html])[0]);
   for (const w of PRICE_WORDS) { const hit = w === '만원' ? (MANWON_PRICE_RE.test(bodyText) || MANWON_PRICE_RE.test(title)) : (bodyText.includes(w) || title.includes(w)); if (hit) { block.push(`W1 가격 단어 「${w}」`); break; } }

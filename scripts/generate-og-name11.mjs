@@ -13,7 +13,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { fileURLToPath } from 'url';
-import { ogVer } from '../src/lib/venue-file-ver.mjs';
+import { ogVer, ogOwnVer, MAGAZINE_OG } from '../src/lib/venue-file-ver.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -29,6 +29,15 @@ for (const block of blocks) {
   const nick = block.match(/staffNickname:\s*'([^']+)'/)?.[1] || '';
   const phone = block.match(/staffPhone:\s*'([^']+)'/)?.[1] || '';
   if (slug && nameKo && cat) venues.push({ slug, nameKo, cat, nick, phone });
+}
+// [놀쿨26-1 · 대표님 2026-10-04 03:43] 놀쿨 전용 광고주 명단(src/data/advertisers.nolcool.json)도 읽는다 — 명단의 매거진 쪽은 가게이름 자리에 명단의 가게 이름을 넣은 4줄 카드
+//   (파일 = venue-file-ver.mjs MAGAZINE_OG · 바탕 색조는 쪽마다 다름). 명단의 가게 쪽은 venues.ts 담당 칸으로 4줄이 되고 판은 ogOwnVer(-v9).
+const nolcoolAds = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/advertisers.nolcool.json'), 'utf-8')).advertisers || [];
+for (const a of nolcoolAds) {
+  for (const p of a.pages) {
+    const id = p.match(/^\/magazine\/([^/]+)\/$/)?.[1];
+    if (id && MAGAZINE_OG[id]) venues.push({ slug: `magazine-${id}`, nameKo: a.shop, cat: 'magazine', nick: a.nickname, phone: a.phone, file: MAGAZINE_OG[id] });
+  }
 }
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -133,12 +142,15 @@ if (import.meta.url === `file:///${process.argv[1].replace(/\\/g, '/')}`) {
   fs.mkdirSync(outDir, { recursive: true });
   let adCount = 0;
   for (const v of targets) {
-    const ver = ogVer(v.slug);
-    const jpgPath = path.join(outDir, `${v.slug}${ver}.jpg`);
+    // [놀쿨26-1] 자기 쪽 판(ogOwnVer)이 따로 있는 가게는 그 판에 4줄을 그리고, 목록용 판(ogVer · 3줄)은 있는 파일을 그대로 둔다(없을 때만 3줄로 그림)
+    const name = v.file || `${v.slug}${ogOwnVer(v.slug)}`;
+    const jpgPath = path.join(outDir, `${name}.jpg`);
     await sharp(Buffer.from(buildSvg(v))).jpeg({ quality: 86 }).toFile(jpgPath);
+    const listPath = path.join(outDir, `${v.slug}${ogVer(v.slug)}.jpg`);
+    if (!v.file && ogOwnVer(v.slug) !== ogVer(v.slug) && !fs.existsSync(listPath)) await sharp(Buffer.from(buildSvg({ ...v, nick: '', phone: '' }))).jpeg({ quality: 86 }).toFile(listPath);
     const L = layout(v);
     if (L.isAd) adCount++;
-    console.log(`✅ ${v.slug}${ver}.jpg — ${v.nameKo} [${L.lines.join(' / ')} · ${L.size}px]${L.isAd ? ` / ${v.nick} ${v.phone}` : ''}`);
+    console.log(`✅ ${name}.jpg — ${v.nameKo} [${L.lines.join(' / ')} · ${L.size}px]${L.isAd ? ` / ${v.nick} ${v.phone}` : ''}`);
   }
   console.log(`\n총 ${targets.length}개 (4줄 ${adCount} · 3줄 ${targets.length - adCount})`);
 }

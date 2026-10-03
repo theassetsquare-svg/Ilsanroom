@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { WEEKEND_N } from '@/data/venues-counts';
-import { isAdVenue } from '@/lib/venue-order';
+import { isAdVenue, isPageOnlyAd } from '@/lib/venue-order';
 import { useSearchParams } from 'react-router-dom';
 import { trackEvent } from '@/lib/visitor-tracker';
 import { Link } from '../components/ui/SafeLink';
@@ -169,7 +169,7 @@ export default function ComparePage() {
                     {v.reviewCount > 0 && v.rating > 0 && (
                       <div><dt className="text-[#999] text-xs">평점</dt><dd className="font-bold" style={{ color: '#F59E0B' }}>★ {v.rating.toFixed(1)} ({v.reviewCount})</dd></div>
                     )}
-                    {v.staffNickname && <div><dt className="text-[#999] text-xs">담당</dt><dd style={{ color: '#D97706' }}>{v.staffNickname}</dd></div>}
+                    {v.staffNickname && !isPageOnlyAd(v) && <div><dt className="text-[#999] text-xs">담당</dt><dd style={{ color: '#D97706' }}>{v.staffNickname}</dd></div>}
                     <div><dt className="text-[#999] text-xs">양주</dt><dd className="text-[#111]">{v.liquorInfo || '매장 문의'}</dd></div>
                     <div><dt className="text-[#999] text-xs">부스</dt><dd className="text-[#111]">{v.boothInfo || '매장 문의'}</dd></div>
                     <div><dt className="text-[#999] text-xs">룸</dt><dd className="text-[#111]">{v.roomInfo || '매장 문의'}</dd></div>

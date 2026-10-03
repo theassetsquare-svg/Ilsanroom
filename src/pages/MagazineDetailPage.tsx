@@ -14,6 +14,7 @@ import HelpfulVote from '@/components/community/HelpfulVote';
 import WeeklyVoteWidget from '@/components/community/WeeklyVoteWidget';
 import { sanitizeHtml } from '@/lib/sanitize-html';
 import { splitHtmlParagraphs } from '@/lib/text-format';
+import { MAGAZINE_OG } from '@/lib/venue-file-ver';
 
 export default function MagazineDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -25,7 +26,9 @@ export default function MagazineDetailPage() {
 
   useDocumentMeta(
     article?.title || '매거진 글',
-    article?.excerpt || '나이트라이프 현장 리포트와 깊이 있는 분석 매거진'
+    article?.excerpt || '나이트라이프 현장 리포트와 깊이 있는 분석 매거진',
+    // [놀쿨26-1] 놀쿨 전용 명단 광고주(따봉)의 매거진 쪽은 4줄 카드(프리렌더와 같은 파일)
+    id && MAGAZINE_OG[id] ? `https://nolcool.com/og/${MAGAZINE_OG[id]}.jpg` : undefined
   );
 
   if (!article) {
