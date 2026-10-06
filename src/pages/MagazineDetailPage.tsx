@@ -13,7 +13,7 @@ import RelatedVenuesForMagazine from '@/components/magazine/RelatedVenuesForMaga
 import HelpfulVote from '@/components/community/HelpfulVote';
 import WeeklyVoteWidget from '@/components/community/WeeklyVoteWidget';
 import { sanitizeHtml } from '@/lib/sanitize-html';
-import { splitHtmlParagraphs } from '@/lib/text-format';
+import { splitHtmlParagraphs, josa } from '@/lib/text-format';
 import { MAGAZINE_OG } from '@/lib/venue-file-ver';
 
 export default function MagazineDetailPage() {
@@ -156,7 +156,8 @@ export default function MagazineDetailPage() {
             <p className="text-xs font-bold mb-1" style={{ color: '#15803D' }}>지금 예약·문의</p>
             <p className="text-base sm:text-lg font-extrabold mb-3" style={{ color: '#111' }}>
               {(article as { venueName?: string }).venueName || '담당자'}{' '}
-              {(article as { staffName?: string }).staffName}이 직접 안내합니다
+              {/* [놀쿨33-1] 닉네임 받침에 맞는 조사(따봉이 · 쌍코피가) */}
+              {josa((article as { staffName?: string }).staffName || '', '이/가')} 직접 안내합니다
             </p>
             <a
               href={`tel:${((article as { phone?: string }).phone || '').replace(/-/g, '')}`}

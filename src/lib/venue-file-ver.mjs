@@ -42,10 +42,14 @@ export const cardSrc = (slug) => `/og/${slug}${ogVer(slug)}-w600.webp`;
 export const OG_OWN_PAGE_VER = {
   busanmulnight: '-v9',
   busanyeonsandongmulnight: '-v9',
+  // [놀쿨33-1 · 대표님 2026-10-06 17:01] 신림그랑프리나이트 광고주 쌍코피 — 자기 쪽만 4줄 판(-v9) · 목록은 -v8(3줄) 그대로
+  sinlimgrandprixnight: '-v9',
 };
 export const ogOwnVer = (slug) => OG_OWN_PAGE_VER[slug] || ogVer(slug);
 export const cardOwnSrc = (slug) => `/og/${slug}${ogOwnVer(slug)}-w600.webp`;
 export const MAGAZINE_OG = {
   'busan-night-guide': 'magazine-busan-night-guide-v1',
   'busan-nightlife-roundup': 'magazine-busan-nightlife-roundup-v1',
+  // [놀쿨33-1] 신림그랑프리나이트 문단이 있는 매거진 1쪽
+  'seoul-southwest-night-guide': 'magazine-seoul-southwest-night-guide-v1',
 };
