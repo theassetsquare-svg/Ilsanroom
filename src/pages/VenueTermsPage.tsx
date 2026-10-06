@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const sections = [
@@ -141,9 +142,9 @@ export default function VenueTermsPage() {
       <div className="mx-auto max-w-4xl px-4 py-16">
         {/* Header */}
         <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold">
+          <NcH1 className="mb-4 text-4xl font-bold">
             매장 입점 <span className="text-neon-primary-light">규정</span>
-          </h1>
+          </NcH1>
           <p className="text-lg text-neon-text-muted">
             놀쿨에 매장을 게시하기 위한 이용 조항
           </p>

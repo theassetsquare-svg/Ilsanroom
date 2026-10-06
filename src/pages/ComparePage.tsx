@@ -1,5 +1,6 @@
 
 
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { WEEKEND_N } from '@/data/venues-counts';
 import { isAdVenue, isPageOnlyAd } from '@/lib/venue-order';
@@ -97,10 +98,10 @@ export default function ComparePage() {
           <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 mb-6 border border-white/10">
             <PageLiveCounter pageName="비교 중" baseCount={28} className="text-white/80 [&_strong]:text-white" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
+          <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-3">
             ⚖️ 두 곳 놓고 따져보면<br />
             <span style={{ color: '#60A5FA' }}>후회가 없다</span>
-          </h1>
+          </NcH1>
           <p className="text-base mb-6" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.6)' }}>
             2~3곳 선택하면 양주·룸·분위기 항목별 비교표가 나온다.
           </p>

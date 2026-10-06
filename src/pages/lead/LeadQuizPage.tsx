@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useCallback } from 'react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { captureLead, isValidEmail } from '@/lib/growth-engine';
@@ -129,7 +130,7 @@ export default function LeadQuizPage() {
       <div className="mx-auto max-w-2xl px-4 py-8">
         <div className="mb-8 rounded-2xl bg-gradient-to-br from-neon-primary to-purple-700 p-6 text-center text-white">
           <p className="mb-1 text-sm opacity-80">당신의 밤 유형은</p>
-          <h1 className="mb-1 text-3xl font-bold">{result.type}</h1>
+          <NcH1 className="mb-1 text-3xl font-bold">{result.type}</NcH1>
           <p className="text-lg opacity-90">{result.subtitle}</p>
         </div>
 
@@ -228,9 +229,9 @@ export default function LeadQuizPage() {
         </div>
       </div>
 
-      <h1 className="mb-8 text-center text-2xl font-bold md:text-3xl">
+      <NcH1 className="mb-8 text-center text-2xl font-bold md:text-3xl">
         {currentQ.question}
-      </h1>
+      </NcH1>
 
       <div className="space-y-3">
         {currentQ.options.map((opt) => (

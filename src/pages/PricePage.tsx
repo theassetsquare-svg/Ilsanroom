@@ -1,5 +1,6 @@
 
 
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useMemo } from 'react';
 import { isAdVenue } from '@/lib/venue-order';
 import { Link } from '../components/ui/SafeLink';
@@ -40,7 +41,7 @@ export default function PricePage() {
 
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
-      <h1 className="text-3xl font-extrabold text-neon-text mb-2">양주·부스·룸 한눈에 보기</h1>
+      <NcH1 className="text-3xl font-extrabold text-neon-text mb-2">양주·부스·룸 한눈에 보기</NcH1>
       <p className="text-neon-text-muted mb-8">각 매장의 양주 라인업, 부스 구성, 룸 타입을 확인하세요.</p>
 
       {/* Category Filter */}

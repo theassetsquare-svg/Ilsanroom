@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
@@ -9,7 +10,7 @@ export default function WeeklyHotPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 text-center">
-      <h1 className="mb-3 text-3xl font-bold">이번 주 핫플 큐레이션</h1>
+      <NcH1 className="mb-3 text-3xl font-bold">이번 주 핫플 큐레이션</NcH1>
       <p className="mb-6 text-base text-neon-muted">
         커뮤니티 후기·검색 추이 데이터를 검증한 뒤 공개합니다. 발송 일정을 미리 약속하지 않습니다.
       </p>

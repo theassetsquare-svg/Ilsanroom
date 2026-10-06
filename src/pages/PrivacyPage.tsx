@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const sections = [
@@ -146,9 +147,9 @@ export default function PrivacyPage() {
       <div className="mx-auto max-w-4xl px-4 py-16">
         {/* Header */}
         <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold">
+          <NcH1 className="mb-4 text-4xl font-bold">
             개인정보<span className="text-neon-primary-light">처리방침</span>
-          </h1>
+          </NcH1>
           <p className="text-lg text-neon-text-muted">
             놀쿨은 회원의 소중한 개인자료를 안전히 보호합니다
           </p>

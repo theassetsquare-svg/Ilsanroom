@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useParams } from 'react-router-dom';
 import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -26,7 +27,7 @@ export default function NewCategoryPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold">새로 입점한 {catKo} {filtered.length}곳</h1>
+      <NcH1 className="mb-6 text-2xl font-bold">새로 입점한 {catKo} {filtered.length}곳</NcH1>
       <p className="mb-8 text-gray-600">최근 놀쿨에 등록된 {catKo}를 확인하세요. 남들보다 먼저 발견하는 재미.</p>
       <div className="grid gap-4 sm:grid-cols-2">
         {filtered.map(v => (

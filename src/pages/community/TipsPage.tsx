@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useEffect, lazy, Suspense } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Link } from '../../components/ui/SafeLink';
@@ -115,7 +116,7 @@ export default function TipsPage() {
           <Link to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold">꿀팁</h1>
+              <NcH1 className="text-3xl font-bold">꿀팁</NcH1>
               <p className="mt-2 text-sm font-bold" style={{ color: '#8B5CF6' }}>
                 "이거 모르고 갔다가 후회한 사람 한둘이 아님"
               </p>

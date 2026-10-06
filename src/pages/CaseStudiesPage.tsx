@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
@@ -13,7 +14,7 @@ export default function CaseStudiesPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 text-center">
-      <h1 className="text-2xl font-extrabold text-neon-text mb-3">입점 사례 연구</h1>
+      <NcH1 className="text-2xl font-extrabold text-neon-text mb-3">입점 사례 연구</NcH1>
       <p className="text-sm text-neon-text-muted mb-6 leading-relaxed">
         예약 문의 증감, 검색 노출 변화 같은 수치는
         <br />

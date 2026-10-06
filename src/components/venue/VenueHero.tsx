@@ -1,4 +1,5 @@
-import { cardOwnSrc } from '@/lib/venue-file-ver'; // [놀쿨26-1] 가게 자기 쪽 판(놀쿨 명단 가게는 4줄 -v9 · 그 밖은 목록과 같은 판)
+import NcH1 from '@/components/seo/NcH1';
+import { cardOwnJpg, cardOwnLight } from '@/lib/venue-file-ver'; // [놀쿨26-1] 가게 자기 쪽 판(놀쿨 명단 가게는 4줄 -v9 · 그 밖은 목록과 같은 판) · [놀쿨34-1] og:image 와 같은 jpg 파일 + 같은 카드의 가벼운 판
 
 interface VenueHeroProps {
   name: string;
@@ -20,17 +21,22 @@ export default function VenueHero({ name, staffNickname, isAd, regionLabel, slug
     <section className="border-b border-neon-border bg-neon-bg">
       <div className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
         {slug && (
-          <img
-            src={cardOwnSrc(slug)}
-            alt={`${name} 표준 카드`}
-            width={600}
-            height={600}
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-            className="block w-full rounded-xl bg-[#111]"
-            style={{ maxWidth: 300, aspectRatio: '1 / 1', height: 'auto' }}
-          />
+          <picture>
+            {/* [놀쿨34-1 · G3 · 속도] 같은 카드의 가벼운 판(webp · 가로 1200) — 프리렌더 첫 화면이 이미 받아 둔 그 파일이라 다시 받지 않는다 */}
+            <source type="image/webp" srcSet={cardOwnLight(slug)} />
+            <img
+              /* [놀쿨34-1 · G3] 첫 그림의 주소 = og:image 와 같은 파일(1200×1200 jpg) · 그림 설명은 그림에 그려진 그대로 */
+              src={cardOwnJpg(slug)}
+              alt={`${name} 안내 카드`}
+              width={1200}
+              height={1200}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              className="block w-full rounded-xl bg-[#111]"
+              style={{ maxWidth: 300, aspectRatio: '1 / 1', height: 'auto' }}
+            />
+          </picture>
         )}
         <div className="mt-3 flex flex-wrap items-center gap-2">
           {isAd && (
@@ -38,7 +44,7 @@ export default function VenueHero({ name, staffNickname, isAd, regionLabel, slug
           )}
           <span className="text-sm text-[#444]">{regionLabel}</span>
         </div>
-        <h1 className="mt-1 text-3xl font-extrabold text-neon-text sm:text-4xl">{name}</h1>
+        <NcH1 className="mt-1 text-3xl font-extrabold text-neon-text sm:text-4xl">{name}</NcH1>
         {staffNickname && (
           <p className="mt-2 text-base font-bold text-[#111]">
             <span className="text-[#6D28D9]">★</span> 담당: {staffNickname}

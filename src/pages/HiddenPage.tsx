@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useRef } from 'react';
 import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -69,10 +70,10 @@ export default function HiddenPage() {
           </div>
 
           <div className="text-6xl mb-4">🔮</div>
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-3 leading-tight">
+          <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-3 leading-tight">
             단골만 알던 곳,<br />
             <span style={{ color: '#C4B5FD' }}>여기서 처음 공개한다</span>
-          </h1>
+          </NcH1>
           <p className="text-base mb-4" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.5)' }}>
             아는 사람만 가던 숨은 명소를 발굴해 소개한다.<br />
             새 곳이 더해지면 여기서 먼저 공개된다.

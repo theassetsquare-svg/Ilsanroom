@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Link } from '../components/ui/SafeLink';
@@ -79,7 +80,7 @@ export default function MagazineDetailPage() {
           </div>
 
           {/* 제목 */}
-          <h1 className="text-2xl sm:text-3xl font-black leading-tight mb-4" style={{ color: '#111' }}>{article.title}</h1>
+          <NcH1 className="text-2xl sm:text-3xl font-black leading-tight mb-4" style={{ color: '#111' }}>{article.title}</NcH1>
 
           {/* 요약 */}
           <p className="text-base leading-relaxed" style={{ color: '#555', lineHeight: '1.8' }}>{article.excerpt}</p>

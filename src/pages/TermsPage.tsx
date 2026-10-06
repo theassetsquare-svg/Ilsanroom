@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const articles = [
@@ -100,9 +101,9 @@ export default function TermsPage() {
       <div className="mx-auto max-w-4xl px-4 py-16">
         {/* Header */}
         <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold">
+          <NcH1 className="mb-4 text-4xl font-bold">
             이용<span className="text-neon-primary-light">약관</span>
-          </h1>
+          </NcH1>
           <p className="text-lg text-neon-text-muted">
             본사 플랫폼 이용약관
           </p>

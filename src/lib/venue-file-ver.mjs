@@ -47,6 +47,12 @@ export const OG_OWN_PAGE_VER = {
 };
 export const ogOwnVer = (slug) => OG_OWN_PAGE_VER[slug] || ogVer(slug);
 export const cardOwnSrc = (slug) => `/og/${slug}${ogOwnVer(slug)}-w600.webp`;
+/** [놀쿨34-1 · G3] 가게 자기 쪽의 첫 그림 = og:image 와 같은 파일(1200×1200 jpg · 프리렌더 getVenueOgImage 와 같은 이름).
+ *  구글이 「이 쪽의 큰 그림」으로 집는 주소가 og:image 와 하나가 되게 한다(축소판 webp 는 목록·검색 쪽에서만). */
+export const cardOwnJpg = (slug) => `/og/${slug}${ogOwnVer(slug)}.jpg`;
+/** [놀쿨34-1 · G3 · 속도] 같은 카드의 가벼운 판(webp · 가로 1200 — 빌드가 og jpg 에서 만든다 · scripts/prerender-seo.mjs buildOgWebp).
+ *  <picture> 의 source 로만 쓴다(<img src> 는 og:image 와 같은 jpg 그대로). 프리렌더 첫 화면과 같은 이름이라 React 가 다시 그려도 새로 받지 않는다. */
+export const cardOwnLight = (slug) => `/og/${slug}${ogOwnVer(slug)}-w1200.webp`;
 export const MAGAZINE_OG = {
   'busan-night-guide': 'magazine-busan-night-guide-v1',
   'busan-nightlife-roundup': 'magazine-busan-nightlife-roundup-v1',

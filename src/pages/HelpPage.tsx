@@ -1,5 +1,6 @@
 "use client";
 
+import NcH1 from '@/components/seo/NcH1';
 import { useState } from "react";
 import {
   ChevronDown,
@@ -214,9 +215,9 @@ export default function HelpPage() {
         {/* Header */}
         <div className="mb-12 text-center">
           <HelpCircle className="mx-auto mb-4 h-10 w-10 text-neon-primary-light" />
-          <h1 className="mb-4 text-4xl font-bold">
+          <NcH1 className="mb-4 text-4xl font-bold">
             고객 <span className="text-neon-primary-light">센터</span>
-          </h1>
+          </NcH1>
           <p className="text-lg text-neon-text-muted">
             궁금한 점을 검색하거나 카테고리별 자주 묻는 질문 모아뒀어.
           </p>

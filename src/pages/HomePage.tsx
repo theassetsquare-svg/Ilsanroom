@@ -1,4 +1,5 @@
 
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useEffect, useRef, useMemo, useCallback, memo, lazy, Suspense, startTransition } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from '../components/ui/SafeLink';
@@ -500,12 +501,7 @@ export default function HomePage() {
 
   return (
     <div className="bg-white min-h-screen">
-      {/* JSON-LD */}
-      <JsonLd data={{
-        '@context': 'https://schema.org', '@type': 'WebSite', name: '놀쿨',
-        url: 'https://nolcool.com',
-        potentialAction: { '@type': 'SearchAction', target: { '@type': 'EntryPoint', urlTemplate: 'https://nolcool.com/search?q={search_term_string}' }, 'query-input': 'required name=search_term_string' },
-      }} />
+      {/* JSON-LD — [놀쿨34-1 · G7] WebSite 는 프리렌더가 홈 머리(head)에 넣는 것 하나만 쓴다(여기서 한 번 더 그리던 것을 뺐다 · 그린 뒤 홈에 WebSite 가 셋이었다) */}
       <JsonLd data={{
         '@context': 'https://schema.org', '@type': 'ItemList', name: '인기 매장',
         itemListElement: popularVenues.slice(0, 10).map((v, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'LocalBusiness', name: v.nameKo, address: v.address } })),
@@ -531,9 +527,9 @@ export default function HomePage() {
         <div className="relative z-10 px-4 pt-4 pb-3 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
           {/* 실시간 접속자 + 타이틀 — 한 줄 */}
           <div className="flex items-center justify-between mb-2">
-            <h1 className="text-[22px] sm:text-[28px] font-black text-white leading-tight">
+            <NcH1 className="text-[22px] sm:text-[28px] font-black text-white leading-tight">
               {heroH1Override || '오늘 밤, 어디 갈래?'}
-            </h1>
+            </NcH1>
             {heroSubtitle && (
               <p className="mt-1 text-[13px] sm:text-sm text-white/80 w-full">{heroSubtitle}</p>
             )}

@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const steps = [
@@ -49,11 +50,11 @@ export default function ReferralPage() {
           <div className="mb-4 inline-flex rounded-full bg-neon-primary/20 px-4 py-1.5 text-sm font-medium text-neon-primary-light">
             친구 추천
           </div>
-          <h1 className="mb-4 text-4xl font-bold md:text-5xl">
+          <NcH1 className="mb-4 text-4xl font-bold md:text-5xl">
             친구에게
             <br />
             <span className="text-neon-primary-light">놀쿨 공유하기</span>
-          </h1>
+          </NcH1>
           <p className="mx-auto max-w-xl text-lg text-neon-text-muted">
             추천 링크를 공유하면 친구도 같은 페이지에서 후기·랭킹·커뮤니티를 함께 봅니다.
             추천 보상은 없습니다.

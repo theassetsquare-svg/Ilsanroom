@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useParams } from 'react-router-dom';
 import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -57,7 +58,7 @@ export default function BestCategoryPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="mb-4 text-2xl font-bold">{catKo} 인기 TOP {filtered.length}</h1>
+      <NcH1 className="mb-4 text-2xl font-bold">{catKo} 인기 TOP {filtered.length}</NcH1>
       <div className="mb-4"><RankingBasisNote /></div>
       <p className="mb-8 text-gray-600">지금 영업이 확인된 전국 {catKo} {filtered.length}곳입니다. 각 줄의 동네와 한 줄 소개를 보고 끌리는 곳부터 눌러보세요.</p>
       {!showRanks && (

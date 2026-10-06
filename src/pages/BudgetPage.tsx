@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { Link } from '../components/ui/SafeLink';
 import { WEEKEND_N } from '@/data/venues-counts';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -51,9 +52,9 @@ export default function BudgetPage() {
           <span className="inline-block px-3 py-1 bg-neon-accent text-white text-sm font-bold rounded-full mb-3">
             💡 처음이라면 이거부터
           </span>
-          <h1 className="text-2xl md:text-4xl font-bold text-neon-text mb-3">
+          <NcH1 className="text-2xl md:text-4xl font-bold text-neon-text mb-3">
             어떤 자리를 찾고 있나? — 상황별 코스 4가지
-          </h1>
+          </NcH1>
           <p className="text-neon-text-muted text-base md:text-lg">
             가격은 매장마다 다르니까 분위기·구성으로 골랐다. 망설이지 말고 한 번에 정해보자.
           </p>

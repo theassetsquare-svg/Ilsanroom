@@ -1,124 +1,168 @@
+# Content Signals (https://contentsignals.org/): search=yes (building a search index and showing search results),
+# ai-input=yes (using this content as input for AI answers, e.g. retrieval and grounding). ai-train is intentionally not stated.
+
 User-agent: *
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Googlebot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Googlebot-Image
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Google-Extended
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Google-InspectionTool
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Bingbot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Yeti
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: NaverBot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Daumoa
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: GPTBot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: ChatGPT-User
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: OAI-SearchBot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: PerplexityBot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 
 User-agent: Perplexity-User
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 User-agent: ClaudeBot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 
 User-agent: Claude-SearchBot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Claude-User
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 User-agent: anthropic-ai
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Claude-Web
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Applebot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Applebot-Extended
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Bytespider
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: YouBot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: cohere-ai
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Meta-ExternalAgent
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: meta-externalagent
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: FacebookBot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: facebookexternalhit
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Kakaotalk-scrap
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Twitterbot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Slurp
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: DuckDuckBot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Baiduspider
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: YandexBot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: CCBot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: ia_archiver
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: Amazonbot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: PhindBot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: WritesonicBot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: JasperBot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 User-agent: YouChatBot
+Content-Signal: search=yes, ai-input=yes
 Allow: /
 
 Sitemap: https://nolcool.com/sitemap.xml

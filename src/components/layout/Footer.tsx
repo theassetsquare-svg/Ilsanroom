@@ -171,13 +171,12 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* 하단 카피라이트 + 마지막 업데이트 (빌드 시각, 24h 자동 빌드) */}
+        {/* 하단 카피라이트 — [놀쿨34-1 · G6] 「마지막 업데이트 <빌드한 날> · 24시간 자동 빌드」 줄은 뺐다.
+            빌드할 때마다 모든 쪽에 오늘 날짜(<time>)가 찍혀, 내용이 안 바뀐 쪽도 「오늘 고침」으로 보였다(34-1 실측: 그린 뒤 모든 쪽).
+            쪽의 날짜는 실제로 바뀐 날(사이트맵 lastmod · 매거진 수정일)과 가게 쪽의 「정보 확인」 날짜만 쓴다. */}
         <div className="mt-8 border-t pt-4 space-y-1" style={{ borderColor: '#E5E7EB' }}>
           <p className="text-center text-xs" style={{ color: '#666' }}>
             &copy; {new Date().getFullYear()} <span style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span> NOLCOOL. All rights reserved.
-          </p>
-          <p className="text-center text-[11px]" style={{ color: '#595959' }}>
-            마지막 업데이트 <time dateTime={__BUILD_DATE__}>{__BUILD_DATE__}</time> · 24시간 자동 빌드
           </p>
         </div>
       </div>

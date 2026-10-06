@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useParams } from 'react-router-dom';
 import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -32,7 +33,7 @@ export default function TagPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold">#{decodedTag} ({filtered.length}곳)</h1>
+      <NcH1 className="mb-6 text-2xl font-bold">#{decodedTag} ({filtered.length}곳)</NcH1>
       <p className="mb-8 text-gray-600">'{decodedTag}' 관련 업소를 모았습니다.</p>
       <div className="grid gap-4 sm:grid-cols-2">
         {filtered.map(v => (

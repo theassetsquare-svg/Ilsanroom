@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { trackEvent, getIncomingUtm } from '@/lib/visitor-tracker';
 
@@ -55,7 +56,7 @@ export default function CafePage() {
   return (
     <div className="bg-gradient-to-b from-[#0A0118] via-[#1a0a2e] to-[#0f0720]">
       <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
-        <h1 className="text-3xl sm:text-4xl font-black text-white mb-4 text-center">놀쿨 카페는 두 곳입니다</h1>
+        <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-4 text-center">놀쿨 카페는 두 곳입니다</NcH1>
         <p className="text-base text-white/70 mb-10 text-center" style={{ lineHeight: '1.8' }}>
           1관은 처음 가는 분을 위한 정보, 2관은 다니는 분을 위한 소식입니다. 만 19세 이상만 이용합니다.
         </p>

@@ -12,50 +12,11 @@ import RecentVenuesBar from '@/components/venue/RecentVenuesBar';
 import CompareBar from '@/components/venue/CompareBar';
 import Toast from '@/components/ui/Toast';
 import SecretModeToast from '@/components/privacy/SecretModeToast';
-import JsonLd from '@/components/seo/JsonLd';
 import { useSeoOverride } from '@/hooks/useSeoOverride';
-import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 
-const organizationJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: '놀쿨',
-  alternateName: ['NOLCOOL', '놀쿨닷컴', 'nolcool.com'],
-  url: 'https://nolcool.com',
-  logo: 'https://nolcool.com/favicon.ico',
-  description: '대한민국 전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보 플랫폼. 서울 경기 부산 대전 대구 광주 울산 제주 나이트라이프 정보.',
-  areaServed: {
-    '@type': 'Country',
-    name: 'South Korea',
-  },
-  knowsAbout: [
-    '한국 클럽', '한국 나이트', '한국 라운지', '한국 룸', '한국 요정', '한국 호빠',
-    '강남 클럽', '홍대 클럽', '이태원 클럽', '압구정 클럽',
-    '서울 나이트', '경기 나이트', '부산 나이트', '대전 나이트', '대구 나이트',
-    '호스트바', '소셜댄스', '나이트라이프', 'nightlife Korea',
-  ],
-  sameAs: [],
-};
-
-const websiteJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: '놀쿨',
-  alternateName: 'NOLCOOL',
-  url: 'https://nolcool.com',
-  description: '전국 클럽·나이트·라운지·룸·요정·호빠 ' + VENUES_TOTAL_OPEN + '곳 비교. 지역별 분위기, 후기, 예약 안내.',
-  inLanguage: 'ko',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: { '@type': 'EntryPoint', urlTemplate: 'https://nolcool.com/search?q={search_term_string}' },
-    'query-input': 'required name=search_term_string',
-  },
-  speakable: {
-    '@type': 'SpeakableSpecification',
-    cssSelector: ['h1', 'h2', '[itemprop="description"]', 'article p:first-of-type'],
-  },
-};
-
+// [놀쿨34-1 · G7] 여기 있던 Organization · WebSite JSON-LD 두 개는 뺐다.
+//   이 틀은 모든 쪽을 감싸므로, 브라우저가 그린 뒤에는 가게 쪽을 포함한 모든 쪽에 Organization 이 붙어 있었다(34-1 실측 75/75쪽 · 홈은 2개).
+//   구글 organization 문서: 홈(또는 소개 쪽) 한 곳이면 된다. 홈의 Organization · WebSite 는 프리렌더가 머리(head)에 넣는 것 하나만 쓴다(scripts/prerender-seo.mjs ORG_JSONLD · WEBSITE_JSONLD).
 function ScrollToTop() {
   const { pathname } = useLocation();
   const navType = useNavigationType();
@@ -90,10 +51,10 @@ export default function MainLayout() {
       <SsrPageLdCleaner />
       <SeoOverrideRunner />
       <ScrollProgress />
-      <JsonLd data={organizationJsonLd} />
-      <JsonLd data={websiteJsonLd} />
       <Header />
-      <main id="main-content" className="flex-1 pt-[92px] md:pt-[56px] pb-[72px] md:pb-6">
+      {/* [놀쿨34-1 · 흔들림] 본문 칸은 처음부터 첫 화면 높이 이상(min-h-screen) — 내용이 짧은 쪽에서 아래 띠·푸터가 첫 화면 안에 걸려 있다가
+          프리렌더 본문(SsrArticle)이 들어올 때 밀려 내려가는 흔들림을 없앤다(사이트 안에서 옮겨 와 본문을 늦게 받는 때도 같다). 숨김 0 · 글자 변화 0. */}
+      <main id="main-content" className="flex-1 min-h-screen pt-[92px] md:pt-[56px] pb-[72px] md:pb-6">
         <Outlet />
         {/* [놀쿨11-2] 프리렌더 완독 뼈대 본문을 끌어안는 자리 — 크롤러와 사람이 같은 본문 */}
         <WelcomeBenefits />

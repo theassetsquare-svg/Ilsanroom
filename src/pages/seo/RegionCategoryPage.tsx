@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useParams } from 'react-router-dom';
 import { isAdVenue, isListed, sortVenues } from '@/lib/venue-order';
 import { popularity } from '@/lib/popularity';
@@ -104,7 +105,7 @@ export default function RegionCategoryPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold">{decodedRegion} {catKo} ({filtered.length}곳)</h1>
+      <NcH1 className="mb-6 text-2xl font-bold">{decodedRegion} {catKo} ({filtered.length}곳)</NcH1>
       {/* [펩시17-2] 광고주 카드는 프리렌더(#nc-ssr)가 그린 한 장을 그대로 보여준다 — 여기서 또 그리면 두 장이 된다(16:1x 실측). 여기는 아래 고정 전화바만. */}
       <p className="mb-8 text-gray-600">{decodedRegion} 지역 {catKo}를 비교하고 선택하세요.</p>
       <div className="grid gap-4 sm:grid-cols-2">

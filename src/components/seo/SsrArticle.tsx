@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { trackEvent } from '@/lib/visitor-tracker';
+import { NC_META_EVENT } from '@/components/seo/NcH1';
 
 /**
  * [놀쿨11-2] 프리렌더가 #root 밖 #nc-ssr 에 둔 완독 뼈대 본문(<main id="main-content"> 안 <article id="nc-article">)을
@@ -19,6 +20,7 @@ export function applyPrerenderMeta(html: string, key: string) {
   const meta: NcMeta = { path: key, title: t ? dec(t[1]) : '', desc: d ? dec(d[1]) : '' };
   const w = window as unknown as { __NC_META_CACHE?: Record<string, NcMeta> };
   w.__NC_META_CACHE = { ...(w.__NC_META_CACHE || {}), [key]: meta };
+  window.dispatchEvent(new Event(NC_META_EVENT)); // [놀쿨34-1] 사이트 안 이동 — 받아 온 제목을 화면의 h1(NcH1)이 바로 따라 그리게
   if (meta.title && !document.documentElement.hasAttribute('data-stealth')) document.title = meta.title;
   if (meta.desc) { const el = document.querySelector('meta[name="description"]'); if (el) el.setAttribute('content', meta.desc); }
 }
@@ -62,7 +64,10 @@ export default function SsrArticle() {
   const ref = useRef<HTMLDivElement>(null);
   const { pathname } = useLocation();
 
-  useEffect(() => {
+  // [놀쿨34-1 · 흔들림] 끌어안기는 화면을 그리기 **전에**(useLayoutEffect) 한다.
+  //   예전(useEffect)에는 React 가 본문 없는 첫 화면을 한 번 그린 뒤에 본문을 옮겼다 → 내용이 짧은 쪽(가게 1~2곳짜리 지역·역 근처 쪽)에서는
+  //   그 한 번의 화면에 아래 띠·푸터가 첫 화면 안에 보였다가 본문이 들어오며 밀려 내려갔다(실측 10-07 /region/강남/nights/ 흔들림 0.36 — 고치기 전 판도 0.39).
+  useLayoutEffect(() => {
     const host = ref.current;
     if (!host) return;
     const ssr = document.getElementById('nc-ssr');

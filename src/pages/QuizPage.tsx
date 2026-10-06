@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { lazy, Suspense, useRef } from 'react';
 import { WEEKEND_N } from '@/data/venues-counts';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -37,9 +38,9 @@ export default function QuizPage() {
           <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 mb-6 border border-white/10">
             <PageLiveCounter pageName="놀고 있는 중" baseCount={55} className="text-white/80 [&_strong]:text-white" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
+          <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-3">
             🎮 인터랙티브 존
-          </h1>
+          </NcH1>
           <p className="text-base text-white/60 mb-6" style={{ lineHeight: '1.7' }}>
             MBTI 테스트, 룰렛, VS배틀, 출석체크, 술값계산기<br />
             심심할 틈 없다. 하나씩 다 해봐.

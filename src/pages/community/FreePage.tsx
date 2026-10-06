@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useEffect, lazy, Suspense } from "react";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Link } from '../../components/ui/SafeLink';
@@ -118,7 +119,7 @@ export default function FreeBoardPage() {
         <div className="mb-6 flex items-start justify-between">
           <div>
             <Link to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
-            <h1 className="text-3xl font-bold">자유게시판</h1>
+            <NcH1 className="text-3xl font-bold">자유게시판</NcH1>
             <p className="mt-2 text-sm font-bold" style={{ color: '#8B5CF6' }}>
               "어젯밤 얘기 여기서 풀어. 읽다 보면 시간 녹는다."
             </p>

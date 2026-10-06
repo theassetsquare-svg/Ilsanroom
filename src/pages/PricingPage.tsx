@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function PricingPage() {
@@ -5,7 +6,7 @@ export default function PricingPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">
-      <h1 className="text-2xl font-bold text-center mb-2" style={{ color: '#111' }}>업주 요금제 안내</h1>
+      <NcH1 className="text-2xl font-bold text-center mb-2" style={{ color: '#111' }}>업주 요금제 안내</NcH1>
       <p className="text-center text-sm mb-10" style={{ color: '#555' }}>
         놀쿨은 지역, 업종, 규모에 따라 최적화된 요금제를 제안드립니다.
       </p>

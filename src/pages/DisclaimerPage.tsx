@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const disclaimerSections = [
@@ -58,9 +59,9 @@ export default function DisclaimerPage() {
       <div className="mx-auto max-w-4xl px-4 py-16">
         {/* Header */}
         <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold">
+          <NcH1 className="mb-4 text-4xl font-bold">
             면책<span className="text-neon-primary-light">조항</span>
-          </h1>
+          </NcH1>
           <p className="text-lg text-neon-text-muted">
             플랫폼 이용 전 반드시 확인해 주세요
           </p>

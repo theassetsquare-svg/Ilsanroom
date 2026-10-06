@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useEffect, lazy, Suspense } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Link } from '../../components/ui/SafeLink';
@@ -113,7 +114,7 @@ export default function QnAPage() {
       <div className="mx-auto max-w-4xl px-4 py-10 sm:py-16">
         <div className="mb-8">
           <Link to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
-          <h1 className="text-3xl font-bold">오늘어디갈까</h1>
+          <NcH1 className="text-3xl font-bold">오늘어디갈까</NcH1>
           <p className="mt-2 text-sm font-bold" style={{ color: '#8B5CF6' }}>
             "금요일 밤 강남 vs 홍대, 정답 알려줄 사람 손?"
           </p>

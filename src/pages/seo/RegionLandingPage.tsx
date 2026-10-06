@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useParams } from 'react-router-dom';
 import { isAdVenue, isListed, sortVenues } from '@/lib/venue-order';
 import { popularity } from '@/lib/popularity';
@@ -33,7 +34,7 @@ export default function RegionLandingPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold">{region} 나이트라이프 {filtered.length}곳</h1>
+      <NcH1 className="mb-6 text-2xl font-bold">{region} 나이트라이프 {filtered.length}곳</NcH1>
       <p className="mb-8 text-gray-600">{region} 지역 나이트라이프 업소를 업종별로 정리했습니다.</p>
       {Object.entries(byCat).map(([cat, vList]) => (
         <section key={cat} className="mb-8">

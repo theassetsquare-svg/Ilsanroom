@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useEffect } from 'react';
 import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -57,9 +58,9 @@ export default function WelcomePage() {
             <span className="text-[11px] font-black uppercase tracking-[0.2em] text-rose-300">OPEN BETA</span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-3 leading-tight">
+          <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-3 leading-tight">
             놀쿨이 <span style={{ color: '#F59E0B' }}>막 열렸습니다</span>
-          </h1>
+          </NcH1>
           <p className="text-base text-white/75 mb-6" style={{ lineHeight: '1.7' }}>
             전국 클럽·나이트·라운지·룸·요정·호빠 한 곳에서.<br />
             카톡 공유해도 업소 단어 0% — 친구한테 보내도 안전.

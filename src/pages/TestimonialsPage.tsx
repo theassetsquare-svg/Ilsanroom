@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
@@ -13,7 +14,7 @@ export default function TestimonialsPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 text-center">
-      <h1 className="text-2xl font-extrabold text-neon-text mb-3">입점 후기</h1>
+      <NcH1 className="text-2xl font-extrabold text-neon-text mb-3">입점 후기</NcH1>
       <p className="text-sm text-neon-text-muted mb-6 leading-relaxed">
         사장님 인터뷰와 매출 변화 데이터는 출처가 확인된 사례만 공개합니다.
         <br />

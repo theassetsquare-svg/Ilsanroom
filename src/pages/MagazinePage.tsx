@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useRef } from 'react';
 import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -29,9 +30,9 @@ export default function MagazinePage() {
             <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>총 {articles.length}편</span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-black mb-3" style={{ color: '#FFFFFF', letterSpacing: '-0.02em' }}>
+          <NcH1 className="text-3xl sm:text-4xl font-black mb-3" style={{ color: '#FFFFFF', letterSpacing: '-0.02em' }}>
             나이트라이프 매거진 — 가기 전에 읽는 글
-          </h1>
+          </NcH1>
           <p className="text-sm sm:text-base mb-8" style={{ color: 'rgba(255,255,255,0.55)' }}>
             지역 분석, 업종 비교, 신규 매장 현장 리포트
           </p>

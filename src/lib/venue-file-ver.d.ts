@@ -7,4 +7,6 @@ export declare function cardSrc(slug: string): string;
 export declare const OG_OWN_PAGE_VER: Record<string, string>;
 export declare function ogOwnVer(slug: string): string;
 export declare function cardOwnSrc(slug: string): string;
+export declare function cardOwnJpg(slug: string): string;
+export declare function cardOwnLight(slug: string): string;
 export declare const MAGAZINE_OG: Record<string, string>;

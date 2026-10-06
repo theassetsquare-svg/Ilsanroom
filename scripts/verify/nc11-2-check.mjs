@@ -48,12 +48,12 @@ if (stage === '스테이징') {
   ck('제목 자리 하나: makeTitle 호출 4곳(near·region·tag·new)', (pre.match(/makeTitle\(/g) || []).length === 4, String((pre.match(/makeTitle\(/g) || []).length));
   ck('명시 제목 등록 registerFixed', /registerFixed\(routePath, meta\.title/.test(pre));
   ck('getHookingTitle 은 그대로(seo-hooks 명시 제목 유지)', /function getHookingTitle\(nameKo, venue\)/.test(pre) && /seoHooksSrc\.match\(regex\)/.test(pre));
-  ck('H1 ≠ 제목 makeH1', /makeH1\(/.test(pre));
+  ck('H1 = 제목(놀쿨34-1 · C5 — 11-2 의 「H1 ≠ 제목 makeH1」을 뒤집음)', /const h1 = meta\.title \|\| '';/.test(pre) && !/\|\| makeH1\(|= makeH1\(/.test(pre));
   ck('뼈대 applySkeleton 호출', /applySkeleton\(type, meta\.ssrBody/.test(pre));
   ck('skel 넘기는 호출 10곳 이상', (pre.match(/skel: /g) || []).length >= 10, String((pre.match(/skel: /g) || []).length));
   ck('숨김 SSR 코드 제거', !/class="ssr-seo"/.test(pre));
   ck('본문은 #nc-ssr 로', /id="nc-ssr"/.test(pre));
-  ck('첫 그림 fetchpriority=high · 치수', /width="1200" height="675" fetchpriority="high"/.test(pre));
+  ck('첫 그림 fetchpriority=high · 치수(놀쿨34-1 · G3 — og 파일의 실제 치수)', /width="\$\{heroDims\.w\}" height="\$\{heroDims\.h\}" fetchpriority="high"/.test(pre));
   ck('lazy+low 주입 제거', !/loading="lazy" fetchpriority="low"/.test(pre));
   ck('변형 엔진 data-skel 고정', /data-skel="\(answer\|facts\|body\|faq\|summary\|next\)"/.test(rd('scripts/uniq-variant.mjs')));
   ck('변형 엔진 parseHtml export', /export function parseHtml/.test(rd('scripts/uniq-variant.mjs')));
@@ -63,7 +63,7 @@ if (stage === '스테이징') {
   ck('빌드 체인에 page-gate', /node scripts\/page-gate\.mjs/.test(pkg.scripts.build));
   ck('audit:page-gate 스크립트', pkg.scripts['audit:page-gate'] === 'node scripts/page-gate.mjs');
   ck('우회 레지스트리 page-gate', /'scripts\/page-gate\.mjs': \{/.test(rd('scripts/gate-bypass-audit.mjs')));
-  for (const k of ['T1', 'T2', 'T3', 'T4', 'T5', 'H1', 'H2', 'D1', 'S1', 'S2', 'S3', 'L1', 'L2', 'A1', 'W1', 'N1']) ck('게이트 항목 ' + k, new RegExp(`'${k} |\`${k} `).test(rd('scripts/page-gate.mjs')));
+  for (const k of ['T1', 'T2', 'T3', 'T4', 'T5', 'H1', 'G2', 'D1', 'S1', 'S2', 'S3', 'L1', 'L2', 'A1', 'W1', 'N1']) ck('게이트 항목 ' + k, new RegExp(`'${k} |\`${k} `).test(rd('scripts/page-gate.mjs')));
   ck('게이트 품질 3항목', /Q1 |Q2 |Q3 /.test(rd('scripts/page-gate.mjs')));
   ck('뼈대 유형 6', SKEL_TYPES.length === 6);
   for (const t of SKEL_TYPES) ck('뼈대 유형 ' + t, SKEL_TYPES.includes(t));
@@ -90,13 +90,13 @@ if (stage === '디버깅') {
   ck('후킹 0 제목 0(analyzeHook)', au.hook0.length === 0, String(au.hook0.length));
   // H1
   const h1eq = pages.filter((p) => normalize(h1Of(p.html)) === normalize(titleOf(p.html)));
-  ck('H1 = 제목인 쪽 0', h1eq.length === 0, String(h1eq.length));
+  ck('H1 = 제목 전 쪽(놀쿨34-1 · C5 — 예전 단언 「H1 = 제목인 쪽 0」을 뒤집음)', h1eq.length === pages.length, `${h1eq.length}/${pages.length}`);
   ck('H1 1개 466', pages.every((p) => (p.html.match(/<h1\b/g) || []).length === 1));
   ck('T6 내부 새 창 0', pages.every((p) => ![...p.html.matchAll(/<a\s+([^>]*)>/g)].some((m) => /target="_blank"/.test(m[1]) && /href="(\/|https?:\/\/nolcool\.com)/.test(m[1]))));
   ck('숨김 SSR 0', pages.every((p) => !/class="ssr-seo"|clip:rect\(0,0,0,0\)/.test(p.html)));
   ck('nc-ssr 본문 466', pages.every((p) => /id="nc-ssr"/.test(p.html) && /id="nc-article"/.test(p.html)));
   ck('첫 그림 lazy 0', pages.every((p) => !/<img[^>]*loading="lazy"[^>]*fetchpriority="low"/.test((p.html.match(/<img[^>]*>/) || [''])[0])));
-  ck('첫 그림 치수 466', pages.every((p) => /width="1200" height="675"/.test((p.html.match(/<img[^>]*>/) || [''])[0])));
+  ck('첫 그림 = og 파일 · 치수 속성(놀쿨34-1 · G3 — 게이트 G3 0)', pages.every((p) => !gatePage(p.html, { route: p.route }).block.some((b) => b.startsWith('G3'))));
   // T3 뼈대 6종
   const byType = {};
   for (const p of pages) { const t = pageTypeOf(p.route); (byType[t] ||= []).push(p); }
@@ -172,7 +172,7 @@ if (stage === '최종') {
     const five = (byType[t] || []).filter((_, i) => i % Math.max(1, Math.floor((byType[t] || []).length / 5)) === 0).slice(0, 5);
     for (const p of five) {
       const h = p.html;
-      ck(`30쪽 ${t} ${p.route} 제목·H1 다름`, !!titleOf(h) && normalize(h1Of(h)) !== normalize(titleOf(h)));
+      ck(`30쪽 ${t} ${p.route} 제목 = H1(놀쿨34-1 · C5)`, !!titleOf(h) && normalize(h1Of(h)) === normalize(titleOf(h)));
       ck(`30쪽 ${t} ${p.route} 직답`, /data-skel="answer"/.test(h));
       ck(`30쪽 ${t} ${p.route} 사실/표`, t === 'community' || t === 'guide' ? 'na' : /data-skel="facts"/.test(h));
       ck(`30쪽 ${t} ${p.route} FAQ`, t === 'magazine' || t === 'community' || t === 'guide' ? (/data-skel="faq"/.test(h) ? true : 'na') : /data-skel="faq"/.test(h));
@@ -193,7 +193,7 @@ if (stage === '최종') {
   ck('11-2 0절 광고 라벨 18쪽 유지', pages.filter((p) => /ssr-adlabel|>광고</.test(p.html)).length >= 18, String(pages.filter((p) => /ssr-adlabel|>광고</.test(p.html)).length));
   ck('11-2 0절 새 창 0', pages.every((p) => ![...p.html.matchAll(/<a\s+([^>]*)>/g)].some((m) => /target="_blank"/.test(m[1]) && /href="\//.test(m[1]))));
   ck('11-2 1절 소원 엔진 CTR 안전핀 파일 그대로', ex('data/wish-engine/title-experiments.json') && ex('scripts/wish-engine-loop.mjs'));
-  ck('11-2 2-1 H1 다르게 1개', pages.every((p) => (p.html.match(/<h1\b/g) || []).length === 1 && normalize(h1Of(p.html)) !== normalize(titleOf(p.html))));
+  ck('11-2 2-1 H1 1개 · 제목과 같게(놀쿨34-1 · C5)', pages.every((p) => (p.html.match(/<h1\b/g) || []).length === 1 && normalize(h1Of(p.html)) === normalize(titleOf(p.html))));
   ck('11-2 2-1 설명 ≠ 제목', pages.every((p) => normalize(dec((p.html.match(/<meta name="description" content="([^"]*)"/) || [])[1] || '')) !== normalize(titleOf(p.html))));
   ck('11-2 2-2 목록 쪽 가게별 한 줄 요약', (byType.list || []).every((p) => /nc-members/.test(p.html)));
   ck('11-2 2-3 측정 잣대 = measure5 --extra(P-nol)', true, '스크래치 measure-nol.mjs(출력만 바꾼 복사본)');

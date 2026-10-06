@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
@@ -13,7 +14,7 @@ export default function DemoPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 text-center">
-      <h1 className="text-2xl font-extrabold text-neon-text mb-3">업주 화면 미리보기</h1>
+      <NcH1 className="text-2xl font-extrabold text-neon-text mb-3">업주 화면 미리보기</NcH1>
       <p className="text-sm text-neon-text-muted mb-6 leading-relaxed">
         실제 어드민 화면 캡처와 동일한 데모로 교체 중입니다.
         <br />

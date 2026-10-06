@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Link } from '../../components/ui/SafeLink';
@@ -333,7 +334,7 @@ export default function JogakPage() {
         <Link to="/community" className="mb-1 inline-block text-xs" style={{ color: '#999' }}>← 커뮤니티</Link>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-black" style={{ color: '#111' }}>조각 모임</h1>
+            <NcH1 className="text-2xl font-black" style={{ color: '#111' }}>조각 모임</NcH1>
             <div className="mt-1 flex items-center gap-3">
               <p className="text-sm font-bold" style={{ color: '#8B5CF6' }}>
                 "오늘 밤 같이 갈 사람, 지금 바로 구해"

@@ -10,7 +10,7 @@ import crypto from 'crypto';
 import { execSync } from 'child_process';
 import { provinceOf, localityOf } from './lib/region-admin.mjs';
 import { ogVer, ogOwnVer, MAGAZINE_OG } from '../src/lib/venue-file-ver.mjs';
-import { isAdVenue, isListed, regionOf, regionTree, sortVenues } from '../src/lib/venue-order.mjs'; // [놀쿨12-2 · 13:18-1·2·4] React 목록과 같은 한 자리
+import { isAdVenue, isPageOnlyAd, isListed, regionOf, regionTree, sortVenues } from '../src/lib/venue-order.mjs'; // [놀쿨12-2 · 13:18-1·2·4] React 목록과 같은 한 자리
 import sharp from 'sharp'; // [놀쿨11-3] 첫 화면 그림(og jpg) 의 webp 축소판 생성
 
 const DIST = path.resolve('dist');
@@ -65,6 +65,27 @@ function ogWebpSet(url) {
   return { src: `${BASE_URL}/og/${base}-w1200.webp`, srcset: `${BASE_URL}/og/${base}-w600.webp 600w, ${BASE_URL}/og/${base}-w1200.webp 1200w`, sizes: '(max-width: 640px) 100vw, 1200px' };
 }
 
+// [놀쿨34-1 · G3] og jpg 의 실제 가로·세로(JPEG 머리의 SOF 칸) — 첫 그림의 width/height 속성에 쓴다(짐작한 숫자 0). 못 읽으면 null.
+const _OG_DIMS = new Map();
+function ogDims(url) {
+  const m = String(url || '').match(/\/og\/([^/?#]+\.jpe?g)$/i);
+  if (!m) return null;
+  if (_OG_DIMS.has(m[1])) return _OG_DIMS.get(m[1]);
+  let out = null;
+  try {
+    const b = fs.readFileSync(path.join(DIST, 'og', m[1]));
+    let i = 2;
+    while (i + 9 < b.length) {
+      if (b[i] !== 0xFF) { i++; continue; }
+      const mk = b[i + 1];
+      if (mk >= 0xC0 && mk <= 0xCF && mk !== 0xC4 && mk !== 0xC8 && mk !== 0xCC) { out = { h: b.readUInt16BE(i + 5), w: b.readUInt16BE(i + 7) }; break; }
+      i += 2 + b.readUInt16BE(i + 2);
+    }
+  } catch { out = null; }
+  _OG_DIMS.set(m[1], out);
+  return out;
+}
+
 // 전화 노출 억제 목록 — 비어 있다. 과거 2개 slug를 가렸던 사유는 호객성 카피였고,
 //   카피를 정화(호객·접객 묘사 제거)한 뒤에는 전화(NAP telephone)를 재노출한다.
 //   전화 노출 자체는 엔티티 SEO(NAP 일치)에 플러스 신호이며 호객과 분리된다.
@@ -97,6 +118,14 @@ const BUILD_ISO_KST = (() => {
   const d = new Date(Date.now() + 9 * 60 * 60 * 1000);
   return d.toISOString().replace('Z', '+09:00');
 })();
+// [놀쿨34-1 · G6] 쪽마다 「실제로 바뀐 날」 — 사이트맵 lastmodFor() 와 같은 잣대(해시가 직전 빌드와 같으면 이전 날짜 · 다르면 오늘).
+//   머리의 날짜 메타 · 매거진 dateModified · article:modified_time 이 이 값을 쓴다(빌드한 날을 모든 쪽에 찍지 않는다).
+const TODAY_UTC = new Date().toISOString().slice(0, 10); // lastmodFor()·lastmod-honesty-gate 와 같은 날짜 기준(UTC)
+// [놀쿨34-1 · G6] 「정보 확인」 날짜 = 출처 장부(src/data/places-provenance.json)의 fetchedAt — 그 가게의 주소·영업시간·좌표·가까운 역을 실제로 확인한 날.
+//   값이 없는 가게는 표기하지 않는다(지어내지 않음).
+const PLACES_PROV = (() => { try { return JSON.parse(fs.readFileSync('src/data/places-provenance.json', 'utf8')); } catch { return {}; } })();
+// [놀쿨34-1 · G7] 구조화 값의 전화는 국제 표기(+82-10-…) — 화면 글자는 010-… 그대로(같은 번호의 표기만 다르다 · 구글 local-business 「국가 번호를 넣어라」). 못 읽는 꼴은 싣지 않는다.
+const telIntl = (p) => { const m = String(p || '').trim().match(/^0(\d{1,2})[-. ]?(\d{3,4})[-. ]?(\d{4})$/); return m ? `+82-${m[1]}-${m[2]}-${m[3]}` : undefined; };
 
 // ── 기본 index.html 읽기 ──
 // 시즌176-B — build-sha 메타 주입 (deploy-sync 가드용, CF 배포 완료 검증)
@@ -110,7 +139,7 @@ const baseHtml = _baseRaw.replace('</head>', `    <meta name="build-sha" content
 import { transformSsr, pageTokens } from './uniq-variant.mjs';
 import { applyProse, PROSE_STATS } from './uniq-prose.mjs';
 // [놀쿨11-2] 제목 창고(소원 엔진 제목 자리 하나) · 완독 뼈대 엔진
-import { makeTitle, makeH1, registerFixed, report as titleBankReport } from './lib/title-bank.mjs';
+import { makeTitle, registerFixed, report as titleBankReport } from './lib/title-bank.mjs'; // [놀쿨34-1 · C5] H1 = 제목 글자 그대로 — makeH1(제목과 다른 문구)은 더 부르지 않는다
 import { applySkeleton, skelTypeOf } from './skeleton/index.mjs';
 // [놀쿨16-1] 4 키워드 허브(강남호빠·장안동호빠·건대호빠) 고유 og 카드 — 목록 한 곳 data/hub-og-cards.json(그림은 gen-category-og.mjs 가 만든다)
 const HUB_OG_CARDS = JSON.parse(fs.readFileSync('data/hub-og-cards.json', 'utf8')).cards; // 다른 자료와 같이 저장소 뿌리 기준 상대 경로
@@ -157,7 +186,7 @@ function truncateDesc(text, maxLen = 150) {
 /**
  * HTML의 head 메타 태그를 교체
  */
-function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords, preloadImage, diluteName, heroImage, heroSquare, preloadCard }) {
+function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ssrBody, jsonLdList, noindex, datePublished, dateModified, keywords, preloadImage, diluteName, heroImage, heroSquare, preloadCard, lastmod, heroAlt, heroAd }) {
   let html = baseHtml;
   const desc = truncateDesc(description || '', 150);
   // canonical은 sitemap loc과 동일 형식이어야 함 (trailing slash 일치).
@@ -250,19 +279,8 @@ function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ss
     `<link rel="canonical" href="${escHtml(can)}"`
   );
 
-  // 시즌28 — hreflang ko-KR/ko/x-default 페이지별 canonical과 동기화
-  html = html.replace(
-    /<link rel="alternate" hreflang="ko-KR" href="[^"]*"/,
-    `<link rel="alternate" hreflang="ko-KR" href="${escHtml(can)}"`
-  );
-  html = html.replace(
-    /<link rel="alternate" hreflang="ko" href="[^"]*"/,
-    `<link rel="alternate" hreflang="ko" href="${escHtml(can)}"`
-  );
-  html = html.replace(
-    /<link rel="alternate" hreflang="x-default" href="[^"]*"/,
-    `<link rel="alternate" hreflang="x-default" href="${escHtml(can)}"`
-  );
+  // [놀쿨34-1 · G4] hreflang 3줄(ko-KR · ko · x-default — 전부 자기 주소)은 뺐다. 놀쿨은 한국어 한 판뿐이고,
+  //   구글 localized-versions 문서는 hreflang 을 「여러 언어·지역 판이 있을 때」 쓰라고 한다(index.html 에서도 지움 · 게이트 page-gate G4).
 
   // noindex for private pages
   if (noindex) {
@@ -284,9 +302,12 @@ function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ss
     `<meta name="citation_public_url" content="${escHtml(can)}"`
   );
 
-  // 모든 페이지 공통: 24시간 자동 빌드 → 매일 새 dateModified (구글 freshness 시그널)
-  const lastModMeta = `<meta name="last-modified" content="${BUILD_ISO_KST}">\n    <meta name="date" content="${BUILD_DATE_KST}">`;
-  html = html.replace('</head>', `    ${lastModMeta}\n  </head>`);
+  // [놀쿨34-1 · G6] 머리의 날짜 메타 = 이 쪽 내용이 실제로 바뀐 날(사이트맵 lastmod 와 같은 값 · 해시 장부).
+  //   예전에는 빌드한 날을 모든 쪽에 찍었다(「오늘 빌드했으니 오늘 수정」 = 사이트맵 lastmod 와 465쪽이 어긋남 · 34-1 실측).
+  if (lastmod) {
+    const lastModMeta = `<meta name="last-modified" content="${lastmod}">\n    <meta name="date" content="${lastmod}">`;
+    html = html.replace('</head>', `    ${lastModMeta}\n  </head>`);
+  }
 
   // 시즌29-F — LCP preload: hero 이미지 JS 번들과 병렬 다운로드 시작 (PC LCP 3.5~4.2s → <2.5s)
   if (preloadCard && OG_WEBP.has(`${preloadCard}-w600`)) {
@@ -330,24 +351,39 @@ function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ss
       heroDesc = heroDesc.replace(new RegExp(dn.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), '여기');
     }
     // 첫 그림 = LCP 후보 → eager + high (11-1 연구 webdev-lazy-lcp: LCP 그림은 지연 로드하지 않는다)
-    // [펩시17-2 검토] heroImage 를 준 쪽은 그 그림을 첫 그림으로(광고 카드를 og:image 로 쓰는 쪽은 hero 를 공용 그림으로 둔다 — 잘린 광고 카드가 「광고」 표시 없이 한 장 더 뜨지 않게)
-    const heroImgSrc = heroImage || preloadImage || ogImg;
-    const heroWebp = (preloadImage && !heroImage) ? null : ogWebpSet(heroImage || ogImg); // [놀쿨11-3] og jpg 를 쓰는 쪽은 webp 축소판 srcset(og:image 는 jpg 그대로)
-    // [놀쿨12-2 · 느림] 첫 그림을 HTML 안에(inline webp 600w · 7~20KB) 싣는다 — 따로 받지 않아 첫 그리기와 같은 때 보인다.
-    //   React 가 첫 화면을 다시 그릴 때 이보다 큰 것을 그리지 않으면 LCP 는 이 그림(첫 그리기 때)으로 정해진다(web.dev/articles/optimize-lcp · 「LCP 그림은 HTML 안에서 바로 발견」).
-    //   가게 쪽(heroSquare)은 표준 카드 정사각 · 가로 최대 420px(React VenueHero 와 같은 크기).
-    const inlineHero = heroWebp ? inlineWebp(heroWebp.src) : null;
+    // [놀쿨34-1 · G3] 첫 그림 = og:image 와 **같은 파일**(주소가 있는 그림 · 가로 1200px 이상 · 치수 속성 = 파일의 실제 치수 · fetchpriority=high).
+    //   예전(12-2)에는 쪽 안에 박은 360px 그림(data URI)이 첫 그림이라, 구글이 「이 쪽의 큰 그림」으로 집을 주소가 없었다(34-1 실측 467쪽).
+    //   박아 둔 작은 그림은 같은 <img> 의 바탕으로 남긴다 — 큰 파일이 오기 전에도 같은 그림이 첫 그리기 때 바로 보이고(LCP 유지),
+    //   자리(가로·세로 · aspect-ratio)가 같아 흔들림(CLS)이 없다. 숨김 0 · 다른 그림 0(같은 그림의 작은 판).
+    //   광고주 카드를 og:image 로 쓰는 쪽(heroAd)도 이제 그 카드가 첫 그림이다 — 자르지 않고(정사각 · contain) 바로 위에 「광고」 표시를 붙인다(펩시17-2 의 걱정 = 「잘린 카드가 표시 없이」를 둘 다 막음).
+    void heroImage; void preloadImage; // 첫 그림은 언제나 og:image 파일 하나(옛 인자는 받기만 한다)
+    const heroImgSrc = ogImg;
+    const heroPath = String(heroImgSrc).replace(BASE_URL, ''); // 같은 출처 경로(/og/….jpg) — og:image 의 절대 주소와 같은 파일
+    const heroDims = ogDims(heroImgSrc) || { w: 1200, h: 1200 };
+    const heroWebp = ogWebpSet(heroImgSrc);
+    const inlineHero = heroWebp ? inlineWebp(heroWebp.src) : null; // 바탕으로 쓸 작은 판(360px webp · 24KB 넘으면 없음)
+    const heroBg = (base, fit) => (inlineHero ? `${base} url(${inlineHero}) center/${fit} no-repeat` : base);
     const heroStyle = heroSquare
-      ? 'display:block;width:100%;max-width:420px;height:auto;aspect-ratio:1/1;object-fit:contain;border-radius:12px;margin-bottom:16px;background:#111'
-      : 'display:block;width:100%;height:auto;max-height:280px;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;background:#0a0a0a';
+      ? `display:block;width:100%;max-width:420px;height:auto;aspect-ratio:1/1;object-fit:contain;border-radius:12px;margin-bottom:16px;background:${heroBg('#111', 'contain')}`
+      : `display:block;width:100%;height:auto;max-height:280px;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:16px;background:${heroBg('#0a0a0a', 'cover')}`;
+    const heroAltText = heroAlt || (ogImage ? (ogImageAlt || title || '') : '놀쿨 안내 카드'); // 그림에 실제로 그려진 것(카드)을 적는다
+    const heroAdMark = heroAd ? `<span class="nc-hero-ad" style="display:inline-block;margin:0 0 8px;border:1px solid #111;border-radius:4px;padding:0 6px;font-size:12px;font-weight:700;color:#111;background:#fff">광고</span>` : '';
+    // [놀쿨34-1 · G3 · 속도] 같은 카드의 가벼운 판(webp · 가로 1200 · 빌드가 og jpg 에서 만든 것)을 <picture> 로 같이 내준다.
+    //   <img src> 는 og:image 파일 그대로(수집기가 읽는 주소) · webp 를 아는 브라우저는 가벼운 판을 받는다(같은 그림 · 같은 치수).
+    //   실측(10-07 · 느린 4G · CPU 4배): jpg 만 내주면 첫 화면이 0.4~0.7초 늦어졌다(85~127KB 가 모양 파일과 내려받기를 나눠 씀) → 가벼운 판을 같이 내주면 고치기 전 수준.
+    const heroLight = heroWebp ? String(heroWebp.src).replace(BASE_URL, '') : '';
+    const heroImgEl = `<img src="${escHtml(heroPath)}" alt="${escHtml(heroAltText)}" width="${heroDims.w}" height="${heroDims.h}" fetchpriority="high" decoding="async" style="${heroStyle}">`;
     const heroImgTag = heroImgSrc
-      ? (inlineHero
-        ? `<img src="${inlineHero}" alt="${escHtml((heroImage ? '' : ogImageAlt) || title || '')}" width="${heroSquare ? 600 : 1200}" height="${heroSquare ? 600 : 675}" decoding="sync" style="${heroStyle}">`
-        : `<img src="${escHtml(heroWebp ? heroWebp.src : heroImgSrc)}"${heroWebp ? ` srcset="${escHtml(heroWebp.srcset)}" sizes="${heroWebp.sizes}"` : ''} alt="${escHtml((heroImage ? '' : ogImageAlt) || title || '')}" width="${heroSquare ? 600 : 1200}" height="${heroSquare ? 600 : 675}" fetchpriority="high" decoding="async" style="${heroStyle}">`)
+      ? `${heroAdMark}${heroLight ? `<picture><source type="image/webp" srcset="${escHtml(heroLight)}">${heroImgEl}</picture>` : heroImgEl}`
       : '';
     const _pt = pageTokens(canonical || title || '');
     html = html.replace('</head>', `    ${_pt.style}\n    ${NC_SKEL_STYLE}\n    <script>window.__NC_META=${JSON.stringify({ path: canonicalWithSlash, title: title || '', h1: h1 || '', desc: desc || '' }).replace(/</g, '\\u003c')}</script>\n  </head>`);
-    const _h1 = `<h1 style="margin:0 0 10px;font-size:24px;font-weight:800;color:#111;line-height:1.25;letter-spacing:-0.02em">${heroTitle}</h1>`;
+    // [놀쿨34-1 · G2] h1 글자 = 제목 그대로. 모양만 React 화면(NcH1)과 같게 — 「머리 — 꼬리」 꼴은 머리를 크게, 꼬리를 한 줄 아래 작게(한 h1 안 · 빠지는 글자 0).
+    const _sep = heroTitle.indexOf(' — ');
+    const _h1Inner = _sep > 0
+      ? `${heroTitle.slice(0, _sep)} <span style="display:block;font-size:.58em;font-weight:700;line-height:1.35;margin-top:.3em;letter-spacing:-.01em">— ${heroTitle.slice(_sep + 3)}</span>`
+      : ((h1 || title || '').length > 20 ? `<span style="font-size:.74em;line-height:1.3">${heroTitle}</span>` : heroTitle);
+    const _h1 = `<h1 style="margin:0 0 10px;font-size:24px;font-weight:800;color:#111;line-height:1.25;letter-spacing:-0.02em">${_h1Inner}</h1>`;
     // [놀쿨11-4] 홈 = 네이버형: 상단 검색창(SSR · 자동완성 = datalist 로컬 색인 · 외부 호출 0) → /search/?q= · 업종 탭 6 · 지역 바로가기(가게 수 순 12)
     let homeTop = '';
     if (canonicalWithSlash === '/') { // canonicalWithSlash 는 경로(홈 = '/')
@@ -381,7 +417,7 @@ function renderPage({ title, h1, description, canonical, ogImage, ogImageAlt, ss
   return html;
 }
 
-const NC_SKEL_STYLE = `<style data-nc-skel>.nc-ssr{max-width:1200px;margin:0 auto;padding:0 16px 32px}.nc-skel{max-width:760px;font-size:16px;line-height:1.75;color:#222}.nc-skel h2{font-size:20px;margin:28px 0 10px;font-weight:700}.nc-skel h3{font-size:17px;margin:20px 0 8px}.nc-skel p{margin:0 0 12px}.nc-skel ul,.nc-skel ol{padding-left:20px;margin:0 0 12px}.nc-skel li{margin:4px 0}.nc-facts-table{border-collapse:collapse;width:100%;margin:0 0 12px}.nc-facts-table th{text-align:left;width:34%;padding:8px 10px;border-bottom:1px solid #e5e5e5;font-weight:600;color:#333}.nc-facts-table td{padding:8px 10px;border-bottom:1px solid #e5e5e5}.nc-faq dt{font-weight:700;margin-top:12px}.nc-faq dd{margin:4px 0 0}.nc-summary{border-left:4px solid #999;padding-left:12px}.nc-next ul{list-style:none;padding:0}.nc-next-list li{padding:8px 0;border-bottom:1px solid #eee}.nc-next-list a{font-weight:600;color:#111}.nc-actions{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}.nc-actions button,.nc-actions a{padding:10px 14px;border:1px solid #111;border-radius:10px;background:#fff;color:#111;font-size:15px;text-decoration:none;cursor:pointer}.nc-actions button[aria-pressed=true]{background:#111;color:#fff}.nc-meta{color:#666;font-size:14px}.nc-rank{display:inline-block;margin-left:6px;padding:0 6px;border:1px solid #ccc;border-radius:10px;font-size:12px;color:#444}.nc-rank-note{font-size:13px;color:#666}.nc-ssr .ssr-breadcrumb ol{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px;font-size:14px}</style>`;
+const NC_SKEL_STYLE = `<style data-nc-skel>.nc-ssr{max-width:1200px;margin:0 auto;padding:0 16px 32px}.nc-skel{max-width:760px;font-size:16px;line-height:1.75;color:#222}.nc-skel h2{font-size:20px;margin:28px 0 10px;font-weight:700}.nc-skel h3{font-size:17px;margin:20px 0 8px}.nc-skel p{margin:0 0 12px}.nc-skel ul,.nc-skel ol{padding-left:20px;margin:0 0 12px}.nc-skel li{margin:4px 0}.nc-facts-table{border-collapse:collapse;width:100%;margin:0 0 12px}.nc-facts-table th{text-align:left;width:34%;padding:8px 10px;border-bottom:1px solid #e5e5e5;font-weight:600;color:#333}.nc-facts-table td{padding:8px 10px;border-bottom:1px solid #e5e5e5}.nc-faq dt{font-weight:700;margin-top:12px}.nc-faq dd{margin:4px 0 0}.nc-summary{border-left:4px solid #999;padding-left:12px}.nc-next ul{list-style:none;padding:0}.nc-next-list li{padding:8px 0;border-bottom:1px solid #eee}.nc-next-list a{font-weight:600;color:#111}.nc-actions{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}.nc-actions button,.nc-actions a{padding:10px 14px;border:1px solid #111;border-radius:10px;background:#fff;color:#111;font-size:15px;text-decoration:none;cursor:pointer}.nc-actions button[aria-pressed=true]{background:#111;color:#fff}.nc-meta{color:#666;font-size:14px}.nc-checked{color:#555;font-size:14px;margin:0 0 12px}.nc-rank{display:inline-block;margin-left:6px;padding:0 6px;border:1px solid #ccc;border-radius:10px;font-size:12px;color:#444}.nc-rank-note{font-size:13px;color:#666}.nc-ssr .ssr-breadcrumb ol{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px;font-size:14px}</style>`;
 const noIndexPathsSet = new Set(['/login', '/profile', '/dashboard', '/analytics', '/billing', '/onboarding', '/launch', '/admin', '/admin/venues', '/admin/magazine', '/admin/media', '/admin/seo', '/admin/blocks', '/admin/moderation', '/admin/stats', '/admin/visitors', '/admin/audit', '/my/customize', '/search']);
 
 // ── 파트2(2026-08-09) 색인 미달 28곳 조치 — 근거: reports/audit/2026-08-korea1.md 색인 전수(08-03) ──
@@ -405,7 +441,7 @@ function venueHref(v) {
 const SKIP_TO_CONTENT = `<a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:0;z-index:9999;background:#000;color:#fff;padding:8px 12px;text-decoration:none;font-weight:600" onfocus="this.style.left='8px'" onblur="this.style.left='-9999px'">본문 바로가기</a>`;
 const SITE_NAV_ANCHORS = `${SKIP_TO_CONTENT}<nav aria-label="카테고리"><ul><li><a href="/clubs/">클럽</a></li><li><a href="/nights/">나이트</a></li><li><a href="/lounges/">라운지</a></li><li><a href="/rooms/">룸</a></li><li><a href="/yojeong/">요정</a></li><li><a href="/hoppa/">호빠</a></li><li><a href="/community/">커뮤니티</a></li><li><a href="/magazine/">매거진</a></li><li><a href="/search/">검색</a></li></ul></nav>`;
 // 시즌22 — 사이트 footer SSR 내부링크 (정적 유틸/lounge/lead 페이지 reachable)
-const SITE_FOOTER_ANCHORS = `<footer aria-label="사이트맵"><h2>전체 메뉴</h2><nav aria-label="사이트맵 링크"><ul><li><a href="/weekend/">이번 주말</a></li><li><a href="/occasion/">상황별</a></li><li><a href="/budget/">예산별</a></li><li><a href="/guide/">입문 가이드</a></li><li><a href="/safety/">안전 가이드</a></li><li><a href="/help/">자주 묻는 질문</a></li><li><a href="/venue-info/">양주·부스·룸 안내</a></li><li><a href="/events/">이벤트 일정</a></li><li><a href="/gallery/">매장 사진</a></li><li><a href="/ranking/">인기 랭킹</a></li><li><a href="/quiz/">스타일 퀴즈</a></li><li><a href="/roulette/">룰렛 추천</a></li><li><a href="/vs/">VS 매치업</a></li><li><a href="/compare/">업소 비교</a></li><li><a href="/hidden/">숨은 명소</a></li><li><a href="/welcome/">놀쿨 소개</a></li><li><a href="/cafe/">놀쿨 카페 안내</a></li><li><a href="/login/">로그인</a></li><li><a href="/profile/">내 프로필</a></li><li><a href="/referral/">친구 초대</a></li><li><a href="/onboarding/">업소 입점</a></li><li><a href="/pricing/">요금제</a></li><li><a href="/dashboard/">매장 대시보드</a></li><li><a href="/analytics/">분석 리포트</a></li><li><a href="/billing/">결제 관리</a></li><li><a href="/launch/">오픈 체크</a></li><li><a href="/demo/">업주 데모</a></li><li><a href="/case-studies/">운영 사례</a></li><li><a href="/testimonials/">업주 인터뷰</a></li><li><a href="/status/">서비스 상태</a></li><li><a href="/privacy-promise/">프라이버시 정책</a></li><li><a href="/disclaimer/">고지 사항</a></li><li><a href="/legal/">법적 준수 안내</a></li><li><a href="/terms/">이용 약관</a></li><li><a href="/privacy/">개인정보 처리</a></li><li><a href="/venue-terms/">업주 약관</a></li><li><a href="/lounge/">업종별 라운지</a></li><li><a href="/lounge/club/">클럽 게시판</a></li><li><a href="/lounge/night/">나이트 게시판</a></li><li><a href="/lounge/room/">룸 게시판</a></li><li><a href="/lounge/lounge/">라운지바 게시판</a></li><li><a href="/lounge/yojung/">요정 게시판</a></li><li><a href="/lounge/free/">자유 게시판</a></li><li><a href="/lounge/qna/">Q&A 게시판</a></li><li><a href="/lead/nightlife-guide/">나이트라이프 가이드</a></li><li><a href="/lead/quiz/">스타일 진단</a></li><li><a href="/lead/weekly-hot/">주간 핫스팟</a></li></ul></nav><nav aria-label="최근 업데이트"><h2>다시 오면 새로 보이는 것</h2><ul><li><a href="/new/clubs/">이번에 새로 들어온 곳</a></li><li><a href="/magazine/">이번 주 매거진 글</a></li></ul><p>콘텐츠 최근 갱신 ${BUILD_DATE_KST} 기준</p></nav></footer>`;
+const SITE_FOOTER_ANCHORS = `<footer aria-label="사이트맵"><h2>전체 메뉴</h2><nav aria-label="사이트맵 링크"><ul><li><a href="/weekend/">이번 주말</a></li><li><a href="/occasion/">상황별</a></li><li><a href="/budget/">예산별</a></li><li><a href="/guide/">입문 가이드</a></li><li><a href="/safety/">안전 가이드</a></li><li><a href="/help/">자주 묻는 질문</a></li><li><a href="/venue-info/">양주·부스·룸 안내</a></li><li><a href="/events/">이벤트 일정</a></li><li><a href="/gallery/">매장 사진</a></li><li><a href="/ranking/">인기 랭킹</a></li><li><a href="/quiz/">스타일 퀴즈</a></li><li><a href="/roulette/">룰렛 추천</a></li><li><a href="/vs/">VS 매치업</a></li><li><a href="/compare/">업소 비교</a></li><li><a href="/hidden/">숨은 명소</a></li><li><a href="/welcome/">놀쿨 소개</a></li><li><a href="/cafe/">놀쿨 카페 안내</a></li><li><a href="/login/">로그인</a></li><li><a href="/profile/">내 프로필</a></li><li><a href="/referral/">친구 초대</a></li><li><a href="/onboarding/">업소 입점</a></li><li><a href="/pricing/">요금제</a></li><li><a href="/dashboard/">매장 대시보드</a></li><li><a href="/analytics/">분석 리포트</a></li><li><a href="/billing/">결제 관리</a></li><li><a href="/launch/">오픈 체크</a></li><li><a href="/demo/">업주 데모</a></li><li><a href="/case-studies/">운영 사례</a></li><li><a href="/testimonials/">업주 인터뷰</a></li><li><a href="/status/">서비스 상태</a></li><li><a href="/privacy-promise/">프라이버시 정책</a></li><li><a href="/disclaimer/">고지 사항</a></li><li><a href="/legal/">법적 준수 안내</a></li><li><a href="/terms/">이용 약관</a></li><li><a href="/privacy/">개인정보 처리</a></li><li><a href="/venue-terms/">업주 약관</a></li><li><a href="/lounge/">업종별 라운지</a></li><li><a href="/lounge/club/">클럽 게시판</a></li><li><a href="/lounge/night/">나이트 게시판</a></li><li><a href="/lounge/room/">룸 게시판</a></li><li><a href="/lounge/lounge/">라운지바 게시판</a></li><li><a href="/lounge/yojung/">요정 게시판</a></li><li><a href="/lounge/free/">자유 게시판</a></li><li><a href="/lounge/qna/">Q&A 게시판</a></li><li><a href="/lead/nightlife-guide/">나이트라이프 가이드</a></li><li><a href="/lead/quiz/">스타일 진단</a></li><li><a href="/lead/weekly-hot/">주간 핫스팟</a></li></ul></nav><nav aria-label="최근 업데이트"><h2>다시 오면 새로 보이는 것</h2><ul><li><a href="/new/clubs/">이번에 새로 들어온 곳</a></li><li><a href="/magazine/">이번 주 매거진 글</a></li></ul></nav></footer>`; // [놀쿨34-1 · G6] 「콘텐츠 최근 갱신 <빌드한 날> 기준」 줄은 뺐다 — 내용이 안 바뀐 쪽에도 빌드할 때마다 오늘 날짜가 보였다(실측 467쪽 · lastmod 와 465쪽이 어긋남)
 
 // 시즌89 — 가시 브레드크럼: jsonLdList의 BreadcrumbList(이미 페이지별 정확한 이름·URL)에서 생성.
 // 전 페이지 유형 공통(venue/매거진/집계/정적). 상위 단계는 같은 탭 내부링크(퍼널 상향 동선),
@@ -427,15 +463,15 @@ function visibleBreadcrumb(meta) {
 function writePage(routePath, meta) {
   // ★ 플랫폼 트랙 P — 페이지 고유 문장(src/data/uniq-prose.json) 먼저 적용(해시·변형보다 앞: 글이 바뀌면 lastmod 도 바뀌어야 한다)
   if (meta && meta.ssrBody) meta = { ...meta, ssrBody: applyProse(meta.ssrBody, routePath) };
-  // [놀쿨11-2] ① 제목 레지스트리(창고가 만든 제목은 이미 등록됨) ② H1 은 제목과 다른 문구 ③ 완독 뼈대
+  // [놀쿨11-2] ① 제목 레지스트리(창고가 만든 제목은 이미 등록됨) ② H1(34-1 부터 = 제목 글자 그대로) ③ 완독 뼈대
   {
     const sk = meta.skel || {};
     if (!sk.generated) registerFixed(routePath, meta.title || '');
     const type = sk.type || skelTypeOf(routePath);
-    const h1Type = sk.h1Type || ({ venue: 'venue', magazine: 'magazine', community: 'community', guide: 'guide', list: 'list', hub: 'hub' })[type] || 'static';
-    const head = String(meta.title || '').split(/\s[—|]\s/)[0].trim();
-    const h1Facts = { head, n: sk.facts?.n, name: sk.facts?.name, region: sk.facts?.region, cat: sk.facts?.cat, station: sk.facts?.station, place: sk.facts?.place, tag: sk.facts?.tag, ...(sk.h1Facts || {}) };
-    const h1 = meta.h1 || makeH1(h1Type === 'hub' ? (sk.h1Type || 'region') : h1Type, routePath, h1Facts, meta.title || '');
+    // [놀쿨34-1 · C5·G2] H1 = 제목 글자 그대로. 11-2 는 H1 을 일부러 제목과 다른 틀 문구(「<가게> — <지역> <업종> 안내」 6가지)로 만들었다(충돌 C5).
+    //   구글 title-link 문서: 제목 링크의 출처는 <title> · 주 시각 제목 · <h1> · og:title … 이고 「제목 글자를 쪽의 첫 보이는 <h1> 에 두라」 → 셋을 같은 글자로 맞춘다.
+    //   쪽마다 다른 것(11-2 고유성)은 제목 자체(창고·명시 제목 · 동일 0 · 유사 0.8↑ 0)와 소제목·본문이 맡는다.
+    const h1 = meta.title || '';
     const faqPairs = sk.faqPairs || (meta.jsonLdList || []).filter((j) => j && j['@type'] === 'FAQPage').flatMap((j) => (j.mainEntity || []).map((q) => ({ q: q.name, a: q.acceptedAnswer?.text || '' })));
     meta = { ...meta, h1, ssrBody: meta.ssrBody ? applySkeleton(type, meta.ssrBody, { ...sk, route: routePath, answer: sk.answer || meta.description || '', faqPairs, catLabel: catLabelMap, venueHref, popRank: POP_RANK, next: buildNext(type, sk, routePath) }) : meta.ssrBody };
     // FAQPage JSON-LD = 화면 문답(dl) — 생성기 회전 질문과 LD 질문이 다르면 LD 를 화면 쪽으로 맞춘다(구글 「보이지 않는 콘텐츠 마크업 금지」)
@@ -467,8 +503,17 @@ function writePage(routePath, meta) {
   //   footer)·빌드날짜/ISO타임스탬프는 입력에서 제거 → 푸터 한 줄/오늘 빌드가 lastmod를 흔들지 않게.
   {
     const body = (meta.ssrBody || '').replace(CHROME_STRIP_RE, '');
-    const hi = `${meta.title || ''}\u0000${meta.description || ''}\u0000${body}`.replace(VOLATILE_DATE_RE, 'DATE');
+    // [놀쿨34-1] 큰 제목(h1)도 의미 콘텐츠다 → 해시 입력에 넣는다. 34-1 에서 467쪽의 h1 이 틀 문구에서 제목 글자로 바뀌었으므로
+    //   이 한 번은 모든 쪽의 해시가 달라져 lastmod 가 「바뀐 날」로 간다(실제로 모든 쪽이 바뀌었다). 그 뒤로는 h1 = 제목이라 값이 같다.
+    const hi = `${meta.title || ''}\u0000${meta.description || ''}\u0000${meta.h1 || ''}\u0000${body}`.replace(VOLATILE_DATE_RE, 'DATE');
     CONTENT_HASH_BY_ROUTE[routePath] = crypto.createHash('sha1').update(hi).digest('hex');
+  }
+  // [놀쿨34-1 · G6] 이 쪽이 실제로 바뀐 날 — lastmodFor()(사이트맵)와 같은 잣대. 머리 날짜 메타 · 매거진 dateModified · article:modified_time 이 쓴다.
+  const pageLastmod = (() => { const prev = PREV_LASTMOD[routePath]; return (prev && prev.hash === CONTENT_HASH_BY_ROUTE[routePath]) ? prev.lastmod : TODAY_UTC; })();
+  if (meta.datePublished || (Array.isArray(meta.jsonLdList) && meta.jsonLdList.some((j) => j && j['@type'] === 'Article'))) {
+    // 수정일 = 바뀐 날(작성일보다 앞서지 않게). 예전에는 빌드한 날을 매번 찍었다(매거진 59쪽 · lastmod 와 58쪽이 어긋남)
+    const mod = (pub) => (pub && String(pub) > pageLastmod ? String(pub) : pageLastmod);
+    meta = { ...meta, ...(meta.datePublished ? { dateModified: mod(meta.datePublished) } : {}), jsonLdList: (meta.jsonLdList || []).map((j) => (j && j['@type'] === 'Article' ? { ...j, dateModified: mod(j.datePublished) } : j)) };
   }
   // 파일시스템은 디코딩된 경로 (Cloudflare가 URL 디코딩 후 매칭)
   // canonical/sitemap은 routePath 그대로 (인코딩 유지)
@@ -519,7 +564,7 @@ function writePage(routePath, meta) {
       ssrBody = ssrBody.replace('<main id="main-content">', `<main id="main-content">${crumb}`);
     }
   }
-  const html = renderPage({ ...meta, ssrBody, canonical: CANONICAL_MERGE_TO[routePath] || routePath, noindex: noIndexPathsSet.has(routePath) });
+  const html = renderPage({ ...meta, ssrBody, canonical: CANONICAL_MERGE_TO[routePath] || routePath, noindex: noIndexPathsSet.has(routePath), lastmod: pageLastmod });
   fs.writeFileSync(path.join(dir, 'index.html'), html);
 }
 
@@ -707,7 +752,13 @@ function venueSkel(v) {
   const catKo = catLabelMap[v.cat] || v.cat;
   const station = (v.nearbyStation || '').match(/([^\s]+역)/)?.[1] || v.nearbyStation || '';
   const summary = `${v.nameKo}${hasJongseong(v.nameKo) ? '은' : '는'} ${v.regionKo} ${catKo}${station ? `이고 ${station} 근처에 있다` : '이다'}. ${(v.shortDesc || '').trim()}`.trim();
-  return { type: 'venue', h1Type: 'venue', venue: v, facts: { name: v.nameKo, region: v.regionKo, cat: catKo, station, hours: v.openHours, ageGroup: v.ageGroup, dressCode: v.dressCode, bestTime: v.bestTime, parking: v.parking, features: v.features, staffNickname: v.staffNickname, staffPhone: v.staffPhone, factsHeading: `${v.nameKo} 기본 정보` }, summary };
+  // [놀쿨34-1 · G6] 「정보 확인: 날짜」 = 출처 장부(places-provenance.json)의 fetchedAt — 그날 확인한 항목 가운데 이 쪽에 실제로 보이는 것(주소·영업시간·가까운 역)만 옆에 적는다.
+  //   날짜 꼴이 아니거나 빌드한 날보다 뒤면 쓰지 않는다(미래 날짜 0). 장부에 없는 가게는 줄 자체가 없다(지어내지 않음).
+  const prov = PLACES_PROV[v.slug];
+  const checkedAt = prov && /^\d{4}-\d{2}-\d{2}$/.test(String(prov.fetchedAt || '')) && String(prov.fetchedAt) <= BUILD_DATE_KST ? String(prov.fetchedAt) : '';
+  const CHECKED_KO = { address: ['주소', v.address], openHours: ['영업시간', v.openHours], nearbyStation: ['가까운 역', v.nearbyStation] };
+  const checkedFields = checkedAt ? (prov.fields || []).filter((k) => CHECKED_KO[k] && CHECKED_KO[k][1]).map((k) => CHECKED_KO[k][0]) : [];
+  return { type: 'venue', h1Type: 'venue', venue: v, facts: { name: v.nameKo, region: v.regionKo, cat: catKo, station, hours: v.openHours, ageGroup: v.ageGroup, dressCode: v.dressCode, bestTime: v.bestTime, parking: v.parking, features: v.features, staffNickname: v.staffNickname, staffPhone: v.staffPhone, factsHeading: `${v.nameKo} 기본 정보`, checkedAt, checkedFields }, summary };
 }
 
 /**
@@ -751,8 +802,12 @@ const ORG_JSONLD = {
   alternateName: 'NOLCOOL',
   url: BASE_URL,
   logo: `${BASE_URL}/og/nolcool-og.jpg`,
-  description: '대한민국 최대 나이트라이프 정보 플랫폼. 전국 클럽·나이트·라운지·룸·요정·호빠 정보 제공.',
-  contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', availableLanguage: 'Korean' }
+  // [놀쿨34-1 · G7] 「대한민국 최대」는 근거를 댈 수 없는 최상급이라 뺐다(지어낸 사실 0). 하는 일만 적는다.
+  description: '전국 클럽·나이트·라운지·룸·요정·호빠 가게 정보를 한곳에서 비교하는 안내 사이트.',
+  contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', availableLanguage: 'Korean' },
+  // [놀쿨34-1 · G7] sameAs = 놀쿨이 운영하는 곳의 실제 주소만 — 놀쿨 네이버 카페 1관·2관(/cafe/ 쪽에 보이는 그 두 주소 · src/pages/CafePage.tsx).
+  //   영상 채널 주소는 저장소·자료 어디에도 없어 넣지 않았다(없으면 비움).
+  sameAs: ['https://cafe.naver.com/qotjsdnr', 'https://cafe.naver.com/beasunwook'],
 };
 
 // getVenueReviews() 가공 후기 풀(6 업종 × 6~8개 템플릿) 영구 제거.
@@ -1788,7 +1843,7 @@ for (const pg of staticPages) {
   }
   const _catKeyOfPath = Object.entries(catMap).find(([, ci]) => '/' + ci.path === pg.path)?.[0];
   const _catMembers = _catKeyOfPath ? recOrder(LISTED.filter(vv => vv.cat === _catKeyOfPath)) : [];
-  writePage(pg.path, { title: pg.title, description: pg.desc, ssrBody, jsonLdList: jsonLdList.length > 0 ? jsonLdList : undefined, ogImage: pageOgImage, skel: _catKeyOfPath ? hubSkel('list', _catMembers, { cat: catMap[_catKeyOfPath].labelKo, factsHeading: `${catMap[_catKeyOfPath].labelKo} 전체 ${_catMembers.length}곳` }, undefined, `${catMap[_catKeyOfPath].labelKo}는 전국 ${_catMembers.length}곳이 등록돼 있다.`, 'list') : (pg.path === '/guide/ilsan-yojeong' ? { type: 'guide', h1Type: 'guide', facts: { region: '일산', cat: '요정', place: '마두' } } : undefined) }); // [놀쿨11-3] 안내 쪽도 장부 사실(지역·업종·역)로 허브 링크를 받는다 → L3 내부 링크 ≥6
+  writePage(pg.path, { title: pg.title, description: pg.desc, ssrBody, jsonLdList: jsonLdList.length > 0 ? jsonLdList : undefined, ogImage: pageOgImage, heroAlt: pageOgImage && _catKeyOfPath ? `${catMap[_catKeyOfPath].labelKo} 안내 카드` : undefined /* [놀쿨34-1 · G3] 업종 카드(「놀쿨 / <업종> / 전체보기」)에 그려진 그대로 */, skel: _catKeyOfPath ? hubSkel('list', _catMembers, { cat: catMap[_catKeyOfPath].labelKo, factsHeading: `${catMap[_catKeyOfPath].labelKo} 전체 ${_catMembers.length}곳` }, undefined, `${catMap[_catKeyOfPath].labelKo}는 전국 ${_catMembers.length}곳이 등록돼 있다.`, 'list') : (pg.path === '/guide/ilsan-yojeong' ? { type: 'guide', h1Type: 'guide', facts: { region: '일산', cat: '요정', place: '마두' } } : undefined) }); // [놀쿨11-3] 안내 쪽도 장부 사실(지역·업종·역)로 허브 링크를 받는다 → L3 내부 링크 ≥6
   pageCount++;
 }
 console.log(`✅ 정적 페이지 ${staticPages.length}개 생성`);
@@ -2160,7 +2215,7 @@ for (const v of venues) {
     address: { '@type': 'PostalAddress', streetAddress: v.address || `${v.regionKo} ${v.nameKo}`, addressLocality: localityOf(v.regionKo), addressRegion: provinceOf(v.regionKo) || v.regionKo, addressCountry: 'KR' },
     url: `${BASE_URL}${routePath}/`,
     image: getVenueImageList(v.slug),
-    telephone: (v.staffPhone && !PHONE_HIDDEN_SLUGS.has(v.slug)) ? v.staffPhone : undefined,
+    telephone: (v.staffPhone && !PHONE_HIDDEN_SLUGS.has(v.slug)) ? telIntl(v.staffPhone) : undefined, // [놀쿨34-1 · G7] +82-10-… (화면 글자는 010-… 그대로)
     // [놀쿨11-3] 영업시간은 장부 openHours 를 요일별로 읽은 값만(구글 구조화 데이터 「보이는 사실만」). 못 읽으면 속성 없음 — 19:00~05:00 일괄 기재(지어낸 값) 제거
     openingHoursSpecification: parseOpeningHours(v.openHours),
   };
@@ -2233,6 +2288,8 @@ for (const v of venues) {
     ogImageAlt: `${v.nameKo} 표준 카드 — ${v.regionKo} ${catLabelMap[v.cat]}`,
     heroImage: getVenueOgImage(v.slug),
     heroSquare: true,
+    heroAlt: `${v.nameKo} 안내 카드`, // [놀쿨34-1 · G3] 그림에 실제로 그려진 것(가게 이름 카드)을 적는다 — React VenueHero 의 alt 와 같은 글자
+    heroAd: isAdVenue(v) || isPageOnlyAd(v), // 광고주 카드(닉네임·번호가 그려진 판)가 첫 그림인 쪽 = 「광고」 표시(React VenueHero 와 같게)
     ssrBody: generateVenueSsrBody(v, venues),
     skel: venueSkel(v),
     jsonLdList: [venueJsonLd, faqJsonLd, breadcrumbJsonLd, venueWebPageJsonLd],
@@ -2270,6 +2327,9 @@ function parseMagazineArticles() {
   return result;
 }
 const magazineArticles = parseMagazineArticles();
+// [놀쿨34-1 · G3] 매거진 광고 카드(4줄)의 그림 설명 — 놀쿨 명단(src/data/advertisers.nolcool.json)에서 그 쪽의 가게이름을 읽는다(그림에 그려진 가게). 명단에 없으면 빈 값(→ 제목).
+const NC_PAGE_ADS = (() => { try { return JSON.parse(fs.readFileSync('src/data/advertisers.nolcool.json', 'utf8')).advertisers || []; } catch { return []; } })();
+const magAdAlt = (id) => { const ad = NC_PAGE_ADS.find((x) => (x.pages || []).includes(`/magazine/${id}/`)); return ad ? `${ad.shop} 안내 카드` : ''; };
 let magazineCount = 0;
 for (const a of magazineArticles) {
   const routePath = `/magazine/${a.id}`;
@@ -2307,12 +2367,12 @@ ${_relNav}
     headline: a.title,
     description: a.excerpt,
     datePublished: a.date,
-    dateModified: BUILD_DATE_KST,
+    dateModified: a.date, // [놀쿨34-1 · G6] writePage 가 「이 글이 실제로 바뀐 날」(lastmod 장부)로 바꾼다 — 빌드한 날을 찍지 않는다
     author: { '@type': 'Organization', name: '놀쿨', url: BASE_URL },
     publisher: {
       '@type': 'Organization',
       name: '놀쿨',
-      logo: { '@type': 'ImageObject', url: `${BASE_URL}/logo-512.png` },
+      logo: { '@type': 'ImageObject', url: `${BASE_URL}/og/nolcool-og.jpg` }, // [놀쿨34-1 · G7] 예전 값 /logo-512.png 는 없는 파일(라이브 404 실측) → 홈 Organization 의 logo 와 같은 실제 파일로
     },
     mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
     articleSection: a.tag,
@@ -2330,9 +2390,10 @@ ${_relNav}
     skel: { type: 'magazine', h1Type: 'magazine', article: a, facts: { tag: a.tag, date: a.date, factsHeading: '글 정보' }, answer: a.answer || '', summary: a.excerpt || '' },
     jsonLdList: [articleJsonLd, breadcrumbJsonLd],
     datePublished: a.date,
-    dateModified: BUILD_DATE_KST,
-    // [놀쿨26-1] 놀쿨 전용 명단 광고주(따봉)의 매거진 쪽 — og:image·twitter:image 만 4줄 카드로, 첫 그림은 공용 그림 그대로(허브 광고 카드와 같은 방식 · 펩시17-2)
-    ...(MAGAZINE_OG[a.id] && fs.existsSync(path.join('public', 'og', `${MAGAZINE_OG[a.id]}.jpg`)) ? { ogImage: `${BASE_URL}/og/${MAGAZINE_OG[a.id]}.jpg`, heroImage: OG_IMAGE } : {}),
+    dateModified: a.date, // [놀쿨34-1 · G6] writePage 가 「실제로 바뀐 날」로 바꾼다
+    // [놀쿨26-1] 놀쿨 전용 명단 광고주(따봉)의 매거진 쪽 — og:image·twitter:image 는 4줄 카드.
+    // [놀쿨34-1 · G3] 첫 그림도 og:image 와 같은 파일(그 4줄 카드)로 — 자르지 않고(정사각) 바로 위에 「광고」 표시(예전에는 첫 그림만 공용 그림이었다 · 펩시17-2)
+    ...(MAGAZINE_OG[a.id] && fs.existsSync(path.join('public', 'og', `${MAGAZINE_OG[a.id]}.jpg`)) ? { ogImage: `${BASE_URL}/og/${MAGAZINE_OG[a.id]}.jpg`, heroSquare: true, heroAd: true, heroAlt: magAdAlt(a.id) } : {}),
     keywords: `${a.title}, ${a.tag}, 나이트라이프 매거진, 놀쿨 매거진, 나이트라이프 ${a.tag}`,
   });
   magazineCount++;
@@ -2669,7 +2730,7 @@ for (const [regionKo, _regionAll] of Object.entries(allRegions)) {
     cSsr += faqPairsDl('자주 묻는 질문', crossFaqPairs);
     cSsr += aggHubMesh(crossVenues, 'region', regionKo);
     const hubOg = HUB_OG_CARDS.find((c) => c.route === cp); // [놀쿨16-1] 4 키워드 허브만 고유 카드 · 나머지는 그대로
-    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, preloadCard: adCard ? (HUB_OG_CARDS.find((c) => c.route === cp) || {}).slug : undefined, ogImage: hubOg ? `${BASE_URL}/og/${hubOg.slug}.jpg` : undefined, ogImageAlt: hubOg ? (hubOg.ad ? `${hubOg.ad.shop} ${hubOg.ad.nick} ${hubOg.ad.phone}` : `${hubOg.label} — 놀쿨 ${crossVenues.length}곳 비교 카드`) : undefined, heroImage: hubOg && hubOg.ad ? `${BASE_URL}/og/nolcool-og.jpg` : undefined, skel: hubSkel('hub', crossVenues, { region: regionKo, cat: catInfo.labelKo, factsHeading: `${crossVenues.length}곳 한 줄씩` }, crossFaqPairs, crossVenues.length >= 4 ? `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이고, ${crossNames} 등이 있다.` : `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이다.`, 'region_cat'), keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: [...collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]), faqPairsJsonLd(crossFaqPairs)] });
+    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, preloadCard: adCard ? (HUB_OG_CARDS.find((c) => c.route === cp) || {}).slug : undefined, ogImage: hubOg ? `${BASE_URL}/og/${hubOg.slug}.jpg` : undefined, ogImageAlt: hubOg ? (hubOg.ad ? `${hubOg.ad.shop} ${hubOg.ad.nick} ${hubOg.ad.phone}` : `${hubOg.label} — 놀쿨 ${crossVenues.length}곳 비교 카드`) : undefined, /* [놀쿨34-1 · G3] 광고주 카드 허브도 첫 그림 = og:image 파일(그 카드) — 자르지 않고(정사각) 「광고」 표시 */ heroSquare: !!(hubOg && hubOg.ad), heroAd: !!(hubOg && hubOg.ad), heroAlt: hubOg && hubOg.ad ? `${hubOg.ad.shop} 안내 카드` : undefined, skel: hubSkel('hub', crossVenues, { region: regionKo, cat: catInfo.labelKo, factsHeading: `${crossVenues.length}곳 한 줄씩` }, crossFaqPairs, crossVenues.length >= 4 ? `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이고, ${crossNames} 등이 있다.` : `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이다.`, 'region_cat'), keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: [...collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]), faqPairsJsonLd(crossFaqPairs)] });
     dynamicPages.push(cp);
   }
 }
@@ -2815,7 +2876,7 @@ console.log(`✅ 동적 SEO 페이지 ${dynamicPages.length}개 생성`);
 // ★ trailing slash 통일 (Cloudflare Pages 308 리다이렉트 매칭)
 // ★ 비공개/관리 페이지 제외 (login, profile, dashboard, admin 등)
 // ══════════════════════════════════════════
-const today = new Date().toISOString().slice(0, 10);
+const today = TODAY_UTC; // [놀쿨34-1] writePage 의 pageLastmod 와 같은 값(자정을 걸친 빌드에서도 둘이 어긋나지 않게)
 // ★ lastmod 정직화 — routePath의 콘텐츠 해시가 직전 빌드와 같으면 이전 lastmod 유지, 다르면(신규 포함) today.
 //   '오늘 빌드했으니 오늘 수정' 거짓 신선도를 차단하고, 실제 바뀐 페이지만 새 날짜를 갖게 한다.
 function lastmodFor(routePath) {

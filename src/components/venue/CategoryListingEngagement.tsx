@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useMemo } from 'react';
 import { Link } from '../ui/SafeLink';
 import type { Venue } from '@/types';
@@ -24,7 +25,7 @@ export function CategoryHero({ emoji, title, hook, venueCount, gradient, accentC
       <div className="relative z-10">
         <div className="flex items-center gap-3 mb-3">
           <span className="text-4xl">{emoji}</span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">{title}</h1>
+          <NcH1 className="text-2xl sm:text-3xl font-extrabold text-white">{title}</NcH1>
         </div>
         <p className="text-lg sm:text-xl text-white/90 font-medium mb-4 max-w-2xl leading-relaxed">
           {hook}

@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useState } from 'react';
 import { Link } from '@/components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -40,9 +41,9 @@ export default function NightlifeGuidePage() {
     <div className="mx-auto max-w-4xl px-4 py-8">
       {/* Hero */}
       <section className="mb-12 text-center">
-        <h1 className="mb-4 text-3xl font-bold md:text-4xl">
+        <NcH1 className="mb-4 text-3xl font-bold md:text-4xl">
           서울/경기 나이트라이프 — 업종별로 바로 찾기
-        </h1>
+        </NcH1>
         <p className="mb-2 text-lg text-neon-muted">
           클럽·나이트·라운지·룸·요정·호빠 6개 카테고리. 원하는 업종을 골라 등록된 업소를 지역별로 확인하세요.
         </p>

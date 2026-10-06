@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useRef } from 'react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import JsonLd from '@/components/seo/JsonLd';
@@ -60,10 +61,10 @@ export default function EventsPage() {
             </div>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
+          <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-3">
             📅 놓치면 후회할<br />
             <span style={{ color: '#EC4899' }}>이번 달 파티·행사</span>
-          </h1>
+          </NcH1>
           <p className="text-base mb-6" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.6)' }}>
             DJ 게스트, 기념행사, 시즌 이벤트. 달력에 표시해두고 가라.
           </p>

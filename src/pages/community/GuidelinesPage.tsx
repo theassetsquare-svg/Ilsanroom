@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
@@ -100,7 +101,7 @@ export default function GuidelinesPage() {
       <div className="mx-auto max-w-4xl px-4 py-12">
         {/* Header */}
         <div className="mb-12 text-center">
-          <h1 className="text-4xl font-bold">활용 규칙</h1>
+          <NcH1 className="text-4xl font-bold">활용 규칙</NcH1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-neon-text-muted">
             모든 회원이 안전하고 즐겁게 소통할 수 있는 공간을 지향합니다.
             아래 규칙을 숙지하시고, 함께 건전한 문화를 만들어 가요.

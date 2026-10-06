@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from '../../components/ui/SafeLink';
@@ -95,9 +96,9 @@ export default function LoungePage() {
             {/* 헤더 */}
             <div className="mb-5 flex items-center justify-between">
               <div>
-                <h1 className="text-2xl font-black" style={{ color: '#111' }}>
+                <NcH1 className="text-2xl font-black" style={{ color: '#111' }}>
                   {loungeDef.icon} {loungeDef.name}
-                </h1>
+                </NcH1>
                 <p className="text-sm text-neon-text-muted mt-1">{total}개의 글</p>
               </div>
               <button

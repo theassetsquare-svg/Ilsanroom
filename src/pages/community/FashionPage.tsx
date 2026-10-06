@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useEffect, lazy, Suspense } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Link } from '../../components/ui/SafeLink';
@@ -102,7 +103,7 @@ export default function FashionPage() {
           <Link to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold">스타일 갤러리</h1>
+              <NcH1 className="text-3xl font-bold">스타일 갤러리</NcH1>
               <p className="mt-2 text-sm font-bold" style={{ color: '#8B5CF6' }}>
                 "입구에서 막힌 적 있으면 여기부터 읽어"
               </p>

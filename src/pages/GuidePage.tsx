@@ -1,4 +1,5 @@
 
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useRef } from 'react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { Link } from '../components/ui/SafeLink';
@@ -89,10 +90,10 @@ export default function GuidePage() {
             <PageLiveCounter pageName="이 가이드" baseCount={45} className="text-white/80 [&_strong]:text-white" />
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-3 leading-tight">
+          <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-3 leading-tight">
             처음이라 긴장된다고?<br />
             <span style={{ color: '#A78BFA' }}>이거 읽고 가면 프로다</span>
-          </h1>
+          </NcH1>
           <p className="text-base mb-6 max-w-lg mx-auto" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.6)' }}>
             드레스코드, 예산, 혼자 가도 되는지까지.<br />
             업종별 핵심만 2분이면 끝난다.

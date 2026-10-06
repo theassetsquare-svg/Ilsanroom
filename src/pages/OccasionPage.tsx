@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { Link } from '../components/ui/SafeLink';
 import { WEEKEND_N } from '@/data/venues-counts';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -66,9 +67,9 @@ export default function OccasionPage() {
           <span className="inline-block px-3 py-1 bg-neon-primary text-white text-sm font-bold rounded-full mb-3">
             🎯 상황별 큐레이션
           </span>
-          <h1 className="text-2xl md:text-4xl font-bold text-neon-text mb-3">
+          <NcH1 className="text-2xl md:text-4xl font-bold text-neon-text mb-3">
             어떤 자리야? — 6가지 상황별 핫플 정리
-          </h1>
+          </NcH1>
           <p className="text-neon-text-muted text-base md:text-lg">
             나한테 맞는 자리부터 찾자. 5초 안에 답 나온다.
           </p>

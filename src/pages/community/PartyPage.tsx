@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useEffect, lazy, Suspense } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Link } from '../../components/ui/SafeLink';
@@ -181,7 +182,7 @@ export default function PartyRecruitPage() {
             <Link to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">
               ← 커뮤니티
             </Link>
-            <h1 className="text-3xl font-bold">파티모임</h1>
+            <NcH1 className="text-3xl font-bold">파티모임</NcH1>
             <p className="mt-2 text-sm font-bold" style={{ color: '#8B5CF6' }}>
               "혼자 가기 심심할 때, 여기서 동행 구하면 끝"
             </p>

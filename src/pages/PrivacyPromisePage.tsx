@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
@@ -59,10 +60,10 @@ export default function PrivacyPromisePage() {
             <span className="text-emerald-400">🔒</span>
             <span className="text-[12px] text-white/80">프라이버시 6대 약속</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-4 leading-tight">
+          <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-4 leading-tight">
             친구한테 추천해도<br />
             <span style={{ color: '#22C55E' }}>걱정 없는 이유</span>
-          </h1>
+          </NcH1>
           <p className="text-base text-white/70" style={{ lineHeight: '1.7' }}>
             놀쿨은 나이트라이프 사용자가 가장 무서워하는 6가지를 전부 막았다.<br />
             이 약속이 깨지면 사이트 자격 없음.

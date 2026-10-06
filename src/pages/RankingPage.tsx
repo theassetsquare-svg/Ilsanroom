@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -444,9 +445,9 @@ export default function RankingPage() {
           <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 mb-6 border border-white/10">
             <PageLiveCounter pageName="랭킹 보는 중" baseCount={63} className="text-white/80 [&_strong]:text-white" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
+          <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-3">
             🏆 인기 랭킹 <span style={{ color: '#F59E0B' }}>TOP 20</span>
-          </h1>
+          </NcH1>
           <p className="text-base mb-6" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.6)' }}>
             전국 클럽·나이트·라운지·룸·요정·호빠<br />
             지금 사람들이 가장 많이 보는 곳

@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useEffect } from "react";
 import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -86,9 +87,9 @@ export default function CommunityPage() {
         {/* ══════ HERO: 살아있는 사이트 느낌 ══════ */}
         <div className="mb-10 rounded-2xl border border-neon-primary/30 p-6 sm:p-8 text-center"
           style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.08), rgba(16,185,129,0.06))' }}>
-          <h1 className="mb-3 text-3xl sm:text-4xl font-black" style={{ color: '#111' }}>
+          <NcH1 className="mb-3 text-3xl sm:text-4xl font-black" style={{ color: '#111' }}>
             밤 사람들이 모이는 커뮤니티
-          </h1>
+          </NcH1>
           <p className="text-base sm:text-lg mb-5" style={{ color: '#555' }}>
             지금 이 순간에도 사람들이 모이고, 떠들고, 약속을 잡고 있다
           </p>

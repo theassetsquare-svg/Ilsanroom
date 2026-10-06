@@ -57,7 +57,12 @@ function factsTable(type, ctx) {
   } else if (type === 'magazine') { push('분류', f.tag); push('작성일', f.date); push('작성', '놀쿨 편집'); }
   else { push('업소 수', f.n ? `${f.n}곳` : ''); push('업종', f.cats); push('지역', f.regions); push('가까운 역', f.stations); }
   if (!rows.length) return '';
-  return `<section data-skel="facts" class="nc-facts"><h2>${esc(f.factsHeading || '한눈에 보는 사실')}</h2><table class="nc-facts-table"><tbody>${rows.map(([k, v]) => `<tr><th scope="row">${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')}</tbody></table></section>`;
+  // [놀쿨34-1 · G6] 「정보 확인: YYYY-MM-DD」 — 가게 쪽에만 · 쪽에 1곳 · 출처 장부에 확인일이 있을 때만(없으면 줄 자체가 없다 · 지어내지 않음). 옆의 괄호는 그날 확인한 항목.
+  //   괄호 끝 「확인일」 — 그 날짜가 무엇의 확인일인지 적는다. 이 줄은 여러 가게 쪽에 같은 꼴로 들어가는 고지 줄이라,
+  //   5차원 측정기(naver-watch scripts/platform/measure-p.mjs 규정 틀 낱말 「확인일」)가 본문 겹침(①②③)·틀 글자(⑤)에서 빼는 꼴로 맞춘다
+  //   (10-07 실측: 「확인일」 없이 넣었더니 가게 쪽 2곳이 ①②  기준 10% 를 새로 넘었다 — 9.30→10.10% · 9.62→10.63%).
+  const checked = (type === 'venue' && f.checkedAt) ? `<p class="nc-checked">정보 확인: <time datetime="${esc(f.checkedAt)}">${esc(f.checkedAt)}</time>${f.checkedFields && f.checkedFields.length ? ` (${esc(f.checkedFields.join(' · '))} 확인일)` : ''}</p>` : '';
+  return `<section data-skel="facts" class="nc-facts"><h2>${esc(f.factsHeading || '한눈에 보는 사실')}</h2><table class="nc-facts-table"><tbody>${rows.map(([k, v]) => `<tr><th scope="row">${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')}</tbody></table>${checked}</section>`;
 }
 
 function memberList(ctx) {

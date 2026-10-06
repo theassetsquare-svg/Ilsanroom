@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const legalSections = [
@@ -61,7 +62,7 @@ export default function LegalPage() {
     <div className="min-h-screen bg-neon-bg text-neon-text">
       <div className="mx-auto max-w-4xl px-4 py-16">
         <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold">법적 준수 안내</h1>
+          <NcH1 className="mb-4 text-4xl font-bold">법적 준수 안내</NcH1>
           <p className="text-lg text-neon-text-muted">
             본 플랫폼이 따르는 국내 법령과 운영 원칙을 투명하게 공개합니다.
           </p>

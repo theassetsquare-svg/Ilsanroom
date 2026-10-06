@@ -1,5 +1,6 @@
 
 
+import NcH1 from '@/components/seo/NcH1';
 import { CheckCircle2, Clock, Bell, Mail } from "lucide-react";
 import { useState } from "react";
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -29,9 +30,9 @@ export default function StatusPage() {
       <div className="mx-auto max-w-4xl px-4 py-16">
         {/* Header */}
         <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold">
+          <NcH1 className="mb-4 text-4xl font-bold">
             서비스 <span className="text-neon-primary-light">상태</span>
-          </h1>
+          </NcH1>
           <div className="inline-flex items-center gap-2 rounded-full bg-neon-green/10 px-5 py-2">
             <span className="relative flex h-3 w-3">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />

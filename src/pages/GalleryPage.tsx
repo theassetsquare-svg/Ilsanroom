@@ -1,4 +1,5 @@
 
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from '../components/ui/SafeLink';
@@ -253,7 +254,7 @@ export default function GalleryPage() {
       <div className="relative overflow-hidden bg-gradient-to-b from-[#0A0118] via-[#1a0a2e] to-black">
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 30% 50%, #EC4899 0%, transparent 40%), radial-gradient(circle at 70% 50%, #8B5CF6 0%, transparent 40%)' }} />
         <div className="relative mx-auto max-w-lg px-4 py-10 text-center">
-          <h1 className="text-2xl font-black text-white mb-2">실시간 클립</h1>
+          <NcH1 className="text-2xl font-black text-white mb-2">실시간 클립</NcH1>
           <p className="text-sm text-white/50 mb-4" style={{ lineHeight: '1.7' }}>
             지금 이 순간, 현장 분위기를 사진으로 먼저 확인해
           </p>

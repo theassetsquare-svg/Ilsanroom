@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useState, useEffect } from 'react';
 import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -45,9 +46,9 @@ export default function LoungeIndexPage() {
 
         {/* 헤더 */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl sm:text-4xl font-black mb-3" style={{ color: '#111' }}>
+          <NcH1 className="text-3xl sm:text-4xl font-black mb-3" style={{ color: '#111' }}>
             업종별 라운지
-          </h1>
+          </NcH1>
           <p className="text-neon-text-muted">같은 취향, 같은 관심사끼리 모이는 전용 게시판</p>
           <div className="mt-4 flex items-center justify-center gap-6 text-sm">
             <span className="text-neon-text-muted">

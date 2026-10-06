@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { Link } from '@/components/ui/SafeLink';
 import { RouteMapGraphic, RoomLayoutGraphic, SeasonCourseGraphic } from '@/components/venue/IlsanYojeongGraphics';
@@ -56,7 +57,7 @@ export default function IlsanYojeongGuidePage() {
       {/* HERO — H1은 title과 완전히 동일한 문장 */}
       <header className="mx-auto max-w-3xl px-4 pt-6 pb-2 sm:px-6">
         <p className="mb-2 text-xs font-medium text-neon-text-muted">일산요정 · 정보 가이드</p>
-        <h1 className="text-2xl font-bold leading-snug text-neon-text sm:text-3xl">{TITLE}</h1>
+        <NcH1 className="text-2xl font-bold leading-snug text-neon-text sm:text-3xl">{TITLE}</NcH1>
       </header>
 
       <main className="mx-auto max-w-3xl px-4 pb-10 sm:px-6">

@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { lazy, Suspense } from 'react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
@@ -12,7 +13,7 @@ export default function SafetyPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 space-y-8">
       <div className="text-center">
-        <h1 className="text-3xl font-extrabold text-neon-text mb-2">안전 가이드</h1>
+        <NcH1 className="text-3xl font-extrabold text-neon-text mb-2">안전 가이드</NcH1>
         <p className="text-neon-text-muted">안전한 나이트라이프를 위한 필수 도구와 정보</p>
       </div>
 

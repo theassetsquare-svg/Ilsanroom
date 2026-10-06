@@ -95,7 +95,9 @@ if (stage === '스테이징') {
   for (const k of ['M1', 'M2', 'M3', 'M4']) ck(`page-gate ${k}(scripts/page-gate.mjs:${line(pg, new RegExp("push\\(`?'?" + k + ' '))})`, new RegExp("push\\((`|')" + k + ' ').test(pg));
   ck('page-gate Q4 링크 12~25 품질', /Q4 본문 내부 링크/.test(pg) && /artLinks\.size < 12 \|\| artLinks\.size > 25/.test(pg));
   // 있는 게이트가 그대로인가(11-2·11-3 항목 25) · 뼈대 업종표 · 인기 엔진 장부 · 검색창 접근성 · 홈 절
-  for (const k of ['T1', 'T2', 'T3', 'T4', 'T5', 'H1', 'H2', 'D1', 'S1', 'S2', 'S3', 'L1', 'L2', 'A1', 'W1', 'N1', 'J1', 'J2', 'J3', 'J4', 'J5', 'O1', 'S4', 'L3', 'L4']) ck(`page-gate 기존 항목 ${k} 그대로`, new RegExp("push\\((`|')" + k + ' ').test(pg));
+  for (const k of ['T1', 'T2', 'T3', 'T4', 'T5', 'H1', 'D1', 'S1', 'S2', 'S3', 'L1', 'L2', 'A1', 'W1', 'N1', 'J1', 'J2', 'J3', 'J4', 'J5', 'O1', 'S4', 'L3', 'L4']) ck(`page-gate 기존 항목 ${k} 그대로`, new RegExp("push\\((`|')" + k + ' ').test(pg));
+  // [놀쿨34-1 · C5] 옛 항목 H2(「H1 이 제목과 같으면 막음」)는 뒤집혔다 — 이제 G2(「H1 ≠ 제목이면 막음」 · 구글 title-link: 제목 글자를 첫 보이는 h1 에)
+  ck('page-gate 옛 항목 H2 는 놀쿨34-1 · C5 로 뒤집음 → G2(H1 ≠ 제목이면 막음)', !new RegExp("push\\((`|')H2 ").test(pg) && /`G2 H1 ≠ 제목/.test(pg));
   for (const cat of ['클럽', '나이트', '라운지', '룸', '요정', '호빠']) ck(`skeleton 업종표 ${cat}`, new RegExp(`'${cat}': '`).test(sk));
   const popJ = JSON.parse(rd('src/data/popularity-scores.json'));
   ck('인기 장부 weights.view = 1', popJ.weights?.view === 1); ck('인기 장부 weights.user = 2', popJ.weights?.user === 2); ck('인기 장부 weights.phoneClick = 30', popJ.weights?.phoneClick === 30); ck('인기 장부 weights.gscClick = 3', popJ.weights?.gscClick === 3);

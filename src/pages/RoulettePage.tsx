@@ -1,3 +1,4 @@
+import NcH1 from '@/components/seo/NcH1';
 import { lazy, Suspense, useRef } from 'react';
 import { WEEKEND_N } from '@/data/venues-counts';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
@@ -18,10 +19,10 @@ export default function RoulettePage() {
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 50% 40%, #F59E0B 0%, transparent 40%), radial-gradient(circle at 50% 80%, #8B5CF6 0%, transparent 50%)' }} />
         <div className="relative mx-auto max-w-3xl px-4 py-14 sm:px-6 text-center">
           <div className="text-6xl mb-4 animate-bounce" style={{ animationDuration: '2s' }}>🎰</div>
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
+          <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-3">
             고민 끝.<br />
             <span style={{ color: '#F59E0B' }}>룰렛이 골라준다</span>
-          </h1>
+          </NcH1>
           <p className="text-base mb-6" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.6)' }}>
             어디 갈지 못 정하겠다면?<br />
             탭 한 번이면 오늘 밤이 정해진다.
