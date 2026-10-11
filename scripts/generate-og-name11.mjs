@@ -46,7 +46,7 @@ for (const a of nolcoolAds) {
 for (const [route, pc] of Object.entries(PAGE_CARD)) {
   const ad = pc.kind === 'ad' ? nolcoolAds.find((a) => (a.pages || []).some((p) => pageKey(p) === pageKey(route))) : null;
   if (pc.kind === 'ad' && !ad) continue;
-  venues.push({ slug: pc.file, nameKo: ad ? ad.shop : pc.shop, cat: 'page', nick: ad ? ad.nickname : '', phone: ad ? ad.phone : '', file: pc.file });
+  venues.push({ slug: pc.file, nameKo: ad ? ad.shop : pc.shop, cat: 'page', nick: ad ? ad.nickname : '', phone: ad ? ad.phone : '', file: pc.file, hue: pc.hue });
 }
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -78,9 +78,9 @@ export function splitName(name, maxPer) {
 }
 
 /** 가게마다 다른 어두운 바탕 색조(이름 해시) — 글자 대비는 그대로(바탕 밝기 12% 이하) */
-function tint(slug) {
+function tint(slug, fixedHue) {
   const h = crypto.createHash('md5').update(slug).digest();
-  const hue = h[0] * 360 / 256;
+  const hue = Number.isFinite(fixedHue) ? fixedHue : h[0] * 360 / 256; // [놀쿨44-1] 쪽 카드는 색조를 적어 줄 수 있다(PAGE_CARD hue — 같은 글자 카드끼리 겹치지 않게)
   return { a: `hsl(${hue.toFixed(0)},45%,11%)`, b: `hsl(${((hue + 40) % 360).toFixed(0)},40%,6%)` };
 }
 
@@ -102,7 +102,7 @@ export function layout(v) {
 
 export function buildSvg(v) {
   const { isAd, lines, size } = layout(v);
-  const t = tint(v.slug);
+  const t = tint(v.slug, v.hue);
   const gap = size * 1.08;
   const top = isAd ? 70 : 110;
   const nameBlockH = gap * lines.length;

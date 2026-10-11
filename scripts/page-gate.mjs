@@ -33,7 +33,7 @@ import crypto from 'node:crypto';
 import { analyzeHook } from './lib/hook-detector.mjs';
 import { normalize, grams3, jaccard, hookPart, SIM_LIMIT } from './lib/title-bank.mjs';
 import { checkSkeleton } from './skeleton/index.mjs';
-import { PAGE_CARD, pageKey, pageCardOf, ogVer, ogOwnVer, OG_OWN_PAGE_VER } from '../src/lib/venue-file-ver.mjs'; // [놀쿨44-1] 쪽 카드 표 · 가게 카드 판 — 프리렌더와 같은 한 자리
+import { PAGE_CARD, pageKey, pageCardOf, ogVer, ogOwnVer, OG_OWN_PAGE_VER, OG_FILE_VER } from '../src/lib/venue-file-ver.mjs'; // [놀쿨44-1] 쪽 카드 표 · 가게 카드 판 — 프리렌더와 같은 한 자리
 
 const DIST = process.argv.find((a) => a.startsWith('--dist='))?.slice(7) || 'dist';
 const OUT = process.argv.find((a) => a.startsWith('--out='))?.slice(6) || '';
@@ -454,6 +454,12 @@ if (isMain) {
     // 쪽 카드 표에 적힌 쪽은 dist 에 있어야 한다(표만 있고 쪽이 없으면 막음)
     const have = new Set([...routes.map((r) => pageKey(r)), ...walk(DIST).map((f) => { const rel = path.relative(DIST, path.dirname(f)).split(path.sep).join('/'); return pageKey(rel ? `/${rel}` : '/'); })]);
     for (const k of Object.keys(PAGE_CARD)) if (!have.has(pageKey(k))) results.push({ route: k, block: ['A8 쪽 카드 표에 적힌 쪽이 dist 에 없음'], quality: [] });
+    // 쪽마다 다른 그림(같은 그림 재사용 0) — 쪽 카드 표의 카드와 가게 카드(자기 쪽 판 · 따로 올린 목록 판)의 바이트가 서로 달라야 한다.
+    //   같은 글자의 카드는 바탕 색조만 다르다 → 색조가 가까우면 같은 그림이 된다(10-11 실측: 가게 쪽 카드 = 매거진 쪽 카드). 그때는 PAGE_CARD 의 hue 를 적어 새 이름으로 다시 그린다.
+    const cardFiles = [...new Set([...Object.values(PAGE_CARD).map((c) => c.file), ...Object.keys(OG_OWN_PAGE_VER).map((s) => `${s}${ogOwnVer(s)}`), ...Object.keys(OG_FILE_VER).map((s) => `${s}${ogVer(s)}`)])];
+    const bySha = new Map();
+    for (const c of cardFiles) { let h = ''; try { h = crypto.createHash('sha1').update(fs.readFileSync(path.join(DIST, 'og', `${c}.jpg`))).digest('hex'); } catch { h = ''; } if (!h) { results.push({ route: `/og/${c}.jpg`, block: ['A8 등록된 카드 그림 파일 없음'], quality: [] }); continue; } bySha.set(h, [...(bySha.get(h) || []), c]); }
+    for (const same of bySha.values()) if (same.length > 1) results.push({ route: `/og/${same[0]}.jpg`, block: [`A8 카드 그림이 서로 같음(쪽마다 다른 그림이어야): ${same.join(' = ')}`], quality: [] });
   }
   const blocked = results.filter((r) => r.block.length);
   const q = results.filter((r) => r.quality.length);

@@ -71,12 +71,15 @@ export const MAGAZINE_OG = {
  *  「일산룸」이 든 쪽 = 광고문의 카드(kind 'inquiry' · 3줄 · 번호 0). 가게 쪽 둘은 위 OG_OWN_PAGE_VER · OG_FILE_VER 가 맡고, 여기는 그 밖의 쪽(안내·매거진·지역·태그·목록)이다.
  *  쪽마다 다른 파일(public/og/<file>.jpg · 1200×1200 · scripts/generate-og-name11.mjs 가 그린다). 프리렌더(writePage)가 이 표 하나로 og:image · twitter:image · 첫 그림 · 본문 카드를 넣는다.
  *  kind 'ad' 인 쪽은 놀쿨 명단(src/data/advertisers.nolcool.json)에 적힌 쪽이어야 한다 — scripts/page-gate.mjs 가 본다. 열쇠 = 풀어 쓴(한글) 경로 + 끝 빗금. */
+//  hue = 바탕 색조(0~359). 같은 글자의 카드가 여러 쪽에 쓰이므로 쪽마다 그림이 달라야 한다(같은 그림 재사용 0). 색조를 파일 이름 해시에만 맡기면
+//  가까운 값끼리 겹친다 — 10-11 실측: 가게 쪽(13) · 매거진(14) 카드가 바이트까지 같은 그림이 됐다 → 세 장은 색조를 적어 새 이름(-v11)으로 다시 그렸다.
+//  (/og/* 는 30일 캐시라 같은 이름에 다른 그림을 넣지 않는다 · 앞서 올라간 -v10 세 장은 지우지 않았다 — 주소 404 0 · 부르는 쪽 0)
 export const PAGE_CARD = {
   '/guide/ilsan-yojeong/': { file: 'guide-ilsan-yojeong-v10', kind: 'ad', shop: '일산명월관요정' },
-  '/magazine/ilsan-myeongwolgwan-guide/': { file: 'magazine-ilsan-myeongwolgwan-guide-v10', kind: 'ad', shop: '일산명월관요정' },
-  '/region/일산/yojeong/': { file: 'region-ilsan-yojeong-v10', kind: 'ad', shop: '일산명월관요정' },
+  '/magazine/ilsan-myeongwolgwan-guide/': { file: 'magazine-ilsan-myeongwolgwan-guide-v11', kind: 'ad', shop: '일산명월관요정', hue: 110 },
+  '/region/일산/yojeong/': { file: 'region-ilsan-yojeong-v11', kind: 'ad', shop: '일산명월관요정', hue: 160 },
   '/tag/일산요정/': { file: 'tag-ilsan-yojeong-v10', kind: 'ad', shop: '일산명월관요정' },
-  '/yojeong/ilsan/': { file: 'yojeong-ilsan-v10', kind: 'ad', shop: '일산명월관요정' },
+  '/yojeong/ilsan/': { file: 'yojeong-ilsan-v11', kind: 'ad', shop: '일산명월관요정', hue: 60 },
   '/magazine/ilsan-room-guide/': { file: 'magazine-ilsan-room-guide-v10', kind: 'inquiry', shop: '일산룸' },
   '/region/일산/rooms/': { file: 'region-ilsan-rooms-v10', kind: 'inquiry', shop: '일산룸' },
   '/rooms/ilsan/': { file: 'rooms-ilsan-v10', kind: 'inquiry', shop: '일산룸' },
