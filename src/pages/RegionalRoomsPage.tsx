@@ -183,7 +183,7 @@ export default function RegionalRoomsPage() {
         <BottomFinishCounter baseCount={72} />
       </section>
 
-      {/* [놀쿨12-2 R12] 일산 총책임자 전화바는 일산룸·일산명월관 두 가게 쪽에만 — 지역 목록 쪽에서는 뺐다 */}
+      {/* [놀쿨44-1] 일산 룸 쪽 = 광고문의(번호·전화바 0) — 광고문의 카드는 프리렌더 본문(끌어안은 글) 안에 있다 */}
     </div>
   );
 }

@@ -24,6 +24,22 @@
       ],
       "since": "2026-10-06",
       "근거": "대표님 2026-10-06 17:01"
+    },
+    {
+      "shop": "일산명월관요정",
+      "nickname": "신실장",
+      "phone": "010-3695-4929",
+      "pages": [
+        "/yojeong/ilsan/ilsanmyeongwolgwanyojeong/",
+        "/yojeong/ilsan/",
+        "/guide/ilsan-yojeong/",
+        "/magazine/ilsan-myeongwolgwan-guide/",
+        "/region/일산/yojeong/",
+        "/tag/일산요정/"
+      ],
+      "fixedBar": true,
+      "since": "2026-10-11",
+      "근거": "대표님 2026-10-04 04:35 · 2026-10-11 18:09 — 제목(title · og:title · h1)에 「일산명월관」·「일산요정」이 든 쪽 전부. fixedBar = 화면 아래 고정 전화바(번호만)를 이 쪽들에 띄운다(src/components/venue/PageAdBar.tsx). 일산룸은 명단에 없다(광고문의 표준)."
     }
   ]
 }

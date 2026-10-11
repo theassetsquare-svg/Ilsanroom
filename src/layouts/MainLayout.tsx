@@ -10,6 +10,7 @@ import ScrollProgress from '@/components/layout/ScrollProgress';
 import SavedVenuesBar from '@/components/venue/SavedVenuesBar';
 import RecentVenuesBar from '@/components/venue/RecentVenuesBar';
 import CompareBar from '@/components/venue/CompareBar';
+import PageAdBar from '@/components/venue/PageAdBar';
 import Toast from '@/components/ui/Toast';
 import SecretModeToast from '@/components/privacy/SecretModeToast';
 import { useSeoOverride } from '@/hooks/useSeoOverride';
@@ -70,6 +71,8 @@ export default function MainLayout() {
         </p>
       </div>
       <Footer />
+      {/* [놀쿨44-1] 놀쿨 명단의 신실장 쪽(제목에 「일산명월관」·「일산요정」)에만 고정 전화바(번호만) — 그 밖의 쪽에서는 아무것도 그리지 않는다 */}
+      <PageAdBar />
       <MobileBottomNav />
       {/* 시즌157C — 비교 선택 sticky bar (items > 0일 때만 표시) */}
       <CompareBar />

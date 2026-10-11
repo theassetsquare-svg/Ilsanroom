@@ -3,7 +3,8 @@
  * [놀쿨12-2 · 대표님 13:18-7 · 2026-09-24] 새 판(-v8): 가게 이름이 가장 크게(목록 표시 100px 에서도 읽히게 — 원본 글자 높이 140px 이상)
  *   · 긴 이름은 두세 줄 자동 맞춤 · 어두운 바탕에 밝은 글자(대비 4.5:1 이상) · 쪽마다 고유(이름이 다르고 바탕 색조도 가게마다 다름)
  *   · 줄 수 = 썸네일 표준: 광고주 4줄(가게 이름 / 닉네임 / 번호 / 광고문의 카톡 besta12) · 그 밖 3줄(가게 이름 / 광고문의 / 카톡 besta12)
- *   · 광고주 = venues.ts staffNickname+staffPhone(= naver-watch data/advertisers.json 명단) · 일산룸·일산명월관 두 가게는 총책임자 줄(규칙 R12)
+ *   · 광고주 = venues.ts staffNickname+staffPhone(= naver-watch data/advertisers.json 명단 + 놀쿨 명단 src/data/advertisers.nolcool.json)
+ *   · [놀쿨44-1] 일산명월관요정 = 놀쿨 명단의 신실장(자기 쪽 4줄 -v10 · 목록 3줄 -v9) · 일산룸 = 3줄(-v10 · 광고문의) · 쪽 카드 = PAGE_CARD
  * - 출력: public/og/{slug}{판}.jpg (판 = src/lib/venue-file-ver.mjs ogVer · 파일 이름을 올려야 엣지 캐시가 옛 그림을 안 준다)
  * - 옛 판 파일은 지우지 않는다.
  * 사용: node scripts/generate-og-name11.mjs [slug]
@@ -13,7 +14,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { fileURLToPath } from 'url';
-import { ogVer, ogOwnVer, MAGAZINE_OG } from '../src/lib/venue-file-ver.mjs';
+import { ogVer, ogOwnVer, MAGAZINE_OG, PAGE_CARD, pageKey } from '../src/lib/venue-file-ver.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -38,6 +39,14 @@ for (const a of nolcoolAds) {
     const id = p.match(/^\/magazine\/([^/]+)\/$/)?.[1];
     if (id && MAGAZINE_OG[id]) venues.push({ slug: `magazine-${id}`, nameKo: a.shop, cat: 'magazine', nick: a.nickname, phone: a.phone, file: MAGAZINE_OG[id] });
   }
+}
+// [놀쿨44-1 · 대표님 2026-10-11 18:09] 쪽 카드(src/lib/venue-file-ver.mjs PAGE_CARD) — 쪽마다 파일 하나(바탕 색조는 파일 이름마다 다름).
+//   kind 'ad' = 명단에 그 쪽이 적힌 광고주의 4줄(가게이름 / 닉네임 / 번호 / 광고문의 카톡 besta12) — 명단에 없으면 그리지 않는다.
+//   kind 'inquiry' = 3줄(가게이름 / 광고문의 / 카톡 besta12 · 번호 0). 부를 때: node scripts/generate-og-name11.mjs <file 이름>
+for (const [route, pc] of Object.entries(PAGE_CARD)) {
+  const ad = pc.kind === 'ad' ? nolcoolAds.find((a) => (a.pages || []).some((p) => pageKey(p) === pageKey(route))) : null;
+  if (pc.kind === 'ad' && !ad) continue;
+  venues.push({ slug: pc.file, nameKo: ad ? ad.shop : pc.shop, cat: 'page', nick: ad ? ad.nickname : '', phone: ad ? ad.phone : '', file: pc.file });
 }
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -91,7 +100,7 @@ export function layout(v) {
   return { isAd, ...best };
 }
 
-function buildSvg(v) {
+export function buildSvg(v) {
   const { isAd, lines, size } = layout(v);
   const t = tint(v.slug);
   const gap = size * 1.08;

@@ -9,7 +9,7 @@ import path from 'path';
 import crypto from 'crypto';
 import { execSync } from 'child_process';
 import { provinceOf, localityOf } from './lib/region-admin.mjs';
-import { ogVer, ogOwnVer, MAGAZINE_OG } from '../src/lib/venue-file-ver.mjs';
+import { ogVer, ogOwnVer, MAGAZINE_OG, pageCardOf, pageKey } from '../src/lib/venue-file-ver.mjs';
 import { isAdVenue, isPageOnlyAd, isListed, regionOf, regionTree, sortVenues } from '../src/lib/venue-order.mjs'; // [놀쿨12-2 · 13:18-1·2·4] React 목록과 같은 한 자리
 import sharp from 'sharp'; // [놀쿨11-3] 첫 화면 그림(og jpg) 의 webp 축소판 생성
 
@@ -460,9 +460,46 @@ function visibleBreadcrumb(meta) {
   return `<nav aria-label="현재 위치" class="ssr-breadcrumb"><ol>${lis}</ol></nav>`;
 }
 
+// [놀쿨44-1 · 대표님 2026-10-11 18:09] 쪽 카드 — 제목에 「일산명월관」·「일산요정」이 든 쪽(신실장 광고 카드)과 「일산룸」이 든 쪽(광고문의 카드).
+//   표는 src/lib/venue-file-ver.mjs PAGE_CARD 한 곳(가게 쪽 둘은 가게 틀이 맡는다 — 여기는 안내·매거진·지역·태그·목록).
+//   모든 쪽이 지나는 writePage 에서 한 번에 넣는다: og:image · twitter:image · 첫 그림 = 그 쪽의 카드 파일 · 본문 답 칸 바로 아래 같은 카드.
+//   광고 카드는 놀쿨 명단(src/data/advertisers.nolcool.json)에 그 쪽이 적혀 있을 때만(닉네임·번호는 명단 값 그대로 · 「광고」 표시) — 명단에 없으면 아무것도 안 넣는다.
+//   광고문의 카드에는 번호·tel 링크가 없다. 글자는 카드에 그려진 것과 같다(가게이름 / 광고문의 / 카톡 besta12).
+const NC_PAGE_CARD_ADS = (() => { try { return JSON.parse(fs.readFileSync('src/data/advertisers.nolcool.json', 'utf8')).advertisers || []; } catch { return []; } })();
+function withPageCard(meta, pc, routePath) {
+  if (!fs.existsSync(path.join('public', 'og', `${pc.file}.jpg`))) return meta; // 그림이 없으면 넣지 않는다(배선-자산 불일치 안전핀 · page-gate 가 막는다)
+  const key = pageKey(routePath);
+  const ad = pc.kind === 'ad' ? NC_PAGE_CARD_ADS.find((x) => (x.pages || []).some((p) => pageKey(p) === key)) : null;
+  if (pc.kind === 'ad' && !ad) return meta;
+  const has600 = OG_WEBP.has(`${pc.file}-w600`), has1200 = OG_WEBP.has(`${pc.file}-w1200`);
+  const imgAttrs = `src="${has600 ? `/og/${escHtml(pc.file)}-w600.webp` : `/og/${escHtml(pc.file)}.jpg`}"${has600 && has1200 ? ` srcset="/og/${escHtml(pc.file)}-w600.webp 600w, /og/${escHtml(pc.file)}-w1200.webp 1200w" sizes="260px"` : ''} width="360" height="360"`;
+  const box = 'border:1px solid #d4d4d4;border-radius:14px;padding:14px;margin:0 0 16px;max-width:420px';
+  let card;
+  if (ad) {
+    const shopVenue = venues.find((v) => v.nameKo === ad.shop);
+    const href = shopVenue ? venueHref(shopVenue) : '';
+    const img = `<img ${imgAttrs} alt="${escHtml(ad.shop)} ${escHtml(ad.nickname)} ${escHtml(ad.phone)}" style="width:100%;max-width:260px;height:auto;border-radius:10px">`;
+    card = `<section class="nc-ad-card ssr-adlabel" aria-label="광고" style="${box}"><p style="margin:0 0 8px;font-size:12px;color:#555"><span style="display:inline-block;padding:1px 6px;border:1px solid #888;border-radius:6px">광고</span> 아래 연락처는 업소 담당자가 제공한 광고 정보입니다.</p>${href ? `<a href="${escHtml(href)}">${img}</a>` : img}<p style="margin:10px 0 4px;font-weight:700">${escHtml(ad.shop)} · ${escHtml(ad.nickname)}</p><p style="margin:0 0 8px"><a href="tel:${escHtml(ad.phone.replace(/\D/g, ''))}" style="display:inline-flex;align-items:center;padding:0 16px;min-height:48px!important;box-sizing:border-box;border-radius:10px;background:#15803D;color:#fff;font-weight:700;text-decoration:none">📞 ${escHtml(ad.phone)}</a></p>${href ? `<p style="margin:0;font-size:14px"><a href="${escHtml(href)}">${escHtml(ad.shop)} 자세히 보기</a></p>` : ''}</section>`;
+  } else {
+    card = `<p class="nc-inq-card" style="${box}"><img ${imgAttrs} alt="${escHtml(pc.shop)} 광고문의 카톡 besta12" style="display:block;width:100%;max-width:260px;height:auto;border-radius:10px;margin:0 0 10px"><strong>광고문의</strong> · 카톡 besta12</p>`;
+  }
+  // 자리 = 직답(.ssr-answer) 바로 아래. 직답이 없는 쪽은 뼈대가 쓰던 것과 같은 글(설명)을 직답으로 먼저 두고 그 아래(직답 글자 변화 0).
+  let body = meta.ssrBody || '';
+  const m = body.match(/<(p|div)\b[^>]*class="[^"]*\bssr-answer\b[^"]*"[^>]*>[\s\S]*?<\/\1>/);
+  if (m) body = body.slice(0, m.index + m[0].length) + card + body.slice(m.index + m[0].length);
+  else {
+    const ans = (meta.skel && meta.skel.answer) || meta.description || '';
+    const block = `${ans ? `<p class="ssr-answer">${escHtml(ans)}</p>` : ''}${card}`;
+    body = /<\/h1>/.test(body) ? body.replace(/<\/h1>/, `</h1>${block}`) : block + body;
+  }
+  return { ...meta, ssrBody: body, ogImage: `${BASE_URL}/og/${pc.file}.jpg`, heroSquare: true, heroAd: !!ad, heroAlt: `${pc.shop} 안내 카드` };
+}
+
 function writePage(routePath, meta) {
   // ★ 플랫폼 트랙 P — 페이지 고유 문장(src/data/uniq-prose.json) 먼저 적용(해시·변형보다 앞: 글이 바뀌면 lastmod 도 바뀌어야 한다)
   if (meta && meta.ssrBody) meta = { ...meta, ssrBody: applyProse(meta.ssrBody, routePath) };
+  // [놀쿨44-1] 쪽 카드(일산 쪽 9곳 · 표 PAGE_CARD) — 고유 문장 뒤 · 뼈대 앞(답 칸에 실린다)
+  { const pc = pageCardOf(routePath); if (pc && meta && meta.ssrBody) meta = withPageCard(meta, pc, routePath); }
   // [놀쿨11-2] ① 제목 레지스트리(창고가 만든 제목은 이미 등록됨) ② H1(34-1 부터 = 제목 글자 그대로) ③ 완독 뼈대
   {
     const sk = meta.skel || {};
@@ -1827,7 +1864,7 @@ for (const pg of staticPages) {
       url: `${BASE_URL}/yojeong/ilsan/ilsanmyeongwolgwanyojeong/`,
       description: `${cf.nearestStation}이 가장 가까운 전통 한정식 요정. ${cf.parking}. ${cf._provenance.source}.`,
       servesCuisine: '한정식',
-      // [놀쿨12-2 R12] telephone 은 일산명월관요정 가게 쪽 JSON-LD 에만(총책임자 줄은 일산 두 쪽에만)
+      // [놀쿨12-2 R12] telephone 은 일산명월관요정 가게 쪽 JSON-LD 에만 · [놀쿨44-1] 이 안내 쪽의 연락처는 본문 광고 카드(신실장 · tel 링크)에 있다
       address: { '@type': 'PostalAddress', streetAddress: cf.address, addressLocality: '고양시', addressRegion: '경기도', addressCountry: 'KR' },
       ...(mv ? { geo: { '@type': 'GeoCoordinates', latitude: mv.lat, longitude: mv.lng } } : {}),
       openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: cf.hoursSpec.openDays, opens: cf.hoursSpec.opens, closes: cf.hoursSpec.closes }],

@@ -10,25 +10,22 @@
  * - 같은 가게 두 쪽: sameAs 가 있는 쪽은 목록·숫자에서 빠진다(쪽 주소는 그대로 · 본 쪽으로 링크).
  */
 
-/** 일산룸·일산명월관 두 가게 쪽에만 두는 총책임자 번호(광고주 명단 밖 · 대표님 규칙 R12) — 광고 블록에 넣지 않는다 */
-export const ILSAN_CHIEF_PHONE = '010-4117-5556';
-
-const digits = (s) => String(s || '').replace(/\D/g, '');
-
 /**
  * [놀쿨26-1 · 대표님 2026-10-04 03:43] 놀쿨 전용 명단(src/data/advertisers.nolcool.json)의 가게 — 명단에 적힌 쪽에서만 광고주로 다룬다.
  * 목록·검색·비교 같은 다른 쪽에서는 「광고」 정렬·표시·닉네임을 붙이지 않는다(그 4쪽 밖 글자 변경 0).
  * 명단 pages 와 이 목록이 같은지는 scripts/verify/nc26-check.mjs 가 본다.
  * [놀쿨33-1 · 대표님 2026-10-06 17:01] 신림그랑프리나이트(쌍코피) 더함 — 같은 방식(명단에 적힌 쪽에서만).
+ * [놀쿨44-1 · 대표님 2026-10-11 18:09] 일산명월관요정(신실장) 더함 — 같은 방식. 일산룸은 담당 칸을 비웠다(광고문의 표준).
+ *   옛 「일산 두 가게 쪽에만 두는 번호」 예외는 없앴다(그 번호는 이제 어느 쪽에도 없다 — scripts/page-gate.mjs 가 막는다).
  */
-export const PAGE_ONLY_AD_SLUGS = new Set(['busanmulnight', 'busanyeonsandongmulnight', 'sinlimgrandprixnight']);
+export const PAGE_ONLY_AD_SLUGS = new Set(['busanmulnight', 'busanyeonsandongmulnight', 'sinlimgrandprixnight', 'ilsanmyeongwolgwanyojeong']);
 export function isPageOnlyAd(v) {
   return !!(v && v.staffPhone && PAGE_ONLY_AD_SLUGS.has(v.slug));
 }
 
-/** 광고주 가게인가 — 명단 번호가 붙은 가게(일산 총책임자 · 쪽 한정 광고주 제외) */
+/** 광고주 가게인가 — 명단 번호가 붙은 가게(쪽 한정 광고주 제외) */
 export function isAdVenue(v) {
-  return !!(v && v.staffPhone && digits(v.staffPhone) !== digits(ILSAN_CHIEF_PHONE) && !PAGE_ONLY_AD_SLUGS.has(v.slug));
+  return !!(v && v.staffPhone && !PAGE_ONLY_AD_SLUGS.has(v.slug));
 }
 
 /** 목록·숫자에 드는가 — 영업 확인 + 같은 가게 둘째 쪽 아님 */
