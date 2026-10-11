@@ -33,7 +33,7 @@ import crypto from 'node:crypto';
 import { analyzeHook } from './lib/hook-detector.mjs';
 import { normalize, grams3, jaccard, hookPart, SIM_LIMIT } from './lib/title-bank.mjs';
 import { checkSkeleton } from './skeleton/index.mjs';
-import { PAGE_CARD, pageKey, pageCardOf, ogVer, ogOwnVer, OG_OWN_PAGE_VER, OG_FILE_VER } from '../src/lib/venue-file-ver.mjs'; // [놀쿨44-1] 쪽 카드 표 · 가게 카드 판 — 프리렌더와 같은 한 자리
+import { PAGE_CARD, pageKey, pageCardOf, ogVer, ogOwnVer, OG_OWN_PAGE_VER, OG_FILE_VER, MAGAZINE_OG } from '../src/lib/venue-file-ver.mjs'; // [놀쿨44-1] 쪽 카드 표 · 가게 카드 판 — 프리렌더와 같은 한 자리
 
 const DIST = process.argv.find((a) => a.startsWith('--dist='))?.slice(7) || 'dist';
 const OUT = process.argv.find((a) => a.startsWith('--out='))?.slice(6) || '';
@@ -55,6 +55,23 @@ const PHONE_RE = /(?<![\d.])(?:01[016789][-. ]?\d{3,4}[-. ]?\d{4}|0(?:2|[3-6][1-
 const FORBIDDEN_WORDS = ['신실장', 'WT창민', 'W.T창민'];
 // [놀쿨44-1 · 대표님 2026-10-11 18:09] 금지 번호 — 옛 「일산룸 총책임자」 번호. 붙임·줄표·점·빈칸·+82 어느 꼴이든 쪽 어디에도 0(12-2 의 「두 가게 쪽에만」을 뒤집음)
 const BANNED_NUMBER_RE = /4117[-. )]*5556/;
+// [놀쿨44-1 · 새 맥락 검토 2026-10-11] 번호를 어떤 꼴로 써도(끊김 없는 빈칸 · 긴 줄표 · 가운뎃점 · 빗금 · 사이에 낀 태그 · 전각 숫자 · %2D) 한 덩이 숫자로 보게 —
+//   숫자와 숫자 사이의 구분 글자만 걷어낸다(글자·쉼표·쌍점은 그대로라 날짜·좌표·값이 번호로 붙지 않는다). 박아 넣은 그림(data:)과 그림 경로 글(<svg>)은 뺀다.
+const toAsciiDigits = (s) => String(s).replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xFEE0)).replace(/&#(4[89]|5[0-7]);/g, (_, n) => String.fromCharCode(+n)).replace(/&#x3([0-9]);/gi, '$1');
+const DIGIT_SEP_RE = /(?<=\d)(?:<[^>]{0,200}>|&(?:nbsp|ndash|mdash|minus|middot|#x?[0-9a-fA-F]{2,6});|%2D|%20|[\s\-‐-―−·ㆍ./)(]){1,6}(?=\d)/gi;
+//   그림 경로 값(d="M4 11.7 …" · points · viewBox — 화면에 글자로 보이지 않는다)은 숫자가 빈칸·점으로 이어져 우연히 번호 꼴이 될 수 있어 뺀다.
+const PATH_NOISE_RE = /\b(?:d\s*[=:]\s*(?:"[Mm][^"]*"|'[Mm][^']*')|(?:points|viewBox)\s*[=:]\s*(?:"[^"]*"|'[^']*'))/g;
+export const squashDigits = (html, opt = {}) => { const s = String(html || '').replace(/data:[a-z]+\/[a-z0-9.+-]+;base64,[A-Za-z0-9+/=]+/g, ' ').replace(PATH_NOISE_RE, ' '); return toAsciiDigits(opt.keepSvg ? s : s.replace(/<svg[\s\S]*?<\/svg>/gi, ' ')).replace(DIGIT_SEP_RE, ''); };
+const BANNED_DIGITS = '41175556';
+// 옛 담당 줄 글자 — 「일산룸 총책임자」(사이에 빈칸·태그가 끼어도). 제목의 「일산룸 — 마두역 3분, 총책임자가 …」처럼 다른 말이 낀 것은 이 꼴이 아니다(제목은 바꾸지 않는다)
+const OLD_PHRASE_RE = /일산룸(?:\s|&nbsp;|<[^>]{0,200}>)*총책임자/;
+/** 쪽이 아닌 글 파일(js · css · json · txt · xml · svg)에서 금지 번호(꼴 가리지 않음)·옛 담당 줄 글자 — 있으면 까닭, 없으면 '' */
+export const bannedInText = (text) => (BANNED_NUMBER_RE.test(text) || squashDigits(text, { keepSvg: true }).includes(BANNED_DIGITS) ? '금지 번호 010-4117-5556' : (OLD_PHRASE_RE.test(text) ? '옛 글자 「일산룸 총책임자」' : ''));
+/** 꼴을 바꿔 쓴 전화번호(숫자만 남긴 글에서) — 휴대(010… · +82 10…) · 지역·대표 번호(02 · 031 · 070 · 080 · 050x) */
+const LOOSE_PHONE_RES = [/(?<!\d)(?:\+?820?|0)1[016789]\d{7,8}(?!\d)/g, /(?<!\d)0(?:2|[3-6][1-5]|70|80|50\d)\d{7,8}(?!\d)/g, /\+820?(?:2|[3-6][1-5]|70|80|50\d)\d{7,8}(?!\d)/g];
+export const loosePhones = (html) => { const sq = squashDigits(html); return [...new Set(LOOSE_PHONE_RES.flatMap((re) => sq.match(re) || []).map((m) => m.replace(/\D/g, '')))]; };
+/** 낱말 사이에 빈칸·태그를 끼워 쓴 닉네임(신 실장 · 신<b>실장</b>)도 같은 낱말로 본다 — 앞 글자가 한글이면(당신 실장) 다른 말 */
+const looseWordRe = (w) => new RegExp('(?<![가-힣])' + [...w].map((c) => c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('(?:\\s|&nbsp;|<[^>]{0,200}>)*'));
 // 제목(title · og:title · 첫 h1 — 하나라도)에서 빈칸·「#」을 뺀 글자로 「일산명월관」·「일산요정」이 든 쪽 = A(신실장 광고 카드) · 「일산룸」이 든 쪽 = B(광고문의 카드 · 번호 0)
 const squashTitle = (s) => String(s || '').replace(/[\s#]/g, '');
 export function ilsanKindOf(html) {
@@ -74,6 +91,18 @@ const PAGE_ONLY = (() => {
 })();
 /** 이 쪽이 명단에 적힌 광고주(닉네임 기준) — 없으면 null */
 const rosterOf = (route) => { const here = pageKey(route); return [...PAGE_ONLY.values()].find((p) => p.pages.has(here)) || null; };
+// [놀쿨44-1 · 새 맥락 검토] 쪽 카드 표의 광고 카드(kind 'ad' · 가게 이름으로 명단과 잇는다) — 그 광고주의 명단 쪽에서만 부를 수 있다(닉네임·번호가 그려진 그림이 다른 쪽에 실리지 않게)
+//   가게 자기 쪽 4줄 판(OG_OWN_PAGE_VER) · 매거진 광고 카드(MAGAZINE_OG)도 같은 잣대 — 그 쪽이 든 명단의 쪽에서만
+const escRe = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const cardRe = (file) => new RegExp('/og/' + escRe(file) + '(?:-w\\d+|-i\\d+)?\\.(?:jpg|webp)');
+const rosterList = [...PAGE_ONLY.values()];
+const AD_CARDS = [
+  ...Object.values(PAGE_CARD).filter((c) => c.kind === 'ad').map((c) => { const p = rosterList.find((x) => x.shop === c.shop); return p ? { file: c.file, pages: p.pages, re: cardRe(c.file) } : null; }),
+  ...Object.keys(OG_OWN_PAGE_VER).map((slug) => { const p = rosterList.find((x) => [...x.pages].some((k) => k.endsWith(`/${slug}/`))); return p ? { file: `${slug}${ogOwnVer(slug)}`, pages: p.pages, re: cardRe(`${slug}${ogOwnVer(slug)}`) } : null; }),
+  ...Object.entries(MAGAZINE_OG).map(([slug, file]) => { const p = rosterList.find((x) => x.pages.has(`/magazine/${slug}/`)); return p ? { file, pages: p.pages, re: cardRe(file) } : null; }),
+].filter(Boolean);
+// 제목이 A 여야 하는 명단 닉네임 — 명단 쪽에 제목이 다른 쪽을 적어 넣어 닉네임·번호가 통과하는 것을 막는다
+const TITLE_BOUND_NICKS = new Set(['신실장']);
 // [놀쿨12-2 R7·R10] 그림 — ① 가게 사진(/venues/*)은 사진 판정표 여섯 가지를 넘은 것만(지금 0장 → 참조 0) ② 번호·신실장이 그려진 것으로 확인된 그림(해시 목록 scripts/forbidden-images.json) 참조 0
 const FORBIDDEN_IMG = (() => { try { return JSON.parse(fs.readFileSync('scripts/forbidden-images.json', 'utf8')).sha1 || {}; } catch { return {}; } })();
 const PHOTO_PASS = (() => { try { return new Set([...fs.readFileSync('src/data/venue-image-manifest.ts', 'utf8').matchAll(/^\s+'([^']+)',$/gm)].map((m) => m[1])); } catch { return new Set(); } })();
@@ -233,15 +262,23 @@ export function contactProblems(html, route = '') {
   const pageOnlyOk = (n) => { const p = PAGE_ONLY.get(n); return !!p && p.pages.has(here); }; // [놀쿨26-1] 놀쿨 명단 번호는 적힌 쪽에서만
   const off = [...new Set([...nums, ...tels])].filter((n) => (PAGE_ONLY.has(n) ? !pageOnlyOk(n) : !ALLOWED_PHONES.has(n)));
   const nickOkHere = (w) => [...PAGE_ONLY.values()].some((p) => p.nick === w && p.pages.has(here)); // [놀쿨44-1] 금지 낱말이 명단 닉네임이면(신실장) 그 쪽에서만 통과
-  const words = FORBIDDEN_WORDS.filter((w) => noJs.includes(w) && !nickOkHere(w));
+  // [놀쿨44-1 · 새 맥락 검토] 낱말 사이에 빈칸·태그를 낀 꼴 · 스크립트 속(ld+json 아닌 것 포함)까지 본다
+  const noData = html.replace(/data:[a-z]+\/[a-z0-9.+-]+;base64,[A-Za-z0-9+/=]+/g, ' ');
+  const words = FORBIDDEN_WORDS.filter((w) => (noJs.includes(w) || looseWordRe(w).test(noData)) && !nickOkHere(w));
   for (const m of noJs.matchAll(NICK_NEAR_NUMBER_RE)) {
     const n = m[0].replace(/\D/g, '');
     if (pageOnlyOk(n) && m[1] === PAGE_ONLY.get(n).nick) continue; // 놀쿨 명단의 닉네임+번호 꼴은 그 쪽에서만 통과
     words.push(m[0]); break;
   }
-  // [놀쿨44-1] 금지 번호 — 쪽 전체(스크립트·JSON-LD·속성 포함 · 박아 넣은 그림 data: 는 뺌)에서 본다
-  const banned = BANNED_NUMBER_RE.test(html.replace(/data:[a-z]+\/[a-z0-9.+-]+;base64,[A-Za-z0-9+/=]+/g, ' '));
-  return { off, words, banned, nums, tels };
+  // [놀쿨44-1 · 새 맥락 검토] 명단 번호를 꼴을 바꿔(+82 · 끊김 없는 빈칸 · 긴 줄표 · 사이 태그 · 스크립트 속) 명단 밖 쪽에 쓴 것 — 숫자만 남긴 글에서 앞 0 을 뺀 열 자리로 찾는다
+  const squashed = squashDigits(html);
+  for (const [n, p] of PAGE_ONLY) if (!p.pages.has(here) && squashed.includes(n.slice(1)) && !off.includes(n)) off.push(n);
+  // 명단 광고주의 광고 카드(닉네임·번호가 그려진 4줄 그림)를 명단 밖 쪽이 부르는 것
+  const cards = AD_CARDS.filter((c) => !c.pages.has(here) && c.re.test(html)).map((c) => c.file);
+  // [놀쿨44-1] 금지 번호 — 쪽 전체(스크립트·JSON-LD·속성 포함 · 박아 넣은 그림 data: 는 뺌)에서 본다 · 꼴을 바꿔 써도(숫자만 남긴 글)
+  const banned = BANNED_NUMBER_RE.test(noData) || squashed.includes(BANNED_DIGITS);
+  const oldPhrase = OLD_PHRASE_RE.test(noData); // 옛 담당 줄 글자 「일산룸 총책임자」
+  return { off, words, banned, oldPhrase, nums, tels, cards };
 }
 /**
  * [놀쿨44-1 · 대표님 2026-10-11 18:09] 제목 기준 일산 쪽 검사(순수 · 쪽 하나) — ctx: { route, type, dist }
@@ -258,7 +295,11 @@ export function ilsanProblems(html, ctx = {}) {
   const pc = pageCardOf(route);
   if (pc && pc.kind === 'ad' && !kind.A) out.push('A8 쪽 카드 표에는 광고 카드 쪽인데 제목에 「일산명월관」·「일산요정」이 없음');
   if (pc && pc.kind === 'inquiry' && !kind.B) out.push('A8 쪽 카드 표에는 광고문의 카드 쪽인데 제목에 「일산룸」이 없음');
+  // [놀쿨44-1 · 새 맥락 검토] 명단에 적힌 쪽이라도 제목이 A 가 아니면 그 닉네임·번호를 통과시키지 않는다(명단에 제목이 다른 쪽을 적어 넣는 길을 막음)
+  const bound = rosterOf(route);
+  if (bound && TITLE_BOUND_NICKS.has(bound.nick) && !kind.A) out.push(`A8 놀쿨 명단에는 「${bound.nick}」 쪽인데 제목에 「일산명월관」·「일산요정」이 없음`);
   if (!kind.A && !kind.B) return out;
+  const bodyImgOf = (p) => new RegExp(`<img\\b[^>]*\\ssrc="${escRe(p)}"`); // 본문 그림(<img src>) — 머리의 og:image 만 있고 본문 카드가 빠진 쪽을 잡는다
   const og = sameOriginPath((html.match(/<meta property="og:image" content="([^"]*)"/) || [])[1]);
   const tw = sameOriginPath((html.match(/<meta name="twitter:image" content="([^"]*)"/) || [])[1]);
   const slug = type === 'venue' ? (route.split('/').filter(Boolean).pop() || '') : ''; // 주소의 마지막 토막을 읽기만 한다
@@ -279,6 +320,12 @@ export function ilsanProblems(html, ctx = {}) {
       if (!/ssr-adlabel|>광고</.test(html)) out.push('A6 「광고」 표시 없음');
       const other = numsAll.filter((n) => n !== telDigits);
       if (other.length) out.push(`A6 광고주 번호 말고 다른 번호 ${other.join(',')}`);
+      // [놀쿨44-1 · 새 맥락 검토] 꼴을 바꿔 쓴 다른 번호(+82 · 080 · 붙여 쓴 지역번호 · 사이 태그) · 본문 카드 그림·카드 블록이 빠진 쪽
+      const natl = (n) => (n.startsWith('82') ? `0${n.slice(2).replace(/^0/, '')}` : n); // +82 10… → 010…
+      const loose = [...new Set(loosePhones(html).map(natl))].filter((n) => n !== telDigits);
+      if (loose.length && !other.length) out.push(`A6 광고주 번호 말고 다른 번호(꼴 바꿈) ${loose.join(',')}`);
+      if (want && !bodyImgOf(want).test(html)) out.push(`A6 본문에 광고 카드 그림 없음 ${want}`);
+      if (pc && pc.kind === 'ad' && !/class="[^"]*\bnc-ad-card\b/.test(html)) out.push('A6 본문 광고 카드 블록 없음(nc-ad-card)');
     }
     if (kind.B && !/class="[^"]*\bnc-inq-card\b/.test(html)) out.push('A7 「일산룸」도 든 쪽인데 본문 광고문의 카드 없음');
   } else {
@@ -290,6 +337,14 @@ export function ilsanProblems(html, ctx = {}) {
     else if (og !== want || tw !== want) out.push(`A7 og:image·twitter:image ≠ 광고문의 카드 ${want} (${og || '없음'})`);
     else if (!fileOk(want)) out.push(`A7 광고문의 카드 파일 없음 ${want}`);
     if (slug && OG_OWN_PAGE_VER[slug]) out.push('A7 「일산룸」 가게에 광고주 판 카드가 등록돼 있음');
+    // [놀쿨44-1 · 새 맥락 검토] 꼴을 바꿔 쓴 번호(+82 · 080 · 붙여 쓴 지역번호 · 사이 태그 · 스크립트 속) · tel·sms 링크 · 신실장 글자 · 본문 카드 그림·카드 블록
+    const loose = loosePhones(html);
+    if (loose.length && !numsAll.length) out.push(`A7 제목에 「일산룸」이 든 쪽에 번호 꼴 ${loose.join(',')}(꼴 바꿈 포함 · 번호 0)`);
+    if (/href="(?:tel|sms):/i.test(html) && !cp.tels.length) out.push('A7 「일산룸」 쪽에 tel·sms 링크');
+    const noData = html.replace(/data:[a-z]+\/[a-z0-9.+-]+;base64,[A-Za-z0-9+/=]+/g, ' ');
+    for (const w of TITLE_BOUND_NICKS) if (looseWordRe(w).test(noData) && !cp.words.includes(w)) out.push(`A7 「일산룸」 쪽에 「${w}」 글자`);
+    if (want && !bodyImgOf(want).test(html)) out.push(`A7 본문에 광고문의 카드 그림 없음 ${want}`);
+    if (pc && pc.kind === 'inquiry' && !/class="[^"]*\bnc-inq-card\b/.test(html)) out.push('A7 본문 광고문의 카드 블록 없음(nc-inq-card)');
   }
   return out;
 }
@@ -301,6 +356,8 @@ export function contactBlocks(html, ctx = {}) {
   if (cp.off.length) block.push(`A2 명단 밖 번호 ${cp.off.join(',')}`);
   if (cp.words.length) block.push(`A3 금지 낱말 ${cp.words.join(',')}`);
   if (cp.banned) block.push('A4 금지 번호 010-4117-5556(어느 쪽에도 0)');
+  if (cp.oldPhrase) block.push('A4 옛 글자 「일산룸 총책임자」(어느 쪽에도 0)');
+  if (cp.cards.length) block.push(`A8 명단 밖 쪽이 광고 카드 그림을 부름 ${cp.cards.join(',')}`);
   for (const b of ilsanProblems(html, ctx)) block.push(b);
   return block;
 }
@@ -451,6 +508,36 @@ if (isMain) {
       if (b.length) results.push({ route, block: b, quality: [] });
     }
     console.log(`   · 사이트맵 밖 ${extra}쪽 연락처 검사(A2·A3·A4·A6·A7·A8)`);
+    // [놀쿨44-1 · 새 맥락 검토] 쪽(index.html)만 보면 놓치는 자리 — index.html 이 아닌 html(404.html 등)에도 연락처 막음 ·
+    //   dist 의 글 파일 전부(js · css · json · txt · xml · svg · webmanifest)에서 금지 번호(꼴 가리지 않음)·옛 글자 「일산룸 총책임자」 0
+    {
+      const TEXT_EXT = /\.(?:m?js|css|json|txt|xml|svg|webmanifest|map)$/i;
+      const walkAll = (dir, acc = []) => { for (const e of fs.readdirSync(dir, { withFileTypes: true })) { const f = path.join(dir, e.name); if (e.isDirectory()) walkAll(f, acc); else acc.push(f); } return acc; };
+      let texts = 0, htmls = 0;
+      for (const f of walkAll(DIST)) {
+        const rel = `/${path.relative(DIST, f).split(path.sep).join('/')}`;
+        if (/\.html?$/i.test(f)) {
+          if (path.basename(f) === 'index.html') continue; // 위에서 봤다
+          htmls++;
+          const b = contactBlocks(fs.readFileSync(f, 'utf8'), { route: rel });
+          if (b.length) results.push({ route: rel, block: b, quality: [] });
+        } else if (TEXT_EXT.test(f)) {
+          texts++;
+          const txt = fs.readFileSync(f, 'utf8');
+          const why = bannedInText(txt);
+          if (why) results.push({ route: rel, block: [`A4 ${why}(글 파일 · 어디에도 0)`], quality: [] });
+          // 글자가 그려지는 그림(svg)은 쪽이 아니라 어느 쪽에서든 불릴 수 있다 — 명단 닉네임·번호 0(4줄 카드는 쪽 카드 표의 jpg 만)
+          if (/\.svg$/i.test(f)) {
+            const sq = squashDigits(txt, { keepSvg: true });
+            const w = FORBIDDEN_WORDS.filter((x) => looseWordRe(x).test(txt));
+            const n = [...PAGE_ONLY.keys()].filter((k) => sq.includes(k.slice(1)));
+            if (w.length) results.push({ route: rel, block: [`A3 금지 낱말 ${w.join(',')}(그림 글자 · 쪽 밖)`], quality: [] });
+            if (n.length) results.push({ route: rel, block: [`A2 명단 번호 ${n.join(',')}(그림 글자 · 쪽 밖)`], quality: [] });
+          }
+        }
+      }
+      console.log(`   · 그 밖의 html ${htmls}개 연락처 검사 · 글 파일 ${texts}개 금지 번호·옛 글자 검사(A4)`);
+    }
     // 쪽 카드 표에 적힌 쪽은 dist 에 있어야 한다(표만 있고 쪽이 없으면 막음)
     const have = new Set([...routes.map((r) => pageKey(r)), ...walk(DIST).map((f) => { const rel = path.relative(DIST, path.dirname(f)).split(path.sep).join('/'); return pageKey(rel ? `/${rel}` : '/'); })]);
     for (const k of Object.keys(PAGE_CARD)) if (!have.has(pageKey(k))) results.push({ route: k, block: ['A8 쪽 카드 표에 적힌 쪽이 dist 에 없음'], quality: [] });

@@ -79,6 +79,8 @@ export default function VenueSeoContent({ venue }: { venue: Venue }) {
       `${v} 담당은 ${venue.staffNickname}. 예약부터 퇴실까지 밀착으로 케어해주는 스타일이라 ${v} 처음 가는 사람도 어색하지 않게 놀 수 있다.`,
     ];
     staffText = pickBySlug(slug + 's', staffTexts);
+    // [놀쿨44-1 · 새 맥락 검토 2026-10-11] 일산명월관요정(신실장)은 틀 문장 하나만 — 확인하지 않은 응대 묘사(세팅·퇴실·단골 관리)를 신실장 이름으로 붙이지 않는다
+    if (slug === 'ilsanmyeongwolgwanyojeong') staffText = `${v} 예약과 안내는 ${josa(venue.staffNickname, '이/가')} 맡고 있다.`;
   }
 
   // ── 5. 접근성 ──
