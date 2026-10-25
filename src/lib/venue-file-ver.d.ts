@@ -13,3 +13,5 @@ export declare const MAGAZINE_OG: Record<string, string>;
 export declare const PAGE_CARD: Record<string, { file: string; kind: 'ad' | 'inquiry'; shop: string; hue?: number }>;
 export declare function pageKey(route: string): string;
 export declare function pageCardOf(route: string): { file: string; kind: 'ad' | 'inquiry'; shop: string; hue?: number } | null;
+export declare function pageCardJpg(file: string): string;
+export declare function pageCardLight(file: string): string;

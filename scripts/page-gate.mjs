@@ -74,11 +74,18 @@ export const loosePhones = (html) => { const sq = squashDigits(html); return [..
 const looseWordRe = (w) => new RegExp('(?<![가-힣])' + [...w].map((c) => c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('(?:\\s|&nbsp;|<[^>]{0,200}>)*'));
 // 제목(title · og:title · 첫 h1 — 하나라도)에서 빈칸·「#」을 뺀 글자로 「일산명월관」·「일산요정」이 든 쪽 = A(신실장 광고 카드) · 「일산룸」이 든 쪽 = B(광고문의 카드 · 번호 0)
 const squashTitle = (s) => String(s || '').replace(/[\s#]/g, '');
-export function ilsanKindOf(html) {
+/** 제목 세 자리(title · og:title · 첫 h1)의 글자(빈칸·# 뺌) — [놀쿨61-1] 명단 titleWords 와 견주는 데도 쓴다 */
+export function titleKeysOf(html) {
   const one = (re) => squashTitle(dec((html.match(re) || [])[1] || ''));
-  const keys = [one(/<title>([^<]*)<\/title>/), one(/<meta property="og:title" content="([^"]*)"/), squashTitle(strip((html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/) || [])[1] || ''))];
+  return [one(/<title>([^<]*)<\/title>/), one(/<meta property="og:title" content="([^"]*)"/), squashTitle(strip((html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/) || [])[1] || ''))];
+}
+export function ilsanKindOf(html) {
+  const keys = titleKeysOf(html);
   return { A: keys.some((k) => k.includes('일산명월관') || k.includes('일산요정')), B: keys.some((k) => k.includes('일산룸')) };
 }
+// [놀쿨61-1 · 대표님 2026-10-25] 제목 낱말로 묶인 광고주 — 명단 줄의 titleWords(빈칸·# 뺀 글자)가 제목 세 자리 어디에든 들면 그 광고주의 쪽이다(일산명월관·일산요정 = 신실장 · 장안동호빠 = 큐브).
+const titleHits = (keys, list) => list.filter((p) => p.titleWords.length && keys.some((k) => p.titleWords.some((w) => k.includes(w))));
+const 낱말글 = (words) => words.map((w) => `「${w}」`).join('·');
 // [놀쿨12-2 R10 · 13:18-9] 흔한 낱말(천사·태양·둘리·따봉·수빈)은 번호와 붙어 나올 때만 막는다(명단 밖 옛 닉네임+번호 꼴)
 const NICK_NEAR_NUMBER_RE = /(천사|태양|둘리|따봉|수빈)[\s:·)]{0,4}0\d{1,2}[-. ]?\d{3,4}[-. ]?\d{4}/g;
 // [놀쿨26-1 · 2026-10-04 · 대표님 03:43] 놀쿨 전용 광고주 명단(src/data/advertisers.nolcool.json) — 적힌 쪽(pages)에서만 그 닉네임·번호를 허용한다.
@@ -86,7 +93,7 @@ const NICK_NEAR_NUMBER_RE = /(천사|태양|둘리|따봉|수빈)[\s:·)]{0,4}0\
 //   [놀쿨44-1] 쪽 주소는 풀어 쓴(한글) 꼴 + 끝 빗금으로 맞춰 견준다(명단에 한글 주소가 들어왔다 — /region/일산/yojeong/ · /tag/일산요정/).
 const PAGE_ONLY = (() => {
   const map = new Map();
-  try { for (const a of JSON.parse(fs.readFileSync('src/data/advertisers.nolcool.json', 'utf8')).advertisers || []) map.set(String(a.phone).replace(/\D/g, ''), { nick: a.nickname, shop: a.shop, phone: a.phone, pages: new Set((a.pages || []).map(pageKey)) }); } catch {}
+  try { for (const a of JSON.parse(fs.readFileSync('src/data/advertisers.nolcool.json', 'utf8')).advertisers || []) map.set(String(a.phone).replace(/\D/g, ''), { nick: a.nickname, shop: a.shop, phone: a.phone, titleWords: (Array.isArray(a.titleWords) ? a.titleWords : []).map((w) => squashTitle(w)).filter(Boolean), pages: new Set((a.pages || []).map(pageKey)) }); } catch {}
   return map;
 })();
 /** 이 쪽이 명단에 적힌 광고주(닉네임 기준) — 없으면 null */
@@ -102,7 +109,7 @@ const AD_CARDS = [
   ...Object.entries(MAGAZINE_OG).map(([slug, file]) => { const p = rosterList.find((x) => x.pages.has(`/magazine/${slug}/`)); return p ? { file, pages: p.pages, re: cardRe(file) } : null; }),
 ].filter(Boolean);
 // 제목이 A 여야 하는 명단 닉네임 — 명단 쪽에 제목이 다른 쪽을 적어 넣어 닉네임·번호가 통과하는 것을 막는다
-const TITLE_BOUND_NICKS = new Set(['신실장']);
+const TITLE_BOUND_NICKS = new Set(rosterList.filter((p) => p.titleWords.length).map((p) => p.nick)); // [놀쿨61-1] 명단 titleWords 가 있는 줄(신실장 · 유현재 실장)
 // [놀쿨12-2 R7·R10] 그림 — ① 가게 사진(/venues/*)은 사진 판정표 여섯 가지를 넘은 것만(지금 0장 → 참조 0) ② 번호·신실장이 그려진 것으로 확인된 그림(해시 목록 scripts/forbidden-images.json) 참조 0
 const FORBIDDEN_IMG = (() => { try { return JSON.parse(fs.readFileSync('scripts/forbidden-images.json', 'utf8')).sha1 || {}; } catch { return {}; } })();
 const PHOTO_PASS = (() => { try { return new Set([...fs.readFileSync('src/data/venue-image-manifest.ts', 'utf8').matchAll(/^\s+'([^']+)',$/gm)].map((m) => m[1])); } catch { return new Set(); } })();
@@ -292,12 +299,19 @@ export function ilsanProblems(html, ctx = {}) {
   const dist = ctx.dist || DIST;
   const out = [];
   const kind = ilsanKindOf(html);
+  const keys = titleKeysOf(html);
+  const hits = titleHits(keys, rosterList); // [놀쿨61-1] 제목이 가리키는 명단 광고주(titleWords) — 일산 A 는 신실장 줄의 titleWords 로 같은 결과
+  if (hits.length) kind.A = true;
   const pc = pageCardOf(route);
-  if (pc && pc.kind === 'ad' && !kind.A) out.push('A8 쪽 카드 표에는 광고 카드 쪽인데 제목에 「일산명월관」·「일산요정」이 없음');
+  if (pc && pc.kind === 'ad') {
+    const owner = rosterList.find((p) => p.shop === pc.shop);
+    const words = owner && owner.titleWords.length ? owner.titleWords : ['일산명월관', '일산요정'];
+    if (!keys.some((k) => words.some((w) => k.includes(w)))) out.push(`A8 쪽 카드 표에는 광고 카드 쪽인데 제목에 ${낱말글(words)}이 없음`);
+  }
   if (pc && pc.kind === 'inquiry' && !kind.B) out.push('A8 쪽 카드 표에는 광고문의 카드 쪽인데 제목에 「일산룸」이 없음');
   // [놀쿨44-1 · 새 맥락 검토] 명단에 적힌 쪽이라도 제목이 A 가 아니면 그 닉네임·번호를 통과시키지 않는다(명단에 제목이 다른 쪽을 적어 넣는 길을 막음)
   const bound = rosterOf(route);
-  if (bound && TITLE_BOUND_NICKS.has(bound.nick) && !kind.A) out.push(`A8 놀쿨 명단에는 「${bound.nick}」 쪽인데 제목에 「일산명월관」·「일산요정」이 없음`);
+  if (bound && bound.titleWords.length && !keys.some((k) => bound.titleWords.some((w) => k.includes(w)))) out.push(`A8 놀쿨 명단에는 「${bound.nick}」 쪽인데 제목에 ${낱말글(bound.titleWords)}이 없음`);
   if (!kind.A && !kind.B) return out;
   const bodyImgOf = (p) => new RegExp(`<img\\b[^>]*\\ssrc="${escRe(p)}"`); // 본문 그림(<img src>) — 머리의 og:image 만 있고 본문 카드가 빠진 쪽을 잡는다
   const og = sameOriginPath((html.match(/<meta property="og:image" content="([^"]*)"/) || [])[1]);
@@ -308,7 +322,7 @@ export function ilsanProblems(html, ctx = {}) {
   const fileOk = (p) => { try { return !!p && fs.existsSync(path.join(dist, decodeURIComponent(p))); } catch { return false; } };
   if (kind.A) {
     const ad = rosterOf(route);
-    if (!ad) out.push('A6 제목에 「일산명월관」·「일산요정」이 든 쪽인데 놀쿨 명단에 없음(신실장 광고 카드 없음)');
+    if (!ad) out.push(`A6 제목에 ${낱말글(hits.length ? [...new Set(hits.flatMap((p) => p.titleWords))] : ['일산명월관', '일산요정'])}이 든 쪽인데 놀쿨 명단에 없음(${hits.length ? hits.map((p) => p.nick).join('·') : '신실장'} 광고 카드 없음)`);
     else {
       const want = pc && pc.kind === 'ad' ? `/og/${pc.file}.jpg` : (slug && OG_OWN_PAGE_VER[slug] ? `/og/${slug}${ogOwnVer(slug)}.jpg` : '');
       if (!want) out.push('A6 이 쪽의 광고 카드 그림이 등록돼 있지 않음(PAGE_CARD · OG_OWN_PAGE_VER)');

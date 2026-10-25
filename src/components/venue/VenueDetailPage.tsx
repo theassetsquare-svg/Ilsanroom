@@ -18,6 +18,7 @@ import { useRecentVenues } from '@/hooks/useRecentVenues';
 import { useFavorites } from '@/hooks/useFavorites';
 import { getVenueBySlug } from '@/data/venues';
 import { isAdVenue, isPageOnlyAd, regionOf } from '@/lib/venue-order';
+import { pageCardOf } from '@/lib/venue-file-ver'; // [놀쿨61-1] 쪽 카드 표 — 가게 쪽에 다른 가게(명단 광고주)의 광고 카드가 걸린 쪽(장안동호빠 빵빵·플렉스 = 큐브 카드)
 
 const VenueSeoContent = lazy(() => import('@/components/venue/VenueSeoContent'));
 const VenueReportModal = lazy(() => import('@/components/venue/VenueReportModal'));
@@ -97,6 +98,10 @@ export default function VenueDetailPage({
     return hooks[hash % hooks.length];
   }, [venue.slug]);
 
+  // [놀쿨61-1] 쪽 카드(PAGE_CARD · kind 'ad')가 있는 가게 쪽 — 첫 그림·「광고」 표시를 프리렌더(withPageCard: og:image · heroAd)와 같게 한다(담당 줄은 그대로 — 그 가게의 담당이 아니다)
+  const pageCard = pageCardOf(detailPath);
+  const heroCard = pageCard && pageCard.kind === 'ad' ? pageCard : null;
+
   return (
     <div className="bg-neon-bg">
       {/* JSON-LD (NightClub/BarOrPub + BreadcrumbList + FAQPage) is emitted by SSR prerender-seo.mjs.
@@ -115,10 +120,12 @@ export default function VenueDetailPage({
       <VenueHero
         name={venue.nameKo}
         staffNickname={venue.staffNickname}
-        isAd={isAdVenue(venue) || isPageOnlyAd(venue)}
+        isAd={isAdVenue(venue) || isPageOnlyAd(venue) || !!heroCard}
         category={venue.category}
         regionLabel={regionOf(venue).label}
         slug={venue.slug}
+        cardFile={heroCard ? heroCard.file : undefined}
+        cardAlt={heroCard ? `${heroCard.shop} 안내 카드` : undefined}
       />
 
       {/* [놀쿨12-2 · 13:18-4] 같은 가게 둘째 쪽 — 주소는 그대로 두고 같은 가게임을 밝혀 본 쪽으로 잇는다(목록·숫자에는 본 쪽만) */}

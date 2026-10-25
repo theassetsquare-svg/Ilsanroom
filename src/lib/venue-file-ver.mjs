@@ -84,7 +84,16 @@ export const PAGE_CARD = {
   '/region/일산/rooms/': { file: 'region-ilsan-rooms-v10', kind: 'inquiry', shop: '일산룸' },
   '/rooms/ilsan/': { file: 'rooms-ilsan-v10', kind: 'inquiry', shop: '일산룸' },
   '/tag/일산룸/': { file: 'tag-ilsan-room-v10', kind: 'inquiry', shop: '일산룸' },
+  // [놀쿨61-1 · 대표님 2026-10-25 16:1x·17:5x] 제목에 「장안동호빠」가 든 쪽 4 = 장안동호빠 큐브(유현재 실장 010-7674-8310) 광고 카드 — 큐브 자기 쪽은 놀쿨에 없고,
+  //   빵빵·플렉스는 다른 가게의 쪽이라 가게 담당 칸이 아니라 여기(쪽 카드)로 넣는다(가게 쪽도 PAGE_CARD 가 있으면 첫 그림·og:image = 이 카드 · VenueHero). 색조는 넷 다 적어 서로 다른 그림.
+  '/hoppa/jangandonghoppa-bbangbbang/': { file: 'hoppa-jangandonghoppa-bbangbbang-cube-v1', kind: 'ad', shop: '장안동호빠 큐브', hue: 20 },
+  '/hoppa/jangandong-hoppa-flex/': { file: 'hoppa-jangandong-hoppa-flex-cube-v1', kind: 'ad', shop: '장안동호빠 큐브', hue: 205 },
+  '/region/장안동/hoppa/': { file: 'region-jangandong-hoppa-cube-v1', kind: 'ad', shop: '장안동호빠 큐브', hue: 290 },
+  '/tag/장안동호빠/': { file: 'tag-jangandong-hoppa-cube-v1', kind: 'ad', shop: '장안동호빠 큐브', hue: 340 },
 };
+/** [놀쿨61-1] 쪽 카드 그림 주소 — 가게 쪽이 PAGE_CARD 에 있으면 첫 그림(VenueHero)도 이 파일(프리렌더 withPageCard 의 og:image 와 같은 파일) */
+export const pageCardJpg = (file) => `/og/${file}.jpg`;
+export const pageCardLight = (file) => `/og/${file}-w1200.webp`;
 /** 경로(인코딩돼 있어도 됨 · 끝 빗금 없어도 됨) → 표의 열쇠 꼴 */
 export const pageKey = (route) => { let r = String(route || ''); try { r = decodeURIComponent(r); } catch { /* 풀 수 없는 글자는 그대로 */ } return r === '/' ? '/' : r.replace(/\/*$/, '/'); };
 export const pageCardOf = (route) => PAGE_CARD[pageKey(route)] || null;

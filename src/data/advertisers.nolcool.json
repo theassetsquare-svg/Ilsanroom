@@ -38,8 +38,24 @@
         "/tag/일산요정/"
       ],
       "fixedBar": true,
+      "titleWords": ["일산명월관", "일산요정"],
       "since": "2026-10-11",
       "근거": "대표님 2026-10-04 04:35 · 2026-10-11 18:09 — 제목(title · og:title · h1)에 「일산명월관」·「일산요정」이 든 쪽 전부. fixedBar = 화면 아래 고정 전화바(번호만)를 이 쪽들에 띄운다(src/components/venue/PageAdBar.tsx). 일산룸은 명단에 없다(광고문의 표준)."
+    },
+    {
+      "shop": "장안동호빠 큐브",
+      "nickname": "유현재 실장",
+      "phone": "010-7674-8310",
+      "pages": [
+        "/hoppa/jangandonghoppa-bbangbbang/",
+        "/hoppa/jangandong-hoppa-flex/",
+        "/region/장안동/hoppa/",
+        "/tag/장안동호빠/"
+      ],
+      "fixedBar": true,
+      "titleWords": ["장안동호빠"],
+      "since": "2026-10-25",
+      "근거": "대표님 2026-10-25 16:1x 「놀쿨사이트하고 놀쿨하위도메인하고 깃허브에 있는 모든 장안동호빠 페이지를 광고주 썸네일이미지하고밑에 고정전화번호를 넣어 … 장안동호빠 큐브 유현재실장 010 7674 8310」 · 17:5x 「놀쿨 4쪽 장안동호빠 카드·전화바. 이거 먼저해」 — 제목(title · og:title · h1 · 빈칸·# 뺀 글자)에 「장안동호빠」가 든 쪽 전부(큐브 자기 쪽은 놀쿨에 없음 · 빵빵·플렉스는 다른 가게의 쪽이라 가게 담당 칸(venues.ts)이 아니라 쪽 카드(PAGE_CARD)로 — 명단은 naver-watch data/advertisers.json 과 같은 값). titleWords = 제목에 이 낱말이 든 쪽은 이 명단에 있어야 하고(scripts/page-gate.mjs A6), 명단 쪽은 제목에 이 낱말이 있어야 한다(A8)."
     }
   ]
 }

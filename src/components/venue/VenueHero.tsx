@@ -1,5 +1,5 @@
 import NcH1 from '@/components/seo/NcH1';
-import { cardOwnJpg, cardOwnLight } from '@/lib/venue-file-ver'; // [놀쿨26-1] 가게 자기 쪽 판(놀쿨 명단 가게는 4줄 -v9 · 그 밖은 목록과 같은 판) · [놀쿨34-1] og:image 와 같은 jpg 파일 + 같은 카드의 가벼운 판
+import { cardOwnJpg, cardOwnLight, pageCardJpg, pageCardLight } from '@/lib/venue-file-ver'; // [놀쿨26-1] 가게 자기 쪽 판(놀쿨 명단 가게는 4줄 -v9 · 그 밖은 목록과 같은 판) · [놀쿨34-1] og:image 와 같은 jpg 파일 + 같은 카드의 가벼운 판
 
 interface VenueHeroProps {
   name: string;
@@ -9,6 +9,9 @@ interface VenueHeroProps {
   category: string;
   regionLabel: string;
   slug?: string;
+  /** [놀쿨61-1] 쪽 카드(src/lib/venue-file-ver.mjs PAGE_CARD)가 있는 가게 쪽 — 첫 그림 = 그 카드 파일(프리렌더 withPageCard 의 og:image 와 같은 파일) · alt 는 「<카드 가게> 안내 카드」 */
+  cardFile?: string;
+  cardAlt?: string;
 }
 
 /**
@@ -16,18 +19,18 @@ interface VenueHeroProps {
  * 프리렌더 첫 화면(scripts/prerender-seo.mjs ssr-hero)은 같은 카드를 더 크게(가로 최대 420px) 먼저 그린다
  * → React 가 첫 화면을 다시 그려도 그보다 큰 요소가 없어 첫 화면 그리기(LCP)가 자바스크립트 뒤로 밀리지 않는다(web.dev/articles/optimize-lcp).
  */
-export default function VenueHero({ name, staffNickname, isAd, regionLabel, slug }: VenueHeroProps) {
+export default function VenueHero({ name, staffNickname, isAd, regionLabel, slug, cardFile, cardAlt }: VenueHeroProps) {
   return (
     <section className="border-b border-neon-border bg-neon-bg">
       <div className="mx-auto max-w-[1200px] px-4 pb-6 sm:px-6">
         {slug && (
           <picture>
             {/* [놀쿨34-1 · G3 · 속도] 같은 카드의 가벼운 판(webp · 가로 1200) — 프리렌더 첫 화면이 이미 받아 둔 그 파일이라 다시 받지 않는다 */}
-            <source type="image/webp" srcSet={cardOwnLight(slug)} />
+            <source type="image/webp" srcSet={cardFile ? pageCardLight(cardFile) : cardOwnLight(slug)} />
             <img
               /* [놀쿨34-1 · G3] 첫 그림의 주소 = og:image 와 같은 파일(1200×1200 jpg) · 그림 설명은 그림에 그려진 그대로 */
-              src={cardOwnJpg(slug)}
-              alt={`${name} 안내 카드`}
+              src={cardFile ? pageCardJpg(cardFile) : cardOwnJpg(slug)}
+              alt={cardAlt || `${name} 안내 카드`}
               width={1200}
               height={1200}
               loading="eager"
