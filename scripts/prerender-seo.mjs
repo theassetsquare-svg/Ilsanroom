@@ -484,7 +484,9 @@ function withPageCard(meta, pc, routePath) {
   const has600 = OG_WEBP.has(`${pc.file}-w600`), has1200 = OG_WEBP.has(`${pc.file}-w1200`);
   const imgAttrs = `src="${has600 ? `/og/${escHtml(pc.file)}-w600.webp` : `/og/${escHtml(pc.file)}.jpg`}"${has600 && has1200 ? ` srcset="/og/${escHtml(pc.file)}-w600.webp 600w, /og/${escHtml(pc.file)}-w1200.webp 1200w" sizes="260px"` : ''} width="360" height="360"${g ? ' loading="eager" decoding="async"' : ''}`;
   const box = 'border:1px solid #d4d4d4;border-radius:14px;padding:14px;margin:0 0 16px;max-width:420px';
-  const cardAlt = `${escHtml(pc.shop)} 안내 카드`; // [구글69-1] 그림에 실제로 그려진 것(가게 이름 카드) — 번호·닉네임·「광고문의」 글자는 alt 에 0
+  // [구글69-1] alt = 그림에 실제로 그려진 것만 — 광고주 카드(가게 이름 카드) = 「<가게> 안내 카드」(번호·닉네임은 alt 에 0) · 광고문의 카드(구글 쪽 허브 3)는 「광고문의 · 카톡 besta12」가 그려져 있어 그대로 적는다(대표님 규칙 C7 광고문의 쪽 = alt 에 「광고문의」 · scripts/naver/human-check.mjs · 11-08)
+  const altText = g && !ad ? `${pc.shop} 광고문의 안내 카드(카톡 besta12)` : `${pc.shop} 안내 카드`;
+  const cardAlt = escHtml(altText);
   let card;
   if (ad) {
     const shopVenue = venues.find((v) => v.nameKo === ad.shop);
@@ -519,7 +521,7 @@ function withPageCard(meta, pc, routePath) {
       return out;
     });
   }
-  return { ...meta, ssrBody: body, ...(g && jsonLdList ? { jsonLdList } : {}), ogImage: cardUrl, heroSquare: true, heroAd: !!ad, heroAlt: `${pc.shop} 안내 카드`, ...(g ? { ogImageAlt: `${pc.shop} 안내 카드` } : {}) };
+  return { ...meta, ssrBody: body, ...(g && jsonLdList ? { jsonLdList } : {}), ogImage: cardUrl, heroSquare: true, heroAd: !!ad, heroAlt: altText, ...(g ? { ogImageAlt: altText } : {}) };
 }
 
 function writePage(routePath, meta) {
