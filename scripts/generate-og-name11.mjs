@@ -46,7 +46,7 @@ for (const a of nolcoolAds) {
 for (const [route, pc] of Object.entries(PAGE_CARD)) {
   const ad = pc.kind === 'ad' ? nolcoolAds.find((a) => (a.pages || []).some((p) => pageKey(p) === pageKey(route))) : null;
   if (pc.kind === 'ad' && !ad) continue;
-  venues.push({ slug: pc.file, nameKo: ad ? ad.shop : pc.shop, cat: 'page', nick: ad ? ad.nickname : '', phone: ad ? ad.phone : '', file: pc.file, hue: pc.hue });
+  venues.push({ slug: pc.file, nameKo: ad ? ad.shop : pc.shop, cat: 'page', nick: ad ? ad.nickname : '', phone: ad ? ad.phone : '', file: pc.file, hue: pc.hue, variant: pc.variant || '' }); // [구글69-1] variant: 낱말을 -로 이어 조합(variantTokens) — low(아래로) · mid(세로 가운데) · split(줄 나눔) · small(글자 0.7배) · left/right(왼쪽/오른쪽 맞춤 · 0.7배 · 세로 가운데) — 같은 글자 카드끼리 dHash(옆 칸 밝기 비교) 거리를 벌림
 }
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -84,19 +84,24 @@ function tint(slug, fixedHue) {
   return { a: `hsl(${hue.toFixed(0)},45%,11%)`, b: `hsl(${((hue + 40) % 360).toFixed(0)},40%,6%)` };
 }
 
+/** [구글69-1] variant 낱말 — 'low'(아래로 ≤300px) · 'mid'(세로 가운데) · 'split'(줄 나눔) · 'small'(글자 0.7배) · 'left'/'right'(왼쪽/오른쪽 맞춤 · 0.7배 · low 가 없으면 세로 가운데) · '-'로 이어 조합('right-low') */
+export const variantTokens = (v) => new Set(String(v.variant || '').split('-').filter(Boolean));
+
 export function layout(v) {
   const isAd = !!(v.nick && v.phone);
   // 이름 칸 세로 예산: 광고주는 아래 세 줄, 그 밖은 두 줄 자리를 남긴다
   const budget = isAd ? 560 : 640;
   let best = null;
-  for (let maxPer = 4; maxPer <= 8; maxPer++) {
+  const vt = variantTokens(v); const want = vt.has('split'); // [구글69-1] 'split' = 가장 많은 줄(≤3)로 나눈 판(글자·색 그대로 · 배치만 다름)
+  for (let maxPer = (want ? 2 : 4); maxPer <= 8; maxPer++) {
     const lines = splitName(v.nameKo, maxPer);
     if (lines.length > 3) continue;
     const longest = Math.max(...lines.map((l) => l.length));
     const size = Math.floor(Math.min(260, 1060 / longest, budget / (lines.length * 1.08)));
-    const score = size * (lines.halved ? 0.85 : 1); // 같은 크기면 낱말을 자르지 않은 판
+    const score = want ? (lines.halved ? 0 : lines.length * 1000) + size : size * (lines.halved ? 0.85 : 1); // 같은 크기면 낱말을 자르지 않은 판 · split 은 자르지 않은 판 가운데 줄 수 먼저
     if (!best || score > best.score) best = { lines, size, score };
   }
+  if (vt.has('left') || vt.has('right') || vt.has('small')) best = { ...best, size: Math.floor(best.size * 0.7) }; // [구글69-1] left·right·small = 글자 0.7배(left·right 는 왼쪽·오른쪽 맞춤 · 세로 가운데 — buildSvg)
   return { isAd, ...best };
 }
 
@@ -104,26 +109,32 @@ export function buildSvg(v) {
   const { isAd, lines, size } = layout(v);
   const t = tint(v.slug, v.hue);
   const gap = size * 1.08;
-  const top = isAd ? 70 : 110;
+  const top0 = isAd ? 70 : 110;
   const nameBlockH = gap * lines.length;
+  // [구글69-1] variant 'low' — 기본 배치의 맨 아래(카톡 줄 아래)에서 1150 까지 비는 자리 안에서(최대 300px) 전체를 아래로 내린다 · 글자·크기·색은 그대로
+  const bottom0 = (() => { let yy = top0 + nameBlockH + (isAd ? 60 : 90); if (isAd) { const ns = Math.min(128, Math.floor(1000 / Math.max(2, v.nick.length)), size - 20); yy += ns * 1.2; const ps = Math.min(110, size - 30); yy += ps * 1.35; return Math.min(yy + 56, 1150) + 20; } const s2 = Math.min(120, size - 30); yy += s2 * 1.3; return yy + s2 * 0.9 + 20; })();
+  const vt = variantTokens(v);
+  const dy = vt.has('low') ? Math.max(0, Math.min(300, 1150 - bottom0)) : (vt.has('mid') || vt.has('left') || vt.has('right')) ? Math.max(0, Math.round((1200 - (bottom0 - top0)) / 2) - top0) : 0;
+  const top = top0 + dy;
+  const X = vt.has('left') ? 80 : vt.has('right') ? 1120 : 600; const anchor = vt.has('left') ? 'start' : vt.has('right') ? 'end' : 'middle'; // [구글69-1] left·right 는 모든 줄을 왼쪽(x=80)·오른쪽(x=1120)에 맞춤
   const nameTexts = lines
-    .map((l, i) => `<text x="600" y="${Math.round(top + gap * i + size * 0.92)}" text-anchor="middle" font-family="KO" font-size="${size}" font-weight="900" fill="#FFD54A" letter-spacing="-0.02em">${esc(l)}</text>`)
+    .map((l, i) => `<text x="${X}" y="${Math.round(top + gap * i + size * 0.92)}" text-anchor="${anchor}" font-family="KO" font-size="${size}" font-weight="900" fill="#FFD54A" letter-spacing="-0.02em">${esc(l)}</text>`)
     .join('\n  ');
   let y = top + nameBlockH + (isAd ? 60 : 90);
   let rest = '';
   if (isAd) {
     const nickSize = Math.min(128, Math.floor(1000 / Math.max(2, v.nick.length)), size - 20);
-    rest += `<text x="600" y="${Math.round(y + nickSize * 0.9)}" text-anchor="middle" font-family="KO" font-size="${nickSize}" font-weight="900" fill="#FFFFFF">${esc(v.nick)}</text>`;
+    rest += `<text x="${X}" y="${Math.round(y + nickSize * 0.9)}" text-anchor="${anchor}" font-family="KO" font-size="${nickSize}" font-weight="900" fill="#FFFFFF">${esc(v.nick)}</text>`;
     y += nickSize * 1.2;
     const phoneSize = Math.min(110, size - 30);
-    rest += `\n  <text x="600" y="${Math.round(y + phoneSize * 0.9)}" text-anchor="middle" font-family="KO" font-size="${phoneSize}" font-weight="900" fill="#FFFFFF" letter-spacing="0.01em">${esc(v.phone.replace(/-/g, ' '))}</text>`;
+    rest += `\n  <text x="${X}" y="${Math.round(y + phoneSize * 0.9)}" text-anchor="${anchor}" font-family="KO" font-size="${phoneSize}" font-weight="900" fill="#FFFFFF" letter-spacing="0.01em">${esc(v.phone.replace(/-/g, ' '))}</text>`;
     y += phoneSize * 1.35;
-    rest += `\n  <text x="600" y="${Math.round(Math.min(y + 56, 1150))}" text-anchor="middle" font-family="KO" font-size="58" font-weight="700" fill="#E8F5E9">${esc(KAKAO_LINE)}</text>`;
+    rest += `\n  <text x="${X}" y="${Math.round(Math.min(y + 56, 1150))}" text-anchor="${anchor}" font-family="KO" font-size="58" font-weight="700" fill="#E8F5E9">${esc(KAKAO_LINE)}</text>`;
   } else {
     const s2 = Math.min(120, size - 30);
-    rest += `<text x="600" y="${Math.round(y + s2 * 0.9)}" text-anchor="middle" font-family="KO" font-size="${s2}" font-weight="900" fill="#FFFFFF">광고문의</text>`;
+    rest += `<text x="${X}" y="${Math.round(y + s2 * 0.9)}" text-anchor="${anchor}" font-family="KO" font-size="${s2}" font-weight="900" fill="#FFFFFF">광고문의</text>`;
     y += s2 * 1.3;
-    rest += `\n  <text x="600" y="${Math.round(y + s2 * 0.9)}" text-anchor="middle" font-family="KO" font-size="${s2}" font-weight="900" fill="#E8F5E9">카톡 besta12</text>`;
+    rest += `\n  <text x="${X}" y="${Math.round(y + s2 * 0.9)}" text-anchor="${anchor}" font-family="KO" font-size="${s2}" font-weight="900" fill="#E8F5E9">카톡 besta12</text>`;
   }
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
   <defs>

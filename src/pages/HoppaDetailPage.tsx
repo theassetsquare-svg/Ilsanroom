@@ -23,7 +23,7 @@ export default function HoppaDetailPage() {
   const venue = getVenueBySlug(slug!);
   // [놀쿨12-2 · P39·P40] 훅은 일찍 돌아가기(Navigate) 전에 — 같은 쪽 틀에서 잘못된 주소 → 맞는 주소로 옮길 때 React 오류 #310(훅 수가 달라짐)이 나던 것
   const valid = !!venue && venue.category === 'hoppa';
-  // [놀쿨61-1] 쪽 카드(PAGE_CARD · kind 'ad')가 걸린 쪽(장안동호빠 빵빵·플렉스 = 큐브 카드)은 og:image 도 그 카드 파일 — 프리렌더가 박은 값을 수화 뒤 가게 자기 카드(-v8)로 덮어쓰지 않게 한다
+  // [놀쿨61-1] 쪽 카드(PAGE_CARD · kind 'ad')가 걸린 쪽(장안동호빠 빵빵·큐브 = 큐브 카드 · 건대호빠 = 건대호빠 카드 · 구글69-1)은 og:image 도 그 카드 파일 — 프리렌더가 박은 값을 수화 뒤 가게 자기 카드(-v8)로 덮어쓰지 않게 한다
   const pageCard = valid ? pageCardOf(`/hoppa/${slug}/`) : null;
   const ogImage = valid ? (pageCard && pageCard.kind === 'ad' ? `https://nolcool.com${pageCardJpg(pageCard.file)}` : getVenueOgImageBySlug(venue!.slug)) : undefined;
   useDocumentMeta(valid ? getHookingTitle(venue!) + '' : '', valid ? getHookingDescription(venue!) : '', ogImage);

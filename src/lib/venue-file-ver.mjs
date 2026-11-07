@@ -86,10 +86,20 @@ export const PAGE_CARD = {
   '/tag/일산룸/': { file: 'tag-ilsan-room-v10', kind: 'inquiry', shop: '일산룸' },
   // [놀쿨61-1 · 대표님 2026-10-25 16:1x·17:5x] 제목에 「장안동호빠」가 든 쪽 4 = 장안동호빠 큐브(유현재 실장 010-7674-8310) 광고 카드 — 큐브 자기 쪽은 놀쿨에 없고,
   //   빵빵·플렉스는 다른 가게의 쪽이라 가게 담당 칸이 아니라 여기(쪽 카드)로 넣는다(가게 쪽도 PAGE_CARD 가 있으면 첫 그림·og:image = 이 카드 · VenueHero). 색조는 넷 다 적어 서로 다른 그림.
-  '/hoppa/jangandonghoppa-bbangbbang/': { file: 'hoppa-jangandonghoppa-bbangbbang-cube-v1', kind: 'ad', shop: '장안동호빠 큐브', hue: 20 },
-  '/hoppa/jangandong-hoppa-flex/': { file: 'hoppa-jangandong-hoppa-flex-cube-v1', kind: 'ad', shop: '장안동호빠 큐브', hue: 205 },
-  '/region/장안동/hoppa/': { file: 'region-jangandong-hoppa-cube-v1', kind: 'ad', shop: '장안동호빠 큐브', hue: 290 },
-  '/tag/장안동호빠/': { file: 'tag-jangandong-hoppa-cube-v1', kind: 'ad', shop: '장안동호빠 큐브', hue: 340 },
+  //   [구글69-1 · 2026-11-07 · 대표님 00:23 「사진을 구글정식문서에 맞게 전부다 넣어」] google: true = 구글 이미지 공식 문서대로 더 넣는 쪽(scripts/prerender-seo.mjs withPageCard):
+  //   alt 「<가게> 안내 카드」(그려진 것만 · 번호 0) · 본문 카드 loading="eager" · og:image alt 같은 글자 · JSON-LD image(광고주 쪽만 telephone) · 사이트맵 <image:image>. 표시 없는 쪽은 글자 변화 0.
+  '/hoppa/jangandonghoppa-bbangbbang/': { file: 'hoppa-jangandonghoppa-bbangbbang-cube-v1', kind: 'ad', shop: '장안동호빠 큐브', hue: 20, google: true },
+  '/hoppa/jangandong-hoppa-flex/': { file: 'hoppa-jangandong-hoppa-flex-cube-v1', kind: 'ad', shop: '장안동호빠 큐브', hue: 205, google: true, variant: 'low' },
+  '/region/장안동/hoppa/': { file: 'region-jangandong-hoppa-cube-v1', kind: 'ad', shop: '장안동호빠 큐브', hue: 290, google: true, variant: 'split' },
+  '/tag/장안동호빠/': { file: 'tag-jangandong-hoppa-cube-v1', kind: 'ad', shop: '장안동호빠 큐브', hue: 340, google: true, variant: 'left' },
+  // [구글69-1 · 대표님 2026-11-07 00:23 「건대호빠 광고주는 유현재실장 010 7674 8310」] 제목에 「건대호빠」가 든 쪽 3 = 건대호빠(유현재 실장 · 큐브와 같은 번호 · 명단 src/data/advertisers.nolcool.json) 광고 카드 · 색조 셋 다 적어 서로 다른 그림
+  '/hoppa/geondaehoppa-w/': { file: 'geondae-hoppa-card-v1', kind: 'ad', shop: '건대호빠', hue: 80, google: true },
+  '/region/건대/hoppa/': { file: 'region-geondae-hoppa-card-v1', kind: 'ad', shop: '건대호빠', hue: 130, google: true, variant: 'low' }, // [구글69-1] variant = 같은 글자 카드 묶음(장안동 4 · 건대 3 · 광고문의 3)의 지각해시(dHash) 거리를 벌리는 배치(generate-og-name11 · 색조만 달라선 거리 1~8 · 기본=위 가운데 · low=아래로 · mid=세로 가운데 · split=줄 나눔 · small=0.7배 · left/right=왼쪽/오른쪽 맞춤 · -로 조합)
+  '/tag/건대호빠/': { file: 'tag-geondae-hoppa-card-v1', kind: 'ad', shop: '건대호빠', hue: 250, google: true, variant: 'right-low' }, // split(두 줄 · 위 가운데)은 보통 가게 카드와 거리 8 → right-low
+  // [구글69-1 · 대표님 2026-11-07 00:23 「강남호빠 광고문의 · 해운대호빠 광고문의 · 부산호빠 광고문의」] 지역 허브 3 = 광고문의 카드(3줄 · 번호 0 · 카톡 besta12 는 카드·본문 카드에만)
+  '/region/강남/hoppa/': { file: 'region-gangnam-hoppa-inquiry-card-v1', kind: 'inquiry', shop: '강남호빠', hue: 5, google: true, variant: 'left' },
+  '/region/부산 해운대/hoppa/': { file: 'region-busan-haeundae-hoppa-inquiry-card-v1', kind: 'inquiry', shop: '해운대호빠', hue: 190, google: true, variant: 'right' }, // split 은 보통 가게 카드와 거리 10 → right
+  '/region/부산/hoppa/': { file: 'region-busan-hoppa-inquiry-card-v1', kind: 'inquiry', shop: '부산호빠', hue: 310, google: true, variant: 'low' },
 };
 /** [놀쿨61-1] 쪽 카드 그림 주소 — 가게 쪽이 PAGE_CARD 에 있으면 첫 그림(VenueHero)도 이 파일(프리렌더 withPageCard 의 og:image 와 같은 파일) */
 export const pageCardJpg = (file) => `/og/${file}.jpg`;

@@ -1,5 +1,5 @@
 /**
- * 장안동호빠 플렉스 페이지 단일 키워드 SEO 24h watch (시즌123).
+ * 장안동호빠 큐브(옛 이름 플렉스 · 주소 그대로) 페이지 단일 키워드 SEO 24h watch (시즌123 · 구글69-1 2026-11-07 이름·디테일 토큰 고침).
  * 매일 KST 11:25 — title/desc/body 검색 의도 매칭 측정 → 회귀시만 메일.
  *
  * 측정 키워드:
@@ -16,8 +16,8 @@
  *   8) "장안동호빠" body 등장 ≥5회
  *   9) "장안동호빠" body 밀도 1.0%~3.5%
  *  10) 후킹 5축 ≥1축 (title 또는 desc)
- *  11) 디테일 토큰 (4번출구·중랑천·미러볼·청량리역·양꼬치골목) 모두 등장
- *     — 시즌122 빵빵(장한평역·답십리역·곱창골목·한천로·동대문구청)과 0/5 토큰 겹침
+ *  11) 디테일 토큰 (장안동·동대문구·유현재 실장·호스트바·예약) 모두 등장
+ *     — 쪽에 실제로 적힌 사실 낱말만(옛 4번출구·중랑천·미러볼·청량리역·양꼬치골목 은 확인 안 된 값이라 뺌 · 구글69-1)
  *
  * 환경:
  *   RESEND_API_KEY     필수
@@ -30,7 +30,7 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/hoppa/jangandong-hoppa-flex/';
 const KEYWORD = '장안동호빠';
-const DETAIL_TOKENS = ['4번출구', '중랑천', '미러볼', '청량리역', '양꼬치골목'];
+const DETAIL_TOKENS = ['장안동', '동대문구', '유현재 실장', '호스트바', '예약'];
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */
@@ -93,7 +93,7 @@ async function main() {
     hookSamples: [...hookTitle.axes, ...hookDesc.axes].filter(a => a.hits > 0).map(a => `${a.axis}:${a.samples.join('|')}`).join(' / '),
   };
 
-  console.log('장안동호빠 플렉스 SEO watch');
+  console.log('장안동호빠 큐브 SEO watch');
   console.log('  URL:', URL);
   console.log('  title:', title);
   console.log('  desc:', desc);
@@ -114,7 +114,7 @@ async function sendMail({ issues, snapshot }) {
   const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const kst = new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 19) + ' KST';
   const html = `<div style="font-family:sans-serif;max-width:680px;margin:0 auto;padding:20px">
-    <h2 style="color:#DC2626">[⚠ 장안동호빠 플렉스 SEO 회귀] ${issues.length}건</h2>
+    <h2 style="color:#DC2626">[⚠ 장안동호빠 큐브 SEO 회귀] ${issues.length}건</h2>
     <p style="color:#666;font-size:13px">측정 시각: ${kst}</p>
     <p><a href="${URL}">${URL}</a></p>
     <h3>회귀 사유</h3>
@@ -137,7 +137,7 @@ async function sendMail({ issues, snapshot }) {
     body: JSON.stringify({
       from: 'NOLCOOL auto <onboarding@resend.dev>',
       to: [TO],
-      subject: `[놀쿨][⚠] 장안동호빠 플렉스 SEO 회귀 ${issues.length}건`,
+      subject: `[놀쿨][⚠] 장안동호빠 큐브 SEO 회귀 ${issues.length}건`,
       html,
     }),
   });

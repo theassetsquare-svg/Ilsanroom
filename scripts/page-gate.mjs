@@ -91,18 +91,28 @@ const NICK_NEAR_NUMBER_RE = /(천사|태양|둘리|따봉|수빈)[\s:·)]{0,4}0\
 // [놀쿨26-1 · 2026-10-04 · 대표님 03:43] 놀쿨 전용 광고주 명단(src/data/advertisers.nolcool.json) — 적힌 쪽(pages)에서만 그 닉네임·번호를 허용한다.
 //   그 밖의 쪽에 그 번호가 나오면 지금처럼 A2 로 막는다(venues.ts staffPhone 에 있어도 쪽 밖이면 막음).
 //   [놀쿨44-1] 쪽 주소는 풀어 쓴(한글) 꼴 + 끝 빗금으로 맞춰 견준다(명단에 한글 주소가 들어왔다 — /region/일산/yojeong/ · /tag/일산요정/).
+// [구글69-1 · 2026-11-07] 명단 줄 하나 = 가게 하나(장안동호빠 큐브 · 건대호빠는 같은 실장·같은 번호라 두 줄) — 가게·titleWords·쪽은 줄마다 따로(ROSTER_ROWS),
+//   번호 키 Map(PAGE_ONLY)은 같은 번호의 쪽을 합친다(pages 합집합 · nicks). 번호로만 키를 잡으면 뒤 줄이 앞 줄을 덮어 앞 가게 쪽이 「명단 밖 번호」로 막힌다(11-07 실측).
+const ROSTER_ROWS = (() => {
+  try { return (JSON.parse(fs.readFileSync('src/data/advertisers.nolcool.json', 'utf8')).advertisers || []).map((a) => ({ nick: a.nickname, shop: a.shop, phone: a.phone, titleWords: (Array.isArray(a.titleWords) ? a.titleWords : []).map((w) => squashTitle(w)).filter(Boolean), pages: new Set((a.pages || []).map(pageKey)) })); } catch { return []; }
+})();
 const PAGE_ONLY = (() => {
   const map = new Map();
-  try { for (const a of JSON.parse(fs.readFileSync('src/data/advertisers.nolcool.json', 'utf8')).advertisers || []) map.set(String(a.phone).replace(/\D/g, ''), { nick: a.nickname, shop: a.shop, phone: a.phone, titleWords: (Array.isArray(a.titleWords) ? a.titleWords : []).map((w) => squashTitle(w)).filter(Boolean), pages: new Set((a.pages || []).map(pageKey)) }); } catch {}
+  for (const r of ROSTER_ROWS) {
+    const k = String(r.phone).replace(/\D/g, '');
+    const cur = map.get(k);
+    if (!cur) { map.set(k, { nick: r.nick, nicks: new Set([r.nick]), shop: r.shop, phone: r.phone, titleWords: [...r.titleWords], pages: new Set(r.pages) }); continue; }
+    cur.nicks.add(r.nick); for (const p of r.pages) cur.pages.add(p); for (const w of r.titleWords) if (!cur.titleWords.includes(w)) cur.titleWords.push(w);
+  }
   return map;
 })();
-/** 이 쪽이 명단에 적힌 광고주(닉네임 기준) — 없으면 null */
-const rosterOf = (route) => { const here = pageKey(route); return [...PAGE_ONLY.values()].find((p) => p.pages.has(here)) || null; };
+/** 이 쪽이 명단에 적힌 광고주(줄 기준 · 가게 하나) — 없으면 null */
+const rosterOf = (route) => { const here = pageKey(route); return ROSTER_ROWS.find((p) => p.pages.has(here)) || null; };
 // [놀쿨44-1 · 새 맥락 검토] 쪽 카드 표의 광고 카드(kind 'ad' · 가게 이름으로 명단과 잇는다) — 그 광고주의 명단 쪽에서만 부를 수 있다(닉네임·번호가 그려진 그림이 다른 쪽에 실리지 않게)
 //   가게 자기 쪽 4줄 판(OG_OWN_PAGE_VER) · 매거진 광고 카드(MAGAZINE_OG)도 같은 잣대 — 그 쪽이 든 명단의 쪽에서만
 const escRe = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const cardRe = (file) => new RegExp('/og/' + escRe(file) + '(?:-w\\d+|-i\\d+)?\\.(?:jpg|webp)');
-const rosterList = [...PAGE_ONLY.values()];
+const rosterList = ROSTER_ROWS; // [구글69-1] 가게(줄)마다 하나 — 같은 번호 두 가게도 각각
 const AD_CARDS = [
   ...Object.values(PAGE_CARD).filter((c) => c.kind === 'ad').map((c) => { const p = rosterList.find((x) => x.shop === c.shop); return p ? { file: c.file, pages: p.pages, re: cardRe(c.file) } : null; }),
   ...Object.keys(OG_OWN_PAGE_VER).map((slug) => { const p = rosterList.find((x) => [...x.pages].some((k) => k.endsWith(`/${slug}/`))); return p ? { file: `${slug}${ogOwnVer(slug)}`, pages: p.pages, re: cardRe(`${slug}${ogOwnVer(slug)}`) } : null; }),
@@ -268,13 +278,13 @@ export function contactProblems(html, route = '') {
   const here = pageKey(route); // [놀쿨44-1] 풀어 쓴 꼴 + 끝 빗금(한글 주소도 명단과 맞게)
   const pageOnlyOk = (n) => { const p = PAGE_ONLY.get(n); return !!p && p.pages.has(here); }; // [놀쿨26-1] 놀쿨 명단 번호는 적힌 쪽에서만
   const off = [...new Set([...nums, ...tels])].filter((n) => (PAGE_ONLY.has(n) ? !pageOnlyOk(n) : !ALLOWED_PHONES.has(n)));
-  const nickOkHere = (w) => [...PAGE_ONLY.values()].some((p) => p.nick === w && p.pages.has(here)); // [놀쿨44-1] 금지 낱말이 명단 닉네임이면(신실장) 그 쪽에서만 통과
+  const nickOkHere = (w) => ROSTER_ROWS.some((p) => p.nick === w && p.pages.has(here)); // [놀쿨44-1] 금지 낱말이 명단 닉네임이면(신실장) 그 쪽에서만 통과
   // [놀쿨44-1 · 새 맥락 검토] 낱말 사이에 빈칸·태그를 낀 꼴 · 스크립트 속(ld+json 아닌 것 포함)까지 본다
   const noData = html.replace(/data:[a-z]+\/[a-z0-9.+-]+;base64,[A-Za-z0-9+/=]+/g, ' ');
   const words = FORBIDDEN_WORDS.filter((w) => (noJs.includes(w) || looseWordRe(w).test(noData)) && !nickOkHere(w));
   for (const m of noJs.matchAll(NICK_NEAR_NUMBER_RE)) {
     const n = m[0].replace(/\D/g, '');
-    if (pageOnlyOk(n) && m[1] === PAGE_ONLY.get(n).nick) continue; // 놀쿨 명단의 닉네임+번호 꼴은 그 쪽에서만 통과
+    if (pageOnlyOk(n) && PAGE_ONLY.get(n).nicks.has(m[1])) continue; // 놀쿨 명단의 닉네임+번호 꼴은 그 쪽에서만 통과
     words.push(m[0]); break;
   }
   // [놀쿨44-1 · 새 맥락 검토] 명단 번호를 꼴을 바꿔(+82 · 끊김 없는 빈칸 · 긴 줄표 · 사이 태그 · 스크립트 속) 명단 밖 쪽에 쓴 것 — 숫자만 남긴 글에서 앞 0 을 뺀 열 자리로 찾는다
@@ -308,7 +318,10 @@ export function ilsanProblems(html, ctx = {}) {
     const words = owner && owner.titleWords.length ? owner.titleWords : ['일산명월관', '일산요정'];
     if (!keys.some((k) => words.some((w) => k.includes(w)))) out.push(`A8 쪽 카드 표에는 광고 카드 쪽인데 제목에 ${낱말글(words)}이 없음`);
   }
-  if (pc && pc.kind === 'inquiry' && !kind.B) out.push('A8 쪽 카드 표에는 광고문의 카드 쪽인데 제목에 「일산룸」이 없음');
+  // [구글69-1 · 2026-11-07] 광고문의 카드 쪽의 제목 낱말 = 표의 shop(일산룸 · 강남호빠 · 해운대호빠 · 부산호빠) — 제목(빈칸·# 뺀 글자)에 그 이름이 들면 B(광고문의 · 번호 0) 갈래로 일산룸과 같은 잣대를 댄다
+  const bName = pc && pc.kind === 'inquiry' ? pc.shop : '일산룸';
+  if (pc && pc.kind === 'inquiry' && keys.some((k) => k.includes(squashTitle(pc.shop)))) kind.B = true;
+  if (pc && pc.kind === 'inquiry' && !kind.B) out.push(`A8 쪽 카드 표에는 광고문의 카드 쪽인데 제목에 「${bName}」이 없음`);
   // [놀쿨44-1 · 새 맥락 검토] 명단에 적힌 쪽이라도 제목이 A 가 아니면 그 닉네임·번호를 통과시키지 않는다(명단에 제목이 다른 쪽을 적어 넣는 길을 막음)
   const bound = rosterOf(route);
   if (bound && bound.titleWords.length && !keys.some((k) => bound.titleWords.some((w) => k.includes(w)))) out.push(`A8 놀쿨 명단에는 「${bound.nick}」 쪽인데 제목에 ${낱말글(bound.titleWords)}이 없음`);
@@ -341,22 +354,22 @@ export function ilsanProblems(html, ctx = {}) {
       if (want && !bodyImgOf(want).test(html)) out.push(`A6 본문에 광고 카드 그림 없음 ${want}`);
       if (pc && pc.kind === 'ad' && !/class="[^"]*\bnc-ad-card\b/.test(html)) out.push('A6 본문 광고 카드 블록 없음(nc-ad-card)');
     }
-    if (kind.B && !/class="[^"]*\bnc-inq-card\b/.test(html)) out.push('A7 「일산룸」도 든 쪽인데 본문 광고문의 카드 없음');
+    if (kind.B && !/class="[^"]*\bnc-inq-card\b/.test(html)) out.push(`A7 「${bName}」도 든 쪽인데 본문 광고문의 카드 없음`);
   } else {
     // B 만
-    if (numsAll.length) out.push(`A7 제목에 「일산룸」이 든 쪽에 번호 ${numsAll.join(',')}(광고문의 · 번호 0)`);
-    if (/"telephone"\s*:/.test(html)) out.push('A7 「일산룸」 쪽 구조화 데이터에 telephone');
+    if (numsAll.length) out.push(`A7 제목에 「${bName}」이 든 쪽에 번호 ${numsAll.join(',')}(광고문의 · 번호 0)`);
+    if (/"telephone"\s*:/.test(html)) out.push(`A7 「${bName}」 쪽 구조화 데이터에 telephone`);
     const want = pc && pc.kind === 'inquiry' ? `/og/${pc.file}.jpg` : (slug ? `/og/${slug}${ogVer(slug)}.jpg` : '');
     if (!want) out.push('A7 이 쪽의 광고문의 카드 그림이 등록돼 있지 않음(PAGE_CARD)');
     else if (og !== want || tw !== want) out.push(`A7 og:image·twitter:image ≠ 광고문의 카드 ${want} (${og || '없음'})`);
     else if (!fileOk(want)) out.push(`A7 광고문의 카드 파일 없음 ${want}`);
-    if (slug && OG_OWN_PAGE_VER[slug]) out.push('A7 「일산룸」 가게에 광고주 판 카드가 등록돼 있음');
+    if (slug && OG_OWN_PAGE_VER[slug]) out.push(`A7 「${bName}」 가게에 광고주 판 카드가 등록돼 있음`);
     // [놀쿨44-1 · 새 맥락 검토] 꼴을 바꿔 쓴 번호(+82 · 080 · 붙여 쓴 지역번호 · 사이 태그 · 스크립트 속) · tel·sms 링크 · 신실장 글자 · 본문 카드 그림·카드 블록
     const loose = loosePhones(html);
-    if (loose.length && !numsAll.length) out.push(`A7 제목에 「일산룸」이 든 쪽에 번호 꼴 ${loose.join(',')}(꼴 바꿈 포함 · 번호 0)`);
-    if (/href="(?:tel|sms):/i.test(html) && !cp.tels.length) out.push('A7 「일산룸」 쪽에 tel·sms 링크');
+    if (loose.length && !numsAll.length) out.push(`A7 제목에 「${bName}」이 든 쪽에 번호 꼴 ${loose.join(',')}(꼴 바꿈 포함 · 번호 0)`);
+    if (/href="(?:tel|sms):/i.test(html) && !cp.tels.length) out.push(`A7 「${bName}」 쪽에 tel·sms 링크`);
     const noData = html.replace(/data:[a-z]+\/[a-z0-9.+-]+;base64,[A-Za-z0-9+/=]+/g, ' ');
-    for (const w of TITLE_BOUND_NICKS) if (looseWordRe(w).test(noData) && !cp.words.includes(w)) out.push(`A7 「일산룸」 쪽에 「${w}」 글자`);
+    for (const w of TITLE_BOUND_NICKS) if (looseWordRe(w).test(noData) && !cp.words.includes(w)) out.push(`A7 「${bName}」 쪽에 「${w}」 글자`);
     if (want && !bodyImgOf(want).test(html)) out.push(`A7 본문에 광고문의 카드 그림 없음 ${want}`);
     if (pc && pc.kind === 'inquiry' && !/class="[^"]*\bnc-inq-card\b/.test(html)) out.push('A7 본문 광고문의 카드 블록 없음(nc-inq-card)');
   }

@@ -466,22 +466,31 @@ function visibleBreadcrumb(meta) {
 //   광고 카드는 놀쿨 명단(src/data/advertisers.nolcool.json)에 그 쪽이 적혀 있을 때만(닉네임·번호는 명단 값 그대로 · 「광고」 표시) — 명단에 없으면 아무것도 안 넣는다.
 //   광고문의 카드에는 번호·tel 링크가 없다. 글자는 카드에 그려진 것과 같다(가게이름 / 광고문의 / 카톡 besta12).
 const NC_PAGE_CARD_ADS = (() => { try { return JSON.parse(fs.readFileSync('src/data/advertisers.nolcool.json', 'utf8')).advertisers || []; } catch { return []; } })();
+// [구글69-1 · 2026-11-07 · 대표님 00:23 「사진을 구글정식문서에 맞게 전부다 넣어」] PAGE_CARD 에 google: true 가 적힌 쪽만 구글 공식 문서(Google Search Central
+//   「Google 이미지 SEO 권장사항」·「이미지 사이트맵」·「LocalBusiness 구조화 데이터」 · 확인 2026-11-07)대로 더 넣는다 — alt 는 그림에 실제로 그려진 것을 짧게(「<가게> 안내 카드」 · 번호·닉네임 0) ·
+//   본문 카드 그림은 loading="eager"(첫 화면 안의 그림은 지연 0) · og:image alt 도 같은 글자 · JSON-LD(#business · CollectionPage) image = 그 쪽에 보이는 카드 주소 · 광고주 쪽만 telephone(명단 번호 · +82 꼴) ·
+//   사이트맵 <image:image>(5절 imgXml 이 아래 표를 읽음). google 표시가 없는 쪽(일산 9 등 다른 창 몫)은 글자 하나 바뀌지 않는다.
+const SITEMAP_IMAGE_BY_ROUTE = {};
 function withPageCard(meta, pc, routePath) {
   if (!fs.existsSync(path.join('public', 'og', `${pc.file}.jpg`))) return meta; // 그림이 없으면 넣지 않는다(배선-자산 불일치 안전핀 · page-gate 가 막는다)
   const key = pageKey(routePath);
   const ad = pc.kind === 'ad' ? NC_PAGE_CARD_ADS.find((x) => (x.pages || []).some((p) => pageKey(p) === key)) : null;
   if (pc.kind === 'ad' && !ad) return meta;
+  const g = !!pc.google; // [구글69-1] 구글 이미지 공식대로 더 넣는 쪽(위 주석)
   const has600 = OG_WEBP.has(`${pc.file}-w600`), has1200 = OG_WEBP.has(`${pc.file}-w1200`);
-  const imgAttrs = `src="${has600 ? `/og/${escHtml(pc.file)}-w600.webp` : `/og/${escHtml(pc.file)}.jpg`}"${has600 && has1200 ? ` srcset="/og/${escHtml(pc.file)}-w600.webp 600w, /og/${escHtml(pc.file)}-w1200.webp 1200w" sizes="260px"` : ''} width="360" height="360"`;
+  const imgAttrs = `src="${has600 ? `/og/${escHtml(pc.file)}-w600.webp` : `/og/${escHtml(pc.file)}.jpg`}"${has600 && has1200 ? ` srcset="/og/${escHtml(pc.file)}-w600.webp 600w, /og/${escHtml(pc.file)}-w1200.webp 1200w" sizes="260px"` : ''} width="360" height="360"${g ? ' loading="eager" decoding="async"' : ''}`;
   const box = 'border:1px solid #d4d4d4;border-radius:14px;padding:14px;margin:0 0 16px;max-width:420px';
+  const cardAlt = `${escHtml(pc.shop)} 안내 카드`; // [구글69-1] 그림에 실제로 그려진 것(가게 이름 카드) — 번호·닉네임·「광고문의」 글자는 alt 에 0
   let card;
   if (ad) {
     const shopVenue = venues.find((v) => v.nameKo === ad.shop);
-    const href = shopVenue ? venueHref(shopVenue) : '';
-    const img = `<img ${imgAttrs} alt="${escHtml(ad.shop)} ${escHtml(ad.nickname)} ${escHtml(ad.phone)}" style="width:100%;max-width:260px;height:auto;border-radius:10px">`;
+    const href0 = shopVenue ? venueHref(shopVenue) : '';
+    // [구글69-1] 가게 자기 쪽(구글 쪽만)에서는 자기 링크(「자세히 보기」·그림 링크)를 뺀다 — 쓸모 0 · 가게 이름 한 번 덜(venue-density-audit 3.0%)
+    const href = g && href0 && pageKey(href0) === key ? '' : href0;
+    const img = `<img ${imgAttrs} alt="${g ? cardAlt : `${escHtml(ad.shop)} ${escHtml(ad.nickname)} ${escHtml(ad.phone)}`}" style="width:100%;max-width:260px;height:auto;border-radius:10px">`;
     card = `<section class="nc-ad-card ssr-adlabel" aria-label="광고" style="${box}"><p style="margin:0 0 8px;font-size:12px;color:#555"><span style="display:inline-block;padding:1px 6px;border:1px solid #888;border-radius:6px">광고</span> 아래 연락처는 업소 담당자가 제공한 광고 정보입니다.</p>${href ? `<a href="${escHtml(href)}">${img}</a>` : img}<p style="margin:10px 0 4px;font-weight:700">${escHtml(ad.shop)} · ${escHtml(ad.nickname)}</p><p style="margin:0 0 8px"><a href="tel:${escHtml(ad.phone.replace(/\D/g, ''))}" style="display:inline-flex;align-items:center;padding:0 16px;min-height:48px!important;box-sizing:border-box;border-radius:10px;background:#15803D;color:#fff;font-weight:700;text-decoration:none">📞 ${escHtml(ad.phone)}</a></p>${href ? `<p style="margin:0;font-size:14px"><a href="${escHtml(href)}">${escHtml(ad.shop)} 자세히 보기</a></p>` : ''}</section>`;
   } else {
-    card = `<p class="nc-inq-card" style="${box}"><img ${imgAttrs} alt="${escHtml(pc.shop)} 광고문의 카톡 besta12" style="display:block;width:100%;max-width:260px;height:auto;border-radius:10px;margin:0 0 10px"><strong>광고문의</strong> · 카톡 besta12</p>`;
+    card = `<p class="nc-inq-card" style="${box}"><img ${imgAttrs} alt="${g ? cardAlt : `${escHtml(pc.shop)} 광고문의 카톡 besta12`}" style="display:block;width:100%;max-width:260px;height:auto;border-radius:10px;margin:0 0 10px"><strong>광고문의</strong> · 카톡 besta12</p>`;
   }
   // 자리 = 직답(.ssr-answer) 바로 아래. 직답이 없는 쪽은 뼈대가 쓰던 것과 같은 글(설명)을 직답으로 먼저 두고 그 아래(직답 글자 변화 0).
   let body = meta.ssrBody || '';
@@ -492,7 +501,20 @@ function withPageCard(meta, pc, routePath) {
     const block = `${ans ? `<p class="ssr-answer">${escHtml(ans)}</p>` : ''}${card}`;
     body = /<\/h1>/.test(body) ? body.replace(/<\/h1>/, `</h1>${block}`) : block + body;
   }
-  return { ...meta, ssrBody: body, ogImage: `${BASE_URL}/og/${pc.file}.jpg`, heroSquare: true, heroAd: !!ad, heroAlt: `${pc.shop} 안내 카드` };
+  const cardUrl = `${BASE_URL}/og/${pc.file}.jpg`;
+  let jsonLdList = meta.jsonLdList;
+  if (g) {
+    SITEMAP_IMAGE_BY_ROUTE[key] = cardUrl; // 사이트맵 <image:image> — 이 쪽에 실제로 보이는 그 그림 하나
+    if (Array.isArray(jsonLdList)) jsonLdList = jsonLdList.map((node) => {
+      if (!node || typeof node !== 'object') return node;
+      const isBiz = String(node['@id'] || '').endsWith('#business');
+      if (!isBiz && node['@type'] !== 'CollectionPage') return node;
+      const out = { ...node, image: cardUrl }; // 구글 구조화 데이터 「쪽에 보이는 것과 같은 값」 — 첫 그림(카드) 하나
+      if (isBiz && ad) out.telephone = telIntl(ad.phone); // 광고주 쪽만(명단 번호 · +82 꼴) · 광고문의 쪽은 telephone 0(page-gate A7)
+      return out;
+    });
+  }
+  return { ...meta, ssrBody: body, ...(g && jsonLdList ? { jsonLdList } : {}), ogImage: cardUrl, heroSquare: true, heroAd: !!ad, heroAlt: `${pc.shop} 안내 카드`, ...(g ? { ogImageAlt: `${pc.shop} 안내 카드` } : {}) };
 }
 
 function writePage(routePath, meta) {
@@ -1988,17 +2010,19 @@ const CROSS_SIG = {
     '청담':   { tail: '명품거리 멤버십 게스트 비공개 라인',   sig: '명품거리 멤버십 손님만 아는 비공개 게스트 라인' },
   },
   hoppa: {
-    '장안동': { tail: '장한평 실장이 호스트 셀렉션 돕는 자리', sig: '장한평 실장이 호스트 셀렉션을 돕는 자리' },
+    // [구글69-1 · 2026-11-07] 장안동·강남·건대·부산·부산 해운대 다섯 꼬리는 그 쪽 사실(가게 이름·수·실장 전화 자리)로 바꿨다 — 옛 꼬리(장한평·역삼·화양리·서면·달맞이 실장 …)는 근거 없는 인물·장소 글이었다.
+    //   제목 본문은 HUB_OVERRIDE(아래)가 적고, 여기 꼬리는 그 제목과 같은 글자(region-cross-title-watch 가 라이브 제목에 이 꼬리가 있는지 본다 · 그 파일 69~79줄과 같이 고침).
+    '장안동': { tail: '큐브 예약 문의는 실장 전화 한 통으로', sig: '큐브 예약 문의는 실장 전화 한 통으로' },
     // '해운대' 단독 키 제거(2026-08-02): venue regionKo는 '부산 해운대'만 존재 → 이 키는 어떤 페이지에도
     // 매칭된 적 없는 죽은 설정. watch가 이걸 복사해 매일 404 거짓경보를 냈으므로 양쪽 동기 삭제.
-    '강남':   { tail: '역삼 실장 골라주는 호스트 코스',       sig: '역삼 실장이 골라주는 호스트 코스' },
+    '강남':   { tail: '로얄·어게인·플러팅을 한 쪽에서 견준다', sig: '로얄·어게인·플러팅을 한 쪽에서 견준다' },
     '수원':   { tail: '인계동 실장이 호스트 붙여주는 자리',   sig: '인계동 실장이 호스트를 붙여주는 자리' },
     '대구':   { tail: '동성로 실장 매칭 호스트 무대',         sig: '동성로 실장 매칭 호스트 무대' },
     '대전':   { tail: '갤러리아 실장 호스트 셀렉션 라인',     sig: '갤러리아 실장 호스트 셀렉션 라인' },
     '홍대':   { tail: '연남 실장 호스트 추천 도는 곳',         sig: '연남 실장이 호스트를 추천해 도는 곳' },
-    '건대':   { tail: '화양리 실장 골라주는 호스트 무대',     sig: '화양리 실장이 골라주는 호스트 무대' },
-    '부산':   { tail: '서면 실장 호스트 셀렉션 빠른 라인',     sig: '서면 실장 호스트 셀렉션이 빠른 라인' },
-    '부산 해운대': { tail: '달맞이 실장 매칭 호스트 자리',     sig: '달맞이 실장 매칭 호스트 자리' },
+    '건대':   { tail: '실장 전화로 예약 문의를 받는 호스트바 안내', sig: '실장 전화로 예약 문의를 받는 호스트바 안내' },
+    '부산':   { tail: '스타·맨즈·아우라와 안내 글 둘을 한 쪽에 모았다', sig: '스타·맨즈·아우라와 안내 글 둘을 한 쪽에 모았다' },
+    '부산 해운대': { tail: '깐따삐야·미슐랭·벨벳, 해운대에서 고르는 세 곳', sig: '깐따삐야·미슐랭·벨벳, 해운대에서 고르는 세 곳' },
     '전주':   { tail: '객사 실장 골라주는 호스트 코스',       sig: '객사 실장이 골라주는 호스트 코스' },
   },
   yojeong: {
@@ -2010,6 +2034,89 @@ const CROSS_SIG = {
   },
   lounge: {
     '압구정': { tail: '로데오 칵테일바 조용한 만남 자리',     sig: '로데오 칵테일바에서 조용한 만남이 가능한 자리' },
+  },
+};
+// [구글69-1 · 2026-11-07 · 대표님 00:23 「장안동호빠 · 건대호빠 광고주는 유현재실장 010 7674 8310 · 강남호빠 · 해운대호빠 · 부산호빠 · 해운대고구려」] 지역×업종 허브 덮어쓰기(hoppa 5쪽).
+//   · 제목 = 키워드 맨 앞 + N곳 + CROSS_SIG 꼬리(같은 글자 · 빌드 때 대조해 어긋나면 멈춤) · 60자 안 · 연락처 낱말 0
+//   · 본문 = 그 쪽 사실만(가게 이름·수·번호가 있는 자리·확인 안 된 것은 「확인된 자료가 없다」) · 지어낸 분위기·인물·장소·후기 0 · 직답(ssr-answer) 바로 아래에 PAGE_CARD(venue-file-ver.mjs)가 카드를 끼운다
+//   · FAQ 는 화면 dl 과 FAQPage JSON-LD 가 같은 배열(faqPairsDl · faqPairsJsonLd) · 목록 줄은 가게 이름 링크만(다른 가게의 확인 안 된 소개 글을 허브에 다시 싣지 않음) · 대표 업소 미리보기 절도 같은 까닭으로 뺌
+//   · 닉네임 「유현재 실장」은 명단(src/data/advertisers.nolcool.json) 쪽인 장안동·건대 허브에만 · 광고문의 허브 셋(강남·부산·부산 해운대)은 번호·닉네임 0(page-gate A7)
+//   · n = 그 지역 호빠 가게 수(빌드 때 실제 수와 대조 · 가게가 늘거나 줄면 이 표부터 고친다)
+const HUB_OVERRIDE = {
+  hoppa: {
+    '장안동': {
+      n: 2,
+      title: '장안동호빠 2곳 — 큐브 예약 문의는 실장 전화 한 통으로',
+      desc: '장안동호빠 두 곳, 큐브와 빵빵을 한 쪽에 모았다. 큐브 예약 문의는 이 쪽 카드와 화면 아래 전화바에 있는 실장 번호로 받는다(광고). 영업시간과 가격은 전화로 확인하면 된다.',
+      answer: '장안동호빠는 놀쿨에 두 곳이 실려 있다. 큐브는 유현재 실장이 예약과 문의를 받는 광고주 가게라 번호가 이 쪽 카드와 화면 아래 전화바에 있다. 빵빵은 가게 쪽에서 소개만 한다. 두 가게 모두 장안동에 있다.',
+      // [구글69-1 · 11-07 셋째 빌드 뒤] 뼈대 ⑤ 「한 줄 정리」 글 — 직답(answer)과 다른 문장(같은 글이 한 쪽에 두 번 들어가 ai-smell 「쪽안같은문장」이 나서 따로 둠)
+      summary: '큐브와 빵빵 두 이름, 큐브 실장 번호가 있는 자리, 아직 확인하지 못한 영업시간과 가격까지 이 쪽에 적어 두었다.',
+      // 본문 절(뼈대 body 조각 · 그 쪽 사실만 · 11-07 첫 빌드에서 S2 「빠진 조각 body」· 본문 590자 < 800 이 나서 더함)
+      bodyHtml: '<h2>두 가게가 다른 자리</h2><p>큐브는 유현재 실장이 전화로 예약과 문의를 받는 가게다. 번호는 이 쪽 광고 카드와 화면 아래 전화바에 있다. 빵빵 소개 쪽에도 큐브 실장 카드가 붙어 있어서 어느 쪽에서 들어와도 같은 번호로 닿는다.</p><p>빵빵은 가게 소개 쪽만 있다. 두 가게의 영업시간과 가격은 확인된 자료가 없어 적지 않았다. 가기 전에 전화로 인원과 시간을 말해 두면 된다.</p><p>장안동은 서울 동대문구에 있다. 큐브 소개 쪽의 주소도 동대문구 장안동까지만 적혀 있고 번지는 확인된 자료가 없다.</p><p>건대호빠도 같은 실장이 맡고 있어서 번호가 같다. 장안동과 건대 가운데 그날 가까운 쪽을 전화로 정하면 된다.</p>',
+      cta: '큐브에 갈 생각이면 화면 아래 전화바의 번호를 누르면 실장에게 전화가 걸린다. 인원과 시간, 예산 세 가지를 먼저 말하면 이야기가 빨리 끝난다.',
+      faq: [
+        { q: '장안동호빠 큐브 예약 문의는 어디로 하나요?', a: '이 쪽의 광고 카드와 화면 아래 전화바에 있는 유현재 실장 번호로 하면 된다(광고). 빵빵은 가게 쪽을 보면 된다.' },
+        { q: '영업시간이나 가격은 어디서 보나요?', a: '놀쿨이 확인한 자료가 없어 이 쪽에는 적지 않았다. 전화로 인원과 시간, 예산을 말하고 물어 보는 것이 가장 정확하다.' },
+      ],
+    },
+    '건대': {
+      n: 1,
+      // 제목에서 「건대 호스트바」의 홀로 선 「건대」를 뺌 — nolcool-dist-audit 「title 중복단어」(2~3자 낱말이 4자 이상 낱말 안에 들어가면 막음 · 건대 ⊂ 건대호빠)
+      title: '건대호빠 1곳 — 실장 전화로 예약 문의를 받는 호스트바 안내',
+      desc: '건대호빠 한 곳을 안내한다. 예약과 문의는 이 쪽 카드와 화면 아래 전화바에 있는 유현재 실장 번호로 받는다(광고). 상세 주소와 영업시간, 가격은 확인된 자료가 없어 전화로 묻는 쪽이 정확하다.',
+      answer: '건대호빠는 놀쿨에 한 곳이 실려 있다. 예약과 문의는 유현재 실장이 전화로 받는다. 번호는 이 쪽의 광고 카드와 화면 아래 전화바에 있다. 장안동호빠 큐브와 같은 실장이 맡고 있어 두 가게의 번호가 같다.',
+      // [구글69-1 · 11-07 셋째 빌드 뒤] 뼈대 ⑤ 「한 줄 정리」 글 — 직답(answer)과 다른 문장(같은 글이 한 쪽에 두 번 들어가 ai-smell 「쪽안같은문장」이 나서 따로 둠)
+      summary: '가게 이름과 예약 문의를 받는 실장, 번호가 있는 자리까지만 적고 주소와 영업시간은 비워 둔 쪽이다.',
+      bodyHtml: '<h2>이 쪽에 적은 것과 적지 않은 것</h2><p>적은 것은 가게 이름과 예약 문의를 받는 사람이다. 이 가게는 유현재 실장이 전화로 예약과 문의를 받는다. 번호는 이 쪽 광고 카드와 화면 아래 전화바에 있다. 장안동호빠 큐브도 같은 실장이 맡아 두 가게 번호가 같다.</p><p>적지 않은 것은 상세 주소와 영업시간, 가격이다. 확인된 자료가 없어 비워 두었고 짐작으로 채우지 않았다. 위치와 시간은 전화로 묻는 길만 남겼다.</p><p>가게 소개 쪽은 위 목록의 이름을 누르면 열린다. 그 쪽에도 같은 카드와 전화바가 있어 어디서 보든 번호는 하나다. 건대 쪽 다른 호빠는 아직 놀쿨 명단에 없다.</p><p>전화할 때는 인원과 시간, 예산을 먼저 말하는 편이 낫다. 단체나 늦은 시간은 자리가 있는지부터 묻는다.</p>',
+      cta: '가게 쪽에는 주소와 영업시간이 비어 있다. 확인된 자료가 없어서 비워 둔 것이니, 가기 전에 전화로 위치와 시간을 물어 보면 된다.',
+      faq: [
+        { q: '예약 문의는 어디로 하나요?', a: '이 쪽 광고 카드와 화면 아래 전화바에 있는 유현재 실장 번호로 전화하면 된다(광고).' },
+        { q: '주소와 영업시간은 왜 없나요?', a: '놀쿨이 확인한 자료가 없어서 비워 두었다. 짐작으로 적지 않았다. 대신 전화로 묻는 길을 남겼다.' },
+      ],
+    },
+    '강남': {
+      n: 3,
+      title: '강남호빠 3곳 — 로얄·어게인·플러팅을 한 쪽에서 견준다',
+      desc: '강남호빠 세 곳, 로얄과 어게인과 플러팅을 한 쪽에서 견준다. 이 쪽에 전화번호는 없고 광고 문의 창구만 본문 카드에 있다. 가게마다 소개 쪽으로 이어진다.',
+      answer: '강남호빠는 놀쿨에 로얄, 어게인, 플러팅 세 곳이 실려 있다. 세 가게 모두 광고주가 아니어서 이 쪽에 전화번호를 적지 않았다. 광고를 내고 싶은 가게는 본문 카드의 카카오톡으로 문의하면 된다.',
+      // [구글69-1 · 11-07 셋째 빌드 뒤] 뼈대 ⑤ 「한 줄 정리」 글 — 직답(answer)과 다른 문장(같은 글이 한 쪽에 두 번 들어가 ai-smell 「쪽안같은문장」이 나서 따로 둠)
+      summary: '로얄, 어게인, 플러팅 세 이름과 각 소개 쪽으로 가는 길, 광고를 내려는 가게의 문의 창구를 한 쪽에 두었다.',
+      bodyHtml: '<h2>세 가게를 한 쪽에 모은 까닭</h2><p>로얄과 어게인과 플러팅은 모두 강남 쪽 호스트바라 한 쪽에서 견주기 좋다. 세 가게의 소개 글은 각자 쪽에 있고 이 허브는 이름과 이어지는 길만 둔다.</p><p>세 가게 모두 광고주가 아니다. 가게로 바로 걸 번호는 이 쪽에 없다. 본문 카드에 있는 카카오톡은 광고를 내려는 가게가 쓰는 창구다.</p><p>로얄과 플러팅은 역삼동, 어게인은 삼성동에 있다고 각 소개 쪽에 적혀 있다. 강남 안에서도 동네가 갈리니 역에서 가까운 이름부터 열어 보면 된다.</p><p>영업시간과 가격은 세 가게 모두 이 허브에 적지 않았다. 각 소개 쪽에 적힌 것만 믿고 나머지는 가게에 직접 확인하는 편이 낫다.</p>',
+      cta: '세 가게의 소개 쪽은 위 목록에서 바로 열린다. 가게에 직접 물을 번호는 이 쪽에 없으니, 광고 문의가 아니라면 각 소개 쪽의 안내를 읽고 가면 된다.',
+      faq: [
+        { q: '강남호빠 전화번호는 어디 있나요?', a: '이 쪽에는 없다. 세 가게가 광고주가 아니어서 번호를 싣지 않았다. 본문 카드의 카카오톡은 광고를 내려는 가게를 위한 문의 창구다.' },
+        { q: '어디부터 보면 되나요?', a: '목록 순서대로 로얄, 어게인, 플러팅 소개 쪽을 차례로 열어 보면 된다. 세 쪽에 각자 소개 글이 있다.' },
+      ],
+    },
+    '부산 해운대': {
+      n: 3,
+      title: '해운대호빠 3곳 — 깐따삐야·미슐랭·벨벳, 해운대에서 고르는 세 곳', // [구글69-1] 38자 → 37자(page-gate 제목 ≤37) · CROSS_SIG tail·sig · region-cross-title-watch 와 같은 글자
+      desc: '해운대호빠 세 곳, 깐따삐야와 미슐랭과 벨벳을 모았다. 번호를 묻는 전화는 이 쪽에서 걸 수 없다. 광고를 내려는 가게만 본문 카드로 문의한다.',
+      answer: '해운대호빠는 놀쿨에 깐따삐야, 미슐랭, 벨벳 세 곳이 있다. 지역 이름은 부산 해운대로 묶여 있다. 세 곳 다 광고주 가게가 아니므로 전화번호는 없다. 가게 소개는 각 쪽에서 읽으면 된다.',
+      // [구글69-1 · 11-07 셋째 빌드 뒤] 뼈대 ⑤ 「한 줄 정리」 글 — 직답(answer)과 다른 문장(같은 글이 한 쪽에 두 번 들어가 ai-smell 「쪽안같은문장」이 나서 따로 둠)
+      summary: '깐따삐야, 미슐랭, 벨벳 세 이름과 소개 쪽으로 가는 길을 모았고 가게 번호는 싣지 않았다.',
+      bodyHtml: '<h2>해운대 세 가게, 이 쪽이 하는 일</h2><p>깐따삐야와 미슐랭과 벨벳은 지역 이름이 부산 해운대로 묶인 세 가게다. 이 쪽은 세 이름을 모아 각 소개 쪽으로 이어 주는 자리라서 가게마다의 글은 그 쪽에서 읽으면 된다.</p><p>세 가게 모두 광고주가 아니어서 가게 번호는 이 쪽에 없다. 본문 카드의 카카오톡은 광고를 내려는 가게가 쓰는 창구다.</p><p>세 소개 쪽에는 구남로와 마린시티, 청사포가 각각 적혀 있다. 머무는 곳에서 가까운 이름부터 열어 보면 된다.</p>',
+      ctaHtml: '부산 전체 호빠는 <a href="/region/' + encodeURIComponent('부산') + '/hoppa/">부산호빠 허브</a>에 따로 모아 두었다. 해운대 세 곳과 부산 세 곳을 같은 밤에 견주려면 두 쪽을 같이 보면 된다.',
+      faq: [
+        { q: '해운대호빠 예약 전화는 어디 있나요?', a: '없다. 세 가게 어느 곳도 광고주가 아니라서 번호를 올리지 않았다. 본문에 있는 카카오톡 카드는 광고를 내고 싶은 가게가 쓰는 창구다.' },
+        { q: '해운대호빠와 부산호빠 쪽은 무엇이 다른가요?', a: '이 쪽은 지역 이름이 부산 해운대로 묶인 세 가게만 모았다. 부산호빠 쪽은 그 밖의 부산 가게 세 곳과 안내 글 두 편을 모았다.' },
+      ],
+    },
+    '부산': {
+      n: 3,
+      title: '부산호빠 3곳 — 스타·맨즈·아우라와 안내 글 둘을 한 쪽에 모았다',
+      desc: '부산호빠 세 곳, 스타와 맨즈와 아우라에 부산 호빠 안내 글 두 편을 한 쪽에 묶었다. 가게 전화번호는 없다. 광고를 내려는 가게의 문의 창구만 본문 카드에 있다.',
+      answer: '부산호빠는 놀쿨에 스타, 맨즈, 아우라 세 곳이 실려 있다. 해운대 쪽 세 곳은 해운대호빠 쪽에 따로 있다. 광고주 가게가 없어서 세 곳의 전화번호는 적지 않았다. 아래에 부산 호빠 안내 글 두 편도 이어 두었다.',
+      // [구글69-1 · 11-07 셋째 빌드 뒤] 뼈대 ⑤ 「한 줄 정리」 글 — 직답(answer)과 다른 문장(같은 글이 한 쪽에 두 번 들어가 ai-smell 「쪽안같은문장」이 나서 따로 둠)
+      summary: '스타, 맨즈, 아우라 세 이름과 안내 글 두 편으로 가는 길을 한 쪽에 모았고 가게 번호는 없다.',
+      bodyHtml: '<h2>이 쪽에서 볼 수 있는 것</h2><p>스타와 맨즈와 아우라 세 가게의 이름과 소개 쪽으로 가는 길에 부산 호빠 안내 글 두 편을 더했다. 세 가게 가운데 광고주는 없고, 그래서 가게 번호도 적지 않았다. 본문 카드의 카카오톡은 광고를 내려는 가게가 쓰는 창구다.</p><p>세 가게 소개 쪽에는 서면과 광안리, 광안대교 쪽이 적혀 있다. 부산 시내와 바닷가로 갈리니 그날 자리 잡은 쪽과 가까운 가게를 먼저 보면 된다.</p>',
+      cta: '세 가게의 소개 쪽은 위 목록에서 열린다. 가게에 직접 물을 번호는 이 쪽에 없다. 광고를 내려는 가게만 본문 카드로 문의하면 된다.',
+      extraHtml: '<h2>부산 호빠 안내 글 두 편</h2><ul><li><a href="/magazine/busan-hoppa-guide/">부산·해운대 호빠 3색</a> 글은 서면과 광안리, 마린시티 세 곳을 견준다.</li><li><a href="/magazine/busan-hoppa-coast-guide/">부산 호빠 바다 2색</a> 글은 광안대교 쪽과 해변 앞 두 곳을 견준다.</li></ul><p>해운대 쪽 세 가게는 <a href="/region/' + encodeURIComponent('부산 해운대') + '/hoppa/">해운대호빠 허브</a>에 따로 모아 두었다.</p>',
+      faq: [
+        { q: '부산호빠 예약 전화는 어디서 보나요?', a: '이 쪽에는 없다. 스타, 맨즈, 아우라 모두 광고주가 아니어서 번호를 싣지 않았다. 본문 카드의 카카오톡은 광고 문의용이다.' },
+        { q: '안내 글 두 편은 어떤 내용인가요?', a: '하나는 서면과 광안리, 마린시티 세 곳을 견준 3색 글이다. 다른 하나는 광안대교 쪽과 해변 앞 두 곳을 견준 바다 2색 글이다. 둘 다 이 쪽의 링크에서 열린다.' },
+      ],
+    },
   },
 };
 // 파트2 — GSC 실측 CTR 0% 허브만 직답형 개별 카피 (대전 클럽 102imp·청주 클럽 162imp, 나머지 허브는 기존 템플릿 유지)
@@ -2263,7 +2370,7 @@ for (const v of venues) {
   if (v.staffNickname) venueJsonLd.employee = { '@type': 'Person', name: v.staffNickname };
   /* alternateName — Google/AI 검색 동의어 매핑 (예: "일산요정" 검색 시 명월관 매칭)
      + 이름 띄어쓰기 표기 변형 자동 파생(같은 이름의 표기 차이만, 날조 0):
-     "건대호빠 W" → "건대호빠W" / "건대 호빠 W" (사용자 검색 변형 ↔ 엔티티 결합) */
+     "장안동호빠 큐브" → "장안동호빠큐브" / "장안동 호빠 큐브" (사용자 검색 변형 ↔ 엔티티 결합 · 구글69-1 2026-11-07: 옛 보기 「건대호빠 W」는 이름을 「건대호빠」로 통일해 뺌) */
   const nameVariants = new Set(Array.isArray(v.aliases) ? v.aliases : []);
   const noSpace = v.nameKo.replace(/\s+/g, '');
   if (noSpace !== v.nameKo) nameVariants.add(noSpace);
@@ -2727,14 +2834,20 @@ for (const [regionKo, _regionAll] of Object.entries(allRegions)) {
     const cp = `/region/${encodeURIComponent(regionKo)}/${catInfo.path}`;
     const crossNames = crossVenues.slice(0, 3).map(cv => { const ps = (cv.nameKo || '').split(/\s+/); return ps.length > 1 ? ps.slice(1).join(' ') : cv.nameKo; }).join(', ');
     const xs = (CROSS_SIG[catKey] || {})[regionKo];
-    const ct = xs
+    const ct0 = xs
       ? `${regionKo} ${catInfo.labelKo} ${crossVenues.length}곳 — ${xs.tail}`
       : `${regionKo} ${catInfo.labelKo} ${crossVenues.length}곳 — 한눈에 비교하고 고르기`;
-    const cd = xs
+    const cd0 = xs
       ? `${regionKo}에서 ${catInfo.labelKo} 어디가 진짜야? ${xs.sig}. ${crossNames} 등 ${crossVenues.length}곳 분위기·후기·매니저·드레스코드·전화번호·예약 팁까지 한 페이지에서 바로 확인. 헛걸음 전에 비교하고 가자.`
       : `${regionKo}에서 ${catInfo.labelKo} 어디가 진짜야? ${crossNames} 등 ${crossVenues.length}곳 분위기·후기·평점·매니저·드레스코드·전화번호·영업시간·예약 팁까지 한 페이지에서 바로 확인. 헛걸음 전에 비교하고 가자.`;
+    // [구글69-1] 덮어쓰기 허브(hoppa 5쪽) — 제목·설명·직답은 HUB_OVERRIDE · 꼬리·가게 수가 어긋나면 빌드를 세운다
+    const ov = (HUB_OVERRIDE[catKey] || {})[regionKo] || null;
+    if (ov && xs && !ov.title.includes(xs.tail)) throw new Error(`[구글69-1] HUB_OVERRIDE ${catKey}/${regionKo} 제목에 CROSS_SIG 꼬리 「${xs.tail}」가 없음`);
+    if (ov && ov.n !== crossVenues.length) throw new Error(`[구글69-1] HUB_OVERRIDE ${catKey}/${regionKo} 가게 수 ${ov.n} ≠ 실제 ${crossVenues.length}`);
+    const ct = ov ? ov.title : ct0;
+    const cd = ov ? ov.desc : cd0;
     let cSsr = `<h1>${escHtml(ct)}</h1>`;
-    cSsr += aggAnswerBlock(crossVenues, `${regionKo} ${catInfo.labelKo}`, ct);
+    cSsr += ov ? `<p class="ssr-answer">${escHtml(ov.answer)}</p>` : aggAnswerBlock(crossVenues, `${regionKo} ${catInfo.labelKo}`, ct);
     // [펩시17-2] 광고주 카드 — data/hub-og-cards.json 의 ad 가 있는 쪽만(지금 강남 나이트 = 청담나이트 펩시맨) · 뼈대 답 칸(ssr-adlabel) · 「광고」 표시 · 사람도 이 한 장을 본다(React RegionCategoryPage 는 카드를 그리지 않고 같은 자료로 아래 고정 전화바만)
     const adCard = (HUB_OG_CARDS.find((c) => c.route === cp) || {}).ad;
     if (adCard) {
@@ -2748,26 +2861,28 @@ for (const [regionKo, _regionAll] of Object.entries(allRegions)) {
       // 시즌172 — 상위 5곳만 shortDesc, 그 외는 suffix 라벨만
       const parts = (cv.nameKo || '').split(/\s+/);
       const shortLabel = parts.length > 1 ? parts.slice(1).join(' ') : cv.nameKo;
-      if (idx < 5) {
+      if (idx < 5 && !ov) { // [구글69-1] 덮어쓰기 허브는 이름 링크만(다른 가게의 확인 안 된 소개 글 0)
         cSsr += `<li><a href="${venueHref(cv)}">${escHtml(shortLabel)}</a>${adMark(cv)} — ${escHtml(cutAtWord(cv.shortDesc, 50))}</li>`;
       } else {
         cSsr += `<li><a href="${venueHref(cv)}">${escHtml(shortLabel)}</a>${adMark(cv)}</li>`;
       }
     });
     cSsr += `</ul>`;
+    if (ov && ov.bodyHtml) cSsr += ov.bodyHtml; // [구글69-1] 덮어쓰기 허브 본문 절(뼈대 body 조각 · 그 쪽 사실만 · 뒤 agg-cta 도 body 로 묶임)
     // 시즌88 — 동일 템플릿 문단 제거 → 멤버 실데이터 본문 + 허브-메시(막다른길 0)
     const crossShort = (cv) => { const ps = (cv.nameKo || '').split(/\s+/); return ps.length > 1 ? ps.slice(1).join(' ') : cv.nameKo; };
-    cSsr += `<h2>${escHtml(regionKo)} 대표 업소 미리보기</h2>${aggHighlights(crossVenues, crossShort, 6, catInfo.labelKo)}`;
-    cSsr += aggInlineCta('rc-' + regionKo + '-' + catKey, crossVenues);
+    if (!ov) cSsr += `<h2>${escHtml(regionKo)} 대표 업소 미리보기</h2>${aggHighlights(crossVenues, crossShort, 6, catInfo.labelKo)}`; // [구글69-1] 덮어쓰기 허브는 뺌
+    cSsr += ov ? `<p class="agg-cta">${ov.ctaHtml || escHtml(ov.cta)}</p>` : aggInlineCta('rc-' + regionKo + '-' + catKey, crossVenues);
     // FAQ — 화면 dl + FAQPage JSON-LD 단일 배열 소스(화면↔스키마 100% 일치)
-    const crossFaqPairs = [
+    const crossFaqPairs = ov ? ov.faq : [
       { q: `${regionKo}에서 어디부터 보면 되나요?`, a: `추천 순서(「광고」 먼저 → 인기 엔진 순위 → 가나다)로 ${crossNames} 등이 앞에 있습니다. 상세 페이지에서 분위기부터 확인해 보세요.` },
       { q: `예약은 어떻게 하나요?`, a: `각 업소 상세 페이지에서 직통 전화로 예약 가능 시간과 룸 사이즈를 미리 확인하세요. 주말은 일찍 마감되는 곳이 많습니다.` },
     ];
     cSsr += faqPairsDl('자주 묻는 질문', crossFaqPairs);
+    if (ov && ov.extraHtml) cSsr += ov.extraHtml; // [구글69-1] 부산 허브 = 안내 글 두 편 링크 절
     cSsr += aggHubMesh(crossVenues, 'region', regionKo);
     const hubOg = HUB_OG_CARDS.find((c) => c.route === cp); // [놀쿨16-1] 4 키워드 허브만 고유 카드 · 나머지는 그대로
-    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, preloadCard: adCard ? (HUB_OG_CARDS.find((c) => c.route === cp) || {}).slug : undefined, ogImage: hubOg ? `${BASE_URL}/og/${hubOg.slug}.jpg` : undefined, ogImageAlt: hubOg ? (hubOg.ad ? `${hubOg.ad.shop} ${hubOg.ad.nick} ${hubOg.ad.phone}` : `${hubOg.label} — 놀쿨 ${crossVenues.length}곳 비교 카드`) : undefined, /* [놀쿨34-1 · G3] 광고주 카드 허브도 첫 그림 = og:image 파일(그 카드) — 자르지 않고(정사각) 「광고」 표시 */ heroSquare: !!(hubOg && hubOg.ad), heroAd: !!(hubOg && hubOg.ad), heroAlt: hubOg && hubOg.ad ? `${hubOg.ad.shop} 안내 카드` : undefined, skel: hubSkel('hub', crossVenues, { region: regionKo, cat: catInfo.labelKo, factsHeading: `${crossVenues.length}곳 한 줄씩` }, crossFaqPairs, crossVenues.length >= 4 ? `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이고, ${crossNames} 등이 있다.` : `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이다.`, 'region_cat'), keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: [...collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]), faqPairsJsonLd(crossFaqPairs)] });
+    writePage(cp, { title: ct, description: cd, ssrBody: cSsr, preloadCard: adCard ? (HUB_OG_CARDS.find((c) => c.route === cp) || {}).slug : undefined, ogImage: hubOg ? `${BASE_URL}/og/${hubOg.slug}.jpg` : undefined, ogImageAlt: hubOg ? (hubOg.ad ? `${hubOg.ad.shop} ${hubOg.ad.nick} ${hubOg.ad.phone}` : `${hubOg.label} — 놀쿨 ${crossVenues.length}곳 비교 카드`) : undefined, /* [놀쿨34-1 · G3] 광고주 카드 허브도 첫 그림 = og:image 파일(그 카드) — 자르지 않고(정사각) 「광고」 표시 */ heroSquare: !!(hubOg && hubOg.ad), heroAd: !!(hubOg && hubOg.ad), heroAlt: hubOg && hubOg.ad ? `${hubOg.ad.shop} 안내 카드` : undefined, skel: hubSkel('hub', crossVenues, { region: regionKo, cat: catInfo.labelKo, factsHeading: `${crossVenues.length}곳 한 줄씩` }, crossFaqPairs, ov ? (ov.summary || ov.answer) /* [구글69-1] 한 줄 정리 = summary(직답과 다른 글) */ : crossVenues.length >= 4 ? `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이고, ${crossNames} 등이 있다.` : `${regionKo} ${catInfo.labelKo}는 ${crossVenues.length}곳이다.`, 'region_cat'), keywords: `${regionKo} ${catInfo.labelKo}, ${regionKo} ${catInfo.labelKo} 추천`, jsonLdList: [...collectionJsonLd(cp, ct, cd, crossVenues, [{ name: '놀쿨', url: BASE_URL }, { name: regionKo, url: `${BASE_URL}/region/${encodeURIComponent(regionKo)}/` }, { name: catInfo.labelKo, url: `${BASE_URL}${cp}/` }]), faqPairsJsonLd(crossFaqPairs)] });
     dynamicPages.push(cp);
   }
 }
@@ -2923,7 +3038,10 @@ function lastmodFor(routePath) {
   NEW_LASTMOD[routePath] = { hash: h || '', lastmod: lm };
   return lm;
 }
-let sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+// [구글69-1 · 2026-11-07] 이미지 사이트맵 — 구글 공식(Google Search Central 「이미지 사이트맵」 · 확인 2026-11-07)대로 그 쪽 <url> 안에 <image:image><image:loc> 하나.
+//   쪽 카드가 google: true 인 쪽만(withPageCard 가 SITEMAP_IMAGE_BY_ROUTE 에 적음) · 그 밖의 <url> 줄은 글자 변화 0 · <loc>·<lastmod> 붙어 있는 꼴 그대로(lastmod-honesty-gate 가 읽는 자리) · 자리는 priority 뒤(sitemap.xsd 의 확장 요소 자리).
+const imgXml = (route) => { const u = SITEMAP_IMAGE_BY_ROUTE[pageKey(route)]; return u ? `<image:image><image:loc>${u}</image:loc></image:image>` : ''; };
+let sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n`;
 // Homepage
 sitemapXml += `  <url><loc>${BASE_URL}/</loc><lastmod>${lastmodFor('/')}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>\n`;
 // Static pages (비공개 페이지 제외, trailing slash 추가)
@@ -2951,7 +3069,7 @@ for (const v of venues) {
   } else {
     routePath = `/${cm.path}/${v.slug}`;
   }
-  sitemapXml += `  <url><loc>${BASE_URL}${routePath}/</loc><lastmod>${lastmodFor(routePath)}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
+  sitemapXml += `  <url><loc>${BASE_URL}${routePath}/</loc><lastmod>${lastmodFor(routePath)}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority>${imgXml(routePath)}</url>\n`;
 }
 // Magazine article pages (시즌9 — Article schema + SSR 본문 prerender)
 for (const a of magazineArticles) {
@@ -2961,7 +3079,7 @@ for (const a of magazineArticles) {
 // 파트2 — noindex 지정·canonical 통합 페이지는 sitemap 제외 (색인 신호 일관성)
 for (const dp of dynamicPages) {
   if (noIndexPathsSet.has(dp) || CANONICAL_MERGE_TO[dp]) continue;
-  sitemapXml += `  <url><loc>${BASE_URL}${dp}/</loc><lastmod>${lastmodFor(dp)}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>\n`;
+  sitemapXml += `  <url><loc>${BASE_URL}${dp}/</loc><lastmod>${lastmodFor(dp)}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority>${imgXml(dp)}</url>\n`;
 }
 sitemapXml += `</urlset>`;
 fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml);
