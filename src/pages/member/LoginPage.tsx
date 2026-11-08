@@ -151,7 +151,9 @@ export default function LoginPage() {
       // [고침71-2 2026-11-08 · 대표님 20:53 「회원가입을 했는데 왜 또 로그인 화면으로 가」]
       // 수파베이스 공식: 「이메일 확인」이 꺼진 프로젝트는 signUp 이 user 와 session 을 함께 돌려주고 그 자리에서 로그인된다(이 프로젝트가 그렇다 — /auth/v1/settings mailer_autoconfirm=true).
       // 전에는 세션이 있어도 「인증 메일을 발송했습니다」(사실이 아닌 안내)만 보여 주고 로그인 창에 머물렀다 → 가입은 됐는데 회원은 「또 로그인하라」로 읽었다.
-      if (data.session) { window.location.href = takeReturn() || '/'; return; }
+      // [고침71-3 2026-11-08 22:1x] 가입 즉시 세션이 생기면 /auth/callback 을 거친다 — 카카오·구글과 같은 길(동의 기록 옮기기 · users 표 닉네임 · 새 회원 안내 · 보던 쪽 복귀).
+      //   전에는 바로 보던 쪽으로 가서 이메일 가입자의 동의(만 19세·약관·개인정보) 기록이 회원 정보로 안 옮겨졌다.
+      if (data.session) { window.location.href = '/auth/callback'; return; }
       // 세션 없음 + identities 가 빈 배열 = 이미 가입된 이메일(공식: 이메일 중복 보호가 켜져 있으면 가짜 user 객체를 돌려준다)
       if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
         setEmailError('이미 가입된 이메일입니다. 아래 「이메일로 로그인」으로 들어가 주세요.');
@@ -164,7 +166,7 @@ export default function LoginPage() {
       const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
       setLoading(null);
       if (error) setEmailError(koreanAuthError(error.message));
-      else window.location.href = takeReturn() || '/';
+      else window.location.href = '/auth/callback'; // [고침71-3] 이메일 로그인도 같은 길(동의 기록 · 보던 쪽 복귀)
     }
   };
 
