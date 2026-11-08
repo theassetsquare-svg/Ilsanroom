@@ -41,7 +41,9 @@ export default function MagazineDetailPage() {
     );
   }
 
-  const relatedArticles = articles.filter(a => a.id !== article.id).slice(0, 3);
+  // 관련 글 카드 — 같은 태그 글을 먼저(대전 권역 글에 강남 EDM 글이 붙던 것 → 다음 읽을거리 연결)
+  const others = articles.filter(a => a.id !== article.id);
+  const relatedArticles = [...others.filter(a => a.tag === article.tag), ...others.filter(a => a.tag !== article.tag)].slice(0, 3);
   const contentLength = (article.content || '').length + (article.excerpt || '').length;
 
   /* 완독 레버 — 본문 H2에서 목차 자동 생성 + 앵커 id 주입 (새 문장 창작 0).
