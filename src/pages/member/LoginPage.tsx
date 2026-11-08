@@ -36,6 +36,20 @@ function signInWith(provider: 'kakao' | 'google') {
   supabase.auth.signInWithOAuth({ provider, options: { redirectTo: 'https://nolcool.com/auth/callback' } });
 }
 
+/** [고침71-2] 수파베이스 인증 오류(영어)를 회원이 읽는 말로 — 모르는 문장은 그대로 */
+function koreanAuthError(message: string): string {
+  const m = String(message || '');
+  if (/Invalid login credentials/i.test(m)) return '이메일 또는 비밀번호가 일치하지 않습니다';
+  if (/already registered|already exists|already been registered/i.test(m)) return '이미 가입된 이메일입니다. 아래 「이메일로 로그인」으로 들어가 주세요.';
+  if (/Email not confirmed/i.test(m)) return '가입 확인 메일의 링크를 아직 안 누르셨어요. 메일함(스팸함 포함)을 확인해 주세요.';
+  if (/invalid format|Unable to validate email/i.test(m)) return '이메일 주소 형식이 맞지 않습니다';
+  if (/Password should be at least|weak password/i.test(m)) return '비밀번호는 6자 이상이어야 합니다';
+  if (/rate limit|too many requests/i.test(m)) return '잠시 뒤 다시 시도해 주세요(요청이 너무 잦습니다)';
+  if (/Signups not allowed|signup is disabled/i.test(m)) return '지금은 이메일 가입을 받지 않습니다. 카카오·구글로 시작해 주세요.';
+  if (/Failed to fetch|NetworkError|network/i.test(m)) return '인터넷 연결을 확인하고 다시 시도해 주세요';
+  return m;
+}
+
 type Checks = { age19: boolean; terms: boolean; privacy: boolean; service: boolean; ad: boolean };
 
 function ConsentRow({ on, onToggle, label, req, link, note }: { on: boolean; onToggle: () => void; label: string; req: boolean; link?: string; note?: string }) {
@@ -123,18 +137,33 @@ export default function LoginPage() {
       // 운영팀 사칭 방지 — 공식 명찰 닉네임은 예약어(가입 불가)
       if (isOfficialTeam(nickname)) { setEmailError('사용할 수 없는 닉네임입니다'); setLoading(null); return; }
       trackEvent('signup_start', { provider: 'email' });
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: email.trim(),
         password,
         options: { emailRedirectTo: 'https://nolcool.com/auth/callback', data: { nickname: nickname.trim() } },
       });
       setLoading(null);
-      if (error) setEmailError(error.message);
-      else setEmailSuccess('인증 메일을 발송했습니다. 메일함을 확인해주세요.');
+      if (error) {
+        setEmailError(koreanAuthError(error.message));
+        if (/already registered|already exists/i.test(error.message)) setMode('login');
+        return;
+      }
+      // [고침71-2 2026-11-08 · 대표님 20:53 「회원가입을 했는데 왜 또 로그인 화면으로 가」]
+      // 수파베이스 공식: 「이메일 확인」이 꺼진 프로젝트는 signUp 이 user 와 session 을 함께 돌려주고 그 자리에서 로그인된다(이 프로젝트가 그렇다 — /auth/v1/settings mailer_autoconfirm=true).
+      // 전에는 세션이 있어도 「인증 메일을 발송했습니다」(사실이 아닌 안내)만 보여 주고 로그인 창에 머물렀다 → 가입은 됐는데 회원은 「또 로그인하라」로 읽었다.
+      if (data.session) { window.location.href = takeReturn() || '/'; return; }
+      // 세션 없음 + identities 가 빈 배열 = 이미 가입된 이메일(공식: 이메일 중복 보호가 켜져 있으면 가짜 user 객체를 돌려준다)
+      if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+        setEmailError('이미 가입된 이메일입니다. 아래 「이메일로 로그인」으로 들어가 주세요.');
+        setMode('login');
+        return;
+      }
+      // 세션 없음 = 이 프로젝트에서 메일 확인을 켠 경우에만 온다
+      setEmailSuccess('가입 확인 메일을 보냈습니다. 메일의 링크를 누르면 가입이 끝나고 바로 로그인됩니다.');
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
       setLoading(null);
-      if (error) setEmailError(error.message === 'Invalid login credentials' ? '이메일 또는 비밀번호가 일치하지 않습니다' : error.message);
+      if (error) setEmailError(koreanAuthError(error.message));
       else window.location.href = takeReturn() || '/';
     }
   };

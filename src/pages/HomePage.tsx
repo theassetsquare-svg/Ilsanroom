@@ -658,7 +658,7 @@ export default function HomePage() {
       ) : (
         <section className="px-4 pt-2 pb-4 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
           <Link
-            to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'}
+            to="/community/free?write=true"
             className="block rounded-2xl border border-purple-100 bg-gradient-to-br from-[#F5F3FF] to-white p-5 active:bg-purple-50 transition"
           >
             <p className="text-[13px] font-bold text-[#7C3AED]">커뮤니티를 시작하는 중입니다</p>
@@ -768,7 +768,7 @@ export default function HomePage() {
 
       {/* ═══ 한마디 남기기 — 회원/비회원 분기 ═══ */}
       <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
-        <Link to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="block rounded-2xl border border-purple-100 bg-gradient-to-r from-[#F5F3FF] to-white p-4 active:bg-purple-50 transition">
+        <Link to="/community/free?write=true" className="block rounded-2xl border border-purple-100 bg-gradient-to-r from-[#F5F3FF] to-white p-4 active:bg-purple-50 transition">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#7C3AED]/10">
               <span className="text-lg">✏️</span>
@@ -855,7 +855,7 @@ export default function HomePage() {
       <section className="px-4 py-3 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-base font-bold text-[#111]">게시판 바로가기</h2>
-          <Link to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="inline-flex items-center rounded-full bg-[#7C3AED] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 44 }}>글쓰기</Link>
+          <Link to="/community/free?write=true" className="inline-flex items-center rounded-full bg-[#7C3AED] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 44 }}>글쓰기</Link>
         </div>
         <div className="flex gap-2 overflow-x-auto scrollbar-hide">
           {[
@@ -970,7 +970,7 @@ export default function HomePage() {
             <span className="rounded-full bg-orange-700 px-1.5 py-0.5 text-[9px] font-bold text-white">모집중</span>
           </div>
           <div className="flex items-center gap-2">
-            <Link to={user ? '/community/jogak?write=true' : '/login?redirect=/community/jogak?write=true'} className="inline-flex items-center rounded-full bg-[#7C3AED] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 44 }}>모임만들기</Link>
+            <Link to="/community/jogak?write=true" className="inline-flex items-center rounded-full bg-[#7C3AED] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 44 }}>모임만들기</Link>
             <Link to="/community/jogak" className="text-xs text-[#7C3AED] font-medium inline-block py-1.5 -my-1.5">전체 →</Link>
           </div>
         </div>
@@ -1356,7 +1356,7 @@ export default function HomePage() {
               // 28번째 — 글쓰기 강력 유도
               if (idx + 1 === 28) {
                 cards.push(
-                  <Link key={`write-cta-${idx}`} to={user ? '/community/free?write=true' : '/login?redirect=/community/free?write=true'} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] p-4 active:scale-[0.98] transition text-center">
+                  <Link key={`write-cta-${idx}`} to="/community/free?write=true" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] p-4 active:scale-[0.98] transition text-center">
                     <p className="text-base font-bold text-white">여기까지 봤으면 한마디 남기고 가</p>
                     <p className="text-[11px] text-white/70 mt-0.5">단골만 아는 디테일이 다음 사람을 살린다</p>
                   </Link>

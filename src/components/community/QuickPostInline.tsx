@@ -15,6 +15,7 @@
 import { useState } from 'react';
 import { Link } from '../ui/SafeLink';
 import { useAuth } from '@/hooks/useAuth';
+import { loginHref } from '@/lib/auth-return';
 import { createPost } from '@/lib/community-api';
 import { checkContent } from '@/lib/content-filter';
 import { COLOR, RADIUS } from '@/lib/design-tokens';
@@ -24,7 +25,7 @@ interface Props {
 }
 
 export function QuickPostInline({ onPosted }: Props) {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [text, setText] = useState('');
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
@@ -63,7 +64,9 @@ export function QuickPostInline({ onPosted }: Props) {
     setTimeout(() => setOk(false), 2200);
   };
 
-  // 비로그인 — 가벼운 유도
+  // [고침71-2] 세션을 읽는 동안(user 아직 null)은 아무것도 안 보인다 — 로그인된 회원에게 「로그인」 단추가 깜빡이지 않게
+  if (authLoading) return null;
+  // 비로그인 — 가벼운 유도 · 로그인 뒤 홈으로 돌아온다
   if (!user) {
     return (
       <div
@@ -82,7 +85,7 @@ export function QuickPostInline({ onPosted }: Props) {
           오늘 어디 갔다 왔어요? 한 줄로 자랑해봐요
         </div>
         <Link
-          to="/login"
+          to={loginHref()}
           style={{
             background: COLOR.gradient.hot,
             color: '#fff',
