@@ -515,7 +515,10 @@ function withPageCard(meta, pc, routePath) {
       if (!node || typeof node !== 'object') return node;
       const isBiz = String(node['@id'] || '').endsWith('#business');
       if (!isBiz && node['@type'] !== 'CollectionPage') return node;
-      if (isBiz && ad && !ownShop) return node; // [구글69-1 · 지적 8] 다른 가게 쪽의 #business 는 손대지 않는다(telephone 0 · image 0 — 그 그림은 광고주 카드지 이 가게의 그림이 아님)
+      // [구글69-1 · 지적 8] 다른 가게 쪽(예: 장안동호빠 빵빵에 실린 큐브 카드)의 #business 에는 광고주 번호·카드 그림을 넣지 않는다(그 그림은 광고주 카드지 이 가게의 그림이 아님).
+      //   [11-08 라이브 눈 확인] 그 #business 의 자기 카드(-v8 · 옛 og:image)는 이 쪽에 이제 보이지 않는다(첫 그림·og:image = 광고 카드) → 구글 구조화 데이터 정책 「쪽에 보이지 않는 내용은 마크업하지 않는다」(sd-policies · 확인 2026-11-08)대로 image 를 뺀다.
+      //   LocalBusiness 에서 image 는 권장 칸(필수 = address·name · local-business 문서 · 확인 2026-11-08) · 쪽의 그림 신호(og:image · 첫 그림 · 사이트맵 image)는 광고 카드 하나로 모인다.
+      if (isBiz && ad && !ownShop) { const { image: _own, ...rest } = node; return rest; }
       const out = { ...node, image: cardUrl }; // 구글 구조화 데이터 「쪽에 보이는 것과 같은 값」 — 첫 그림(카드) 하나
       if (isBiz && ad) out.telephone = telIntl(ad.phone); // 광고주 쪽만(명단 번호 · +82 꼴) · 광고문의 쪽은 telephone 0(page-gate A7)
       return out;
