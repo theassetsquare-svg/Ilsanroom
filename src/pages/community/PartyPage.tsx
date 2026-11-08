@@ -5,6 +5,7 @@ import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { loginHref } from '@/lib/auth-return';
 import { useFilteredPosts } from '@/hooks/useFilteredPosts';
 import { useDraftAutosave } from '@/hooks/useDraftAutosave';
 // ↑ useDocumentMeta 페이지: 임시저장 (영역 L-9)
@@ -102,7 +103,7 @@ function NbbangCalc() {
 
 export default function PartyRecruitPage() {
   useDocumentMeta('같이 갈 사람 손! 파티 멤버 지금 모집한다', '혼자 가기 아깝다면? 우리끼리 같이 갈 사람 바로 모집. 클럽 4인 N빵·라운지 짝매칭·룸 단체석·주말 1박2일 투어까지. 인원 채워서 출발, 바로 확인.');
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [statusFilter, setStatusFilter] = useState<PartyStatus | "전체">("전체");
   const [parties, setParties] = useState<PartyItem[]>([]);
@@ -133,10 +134,10 @@ export default function PartyRecruitPage() {
     })();
   }, []);
 
+  // [고침71-1 2026-11-08 · 대표님 15:53 「회원가입을 했는데 왜 또 로그인 화면으로 가」] useAuth 는 세션을 읽는 동안 user 가 null → 그 순간 /login 으로 튕기던 것(로그인된 회원도) · 세션 확인이 끝난 뒤에만 판단하고, 로그인 뒤 이 쪽으로 돌아온다(loginHref)
   const handleWriteClick = () => {
-    if (!user) {
-      window.location.href = '/login'; return;
-    }
+    if (authLoading) return;
+    if (!user) { window.location.href = loginHref(); return; }
     setShowWriteModal(true);
   };
 

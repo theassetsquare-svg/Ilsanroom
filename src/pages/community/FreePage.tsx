@@ -5,6 +5,7 @@ import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { loginHref } from '@/lib/auth-return';
 import { useFilteredPosts } from '@/hooks/useFilteredPosts';
 import { useDraftAutosave } from '@/hooks/useDraftAutosave';
 // ↑ useDocumentMeta 페이지: 임시저장 (영역 L-9)
@@ -40,19 +41,20 @@ function postToSimple(post: Post): SimplePost {
 
 export default function FreeBoardPage() {
   useDocumentMeta('자유게시판 — 주제 제한 없이 솔직하게 떠드는 곳이다', '오늘 뭐 떠들고 싶어? 잡담 질문 자랑 푸념 황당썰 추천음악 맛집 해장정보 다 OK. 익명 보장, 규칙 1개만 지키면 자유. 나이트라이프 입문자도 바로 환영.');
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [recentPosts, setRecentPosts] = useState<SimplePost[]>([]);
   const [loading, setLoading] = useState(true);
   const [showWriteModal, setShowWriteModal] = useState(false);
 
+  // [고침71-1 2026-11-08 · 대표님 15:53 「회원가입을 했는데 왜 또 로그인 화면으로 가」] useAuth 는 세션을 읽는 동안 user 가 null → 그 순간 /login 으로 튕기던 것(로그인된 회원도) · 세션 확인이 끝난 뒤에만 판단하고, 로그인 뒤 이 쪽으로 돌아온다(loginHref)
   useEffect(() => {
-    if (searchParams.get('write') === 'true') {
-      if (!user) { window.location.href = '/login'; return; }
-      setShowWriteModal(true);
-    }
-  }, [searchParams, user]);
+    if (searchParams.get('write') !== 'true') return;
+    if (authLoading) return;
+    if (!user) { window.location.href = loginHref(); return; }
+    setShowWriteModal(true);
+  }, [searchParams, user, authLoading]);
   const [writeTitle, setWriteTitle] = useState("");
   const [writeContent, setWriteContent] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -83,7 +85,8 @@ export default function FreeBoardPage() {
   }, [currentPage]);
 
   const handleWriteClick = () => {
-    if (!user) { window.location.href = '/login'; return; }
+    if (authLoading) return;
+    if (!user) { window.location.href = loginHref(); return; }
     setShowWriteModal(true);
   };
 

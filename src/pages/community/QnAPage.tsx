@@ -5,6 +5,7 @@ import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { loginHref } from '@/lib/auth-return';
 import { useFilteredPosts } from '@/hooks/useFilteredPosts';
 import { useDraftAutosave } from '@/hooks/useDraftAutosave';
 // ↑ useDocumentMeta 페이지: 임시저장 (영역 L-9)
@@ -50,7 +51,7 @@ const categoryFilters = ["전체", "입장", "예약", "드레스코드", "분�
 
 export default function QnAPage() {
   useDocumentMeta('오늘 밤 어디 가냐고? 여기서 추천받아', '오늘 밤 어디 갈지 모르면 여기 물어봐. 인원·분위기·지역만 적으면 단골 회원 100명이 5분 안에 답해줘. 솔직히 가본 사람만 추천. 바로 확인.');
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("전체");
@@ -79,8 +80,10 @@ export default function QnAPage() {
     })();
   }, []);
 
+  // [고침71-1 2026-11-08 · 대표님 15:53 「회원가입을 했는데 왜 또 로그인 화면으로 가」] useAuth 는 세션을 읽는 동안 user 가 null → 그 순간 /login 으로 튕기던 것(로그인된 회원도) · 세션 확인이 끝난 뒤에만 판단하고, 로그인 뒤 이 쪽으로 돌아온다(loginHref)
   const handleWriteClick = () => {
-    if (!user) { navigate('/login'); return; }
+    if (authLoading) return;
+    if (!user) { navigate(loginHref()); return; }
     setShowWriteModal(true);
   };
 

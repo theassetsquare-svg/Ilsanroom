@@ -78,6 +78,17 @@ export default function LoginPage() {
     if (target) rememberReturn(target);
   }, []);
 
+  // [고침71-1 2026-11-08] 이미 로그인된 회원이 /login 에 오면(글쓰기 쪽이 세션 읽기 전에 튕겨 보냈을 때 등) 로그인 창을 다시 보이지 않고 보던 쪽으로 돌려보낸다
+  useEffect(() => {
+    const supabase = createClient();
+    if (!supabase) return;
+    let alive = true;
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (alive && session?.user) window.location.replace(takeReturn() || '/');
+    }).catch(() => { /* 세션 확인 실패 = 로그인 창 그대로 */ });
+    return () => { alive = false; };
+  }, []);
+
   const loginTimerRef = useRef<ReturnType<typeof setTimeout>>();
   useEffect(() => () => { if (loginTimerRef.current) clearTimeout(loginTimerRef.current); }, []);
 

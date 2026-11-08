@@ -5,6 +5,7 @@ import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { loginHref } from '@/lib/auth-return';
 import { useFilteredPosts } from '@/hooks/useFilteredPosts';
 import { useDraftAutosave } from '@/hooks/useDraftAutosave';
 // ↑ useDocumentMeta 페이지: 임시저장 (영역 L-9)
@@ -44,7 +45,7 @@ const DRESS_GUIDE = [
 
 export default function FashionPage() {
   useDocumentMeta('운동화 신고 가도 돼? 업종별 복장 가이드', '운동화 신고 가도 돼? 6개 업종별 드레스코드 정리. 반바지 가능 여부·시즌 옷차림·첫방문 안전한 룩·강남/홍대 입장 거절 리스크까지 바로 확인. 후회 전에.');
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [posts, setPosts] = useState<StylePost[]>([]);
   const [loading, setLoading] = useState(true);
@@ -71,8 +72,10 @@ export default function FashionPage() {
     })();
   }, []);
 
+  // [고침71-1 2026-11-08 · 대표님 15:53 「회원가입을 했는데 왜 또 로그인 화면으로 가」] useAuth 는 세션을 읽는 동안 user 가 null → 그 순간 /login 으로 튕기던 것(로그인된 회원도) · 세션 확인이 끝난 뒤에만 판단하고, 로그인 뒤 이 쪽으로 돌아온다(loginHref)
   const handleWriteClick = () => {
-    if (!user) { window.location.href = '/login'; return; }
+    if (authLoading) return;
+    if (!user) { window.location.href = loginHref(); return; }
     setShowWriteModal(true);
   };
 

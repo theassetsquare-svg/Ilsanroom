@@ -5,6 +5,7 @@ import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { loginHref } from '@/lib/auth-return';
 import { useFilteredPosts } from '@/hooks/useFilteredPosts';
 import { useDraftAutosave } from '@/hooks/useDraftAutosave';
 // ↑ useDocumentMeta 페이지: 임시저장 (영역 L-9)
@@ -55,7 +56,7 @@ function StarDisplay({ rating, size = "md" }: { rating: number; size?: "sm" | "m
 
 export default function ReviewsPage() {
   useDocumentMeta('가본 사람만 쓸 수 있다, 실제 방문 후기', '어느 가게가 진짜? 광고 아닌 솔직히 가본 사람만 쓴 1줄 후기. 별점·한줄평으로 보는 6업종 리얼 리뷰. 강남 홍대 부산 모든 업종 모음. 바로 확인.');
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [starFilter, setStarFilter] = useState<number | null>(null);
   const [photoOnly, setPhotoOnly] = useState(false);
@@ -89,8 +90,10 @@ export default function ReviewsPage() {
     })();
   }, []);
 
+  // [고침71-1 2026-11-08 · 대표님 15:53 「회원가입을 했는데 왜 또 로그인 화면으로 가」] useAuth 는 세션을 읽는 동안 user 가 null → 그 순간 /login 으로 튕기던 것(로그인된 회원도) · 세션 확인이 끝난 뒤에만 판단하고, 로그인 뒤 이 쪽으로 돌아온다(loginHref)
   const handleWriteClick = () => {
-    if (!user) { window.location.href = '/login'; return; }
+    if (authLoading) return;
+    if (!user) { window.location.href = loginHref(); return; }
     setShowWriteModal(true);
   };
 

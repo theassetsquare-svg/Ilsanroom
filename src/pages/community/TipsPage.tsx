@@ -5,6 +5,7 @@ import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { fetchPosts, createPost, type Post } from '@/lib/community-api';
 import { useAuth } from '@/hooks/useAuth';
+import { loginHref } from '@/lib/auth-return';
 import { useFilteredPosts } from '@/hooks/useFilteredPosts';
 import { useDraftAutosave } from '@/hooks/useDraftAutosave';
 // ↑ useDocumentMeta 페이지: 임시저장 (영역 L-9)
@@ -54,7 +55,7 @@ const categories: Array<Category | typeof ALL> = [ALL, "입문", "절약", "보�
 
 export default function TipsPage() {
   useDocumentMeta('고수들이 풀어놓은 밤놀이 실전 꿀팁 모음이다', '어떤 가게가 안전? 초보가 호구되기 전에 무조건 봐. 입장 타이밍·자리 잡는 법·단골 매너까지 1편 정리. 강남 홍대 부산 6개 지역 팁 바로 확인. 후회 전에.');
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [activeCat, setActiveCat] = useState<Category | "전체">(ALL);
   const [tips, setTips] = useState<TipCard[]>([]);
@@ -82,8 +83,10 @@ export default function TipsPage() {
     })();
   }, []);
 
+  // [고침71-1 2026-11-08 · 대표님 15:53 「회원가입을 했는데 왜 또 로그인 화면으로 가」] useAuth 는 세션을 읽는 동안 user 가 null → 그 순간 /login 으로 튕기던 것(로그인된 회원도) · 세션 확인이 끝난 뒤에만 판단하고, 로그인 뒤 이 쪽으로 돌아온다(loginHref)
   const handleWriteClick = () => {
-    if (!user) { window.location.href = '/login'; return; }
+    if (authLoading) return;
+    if (!user) { window.location.href = loginHref(); return; }
     setShowWriteModal(true);
   };
 

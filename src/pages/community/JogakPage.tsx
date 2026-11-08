@@ -5,6 +5,7 @@ import { Link } from '../../components/ui/SafeLink';
 import WriteHeader from '@/components/community/WriteHeader';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useAuth } from '@/hooks/useAuth';
+import { loginHref } from '@/lib/auth-return';
 import { useFilteredPosts } from '@/hooks/useFilteredPosts';
 import { useDraftAutosave } from '@/hooks/useDraftAutosave';
 // ↑ useDocumentMeta 페이지: 임시저장 (영역 L-9)
@@ -144,7 +145,7 @@ export default function JogakPage() {
     '자리 하나 남았을 때 바로 올리고 바로 구하는 조각 매칭판. 여성조각·남성조각·제휴조각·벙개까지 실시간 모집. 강남 홍대 이태원 일산 클럽·룸·라운지 자리 채우기. 100P 이상 작성 가능.'
   );
 
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const isOwner = (user as any)?.user_metadata?.role === 'owner' || (user as any)?.app_metadata?.role === 'owner';
 
@@ -168,12 +169,13 @@ export default function JogakPage() {
   const [showWrite, setShowWrite] = useState(false);
 
   // 홈에서 ?write=true로 오면 글쓰기 자동 오픈
+  // [고침71-1 2026-11-08 · 대표님 15:53 「회원가입을 했는데 왜 또 로그인 화면으로 가」] useAuth 는 세션을 읽는 동안 user 가 null → 그 순간 /login 으로 튕기던 것(로그인된 회원도) · 세션 확인이 끝난 뒤에만 판단하고, 로그인 뒤 이 쪽으로 돌아온다(loginHref)
   useEffect(() => {
-    if (searchParams.get('write') === 'true') {
-      if (!user) { window.location.href = '/login'; return; }
-      setShowWrite(true);
-    }
-  }, [searchParams, user]);
+    if (searchParams.get('write') !== 'true') return;
+    if (authLoading) return;
+    if (!user) { window.location.href = loginHref(); return; }
+    setShowWrite(true);
+  }, [searchParams, user, authLoading]);
   const [submitting, setSubmitting] = useState(false);
 
   // 폼 필드
@@ -236,7 +238,8 @@ export default function JogakPage() {
   };
 
   const handleWriteClick = () => {
-    if (!user) { window.location.href = '/login'; return; }
+    if (authLoading) return;
+    if (!user) { window.location.href = loginHref(); return; }
     // 제휴조각은 광고주(owner)만 가능
     if (activeCategory === 'partner' && !isOwner) {
       return;
