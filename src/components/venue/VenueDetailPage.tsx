@@ -18,7 +18,8 @@ import { useRecentVenues } from '@/hooks/useRecentVenues';
 import { useFavorites } from '@/hooks/useFavorites';
 import { getVenueBySlug } from '@/data/venues';
 import { isAdVenue, isPageOnlyAd, regionOf } from '@/lib/venue-order';
-import { pageCardOf } from '@/lib/venue-file-ver'; // [놀쿨61-1] 쪽 카드 표 — 가게 쪽에 다른 가게(명단 광고주)의 광고 카드가 걸린 쪽(장안동호빠 빵빵·플렉스 = 큐브 카드)
+import { pageCardOf, pageCardAlt, pageKey } from '@/lib/venue-file-ver'; // [놀쿨61-1] 쪽 카드 표 — 가게 쪽에 다른 가게(명단 광고주)의 광고 카드가 걸린 쪽(장안동호빠 빵빵·플렉스 = 큐브 카드)
+import NC_ROSTER from '@/data/advertisers.nolcool.json'; // [놀쿨70-1] 카드 그림 설명(alt)에 명단의 닉네임·번호를 쓰는 쪽(altFull · 일산룸 쪽) — 프리렌더 withPageCard 와 같은 줄을 찾는다
 
 const VenueSeoContent = lazy(() => import('@/components/venue/VenueSeoContent'));
 const VenueReportModal = lazy(() => import('@/components/venue/VenueReportModal'));
@@ -101,6 +102,8 @@ export default function VenueDetailPage({
   // [놀쿨61-1] 쪽 카드(PAGE_CARD · kind 'ad')가 있는 가게 쪽 — 첫 그림·「광고」 표시를 프리렌더(withPageCard: og:image · heroAd)와 같게 한다(담당 줄은 그대로 — 그 가게의 담당이 아니다)
   const pageCard = pageCardOf(detailPath);
   const heroCard = pageCard && pageCard.kind === 'ad' ? pageCard : null;
+  // [놀쿨70-1] 이 쪽이 적힌 명단 줄(프리렌더 withPageCard 와 같은 찾기) — altFull 인 카드는 alt 에 가게 이름·닉네임·번호(pageCardAlt 한 곳)
+  const heroAdRow = heroCard ? (NC_ROSTER as { advertisers: { shop: string; nickname: string; phone: string; pages: string[] }[] }).advertisers.find((a) => a.pages.some((p) => pageKey(p) === pageKey(detailPath))) : undefined;
 
   return (
     <div className="bg-neon-bg">
@@ -125,7 +128,7 @@ export default function VenueDetailPage({
         regionLabel={regionOf(venue).label}
         slug={venue.slug}
         cardFile={heroCard ? heroCard.file : undefined}
-        cardAlt={heroCard ? `${heroCard.shop} 안내 카드` : undefined}
+        cardAlt={heroCard ? pageCardAlt(heroCard, heroAdRow) : undefined}
       />
 
       {/* [놀쿨12-2 · 13:18-4] 같은 가게 둘째 쪽 — 주소는 그대로 두고 같은 가게임을 밝혀 본 쪽으로 잇는다(목록·숫자에는 본 쪽만) */}

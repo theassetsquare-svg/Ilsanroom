@@ -100,7 +100,14 @@ export const PAGE_CARD = {
   '/region/강남/hoppa/': { file: 'region-gangnam-hoppa-inquiry-card-v1', kind: 'inquiry', shop: '강남호빠', hue: 5, google: true, variant: 'left' },
   '/region/부산 해운대/hoppa/': { file: 'region-busan-haeundae-hoppa-inquiry-card-v1', kind: 'inquiry', shop: '해운대호빠', hue: 190, google: true, variant: 'right' }, // split 은 보통 가게 카드와 거리 10 → right
   '/region/부산/hoppa/': { file: 'region-busan-hoppa-inquiry-card-v1', kind: 'inquiry', shop: '부산호빠', hue: 310, google: true, variant: 'low' },
+  // [놀쿨70-1 · 대표님 2026-11-07 19:53 · 11-08 22:0x] 일산룸 가게 쪽 · 일산 지역 쪽 = 일산룸 광고주 카드(신실장 · 명단 「일산룸」 줄 · 쪽으로만 묶음 — 제목에 「일산룸」이 든 다른 쪽 넷은 위 광고문의 카드 그대로)
+  //   google: true(구글69-1 과 같은 길) · altFull = 그림 설명에 가게 이름·닉네임 줄·번호까지(지시서 1-2 · 카드에 그려진 글자 그대로) · 색조·배치를 달리해 두 장이 서로 다른 그림
+  '/rooms/ilsan/ilsanroom/': { file: 'ilsanroom-sinsiljang-card-v1', kind: 'ad', shop: '일산룸', hue: 35, google: true, altFull: true, variant: 'mid' }, // 기본 배치는 옛 일산룸 카드(ilsanroom-v8)와 dHash 거리 7 → mid(세로 가운데 · 글자 크기 그대로) = 가장 가까운 카드와 거리 20(11-08 실측)
+  '/region/일산/': { file: 'region-ilsan-sinsiljang-card-v1', kind: 'ad', shop: '일산룸', hue: 265, google: true, altFull: true, variant: 'low' },
 };
+/** [놀쿨70-1] 쪽 카드 그림 설명(alt) 한 곳 — 프리렌더(withPageCard)와 화면(VenueDetailPage → VenueHero)이 같이 쓴다.
+ *  altFull 인 쪽 = 「<가게> <닉네임> <번호> 안내 카드」(카드에 그려진 글자 그대로) · 그 밖 = 옛 글자 「<가게> 안내 카드」 그대로 */
+export const pageCardAlt = (pc, ad) => (pc && pc.altFull && ad ? `${ad.shop} ${ad.nickname} ${ad.phone} 안내 카드` : `${pc ? pc.shop : ''} 안내 카드`);
 /** [놀쿨61-1] 쪽 카드 그림 주소 — 가게 쪽이 PAGE_CARD 에 있으면 첫 그림(VenueHero)도 이 파일(프리렌더 withPageCard 의 og:image 와 같은 파일) */
 export const pageCardJpg = (file) => `/og/${file}.jpg`;
 export const pageCardLight = (file) => `/og/${file}-w1200.webp`;

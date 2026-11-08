@@ -9,7 +9,7 @@ import path from 'path';
 import crypto from 'crypto';
 import { execSync } from 'child_process';
 import { provinceOf, localityOf } from './lib/region-admin.mjs';
-import { ogVer, ogOwnVer, MAGAZINE_OG, pageCardOf, pageKey } from '../src/lib/venue-file-ver.mjs';
+import { ogVer, ogOwnVer, MAGAZINE_OG, pageCardOf, pageKey, pageCardAlt } from '../src/lib/venue-file-ver.mjs';
 import { isAdVenue, isPageOnlyAd, isListed, regionOf, regionTree, sortVenues } from '../src/lib/venue-order.mjs'; // [놀쿨12-2 · 13:18-1·2·4] React 목록과 같은 한 자리
 import sharp from 'sharp'; // [놀쿨11-3] 첫 화면 그림(og jpg) 의 webp 축소판 생성
 
@@ -485,7 +485,8 @@ function withPageCard(meta, pc, routePath) {
   const imgAttrs = `src="${has600 ? `/og/${escHtml(pc.file)}-w600.webp` : `/og/${escHtml(pc.file)}.jpg`}"${has600 && has1200 ? ` srcset="/og/${escHtml(pc.file)}-w600.webp 600w, /og/${escHtml(pc.file)}-w1200.webp 1200w" sizes="260px"` : ''} width="360" height="360"${g ? ' loading="eager" decoding="async"' : ''}`;
   const box = 'border:1px solid #d4d4d4;border-radius:14px;padding:14px;margin:0 0 16px;max-width:420px';
   // [구글69-1] alt = 그림에 실제로 그려진 것만 — 광고주 카드(가게 이름 카드) = 「<가게> 안내 카드」(번호·닉네임은 alt 에 0) · 광고문의 카드(구글 쪽 허브 3)는 「광고문의 · 카톡 besta12」가 그려져 있어 그대로 적는다(대표님 규칙 C7 광고문의 쪽 = alt 에 「광고문의」 · scripts/naver/human-check.mjs · 11-08)
-  const altText = g && !ad ? `${pc.shop} 광고문의 안내 카드(카톡 besta12)` : `${pc.shop} 안내 카드`;
+  //   [놀쿨70-1 · 지시서 1-2] altFull 인 쪽(일산룸 2쪽)은 카드에 그려진 가게 이름·닉네임 줄·번호를 alt 에 다 적는다(한 곳 = venue-file-ver.mjs pageCardAlt · 화면 VenueHero 와 같은 글자)
+  const altText = g && !ad ? `${pc.shop} 광고문의 안내 카드(카톡 besta12)` : pageCardAlt(pc, ad);
   const cardAlt = escHtml(altText);
   let card;
   if (ad) {

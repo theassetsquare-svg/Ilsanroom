@@ -17,6 +17,8 @@
  *                 A3 「신실장」은 놀쿨 명단에 적힌 쪽에서만 통과 · A6 제목(title · og:title · h1)에 「일산명월관」·「일산요정」이 든 쪽 = 명단 쪽이어야 하고 신실장 광고 카드(등록된 카드 그림 · tel 링크 · 닉네임 · 「광고」 표시)가 있어야 함
  *                 A7 제목에 「일산룸」이 든 쪽 = 번호·tel 링크 0 · 등록된 광고문의 카드 그림 · A8 쪽 카드 표(src/lib/venue-file-ver.mjs PAGE_CARD)와 제목·명단이 어긋남
  *                 A2·A3·A4·A6·A7 은 사이트맵 밖 쪽(색인 제외 태그 · 합친 지역 쪽)까지 dist 전부를 본다
+ *   [놀쿨70-1 · 대표님 2026-11-07 19:53 · 11-08 22:0x] 쪽으로만 묶인 광고 카드(명단 줄에 titleWords 없음 · 그 줄의 pages = 일산룸 가게 쪽 · 일산 지역 쪽) — 그 두 쪽은 A 갈래(A6 잣대 그대로)로 보고,
+ *                 그 줄의 닉네임 줄(「총책임자 신실장」)·가게 이름+닉네임 글자(「일산룸 총책임자」)는 그 두 쪽에서만 A3·A4 통과 · 금지 번호 010-4117-5556 은 어디든 그대로 막음
  *   [놀쿨11-4] M1 「다음에 볼 곳」 모듈 안 같은 주소 2번 · M2 가게 쪽 모듈 7칸 미만 · M3 모듈 링크 새 창 · M4 저장 버튼 없는 가게 쪽
  *   [놀쿨34-1 · 노출34 연구표 G2~G7] G2 H1 = 제목 글자 그대로 · og:title = 제목(11-2 의 「H2 H1 = 제목이면 막음」을 뒤집음 — 충돌 C5 · 구글 title-link 「제목 글자를 첫 보이는 h1 에」)
  *                 G3 첫 그림 = og:image 와 같은 파일(data URI 아님 · 치수 속성 = 파일의 실제 치수 · 가로 1200 이상 · fetchpriority=high · alt 있음 · <picture> 로 감쌌으면 가벼운 판 = 같은 카드의 -w1200.webp 하나 · 있는 파일 · 같은 치수)
@@ -278,7 +280,7 @@ export function contactProblems(html, route = '') {
   const here = pageKey(route); // [놀쿨44-1] 풀어 쓴 꼴 + 끝 빗금(한글 주소도 명단과 맞게)
   const pageOnlyOk = (n) => { const p = PAGE_ONLY.get(n); return !!p && p.pages.has(here); }; // [놀쿨26-1] 놀쿨 명단 번호는 적힌 쪽에서만
   const off = [...new Set([...nums, ...tels])].filter((n) => (PAGE_ONLY.has(n) ? !pageOnlyOk(n) : !ALLOWED_PHONES.has(n)));
-  const nickOkHere = (w) => ROSTER_ROWS.some((p) => p.nick === w && p.pages.has(here)); // [놀쿨44-1] 금지 낱말이 명단 닉네임이면(신실장) 그 쪽에서만 통과
+  const nickOkHere = (w) => ROSTER_ROWS.some((p) => p.pages.has(here) && (p.nick === w || p.nick.includes(w))); // [놀쿨44-1] 금지 낱말이 명단 닉네임이면(신실장) 그 쪽에서만 통과 · [놀쿨70-1] 닉네임 줄이 그 낱말을 품은 꼴(「총책임자 신실장」)도 그 줄의 쪽에서만
   // [놀쿨44-1 · 새 맥락 검토] 낱말 사이에 빈칸·태그를 낀 꼴 · 스크립트 속(ld+json 아닌 것 포함)까지 본다
   const noData = html.replace(/data:[a-z]+\/[a-z0-9.+-]+;base64,[A-Za-z0-9+/=]+/g, ' ');
   const words = FORBIDDEN_WORDS.filter((w) => (noJs.includes(w) || looseWordRe(w).test(noData)) && !nickOkHere(w));
@@ -294,7 +296,8 @@ export function contactProblems(html, route = '') {
   const cards = AD_CARDS.filter((c) => !c.pages.has(here) && c.re.test(html)).map((c) => c.file);
   // [놀쿨44-1] 금지 번호 — 쪽 전체(스크립트·JSON-LD·속성 포함 · 박아 넣은 그림 data: 는 뺌)에서 본다 · 꼴을 바꿔 써도(숫자만 남긴 글)
   const banned = BANNED_NUMBER_RE.test(noData) || squashed.includes(BANNED_DIGITS);
-  const oldPhrase = OLD_PHRASE_RE.test(noData); // 옛 담당 줄 글자 「일산룸 총책임자」
+  // 옛 담당 줄 글자 「일산룸 총책임자」 · [놀쿨70-1 · 대표님 2026-11-07 19:53] 명단 줄(가게 이름 + 닉네임 줄)이 바로 그 글자인 쪽(일산룸 2쪽 · 「일산룸」 줄의 pages)에서만 통과 — 다른 쪽은 그대로 막음 · 금지 번호(banned)는 어느 쪽이든 그대로
+  const oldPhrase = OLD_PHRASE_RE.test(noData) && !ROSTER_ROWS.some((p) => p.pages.has(here) && OLD_PHRASE_RE.test(`${p.shop} ${p.nick}`));
   return { off, words, banned, oldPhrase, nums, tels, cards };
 }
 /**
@@ -313,7 +316,11 @@ export function ilsanProblems(html, ctx = {}) {
   const hits = titleHits(keys, rosterList); // [놀쿨61-1] 제목이 가리키는 명단 광고주(titleWords) — 일산 A 는 신실장 줄의 titleWords 로 같은 결과
   if (hits.length) kind.A = true;
   const pc = pageCardOf(route);
-  if (pc && pc.kind === 'ad') {
+  // [놀쿨70-1 · 대표님 2026-11-07 19:53] 쪽으로만 묶인 광고 카드 — 이 쪽을 적은 명단 줄에 titleWords 가 없고 그 줄의 가게가 표(PAGE_CARD)의 가게와 같으면
+  //   제목 낱말 대신 쪽 주소로 A(광고 카드) 갈래를 탄다(일산룸 가게 쪽 · 일산 지역 쪽 2쪽만 · 제목에 「일산룸」이 들어도 B(광고문의 · 번호 0) 잣대를 대지 않음). A6 잣대(카드 그림 · tel · 닉네임 · 「광고」 · 다른 번호 0)는 그대로
+  const bound = rosterOf(route);
+  const pageBound = !!(pc && pc.kind === 'ad' && bound && !bound.titleWords.length && bound.shop === pc.shop);
+  if (pc && pc.kind === 'ad' && !pageBound) {
     const owner = rosterList.find((p) => p.shop === pc.shop);
     const words = owner && owner.titleWords.length ? owner.titleWords : ['일산명월관', '일산요정'];
     if (!keys.some((k) => words.some((w) => k.includes(w)))) out.push(`A8 쪽 카드 표에는 광고 카드 쪽인데 제목에 ${낱말글(words)}이 없음`);
@@ -323,8 +330,8 @@ export function ilsanProblems(html, ctx = {}) {
   if (pc && pc.kind === 'inquiry' && keys.some((k) => k.includes(squashTitle(pc.shop)))) kind.B = true;
   if (pc && pc.kind === 'inquiry' && !kind.B) out.push(`A8 쪽 카드 표에는 광고문의 카드 쪽인데 제목에 「${bName}」이 없음`);
   // [놀쿨44-1 · 새 맥락 검토] 명단에 적힌 쪽이라도 제목이 A 가 아니면 그 닉네임·번호를 통과시키지 않는다(명단에 제목이 다른 쪽을 적어 넣는 길을 막음)
-  const bound = rosterOf(route);
   if (bound && bound.titleWords.length && !keys.some((k) => bound.titleWords.some((w) => k.includes(w)))) out.push(`A8 놀쿨 명단에는 「${bound.nick}」 쪽인데 제목에 ${낱말글(bound.titleWords)}이 없음`);
+  if (pageBound) { kind.A = true; kind.B = false; } // [놀쿨70-1] 위 주석
   if (!kind.A && !kind.B) return out;
   const bodyImgOf = (p) => new RegExp(`<img\\b[^>]*\\ssrc="${escRe(p)}"`); // 본문 그림(<img src>) — 머리의 og:image 만 있고 본문 카드가 빠진 쪽을 잡는다
   const og = sameOriginPath((html.match(/<meta property="og:image" content="([^"]*)"/) || [])[1]);
