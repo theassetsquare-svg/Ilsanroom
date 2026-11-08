@@ -29,8 +29,8 @@ import path from 'node:path';
 const CUR_PATH = path.resolve('scripts/.seo-lastmod.json');        // 이번 빌드 결과 {route:{hash,lastmod}}
 const PREV_PATH = path.resolve('scripts/.seo-lastmod.prev.json');  // lastmodFor()가 비교한 직전값
 const SITEMAP_PATH = path.resolve('dist/sitemap.xml');
-// prerender-seo.mjs lastmodFor() 와 ★동일: const today = new Date().toISOString().slice(0,10)
-const today = new Date().toISOString().slice(0, 10);
+// prerender-seo.mjs lastmodFor() 와 ★동일(TODAY_KST): 한국 날짜 — [구글69-1 11-08] 옛 판은 UTC 라 00:00~09:00 빌드가 전날로 찍혔다
+const today = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
 
 function readJson(p) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); }
