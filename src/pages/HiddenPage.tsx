@@ -31,7 +31,7 @@ const hiddenGems = [
     region: '울산',
     category: '나이트',
     hook: '울산 공단 직장인들의 주말 해방구',
-    reason: '울산 지역 나이트 문화의 중심. 춘자 실장의 친절한 운영으로 초보 방문객도 편안하게 즐길 수 있는 곳입니다.',
+    reason: '울산 지역 나이트 문화의 중심. 초보 방문객도 편안하게 즐길 수 있는 곳입니다.',
     href: '/nights/ulsanchampionnight',
     week: '지난 달 4주차',
     emoji: '🌙',

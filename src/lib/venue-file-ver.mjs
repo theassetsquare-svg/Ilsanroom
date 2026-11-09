@@ -8,12 +8,9 @@
 
 /** slot 1(히어로/썸네일) 파일명 버전 */
 export const HERO_FILE_VER = {
-  // 2026-09-22 대표님 지시 — 옛 광고주 세트 → 일산룸 총책임자(010-4117-5556).
-  // -v2 는 옛 닉네임·옛 번호가 그림에 합성돼 있어 글자만으로는 못 지운다. 생성기(gen-*-image.mjs)의
-  // 배경·무늬·테두리를 그대로 다시 그리고 리본 글자와 번호 줄만 새 값으로 넣어 -v3 을 만들었다.
-  // 옛 -v2 파일은 지우지 않고 남겨 둔다(되돌릴 근거).
-  ilsanroom: '-v3',
-  ilsanmyeongwolgwanyojeong: '-v3',
+  // 2026-09-22 일산룸·일산명월관요정 사진 판 -v3 을 만들었으나 그 그림에 옛 일산룸 총책임자 번호가 들어 있다(대표님 2026-10-04 04:35 「어디에도 0」).
+  // [놀쿨70-1 · 2026-11-09] 그래서 두 -v3 판(jpg·webp)을 public/venues 에서 뺐고(_to_delete · git 기록 · sha1 은 scripts/forbidden-images.json) 여기도 비웠다.
+  //   가게 사진은 PHOTO_PASS(scripts/gen-image-manifest.mjs)가 비어 지금 어느 쪽도 부르지 않는다. 출처가 확인된 새 사진을 쓸 때 slug: '-v4' 식으로 다시 넣는다.
 };
 
 /** /og/{slug}.jpg 파일명 버전 */
@@ -25,9 +22,14 @@ export const OG_FILE_VER = {
   dapsimnimiraclenight: '-v9',
   // [놀쿨44-1 · 대표님 2026-10-11 18:09] 일산룸 = 광고문의 — 3줄 판(일산룸 / 광고문의 / 카톡 besta12)을 새 이름으로(목록·자기 쪽 같은 판).
   //   일산명월관요정 = 신실장 광고주(쪽 한정) — 목록·검색 같은 다른 쪽에 쓰는 3줄 판을 새 이름(-v9)으로 · 자기 쪽 4줄 판은 아래 OG_OWN_PAGE_VER(-v10).
-  //   옛 판(-v8 · 그 앞)은 옛 담당 줄·번호가 그려져 있다 — 파일은 그대로 두고(주소 404 0) 어느 쪽도 부르지 않는다(sha1 은 scripts/forbidden-images.json · page-gate A5 가 막는다).
+  //   옛 판(-v8 · 그 앞)은 옛 담당 줄·번호가 그려져 있다 — 어느 쪽도 부르지 않는다(sha1 은 scripts/forbidden-images.json · page-gate A5 가 막는다).
+  //   [놀쿨70-1 · 2026-11-09] 그중 옛 일산룸 총책임자 번호가 그려진 판(일산룸·일산명월관요정 -v6 · -v8)은 「어디에도 0」(대표님 2026-10-04 04:35)이라 public/og 에서 뺐다(_to_delete · git 기록).
   ilsanroom: '-v10',
   ilsanmyeongwolgwanyojeong: '-v9',
+  // [놀쿨70-1 · 2026-11-09] 울산챔피언나이트·부평키스나이트 담당 광고 해지(2026-10-25 · 전체57-1 ④) — 3줄 판(가게 이름 / 광고문의 / 카톡 besta12)을 새 이름으로.
+  //   옛 판(울산 -v3 · -v5 · -v8 · 판 없는 jpg·svg · 부평 -v5 · -v8)은 해지한 담당 줄이 그려져 있어 public/og 에서 뺐다(_to_delete · git 기록 · sha1 은 scripts/forbidden-images.json).
+  ulsanchampionnight: '-v9',
+  bupyeongkissnight: '-v9',
 };
 
 /** 2026-08-22 전 업소 "가게이름" 1:1 og 썸네일 전환(generate-og-name11.mjs).

@@ -27,7 +27,7 @@ const NICKNAME_MAP = {
   'suwonchancenight': '박찬호',
   'cheongdamh2onight': '펩시맨',
   'pajuyadangskydomenight': '딸기',
-  'ulsanchampionnight': '춘자',
+  // 'ulsanchampionnight' — [놀쿨70-1 · 2026-11-09] 2026-10-25 광고 해지로 뺌(3줄 광고문의 판은 generate-og-name11.mjs)
   'daejeonsevennight': '영탁',
   'daejeononenight': '',
 };
