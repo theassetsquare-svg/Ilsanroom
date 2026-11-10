@@ -82,10 +82,8 @@ export const PAGE_CARD = {
   '/region/일산/yojeong/': { file: 'region-ilsan-yojeong-v11', kind: 'ad', shop: '일산명월관요정', hue: 160 },
   '/tag/일산요정/': { file: 'tag-ilsan-yojeong-v10', kind: 'ad', shop: '일산명월관요정' },
   '/yojeong/ilsan/': { file: 'yojeong-ilsan-v11', kind: 'ad', shop: '일산명월관요정', hue: 60 },
-  '/magazine/ilsan-room-guide/': { file: 'magazine-ilsan-room-guide-v10', kind: 'inquiry', shop: '일산룸' },
   // '/region/일산/rooms/' — 2026-11-09 놀쿨70-1 에서 일산룸 광고 카드로 바뀜(아래 놀쿨70-1 묶음 · 옛 광고문의 그림 region-ilsan-rooms-v10.jpg 는 지우지 않음 — 주소 404 0)
-  '/rooms/ilsan/': { file: 'rooms-ilsan-v10', kind: 'inquiry', shop: '일산룸' },
-  '/tag/일산룸/': { file: 'tag-ilsan-room-v10', kind: 'inquiry', shop: '일산룸' },
+  // '/magazine/ilsan-room-guide/' · '/rooms/ilsan/' · '/tag/일산룸/' — 2026-11-10 구글72-1 에서 일산룸 광고 카드로 바뀜(아래 구글72-1 묶음 · 옛 광고문의 그림 magazine-ilsan-room-guide-v10 · rooms-ilsan-v10 · tag-ilsan-room-v10 은 지우지 않음 — 주소 404 0 · 부르는 쪽 0)
   // [놀쿨61-1 · 대표님 2026-10-25 16:1x·17:5x] 제목에 「장안동호빠」가 든 쪽 4 = 장안동호빠 큐브(유현재 실장 010-7674-8310) 광고 카드 — 큐브 자기 쪽은 놀쿨에 없고,
   //   빵빵·플렉스는 다른 가게의 쪽이라 가게 담당 칸이 아니라 여기(쪽 카드)로 넣는다(가게 쪽도 PAGE_CARD 가 있으면 첫 그림·og:image = 이 카드 · VenueHero). 색조는 넷 다 적어 서로 다른 그림.
   //   [구글69-1 · 2026-11-07 · 대표님 00:23 「사진을 구글정식문서에 맞게 전부다 넣어」] google: true = 구글 이미지 공식 문서대로 더 넣는 쪽(scripts/prerender-seo.mjs withPageCard):
@@ -107,6 +105,11 @@ export const PAGE_CARD = {
   '/rooms/ilsan/ilsanroom/': { file: 'ilsanroom-sinsiljang-card-v1', kind: 'ad', shop: '일산룸', hue: 35, google: true, altFull: true, variant: 'mid' }, // 기본 배치는 옛 일산룸 카드(ilsanroom-v8)와 dHash 거리 7 → mid(세로 가운데 · 글자 크기 그대로) = 가장 가까운 카드와 거리 20(11-08 실측)
   '/region/일산/': { file: 'region-ilsan-sinsiljang-card-v1', kind: 'ad', shop: '일산룸', hue: 265, google: true, altFull: true, variant: 'low' },
   '/region/일산/rooms/': { file: 'region-ilsan-rooms-sinsiljang-card-v1', kind: 'ad', shop: '일산룸', hue: 0, google: true, altFull: true, variant: 'left-low' }, // [11-09 03:3x 대표님 「여기페이지에도」] 같은 글자 카드 둘(mid · low)과 다른 배치 · left-low = public/og 모든 jpg 와 가장 가까운 dHash 거리 25(11-09 실측 · 닮음 잣대 ≤10)
+  // [구글72-1 · 대표님 2026-11-10 15:18 「구글서치콘솔에 등록된웹사이트페이지에서 일산룸페이지에 일산룸총책임자 신실장 썸네일이미지하고 전화번호 넣어」] 제목에 「일산룸」이 든 남은 쪽 셋(일산 룸 허브 · 매거진 · 태그)도
+  //   일산룸 광고주 카드(신실장 · 명단 「일산룸」 줄의 pages 에 더함 · 쪽으로만 묶음 그대로) — 이제 제목에 「일산룸」이 든 쪽은 전부 광고 카드다. 같은 글자 카드가 여섯 장이 되므로 배치·색조를 여섯 가지로 달리 적는다(닮음 잣대 dHash ≤10).
+  '/rooms/ilsan/': { file: 'rooms-ilsan-sinsiljang-card-v1', kind: 'ad', shop: '일산룸', hue: 120, google: true, altFull: true, variant: 'right' },
+  '/magazine/ilsan-room-guide/': { file: 'magazine-ilsan-room-guide-sinsiljang-card-v1', kind: 'ad', shop: '일산룸', hue: 205, google: true, altFull: true, variant: 'left' },
+  '/tag/일산룸/': { file: 'tag-ilsan-room-sinsiljang-card-v1', kind: 'ad', shop: '일산룸', hue: 320, google: true, altFull: true, variant: 'right-low' },
 };
 /** [놀쿨70-1] 쪽 카드 그림 설명(alt) 한 곳 — 프리렌더(withPageCard)와 화면(VenueDetailPage → VenueHero)이 같이 쓴다.
  *  altFull 인 쪽 = 「<가게> <닉네임> <번호> 안내 카드」(카드에 그려진 글자 그대로) · 그 밖 = 옛 글자 「<가게> 안내 카드」 그대로 */
