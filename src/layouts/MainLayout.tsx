@@ -71,7 +71,7 @@ export default function MainLayout() {
         </p>
       </div>
       <Footer />
-      {/* [놀쿨44-1] 놀쿨 명단의 신실장 쪽(제목에 「일산명월관」·「일산요정」)에만 고정 전화바(번호만) — 그 밖의 쪽에서는 아무것도 그리지 않는다 */}
+      {/* [놀쿨44-1] 놀쿨 명단에서 fixedBar 가 켜진 광고주의 쪽에만 고정 전화바(번호만) — 그 밖의 쪽에서는 아무것도 그리지 않는다 */}
       <PageAdBar />
       <MobileBottomNav />
       {/* 시즌157C — 비교 선택 sticky bar (items > 0일 때만 표시) */}

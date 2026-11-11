@@ -15,10 +15,10 @@
  * 목록·검색·비교 같은 다른 쪽에서는 「광고」 정렬·표시·닉네임을 붙이지 않는다(그 4쪽 밖 글자 변경 0).
  * 명단 pages 와 이 목록이 같은지는 scripts/verify/nc26-check.mjs 가 본다.
  * [놀쿨33-1 · 대표님 2026-10-06 17:01] 신림그랑프리나이트(쌍코피) 더함 — 같은 방식(명단에 적힌 쪽에서만).
- * [놀쿨44-1 · 대표님 2026-10-11 18:09] 일산명월관요정(신실장) 더함 — 같은 방식. 일산룸은 담당 칸을 비웠다(광고문의 표준).
+ * [놀쿨44-1 · 대표님 2026-10-11 18:09] 일산명월관요정 더함 → [일산74-1 · 대표님 2026-11-11 13:2x] 다시 뺌(일산 담당 광고 해지 — 담당 칸을 비웠다 · 광고문의 표준). 일산룸도 담당 칸이 비어 있다.
  *   옛 「일산 두 가게 쪽에만 두는 번호」 예외는 없앴다(그 번호는 이제 어느 쪽에도 없다 — scripts/page-gate.mjs 가 막는다).
  */
-export const PAGE_ONLY_AD_SLUGS = new Set(['busanmulnight', 'busanyeonsandongmulnight', 'sinlimgrandprixnight', 'ilsanmyeongwolgwanyojeong']);
+export const PAGE_ONLY_AD_SLUGS = new Set(['busanmulnight', 'busanyeonsandongmulnight', 'sinlimgrandprixnight']);
 export function isPageOnlyAd(v) {
   return !!(v && v.staffPhone && PAGE_ONLY_AD_SLUGS.has(v.slug));
 }

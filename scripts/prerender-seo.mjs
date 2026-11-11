@@ -460,7 +460,7 @@ function visibleBreadcrumb(meta) {
   return `<nav aria-label="현재 위치" class="ssr-breadcrumb"><ol>${lis}</ol></nav>`;
 }
 
-// [놀쿨44-1 · 대표님 2026-10-11 18:09] 쪽 카드 — 제목에 「일산명월관」·「일산요정」이 든 쪽(신실장 광고 카드)과 「일산룸」이 든 쪽(광고문의 카드).
+// [놀쿨44-1 · 대표님 2026-10-11 18:09] 쪽 카드 — 놀쿨 명단 광고주의 쪽(광고 카드)과 광고문의 카드 쪽 · [일산74-1 · 대표님 2026-11-11 13:2x] 제목에 「일산명월관」·「일산요정」·「일산룸」이 든 쪽은 모두 광고문의 카드.
 //   표는 src/lib/venue-file-ver.mjs PAGE_CARD 한 곳(가게 쪽 둘은 가게 틀이 맡는다 — 여기는 안내·매거진·지역·태그·목록).
 //   모든 쪽이 지나는 writePage 에서 한 번에 넣는다: og:image · twitter:image · 첫 그림 = 그 쪽의 카드 파일 · 본문 답 칸 바로 아래 같은 카드.
 //   광고 카드는 놀쿨 명단(src/data/advertisers.nolcool.json)에 그 쪽이 적혀 있을 때만(닉네임·번호는 명단 값 그대로 · 「광고」 표시) — 명단에 없으면 아무것도 안 넣는다.
@@ -1897,7 +1897,7 @@ for (const pg of staticPages) {
       url: `${BASE_URL}/yojeong/ilsan/ilsanmyeongwolgwanyojeong/`,
       description: `${cf.nearestStation}이 가장 가까운 전통 한정식 요정. ${cf.parking}. ${cf._provenance.source}.`,
       servesCuisine: '한정식',
-      // [놀쿨12-2 R12] telephone 은 일산명월관요정 가게 쪽 JSON-LD 에만 · [놀쿨44-1] 이 안내 쪽의 연락처는 본문 광고 카드(신실장 · tel 링크)에 있다
+      // [놀쿨12-2 R12] telephone 은 일산명월관요정 가게 쪽 JSON-LD 에만 · [놀쿨44-1 → 일산74-1] 이 안내 쪽에는 연락처가 없다(본문 카드는 광고문의 카드)
       address: { '@type': 'PostalAddress', streetAddress: cf.address, addressLocality: '고양시', addressRegion: '경기도', addressCountry: 'KR' },
       ...(mv ? { geo: { '@type': 'GeoCoordinates', latitude: mv.lat, longitude: mv.lng } } : {}),
       openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: cf.hoursSpec.openDays, opens: cf.hoursSpec.opens, closes: cf.hoursSpec.closes }],

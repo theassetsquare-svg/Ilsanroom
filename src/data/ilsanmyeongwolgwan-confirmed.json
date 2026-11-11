@@ -18,11 +18,6 @@
     "closedDays": ["Sunday"]
   },
   "parking": "발렛 주차 가능",
-  "contact": {
-    "staff": "신실장",
-    "phone": "010-3695-4929",
-    "phoneRaw": "01036954929"
-  },
   "coursesNote": "계절별 15첩 궁중 상차림",
   "courses": [
     { "season": "봄", "menu": "냉이된장국" },

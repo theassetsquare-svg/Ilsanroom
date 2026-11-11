@@ -4,7 +4,7 @@
  *   · 긴 이름은 두세 줄 자동 맞춤 · 어두운 바탕에 밝은 글자(대비 4.5:1 이상) · 쪽마다 고유(이름이 다르고 바탕 색조도 가게마다 다름)
  *   · 줄 수 = 썸네일 표준: 광고주 4줄(가게 이름 / 닉네임 / 번호 / 광고문의 카톡 besta12) · 그 밖 3줄(가게 이름 / 광고문의 / 카톡 besta12)
  *   · 광고주 = venues.ts staffNickname+staffPhone(= naver-watch data/advertisers.json 명단 + 놀쿨 명단 src/data/advertisers.nolcool.json)
- *   · [놀쿨44-1] 일산명월관요정 = 놀쿨 명단의 신실장(자기 쪽 4줄 -v10 · 목록 3줄 -v9) · 일산룸 = 3줄(-v10 · 광고문의) · 쪽 카드 = PAGE_CARD
+ *   · [놀쿨44-1 → 일산74-1] 일산명월관요정 = 3줄(-v11 · 광고문의 · 배치 VENUE_LOOK) · 일산룸 = 3줄(-v10 · 광고문의) · 쪽 카드 = PAGE_CARD
  * - 출력: public/og/{slug}{판}.jpg (판 = src/lib/venue-file-ver.mjs ogVer · 파일 이름을 올려야 엣지 캐시가 옛 그림을 안 준다)
  * - 옛 판 파일은 지우지 않는다.
  * 사용: node scripts/generate-og-name11.mjs [slug]
@@ -23,13 +23,18 @@ const FONT_B64 = fs.readFileSync(path.join(__dirname, 'og-fonts/NotoSansKR-Bold.
 const venuesContent = fs.readFileSync(path.join(ROOT, 'src/data/venues.ts'), 'utf-8');
 const blocks = venuesContent.split(/\n  \{/);
 const venues = [];
+// [일산74-1 · 2026-11-12] 가게 카드 하나의 배치·색조를 따로 정하는 자리(PAGE_CARD 의 hue·variant 와 같은 뜻).
+//   일산명월관요정 3줄 판을 기본 배치로 그리면 다른 가게 3줄 카드와 dHash 거리 7(닮음 잣대 10 이하)이라 오른쪽 아래 배치로 그린다(-v11 · 가장 가까운 카드와 거리 21).
+const VENUE_LOOK = {
+  ilsanmyeongwolgwanyojeong: { variant: 'right-low' },
+};
 for (const block of blocks) {
   const slug = block.match(/slug:\s*'([^']+)'/)?.[1];
   const nameKo = block.match(/nameKo:\s*'([^']+)'/)?.[1];
   const cat = block.match(/category:\s*'([^']+)'/)?.[1];
   const nick = block.match(/staffNickname:\s*'([^']+)'/)?.[1] || '';
   const phone = block.match(/staffPhone:\s*'([^']+)'/)?.[1] || '';
-  if (slug && nameKo && cat) venues.push({ slug, nameKo, cat, nick, phone });
+  if (slug && nameKo && cat) venues.push({ slug, nameKo, cat, nick, phone, ...(VENUE_LOOK[slug] || {}) });
 }
 // [놀쿨26-1 · 대표님 2026-10-04 03:43] 놀쿨 전용 광고주 명단(src/data/advertisers.nolcool.json)도 읽는다 — 명단의 매거진 쪽은 가게이름 자리에 명단의 가게 이름을 넣은 4줄 카드
 //   (파일 = venue-file-ver.mjs MAGAZINE_OG · 바탕 색조는 쪽마다 다름). 명단의 가게 쪽은 venues.ts 담당 칸으로 4줄이 되고 판은 ogOwnVer(-v9).
