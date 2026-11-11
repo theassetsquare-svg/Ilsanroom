@@ -45,7 +45,8 @@ export const cardSrc = (slug) => `/og/${slug}${ogVer(slug)}-w600.webp`;
 
 /** [놀쿨26-1 · 대표님 2026-10-04 03:43] 놀쿨 전용 명단(src/data/advertisers.nolcool.json · 따봉)의 4줄 카드 — 명단에 적힌 쪽에서만 쓴다.
  *  가게 쪽: 자기 쪽의 og:image·첫 그림만 이 판(-v9 · 가게이름 / 닉네임 / 번호 / 광고문의 카톡 besta12). 목록·검색 같은 다른 쪽은 ogVer(3줄 판) 그대로.
- *  매거진 쪽: og:image 만 MAGAZINE_OG 의 파일(public/og/<값>.jpg). 그림은 scripts/generate-og-name11.mjs 가 그린다. */
+ *  매거진 쪽: og:image 만 MAGAZINE_OG 의 파일(public/og/<값>.jpg). 그림은 scripts/generate-og-name11.mjs 가 그린다.
+ *  (2026-11-11 구글72-1: 부산 나이트 매거진 두 쪽은 대표님 말씀으로 광고문의 카드가 됐다 — 아래 PAGE_CARD · 이 명단의 4줄 카드는 가게 쪽 둘뿐) */
 export const OG_OWN_PAGE_VER = {
   busanmulnight: '-v9',
   busanyeonsandongmulnight: '-v9',
@@ -63,8 +64,7 @@ export const cardOwnJpg = (slug) => `/og/${slug}${ogOwnVer(slug)}.jpg`;
  *  <picture> 의 source 로만 쓴다(<img src> 는 og:image 와 같은 jpg 그대로). 프리렌더 첫 화면과 같은 이름이라 React 가 다시 그려도 새로 받지 않는다. */
 export const cardOwnLight = (slug) => `/og/${slug}${ogOwnVer(slug)}-w1200.webp`;
 export const MAGAZINE_OG = {
-  'busan-night-guide': 'magazine-busan-night-guide-v1',
-  'busan-nightlife-roundup': 'magazine-busan-nightlife-roundup-v1',
+  // 'busan-night-guide' · 'busan-nightlife-roundup' — 2026-11-11 구글72-1 에서 광고문의 카드로 바뀜(아래 PAGE_CARD · 옛 4줄 그림 magazine-busan-night-guide-v1 · magazine-busan-nightlife-roundup-v1 은 public/og 에서 뺌)
   // [놀쿨33-1] 신림그랑프리나이트 문단이 있는 매거진 1쪽
   'seoul-southwest-night-guide': 'magazine-seoul-southwest-night-guide-v1',
 };
@@ -110,6 +110,10 @@ export const PAGE_CARD = {
   '/rooms/ilsan/': { file: 'rooms-ilsan-sinsiljang-card-v1', kind: 'ad', shop: '일산룸', hue: 120, google: true, altFull: true, variant: 'right' },
   '/magazine/ilsan-room-guide/': { file: 'magazine-ilsan-room-guide-sinsiljang-card-v1', kind: 'ad', shop: '일산룸', hue: 205, google: true, altFull: true, variant: 'left' },
   '/tag/일산룸/': { file: 'tag-ilsan-room-sinsiljang-card-v1', kind: 'ad', shop: '일산룸', hue: 320, google: true, altFull: true, variant: 'right-low' },
+  // [구글72-1 · 대표님 2026-11-11 08:38 「이거두개 페이지에서 부산물나이트 따봉 전화번호 삭제하고 광고문의 카톡 besta12 로 넣어」] 부산 나이트 매거진 두 쪽 = 광고문의 카드(3줄 · 번호 0)
+  //   첫 줄 = 그 쪽 주제(제목에 든 글자 그대로) · 옛 4줄 카드와 다른 새 이름(같은 이름에 다른 그림 0 — /og/* 30일 캐시) · 색조·배치를 달리 적어 서로 다른 그림
+  '/magazine/busan-night-guide/': { file: 'magazine-busan-night-guide-inquiry-card-v1', kind: 'inquiry', shop: '부산 나이트 3곳', hue: 45, google: true, variant: 'mid' },
+  '/magazine/busan-nightlife-roundup/': { file: 'magazine-busan-nightlife-roundup-inquiry-card-v1', kind: 'inquiry', shop: '부산 나이트라이프 총정리', hue: 235, google: true, variant: 'left-low' },
 };
 /** [놀쿨70-1] 쪽 카드 그림 설명(alt) 한 곳 — 프리렌더(withPageCard)와 화면(VenueDetailPage → VenueHero)이 같이 쓴다.
  *  altFull 인 쪽 = 「<가게> <닉네임> <번호> 안내 카드」(카드에 그려진 글자 그대로) · 그 밖 = 옛 글자 「<가게> 안내 카드」 그대로 */
