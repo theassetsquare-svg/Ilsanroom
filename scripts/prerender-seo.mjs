@@ -91,6 +91,9 @@ function ogDims(url) {
 //   전화 노출 자체는 엔티티 SEO(NAP 일치)에 플러스 신호이며 호객과 분리된다.
 //   라벨은 중립("예약 문의")으로만 노출하고 호객 카피는 0.
 const PHONE_HIDDEN_SLUGS = new Set([]);
+// [일산74-1 · 2026-11-12] 광고가 끝난 가게 — 담당 연락처 줄이 빠진 자리에 이 사이트 광고문의 한 줄(매거진 쪽 nc-inq-line 과 같은 꼴)
+//   일산 담당 광고 해지(대표님 2026-11-11 13:2x 「광고주에서 빼고 광고문의로」) · 연락처·tel 0
+const INQUIRY_LINE_SLUGS = new Set(['ilsanmyeongwolgwanyojeong', 'ilsanroom']);
 
 // ★ lastmod 정직화 — 페이지별 "의미 콘텐츠" 해시를 직전 빌드와 비교해, 실제로 바뀐 URL만
 //   lastmod를 갱신한다. 안 바뀐 페이지는 이전 lastmod 그대로 유지 → 매일 today 도배 방지.
@@ -951,6 +954,8 @@ function generateVenueSsrBody(v, allVenues) {
     // [P2 · 14-5 광고 표시] 광고주(담당 연락처) 페이지는 「광고」 표시 + 업소 제공 정보 고지
     html += `<p class="ssr-adlabel">광고 · 아래 연락처는 업소 담당자가 제공한 광고 정보입니다.</p>`;
     html += `<p class="ssr-phone">📞 예약 문의: <a href="tel:${telDigits}" itemprop="telephone">${staffLabel}${escHtml(v.staffPhone)}</a></p>`;
+  } else if (INQUIRY_LINE_SLUGS.has(v.slug)) {
+    html += `<p class="nc-inq-line"><strong>광고문의</strong> · 카톡 besta12</p>`;
   }
   if (v.openHours) {
     html += `<p class="ssr-hours" itemprop="openingHours">⏰ 영업시간: ${escHtml(v.openHours)}</p>`;
