@@ -15,7 +15,7 @@ import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCou
 export default function YojeongPage() {
   useDocumentMeta(
     '요정 — 거래처 모시는 자리, 한정식 12첩 가야금 선율 위에 격을 갖춘다',
-    '요정 — 사장님 모시는 자리, 격 떨어지면 다음은 없죠. 20년 실장이 한정식 12첩·국악 가야금·정찰제 매너 한 줄로 정리. 일산명월관·강남·여의도·종로·부산 진짜 요정만 추렸으니 모시기 전에 먼저 확인 →'
+    '요정 — 사장님 모시는 자리, 격 떨어지면 다음은 없죠. 한정식 코스와 국악, 예약 매너를 모았고, 일산명월관요정의 계절 15첩 상차림과 방 15개 구성도 실었다.' // [놀쿨83-1 둘째 판 · 2026-11-15] = scripts/prerender-seo.mjs 의 /yojeong 설명
   );
   const venues = getVenuesByCategory('yojeong');
   const featured = sortVenues(venues, 'rec', popularity.venues)[0]; // [놀쿨12-2 · 13:18-2] 목록 추천 순서의 첫 가게(광고면 「광고」 표시)
@@ -69,7 +69,8 @@ export default function YojeongPage() {
             요정의 코스는 12첩 반상부터 산해진미 풀코스까지 계절 식재료로 구성한다. 봄에는 두릅과 냉이, 가을에는 송이와 전복이 올라온다. 음식 하나하나에 정성이 들어가니까 먹는 속도가 자연스럽게 느려지고, 대화가 길어진다. 이게 대접의 핵심이다.
           </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
-            전국적으로 요정 고유의 형식을 유지하는 곳이 점점 줄고 있다. 요정의 희소성이 높다. 일산명월관요정은 고양시 일산동구 장항로 895-1에 위치하며, 개별 룸 30개와 정찰제를 운영한다. 15가지 한정식 코스, 국악 라이브 연주, 발렛 주차까지 갖추고 있다. 바가지 걱정 없이 코스를 고르면 된다.
+            {/* [일산76-1 · 2026-11-13] 일산명월관요정 사실은 src/data/ilsanmyeongwolgwan-confirmed.json(2026-07-30 업소 확인)만 — 옛 글의 장항로·룸 30개·정찰제는 확인 자료와 어긋나거나 없어 고쳤다 */}
+            전국적으로 요정 고유의 형식을 유지하는 곳이 점점 줄고 있다. 일산명월관요정은 고양시 일산동구 장항동 895-1 지하 1층에 있고, 방은 모두 15개다. 상차림은 계절마다 바뀌는 15첩 궁중 상차림이고, 식사에는 거문고·해금 합주가 함께한다. 차로 오면 발렛 주차를 맡길 수 있다.
           </p>
           <p className="text-base leading-relaxed text-neon-text-muted">
             요정은 거래처 접대, VIP 만찬, 격식 있는 모임까지 폭넓게 쓰인다. 좌식 테이블에 병풍이 둘러진 전통 공간인데, 요즘 이런 곳이 전국에 몇 안 남았다. 최소 하루 전 예약 문의는 필수이고, 인기 있는 주말 날짜는 2주 전에 잡아야 한다. 세미 포멀 이상 착장을 준비하자.

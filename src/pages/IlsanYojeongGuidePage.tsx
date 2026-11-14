@@ -10,7 +10,7 @@ import CONFIRMED from '@/data/ilsanmyeongwolgwan-confirmed.json';
    추정·과장·창작 0. 선정적 표현·호객·가격·평점·순위 주장 0. 사진 0(자체 SVG만). */
 
 const VENUE_PATH = '/yojeong/ilsan/ilsanmyeongwolgwanyojeong';
-const TITLE = '일산요정 첫 방문 가이드 — 전통 한정식 정찬과 국악 접객, 예약까지 한눈에';
+const TITLE = '일산요정 첫 방문 가이드 — 15첩 상차림, 방 15개, 일요일 휴무까지'; // [놀쿨83-1 둘째 판 · 2026-11-15] = scripts/prerender-seo.mjs 의 /guide/ilsan-yojeong 제목 · h1
 const SOURCE = CONFIRMED._provenance.source;
 
 // H1 직후 핵심 요약 — 각 칸 한 줄 완결 (AI Overview 상단 인용 타깃)
@@ -34,11 +34,11 @@ const TOC: { id: string; label: string }[] = [
 const FAQS = [
   {
     q: '일산요정은 어떤 곳인가요?',
-    a: '요정은 전통 한정식 정찬을 격식 있게 대접하는 접객 공간에서 유래한 업태입니다. 여러 첩의 한정식 코스와 좌식 한실, 가야금·거문고·해금 같은 국악 연주가 곁들여집니다. 일산에서는 일산명월관요정이 대표적으로 꼽힙니다.',
+    a: '요정은 전통 한정식 정찬을 격식 있게 대접하는 접객 공간에서 유래한 업태입니다. 여러 첩의 한정식 코스와 국악 연주가 곁들여집니다. 일산명월관요정은 일산동구 장항동에 있는 요정입니다.',
   },
   {
     q: '일산명월관요정은 어디에 있고 어떻게 가나요?',
-    a: `${CONFIRMED.address}에 있습니다. ${CONFIRMED.nearestStation}이 가장 가깝고, 정발산 근린공원과 일산호수공원 사이에 자리합니다. ${CONFIRMED.parking}합니다.`,
+    a: `${CONFIRMED.address}에 있습니다. ${CONFIRMED.nearestStation}이 가장 가깝고, ${CONFIRMED.parking}합니다.`,
   },
   {
     q: '예약과 문의는 어떻게 하나요?',
@@ -49,7 +49,7 @@ const FAQS = [
 export default function IlsanYojeongGuidePage() {
   useDocumentMeta(
     TITLE,
-    '일산요정 첫 방문이라 막막하다면? 전통 한정식 15첩 정찬과 거문고·해금 국악, 한복 접객의 격식부터 마두역 인근 위치와 예약·주차까지, 일산명월관요정 실정보 기준으로 담백하게 짚었다.',
+    '일산요정에 처음 가는 날 알아 둘 것만 모았다. 일산명월관요정은 마두역과 가까운 장항동 895-1 지하 1층에 있고 일요일은 쉰다. 상은 계절마다 바뀌는 15첩 궁중 상차림이고, 방은 6인부터 20인 이상까지 15개다.',
   );
 
   return (
@@ -91,8 +91,7 @@ export default function IlsanYojeongGuidePage() {
             <h2 className="mb-3 text-lg font-bold text-neon-text">요정이란 — 전통 한정식 정찬과 접객 문화</h2>
             <p className="text-[15px] leading-[1.8] text-neon-text-muted">
               요정은 전통 한정식 정찬을 격식 있게 대접하는 접객 공간이다. 근대 요릿집 전통의 연장선에서
-              자리 잡았다. 한복을 갖춘 접객원이 상을 차리고 국악 연주가 곁들여진다. 여러 첩의 한정식 코스,
-              좌식 한실, 가야금·거문고·해금 라이브가 일반 음식점과 구분되는 지점이다.
+              자리 잡았다. 여러 첩의 한정식 코스와 국악 연주가 일반 음식점과 구분되는 지점이다.
             </p>
           </section>
 
@@ -101,7 +100,7 @@ export default function IlsanYojeongGuidePage() {
             <h2 className="mb-3 text-lg font-bold text-neon-text">위치와 교통 — 마두역이 가장 가깝다</h2>
             <p className="text-[15px] leading-[1.8] text-neon-text-muted">
               일산명월관요정은 {CONFIRMED.nearestStation}이 가장 가깝다. 주소는 {CONFIRMED.address}이다.
-              정발산 근린공원과 일산호수공원 사이 장항동에 있다. 자가용은 {CONFIRMED.parking}하다.
+              자가용은 {CONFIRMED.parking}하다.
             </p>
             <RouteMapGraphic />
           </section>
@@ -110,9 +109,9 @@ export default function IlsanYojeongGuidePage() {
           <section id="course" className="scroll-mt-20">
             <h2 className="mb-3 text-lg font-bold text-neon-text">상차림과 국악 — 계절 15첩 정찬</h2>
             <p className="text-[15px] leading-[1.8] text-neon-text-muted">
-              계절마다 바뀌는 {CONFIRMED.coursesNote}을 낸다. 봄에는 냉이된장국, 여름에는 전복삼계탕,
-              가을에는 송이버섯전골, 겨울에는 굴떡국으로 첫 상이 바뀐다. 식사 중간 거문고·해금 합주가
-              이어진다. 코스는 다도 의식으로 마무리한다.
+              {CONFIRMED.coursesNote}을 낸다. 봄에는 냉이된장국, 여름에는 전복삼계탕,
+              가을에는 송이버섯전골, 겨울에는 굴떡국으로 첫 상이 바뀐다. 상에는 거문고·해금 합주가
+              함께한다. 코스는 다도 의식으로 마무리한다.
             </p>
             <SeasonCourseGraphic />
           </section>
@@ -122,8 +121,7 @@ export default function IlsanYojeongGuidePage() {
             <h2 className="mb-3 text-lg font-bold text-neon-text">룸 구성과 인원 — 6인부터 대연회장까지</h2>
             <p className="text-[15px] leading-[1.8] text-neon-text-muted">
               객실은 6인·10인·20인 이상 세 종류로 나뉜다. 6인 소형 다다미방 8개, 10인 중형 한실 5개,
-              20인 이상 대연회장 2개다. 전 객실에 대나무 정원 조망 창이 있다. 한실 바닥에는 전통 온돌이
-              깔려 있다.
+              20인 이상 대연회장 2개다. 인원과 목적에 맞는 방은 예약할 때 함께 정하면 된다.
             </p>
             <RoomLayoutGraphic />
           </section>

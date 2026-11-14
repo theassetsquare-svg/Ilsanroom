@@ -14,7 +14,10 @@
     {
       "slug": "ilsanmyeongwolgwanyojeong",
       "pagePath": "/yojeong/ilsan/ilsanmyeongwolgwanyojeong/",
-      "status": "active",
+      "status": "ended",
+      "endedAt": "2026-11-13",
+      "endedReason": "일산76-1 — 기준·변형 제목 둘 다의 「정발산 정원」이 업소 확인 자료(src/data/ilsanmyeongwolgwan-confirmed.json · 장항동 895-1 B1층)에 없어 확인된 사실 제목으로 바꿈. 마지막 판정 2026-09-07 rollback-candidate(변형 2.85% < 기준 3.5%).",
+      "finalTitle": "일산명월관요정 — 거문고·해금 합주에 계절 15첩 상차림, 마지막은 다도",
       "appliedAt": "2026-08-18",
       "baselineWindow": "2026-07-18~2026-08-15",
       "baselineImp": 1638,

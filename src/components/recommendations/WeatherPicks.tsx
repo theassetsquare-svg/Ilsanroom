@@ -31,7 +31,7 @@ const WEATHER_RECS: Record<WeatherType, WeatherRecommendation> = {
     description: '비 오는 날 분위기 있는 실내 공간을 추천해요',
     venues: [
       { name: '압구정라운지 디엠', reason: '프라이빗한 하이엔드 라운지', link: '/lounges/apgujeong-dm' },
-      { name: '일산명월관요정', reason: '빗소리와 국악이 어우러지는 전통 공간', link: '/yojeong/ilsan/ilsanmyeongwolgwanyojeong' },
+      { name: '일산명월관요정', reason: '거문고·해금 합주를 들으며 먹는 한정식', link: '/yojeong/ilsan/ilsanmyeongwolgwanyojeong' }, // [일산76-1] 지하 1층 가게라 「빗소리」는 근거 없음
       { name: '강남청담클럽 사운드', reason: '실내에서 즐기는 사운드 클럽', link: '/clubs/gangnam/gangnamclub-sound' },
     ],
   },
@@ -71,7 +71,7 @@ const WEATHER_RECS: Record<WeatherType, WeatherRecommendation> = {
     title: '추운 날엔 따뜻한 실내에서',
     description: '따뜻하게 즐길 수 있는 곳을 추천해요',
     venues: [
-      { name: '일산명월관요정', reason: '온돌과 따뜻한 한정식', link: '/yojeong/ilsan/ilsanmyeongwolgwanyojeong' },
+      { name: '일산명월관요정', reason: '겨울 상차림에 굴떡국이 오르는 한정식', link: '/yojeong/ilsan/ilsanmyeongwolgwanyojeong' }, // [일산76-1] 온돌은 확인 자료(ilsanmyeongwolgwan-confirmed.json)에 없음
       { name: '일산룸', reason: '프라이빗한 따뜻한 공간', link: '/rooms/ilsan/ilsanroom' },
     ],
   },

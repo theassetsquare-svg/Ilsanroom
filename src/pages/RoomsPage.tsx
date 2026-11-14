@@ -13,7 +13,7 @@ import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCou
 
 
 export default function RoomsPage() {
-  useDocumentMeta('룸 선택 한 번이라도 후회해본 사람만 봐요. 10년 실장이 까드림', '사진이랑 다르면 그 순간 분위기 끝납니다. 10년 일한 룸 실장이 셀렉션·양주 라인·진행 케어까지 매장별로 솔직하게. 후회하기 전에 일단 물어봐요 →');
+  useDocumentMeta('룸 선택 한 번이라도 후회해본 사람만 봐요. 10년 실장이 까드림', '사진이랑 다르면 그 순간 분위기 끝납니다. 가게별 방음과 영업시간을 먼저 보고, 후회하기 전에 직접 물어봐요 →'); // [놀쿨83-1 둘째 판 · 2026-11-15] = scripts/prerender-seo.mjs 의 /rooms 설명(「10년 일한 룸 실장」 뺌)
   const venues = getVenuesByCategory('room');
   const featured = sortVenues(venues, 'rec', popularity.venues)[0]; // [놀쿨12-2 · 13:18-2] 목록 추천 순서의 첫 가게(광고면 「광고」 표시)
 

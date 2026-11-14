@@ -148,7 +148,7 @@ if (stage === '디버깅') {
   ck('T1 창고 제목의 「N곳」 = 실제 업소 수(전체)', numBad.length === 0 && numOk > 0, `${numOk} 일치 · ${numBad.slice(0, 3).join(' ')}`);
   // T2 CTR 실험 제목 손대지 않음
   const exp = JSON.parse(rd('data/wish-engine/title-experiments.json'));
-  for (const e of exp.experiments) { const p = pages.find((x) => x.route === e.pagePath.replace(/\/$/, '') || x.enc === e.pagePath.replace(/\/$/, '')); ck(`T2 실험 제목 유지 ${e.slug}`, !!p && titleOf(p.html) === e.variantTitle, p ? titleOf(p.html).slice(0, 40) : '쪽 없음'); }
+  for (const e of exp.experiments) { if (e.status && e.status !== 'active') continue; /* [일산76-1] 끝난 실험(status ended)은 제목 유지 검사에서 뺀다 */ const p = pages.find((x) => x.route === e.pagePath.replace(/\/$/, '') || x.enc === e.pagePath.replace(/\/$/, '')); ck(`T2 실험 제목 유지 ${e.slug}`, !!p && titleOf(p.html) === e.variantTitle, p ? titleOf(p.html).slice(0, 40) : '쪽 없음'); }
   // 후킹 비율(저장소 잣대)·본문 글자
   ck('후킹 통과율 100%', pages.every((p) => analyzeHook(titleOf(p.html)).passed));
   const chars = gate.map((g) => g.chars);

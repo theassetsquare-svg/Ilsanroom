@@ -22,15 +22,12 @@ function Figure({ children, w, h, label, caption }: { children: React.ReactNode;
 /* ① 마두역 → 업소 도보 동선 개념도 */
 export function RouteMapGraphic() {
   return (
-    <Figure w={360} h={130} label="지하철 3호선 마두역에서 일산명월관요정까지 도보 동선 개념도. 정발산 근린공원과 일산호수공원 사이 장항동에 위치하며 발렛 주차가 가능하다." caption={`3호선 마두역 → 일산명월관요정(장항동 895-1 B1층). 정발산 근린공원·일산호수공원 인접, 발렛 주차 가능. · ${CAP}`}>
-      <title>마두역에서 일산명월관요정까지 도보 동선</title>
-      <desc>왼쪽 마두역 노드에서 점선 도보 경로를 따라 오른쪽 일산명월관요정 노드로 이어진다. 위쪽에 정발산 근린공원과 일산호수공원 지형지물이 표시된다.</desc>
-      {/* 지형지물 */}
-      <text x="80" y="20" fontSize="11" fill={C.muted} textAnchor="middle">정발산 근린공원</text>
-      <text x="280" y="20" fontSize="11" fill={C.muted} textAnchor="middle">일산호수공원</text>
-      {/* 도보 경로 (점선) */}
+    <Figure w={360} h={130} label="지하철 3호선 마두역과 일산명월관요정 위치 개념도. 마두역이 가장 가까운 역이고 발렛 주차가 가능하다." caption={`3호선 마두역(가장 가까운 역) → 일산명월관요정(장항동 895-1 B1층). 발렛 주차 가능. · ${CAP}`}>
+      <title>마두역과 일산명월관요정 위치</title>
+      <desc>왼쪽 마두역 노드에서 점선을 따라 오른쪽 일산명월관요정 노드로 이어진다.</desc>
+      {/* [일산76-1 · 2026-11-13] 공원 두 곳 지형지물·「도보」 글자는 업소 확인 자료(ilsanmyeongwolgwan-confirmed.json)에 없어 뺐다 — 자료에 있는 것: 가장 가까운 역 · 주소 · 발렛 */}
       <line x1="92" y1="72" x2="250" y2="72" stroke={C.accent} strokeWidth="2.5" strokeDasharray="6 5" />
-      <text x="171" y="63" fontSize="11" fill={C.accent} textAnchor="middle">도보</text>
+      <text x="171" y="63" fontSize="11" fill={C.accent} textAnchor="middle">가장 가까운 역</text>
       {/* 마두역 노드 */}
       <rect x="14" y="52" width="78" height="40" rx="8" fill={C.surface} stroke={C.border} strokeWidth="1.5" />
       <text x="53" y="70" fontSize="13" fontWeight="700" fill={C.text} textAnchor="middle">마두역</text>
