@@ -56,7 +56,7 @@ export const articles: MagazineArticle[] = [
     excerpt: '일산요정 어디로 잡지? 일산명월관은 정발산 자락 대나무 정원에 자리 잡은 일산 권역 대표 전통 요정이다. 한정식 15첩·국악 라이브·다도 마무리 코스까지 직접 가본 정리. 거래처 모시는 자리, 헛걸음 없게 바로 확인.',
     tag: '요정',
     date: '2026-03-10',
-    // [일산74-1 · 대표님 2026-11-11 13:2x] 이 글의 담당 연락처 칸(phone · staffName)을 뺐다 — 아래 전화 버튼·고정 전화바가 안 나온다. 글 속 광고 줄은 광고문의 줄 · 쪽 카드는 src/lib/venue-file-ver.mjs PAGE_CARD(광고문의)
+    // [일산74-1 → 일산76-1 · 대표님 2026-11-13 13:30 · 13:48] 담당 연락처 칸(phone · staffName)은 비워 둔다 — 그 칸을 쓰면 「… 직접 안내합니다」 상자가 뜬다(확인 안 된 응대 묘사 0). 광고주 세트는 쪽 카드(src/lib/venue-file-ver.mjs PAGE_CARD 광고 카드) · 글 끝 광고 줄 · 명단 고정 전화바가 맡는다
     venueSlug: 'ilsanmyeongwolgwanyojeong',
     venueName: '일산명월관요정',
     content: `<h2>일산요정에서 일산명월관을 첫 손에 꼽는 이유</h2>
@@ -83,7 +83,7 @@ export const articles: MagazineArticle[] = [
 <h2>예약 안내</h2>
 <p><a href="/yojeong/ilsan/ilsanmyeongwolgwanyojeong">일산명월관</a>은 최소 3일 전 예약을 추천하며, 알레르기·선호 메뉴를 미리 알려주면 상차림에 반영된다.</p>
 
-<p class="nc-inq-line"><strong>광고문의</strong> · 카톡 besta12</p>`,
+<p class="ssr-adlabel"><strong>광고</strong> · 일산명월관요정 · 일산요정 총책임자 신실장 · <a href="tel:01035410027">010-3541-0027</a></p>`,
   },
   {
     id: 'edm-vs-social-dance',

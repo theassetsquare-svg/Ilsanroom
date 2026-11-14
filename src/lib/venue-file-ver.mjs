@@ -21,7 +21,7 @@ export const OG_FILE_VER = {
   //   옛 판(-v3 · -v5 · -v8)은 해지한 닉네임·번호가 그려져 있어 파일을 지웠다(git 기록에 남음 · sha1 은 scripts/forbidden-images.json).
   dapsimnimiraclenight: '-v9',
   // [놀쿨44-1 · 대표님 2026-10-11 18:09] 일산룸 = 광고문의 — 3줄 판(일산룸 / 광고문의 / 카톡 besta12)을 새 이름으로(목록·자기 쪽 같은 판).
-  //   일산명월관요정 = 3줄 판(-v11 · 가게 이름 / 광고문의 / 카톡 besta12 · 오른쪽 아래 배치) — [일산74-1 · 대표님 2026-11-11 13:2x] 일산 담당 광고 해지로 자기 쪽도 이 판(자기 쪽 4줄 판 -v10 은 public/og 에서 뺌 · sha1 은 scripts/forbidden-images.json).
+  //   일산명월관요정 = 3줄 판(-v11 · 가게 이름 / 광고문의 / 카톡 besta12 · 오른쪽 아래 배치) — [일산74-1 · 대표님 2026-11-11 13:2x] 일산 담당 광고 해지로 자기 쪽도 이 판(자기 쪽 4줄 판 -v10 은 public/og 에서 뺌 · sha1 은 scripts/forbidden-images.json). · [일산76-1 · 대표님 2026-11-13] 자기 쪽은 아래 PAGE_CARD 의 광고 카드(4줄)가 맡고, 이 3줄 판은 홈·목록에만 실린다.
   //   [일산74-1 · 2026-11-12] 기본 배치 3줄 판(-v9)은 다른 가게 3줄 카드 15장과 dHash 거리 7 이하라(AI 냄새 검사 「그림-닮은카드」) 배치를 바꾼 -v11 로 올렸다 — -v9 파일은 public/og 에 둔다(담당 줄·번호 없음 · 어느 쪽도 부르지 않음).
   //   옛 판(-v8 · 그 앞)은 옛 담당 줄·번호가 그려져 있다 — 어느 쪽도 부르지 않는다(sha1 은 scripts/forbidden-images.json · page-gate A5 가 막는다).
   //   [놀쿨70-1 · 2026-11-09] 그중 옛 일산룸 총책임자 번호가 그려진 판(일산룸·일산명월관요정 -v6 · -v8)은 「어디에도 0」(대표님 2026-10-04 04:35)이라 public/og 에서 뺐다(_to_delete · git 기록).
@@ -53,7 +53,7 @@ export const OG_OWN_PAGE_VER = {
   busanyeonsandongmulnight: '-v9',
   // [놀쿨33-1 · 대표님 2026-10-06 17:01] 신림그랑프리나이트 광고주 쌍코피 — 자기 쪽만 4줄 판(-v9) · 목록은 -v8(3줄) 그대로
   sinlimgrandprixnight: '-v9',
-  // [일산74-1 · 대표님 2026-11-11 13:2x] 일산명월관요정 줄을 뺐다(일산 담당 광고 해지) — 자기 쪽도 목록과 같은 3줄 판(-v11 · 광고문의)
+  // [일산74-1 · 대표님 2026-11-11 13:2x] 일산명월관요정 줄을 뺐다(일산 담당 광고 해지) — 자기 쪽도 목록과 같은 3줄 판(-v11 · 광고문의) · [일산76-1 · 대표님 2026-11-13] 다시 광고주 — 자기 쪽 카드는 아래 PAGE_CARD(광고 카드 · 쪽으로 묶음)라 이 표에는 넣지 않는다
 };
 export const ogOwnVer = (slug) => OG_OWN_PAGE_VER[slug] || ogVer(slug);
 export const cardOwnSrc = (slug) => `/og/${slug}${ogOwnVer(slug)}-w600.webp`;
@@ -69,28 +69,32 @@ export const MAGAZINE_OG = {
   'seoul-southwest-night-guide': 'magazine-seoul-southwest-night-guide-v1',
 };
 
-/** [놀쿨44-1 · 대표님 2026-10-11 18:09 → 일산74-1 · 대표님 2026-11-11 13:2x] 쪽 카드 — 제목(title · og:title · h1)에 「일산명월관」·「일산요정」·「일산룸」이 든 쪽과 일산 지역 쪽 = 광고문의 카드(kind 'inquiry' · 3줄 · 번호 0).
- *  kind 'ad'(4줄)는 놀쿨 명단에 남아 있는 광고주의 쪽뿐이다. 일산 가게 쪽 둘은 위 OG_FILE_VER 의 3줄 판이 맡고, 여기는 그 밖의 쪽(안내·매거진·지역·태그·목록)이다.
+/** [놀쿨44-1 · 대표님 2026-10-11 18:09 → 일산74-1 · 대표님 2026-11-11 13:2x → 일산76-1 · 대표님 2026-11-13 13:30 · 13:48] 쪽 카드 — 제목(title · og:title · h1)에 「일산명월관」·「일산요정」·「일산룸」이 든 쪽과 일산 지역 쪽 = 광고 카드(kind 'ad' · 4줄 · 명단의 닉네임 줄 + 새 번호). 2026-11-12 부터 이 고침 전까지는 광고문의 카드(kind 'inquiry')였다.
+ *  kind 'ad'(4줄)는 놀쿨 명단에 적힌 광고주의 쪽뿐이다. 일산 가게 쪽 둘도 이 표의 광고 카드가 맡고(자기 쪽), 홈·목록에 실리는 두 가게 카드는 위 OG_FILE_VER 의 3줄 판 그대로다.
  *  쪽마다 다른 파일(public/og/<file>.jpg · 1200×1200 · scripts/generate-og-name11.mjs 가 그린다). 프리렌더(writePage)가 이 표 하나로 og:image · twitter:image · 첫 그림 · 본문 카드를 넣는다.
  *  kind 'ad' 인 쪽은 놀쿨 명단(src/data/advertisers.nolcool.json)에 적힌 쪽이어야 한다 — scripts/page-gate.mjs 가 본다. 열쇠 = 풀어 쓴(한글) 경로 + 끝 빗금. */
 //  hue = 바탕 색조(0~359). 같은 글자의 카드가 여러 쪽에 쓰이므로 쪽마다 그림이 달라야 한다(같은 그림 재사용 0). 색조를 파일 이름 해시에만 맡기면
 //  가까운 값끼리 겹친다 — 10-11 실측: 가게 쪽(13) · 매거진(14) 카드가 바이트까지 같은 그림이 됐다 → 세 장은 색조를 적어 새 이름(-v11)으로 다시 그렸다.
 //  (/og/* 는 30일 캐시라 같은 이름에 다른 그림을 넣지 않는다 · 앞서 올라간 -v10 · -v11 카드는 담당 닉네임·번호가 그려진 그림이라 [일산74-1] 에서 public/og 에서 뺐다)
 export const PAGE_CARD = {
-  // [일산74-1 · 대표님 2026-11-11 13:2x] 일산 담당 광고 해지 — 일산 쪽 열 곳 = 광고문의 카드(3줄 · 번호 0). 가게 쪽 둘(일산명월관요정 · 일산룸)은 위 OG_FILE_VER 의 3줄 판.
-  //   첫 줄 = 그 쪽 제목에 든 글자(scripts/page-gate.mjs A8) · 옛 4줄 카드와 다른 새 이름(같은 이름에 다른 그림 0 — /og/* 30일 캐시) · 같은 글자 카드는 배치(variant)를 서로 달리 · 색조도 쪽마다 다르게
-  //   (2026-11-11 실측: 새 열 장끼리 · public/og 에 남는 그림 전부와 dHash 거리 16 이상 — 닮음 잣대는 10 이하). google: true = 구글69-1 과 같은 길(사이트맵 그림 줄 · 구조화 데이터 image · og:image:alt) — 일산룸 쪽 다섯은 앞 판 그대로.
-  //   옛 4줄 카드 열두 장과 그 앞 판 일곱 장(담당 닉네임·번호가 그려진 그림)은 public/og 에서 뺐다(sha1 은 scripts/forbidden-images.json). 번호가 없는 옛 3줄 그림(region-ilsan-rooms-v10 · magazine-ilsan-room-guide-v10 · rooms-ilsan-v10 · tag-ilsan-room-v10)은 그대로 둔다(부르는 쪽 0).
-  '/guide/ilsan-yojeong/': { file: 'guide-ilsan-yojeong-inquiry-card-v1', kind: 'inquiry', shop: '일산요정', hue: 285, variant: 'right' },
-  '/magazine/ilsan-myeongwolgwan-guide/': { file: 'magazine-ilsan-myeongwolgwan-guide-inquiry-card-v1', kind: 'inquiry', shop: '일산명월관요정', hue: 110, variant: 'left-low' },
-  '/region/일산/yojeong/': { file: 'region-ilsan-yojeong-inquiry-card-v1', kind: 'inquiry', shop: '일산요정', hue: 160, variant: 'left-low' },
-  '/tag/일산요정/': { file: 'tag-ilsan-yojeong-inquiry-card-v1', kind: 'inquiry', shop: '일산요정', hue: 215, variant: 'small' },
-  '/yojeong/ilsan/': { file: 'yojeong-ilsan-inquiry-card-v1', kind: 'inquiry', shop: '일산요정', hue: 60, variant: 'left' },
-  '/region/일산/': { file: 'region-ilsan-inquiry-card-v1', kind: 'inquiry', shop: '일산 밤', hue: 265, google: true, variant: 'left-low' },
-  '/region/일산/rooms/': { file: 'region-ilsan-rooms-inquiry-card-v1', kind: 'inquiry', shop: '일산룸', hue: 0, google: true, variant: 'right' },
-  '/rooms/ilsan/': { file: 'rooms-ilsan-inquiry-card-v1', kind: 'inquiry', shop: '일산룸', hue: 120, google: true, variant: 'left' },
-  '/magazine/ilsan-room-guide/': { file: 'magazine-ilsan-room-guide-inquiry-card-v1', kind: 'inquiry', shop: '일산룸', hue: 205, google: true, variant: 'right-low' },
-  '/tag/일산룸/': { file: 'tag-ilsan-room-inquiry-card-v1', kind: 'inquiry', shop: '일산룸', hue: 320, google: true, variant: 'low' },
+  // [일산76-1 · 대표님 2026-11-13 13:30 · 13:48] 일산룸 · 일산명월관 · 일산요정 쪽 = 다시 광고주(새 번호 · 명단 src/data/advertisers.nolcool.json 두 줄) — 일산 쪽 열두 곳 = 광고 카드(4줄 · kind 'ad').
+  //   가게 쪽 둘(일산명월관요정 · 일산룸)도 이 표가 맡는다(홈·목록의 두 가게 카드는 위 OG_FILE_VER 의 3줄 판 그대로 — 홈·목록은 일산 쪽이 아니다).
+  //   닉네임 줄: 일산룸 쪽 여섯(제목에 「일산룸」 다섯 + 세 가게가 섞인 일산 지역 쪽) = 명단 「일산룸」 줄 · 일산명월관·일산요정 쪽 여섯 = 명단 「일산명월관요정」 줄. 카드 첫 줄 = 그 줄의 가게 이름.
+  //   새 파일 이름(*-chief-card-v1 · /og/* 30일 캐시 — 2026-11-11 까지의 옛 4줄 카드 · 2026-11-12 의 광고문의 카드와 다른 이름) · 같은 글자 카드는 배치(variant)·색조를 쪽마다 달리
+  //   (2026-11-13 실측: 새 열두 장끼리 dHash 거리 17 이상 · public/og 의 그림 전부와 17 이상 — 닮음 잣대는 10 이하). google: true = 구글69-1 과 같은 길 · altFull = 카드에 그려진 글자를 alt 에 다 적음.
+  //   2026-11-12 의 광고문의 카드 열 장(*-inquiry-card-v1)은 public/og 에 그대로 둔다(번호 없음 · 부르는 쪽 0 · 이미 퍼진 주소가 404 로 바뀌지 않게).
+  '/yojeong/ilsan/ilsanmyeongwolgwanyojeong/': { file: 'ilsanmyeongwolgwanyojeong-chief-card-v1', kind: 'ad', shop: '일산명월관요정', hue: 40, google: true, altFull: true, variant: 'right-low' },
+  '/yojeong/ilsan/': { file: 'yojeong-ilsan-chief-card-v1', kind: 'ad', shop: '일산명월관요정', hue: 100, google: true, altFull: true },
+  '/guide/ilsan-yojeong/': { file: 'guide-ilsan-yojeong-chief-card-v1', kind: 'ad', shop: '일산명월관요정', hue: 160, google: true, altFull: true, variant: 'right' },
+  '/magazine/ilsan-myeongwolgwan-guide/': { file: 'magazine-ilsan-myeongwolgwan-guide-chief-card-v1', kind: 'ad', shop: '일산명월관요정', hue: 220, google: true, altFull: true, variant: 'left-low' },
+  '/region/일산/yojeong/': { file: 'region-ilsan-yojeong-chief-card-v1', kind: 'ad', shop: '일산명월관요정', hue: 280, google: true, altFull: true, variant: 'small' },
+  '/tag/일산요정/': { file: 'tag-ilsan-yojeong-chief-card-v1', kind: 'ad', shop: '일산명월관요정', hue: 340, google: true, altFull: true, variant: 'small-low' },
+  '/rooms/ilsan/ilsanroom/': { file: 'ilsanroom-chief-card-v1', kind: 'ad', shop: '일산룸', hue: 10, google: true, altFull: true, variant: 'left' },
+  '/region/일산/': { file: 'region-ilsan-chief-card-v1', kind: 'ad', shop: '일산룸', hue: 70, google: true, altFull: true, variant: 'small-mid' },
+  '/region/일산/rooms/': { file: 'region-ilsan-rooms-chief-card-v1', kind: 'ad', shop: '일산룸', hue: 130, google: true, altFull: true, variant: 'right' },
+  '/rooms/ilsan/': { file: 'rooms-ilsan-chief-card-v1', kind: 'ad', shop: '일산룸', hue: 190, google: true, altFull: true, variant: 'left-low' },
+  '/magazine/ilsan-room-guide/': { file: 'magazine-ilsan-room-guide-chief-card-v1', kind: 'ad', shop: '일산룸', hue: 250, google: true, altFull: true, variant: 'small' },
+  '/tag/일산룸/': { file: 'tag-ilsan-room-chief-card-v1', kind: 'ad', shop: '일산룸', hue: 310, google: true, altFull: true, variant: 'mid' },
   // [놀쿨61-1 · 대표님 2026-10-25 16:1x·17:5x] 제목에 「장안동호빠」가 든 쪽 4 = 장안동호빠 큐브(유현재 실장 010-7674-8310) 광고 카드 — 큐브 자기 쪽은 놀쿨에 없고,
   //   빵빵·플렉스는 다른 가게의 쪽이라 가게 담당 칸이 아니라 여기(쪽 카드)로 넣는다(가게 쪽도 PAGE_CARD 가 있으면 첫 그림·og:image = 이 카드 · VenueHero). 색조는 넷 다 적어 서로 다른 그림.
   //   [구글69-1 · 2026-11-07 · 대표님 00:23 「사진을 구글정식문서에 맞게 전부다 넣어」] google: true = 구글 이미지 공식 문서대로 더 넣는 쪽(scripts/prerender-seo.mjs withPageCard):
@@ -112,9 +116,12 @@ export const PAGE_CARD = {
   '/magazine/busan-night-guide/': { file: 'magazine-busan-night-guide-inquiry-card-v1', kind: 'inquiry', shop: '부산 나이트 3곳', hue: 45, google: true, variant: 'mid' },
   '/magazine/busan-nightlife-roundup/': { file: 'magazine-busan-nightlife-roundup-inquiry-card-v1', kind: 'inquiry', shop: '부산 나이트라이프 총정리', hue: 235, google: true, variant: 'left-low' },
 };
+/** [일산76-1 · 대표님 2026-11-13 13:48] 광고주 이름 줄 한 곳 — 「<가게><sep><닉네임>」. 닉네임 줄이 가게 이름으로 시작하면(「일산룸 총책임자 …」) 가게 이름을 두 번 적지 않고 닉네임 줄만 적는다.
+ *  카드 그림 설명(아래 pageCardAlt · sep 빈칸)과 프리렌더 카드 블록의 이름 줄(sep 가운뎃점)이 같이 쓴다 — 닉네임이 가게 이름으로 시작하지 않는 다른 광고주는 옛 글자 그대로 */
+export const adNameLine = (ad, sep = ' ') => (String(ad.nickname).startsWith(ad.shop) ? ad.nickname : `${ad.shop}${sep}${ad.nickname}`);
 /** [놀쿨70-1] 쪽 카드 그림 설명(alt) 한 곳 — 프리렌더(withPageCard)와 화면(VenueDetailPage → VenueHero)이 같이 쓴다.
- *  altFull 인 쪽 = 「<가게> <닉네임> <번호> 안내 카드」(카드에 그려진 글자 그대로) · 그 밖 = 옛 글자 「<가게> 안내 카드」 그대로 */
-export const pageCardAlt = (pc, ad) => (pc && pc.altFull && ad ? `${ad.shop} ${ad.nickname} ${ad.phone} 안내 카드` : `${pc ? pc.shop : ''} 안내 카드`);
+ *  altFull 인 쪽 = 「<이름 줄 — 위 adNameLine> <번호> 안내 카드」(카드에 그려진 가게 이름·닉네임 줄·번호) · 그 밖 = 옛 글자 「<가게> 안내 카드」 그대로 */
+export const pageCardAlt = (pc, ad) => (pc && pc.altFull && ad ? `${adNameLine(ad)} ${ad.phone} 안내 카드` : `${pc ? pc.shop : ''} 안내 카드`);
 /** [놀쿨61-1] 쪽 카드 그림 주소 — 가게 쪽이 PAGE_CARD 에 있으면 첫 그림(VenueHero)도 이 파일(프리렌더 withPageCard 의 og:image 와 같은 파일) */
 export const pageCardJpg = (file) => `/og/${file}.jpg`;
 export const pageCardLight = (file) => `/og/${file}-w1200.webp`;

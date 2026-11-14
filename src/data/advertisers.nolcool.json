@@ -51,6 +51,41 @@
       "titleWords": ["건대호빠"],
       "since": "2026-11-07",
       "근거": "대표님 2026-11-07 00:23 「건대호빠 광고주는 유현재실장 010 7674 8310」(docs/대표님원문/2026-11-07_00-23_00-33_호빠-6키워드-광고주-유현재실장-구글AI-상위노출-사진-색인요청-될때까지-자동.md) · 구글69-1 — 장안동호빠 큐브와 같은 실장·같은 번호. 제목(title · og:title · h1 · 빈칸·# 뺀 글자)에 「건대호빠」가 든 쪽 전부(가게 쪽 · 지역 허브 · 태그). 가게 이름은 원문대로 「건대호빠」(옛 「건대호빠 W」의 W 는 원문·명단·동의에 근거 0 → 뺌 · 주소 /hoppa/geondaehoppa-w/ 는 그대로)."
+    },
+    {
+      "shop": "일산명월관요정",
+      "nickname": "일산요정 총책임자 신실장",
+      "phone": "010-3541-0027",
+      "pages": [
+        "/yojeong/ilsan/ilsanmyeongwolgwanyojeong/",
+        "/yojeong/ilsan/",
+        "/guide/ilsan-yojeong/",
+        "/magazine/ilsan-myeongwolgwan-guide/",
+        "/region/일산/yojeong/",
+        "/tag/일산요정/"
+      ],
+      "fixedBar": true,
+      "titleWords": ["일산명월관", "일산요정"],
+      "since": "2026-11-13",
+      "근거": "대표님 2026-11-13 13:30 · 13:48 — 일산명월관 쪽 · 일산요정 쪽 광고주 닉네임 줄 「일산요정 총책임자 신실장」(naver-watch docs/규칙/일산_총책임자_광고주_새번호_2026-11-13.md · 지시서 일산76-1). 닉네임 줄·번호는 이 pages 여섯 쪽에서만."
+    },
+    {
+      "shop": "일산룸",
+      "nickname": "일산룸 총책임자 신실장",
+      "phone": "010-3541-0027",
+      "pages": [
+        "/rooms/ilsan/ilsanroom/",
+        "/region/일산/",
+        "/region/일산/rooms/",
+        "/rooms/ilsan/",
+        "/magazine/ilsan-room-guide/",
+        "/tag/일산룸/"
+      ],
+      "fixedBar": true,
+      "titleWords": ["일산룸"],
+      "untitledPages": ["/region/일산/"],
+      "since": "2026-11-13",
+      "근거": "대표님 2026-11-13 13:30 · 13:48 — 일산룸 쪽 광고주 닉네임 줄 「일산룸 총책임자 신실장」(같은 규칙 · 지시서 일산76-1). 제목에 「일산룸」이 든 다섯 쪽 + 일산 지역 쪽(untitledPages — 세 가게가 섞인 쪽 · 규칙 파일이 이 닉네임 줄로 정함). 닉네임 줄·번호는 이 pages 여섯 쪽에서만."
     }
   ]
 }

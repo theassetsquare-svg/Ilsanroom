@@ -9,7 +9,7 @@ import path from 'path';
 import crypto from 'crypto';
 import { execSync } from 'child_process';
 import { provinceOf, localityOf } from './lib/region-admin.mjs';
-import { ogVer, ogOwnVer, MAGAZINE_OG, pageCardOf, pageKey, pageCardAlt } from '../src/lib/venue-file-ver.mjs';
+import { ogVer, ogOwnVer, MAGAZINE_OG, pageCardOf, pageKey, pageCardAlt, adNameLine } from '../src/lib/venue-file-ver.mjs';
 import { isAdVenue, isPageOnlyAd, isListed, regionOf, regionTree, sortVenues } from '../src/lib/venue-order.mjs'; // [놀쿨12-2 · 13:18-1·2·4] React 목록과 같은 한 자리
 import sharp from 'sharp'; // [놀쿨11-3] 첫 화면 그림(og jpg) 의 webp 축소판 생성
 
@@ -91,9 +91,9 @@ function ogDims(url) {
 //   전화 노출 자체는 엔티티 SEO(NAP 일치)에 플러스 신호이며 호객과 분리된다.
 //   라벨은 중립("예약 문의")으로만 노출하고 호객 카피는 0.
 const PHONE_HIDDEN_SLUGS = new Set([]);
-// [일산74-1 · 2026-11-12] 광고가 끝난 가게 — 담당 연락처 줄이 빠진 자리에 이 사이트 광고문의 한 줄(매거진 쪽 nc-inq-line 과 같은 꼴)
-//   일산 담당 광고 해지(대표님 2026-11-11 13:2x 「광고주에서 빼고 광고문의로」) · 연락처·tel 0
-const INQUIRY_LINE_SLUGS = new Set(['ilsanmyeongwolgwanyojeong', 'ilsanroom']);
+// [일산74-1 · 2026-11-12] 광고가 끝난 가게 — 담당 연락처 줄이 빠진 자리에 이 사이트 광고문의 한 줄(매거진 쪽 nc-inq-line 과 같은 꼴) · 연락처·tel 0
+//   [일산76-1 · 대표님 2026-11-13 13:30 · 13:48] 일산 두 가게는 다시 광고주(명단 두 줄 + 쪽 카드 표의 광고 카드 — 카드 블록에 닉네임 줄·번호·「광고」 표시)라 이 목록에서 뺐다 → 지금 0곳
+const INQUIRY_LINE_SLUGS = new Set([]);
 
 // ★ lastmod 정직화 — 페이지별 "의미 콘텐츠" 해시를 직전 빌드와 비교해, 실제로 바뀐 URL만
 //   lastmod를 갱신한다. 안 바뀐 페이지는 이전 lastmod 그대로 유지 → 매일 today 도배 방지.
@@ -463,8 +463,8 @@ function visibleBreadcrumb(meta) {
   return `<nav aria-label="현재 위치" class="ssr-breadcrumb"><ol>${lis}</ol></nav>`;
 }
 
-// [놀쿨44-1 · 대표님 2026-10-11 18:09] 쪽 카드 — 놀쿨 명단 광고주의 쪽(광고 카드)과 광고문의 카드 쪽 · [일산74-1 · 대표님 2026-11-11 13:2x] 제목에 「일산명월관」·「일산요정」·「일산룸」이 든 쪽은 모두 광고문의 카드.
-//   표는 src/lib/venue-file-ver.mjs PAGE_CARD 한 곳(가게 쪽 둘은 가게 틀이 맡는다 — 여기는 안내·매거진·지역·태그·목록).
+// [놀쿨44-1 · 대표님 2026-10-11 18:09] 쪽 카드 — 놀쿨 명단 광고주의 쪽(광고 카드)과 광고문의 카드 쪽 · [일산74-1 · 대표님 2026-11-11 13:2x] 제목에 「일산명월관」·「일산요정」·「일산룸」이 든 쪽은 모두 광고문의 카드. → [일산76-1 · 대표님 2026-11-13 13:30 · 13:48] 그 쪽들과 일산 지역 쪽 = 다시 광고 카드(명단 두 줄).
+//   표는 src/lib/venue-file-ver.mjs PAGE_CARD 한 곳([일산76-1] 일산 가게 쪽 둘도 이 표의 광고 카드 — 가게 · 안내 · 매거진 · 지역 · 태그 · 목록 열두 쪽).
 //   모든 쪽이 지나는 writePage 에서 한 번에 넣는다: og:image · twitter:image · 첫 그림 = 그 쪽의 카드 파일 · 본문 답 칸 바로 아래 같은 카드.
 //   광고 카드는 놀쿨 명단(src/data/advertisers.nolcool.json)에 그 쪽이 적혀 있을 때만(닉네임·번호는 명단 값 그대로 · 「광고」 표시) — 명단에 없으면 아무것도 안 넣는다.
 //   광고문의 카드에는 번호·tel 링크가 없다. 글자는 카드에 그려진 것과 같다(가게이름 / 광고문의 / 카톡 besta12).
@@ -498,7 +498,7 @@ function withPageCard(meta, pc, routePath) {
     // [구글69-1] 가게 자기 쪽(구글 쪽만)에서는 자기 링크(「자세히 보기」·그림 링크)를 뺀다 — 쓸모 0 · 가게 이름 한 번 덜(venue-density-audit 3.0%)
     const href = g && href0 && pageKey(href0) === key ? '' : href0;
     const img = `<img ${imgAttrs} alt="${g ? cardAlt : `${escHtml(ad.shop)} ${escHtml(ad.nickname)} ${escHtml(ad.phone)}`}" style="width:100%;max-width:260px;height:auto;border-radius:10px">`;
-    card = `<section class="nc-ad-card ssr-adlabel" aria-label="광고" style="${box}"><p style="margin:0 0 8px;font-size:12px;color:#555"><span style="display:inline-block;padding:1px 6px;border:1px solid #888;border-radius:6px">광고</span> 아래 연락처는 업소 담당자가 제공한 광고 정보입니다.</p>${href ? `<a href="${escHtml(href)}">${img}</a>` : img}<p style="margin:10px 0 4px;font-weight:700">${escHtml(ad.shop)} · ${escHtml(ad.nickname)}</p><p style="margin:0 0 8px"><a href="tel:${escHtml(ad.phone.replace(/\D/g, ''))}" style="display:inline-flex;align-items:center;padding:0 16px;min-height:48px!important;box-sizing:border-box;border-radius:10px;background:#15803D;color:#fff;font-weight:700;text-decoration:none">📞 ${escHtml(ad.phone)}</a></p>${href ? `<p style="margin:0;font-size:14px"><a href="${escHtml(href)}">${escHtml(ad.shop)} 자세히 보기</a></p>` : ''}</section>`;
+    card = `<section class="nc-ad-card ssr-adlabel" aria-label="광고" style="${box}"><p style="margin:0 0 8px;font-size:12px;color:#555"><span style="display:inline-block;padding:1px 6px;border:1px solid #888;border-radius:6px">광고</span> 아래 연락처는 업소 담당자가 제공한 광고 정보입니다.</p>${href ? `<a href="${escHtml(href)}">${img}</a>` : img}<p style="margin:10px 0 4px;font-weight:700">${escHtml(adNameLine(ad, ' · '))}</p><p style="margin:0 0 8px"><a href="tel:${escHtml(ad.phone.replace(/\D/g, ''))}" style="display:inline-flex;align-items:center;padding:0 16px;min-height:48px!important;box-sizing:border-box;border-radius:10px;background:#15803D;color:#fff;font-weight:700;text-decoration:none">📞 ${escHtml(ad.phone)}</a></p>${href ? `<p style="margin:0;font-size:14px"><a href="${escHtml(href)}">${escHtml(ad.shop)} 자세히 보기</a></p>` : ''}</section>`;
   } else {
     card = `<p class="nc-inq-card" style="${box}"><img ${imgAttrs} alt="${g ? cardAlt : `${escHtml(pc.shop)} 광고문의 카톡 besta12`}" style="display:block;width:100%;max-width:260px;height:auto;border-radius:10px;margin:0 0 10px"><strong>광고문의</strong> · 카톡 besta12</p>`;
   }
@@ -522,7 +522,10 @@ function withPageCard(meta, pc, routePath) {
       // [구글69-1 · 지적 8] 다른 가게 쪽(예: 장안동호빠 빵빵에 실린 큐브 카드)의 #business 에는 광고주 번호·카드 그림을 넣지 않는다(그 그림은 광고주 카드지 이 가게의 그림이 아님).
       //   [11-08 라이브 눈 확인] 그 #business 의 자기 카드(-v8 · 옛 og:image)는 이 쪽에 이제 보이지 않는다(첫 그림·og:image = 광고 카드) → 구글 구조화 데이터 정책 「쪽에 보이지 않는 내용은 마크업하지 않는다」(sd-policies · 확인 2026-11-08)대로 image 를 뺀다.
       //   LocalBusiness 에서 image 는 권장 칸(필수 = address·name · local-business 문서 · 확인 2026-11-08) · 쪽의 그림 신호(og:image · 첫 그림 · 사이트맵 image)는 광고 카드 하나로 모인다.
-      if (isBiz && ad && !ownShop) { const { image: _own, ...rest } = node; return rest; }
+      // [일산76-1 · 2026-11-13] 광고주 자기 가게의 #business 가 가게 쪽 밖에 실린 쪽(/guide/ilsan-yojeong/ 의 일산명월관요정 노드)은 쪽 주소가 아니라 노드 @id 로 자기 가게를 가린다
+      //   — 그 노드도 이 쪽에 보이는 카드 그림 · 명단 번호를 받는다(가게 쪽과 같은 값). 다른 가게의 노드(빵빵·플렉스)는 @id 가 달라 지금처럼 그림을 빼고 번호를 넣지 않는다.
+      const ownNode = isBiz && !!ad && !!adShopHref && pageKey(String(node['@id']).slice(BASE_URL.length).replace(/#business$/, '')) === pageKey(adShopHref);
+      if (isBiz && ad && !ownShop && !ownNode) { const { image: _own, ...rest } = node; return rest; }
       const out = { ...node, image: cardUrl }; // 구글 구조화 데이터 「쪽에 보이는 것과 같은 값」 — 첫 그림(카드) 하나
       if (isBiz && ad) out.telephone = telIntl(ad.phone); // 광고주 쪽만(명단 번호 · +82 꼴) · 광고문의 쪽은 telephone 0(page-gate A7)
       return out;
@@ -644,6 +647,8 @@ function writePage(routePath, meta) {
 // ── 업소 데이터 파싱 ──
 // 일산명월관요정 업소 확인 실데이터(단일 소스) — React 페이지·SSR·JSON-LD 공통 참조
 const ILSAN_CONFIRMED = JSON.parse(fs.readFileSync('src/data/ilsanmyeongwolgwan-confirmed.json', 'utf8'));
+// [일산76-1 · 2026-11-13] 첫 문단(hero)에 가게 이름을 그대로 두는 일산 가게 쪽 — 쓰는 곳: 업소 상세 writePage 의 diluteName
+const ILSAN_HERO_KEEP_NAME = new Set(['ilsanroom', 'ilsanmyeongwolgwanyojeong']);
 const venuesSrc = fs.readFileSync('src/data/venues.ts', 'utf8');
 const seoHooksSrc = fs.readFileSync('src/lib/seo-hooks.ts', 'utf8');
 
@@ -1902,7 +1907,7 @@ for (const pg of staticPages) {
       url: `${BASE_URL}/yojeong/ilsan/ilsanmyeongwolgwanyojeong/`,
       description: `${cf.nearestStation}이 가장 가까운 전통 한정식 요정. ${cf.parking}. ${cf._provenance.source}.`,
       servesCuisine: '한정식',
-      // [놀쿨12-2 R12] telephone 은 일산명월관요정 가게 쪽 JSON-LD 에만 · [놀쿨44-1 → 일산74-1] 이 안내 쪽에는 연락처가 없다(본문 카드는 광고문의 카드)
+      // [놀쿨12-2 R12] telephone 은 일산명월관요정 가게 쪽 JSON-LD 에만 · [놀쿨44-1 → 일산74-1] 이 안내 쪽에는 연락처가 없다(본문 카드는 광고문의 카드) → [일산76-1] 본문 카드는 다시 광고 카드 · 이 노드는 일산명월관요정 가게 노드(@id = 가게 쪽 #business)라 withPageCard 가 쪽 카드 그림(image)과 명단 번호(telephone)를 넣는다 — 여기에 직접 적지 않는다
       address: { '@type': 'PostalAddress', streetAddress: cf.address, addressLocality: '고양시', addressRegion: '경기도', addressCountry: 'KR' },
       ...(mv ? { geo: { '@type': 'GeoCoordinates', latitude: mv.lat, longitude: mv.lng } } : {}),
       openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: cf.hoursSpec.openDays, opens: cf.hoursSpec.opens, closes: cf.hoursSpec.closes }],
@@ -2455,7 +2460,9 @@ for (const v of venues) {
     jsonLdList: [venueJsonLd, faqJsonLd, breadcrumbJsonLd, venueWebPageJsonLd],
     keywords: venueKeywords,
     preloadImage,
-    diluteName: v.nameKo,
+    // [일산76-1 · 2026-11-13] 일산 두 가게 쪽은 첫 문단(hero)에서 이름을 「여기」로 바꾸지 않는다 — 「여기 — …」로 시작하는 첫 문단은 무엇을 말하는지 알 수 없다(후킹 B1 · 첫 두 문장에 누가·어디).
+    //   이름 비율은 빌드 25단계 venue-density-audit(3.0% 이하)가 그대로 잰다. 다른 가게 쪽은 손대지 않는다(놀쿨81-1 2절에서 쪽마다).
+    diluteName: ILSAN_HERO_KEEP_NAME.has(v.slug) ? undefined : v.nameKo,
   });
   venueCount++;
 }

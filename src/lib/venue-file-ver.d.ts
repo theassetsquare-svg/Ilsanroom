@@ -13,6 +13,7 @@ export declare const MAGAZINE_OG: Record<string, string>;
 export declare const PAGE_CARD: Record<string, { file: string; kind: 'ad' | 'inquiry'; shop: string; hue?: number; google?: boolean; variant?: string; altFull?: boolean }>;
 export declare function pageKey(route: string): string;
 export declare function pageCardOf(route: string): { file: string; kind: 'ad' | 'inquiry'; shop: string; hue?: number; google?: boolean; variant?: string; altFull?: boolean } | null;
+export declare function adNameLine(ad: { shop: string; nickname: string }, sep?: string): string;
 export declare function pageCardAlt(pc: { shop: string; altFull?: boolean } | null, ad: { shop: string; nickname: string; phone: string } | null | undefined): string;
 export declare function pageCardJpg(file: string): string;
 export declare function pageCardLight(file: string): string;
