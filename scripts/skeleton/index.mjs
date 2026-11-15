@@ -129,6 +129,12 @@ export function applySkeleton(type, ssrBody, ctx = {}) {
   }
   // ① 직답 — 생성기의 .ssr-answer·설명 문단·전화/시간/입장 줄 (없으면 첫 body 문단을 끌어올리지 않는다: 창작 0)
   let answerHtml = intro.length ? ser(intro) : (ctx.answer ? `<p class="ssr-answer">${esc(ctx.answer)}</p>` : '');
+  // [놀쿨85-1] 쪽 카드 — 직답 글이 따로 없는 쪽(prerender withPageCard 가 ctx.answerCard 로 넘김)은 직답 칸 첫 문단 바로 아래에 둔다.
+  //   직답 칸 글은 카드가 없을 때와 한 글자도 같다(h1 뒤 문단이 있으면 그 문단들 · 없으면 설명 글). 카드는 광고 표시 칸(.ssr-adlabel)이라 원래도 이 칸에 실린다.
+  if (ctx.answerCard) {
+    const k = intro.findIndex(isEl);
+    answerHtml = k >= 0 ? ser(intro.slice(0, k + 1)) + ctx.answerCard + ser(intro.slice(k + 1)) : answerHtml + ctx.answerCard;
+  }
   // ② 사실/표
   let factsHtml = (type === 'list' || type === 'hub') ? memberList(ctx) : factsTable(type, ctx);
   if (!factsHtml && (type === 'list' || type === 'hub')) factsHtml = factsTable(type, ctx);

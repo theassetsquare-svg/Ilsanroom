@@ -502,15 +502,16 @@ function withPageCard(meta, pc, routePath) {
   } else {
     card = `<p class="nc-inq-card" style="${box}"><img ${imgAttrs} alt="${g ? cardAlt : `${escHtml(pc.shop)} 광고문의 카톡 besta12`}" style="display:block;width:100%;max-width:260px;height:auto;border-radius:10px;margin:0 0 10px"><strong>광고문의</strong> · 카톡 besta12</p>`;
   }
-  // 자리 = 직답(.ssr-answer) 바로 아래. 직답이 없는 쪽은 뼈대가 쓰던 것과 같은 글(설명)을 직답으로 먼저 두고 그 아래(직답 글자 변화 0).
+  // 자리 = 직답(.ssr-answer) 바로 아래.
+  // [놀쿨85-1] 직답(.ssr-answer)이 없는 쪽은 본문에 넣지 않고 뼈대(applySkeleton)에 넘긴다(answerCard) — 뼈대가 직답 칸을 고른 뒤 그 첫 문단 바로 아래에 둔다.
+  //   옛 길(설명 글을 직답으로 먼저 넣고 그 아래 카드)은 뼈대가 h1 뒤 문단을 직답으로 쓰는 쪽에서 설명 글을 하나 더 넣어 같은 문장이 두 번 나왔다
+  //   (11-15 실측: 라이브 태그 쪽 넷 /tag/건대호빠/ · /tag/일산룸/ · /tag/일산요정/ · /tag/장안동호빠/ · 새로 넣는 15쪽 가운데 열넷).
+  //   뼈대가 h1 뒤 문단을 못 찾는 쪽은 뼈대가 설명 글을 직답으로 만들고 그 아래에 카드 — 옛 길과 같은 글 · 같은 차례 · 같은 바이트(escHtml 과 뼈대 esc 는 같은 네 글자를 바꾼다).
   let body = meta.ssrBody || '';
+  let answerCard = '';
   const m = body.match(/<(p|div)\b[^>]*class="[^"]*\bssr-answer\b[^"]*"[^>]*>[\s\S]*?<\/\1>/);
   if (m) body = body.slice(0, m.index + m[0].length) + card + body.slice(m.index + m[0].length);
-  else {
-    const ans = (meta.skel && meta.skel.answer) || meta.description || '';
-    const block = `${ans ? `<p class="ssr-answer">${escHtml(ans)}</p>` : ''}${card}`;
-    body = /<\/h1>/.test(body) ? body.replace(/<\/h1>/, `</h1>${block}`) : block + body;
-  }
+  else answerCard = card;
   const cardUrl = `${BASE_URL}/og/${pc.file}.jpg`;
   let jsonLdList = meta.jsonLdList;
   if (g) {
@@ -531,7 +532,7 @@ function withPageCard(meta, pc, routePath) {
       return out;
     });
   }
-  return { ...meta, ssrBody: body, ...(g && jsonLdList ? { jsonLdList } : {}), ogImage: cardUrl, heroSquare: true, heroAd: !!ad, heroAlt: altText, ...(g ? { ogImageAlt: altText } : {}) };
+  return { ...meta, ssrBody: body, ...(answerCard ? { answerCard } : {}), ...(g && jsonLdList ? { jsonLdList } : {}), ogImage: cardUrl, heroSquare: true, heroAd: !!ad, heroAlt: altText, ...(g ? { ogImageAlt: altText } : {}) };
 }
 
 function writePage(routePath, meta) {
@@ -549,7 +550,7 @@ function writePage(routePath, meta) {
     //   쪽마다 다른 것(11-2 고유성)은 제목 자체(창고·명시 제목 · 동일 0 · 유사 0.8↑ 0)와 소제목·본문이 맡는다.
     const h1 = meta.title || '';
     const faqPairs = sk.faqPairs || (meta.jsonLdList || []).filter((j) => j && j['@type'] === 'FAQPage').flatMap((j) => (j.mainEntity || []).map((q) => ({ q: q.name, a: q.acceptedAnswer?.text || '' })));
-    meta = { ...meta, h1, ssrBody: meta.ssrBody ? applySkeleton(type, meta.ssrBody, { ...sk, route: routePath, answer: sk.answer || meta.description || '', faqPairs, catLabel: catLabelMap, venueHref, popRank: POP_RANK, next: buildNext(type, sk, routePath) }) : meta.ssrBody };
+    meta = { ...meta, h1, ssrBody: meta.ssrBody ? applySkeleton(type, meta.ssrBody, { ...sk, route: routePath, answer: sk.answer || meta.description || '', answerCard: meta.answerCard || '', faqPairs, catLabel: catLabelMap, venueHref, popRank: POP_RANK, next: buildNext(type, sk, routePath) }) : meta.ssrBody };
     // FAQPage JSON-LD = 화면 문답(dl) — 생성기 회전 질문과 LD 질문이 다르면 LD 를 화면 쪽으로 맞춘다(구글 「보이지 않는 콘텐츠 마크업 금지」)
     if (meta.ssrBody && Array.isArray(meta.jsonLdList)) {
       const faqBlock = (meta.ssrBody.match(/data-skel="faq"[\s\S]*?(?=<section data-skel="summary"|<nav data-skel="next"|<\/article>)/) || [''])[0];
