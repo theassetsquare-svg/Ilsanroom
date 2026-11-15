@@ -3230,6 +3230,7 @@ function lastmodFor(routePath) {
 }
 // [구글69-1 · 2026-11-07] 이미지 사이트맵 — 구글 공식(Google Search Central 「이미지 사이트맵」 · 확인 2026-11-07)대로 그 쪽 <url> 안에 <image:image><image:loc> 하나.
 //   쪽 카드가 google: true 인 쪽만(withPageCard 가 SITEMAP_IMAGE_BY_ROUTE 에 적음) · 그 밖의 <url> 줄은 글자 변화 0 · <loc>·<lastmod> 붙어 있는 꼴 그대로(lastmod-honesty-gate 가 읽는 자리) · 자리는 priority 뒤(sitemap.xsd 의 확장 요소 자리).
+//   [놀쿨85-1 · 2026-11-15] 고정 쪽 · 지역 쪽 · 매거진 줄에도 붙인다 — 그 전엔 가게 쪽 · 동적 쪽 줄에만 붙어 google: true 카드 10쪽(/yojeong/ · /rooms/ · /lounge/yojung/ · /yojeong/ilsan/ · /rooms/ilsan/ · /guide/ilsan-yojeong/ · 매거진 넷)이 빠졌다 · 쪽 글자 변화 0
 const imgXml = (route) => { const u = SITEMAP_IMAGE_BY_ROUTE[pageKey(route)]; return u ? `<image:image><image:loc>${u}</image:loc></image:image>` : ''; };
 let sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n`;
 // Homepage
@@ -3239,14 +3240,14 @@ for (const pg of staticPages) {
   if (noIndexPathsSet.has(pg.path)) continue;
   const freq = pg.path.startsWith('/community') ? 'daily' : 'weekly';
   const pri = categoryPaths.has(pg.path) ? '0.9' : pg.path.startsWith('/community') ? '0.7' : '0.7';
-  sitemapXml += `  <url><loc>${BASE_URL}${pg.path}/</loc><lastmod>${lastmodFor(pg.path)}</lastmod><changefreq>${freq}</changefreq><priority>${pri}</priority></url>\n`;
+  sitemapXml += `  <url><loc>${BASE_URL}${pg.path}/</loc><lastmod>${lastmodFor(pg.path)}</lastmod><changefreq>${freq}</changefreq><priority>${pri}</priority>${imgXml(pg.path)}</url>\n`;
 }
 // Regional pages (trailing slash 추가)
 for (const [cat, regions] of Object.entries(regionsByCategory)) {
   const cm = catMap[cat];
   if (!cm || !['club', 'room', 'yojeong'].includes(cat)) continue;
   for (const region of Object.keys(regions)) {
-    sitemapXml += `  <url><loc>${BASE_URL}/${cm.path}/${region}/</loc><lastmod>${lastmodFor(`/${cm.path}/${region}`)}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
+    sitemapXml += `  <url><loc>${BASE_URL}/${cm.path}/${region}/</loc><lastmod>${lastmodFor(`/${cm.path}/${region}`)}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority>${imgXml(`/${cm.path}/${region}`)}</url>\n`;
   }
 }
 // All venue detail pages (trailing slash 추가)
@@ -3263,7 +3264,7 @@ for (const v of venues) {
 }
 // Magazine article pages (시즌9 — Article schema + SSR 본문 prerender)
 for (const a of magazineArticles) {
-  sitemapXml += `  <url><loc>${BASE_URL}/magazine/${a.id}/</loc><lastmod>${lastmodFor(`/magazine/${a.id}`)}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>\n`;
+  sitemapXml += `  <url><loc>${BASE_URL}/magazine/${a.id}/</loc><lastmod>${lastmodFor(`/magazine/${a.id}`)}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority>${imgXml(`/magazine/${a.id}`)}</url>\n`;
 }
 // Dynamic SEO pages (best, new, region, tag, near)
 // 파트2 — noindex 지정·canonical 통합 페이지는 sitemap 제외 (색인 신호 일관성)
