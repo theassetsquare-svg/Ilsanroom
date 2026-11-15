@@ -95,6 +95,24 @@ export const PAGE_CARD = {
   '/rooms/ilsan/': { file: 'rooms-ilsan-chief-card-v1', kind: 'ad', shop: '일산룸', hue: 190, google: true, altFull: true, variant: 'left-low' },
   '/magazine/ilsan-room-guide/': { file: 'magazine-ilsan-room-guide-chief-card-v1', kind: 'ad', shop: '일산룸', hue: 250, google: true, altFull: true, variant: 'small' },
   '/tag/일산룸/': { file: 'tag-ilsan-room-chief-card-v1', kind: 'ad', shop: '일산룸', hue: 310, google: true, altFull: true, variant: 'mid' },
+  // [놀쿨85-1 · 대표님 2026-11-15 12:58 「요정하고 일산룸하고 명월관들어간페이지에는 광고주 신실장 썸네일이미지하고 번호 넣으라고」] 요정 · 일산룸이 주제인 쪽 열다섯 — 명단 두 줄의 untitledPages(제목에 가게 이름이 없어도 광고 카드 쪽).
+  //   요정 여덟(요정 모음 · 새 요정 · 요정 인기 · 요정 라운지 · 일산명월관요정 한 곳만 실린 태그 넷) = 「일산명월관요정」 줄 · 룸 일곱(룸 모음 · 새 룸 · 룸 인기 · 마두역 도보권 · 일산룸 한 곳만 실린 태그 셋) = 「일산룸」 줄.
+  //   같은 글자 카드가 열 장을 넘어 배치 낱말을 둘 더함(scripts/generate-og-name11.mjs 'one' · 'top') · 2026-11-15 실측: 새 열다섯 장끼리 dHash 거리 17 이상 · public/og 의 그림 536장 전부와 17 이상(닮음 잣대 10 이하).
+  '/yojeong/': { file: 'yojeong-hub-chief-card-v1', kind: 'ad', shop: '일산명월관요정', hue: 195, google: true, altFull: true, variant: 'one' },
+  '/new/yojeong/': { file: 'new-yojeong-chief-card-v1', kind: 'ad', shop: '일산명월관요정', hue: 0, google: true, altFull: true, variant: 'left-top' },
+  '/best/yojeong/': { file: 'best-yojeong-chief-card-v1', kind: 'ad', shop: '일산명월관요정', hue: 255, google: true, altFull: true, variant: 'mid' },
+  '/lounge/yojung/': { file: 'lounge-yojung-chief-card-v1', kind: 'ad', shop: '일산명월관요정', hue: 135, google: true, altFull: true, variant: 'one-low' },
+  '/tag/국악/': { file: 'tag-gugak-chief-card-v1', kind: 'ad', shop: '일산명월관요정', hue: 15, google: true, altFull: true, variant: 'small-mid' },
+  '/tag/비즈니스접대/': { file: 'tag-business-entertain-chief-card-v1', kind: 'ad', shop: '일산명월관요정', hue: 240, google: true, altFull: true, variant: 'one-mid' },
+  '/tag/프라이빗룸/': { file: 'tag-private-room-chief-card-v1', kind: 'ad', shop: '일산명월관요정', hue: 75, google: true, altFull: true, variant: 'right-top' },
+  '/tag/한정식/': { file: 'tag-hanjeongsik-chief-card-v1', kind: 'ad', shop: '일산명월관요정', hue: 315, google: true, altFull: true, variant: 'low' },
+  '/rooms/': { file: 'rooms-hub-chief-card-v1', kind: 'ad', shop: '일산룸', hue: 345, google: true, altFull: true, variant: 'right-top' },
+  '/new/rooms/': { file: 'new-rooms-chief-card-v1', kind: 'ad', shop: '일산룸', hue: 210, google: true, altFull: true, variant: 'left-top' },
+  '/best/rooms/': { file: 'best-rooms-chief-card-v1', kind: 'ad', shop: '일산룸', hue: 105, google: true, altFull: true, variant: 'left-split-low' },
+  '/near/마두/': { file: 'near-madu-chief-card-v1', kind: 'ad', shop: '일산룸', hue: 150, google: true, altFull: true, variant: 'left-top-split' },
+  '/tag/VIP/': { file: 'tag-vip-chief-card-v1', kind: 'ad', shop: '일산룸', hue: 270, google: true, altFull: true, variant: 'right-split-low' },
+  '/tag/비즈니스/': { file: 'tag-business-chief-card-v1', kind: 'ad', shop: '일산룸', hue: 45, google: true, altFull: true, variant: 'small-split' },
+  '/tag/프라이빗/': { file: 'tag-private-chief-card-v1', kind: 'ad', shop: '일산룸', hue: 30, google: true, altFull: true, variant: 'left-split' },
   // [놀쿨61-1 · 대표님 2026-10-25 16:1x·17:5x] 제목에 「장안동호빠」가 든 쪽 4 = 장안동호빠 큐브(유현재 실장 010-7674-8310) 광고 카드 — 큐브 자기 쪽은 놀쿨에 없고,
   //   빵빵·플렉스는 다른 가게의 쪽이라 가게 담당 칸이 아니라 여기(쪽 카드)로 넣는다(가게 쪽도 PAGE_CARD 가 있으면 첫 그림·og:image = 이 카드 · VenueHero). 색조는 넷 다 적어 서로 다른 그림.
   //   [구글69-1 · 2026-11-07 · 대표님 00:23 「사진을 구글정식문서에 맞게 전부다 넣어」] google: true = 구글 이미지 공식 문서대로 더 넣는 쪽(scripts/prerender-seo.mjs withPageCard):

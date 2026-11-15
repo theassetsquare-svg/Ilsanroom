@@ -89,7 +89,8 @@ function tint(slug, fixedHue) {
   return { a: `hsl(${hue.toFixed(0)},45%,11%)`, b: `hsl(${((hue + 40) % 360).toFixed(0)},40%,6%)` };
 }
 
-/** [구글69-1] variant 낱말 — 'low'(아래로 ≤300px) · 'mid'(세로 가운데) · 'split'(줄 나눔) · 'small'(글자 0.7배) · 'left'/'right'(왼쪽/오른쪽 맞춤 · 0.7배 · low 가 없으면 세로 가운데) · '-'로 이어 조합('right-low') */
+/** [구글69-1] variant 낱말 — 'low'(아래로 ≤300px) · 'mid'(세로 가운데) · 'split'(줄 나눔) · 'small'(글자 0.7배) · 'left'/'right'(왼쪽/오른쪽 맞춤 · 0.7배 · low 가 없으면 세로 가운데) · '-'로 이어 조합('right-low')
+ *  [놀쿨85-1 · 2026-11-15] 'one'(가게 이름을 한 줄로 — 글자·색·크기 셈 그대로 · 줄 배치만 다름) · 'top'(left·right 를 세로 가운데 대신 맨 위에) — 같은 가게 카드가 열 장을 넘어 위 낱말 조합이 바닥났을 때(일산명월관요정 14쪽 · 썸네일 표준 「표준 모양 안에서 배경 톤·테두리·배치를 바꾼다」) · 이 두 낱말이 없는 카드는 전과 한 글자도 같게 그려진다 */
 export const variantTokens = (v) => new Set(String(v.variant || '').split('-').filter(Boolean));
 
 export function layout(v) {
@@ -106,6 +107,7 @@ export function layout(v) {
     const score = want ? (lines.halved ? 0 : lines.length * 1000) + size : size * (lines.halved ? 0.85 : 1); // 같은 크기면 낱말을 자르지 않은 판 · split 은 자르지 않은 판 가운데 줄 수 먼저
     if (!best || score > best.score) best = { lines, size, score };
   }
+  if (vt.has('one')) best = { lines: [v.nameKo], size: Math.floor(Math.min(260, 1060 / v.nameKo.length, budget / 1.08)), score: 0 }; // [놀쿨85-1] 'one' = 이름 한 줄(크기 셈은 위 for 와 같은 식)
   if (vt.has('left') || vt.has('right') || vt.has('small')) best = { ...best, size: Math.floor(best.size * 0.7) }; // [구글69-1] left·right·small = 글자 0.7배(left·right 는 왼쪽·오른쪽 맞춤 · 세로 가운데 — buildSvg)
   return { isAd, ...best };
 }
@@ -119,7 +121,7 @@ export function buildSvg(v) {
   // [구글69-1] variant 'low' — 기본 배치의 맨 아래(카톡 줄 아래)에서 1150 까지 비는 자리 안에서(최대 300px) 전체를 아래로 내린다 · 글자·크기·색은 그대로
   const bottom0 = (() => { let yy = top0 + nameBlockH + (isAd ? 60 : 90); if (isAd) { const ns = Math.min(128, Math.floor(1000 / Math.max(2, v.nick.length)), size - 20); yy += ns * 1.2; const ps = Math.min(110, size - 30); yy += ps * 1.35; return Math.min(yy + 56, 1150) + 20; } const s2 = Math.min(120, size - 30); yy += s2 * 1.3; return yy + s2 * 0.9 + 20; })();
   const vt = variantTokens(v);
-  const dy = vt.has('low') ? Math.max(0, Math.min(300, 1150 - bottom0)) : (vt.has('mid') || vt.has('left') || vt.has('right')) ? Math.max(0, Math.round((1200 - (bottom0 - top0)) / 2) - top0) : 0;
+  const dy = vt.has('low') ? Math.max(0, Math.min(300, 1150 - bottom0)) : (vt.has('mid') || ((vt.has('left') || vt.has('right')) && !vt.has('top'))) ? Math.max(0, Math.round((1200 - (bottom0 - top0)) / 2) - top0) : 0; // [놀쿨85-1] 'top' = left·right 를 맨 위에(dy 0)
   const top = top0 + dy;
   const X = vt.has('left') ? 80 : vt.has('right') ? 1120 : 600; const anchor = vt.has('left') ? 'start' : vt.has('right') ? 'end' : 'middle'; // [구글69-1] left·right 는 모든 줄을 왼쪽(x=80)·오른쪽(x=1120)에 맞춤
   const nameTexts = lines
