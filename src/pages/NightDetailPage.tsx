@@ -4,6 +4,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import VenueDetailPage from '@/components/venue/VenueDetailPage';
 import { getHookingTitle, getHookingDescription } from '@/lib/seo-hooks';
 import { getVenueOgImageBySlug } from '@/lib/og-image';
+import { pageCardOf, pageCardJpg } from '@/lib/venue-file-ver'; // [나머지86-1] 쪽 카드 표 — 광고 카드가 걸린 나이트 쪽은 og:image 도 그 카드(프리렌더 withPageCard · VenueHero 첫 그림과 같은 파일)
 import { getVenueBySlug, getRelatedVenues } from '@/data/venues';
 import ChangwonLullalalaCallBar from '@/components/venue/ChangwonLullalalaCallBar';
 import { Link } from '@/components/ui/SafeLink';
@@ -144,7 +145,10 @@ export default function NightDetailPage() {
   const venue = getVenueBySlug(slug!);
   // [놀쿨12-2 · P39·P40] 훅은 일찍 돌아가기(Navigate) 전에 — 같은 쪽 틀에서 잘못된 주소 → 맞는 주소로 옮길 때 React 오류 #310(훅 수가 달라짐)이 나던 것
   const valid = !!venue && venue.category === 'night';
-  useDocumentMeta(valid ? getHookingTitle(venue!) + '' : '', valid ? getHookingDescription(venue!) : '', valid ? getVenueOgImageBySlug(venue!.slug) : undefined);
+  // [나머지86-1 · 대표님 2026-11-22 07:25] 쪽 카드(PAGE_CARD · kind 'ad')가 걸린 나이트 쪽(대전원나이트)은 og:image 도 그 카드 파일 — 프리렌더가 박은 값을 수화 뒤 목록용 3줄 판으로 덮어쓰지 않게(룸 틀 일산76-1 과 같은 길)
+  const pageCard = valid ? pageCardOf(`/nights/${slug}/`) : null;
+  const ogImage = valid ? (pageCard && pageCard.kind === 'ad' ? `https://nolcool.com${pageCardJpg(pageCard.file)}` : getVenueOgImageBySlug(venue!.slug)) : undefined;
+  useDocumentMeta(valid ? getHookingTitle(venue!) + '' : '', valid ? getHookingDescription(venue!) : '', ogImage);
   if (!valid || !venue) return <Navigate to="/404" replace />;
   const related = getRelatedVenues(venue, 6);
 

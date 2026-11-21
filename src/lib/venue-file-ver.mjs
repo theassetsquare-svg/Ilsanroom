@@ -133,6 +133,13 @@ export const PAGE_CARD = {
   //   첫 줄 = 그 쪽 주제(제목에 든 글자 그대로) · 옛 4줄 카드와 다른 새 이름(같은 이름에 다른 그림 0 — /og/* 30일 캐시) · 색조·배치를 달리 적어 서로 다른 그림
   '/magazine/busan-night-guide/': { file: 'magazine-busan-night-guide-inquiry-card-v1', kind: 'inquiry', shop: '부산 나이트 3곳', hue: 45, google: true, variant: 'mid' },
   '/magazine/busan-nightlife-roundup/': { file: 'magazine-busan-nightlife-roundup-inquiry-card-v1', kind: 'inquiry', shop: '부산 나이트라이프 총정리', hue: 235, google: true, variant: 'left-low' },
+  // [나머지86-1 · 대표님 2026-11-22 01:00 · 02:01 · 07:25 「놀쿨사이트 먼저 대전원나이트 광고주 … 썸네일이미지하고 번호 넣으라고」] 제목에 「대전원나이트」·「대전나이트」가 든 쪽 넷 + 대전 지역 모음 쪽 = 대전원나이트 광고 카드(4줄 · 명단 src/data/advertisers.nolcool.json 「대전원나이트」 줄)
+  //   가게 쪽(/nights/daejeononenight/)도 이 표가 맡는다(첫 그림 · og:image = 이 카드 · 목록에 실리는 가게 카드는 위 OG_FILE_VER 의 3줄 판 그대로) · 새 파일 이름(*-call-card-v1 · /og/* 30일 캐시) · 색조·배치는 다섯 장 다 적어 서로 다른 그림
+  '/nights/daejeononenight/': { file: 'daejeononenight-call-card-v1', kind: 'ad', shop: '대전원나이트', hue: 22, google: true, altFull: true, variant: 'left-top' },
+  '/magazine/daejeon-night-guide/': { file: 'magazine-daejeon-night-guide-call-card-v1', kind: 'ad', shop: '대전원나이트', hue: 165, google: true, altFull: true, variant: 'left' },
+  '/region/대전/nights/': { file: 'region-daejeon-nights-call-card-v1', kind: 'ad', shop: '대전원나이트', hue: 330, google: true, altFull: true, variant: 'right-top' },
+  '/tag/대전나이트/': { file: 'tag-daejeon-night-call-card-v1', kind: 'ad', shop: '대전원나이트', hue: 100, google: true, altFull: true, variant: 'one-mid' },
+  '/region/대전/': { file: 'region-daejeon-call-card-v1', kind: 'ad', shop: '대전원나이트', hue: 225, google: true, altFull: true, variant: 'left-split-low' },
 };
 /** [일산76-1 · 대표님 2026-11-13 13:48] 광고주 이름 줄 한 곳 — 「<가게><sep><닉네임>」. 닉네임 줄이 가게 이름으로 시작하면(「일산룸 총책임자 …」) 가게 이름을 두 번 적지 않고 닉네임 줄만 적는다.
  *  카드 그림 설명(아래 pageCardAlt · sep 빈칸)과 프리렌더 카드 블록의 이름 줄(sep 가운뎃점)이 같이 쓴다 — 닉네임이 가게 이름으로 시작하지 않는 다른 광고주는 옛 글자 그대로 */
