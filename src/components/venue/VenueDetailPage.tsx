@@ -249,7 +249,7 @@ export default function VenueDetailPage({
       {/* ═══ 9. Share — 바이럴 루프 (읽은 뒤에 공유) ═══ */}
       <section className="mx-auto max-w-[1200px] px-4 pt-2 pb-4 sm:px-6">
         <div className="rounded-2xl bg-gradient-to-r from-[#F3F0FF] to-white border border-[#E9E5FF] p-4">
-          <p className="text-center text-xs font-bold text-[#8B5CF6] mb-2">이 정보 괜찮았다면 — 친구한테 보내기</p>
+          <p className="text-center text-xs font-bold text-[#8B5CF6] mb-2">함께 갈 사람에게 이 가게를 보내세요</p>
           <ShareButtons
             title={venue.nameKo}
             description={venue.shortDescription || venue.description.slice(0, 80)}

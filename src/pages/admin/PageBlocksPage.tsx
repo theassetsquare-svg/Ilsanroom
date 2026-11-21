@@ -28,8 +28,8 @@ const empty: Row = {
 
 // 사이트에서 사용 중인 블록 — 카탈로그 (관리자가 어떤 키가 있는지 알 수 있도록)
 const KNOWN_BLOCKS: { page: string; key: string; label: string; default: string }[] = [
-  { page: 'home', key: 'hero_h1', label: '홈 히어로 H1 (시간대 자동 문구 덮어쓰기)', default: '오늘 밤, 어디 갈래?' },
-  { page: 'home', key: 'hero_subtitle', label: '홈 히어로 서브타이틀 (없으면 미표시)', default: '' },
+  { page: 'home', key: 'hero_h1', label: '홈 히어로 H1 (시간대 자동 문구 덮어쓰기)', default: '전국의 밤을 한눈에' },
+  { page: 'home', key: 'hero_subtitle', label: '홈 히어로 서브타이틀 (비우면 기본 문구)', default: '클럽·나이트·라운지·룸·요정·호빠. 가게 이름이나 지역으로 찾고, 처음 가는 곳도 미리 살펴보세요.' },
 ];
 
 const inputCls = 'w-full rounded-lg border border-neon-border bg-neon-bg px-3 py-2 text-sm outline-none focus:border-neon-primary';

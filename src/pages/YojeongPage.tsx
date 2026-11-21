@@ -14,8 +14,8 @@ import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCou
 
 export default function YojeongPage() {
   useDocumentMeta(
-    '요정 — 거래처 모시는 자리, 한정식 12첩 가야금 선율 위에 격을 갖춘다',
-    '요정 — 사장님 모시는 자리, 격 떨어지면 다음은 없죠. 한정식 코스와 국악, 예약 매너를 모았고, 일산명월관요정의 계절 15첩 상차림과 방 15개 구성도 실었다.' // [놀쿨83-1 둘째 판 · 2026-11-15] = scripts/prerender-seo.mjs 의 /yojeong 설명
+    '요정 한정식 코스와 국악 — 거래처 첫 접대 전에 챙길 예약 예절',
+    '요정은 한정식 코스를 받으며 국악을 듣는 전통 접대 공간입니다. 예약 예절과 일산명월관요정의 계절 15첩 상차림, 방 15개 구성을 모았습니다.' // [놀쿨86-1 · 2026-11-22] = scripts/prerender-seo.mjs 의 /yojeong 제목 · 설명
   );
   const venues = getVenuesByCategory('yojeong');
   const featured = sortVenues(venues, 'rec', popularity.venues)[0]; // [놀쿨12-2 · 13:18-2] 목록 추천 순서의 첫 가게(광고면 「광고」 표시)

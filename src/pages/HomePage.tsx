@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useMemo, useCallback, memo, lazy, Suspense
 import { useNavigate } from 'react-router-dom';
 import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
+import { trackEvent } from '@/lib/visitor-tracker';
 import { usePageBlock } from '@/hooks/usePageBlock';
 import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 import { VENUES_TOP4 } from '@/data/venues-top4';
@@ -232,7 +233,7 @@ const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, r
 /* ══════════════════════════════════════════════════════ */
 
 export default function HomePage() {
-  useDocumentMeta('놀쿨 — 오늘 어디 갈지 못 정했죠? 20년 굴러본 사람이 골라드림', `놀쿨 — 오늘 어디 갈지 못 정했죠? 거를 곳 천지예요. 놀쿨은 클럽·나이트·룸·요정·라운지·호빠 6업종 ${VENUES_TOTAL_OPEN}+ 업소를 20년 굴러본 사람이 1줄로 정리. 주말 망치기 전 놀쿨부터 켜요.`);
+  useDocumentMeta(`놀쿨 — 전국 ${VENUES_TOTAL_OPEN}곳의 밤을 한눈에`, `놀쿨은 전국 클럽·나이트·라운지·룸·요정·호빠 ${VENUES_TOTAL_OPEN}곳의 정보를 모은 플랫폼입니다. 가게마다 소개와 특징을 같은 순서로 정리했습니다. 마음에 드는 곳은 놀쿨 링크로 보내 함께 갈 사람과 고르세요.`); // [놀쿨86-1 · 2026-11-22] = scripts/prerender-seo.mjs 의 홈 제목 · 설명
   const navigate = useNavigate();
   const { user } = useAuth();
   // 파트2.5 정직화 — 홈 커뮤니티 섹션 자동 스위치(실제 7일 회원 글 임계값 이상일 때만 노출)
@@ -240,7 +241,12 @@ export default function HomePage() {
 
   // 단계 5 — 관리자가 /admin/blocks에서 덮어쓸 수 있는 블록들
   const heroH1Override = usePageBlock('home', 'hero_h1', '');
-  const heroSubtitle = usePageBlock('home', 'hero_subtitle', '');
+  const heroSubtitle = usePageBlock('home', 'hero_subtitle', '클럽·나이트·라운지·룸·요정·호빠. 가게 이름이나 지역으로 찾고, 처음 가는 곳도 미리 살펴보세요.');
+  // [놀쿨86-1] 「링크 보내기」(utm_source=invite)로 홈을 연 방문자 — invite_open 1회(환영 쪽과 같은 이벤트 · 개인 식별 0)
+  useEffect(() => {
+    const qs = new URLSearchParams(window.location.search);
+    if (qs.get('utm_source') === 'invite') trackEvent('invite_open', { channel: 'home' });
+  }, []);
 
   // R3-2 — Hero 네온 파티클 동적 카운트 (mobile 6 / pc 12 / reduced-motion 0)
   const [particleCount, setParticleCount] = useState(12);
@@ -526,9 +532,9 @@ export default function HomePage() {
 
         <div className="relative z-10 px-4 pt-4 pb-3 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
           {/* 실시간 접속자 + 타이틀 — 한 줄 */}
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex flex-wrap items-center justify-between mb-2">
             <NcH1 className="text-[22px] sm:text-[28px] font-black text-white leading-tight">
-              {heroH1Override || '오늘 밤, 어디 갈래?'}
+              {heroH1Override || '전국의 밤을 한눈에'}
             </NcH1>
             {heroSubtitle && (
               <p className="mt-1 text-[13px] sm:text-sm text-white/80 w-full">{heroSubtitle}</p>
@@ -1428,8 +1434,9 @@ export default function HomePage() {
 
         <div className="rounded-2xl bg-violet-50 border border-violet-200 px-5 py-3 text-center">
           <p className="text-sm font-bold text-[#111]">
-            구글 · ChatGPT · Gemini에서 <span className="text-lg text-[#7C3AED]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>"놀쿨"</span> 검색하세요
+            밤 약속이 잡히면, <span className="text-lg text-[#7C3AED]" style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span>부터.
           </p>
+          <p className="mt-1 text-xs text-[#555]">다음에 오실 때는 nolcool.com 으로 들어오시거나 즐겨찾기에 두세요.</p>
         </div>
 
         {/* 실시간 현황 위젯 */}
@@ -1441,28 +1448,26 @@ export default function HomePage() {
       {/* ═══ SEO TEXT ═══ */}
       <section className="px-4 pb-8 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="rounded-2xl border border-gray-100 bg-[#F5F5F5] p-5">
-          <h2 className="mb-2 text-base font-bold text-[#111]">전국 클럽·나이트·라운지 실시간 정보</h2>
+          <h2 className="mb-2 text-base font-bold text-[#111]">전국 클럽·나이트·라운지·룸·요정·호빠 정보</h2>
           <div className="space-y-2 text-sm leading-relaxed text-[#555]">
             <p>
-              오늘 밤 어디로 갈지 30분째 검색만 반복하고 있나요? 놀쿨은 전국 {VENUES_TOTAL_OPEN}곳을
-              클럽·나이트·라운지·룸·요정·호빠 6업종으로 갈라, 분위기·연령대·동선까지 한 줄로 정리해 둔 곳입니다.
-              강남 EDM 플로어가 당기는 날과 일산 호수공원 끝 라이브 무대가 당기는 날은 골라야 할 곳이 완전히 다르죠.
-              업종부터 좁히고 내 동네를 누르면, 직접 가본 사람이 남긴 솔직한 분위기 메모가 먼저 뜹니다.
-              가서 실망할 곳을 미리 걸러내는 게 목적이에요.
+              놀쿨은 전국 {VENUES_TOTAL_OPEN}곳을 클럽·나이트·라운지·룸·요정·호빠 여섯 업종으로 나눠 정리했습니다.
+              같은 업종이라도 지역에 따라 음악과 분위기가 다르기 때문에, 업종을 먼저 고르고 지역으로 좁히는 순서를 권합니다.
+              소개와 특징은 모든 가게에 같은 순서로 실려 있고, 주소가 등록된 곳은 찾아가는 길도 함께 적었습니다.
             </p>
-            <h3 className="mt-3 mb-1 text-[13px] font-bold text-[#333]">6업종, 뭐가 어떻게 다른데?</h3>
+            <h3 className="mt-3 mb-1 text-[13px] font-bold text-[#333]">여섯 업종은 어떻게 다른가요</h3>
             <ul className="space-y-1 pl-1">
               <li>· <b>클럽</b> — EDM·힙합 사운드에 스탠딩 플로어. 춤추러 가는 밤.</li>
-              <li>· <b>나이트</b> — 웨이터가 자리를 안내하는 소셜 댄스. 둔산동 트로트 라이브와 중앙로 38세+ 홀은 같은 나이트라도 결이 완전히 다릅니다.</li>
+              <li>· <b>나이트</b> — 웨이터가 자리를 안내하는 소셜 댄스. 같은 나이트라도 가게마다 음악과 연령대가 다릅니다.</li>
               <li>· <b>라운지</b> — 대화가 끊기지 않는 조용한 바. 한 잔 놓고 길게 앉는 자리.</li>
-              <li>· <b>룸</b> — 프라이빗하게 양주 한 병 놓고 우리끼리 노는 공간.</li>
+              <li>· <b>룸</b> — 일행끼리만 쓰는 독립된 방.</li>
               <li>· <b>요정</b> — 전통 한정식과 격식, 조용히 모시는 자리.</li>
-              <li>· <b>호빠</b> — 여성 손님이 실장 매칭으로 노는 곳.</li>
+              <li>· <b>호빠</b> — 여성 손님을 위한 호스트바.</li>
             </ul>
-            <h3 className="mt-3 mb-1 text-[13px] font-bold text-[#333]">혼자 정하기 막막할 때</h3>
+            <h3 className="mt-3 mb-1 text-[13px] font-bold text-[#333]">혼자 정하기 어렵다면</h3>
             <p>
-              조각모임에서 같은 날 같은 지역 사람을 찾아 함께 출발하고, 다녀온 뒤엔 커뮤니티에 분위기 한 줄을 남겨
-              다음 사람 헛걸음을 줄여 주세요. 주말 계획 어그러지기 전에 업종 하나만 정하고 들어오면, 나머지는 여기서 좁혀집니다.
+              조각모임에서 같은 날 같은 지역으로 가는 사람을 찾을 수 있습니다.
+              다녀온 뒤 커뮤니티에 한 줄을 남기면 다음 방문자가 헛걸음을 줄일 수 있습니다.
             </p>
           </div>
         </div>

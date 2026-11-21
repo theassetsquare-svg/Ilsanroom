@@ -14,11 +14,9 @@ import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCou
 import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 
 
-// [놀쿨12-2 · R4] 제목의 「강남 N곳」도 데이터에서 센다(박힌 숫자 0)
-const CLUB_GANGNAM_N = getVenuesByCategory('club').filter((v) => v.regionKo === '강남').length;
 
 export default function ClubsPage() {
-  useDocumentMeta('클럽 ' + VENUES_BY_CATEGORY.club + '곳 — 강남 ' + CLUB_GANGNAM_N + '곳부터 이태원·압구정·홍대까지, 줄 서기 전에 드레스코드 먼저', '클럽 줄 컷이면 그날 끝. 10년 MD가 강남·홍대 클럽 Funktion-One·드레스코드·해외 게스트 DJ·새벽 3시 피크·VIP 부킹까지 클럽 ' + VENUES_BY_CATEGORY.club + '곳, 갈 곳만 추렸으니 줄 서기 전에 바로 확인 →');
+  useDocumentMeta('클럽 ' + VENUES_BY_CATEGORY.club + '곳 — 강남·홍대·이태원, 입장 전 드레스코드부터', '클럽이 처음이라면 입구에서 막히는 옷차림부터 알아 두세요. 놀쿨 클럽 페이지에는 ' + VENUES_BY_CATEGORY.club + '곳의 소개와 함께 게이트 오픈 시간, 새벽 피크, VIP 테이블과 플로어의 차이를 정리했습니다.'); // [놀쿨86-1 · 2026-11-22] = scripts/prerender-seo.mjs 의 /clubs 제목 · 설명
   const venues = getVenuesByCategory('club');
   const featured = sortVenues(venues, 'rec', popularity.venues)[0]; // [놀쿨12-2 · 13:18-2] 목록 추천 순서의 첫 가게(광고면 「광고」 표시)
   const byRegion = venues.reduce<Record<string, { n: number; key: string }>>((m, v) => {

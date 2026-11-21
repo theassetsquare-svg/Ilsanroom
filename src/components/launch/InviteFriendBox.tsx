@@ -3,10 +3,10 @@ import { trackEvent } from '@/lib/visitor-tracker';
 
 /* 카톡 원클릭 친구 초대 박스 — 입소문 가속기.
    Web Share API (모바일 카톡/메시지 자동) → 폴백 = 클립보드 복사.
-   카톡 미리보기는 og:* 가 항상 중립 ("놀쿨 — 오늘 밤 가이드"). */
+   미리보기 글은 받는 주소의 og:title · og:description 그대로다(홈 = 프리렌더가 쓴 title · description). */
 
-const INVITE_URL = 'https://nolcool.com/welcome?utm_source=invite&utm_medium=kakao';
-const INVITE_TEXT = '놀쿨 — 오늘 밤 가이드. 카톡 공유해도 업소 단어 0%, 친구한테 추천해도 안전.';
+const INVITE_URL = 'https://nolcool.com/?utm_source=invite&utm_medium=kakao'; // [놀쿨86-1] 가입 안내 쪽(/welcome)이 아니라 홈으로 — 받은 사람이 가입 없이 바로 가게 정보를 본다
+const INVITE_TEXT = '놀쿨 — 오늘 갈 곳을 같이 골라 보세요.';
 
 export default function InviteFriendBox() {
   const [copied, setCopied] = useState(false);
@@ -17,7 +17,7 @@ export default function InviteFriendBox() {
     if (typeof navigator !== 'undefined' && 'share' in navigator) {
       try {
         await navigator.share({
-          title: '놀쿨 — 오늘 밤 가이드',
+          title: '놀쿨 — 전국의 밤을 한눈에',
           text: INVITE_TEXT,
           url: INVITE_URL,
         });
@@ -33,7 +33,7 @@ export default function InviteFriendBox() {
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // prompt 폴백
-      window.prompt('아래 링크를 카톡에 붙여넣으세요:', `${INVITE_TEXT} ${INVITE_URL}`);
+      window.prompt('아래 링크를 복사해 대화창에 붙여 넣으세요.', `${INVITE_TEXT} ${INVITE_URL}`);
     }
   };
 
@@ -49,14 +49,14 @@ export default function InviteFriendBox() {
             💬
           </div>
           <div className="text-left min-w-0">
-            <div className="text-[13px] font-black text-[#111]">친구한테 카톡으로 보내기</div>
-            <div className="text-[11px] text-[#666] truncate">
-              {copied ? '✓ 링크 복사 완료 — 카톡에 붙여넣기' : '미리보기에 업소 단어 0% · 안전'}
+            <div className="text-[13px] font-black text-[#111]">함께 갈 사람에게 놀쿨을 보내 주세요</div>
+            <div className="text-[11px] text-[#666] leading-snug">
+              {copied ? '링크를 복사했습니다. 대화창에 붙여 넣으세요.' : '가입하지 않아도 바로 가게 정보를 볼 수 있습니다.'}
             </div>
           </div>
         </div>
         <div className="shrink-0 text-[12px] font-black text-amber-700 group-hover:text-amber-800">
-          {copied ? '복사됨' : '보내기 →'}
+          {copied ? '복사됨' : '링크 보내기'}
         </div>
       </button>
     </section>

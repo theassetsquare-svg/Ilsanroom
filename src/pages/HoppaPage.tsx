@@ -14,7 +14,7 @@ import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 
 
 export default function HoppaPage() {
-  useDocumentMeta('여자 혼자 호빠 가도 돼? 10년 실장이 외모·매너·진행 다 봐주는 ' + VENUES_BY_CATEGORY.hoppa + '곳', '처음 호빠 가서 어색한 시간 30분이면 끝. 10년 일한 호빠 실장이 외모·매너·진행 다 봐드립니다. 강남·홍대·일산·해운대·대구 호빠 진짜 케어되는 ' + VENUES_BY_CATEGORY.hoppa + '곳만 골랐으니 첫 방문 전에 먼저 확인 →');
+  useDocumentMeta('호빠 첫 방문 안내 — 여성 손님이 알아 둘 진행과 매너, ' + VENUES_BY_CATEGORY.hoppa + '곳', '호빠에 혼자 가도 되는지, 들어가서 무엇부터 말하면 되는지 궁금한 여성 손님을 위해 호빠 첫 방문의 진행 순서와 매너를 정리했습니다. 놀쿨에 등록된 호빠 ' + VENUES_BY_CATEGORY.hoppa + '곳의 소개도 실었습니다.'); // [놀쿨86-1 · 2026-11-22] = scripts/prerender-seo.mjs 의 /hoppa 제목 · 설명
   const venues = getVenuesByCategory('hoppa');
   const featured = sortVenues(venues, 'rec', popularity.venues)[0]; // [놀쿨12-2 · 13:18-2] 목록 추천 순서의 첫 가게(광고면 「광고」 표시)
 

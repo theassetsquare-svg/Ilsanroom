@@ -14,7 +14,7 @@ import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 
 
 export default function NightsPage() {
-  useDocumentMeta('나이트 부킹 한 번도 못 잡고 집 간 적? 10년 웨이터가 거를 곳 알려줘요', '부킹 안 잡히는 나이트 가면 1차로 끝나요. 10년 짠밥 웨이터가 홀·부스·물·진행 다 풀어드립니다. 방문 시간·매너·드레스코드까지 ' + VENUES_BY_CATEGORY.night + '곳 갈 곳 vs 거를 곳 한 줄로 정리 →');
+  useDocumentMeta('나이트 부킹이 처음이라면 — 진행 순서와 자리 고르는 법, ' + VENUES_BY_CATEGORY.night + '곳 목록', '나이트에 처음 가면 자리 안내부터 부킹, 정산까지 순서가 낯섭니다. 홀과 부스의 차이, 거절할 때 쓰는 한마디, 귀가 동선을 전국 ' + VENUES_BY_CATEGORY.night + '곳 목록과 함께 담았습니다.'); // [놀쿨86-1 · 2026-11-22] = scripts/prerender-seo.mjs 의 /nights 제목 · 설명
   const venues = getVenuesByCategory('night');
   const featured = sortVenues(venues, 'rec', popularity.venues)[0]; // [놀쿨12-2 · 13:18-2] 목록 추천 순서의 첫 가게(광고면 「광고」 표시)
 

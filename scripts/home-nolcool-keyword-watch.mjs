@@ -8,11 +8,11 @@
  *   3) title ≤60자
  *   4) title 중복단어 없음
  *   5) desc 80~150자
- *   6) desc에 "놀쿨" ≥3회
+ *   6) desc에 "놀쿨" ≥1회 (놀쿨86-1 — 설명은 사람이 읽는 문장으로 · 낱말 반복 0)
  *   7) "놀쿨" body 밀도 ≤3.5% (스터핑 상한)
  *   8) "놀쿨" body 등장 ≥10회
  *   9) 후킹 5축 ≥1축 (title 또는 desc)
- *  10) 디테일 토큰 (121+ 업소·6업종·1줄·20년·주말 망치기) 모두 등장
+ *  10) 디테일 토큰 (곳의 밤을 한눈에·같은 순서로·찾아가는 길) 모두 등장
  *  11) JSON-LD WebSite 존재
  *  12) JSON-LD Organization 존재
  *  13) canonical = https://nolcool.com/
@@ -25,7 +25,7 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const TO = process.env.NOTIFICATION_EMAIL || 'theassetsquare@gmail.com';
 const URL = 'https://nolcool.com/';
 const KEYWORD = '놀쿨';
-const DETAIL_TOKENS = ['+ 업소', '6업종', '1줄', '20년', '주말 망치기'];
+const DETAIL_TOKENS = ['곳의 밤을 한눈에', '같은 순서로', '찾아가는 길']; // [놀쿨86-1 · 2026-11-22] 새 홈 문구(제목 · 설명 · 첫 문단)에 실제로 있는 낱말
 
 function fetchHtml(url) {
   /* 시즌168 — 일시적 5xx/timeout 1회 재시도 (false-positive 메일 방지) */
@@ -77,7 +77,7 @@ async function main() {
   if (title.length === 0 || title.length > 60) issues.push(`title ${title.length}자 (≤60)`);
   if (dupTitle.length > 0) issues.push(`title 중복 [${dupTitle.join(',')}]`);
   if (desc.length < 80 || desc.length > 150) issues.push(`desc ${desc.length}자 (80~150)`);
-  if (kwDesc < 3) issues.push(`desc "${KEYWORD}" ${kwDesc}회 (≥3 필요)`);
+  if (kwDesc < 1) issues.push(`desc "${KEYWORD}" ${kwDesc}회 (≥1 필요)`);
   if (kwDensity > 0.035) issues.push(`"${KEYWORD}" 밀도 ${(kwDensity*100).toFixed(2)}% (≤3.5%)`);
   if (kwBody < 10) issues.push(`"${KEYWORD}" body ${kwBody}회 (≥10 필요)`);
   if (hookAxesHit === 0) issues.push('후킹 5축 0 (title/desc 모두)');

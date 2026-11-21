@@ -10,10 +10,11 @@ import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import { MidContentHook, ReadFinishCount } from '@/components/engagement/ReadingEngagement';
 import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCounter } from '@/components/venue/CategoryListingEngagement';
+import { VENUES_BY_CATEGORY } from '@/data/venues-counts';
 
 
 export default function LoungesPage() {
-  useDocumentMeta('라운지 시끄러워서 데이트 망친 적 한 번이라도? 10년 실장이 거름', '분위기 보고 갔는데 어수선하면 데이트도 망합니다. 10년 본 라운지 실장이 인테리어·시그니처·만남 결까지 다 풀어드립니다. 조용히 가서 조용히 나와요 →');
+  useDocumentMeta('조용히 대화하는 라운지 — 데이트와 접대 자리, 어디에 앉을까', '바 자리는 한두 명, 소파석은 넷 이상, 창가는 야경을 볼 때 어울립니다. 놀쿨 라운지 페이지에서 좌석 고르는 법과 가게 ' + VENUES_BY_CATEGORY.lounge + '곳의 소개를 함께 보세요.'); // [놀쿨86-1 · 2026-11-22] = scripts/prerender-seo.mjs 의 /lounges 제목 · 설명
   const venues = getVenuesByCategory('lounge');
   const featured = sortVenues(venues, 'rec', popularity.venues)[0]; // [놀쿨12-2 · 13:18-2] 목록 추천 순서의 첫 가게(광고면 「광고」 표시)
 
