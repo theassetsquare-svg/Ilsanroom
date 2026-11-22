@@ -22,7 +22,7 @@ function getCategoryHref(category: string, slug: string, region: string) {
 
 const nextHooks = [
   '이것도 볼래?', '다른 데도 궁금하지?', '여기는 가봤어?',
-  '아직 안 봤지?', '이건 진짜 숨은 맛집', '사람들이 찜한 곳',
+  '아직 안 봤지?', '여기도 한번 볼래?', '조금 더 둘러볼까?',
 ];
 
 export default function InfiniteRecommendLoop({ venues, popularVenues }: { venues: Venue[]; popularVenues: Venue[] }) {
@@ -116,8 +116,8 @@ export default function InfiniteRecommendLoop({ venues, popularVenues }: { venue
 
             {bIdx % 3 === 1 && (
               <Link to="/community/free?write=true" className="mt-2 block rounded-xl border border-orange-100 bg-orange-50/50 p-3 active:bg-orange-50 transition text-center">
-                <p className="text-[13px] font-bold text-[#111]">💬 이 중에 가본 데 있어? 후기 보러가기</p>
-                <p className="text-[10px] text-[#666] mt-0.5">솔직 후기 모음</p>
+                <p className="text-[13px] font-bold text-[#111]">💬 이 중에 가본 데 있어? 한 줄 남겨 줘</p>
+                <p className="text-[10px] text-[#666] mt-0.5">자유게시판에 글쓰기</p>
               </Link>
             )}
           </div>

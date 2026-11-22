@@ -9,6 +9,7 @@ import { createClient } from '@/lib/supabase';
 import { splitByPopularity, hasPopularityData, POPULARITY_UPDATED_AT } from '@/lib/popularity';
 import RankingBasisNote from '@/components/ui/RankingBasisNote';
 import WeeklyVoteWidget from '@/components/community/WeeklyVoteWidget';
+import { isAdVenue } from '@/lib/venue-order';
 
 /* ── 카테고리 ── */
 const categories = [
@@ -270,7 +271,7 @@ function VoteSection() {
           <div className="text-center py-6">
             <p className="text-5xl mb-3">🔒</p>
             <p className="text-sm font-bold mb-1" style={{ color: '#111' }}>회원만 투표할 수 있습니다</p>
-            <p className="text-xs mb-4" style={{ color: '#999' }}>공정한 랭킹을 위해 1인 1계정, 카테고리별 월 1표</p>
+            <p className="text-xs mb-4" style={{ color: '#999' }}>계정 하나에 카테고리별 월 1표</p>
             <Link
               to="/login"
               className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white transition active:scale-[0.97]"
@@ -284,7 +285,7 @@ function VoteSection() {
             <p className="text-5xl mb-3">🎉</p>
             <p className="text-sm font-bold mb-1" style={{ color: '#111' }}>이번 달 투표 완료!</p>
             <p className="text-xs" style={{ color: '#999' }}>6개 카테고리 전부 투표했어. 다음 달 1일에 다시 투표할 수 있어</p>
-            <p className="text-xs font-bold mt-2" style={{ color: '#8B5CF6' }}>결과 발표: 매월 1일</p>
+            <p className="text-xs font-bold mt-2" style={{ color: '#8B5CF6' }}>매월 1일에 투표가 새로 시작됩니다</p>
           </div>
         ) : (
           <>
@@ -418,7 +419,7 @@ function VoteSection() {
 
 /* ═══ 메인 ═══ */
 export default function RankingPage() {
-  useDocumentMeta('인기 랭킹 TOP 20 — 회원이 직접 투표한 카테고리별 1위', '회원 직접 투표 기반 카테고리·지역별 랭킹. 강남 홍대 이태원 일산 부산 클럽·나이트·룸·요정·라운지·호빠 1위 업소를 매월 1일 시즌 초기화로 확인.');
+  useDocumentMeta('인기 랭킹 TOP 20 — 28일 조회·문의 순위와 회원 투표', '28일 동안의 실제 조회·전화 문의·검색 유입으로 매긴 순위와, 업종마다 한 달에 한 표씩 던지는 회원 투표를 한 페이지에서 봅니다.');
   const [category, setCategory] = useState('all');
   const [region, setRegion] = useState('all');
   const containerRef = useRef<HTMLDivElement>(null);
@@ -442,15 +443,12 @@ export default function RankingPage() {
       <div className="relative overflow-hidden bg-gradient-to-b from-[#0A0118] via-[#1a0a2e] to-[#0f0720]">
         <div className="absolute inset-0 opacity-15" style={{ backgroundImage: 'radial-gradient(circle at 50% 30%, #F59E0B 0%, transparent 50%)' }} />
         <div className="relative mx-auto max-w-4xl px-4 py-14 sm:px-6 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 mb-6 border border-white/10">
-            <PageLiveCounter pageName="랭킹 보는 중" baseCount={63} className="text-white/80 [&_strong]:text-white" />
-          </div>
           <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-3">
             🏆 인기 랭킹 <span style={{ color: '#F59E0B' }}>TOP 20</span>
           </NcH1>
           <p className="text-base mb-6" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.6)' }}>
             전국 클럽·나이트·라운지·룸·요정·호빠<br />
-            지금 사람들이 가장 많이 보는 곳
+            조회와 문의가 많은 곳
           </p>
 
           <button
@@ -520,7 +518,7 @@ export default function RankingPage() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <h3 className="truncate text-sm font-bold" style={{ color: '#111' }}>{v.nameKo}</h3>
-                    {v.isPremium && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: '#8B5CF6', backgroundColor: '#F3F0FF' }}>AD</span>}
+                    {isAdVenue(v) && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: '#8B5CF6', backgroundColor: '#F3F0FF' }}>광고</span>}
                   </div>
                   <p className="text-xs" style={{ color: '#999' }}>{v.regionKo} · {catLabel[v.category] || v.category}</p>
                 </div>
@@ -560,7 +558,7 @@ export default function RankingPage() {
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <h3 className="truncate text-sm font-bold" style={{ color: '#111' }}>{v.nameKo}</h3>
-                        {v.isPremium && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: '#8B5CF6', backgroundColor: '#F3F0FF' }}>AD</span>}
+                        {isAdVenue(v) && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: '#8B5CF6', backgroundColor: '#F3F0FF' }}>광고</span>}
                       </div>
                       <p className="text-xs" style={{ color: '#999' }}>{v.regionKo} · {catLabel[v.category] || v.category}</p>
                     </div>
@@ -572,8 +570,8 @@ export default function RankingPage() {
         )}
 
         <MidContentQuiz
-          question="이번 주 1위는 어디일까?"
-          options={['강남 클럽이 당연 1위', '나이트가 의외로 강하다', '요즘 라운지가 대세', '지방 업소가 역전 중']}
+          question="이 순위표의 1위는 어디일까?"
+          options={['강남 클럽일 것 같다', '나이트일 것 같다', '라운지일 것 같다', '지방 가게일 것 같다']}
           seed="ranking-quiz"
         />
 
@@ -586,16 +584,16 @@ export default function RankingPage() {
         <div className="mt-8 rounded-xl bg-gray-50 p-4">
           <p className="text-xs font-bold mb-1" style={{ color: '#8B5CF6' }}>랭킹·투표 기준 안내</p>
           <ul className="text-xs space-y-1" style={{ color: '#555' }}>
-            <li><strong>리스트 정렬:</strong> 최근 28일 실제 조회·전화 문의·검색 유입 가중 점수{hasPopularityData() ? ` (마지막 갱신 ${POPULARITY_UPDATED_AT}, 매주 자동 재계산)` : ' — 데이터가 쌓이는 대로 자동 전환, 그 전까지는 최신 등록순'}. 표본 미달 업소는 순위 없이 최신 등록순으로만 표시.</li>
+            <li><strong>리스트 정렬:</strong> 갱신일까지 28일 동안 실제 조회·전화 문의·검색 유입 가중 점수{hasPopularityData() ? ` (마지막 갱신 ${POPULARITY_UPDATED_AT})` : ' — 데이터가 쌓이는 대로 자동 전환, 그 전까지는 최신 등록순'}. 표본 미달 업소는 순위 없이 최신 등록순으로만 표시.</li>
             <li><strong>투표 랭킹:</strong> 회원 직접 투표. 카테고리별 월 1표. 매월 1일 시즌 초기화.</li>
-            <li><strong>공정성:</strong> 광고비로 순위를 살 수 없습니다(광고 업소는 AD 표기만). 가짜 후기 0 — 전부 삭제했습니다. 1인 1계정, 카테고리당 월 1회.</li>
+            <li><strong>공정성:</strong> 광고비로 순위를 살 수 없습니다(광고 업소는 「광고」 표시만). 후기는 회원이 직접 쓴 것만 싣습니다. 투표는 계정 하나에 카테고리별 월 1회입니다.</li>
           </ul>
         </div>
 
-        <ReadCompletionReward teaser="랭킹에서 볼 수 없는 숨은 인기 업소">
+        <ReadCompletionReward teaser="순위에 없는 가게 더 보기">
           <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>
-            랭킹에 아직 안 올라왔지만 단골들 사이에서 입소문 타는 곳들이 있다.
-            숨은 명소 페이지에서 확인해봐.
+            순위에 없는 가게도 있습니다.
+            숨은 명소 페이지에서 더 둘러보세요.
           </p>
           <Link to="/hidden" className="inline-flex items-center gap-1 text-sm font-bold text-[#8B5CF6] hover:text-[#7C3AED] mt-2">
             숨은 명소 보기 →

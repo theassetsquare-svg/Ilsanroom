@@ -25,14 +25,14 @@ export function ReadTimeEstimate({ charCount, className }: { charCount: number; 
 
 // ── 중간 훅 (호기심 유발) ──
 const midHooks = [
-  { emoji: '👇', text: '아래에 진짜 핵심이 있다' },
-  { emoji: '🔥', text: '여기서부터가 진짜다' },
-  { emoji: '💡', text: '이건 직접 가본 사람만 아는 정보' },
-  { emoji: '⚡', text: '이 부분 놓치면 후회한다' },
-  { emoji: '🎯', text: '끝까지 읽은 사람만 보는 꿀팁이 아래에' },
-  { emoji: '👀', text: '다른 데선 절대 안 알려주는 내용' },
-  { emoji: '🤫', text: '이건 아는 사람만 아는 거다' },
-  { emoji: '💎', text: '여기부터 읽는 사람이 진짜 고수' },
+  { emoji: '👇', text: '중요한 내용은 아래에 이어집니다' },
+  { emoji: '🔥', text: '여기서부터 자세히 봅니다' },
+  { emoji: '💡', text: '가기 전에 알아 둘 내용' },
+  { emoji: '⚡', text: '가기 전에 이 부분은 꼭 보세요' },
+  { emoji: '🎯', text: '아래에 이어지는 내용도 함께 보세요' },
+  { emoji: '👀', text: '아래에 더 자세한 내용' },
+  { emoji: '🤫', text: '헷갈리기 쉬운 부분은 아래에' },
+  { emoji: '💎', text: '여기부터는 한 번 더 확인할 내용' },
 ];
 
 export function MidContentHook({ seed, variant }: { seed?: string; variant?: number }) {
@@ -58,10 +58,10 @@ export function MidContentHook({ seed, variant }: { seed?: string; variant?: num
 
 // ── 읽기 마일스톤 (스크롤 진행률에 따라 표시) ──
 const milestoneMessages = [
-  { pct: 25, emoji: '📖', text: '벌써 25%! 계속 읽어봐' },
-  { pct: 50, emoji: '🔥', text: '반 왔다! 핵심은 지금부터' },
-  { pct: 75, emoji: '💪', text: '거의 다 왔어! 마지막이 제일 중요' },
-  { pct: 100, emoji: '🎉', text: '끝까지 읽었어! 당신이 진짜다' },
+  { pct: 25, emoji: '📖', text: '4분의 1을 읽었어요' },
+  { pct: 50, emoji: '🔥', text: '절반을 읽었어요' },
+  { pct: 75, emoji: '💪', text: '거의 다 읽었어요' },
+  { pct: 100, emoji: '🎉', text: '끝까지 읽었어요' },
 ];
 
 export function ReadingMilestone({ containerRef }: { containerRef: React.RefObject<HTMLElement | null> }) {
@@ -159,15 +159,15 @@ export function ReadCompletionReward({
         >
           <span className="text-3xl block mb-2">🔒</span>
           <p className="text-sm font-bold text-[#111] mb-1">
-            {teaser || '끝까지 읽은 사람만 보는 숨겨진 정보'}
+            {teaser || '아래에 덧붙인 정보'}
           </p>
-          <p className="mt-2 text-xs text-[#999]">조금만 더 스크롤하면 공개됩니다</p>
+          <p className="mt-2 text-xs text-[#999]">조금 더 내리면 보입니다</p>
         </div>
       ) : (
         <div className="rounded-2xl border border-[#8B5CF6]/20 bg-gradient-to-br from-[#F3F0FF] via-white to-[#FAFAFE] p-6 animate-fade-in">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-lg">🎉</span>
-            <p className="text-sm font-bold text-[#8B5CF6]">끝까지 읽은 당신에게만 공개!</p>
+            <p className="text-sm font-bold text-[#8B5CF6]">덧붙인 정보</p>
           </div>
           {children}
         </div>

@@ -4,7 +4,7 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { sortVenues } from '@/lib/venue-order';
 import { popularity } from '@/lib/popularity';
-import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
+import { FirstVisitGuide, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
 import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
@@ -55,7 +55,7 @@ export default function YojeongPage() {
 
       <VenueListClient venues={venues} hrefPattern="/yojeong/{region}/{slug}" showEngagementHooks accentColor="emerald" />
 
-      <CategoryVSBattle venueA="일산명월관요정" venueB="강남청담클럽 아르쥬" topic="만찬 장소 대결 — 전통 정찬 vs 모던" />
+      <CategoryVSBattle venueA="일산명월관요정" venueB="강남청담클럽 아르쥬" topic="오늘 밤 고른다면 — 요정 정찬 vs 청담 클럽" />
 
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
@@ -84,14 +84,6 @@ export default function YojeongPage() {
         alone="1인 이용보다 만찬·모임 자리. 전화 문의 시 참석자·코스 조절 가능."
         reservation="미리 문의 필수. 원하는 공간과 코스를 확보하려면 최소 하루 전 연락."
       />
-
-      <PopularTimes slots={[
-        { day: '금요일', time: '18:00~22:00', level: 90 },
-        { day: '토요일', time: '17:00~22:00', level: 85 },
-        { day: '목요일', time: '18:00~21:00', level: 60 },
-        { day: '수요일', time: '18:00~21:00', level: 45 },
-        { day: '일요일', time: '12:00~15:00', level: 50 },
-      ]} />
 
       <RelatedMagazine category="yojeong" />
 

@@ -45,29 +45,6 @@ export function FirstVisitGuide({ category, dress, budget, alone, reservation }:
   );
 }
 
-/* ── [E] 인기 시간대 ── */
-interface TimeSlot { day: string; time: string; level: number }
-
-export function PopularTimes({ slots }: { slots: TimeSlot[] }) {
-  return (
-    <div className="rounded-2xl border border-neon-border bg-neon-surface p-6">
-      <h2 className="text-xl font-bold text-neon-text mb-4">인기 요일·시간대</h2>
-      <div className="space-y-3">
-        {slots.map((s) => (
-          <div key={s.day} className="flex items-center gap-3">
-            <span className="w-14 text-sm font-medium text-neon-text">{s.day}</span>
-            <span className="w-24 text-xs text-neon-text-muted">{s.time}</span>
-            <div className="h-3 flex-1 rounded-full bg-neon-surface-2">
-              <div className={`h-3 rounded-full ${s.level >= 80 ? 'bg-neon-pink' : s.level >= 50 ? 'bg-neon-gold' : 'bg-neon-green'}`} style={{ width: `${s.level}%` }} />
-            </div>
-            <span className="w-16 text-right text-xs text-neon-text-muted">{s.level >= 80 ? '최고 인기' : s.level >= 50 ? '보통' : '여유'}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 /* ── [B] VS 대결 ── */
 export function CategoryVSBattle({ venueA, venueB, topic }: { venueA: string; venueB: string; topic: string }) {
   const [voted, setVoted] = useState<'a' | 'b' | null>(null);
@@ -83,24 +60,21 @@ export function CategoryVSBattle({ venueA, venueB, topic }: { venueA: string; ve
 
   return (
     <div className="rounded-2xl border border-neon-pink/30 bg-neon-surface p-6">
-      <h2 className="text-xl font-bold text-neon-text mb-1">VS 대결 투표</h2>
+      <h2 className="text-xl font-bold text-neon-text mb-1">VS 골라 보기</h2>
       <p className="text-sm text-neon-pink mb-4">{topic}</p>
       <div className="grid grid-cols-2 gap-4 mb-4">
         {[{ side: 'a' as const, name: venueA, v: va, color: 'neon-primary' }, { side: 'b' as const, name: venueB, v: vb, color: 'neon-accent' }].map(({ side, name, v, color }) => (
           <button key={side} onClick={() => vote(side)}
             className={`rounded-xl border-2 p-5 text-center transition ${voted === side ? `border-${color} bg-${color}/10` : 'border-neon-border hover:border-neon-primary/50'}`}>
             <span className="text-base font-bold text-neon-text">{name}</span>
-            {voted && (
-              <div className="mt-3">
-                <div className="h-2 rounded-full bg-neon-surface-2"><div className={`h-2 rounded-full bg-${color}`} style={{ width: `${(v / total) * 100}%` }} /></div>
-                <span className="text-xs text-neon-text-muted mt-1">{Math.round((v / total) * 100)}%</span>
-              </div>
+            {voted === side && (
+              <span className="mt-3 block text-xs font-bold text-neon-text-muted">내 선택</span>
             )}
           </button>
         ))}
       </div>
       {voted && <ShareButtons title={`VS: ${venueA} vs ${venueB}`} />}
-      {!voted && <p className="text-center text-xs text-neon-text-subtle">투표하면 결과 확인 가능</p>}
+      {!voted && <p className="text-center text-xs text-neon-text-subtle">마음에 드는 쪽을 골라 보세요</p>}
     </div>
   );
 }

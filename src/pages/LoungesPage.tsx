@@ -4,7 +4,7 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { sortVenues } from '@/lib/venue-order';
 import { popularity } from '@/lib/popularity';
-import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
+import { FirstVisitGuide, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
 import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
@@ -85,14 +85,6 @@ export default function LoungesPage() {
         alone="1인 입장 매우 적합. 바에서 바텐더와 대화하며 한 잔 즐기기."
         reservation="금토 저녁은 미리 연락 추천. 월~목은 워크인 가능한 곳이 많음."
       />
-
-      <PopularTimes slots={[
-        { day: '주말 저녁', time: '20:00~02:00', level: 85 },
-        { day: '토', time: '19:00~02:00', level: 90 },
-        { day: '목', time: '20:00~00:00', level: 50 },
-        { day: '수', time: '19:00~23:00', level: 30 },
-        { day: '일', time: '18:00~23:00', level: 40 },
-      ]} />
 
       <RelatedMagazine category="lounge" />
 

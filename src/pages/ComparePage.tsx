@@ -36,7 +36,7 @@ const popularComparisons = [
 ];
 
 export default function ComparePage() {
-  useDocumentMeta('두 곳 놓고 따져보면 후회가 없다', '어느 가게가 내 스타일? 분위기·후기·평점·접근성·매너 5개 항목별 두 업소 1대1 비교. 강남 vs 홍대, 클럽 vs 라운지 인기 매치 모음. 고민 끝, 바로 확인.');
+  useDocumentMeta('두 곳 놓고 따져보면 후회가 없다', '어느 가게가 내 모임에 맞을까? 두 곳을 골라 업종·지역·영업시간·양주·부스·룸·드레스코드를 한 화면에 나란히 놓고 봅니다. 편집부가 고른 조합 세 가지부터 눌러 보세요.');
   const [selected, setSelected] = useState<string[]>([]);
   const [votes, setVotes] = useState<Record<string, number>>({});
   const containerRef = useRef<HTMLDivElement>(null);
@@ -95,15 +95,12 @@ export default function ComparePage() {
       <div className="relative overflow-hidden bg-gradient-to-b from-[#0A0118] via-[#1a0a2e] to-[#0f0720]">
         <div className="absolute inset-0 opacity-15" style={{ backgroundImage: 'radial-gradient(circle at 30% 50%, #3B82F6 0%, transparent 40%), radial-gradient(circle at 70% 50%, #EF4444 0%, transparent 40%)' }} />
         <div className="relative mx-auto max-w-[1200px] px-4 py-14 sm:px-6 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 mb-6 border border-white/10">
-            <PageLiveCounter pageName="비교 중" baseCount={28} className="text-white/80 [&_strong]:text-white" />
-          </div>
           <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-3">
             ⚖️ 두 곳 놓고 따져보면<br />
             <span style={{ color: '#60A5FA' }}>후회가 없다</span>
           </NcH1>
           <p className="text-base mb-6" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.6)' }}>
-            2~3곳 선택하면 양주·룸·분위기 항목별 비교표가 나온다.
+            2~4곳을 고르면 양주·부스·룸·영업시간을 나란히 놓은 비교표가 나온다.
           </p>
 
           {/* 인기 비교 조합 */}
@@ -203,7 +200,7 @@ export default function ComparePage() {
         ) : (
           <div className="rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 p-12 text-center">
             <span className="text-4xl block mb-3">⚖️</span>
-            <p className="text-[#111] font-bold mb-1">위에서 2~3곳을 선택해보세요</p>
+            <p className="text-[#111] font-bold mb-1">위에서 2~4곳을 선택해보세요</p>
             <p className="text-sm text-[#555]">항목별 비교표가 자동으로 나타납니다</p>
           </div>
         )}
@@ -222,10 +219,10 @@ export default function ComparePage() {
           <div className="space-y-2">
             <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>
               표로 비교되지 않는 것: <strong>실장의 센스, 웨이터 서비스, 그날의 분위기.</strong>
-              직접 다녀온 사람들의 커뮤니티 후기를 같이 보면 실패가 없다.
+              이런 부분은 가게에 직접 물어보는 편이 정확합니다.
             </p>
             <Link to="/community" className="inline-flex items-center gap-1 text-sm font-bold text-[#8B5CF6] hover:text-[#7C3AED] mt-2">
-              실제 후기 보러 가기 →
+              커뮤니티 둘러보기 →
             </Link>
           </div>
         </ReadCompletionReward>
@@ -234,7 +231,7 @@ export default function ComparePage() {
           <h2 className="text-base font-bold text-[#111] mb-3">비교 끝났다면 코스도 정해볼까</h2>
           <div className="grid grid-cols-2 gap-2">
             <Link to="/ranking" className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-3 text-sm font-bold text-[#111] active:bg-gray-100">
-              🏆 실시간 인기 랭킹 →
+              🏆 인기 랭킹 →
             </Link>
             <Link to="/weekend" className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-3 text-sm font-bold text-[#111] active:bg-gray-100">
               📅 이번 주말 {WEEKEND_N}곳 →

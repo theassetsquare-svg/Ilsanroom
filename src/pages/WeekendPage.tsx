@@ -111,7 +111,7 @@ export default function WeekendPage() {
           <h2 className="text-base font-bold text-neon-text mb-3">주말 말고 다른 자리 찾고 있어?</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <Link to="/ranking" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
-              🏆 실시간 인기 랭킹 →
+              🏆 인기 랭킹 →
             </Link>
             <Link to="/occasion" className="block px-4 py-3 bg-neon-surface-2 hover:bg-neon-bg rounded-lg text-sm text-neon-text">
               🎯 상황별 6가지 →

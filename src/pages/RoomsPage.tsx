@@ -4,7 +4,7 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { sortVenues } from '@/lib/venue-order';
 import { popularity } from '@/lib/popularity';
-import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
+import { FirstVisitGuide, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
 import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
@@ -13,7 +13,7 @@ import { CategoryHero, FeaturedVenueCard, BrowseOtherCategories, BottomFinishCou
 
 
 export default function RoomsPage() {
-  useDocumentMeta('사진과 다를까 걱정되는 룸 첫 예약 — 영업시간과 위치부터 확인', '룸은 일행끼리만 쓰는 방입니다. 영업시간과 주소를 같은 자리에 두었으니 예약 문의 전에 먼저 확인하세요.'); // [놀쿨86-1 · 2026-11-22] = scripts/prerender-seo.mjs 의 /rooms 제목 · 설명
+  useDocumentMeta('사진과 다를까 걱정되는 룸 첫 예약 — 영업시간과 위치부터 확인', '룸은 일행끼리만 쓰는 방입니다. 가게마다 상세 페이지에 적힌 소개를 먼저 읽어 보세요.'); // [놀쿨86-1 · 2026-11-22] = scripts/prerender-seo.mjs 의 /rooms 제목 · 설명
   const venues = getVenuesByCategory('room');
   const featured = sortVenues(venues, 'rec', popularity.venues)[0]; // [놀쿨12-2 · 13:18-2] 목록 추천 순서의 첫 가게(광고면 「광고」 표시)
 
@@ -80,14 +80,6 @@ export default function RoomsPage() {
         alone="보통 2인 이상 이용. 1인 가능 여부 매장에 확인."
         reservation="사전 예약 필수. 원하는 크기의 룸을 확보하려면 미리 연락."
       />
-
-      <PopularTimes slots={[
-        { day: '금요일', time: '19:00~01:00', level: 90 },
-        { day: '토요일', time: '18:00~01:00', level: 95 },
-        { day: '목요일', time: '19:00~23:00', level: 65 },
-        { day: '수요일', time: '19:00~23:00', level: 45 },
-        { day: '일요일', time: '17:00~22:00', level: 35 },
-      ]} />
 
       <RelatedMagazine category="room" />
 

@@ -2,32 +2,34 @@ import NcH1 from '@/components/seo/NcH1';
 import { useRef } from 'react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import JsonLd from '@/components/seo/JsonLd';
-import { PageLiveCounter } from '@/components/ui/LiveStats';
-import { MidContentHook, ReadFinishCount, ReadCompletionReward, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
+import { ReadingMilestone } from '@/components/engagement/ReadingEngagement';
 import { Link } from '../components/ui/SafeLink';
 
-const events = [
-  { id: 'e1', title: '강남청담클럽 레이스 EDM 위크엔드', venue: '강남청담클럽 레이스', date: '2026-03-21', time: '23:00', region: '강남', category: '클럽', desc: '강남 대표 EDM 파티. 해외 게스트 DJ 라인업과 함께하는 주말 페스티벌 분위기.' },
-  { id: 'e2', title: '일산명월관요정 봄 한정식 특선', venue: '일산명월관요정', date: '2026-03-25', time: '18:00', region: '일산', category: '요정', desc: '봄 제철 식재료로 구성한 한정식 특선 코스. 국악 라이브 공연 포함.' },
-  { id: 'e3', title: '수원찬스돔 주말 스페셜', venue: '수원찬스돔나이트', date: '2026-03-29', time: '20:00', region: '수원', category: '소셜댄스', desc: '돔 구조 사운드홀에서 펼쳐지는 수원 대표 주말 퍼포먼스.' },
-  { id: 'e4', title: '부산 연산동 봄맞이 축제', venue: '부산연산동물나이트', date: '2026-04-05', time: '20:00', region: '부산', category: '소셜댄스', desc: '연산동 대형 홀에서 열리는 봄 시즌 개막 축제. 라이브 밴드 3팀 출연.' },
-  { id: 'e5', title: '청담H2O VIP 한정 이벤트', venue: '청담H2O나이트', date: '2026-04-12', time: '21:00', region: '청담', category: 'VIP', desc: '워터 테마 VIP 전용 이벤트. 고급 양주 테이스팅과 라이브 DJ.' },
-  { id: 'e6', title: '대전세븐 7주년 기념 파티', venue: '대전세븐나이트', date: '2026-04-19', time: '20:00', region: '대전', category: '기념행사', desc: '7가지 테마 공간을 오픈하는 대전세븐 개업 7주년 특별 행사.' },
-];
-
-const months = [
-  { label: '2026년 3월', prefix: '2026-03', days: 31, startDay: 0 },
-  { label: '2026년 4월', prefix: '2026-04', days: 30, startDay: 3 },
-];
-
-const DOW = ['일', '월', '화', '수', '목', '금', '토'];
-
-const catColors: Record<string, string> = {
-  '클럽': '#7c3aed', '소셜댄스': '#ec4899', '요정': '#ef4444', 'VIP': '#f59e0b', '기념행사': '#06b6d4',
+type EventItem = {
+  id: string;
+  title: string;
+  venue: string;
+  date: string;
+  time: string;
+  region: string;
+  category: string;
+  desc: string;
 };
 
+// 가게에서 확인된 행사만 넣는다.
+const events: EventItem[] = [];
+
+const categoryLinks = [
+  { to: '/clubs', label: '클럽' },
+  { to: '/nights', label: '나이트' },
+  { to: '/lounges', label: '라운지' },
+  { to: '/rooms', label: '룸' },
+  { to: '/yojeong', label: '요정' },
+  { to: '/hoppa', label: '호빠' },
+];
+
 export default function EventsPage() {
-  useDocumentMeta('놓치면 후회할 이번 달 파티·행사 일정', 'DJ 게스트, 기념행사, 핼러윈·크리스마스·연말 시즌 파티 일정 캘린더. 강남 홍대 이태원 일산 부산 핫스팟 이벤트 정리. 달력에 표시하고 예약 미리 잡고 가라.');
+  useDocumentMeta('행사 일정 — 가게에서 확인된 일정만 싣는다', '가게에서 확인한 행사 일정만 싣는 페이지입니다. 아직 올라온 행사가 없어, 그 전까지는 각 가게 페이지에서 가게 소개를 먼저 보세요.');
   const containerRef = useRef<HTMLDivElement>(null);
 
   // 곧 다가오는 이벤트
@@ -55,19 +57,10 @@ export default function EventsPage() {
       <div className="relative overflow-hidden bg-gradient-to-b from-[#0A0118] via-[#1a0a2e] to-[#0f0720]">
         <div className="absolute inset-0 opacity-15" style={{ backgroundImage: 'radial-gradient(circle at 40% 40%, #EC4899 0%, transparent 40%), radial-gradient(circle at 60% 60%, #8B5CF6 0%, transparent 40%)' }} />
         <div className="relative mx-auto max-w-5xl px-4 py-14 sm:px-6">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 border border-white/10">
-              <PageLiveCounter pageName="일정 확인 중" baseCount={25} className="text-white/80 [&_strong]:text-white" />
-            </div>
-          </div>
-
           <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-3">
-            📅 놓치면 후회할<br />
-            <span style={{ color: '#EC4899' }}>이번 달 파티·행사</span>
+            📅 행사 일정<br />
+            <span style={{ color: '#EC4899' }}>가게에서 확인된 일정만</span>
           </NcH1>
-          <p className="text-base mb-6" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.6)' }}>
-            DJ 게스트, 기념행사, 시즌 이벤트. 달력에 표시해두고 가라.
-          </p>
 
           {/* 다가오는 이벤트 하이라이트 */}
           {upcomingEvents.length > 0 && (
@@ -90,83 +83,45 @@ export default function EventsPage() {
         </div>
       </div>
 
-      {/* ═══ CALENDAR + EVENTS ═══ */}
+      {/* ═══ EVENTS ═══ */}
       <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
-        {months.map((m, mIdx) => {
-          const monthEvents = events.filter((e) => e.date.startsWith(m.prefix));
-          const eventDays = new Set(monthEvents.map((e) => parseInt(e.date.split('-')[2])));
-          const cells = Array.from({ length: m.startDay }, (_, i) => ({ day: 0, key: `empty-${i}` }))
-            .concat(Array.from({ length: m.days }, (_, i) => ({ day: i + 1, key: `d-${i + 1}` })));
-
-          return (
-            <section key={m.prefix} className="mb-10">
-              <h2 className="mb-4 text-lg font-bold text-[#111] flex items-center gap-2">
-                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#8B5CF6]/10 text-sm">📅</span>
-                {m.label}
-              </h2>
-
-              {/* 미니 캘린더 */}
-              <div className="mb-4 rounded-xl border border-gray-200 bg-white p-4 overflow-x-auto shadow-sm">
-                <div className="grid grid-cols-7 gap-1 min-w-[280px]">
-                  {DOW.map((d) => (
-                    <div key={d} className="text-center text-xs font-medium text-[#999] py-1">{d}</div>
-                  ))}
-                  {cells.map((c) => (
-                    <div key={c.key} className={`text-center text-xs py-2 rounded-lg transition-colors ${
-                      c.day === 0 ? '' : eventDays.has(c.day) ? 'bg-[#8B5CF6]/15 text-[#8B5CF6] font-bold ring-1 ring-[#8B5CF6]/20' : 'text-[#555]'
-                    }`}>
-                      {c.day || ''}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* 이벤트 리스트 */}
-              <div className="space-y-2.5">
-                {monthEvents.map((e) => {
-                  const cc = catColors[e.category] || '#8B5CF6';
-                  return (
-                    <div key={e.id} className="flex items-start gap-4 rounded-xl border border-gray-200 bg-white px-4 py-4 sm:px-5 shadow-sm transition-all hover:shadow-md hover:border-[#8B5CF6]/20" style={{ minHeight: 72 }}>
-                      <div className="shrink-0 w-12 text-center">
-                        <p className="text-xl font-bold text-[#111] leading-tight">{e.date.split('-')[2]}</p>
-                        <p className="text-xs text-[#999]">{m.label.slice(6)}</p>
-                      </div>
-                      <div className="h-10 w-0.5 rounded-full shrink-0 self-center" style={{ backgroundColor: cc }} />
-                      <div className="min-w-0 flex-1">
-                        <h3 className="text-sm font-bold text-[#111] mb-1">{e.title}</h3>
-                        <p className="text-xs text-[#555] line-clamp-2 mb-1" style={{ lineHeight: '1.6' }}>{e.desc}</p>
-                        <p className="text-xs text-[#999]">{e.venue} · {e.region} · {e.time}</p>
-                      </div>
-                      <span className="shrink-0 rounded-full px-2.5 py-1 text-xs font-bold self-start" style={{ backgroundColor: cc + '15', color: cc }}>{e.category}</span>
-                    </div>
-                  );
-                })}
-                {monthEvents.length === 0 && (
-                  <p className="text-center text-sm text-[#999] py-8">등록된 행사가 없습니다</p>
-                )}
-              </div>
-
-              {mIdx === 0 && <MidContentHook seed="events-mid" variant={4} />}
-            </section>
-          );
-        })}
-
-        {/* ═══ BOTTOM ═══ */}
-        <ReadCompletionReward teaser="행사 정보를 가장 빨리 받는 방법">
-          <div className="space-y-2">
-            <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>
-              커뮤니티에서 행사 정보가 가장 먼저 올라온다.
-              실장들이 직접 올리는 이벤트 글을 놓치지 마.
+        {events.length === 0 ? (
+          <section className="mb-10 rounded-xl border border-gray-200 bg-white px-5 py-8 shadow-sm" aria-labelledby="events-empty-heading">
+            <h2 id="events-empty-heading" className="mb-3 text-lg font-bold text-[#111]">등록된 행사가 아직 없습니다</h2>
+            <p className="mb-5 text-sm text-[#555]" style={{ lineHeight: '1.7' }}>
+              가게에서 확인된 행사 일정만 이 페이지에 올립니다. 그 전까지는 각 가게 페이지에서 가게 소개를 확인하세요.
             </p>
-            <Link to="/community" className="inline-flex items-center gap-1 text-sm font-bold text-[#8B5CF6] hover:text-[#7C3AED] mt-2">
-              커뮤니티 가기 →
-            </Link>
-          </div>
-        </ReadCompletionReward>
+            <ul className="flex flex-wrap gap-2">
+              {categoryLinks.map((c) => (
+                <li key={c.to}>
+                  <Link to={c.to} className="inline-flex items-center rounded-full border border-gray-200 px-4 py-2 text-sm font-bold text-[#8B5CF6] hover:border-[#8B5CF6]/40 hover:text-[#7C3AED]">
+                    {c.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : (
+          <section className="mb-10">
+            <div className="space-y-2.5">
+              {events.map((e) => (
+                <div key={e.id} className="flex items-start gap-4 rounded-xl border border-gray-200 bg-white px-4 py-4 sm:px-5 shadow-sm">
+                  <div className="shrink-0 w-12 text-center">
+                    <p className="text-xl font-bold text-[#111] leading-tight">{e.date.split('-')[2]}</p>
+                    <p className="text-xs text-[#999]">{e.date.split('-')[1]}월</p>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-sm font-bold text-[#111] mb-1">{e.title}</h3>
+                    <p className="text-xs text-[#555] line-clamp-2 mb-1" style={{ lineHeight: '1.6' }}>{e.desc}</p>
+                    <p className="text-xs text-[#999]">{e.venue} · {e.region} · {e.time}</p>
+                  </div>
+                  <span className="shrink-0 rounded-full bg-[#8B5CF6]/10 px-2.5 py-1 text-xs font-bold text-[#8B5CF6] self-start">{e.category}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
-        <div className="text-center mt-6">
-          <ReadFinishCount pageName="행사 캘린더" baseCount={100} />
-        </div>
       </div>
 
       <ReadingMilestone containerRef={containerRef} />

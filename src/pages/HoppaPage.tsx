@@ -4,7 +4,7 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { sortVenues } from '@/lib/venue-order';
 import { popularity } from '@/lib/popularity';
-import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
+import { FirstVisitGuide, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
 import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
@@ -104,14 +104,6 @@ export default function HoppaPage() {
         alone="혼자 방문 완전 가능! 오히려 솔로 손님이 많다. 직원이 처음부터 끝까지 안내해준다."
         reservation="전화 상담 강력 권장. 원하는 시간·명수·분위기를 미리 말하면 딱 맞는 안내를 받을 수 있다."
       />
-
-      <PopularTimes slots={[
-        { day: '금요일', time: '21:00~03:00', level: 85 },
-        { day: '토요일', time: '21:00~04:00', level: 95 },
-        { day: '목요일', time: '21:00~01:00', level: 50 },
-        { day: '수요일', time: '21:00~00:00', level: 30 },
-        { day: '일요일', time: '20:00~00:00', level: 35 },
-      ]} />
 
       <RelatedMagazine category="hoppa" />
 

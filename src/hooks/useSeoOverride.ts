@@ -69,7 +69,7 @@ export function useSeoOverride() {
       if (cancelled) return;
       const ov = map.get(pathname);
       if (!ov) return;
-      if (ov.title) document.title = ov.title;
+      if (ov.title && !document.documentElement.hasAttribute('data-stealth')) document.title = ov.title;
       if (ov.description) setMeta('name', 'description', ov.description.slice(0, 160));
       if (ov.og_image) {
         setMeta('property', 'og:image', ov.og_image);

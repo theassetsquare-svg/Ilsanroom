@@ -3,11 +3,10 @@ import { useRef } from 'react';
 import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { useArticles } from '@/hooks/useMagazine';
-import { PageLiveCounter } from '@/components/ui/LiveStats';
-import { MidContentHook, ReadFinishCount, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
+import { MidContentHook, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
 
 export default function MagazinePage() {
-  useDocumentMeta('나이트라이프 읽을거리, 여기 다 모았다', '강남 홍대 이태원 일산 지역 분석, 클럽 vs 라운지 업종 비교, 신규 매장 현장 리포트. 가기 전에 읽으면 달라지는 매거진.');
+  useDocumentMeta('나이트라이프 읽을거리, 여기 다 모았다', '강남·홍대·이태원·일산·부산·수원 지역 안내와 업종 비교 글을 모았습니다. 처음 가는 동네라면 가기 전에 한 편 읽어 보세요.');
   const containerRef = useRef<HTMLDivElement>(null);
   const { articles } = useArticles();
   const featured = articles[0];
@@ -20,13 +19,6 @@ export default function MagazinePage() {
         <div className="absolute inset-0 opacity-15" style={{ backgroundImage: 'radial-gradient(circle at 30% 40%, #8B5CF6 0%, transparent 50%), radial-gradient(circle at 70% 60%, #EC4899 0%, transparent 50%)' }} />
         <div className="relative mx-auto max-w-5xl px-4 py-14 sm:px-6">
           <div className="flex items-center gap-3 mb-6">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 border border-white/10">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-green-400" />
-              </span>
-              <PageLiveCounter pageName="매거진 읽는 중" baseCount={37} className="text-white/80 [&_strong]:text-white" />
-            </div>
             <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>총 {articles.length}편</span>
           </div>
 
@@ -34,7 +26,7 @@ export default function MagazinePage() {
             나이트라이프 매거진 — 가기 전에 읽는 글
           </NcH1>
           <p className="text-sm sm:text-base mb-8" style={{ color: 'rgba(255,255,255,0.55)' }}>
-            지역 분석, 업종 비교, 신규 매장 현장 리포트
+            지역 안내, 업종 비교 글 모음
           </p>
 
           {/* 피처드 아티클 — 대형 카드 */}
@@ -86,26 +78,17 @@ export default function MagazinePage() {
         <section className="mt-12 rounded-2xl border bg-[#FAFAFA] p-6 space-y-3" style={{ borderColor: '#E5E7EB' }}>
           <h2 className="text-base font-bold text-[#111]">매거진, 뭘 읽는 곳이냐면</h2>
           <p className="text-sm leading-relaxed text-[#555]">
-            가기 전에 5분만 읽으면 그날 밤이 달라져요. 여기 글은 광고 카피가 아니라 직접 발품 판 기록입니다.
-            강남·홍대·이태원 같은 동네를 통째로 뜯어보는 지역 분석, 클럽과 라운지가 뭐가 어떻게 다른지 끝까지
-            비교하는 업종 가이드, 새로 문 연 매장에 먼저 다녀온 현장 리포트가 주로 올라옵니다.
+            가기 전에 읽어 두면 좋은 글을 모았습니다. 강남·홍대·이태원 같은 동네를 한 번에 살펴보는 지역 안내와, 클럽과 라운지가 어떻게 다른지 견주는 업종 가이드가 주로 올라옵니다.
           </p>
           <ul className="space-y-1 text-sm text-[#555]">
-            <li>· <b>지역 분석</b> — 이 동네는 첫차 끊기기 전 어디로 옮기는지, 토박이 동선까지</li>
+            <li>· <b>지역 안내</b> — 한 동네 안에서 성격이 다른 가게를 나란히 놓고 보기</li>
             <li>· <b>업종 비교</b> — 클럽 vs 라운지 vs 나이트, 오늘 기분엔 어디가 맞는지</li>
-            <li>· <b>현장 리포트</b> — 새로 생긴 곳, 줄 서기 전에 미리 보는 분위기</li>
           </ul>
           <p className="text-sm leading-relaxed text-[#555]">
-            읽다가 끌리는 곳이 생기면 글 안의 링크로 바로 그 업소 상세로 넘어가면 됩니다. 매주 새 글이 더해지니,
-            주말 계획 짜기 전 한 번 훑어보세요.
+            읽다가 끌리는 곳이 생기면 글 안의 링크로 바로 그 업소 상세로 넘어가면 됩니다. 주말 계획 짜기 전 한 번 훑어보세요.
           </p>
         </section>
 
-        {/* ═══ BOTTOM ═══ */}
-        <div className="mt-10 text-center space-y-3">
-          <ReadFinishCount pageName="매거진 목록" baseCount={120} />
-          <p className="text-xs text-[#999]">매주 새로운 글이 올라옵니다</p>
-        </div>
       </div>
 
       <ReadingMilestone containerRef={containerRef} />

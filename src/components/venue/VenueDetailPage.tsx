@@ -91,9 +91,9 @@ export default function VenueDetailPage({
   // 비슷한 업소 — 동적 hook text
   const relatedHookText = useMemo(() => {
     const hooks = [
-      '여기 다녀온 사람들이 같이 가본 곳',
-      '이 업소 좋아하면 여기도 갈만하다',
-      '단골들이 번갈아 가는 곳',
+      '같은 업종의 다른 가게',
+      '같은 지역의 다른 가게',
+      '같은 업종·지역의 다른 가게',
     ];
     const hash = venue.slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
     return hooks[hash % hooks.length];
@@ -278,8 +278,8 @@ export default function VenueDetailPage({
       {/* ═══ 10-c. 다음 읽을거리 — 커뮤니티 (재방문 레버: 후기·Q&A 내부링크, fetch 0·가짜 0) ═══ */}
       <section className="mx-auto max-w-[1200px] px-4 pt-6 sm:px-6">
         <div className="rounded-2xl border border-[#E9E5FF] bg-gradient-to-r from-[#F7F5FF] to-white p-4">
-          <p className="text-sm font-bold text-neon-text">{venue.nameKo} 다녀온 사람들 이야기</p>
-          <p className="mt-0.5 text-xs text-neon-text-muted mb-3">가기 전에 후기 먼저 보고, 궁금한 건 물어보고</p>
+          <p className="text-sm font-bold text-neon-text">놀쿨 커뮤니티 후기·질문 게시판</p>
+          <p className="mt-0.5 text-xs text-neon-text-muted mb-3">다녀왔다면 후기를 남기고, 궁금한 건 물어보세요</p>
           <div className="grid grid-cols-3 gap-2">
             <Link to="/community/reviews" className="flex flex-col items-center gap-1 rounded-xl border border-[#E9E5FF] bg-white py-3 text-center active:scale-[0.97] transition" style={{ minHeight: 64 }}>
               <span className="text-lg">{'\uD83D\uDCDD'}</span>
@@ -311,8 +311,8 @@ export default function VenueDetailPage({
           <div className="flex items-center gap-3">
             <span className="text-2xl">{'\uD83D\uDC8E'}</span>
             <div>
-              <p className="text-sm font-bold text-neon-text">이 업소 몰랐지? — 매주 숨은 명소 발굴</p>
-              <p className="text-xs text-neon-text-muted">다른 데서 안 나오는 숨은 곳들, 여기서만 파냄</p>
+              <p className="text-sm font-bold text-neon-text">숨은 명소 보기</p>
+              <p className="text-xs text-neon-text-muted">놀쿨이 골라 둔 덜 알려진 가게를 소개합니다</p>
             </div>
           </div>
         </Link>

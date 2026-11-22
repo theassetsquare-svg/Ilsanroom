@@ -198,7 +198,7 @@ function getSuggestions(query: string): string[] {
   return suggestions.slice(0, 8);
 }
 
-/* ── 인기 검색어 ── */
+/* ── 추천 검색어 (고정 목록 · 검색 기록에서 뽑은 순위가 아니다) ── */
 const TRENDING = ['강남클럽', '일산룸', '홍대나이트', '해운대클럽', '강남라운지', '부산호빠', '이태원', '압구정'];
 
 /* ── 검색박스 placeholder 회전 — 막막함 → 영감 ── */
@@ -224,7 +224,7 @@ export default function SearchPage() {
   const suggestRef = useRef<HTMLFormElement>(null);
 
   useDocumentMeta(
-    queryParam ? `"${queryParam}" 검색 결과 — 지금 뜨는 곳 총정리` : '이름만 치면 바로 나온다, 통합 검색',
+    queryParam ? `"${queryParam}" 검색 결과 — 등록된 가게에서 찾은 곳` : '이름만 치면 바로 나온다, 통합 검색',
     queryParam
       ? `'${queryParam}' 관련 강남 홍대 이태원 일산 부산 핫스팟 검색 결과. 업종·지역·분위기 비교까지 한눈에 확인.`
       : '지역·업종·이름·분위기 아무거나 입력하면 ' + VENUES_TOTAL_OPEN + '곳 중 딱 맞는 곳. 자동완성·오타 보정·인기 검색어 추천까지 통합 검색 엔진.'
@@ -470,21 +470,19 @@ export default function SearchPage() {
         {/* ── 검색 전 화면 ── */}
         {!queryParam && (
           <>
-            {/* 인기 검색어 — 강조 */}
+            {/* 추천 검색어 */}
             <div className="rounded-2xl bg-white p-5 shadow-sm border border-gray-100">
               <div className="flex items-center gap-2 mb-4">
                 <span className="text-lg">🔥</span>
-                <h3 className="text-sm font-bold text-gray-900">실시간 인기 검색어</h3>
-                <span className="ml-auto text-[10px] text-[#8B5CF6] font-medium">지금 뜨는 키워드</span>
+                <h3 className="text-sm font-bold text-gray-900">추천 검색어</h3>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 {TRENDING.map((tag, i) => (
                   <button key={tag} onClick={() => { setInputValue(tag); doSearch(tag); }}
                     className="flex items-center gap-3 rounded-lg bg-gray-50 px-3 py-2.5 text-left transition-all hover:bg-gray-100 active:scale-[0.98]"
                     style={{ minHeight: 44 }}>
-                    <span className={`text-xs font-bold w-5 text-center ${i < 3 ? 'text-[#8B5CF6]' : 'text-gray-400'}`}>{i + 1}</span>
+                    <span className="text-xs font-bold w-5 text-center text-gray-400">#</span>
                     <span className="text-sm font-medium text-gray-800">{tag}</span>
-                    {i < 3 && <span className="ml-auto text-[10px] text-red-400 font-bold">HOT</span>}
                   </button>
                 ))}
               </div>

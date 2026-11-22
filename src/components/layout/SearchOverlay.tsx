@@ -173,7 +173,7 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
         {/* Popular terms */}
         {!query.trim() && (
           <div className="mt-6">
-            <h3 className="mb-3 text-sm font-medium text-neon-text-muted">인기 검색어</h3>
+            <h3 className="mb-3 text-sm font-medium text-neon-text-muted">추천 검색어</h3>
             <div className="flex flex-wrap gap-2">
               {popularTerms.map((term) => (
                 <button

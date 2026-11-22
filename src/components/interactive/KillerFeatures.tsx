@@ -5,7 +5,7 @@ import { Link } from '../ui/SafeLink';
 import { venues } from '@/data/venues';
 import ShareButtons from './ShareButtons';
 
-/* ═══ [F] 지금 이 시간 추천 (날짜·시간 기반 결정적 선정) ═══ */
+/* ═══ [F] 둘러볼 곳 (날짜·시간대마다 차례로 도는 3곳 — 조회·인기 순위가 아니다) ═══ */
 export function HotRightNow() {
   const [hour, setHour] = useState(22);
   const [bucket, setBucket] = useState(0);
@@ -29,9 +29,9 @@ export function HotRightNow() {
   return (
     <div className="rounded-2xl border border-neon-pink/30 bg-neon-surface p-6">
       <div className="flex items-center gap-2 mb-4">
-        <span className="h-2 w-2 rounded-full bg-neon-pink animate-pulse" />
-        <h3 className="text-lg font-bold text-neon-text">지금 이 시간 — {timeLabel}</h3>
-        <span className="text-xs text-neon-text-muted">{hour}시 기준</span>
+        <span className="h-2 w-2 rounded-full bg-neon-pink" />
+        <h3 className="text-lg font-bold text-neon-text">지금 시간대의 3곳</h3>
+        <span className="text-xs text-neon-text-muted">등록된 가게를 시간대마다 차례로 보여 줍니다</span>
       </div>
       <div className="space-y-3">
         {top3.map((v, i) => (

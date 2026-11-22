@@ -70,7 +70,7 @@ export default function RelatedMagazineForVenue({ venue }: Props) {
   return (
     <section className="pt-6 mt-8 border-t" style={{ borderColor: '#E5E7EB' }}>
       <h2 className="text-lg font-bold mb-1" style={{ color: '#111' }}>{venue.nameKo} 관련 매거진</h2>
-      <p className="text-xs mb-4" style={{ color: '#888' }}>현장 가이드·후기·심층 분석</p>
+      <p className="text-xs mb-4" style={{ color: '#888' }}>지역 안내·업종 비교 글</p>
       <div className="space-y-3">
         {matched.map(a => (
           <Link

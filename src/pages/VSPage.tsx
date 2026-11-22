@@ -2,14 +2,13 @@ import NcH1 from '@/components/seo/NcH1';
 import { lazy, Suspense, useRef } from 'react';
 import { WEEKEND_N } from '@/data/venues-counts';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
-import { PageLiveCounter } from '@/components/ui/LiveStats';
-import { ReadFinishCount, ReadCompletionReward, MidContentHook, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
+import { ReadingMilestone } from '@/components/engagement/ReadingEngagement';
 import { Link } from '../components/ui/SafeLink';
 
 const VSBattle = lazy(() => import('@/components/interactive/VSBattle'));
 
 export default function VSPage() {
-  useDocumentMeta('어디가 더 낫냐고? 투표로 결판내자', '강남 클럽 vs 강남 클럽, 홍대 라운지 vs 이태원 라운지 등 인기 업소 맞대결. 회원 실시간 투표 결과로 진짜 1위 확인.');
+  useDocumentMeta('어디가 더 낫냐고? 둘 중 하나만 골라 봐', '강남 클럽과 홍대 클럽, 나이트와 클럽, 테이블석과 스탠딩. 일곱 가지 주제에서 하나씩 골라 보세요. 고른 것은 이 기기에만 저장됩니다.');
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -26,11 +25,8 @@ export default function VSPage() {
             <br />어디가 더 낫냐고?
           </NcH1>
           <p className="text-base mb-4" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.6)' }}>
-            인기 업소끼리 실시간 대결. 한 표 던지고 결과 확인해봐.
+            둘 중 하나를 골라 보기
           </p>
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 border border-white/10">
-            <PageLiveCounter pageName="투표 참여 중" baseCount={44} className="text-white/80 [&_strong]:text-white" />
-          </div>
         </div>
       </div>
 
@@ -44,29 +40,20 @@ export default function VSPage() {
           <VSBattle />
         </Suspense>
 
-        <MidContentHook seed="vs-battle" variant={1} />
-
-        {/* ═══ BOTTOM ═══ */}
-        <ReadCompletionReward teaser="투표 결과에서 보이는 재미있는 패턴">
-          <div className="space-y-2">
-            <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>
-              <strong>금요일 밤</strong>에 투표하는 사람들은 <strong>강남</strong>쪽에 표를 더 많이 주고,
-              <strong>토요일 오후</strong>에는 <strong>홍대·이태원</strong>쪽이 더 인기있다.
-            </p>
-            <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>
-              직접 비교해보고 싶다면 비교 페이지에서 항목별로 따져볼 수 있다.
-            </p>
-            <Link to="/compare" className="inline-flex items-center gap-1 text-sm font-bold text-[#8B5CF6] hover:text-[#7C3AED] mt-2">
-              업소 비교하기 →
-            </Link>
-          </div>
-        </ReadCompletionReward>
+        <div className="my-8 rounded-2xl border border-gray-200 bg-white p-5">
+          <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>
+            가게를 항목별로 견주려면 비교 페이지를 이용하세요.
+          </p>
+          <Link to="/compare" className="inline-flex items-center gap-1 text-sm font-bold text-[#8B5CF6] hover:text-[#7C3AED] mt-2">
+            업소 비교하기 →
+          </Link>
+        </div>
 
         <nav className="mt-8 rounded-2xl border border-gray-200 bg-white p-5" aria-label="시점별 큐레이션">
-          <h2 className="text-base font-bold text-[#111] mb-3">투표 끝났으면 진짜 가볼 곳도 골라봐</h2>
+          <h2 className="text-base font-bold text-[#111] mb-3">다 골랐다면, 갈 곳도 찾아보세요</h2>
           <div className="grid grid-cols-2 gap-2">
             <Link to="/ranking" className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-3 text-sm font-bold text-[#111] active:bg-gray-100">
-              🏆 실시간 인기 랭킹 →
+              🏆 인기 랭킹 →
             </Link>
             <Link to="/weekend" className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-3 text-sm font-bold text-[#111] active:bg-gray-100">
               📅 이번 주말 {WEEKEND_N}곳 →
@@ -80,9 +67,6 @@ export default function VSPage() {
           </div>
         </nav>
 
-        <div className="text-center mt-6">
-          <ReadFinishCount pageName="VS 대결" baseCount={200} />
-        </div>
       </div>
 
       <ReadingMilestone containerRef={containerRef} />

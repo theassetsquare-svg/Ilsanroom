@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import { Link } from '../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { PageLiveCounter } from '@/components/ui/LiveStats';
-import { MidContentHook, ReadFinishCount, ReadCompletionReward, MidContentQuiz, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
+import { MidContentHook, ReadFinishCount, MidContentQuiz, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
 
 const hiddenGems = [
   {
@@ -14,33 +14,30 @@ const hiddenGems = [
     // [일산76-1 · 2026-11-13] 사실은 src/data/ilsanmyeongwolgwan-confirmed.json(2026-07-30 업소 확인)만 — 옛 글의 룸 30개·정찰제는 확인 자료와 어긋나거나 없어 고쳤다
     reason: '일산명월관요정은 장항동 895-1 지하 1층에 있는 한정식 요정이고, 방은 모두 15개입니다. 계절마다 바뀌는 15첩 궁중 상차림에 거문고·해금 합주가 함께하고, 코스는 다도로 마무리합니다.',
     href: '/yojeong/ilsan/ilsanmyeongwolgwanyojeong',
-    week: '이번 달 2주차',
     emoji: '🏮',
   },
   {
     name: '파주야당스카이돔나이트',
     region: '파주',
     category: '나이트',
-    hook: '높은 천장의 개방감이 돋보이는 파주권 대형 나이트',
-    reason: '파주·일산·김포 지역에서 접근할 수 있는 대형 나이트클럽으로, 스카이돔이라는 이름에 걸맞은 높은 천장과 넓은 댄스 플로어가 특징입니다. 야당역 도보 접근 가능.',
+    hook: '돔 지붕 아래 댄스홀이 있는 야당동 나이트',
+    reason: '파주 야당동(소리천로 25)에 있는 나이트입니다. 가까운 역은 야당역이고, 돔 모양 지붕 아래 댄스홀과 라이브 음악이 있는 곳입니다.',
     href: '/nights/pajuyadangskydomenight',
-    week: '이번 달 1주차',
     emoji: '🌙',
   },
   {
     name: '울산챔피언나이트',
     region: '울산',
     category: '나이트',
-    hook: '울산 공단 직장인들의 주말 해방구',
-    reason: '울산 지역 나이트 문화의 중심. 초보 방문객도 편안하게 즐길 수 있는 곳입니다.',
+    hook: '복싱 글러브 네온사인이 걸린 삼산동 나이트',
+    reason: '울산 남구 삼산동(정동로 75) 1층에 있는 나이트입니다. 가까운 역은 태화강역이고, 진행자가 마이크를 잡고 분위기를 끌어가는 곳입니다.',
     href: '/nights/ulsanchampionnight',
-    week: '지난 달 4주차',
     emoji: '🌙',
   },
 ];
 
 export default function HiddenPage() {
-  useDocumentMeta('단골만 알던 곳, 여기서 처음 공개한다', '강남·홍대·일산 단골만 가던 숨은 룸·라운지·요정·호빠 큐레이션. 첫 방문에는 안 보이는 디테일을 기록한 사람들의 후기.');
+  useDocumentMeta('검색 안 해본 사람만 모르는 곳 — 놀쿨이 골라 둔 숨은 업소', '놀쿨이 골라 둔 덜 알려진 가게 3곳을 소개합니다. 요정 한 곳과 나이트 두 곳이고, 알고 있는 숨은 곳이 있다면 커뮤니티에 알려 주세요.');
   const [revealedIdx, setRevealedIdx] = useState<Set<number>>(new Set([0]));
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -66,18 +63,15 @@ export default function HiddenPage() {
         </div>
 
         <div className="relative mx-auto max-w-4xl px-4 py-16 sm:px-6 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 mb-6 border border-white/10">
-            <PageLiveCounter pageName="이 페이지" baseCount={22} className="text-white/80 [&_strong]:text-white" />
-          </div>
 
           <div className="text-6xl mb-4">🔮</div>
           <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-3 leading-tight">
-            단골만 알던 곳,<br />
-            <span style={{ color: '#C4B5FD' }}>여기서 처음 공개한다</span>
+            놀쿨이 골라 둔<br />
+            <span style={{ color: '#C4B5FD' }}>숨은 곳</span>
           </NcH1>
           <p className="text-base mb-4" style={{ lineHeight: '1.7', color: 'rgba(255,255,255,0.5)' }}>
-            아는 사람만 가던 숨은 명소를 발굴해 소개한다.<br />
-            새 곳이 더해지면 여기서 먼저 공개된다.
+            놀쿨이 골라 둔 덜 알려진 곳을 소개한다.<br />
+            고른 곳이 늘면 여기에 더한다.
           </p>
           <div className="inline-flex items-center gap-2 rounded-xl px-4 py-2" style={{ background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.2)' }}>
             <span className="text-sm">🤫</span>
@@ -99,7 +93,7 @@ export default function HiddenPage() {
                   style={{ minHeight: 120 }}
                 >
                   <span className="text-4xl block mb-3">🔒</span>
-                  <p className="text-sm font-bold text-[#111] mb-1">{gem.week} 발굴 업소</p>
+                  <p className="text-sm font-bold text-[#111] mb-1">{gem.region} {gem.category}</p>
                   <p className="text-xs text-[#8B5CF6]">터치해서 공개하기</p>
                 </button>
               ) : (
@@ -109,7 +103,6 @@ export default function HiddenPage() {
                   className="block rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:shadow-lg hover:border-[#8B5CF6]/30 animate-fade-in"
                 >
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="rounded-full bg-[#8B5CF6]/10 px-3 py-1 text-xs font-bold text-[#8B5CF6]">{gem.week}</span>
                     <span className="text-xs text-[#999]">{gem.region} · {gem.category}</span>
                     <span className="ml-auto text-xl">{gem.emoji}</span>
                   </div>
@@ -128,21 +121,11 @@ export default function HiddenPage() {
         {/* 퀴즈 */}
         <MidContentQuiz
           question="숨은 명소, 어떻게 찾아?"
-          options={['현지 택시기사한테 물어본다', '커뮤니티 후기를 파본다', '직접 동네를 돌아다닌다', '여기서 매주 발굴되는 걸 본다']}
+          options={['현지 택시기사한테 물어본다', '커뮤니티 후기를 파본다', '직접 동네를 돌아다닌다', '여기서 골라 둔 곳을 본다']}
           seed="hidden-quiz"
         />
 
         {/* ═══ BOTTOM ═══ */}
-        <ReadCompletionReward teaser="다음 주 공개될 곳의 힌트">
-          <div className="space-y-2">
-            <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>
-              힌트: 다음 주 공개될 곳은 <strong>경기도 남부</strong>에 있고,
-              <strong>30년 넘은 역사</strong>를 가진 곳이다.
-              단골만 아는 숨겨진 시스템이 있다는 소문.
-            </p>
-            <p className="text-xs text-[#999] mt-2">기록한 사람이 늘면 다음 후보가 공개된다</p>
-          </div>
-        </ReadCompletionReward>
 
         <div className="text-center mt-6">
           <ReadFinishCount pageName="숨은 명소" baseCount={170} />

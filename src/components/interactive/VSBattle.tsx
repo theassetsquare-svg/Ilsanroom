@@ -1,15 +1,15 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import ShareButtons from './ShareButtons';
 
-/* ── 배틀 데이터 — 기본 투표수 포함 (현실적 비율) ── */
+/* ── 배틀 데이터 (서버 집계 없음 — 방문자 본인 선택만 이 기기에 저장) ── */
 const BATTLES = [
-  { a: '강남 클럽', b: '홍대 클럽', topic: '🔥 클럽은 어디가 더 미쳤어?', baseA: 487, baseB: 412 },
-  { a: '나이트', b: '클럽', topic: '🌙 금요일 밤, 뭐 탈래?', baseA: 356, baseB: 523 },
-  { a: '라운지', b: '호빠', topic: '🍸 프라이빗한 밤을 원한다면?', baseA: 298, baseB: 341 },
-  { a: '일산 룸', b: '강남 룸', topic: '🚪 격 있는 룸 대결!', baseA: 267, baseB: 389 },
-  { a: '소셜댄스', b: 'EDM 프리스타일', topic: '💃 당신의 춤 스타일은?', baseA: 312, baseB: 445 },
-  { a: '혼자 라운지', b: '친구랑 클럽', topic: '🎵 오늘 밤 어떤 기분?', baseA: 198, baseB: 467 },
-  { a: '테이블석', b: '스탠딩', topic: '🪩 어디서 놀래?', baseA: 534, baseB: 321 },
+  { a: '강남 클럽', b: '홍대 클럽', topic: '🔥 클럽은 어디가 더 미쳤어?' },
+  { a: '나이트', b: '클럽', topic: '🌙 금요일 밤, 뭐 탈래?' },
+  { a: '라운지', b: '호빠', topic: '🍸 프라이빗한 밤을 원한다면?' },
+  { a: '일산 룸', b: '강남 룸', topic: '🚪 격 있는 룸 대결!' },
+  { a: '소셜댄스', b: 'EDM 프리스타일', topic: '💃 당신의 춤 스타일은?' },
+  { a: '혼자 라운지', b: '친구랑 클럽', topic: '🎵 오늘 밤 어떤 기분?' },
+  { a: '테이블석', b: '스탠딩', topic: '🪩 어디서 놀래?' },
 ];
 
 /* ── localStorage 키 (날짜별) ── */
@@ -29,36 +29,11 @@ export default function VSBattle() {
     } catch { return {}; }
   });
 
-  // 날짜 기반으로 기본 투표수에 변동 추가 (매일 다르게 보임)
-  const dailyVotes = useMemo(() => {
-    const d = new Date().getDate();
-    return BATTLES.map((b, i) => ({
-      a: b.baseA + ((d * 17 + i * 31) % 89),
-      b: b.baseB + ((d * 23 + i * 47) % 73),
-    }));
-  }, []);
-
-  const [extraVotes, setExtraVotes] = useState<Record<number, { a: number; b: number }>>({});
-
   const battle = BATTLES[battleIdx];
-  const base = dailyVotes[battleIdx];
-  const extra = extraVotes[battleIdx] || { a: 0, b: 0 };
-  const totalA = base.a + extra.a;
-  const totalB = base.b + extra.b;
-  const total = totalA + totalB;
-  const pctA = Math.round((totalA / total) * 100);
-  const pctB = 100 - pctA;
   const hasVoted = voted[battleIdx];
 
   const vote = (side: 'a' | 'b') => {
     if (hasVoted) return;
-    setExtraVotes(prev => ({
-      ...prev,
-      [battleIdx]: {
-        a: (prev[battleIdx]?.a || 0) + (side === 'a' ? 1 : 0),
-        b: (prev[battleIdx]?.b || 0) + (side === 'b' ? 1 : 0),
-      },
-    }));
     setVoted(prev => {
       const next = { ...prev, [battleIdx]: side };
       try { localStorage.setItem(getStorageKey(), JSON.stringify(next)); } catch {}
@@ -105,14 +80,10 @@ export default function VSBattle() {
             style={{ minHeight: 100 }}
           >
             <div className="absolute inset-0 bg-gradient-to-b from-[#8B5CF6]/5 to-[#8B5CF6]/15 rounded-xl" />
-            {hasVoted && (
-              <div className="absolute bottom-0 left-0 right-0 bg-[#8B5CF6]/20 transition-all duration-700 rounded-b-xl"
-                style={{ height: `${pctA}%` }} />
-            )}
             <div className="relative z-10 flex flex-col items-center justify-center h-full py-3 px-2">
               <span className="text-sm font-bold text-[#111] text-center">{battle.a}</span>
-              {hasVoted && (
-                <span className="text-xl font-black text-[#8B5CF6] mt-2">{pctA}%</span>
+              {hasVoted === 'a' && (
+                <span className="mt-2 rounded-full bg-[#8B5CF6] px-2 py-0.5 text-xs font-bold text-white">내 선택</span>
               )}
             </div>
           </button>
@@ -133,26 +104,22 @@ export default function VSBattle() {
             style={{ minHeight: 100 }}
           >
             <div className="absolute inset-0 bg-gradient-to-b from-[#EC4899]/5 to-[#EC4899]/15 rounded-xl" />
-            {hasVoted && (
-              <div className="absolute bottom-0 left-0 right-0 bg-[#EC4899]/20 transition-all duration-700 rounded-b-xl"
-                style={{ height: `${pctB}%` }} />
-            )}
             <div className="relative z-10 flex flex-col items-center justify-center h-full py-3 px-2">
               <span className="text-sm font-bold text-[#111] text-center">{battle.b}</span>
-              {hasVoted && (
-                <span className="text-xl font-black text-[#EC4899] mt-2">{pctB}%</span>
+              {hasVoted === 'b' && (
+                <span className="mt-2 rounded-full bg-[#EC4899] px-2 py-0.5 text-xs font-bold text-white">내 선택</span>
               )}
             </div>
           </button>
         </div>
 
-        {/* 참여자 수 + 투표 유도 */}
+        {/* 내 선택 안내 */}
         {hasVoted ? (
           <p className="text-xs text-center font-medium text-[#8B5CF6]">
-            <span className="font-bold">{hasVoted === 'a' ? battle.a : battle.b}</span> 선택! · {total.toLocaleString()}명 참여
+            내 선택: <span className="font-bold">{hasVoted === 'a' ? battle.a : battle.b}</span>
           </p>
         ) : (
-          <p className="text-xs text-center text-[#999]">터치해서 투표하세요 · {total.toLocaleString()}명 참여 중</p>
+          <p className="text-xs text-center text-[#999]">마음에 드는 쪽을 골라 보세요</p>
         )}
 
         {/* 네비게이션 */}

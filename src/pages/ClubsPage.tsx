@@ -5,7 +5,7 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { sortVenues } from '@/lib/venue-order';
 import { popularity } from '@/lib/popularity';
-import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
+import { FirstVisitGuide, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
 import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
@@ -123,14 +123,6 @@ export default function ClubsPage() {
         alone="혼자 방문 가능. 바 카운터에서 음료 마시며 분위기 즐기다 댄스플로어 합류하면 됨."
         reservation="테이블은 사전 예약 권장. 일반 입장은 현장 대기. 주말은 0시 이후 대기 길어질 수 있음."
       />
-
-      <PopularTimes slots={[
-        { day: '금요일', time: '23:00~03:00', level: 90 },
-        { day: '토요일', time: '23:00~04:00', level: 100 },
-        { day: '일요일', time: '22:00~02:00', level: 50 },
-        { day: '목요일', time: '23:00~02:00', level: 60 },
-        { day: '수요일', time: '22:00~01:00', level: 30 },
-      ]} />
 
       <RelatedMagazine category="club" />
 

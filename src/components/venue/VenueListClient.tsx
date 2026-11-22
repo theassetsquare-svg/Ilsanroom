@@ -174,7 +174,7 @@ export default function VenueListClient({ venues, hrefPattern, showEngagementHoo
           </span>
         </div>
         {sortKey === 'rec' && (
-          <p className="mt-1 text-xs text-[#444]">추천 = 「광고」 가게 먼저 → 인기 순위(최근 28일 실측 · {popularity.generatedAt || '집계 전'} 기준) → 가나다</p>
+          <p className="mt-1 text-xs text-[#444]">추천 = 「광고」 가게 먼저 → 인기 순위(28일 실측 · {popularity.generatedAt || '집계 전'} 기준) → 가나다</p>
         )}
       </div>
 

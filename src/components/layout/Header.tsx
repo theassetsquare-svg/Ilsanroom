@@ -34,7 +34,7 @@ const menuFeatures = [
   { icon: '✉️', label: '쪽지함', href: '/messages' },
   { icon: '📸', label: '클립', href: '/gallery' },
   { icon: '🔥', label: '랭킹', href: '/ranking' },
-  { icon: '🆚', label: 'VS 투표', href: '/vs' },
+  { icon: '🆚', label: 'VS 고르기', href: '/vs' },
 ];
 
 const menuExtra = [
@@ -482,7 +482,7 @@ export default function Header() {
 
             <div className="mx-4 border-t border-gray-100" />
 
-            {/* Privacy — 프라이버시 6대 약속 + Stealth 토글 */}
+            {/* Privacy — 개인정보 보호 안내 + Stealth 토글 */}
             <div className="px-2 py-3">
               <p className="px-3 pb-2 text-xs font-bold text-emerald-600 uppercase tracking-wider">프라이버시</p>
               <div className="px-3 pb-2">
@@ -495,7 +495,7 @@ export default function Header() {
                 style={{ minHeight: 44 }}
               >
                 <span className="text-lg">🔒</span>
-                프라이버시 6대 약속
+                개인정보 보호 안내
               </Link>
             </div>
 

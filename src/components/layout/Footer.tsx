@@ -18,7 +18,7 @@ const communityLinks = [
   { href: '/community/jogak', label: '조각모집' },
   { href: '/ranking', label: '랭킹' },
   { href: '/gallery', label: '클립' },
-  { href: '/vs', label: 'VS 투표' },
+  { href: '/vs', label: 'VS 고르기' },
 ];
 
 const infoLinks = [
@@ -143,7 +143,7 @@ export default function Footer() {
               <span style={{ fontWeight: 300, letterSpacing: '0.05em' }}>놀쿨</span>
             </Link>
             <p className="mt-2 text-sm leading-relaxed" style={{ color: '#555' }}>
-              전국 클럽·나이트·라운지·룸·요정·호빠 실시간 정보
+              전국 클럽·나이트·라운지·룸·요정·호빠 정보
             </p>
             <p className="mt-3 text-sm" style={{ color: '#555' }}>
               구글 · ChatGPT · Gemini에서<br />

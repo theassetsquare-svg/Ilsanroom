@@ -64,7 +64,7 @@ export function TemperatureRanking({ limit = 10 }: { limit?: number }) {
         }}
       >
         <h3 style={{ fontSize: 15, fontWeight: 900, margin: 0, letterSpacing: '-0.01em' }}>
-          🔥 실시간 밤의 온도 TOP {limit}
+          🔥 밤의 온도 TOP {limit}
         </h3>
         <p style={{ fontSize: 11, margin: '2px 0 0', opacity: 0.9 }}>
           누적 활동량 기준 — 글·후기·댓글로 올라간다

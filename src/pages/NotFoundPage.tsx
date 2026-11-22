@@ -71,7 +71,7 @@ export default function NotFound() {
 
       {/* 인기 추천 — DB에서 가져옴 */}
       <div className="w-full max-w-lg">
-        <h3 className="mb-4 text-sm font-semibold text-neon-primary">지금 핫한 곳</h3>
+        <h3 className="mb-4 text-sm font-semibold text-neon-primary">인기 점수 높은 곳</h3>
         <div className="grid grid-cols-2 gap-3">
           {popularVenues.map((v) => (
             <Link

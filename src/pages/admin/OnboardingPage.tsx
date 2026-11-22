@@ -2,7 +2,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { Link } from '../../components/ui/SafeLink';
 
 export default function OnboardingPage() {
-  useDocumentMeta('입점 신청 — 사장님 전용', '사업자등록증·매장 사진 3장이면 입점 신청 가능. 카카오톡 besta12로 상세 문의 가능. 노출 위치·기간은 협의 후 확정.');
+  useDocumentMeta('입점 신청 안내 — 사장님, 문의부터 등록까지 3단계', '놀쿨에 가게를 올리고 싶은 사장님을 위한 안내입니다. 카카오톡으로 문의하고 상호명·주소·연락처·사진을 보내 주시면, 검토한 뒤 등록을 마쳤는지 알려 드립니다.');
 
   return (
     <div className="mx-auto max-w-lg px-4 py-12">

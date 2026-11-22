@@ -18,7 +18,7 @@ export default function WeeklyVoteWidget() {
   const [myChoice, setMyChoice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  // 실측 상위 2곳 — popularity JSON은 주 1회 갱신되므로 poll_key가 자동으로 주간 회전
+  // 인기 점수 상위 2곳 — popularity JSON 이 다시 계산될 때마다 poll_key 가 바뀐다
   const top2 = hasPopularityData()
     ? venues
         .filter(v => v.status !== 'closed_or_unclear' && !v.sameAs && isRanked(v.slug))
@@ -66,11 +66,11 @@ export default function WeeklyVoteWidget() {
 
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-5">
-      <p className="text-xs font-bold" style={{ color: '#7C3AED' }}>🗳 이번 주 원터치 투표</p>
+      <p className="text-xs font-bold" style={{ color: '#7C3AED' }}>🗳 원터치 투표</p>
       <p className="mt-1 text-sm font-bold" style={{ color: '#111', lineHeight: '1.5' }}>
-        이번 주 실제 조회 1·2위, 먼저 가보고 싶은 곳은?
+        인기 점수 1·2위 두 곳, 먼저 가보고 싶은 곳은?
       </p>
-      <p className="mt-0.5 text-[10px]" style={{ color: '#767676' }}>후보 = 최근 28일 실측 조회 상위 2곳 ({POPULARITY_UPDATED_AT} 기준) · 표는 회원 실투표만</p>
+      <p className="mt-0.5 text-[10px]" style={{ color: '#767676' }}>후보 = 28일 조회·방문자·전화·검색 클릭을 합친 점수 상위 2곳 ({POPULARITY_UPDATED_AT} 기준) · 표는 회원 실투표만</p>
       <div className="mt-3 grid grid-cols-2 gap-2">
         {top2.map(v => {
           const n = counts[v.slug] || 0;

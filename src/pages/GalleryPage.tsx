@@ -259,9 +259,6 @@ export default function GalleryPage() {
             지금 이 순간, 현장 분위기를 사진으로 먼저 확인해
           </p>
           <div className="flex items-center justify-center gap-4">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-3 py-1.5 border border-white/10">
-              <PageLiveCounter pageName="클립 보는 중" baseCount={38} className="text-white/80 [&_strong]:text-white" />
-            </div>
             <span className="text-xs text-white/30">{clips.length}개 클립</span>
           </div>
         </div>

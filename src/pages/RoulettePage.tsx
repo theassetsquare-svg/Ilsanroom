@@ -9,7 +9,7 @@ import { Link } from '../components/ui/SafeLink';
 const Roulette = lazy(() => import('@/components/interactive/Roulette'));
 
 export default function RoulettePage() {
-  useDocumentMeta('고민 끝, 룰렛이 대신 골라준다', '오늘 밤 갈 곳 못 정했을 때 탭 한 번이면 결정. 지역·업종·예산·인원 필터 적용해 평점 가중치 랜덤 추천. 다시 돌리기 무제한.');
+  useDocumentMeta('고민 끝, 룰렛이 대신 골라준다', '오늘 밤 어디 갈지 망설일 때 탭 한 번이면 정해집니다. 등록된 가게 가운데 한 곳을 무작위로 뽑고, 다시 돌리기는 몇 번이든 됩니다.');
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -27,9 +27,6 @@ export default function RoulettePage() {
             어디 갈지 못 정하겠다면?<br />
             탭 한 번이면 오늘 밤이 정해진다.
           </p>
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 border border-white/10">
-            <PageLiveCounter pageName="룰렛 돌리는 중" baseCount={32} className="text-white/80 [&_strong]:text-white" />
-          </div>
         </div>
       </div>
 
@@ -48,8 +45,8 @@ export default function RoulettePage() {
         <ReadCompletionReward teaser="룰렛 당첨 업소를 더 알고 싶다면">
           <div className="space-y-2">
             <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>
-              룰렛으로 나온 업소가 진짜 괜찮은 곳인지, 다녀온 사람들 후기를 확인해봐.
-              랭킹에서 순위도 체크하고 가면 실패 없다.
+              룰렛으로 나온 가게가 어떤 곳인지, 가게 페이지에서 소개를 먼저 읽어 봐.
+              랭킹에서 다른 곳도 같이 비교해 봐.
             </p>
             <div className="flex flex-wrap gap-3 mt-3">
               <Link to="/ranking" className="text-sm font-bold text-[#8B5CF6] hover:text-[#7C3AED]">랭킹 확인 →</Link>

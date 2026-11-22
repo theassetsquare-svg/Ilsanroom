@@ -35,7 +35,9 @@ export default function TrendingTodayWidget() {
   }, []);
 
   // 데이터 없거나 비어있으면 위젯 숨김 (가짜 데이터 X)
-  if (error || !data || !data.items || data.items.length === 0) return null;
+  // 만든 지 48시간이 넘은 자료는 「오늘」이 아니다 — 옛 자료를 오늘 것처럼 보이지 않게 숨긴다
+  const ageMs = data && data.generated_at ? Date.now() - new Date(data.generated_at).getTime() : Infinity;
+  if (error || !data || !data.items || data.items.length === 0 || !(ageMs < 48 * 3600 * 1000)) return null;
 
   const top = data.items.slice(0, 7);
 
@@ -65,7 +67,7 @@ export default function TrendingTodayWidget() {
             </li>
           ))}
         </ol>
-        <p className="mt-2 text-[10px] text-gray-400 text-center">실제 조회 기준 · AI 에디터 큐레이션</p>
+        <p className="mt-2 text-[10px] text-gray-400 text-center">실제 조회 기준</p>
       </div>
     </section>
   );

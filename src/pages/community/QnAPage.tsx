@@ -50,7 +50,7 @@ function postToQuestion(post: Post): QuestionItem {
 const categoryFilters = ["전체", "입장", "예약", "드레스코드", "분위기", "교통"] as const;
 
 export default function QnAPage() {
-  useDocumentMeta('오늘 밤 어디 가냐고? 여기서 추천받아', '오늘 밤 어디 갈지 모르면 여기 물어봐. 인원·분위기·지역만 적으면 단골 회원 100명이 5분 안에 답해줘. 솔직히 가본 사람만 추천. 바로 확인.');
+  useDocumentMeta('오늘 밤 어디 가냐고? 여기서 추천받아', '오늘 밤 어디로 갈지 고민이라면 놀쿨 Q&A 게시판에 물어보세요. 인원·분위기·지역을 적어 올리면 회원이 댓글로 답합니다. 질문은 회원 가입 뒤에 올릴 수 있습니다.');
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState<number | null>(null);

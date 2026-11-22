@@ -55,7 +55,7 @@ function StarDisplay({ rating, size = "md" }: { rating: number; size?: "sm" | "m
 }
 
 export default function ReviewsPage() {
-  useDocumentMeta('가본 사람만 쓸 수 있다, 실제 방문 후기', '어느 가게가 진짜? 광고 아닌 솔직히 가본 사람만 쓴 1줄 후기. 별점·한줄평으로 보는 6업종 리얼 리뷰. 강남 홍대 부산 모든 업종 모음. 바로 확인.');
+  useDocumentMeta('업소 후기 게시판 — 다녀온 가게를 별점과 한 줄로 남긴다', '다녀온 가게를 별점과 한 줄 평으로 남기는 게시판입니다. 후기는 회원 가입 뒤에 쓸 수 있습니다.');
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [starFilter, setStarFilter] = useState<number | null>(null);
@@ -143,7 +143,7 @@ export default function ReviewsPage() {
           <Link to="/community" className="mb-2 inline-block text-sm text-neon-text-muted hover:text-neon-primary-light">← 커뮤니티</Link>
           <NcH1 className="text-3xl font-bold">업소후기</NcH1>
           <p className="mt-2 text-sm font-bold" style={{ color: '#8B5CF6' }}>
-            "광고글 아님. 직접 가본 사람들이 쓴 리얼 후기만 모았다."
+            다녀온 가게를 별점과 한 줄 평으로 남기는 곳입니다.
           </p>
           <div className="mt-2"><PageLiveCounter pageName="후기 읽는 중" baseCount={28} /></div>
         </div>

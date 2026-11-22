@@ -82,13 +82,6 @@ export default function GuidePage() {
       <div className="relative overflow-hidden bg-gradient-to-b from-[#0A0118] via-[#1a0a2e] to-[#0f0720]">
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, #8B5CF6 0%, transparent 50%), radial-gradient(circle at 80% 50%, #EC4899 0%, transparent 50%)' }} />
         <div className="relative mx-auto max-w-5xl px-4 py-16 sm:px-6 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 mb-6 border border-white/10">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-400" />
-            </span>
-            <PageLiveCounter pageName="이 가이드" baseCount={45} className="text-white/80 [&_strong]:text-white" />
-          </div>
 
           <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-3 leading-tight">
             처음이라 긴장된다고?<br />
@@ -193,9 +186,9 @@ export default function GuidePage() {
         {/* 무작위 가짜 활동 피드 섹션 제거 (놀쿨 신뢰 규칙) */}
 
         {/* ═══ BOTTOM REWARD ═══ */}
-        <ReadCompletionReward teaser="끝까지 읽은 사람만 보는 첫 방문 꿀팁">
+        <ReadCompletionReward teaser="첫 방문 전에 읽어 둘 팁">
           <div className="space-y-3">
-            <p className="text-sm font-bold text-[#111]">현직 실장들이 알려주는 첫 방문 꿀팁 3가지</p>
+            <p className="text-sm font-bold text-[#111]">처음 가는 날 알아 두면 좋은 세 가지</p>
             <ul className="text-sm text-[#555] space-y-2" style={{ lineHeight: '1.7' }}>
               <li>1. <strong>금요일 22시</strong>에 가면 사람이 적당해서 분위기 파악하기 딱 좋다</li>
               <li>2. 첫 방문이면 <strong>웨이터한테 처음 왔다고</strong> 말해라. 더 잘 챙겨준다</li>

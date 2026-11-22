@@ -2,7 +2,6 @@ import NcH1 from '@/components/seo/NcH1';
 import { lazy, Suspense, useRef } from 'react';
 import { WEEKEND_N } from '@/data/venues-counts';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
-import { PageLiveCounter } from '@/components/ui/LiveStats';
 import { MidContentHook, ReadFinishCount, ReadCompletionReward, NextSectionTeaser, ReadingMilestone } from '@/components/engagement/ReadingEngagement';
 import { Link } from '../components/ui/SafeLink';
 
@@ -16,7 +15,7 @@ const DrinkBudgetCalc = lazy(() => import('@/components/interactive/KillerFeatur
 const InviteFriend = lazy(() => import('@/components/interactive/KillerFeatures').then(m => ({ default: m.InviteFriend })));
 
 const sectionList = [
-  { emoji: '🔥', label: '지금 핫한 곳' },
+  { emoji: '🧭', label: '둘러볼 곳' },
   { emoji: '📅', label: '출석 도장' },
   { emoji: '🎭', label: 'MBTI 테스트' },
   { emoji: '🎰', label: '룰렛' },
@@ -26,7 +25,7 @@ const sectionList = [
 ];
 
 export default function QuizPage() {
-  useDocumentMeta('클럽형인지 라운지형인지, 테스트 해봐', '10문항 2분이면 나한테 맞는 나이트라이프 스타일 결과. 클럽 라운지 나이트 룸 요정 호빠 6가지 유형. 친구와 비교 공유 가능.');
+  useDocumentMeta('클럽형인지 라운지형인지, 테스트 해봐', '8문항에 답하면 나에게 맞는 나이트라이프 스타일이 8가지 유형 가운데 하나로 나옵니다. 유형마다 어울리는 가게 두 곳을 함께 보여 줍니다.');
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -35,9 +34,6 @@ export default function QuizPage() {
       <div className="relative overflow-hidden bg-gradient-to-b from-[#0A0118] via-[#1a0a2e] to-[#0f0720]">
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 30% 30%, #EC4899 0%, transparent 40%), radial-gradient(circle at 70% 70%, #8B5CF6 0%, transparent 40%), radial-gradient(circle at 50% 50%, #F59E0B 0%, transparent 30%)' }} />
         <div className="relative mx-auto max-w-4xl px-4 py-14 sm:px-6 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-1.5 mb-6 border border-white/10">
-            <PageLiveCounter pageName="놀고 있는 중" baseCount={55} className="text-white/80 [&_strong]:text-white" />
-          </div>
           <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-3">
             🎮 인터랙티브 존
           </NcH1>
@@ -58,11 +54,11 @@ export default function QuizPage() {
       </div>
 
       <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 space-y-10">
-        {/* [F] 지금 핫한 곳 */}
+        {/* [F] 둘러볼 곳 */}
         <section>
           <h2 className="mb-4 text-xl font-bold text-[#111] flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-50 text-base">🔥</span>
-            지금 이 시간 핫한 곳
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-50 text-base">🧭</span>
+            둘러볼 곳
           </h2>
           <Suspense fallback={null}><HotRightNow /></Suspense>
         </section>
@@ -96,13 +92,13 @@ export default function QuizPage() {
           <Suspense fallback={null}><Roulette /></Suspense>
         </section>
 
-        <NextSectionTeaser text="두 곳 중 어디가 나은지 투표해봐" emoji="⚔️" />
+        <NextSectionTeaser text="둘 중 어디가 더 끌리는지 골라 봐" emoji="⚔️" />
 
         {/* VS 배틀 */}
         <section>
           <h2 className="mb-4 text-xl font-bold text-[#111] flex items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-50 text-base">⚔️</span>
-            VS 배틀 투표
+            VS 배틀 — 둘 중 하나 고르기
           </h2>
           <Suspense fallback={null}><VSBattle /></Suspense>
         </section>
@@ -129,7 +125,7 @@ export default function QuizPage() {
         </section>
 
         {/* ═══ BOTTOM ═══ */}
-        <ReadCompletionReward teaser="전부 다 해본 사람만 보는 히든 정보">
+        <ReadCompletionReward teaser="퀴즈 결과 활용법">
           <div className="space-y-2">
             <p className="text-sm text-[#555]" style={{ lineHeight: '1.7' }}>
               MBTI 결과에 따라 추천되는 업소가 다르다.

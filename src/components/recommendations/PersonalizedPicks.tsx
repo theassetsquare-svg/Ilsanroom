@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from '../ui/SafeLink';
 import { venues } from '@/data/venues';
+import { isAdVenue } from '@/lib/venue-order';
 import type { Venue } from '@/types';
 
 function getRecentlyViewed(): string[] {
@@ -116,8 +117,8 @@ export default function PersonalizedPicks() {
           >
             <div className="mb-2 flex items-center justify-between">
               <span className="text-lg font-bold text-neon-text group-hover:text-violet-400 transition">{venue.nameKo}</span>
-              {venue.isPremium && (
-                <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-bold text-amber-400">P</span>
+              {isAdVenue(venue) && (
+                <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-bold text-amber-400">광고</span>
               )}
             </div>
             <div className="flex items-center gap-2 text-sm text-neon-text-muted">

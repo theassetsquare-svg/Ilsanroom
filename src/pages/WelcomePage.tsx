@@ -9,14 +9,14 @@ import { VENUES_TOTAL_OPEN, VENUES_BY_CATEGORY } from '@/data/venues-counts';
 /* /welcome — OPEN BETA 환영 페이지
    첫 방문자/입소문 들어온 사람한테 "놀쿨이 뭐고 왜 지금 가입해야 하는지" 30초 컷 안내.
    1) 막 오픈 + 창립멤버 100명 카운트다운
-   2) 6대 약속 (프라이버시) 핵심 3개
+   2) 개인정보 보호 안내 핵심 3개
    3) 6종 업소 둘러보기 그리드
    4) 가입 CTA */
 
 const promiseHighlights = [
-  { icon: '💬', text: '카톡 공유해도 업소 단어 0%' },
-  { icon: '🎭', text: '본명·프로필 사진 절대 사용 X' },
-  { icon: '🥷', text: 'Stealth 모드 — 폰 빌려줘도 안전' },
+  { icon: '🎭', text: '글과 댓글은 닉네임으로 표시' },
+  { icon: '🥷', text: 'Stealth 모드 — 탭 제목 가리기' },
+  { icon: '🧹', text: '시크릿 모드 안내' },
 ];
 
 const categories = [
@@ -30,8 +30,8 @@ const categories = [
 
 export default function WelcomePage() {
   useDocumentMeta(
-    'OPEN BETA — 창립멤버 100명 한정 모집',
-    '오픈 직후 첫 100명 창립멤버에게 영구 뱃지를 드립니다. 본명 비노출·Stealth 모드 등 프라이버시 설계로 안심하고 시작하세요.'
+    '처음 오셨다면 — 가입부터 찜·글쓰기까지 5분이면 끝난다',
+    '처음이라 어디부터 볼지 모르겠다면. 카카오·구글 계정으로 가입하고 여섯 업종 가게를 둘러보세요. 글과 댓글에는 닉네임이 표시됩니다.'
   );
   const { remaining, totalCount } = useFoundingMember(null);
 
@@ -55,15 +55,15 @@ export default function WelcomePage() {
               <span className="absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75 animate-ping" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-rose-500" />
             </span>
-            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-rose-300">OPEN BETA</span>
+            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-rose-300">WELCOME</span>
           </div>
 
           <NcH1 className="text-3xl sm:text-4xl font-black text-white mb-3 leading-tight">
-            놀쿨이 <span style={{ color: '#F59E0B' }}>막 열렸습니다</span>
+            놀쿨에 <span style={{ color: '#F59E0B' }}>오신 것을 환영합니다</span>
           </NcH1>
           <p className="text-base text-white/75 mb-6" style={{ lineHeight: '1.7' }}>
             전국 클럽·나이트·라운지·룸·요정·호빠 한 곳에서.<br />
-            카톡 공유해도 업소 단어 0% — 친구한테 보내도 안전.
+            가게 이름이나 지역으로 찾고, 마음에 드는 곳은 링크로 보내 보세요.
           </p>
 
           {/* 창립멤버 카운트 */}
@@ -93,8 +93,8 @@ export default function WelcomePage() {
 
       {/* PROMISES */}
       <section className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-        <p className="text-[11px] font-black text-emerald-600 uppercase tracking-[0.15em] mb-2">프라이버시 6대 약속 핵심</p>
-        <h2 className="text-xl font-black text-[#111] mb-4">친구한테 추천해도 걱정 없는 이유</h2>
+        <p className="text-[11px] font-black text-emerald-600 uppercase tracking-[0.15em] mb-2">개인정보 보호 안내</p>
+        <h2 className="text-xl font-black text-[#111] mb-4">지금 쓸 수 있는 보호 기능</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           {promiseHighlights.map((p) => (
             <div key={p.text} className="rounded-xl border border-emerald-100 bg-emerald-50/50 px-3 py-3">
@@ -104,7 +104,7 @@ export default function WelcomePage() {
           ))}
         </div>
         <Link to="/privacy-promise" className="inline-block mt-3 text-[12px] font-bold text-emerald-600 hover:underline">
-          6대 약속 전체 보기 →
+          자세히 보기 →
         </Link>
       </section>
 
@@ -112,12 +112,11 @@ export default function WelcomePage() {
       <section className="mx-auto max-w-3xl px-4 py-6 sm:px-6 border-t border-neutral-100">
         <p className="text-[11px] font-black text-violet-600 uppercase tracking-[0.15em] mb-2">정직 운영 원칙</p>
         <h2 className="text-xl font-black text-[#111] mb-4">여기는 이렇게 운영합니다</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           {[
-            { icon: '🧹', text: '가짜 후기 0 — 출처 없는 글은 전부 삭제했습니다. 비어 있어도 진짜만 남깁니다.' },
-            { icon: '🚫', text: '광고비로 순위를 살 수 없습니다. 순위는 최근 28일 실제 조회·문의·검색 데이터로만, 광고 업소는 AD 표기.' },
+            { icon: '🧹', text: '후기는 회원이 직접 쓴 것만 싣습니다. 비어 있어도 지어낸 글로 채우지 않습니다.' },
+            { icon: '🚫', text: '광고비로 순위를 살 수 없습니다. 순위는 갱신일까지 28일 동안의 실제 조회·문의·검색 점수로만 매기고, 광고 업소에는 광고 표시를 붙입니다.' },
             { icon: '🗂️', text: '클럽·나이트·라운지·룸·요정·호빠 — 6개 업종을 한곳에서 비교합니다.' },
-            { icon: '🔄', text: '업소 정보는 자동 점검이 매일 확인합니다. 이상이 잡히면 바로 고칩니다.' },
           ].map((p) => (
             <div key={p.icon} className="rounded-xl border border-violet-100 bg-violet-50/40 px-3 py-3">
               <div className="text-2xl mb-1">{p.icon}</div>

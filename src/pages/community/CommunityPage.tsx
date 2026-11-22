@@ -4,7 +4,6 @@ import { Link } from '../../components/ui/SafeLink';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { createClient } from '@/lib/supabase';
 import { CommunityPulse } from '@/components/ui/LiveStats';
-import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
 import DailyPrompt from '@/components/community/DailyPrompt';
 import { venues } from '@/data/venues';
 import { useCommunityActive } from '@/hooks/useCommunityActive';
@@ -21,7 +20,7 @@ const sectionDefs = [
 ];
 
 export default function CommunityPage() {
-  useDocumentMeta('밤 사람들이 모이는 우리 동네 커뮤니티다', '강남 홍대 이태원 일산 부산 수원 클럽 나이트 라운지 룸 요정 호빠 후기 꿀팁 파티모집 Q&A 자유게시판 패션 조각모임 — 진짜 회원이 직접 쓰는 익명 광장.');
+  useDocumentMeta('밤 사람들이 모이는 우리 동네 커뮤니티다', '강남 홍대 이태원 일산 부산 수원 클럽 나이트 라운지 룸 요정 호빠 후기 꿀팁 파티모집 Q&A 자유게시판 패션 조각모임 7개 게시판을 한곳에 모았습니다.');
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [recentPosts, setRecentPosts] = useState<{ id: string; title: string; category: string; likes: number; comment_count: number }[]>([]);
   const [hotCommentPosts, setHotCommentPosts] = useState<{ id: string; title: string; category: string; comment_count: number }[]>([]);
@@ -55,7 +54,7 @@ export default function CommunityPage() {
       } catch {}
 
       try {
-        const { data } = await supabase.from('posts').select('id, title, category, comment_count').order('comment_count', { ascending: false }).limit(5);
+        const { data } = await supabase.from('posts').select('id, title, category, comment_count').gt('comment_count', 0).order('comment_count', { ascending: false }).limit(5);
         if (alive && data && data.length > 0) setHotCommentPosts(data as any);
       } catch {}
     })();
@@ -91,7 +90,7 @@ export default function CommunityPage() {
             밤 사람들이 모이는 커뮤니티
           </NcH1>
           <p className="text-base sm:text-lg mb-5" style={{ color: '#555' }}>
-            지금 이 순간에도 사람들이 모이고, 떠들고, 약속을 잡고 있다
+            동네 이야기, 파티 모집, 궁금한 것을 한곳에서 나눕니다
           </p>
 
           {/* Supabase 실시간 카운트 — 가짜 시드 없음 */}
@@ -114,15 +113,6 @@ export default function CommunityPage() {
           <CommunityPulse className="justify-center" />
         </div>
 
-        {/* ══════ 실시간 활동 피드 (상단 노출) ══════ */}
-        <div className="mb-8 rounded-2xl border border-neon-border bg-neon-surface p-5">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-            <p className="text-sm font-bold" style={{ color: '#111' }}>지금 일어나고 있는 일</p>
-          </div>
-          <LiveActivityFeed maxItems={5} interval={4000} />
-        </div>
-
         {/* ══════ 오늘의 글감 — 매일 자정 회전 ══════ */}
         <DailyPrompt />
 
@@ -136,7 +126,7 @@ export default function CommunityPage() {
             지금 놀쿨에 등록된 업소 <span style={{ color: '#8B5CF6' }}>{REGISTERED_VENUE_COUNT.toLocaleString()}곳</span> — 다녀온 곳, 첫 후기 주인공이 되어보세요
           </p>
           <p className="text-sm mb-4" style={{ color: '#555', lineHeight: 1.7 }}>
-            여기 글·후기·댓글은 전부 실제 회원이 직접 씁니다. 자동으로 만들어 넣는 가짜 글은 한 건도 없어요. 다녀온 업소가 있다면 솔직한 한 줄이 다음 사람에게 가장 큰 도움이 됩니다.
+            「운영팀」 표시가 붙은 글은 놀쿨이 쓴 안내 글이고, 나머지는 회원이 직접 씁니다. 지어낸 후기는 싣지 않습니다. 다녀온 업소가 있다면 솔직한 한 줄이 다음 사람에게 가장 큰 도움이 됩니다.
           </p>
           <div className="flex flex-wrap gap-2">
             <Link to="/community/reviews" className="rounded-xl px-4 py-2.5 text-sm font-bold text-white transition" style={{ backgroundColor: '#7C3AED', minHeight: 44 }}>
@@ -185,15 +175,12 @@ export default function CommunityPage() {
           </div>
         )}
 
-        {/* ══════ 오늘 가장 많이 댓글 달린 글 ══════ */}
+        {/* ══════ 댓글 많은 글 (댓글 1개 이상만) ══════ */}
         {hotCommentPosts.length > 0 && (
           <div className="mb-8 rounded-2xl border border-neon-border bg-neon-surface p-6 sm:p-8">
             <div className="flex items-center gap-2 mb-5">
               <span className="text-lg">💬</span>
-              <h2 className="text-xl font-black" style={{ color: '#111' }}>댓글 폭발 중</h2>
-              {/* animate-pulse 제거 — 반투명 순간 대비 4.5:1 미달로 Lighthouse color-contrast 감점 */}
-              <span className="text-xs rounded-full px-2 py-0.5 font-bold"
-                style={{ backgroundColor: '#FEF3C7', color: '#92400E' }}>HOT</span>
+              <h2 className="text-xl font-black" style={{ color: '#111' }}>댓글 많은 글</h2>
             </div>
             <div className="space-y-2">
               {hotCommentPosts.map((post) => (

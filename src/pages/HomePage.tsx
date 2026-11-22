@@ -18,7 +18,6 @@ import { cardSrc } from '@/lib/venue-file-ver';
 // 모두 above-the-fold 아래에 위치 → LCP/FCP 영향 0.
 const HomeFeed = lazy(() => import('@/components/community/HomeFeed').then(m => ({ default: m.HomeFeed })));
 const TemperatureRanking = lazy(() => import('@/components/community/TemperatureRanking').then(m => ({ default: m.TemperatureRanking })));
-const LiveActivityFeed = lazy(() => import('@/components/ui/LiveActivityFeed'));
 const TrendingTodayWidget = lazy(() => import('@/components/widgets/TrendingTodayWidget'));
 const RecentlyUpdatedWidget = lazy(() => import('@/components/widgets/RecentlyUpdatedWidget'));
 const LiveStats = lazy(() => import('@/components/live/LiveStats'));
@@ -32,7 +31,8 @@ const LuckyRoulette = lazy(() => import('@/components/home/LuckyRoulette'));
 import { articles as magazineArticles } from '@/data/magazine-articles';
 import { useAuth } from '@/hooks/useAuth';
 import { useCommunityActive } from '@/hooks/useCommunityActive';
-import { popularityOrder } from '@/lib/popularity';
+import { popularity, popularityOrder } from '@/lib/popularity';
+import { isAdVenue, sortVenues } from '@/lib/venue-order';
 import { RankingBasisInline } from '@/components/ui/RankingBasisNote';
 import WeeklyVoteWidget from '@/components/community/WeeklyVoteWidget';
 
@@ -56,45 +56,23 @@ const catHrefs: Record<string, string> = { club: '/clubs', night: '/nights', lou
 /* ── Region labels for 지역별 tab filter ── */
 const regionLabels = ['전체', '강남', '압구정', '홍대', '이태원', '부산', '대구', '광주', '대전', '수원', '일산', '인천', '성남', '천안', '울산'];
 
-const allSeedJogak: JogakItem[] = [
-  { id: 'sj-1', title: '금요일 홍대 버뮤다 같이 갈 사람', region: '홍대', gender: '혼성', current: 2, max: 4, time: '이번 금요일 23:00' },
-  { id: 'sj-2', title: '강남 레이스 테이블 엔빵 모집', region: '강남', gender: '남녀무관', current: 3, max: 6, time: '토요일 22:00' },
-  { id: 'sj-3', title: '부산 고구려 주말 조각 급구', region: '해운대', gender: '혼성', current: 4, max: 8, time: '금요일 21:00' },
-  { id: 'sj-4', title: '수원 찬스돔 평일 벙개 갈 사람!!', region: '수원', gender: '누구나', current: 1, max: 3, time: '목요일 23:30' },
-  { id: 'sj-5', title: '대전 나이트 주말 같이 가실 분', region: '대전', gender: '혼성', current: 2, max: 5, time: '토요일 21:00' },
-  { id: 'sj-6', title: '일산 라붐 이번주 ㄱㄱ 2명 더 구함', region: '일산', gender: '혼성', current: 3, max: 5, time: '금요일 22:00' },
-  { id: 'sj-7', title: '강남 호빠 첫방문 같이 갈 여자분!!', region: '강남', gender: '여성', current: 1, max: 3, time: '토요일 20:00' },
-  { id: 'sj-8', title: '대구 나이트 주말 급구!!', region: '대구', gender: '남녀무관', current: 2, max: 4, time: '토요일 22:00' },
-  { id: 'sj-9', title: '이태원 라운지 소규모 모임', region: '이태원', gender: '혼성', current: 2, max: 4, time: '금요일 21:30' },
-  { id: 'sj-10', title: '인천 주말 나이트 크루 모집중', region: '인천', gender: '누구나', current: 3, max: 6, time: '토요일 21:00' },
-];
-// 조각모임도 회전
-function getSeedJogak(): JogakItem[] {
-  const d = new Date();
-  const seed = d.getDate() + Math.floor(d.getHours() / 6);
-  const result: JogakItem[] = [];
-  for (let i = 0; i < 5; i++) result.push(allSeedJogak[(seed + i) % allSeedJogak.length]);
-  return result;
-}
-const seedJogakList = getSeedJogak();
-
-/* ── 지금 뜨는 토론 — 논쟁 유발해서 클릭 + 댓글 유도 ── */
+/* ── 이야기 나눠 볼 주제 (예시 주제 — 실제 글·댓글 수가 아니다) ── */
 const allSeedDebates = [
-  { id: 'db-1', topic: '클럽 vs 나이트, 진짜 만남 확률 높은 곳은?', heat: 89, side: ['클럽이지', '나이트 압승'], comments: 47 },
-  { id: 'db-2', topic: '강남 vs 홍대, 분위기는 어디가 나아?', heat: 76, side: ['강남이 강남', '홍대가 진짜'], comments: 31 },
-  { id: 'db-3', topic: '혼자 가면 진짜 눈치 보여? 솔직하게', heat: 92, side: ['상관없음', '좀 그렇지..'], comments: 58 },
-  { id: 'db-4', topic: '룸 vs 오픈 테이블, 접대는 어디서?', heat: 67, side: ['룸이 답', '오픈이 분위기'], comments: 22 },
-  { id: 'db-5', topic: '금요일밤 vs 토요일밤, 언제가 더 미쳤어?', heat: 83, side: ['불금이지', '토요일 진짜'], comments: 39 },
-  { id: 'db-6', topic: '호빠 처음인데 뭐 입고 가야함?', heat: 71, side: ['캐주얼 OK', '꾸며야지'], comments: 44 },
-  { id: 'db-7', topic: '나이트 부킹 vs 클럽 헌팅, 뭐가 더 자연스러움?', heat: 85, side: ['부킹 편함', '헌팅이 진짜'], comments: 52 },
-  { id: 'db-8', topic: '양주 vs 맥주, 분위기 잡으려면?', heat: 74, side: ['양주 한병이면 끝', '맥주가 편해'], comments: 33 },
-  { id: 'db-9', topic: '서울 vs 지방 나이트, 수준 차이 있음?', heat: 91, side: ['서울이 다름', '지방도 꿀잼'], comments: 61 },
-  { id: 'db-10', topic: '나이트 갈 때 향수 뿌려야함 말아야함?', heat: 68, side: ['필수임', '자연이 최고'], comments: 29 },
-  { id: 'db-11', topic: '클럽 새벽 1시 vs 11시, 갈 타이밍은?', heat: 79, side: ['새벽이 진짜', '일찍 가야 자리'], comments: 37 },
-  { id: 'db-12', topic: '혼술 후 나이트 vs 처음부터 나이트?', heat: 72, side: ['한잔 하고가', '맨정신이 나음'], comments: 41 },
-  { id: 'db-13', topic: '라운지 데이트 vs 레스토랑 데이트?', heat: 81, side: ['라운지가 분위기', '밥이 먼저지'], comments: 48 },
-  { id: 'db-14', topic: '택시 vs 대리, 새벽 귀가 어떻게 함?', heat: 65, side: ['택시 무조건', '대리가 편해'], comments: 26 },
-  { id: 'db-15', topic: '요정 가봄? 솔직히 어때?', heat: 88, side: ['인생 바뀜', '생각보다 그냥'], comments: 55 },
+  { id: 'db-1', topic: '클럽 vs 나이트, 진짜 만남 확률 높은 곳은?', side: ['클럽이지', '나이트 압승'] },
+  { id: 'db-2', topic: '강남 vs 홍대, 분위기는 어디가 나아?', side: ['강남이 강남', '홍대가 진짜'] },
+  { id: 'db-3', topic: '혼자 가면 진짜 눈치 보여? 솔직하게', side: ['상관없음', '좀 그렇지..'] },
+  { id: 'db-4', topic: '룸 vs 오픈 테이블, 접대는 어디서?', side: ['룸이 답', '오픈이 분위기'] },
+  { id: 'db-5', topic: '금요일밤 vs 토요일밤, 언제가 더 미쳤어?', side: ['불금이지', '토요일 진짜'] },
+  { id: 'db-6', topic: '호빠 처음인데 뭐 입고 가야함?', side: ['캐주얼 OK', '꾸며야지'] },
+  { id: 'db-7', topic: '나이트 부킹 vs 클럽 헌팅, 뭐가 더 자연스러움?', side: ['부킹 편함', '헌팅이 진짜'] },
+  { id: 'db-8', topic: '양주 vs 맥주, 분위기 잡으려면?', side: ['양주 한병이면 끝', '맥주가 편해'] },
+  { id: 'db-9', topic: '서울 vs 지방 나이트, 수준 차이 있음?', side: ['서울이 다름', '지방도 꿀잼'] },
+  { id: 'db-10', topic: '나이트 갈 때 향수 뿌려야함 말아야함?', side: ['필수임', '자연이 최고'] },
+  { id: 'db-11', topic: '클럽 새벽 1시 vs 11시, 갈 타이밍은?', side: ['새벽이 진짜', '일찍 가야 자리'] },
+  { id: 'db-12', topic: '혼술 후 나이트 vs 처음부터 나이트?', side: ['한잔 하고가', '맨정신이 나음'] },
+  { id: 'db-13', topic: '라운지 데이트 vs 레스토랑 데이트?', side: ['라운지가 분위기', '밥이 먼저지'] },
+  { id: 'db-14', topic: '택시 vs 대리, 새벽 귀가 어떻게 함?', side: ['택시 무조건', '대리가 편해'] },
+  { id: 'db-15', topic: '요정 가봄? 솔직히 어때?', side: ['인생 바뀜', '생각보다 그냥'] },
 ];
 // 토론도 시간별 회전
 function getSeedDebates() {
@@ -109,18 +87,18 @@ const seedDebates = getSeedDebates();
 /* ── 무한 추천 문구 — 끝없는 탐색 유도 ── */
 const nextHooks = [
   '이것도 볼래?', '다른 데도 궁금하지?', '여기는 가봤어?',
-  '아직 안 봤지?', '이건 진짜 숨은 맛집', '사람들이 찜한 곳',
+  '아직 안 봤지?', '여기도 한번 볼래?', '조금 더 둘러볼까?',
 ];
 
-/* ── VS Polls — 매일 다른 투표 3세트 ── */
+/* ── VS 고르기 — 날마다 다른 3세트 (집계 없음 · 내 선택만 표시) ── */
 const vsPolls = [
-  { q: '강남 양대산맥! 어디가 더 미쳤어?', a: '레이스', b: '아르쥬', aEmoji: '🔥', bEmoji: '💎', aPct: 54, bPct: 46 },
-  { q: '금요일 밤, 뭐가 더 끌려?', a: '클럽', b: '나이트', aEmoji: '🎵', bEmoji: '🌙', aPct: 61, bPct: 39 },
-  { q: '혼자 가도 괜찮은 곳은?', a: '라운지', b: '나이트', aEmoji: '🍸', bEmoji: '💃', aPct: 67, bPct: 33 },
-  { q: '첫 방문이면 어디부터?', a: '홍대', b: '강남', aEmoji: '🎨', bEmoji: '💰', aPct: 48, bPct: 52 },
-  { q: '분위기 vs 가격, 뭐가 더 중요?', a: '분위기', b: '가격', aEmoji: '✨', bEmoji: '💵', aPct: 72, bPct: 28 },
-  { q: '단체 모임, 어디가 찐이야?', a: '룸', b: '호빠', aEmoji: '🚪', bEmoji: '🥂', aPct: 58, bPct: 42 },
-  { q: '주말 새벽 2시, 아직 놀고 싶다면?', a: '클럽', b: '요정', aEmoji: '🎶', bEmoji: '🏮', aPct: 63, bPct: 37 },
+  { q: '강남 두 클럽, 어디가 더 끌려?', a: '레이스', b: '아르쥬', aEmoji: '🔥', bEmoji: '💎' },
+  { q: '금요일 밤, 뭐가 더 끌려?', a: '클럽', b: '나이트', aEmoji: '🎵', bEmoji: '🌙' },
+  { q: '혼자 가도 괜찮은 곳은?', a: '라운지', b: '나이트', aEmoji: '🍸', bEmoji: '💃' },
+  { q: '첫 방문이면 어디부터?', a: '홍대', b: '강남', aEmoji: '🎨', bEmoji: '💰' },
+  { q: '분위기 vs 가격, 뭐가 더 중요?', a: '분위기', b: '가격', aEmoji: '✨', bEmoji: '💵' },
+  { q: '단체 모임, 어디가 찐이야?', a: '룸', b: '호빠', aEmoji: '🚪', bEmoji: '🥂' },
+  { q: '주말 새벽 2시, 아직 놀고 싶다면?', a: '클럽', b: '요정', aEmoji: '🎶', bEmoji: '🏮' },
 ];
 
 /* ── Fortune — 더 풍부하고 재미있는 밤 운세 ── */
@@ -146,15 +124,15 @@ const miniQuizQuestions = [
 
 /* ── 카테고리별 드림고객 카피 (클릭 유도용) ── */
 const dreamCustomerCopy: Record<string, { hook: string; painPoint: string; cta: string }> = {
-  club: { hook: '줄 안 서는 클럽 알려줄까?', painPoint: '어디가 핫한지 모를 때', cta: '인기 클럽 보기' },
-  night: { hook: '내상 0% 나이트, 후기로 증명', painPoint: '내상 입기 싫을 때', cta: '검증된 나이트 보기' },
-  lounge: { hook: '분위기 확실한 곳만 골랐다', painPoint: '소개팅·데이트 장소 고민', cta: '라운지 둘러보기' },
-  room: { hook: '접대 실패 없는 룸, 검증 완료', painPoint: '바가지 걱정될 때', cta: '프라이빗 룸 보기' },
-  yojeong: { hook: 'VIP가 인정한 요정', painPoint: '격 있는 장소 찾을 때', cta: '전통 요정 보기' },
-  hoppa: { hook: '여자들이 직접 쓴 솔직후기', painPoint: '안전하고 재미있는 곳', cta: '호빠 후기 보기' },
+  club: { hook: '오늘은 클럽이 어울려요', painPoint: '어디가 핫한지 모를 때', cta: '클럽 보기' },
+  night: { hook: '오늘은 나이트가 어울려요', painPoint: '새로운 사람을 만나고 싶을 때', cta: '나이트 보기' },
+  lounge: { hook: '오늘은 라운지가 어울려요', painPoint: '소개팅·데이트 장소 고민', cta: '라운지 둘러보기' },
+  room: { hook: '오늘은 룸이 어울려요', painPoint: '일행끼리 조용히 모일 때', cta: '룸 보기' },
+  yojeong: { hook: '오늘은 요정이 어울려요', painPoint: '격 있는 장소 찾을 때', cta: '전통 요정 보기' },
+  hoppa: { hook: '오늘은 호빠가 어울려요', painPoint: '처음이라 망설여질 때', cta: '호빠 보기' },
 };
 
-/* ── 트렌딩 키워드 (요일별 회전) ── */
+/* ── 추천 검색어 (요일별 회전 · 검색 기록에서 뽑은 순위가 아니다) ── */
 const trendingKeywords = [
   ['강남클럽', '홍대나이트', '부산룸', '일산요정', '호빠후기', '강남라운지'],
   ['이태원클럽', '수원나이트', '해운대룸', '대전요정', '강남호빠', '압구정라운지'],
@@ -166,7 +144,7 @@ const trendingKeywords = [
 ];
 
 /* ── Community hot posts — DB에서 가져옴 ── */
-interface JogakItem { id: string; title: string; region: string; gender: string; current: number; max: number; time: string; }
+interface JogakItem { id: string; title: string; region: string; gender: string; current: number | null; max: number | null; time: string; }
 
 function getTodayFortune() {
   const idx = new Date().getDate() % allFortunes.length;
@@ -212,6 +190,7 @@ const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, r
               <h3 className="text-sm font-bold text-white leading-tight truncate">{venue.nameKo}</h3>
               <div className="flex items-center justify-between">
                 <p className="text-[11px] text-white/90 truncate">{catLabel[venue.category]} · {venue.regionKo}</p>
+                {isAdVenue(venue) && <span className="ml-1 shrink-0 rounded bg-white/90 px-1 text-[10px] font-bold text-[#111]">광고</span>}
                 {venue.rating > 0 && <span className="text-[11px] text-yellow-300 font-bold">★ {venue.rating.toFixed(1)}</span>}
               </div>
             </div>
@@ -378,9 +357,9 @@ export default function HomePage() {
               id: p.id,
               title: p.title,
               region: parsed.region || '',
-              gender: parsed.genderPref || '혼성',
-              current: parsed.currentPeople || 1,
-              max: parsed.maxPeople || 4,
+              gender: parsed.genderPref || '',
+              current: Number(parsed.currentPeople) > 0 ? Number(parsed.currentPeople) : null,
+              max: Number(parsed.maxPeople) > 0 ? Number(parsed.maxPeople) : null,
               time: parsed.meetDate ? `${parsed.meetDate} ${parsed.meetTime || ''}` : '',
             };
           }));
@@ -389,7 +368,7 @@ export default function HomePage() {
     })();
   }, []);
 
-  const displayJogak = useMemo(() => jogakList.length > 0 ? jogakList : seedJogakList, [jogakList]);
+  const displayJogak = jogakList;
 
   // === TAB STATE ===
   const [activeTab, setActiveTab] = useState(0);
@@ -411,12 +390,8 @@ export default function HomePage() {
     if (activeTab === 0) return popularityOrder(filteredVenues).slice(0, 30);
     // 신규: 최근 등록순 (배열 뒤쪽 = 최신)
     if (activeTab === 1) return [...filteredVenues].reverse().slice(0, 30);
-    // 추천: 프리미엄 + 평점 높은 순
-    if (activeTab === 2) return [...filteredVenues].sort((a, b) => {
-      if (a.isPremium && !b.isPremium) return -1;
-      if (!a.isPremium && b.isPremium) return 1;
-      return b.rating - a.rating;
-    }).slice(0, 30);
+    // 추천: 「광고」 가게 먼저 → 인기 점수 순위 → 가나다 (업종 목록과 같은 순서)
+    if (activeTab === 2) return sortVenues(filteredVenues, 'rec', popularity.venues).slice(0, 30);
     // 지역별: 지역 그룹으로 정렬
     return filteredVenues.slice(0, 30);
   }, [filteredVenues, activeTab]);
@@ -625,8 +600,8 @@ export default function HomePage() {
         <InviteFriendBox />
       </Suspense>
 
-      {/* ═══ 1.38 이번 주 원터치 투표 — 실측 상위 2곳, 손가락 한 번 참여 (파트4.5) ═══ */}
-      <section className="px-4 pt-2 pb-1 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto" aria-label="이번 주 원터치 투표">
+      {/* ═══ 1.38 원터치 투표 — 실측 상위 2곳, 손가락 한 번 참여 (파트4.5) ═══ */}
+      <section className="px-4 pt-2 pb-1 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto" aria-label="원터치 투표">
         <WeeklyVoteWidget />
       </section>
 
@@ -745,23 +720,6 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* ═══ 실시간 활동 스트림 — 사이트가 살아있는 느낌 ═══ */}
-      <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
-        <div className="rounded-2xl border border-green-100 bg-gradient-to-r from-green-50/50 to-white p-3">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-            </span>
-            <span className="text-xs font-bold text-[#111]">지금 활동 중</span>
-            <span className="text-[10px] text-gray-500 ml-auto">실시간</span>
-          </div>
-          <Suspense fallback={<div className="h-24" aria-hidden="true" />}>
-            <LiveActivityFeed maxItems={4} interval={5000} />
-          </Suspense>
-        </div>
-      </section>
-
       {/* ═══ v28 오늘 가장 본 곳 — 실 page_events 24h 집계 (가짜 카운터 X). 데이터 없으면 자동 숨김 ═══ */}
       <Suspense fallback={null}>
         <TrendingTodayWidget />
@@ -792,14 +750,11 @@ export default function HomePage() {
         </Link>
       </section>
 
-      {/* ═══ 3. VS 투표 — 첫 화면에서 즉시 터치 인터랙션 (1개만) ═══ */}
+      {/* ═══ 3. VS 골라 보기 — 고른 것은 이 기기에만 남는다 (집계·비율 없음) ═══ */}
       <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         {(() => {
           const poll = todayPolls[0];
           const voted = vsVotes[0];
-          // 실제 투표 데이터가 연결되기 전까지는 50/50 표시 (가공 수치 금지)
-          const aPct = 50;
-          const bPct = 50;
           return (
             <div className="rounded-2xl border border-[#7C3AED]/20 bg-gradient-to-br from-[#FAFAFE] to-[#F5F3FF] p-4 shadow-sm">
               <div className="flex items-center justify-between mb-2">
@@ -810,25 +765,23 @@ export default function HomePage() {
                 <button onClick={() => handleVsVote(0, poll.a)} disabled={!!voted}
                   className={`relative rounded-xl overflow-hidden transition-all duration-300 ${voted === poll.a ? 'ring-2 ring-[#8B5CF6] scale-[1.02]' : voted ? 'opacity-60' : 'hover:shadow-md active:scale-95'}`}
                   style={{ minHeight: 60 }}>
-                  {voted && <div className="absolute inset-0 bg-[#7C3AED]/10 rounded-xl"><div className="absolute bottom-0 left-0 right-0 bg-[#7C3AED]/20 transition-all duration-700 rounded-b-xl" style={{ height: `${aPct}%` }} /></div>}
                   <div className="relative z-10 flex flex-col items-center justify-center h-full py-2">
                     <span className="text-xl">{poll.aEmoji}</span>
                     <span className="text-sm font-bold text-[#111]">{poll.a}</span>
-                    {voted && <span className="text-base font-black text-[#7C3AED]">{aPct}%</span>}
+                    {voted === poll.a && <span className="text-xs font-bold text-[#7C3AED]">내 선택</span>}
                   </div>
                 </button>
                 <button onClick={() => handleVsVote(0, poll.b)} disabled={!!voted}
                   className={`relative rounded-xl overflow-hidden transition-all duration-300 ${voted === poll.b ? 'ring-2 ring-[#EC4899] scale-[1.02]' : voted ? 'opacity-60' : 'hover:shadow-md active:scale-95'}`}
                   style={{ minHeight: 60 }}>
-                  {voted && <div className="absolute inset-0 bg-[#EC4899]/10 rounded-xl"><div className="absolute bottom-0 left-0 right-0 bg-[#EC4899]/20 transition-all duration-700 rounded-b-xl" style={{ height: `${bPct}%` }} /></div>}
                   <div className="relative z-10 flex flex-col items-center justify-center h-full py-2">
                     <span className="text-xl">{poll.bEmoji}</span>
                     <span className="text-sm font-bold text-[#111]">{poll.b}</span>
-                    {voted && <span className="text-base font-black text-[#EC4899]">{bPct}%</span>}
+                    {voted === poll.b && <span className="text-xs font-bold text-[#EC4899]">내 선택</span>}
                   </div>
                 </button>
               </div>
-              <p className="mt-1.5 text-[11px] text-center text-[#666]">{voted ? `${voted === poll.a ? poll.a : poll.b} 선택!` : '터치해서 투표'}</p>
+              <p className="mt-1.5 text-[11px] text-center text-[#666]">{voted ? `${voted === poll.a ? poll.a : poll.b} 선택!` : '터치해서 골라 보기'}</p>
             </div>
           );
         })()}
@@ -837,16 +790,16 @@ export default function HomePage() {
       {/* ═══ 파트4 S4 — 역전 문구: 전부 실제 상태와 일치하는 사실 서술만 (경쟁사 실명 0, 과장 0) ═══ */}
       <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex flex-wrap gap-x-3 gap-y-1 rounded-xl border border-gray-100 bg-gray-50 px-3.5 py-2.5">
-          {['가짜 후기 0 — 전부 삭제했습니다', '광고비로 순위 못 삽니다', '6개 업종을 한곳에서', '업소 정보 매일 자동 점검'].map(t => (
+          {['후기는 회원이 쓴 것만 싣습니다', '광고비로 순위 못 삽니다', '6개 업종을 한곳에서'].map(t => (
             <span key={t} className="text-[11px] font-medium text-[#555]">✓ {t}</span>
           ))}
         </div>
       </section>
 
-      {/* ═══ 4. 실시간 TOP 4 — 핵심 업소 즉시 노출 ═══ */}
+      {/* ═══ 4. 인기 점수 TOP 4 — 핵심 업소 즉시 노출 ═══ */}
       <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-1">
-          <h2 className="text-base font-bold text-[#111]">지금 핫한 곳</h2>
+          <h2 className="text-base font-bold text-[#111]">인기 점수 높은 곳</h2>
           <Link to="/ranking" className="text-xs text-[#7C3AED] font-medium inline-block py-1.5 -my-1.5">전체 순위 →</Link>
         </div>
         <div className="mb-2"><RankingBasisInline /></div>
@@ -878,14 +831,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ 5.5 뜨거운 토론 — 논쟁 유발 → 댓글 참여 유도 ═══ */}
+      {/* ═══ 5.5 이야기 나눠 볼 주제 ═══ */}
       <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
-            <h2 className="text-base font-bold text-[#111]">뜨거운 토론</h2>
-            <span className="rounded-full bg-red-600 px-1.5 py-0.5 text-[9px] font-bold text-white">HOT</span>
+            <h2 className="text-base font-bold text-[#111]">이야기 나눠 볼 주제</h2>
           </div>
-          <Link to="/community/free" className="text-xs text-[#7C3AED] font-medium inline-block py-1.5 -my-1.5">참여하기 →</Link>
+          <Link to="/community/free" className="text-xs text-[#7C3AED] font-medium inline-block py-1.5 -my-1.5">자유게시판 →</Link>
         </div>
         <div className="space-y-2">
           {seedDebates.slice(0, 3).map(debate => (
@@ -894,11 +846,9 @@ export default function HomePage() {
               <div className="flex items-center gap-2">
                 <div className="flex gap-1.5 flex-1">
                   {debate.side.map((s, i) => (
-                    <span key={i} className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${i === 0 ? 'bg-[#7C3AED]/10 text-[#7C3AED]' : 'bg-pink-100 text-pink-600'}`}>"{s}"</span>
+                    <span key={i} className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${i === 0 ? 'bg-[#7C3AED]/10 text-[#7C3AED]' : 'bg-pink-100 text-pink-600'}`}>{s}</span>
                   ))}
                 </div>
-                <span className="text-[10px] text-[#666]">💬 {debate.comments}</span>
-                <span className="text-[10px] text-red-600 font-bold">{debate.heat}°</span>
               </div>
             </Link>
           ))}
@@ -953,11 +903,11 @@ export default function HomePage() {
                 </div>
               ) : (
                 <div className="py-3">
-                  <p className="px-4 py-1.5 text-[11px] font-bold text-[#7C3AED] tracking-wider">인기 검색어</p>
+                  <p className="px-4 py-1.5 text-[11px] font-bold text-[#7C3AED] tracking-wider">추천 검색어</p>
                   {['강남클럽', '홍대나이트', '일산룸', '강남호빠', '해운대', '압구정라운지', '일산요정', '부산나이트'].map((term, i) => (
                     <button key={term} onClick={() => { setSearchQuery(term); searchInputRef.current?.focus(); }}
                       className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-gray-50 transition-colors">
-                      <span className={`flex h-6 w-6 items-center justify-center rounded text-xs font-bold ${i < 3 ? 'bg-[#7C3AED] text-white' : 'bg-gray-100 text-gray-600'}`}>{i + 1}</span>
+                      <span className="flex h-6 w-6 items-center justify-center rounded bg-gray-100 text-xs text-gray-500" aria-hidden="true">#</span>
                       <span className="text-sm text-[#111]">{term}</span>
                     </button>
                   ))}
@@ -968,12 +918,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ 7. 조각모임 — 마감 임박 긴급감 + 클릭 유도 ═══ */}
+      {/* ═══ 7. 조각모임 — 회원이 올린 모임 글만 보여 준다 ═══ */}
       <section className="px-4 py-3 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <h2 className="text-base font-bold text-[#111]">조각모임</h2>
-            <span className="rounded-full bg-orange-700 px-1.5 py-0.5 text-[9px] font-bold text-white">모집중</span>
+            {displayJogak.length > 0 && <span className="rounded-full bg-orange-700 px-1.5 py-0.5 text-[9px] font-bold text-white">모집중</span>}
           </div>
           <div className="flex items-center gap-2">
             <Link to="/community/jogak?write=true" className="inline-flex items-center rounded-full bg-[#7C3AED] px-3 py-1.5 text-xs font-bold text-white" style={{ minHeight: 44 }}>모임만들기</Link>
@@ -981,29 +931,36 @@ export default function HomePage() {
           </div>
         </div>
         <div className="space-y-2">
+          {displayJogak.length === 0 && (
+            <Link to="/community/jogak?write=true" className="block rounded-xl border border-dashed border-gray-200 bg-white p-4 text-center text-[13px] text-[#555] active:bg-gray-50 transition">
+              아직 올라온 모임이 없습니다. 첫 모임을 만들어 보세요.
+            </Link>
+          )}
           {displayJogak.slice(0, 4).map((j, idx) => {
-            const fillRate = j.current / j.max;
-            const isAlmostFull = fillRate >= 0.7;
+            const hasCount = j.current != null && j.max != null && j.max > 0;
+            const fillRate = hasCount ? Math.min(1, (j.current as number) / (j.max as number)) : 0;
+            const isAlmostFull = hasCount && fillRate >= 0.7;
             return (
               <Link key={j.id} to="/community/jogak" className={`block rounded-xl border bg-white p-3 active:bg-gray-50 transition ${isAlmostFull ? 'border-red-200 bg-red-50/30' : 'border-gray-100'}`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 flex-1 min-w-0">
                     {isAlmostFull && <span className="shrink-0 rounded bg-red-600 px-1.5 py-0.5 text-[9px] font-bold text-white">마감임박</span>}
-                    {idx === 0 && !isAlmostFull && <span className="shrink-0 rounded bg-[#7C3AED] px-1.5 py-0.5 text-[9px] font-bold text-white">HOT</span>}
                     <p className="text-sm font-medium text-[#111] truncate">{j.title}</p>
                   </div>
                   <span className={`ml-2 flex-shrink-0 rounded-full px-3 py-1 text-[11px] font-bold text-white ${isAlmostFull ? 'bg-red-600' : 'bg-[#7C3AED]'}`}>참여</span>
                 </div>
                 <div className="flex items-center gap-3 mt-1.5">
                   {j.region && <span className="text-[11px] text-[#555]">📍{j.region}</span>}
-                  <span className="text-[11px] text-[#555]">👤{j.gender}</span>
+                  {j.gender && <span className="text-[11px] text-[#555]">👤{j.gender}</span>}
                   {j.time && <span className="text-[11px] text-[#555]">🕐{j.time}</span>}
+                  {hasCount && (
                   <div className="flex-1 flex items-center gap-1.5">
                     <div className="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden">
                       <div className={`h-full rounded-full transition-all ${isAlmostFull ? 'bg-red-600' : 'bg-[#7C3AED]'}`} style={{ width: `${fillRate * 100}%` }} />
                     </div>
                     <span className={`text-[11px] font-bold ${isAlmostFull ? 'text-red-600' : 'text-[#111]'}`}>{j.current}/{j.max}</span>
                   </div>
+                  )}
                 </div>
               </Link>
             );
@@ -1130,10 +1087,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ 11. 트렌딩 키워드 — 검색 유도 (→ /search) ═══ */}
+      {/* ═══ 11. 추천 검색어 — 검색 유도 (→ /search) ═══ */}
       <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-base font-bold text-[#111]">지금 뜨는 검색어</h2>
+          <h2 className="text-base font-bold text-[#111]">추천 검색어</h2>
           <Link to="/search" className="text-xs text-[#7C3AED] font-medium inline-block py-1.5 -my-1.5">검색 →</Link>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -1141,9 +1098,7 @@ export default function HomePage() {
             <Link key={kw} to={`/search?q=${encodeURIComponent(kw)}`}
               className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 py-1.5 active:bg-gray-50 transition"
               style={{ minHeight: 44 }}>
-              <span className={`text-[10px] font-black ${i < 3 ? 'text-[#7C3AED]' : 'text-[#666]'}`}>{i + 1}</span>
               <span className="text-[13px] font-medium text-[#111]">{kw}</span>
-              {i < 2 && <span className="text-[9px] text-red-600 font-bold">HOT</span>}
             </Link>
           ))}
         </div>
@@ -1260,9 +1215,9 @@ export default function HomePage() {
       {/* ═══ VENUE FEED — 2 Column Cards ═══ */}
       <section className="px-4 py-4 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
         {/* 탭 라벨 */}
-        {activeTab === 0 && <p className="text-xs font-medium text-[#7C3AED] mb-3">평점 + 리뷰 수 기반 실시간 인기순</p>}
+        {activeTab === 0 && <div className="mb-3"><span className="text-xs font-medium text-[#7C3AED]">인기 점수 순</span> <RankingBasisInline /></div>}
         {activeTab === 1 && <p className="text-xs font-medium text-[#7C3AED] mb-3">최근 등록된 업소 순</p>}
-        {activeTab === 2 && <p className="text-xs font-medium text-[#7C3AED] mb-3">프리미엄 + 평점 높은 순 추천</p>}
+        {activeTab === 2 && <p className="text-xs font-medium text-[#7C3AED] mb-3">광고 가게 먼저 · 그다음 인기 순위</p>}
         {activeTab === 3 && <p className="text-xs font-medium text-[#7C3AED] mb-3">지역별로 한눈에 보기</p>}
 
         {/* 지역별 탭 — 지역 그룹 레이아웃 */}
@@ -1312,7 +1267,7 @@ export default function HomePage() {
               if (idx + 1 === 12) {
                 cards.push(
                   <div key={`top5-${idx}`} className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-violet-50 to-white p-4">
-                    <p className="text-xs font-bold text-[#7C3AED] mb-0.5">🏆 이번주 TOP 5</p>
+                    <p className="text-xs font-bold text-[#7C3AED] mb-0.5">🏆 인기 점수 TOP 5</p>
                     <p className="mb-2"><RankingBasisInline /></p>
                     <div className="space-y-1">
                       {popularVenues.slice(0, 5).map((v, i) => (
@@ -1331,28 +1286,27 @@ export default function HomePage() {
               if (idx + 1 === 16) {
                 cards.push(
                   <Link key={`mag-cta-${idx}`} to="/magazine" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100 p-3 active:bg-gray-50 transition text-center">
-                    <p className="text-sm font-bold text-[#111]">📰 놀쿨 매거진 — 업소별 심층 리뷰·비교 분석 읽기 →</p>
+                    <p className="text-sm font-bold text-[#111]">📰 놀쿨 매거진 — 지역 안내·업종 비교 글 읽기 →</p>
                   </Link>
                 );
               }
 
-              // 20번째 — VS 투표 CTA
+              // 20번째 — VS 고르기 CTA
               if (idx + 1 === 20) {
                 cards.push(
                   <Link key={`vs-cta-${idx}`} to="/vs" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl bg-gradient-to-r from-pink-50 to-violet-50 border border-pink-100 p-3 active:bg-gray-50 transition text-center">
-                    <p className="text-sm font-bold text-[#7C3AED]">🆚 투표로 결정하자 — VS 배틀 참여하기 →</p>
+                    <p className="text-sm font-bold text-[#7C3AED]">🆚 둘 중 하나만 골라 봐 — VS 골라 보기 →</p>
                   </Link>
                 );
               }
 
-              // 24번째 — 뜨거운 토론 유도
+              // 24번째 — 이야기 나눠 볼 주제
               if (idx + 1 === 24) {
                 const debate = seedDebates[new Date().getDate() % seedDebates.length];
                 cards.push(
                   <Link key={`debate-cta-${idx}`} to="/community/free" className="col-span-2 sm:col-span-3 lg:col-span-4 rounded-xl border border-orange-100 bg-orange-50/50 p-3 active:bg-orange-50 transition">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="rounded bg-red-600 px-1.5 py-0.5 text-[9px] font-bold text-white">HOT</span>
-                      <span className="text-[11px] text-red-600 font-bold">{debate.heat}° 뜨거운 토론</span>
+                      <span className="text-[11px] text-[#7C3AED] font-bold">오늘의 이야깃거리</span>
                     </div>
                     <p className="text-sm font-bold text-[#111]">💬 {debate.topic}</p>
                   </Link>
@@ -1394,12 +1348,12 @@ export default function HomePage() {
           {[
             { icon: '🔍', title: '비교', href: '/compare', desc: '업소 맞대결' },
             { icon: '📖', title: '가이드', href: '/guide', desc: '입문자 필독' },
-            { icon: '🆚', title: 'VS 투표', href: '/vs', desc: '투표 참여' },
-            { icon: '📰', title: '매거진', href: '/magazine', desc: '심층 분석' },
+            { icon: '🆚', title: 'VS 고르기', href: '/vs', desc: '둘 중 하나' },
+            { icon: '📰', title: '매거진', href: '/magazine', desc: '읽을거리' },
             { icon: '🏆', title: '랭킹', href: '/ranking', desc: '전국 순위' },
             { icon: '🎰', title: '룰렛', href: '/roulette', desc: '랜덤 추천' },
             { icon: '🧠', title: '성향 테스트', href: '/quiz', desc: '내 취향 분석' },
-            { icon: '🎉', title: '이벤트', href: '/events', desc: '진행중' },
+            { icon: '🎉', title: '이벤트', href: '/events', desc: '행사 일정' },
           ].map(card => (
             <Link key={card.title} to={card.href}
               className="flex flex-col items-center gap-0.5 rounded-xl border border-gray-200 bg-white p-2 text-center shadow-sm active:scale-[0.97] transition" style={{ minHeight: 56 }}>

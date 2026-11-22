@@ -4,7 +4,7 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import VenueListClient from '@/components/venue/VenueListClient';
 import { sortVenues } from '@/lib/venue-order';
 import { popularity } from '@/lib/popularity';
-import { FirstVisitGuide, PopularTimes, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
+import { FirstVisitGuide, CategoryVSBattle, RelatedMagazine } from '@/components/venue/CategoryExtras';
 import { getVenuesByCategory } from '@/data/venues';
 import { PageLiveCounter, TodayStats } from '@/components/ui/LiveStats';
 import LiveActivityFeed from '@/components/ui/LiveActivityFeed';
@@ -54,7 +54,7 @@ export default function NightsPage() {
       <VenueListClient venues={venues} hrefPattern="/nights/{slug}" showEngagementHooks accentColor="blue" />
 
       {/* 시즌62 — 그리드 직후 인터랙티브 + 본문 즉시 노출 (체류 ↑) */}
-      <CategoryVSBattle venueA="수원찬스돔나이트" venueB="인천아라비안나이트" topic="경기 소셜댄스홀 최강자는?" />
+      <CategoryVSBattle venueA="수원찬스돔나이트" venueB="인천아라비안나이트" topic="수원 vs 인천, 더 끌리는 나이트는?" />
 
       <div className="rounded-2xl border border-neon-border/50 bg-neon-surface/30 p-6 space-y-4">
           <p className="text-lg font-bold text-neon-text">
@@ -88,14 +88,6 @@ export default function NightsPage() {
         alone="웨이터에게 안내 요청하면 부스 배정. 부킹 시스템으로 파트너 매칭 가능."
         reservation="좌석은 미리 예약 권장. 금토 저녁에는 일찍 가야 좋은 자리 확보 가능."
       />
-
-      <PopularTimes slots={[
-        { day: '금요일', time: '21:00~02:00', level: 95 },
-        { day: '토요일', time: '21:00~03:00', level: 100 },
-        { day: '목요일', time: '20:00~01:00', level: 55 },
-        { day: '수요일', time: '20:00~00:00', level: 35 },
-        { day: '일요일', time: '19:00~23:00', level: 40 },
-      ]} />
 
       <RelatedMagazine category="night" />
 

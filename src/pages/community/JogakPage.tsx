@@ -142,7 +142,7 @@ function LiveCounter() {
 export default function JogakPage() {
   useDocumentMeta(
     '조각모임 — 같이 갈 사람 바로 구하기',
-    '자리 하나 남았을 때 바로 올리고 바로 구하는 조각 매칭판. 여성조각·남성조각·제휴조각·벙개까지 실시간 모집. 강남 홍대 이태원 일산 클럽·룸·라운지 자리 채우기. 100P 이상 작성 가능.'
+    '자리 하나 남았을 때 바로 올리고 바로 구하는 조각 매칭판. 여성조각·남성조각·제휴조각·벙개까지 실시간 모집. 강남 홍대 이태원 일산 클럽·룸·라운지 자리 채우기. 로그인하면 바로 쓸 수 있습니다.'
   );
 
   const { user, loading: authLoading } = useAuth();

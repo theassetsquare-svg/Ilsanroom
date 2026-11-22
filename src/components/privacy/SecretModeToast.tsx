@@ -50,7 +50,7 @@ export default function SecretModeToast() {
       <div className="flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-3 py-2 shadow-lg">
         <span className="text-base shrink-0">🧹</span>
         <p className="text-[12px] text-[#333] leading-tight flex-1 min-w-0 truncate">
-          <strong className="text-emerald-700">시크릿 모드</strong>로 켜면 흔적 0%
+          <strong className="text-emerald-700">시크릿 모드</strong>는 이 기기에 방문 기록을 안 남겨요
         </p>
         <Link
           to="/privacy-promise"
