@@ -40,6 +40,13 @@ export const OG_DEFAULT_VER = '-v8'; // [놀쿨12-2] 새 판 카드
 export const heroVer = (slug) => HERO_FILE_VER[slug] || '';
 export const ogVer = (slug) => OG_FILE_VER[slug] || OG_DEFAULT_VER;
 
+/** [놀쿨86-1 · 2026-11-22] 업종 6장 og 카드(clubs · nights · rooms · lounges · yojeong · hoppa)의 파일 이름 판 — 한 곳.
+ *  빌드 서버에서 넣은 글꼴이 안 먹어 획이 깨지던 판(판 없는 이름)을 글꼴 파일로 다시 그리며 올렸다(엣지 30일 · 같은 이름이면 옛 그림).
+ *  쓰는 곳: scripts/gen-category-og.mjs(그림) · scripts/prerender-seo.mjs(og:image) · scripts/og-asset-gate.mjs · scripts/gate-bypass-audit.mjs
+ *  다시 그리면 '-v3' 으로 올린다. 옛 판 파일은 지우지 않는다(이미 퍼진 공유 주소). */
+export const CAT_OG_VER = '-v2';
+export const catOgFile = (slug) => `${slug}${CAT_OG_VER}`;
+
 /** [놀쿨12-2 · 13:18-6·7] 화면의 가게 그림 = 표준 카드(가게 이름이 가장 크게)의 webp 축소판(빌드가 dist/og/<이름>-w600.webp 로 만든다).
  *  가게 사진(/venues/*)은 사진 판정표(docs/NOLCOOL12_사진판정_2026-09-27.md) 여섯 가지를 모두 넘은 것만 쓰는데 지금 0장이라 전부 카드다. */
 export const cardSrc = (slug) => `/og/${slug}${ogVer(slug)}-w600.webp`;

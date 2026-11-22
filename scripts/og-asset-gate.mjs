@@ -14,6 +14,7 @@
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import sharp from 'sharp';
+import { catOgFile } from '../src/lib/venue-file-ver.mjs'; // [놀쿨86-1] 업종 og 판 이름 한 곳(-v2)
 
 const DIST = 'dist';
 const CAT_SLUGS = ['clubs', 'nights', 'rooms', 'lounges', 'yojeong', 'hoppa'];
@@ -52,7 +53,7 @@ for (const f of walk(DIST)) {
 
 // ── 2)+3) 6 카테고리 og JPG 치수 1200² + 두부/빈카드 ──
 for (const slug of CAT_SLUGS) {
-  const jpg = `public/og/${slug}.jpg`;
+  const jpg = `public/og/${catOgFile(slug)}.jpg`; // 쪽이 og:image 로 싣는 판(프리렌더와 같은 이름)
   if (!existsSync(jpg)) { errors.push(`카테고리 og 누락: ${jpg}`); continue; }
   // stale .svg 가 남아있으면(미참조) 경고성 차단 — 동일 slug .svg/.jpg 공존 금지
   if (existsSync(`public/og/${slug}.svg`)) errors.push(`stale 카테고리 og SVG 잔존(미정리): public/og/${slug}.svg`);

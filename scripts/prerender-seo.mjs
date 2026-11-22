@@ -9,7 +9,7 @@ import path from 'path';
 import crypto from 'crypto';
 import { execSync } from 'child_process';
 import { provinceOf, localityOf } from './lib/region-admin.mjs';
-import { ogVer, ogOwnVer, MAGAZINE_OG, pageCardOf, pageKey, pageCardAlt, adNameLine } from '../src/lib/venue-file-ver.mjs';
+import { ogVer, ogOwnVer, MAGAZINE_OG, pageCardOf, pageKey, pageCardAlt, adNameLine, catOgFile } from '../src/lib/venue-file-ver.mjs';
 import { isAdVenue, isPageOnlyAd, isListed, regionOf, regionTree, sortVenues } from '../src/lib/venue-order.mjs'; // [놀쿨12-2 · 13:18-1·2·4] React 목록과 같은 한 자리
 import sharp from 'sharp'; // [놀쿨11-3] 첫 화면 그림(og jpg) 의 webp 축소판 생성
 
@@ -2056,12 +2056,13 @@ for (const pg of staticPages) {
     });
   }
 
-  // ★ 카테고리 페이지 og:image — /og/{slug}.jpg 1200² 매핑 (clubs/nights/lounges/rooms/yojeong/hoppa)
-  // .jpg = gen-category-og.mjs가 임베드 한글폰트로 빌드(두부 0·1:1). 스크레이퍼 SVG 미렌더 회피.
+  // ★ 카테고리 페이지 og:image — /og/{slug}{판}.jpg 1200² 매핑 (clubs/nights/lounges/rooms/yojeong/hoppa)
+  // .jpg = gen-category-og.mjs가 넣어 둔 한글 글꼴 파일로 빌드(두부 0·1:1). 스크레이퍼 SVG 미렌더 회피.
+  // [놀쿨86-1 · 2026-11-22] 판 이름은 src/lib/venue-file-ver.mjs catOgFile 한 곳(-v2 = 글꼴 파일로 다시 그린 판)
   let pageOgImage;
   if (categoryPaths.has(pg.path)) {
     const ogSlug = pg.path.replace(/^\//, '');
-    pageOgImage = `${BASE_URL}/og/${ogSlug}.jpg`;
+    pageOgImage = `${BASE_URL}/og/${catOgFile(ogSlug)}.jpg`;
   }
   const _catKeyOfPath = Object.entries(catMap).find(([, ci]) => '/' + ci.path === pg.path)?.[0];
   const _catMembers = _catKeyOfPath ? recOrder(LISTED.filter(vv => vv.cat === _catKeyOfPath)) : [];

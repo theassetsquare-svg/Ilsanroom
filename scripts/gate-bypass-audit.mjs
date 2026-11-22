@@ -256,8 +256,8 @@ const REGISTRY = {
   },
   'scripts/og-asset-gate.mjs': {
     phase: 'dist',
-    label: '카테고리 og JPG(public/og/clubs.jpg) 제거',
-    mutate: moveAway('public/og/clubs.jpg'),
+    label: '카테고리 og JPG(public/og/clubs-v2.jpg — 쪽이 싣는 판 · src/lib/venue-file-ver.mjs catOgFile) 제거',
+    mutate: moveAway('public/og/clubs-v2.jpg'),
   },
   'scripts/category-density-gate.mjs': {
     phase: 'dist',
