@@ -34,11 +34,11 @@ export default function PostDetailPage() {
 
   // 동적 SEO: 글 제목 + 본문 첫 100자
   const dynamicTitle = post?.title
-    ? `${post.title} — 커뮤니티 실시간 토론`
-    : '커뮤니티 글 상세 — 솔직한 후기와 실시간 토론';
+    ? `${post.title} — 커뮤니티 글`
+    : '커뮤니티 글';
   const dynamicDesc = post?.content
-    ? `${String(post.content).replace(/[\n\r]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 140)} — 강남 홍대 이태원 일산 부산 클럽·나이트·룸·라운지·요정·호빠 회원 실시간 토론.`
-    : '클럽·나이트·룸·호빠 실제 이용자 후기와 댓글. 가기 전에 꼭 확인하세요. 강남 홍대 이태원 일산 부산 회원 실시간 의견 정리.';
+    ? `${String(post.content).replace(/[\n\r]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 140)}`
+    : '회원과 운영팀이 쓴 커뮤니티 글입니다. 글과 댓글에는 닉네임이 표시됩니다.';
   useDocumentMeta(dynamicTitle, dynamicDesc);
   const [comments, setComments] = useState<CommentData[]>([]);
   const [commentText, setCommentText] = useState('');

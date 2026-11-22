@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase';
 
 /* 창립멤버 시스템 — 첫 100명 가입자 영구 ⭐ 뱃지
-   user_profiles.joined_at 순서로 ROW_NUMBER 계산. 스키마 변경 0.
+   가입 순서(user_profiles.joined_at)는 서버 함수 founding_member_info() 가 센다(놀쿨86-1 · 함수가 없으면 숫자를 보이지 않음).
    - totalCount: 총 가입자 수 (1명 미만이면 100자리 모두 빈 자리)
    - myNumber: 현재 로그인 사용자의 가입 순번 (없으면 null)
    - isFounder: myNumber <= 100 */
@@ -24,29 +24,14 @@ export function useFoundingMember(userId?: string | null) {
 
     (async () => {
       try {
-        // 1. 총 가입자 수 (count)
-        const { count } = await supabase
-          .from('user_profiles')
-          .select('*', { count: 'exact', head: true });
-        if (cancelled) return;
-        setTotalCount(count ?? 0);
-
-        // 2. 내 순번 (joined_at 기준)
-        if (userId) {
-          const { data: me } = await supabase
-            .from('user_profiles')
-            .select('joined_at')
-            .eq('user_id', userId)
-            .single();
-          if (cancelled) return;
-          if (me?.joined_at) {
-            const { count: ahead } = await supabase
-              .from('user_profiles')
-              .select('*', { count: 'exact', head: true })
-              .lte('joined_at', me.joined_at);
-            if (!cancelled) setMyNumber(ahead ?? null);
-          }
-        }
+        // [놀쿨86-1 · 2026-11-22] 가입자 수 · 내 순번은 서버 함수 하나로 읽는다. 표(user_profiles)를 바로 세면
+        //   보안 규칙(자기 줄만 보임) 때문에 손님에게는 0명, 회원에게는 자기 한 명만 세어져
+        //   「100자리 남음」 · 「#1」이 사실과 다르게 나왔다(실제 가입 19명 · 11-22 실측). 함수가 없거나 실패하면 숫자를 보이지 않는다.
+        const { data, error } = await (supabase.rpc('founding_member_info') as any);
+        if (cancelled || error || !data) return;
+        const row = Array.isArray(data) ? data[0] : data;
+        if (typeof row?.total === 'number') setTotalCount(row.total);
+        if (userId && typeof row?.my_number === 'number') setMyNumber(row.my_number);
       } catch {
         // silent — 런칭 직후 RLS/오류 시 그냥 null
       } finally {

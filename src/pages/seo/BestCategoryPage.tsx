@@ -13,10 +13,10 @@ const catLabelMap: Record<string, string> = { club: '클럽', night: '나이트'
 const titleSuffixMap: Record<string, string> = {
   club: '발길 끊이지 않는 곳들',
   night: '왜 다들 여기로 몰릴까',
-  lounge: '주말마다 북적이는 상위권',
-  room: '회원들이 가장 많이 찾는다',
-  yojeong: '두 번 세 번 다시 가는 곳',
-  hoppa: '한 번 가면 또 찾는 단골집',
+  lounge: '조용히 한잔할 곳 고르기',
+  room: '어디가 나을지 나란히 비교',
+  yojeong: '모시기 전에 뭘 봐야 할까',
+  hoppa: '어디부터 많이 찾았을까',
 };
 
 // 업종별 인기순 안내 — 해당 키가 있는 페이지만 본문 렌더(공유 템플릿 스터핑 방지).

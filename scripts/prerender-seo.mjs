@@ -2849,22 +2849,22 @@ function aggInlineCta(key, members) {
 // ── best/[category] — 인기순 (6개) ──
 // 시즌36 — 동일 스켈레톤 → 카테고리별 unique 후킹 (질문/1인칭/손실회피/수치/CTA 2+ 적용)
 const BEST_DESC_BY_CAT = {
-  club: (n) => `강남·홍대·압구정 클럽 ${n}곳 중 진짜 핫한 곳이 어디? 회원이 다녀온 분위기·매니저·드레스코드를 비교했습니다. 놓치면 아까운 라인업, 바로 확인하세요.`,
-  night: (n) => `나이트 ${n}곳 중 부킹 잘 되는 곳을 회원이 솔직히 비교했어요. 웨이터 평판·부스 사이즈·양주 라인업까지, 오늘 갈 곳 5분 만에 결정하면 됩니다.`,
-  lounge: (n) => `조용히 마실 라운지가 ${n}곳? 압구정·청담·홍대 분위기와 칵테일 라인업을 다녀온 회원이 정리했습니다. 데이트든 사교든 후회 없이 고르는 비교 페이지.`,
-  room: (n) => `룸 ${n}곳 중 4~6인 부스가 어디 있나? 양주 라인업·진행 매너 모르면 첫방문 망설여집니다. 지역별 룸 구성과 예약 가능 시간을 먼저 확인하고 가세요.`,
-  yojeong: (n) => `요정 ${n}곳 처음이라 격 떨어질까 걱정? 한정식 코스·접대 매너·실장 응대를 회원이 정리했습니다. 사장님 모시는 자리, 놓치면 다음은 없으니까요.`,
-  hoppa: (n) => `호빠 ${n}곳 중 진짜 케어되는 곳이 어디? 강남·홍대 외모·진행·매너를 다녀온 회원이 솔직히 비교했어요. 첫방문 30분 어색함, 미리 보고 가야 안 놓칩니다.`,
+  club: (n) => `클럽 ${n}곳을 실제 조회와 전화 문의가 많은 순서로 세웠습니다. 동네와 가게 소개에 적힌 특징을 한 줄씩 보고 갈 곳을 고르세요.`,
+  night: (n) => `나이트 ${n}곳 중 실제 조회와 전화 문의가 많았던 곳부터 줄을 세웠어요. 동네마다 몇 곳이 있는지도 함께 적어 두었습니다.`,
+  lounge: (n) => `조용히 마실 라운지 ${n}곳을 모았습니다. 곳마다 어느 동네에 있는지와 가게 소개에 적힌 특징을 나란히 보고, 데이트 자리인지 여럿이 모이는 자리인지에 맞춰 고르면 됩니다.`,
+  room: (n) => `룸 ${n}곳을 한 페이지에 나란히 놓았습니다. 곳마다 어느 동네에 있는지, 가게 소개에 적힌 특징이 무엇인지 먼저 보고 끌리는 곳을 눌러 소개 전체를 읽어 보세요.`,
+  yojeong: (n) => `요정 ${n}곳, 처음 가는 접대 자리라 망설여진다면 가게 소개부터 읽어 보세요. 어느 동네에 있는지와 소개에 적힌 특징을 이 페이지에 모아 두었습니다. 모실 분과 가기 전에 한 번 더 확인해 두세요.`,
+  hoppa: (n) => `호빠 ${n}곳 중 사람들이 실제로 많이 찾은 곳은 어디일까요? 조회와 전화 문의가 많았던 곳부터 세우고, 순위가 잡히지 않은 곳은 최근 등록한 순서로 이었어요. 처음이라면 동네별로 몇 곳인지부터 보세요.`,
 };
 // 후미 5어절 unique 절대규칙 — aggPick 해시 모듈로는 6카테고리에서 접미사 충돌(club·night / yojeong·hoppa 동일)
 // → 카테고리당 고유 접미사 1:1 고정 매핑(6개 전부 unique 보장).
 const BEST_TITLE_SUFFIX_BY_CAT = {
   club: '발길 끊이지 않는 곳들',
   night: '왜 다들 여기로 몰릴까',
-  lounge: '주말마다 북적이는 상위권',
-  room: '회원들이 가장 많이 찾는다',
-  yojeong: '두 번 세 번 다시 가는 곳',
-  hoppa: '한 번 가면 또 찾는 단골집',
+  lounge: '조용히 한잔할 곳 고르기',
+  room: '어디가 나을지 나란히 비교',
+  yojeong: '모시기 전에 뭘 봐야 할까',
+  hoppa: '어디부터 많이 찾았을까',
 };
 // 파트4 S1 — /best 순위 = 실측만(popularity-scores.json, 28일 GA4+GSC 가중 점수). 미축적 구간은 최신 등록순 + 정직 라벨.
 let POP_SCORES = { generatedAt: null, venues: {} };
@@ -2888,7 +2888,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
   const p = `/best/${catInfo.path}`;
   const title = `${catInfo.labelKo} 인기 TOP ${catVenues.length} — ${BEST_TITLE_SUFFIX_BY_CAT[catKey]}`;
   const topNames = catVenues.slice(0, 3).map(vv => vv.nameKo).join(', ');
-  const desc = BEST_DESC_BY_CAT[catKey] ? BEST_DESC_BY_CAT[catKey](catVenues.length) : `전국 ${catInfo.labelKo} TOP ${catVenues.length}곳 비교 가이드 — ${topNames} 등 인기 ${catInfo.labelKo} 분위기, 매니저 평판, 드레스코드, 전화번호, 예약 팁까지 정리. 영업 확인을 거친 ${catInfo.labelKo} 추천 리스트.`;
+  const desc = BEST_DESC_BY_CAT[catKey] ? BEST_DESC_BY_CAT[catKey](catVenues.length) : `전국 ${catInfo.labelKo} ${catVenues.length}곳을 한 페이지에 모았습니다. ${topNames} 등이 앞에 있고, 동네와 가게 소개에 적힌 특징을 함께 볼 수 있습니다.`;
   // 시즌88 — 동일 템플릿 문단 제거 → 멤버 실데이터 본문 + 허브-메시(막다른길 0)
   const bestRegionList = [...new Set(catVenues.map(vv => vv.regionKo))].slice(0, 8);
   const bestRegionStr = bestRegionList.slice(0, 4).map(escHtml).join(', ');
@@ -2913,7 +2913,7 @@ for (const [catKey, catInfo] of Object.entries(catMap)) {
     { q: `예약은 어떻게 하나요?`, a: `광고 표시가 붙은 가게는 상세 페이지의 전화 단추로 바로 문의할 수 있습니다. 그 밖의 가게는 상세 페이지에서 소개를 먼저 확인하세요.` },
   ];
   ssrBody += faqPairsDl('자주 묻는 질문', bestFaqPairs);
-  writePage(p, { title, description: desc, ssrBody, skel: hubSkel('list', catVenues, { cat: catInfo.labelKo, factsHeading: `${catInfo.labelKo} 인기 순위 ${catVenues.length}곳` }, bestFaqPairs, `${catInfo.labelKo} ${catVenues.length}곳을 직전 28일 실제 조회·전화 문의·검색 유입 순으로 세웠고, 표본이 적은 곳은 등록순이다.`, 'best'), keywords: `${catInfo.labelKo} 인기, ${catInfo.labelKo} 추천, ${catInfo.labelKo} 랭킹, ${catInfo.labelKo} TOP`, jsonLdList: [...collectionJsonLd(p, title, desc, catVenues, [{ name: '놀쿨', url: BASE_URL }, { name: catInfo.labelKo, url: `${BASE_URL}/${catInfo.path}/` }, { name: '인기 순위', url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(bestFaqPairs)] });
+  writePage(p, { title, description: desc, ssrBody, skel: hubSkel('list', catVenues, { cat: catInfo.labelKo, factsHeading: `${catInfo.labelKo} 인기 순위 ${catVenues.length}곳` }, bestFaqPairs, `${catInfo.labelKo} ${catVenues.length}곳을 ${POP_DAY_KO ? POP_DAY_KO + '까지 ' : '직전 '}28일 실제 조회·전화 문의·검색 유입 순으로 세웠고, 표본이 적은 곳은 등록순이다.`, 'best'), keywords: `${catInfo.labelKo} 인기, ${catInfo.labelKo} 추천, ${catInfo.labelKo} 랭킹, ${catInfo.labelKo} TOP`, jsonLdList: [...collectionJsonLd(p, title, desc, catVenues, [{ name: '놀쿨', url: BASE_URL }, { name: catInfo.labelKo, url: `${BASE_URL}/${catInfo.path}/` }, { name: '인기 순위', url: `${BASE_URL}${p}/` }]), faqPairsJsonLd(bestFaqPairs)] });
   dynamicPages.push(p);
 }
 

@@ -12,6 +12,9 @@
  */
 import { parseHtml, serializeHtml } from '../uniq-variant.mjs';
 import { isAdVenue } from '../../src/lib/venue-order.mjs'; // [놀쿨12-2 · 13:18-2] 목록 줄의 「광고」 표시(명단 광고주만)
+import fs from 'node:fs';
+// [놀쿨86-1 · 2026-11-22] 인기 순위 계산이 끝난 날 — 자료가 9월 7일에 멈춰 있어 날짜 없이 적으면 지금 자료처럼 읽힌다 → 날짜로 적는다(파일이 없으면 날짜 없이)
+const POP_DAY = (() => { try { const d = JSON.parse(fs.readFileSync('src/data/popularity-scores.json', 'utf8')).generatedAt || ''; return d ? `${+d.slice(5, 7)}월 ${+d.slice(8, 10)}일` : ''; } catch { return ''; } })();
 
 export const SKEL_TYPES = ['venue', 'list', 'hub', 'magazine', 'community', 'guide'];
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -90,7 +93,7 @@ function memberList(ctx) {
   });
   // 순위 설명 줄은 순위가 실제로 표시된 쪽에만(틀 문장 되풀이 최소화 · ⑤ 틀 글자)
   const anyRank = ms.some((v) => ctx.popRank && ctx.popRank.get(v.slug));
-  const note = anyRank ? `<p class="nc-rank-note">인기 순위는 최근 28일 실제 조회·전화 문의·검색 유입으로 계산한 값만 표시합니다(표본이 적은 곳은 표시하지 않습니다).</p>` : '';
+  const note = anyRank ? `<p class="nc-rank-note">인기 순위는 ${POP_DAY ? POP_DAY + '까지 28일 동안의' : '28일 동안의'} 실제 조회·전화 문의·검색 유입으로 계산했고, 표본이 적은 곳은 표시하지 않습니다.</p>` : '';
   return `<section data-skel="facts" class="nc-facts nc-members"><h2>${esc(ctx.facts?.factsHeading || `한 줄씩 보는 ${ms.length}곳`)}</h2><ul>${items.join('')}</ul>${note}</section>`;
 }
 

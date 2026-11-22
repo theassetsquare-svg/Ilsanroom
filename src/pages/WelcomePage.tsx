@@ -73,7 +73,7 @@ export default function WelcomePage() {
               <span className="text-3xl font-black text-white">
                 {remaining !== null ? remaining : '100'}
               </span>
-              <span className="text-sm text-white/70">자리 남음</span>
+              <span className="text-sm text-white/70">{remaining !== null ? '자리 남음' : '명까지'}</span>
             </div>
             {totalCount !== null && totalCount > 0 && (
               <span className="text-[10px] text-white/50">{totalCount}명이 먼저 가입했어요</span>
