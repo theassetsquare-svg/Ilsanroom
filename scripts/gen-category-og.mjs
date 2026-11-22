@@ -14,8 +14,9 @@
  *   Cloudflare 빌드 서버에서는 대체 글꼴에 억지 굵기(900)를 씌워 「클럽」 · 「강남호빠」 획 끝이 깨져 나갔다(라이브 그림 원본 크기 실측 13:1x).
  *   이제 배경만 SVG 로 그리고, 글자는 sharp 글자 그림(text · fontfile = 넣어 둔 NotoSansKR-Bold.ttf)으로 그려 얹는다 —
  *   어느 컴퓨터에서 빌드해도 같은 글꼴이다(sharp 공식 문서 「new sharp → options.text.fontfile」 · v0.34.5 · 확인 2026-11-22).
- *   그림이 바뀌므로 파일 이름 판을 올린다(-v2): /og/*.jpg 는 엣지가 30일 들고 있어(max-age=2592000 · cf-cache-status HIT 실측) 같은 이름이면 옛 그림이 나간다.
- *   옛 이름 파일(clubs.jpg …)은 저장소에 그대로 둔다(이미 퍼진 공유 주소가 404 가 되지 않게).
+ *   업종 6장은 그림이 바뀌므로 파일 이름 판을 올린다(-v2): /og/*.jpg 는 엣지가 30일 들고 있어(max-age=2592000 · cf-cache-status HIT 실측) 같은 이름이면 옛 그림이 나간다.
+ *   업종 옛 이름 파일(clubs.jpg …)은 저장소에 그대로 둔다(이미 퍼진 공유 주소가 404 가 되지 않게).
+ *   허브 카드 세 장은 지금 싣는 쪽이 없어 이름 그대로(data/hub-og-cards.json _설명) — 옛 주소 그림만 엣지 캐시가 끝나면 새 그림.
  */
 import sharp from 'sharp';
 import fs from 'fs';
@@ -39,9 +40,8 @@ const CATS = [
 ];
 
 // [놀쿨16-1] 4 키워드 허브 카드(강남호빠·장안동호빠·건대호빠) — 목록은 data/hub-og-cards.json 한 곳(prerender 도 같은 파일을 읽는다)
-const HUB_CARDS = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/hub-og-cards.json'), 'utf8')).cards.filter((c) => !c.committed).map((c) => ({ slug: c.slug, label: c.label, bg: c.bg, sub: '한눈에 비교', ad: c.ad || null, oldSlugs: Array.isArray(c.oldSlugs) ? c.oldSlugs.filter((s) => /^[a-z0-9-]+$/.test(s) && s !== c.slug) : [] })); // [펩시17-2 17:0x] committed 카드(광고주 4줄 · 표준 생성기로 그려 저장소에 넣음)는 건너뛴다 — 빌드 서버 대체 글꼴로 번호가 잘리던 것
-// [놀쿨86-1] oldSlugs = 판 이름을 올리기 전의 옛 이름. 허브 카드는 빌드 때만 생기고 저장소에 없으므로, 옛 이름으로도 같은 그림을 써 두어야
-//   이미 퍼진 공유 주소(/og/hub-gangnam-hoppa.jpg …)가 404 가 되지 않는다. 업종 6장의 옛 이름은 저장소에 커밋되어 있어 손대지 않는다.
+const HUB_CARDS = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/hub-og-cards.json'), 'utf8')).cards.filter((c) => !c.committed).map((c) => ({ slug: c.slug, label: c.label, bg: c.bg, sub: '한눈에 비교', ad: c.ad || null })); // [펩시17-2 17:0x] committed 카드(광고주 4줄 · 표준 생성기로 그려 저장소에 넣음)는 건너뛴다 — 빌드 서버 대체 글꼴로 번호가 잘리던 것
+// [놀쿨86-1] 허브 카드 세 장은 이름을 그대로 둔다 — 지금 og:image 로 싣는 쪽이 없다(자료 파일 _설명 · 빌드 실측). 그림만 새 글꼴로.
 
 function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
@@ -131,9 +131,5 @@ for (const c of [...CATS, ...HUB_CARDS]) {
   const meta = await sharp(jpgPath).metadata();
   const size = fs.statSync(jpgPath).size;
   console.log(`✅ ${file}.jpg ${meta.width}×${meta.height} (${(size/1024).toFixed(1)}KB) — ${c.label}`);
-  for (const old of c.oldSlugs || []) {
-    fs.copyFileSync(jpgPath, path.join(outDir, `${old}.jpg`));
-    console.log(`   ↳ ${old}.jpg (옛 이름 · 같은 그림 — 이미 퍼진 공유 주소용)`);
-  }
 }
 console.log(`\n총 ${CATS.length}개 카테고리 + ${HUB_CARDS.length}개 허브 1:1 OG JPG 생성 완료 (stale SVG 제거)`);
