@@ -37,7 +37,7 @@ const hiddenGems = [
 ];
 
 export default function HiddenPage() {
-  useDocumentMeta('검색 안 해본 사람만 모르는 곳 — 놀쿨이 골라 둔 숨은 업소', '놀쿨이 골라 둔 덜 알려진 가게 3곳을 소개합니다. 요정 한 곳과 나이트 두 곳이고, 알고 있는 숨은 곳이 있다면 커뮤니티에 알려 주세요.');
+  useDocumentMeta('검색 안 해본 사람만 모르는 곳 — 골라 둔 숨은 업소 3곳', '놀쿨이 골라 둔 덜 알려진 가게 3곳을 소개합니다. 요정 한 곳과 나이트 두 곳이고, 알고 있는 숨은 곳이 있다면 커뮤니티에 알려 주세요.');
   const [revealedIdx, setRevealedIdx] = useState<Set<number>>(new Set([0]));
   const containerRef = useRef<HTMLDivElement>(null);
 
