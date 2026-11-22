@@ -11,6 +11,7 @@ import { execSync } from 'child_process';
 import { provinceOf, localityOf } from './lib/region-admin.mjs';
 import { ogVer, ogOwnVer, MAGAZINE_OG, pageCardOf, pageKey, pageCardAlt, adNameLine, catOgFile } from '../src/lib/venue-file-ver.mjs';
 import { isAdVenue, isPageOnlyAd, isListed, regionOf, regionTree, sortVenues } from '../src/lib/venue-order.mjs'; // [놀쿨12-2 · 13:18-1·2·4] React 목록과 같은 한 자리
+import { HOME_AD_CARDS, CAT_KO as HOME_CAT_KO } from '../src/lib/home-ad-cards.mjs'; // [놀쿨86-1 · 대표님 11-22 18:26] 홈 광고주 진열장 — 화면(React)과 같은 한 자리
 import sharp from 'sharp'; // [놀쿨11-3] 첫 화면 그림(og jpg) 의 webp 축소판 생성
 
 const DIST = path.resolve('dist');
@@ -1618,6 +1619,11 @@ const CAT_GUIDE_BLURBS = {
 // 홈 SSR 강화: H2×6 카테고리 + 각 카테고리 TOP 5 + 지역 분포
 let homeSsr = `<h1>놀쿨 — 전국 ${OPEN_N}곳의 밤을 한눈에</h1>`; // [놀쿨86-1 · 2026-11-22] 대표님 05:48 — 「20년 굴러본 사람」(그런 사람 자료 0)을 빼고 회사 소개 글투로
 homeSsr += `<p>놀쿨은 전국 클럽·나이트·라운지·룸·요정·호빠 ${OPEN_N}곳을 업종과 지역으로 나눠 정리한 정보 플랫폼입니다. 업종을 고르고 지역을 누르면 후보가 좁혀지고, 가게 페이지를 열면 소개와 특징이 같은 순서로 나옵니다. 주소가 등록된 곳은 찾아가는 길도 함께 보여 줍니다.</p>`;
+// [놀쿨86-1 · 대표님 11-22 18:26] 홈 광고주 진열장의 글자판 — 카드 그림은 화면(React)에만 싣고 여기는 가게 이름 링크만(번호 · 닉네임 0)
+//   (명단 광고주의 카드는 그 명단 쪽에서만 싣는다는 page-gate 규칙 그대로 — 홈 정적 판에 카드 그림 0)
+homeSsr += `<h2>놀쿨 광고주 ${HOME_AD_CARDS.length}곳</h2>`;
+homeSsr += `<ul>${HOME_AD_CARDS.map((c) => `<li><a href="${c.href}">${escHtml(c.shop)}</a> · ${escHtml(c.regionKo)} ${escHtml(HOME_CAT_KO[c.cat] || '')}</li>`).join('')}</ul>`;
+homeSsr += `<p>가게를 이 진열장에 올리려면 광고문의 카카오톡 besta12 로 연락 주세요. 홈 진열장에 더해 가게 쪽 맨 위 카드와 전화 단추가 같이 들어갑니다.</p>`;
 homeSsr += `<h2>놀쿨이 처음이신가요?</h2>`;
 homeSsr += `<p>놀쿨이 처음이라면 가이드에서 여섯 업종이 어떻게 다른지 먼저 읽어 보세요. 영업시간은 등록된 가게에만 나오고 가격은 싣지 않으니, 방문 전에 가게에 직접 확인하세요.</p>`;
 const HOME_CATS = [
@@ -1631,11 +1637,12 @@ const HOME_CATS = [
 // 시즌21 — 홈에서 카테고리·업소 SSR 내부링크 (JS 미실행 봇 anchor depth 1)
 homeSsr += SITE_NAV_ANCHORS;
 HOME_CATS.forEach(c => {
-  const list = recOrder(LISTED.filter(vv => vv.cat === c.key));
+  // [놀쿨86-1] 홈 업종 목록 = 인기 순(광고주는 위 「놀쿨 광고주」 진열장에 따로 · 그래서 여기 「광고」 표시 0)
+  const list = sortVenues(LISTED.filter(vv => vv.cat === c.key), 'pop', POP_VENUES);
   if (list.length === 0) return;
   homeSsr += `<h2><a href="/${catMap[c.key].path}/">${escHtml(c.ko)}</a> ${list.length}곳 — ${escHtml(c.desc)}</h2>`;
   homeSsr += `<ul>`;
-  list.slice(0, 8).forEach(vv => { homeSsr += `<li><a href="${venueHref(vv)}">${escHtml(vv.regionKo)} ${escHtml(c.ko)} ${escHtml(vv.nameKo)}</a>${adMark(vv)}</li>`; });
+  list.slice(0, 8).forEach(vv => { homeSsr += `<li><a href="${venueHref(vv)}">${escHtml(vv.regionKo)} ${escHtml(c.ko)} ${escHtml(vv.nameKo)}</a></li>`; });
   homeSsr += `</ul>`;
 });
 const homeAllRegions = [...new Set(LISTED.map(v => v.regionKo))];
@@ -1648,7 +1655,7 @@ const HOME_FAQ_SSR = [
   { q: '놀쿨은 어떤 사이트인가요?', a: `놀쿨은 전국 클럽·나이트·라운지·룸·요정·호빠 ${OPEN_N}곳의 정보를 정리한 플랫폼입니다. 가게 정보와 매거진, 회원 커뮤니티를 한곳에서 볼 수 있습니다.` },
   { q: '나이트랑 클럽이 어떻게 다른가요?', a: '나이트는 부킹·웨이터 시스템 중심, 클럽은 음악·스탠딩 중심입니다.' },
   { q: '가게는 어떻게 찾나요?', a: '가게 이름이나 지역으로 검색하거나, 클럽·나이트·라운지·룸·요정·호빠 여섯 업종 목록에서 고르면 됩니다.' },
-  { q: '광고 문의는 어떻게 해요?', a: '카톡 ID besta12로 문의하시면 상세 안내드립니다.' },
+  { q: '광고문의는 어떻게 하나요?', a: '카카오톡 아이디 besta12 로 문의하시면 홈 진열장 · 가게 쪽 카드 · 전화 단추 안내를 드립니다.' },
   { q: '후기 작성 어떻게 해요?', a: '회원가입 후 /community/reviews 페이지에서 작성 가능합니다.' },
 ];
 HOME_FAQ_SSR.forEach(f => { homeSsr += `<dt>${escHtml(f.q)}</dt><dd>${escHtml(f.a)}</dd>`; });

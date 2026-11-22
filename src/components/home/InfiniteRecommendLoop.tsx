@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from '../ui/SafeLink';
 import type { Venue } from '@/types';
-import { cardSrc } from '@/lib/venue-file-ver';
+import { homeCardImg } from '@/lib/home-ad-cards';
 
 const RECOMMEND_BATCH = 6;
 
@@ -82,30 +82,29 @@ export default function InfiniteRecommendLoop({ venues, popularVenues }: { venue
               <div className="flex-1 h-px bg-gray-200" />
             </div>
             <div className="grid grid-cols-2 gap-2.5">
-              {batch.map(v => (
-                <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)}
-                  className="rounded-xl border border-gray-100 bg-white overflow-hidden shadow-sm active:scale-[0.98] transition-transform">
-                  <div className={`relative w-full overflow-hidden bg-gradient-to-br ${
-                    v.category === 'club' ? 'from-violet-500 to-indigo-700' :
-                    v.category === 'night' ? 'from-blue-500 to-purple-700' :
-                    v.category === 'lounge' ? 'from-amber-500 to-orange-700' :
-                    v.category === 'room' ? 'from-rose-500 to-pink-700' :
-                    v.category === 'yojeong' ? 'from-emerald-500 to-teal-700' :
-                    'from-pink-500 to-rose-700'
-                  }`} style={{ aspectRatio: '4/3' }}>
-                    <img src={cardSrc(v.slug)} alt={v.nameKo} loading="lazy" width={300} height={225}
-                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                      className="absolute inset-0 w-full h-full object-cover z-[1]" />
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-2xl">{catEmoji[v.category] || '🎵'}</span>
+              {batch.map(v => {
+                // [놀쿨86-1 · 대표님 11-22 18:26] 그림은 광고주 넉 줄 카드만(정사각 그대로 · 잘림 0) · 광고주가 아니면 이름 칸 · 이름 줄은 그림 밑
+                const img = homeCardImg(v.slug);
+                return (
+                  <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)}
+                    className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-transform active:scale-[0.98]">
+                    <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
+                      <div className="absolute inset-0 flex items-center justify-center bg-neon-bg px-3 text-center">
+                        <span className="text-[15px] font-black leading-snug text-neon-text break-keep">{v.nameKo}</span>
+                      </div>
+                      {img && (
+                        <img src={img} alt={`${v.nameKo} 안내 카드`} loading="lazy" width={300} height={300}
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                          className="absolute inset-0 z-[1] h-full w-full bg-neon-text object-cover" />
+                      )}
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/70 px-2 py-1.5">
-                      <p className="text-[12px] font-bold text-white truncate">{v.nameKo}</p>
-                      <p className="text-[10px] text-white/80">{catLabel[v.category]} · {v.regionKo}</p>
+                    <div className="px-2 py-1.5">
+                      <p className="truncate text-[12px] font-bold text-neon-text">{v.nameKo}</p>
+                      <p className="truncate text-[11px] text-neon-text-subtle">{catLabel[v.category]} · {v.regionKo}</p>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })}
             </div>
 
             {crossHook && bIdx % 2 === 0 && (

@@ -3,15 +3,20 @@
  * Outlet 직후 마운트, 페이지 하단 풋터 직전에 고정 표시.
  * 사이트 어디서나 최근 본 venue 10개 가로 스크롤로 즉시 재방문 (Zillow·Coupang 패턴).
  */
+import { useLocation } from 'react-router-dom';
 import { useRecentVenues } from '@/hooks/useRecentVenues';
 import { Link } from '@/components/ui/SafeLink';
 import { cardSrc } from '@/lib/venue-file-ver';
+import { homeCardImg } from '@/lib/home-ad-cards';
 
 const catEmoji: Record<string, string> = { club: '🎵', night: '🌙', lounge: '🍸', room: '🚪', yojeong: '🏮', hoppa: '🥂' };
 const catLabel: Record<string, string> = { club: '클럽', night: '나이트', lounge: '라운지', room: '룸', yojeong: '요정', hoppa: '호빠' };
 
 export default function RecentVenuesBar() {
   const { items, remove, clear } = useRecentVenues();
+  // [놀쿨86-1 · 대표님 11-22 18:26] 홈에서는 광고주 넉 줄 카드만(광고문의 석 줄 카드 0) · 다른 쪽은 그대로
+  const onHome = useLocation().pathname === '/';
+  const imgOf = (slug: string) => (onHome ? homeCardImg(slug) : cardSrc(slug));
   if (items.length === 0) return null;
   const visible = items.slice(0, 10);
 
@@ -48,9 +53,9 @@ export default function RecentVenuesBar() {
                   className="block rounded-xl overflow-hidden bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.10)] transition-shadow"
                 >
                   <div className="relative aspect-square bg-gradient-to-br from-violet-200 to-violet-400">
-                    {(
+                    {imgOf(v.slug) && (
                       <img
-                        src={cardSrc(v.slug)}
+                        src={imgOf(v.slug) as string}
                         alt={v.nameKo}
                         width={140}
                         height={140}

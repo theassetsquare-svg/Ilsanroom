@@ -13,7 +13,9 @@ import type { Venue } from '@/types';
 import { createClient } from '@/lib/supabase';
 import JsonLd from '@/components/seo/JsonLd';
 import { useFavorites as useFavoritesHook } from '@/hooks/useFavorites';
-import { cardSrc } from '@/lib/venue-file-ver';
+// [놀쿨86-1 · 대표님 11-22 18:26] 홈 가게 그림 = 광고주 넉 줄 카드만(광고문의 석 줄 카드 0) — 고르는 자리는 home-ad-cards 한 곳
+import { homeCardImg } from '@/lib/home-ad-cards';
+import HomeAdShowcase from '@/components/home/HomeAdShowcase';
 // 아래로 접힌 무거운 위젯들은 lazy — TBT(메인 스레드 블로킹) 감소가 목적.
 // 모두 above-the-fold 아래에 위치 → LCP/FCP 영향 0.
 const HomeFeed = lazy(() => import('@/components/community/HomeFeed').then(m => ({ default: m.HomeFeed })));
@@ -24,7 +26,6 @@ const LiveStats = lazy(() => import('@/components/live/LiveStats'));
 const FreshPostsZone = lazy(() => import('@/components/home/FreshPostsZone'));
 const StreakBadge = lazy(() => import('@/components/home/StreakBadge'));
 const PrivacyTrustBadge = lazy(() => import('@/components/privacy/PrivacyTrustBadge'));
-const OpenBetaBanner = lazy(() => import('@/components/launch/OpenBetaBanner'));
 const InviteFriendBox = lazy(() => import('@/components/launch/InviteFriendBox'));
 const InfiniteRecommendLoop = lazy(() => import('@/components/home/InfiniteRecommendLoop'));
 const LuckyRoulette = lazy(() => import('@/components/home/LuckyRoulette'));
@@ -32,7 +33,7 @@ import { articles as magazineArticles } from '@/data/magazine-articles';
 import { useAuth } from '@/hooks/useAuth';
 import { useCommunityActive } from '@/hooks/useCommunityActive';
 import { popularity, popularityOrder } from '@/lib/popularity';
-import { isAdVenue, sortVenues } from '@/lib/venue-order';
+import { sortVenues } from '@/lib/venue-order';
 import { RankingBasisInline } from '@/components/ui/RankingBasisNote';
 import WeeklyVoteWidget from '@/components/community/WeeklyVoteWidget';
 
@@ -156,50 +157,46 @@ const feedTabs = ['🔥인기', '🆕신규', '⭐추천', '📍지역별'] as c
 
 /* ── VenueCard — 재사용 카드 컴포넌트 (memo로 불필요한 리렌더링 방지) ── */
 const VenueCard = memo(function VenueCard({ venue, isFavorite, toggleFavorite, rank, priority }: { venue: Venue; isFavorite: boolean; toggleFavorite: (id: string) => void; rank?: number; priority?: boolean }) {
+  // [놀쿨86-1 · 대표님 11-22 18:26] 그림은 광고주 넉 줄 카드만 — 광고주가 아닌 가게는 이름 칸(광고문의 석 줄 카드 0)
+  // 이름 · 업종은 그림 밑 줄에 둔다(넉 줄 카드의 아래 줄을 가리지 않게)
+  const img = homeCardImg(venue.slug);
   return (
     <div className="relative">
       <Link to={getCategoryHref(venue.category, venue.slug, venue.region)} className="block">
         <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-transform hover:scale-[1.02]">
           <div className="relative w-full overflow-hidden" style={{ aspectRatio: '1/1' }}>
-            {/* R4-2 — TOP 4 첫 카드는 LCP 후보 → eager + fetchPriority high */}
-            <img src={cardSrc(venue.slug)} alt={venue.nameKo}
-              loading={priority ? 'eager' : 'lazy'}
-              {...(priority ? { fetchPriority: 'high' as const } : {})}
-              width={300} height={300}
-              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-              className="absolute inset-0 w-full h-full object-cover z-[1]" />
-            <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${
-              venue.category === 'club' ? 'from-violet-500 to-indigo-700' :
-              venue.category === 'night' ? 'from-blue-500 to-purple-700' :
-              venue.category === 'lounge' ? 'from-amber-500 to-orange-700' :
-              venue.category === 'room' ? 'from-rose-500 to-pink-700' :
-              venue.category === 'yojeong' ? 'from-emerald-500 to-teal-700' :
-              'from-pink-500 to-rose-700'
-            }`}>
-              <span className="text-3xl mb-1">{catEmoji[venue.category] || '🎵'}</span>
-              <span className="text-[13px] font-black text-white">{venue.nameKo.length > 6 ? venue.nameKo.slice(0, 6) : venue.nameKo}</span>
-              <span className="text-[10px] text-white/70 mt-0.5">{venue.regionKo} · {catLabel[venue.category]}</span>
-              {venue.rating > 0 && <span className="text-[10px] text-yellow-300 mt-0.5">★ {venue.rating.toFixed(1)}</span>}
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-neon-bg px-3 text-center">
+              <span className="text-[15px] font-black leading-snug text-neon-text break-keep">{venue.nameKo}</span>
+              <span className="mt-1 text-[11px] text-neon-text-subtle">{venue.regionKo} · {catLabel[venue.category]}</span>
             </div>
+            {/* R4-2 — TOP 4 첫 카드는 LCP 후보 → eager + fetchPriority high */}
+            {img && (
+              <img src={img} alt={`${venue.nameKo} 안내 카드`}
+                loading={priority ? 'eager' : 'lazy'}
+                {...(priority ? { fetchPriority: 'high' as const } : {})}
+                width={300} height={300}
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                className="absolute inset-0 z-[1] h-full w-full bg-neon-text object-cover" />
+            )}
             {rank && (
               <span className={`absolute top-2 left-2 z-[2] flex h-6 w-6 items-center justify-center rounded-full text-xs font-black text-white ${rank <= 3 ? 'bg-[#7C3AED]' : 'bg-black/50'}`}>
                 {rank}
               </span>
             )}
-            <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2.5 py-2">
-              <h3 className="text-sm font-bold text-white leading-tight truncate">{venue.nameKo}</h3>
-              <div className="flex items-center justify-between">
-                <p className="text-[11px] text-white/90 truncate">{catLabel[venue.category]} · {venue.regionKo}</p>
-                {isAdVenue(venue) && <span className="ml-1 shrink-0 rounded bg-white/90 px-1 text-[10px] font-bold text-[#111]">광고</span>}
-                {venue.rating > 0 && <span className="text-[11px] text-yellow-300 font-bold">★ {venue.rating.toFixed(1)}</span>}
-              </div>
+          </div>
+          <div className="py-2 pl-2.5 pr-11">
+            <h3 className="truncate text-sm font-bold leading-tight text-neon-text">{venue.nameKo}</h3>
+            <div className="mt-0.5 flex items-center justify-between gap-1">
+              <p className="truncate text-[11px] text-neon-text-subtle">{catLabel[venue.category]} · {venue.regionKo}</p>
+              {img && <span className="shrink-0 rounded bg-neon-text px-1 text-[10px] font-bold text-white">광고주</span>}
             </div>
           </div>
         </div>
       </Link>
+      {/* 찜 단추는 이름 줄 오른쪽 — 카드 그림 위를 가리지 않게 */}
       <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(venue.id); }}
-        className="absolute top-2 right-2 z-[3] flex h-11 w-11 items-center justify-center rounded-full bg-black/30 backdrop-blur-sm" aria-label="찜하기">
-        <svg className={`h-4 w-4 ${isFavorite ? 'text-red-600 fill-red-600' : 'text-white'}`} fill={isFavorite ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+        className="absolute bottom-0 right-0 z-[3] flex h-11 w-11 items-center justify-center rounded-full" aria-label="찜하기">
+        <svg className={`h-4 w-4 ${isFavorite ? 'text-red-600 fill-red-600' : 'text-neon-text-subtle'}`} fill={isFavorite ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
         </svg>
       </button>
@@ -477,6 +474,7 @@ export default function HomePage() {
     const top = popularVenues.slice(0, 5);
     return top[d % top.length];
   }, [popularVenues]);
+  const featuredImg = featuredVenue ? homeCardImg(featuredVenue.slug) : null; // [86-1] 광고주일 때만 넉 줄 카드
 
   // 가짜 실시간 접속자 카운터 제거 — 출처 검증 불가 (놀쿨 신뢰 규칙)
 
@@ -561,9 +559,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ 1.30 OPEN BETA 시그널 — 첫 100명 창립멤버 긴박감 ═══ */}
+      {/* ═══ 1.30 놀쿨 광고주 진열장 — [놀쿨86-1 · 대표님 11-22 18:26] 홈 그림은 광고주 넉 줄 카드만 · 보자마자 광고문의
+              (옛 「첫 100명 창립멤버」 띠는 막 연 사이트처럼 보여 뺐다) ═══ */}
+      <HomeAdShowcase />
+
+      {/* ═══ 1.31 오늘 가장 본 곳 — 실 page_events 24h 집계(가짜 카운터 0) · 데이터 없으면 자동 숨김 · 진열장 바로 밑으로 올림(86-1) ═══ */}
       <Suspense fallback={null}>
-        <OpenBetaBanner />
+        <TrendingTodayWidget />
       </Suspense>
 
       {/* ═══ 1.35 프라이버시 신뢰 뱃지 — 백만 회원 친구 추천 안심 포인트 ═══ */}
@@ -631,23 +633,11 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* ═══ 1.7 커뮤니티 피드 — 활동 있으면 무한피드, 없으면 정직한 시작 안내(가짜 0) ═══ */}
-      {communityActive ? (
+      {/* ═══ 1.7 커뮤니티 피드 — 활동 있을 때만(가짜 0) · [86-1] 「커뮤니티를 시작하는 중」 안내는 막 연 사이트처럼 보여 뺐다 ═══ */}
+      {communityActive && (
         <Suspense fallback={<div className="h-96" aria-hidden="true" />}>
           <HomeFeed />
         </Suspense>
-      ) : (
-        <section className="px-4 pt-2 pb-4 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
-          <Link
-            to="/community/free?write=true"
-            className="block rounded-2xl border border-purple-100 bg-gradient-to-br from-[#F5F3FF] to-white p-5 active:bg-purple-50 transition"
-          >
-            <p className="text-[13px] font-bold text-[#7C3AED]">커뮤니티를 시작하는 중입니다</p>
-            <p className="mt-1 text-lg font-black leading-tight text-[#111]">첫 글의 주인공, 창립멤버가 되어주세요</p>
-            <p className="mt-1.5 text-[13px] text-[#555] leading-relaxed">지금은 진짜 후기가 쌓이는 단계예요. 오늘 밤 다녀온 곳 한 줄이면 충분합니다 — 먼저 남긴 분께는 1~100번 영구 뱃지.</p>
-            <span className="mt-3 inline-flex items-center rounded-full bg-[#7C3AED] px-4 text-base font-bold text-white" style={{ minHeight: 44 }}>첫 글 남기기 →</span>
-          </Link>
-        </section>
       )}
 
       {/* ═══ 2. 미니 성향테스트 — "3초 만에 오늘 밤 결정" (→ /quiz 유도) ═══ */}
@@ -719,11 +709,6 @@ export default function HomePage() {
           </div>
         )}
       </section>
-
-      {/* ═══ v28 오늘 가장 본 곳 — 실 page_events 24h 집계 (가짜 카운터 X). 데이터 없으면 자동 숨김 ═══ */}
-      <Suspense fallback={null}>
-        <TrendingTodayWidget />
-      </Suspense>
 
       {/* ═══ v28 최근 업데이트 — 광고주가 실제로 갱신한 venue (updated_at 가짜 터치 X) ═══ */}
       <Suspense fallback={null}>
@@ -1108,25 +1093,19 @@ export default function HomePage() {
       {featuredVenue && (
         <section className="px-4 py-2 max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto">
           <Link to={getCategoryHref(featuredVenue.category, featuredVenue.slug, featuredVenue.region)} className="block">
-            <div className={`relative rounded-2xl overflow-hidden bg-gradient-to-br ${
-              featuredVenue.category === 'club' ? 'from-violet-600 to-indigo-800' :
-              featuredVenue.category === 'night' ? 'from-blue-600 to-purple-800' :
-              featuredVenue.category === 'lounge' ? 'from-amber-600 to-orange-800' :
-              featuredVenue.category === 'room' ? 'from-rose-600 to-pink-800' :
-              featuredVenue.category === 'yojeong' ? 'from-emerald-600 to-teal-800' :
-              'from-pink-600 to-rose-800'
-            }`} style={{ minHeight: 130 }}>
-              <img src={cardSrc(featuredVenue.slug)} alt={featuredVenue.nameKo} width={600} height={300} loading="lazy"
-                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                className="absolute inset-0 w-full h-full object-cover z-[1] opacity-60" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-[2]" />
-              <div className="relative z-[3] flex flex-col justify-end h-full p-4" style={{ minHeight: 130 }}>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="rounded-full bg-[#7C3AED] px-2 py-0.5 text-[10px] font-bold text-white">오늘의 추천</span>
-                  <span className="text-[11px] text-white/80">{catLabel[featuredVenue.category]} · {featuredVenue.regionKo}</span>
+            {/* [86-1] 넉 줄 카드는 잘리지 않게 정사각 그대로 옆에 · 광고주가 아니면 그림 0 */}
+            <div className="flex items-center gap-3 rounded-2xl bg-neon-text p-3" style={{ minHeight: 96 }}>
+              {featuredImg && (
+                <img src={featuredImg} alt={`${featuredVenue.nameKo} 안내 카드`} width={96} height={96} loading="lazy"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  className="h-24 w-24 shrink-0 rounded-xl object-cover" />
+              )}
+              <div className="min-w-0 flex-1 px-1">
+                <div className="mb-1 flex items-center gap-2">
+                  <span className="rounded-full bg-neon-primary px-2 py-0.5 text-[10px] font-bold text-white">오늘의 추천</span>
+                  <span className="truncate text-[11px] text-white/80">{catLabel[featuredVenue.category]} · {featuredVenue.regionKo}</span>
                 </div>
-                <h3 className="text-lg font-black text-white leading-tight">{featuredVenue.nameKo}</h3>
-                {featuredVenue.rating > 0 && <span className="text-[13px] font-bold text-yellow-300 mt-0.5">★ {featuredVenue.rating.toFixed(1)} · 리뷰 {featuredVenue.reviewCount}개</span>}
+                <h3 className="text-lg font-black leading-tight text-white">{featuredVenue.nameKo}</h3>
               </div>
             </div>
           </Link>
@@ -1140,31 +1119,27 @@ export default function HomePage() {
         </div>
         <div className="px-4 mb-2"><RankingBasisInline /></div>
         <div className="flex gap-2.5 px-4 overflow-x-auto scrollbar-hide pb-1">
-          {popularVenues.slice(0, 8).map((v, i) => (
-            <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} className="flex-shrink-0" style={{ width: 120 }}>
-              <div className="relative rounded-xl overflow-hidden" style={{ width: 120, height: 120 }}>
-                <img src={cardSrc(v.slug)} alt={v.nameKo} width={120} height={120} loading="lazy"
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  className="absolute inset-0 w-full h-full object-cover z-[1]" />
-                <div className={`absolute inset-0 flex flex-col items-center justify-center ${
-                  v.category === 'club' ? 'bg-gradient-to-br from-violet-500 to-indigo-700' :
-                  v.category === 'night' ? 'bg-gradient-to-br from-blue-500 to-purple-700' :
-                  v.category === 'lounge' ? 'bg-gradient-to-br from-amber-500 to-orange-700' :
-                  v.category === 'room' ? 'bg-gradient-to-br from-rose-500 to-pink-700' :
-                  v.category === 'yojeong' ? 'bg-gradient-to-br from-emerald-500 to-teal-700' :
-                  'bg-gradient-to-br from-pink-500 to-rose-700'
-                }`}>
-                  <span className="text-2xl">{catEmoji[v.category] || '🎵'}</span>
-                  <span className="mt-0.5 text-[11px] font-bold text-white/80">{v.nameKo.slice(0, 4)}</span>
+          {popularVenues.slice(0, 8).map((v, i) => {
+            // [86-1] 그림은 광고주 넉 줄 카드만 · 이름 줄은 그림 밑(카드 아래 줄을 가리지 않게)
+            const img = homeCardImg(v.slug);
+            return (
+              <Link key={v.id} to={getCategoryHref(v.category, v.slug, v.region)} className="flex-shrink-0" style={{ width: 120 }}>
+                <div className="relative overflow-hidden rounded-xl" style={{ width: 120, height: 120 }}>
+                  <div className="absolute inset-0 flex items-center justify-center bg-neon-bg px-2 text-center">
+                    <span className="text-[13px] font-black leading-snug text-neon-text break-keep">{v.nameKo}</span>
+                  </div>
+                  {img && (
+                    <img src={img} alt={`${v.nameKo} 안내 카드`} width={120} height={120} loading="lazy"
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                      className="absolute inset-0 z-[1] h-full w-full bg-neon-text object-cover" />
+                  )}
+                  <span className={`absolute top-1.5 left-1.5 z-[2] flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black text-white ${i < 3 ? 'bg-[#7C3AED]' : 'bg-black/50'}`}>{i + 1}</span>
                 </div>
-                <span className={`absolute top-1.5 left-1.5 z-[2] flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black text-white ${i < 3 ? 'bg-[#7C3AED]' : 'bg-black/50'}`}>{i + 1}</span>
-                <div className="absolute bottom-0 left-0 right-0 z-[2] bg-black/75 px-2 py-1.5">
-                  <p className="text-[11px] font-bold text-white truncate">{v.nameKo}</p>
-                  <p className="text-[9px] text-white/80 truncate">{catLabel[v.category]} · {v.regionKo}</p>
-                </div>
-              </div>
-            </Link>
-          ))}
+                <p className="mt-1 truncate text-[12px] font-bold text-neon-text">{v.nameKo}</p>
+                <p className="truncate text-[11px] text-neon-text-subtle">{catLabel[v.category]} · {v.regionKo}</p>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
@@ -1217,7 +1192,7 @@ export default function HomePage() {
         {/* 탭 라벨 */}
         {activeTab === 0 && <div className="mb-3"><span className="text-xs font-medium text-[#7C3AED]">인기 점수 순</span> <RankingBasisInline /></div>}
         {activeTab === 1 && <p className="text-xs font-medium text-[#7C3AED] mb-3">최근 등록된 업소 순</p>}
-        {activeTab === 2 && <p className="text-xs font-medium text-[#7C3AED] mb-3">광고 가게 먼저 · 그다음 인기 순위</p>}
+        {activeTab === 2 && <p className="text-xs font-medium text-[#7C3AED] mb-3">광고주 가게 먼저 · 그다음 인기 순위</p>}
         {activeTab === 3 && <p className="text-xs font-medium text-[#7C3AED] mb-3">지역별로 한눈에 보기</p>}
 
         {/* 지역별 탭 — 지역 그룹 레이아웃 */}

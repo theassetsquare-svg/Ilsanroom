@@ -39,6 +39,8 @@ import { analyzeHook } from './lib/hook-detector.mjs';
 import { normalize, grams3, jaccard, hookPart, SIM_LIMIT } from './lib/title-bank.mjs';
 import { checkSkeleton } from './skeleton/index.mjs';
 import { PAGE_CARD, pageKey, pageCardOf, ogVer, ogOwnVer, OG_OWN_PAGE_VER, OG_FILE_VER, MAGAZINE_OG } from '../src/lib/venue-file-ver.mjs'; // [놀쿨44-1] 쪽 카드 표 · 가게 카드 판 — 프리렌더와 같은 한 자리
+import { HOME_AD_CARDS, venuePath } from '../src/lib/home-ad-cards.mjs'; // [놀쿨86-1 · 대표님 11-22 18:26] 홈 광고주 진열장 — 화면 · 프리렌더와 같은 한 자리
+import { isAdVenue, isListed } from '../src/lib/venue-order.mjs';
 
 const DIST = process.argv.find((a) => a.startsWith('--dist='))?.slice(7) || 'dist';
 const OUT = process.argv.find((a) => a.startsWith('--out='))?.slice(6) || '';
@@ -559,8 +561,66 @@ export function gatePage(html, ctx = {}) {
   return { route, type, title, h1: h1s[0] || '', block, quality, chars, noindex };
 }
 
+/**
+ * [놀쿨86-1 · 대표님 2026-11-22 18:26 「놀쿨 홈화면에 있는 광고문의 썸네일이미지 보이지 않게 하고 광고주 썸네일이미지만 보이게 하라고」]
+ *   홈의 가게 그림(진열장 · 가게 칸 · 오늘의 추천 · TOP8 · 이어 보기 · 최근 본 · 찜)은 src/lib/home-ad-cards.mjs 한 자리에서만 고른다.
+ *   카드 그림은 화면(React)에만 실리고 홈 정적 판은 가게 이름 글자뿐이라, 위 A6(명단 광고 카드는 그 명단 쪽에서만)은 홈 정적 판을 그대로 본다.
+ *   홈 화면에 명단 광고주의 넉 줄 카드가 실리는 것은 대표님 18:26 말씀으로 연 자리 하나다(번호 · 닉네임 글자는 그대로 명단 쪽에서만).
+ *   그래서 이 칸이 진열장 자료를 본다 —
+ *   막음  H1 가게 자료에 없음 · 업종 · 주소가 가게 쪽과 다름 · 목록에 안 드는 가게 · 같은 가게 두 번 · 진열장 0곳
+ *         H2 광고주가 아닌 가게의 목록 카드(= 광고문의 석 줄 카드) · 홈 정적 판이 광고문의 석 줄 카드를 부름
+ *         H3 명단 광고 카드로 등록 안 된 그림 · 그 카드의 명단 줄 쪽에 가게 쪽이 없음
+ *         H4 그림 파일 없음(jpg · -w600.webp) · 금지 그림 해시 · 정사각 아님
+ *   품질  H5 광고주(가게 자료 번호가 붙은 가게 · 놀쿨 명단 줄)가 진열장에 빠짐
+ */
+export function homeShowcaseProblems(dist = DIST) {
+  const block = [], quality = [];
+  let src = '';
+  try { src = fs.readFileSync('src/data/venues.ts', 'utf8'); } catch { return { block: ['H1 가게 자료(src/data/venues.ts)를 못 읽음'], quality }; }
+  const venues = [];
+  for (const b of src.split(/\n  \{/)) { // scripts/prerender-seo.mjs parseVenues 와 같은 자르기
+    const slug = b.match(/slug:\s*'([^']+)'/)?.[1];
+    if (!slug) continue;
+    venues.push({ slug, cat: b.match(/category:\s*'([^']+)'/)?.[1] || '', region: b.match(/region:\s*'([^']+)'/)?.[1] || '', staffPhone: b.match(/staffPhone:\s*'([^']+)'/)?.[1] || '', status: b.match(/status:\s*'([^']+)'/)?.[1] || '', sameAs: b.match(/\n\s+sameAs:\s*'([^']+)'/)?.[1] || '' });
+  }
+  const bySlug = new Map();
+  for (const v of venues) if (!bySlug.has(v.slug)) bySlug.set(v.slug, v);
+  if (!HOME_AD_CARDS.length) block.push('H1 홈 광고주 진열장이 0곳');
+  const seenSlug = new Set(), seenFile = new Set();
+  for (const c of HOME_AD_CARDS) {
+    if (seenSlug.has(c.slug) || seenFile.has(c.file)) block.push(`H1 진열장에 같은 가게 · 같은 그림 두 번(${c.slug})`);
+    seenSlug.add(c.slug); seenFile.add(c.file);
+    const v = bySlug.get(c.slug);
+    if (!v) { block.push(`H1 가게 자료에 없는 가게(${c.slug})`); continue; }
+    if (v.cat !== c.cat) block.push(`H1 업종이 가게 자료와 다름(${c.slug} · ${c.cat} ≠ ${v.cat})`);
+    if (pageKey(venuePath(v.cat, v.slug, v.region)) !== pageKey(c.href)) block.push(`H1 주소가 가게 쪽과 다름(${c.slug})`);
+    if (!isListed(v)) block.push(`H1 목록에 안 드는 가게(닫힘 · 같은 가게 둘째 쪽 · ${c.slug})`);
+    if (c.listCard) {
+      if (!isAdVenue(v)) block.push(`H2 광고주가 아닌 가게의 목록 카드 = 광고문의 석 줄 카드(${c.file})`);
+    } else {
+      const ads = AD_CARDS.filter((a) => a.file === c.file);
+      if (!ads.length) block.push(`H3 명단 광고 카드로 등록 안 된 그림(${c.file})`);
+      else if (!ads.some((a) => a.pages.has(pageKey(c.href)))) block.push(`H3 그 카드의 명단 줄 쪽에 가게 쪽이 없음(${c.file} · ${c.href})`);
+    }
+    const jpg = path.join(dist, 'og', `${c.file}.jpg`), webp = path.join(dist, 'og', `${c.file}-w600.webp`);
+    if (!fs.existsSync(jpg) || !fs.existsSync(webp)) { block.push(`H4 그림 파일 없음(${c.file} · jpg 또는 -w600.webp)`); continue; }
+    for (const f of [jpg, webp]) { let h = null; try { h = crypto.createHash('sha1').update(fs.readFileSync(f)).digest('hex'); } catch { h = null; } if (h && FORBIDDEN_IMG[h]) block.push(`H4 금지 그림(${path.basename(f)} · ${FORBIDDEN_IMG[h]})`); }
+    const d = imageSize(jpg);
+    if (!d || d.w !== d.h) block.push(`H4 정사각이 아님(${c.file}.jpg · ${d ? `${d.w}×${d.h}` : '크기 못 읽음'})`);
+  }
+  // 홈 정적 판이 부르는 그림 — 가게 목록 카드(광고주 아닌 가게 = 광고문의 석 줄)는 0
+  let home = '';
+  try { home = fs.readFileSync(path.join(dist, 'index.html'), 'utf8'); } catch { block.push('H2 홈 정적 판(dist/index.html)을 못 읽음'); }
+  const listFile = new Map(venues.filter((v) => !isAdVenue(v)).map((v) => [`${v.slug}${ogVer(v.slug)}`, v.slug]));
+  for (const m of home.matchAll(/\/og\/([A-Za-z0-9._-]+?)(?:-w\d+|-i\d+)?\.(?:jpg|webp|png)/g)) if (listFile.has(m[1])) block.push(`H2 홈 정적 판이 광고문의 석 줄 카드를 부름(${m[1]})`);
+  // 빠진 광고주 — 가게 자료 번호가 붙은 가게(목록에 드는 것) · 놀쿨 명단 줄
+  for (const v of venues) if (isListed(v) && isAdVenue(v) && !seenSlug.has(v.slug)) quality.push(`H5 광고주 가게가 홈 진열장에 없음(${v.slug})`);
+  for (const r of ROSTER_ROWS) if (!HOME_AD_CARDS.some((c) => r.pages.has(pageKey(c.href)))) quality.push(`H5 명단 광고주가 홈 진열장에 없음(${r.shop})`);
+  return { block: [...new Set(block)], quality };
+}
+
 /* ── CLI ── */
-const isMain = process.argv[1] && path.resolve(process.argv[1]) === path.resolve(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'));
+const isMain =process.argv[1] && path.resolve(process.argv[1]) === path.resolve(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'));
 if (isMain) {
   const xml = fs.readFileSync(path.join(DIST, 'sitemap.xml'), 'utf8');
   const routes = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].replace(/^https?:\/\/[^/]+/, '')).map((r) => (r === '/' ? '/' : r.replace(/\/$/, '')));
@@ -642,6 +702,12 @@ if (isMain) {
     const bySha = new Map();
     for (const c of cardFiles) { let h = ''; try { h = crypto.createHash('sha1').update(fs.readFileSync(path.join(DIST, 'og', `${c}.jpg`))).digest('hex'); } catch { h = ''; } if (!h) { results.push({ route: `/og/${c}.jpg`, block: ['A8 등록된 카드 그림 파일 없음'], quality: [] }); continue; } bySha.set(h, [...(bySha.get(h) || []), c]); }
     for (const same of bySha.values()) if (same.length > 1) results.push({ route: `/og/${same[0]}.jpg`, block: [`A8 카드 그림이 서로 같음(쪽마다 다른 그림이어야): ${same.join(' = ')}`], quality: [] });
+  }
+  // [놀쿨86-1 · 대표님 11-22 18:26] 홈 광고주 진열장 자료(H1~H5) — 홈 그림은 광고주 넉 줄 카드만
+  {
+    const hs = homeShowcaseProblems(DIST);
+    console.log(`   · 홈 광고주 진열장 ${HOME_AD_CARDS.length}곳 자료 검사(H1~H5) — 막음 ${hs.block.length} · 품질 ${hs.quality.length}`);
+    if (hs.block.length || hs.quality.length) results.push({ route: '/ (홈 광고주 진열장)', block: hs.block, quality: hs.quality });
   }
   const blocked = results.filter((r) => r.block.length);
   const q = results.filter((r) => r.quality.length);
