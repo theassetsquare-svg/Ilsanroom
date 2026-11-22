@@ -36,8 +36,17 @@ export default function PostDetailPage() {
   const dynamicTitle = post?.title
     ? `${post.title} — 커뮤니티 글`
     : '커뮤니티 글';
-  const dynamicDesc = post?.content
-    ? `${String(post.content).replace(/[\n\r]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 140)}`
+  // [놀쿨86-1 · 2026-11-22] 본문은 편집기 HTML(<h2>·<p> …)이라 태그를 떼고 글자만 설명에 쓴다
+  //   (전에는 검색 설명에 「<h2>왜 업종부터…」처럼 꺾쇠 글자가 그대로 들어갔다 · 크롬 실측)
+  const plainBody = post?.content
+    ? String(post.content)
+        .replace(/<(script|style)[^>]*>[\s\S]*?<\/\1>/gi, ' ')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&')
+        .replace(/\s+/g, ' ').trim()
+    : '';
+  const dynamicDesc = plainBody
+    ? plainBody.slice(0, 140)
     : '회원과 운영팀이 쓴 커뮤니티 글입니다. 글과 댓글에는 닉네임이 표시됩니다.';
   useDocumentMeta(dynamicTitle, dynamicDesc);
   const [comments, setComments] = useState<CommentData[]>([]);
@@ -74,7 +83,7 @@ export default function PostDetailPage() {
         setPost(data);
         setLikeCount(data?.likes || 0);
         setLoading(false);
-        if (data?.title && !document.documentElement.hasAttribute('data-stealth')) document.title = `${data.title} — 놀쿨 커뮤니티`;
+        if (data?.title && !document.documentElement.hasAttribute('data-stealth')) document.title = `${data.title} — 커뮤니티 글`; // [놀쿨86-1] 위 useDocumentMeta 와 같은 꼬리 · 제목에 「놀쿨」 0
         if (data?.category) loadRelatedPosts(data.category, data.id);
       }
     });
